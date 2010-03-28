@@ -83,7 +83,7 @@ enum PlayerInfo {
 	Hide,		     // Hide on the radar
 	JailTime,	     // Time for Jails
 	MuteTime,	     // Time for Mute
-	ClickedPlayerid, // clickled player
+	ClickedPlayerid, // clicked player
 	FightStyle,
 	Name[20],
 	Last_Name[20],
@@ -502,6 +502,7 @@ public player_ResetStats(playerid)
 	PlayerRegistered[playerid] = false;
 	Player[playerid][Level] = 0;
 	Player[playerid][XP] = 0;
+	Player[playerid][Bank] = 0;
 	oSetPlayerMoney(playerid,0);
 	Player[playerid][Kills] = 0;
 	Player[playerid][Deaths] = 0;

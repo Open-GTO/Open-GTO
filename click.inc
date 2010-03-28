@@ -16,8 +16,8 @@ stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
 	Player[playerid][ClickedPlayerid] = clickedplayerid;
 	new listitems[256];
 	listitems = "Отправить денег\nЛичное сообщение\nЖалоба";
-	if(IsPlayerMod(playerid)) strcat(listitems, "\nKick\nMute\nUnMute\nJail\nUnJail", sizeof(listitems));
-	if(IsPlayerAdm(playerid)) strcat(listitems, "\nИнфо\nУбить\nTele to\nTele here\nSet health\nSet arm\nGive XP\nДать денег\nFreeze\nUnfreeze", sizeof(listitems));
+	if(IsPlayerMod(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nKick\nMute\nUnMute\nJail\nUnJail", sizeof(listitems));
+	if(IsPlayerAdm(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nИнфо\nУбить\nTele to\nTele here\nSet health\nSet arm\nGive XP\nДать денег\nFreeze\nUnfreeze", sizeof(listitems));
 	ShowPlayerDialog(playerid,ClickDialog,DIALOG_STYLE_LIST,"Выберите действие",listitems," Выбрать"," Отмена");
 }
 
