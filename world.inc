@@ -784,14 +784,14 @@ public SpawnWorld() // run at startup to spawn world
 			AddPlayerClass(i,0.0,0.0,0.0,0.0,0,0,0,0,0,0);
 		}
 	}
-	WriteLog(GameLog,"Все классы игрока запущены");
+	WriteLog(GameLog,"Все классы игрока созданы");
 
 	AddStaticPickup(371, 15, 1710.3359,1614.3585,10.1191); //para
 	AddStaticPickup(371, 15, 1964.4523,1917.0341,130.9375); //para
 	AddStaticPickup(371, 15, 2055.7258,2395.8589,150.4766); //para
 	AddStaticPickup(371, 15, 2265.0120,1672.3837,94.9219); //para
 	AddStaticPickup(371, 15, 2265.9739,1623.4060,94.9219); //para
-	WriteLog(GameLog,"Все статичные пикапы запущены");
+	WriteLog(GameLog,"Все пикапы созданы");
 }
 
 public OneSecTimer()
@@ -810,13 +810,13 @@ public OneMinuteTimer()
 	settime();
 	MuteCheck();
 	JailTimer();
-	PayDay();
 	WorldSave();
 }
 
 public OneHourTimer()
 {
 	Profit();
+	PayDay();
 }
 
 public FiveSecondTimer()

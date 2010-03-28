@@ -187,9 +187,9 @@ public OnGameModeInit()
 		if(VerboseSave == -1) VerboseSave = 0;
 	}
 	printf("SERVER: %s initialization complete. [%02d:%02d]",gamemode,hour,minute);
-	new logstring[MAX_STRING];
-	format(logstring,sizeof(logstring),"SERVER: %s initialization complete. ",gamemode);
-	WriteLog(GameLog,logstring);
+	new string[MAX_STRING];
+	format(string,sizeof(string),"SERVER: %s initialization complete. ",gamemode);
+	WriteLog(GameLog,string);
 	return 1;
 }
 
@@ -356,7 +356,7 @@ public OnPlayerCommandText(playerid,cmdtext[])
 
 public OnPlayerText(playerid, text[])
 {
-	new logstring[MAX_STRING],string[MAX_STRING],gangmessage[MAX_STRING];
+	new string[MAX_STRING],gangmessage[MAX_STRING];
 	switch(text[0])
 	{
 	    case '!':
@@ -366,26 +366,26 @@ public OnPlayerText(playerid, text[])
 				SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 				return 0;
 			}
-			strmid(gangmessage,text,1,strlen(text));
-			if(!strlen(gangmessage)) return 1;
-			format(gangmessage, sizeof(gangmessage), "%s[%d] банде: %s", oGetPlayerName(playerid), playerid, gangmessage);
-			SendGangMessage(PlayerGangid[playerid],gangmessage,COLOUR_GANG_CHAT);
-			format(logstring, sizeof (logstring), "Player: %s[%d]: <GANG CHAT>:   %s",oGetPlayerName(playerid),playerid,text);
-			WriteLog(ChatLog,logstring);
+			strmid(string,text,1,strlen(text));
+			if(!strlen(string)) return 1;
+			format(string,sizeof(string), "%s[%d] банде: %s", oGetPlayerName(playerid), playerid, gangmessage);
+			SendGangMessage(PlayerGangid[playerid],string,COLOUR_GANG_CHAT);
+			format(string,sizeof(string), "Player: %s[%d]: <GANG CHAT>:   %s",oGetPlayerName(playerid),playerid,text);
+			WriteLog(ChatLog,string);
 			return 0;
 		}
 		case '@':
 		{
 			AdminSpecial_OnPlayerText(playerid,text);
-			format(logstring, sizeof (logstring), "Player: %s[%d]: <ADMIN TALK>:   %s",oGetPlayerName(playerid),playerid,text);
-			WriteLog(ChatLog,logstring);
+			format(string,sizeof(string), "Player: %s[%d]: <ADMIN TALK>:   %s",oGetPlayerName(playerid),playerid,text);
+			WriteLog(ChatLog,string);
 			return 0;
 		}
 		case '#':
 		{
 			ModSpecial_OnPlayerText(playerid,text);
-			format(logstring, sizeof (logstring), "Player: %s[%d]: <MODERATOR TALK>:   %s",oGetPlayerName(playerid),playerid,text);
-			WriteLog(ChatLog,logstring);
+			format(string,sizeof(string), "Player: %s[%d]: <MODERATOR TALK>:   %s",oGetPlayerName(playerid),playerid,text);
+			WriteLog(ChatLog,string);
 			return 0;
 		}
 	}
@@ -396,8 +396,8 @@ public OnPlayerText(playerid, text[])
 	}
 	format(string, sizeof(string),"[%d]: %s", playerid, text);
 	SendPlayerMessageToAll(playerid, string);
-	format(logstring,sizeof(logstring),"Player: %s[%d]: %s",oGetPlayerName(playerid),playerid,text);
-	WriteLog(ChatLog,logstring);
+	format(string,sizeof(string),"Player: %s[%d]: %s",oGetPlayerName(playerid),playerid,text);
+	WriteLog(ChatLog,string);
 	return 0;
 }
 
