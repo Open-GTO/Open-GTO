@@ -1,0 +1,17 @@
+del/q GTO\Account\*.*
+del/q GTO\Business\*.*
+del/q GTO\Config\*.*
+del/q GTO\Deathmatch\*.*
+del/q GTO\Deathmatch\Record\*.*
+del/q GTO\Gang\*.*
+del/q GTO\Groundhold\*.*
+del/q GTO\Housing\*.*
+del/q GTO\Logging\ChatLog\*.*
+del/q GTO\Logging\CMDLog\*.*
+del/q GTO\Logging\GameLog\*.*
+del/q GTO\Logging\DebugLog\*.*
+del/q GTO\Player\*.*
+del/q GTO\Race\*.*
+del/q GTO\Race\Record\*.*
+del/q GTO\Vehicle\*.*
+del/q GTO\Weapon\*.*
