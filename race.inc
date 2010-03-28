@@ -693,25 +693,25 @@ stock SendPlayerCurrentRaces(playerid)
 		{
 			if (racefound == 0)
 			{
-				SendPlayerFormattedText(playerid,  lang_texts[10][39] , 0,COLOUR_RACE);
+				SendClientMessage(playerid,COLOUR_GREEN,lang_texts[10][39]);
 				racefound++;
 			}
 			if (RaceStats[raceid][race_racercount] >= Race[raceid][race_minracers])
 			{
-				format(string, sizeof(string),  lang_texts[10][40] ,Race[raceid][race_name],raceid,Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer],RaceStats[raceid][race_racercount],GetRaceCPZoneName(raceid,0));
+				format(string, sizeof(string),lang_texts[10][40],Race[raceid][race_name],raceid,Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer],RaceStats[raceid][race_racercount],GetRaceCPZoneName(raceid,0));
 			}
 			else 
 			{
-				format(string, sizeof(string),  lang_texts[10][41] ,Race[raceid][race_name],raceid,Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer],RaceStats[raceid][race_racercount],Race[raceid][race_minracers],GetRaceCPZoneName(raceid,0));
+				format(string, sizeof(string),lang_texts[10][41],Race[raceid][race_name],raceid,Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer],RaceStats[raceid][race_racercount],Race[raceid][race_minracers],GetRaceCPZoneName(raceid,0));
 			}
-			SendPlayerFormattedText(playerid, string, 0,GetRaceColourForPlayer(playerid,raceid));
+			SendClientMessage(playerid,GetRaceColourForPlayer(playerid,raceid),string);
 		}
 		else if (IsPlayerAdmin(playerid))
 		{
 			if (strlen(Race[raceid][race_name]) > 0)
 			{
 				format(string, sizeof(string),  lang_texts[10][42] ,Race[raceid][race_name],raceid);
-				SendPlayerFormattedText(playerid, string, 0,COLOUR_RED);
+				SendClientMessage(playerid,COLOUR_RED,string);
 			}
 		}
 	}
