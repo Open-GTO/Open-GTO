@@ -177,7 +177,7 @@ public OnGameModeInit()
 	printf("SERVER: Worldtime set as %d",WorldTime);
 	SetWeather(10);
 	SetTimer("OneSecTimer",1000,1); // 1 second
-	SetTimer("FiveSecondTimer",300000,1); // 5 second
+	SetTimer("FiveSecondTimer",5000,1); // 5 second
 	SetTimer("OneMinuteTimer",60000,1); // 1 minute
 	SetTimer("OneHourTimer",3600000,1); // 1 hour
 	SpawnWorld();

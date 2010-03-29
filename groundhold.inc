@@ -26,6 +26,7 @@ enum gh_info
 }
 
 #define MAX_GROUNDHOLD 3
+new Groundhold_Enabled = 1;
 new GroundholdDB[MAX_STRING] = "GTO/Groundhold/";
 new PlayerGroundHoldTime[MAX_GROUNDHOLD][MAX_PLAYERS];
 new PlayerHoldingGround[MAX_GROUNDHOLD][MAX_PLAYERS];
@@ -41,6 +42,7 @@ stock groundhold_LoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 1;
     new file = ini_Open(ConfigDB);
+	ini_GetInt(file,"Groundhold_Enabled",Groundhold_Enabled);
 	ini_Get(file,"Groundhold_DB",GroundholdDB);
 	ini_Close(file);
 	return 1;
@@ -50,6 +52,7 @@ stock groundhold_SaveConfig()
 {
 	if(!ini_Exist(ConfigDB)) {new File:fgh = fopen(ConfigDB,io_write);fclose(fgh);}
     new file = ini_Open(ConfigDB);
+	ini_SetInt(file,"Groundhold_Enabled",Groundhold_Enabled);
 	ini_Set(file,"Groundhold_DB",GroundholdDB);
 	ini_Close(file);
 	return 1;
@@ -110,6 +113,7 @@ stock groundhold_SaveAll()
 stock groundhold_OnGameModeInit()
 {
 	groundhold_LoadConfig();
+	if(Groundhold_Enabled != 1) return 1;
 	groundhold_LoadAll();
 	for(new i=0;i<MAX_GROUNDHOLD;i++)
 	{
@@ -117,6 +121,7 @@ stock groundhold_OnGameModeInit()
 		CreateStreamMapIcon(56,Groundholds[i][gh_x],Groundholds[i][gh_y],Groundholds[i][gh_z]);
 	}
 	WriteLog(GameLog,"Groundhold checkpoints initialised");
+	return 1;
 }
 
 stock CheckGround(ghid)
@@ -224,17 +229,13 @@ stock CheckGround(ghid)
 stock CountPlayers(players[])
 {
 	new count;
-	for(new i = 0;i<MAX_PLAYERS;i++)
-	{
-		if (players[i] > 0) count++;
-	}
+	for(new i=0;i<MAX_PLAYERS;i++) if(players[i] > 0) count++;
 	return count;
 }
 
 stock CheckAllGround()
 {
-	for(new ghid = 0;ghid<MAX_GROUNDHOLD;ghid++)
-	{
-		CheckGround(ghid);
-	}
+	if(Groundhold_Enabled != 1) return 1;
+	for(new ghid=0;ghid<MAX_GROUNDHOLD;ghid++) CheckGround(ghid);
+	return 1;
 }
