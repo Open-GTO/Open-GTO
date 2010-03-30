@@ -36,7 +36,7 @@ enum BusinessInfo {
 }
 
 new Businesses[MAX_BUSINESSES][BusinessInfo] = {
-	//NAME,COST,VALUE,LEVEL,OWNER,BUYOUT
+	//NAME,COST,VALUE,LEVEL,OWNER,BUYOUT,Vault,Upgrade,X,Y,Z
 	{"Botique",35000,800,5,"Unknown",0,0,0,				418.5547,-80.1667,1001.8047},
 	{"Shithole Bar",25000,1300,8,"Unknown",0,0,0,		501.4927,-75.4323,998.7578},
 	{"Tattoo Parlor",40000,600,3,"Unknown",0,0,0,		-203.4864,-41.2045,1002.2734},
@@ -149,6 +149,7 @@ stock business_OnGameModeInit()
 	for(new id=0;id<MAX_BUSINESSES;id++)
 	{
 		BusinessPick[id] = CreatePickup(1274,49,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.5);	//синий домик
+		CreateStreamMapIcon(52,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]);
 	}
 	WriteLog(GameLog,"Business initialised");
 }
