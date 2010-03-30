@@ -30,7 +30,8 @@ new Ammunations[AmmunationsCount][CoordInfo] =
 {
 	{291.0004,-84.5168,1001.5156}, // LVammunation1
 	{293.2710,-108.9645,1001.5156}, // LSAmmunation1
-	{290.3177,-38.7184,1001.5156} // LSAmmunation2
+	{290.3177,-38.7184,1001.5156}, // LSAmmunation2
+	{316.4356,-165.1367,999.6010} // север карты
 };
 
 enum WeaponInfo 
