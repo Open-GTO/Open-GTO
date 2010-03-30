@@ -36,7 +36,7 @@ enum BusinessInfo {
 }
 
 new Businesses[MAX_BUSINESSES][BusinessInfo] = {
-	//NAME,COST,VALUE,LEVEL,OWNER,BUYOUT,Vault,Upgrade,X,Y,Z
+	//NAME,COST,VALUE,LEVEL,OWNER,BUYOUT,upgrade,x,y,z
 	{"Botique",35000,800,5,"Unknown",0,0,0,				418.5547,-80.1667,1001.8047},
 	{"Shithole Bar",25000,1300,8,"Unknown",0,0,0,		501.4927,-75.4323,998.7578},
 	{"Tattoo Parlor",40000,600,3,"Unknown",0,0,0,		-203.4864,-41.2045,1002.2734},
@@ -70,16 +70,19 @@ new Businesses[MAX_BUSINESSES][BusinessInfo] = {
 	{"Four Dragons",2050000,16000,20,"Unknown",0,0,0,	1993.9758,1017.8945,994.8906}
 };
 
-new BusinessPick[MAX_BUSINESSES];
+new BusinessPick[MAX_BUSINESSES],Text3D:Business3DTextLabel[MAX_BUSINESSES],Float:BusinessDistanceOfShowLabel=20.0;
 new BusinessDB[MAX_STRING] = "GTO/Business/";
 
 BusinessLoadAll()
 {
     new file;
-	if(!ini_Exist(ConfigDB)) {new File:fgh = fopen(ConfigDB,io_write);fclose(fgh);}
-	file = ini_Open(ConfigDB);
-	ini_Get(file,"Business_DB",BusinessDB);
-	ini_Close(file);
+	if(ini_Exist(ConfigDB))
+	{
+		file = ini_Open(ConfigDB);
+		ini_Get(file,"Business_DB",BusinessDB);
+		ini_GetFloat(file,"Business_DistanceOfShowLabel",BusinessDistanceOfShowLabel);
+		ini_Close(file);
+	}
 	if(!ini_Exist(BusinessDB))
 	{
 		BusinessSaveAll();
@@ -119,6 +122,7 @@ BusinessSaveAll()
 	{
 		file = ini_Open(ConfigDB);
 		ini_Set(file,"Business_DB",BusinessDB);
+		ini_SetFloat(file,"Business_DistanceOfShowLabel",BusinessDistanceOfShowLabel);
 		ini_Close(file);
 	}
 	for(new i=0;i<MAX_BUSINESSES;i++)
@@ -146,10 +150,13 @@ BusinessSaveAll()
 stock business_OnGameModeInit()
 {
 	BusinessLoadAll();
+	new string[MAX_STRING];
 	for(new id=0;id<MAX_BUSINESSES;id++)
 	{
 		BusinessPick[id] = CreatePickup(1274,49,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.5);	//синий домик
 		CreateStreamMapIcon(52,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]);
+		format(string,sizeof(string),"Бизнес: %s\nСтоимость: %d\nПрибыль: %d\nСейчас принадлежит: %s\nМин.Уровень: %d\nУровень бизнеса: %d",Businesses[id][Business_Name],Businesses[id][Business_Cost],Businesses[id][Business_Value],Businesses[id][Business_Owner],Businesses[id][Business_Level],Businesses[id][Business_Upgrade]);
+		Business3DTextLabel[id] = Create3DTextLabel(string,COLOUR_WHITE,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.75,BusinessDistanceOfShowLabel,0,1);
 	}
 	WriteLog(GameLog,"Business initialised");
 }
@@ -608,3 +615,13 @@ stock business_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	return 1;
 }
 
+stock business_Update3DTextLabelText()
+{
+	new string[MAX_STRING];
+	for(new id=0;id<MAX_BUSINESSES;id++)
+	{
+		format(string,sizeof(string),"Бизнес: %s\nСтоимость: %d\nПрибыль: %d\nСейчас принадлежит: %s\nМин.Уровень: %d\nУровень бизнеса: %d",Businesses[id][Business_Name],Businesses[id][Business_Cost],Businesses[id][Business_Value],Businesses[id][Business_Owner],Businesses[id][Business_Level],Businesses[id][Business_Upgrade]);
+		Update3DTextLabelText(Business3DTextLabel[id],COLOUR_WHITE,string);
+	}
+	return 1;
+}

@@ -186,12 +186,14 @@ new LevelList[MAX_LEVEL+1][LevelInfo] = { // experience required for each level
 BaseLoadConfig()
 {
 	new temp[MAX_STRING],file;
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	file = ini_Open(ConfigDB);
-	ini_Get(file,"Level_DB",LevelDB);
-    ini_GetInt(file,"Verbose_Save",VerboseSave);
-    ini_GetInt(file,"Real_Time",RealTime);
-	ini_Close(file);
+	if(!ini_Exist(ConfigDB))
+	{
+		file = ini_Open(ConfigDB);
+		ini_Get(file,"Level_DB",LevelDB);
+		ini_GetInt(file,"Verbose_Save",VerboseSave);
+		ini_GetInt(file,"Real_Time",RealTime);
+		ini_Close(file);
+	}
 	if(!ini_Exist(LevelDB)) BaseSaveConfig();
 	for(new i=0;i<=MAX_LEVEL;i++)
 	{

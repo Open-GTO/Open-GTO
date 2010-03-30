@@ -826,4 +826,6 @@ public FiveSecondTimer()
 	PlayerHealthRegen();
 	HouseKeepUp();
 	SyncActiveCP();
+	business_Update3DTextLabelText();
+	housing_Update3DTextLabelText();
 }

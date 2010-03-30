@@ -20,7 +20,7 @@
 #define int 15
 
 new Hous[MAX_PLAYERS],Haus[MAX_PLAYERS];
-new housepickup[MAX_HOUSES];
+new housepickup[MAX_HOUSES],Text3D:House3DTextLabel[MAX_HOUSES],Float:HouseDistanceOfShowLabel=20.0;
 
 enum HouseInfo 
 {
@@ -44,7 +44,7 @@ enum HouseInfo
 }
 
 new Houses[MAX_HOUSES][HouseInfo] = {
-	//NAME, COST, OWNER, GANG, UpKeep, UpKeepLeft, BUYOUT
+	//NAME, COST, OWNER, GANG, UpKeep, UpKeepLeft, BUYOUT, интерьер, eX,eY,eZ, Car, Lock, Rentabil, RentName, Rent Cost, Heal upgrade
 	{"[LV]Four Dragons Mansion",1250000,"Unknown","Unknown",500,0,0,1,247.5086,304.9248,999.1484,0,0,0,"Unknown",50000,0},
 	{"[LV]Caligula Mansion",850000,"Unknown","Unknown",500,0,0,3,289.9850,307.3130,999.1484,0,0,0,"Unknown",50000,0},
 	{"[LS]Willowfield",17000,"Unknown","Unknown",50,0,0,5,319.4555,312.5038,999.1484,0,0,0,"Unknown",50000,0},
@@ -401,11 +401,14 @@ new HousesDB[MAX_STRING] = "GTO/Housing/";
 
 stock HousesLoadAll()
 {
-	if(ForceOverwrite) return;
-	if(!ini_Exist(ConfigDB)) ini_Create(ConfigDB);
-	new file = ini_Open(ConfigDB);
-	ini_Get(file,"Houses_DB",HousesDB);
-	ini_Close(file);
+	new file;
+	if(ini_Exist(ConfigDB))
+	{
+		file = ini_Open(ConfigDB);
+		ini_Get(file,"Houses_DB",HousesDB);
+		ini_GetFloat(file,"House_DistanceOfShowLabel",HouseDistanceOfShowLabel);
+		ini_Close(file);
+	}
 	if(!ini_Exist(HousesDB))
 	{
 		HousesSaveAll();
@@ -449,15 +452,16 @@ stock HousesSaveAll()
 	new file;
 	if(ini_Exist(ConfigDB))
 	{
-	    file = ini_Open(ConfigDB);
+		file = ini_Open(ConfigDB);
 		ini_Set(file,"Houses_DB",HousesDB);
+		ini_SetFloat(file,"House_DistanceOfShowLabel",HouseDistanceOfShowLabel);
 		ini_Close(file);
 	}
 	for(new housid=0;housid<MAX_HOUSES;housid++)
 	{
 		SaveHous(housid);
 	}
-	return;
+	return 1;
 }
 
 stock SaveHous(housid)
@@ -489,10 +493,13 @@ stock SaveHous(housid)
 stock housing_OnGameModeInit()
 {
 	HousesLoadAll();
+	new string[MAX_STRING];
 	for(new id=0;id<MAX_HOUSES;id++)
 	{
 		housepickup[id] = CreatePickup(1273,1,HousesCP[id][Coord_X],HousesCP[id][Coord_Y],HousesCP[id][Coord_Z]+0.5);	//зеленый домик
-		CreateStreamMapIcon(31, HousesCP[id][Coord_X],HousesCP[id][Coord_Y],HousesCP[id][Coord_Z]);
+		CreateStreamMapIcon(31,HousesCP[id][Coord_X],HousesCP[id][Coord_Y],HousesCP[id][Coord_Z]);
+		format(string,sizeof(string),"Дом: %s\nСтоимость: %d\nКуплен: %s\nАрендуется: %s",Houses[id][Houses_Name],Houses[id][Houses_Cost],Houses[id][Houses_Owner],Houses[id][Houses_RentName]);
+		House3DTextLabel[id] = Create3DTextLabel(string,COLOUR_WHITE,HousesCP[id][Coord_X],HousesCP[id][Coord_Y],HousesCP[id][Coord_Z]+0.75,HouseDistanceOfShowLabel,0,1);
 	}
 	WriteLog(GameLog,"Housing checkpoints initialised");
 }
@@ -1106,6 +1113,17 @@ stock housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 				Haus[playerid] = -1;
 			}
 		}
+	}
+	return 1;
+}
+
+stock housing_Update3DTextLabelText()
+{
+	new string[MAX_STRING];
+	for(new id=0;id<MAX_HOUSES;id++)
+	{
+		format(string,sizeof(string),"Дом: %s\nСтоимость: %d\nКуплен: %s\nАрендуется: %s",Houses[id][Houses_Name],Houses[id][Houses_Cost],Houses[id][Houses_Owner],Houses[id][Houses_RentName]);
+		Update3DTextLabelText(House3DTextLabel[id],COLOUR_WHITE,string);
 	}
 	return 1;
 }

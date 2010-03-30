@@ -17,7 +17,7 @@
 #define MAX_BULLETS 2999
 #define WeaponsSize 47
 #define MAX_WEAPONS 46
-#define AmmunationsCount 3
+#define AmmunationsCount 4
 
 #define pistol_bullets 14
 #define assault_bullets 30
@@ -102,10 +102,12 @@ new Weapons[WeaponsSize][WeaponInfo] = {
 stock WeaponLoadAll()
 {
 	new file;
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	file = ini_Open(ConfigDB);
-	ini_Get(file,"Weapon_DB",WeaponDB);
-	ini_Close(file);
+	if(ini_Exist(ConfigDB))
+	{
+		file = ini_Open(ConfigDB);
+		ini_Get(file,"Weapon_DB",WeaponDB);
+		ini_Close(file);
+	}
 	if(!ini_Exist(WeaponDB))
 	{
 	    print("WeaponSaveAll();");
