@@ -9,6 +9,8 @@
 #define _mission_included
 #pragma library mission
 
+#define MISSION_ID 999
+
 forward EndMission(playerid);
 
 new Linerunner[4],Trailer[4],driver[MAX_PLAYERS],timer[MAX_PLAYERS],Mission_Enabled=0;
@@ -97,12 +99,14 @@ stock mission_OnPlayerStateChange(playerid,newstate,oldstate)
             driver[playerid] = 1;
             new rand = random(sizeof(LineCoord));
             oSetPlayerCheckpoint(playerid,LineCoord[rand][0],LineCoord[rand][1],LineCoord[rand][2],10);
+            PlayerQuest[playerid] = MISSION_ID;
         }
         else if(GetPlayerVehicleID(playerid) == Linerunner[3])
         {
             driver[playerid] = 1;
             new rand = random(sizeof(PetrolCoord));
             oSetPlayerCheckpoint(playerid,PetrolCoord[rand][0],PetrolCoord[rand][1],PetrolCoord[rand][2],10);
+            PlayerQuest[playerid] = MISSION_ID;
         }
 		else return 1;
         timer[playerid] = SetTimerEx("EndMission",300000,0,"d",playerid);
@@ -119,6 +123,7 @@ stock mission_OnPlayerStateChange(playerid,newstate,oldstate)
 	{
 	    driver[playerid] = 0;
 	    oDisablePlayerCheckpoint(playerid);
+	    PlayerQuest[playerid] = 0;
 	    SendClientMessage(playerid,COLOUR_RED,"*** Ты не справился с миссией.");
 		return 1;
 	}
@@ -135,6 +140,7 @@ stock mission_OnPlayerEnterCheckpoint(playerid)
 		driver[playerid] = 0;
 		GivePlayerMoney(playerid,100000);
 		DetachTrailerFromVehicle(vehicleid);
+		PlayerQuest[playerid] = 0;
 		oDisablePlayerCheckpoint(playerid);
 		SendClientMessage(playerid,COLOUR_WHITE,"*** Поздравляем! Ты справился с миссией. Получи свои бабки!");
 		KillTimer(timer[playerid]);
@@ -148,6 +154,7 @@ stock mission_OnPlayerDisconnect(playerid,reason)
 	if(Mission_Enabled != 1) return 1;
 	if(driver[playerid] != 1) return 1;
 	driver[playerid] = 0;
+	PlayerQuest[playerid] = 0;
 	oDisablePlayerCheckpoint(playerid);
 	return 1;
 }
@@ -158,6 +165,7 @@ stock mission_OnPlayerDeath(playerid, killerid, reason)
 	if(Mission_Enabled != 1) return 1;
 	if(driver[playerid] != 1) return 1;
 	driver[playerid] = 0;
+	PlayerQuest[playerid] = 0;
 	oDisablePlayerCheckpoint(playerid);
 	SendClientMessage(playerid,COLOUR_RED,"*** Ты не справился с миссией доставки груза");
 	return 1;
@@ -169,6 +177,7 @@ stock mission_OnVehicleDeath(vehicleid, killerid)
 	if(vehicleid == Linerunner[1] || vehicleid == Linerunner[2] || vehicleid == Linerunner[3])
 	{
 	    driver[killerid] = 0;
+   		PlayerQuest[killerid] = 0;
 	    oDisablePlayerCheckpoint(killerid);
 	    SendClientMessage(killerid,COLOUR_RED,"*** Ты не справился с миссией, уничтожив свой транспорт");
 	}
@@ -180,6 +189,7 @@ public EndMission(playerid)
 	if(driver[playerid] == 1)
 	{
 	    driver[playerid] = 0;
+   		PlayerQuest[playerid] = 0;
 	    oDisablePlayerCheckpoint(playerid);
 	    SendClientMessage(playerid,COLOUR_RED,"*** Ты не справился с миссией.");
 	}
