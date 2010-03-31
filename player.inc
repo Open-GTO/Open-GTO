@@ -15,50 +15,6 @@
 #include "account"
 #include "weapons"
 
-forward SpawnTimer();
-forward PlayerHealthRegen();
-forward SyncPlayers();
-forward CheckPlayerKick(playerid);
-forward KickPlayer(playerid,reason[]);
-forward HealthRegen(id);
-forward GivePlayerOwnedWeapons(playerid);
-forward SendPlayerOwnedWeapons(playerid);
-forward player_ResetStats(playerid);
-forward IsPlayerRegistered(playerid);
-forward RegisterQuest(name[]);
-forward ResetQuest(playerid);
-forward oSetPlayerCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size);
-forward oDisablePlayerCheckpoint(playerid);
-forward oIsPlayerInCheckpoint(playerid,Float:cpx,Float:cpy,Float:cpz,dist);
-forward CheckPlayerLevel(playerid);
-forward PlayerLevelDown(playerid,level);
-forward PlayerLevelUp(playerid,level);
-forward GetPlayerTotalMoney(playerid);
-forward oGetPlayerMoney(playerid);
-forward PlayerSave(playerid);
-forward CreatePlayer(playerid);
-forward PlayerLoadStats(playerid);
-forward JailPlayer(playerid);
-forward UnJailPlayer(playerid);
-forward GiveWantedLevel(playerid,level);
-forward SetWantedLevel(playerid,level);
-forward CheckWantedLevel(playerid);
-forward CurrentCriminalsCheck(playerid);
-forward SetColorForWantedLevel(playerid);
-forward ADMDropAmmo(playerid);
-forward IsPlayerAdm(playerid);
-forward IsPlayerMod(playerid);
-
-forward DropPlayerWeapons(playerid);
-forward DeletePickup(pickupid);
-forward GetWeaponModel(weaponid);
-forward oGivePlayerWeapon(playerid,weaponid,ammo);
-forward GetWeaponBulletsDown(weaponid);
-forward GetWeaponSlot(weaponid);
-forward MuteCheck();
-forward JailTimer();
-forward PlayerUpdate(playerid);
-
 #define MAX_MONEY 50000000
 #define PLAYER_SYNC_DELAY 1000
 #define MAX_DESYNC 5000
@@ -138,44 +94,44 @@ enum PlayerSpawnInfo {
 
 #define PLAYERSPAWNS_SIZE 38
 new Float:LeveledPlayerSpawns[PLAYERSPAWNS_SIZE][PlayerSpawnInfo] = {
-	{0,946.8751,1733.2366,8.8516,270.7313}, // lvl0spawn1
-	{0,946.8751,1733.2366,8.8516,270.7313}, // lvl0ps
-	{0,946.8751,1733.2366,8.8516,270.7313}, // lvl0ps
-	{3,946.8751,1733.2366,8.8516,270.7313}, // lvl3spawn
-	{3,946.8751,1733.2366,8.8516,270.7313}, // lvl3spawn
-	{3,946.8751,1733.2366,8.8516,270.7313}, // lvl3spawn
-	{3,946.8751,1733.2366,8.8516,270.7313}, // lvl3spawn
-	{5,2033.1472,1530.3121,10.8203,278.1910}, // lvl5spawn
-	{5,2033.1472,1530.3121,10.8203,278.1910}, // lv5spaawn
-	{5,946.8751,1733.2366,8.8516,270.7313}, // lv5 spawn
-	{6,946.8751,1733.2366,8.8516,270.7313}, // lv6spawn
-	{6,2428.2900,1625.6614,10.8203,179.1623}, // lv6spawn
-	{6,946.8751,1733.2366,8.8516,270.7313}, // lv6spawn
-	{6,2428.2900,1625.6614,10.8203,179.1623}, // lv6spawn
-	{6,2428.2900,1625.6614,10.8203,179.1623}, // lv6spawn
-	{7,946.8751,1733.2366,8.8516,270.7313}, // lv7spawn
-	{7,2087.9827,1381.0945,10.8203,193.2659}, // lv7spawn
-	{7,946.8751,1733.2366,8.8516,270.7313}, // lv7spawn
-	{7,2087.9827,1381.0945,10.8203,193.2659}, // lv7spawn
-	{8,946.8751,1733.2366,8.8516,270.7313}, // lvl8player
-	{8,946.8751,1733.2366,8.8516,270.7313}, // lvl8play
-	{8,2033.1472,1530.3121,10.8203,278.1910}, // play8
-	{8,2033.1472,1530.3121,10.8203,278.1910}, // play8
-	{9,2428.2900,1625.6614,10.8203,179.1623}, // play9
-	{9,2428.2900,1625.6614,10.8203,179.1623}, // play9
-	{9,2428.2900,1625.6614,10.8203,179.1623}, // play9
-	{10,946.8751,1733.2366,8.8516,270.7313}, // play10
-	{10,2087.9827,1381.0945,10.8203,193.2659}, // play10
-	{10,2087.9827,1381.0945,10.8203,193.2659}, // play10
-	{11,2033.1472,1530.3121,10.8203,278.1910}, // play10
-	{11,946.8751,1733.2366,8.8516,270.7313}, // play11
+	{0,2517.5344,-1694.0607,18.4772,47.2527}, // lvl0spawn1
+	{0,2494.6113,-1694.2920,23.5697,7.8082}, // lvl0ps
+	{0,2524.2092,-1675.8125,19.9302,65.8183}, // lvl0ps
+	{3,2066.9448,-1700.1219,14.1484,276.0525}, // lvl3spawn
+	{3,2065.0754,-1732.0588,18.7969,308.6771}, // lvl3spawn
+	{3,2042.3877,-1722.0016,13.5469,339.7588}, // lvl3spawn
+	{3,2040.6575,-1646.1099,13.5469,1.2393}, // lvl3spawn
+	{5,1641.0234,-1545.1201,13.5803,293.5606}, // lvl5spawn
+	{5,1585.7887,-1539.0266,13.5864,265.2574}, // lv5spaawn
+	{5,1606.7871,-1476.6110,13.5804,0.8114}, // lv5 spawn
+	{6,1885.8452,-1087.4312,23.9185,279.8816}, // lv6spawn
+	{6,2008.4741,-1098.7870,24.9058,256.2135}, // lv6spawn
+	{6,2045.3113,-1158.0294,23.4437,145.6347}, // lv6spawn
+	{6,2022.5231,-1210.7472,21.7610,35.7139}, // lv6spawn
+	{6,1933.6676,-1226.6060,20.1364,97.0786}, // lv6spawn
+	{7,1332.1099,-911.0746,39.5781,168.9972}, // lv7spawn
+	{7,1309.1066,-847.0045,64.8932,315.8327}, // lv7spawn
+	{7,1285.2598,-830.9579,83.1406,171.4035}, // lv7spawn
+	{7,1243.5209,-743.7954,94.9519,191.1576}, // lv7spawn
+	{8,655.1062,-543.5223,16.3281,349.4992}, // lvl8player
+	{8,702.5857,-463.9641,16.3359,189.5556}, // lvl8play
+	{8,852.9753,-587.0893,18.0406,8.3576}, // play8
+	{8,744.7605,-582.7914,16.9987,84.0696}, // play8
+	{9,248.1220,-278.0332,1.5781,52.9390}, // play9
+	{9,326.3771,-53.1227,1.5285,111.6351}, // play9
+	{9,214.2944,-89.7956,1.5710,312.5051}, // play9
+	{10,614.6899,43.1528,0.0748,344.7167}, // play10
+	{10,867.4291,-30.7355,63.1953,176.7125}, // play10
+	{10,1011.3226,11.4864,93.0156,302.5121}, // play10
+	{11,751.2596,383.9003,23.1719,335.8973}, // play10
+	{11,1222.3271,300.4901,19.5547,155.6648}, // play11
 	{11,1284.9962,175.7558,20.3423,73.2174}, // play11
 	{12,1426.9465,371.7816,18.8869,257.0709}, // play11
 	{12,1572.3761,36.5942,24.5907,242.6472}, // play11
-	{14,946.8751,1733.2366,8.8516,270.7313}, // play12
-	{15,946.8751,1733.2366,8.8516,270.7313}, // play12
-	{17,946.8751,1733.2366,8.8516,270.7313}, // play12
-	{18,946.8751,1733.2366,8.8516,270.7313} // play12
+	{14,2215.1565,123.8511,26.4844,350.1021}, // play12
+	{15,2281.3704,-49.9920,27.0176,207.7730}, // play12
+	{17,2162.9019,-102.3568,2.7500,27.7265}, // play12
+	{18,2459.7744,-40.9547,26.4844,25.8460} // play12
 };
 
 enum CoordInfoJ {
@@ -197,18 +153,33 @@ new Float:JPH[UNJP][CoordInfoJ] = {
 };
 
 // LVDMSpawns
-new Float:LVDMPlayerSpawns[8][CoordInfo] = {
-	{945.9234,1733.2213,8.8516}, 
-	{945.9234,1733.2213,8.8516},
-	{945.9234,1733.2213,8.8516},
-	{945.9234,1733.2213,8.8516},
-	{945.9234,1733.2213,8.8516},
-	{945.9234,1733.2213,8.8516},
-	{945.9234,1733.2213,8.8516},
-	{945.9234,1733.2213,8.8516}
+new Float:LVDMPlayerSpawns[23][CoordInfo] = {
+	{1958.3783,1343.1572,15.3746},
+	{2199.6531,1393.3678,10.8203},
+	{2483.5977,1222.0825,10.8203},
+	{2637.2712,1129.2743,11.1797},
+	{2000.0106,1521.1111,17.0625},
+	{2024.8190,1917.9425,12.3386},
+	{2261.9048,2035.9547,10.8203},
+	{2262.0986,2398.6572,10.8203},
+	{2244.2566,2523.7280,10.8203},
+	{2335.3228,2786.4478,10.8203},
+	{2150.0186,2734.2297,11.1763},
+	{2158.0811,2797.5488,10.8203},
+	{1969.8301,2722.8564,10.8203},
+	{1652.0555,2709.4072,10.8265},
+	{1564.0052,2756.9463,10.8203},
+	{1271.5452,2554.0227,10.8203},
+	{1441.5894,2567.9099,10.8203},
+	{1480.6473,2213.5718,11.0234},
+	{1400.5906,2225.6960,11.0234},
+	{1598.8419,2221.5676,11.0625},
+	{1318.7759,1251.3580,10.8203},
+	{1558.0731,1007.8292,10.8125},
+	{1705.2347,1025.6808,10.8203}
 };
 
-PlayerLoadConfig()
+stock PlayerLoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 1;
 	new file = ini_Open(ConfigDB);
@@ -223,7 +194,7 @@ PlayerLoadConfig()
 	return 1;
 }
 
-PlayerSaveConfig()
+stock PlayerSaveConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 1;
 	new file = ini_Open(ConfigDB);
@@ -261,7 +232,7 @@ stock Float:oGetPlayerHealth(playerid)
 	return health;
 }
 
-public SpawnTimer()
+stock SpawnTimer()
 {
 	for(new playerid;playerid<MAX_PLAYERS;playerid++)
 	{
@@ -269,7 +240,7 @@ public SpawnTimer()
 	}
 }
 
-public PlayerHealthRegen()
+stock PlayerHealthRegen()
 {
 	for(new playerid;playerid<MAX_PLAYERS;playerid++) HealthRegen(playerid);
 	return 1;
@@ -277,7 +248,7 @@ public PlayerHealthRegen()
 
 // needs to be ran by a timer
 // sync player hp/money and check for mismatch
-public SyncPlayers()
+stock SyncPlayers()
 {
 	for(new playerid;playerid<MAX_PLAYERS;playerid++)
 	{
@@ -317,7 +288,7 @@ stock SyncHealth(playerid)
 }
 
 // Check if any players have been marked to kick, and kicks them
-public CheckPlayerKick(playerid)
+stock CheckPlayerKick(playerid)
 {
 	if(IsPlayerConnected(playerid))
 	{
@@ -340,7 +311,7 @@ public CheckPlayerKick(playerid)
 	}
 }
 
-public KickPlayer(playerid,reason[])
+stock KickPlayer(playerid,reason[])
 {
 	if(!IsPlayerConnected(playerid)) return 1;
 	new string[MAX_STRING];
@@ -365,7 +336,7 @@ public KickPlayer(playerid,reason[])
 	return 1;
 }
 
-public HealthRegen(id)
+stock HealthRegen(id)
 {
 	if((Player[id][Health] <= 0) || (Player[id][Health] >= 100)) return 1;
 	if(Player[id][Health] < MIN_HEALTH+(Player[id][Level]*5.0)) // if we regenerate health
@@ -378,7 +349,7 @@ public HealthRegen(id)
 	return 1;
 }
 
-public GivePlayerOwnedWeapons(playerid)
+stock GivePlayerOwnedWeapons(playerid)
 {
 	ResetPlayerWeapons(playerid);
 	for(new weaponslot=0;weaponslot<PLAYER_WEAPON_SLOTS;weaponslot++)
@@ -392,7 +363,7 @@ public GivePlayerOwnedWeapons(playerid)
 	}
 }
 
-public SendPlayerOwnedWeapons(playerid)
+stock SendPlayerOwnedWeapons(playerid)
 {
 	new string[MAX_STRING];
 	SendPlayerFormattedText(playerid,  lang_texts[9][7]  , 0,COLOUR_GREEN);
@@ -411,39 +382,28 @@ public SendPlayerOwnedWeapons(playerid)
 		}
 	}
 }
-GetRndPlayerSpawnByLevel(level)
+
+stock GetRndPlayerSpawnByLevel(level)
 {
-	new spawnlevel=0;
-	for (new lookupid=0;lookupid<PLAYERSPAWNS_SIZE;lookupid++)
-	{ // first we will get our highest available spawn point level (not all have spawnpoints, so we get the level below instead)
-		if ((LeveledPlayerSpawns[lookupid][playerspawn_level] <= level) && (LeveledPlayerSpawns[lookupid][playerspawn_level] > spawnlevel))
+	new spawnlevel=0,leveledspawns[PLAYERSPAWNS_SIZE+1],idx=0,spawnid;
+	for(new lookupid=0;lookupid<PLAYERSPAWNS_SIZE;lookupid++)
+	{
+		if((LeveledPlayerSpawns[lookupid][playerspawn_level] <= level) && (LeveledPlayerSpawns[lookupid][playerspawn_level] > spawnlevel))
 		{
 			spawnlevel = LeveledPlayerSpawns[lookupid][playerspawn_level];
 		}
 	}
-	new leveledspawns[PLAYERSPAWNS_SIZE+1];
-	new idx=0;
-	for (new lookupid=0;lookupid<PLAYERSPAWNS_SIZE;lookupid++)
-	{ // next we will create a list of all our found spawnpoints of that level
-		if (LeveledPlayerSpawns[lookupid][playerspawn_level] == spawnlevel)
+	for(new lookupid=0;lookupid<PLAYERSPAWNS_SIZE;lookupid++)
+	{
+		if(LeveledPlayerSpawns[lookupid][playerspawn_level] == spawnlevel)
 		{
 			leveledspawns[idx] = lookupid;
 			idx++;
 		}
 	}
-
-	new spawnid;
-	// now we will randomly select one of the spawns from our list
-	if (idx != 0)
-	{
-		new rnd = random(idx);
-		spawnid = leveledspawns[rnd];
-	}
-	else
-	{
-		spawnid = leveledspawns[0];
-	}
-	return spawnid; // return the id of the spawn we found
+	if(idx != 0) spawnid = leveledspawns[random(idx)];
+	else spawnid = leveledspawns[0];
+	return spawnid;
 }
 
 stock player_OnPlayerSpawn(playerid)
@@ -470,8 +430,8 @@ stock player_OnPlayerSpawn(playerid)
 			}
 			else
 			{
-				new spawnid=GetRndPlayerSpawnByLevel(Player[playerid][Level]);
-				SetPlayerPos(playerid, LeveledPlayerSpawns[spawnid][playerspawn_x], LeveledPlayerSpawns[spawnid][playerspawn_y], LeveledPlayerSpawns[spawnid][playerspawn_z]); // Warp the player
+				new spawnid = GetRndPlayerSpawnByLevel(Player[playerid][Level]);
+				SetPlayerPos(playerid,LeveledPlayerSpawns[spawnid][playerspawn_x],LeveledPlayerSpawns[spawnid][playerspawn_y],LeveledPlayerSpawns[spawnid][playerspawn_z]); // Warp the player
 			}
 		}
 	}
@@ -497,7 +457,7 @@ stock player_OnPlayerSpawn(playerid)
 	}
 }
 
-public player_ResetStats(playerid)
+stock player_ResetStats(playerid)
 {
 	PlayerRegistered[playerid] = false;
 	Player[playerid][Level] = 0;
@@ -524,7 +484,7 @@ public player_ResetStats(playerid)
 	Player[playerid][FightStyle] = 0;
 }
 
-public IsPlayerRegistered(playerid)
+stock IsPlayerRegistered(playerid)
 {
 	if(playerid == INVALID_PLAYER_ID) return 0;
 	if(Player[playerid][IsActive] == 0) return 0;
@@ -686,7 +646,7 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	return;
 }
 
-public RegisterQuest(name[])
+stock RegisterQuest(name[])
 {
 	if (QuestCount >= MAX_QUESTS) return INVALID_QUEST_ID;
 	QuestCount++;
@@ -695,14 +655,15 @@ public RegisterQuest(name[])
 	return questid;
 }
 
-public ResetQuest(playerid)
+stock ResetQuest(playerid)
 {
 	oDisablePlayerCheckpoint(playerid);
 	PlayerQuest[playerid] = 0;
 }
 
-public oSetPlayerCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size)
+stock oSetPlayerCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size)
 {
+	#pragma unused size
 	DisablePlayerCheckpoint(playerid);
 	SetPlayerCheckpoint(playerid, 0.0, 0.0, 0.0, 8);//size); // TODO: size bugged
 	DisablePlayerCheckpoint(playerid);
@@ -713,7 +674,7 @@ public oSetPlayerCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size)
 	SetPlayerCheckpoint(playerid, x, y, z, 8);//size); // TODO: size bugged
 }
 
-public oDisablePlayerCheckpoint(playerid)
+stock oDisablePlayerCheckpoint(playerid)
 {
 	DisablePlayerCheckpoint(playerid);
 	PlayerCPActive[playerid] = false;
@@ -722,7 +683,7 @@ public oDisablePlayerCheckpoint(playerid)
 	PlayerCP[playerid][Coord_Z] = 0.0;
 }
 
-public oIsPlayerInCheckpoint(playerid,Float:cpx,Float:cpy,Float:cpz,dist)
+stock oIsPlayerInCheckpoint(playerid,Float:cpx,Float:cpy,Float:cpz,dist)
 {
 	if (!IsPlayerConnected(playerid)) {return 0;}
 	if (!PlayerCPActive[playerid]) {return 0;}
@@ -857,7 +818,7 @@ stock GivePlayerXP(playerid, xpamount,showtext) // showtext = do we display "You
 	return 1;
 }
 
-public CheckPlayerLevel(playerid)
+stock CheckPlayerLevel(playerid)
 {
 	if(!IsPlayerConnected(playerid)) return 1;
 	new level = CalculatePlayerLevel(playerid);
@@ -867,7 +828,7 @@ public CheckPlayerLevel(playerid)
 	return 1;
 }
 
-public PlayerLevelDown(playerid,level)
+stock PlayerLevelDown(playerid,level)
 {
 	if(!IsPlayerConnected(playerid)) return 1;
 	new string[MAX_STRING];
@@ -884,7 +845,7 @@ public PlayerLevelDown(playerid,level)
 	return 1;
 }
 
-public PlayerLevelUp(playerid,level)
+stock PlayerLevelUp(playerid,level)
 {
 	if(!IsPlayerConnected(playerid)) return 1;
 	new string[MAX_STRING];
@@ -988,7 +949,7 @@ stock oSetPlayerHealth(playerid,Float:health)
 	return SetPlayerHealth(playerid, health);
 }
 
-public oGivePlayerWeapon(playerid,weaponid,ammo)
+stock oGivePlayerWeapon(playerid,weaponid,ammo)
 {
 	if (!IsPlayerAllowedWeapon(playerid,weaponid)) return;	//Mad
 	new slot = GetWeaponSlot(weaponid);	//Mad
@@ -1014,7 +975,7 @@ public oGivePlayerWeapon(playerid,weaponid,ammo)
 	}
 }
 
-public PlayerSave(playerid)
+stock PlayerSave(playerid)
 {
 	if(!IsPlayerRegistered(playerid)) return 0;
 	player_save_db_ini(playerid);
@@ -1024,7 +985,7 @@ public PlayerSave(playerid)
 	return 1;
 }
 
-public CreatePlayer(playerid)
+stock CreatePlayer(playerid)
 {
 	oSetPlayerMoney(playerid,PlayerStartMoney);
 	SetPlayerXP(playerid,0);
@@ -1062,7 +1023,7 @@ player_create_db_ini(playerid)
 	return 1;
 }
 
-SetWeaponsFromDBString(playerid,dbstring[])
+stock SetWeaponsFromDBString(playerid,dbstring[])
 {
 	new idx;
 	for (new i=0;i<PLAYER_WEAPON_SLOTS;i++)
@@ -1100,7 +1061,7 @@ stock CreateWeaponDBString(playerid)
 	return wepstr;
 }
 
-player_save_db_ini(playerid)
+stock player_save_db_ini(playerid)
 {
 	if(strlen(oGetPlayerName(playerid)) < 1) return 1;
 	new filename[MAX_STRING];
@@ -1133,14 +1094,14 @@ player_save_db_ini(playerid)
 	return 1;
 }
 
-public PlayerLoadStats(playerid)
+stock PlayerLoadStats(playerid)
 {
 	if (!IsPlayerRegistered(playerid)) return 0; // login to acct first
 	player_load_db_ini(playerid);
 	return 1;
 }
 
-player_load_db_ini(playerid)
+stock player_load_db_ini(playerid)
 {
 	new filename[MAX_STRING];
 	format(filename,sizeof(filename),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
@@ -1194,7 +1155,7 @@ player_load_db_ini(playerid)
 	return 1;
 }
 
-public JailPlayer(playerid)
+stock JailPlayer(playerid)
 {
 	if(Player[playerid][Jailed] == 1)
 	{
@@ -1210,7 +1171,7 @@ public JailPlayer(playerid)
 	}
 }
 
-public UnJailPlayer(playerid)
+stock UnJailPlayer(playerid)
 {
 	if(Player[playerid][Jailed] == 0)
 	{
@@ -1231,7 +1192,7 @@ public UnJailPlayer(playerid)
 	SendClientMessageToAll(COLOUR_WHITE, string);
 }
 
-public MuteCheck()
+stock MuteCheck()
 {
 	for(new i=0;i<MAX_PLAYERS;i++)
 	{
@@ -1251,7 +1212,7 @@ public MuteCheck()
 	}
 }
 
-public JailTimer()
+stock JailTimer()
 {
 	for(new i=0;i<MAX_PLAYERS;i++)
 	{
@@ -1286,7 +1247,7 @@ public JailTimer()
 	return 1;
 }
 
-public ADMDropAmmo(playerid)
+stock ADMDropAmmo(playerid)
 {
 	if(IsPlayerConnected(playerid)==0) return 0;
 	for(new i=0;i<PLAYER_WEAPON_SLOTS;i++)
@@ -1299,19 +1260,19 @@ public ADMDropAmmo(playerid)
 	return 1;
 }
 
-public IsPlayerAdm(playerid)
+stock IsPlayerAdm(playerid)
 {
 	if(Player[playerid][Status] >= 11) return 1;
 	return 0;
 }
 
-public IsPlayerMod(playerid)
+stock IsPlayerMod(playerid)
 {
 	if(Player[playerid][Status] > 0) return 1;
 	return 0;
 }
 
-public GetWeaponModel(weaponid)
+stock GetWeaponModel(weaponid)
 {
 	new model;
 	switch(weaponid)
@@ -1334,7 +1295,7 @@ public GetWeaponModel(weaponid)
 	return model;
 }
 
-public GetWeaponBulletsDown(weaponid)
+stock GetWeaponBulletsDown(weaponid)
 {
 	new dbw;
 	switch(weaponid)
@@ -1357,13 +1318,13 @@ public GetWeaponBulletsDown(weaponid)
 	return dbw;
 }
 
-public DeletePickup(pickupid)
+stock DeletePickup(pickupid)
 {
 	DestroyPickup(pickupid);
 	return 1;
 }
 
-public DropPlayerWeapons(playerid)
+stock DropPlayerWeapons(playerid)
 {
 	new pickupid,playerweapons[13][2];
 	new Float:x,Float:y,Float:z;
@@ -1403,7 +1364,7 @@ public DropPlayerWeapons(playerid)
 	return 1;
 }
 
-public GetWeaponSlot(weaponid)
+stock GetWeaponSlot(weaponid)
 {
 	switch(weaponid)
 	{

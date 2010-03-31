@@ -294,7 +294,7 @@ public OnPlayerSpawn(playerid)
 	}
 	if(Player[playerid][MuteTime] != 0)
 	{
-		SendPlayerFormattedText(playerid,lang_texts[1][14], 0,COLOUR_RED);
+		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 		SetPlayerWantedLevel(playerid, 3);
 	}
 	new dmid = GetPlayerDM(playerid);
