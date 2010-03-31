@@ -61,6 +61,7 @@ SA-MP Versions:	0.3a
 #include "admin\adm_commands"
 #include "admin\mod_commands"
 #include "streamers\mapicon_stream"
+#include "misc\mission"
 //#include "testserver"
 #tryinclude "click"
 #tryinclude "FightStyle"
@@ -132,8 +133,8 @@ public OnGameModeInit()
     groundhold_OnGameModeInit();
 	lang_OnGameModeInit();
 	FightStyle_OnGameModeInit();
-
-	// Races
+    mission_OnGameModeInit();
+	//
 	race_thestrip_init();
 	race_riversiderun_init();
 	race_fleethecity_init();
@@ -151,8 +152,7 @@ public OnGameModeInit()
 	race_ls_trailer1_init();
 	race_sf_fuckinwood1_init();
 	race_ls_majestic1_init();
-	
-	// Deathmatches
+	//
 	dm_air_init();
 	dm_area51_init();
 	dm_badandugly_init();
@@ -163,7 +163,6 @@ public OnGameModeInit()
 	dm_minigunmadness_init();
 	dm_poolday_init();
 	dm_usnavy_init();
-	printf("SERVER: Racing and DM scripts init");
 
 	#tryinclude "misc\mapicon"
 	#tryinclude "misc\pickups"
@@ -181,11 +180,12 @@ public OnGameModeInit()
 	SetTimer("OneMinuteTimer",60000,1); // 1 minute
 	SetTimer("OneHourTimer",3600000,1); // 1 hour
 	SpawnWorld();
-	if(VerboseSave == 1 || VerboseSave == -1)
+	WorldSave();
+/*	if(VerboseSave == 1 || VerboseSave == -1)
 	{
 		WorldSave();
 		if(VerboseSave == -1) VerboseSave = 0;
-	}
+	}*/
 	printf("SERVER: %s initialization complete. [%02d:%02d]",gamemode,hour,minute);
 	new string[MAX_STRING];
 	format(string,sizeof(string),"SERVER: %s initialization complete. ",gamemode);
@@ -211,6 +211,7 @@ public OnPlayerDisconnect(playerid,reason)
 {
 	if(playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) return 1;
 	player_OnPlayerDisconnect(playerid,reason);
+	mission_OnPlayerDisconnect(playerid, reason);
 	WorldSave();
 	return 1;
 }
@@ -240,9 +241,15 @@ public OnPlayerPickUpPickup(playerid,pickupid)
 
 public OnPlayerEnterCheckpoint(playerid)
 {
-	race_OnPlayerEnterCheckpoint(playerid);
 	dm_OnPlayerEnterCheckpoint(playerid);
+	mission_OnPlayerEnterCheckpoint(playerid);
 	return 1;
+}
+
+public OnPlayerEnterRaceCheckpoint(playerid)
+{
+    race_OnPlayerEnterCheckpoint(playerid);
+    return 1;
 }
 
 public OnPlayerDeath(playerid, killerid, reason)
@@ -252,6 +259,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	if(killerid == INVALID_PLAYER_ID) format(logstring, sizeof (logstring), "player: %d: %s: has died > Reason: (%d)",playerid,oGetPlayerName(playerid),reason);
 	else format(logstring, sizeof (logstring), "player: %d: %s: has killed player %s(%d)> Reason: (%d)",killerid,oGetPlayerName(killerid),oGetPlayerName(playerid),playerid,reason);
 	WriteLog(GameLog,logstring);
+	mission_OnPlayerDeath(playerid,killerid,reason);
 	SendDeathMessage(killerid,playerid,reason);
 	if(!IsPlayerInAnyDM(playerid))
 	{
@@ -356,7 +364,7 @@ public OnPlayerCommandText(playerid,cmdtext[])
 
 public OnPlayerText(playerid, text[])
 {
-	new string[MAX_STRING],gangmessage[MAX_STRING];
+	new gangmessage[MAX_STRING],string[MAX_STRING];
 	switch(text[0])
 	{
 	    case '!':
@@ -437,8 +445,20 @@ public OnPlayerExitedMenu(playerid)
 	return 1;
 }
 
+public OnPlayerStateChange(playerid,newstate,oldstate)
+{
+	mission_OnPlayerStateChange(playerid,newstate,oldstate);
+	return 1;
+}
+
 public OnVehicleDamageStatusUpdate(vehicleid, playerid)
 {
+	return 1;
+}
+
+public OnVehicleDeath(vehicleid,killerid)
+{
+	mission_OnVehicleDeath(vehicleid,killerid);
 	return 1;
 }
 

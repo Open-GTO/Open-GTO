@@ -98,15 +98,20 @@ new RaceRecordDB[MAX_STRING] = "GTO/Race/Record/";
 
 stock RaceLoadAll()
 {
-	if(ForceOverwrite) return;
 	new temp[MAX_STRING],file;
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	file = ini_Open(ConfigDB);
-	ini_Get(file,"Race_DB",RaceDB);
-	ini_Get(file,"Race_Base_DB",RaceBaseDB);
-	ini_Get(file,"Race_Record_DB",RaceRecordDB);
-	ini_Close(file);
-	if(!ini_Exist(RaceDB)) {new File:fhnd = fopen(RaceDB,io_write);fclose(fhnd);}
+	if(ini_Exist(ConfigDB))
+	{
+		file = ini_Open(ConfigDB);
+		ini_Get(file,"Race_DB",RaceDB);
+		ini_Get(file,"Race_Base_DB",RaceBaseDB);
+		ini_Get(file,"Race_Record_DB",RaceRecordDB);
+		ini_Close(file);
+	}
+	if(!ini_Exist(RaceDB))
+	{
+		RaceSaveAll();
+		return;
+	}
 	for(new racedbid=0;racedbid<MAX_RACES;racedbid++)
 	{
 		new cellname[MAX_STRING];
@@ -790,7 +795,7 @@ stock StartRaceCountdown(raceid)
 //		oDisablePlayerRaceCheckpoint(playerid);
 		RaceStats[raceid][race_activecpid] = 0;
 	}
-	new string[100];
+	new string[MAX_STRING];
 	for(new playerid=0; playerid<MAX_PLAYERS;playerid++)
 	{
 		if(!IsPlayerConnected(playerid)) continue;

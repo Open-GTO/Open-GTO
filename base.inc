@@ -12,9 +12,9 @@
 
 #include "utils\mxINI"
 
-#define VERSION "v0.6.2"
+#define VERSION "v0.6.2 R2"
 
-#define MAX_STRING 256 // !!!Ќ≈ ћ≈Ќя“№!!!, а то мод будет плющить(ZiGGi)
+#define MAX_STRING 128 // !!!Ќ≈ ћ≈Ќя“№!!!, а то мод будет плющить(ZiGGi)
 #define MAX_NAME 40 // number of char's a name/password/misc_word can be
 #define INACTIVE_PLAYER_ID 255
 #define INVALID_QUEST_ID 0
@@ -183,43 +183,42 @@ new LevelList[MAX_LEVEL+1][LevelInfo] = { // experience required for each level
 {  60000000, "60 уровень" }
 };
 
-BaseLoadConfig()
+stock BaseLoadConfig()
 {
 	new temp[MAX_STRING],file;
-	if(!ini_Exist(ConfigDB))
+	if(ini_Exist(ConfigDB))
 	{
 		file = ini_Open(ConfigDB);
 		ini_Get(file,"Level_DB",LevelDB);
-		ini_GetInt(file,"Verbose_Save",VerboseSave);
 		ini_GetInt(file,"Real_Time",RealTime);
+		ini_GetInt(file,"Verbose_Save",VerboseSave);
 		ini_Close(file);
 	}
 	if(!ini_Exist(LevelDB)) BaseSaveConfig();
 	for(new i=0;i<=MAX_LEVEL;i++)
 	{
 	    file = ini_Open(LevelDB);
-	    format(temp,sizeof(temp),"Level%d_Rankname",i);
-		ini_Get(file,temp,LevelList[i][level_name],MAX_STRING);
 		format(temp,sizeof(temp),"Level%d_Experience",i);
 		ini_GetInt(file,temp,LevelList[i][level_xp]);
+	    format(temp,sizeof(temp),"Level%d_Rankname",i);
+		ini_Get(file,temp,LevelList[i][level_name],MAX_STRING);
 		ini_Close(file);
 	}
 	return;
 }
 
-BaseSaveConfig()
+stock BaseSaveConfig()
 {
 	new temp[MAX_STRING],file;
-	if(ini_Exist(ConfigDB))
-	{
-	    file = ini_Open(ConfigDB);
-		ini_Set(file,"Level_DB",LevelDB);
-		ini_SetInt(file,"Verbose_Save",VerboseSave);
-		ini_SetInt(file,"Real_Time",RealTime);
-		ini_Close(file);
-	}
+	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
+	file = ini_Open(ConfigDB);
+	ini_Set(file,"Level_DB",LevelDB);
+	ini_SetInt(file,"Real_Time",RealTime);
+	ini_SetInt(file,"Verbose_Save",VerboseSave);
+	ini_Close(file);
 	
 	if(!ini_Exist(LevelDB)) {new File:fhnd = fopen(LevelDB,io_write);fclose(fhnd);}
+
 	for(new i=0;i<=MAX_LEVEL;i++)
 	{
 	    file = ini_Open(LevelDB);

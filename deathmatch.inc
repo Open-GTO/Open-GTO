@@ -87,13 +87,19 @@ stock DeathmatchLoadAll()
 {
 	if (ForceOverwrite) return;
 	new temp[MAX_STRING],file;
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	file = ini_Open(ConfigDB);
-	ini_Get(file,"Deathmatch_DB",DeathmatchDB);
-	ini_Get(file,"Deathmatch_Base_DB",DMBaseDB);
-	ini_Get(file,"Deathmatch_Record_DB",DMRecordDB);
-	ini_Close(file);
-	if(!ini_Exist(DeathmatchDB)) {new File:fhnd = fopen(DeathmatchDB,io_write);fclose(fhnd);}
+	if(ini_Exist(ConfigDB))
+	{
+		file = ini_Open(ConfigDB);
+		ini_Get(file,"Deathmatch_DB",DeathmatchDB);
+		ini_Get(file,"Deathmatch_Base_DB",DMBaseDB);
+		ini_Get(file,"Deathmatch_Record_DB",DMRecordDB);
+		ini_Close(file);
+	}
+	if(!ini_Exist(DeathmatchDB))
+	{
+		DeathmatchSaveAll();
+		return;
+	}
 	for(new dmdbid=0;dmdbid<MAX_DM;dmdbid++)
 	{ // load all our dms from db
 		new cellname[MAX_STRING];
@@ -310,6 +316,12 @@ stock DeathmatchSaveRecordDB(dmid)
 	return;
 }
 
+stock deathmatch_OnGameModeInit()
+{
+	DeathmatchLoadAll();
+	return 1;
+}
+
 stock Float:GetDMCPX(dmid) return DMStartCP[dmid][Coord_X];
 stock Float:GetDMCPY(dmid) return DMStartCP[dmid][Coord_Y];
 stock Float:GetDMCPZ(dmid) return DMStartCP[dmid][Coord_Z];
@@ -431,12 +443,6 @@ stock CheckDMPlayersInZone(dmid)
 			}
 		}
 	}
-}
-
-stock deathmatch_OnGameModeInit()
-{
-	DeathmatchLoadAll();
-	return 1;
 }
 
 stock DMPlayerDisconnect(playerid)

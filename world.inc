@@ -88,6 +88,7 @@ public WorldSave() // save all
 		vehicles_SaveConfig();
 		groundhold_SaveConfig();
 		groundhold_SaveAll();
+		mission_SaveConfig();
 		if ((VerboseSave == 1) || (VerboseSave == -1))
 		{
 			//SendClientMessageToRegistered(COLOUR_GREEN,"Performing verbose save. Please be patient.");
@@ -139,6 +140,7 @@ public WorldSave() // save all
 			vehicles_SaveConfig();
 			groundhold_SaveConfig();
 			groundhold_SaveAll();
+			mission_SaveConfig();
 			if ((VerboseSave == 1) || (VerboseSave == -1))
 			{
 				//SendClientMessageToRegistered(COLOUR_GREEN,"Performing verbose save. Please be patient.");
