@@ -122,8 +122,7 @@ stock mission_OnPlayerStateChange(playerid,newstate,oldstate)
 	if(newstate == PLAYER_STATE_ONFOOT && driver[playerid] == 1)
 	{
 	    driver[playerid] = 0;
-	    oDisablePlayerCheckpoint(playerid);
-	    PlayerQuest[playerid] = 0;
+		ResetQuest(playerid);
 	    SendClientMessage(playerid,COLOUR_RED,"*** Ты не справился с миссией.");
 		return 1;
 	}
@@ -138,10 +137,11 @@ stock mission_OnPlayerEnterCheckpoint(playerid)
 	{
 	    if(!IsTrailerAttachedToVehicle(vehicleid)) return 1;
 		driver[playerid] = 0;
-		GivePlayerMoney(playerid,100000);
+		oGivePlayerMoney(playerid,100000,1);
+		new Trailer = GetVehicleTrailer(GetPlayerVehicleID(playerid));
 		DetachTrailerFromVehicle(vehicleid);
-		PlayerQuest[playerid] = 0;
-		oDisablePlayerCheckpoint(playerid);
+		SetVehicleToRespawn(Trailer);
+		ResetQuest(playerid);
 		SendClientMessage(playerid,COLOUR_WHITE,"*** Поздравляем! Ты справился с миссией. Получи свои бабки!");
 		KillTimer(timer[playerid]);
 	}
@@ -154,8 +154,7 @@ stock mission_OnPlayerDisconnect(playerid,reason)
 	if(Mission_Enabled != 1) return 1;
 	if(driver[playerid] != 1) return 1;
 	driver[playerid] = 0;
-	PlayerQuest[playerid] = 0;
-	oDisablePlayerCheckpoint(playerid);
+	ResetQuest(playerid);
 	return 1;
 }
 
@@ -165,8 +164,7 @@ stock mission_OnPlayerDeath(playerid, killerid, reason)
 	if(Mission_Enabled != 1) return 1;
 	if(driver[playerid] != 1) return 1;
 	driver[playerid] = 0;
-	PlayerQuest[playerid] = 0;
-	oDisablePlayerCheckpoint(playerid);
+	ResetQuest(playerid);
 	SendClientMessage(playerid,COLOUR_RED,"*** Ты не справился с миссией доставки груза");
 	return 1;
 }
@@ -177,8 +175,7 @@ stock mission_OnVehicleDeath(vehicleid, killerid)
 	if(vehicleid == Linerunner[1] || vehicleid == Linerunner[2] || vehicleid == Linerunner[3])
 	{
 	    driver[killerid] = 0;
-   		PlayerQuest[killerid] = 0;
-	    oDisablePlayerCheckpoint(killerid);
+		ResetQuest(killerid);
 	    SendClientMessage(killerid,COLOUR_RED,"*** Ты не справился с миссией, уничтожив свой транспорт");
 	}
 	return 1;
@@ -189,8 +186,7 @@ public EndMission(playerid)
 	if(driver[playerid] == 1)
 	{
 	    driver[playerid] = 0;
-   		PlayerQuest[playerid] = 0;
-	    oDisablePlayerCheckpoint(playerid);
+		ResetQuest(playerid);
 	    SendClientMessage(playerid,COLOUR_RED,"*** Ты не справился с миссией.");
 	}
 }
