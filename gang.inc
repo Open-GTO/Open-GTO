@@ -353,7 +353,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
   		{
       		if(strcmp(GangMemberInfo[leadermemberid][member_name],oGetPlayerName(playerid),false)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][52]);
       		new inviteid = strval(strcharsplit(text,idx,strchar(" "))),string[MAX_STRING];
-            if(inviteid == INVALID_PLAYER_ID) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][53]);
+            if(inviteid < 0 || inviteid >= MAX_PLAYERS || inviteid == INVALID_PLAYER_ID) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][53]);
       		if(!IsPlayerRegistered(inviteid))
       		{
        			SendClientMessage(playerid,COLOUR_RED,lang_texts[6][55]);
@@ -362,8 +362,8 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
    			}
    			if(PlayerGangid[inviteid] != 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][57]);
          	format(string,sizeof(string),lang_texts[6][58],oGetPlayerName(playerid),Gangs[gangid][gang_name]);
-   			SendClientMessage(playerid,COLOUR_GANG,string);
-   			format(string, sizeof(string),lang_texts[6][59],oGetPlayerName(inviteid),Gangs[gangid][gang_name]);
+   			SendClientMessage(inviteid,COLOUR_GANG,string);
+   			format(string,sizeof(string),lang_texts[6][59],oGetPlayerName(inviteid),Gangs[gangid][gang_name]);
    			SendClientMessage(playerid,COLOUR_GANG,string);
    			GangInvite[inviteid] = gangid;
    			format(string,sizeof(string),"player: %d:  %s: has invited %s to join gang '%s'.",playerid,oGetPlayerName(playerid),oGetPlayerName(inviteid),Gangs[gangid][gang_name]);
