@@ -54,6 +54,7 @@ stock groundhold_SaveConfig()
 	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
     else file = ini_Open(ConfigDB);
 	ini_SetInt(file,"Groundhold_Enabled",Groundhold_Enabled);
+	ini_SetInt(file,"Groundhold_Enabled",Groundhold_Enabled);// НЕ удалять!!! Иначе в файл не запишется >_<
 	ini_Set(file,"Groundhold_DB",GroundholdDB);
 	ini_Close(file);
 	return 1;
