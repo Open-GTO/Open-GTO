@@ -13,8 +13,8 @@
 #include "player"
 
 new sysweath = 0;	//WEATHER
-new syslotto = 1;	//LOTTERY, WITH Time
-new sysmbbomb = 1;	//Military base bombing script
+//new syslotto = 1;	//LOTTERY, WITH Time
+//new sysmbbomb = 1;	//Military base bombing script
 
 stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 {
@@ -31,9 +31,10 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		SendClientMessage(playerid, COLOUR_YELLOW,lang_texts[15][57]);
 		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys cmdlist', '/sys about', '/sys info'");
-		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys weath <param>', - Weather AutoChange (0/1-20 min)");
-		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys lotto <param>', - Lottery (0/1-20 min)");
-		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys bomb <param>', - Military Base Bombing (0/1)");
+		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys weath <param>', - Автосмена погоды (0/1-20 min)");
+		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys groundhold <param>' - Точки прокачки (0/1)");
+/*		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys lotto <param>', - Lottery (0/1-20 min)");
+		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys bomb <param>', - Military Base Bombing (0/1)");*/
 		return 1;
 	}
 
@@ -76,12 +77,14 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid,COLOUR_LIGHTGREEN,string);
 
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[15][66]);
-		format(string,sizeof(string)," '/sys weath' = %d (Weather AutoChange)" , sysweath);
+		format(string,sizeof(string)," '/sys weath' = %d (Автосмена погоды)" , sysweath);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
-		format(string,sizeof(string)," '/sys lotto' = %d (Lottery)" , syslotto);
+		format(string,sizeof(string)," '/sys groundhold' = %d (Точки прокачки)" , Groundhold_Enabled);
+		SendClientMessage(playerid, COLOUR_WHITE, string);
+/*		format(string,sizeof(string)," '/sys lotto' = %d (Lottery)" , syslotto);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		format(string,sizeof(string)," '/sys bomb' = %d (Military Base Bombing)" , sysmbbomb);
-		SendClientMessage(playerid, COLOUR_WHITE, string);
+		SendClientMessage(playerid, COLOUR_WHITE, string);*/
 		return 1;
 	}
 
@@ -108,7 +111,42 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		return 1;
 	}
-
+	
+	if(!strcmp(cmd,"groundhold",true))
+	{
+		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
+		new paramid = strval(strcharsplit(text, idx,strchar(" ")));
+		switch(paramid)
+		{
+			case 0:
+			{
+				Groundhold_Enabled = 0;
+				for(new ghid=0;ghid<MAX_GROUNDHOLD;ghid++)
+				{
+					RemoveActiveCheckpoint(FindActiveCheckpoint(Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]));
+					DeleteStreamMapIcon(FindStreamMapIcon(Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]));
+					CheckGround(ghid);
+				}
+				groundhold_SaveConfig();
+				SendClientMessage(playerid,COLOUR_WHITE,"SYS: Groundhold_Enabled OFF");
+			}
+			case 1:
+			{
+				Groundhold_Enabled = 1;
+				for(new ghid=0;ghid<MAX_GROUNDHOLD;ghid++)
+				{
+					groundholdActiveCPID[ghid] = AddActiveCheckpoint(Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z],200,2);
+					CreateStreamMapIcon(56,Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]);
+					CheckGround(ghid);
+				}
+				groundhold_SaveConfig();
+				SendClientMessage(playerid,COLOUR_WHITE,"SYS: Groundhold_Enabled ON");
+			}
+		}
+		groundhold_SaveConfig();
+		return 1;
+	}
+/*
 	if(!strcmp(cmd,"lotto",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
@@ -156,6 +194,6 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 			}
 		}
 		return 1;
-	}
+	}*/
 	return 0;
 }

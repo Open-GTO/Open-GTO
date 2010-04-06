@@ -33,7 +33,9 @@ enum GangInfo
 	gang_name[MAX_NAME],
     gang_colour,
     gang_kills,
-    gang_score
+    gang_score,
+	gang_xp,
+	gang_level
 }
 
 enum ColourInfo 
@@ -142,6 +144,8 @@ stock gang_load_db_ini(gangid,gangname[])
 	ini_GetInt(file,"Colour",Gangs[gangid][gang_colour]);
 	ini_GetInt(file,"Kills",Gangs[gangid][gang_kills]);
 	ini_GetInt(file,"Score",Gangs[gangid][gang_score]);
+	ini_GetInt(file,"XP",Gangs[gangid][gang_xp]);
+	ini_GetInt(file,"Level",Gangs[gangid][gang_level]);
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
 		GangMembers[gangid][gangmember] = GetFreeMemberID();
@@ -155,7 +159,7 @@ stock gang_load_db_ini(gangid,gangname[])
 		GangMemberInfo[memberid][member_online] = 0;
 		new string[MAX_STRING];
 		format(string,sizeof(string),"Member%d" ,gangmember);
-		ini_Get(file,string,GangMemberInfo[memberid][member_name]);
+		ini_Get(file,string,GangMemberInfo[memberid][member_name],MAX_STRING);
 		GangMemberInfo[memberid][member_playerid] = INVALID_PLAYER_ID;
 	}
 	ini_Close(file);
@@ -236,6 +240,10 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
       		format(string,sizeof(string),lang_texts[6][26],Gangs[gangid][gang_kills]);
 			SendClientMessage(playerid,COLOUR_MISC,string);
    			format(string,sizeof(string),lang_texts[6][27],Gangs[gangid][gang_score]);
+			SendClientMessage(playerid,COLOUR_MISC,string);
+   			format(string,sizeof(string),"XP банды: %d",Gangs[gangid][gang_xp]);
+			SendClientMessage(playerid,COLOUR_MISC,string);
+   			format(string,sizeof(string),"Уровень банды: %d",Gangs[gangid][gang_level]);
 			SendClientMessage(playerid,COLOUR_MISC,string);
    			format(string,sizeof(string),lang_texts[6][28],GangOnlineCount(gangid));
 			SendClientMessage(playerid,COLOUR_MISC,string);
@@ -353,6 +361,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
   		{
       		if(strcmp(GangMemberInfo[leadermemberid][member_name],oGetPlayerName(playerid),false)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][52]);
       		new inviteid = strval(strcharsplit(text,idx,strchar(" "))),string[MAX_STRING];
+   			SendClientMessage(inviteid,COLOUR_GANG,string);
             if(inviteid < 0 || inviteid >= MAX_PLAYERS || inviteid == INVALID_PLAYER_ID) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][53]);
       		if(!IsPlayerRegistered(inviteid))
       		{
@@ -417,6 +426,65 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
   		}
 	}
  	return 0;
+}
+
+/// ************************************* GANG LEVEL ******************************************************
+#define MAX_GANG_LEVEL 10
+#define MAX_GANG_XP  60000000
+
+new GangLevelList[MAX_GANG_LEVEL+1] = {
+	0, // 0
+	500, // 1
+	1000, // 2
+	2000, // 3
+	5000, // 4
+	7500, // 5
+	11000, // 6
+	16000, // 7
+	21000, // 8
+	31000, // 9
+	46000 // 10
+};
+stock GetGangLevel(gangid) return Gangs[gangid][gang_level];
+stock SetGangLevel(gangid) return Gangs[gangid][gang_level];
+stock GetGangXP(gangid) return Gangs[gangid][gang_xp];
+stock GiveGangXP(gangid,xpamount)
+{
+	Gangs[gangid][gang_xp] += xpamount;
+	CheckGangLevel(gangid);
+}
+stock SetGangXP(gangid,xpamount)
+{
+	Gangs[gangid][gang_xp] = xpamount;
+	CheckGangLevel(gangid);
+}
+stock GetGangXPToLevel(gangid,level) return (GangLevelList[level] - Gangs[gangid][gang_xp]);
+stock CalculateGangLevel(gangid)
+{
+	new level;
+	for(new i;i<=MAX_GANG_LEVEL;i++)
+	{
+		if(GetGangXP(gangid) >= GangLevelList[i])
+		{
+			level = i;
+			break;
+		}
+	}
+	return level;
+}
+stock CheckGangLevel(gangid)
+{
+	Gangs[gangid][gang_level] = CalculateGangLevel(gangid);
+	return 1;
+}
+/// ************************************* /GANG LEVEL ******************************************************
+
+stock gang_OnPlayerDeath(playerid,killerid,reason)
+{
+	#pragma unused reason,playerid
+	new gangid = PlayerGangid[killerid];
+	GiveGangXP(gangid,(1+Gangs[gangid][gang_level]) * 20);
+	return 1;
 }
 
 stock PlayerGangColour(playerid)
@@ -520,6 +588,8 @@ stock GangCreate(leaderid,gangname[],gangcolour)
 	Gangs[gangid][gang_colour] = gangcolour;
 	Gangs[gangid][gang_kills] = 0;
 	Gangs[gangid][gang_score] = 0;
+	Gangs[gangid][gang_level] = 0;
+	Gangs[gangid][gang_xp] = 0;
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
 		GangMembers[gangid][gangmember] = GetFreeMemberID();
@@ -619,6 +689,8 @@ stock gang_save_db_ini(gangid)
 	ini_SetInt(file,"Colour",Gangs[gangid][gang_colour]);
 	ini_SetInt(file,"Kills",Gangs[gangid][gang_kills]);
 	ini_SetInt(file,"Score",Gangs[gangid][gang_score]);
+	ini_SetInt(file,"XP",Gangs[gangid][gang_xp]);
+	ini_SetInt(file,"Level",Gangs[gangid][gang_level]);
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
 		format(string,sizeof(string),"Member%d",gangmember);
@@ -702,7 +774,7 @@ stock GangOnlineCount(gangid)
 
 stock GangGiveXP(gangid,xpamount,giverid)
 {
-	Gangs[gangid][gang_score] = Gangs[gangid][gang_score] + xpamount;
+	Gangs[gangid][gang_score] += xpamount;
 	new giveamount = xpamount / GangOnlineCount(gangid),string[MAX_STRING];
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{

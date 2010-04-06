@@ -9,6 +9,7 @@
 
 #define _groundhold_included
 #pragma library groundhold
+
 #include "base"
 #include "player"
 #include "world"
@@ -53,6 +54,7 @@ stock groundhold_SaveConfig()
 	new file;
 	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
     else file = ini_Open(ConfigDB);
+	if(file < 0) print("Can't open INI file");
 	ini_SetInt(file,"Groundhold_Enabled",Groundhold_Enabled);
 	ini_SetInt(file,"Groundhold_Enabled",Groundhold_Enabled);// НЕ удалять!!! Иначе в файл не запишется >_<
 	ini_Set(file,"Groundhold_DB",GroundholdDB);

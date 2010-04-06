@@ -560,7 +560,7 @@ stock player_OnPlayerDeath(playerid,killerid,reason)
 	{
 		if(!IsPlayerAdmin(playerid))
 		{
-			GivePlayerXP(playerid, (0 - (Player[playerid][XP] / 30)),1); // take death penalty xp
+			GivePlayerXP(playerid,-(Player[playerid][XP] / 30),1); // take death penalty xp
 			Player[playerid][XP]=GetPlayerXP(playerid);
 			CheckPlayerLevel(playerid);
 		}
@@ -616,12 +616,12 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	{
 		if (Player[killerid][XP] < MAX_LVLXP) 
 		{
-		GivePlayerXP(victimid,(0-earnedXP),1);
-		GivePlayerXP(killerid, earnedXP,1);
-		Player[killerid][XP]=GetPlayerXP(killerid);
-		Player[victimid][XP]=GetPlayerXP(victimid);
-		CheckPlayerLevel(victimid);
-		CheckPlayerLevel(killerid);
+			GivePlayerXP(victimid,(0-earnedXP),1);
+			GivePlayerXP(killerid, earnedXP,1);
+			Player[killerid][XP]=GetPlayerXP(killerid);
+			Player[victimid][XP]=GetPlayerXP(victimid);
+			CheckPlayerLevel(victimid);
+			CheckPlayerLevel(killerid);
 		}
 		else
 		{

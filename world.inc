@@ -717,17 +717,11 @@ public RemoveActiveCheckpoint(cpid)
 
 public FindActiveCheckpoint(Float:cpx,Float:cpy,Float:cpz)
 {
-	new Float:activecpx;
-	new Float:activecpy;
-	new Float:activecpz;
 	for(new cpid=1;cpid<=ActiveCPCount;cpid++)
 	{
 		if(ActiveCheckpoints[cpid][IsActive])
 		{
-			activecpx = ActiveCheckpoints[cpid][CP_X];
-			activecpy = ActiveCheckpoints[cpid][CP_Y];
-			activecpz = ActiveCheckpoints[cpid][CP_Z];
-			if (loccmp(cpx,cpy,cpz,activecpx,activecpy,activecpz))
+			if(loccmp(cpx,cpy,cpz,ActiveCheckpoints[cpid][CP_X],ActiveCheckpoints[cpid][CP_Y],ActiveCheckpoints[cpid][CP_Z]))
 			{
 				return cpid;
 			}

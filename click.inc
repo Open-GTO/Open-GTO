@@ -100,31 +100,27 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(listitem == 8)
 		{
 			new receiverid = Player[playerid][ClickedPlayerid];
-			if(IsPlayerConnected(receiverid) == 0)
-			{
-				SendPlayerFormattedText(playerid,lang_texts[12][3],0,COLOUR_RED);
-				return 1;
-			}
+			if(!IsPlayerConnected(receiverid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][34],oGetPlayerName(receiverid),receiverid);
-			SendPlayerFormattedText(playerid,string, 0,COLOUR_YELLOW);
+			SendClientMessage(playerid,COLOUR_YELLOW,string);
 			new sid = Player[receiverid][Status];
 			if(sid > 0 && sid < 10) format(string,sizeof(string),lang_texts[12][87],sid);
 			else if(sid > 10) format(string,sizeof(string),lang_texts[12][86],sid);
 			else format(string,sizeof(string),lang_texts[12][88]);
-			SendPlayerFormattedText(playerid,string, 0,COLOUR_LIGHTRED);
+			SendClientMessage(playerid,COLOUR_LIGHTRED,string);
 			format(string,sizeof(string),lang_texts[12][35],Player[receiverid][Level],Player[receiverid][XP]);	//Level, XP
-			SendPlayerFormattedText(playerid,string, 0,COLOUR_WHITE);
+			SendClientMessage(playerid,COLOUR_WHITE,string);
 			format(string,sizeof(string),lang_texts[12][36],Player[receiverid][Money],Player[receiverid][Bank]);	//Money, Bank
-			SendPlayerFormattedText(playerid,string, 0,COLOUR_WHITE);
+			SendClientMessage(playerid,COLOUR_WHITE,string);
 			format(string,sizeof(string),lang_texts[12][38],Player[receiverid][Deaths],Player[receiverid][Kills]);	//Kills, Deaths
-			SendPlayerFormattedText(playerid,string, 0,COLOUR_WHITE);
+			SendClientMessage(playerid,COLOUR_WHITE,string);
 			format(string,sizeof(string),lang_texts[12][71],Player[receiverid][Jailed],Player[receiverid][Muted]);	//Jailed, Muted
-			SendPlayerFormattedText(playerid,string, 0,COLOUR_WHITE);
-			new PlayerIP[256];
-			GetPlayerIp(receiverid,PlayerIP,256);
+			SendClientMessage(playerid,COLOUR_WHITE,string);
+			new PlayerIP[MAX_STRING];
+			GetPlayerIp(receiverid,PlayerIP,sizeof(PlayerIP));
 			format(string,sizeof(string),lang_texts[12][72],GetPlayerPing(receiverid),PlayerIP);
-			SendPlayerFormattedText(playerid,string, 0,COLOUR_WHITE);
+			SendClientMessage(playerid,COLOUR_WHITE,string);
 			return 1;
 		}
 		if(listitem == 9)

@@ -23,6 +23,33 @@ stock CreateStreamMapIcon(iconid, Float:X, Float:Y, Float:Z)
 	return IconidM;
 }
 
+stock DeleteStreamMapIcon(IconidD)
+{
+	if(IconidD >= MAX_ICONS) return;
+	IconidD--;
+	IsValid[IconidD]=0;
+	XM[IconidD]=0.0;
+	YM[IconidD]=0.0;
+	ZM[IconidD]=0.0;
+	MarkerM[IconidD]=0;
+	return;
+}
+
+stock FindStreamMapIcon(Float:X,Float:Y,Float:Z)
+{
+	for(new id=0;id<=IconidM;id++)
+	{
+		if(IsValid[id])
+		{
+			if(loccmp(X,Y,Z,XM[id],YM[id],ZM[id]))
+			{
+				return id;
+			}
+		}
+	}
+	return 0;
+}
+
 stock IsValidMapIcon(iconid)
 {
 	if (IsValid[iconid] == 1) return 1;
