@@ -13,7 +13,7 @@
 
 forward EndMission(playerid);
 
-new Linerunner[4],Trailer[4],driver[MAX_PLAYERS],timer[MAX_PLAYERS],Mission_Enabled=0;
+new Linerunner[4],Trailer[4],driver[MAX_PLAYERS],timer[MAX_PLAYERS],Mission_Enabled=1;
 
 new Float:PetrolCoord[11][3] = {
 {656.9401,1691.4619,6.9922},
@@ -137,10 +137,11 @@ stock mission_OnPlayerEnterCheckpoint(playerid)
 	{
 	    if(!IsTrailerAttachedToVehicle(vehicleid)) return 1;
 		driver[playerid] = 0;
-		oGivePlayerMoney(playerid,100000,1);
-		new Trailer = GetVehicleTrailer(GetPlayerVehicleID(playerid));
+		oGivePlayerMoney(playerid,8000,1);
+		GivePlayerXP(playerid,3000,1);
+		new Trailerr = GetVehicleTrailer(GetPlayerVehicleID(playerid));
 		DetachTrailerFromVehicle(vehicleid);
-		SetVehicleToRespawn(Trailer);
+		SetVehicleToRespawn(Trailerr);
 		ResetQuest(playerid);
 		SendClientMessage(playerid,COLOUR_WHITE,"*** Поздравляем! Ты справился с миссией. Получи свои бабки!");
 		KillTimer(timer[playerid]);
