@@ -62,6 +62,8 @@ SA-MP Versions:	0.3a
 #include "admin\mod_commands"
 #include "streamers\mapicon_stream"
 #include "misc\mission"
+#include "protections\antiidle"
+#include "protections\antirconhack"
 //#include "testserver"
 #tryinclude "click"
 #tryinclude "FightStyle"
@@ -134,6 +136,7 @@ public OnGameModeInit()
 	lang_OnGameModeInit();
 	FightStyle_OnGameModeInit();
     mission_OnGameModeInit();
+    antiidle_OnGameModeInit();
 	//
 	race_thestrip_init();
 	race_riversiderun_init();
@@ -260,6 +263,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	else format(logstring, sizeof (logstring), "player: %d: %s: has killed player %s(%d)> Reason: (%d)",killerid,oGetPlayerName(killerid),oGetPlayerName(playerid),playerid,reason);
 	WriteLog(GameLog,logstring);
 	mission_OnPlayerDeath(playerid,killerid,reason);
+	gang_OnPlayerDeath(playerid,killerid,reason);
 	SendDeathMessage(killerid,playerid,reason);
 	if(!IsPlayerInAnyDM(playerid))
 	{
@@ -464,20 +468,7 @@ public OnVehicleDeath(vehicleid,killerid)
 
 public OnRconLoginAttempt(ip[], password[], success)
 {
-    if(!success)
-    {
-        printf("Неудачный вход рконом с ip `%s`, использовал пароль: %s",ip, password);
-        new pip[16];
-        for(new i=0;i<MAX_PLAYERS;i++)
-        {
-            GetPlayerIp(i, pip, sizeof(pip));
-            if(!strcmp(ip, pip, true))
-            {
-                SendClientMessage(i,COLOUR_RED,"Неправильный пароль. Досвидание!");
-                Ban(i);
-            }
-        }
-    }
+    antirconhack_OnRconLoginAttempt(ip,password,success);
 	return 1;
 }
 

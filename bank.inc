@@ -32,8 +32,9 @@ new MAX_BANK = 15000000;
 
 stock BankSaveConfig()
 {
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	new file = ini_Open(ConfigDB);
+	new file;
+	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
+	else file = ini_Open(ConfigDB);
 	ini_SetInt(file,"BANK_ProfitCount",ProfitCount);
 	ini_SetInt(file,"BANK_MAX_MONEY",MAX_BANK);
 	ini_Close(file);
@@ -42,7 +43,7 @@ stock BankSaveConfig()
 
 stock BankLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
+	if(!ini_Exist(ConfigDB)) return 1;
 	new file = ini_Open(ConfigDB);
     ini_GetInt(file,"BANK_ProfitCount",ProfitCount);
     ini_GetInt(file,"BANK_MAX_MONEY",MAX_BANK);

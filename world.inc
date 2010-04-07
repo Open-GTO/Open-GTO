@@ -89,6 +89,7 @@ public WorldSave() // save all
 		groundhold_SaveConfig();
 		groundhold_SaveAll();
 		mission_SaveConfig();
+		AntiIdleSaveConfig();
 		if ((VerboseSave == 1) || (VerboseSave == -1))
 		{
 			//SendClientMessageToRegistered(COLOUR_GREEN,"Performing verbose save. Please be patient.");
@@ -141,6 +142,7 @@ public WorldSave() // save all
 			groundhold_SaveConfig();
 			groundhold_SaveAll();
 			mission_SaveConfig();
+			AntiIdleSaveConfig();
 			if ((VerboseSave == 1) || (VerboseSave == -1))
 			{
 				//SendClientMessageToRegistered(COLOUR_GREEN,"Performing verbose save. Please be patient.");
@@ -806,6 +808,7 @@ public OneMinuteTimer()
 	settime();
 	MuteCheck();
 	JailTimer();
+	AntiIdle();
 	WorldSave();
 }
 
