@@ -19,10 +19,8 @@
 #define INACTIVE_PLAYER_ID 255
 #define INVALID_QUEST_ID 0
 #define MAX_QUESTS 255
-#define MAX_WIN 900000 // Maximum gambling win
-#define MAX_SPAWNPOINTS 50
 #define MAX_COUNTDOWN 5
-#define KEY_USING KEY_WALK //  нопка '’одьба' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
+#define KEY_USING 	KEY_WALK //  нопка '’одьба' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
 
 
 #define TimerTick 1000 // used for how often timer function is called
@@ -63,7 +61,6 @@
 
 #define MIN_HEALTH 20
 #define MAX_HEALTH 100
-#define NUMVALUES 4	
 
 #define SOUND_MUSIC_CLASSSELECT      1185
 #define SOUND_MUSIC_RACEFINISH       1183
@@ -79,16 +76,6 @@
 #define SOUND_DMKILL                 1056
 #define SOUND_DMDEATH                 1057
 
-#define OUTPUTLEVEL 0 // Amount of imformation outputted to console
-//              0   -   off, no output
-//              1   -   + Minimal output
-//              2   -   + DB saves, etc
-//              3   -   + XP/Level/Money changes output
-
-#define DBTYPE 0 //	Database type (olny flat file ATM)
-//				0	-	dini - flat file
-//				1	-	TODO: SQL
-
 forward WeatherUpdate();
 
 new ConfigDB[MAX_STRING] = "GTO/Config/Base-cfg.txt";
@@ -98,7 +85,6 @@ new RealTime=0;
 new ForceOverwrite = 0;
 new KickList[MAX_PLAYERS];
 new WorldTime;
-new DBSeperator= 124; // seperate db fields.atm for db writing im just sending a string, which is written to a file.
 new nullstr[MAX_STRING];
 
 enum CoordInfo 

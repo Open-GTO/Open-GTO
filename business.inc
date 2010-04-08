@@ -385,7 +385,7 @@ stock FBisBuy(playerid)
 		else
 		{
 			new filename[MAX_STRING];
-			format(filename,sizeof(filename),"%s%s.txt",PlayerDB,EncodeName(Businesses[id][Business_Owner]));
+			format(filename,sizeof(filename),"%s%s.txt",PlayerDB,Businesses[id][Business_Owner]);
 			if(ini_Exist(filename))
 			{
 				new tempmoney,file = ini_Open(filename);

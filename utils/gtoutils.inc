@@ -28,31 +28,6 @@ forward encryptbykey(string[],key[MAX_STRING]);
 forward PlayerCount();
 forward settime();
 
-EncodeName(nickname[])
-{
-	new tmp[MAX_STRING];
-	set(tmp,nickname);
-	new newchar = strchar("_");
-
-	for (new i=0;i<MAX_STRING;i++)
-	{
-		if(tmp[i]==0) break; // null
-	    if(((tmp[i]>=strchar("a")) && (tmp[i]<=strchar("z"))) || ((tmp[i]>=strchar("A")) && (tmp[i]<=strchar("Z"))) || ((tmp[i]>=strchar("0")) && (tmp[i]<=strchar("9"))))
-	    {
-			continue;
-	    }
-	    else
-	    {
-	        if(tmp[i] == strchar(".")) continue; // temp fix until new db handler is finished
-	        tmp[i] = newchar;
-		}
-	}
-	tmp=CharReplace(DBSeperator,newchar,tmp);
-	tmp=CharReplace(strchar(" "),newchar,tmp);
-	tmp=CharReplace(strchar("\n"),newchar,tmp);
-	return tmp;
-}
-
 PlayerPlaySoundOnPlayer(playerid,soundid)
 {
 	new Float:playerx,Float:playery,Float:playerz;
@@ -167,19 +142,6 @@ strcharsplit(string[], &index,seperator)
 public strchar(string[2])
 {
 	return string[0];
-}
-
-CharReplace(findchar,newchar,string[MAX_STRING])
-{
-	for(new i=0;i<MAX_STRING;i++)
-	{
-		if(string[i] == findchar)
-		{
-		    if(string[i] == 0) break;
-		    string[i] = newchar;
-		}
-	}
-	return string;
 }
 
 public Vary(source,varyamount)
