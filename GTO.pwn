@@ -4,35 +4,8 @@ Project Name:	San Andreas: Multiplayer: Grand Theft Online.
 Date Created:		12 August 2006
 Date start edit: 	5 November 2009(by Russian Scripter's)
 
-Current version: GTO 0.6.1a
+Current version: GTO 0.6.2 R3
 SA-MP Versions:	0.3a
-
-[23.03.2010]
- - Полностью убрано использование strcomp, заменено на обычный strcmp
- - MAX_STRING изменён на 128, в lang.inc оставлено 255
- - Дома, бизы, стили, оруж. магазины, банки - диалоговое окно по кнопке 'Ходьба', поменять кнопку в base.inc -> #define KEY_USING
- - Исправлен баг с регистрацией(не логинилось после неё)
- - [TESTING]Фикс бага с гонками(чекпоинты)
-[24.03.2010]
- - [TESTING]Фикс бага с десматчами(чекпоинты)
- - Сохранение и чтение координат игрока теперь хранятся в 1 ключе
- - Фиксы Language-Russian.txt
-[25.03.2010]
- - Оптимизация таймеров
- - Игроку(когда онлайн), у которого есть деньги в банке, начисляется процент каждый час в банк.
- - Фиксы системы домов.
-[26.03.2010]
- - Команда /mole текст, для модераторов
- - lang_texts[][] - выводит теперь без пробела перед текстом.
- - Полная переделка logging.inc - оптимизирован код.
- - Исправлено несколько ошибок связанных с логгированием.
-[27.03.2010]
- - Полностью переписана система банков.
- - Переписаны имена процедур на более читабельные и понятные.
- - В файлах появилось больше опций, все их можно менять.
- - Бизнесы теперь все в 1 массиве и в файлах появились координаты бизнеса.
- - Теперь все точки прокачки записываются в файлы в папке scriptfiles\GTO\Groundhold
- - MAX_STRING 256 - не менять никогда, т.к. будет плохо.
 */
 #include <a_samp>							// samp
 #include "base"								// holds base script values
@@ -64,6 +37,9 @@ SA-MP Versions:	0.3a
 #include "misc\mission"
 #include "protections\antiidle"
 #include "protections\antirconhack"
+#include "protections\antihealthhack"
+#include "protections\antimoneyhack"
+#include "protections\antihightping"
 //#include "testserver"
 #tryinclude "click"
 #tryinclude "FightStyle"
@@ -137,6 +113,9 @@ public OnGameModeInit()
 	FightStyle_OnGameModeInit();
     mission_OnGameModeInit();
     antiidle_OnGameModeInit();
+    antihightping_OnGameModeInit();
+    antihealthhack_OnGameModeInit();
+    antimoneyhack_OnGameModeInit();
 	//
 	race_thestrip_init();
 	race_riversiderun_init();

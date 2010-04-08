@@ -12,7 +12,7 @@
 
 #include "utils\mxINI"
 
-#define VERSION "v0.6.2 R2"
+#define VERSION "v0.6.2 R3"
 
 #define MAX_STRING 128 // !!!Ќ≈ ћ≈Ќя“№!!!, а то мод будет плющить(ZiGGi)
 #define MAX_NAME 40 // number of char's a name/password/misc_word can be
@@ -22,7 +22,6 @@
 #define MAX_WIN 900000 // Maximum gambling win
 #define MAX_SPAWNPOINTS 50
 #define MAX_COUNTDOWN 5
-#define MAX_PING 500
 #define KEY_USING KEY_WALK //  нопка '’одьба' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
 
 
@@ -210,8 +209,8 @@ stock BaseLoadConfig()
 stock BaseSaveConfig()
 {
 	new temp[MAX_STRING],file;
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	file = ini_Open(ConfigDB);
+	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
+	else file = ini_Open(ConfigDB);
 	ini_Set(file,"Level_DB",LevelDB);
 	ini_SetInt(file,"Real_Time",RealTime);
 	ini_SetInt(file,"Verbose_Save",VerboseSave);

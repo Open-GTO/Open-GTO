@@ -90,6 +90,9 @@ public WorldSave() // save all
 		groundhold_SaveAll();
 		mission_SaveConfig();
 		AntiIdleSaveConfig();
+		AntiHightPingSaveConfig();
+		AntiHealthHackSaveConfig();
+		AntiMoneyHackSaveConfig();
 		if ((VerboseSave == 1) || (VerboseSave == -1))
 		{
 			//SendClientMessageToRegistered(COLOUR_GREEN,"Performing verbose save. Please be patient.");
@@ -143,6 +146,9 @@ public WorldSave() // save all
 			groundhold_SaveAll();
 			mission_SaveConfig();
 			AntiIdleSaveConfig();
+			AntiHightPingSaveConfig();
+			AntiHealthHackSaveConfig();
+			AntiMoneyHackSaveConfig();
 			if ((VerboseSave == 1) || (VerboseSave == -1))
 			{
 				//SendClientMessageToRegistered(COLOUR_GREEN,"Performing verbose save. Please be patient.");

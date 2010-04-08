@@ -16,9 +16,6 @@
 #include "weapons"
 
 #define MAX_MONEY 50000000
-#define PLAYER_SYNC_DELAY 1000
-#define MAX_DESYNC 5000
-
 
 new PlayerDB[MAX_STRING] = "GTO/Player/";
 
@@ -257,33 +254,8 @@ stock SyncPlayers()
 		SyncHealth(playerid);
 		CheckPlayerKick(playerid);
 		JailPlayer(playerid);
+		CheckPing(playerid);
 	}
-	return 1;
-}
-
-stock SyncMoney(playerid)
-{
-	if(!IsPlayerConnected(playerid)) return 1;
-	new clientmoney = GetPlayerMoney(playerid);
-	if(clientmoney < 0) return oSetPlayerMoney(playerid,0);
-	if(clientmoney == Player[playerid][Money]) return 1;
-	//if(clientmoney < Player[playerid][Money]) return oSetPlayerMoney(playerid,clientmoney);
-	if(clientmoney > Player[playerid][Money]) return oSetPlayerMoney(playerid,Player[playerid][Money]);
-	return 1;
-}
-
-stock SyncHealth(playerid)
-{
-	if(!IsPlayerConnected(playerid)) return 1;
-	new Float:clienthealth = oGetPlayerHealth(playerid);
-	if(clienthealth < 0) return oSetPlayerHealth(playerid,0);
-	if(clienthealth == Player[playerid][Health]) return 1;
-	if(clienthealth < Player[playerid][Health])
-	{
-		Player[playerid][Health] = clienthealth;
-		return 1;
-	}
-	if(clienthealth > Player[playerid][Health]) return oSetPlayerHealth(playerid,Player[playerid][Health]);
 	return 1;
 }
 
@@ -1039,8 +1011,8 @@ stock SetWeaponsFromDBString(playerid,dbstring[])
 //			PlayerWeapons[playerid][i][pbullets] = 0;
 		}
 
-		PlayerWeapons[playerid][i][pwid] = strval(strcharsplit(dbstring,idx,strchar("|")));
-		PlayerWeapons[playerid][i][pbullets] = strval(strcharsplit(dbstring,idx,strchar("/")));
+		PlayerWeapons[playerid][i][pwid] = strval(strcharsplit(dbstring,idx,strchar("/")));
+		PlayerWeapons[playerid][i][pbullets] = strval(strcharsplit(dbstring,idx,strchar("|")));
 		if (PlayerWeapons[playerid][i][pbullets] > 12000) {PlayerWeapons[playerid][i][pbullets]=12000;}
 	}
 }
