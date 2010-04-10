@@ -12,7 +12,7 @@
 
 #include "utils\mxINI"
 
-#define VERSION "v0.6.2 R3"
+#define VERSION "v0.6.2 R4"
 
 #define MAX_STRING 128 // !!!Ќ≈ ћ≈Ќя“№!!!, а то мод будет плющить(ZiGGi)
 #define MAX_NAME 40 // number of char's a name/password/misc_word can be

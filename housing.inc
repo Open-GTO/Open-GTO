@@ -311,7 +311,7 @@ stock housing_OnGameModeInit()
 	new string[MAX_STRING];
 	for(new id=0;id<MAX_HOUSES;id++)
 	{
-		housepickup[id] = CreatePickup(1273,1,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.5);	//зеленый домик
+		housepickup[id] = CreateStreamPickup(1273,1,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.5);	//зеленый домик
 		CreateStreamMapIcon(31,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]);
 		format(string,sizeof(string),"Дом: %s\nСтоимость: %d\nКуплен: %s\nАрендуется: %s",Houses[id][Houses_Name],Houses[id][Houses_Cost],Houses[id][Houses_Owner],Houses[id][Houses_RentName]);
 		House3DTextLabel[id] = Create3DTextLabel(string,COLOUR_WHITE,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.75,HouseDistanceOfShowLabel,0,1);
@@ -614,7 +614,6 @@ stock FHouseInfo(playerid)
 			SendClientMessage(playerid,COLOUR_GREEN,temp);
 			format(temp,sizeof(temp),lang_texts[8][7],Houses[id][Houses_UpKeepLeft],UpKeep*2800);
 			SendClientMessage(playerid,COLOUR_GREEN,temp);
-			SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][8]);
 		}
 	}
 	else
@@ -624,7 +623,6 @@ stock FHouseInfo(playerid)
 		SendClientMessage(playerid,COLOUR_GREEN,temp);
 		format(temp,sizeof(temp),lang_texts[8][11],Houses[id][Houses_UpKeep],Houses[id][Houses_UpKeepLeft]);
 		SendClientMessage(playerid,COLOUR_GREEN,temp);
-		SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][12]);
 	}
 	return 1;
 }

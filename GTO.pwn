@@ -34,6 +34,7 @@ SA-MP Versions:	0.3a
 #include "admin\adm_commands"
 #include "admin\mod_commands"
 #include "streamers\mapicon_stream"
+#include "streamers\pickups_stream"
 #include "misc\mission"
 #include "protections\antiidle"
 #include "protections\antirconhack"
@@ -347,7 +348,7 @@ public OnPlayerCommandText(playerid,cmdtext[])
 
 public OnPlayerText(playerid, text[])
 {
-	new gangmessage[MAX_STRING],string[MAX_STRING];
+	new string[MAX_STRING];
 	switch(text[0])
 	{
 	    case '!':
@@ -359,7 +360,7 @@ public OnPlayerText(playerid, text[])
 			}
 			strmid(string,text,1,strlen(text));
 			if(!strlen(string)) return 1;
-			format(string,sizeof(string), "%s[%d] банде: %s", oGetPlayerName(playerid), playerid, gangmessage);
+			format(string,sizeof(string), "%s[%d] банде: %s", oGetPlayerName(playerid), playerid, string);
 			SendGangMessage(PlayerGangid[playerid],string,COLOUR_GANG_CHAT);
 			format(string,sizeof(string), "Player: %s[%d]: <GANG CHAT>:   %s",oGetPlayerName(playerid),playerid,text);
 			WriteLog(ChatLog,string);

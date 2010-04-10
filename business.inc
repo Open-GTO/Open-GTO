@@ -153,7 +153,7 @@ stock business_OnGameModeInit()
 	new string[MAX_STRING];
 	for(new id=0;id<MAX_BUSINESSES;id++)
 	{
-		BusinessPick[id] = CreatePickup(1274,49,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.5);	//синий домик
+		BusinessPick[id] = CreateStreamPickup(1274,49,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.5);	//синий домик
 		CreateStreamMapIcon(52,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]);
 		format(string,sizeof(string),"Бизнес: %s\nСтоимость: %d\nПрибыль: %d\nСейчас принадлежит: %s\nМин.Уровень: %d\nУровень бизнеса: %d",Businesses[id][Business_Name],Businesses[id][Business_Cost],Businesses[id][Business_Value],Businesses[id][Business_Owner],Businesses[id][Business_Level],Businesses[id][Business_Upgrade]);
 		Business3DTextLabel[id] = Create3DTextLabel(string,COLOUR_WHITE,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.75,BusinessDistanceOfShowLabel,0,1);
@@ -222,7 +222,7 @@ stock business_OnPlayerCommandText(playerid,text[]) // process player commands
 	set(cmd,strcharsplit(text, idx,strchar(" ")));
 	if (strlen(cmd) == 0) return 0;
 
-	if (!strcmp("/bmenu", cmd, true, 5))
+/*	if (!strcmp("/bmenu", cmd, true, 5))
 	{
 		if (!IsPlayerAtBusiness(playerid))
 		{
@@ -288,7 +288,7 @@ stock business_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		else BbuyUpgrade(playerid);
 	return 1;
-	}
+	}*/
 	return 0;
 }
 //----------------RECOMPILED BUSINESSES----------------------------------------
@@ -360,7 +360,7 @@ stock FBisBuy(playerid)
 		return 1;
 	}
 	new price = Businesses[id][Business_Cost] + Businesses[id][Business_Buyout];
-	if(Player[playerid][Money] >= price) return SendClientMessage(playerid,COLOUR_RED,lang_texts[3][24]);
+	if(Player[playerid][Money] < price) return SendClientMessage(playerid,COLOUR_RED,lang_texts[3][24]);
 	if(!strcmp(Businesses[id][Business_Owner],oGetPlayerName(playerid), true))
 	{
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[3][20]);
@@ -555,10 +555,13 @@ stock BbuyUpgrade(playerid)
 			SendClientMessage(playerid,COLOUR_RED,st);
 			return 1;
 		}
-		if(Businesses[id][Business_Upgrade] == MAX_UPGRADELEVEL) oGivePlayerMoney(playerid,-35000,1);
-		else if(Businesses[id][Business_Upgrade] > 20) oGivePlayerMoney(playerid,-28000,1);
-		else if(Businesses[id][Business_Upgrade] > 10) oGivePlayerMoney(playerid,-22000,1);
-		else if(Businesses[id][Business_Upgrade] < 10) oGivePlayerMoney(playerid,-15000,1);
+		new price;
+		if(Businesses[id][Business_Upgrade] == MAX_UPGRADELEVEL) price = 35000;
+		else if(Businesses[id][Business_Upgrade] > 20) price = 28000;
+		else if(Businesses[id][Business_Upgrade] > 10) price = 22000;
+		else if(Businesses[id][Business_Upgrade] < 10) price = 15000;
+		if(Player[playerid][Money] < price) return SendClientMessage(playerid,COLOUR_RED,lang_texts[3][61]);
+		oGivePlayerMoney(playerid,-price,0);
 		new filename[MAX_STRING];
 		format(filename,sizeof(filename),"%s%s.txt",BusinessDB,Businesses[id][Business_Name]);
 		Businesses[id][Business_Upgrade]++;

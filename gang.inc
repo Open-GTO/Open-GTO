@@ -207,7 +207,9 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
   		}
   		if(!strcmp(cmd,"commands",true))
   		{
+			new string[MAX_STRING];
    			SendPlayerScrollingText(playerid,lang_texts[6][10]);
+			format(string,sizeof(string),lang_texts[6][11],GANG_CREATE_COST);
    			SendPlayerScrollingText(playerid,lang_texts[6][11]);
             SendPlayerScrollingText(playerid,lang_texts[6][12]);
    			SendPlayerScrollingText(playerid,lang_texts[6][13]);
@@ -217,6 +219,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
   			SendPlayerScrollingText(playerid,lang_texts[6][17]);
    			SendPlayerScrollingText(playerid,lang_texts[6][18]);
             SendPlayerScrollingText(playerid,lang_texts[6][19]);
+			format(string,sizeof(string),lang_texts[6][20],GANG_COLOUR_COST);
    			SendPlayerScrollingText(playerid,lang_texts[6][20]);
    			return 1;
   		}
@@ -337,6 +340,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
     			SendClientMessage(playerid,COLOUR_GANG,string);
     			format(string,sizeof(string),lang_texts[6][48],oGetPlayerName(playerid));
     			SendGangMessage(gangid,string,COLOUR_GANG);
+				SetPlayerColor(playerid,PlayerGangColour(playerid));
     			format(string,sizeof(string),"player: %d:  %s: have joined '%s' gang.",playerid,oGetPlayerName(playerid),Gangs[gangid][gang_name]);
     			WriteLog(GameLog,string);
     			return 1;

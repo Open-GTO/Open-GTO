@@ -806,6 +806,7 @@ public OneSecTimer()
 	TextScroller();
 	SyncPlayers();
 	MapIconsTimer();
+	StreamPickups();
 }
 
 public OneMinuteTimer()

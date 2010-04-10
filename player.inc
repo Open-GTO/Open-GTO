@@ -478,9 +478,9 @@ stock player_OnPlayerDisconnect(playerid,reason)
 	format(string,sizeof(string),lang_texts[1][18],oGetPlayerName(playerid),playerid);
 	switch(reason)
 	{
-	    case 0: format(string,sizeof(string),"%s. (Вылетел)",string);
-	    case 1: format(string,sizeof(string),"%s. (Вышел)",string);
-	    case 2: format(string,sizeof(string),"%s. (Кикнут)",string);
+	    case 0: format(string,sizeof(string),"%s (Вылетел)",string);
+	    case 1: format(string,sizeof(string),"%s (Вышел)",string);
+	    case 2: format(string,sizeof(string),"%s (Кикнут)",string);
 	}
 	SendClientMessageToRegistered(COLOUR_GREY,string);
 	GangMemberLogout(playerid,PlayerGangid[playerid]);
@@ -526,13 +526,12 @@ stock player_OnPlayerDeath(playerid,killerid,reason)
 	PlayerCurrentKills[playerid] = 0;
 	if(!IsPlayerInAnyDM(playerid)){DropPlayerWeapons(playerid);}
 	if(oGetPlayerHealth(killerid) > 100) KickPlayer(killerid,"Invalid health amount. (cheat?)");
-	if((Player[playerid][Money] - 100) > 0) Player[playerid][Money] = Player[playerid][Money] - 100;
-	else oSetPlayerMoney(playerid,0);
+	oGivePlayerMoney(playerid,-100,0);
 	if((Player[playerid][XP] - (Player[playerid][XP] / 30)) > 0)
 	{
 		if(!IsPlayerAdmin(playerid))
 		{
-			GivePlayerXP(playerid,-(Player[playerid][XP] / 30),1); // take death penalty xp
+			GivePlayerXP(playerid,-(Player[playerid][XP] / 80),1); // take death penalty xp
 			Player[playerid][XP]=GetPlayerXP(playerid);
 			CheckPlayerLevel(playerid);
 		}
@@ -588,8 +587,8 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	{
 		if (Player[killerid][XP] < MAX_LVLXP) 
 		{
-			GivePlayerXP(victimid,(0-earnedXP),1);
-			GivePlayerXP(killerid, earnedXP,1);
+			GivePlayerXP(victimid,-earnedXP/2,1);
+			GivePlayerXP(killerid,earnedXP,1);
 			Player[killerid][XP]=GetPlayerXP(killerid);
 			Player[victimid][XP]=GetPlayerXP(victimid);
 			CheckPlayerLevel(victimid);
@@ -612,7 +611,7 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	//ЕСЛИ У убийцы предел наличных, stolencash будет соответствовать!
 
 	if((MAX_MONEY-Player[killerid][Money]) < stolencash) stolencash = (MAX_MONEY-Player[killerid][Money]);
-	oGivePlayerMoney(victimid,0-stolencash,1);
+	oGivePlayerMoney(victimid,-stolencash,1);
 	oGivePlayerMoney(killerid,stolencash,1);
 	
 	return;
@@ -892,10 +891,7 @@ stock oGivePlayerMoney(playerid,money,showtext)
 
 stock GetPlayerTotalMoney(playerid)
 {
-	new money;
-	money += Player[playerid][Money];
-	money += Player[playerid][Bank];
-	return money;
+	return Player[playerid][Money]+Player[playerid][Bank];
 }
 
 stock oGetPlayerMoney(playerid)
@@ -923,26 +919,20 @@ stock oSetPlayerHealth(playerid,Float:health)
 
 stock oGivePlayerWeapon(playerid,weaponid,ammo)
 {
-	if (!IsPlayerAllowedWeapon(playerid,weaponid)) return;	//Mad
-	new slot = GetWeaponSlot(weaponid);	//Mad
-
-	if (ammo > 0)
+	if(!IsPlayerAllowedWeapon(playerid,weaponid)) return;
+	new slot = GetWeaponSlot(weaponid);
+	if(ammo > 0)
 	{
-		if (!IsWeaponHandToHand(weaponid))
+		if(!IsWeaponHandToHand(weaponid))
 		{
-//			PlayerWeapons[playerid][weaponid] = PlayerWeapons[playerid][weaponid] + ammo;
 			PlayerWeapons[playerid][slot][pwid] = weaponid;
-			PlayerWeapons[playerid][slot][pbullets] = PlayerWeapons[playerid][slot][pbullets] + ammo;
-
+			PlayerWeapons[playerid][slot][pbullets] += ammo;
 		}
 		else
 		{
-//			PlayerWeapons[playerid][weaponid] = PlayerWeapons[playerid][weaponid] + ammo;
 			PlayerWeapons[playerid][slot][pwid] = weaponid;
 			PlayerWeapons[playerid][slot][pbullets] = 1;
-
 		}
-
 		GivePlayerWeapon(playerid,weaponid,ammo);
 	}
 }
@@ -963,21 +953,9 @@ stock CreatePlayer(playerid)
 	SetPlayerXP(playerid,0);
 	ResetPlayerWeapons(playerid);
 	new bullets = 100;
-	if(PlayerStartWeapon1 != 0)
-	{
-		if(bullets > GetWeaponMaxAmmo(PlayerStartWeapon1)) oGivePlayerWeapon(playerid,PlayerStartWeapon1,GetWeaponMaxAmmo(PlayerStartWeapon1));
-		else oGivePlayerWeapon(playerid,PlayerStartWeapon1,bullets);
-	}
-	if(PlayerStartWeapon2 != 0)
-	{
-		if(bullets > GetWeaponMaxAmmo(PlayerStartWeapon2)) oGivePlayerWeapon(playerid,PlayerStartWeapon2,GetWeaponMaxAmmo(PlayerStartWeapon2));
-		else oGivePlayerWeapon(playerid,PlayerStartWeapon2,bullets);
-	}
-	if(PlayerStartWeapon3 != 0)
-	{
-		if(bullets > GetWeaponMaxAmmo(PlayerStartWeapon3)) oGivePlayerWeapon(playerid,PlayerStartWeapon3,GetWeaponMaxAmmo(PlayerStartWeapon3));
-		else oGivePlayerWeapon(playerid,PlayerStartWeapon3,bullets);
-	}
+	if(PlayerStartWeapon1 != 0) oGivePlayerWeapon(playerid,PlayerStartWeapon1,bullets);
+	if(PlayerStartWeapon2 != 0) oGivePlayerWeapon(playerid,PlayerStartWeapon2,bullets);
+	if(PlayerStartWeapon3 != 0) oGivePlayerWeapon(playerid,PlayerStartWeapon3,bullets);
 	player_create_db_ini(playerid);
 	new logstring[MAX_STRING];
 	format(logstring, sizeof(logstring), "player: %d:  %s: player_created successfully",playerid,oGetPlayerName(playerid));
@@ -998,22 +976,10 @@ player_create_db_ini(playerid)
 stock SetWeaponsFromDBString(playerid,dbstring[])
 {
 	new idx;
-	for (new i=0;i<PLAYER_WEAPON_SLOTS;i++)
+	for(new i=0;i<PLAYER_WEAPON_SLOTS;i++)
 	{
-
-		if (IsPlayerAllowedWeapon(playerid,PlayerWeapons[playerid][i][pwid]))
-		{
-			if(PlayerWeapons[playerid][i][pbullets]>25535) PlayerWeapons[playerid][i][pbullets]=1;
-		}
-		else
-		{
-//			Заменить ИД текущего оружия на ИД разрешенного в данном слоте i
-//			PlayerWeapons[playerid][i][pbullets] = 0;
-		}
-
 		PlayerWeapons[playerid][i][pwid] = strval(strcharsplit(dbstring,idx,strchar("/")));
 		PlayerWeapons[playerid][i][pbullets] = strval(strcharsplit(dbstring,idx,strchar("|")));
-		if (PlayerWeapons[playerid][i][pbullets] > 12000) {PlayerWeapons[playerid][i][pbullets]=12000;}
 	}
 }
 
@@ -1038,8 +1004,9 @@ stock player_save_db_ini(playerid)
 	if(strlen(oGetPlayerName(playerid)) < 1) return 1;
 	new filename[MAX_STRING];
 	format(filename,sizeof(filename),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
-	if(!ini_Exist(filename)) {new File:fhnd = fopen(filename,io_write);fclose(fhnd);}
-	new file = ini_Open(filename);
+	new file;
+	if(!ini_Exist(filename)) file = ini_Create(filename);
+	else file = ini_Open(filename);
 	ini_Set(file,"Name",oGetPlayerName(playerid));
 	ini_Set(file,"Gang",PlayerGangName[playerid]);
 	ini_SetInt(file,"Level",Player[playerid][Level]);
@@ -1068,7 +1035,10 @@ stock player_save_db_ini(playerid)
 
 stock PlayerLoadStats(playerid)
 {
-	if (!IsPlayerRegistered(playerid)) return 0; // login to acct first
+	if(!IsPlayerRegistered(playerid)) return 0; // login to acct first
+	new string[MAX_STRING];
+	format(string,sizeof(string),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
+	if(!ini_Exist(string)) CreatePlayer(playerid);
 	player_load_db_ini(playerid);
 	return 1;
 }
@@ -1292,7 +1262,7 @@ stock GetWeaponBulletsDown(weaponid)
 
 stock DeletePickup(pickupid)
 {
-	DestroyPickup(pickupid);
+	DestroyStreamPickup(pickupid);
 	return 1;
 }
 
@@ -1301,19 +1271,28 @@ stock DropPlayerWeapons(playerid)
 	new pickupid,playerweapons[13][2];
 	new Float:x,Float:y,Float:z;
 	GetPlayerPos(playerid, x, y, z);
-	new drpick = random(12)+1;
+//	new drpick = random(12)+1;
 	for(new i=0;i<13;i++)
 	{
     	GetPlayerWeaponData(playerid, i, playerweapons[i][0], playerweapons[i][1]);
     	new model=GetWeaponModel(playerweapons[i][0]);
-        new dbw=GetWeaponBulletsDown(playerweapons[i][0]);
+//		new dbw=GetWeaponBulletsDown(playerweapons[i][0]);
         new Float:X=x+(random(4)-random(4));
         new Float:Y=y+(random(4)-random(4));
         if(playerweapons[i][1]!=0)
 		{
 			if(model!=-1 && model!=359 && model!=360 && model!=362)
 			{
-				pickupid = CreatePickup(model, 3, X, Y, z);
+				pickupid = CreateStreamPickup(model, 3, X, Y, z);
+				SetTimerEx("DeletePickup", WDropTimer+(i*500), false, "d", pickupid);
+				pickupid++;
+			}
+		}
+ /*       if(playerweapons[i][1]!=0)
+		{
+			if(model!=-1 && model!=359 && model!=360 && model!=362)
+			{
+				pickupid = CreateStreamPickup(model, 3, X, Y, z);
 				SetTimerEx("DeletePickup", WDropTimer+(i*500), false, "d", pickupid);
 				pickupid++;
 				if((PlayerWeapons[playerid][i][pbullets] < dbw) && (PlayerWeapons[playerid][i][pbullets] > 0) )
@@ -1330,8 +1309,8 @@ stock DropPlayerWeapons(playerid)
 				drpick--;
 				if(drpick==0) return 1;
 			}
-		}
-		CreateWeaponDBString(playerid);
+		}*/
+//		CreateWeaponDBString(playerid);
 	}
 	return 1;
 }

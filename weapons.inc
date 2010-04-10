@@ -162,7 +162,7 @@ stock weapons_OnGameModeInit()
 	WeaponMenuInit();
 	for(new id=0;id<AmmunationsCount;id++)
 	{
-		WeapPickup[id] = CreatePickup(1247,1,Ammunations[id][Coord_X],Ammunations[id][Coord_Y],Ammunations[id][Coord_Z]);
+		WeapPickup[id] = CreateStreamPickup(1247,1,Ammunations[id][Coord_X],Ammunations[id][Coord_Y],Ammunations[id][Coord_Z]);
 	}
 	WriteLog(GameLog,"Ammunition checkpoints initialised");
 }

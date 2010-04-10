@@ -56,7 +56,7 @@ stock bank_OnGameModeInit()
 	BankLoadConfig();
 	for(new bankid;bankid<BanksCount;bankid++)
 	{
-	    BankPickup[bankid] = CreatePickup(1274, 23, Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z], 0);
+	    BankPickup[bankid] = CreateStreamPickup(1274, 23, Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z]);
 	}
 	return 1;
 }

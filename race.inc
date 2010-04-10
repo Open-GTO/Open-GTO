@@ -659,10 +659,15 @@ stock SendMessageToRacers(raceid,string[],colour)
 
 stock IsPlayerInRace(playerid,raceid)
 {
-	if (PlayerQuest[playerid] == GetRaceQuestID(raceid)) return 1;
+	if(PlayerQuest[playerid] == GetRaceQuestID(raceid)) return 1;
 	return 0;
 }
 
+stock IsPlayerInAnyRace(playerid)
+{
+	for(new i=0;i<MAX_RACES;i++) if(IsPlayerInRace(playerid,i)) return 1;
+	return 0;
+}
 
 stock GetRaceColourForPlayer(playerid,raceid)
 {

@@ -68,10 +68,10 @@ stock FightStyle_OnPlayerSpawn(playerid)
 
 stock FightStyle_OnGameModeInit()
 {
-	CreatePickup(1314, 2, 759.4146,5.1854,1000.7054, 0); // 1 los santos
-	CreatePickup(1314, 2, 766.8073,-22.8696,1000.5859, 0); // 2 San fiero
-	CreatePickup(1314, 2, 774.8115,-62.2324,1000.7184, 0); // 3 las venturas
-	CreatePickup(1314, 2, 1233.0804,-757.3818,1084.0150, 0); // LS secren pick on holm
+	CreateStreamPickup(1314, 2, 759.4146,5.1854,1000.7054); // 1 los santos
+	CreateStreamPickup(1314, 2, 766.8073,-22.8696,1000.5859); // 2 San fiero
+	CreateStreamPickup(1314, 2, 774.8115,-62.2324,1000.7184); // 3 las venturas
+	CreateStreamPickup(1314, 2, 1233.0804,-757.3818,1084.0150); // LS secren pick on holm
 }
 
 stock FightSty_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
