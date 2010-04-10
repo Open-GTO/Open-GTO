@@ -181,7 +181,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		}
-		if((!IsPlayerConnected(receiverid)) && !IsPlayerInAnyDM(receiverid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
+		if(!IsPlayerConnected(receiverid) || IsPlayerNPC(playerid) || IsPlayerInAnyDM(receiverid) || IsPlayerInAnyRace(playerid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 		new Float:X,Float:Y,Float:Z,Float:Angle;
 		if(IsPlayerInAnyVehicle(receiverid)) 
 		{
@@ -219,7 +219,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 		{
 			if((id < playerid) || (id > playerid))
 			{
-				if(IsPlayerConnected(id) && (Player[id][Jailed] == 0) && !IsPlayerAdmin(id)  && !IsPlayerInAnyDM(id))
+				if(IsPlayerConnected(id) && !IsPlayerNPC(playerid) && (Player[id][Jailed] == 0) && !IsPlayerAdmin(id)  && !IsPlayerInAnyDM(id))
 				{
 					if(IsPlayerConnected(id) == 0) return 0;
 					SetPlayerFacingAngle(id,Angle);
