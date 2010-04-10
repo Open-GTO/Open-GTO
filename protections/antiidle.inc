@@ -52,7 +52,7 @@ stock AntiIdle()
     new Float:x,Float:y,Float:z,string[MAX_STRING];
     for(new playerid=0; playerid<MAX_PLAYERS; playerid++)
 	{
-        if(IsPlayerConnected(playerid))
+        if(IsPlayerConnected(playerid) && !IsPlayerNPC(playerid) && !IsPlayerAdmin(playerid))
 		{
             GetPlayerPos(playerid, x, y, z);
             if(x == playerIdlePos[playerid][Coord_X] && y == playerIdlePos[playerid][Coord_Y] && z == playerIdlePos[playerid][Coord_Z])

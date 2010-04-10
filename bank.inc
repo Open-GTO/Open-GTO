@@ -71,7 +71,7 @@ stock bank_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 		SendPlayerFormattedText(playerid,lang_texts[2][2],Player[playerid][Bank],COLOUR_GREEN);
 		new string[MAX_STRING];
 		format(string,sizeof(string),"Меню банка, сейчас на вашем счету: %d$",Player[playerid][Bank]);
-		return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,string,"Снять деньнги\nПоложить деньги","ОК","Отмена");
+		return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,string,"Снять деньги\nПоложить деньги","ОК","Отмена");
 	}
 	return 1;
 }
@@ -102,7 +102,7 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	    if(!response)
 		{
 			format(string,sizeof(string),"Меню банка, сейчас на вашем счету: %d$",Player[playerid][Bank]);
-			return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,string,"Снять деньнги\nПоложить деньги","ОК","Отмена");
+			return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,string,"Снять деньги\nПоложить деньги","ОК","Отмена");
 		}
 		if(!isNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
 		{
@@ -125,7 +125,7 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	    if(!response)
 		{
 			format(string,sizeof(string),"Меню банка, сейчас на вашем счету: %d$",Player[playerid][Bank]);
-			return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,string,"Снять деньнги\nПоложить деньги","ОК","Отмена");
+			return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,string,"Снять деньги\nПоложить деньги","ОК","Отмена");
 		}
 		if(!isNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
 		{
