@@ -9,7 +9,7 @@
 
 #define MAX_VEHICLE_SPAWNS 2000
 
-new never = 43200;//cars respawn time (86400 - one day)
+new never = 600;//cars respawn time (86400 - one day)
 new VehicleDoors[MAX_VEHICLE_SPAWNS];
 
 #define V_ADMIRAL 445
@@ -1183,7 +1183,7 @@ stock LoadVehicles()
 	{
 		if(VehicleModelSpawns[i][vspawn_model] != 0)
 		{
-			AddStaticVehicleEx(VehicleModelSpawns[i][vspawn_model],VehicleModelSpawns[i][vspawn_x],VehicleModelSpawns[i][vspawn_y],VehicleModelSpawns[i][vspawn_z],VehicleModelSpawns[i][vspawn_heading],VehicleModelSpawns[i][vspawn_colour1],VehicleModelSpawns[i][vspawn_colour2],never);
+			CreateVehicle(VehicleModelSpawns[i][vspawn_model],VehicleModelSpawns[i][vspawn_x],VehicleModelSpawns[i][vspawn_y],VehicleModelSpawns[i][vspawn_z],VehicleModelSpawns[i][vspawn_heading],VehicleModelSpawns[i][vspawn_colour1],VehicleModelSpawns[i][vspawn_colour2],never);
 		}
 	}
 	for (new i=1;i<sizeof(VehicleLevelSpawns);i++)
@@ -1194,7 +1194,7 @@ stock LoadVehicles()
 		    new vehiclemodel = GetRndVModelByLevel(vspawnlevel);
 		    if((vehiclemodel >= VEHICLES_START) && (vehiclemodel <= (VEHICLES_START+VEHICLES_SIZE)))
 		    {
-				AddStaticVehicleEx(vehiclemodel,VehicleLevelSpawns[i][vspawn_x],VehicleLevelSpawns[i][vspawn_y],VehicleLevelSpawns[i][vspawn_z],VehicleLevelSpawns[i][vspawn_heading],VehicleLevelSpawns[i][vspawn_colour1],VehicleLevelSpawns[i][vspawn_colour2],never);
+				CreateVehicle(vehiclemodel,VehicleLevelSpawns[i][vspawn_x],VehicleLevelSpawns[i][vspawn_y],VehicleLevelSpawns[i][vspawn_z],VehicleLevelSpawns[i][vspawn_heading],VehicleLevelSpawns[i][vspawn_colour1],VehicleLevelSpawns[i][vspawn_colour2],never);
 			}
 		}
 	}
