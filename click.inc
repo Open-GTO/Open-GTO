@@ -14,7 +14,7 @@ new ListResponseType[MAX_PLAYERS];
 stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
 {
 	Player[playerid][ClickedPlayerid] = clickedplayerid;
-	new listitems[256];
+	new listitems[MAX_STRING];
 	listitems = "Отправить денег\nЛичное сообщение\nЖалоба";
 	if(IsPlayerMod(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nKick\nMute\nUnMute\nJail\nUnJail", sizeof(listitems));
 	if(IsPlayerAdm(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nИнфо\nУбить\nTele to\nTele here\nSet health\nSet arm\nGive XP\nДать денег\nFreeze\nUnfreeze", sizeof(listitems));
@@ -280,7 +280,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	{
 		if(!response) return 1;
 		if(strlen(inputtext) == 0) return 1;
-		if(strlen(inputtext) > 30) return SendClientMessage(playerid,COLOUR_MISC,lang_texts[12][92]);
+		if(strlen(inputtext) > 128) return SendClientMessage(playerid,COLOUR_MISC,lang_texts[12][92]);
 		if(ListResponseType[playerid] == 0)
 		{
 			new giveplayer[MAX_PLAYER_NAME],sendername[MAX_PLAYER_NAME],string[256];
@@ -289,10 +289,9 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			GetPlayerName(playerid,sendername,sizeof(sendername));
 			if(oGetPlayerMoney(playerid) < strval(inputtext) || !isNumeric(inputtext) || strval(inputtext) < 0)
 			{
-				SendClientMessage(playerid,COLOUR_RED,lang_texts[15][93]);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[15][93]);
 			}
-			oGivePlayerMoney(playerid,(0 - moneys),1);
+			oGivePlayerMoney(playerid,-moneys,1);
 			oGivePlayerMoney(Player[playerid][ClickedPlayerid],moneys,1);
 			format(string,sizeof(string),lang_texts[15][79],giveplayer,Player[playerid][ClickedPlayerid], moneys);
 			SendClientMessage(playerid,COLOUR_MONEY_GOOD, string);
@@ -301,7 +300,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		}
 		if(ListResponseType[playerid] == 1)
 		{
-			new sendername[MAX_PLAYER_NAME],receivename[MAX_PLAYER_NAME],string[256];
+			new sendername[MAX_PLAYER_NAME],receivename[MAX_PLAYER_NAME],string[MAX_STRING];
 			GetPlayerName(Player[playerid][ClickedPlayerid],receivename,sizeof(receivename));
 			GetPlayerName(playerid,sendername,sizeof(sendername));
 			format(string,sizeof(string),lang_texts[9][31],receivename,Player[playerid][ClickedPlayerid],inputtext);
@@ -311,7 +310,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		}
 		if(ListResponseType[playerid] == 2)
 		{
-			new sendername[MAX_PLAYER_NAME],abusename[MAX_PLAYER_NAME],string[256];
+			new sendername[MAX_PLAYER_NAME],abusename[MAX_PLAYER_NAME],string[MAX_STRING];
 			GetPlayerName(Player[playerid][ClickedPlayerid],abusename,sizeof(abusename));
 			GetPlayerName(playerid,sendername,sizeof(sendername));
 			format(string,sizeof(string),lang_texts[15][91],abusename,Player[playerid][ClickedPlayerid],inputtext);
@@ -330,7 +329,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				SendPlayerFormattedText(playerid,lang_texts[12][2],0,COLOUR_RED);
 				return 1;
 			}
-			if(IsPlayerConnected(receiverid) == 0)
+			if(!IsPlayerConnected(receiverid))
 			{
 				SendPlayerFormattedText(playerid,lang_texts[12][3],0,COLOUR_RED);
 				return 1;
