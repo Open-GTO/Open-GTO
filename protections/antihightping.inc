@@ -35,9 +35,9 @@ stock antihightping_OnGameModeInit()
 stock CheckPing(playerid)
 {
 	if(AntiHightPingEnabled != 1) return 1;
-	if(GetPlayerPing(playerid) <= MAX_PING) return 1;
+	if(GetPlayerPing(playerid) <= MAX_PING && !IsPlayerNPC(playerid)) return 1;
 	new string[MAX_STRING];
-	format(string,sizeof(string),"Твой пинг больше %d.",MAX_PING);
+	format(string,sizeof(string),"Пинг больше %d.",MAX_PING);
 	KickPlayer(playerid,string);
 	return 1;
 }
