@@ -68,14 +68,14 @@ stock mission_SaveConfig()
 
 stock mission_OnGameModeInit()
 {
-	mission_LoadConfig();
+	//mission_LoadConfig();
 	if(Mission_Enabled != 1) return 1;
-	Linerunner[1] = AddStaticVehicleEx(403,1087.880,1298.273,10.481,0.0,-1,-1,300);
-	Linerunner[2] = AddStaticVehicleEx(403,1077.959,1298.586,10.481,0.0,-1,-1,300);
-	Linerunner[3] = AddStaticVehicleEx(514,1067.358,1297.892,10.481,0.0,-1,-1,300);
-	Trailer[1] = AddStaticVehicleEx(435,1041.6473,1354.5607,10.8203,0.0,-1,-1,300);
-	Trailer[2] = AddStaticVehicleEx(450,1048.4971,1354.7903,10.8203,0.0,-1,-1,300);
-	Trailer[3] = AddStaticVehicleEx(584,1056.6970,1355.5123,10.8203,0.0,-1,-1,300);
+	Trailer[1] = AddStaticVehicleEx(435,1087.880,1298.273,10.481,0.0,-1,-1,300);
+	Trailer[2] = AddStaticVehicleEx(450,1077.959,1298.586,10.481,0.0,-1,-1,300);
+	Trailer[3] = AddStaticVehicleEx(584,1067.358,1297.892,11.481,0.0,-1,-1,300);
+	Linerunner[1] = AddStaticVehicleEx(403,1057.9988,1345.1780,11.3991,181.9649,25,1,300); // 
+	Linerunner[2] = AddStaticVehicleEx(403,1050.0984,1344.5737,11.4063,185.2680,25,1,300); // 
+	Linerunner[3] = AddStaticVehicleEx(514,1041.2217,1343.9211,11.4017,179.2766,25,1,300); // 
 	CreateObject(4602,2320.724,545.875,0.322,0.0,0.0,0.0);
 	CreateObject(1597,2319.736,582.936,9.438,0.0,0.0,-90.000);
 	CreateObject(6296,2320.679,567.383,8.894,0.0,0.0,-90.000);
@@ -94,37 +94,61 @@ stock mission_OnPlayerStateChange(playerid,newstate,oldstate)
 	if(Mission_Enabled != 1) return 1;
     if(newstate == PLAYER_STATE_DRIVER)
     {
-        if(GetPlayerVehicleID(playerid) == Linerunner[1] || GetPlayerVehicleID(playerid) == Linerunner[2])
-        {
-            driver[playerid] = 1;
-            new rand = random(sizeof(LineCoord));
-            oSetPlayerCheckpoint(playerid,LineCoord[rand][0],LineCoord[rand][1],LineCoord[rand][2],10);
-            PlayerQuest[playerid] = MISSION_ID;
-        }
-        else if(GetPlayerVehicleID(playerid) == Linerunner[3])
-        {
-            driver[playerid] = 1;
-            new rand = random(sizeof(PetrolCoord));
-            oSetPlayerCheckpoint(playerid,PetrolCoord[rand][0],PetrolCoord[rand][1],PetrolCoord[rand][2],10);
-            PlayerQuest[playerid] = MISSION_ID;
-        }
-		else return 1;
-        timer[playerid] = SetTimerEx("EndMission",300000,0,"d",playerid);
-        SendClientMessage(playerid,COLOUR_YELLOW,"*** Езжай на чекпоинт, доставь туда груз.");
-        new string[MAX_STRING];
-        format(string,sizeof(string),"%s взял миссию по доставке груза",oGetPlayerName(playerid));
-        for(new i=0;i<MAX_PLAYERS;i++)
-        {
-            if(IsPlayerConnected(i) && i!=playerid) SendClientMessage(i,COLOUR_LIGHTRED,string);
-        }
+		if(GetPlayerVehicleID(playerid) == Linerunner[1] || GetPlayerVehicleID(playerid) == Linerunner[2] || GetPlayerVehicleID(playerid) == Linerunner[3])	SendClientMessage(playerid,COLOUR_PINK,"ХраП: Вы можете начать миссию дальнобойщика. Для этого нажмите Кнопку миссии (2 или +)");
 		return 1;
     }
-	if(newstate == PLAYER_STATE_ONFOOT && driver[playerid] == 1)
+	/*if(newstate == PLAYER_STATE_ONFOOT && driver[playerid] == 1)
 	{
 	    driver[playerid] = 0;
 		ResetQuest(playerid);
-	    SendClientMessage(playerid,COLOUR_RED,"*** Ты не справился с миссией.");
+	    SendClientMessage(playerid,COLOUR_RED,"ХраП: Ты не справился с миссией.");
 		return 1;
+	}*/
+	return 1;
+}
+
+stock mission_Start(playerid)
+{
+	if(GetPlayerVehicleID(playerid) == Linerunner[1] || GetPlayerVehicleID(playerid) == Linerunner[2])
+    {
+        driver[playerid] = 1;
+        new rand = random(sizeof(LineCoord));
+        oSetPlayerCheckpoint(playerid,LineCoord[rand][0],LineCoord[rand][1],LineCoord[rand][2],10);
+        PlayerQuest[playerid] = MISSION_ID;
+    }
+    else if(GetPlayerVehicleID(playerid) == Linerunner[3])
+    {
+		driver[playerid] = 1;
+        new rand = random(sizeof(PetrolCoord));
+        oSetPlayerCheckpoint(playerid,PetrolCoord[rand][0],PetrolCoord[rand][1],PetrolCoord[rand][2],10);
+        PlayerQuest[playerid] = MISSION_ID;
+    }
+	else return 1;
+    timer[playerid] = SetTimerEx("EndMission",300000,0,"d",playerid);
+    SendClientMessage(playerid,COLOUR_YELLOW,"ХраП: Бери груз, езжай на чекпоинт, доставь туда груз вовремя и получишь бабки + опыт");
+    new string[MAX_STRING];
+    format(string,sizeof(string),"ХраП: %s взял миссию по доставке груза",oGetPlayerName(playerid));
+    for(new i=0;i<MAX_PLAYERS;i++)
+    {
+        if(IsPlayerConnected(i) && i!=playerid) SendClientMessage(i,COLOUR_LIGHTRED,string);
+    }
+	return 1;
+}
+
+stock mission_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
+{
+	#pragma unused oldkeys
+	if(IsPlayerInAnyVehicle(playerid))
+	{
+		if(newkeys == KEY_SUBMISSION) 
+		{
+			if(PlayerQuest[playerid] == 0) mission_Start(playerid);
+			else if(PlayerQuest[playerid] == MISSION_ID) 
+			{
+				EndMission(playerid);
+				KillTimer(timer[playerid]);
+			}
+		}
 	}
 	return 1;
 }
@@ -137,14 +161,20 @@ stock mission_OnPlayerEnterCheckpoint(playerid)
 	{
 	    if(!IsTrailerAttachedToVehicle(vehicleid)) return 1;
 		driver[playerid] = 0;
-		oGivePlayerMoney(playerid,8000,1);
-		GivePlayerXP(playerid,3000,1);
-		new Trailerr = GetVehicleTrailer(GetPlayerVehicleID(playerid));
+		oGivePlayerMoney(playerid,10000,1);
+		new Trailr = GetVehicleTrailer(GetPlayerVehicleID(playerid));
 		DetachTrailerFromVehicle(vehicleid);
-		SetVehicleToRespawn(Trailerr);
+		SetVehicleToRespawn(Trailr);
 		ResetQuest(playerid);
-		SendClientMessage(playerid,COLOUR_WHITE,"*** Поздравляем! Ты справился с миссией. Получи свои бабки!");
+		SendClientMessage(playerid,COLOUR_WHITE,"ХраП: Поздравляем! Ты справился с миссией. Получи свои бабки!");
 		KillTimer(timer[playerid]);
+		new lvl = GetPlayerScore(playerid);
+		if(lvl < 10) GivePlayerXP(playerid,500,1);
+		else if(lvl > 10 && lvl < 20) GivePlayerXP(playerid,5000,1);
+		else if(lvl > 20 && lvl < 30) GivePlayerXP(playerid,10000,1);
+		else if(lvl > 30 && lvl < 40) GivePlayerXP(playerid,20000,1);
+		else if(lvl > 40 && lvl < 50) GivePlayerXP(playerid,50000,1);
+		else if(lvl > 50 && lvl < 60) GivePlayerXP(playerid,100000,1);
 	}
 	return 1;
 }
@@ -166,7 +196,7 @@ stock mission_OnPlayerDeath(playerid, killerid, reason)
 	if(driver[playerid] != 1) return 1;
 	driver[playerid] = 0;
 	ResetQuest(playerid);
-	SendClientMessage(playerid,COLOUR_RED,"*** Ты не справился с миссией доставки груза");
+	SendClientMessage(playerid,COLOUR_RED,"ХраП: Ты не справился с миссией доставки груза");
 	return 1;
 }
 
@@ -177,7 +207,7 @@ stock mission_OnVehicleDeath(vehicleid, killerid)
 	{
 	    driver[killerid] = 0;
 		ResetQuest(killerid);
-	    SendClientMessage(killerid,COLOUR_RED,"*** Ты не справился с миссией, уничтожив свой транспорт");
+	    SendClientMessage(killerid,COLOUR_RED,"ХраП: Ты не справился с миссией, уничтожив свой транспорт");
 	}
 	return 1;
 }
@@ -188,6 +218,6 @@ public EndMission(playerid)
 	{
 	    driver[playerid] = 0;
 		ResetQuest(playerid);
-	    SendClientMessage(playerid,COLOUR_RED,"*** Ты не справился с миссией.");
+	    SendClientMessage(playerid,COLOUR_RED,"ХраП: Ты не справился с миссией.");
 	}
 }

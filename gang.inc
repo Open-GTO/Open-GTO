@@ -606,6 +606,7 @@ stock GangCreate(leaderid,gangname[],gangcolour)
 		GangMemberInfo[memberid][member_active] = 1;
 		GangMemberInfo[memberid][member_online] = 0;
 		GangMemberInfo[memberid][member_playerid] = INVALID_PLAYER_ID;
+		set(GangMemberInfo[memberid][member_name],nullstr);
 	}
 	new memberid = GangMembers[gangid][0];
 	set(GangMemberInfo[memberid][member_name],oGetPlayerName(leaderid));
