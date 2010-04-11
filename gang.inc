@@ -550,6 +550,7 @@ stock GangRemoveMember(gangid,kickplayername[])
 			set(GangMemberInfo[memberid][member_name],nullstr);
 			format(string,sizeof(string),lang_texts[6][70],kickplayername);
 			SendGangMessage(gangid,string,COLOUR_GANG);
+			SetPlayerColor(playerid,PlayerGangColour(playerid));
 			format(string,sizeof(string),"%s has been removed from gang '%s'",kickplayername,Gangs[gangid][gang_name]);
 			WriteLog(GameLog,string);
 			if(playerid != INVALID_PLAYER_ID)
