@@ -83,8 +83,9 @@ stock GangLoadConfig()
 
 stock GangSaveConfig()
 {
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	new file = ini_Open(ConfigDB);
+	new file;
+	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
+	else file = ini_Open(ConfigDB);
 	ini_Set(file,"Gang_DB",GangDB);
 	ini_SetInt(file,"Gang_Create_Cost",GANG_CREATE_COST);
 	ini_SetInt(file,"Gang_Colour_Cost",GANG_COLOUR_COST);
@@ -340,7 +341,6 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
     			SendClientMessage(playerid,COLOUR_GANG,string);
     			format(string,sizeof(string),lang_texts[6][48],oGetPlayerName(playerid));
     			SendGangMessage(gangid,string,COLOUR_GANG);
-				SetPlayerColor(playerid,PlayerGangColour(playerid));
     			format(string,sizeof(string),"player: %d:  %s: have joined '%s' gang.",playerid,oGetPlayerName(playerid),Gangs[gangid][gang_name]);
     			WriteLog(GameLog,string);
     			return 1;
@@ -530,6 +530,7 @@ stock GangJoinMember(gangid,playerid)
 			PlayerGangid[playerid] = gangid;
 			set(PlayerGangName[playerid],Gangs[gangid][gang_name]);
 			GangMemberLogin(gangid,playerid);
+			SetPlayerColor(playerid,PlayerGangColour(playerid));
 			return 1;
 		}
 	}
@@ -550,7 +551,6 @@ stock GangRemoveMember(gangid,kickplayername[])
 			set(GangMemberInfo[memberid][member_name],nullstr);
 			format(string,sizeof(string),lang_texts[6][70],kickplayername);
 			SendGangMessage(gangid,string,COLOUR_GANG);
-			SetPlayerColor(playerid,PlayerGangColour(playerid));
 			format(string,sizeof(string),"%s has been removed from gang '%s'",kickplayername,Gangs[gangid][gang_name]);
 			WriteLog(GameLog,string);
 			if(playerid != INVALID_PLAYER_ID)
@@ -560,6 +560,7 @@ stock GangRemoveMember(gangid,kickplayername[])
 				PlayerGangid[playerid] = 0;
 				set(PlayerGangName[playerid],nullstr);
 			}
+			SetPlayerColor(playerid,PlayerGangColour(playerid));
 			if(GangOnlineCount(gangid) == 0) GangUnload(gangid);
 			return 1;
 		}
@@ -616,6 +617,7 @@ stock GangCreate(leaderid,gangname[],gangcolour)
 	set(PlayerGangName[leaderid],gangname);
 	PlayerGangid[leaderid] = gangid;
 	GangSave(gangid);
+	SetPlayerColor(leaderid,PlayerGangColour(leaderid));
 	return gangid;
 }
 
@@ -636,6 +638,7 @@ stock GangCleanup(gangid)
 		}
 	}
 	if(GangOnlineCount(gangid) == 0) GangUnload(gangid);
+	return;
 }
 
 stock GangSaveAll()
@@ -653,10 +656,7 @@ stock GangSaveAll()
 stock GangMemberLogout(playerid,gangid)
 {
 	GangInvite[playerid] = 0;
-	if (gangid == 0)
-	{
-		return;
-	}
+	if(gangid == 0) return;
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
 		new memberid = GangMembers[gangid][gangmember];
@@ -674,6 +674,8 @@ stock GangMemberLogout(playerid,gangid)
 		format(string, sizeof(string),lang_texts[6][74],oGetPlayerName(playerid));
 		SendGangMessage(gangid,string,COLOUR_GANG);
 	}
+	GangSave(gangid);
+	return;
 }
 
 stock GangSave(gangid)
@@ -687,10 +689,10 @@ stock GangSave(gangid)
 
 stock gang_save_db_ini(gangid)
 {
-	new filename[MAX_STRING],string[MAX_STRING];
+	new filename[MAX_STRING],file,string[MAX_STRING];
 	format(filename,sizeof(filename),"%s%s.txt",GangDB,Gangs[gangid][gang_name]);
-	if(!ini_Exist(filename)) {new File:fhnd = fopen(filename,io_write);fclose(fhnd);}
-	new file = ini_Open(filename);
+	if(!ini_Exist(filename)) file = ini_Create(filename);
+	else file = ini_Open(filename);
 	ini_Set(file,"Name",Gangs[gangid][gang_name]);
 	ini_SetInt(file,"Colour",Gangs[gangid][gang_colour]);
 	ini_SetInt(file,"Kills",Gangs[gangid][gang_kills]);

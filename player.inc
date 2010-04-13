@@ -54,8 +54,7 @@ enum PWeap {
 new PlayerWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap]; // 0 - weaponid, 1 - ammo
 new PlayerTempWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap];
 
-//DROP WEAPONS
-new WDropTimer=10000;
+
 new PlayerCurrentKills[MAX_PLAYERS];
 new PlayerGangid[MAX_PLAYERS];
 new PlayerGangName[MAX_PLAYERS][MAX_NAME];
@@ -524,7 +523,6 @@ stock player_OnPlayerDeath(playerid,killerid,reason)
 	#pragma unused reason
 	Player[playerid][Deaths]++;
 	PlayerCurrentKills[playerid] = 0;
-	if(!IsPlayerInAnyDM(playerid)){DropPlayerWeapons(playerid);}
 	if(oGetPlayerHealth(killerid) > 100) KickPlayer(killerid,"Invalid health amount. (cheat?)");
 	oGivePlayerMoney(playerid,-100,0);
 	if((Player[playerid][XP] - (Player[playerid][XP] / 30)) > 0)
@@ -1263,55 +1261,6 @@ stock GetWeaponBulletsDown(weaponid)
 stock DeletePickup(pickupid)
 {
 	DestroyStreamPickup(pickupid);
-	return 1;
-}
-
-stock DropPlayerWeapons(playerid)
-{
-	new pickupid,playerweapons[13][2];
-	new Float:x,Float:y,Float:z;
-	GetPlayerPos(playerid, x, y, z);
-//	new drpick = random(12)+1;
-	for(new i=0;i<13;i++)
-	{
-    	GetPlayerWeaponData(playerid, i, playerweapons[i][0], playerweapons[i][1]);
-    	new model=GetWeaponModel(playerweapons[i][0]);
-//		new dbw=GetWeaponBulletsDown(playerweapons[i][0]);
-        new Float:X=x+(random(4)-random(4));
-        new Float:Y=y+(random(4)-random(4));
-        if(playerweapons[i][1]!=0)
-		{
-			if(model!=-1 && model!=359 && model!=360 && model!=362)
-			{
-				pickupid = CreateStreamPickup(model, 3, X, Y, z);
-				SetTimerEx("DeletePickup", WDropTimer+(i*500), false, "d", pickupid);
-				pickupid++;
-			}
-		}
- /*       if(playerweapons[i][1]!=0)
-		{
-			if(model!=-1 && model!=359 && model!=360 && model!=362)
-			{
-				pickupid = CreateStreamPickup(model, 3, X, Y, z);
-				SetTimerEx("DeletePickup", WDropTimer+(i*500), false, "d", pickupid);
-				pickupid++;
-				if((PlayerWeapons[playerid][i][pbullets] < dbw) && (PlayerWeapons[playerid][i][pbullets] > 0) )
-				{
-					PlayerWeapons[playerid][i][pbullets] = 0;
-					PlayerWeapons[playerid][i][pwid] = 0;
-				}
-				if (PlayerWeapons[playerid][i][pbullets] >= dbw) PlayerWeapons[playerid][i][pbullets] -= dbw;
-				if (PlayerWeapons[playerid][i][pwid]==46)
-				{
-					PlayerWeapons[playerid][i][pwid]=0;
-					PlayerWeapons[playerid][i][pbullets] = 0;
-				}
-				drpick--;
-				if(drpick==0) return 1;
-			}
-		}*/
-//		CreateWeaponDBString(playerid);
-	}
 	return 1;
 }
 
