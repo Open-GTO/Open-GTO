@@ -181,7 +181,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		}
-		if(!IsPlayerConnected(receiverid) || IsPlayerNPC(receiverid) || IsPlayerInAnyDM(receiverid) || IsPlayerInAnyRace(receiverid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
+		if(!IsPlayerConnected(receiverid) || IsPlayerNPC(receiverid) || IsPlayerInAnyDM(receiverid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 		new Float:X,Float:Y,Float:Z,Float:Angle;
 		if(IsPlayerInAnyVehicle(receiverid)) 
 		{
