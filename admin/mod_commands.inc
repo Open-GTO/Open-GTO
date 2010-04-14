@@ -275,7 +275,7 @@ stock mod_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger)
 	#pragma unused ispassenger
 	for(new id=0;id<MAX_PLAYERS;id++)
 	{
-		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[playerid][SpecID] == playerid)	PlayerSpectateVehicle(id,vehicleid);
+		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[id][SpecID] == playerid) PlayerSpectateVehicle(id,vehicleid);
 	}
 	return 1;
 }
@@ -285,7 +285,7 @@ stock mod_OnPlayerExitVehicle(playerid,vehicleid)
 	#pragma unused vehicleid
 	for(new id=0;id<MAX_PLAYERS;id++)
 	{
-		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[playerid][SpecID] == playerid)	PlayerSpectatePlayer(id,playerid);
+		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[id][SpecID] == playerid) PlayerSpectatePlayer(id,playerid);
 	}
 	return 1;
 }
