@@ -244,7 +244,76 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessageToAll(COLOUR_BLUE,string);
 		return 1;
 	}
+	if(!strcmp(cmd,"/spec",true))
+	{
+		new specid = strval(strcharsplit(text, idx,strchar(" ")));
+		if(Player[playerid][Spectating]) TogglePlayerSpectating(playerid,0);
+		if(specid < 0 || specid > MAX_PLAYERS || !IsPlayerConnected(specid))
+		{
+			SendClientMessage(playerid,COLOUR_RED,"Вы не можете следить за несуществующими игроками");
+			return 1;
+		}
+		Player[playerid][SpecID] = specid;
+		Player[playerid][Spectating] = true;
+		TogglePlayerSpectating(playerid,1);
+		SendClientMessage(playerid,COLOUR_BLUE,"Чтобы выключить спектатор, введите /spec-off");
+		if(IsPlayerInAnyVehicle(specid)) PlayerSpectateVehicle(playerid,GetPlayerVehicleID(specid));
+		else PlayerSpectatePlayer(playerid,specid);
+		return 1;
+	}
+	if(!strcmp(cmd,"/spec-off",true))
+	{
+		if(!Player[playerid][Spectating]) return 1;
+		else TogglePlayerSpectating(playerid,0);
+		return 1;
+	}
 	return 0;
+}
+
+stock mod_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger)
+{	
+	#pragma unused ispassenger
+	for(new id=0;id<MAX_PLAYERS;id++)
+	{
+		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[playerid][SpecID] == playerid)	PlayerSpectateVehicle(id,vehicleid);
+	}
+	return 1;
+}
+
+stock mod_OnPlayerExitVehicle(playerid,vehicleid)
+{
+	#pragma unused vehicleid
+	for(new id=0;id<MAX_PLAYERS;id++)
+	{
+		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[playerid][SpecID] == playerid)	PlayerSpectatePlayer(id,playerid);
+	}
+	return 1;
+}
+
+stock mod_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
+{
+	#pragma unused oldinteriorid
+	for(new id=0;id<MAX_PLAYERS;id++)
+	{
+		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[playerid][SpecID] == playerid)	SetPlayerInterior(id,newinteriorid);
+	}
+	return 1;
+}
+
+stock mod_OnPlayerDeath(playerid,killerid,reason)
+{
+	#pragma unused reason
+	#pragma unused killerid
+	for(new id=0;id<MAX_PLAYERS;id++) 
+	{
+		if(IsPlayerConnected(id) && Player[id][SpecID] == playerid  && Player[id][Spectating]) 
+		{ 
+			TogglePlayerSpectating(id,false); 
+			Player[id][Spectating] = false; 
+			Player[id][SpecID] = INVALID_PLAYER_ID; 
+		}
+	}
+	return 1;
 }
 
 stock ModSpecial_OnPlayerText(playerid,text[])
