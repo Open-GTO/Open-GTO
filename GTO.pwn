@@ -435,7 +435,25 @@ public OnPlayerStateChange(playerid,newstate,oldstate)
 	return 1;
 }
 
-public OnVehicleDamageStatusUpdate(vehicleid, playerid)
+public OnPlayerExitVehicle(playerid,vehicleid)
+{
+	mod_OnPlayerExitVehicle(playerid,vehicleid);
+	return 1;
+}
+
+public OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
+{
+    mod_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid);
+    return 1;
+}
+
+public OnPlayerEnterVehicle(playerid,vehicleid,ispassenger)
+{
+	mod_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger);
+	return 1;
+}
+
+public OnVehicleDamageStatusUpdate(vehicleid,playerid)
 {
 	return 1;
 }
