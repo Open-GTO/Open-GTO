@@ -41,7 +41,8 @@ enum PlayerInfo {
 	Name[20],
 	Last_Name[20],
 	bool:Spectating,
-	SpecID
+	SpecID,
+	bool:VIP,
 }
 
 new Player[MAX_PLAYERS][PlayerInfo];
