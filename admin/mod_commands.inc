@@ -266,10 +266,10 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(!Player[playerid][Spectating]) return 1;
 		else 
 		{
+			SetPlayerInterior(playerid,0);
 			TogglePlayerSpectating(playerid,0);
 			Player[playerid][SpecID] = INVALID_PLAYER_ID;
 			Player[playerid][Spectating] = false;
-			SetPlayerInterior(playerid,0);
 		}
 		return 1;
 	}
