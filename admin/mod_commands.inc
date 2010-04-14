@@ -264,7 +264,12 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/spec-off",true))
 	{
 		if(!Player[playerid][Spectating]) return 1;
-		else TogglePlayerSpectating(playerid,0);
+		else 
+		{
+			TogglePlayerSpectating(playerid,0);
+			Player[playerid][SpecID] = INVALID_PLAYER_ID;
+			Player[playerid][Spectating] = false;
+		}
 		return 1;
 	}
 	return 0;
