@@ -41,6 +41,7 @@ SA-MP Versions:	0.3a
 #include "protections\antihealthhack"
 #include "protections\antimoneyhack"
 #include "protections\antihightping"
+#include "protections\antivehiclevip"
 //#include "testserver"
 #tryinclude "click"
 #tryinclude "FightStyle"
@@ -75,7 +76,7 @@ SA-MP Versions:	0.3a
 #tryinclude "deathmatches\dm_poolday"		// Deathmatch - fy_poolday
 #tryinclude "deathmatches\dm_usnavy"		// Deathmatch - The US Navy
 
-main() 
+main()
 {	// CREDITS NOT DELETE !!!!!!!!!!!!!!!!!
 	print(" ");
 	print(" ");
@@ -151,7 +152,7 @@ public OnGameModeInit()
 	#tryinclude "misc\pickups"
 	#tryinclude "misc\objects"
 	printf("SERVER: New Objects and Pickups init");
-	
+
 	new hour,minute,second;
 	gettime(hour,minute,second);
 	WorldTime = hour;
@@ -450,6 +451,7 @@ public OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
 public OnPlayerEnterVehicle(playerid,vehicleid,ispassenger)
 {
 	mod_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger);
+	protection_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger);
 	return 1;
 }
 
