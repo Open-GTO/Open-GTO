@@ -5,12 +5,16 @@
 #include "player"
 #include "vehicles"
 
-stock protection_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger)
+stock protection_OnPlayerStateChange(playerid,newstate,oldstate)
 {
-	#pragma unused ispassenger
-	if(!Player[playerid][VIP])
+	#pragma unused oldstate
+	if(newstate = PLAYER_STATE_DRIVER)
 	{
-		if(vehicleid == vipvehic[0] || vehicleid == vipvehic[1] || vehicleid == vipvehic[2] || vehicleid == vipvehic[3] || vehicleid == vipvehic[4]) RemovePlayerFromVehicle(playerid);
+		new vehicleid = GetPlayerVehicleID(playerid);
+		if(!Player[playerid][VIP])
+		{
+			if(vehicleid == vipvehic[0] || vehicleid == vipvehic[1] || vehicleid == vipvehic[2] || vehicleid == vipvehic[3] || vehicleid == vipvehic[4]) RemovePlayerFromVehicle(playerid);
+		}
 	}
 	return 1;
 }
