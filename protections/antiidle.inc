@@ -85,6 +85,7 @@ stock AntiIdle()
 
 stock IsPlayerInAnyKach(playerid)
 {
+	new Float:X,Float:Y,Float:Z;
 	GetPlayerPos(playerid,X,Y,Z);
 	for(new id=0;id<MAX_GROUNDHOLD;id++)
 	{
