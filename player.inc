@@ -38,11 +38,11 @@ enum PlayerInfo {
 	MuteTime,	     // Time for Mute
 	ClickedPlayerid, // clicked player
 	FightStyle,
-	Name[20],
-	Last_Name[20],
 	bool:Spectating,
 	SpecID,
 	bool:VIP,
+	VIPDate[15],
+	Last_Name[20]
 }
 
 new Player[MAX_PLAYERS][PlayerInfo];
@@ -1031,6 +1031,7 @@ stock player_save_db_ini(playerid)
 	ini_SetInt(file,"Status",Player[playerid][Status]);
 	ini_Set(file,"Weapons",CreateWeaponDBString(playerid));
 	ini_SetInt(file,"SkinModel",Player[playerid][SkinModel]);
+	ini_Set(file,"VIP",Player[playerid][VIPDate]);
 	ini_Close(file);
 	return 1;
 }
@@ -1093,10 +1094,35 @@ stock player_load_db_ini(playerid)
 	ini_Get(file,"Weapons",wepstr);
 	SetWeaponsFromDBString(playerid,wepstr);
 	ini_GetInt(file,"SkinModel",Player[playerid][SkinModel]);
+	ini_Get(file,"VIP",Player[playerid][VIPDate]);
+	if(VIPCheck(Player[playerid][VIPDate])) Player[playerid][VIP] = true;
+	else Player[playerid][VIP] = false;
 	UpdatePlayerScore(playerid);
 	set(Player[playerid][Last_Name],oGetPlayerName(playerid));
 	ini_Close(file);
 	return 1;
+}
+
+stock VIPCheck(date[])
+{
+	new h[5],day,month,year,day1,month1,year1;
+	strmid(h,date,0,2); 
+	day=strval(h);
+	strmid(h,date,3,5); 
+	month=strval(h);
+	strmid(h,date,6,10); 
+	year=strval(h);
+	getdate(year1,month1,day1);
+	if(year > year1) return true;
+	else if(year == year1)
+	{
+		if(month > month1) return true;
+		else if(month == month1)
+		{
+			if(day > day1 || day == day1) return true;
+		}
+	}
+	return false;
 }
 
 stock JailPlayer(playerid)
