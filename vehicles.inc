@@ -1175,15 +1175,20 @@ new VehicleLevelSpawns[][VehicleSpawnInfo] = {
 
 };
 //------------------------------------------------------------------------------
-new ActiveVehicles[MAX_VEHICLE_SPAWNS];
+new ActiveVehicles[MAX_VEHICLE_SPAWNS],vipvehic[5];
 
 stock LoadVehicles()
 {
+	vipvehic[0] = AddStaticVehicle(447,230.772,1953.617,17.301,0.0,-1,-1);
+	vipvehic[1] = AddStaticVehicle(520,245.733,1968.859,17.301,89.0,-1,-1);
+	vipvehic[2] = AddStaticVehicle(520,245.406,1982.253,17.301,89.0,-1,-1);
+	vipvehic[3] = AddStaticVehicle(432,207.934,1974.734,17.301,270.0,-1,-1);
+	vipvehic[4] = AddStaticVehicle(432,208.515,1987.570,17.301,270.0,-1,-1);
 	for(new i;i<sizeof(VehicleModelSpawns);i++)
 	{
 		if(VehicleModelSpawns[i][vspawn_model] != 0)
 		{
-			CreateVehicle(VehicleModelSpawns[i][vspawn_model],VehicleModelSpawns[i][vspawn_x],VehicleModelSpawns[i][vspawn_y],VehicleModelSpawns[i][vspawn_z],VehicleModelSpawns[i][vspawn_heading],VehicleModelSpawns[i][vspawn_colour1],VehicleModelSpawns[i][vspawn_colour2],never);
+			AddStaticVehicleEx(VehicleModelSpawns[i][vspawn_model],VehicleModelSpawns[i][vspawn_x],VehicleModelSpawns[i][vspawn_y],VehicleModelSpawns[i][vspawn_z],VehicleModelSpawns[i][vspawn_heading],VehicleModelSpawns[i][vspawn_colour1],VehicleModelSpawns[i][vspawn_colour2],never);
 		}
 	}
 	for (new i=1;i<sizeof(VehicleLevelSpawns);i++)
@@ -1194,7 +1199,7 @@ stock LoadVehicles()
 		    new vehiclemodel = GetRndVModelByLevel(vspawnlevel);
 		    if((vehiclemodel >= VEHICLES_START) && (vehiclemodel <= (VEHICLES_START+VEHICLES_SIZE)))
 		    {
-				CreateVehicle(vehiclemodel,VehicleLevelSpawns[i][vspawn_x],VehicleLevelSpawns[i][vspawn_y],VehicleLevelSpawns[i][vspawn_z],VehicleLevelSpawns[i][vspawn_heading],VehicleLevelSpawns[i][vspawn_colour1],VehicleLevelSpawns[i][vspawn_colour2],never);
+				AddStaticVehicleEx(vehiclemodel,VehicleLevelSpawns[i][vspawn_x],VehicleLevelSpawns[i][vspawn_y],VehicleLevelSpawns[i][vspawn_z],VehicleLevelSpawns[i][vspawn_heading],VehicleLevelSpawns[i][vspawn_colour1],VehicleLevelSpawns[i][vspawn_colour2],never);
 			}
 		}
 	}
@@ -1275,7 +1280,7 @@ stock GetVehicleSpeed(playerid)
 
 stock vehicles_OnPlayerCommandText(playerid, cmdtext[])
 {
-	if(!strcmp(cmdtext, "/carlock", true)) 
+	if(!strcmp(cmdtext,"/carlock",true)) 
 	{
 		if(!IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid,COLOUR_RED, lang_texts[5][24]);
 		new newstate,pv = GetPlayerVehicleID(playerid);
@@ -1298,7 +1303,7 @@ stock vehicles_OnPlayerCommandText(playerid, cmdtext[])
 		}
 		return 1;
 	}
-	if(!strcmp(cmdtext, "/carunlock", true))
+	if(!strcmp(cmdtext,"/carunlock",true))
 	{
 		if(!IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid,COLOUR_RED, lang_texts[5][24]);
 		new pv = GetPlayerVehicleID(playerid);
