@@ -227,6 +227,15 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		fremove(string);
 		return 1;
 	}
-
+	if(!strcmp(cmd,"/piss",true))
+	{
+		SetPlayerSpecialAction(playerid,SPECIAL_ACTION_DUCK);
+		return 1;
+	}
+	if(!strcmp(cmd,"/smoke",true))
+	{
+		SetPlayerSpecialAction(playerid,SPECIAL_ACTION_SMOKE_CIGGY);
+		return 1;
+	}
 	return 0;
 }
