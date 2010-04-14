@@ -13,6 +13,7 @@
 
 #include "base"
 #include "player"
+#include "groundhold"
 
 new AntiIdleEnabled = 1;
 new MaxIdle = 5;
@@ -52,7 +53,7 @@ stock AntiIdle()
     new Float:x,Float:y,Float:z,string[MAX_STRING];
     for(new playerid=0; playerid<MAX_PLAYERS; playerid++)
 	{
-        if(IsPlayerConnected(playerid) && !IsPlayerNPC(playerid) && !IsPlayerAdmin(playerid))
+        if(IsPlayerConnected(playerid) && !IsPlayerNPC(playerid) && !IsPlayerAdmin(playerid) && IsPlayerInAnyKach(playerid))
 		{
             GetPlayerPos(playerid, x, y, z);
             if(x == playerIdlePos[playerid][Coord_X] && y == playerIdlePos[playerid][Coord_Y] && z == playerIdlePos[playerid][Coord_Z])
@@ -80,4 +81,14 @@ stock AntiIdle()
             playerIdlePos[playerid][Coord_Z] = z;
    		}
    	}
+}
+
+stock IsPlayerInAnyKach(playerid)
+{
+	GetPlayerPos(playerid,X,Y,Z);
+	for(new id=0;id<MAX_GROUNDHOLD;id++)
+	{
+		if(IsPlayerInRangeOfPoint(playerid,Groundholds[id][gh_dist],Groundholds[id][gh_x],Groundholds[id][gh_y],Groundholds[id][gh_z])) return true;
+	}
+	return false;
 }
