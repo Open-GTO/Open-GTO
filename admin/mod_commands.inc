@@ -248,7 +248,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		new specid = strval(strcharsplit(text, idx,strchar(" ")));
 		if(Player[playerid][Spectating]) TogglePlayerSpectating(playerid,0);
-		if(specid < 0 || specid > MAX_PLAYERS || !IsPlayerConnected(specid))
+		if(specid < 0 || specid > MAX_PLAYERS || !IsPlayerConnected(specid) || specid == playerid)
 		{
 			SendClientMessage(playerid,COLOUR_RED,"¬ы не можете следить за несуществующими игроками");
 			return 1;
@@ -269,6 +269,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 			TogglePlayerSpectating(playerid,0);
 			Player[playerid][SpecID] = INVALID_PLAYER_ID;
 			Player[playerid][Spectating] = false;
+			SetPlayerInterior(playerid,0);
 		}
 		return 1;
 	}
@@ -300,7 +301,7 @@ stock mod_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
 	#pragma unused oldinteriorid
 	for(new id=0;id<MAX_PLAYERS;id++)
 	{
-		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[playerid][SpecID] == playerid)	SetPlayerInterior(id,newinteriorid);
+		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[id][SpecID] == playerid)	SetPlayerInterior(id,newinteriorid);
 	}
 	return 1;
 }
