@@ -382,6 +382,7 @@ stock GetRndPlayerSpawnByLevel(level)
 
 stock player_OnPlayerSpawn(playerid)
 {
+	if(IsPlayerNPC(playerid)) return 1;
 	new GH = ganghouse(playerid);
 	SpawnTime[playerid] = 0;
 	SetPlayerInterior(playerid,0);
@@ -429,6 +430,7 @@ stock player_OnPlayerSpawn(playerid)
 		case 3:SetPlayerFightingStyle(playerid, FIGHT_STYLE_KNEEHEAD);
 		case 4:SetPlayerFightingStyle(playerid, FIGHT_STYLE_GRABKICK);
 	}
+	return 1;
 }
 
 stock player_ResetStats(playerid)
