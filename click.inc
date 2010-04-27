@@ -7,6 +7,8 @@
 #define ClickDialogResp 17
 #define AdminDialogid 18
 
+#define MAX_SEND_SYMBOLS 64
+
 forward ClickPlayer(playerid, clickedplayerid);
 forward PlayerClickResponse(playerid,dialogid,response,listitem,inputtext[]);
 new ListResponseType[MAX_PLAYERS];
@@ -280,10 +282,15 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	{
 		if(!response) return 1;
 		if(strlen(inputtext) == 0) return 1;
-		if(strlen(inputtext) > 128) return SendClientMessage(playerid,COLOUR_MISC,lang_texts[12][92]);
+		if(strlen(inputtext) > MAX_SEND_SYMBOLS)
+		{
+			new string[MAX_STRING];
+			format(string,sizeof(string),lang_texts[12][92],MAX_SEND_SYMBOLS);
+			return SendClientMessage(playerid,COLOUR_MISC,string);
+		}
 		if(ListResponseType[playerid] == 0)
 		{
-			new giveplayer[MAX_PLAYER_NAME],sendername[MAX_PLAYER_NAME],string[256];
+			new giveplayer[MAX_PLAYER_NAME],sendername[MAX_PLAYER_NAME],string[MAX_STRING];
 			new moneys = strval(inputtext);
 			GetPlayerName(Player[playerid][ClickedPlayerid],giveplayer,sizeof(giveplayer));
 			GetPlayerName(playerid,sendername,sizeof(sendername));
