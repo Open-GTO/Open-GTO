@@ -448,24 +448,3 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	}
 	return 0;
 }
-
-stock BanCheck(playerid)
-{
-    new player[MAX_PLAYER_NAME],string[MAX_STRING],filestr[MAX_STRING];
-    GetPlayerName(playerid,player,sizeof player);
-	format(string,sizeof(string),"GTO/Bans/Names/%s.txt",player);
-	format(player,sizeof(player),"Banned");
-	new File:file = fopen(string,io_read);
-	if(file)
-	{
-	    while(fread(file,filestr,sizeof(filestr)))
-	    {
-	    	if(strfind(filestr,"Banned",true) != -1)
-	    	{
-	    	    SendClientMessage(playerid,red,"Xpaœ: Ou caaaiai ia na?aa?a NOOEA!");
-	    	    return Kick(playerid);
-	    	}
-		}
-	}
-	return true;
-}

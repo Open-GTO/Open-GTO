@@ -161,7 +161,7 @@ stock account_login_db_dini(playerid,password[])
 	new dbpassword[MAX_NAME];
 	if(!ini_Exist(filename)) return 1;
 	new file = ini_Open(filename);
-	ini_Get(file,"Password",dbpassword);
+	ini_Get(file,"Password",dbpassword,MAX_STRING);
 	if(!equal(password,dbpassword,false))
 	{
 		new logstring[MAX_STRING];

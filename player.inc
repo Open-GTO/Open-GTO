@@ -42,7 +42,7 @@ enum PlayerInfo {
 	SpecID,
 	bool:VIP,
 	VIPDate[15],
-	Last_Name[20]
+	Last_Name[MAX_PLAYER_NAME]
 }
 
 new Player[MAX_PLAYERS][PlayerInfo];
@@ -540,7 +540,7 @@ stock player_OnPlayerDeath(playerid,killerid,reason)
 		}
 	}
 	else SetPlayerXP(playerid,0);
-	mod_OnPlayerDeath(playerid,killerid,reason);
+	modfunc_OnPlayerDeath(playerid,killerid,reason);
 }
 
 stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++

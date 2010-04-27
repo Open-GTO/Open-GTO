@@ -27,6 +27,8 @@ SA-MP Versions:	0.3a
 #include "bank"								// bank money to keep it on death
 #include "payday" 							// pay players money based on level
 #include "groundhold"						// hold ground to gain money, pirate ship, etc
+#include "admin\admin_func"
+#include "admin\mod_func"
 #include "admin\admin_commands"				// admin commands
 #include "admin\admin_commands_race"		// admin commands for race creation/minipulation
 #include "admin\admin_commands_dm"			// admin commands for deathmatch creation/minipulation
@@ -41,7 +43,7 @@ SA-MP Versions:	0.3a
 #include "protections\antihealthhack"
 #include "protections\antimoneyhack"
 #include "protections\antihightping"
-#include "protections\antivehiclevip"
+#include "protections\antivehicle"
 //#include "testserver"
 #tryinclude "click"
 #tryinclude "FightStyle"
@@ -369,14 +371,14 @@ public OnPlayerText(playerid, text[])
 		}
 		case '@':
 		{
-			AdminSpecial_OnPlayerText(playerid,text);
+			adminfunc_OnPlayerText(playerid,text);
 			format(string,sizeof(string), "Player: %s[%d]: <ADMIN TALK>:   %s",oGetPlayerName(playerid),playerid,text);
 			WriteLog(ChatLog,string);
 			return 0;
 		}
 		case '#':
 		{
-			ModSpecial_OnPlayerText(playerid,text);
+			modfunc_OnPlayerText(playerid,text);
 			format(string,sizeof(string), "Player: %s[%d]: <MODERATOR TALK>:   %s",oGetPlayerName(playerid),playerid,text);
 			WriteLog(ChatLog,string);
 			return 0;
@@ -433,25 +435,25 @@ public OnPlayerExitedMenu(playerid)
 public OnPlayerStateChange(playerid,newstate,oldstate)
 {
 	mission_OnPlayerStateChange(playerid,newstate,oldstate);
+	antivehicle_OnPlayerStateChange(playerid,newstate,oldstate);
 	return 1;
 }
 
 public OnPlayerExitVehicle(playerid,vehicleid)
 {
-	mod_OnPlayerExitVehicle(playerid,vehicleid);
+	modfunc_OnPlayerExitVehicle(playerid,vehicleid);
 	return 1;
 }
 
 public OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
 {
-    mod_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid);
+    modfunc_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid);
     return 1;
 }
 
 public OnPlayerEnterVehicle(playerid,vehicleid,ispassenger)
 {
-	mod_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger);
-	protection_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger);
+	modfunc_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger);
 	return 1;
 }
 
