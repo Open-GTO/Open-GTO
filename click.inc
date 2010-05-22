@@ -16,7 +16,7 @@ new ListResponseType[MAX_PLAYERS];
 stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
 {
 	Player[playerid][ClickedPlayerid] = clickedplayerid;
-	new listitems[MAX_STRING];
+	new listitems[256]; // не менять!
 	listitems = "Отправить денег\nЛичное сообщение\nЖалоба";
 	if(IsPlayerMod(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nKick\nMute\nUnMute\nJail\nUnJail", sizeof(listitems));
 	if(IsPlayerAdm(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nИнфо\nУбить\nTele to\nTele here\nSet health\nSet arm\nGive XP\nДать денег\nFreeze\nUnfreeze", sizeof(listitems));
