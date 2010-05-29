@@ -13,11 +13,8 @@
 #include "base"
 #include "utils\gtoutils"
 #include "account"
-#include "weapons"
 
 #define MAX_MONEY 50000000
-
-new PlayerDB[MAX_STRING] = "GTO/Player/";
 
 enum PlayerInfo {
 	IsActive,      // is player online
@@ -38,6 +35,7 @@ enum PlayerInfo {
 	MuteTime,	     // Time for Mute
 	ClickedPlayerid, // clicked player
 	FightStyle,
+	FightStyleUsed,
 	bool:Spectating,
 	SpecID,
 	bool:VIP,
@@ -46,6 +44,16 @@ enum PlayerInfo {
 }
 
 new Player[MAX_PLAYERS][PlayerInfo];
+
+#define GetPlayerTotalMoney(%1) Player[%1][Money]+Player[%1][Bank]
+#define oGetPlayerMoney(%1) Player[%1][Money]
+#define UpdatePlayerScore(%1) SetPlayerScore(%1,Player[%1][Level])
+#define GetPlayerGangName(%1) Gang[PlayerGangid[%1]][gang_name]
+#define GetPlayerLevel(%1) Player[%1][Level]
+#define GetPlayerXP(%1) Player[%1][XP]
+#define SetPlayerXP(%1,%2) Player[%1][XP] = %2
+
+#include "weapons"
 
 new PlayerSkin[MAX_PLAYERS];
 
@@ -57,6 +65,8 @@ enum PWeap {
 new PlayerWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap]; // 0 - weaponid, 1 - ammo
 new PlayerTempWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap];
 
+#define PLAYER_WEAPON_SKILLS 10
+new PlayerWeaponsSkills[MAX_PLAYERS][PLAYER_WEAPON_SKILLS];
 
 new PlayerCurrentKills[MAX_PLAYERS];
 new PlayerGangid[MAX_PLAYERS];
@@ -181,30 +191,30 @@ new Float:LVDMPlayerSpawns[23][CoordInfo] = {
 stock PlayerLoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 1;
-	new file = ini_Open(ConfigDB);
-	ini_Get(file,"Player_DB",PlayerDB);
-	ini_GetInt(file,"Player_Start_Money",PlayerStartMoney);
-	ini_GetInt(file,"Player_Start_Weapon1",PlayerStartWeapon1);
-	ini_GetInt(file,"Player_Start_Weapon2",PlayerStartWeapon2);
-	ini_GetInt(file,"Player_Start_Weapon3",PlayerStartWeapon3);
-	ini_GetInt(file,"Player_Jailed",PlayerJailed);
-	ini_GetInt(file,"Player_Muted",PlayerMuted);
-	ini_Close(file);
+	new file_player = ini_Open(ConfigDB);
+	ini_Get(file_player,"Player_DB",PlayerDB);
+	ini_GetInt(file_player,"Player_Start_Money",PlayerStartMoney);
+	ini_GetInt(file_player,"Player_Start_Weapon1",PlayerStartWeapon1);
+	ini_GetInt(file_player,"Player_Start_Weapon2",PlayerStartWeapon2);
+	ini_GetInt(file_player,"Player_Start_Weapon3",PlayerStartWeapon3);
+	ini_GetInt(file_player,"Player_Jailed",PlayerJailed);
+	ini_GetInt(file_player,"Player_Muted",PlayerMuted);
+	ini_Close(file_player);
 	return 1;
 }
 
 stock PlayerSaveConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 1;
-	new file = ini_Open(ConfigDB);
-	ini_Set(file,"Player_DB",PlayerDB);
-	ini_SetInt(file,"Player_Start_Money",PlayerStartMoney);
-	ini_SetInt(file,"Player_Start_Weapon1",PlayerStartWeapon1);
-	ini_SetInt(file,"Player_Start_Weapon2",PlayerStartWeapon2);
-	ini_SetInt(file,"Player_Start_Weapon3",PlayerStartWeapon3);
-	ini_SetInt(file,"Player_Jailed",PlayerJailed);
-	ini_SetInt(file,"Player_Muted",PlayerMuted);
-	ini_Close(file);
+	new file_player = ini_Open(ConfigDB);
+	ini_Set(file_player,"Player_DB",PlayerDB);
+	ini_SetInt(file_player,"Player_Start_Money",PlayerStartMoney);
+	ini_SetInt(file_player,"Player_Start_Weapon1",PlayerStartWeapon1);
+	ini_SetInt(file_player,"Player_Start_Weapon2",PlayerStartWeapon2);
+	ini_SetInt(file_player,"Player_Start_Weapon3",PlayerStartWeapon3);
+	ini_SetInt(file_player,"Player_Jailed",PlayerJailed);
+	ini_SetInt(file_player,"Player_Muted",PlayerMuted);
+	ini_Close(file_player);
 	return 1;
 }
 
@@ -422,14 +432,11 @@ stock player_OnPlayerSpawn(playerid)
 	oSetPlayerMoney(playerid,Player[playerid][Money]);
 	SetPlayerXP(playerid,Player[playerid][XP]);
 	PlayerJustTeleported[playerid]+=5;
-	switch(Player[playerid][FightStyle])
-	{
-		case 0:SetPlayerFightingStyle(playerid, FIGHT_STYLE_NORMAL);
-		case 1:SetPlayerFightingStyle(playerid, FIGHT_STYLE_BOXING);
-		case 2:SetPlayerFightingStyle(playerid, FIGHT_STYLE_KUNGFU);
-		case 3:SetPlayerFightingStyle(playerid, FIGHT_STYLE_KNEEHEAD);
-		case 4:SetPlayerFightingStyle(playerid, FIGHT_STYLE_GRABKICK);
-	}
+
+	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
+		SetPlayerSkillLevel(playerid,i,PlayerWeaponsSkills[playerid][i]);
+	Player[playerid][FightStyleUsed] = Player[playerid][FightStyle];
+	SetPlayerFightingStyle(playerid,Player[playerid][FightStyleUsed]);
 	return 1;
 }
 
@@ -457,7 +464,13 @@ stock player_ResetStats(playerid)
 	Player[playerid][Status] = 0;
 	Player[playerid][Hide] = 0;
 	Player[playerid][SkinModel] = 0;
-	Player[playerid][FightStyle] = 0;
+	Player[playerid][FightStyle] = 4;
+	Player[playerid][FightStyleUsed] = 4;
+	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
+	{
+		PlayerWeaponsSkills[playerid][i] = 0;
+		SetPlayerSkillLevel(playerid,i,0);
+	}
 }
 
 stock IsPlayerRegistered(playerid)
@@ -580,7 +593,10 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 
 	Player[killerid][Kills]++;
 	PlayerCurrentKills[killerid]++;
-	
+
+	new WeaponSkillID = GetWeaponSkillID(reason);
+	SetPlayerSkillLevel(killerid,WeaponSkillID,PlayerWeaponsSkills[killerid][WeaponSkillID] += 1);
+
 	// earn xp
 	new earnedXP = ((1+Player[victimid][Level]) * 75);
 	if (earnedXP > (1+Player[killerid][Level]) * 100)
@@ -620,7 +636,7 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	
 	return;
 }
-
+ 
 stock RegisterQuest(name[])
 {
 	if (QuestCount >= MAX_QUESTS) return INVALID_QUEST_ID;
@@ -672,13 +688,11 @@ stock oIsPlayerInCheckpoint(playerid,Float:cpx,Float:cpy,Float:cpz,dist)
 stock GetXPToLevel(playerid,level)
 {
 	if(!IsPlayerConnected(playerid)) return 0;
-	new xptolevel;
-	if((level <= MAX_LEVEL-1) && (level > Player[playerid][Level]))
+	if((level <= MAX_LEVEL) && (level > Player[playerid][Level]))
 	{
-		xptolevel = LevelList[level][level_xp] - Player[playerid][XP];
+		return (LevelList[level][level_xp] - Player[playerid][XP]);
 	}
-	else xptolevel = 0;
-	return xptolevel;
+	else return 0;
 }
 
 stock CalculatePlayerLevel(playerid)
@@ -690,24 +704,6 @@ stock CalculatePlayerLevel(playerid)
 		if(GetPlayerXP(playerid) >=LevelList[i][level_xp]) level = i;
 	}
 	return level;
-}
-
-stock GetPlayerLevel(playerid)
-{
-	if(!IsPlayerConnected(playerid)) return 0;
-	return Player[playerid][Level];
-}
-
-stock GetPlayerXP(playerid)
-{
-	if(!IsPlayerConnected(playerid)) return 0;
-	return Player[playerid][XP];
-}
-
-stock SetPlayerXP(playerid, xpamount)
-{
-	if (!IsPlayerConnected(playerid)) return 1;
-	return Player[playerid][XP] = xpamount;
 }
 
 stock GivePlayerXP(playerid, xpamount,showtext) // showtext = do we display "You gain %d XP"  to client
@@ -893,21 +889,6 @@ stock oGivePlayerMoney(playerid,money,showtext)
 	return oSetPlayerMoney(playerid,Player[playerid][Money] + money);
 }
 
-stock GetPlayerTotalMoney(playerid)
-{
-	return Player[playerid][Money]+Player[playerid][Bank];
-}
-
-stock oGetPlayerMoney(playerid)
-{
-	return Player[playerid][Money];
-}
-
-stock UpdatePlayerScore(playerid)
-{
-	SetPlayerScore(playerid,Player[playerid][Level]);
-}
-
 stock oGetPlayerName(playerid)
 {
 	new name[MAX_PLAYER_NAME];
@@ -969,10 +950,10 @@ stock CreatePlayer(playerid)
 
 player_create_db_ini(playerid)
 {
-	new filename[MAX_STRING];
-	format(filename,sizeof(filename),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
+	new filename_player[MAX_STRING];
+	format(filename_player,sizeof(filename_player),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
 
-	if(ini_Exist(filename)) return SendClientMessage(playerid,COLOUR_RED, lang_texts[9][30]);
+	if(ini_Exist(filename_player)) return SendClientMessage(playerid,COLOUR_RED, lang_texts[9][30]);
 	player_save_db_ini(playerid);
 	return 1;
 }
@@ -1002,39 +983,59 @@ stock CreateWeaponDBString(playerid)
 	}
 	return wepstr;
 }
+stock SetWeaponsSkillsFromDBString(playerid,dbstring[])
+{
+	new idx;
+	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
+		PlayerWeaponsSkills[playerid][i] = strval(strcharsplit(dbstring,idx,strchar("/")));
+}
+stock CreateWeaponSkillsDBString(playerid)
+{
+	new wepstr[MAX_STRING];
+	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
+	{
+		new temp[MAX_STRING];
+		valstr(temp,PlayerWeaponsSkills[playerid][i]);
+		strins(wepstr,temp,strlen(wepstr));
+		wepstr[strlen(wepstr)] = strchar("/");
+	}
+	return wepstr;
+}
+
 
 stock player_save_db_ini(playerid)
 {
 	if(strlen(oGetPlayerName(playerid)) < 1) return 1;
-	new filename[MAX_STRING];
-	format(filename,sizeof(filename),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
-	new file;
-	if(!ini_Exist(filename)) file = ini_Create(filename);
-	else file = ini_Open(filename);
-	ini_Set(file,"Name",oGetPlayerName(playerid));
-	ini_Set(file,"Gang",PlayerGangName[playerid]);
-	ini_SetInt(file,"Level",Player[playerid][Level]);
-	ini_SetInt(file,"XP",Player[playerid][XP]);
-	ini_SetInt(file,"Money",Player[playerid][Money]);
-	ini_SetInt(file,"BankMoney",Player[playerid][Bank]);
-	ini_SetInt(file,"Deaths",Player[playerid][Deaths]);
-	ini_SetInt(file,"Kills",Player[playerid][Kills]);
-	ini_SetInt(file,"Jailed",Player[playerid][Jailed]);
-	ini_SetInt(file,"Muted",Player[playerid][Muted]);
-	ini_SetInt(file,"JailTime",Player[playerid][JailTime]);
-	ini_SetInt(file,"MuteTime",Player[playerid][MuteTime]);
-	ini_SetInt(file,"FightStyle",Player[playerid][FightStyle]);
+	new filename_player[MAX_STRING];
+	format(filename_player,sizeof(filename_player),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
+	new file_player;
+	if(!ini_Exist(filename_player)) file_player = ini_Create(filename_player);
+	else file_player = ini_Open(filename_player);
+	ini_Set(file_player,"Name",oGetPlayerName(playerid));
+	ini_Set(file_player,"Gang",PlayerGangName[playerid]);
+	ini_SetInt(file_player,"Level",Player[playerid][Level]);
+	ini_SetInt(file_player,"XP",Player[playerid][XP]);
+	ini_SetInt(file_player,"Money",Player[playerid][Money]);
+	ini_SetInt(file_player,"BankMoney",Player[playerid][Bank]);
+	ini_SetInt(file_player,"Deaths",Player[playerid][Deaths]);
+	ini_SetInt(file_player,"Kills",Player[playerid][Kills]);
+	ini_SetInt(file_player,"Jailed",Player[playerid][Jailed]);
+	ini_SetInt(file_player,"Muted",Player[playerid][Muted]);
+	ini_SetInt(file_player,"JailTime",Player[playerid][JailTime]);
+	ini_SetInt(file_player,"MuteTime",Player[playerid][MuteTime]);
+	ini_SetInt(file_player,"FightStyle",Player[playerid][FightStyle]);
 	new Float:x,Float:y,Float:z;
 	GetPlayerPos(playerid,x,y,z);
 	if(z > 900) {x=0;y=0;z=0;}
 	new string[MAX_STRING];
 	format(string,sizeof(string),"%f,%f,%f",x,y,z);
-	ini_Set(file,"Coord",string);
-	ini_SetInt(file,"Status",Player[playerid][Status]);
-	ini_Set(file,"Weapons",CreateWeaponDBString(playerid));
-	ini_SetInt(file,"SkinModel",Player[playerid][SkinModel]);
-	ini_Set(file,"VIP",Player[playerid][VIPDate]);
-	ini_Close(file);
+	ini_Set(file_player,"Coord",string);
+	ini_SetInt(file_player,"Status",Player[playerid][Status]);
+	ini_Set(file_player,"Weapons",CreateWeaponDBString(playerid));
+	ini_Set(file_player,"WeaponsSkills",CreateWeaponSkillsDBString(playerid));
+	ini_SetInt(file_player,"SkinModel",Player[playerid][SkinModel]);
+	ini_Set(file_player,"VIP",Player[playerid][VIPDate]);
+	ini_Close(file_player);
 	return 1;
 }
 
@@ -1050,33 +1051,33 @@ stock PlayerLoadStats(playerid)
 
 stock player_load_db_ini(playerid)
 {
-	new filename[MAX_STRING];
-	format(filename,sizeof(filename),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
-	if(!ini_Exist(filename)) return 1;
-	new file = ini_Open(filename);
-    ini_GetInt(file,"Level",Player[playerid][Level]);
-    ini_GetInt(file,"XP",Player[playerid][XP]);
+	new filename_player[MAX_STRING];
+	format(filename_player,sizeof(filename_player),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
+	if(!ini_Exist(filename_player)) return 1;
+	new file_player = ini_Open(filename_player);
+    ini_GetInt(file_player,"Level",Player[playerid][Level]);
+    ini_GetInt(file_player,"XP",Player[playerid][XP]);
 	new money;
-    ini_GetInt(file,"Money",money);
+    ini_GetInt(file_player,"Money",money);
     oSetPlayerMoney(playerid,money);
-    ini_GetInt(file,"BankMoney",Player[playerid][Bank]);
-    ini_GetInt(file,"Deaths",Player[playerid][Deaths]);
-    ini_GetInt(file,"Kills",Player[playerid][Kills]);
-    ini_GetInt(file,"Jailed",Player[playerid][Jailed]);
-    ini_GetInt(file,"Muted",Player[playerid][Muted]);
-    ini_GetInt(file,"JailTime",Player[playerid][JailTime]);
-    ini_GetInt(file,"MuteTime",Player[playerid][MuteTime]);
-    ini_GetInt(file,"FightStyle",Player[playerid][FightStyle]);
-    ini_GetInt(file,"Level",Player[playerid][Level]);
+    ini_GetInt(file_player,"BankMoney",Player[playerid][Bank]);
+    ini_GetInt(file_player,"Deaths",Player[playerid][Deaths]);
+    ini_GetInt(file_player,"Kills",Player[playerid][Kills]);
+    ini_GetInt(file_player,"Jailed",Player[playerid][Jailed]);
+    ini_GetInt(file_player,"Muted",Player[playerid][Muted]);
+    ini_GetInt(file_player,"JailTime",Player[playerid][JailTime]);
+    ini_GetInt(file_player,"MuteTime",Player[playerid][MuteTime]);
+    ini_GetInt(file_player,"FightStyle",Player[playerid][FightStyle]);
+    ini_GetInt(file_player,"Level",Player[playerid][Level]);
 	new string[MAX_STRING],idx=0;
-	ini_Get(file,"Coords",string);
+	ini_Get(file_player,"Coords",string);
 	PlayerSpawn[playerid][Coord_X] = floatstr(strcharsplit(string,idx,strchar(",")));
 	PlayerSpawn[playerid][Coord_Y] = floatstr(strcharsplit(string,idx,strchar(",")));
 	PlayerSpawn[playerid][Coord_Z] = floatstr(strcharsplit(string,idx,strchar(",")));
-    ini_GetInt(file,"Status",Player[playerid][Status]);
+    ini_GetInt(file_player,"Status",Player[playerid][Status]);
 	SetPlayerFightingStyle(playerid,Player[playerid][FightStyle]);
 	new gangname[MAX_NAME];
-	ini_Get(file,"Gang",gangname);
+	ini_Get(file_player,"Gang",gangname);
 	if(strlen(gangname) > 0)
 	{
 		set(PlayerGangName[playerid],gangname);
@@ -1093,15 +1094,17 @@ stock player_load_db_ini(playerid)
 	else PlayerGangid[playerid] = 0; // no gang
 
 	new wepstr[MAX_STRING];
-	ini_Get(file,"Weapons",wepstr);
+	ini_Get(file_player,"Weapons",wepstr);
 	SetWeaponsFromDBString(playerid,wepstr);
-	ini_GetInt(file,"SkinModel",Player[playerid][SkinModel]);
-	ini_Get(file,"VIP",Player[playerid][VIPDate]);
+	ini_Get(file_player,"WeaponsSkills",wepstr);
+	SetWeaponsSkillsFromDBString(playerid,wepstr);
+	ini_GetInt(file_player,"SkinModel",Player[playerid][SkinModel]);
+	ini_Get(file_player,"VIP",Player[playerid][VIPDate]);
 	if(VIPCheck(Player[playerid][VIPDate])) Player[playerid][VIP] = true;
 	else Player[playerid][VIP] = false;
 	UpdatePlayerScore(playerid);
 	set(Player[playerid][Last_Name],oGetPlayerName(playerid));
-	ini_Close(file);
+	ini_Close(file_player);
 	return 1;
 }
 
@@ -1289,11 +1292,25 @@ stock GetWeaponBulletsDown(weaponid)
 	if(dbw<1 || dbw>500) return 1;
 	return dbw;
 }
+#define DeletePickup(%1) DestroyStreamPickup(%1)
 
-stock DeletePickup(pickupid)
+stock GetWeaponSkillID(weaponid)
 {
-	DestroyStreamPickup(pickupid);
-	return 1;
+	switch(weaponid)
+	{
+		case 22: return WEAPONSKILL_PISTOL;
+		case 23: return WEAPONSKILL_PISTOL_SILENCED;
+		case 24: return WEAPONSKILL_DESERT_EAGLE;
+		case 25: return WEAPONSKILL_SHOTGUN;
+		case 26: return WEAPONSKILL_SAWNOFF_SHOTGUN;
+		case 27: return WEAPONSKILL_SPAS12_SHOTGUN;
+		case 28: return WEAPONSKILL_MICRO_UZI;
+		case 29: return WEAPONSKILL_MP5;
+		case 30: return WEAPONSKILL_AK47;
+		case 31: return WEAPONSKILL_M4;
+		case 34: return WEAPONSKILL_SNIPERRIFLE;
+	}
+	return -1;
 }
 
 stock GetWeaponSlot(weaponid)

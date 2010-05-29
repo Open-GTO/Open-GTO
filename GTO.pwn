@@ -4,7 +4,7 @@ Project Name:	San Andreas: Multiplayer: Grand Theft Online.
 Date Created:		12 August 2006
 Date start edit: 	5 November 2009(by Russian Scripter's)
 
-Current version: GTO 0.6.2 R3
+Current version: GTO 0.6.3
 SA-MP Versions:	0.3a
 */
 #include <a_samp>							// samp
@@ -45,8 +45,8 @@ SA-MP Versions:	0.3a
 #include "protections\antihightping"
 #include "protections\antivehicle"
 //#include "testserver"
-#tryinclude "click"
-#tryinclude "FightStyle"
+#include "click"
+#include "fightstyles"
 // Races
 #tryinclude "races\race_monstertruck"		// Race: Monstertruck Madness
 #tryinclude "races\race_thestrip"			// Race: Burnin Down The Strip. - Just a strait sprint down the strip and back
@@ -114,7 +114,7 @@ public OnGameModeInit()
 	bank_OnGameModeInit();
     groundhold_OnGameModeInit();
 	lang_OnGameModeInit();
-	FightStyle_OnGameModeInit();
+	fights_OnGameModeInit();
     mission_OnGameModeInit();
     antiidle_OnGameModeInit();
     antihightping_OnGameModeInit();
@@ -209,7 +209,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	business_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 	click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
-	FightStyle_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+	fights_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	return 1;
 }
 
@@ -266,7 +266,6 @@ public OnPlayerSpawn(playerid)
 {
 	if(!IsPlayerConnected(playerid)) return 1;
 	SetPlayerSkin(playerid,Player[playerid][SkinModel]);
-	FightStyle_OnPlayerSpawn(playerid);
 	if(Player[playerid][Jailed] == 1)
 	{
 		SetPlayerInterior(playerid,6);
@@ -341,7 +340,6 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	business_OnPlayerCommandText(playerid,cmdtext);
 	housing_OnPlayerCommandText(playerid,cmdtext);
 	vehicles_OnPlayerCommandText(playerid,cmdtext);
-	FightStyle_OnPlayerCommandText(playerid,cmdtext);
 
 	new logstring[MAX_STRING];
 	format(logstring,sizeof(logstring),"Player: %s[%d]: %s",oGetPlayerName(playerid),playerid,cmdtext);
@@ -416,7 +414,7 @@ public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	business_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 	bank_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 	weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
-    FightSty_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+    fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 	return 1;
 }
 

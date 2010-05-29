@@ -17,7 +17,6 @@
 #define AccountRegDialogid 0
 #define AccountLogDialogid 1
 
-new AccountDB[MAX_STRING] = "GTO/Account/";
 new PlayerEmail[MAX_PLAYERS][MAX_NAME];
 new PlayerPassword[MAX_PLAYERS][MAX_NAME];
 new PlayerCreationDate[MAX_PLAYERS];
@@ -27,18 +26,18 @@ new City[MAX_PLAYERS];
 stock AccountLoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 1;
-	new file = ini_Open(ConfigDB);
-	ini_Get(file,"Account_DB",AccountDB);
-	ini_Close(file);
+	new file_account = ini_Open(ConfigDB);
+	ini_Get(file_account,"Account_DB",AccountDB);
+	ini_Close(file_account);
 	return 1;
 }
 
 stock AccountSaveConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 1;
-	new file = ini_Open(ConfigDB);
-	ini_Set(file,"Account_DB",AccountDB);
-	ini_Close(file);
+	new file_account = ini_Open(ConfigDB);
+	ini_Set(file_account,"Account_DB",AccountDB);
+	ini_Close(file_account);
 	return 1;
 }
 
@@ -51,20 +50,20 @@ stock AccountSave(playerid)
 
 stock account_save_db_ini(playerid)
 {
-	new filename[MAX_STRING];
-	format(filename,sizeof(filename),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
-	if(!ini_Exist(filename)) {new File:fhnd = fopen(filename,io_write);fclose(fhnd);}
-	new file = ini_Open(filename);
-	ini_Set(file,"Name",oGetPlayerName(playerid));
-	ini_Set(file,"Password",PlayerPassword[playerid]);
-	ini_Set(file,"Email",PlayerEmail[playerid]);
-	ini_Set(file,"Creation_Date",PlayerCreationDate[playerid]);
+	new filename_account[MAX_STRING];
+	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
+	if(!ini_Exist(filename_account)) {new File:fhnd = fopen(filename_account,io_write);fclose(fhnd);}
+	new file_account = ini_Open(filename_account);
+	ini_Set(file_account,"Name",oGetPlayerName(playerid));
+	ini_Set(file_account,"Password",PlayerPassword[playerid]);
+	ini_Set(file_account,"Email",PlayerEmail[playerid]);
+	ini_Set(file_account,"Creation_Date",PlayerCreationDate[playerid]);
 	new day,month,year,seconds,minutes,hours,temp[MAX_STRING];
 	gettime(hours,minutes,seconds);
 	getdate(year,month,day);
-	format(temp,sizeof(temp),"%d.%02d.%d, %d:%02d",day,month,year,hours,minutes);
-	ini_Set(file,"Last_Login",temp);
-	ini_Close(file);
+	format(temp,sizeof(temp),"%02d.%02d.%d, %02d:%02d",day,month,year,hours,minutes);
+	ini_Set(file_account,"Last_Login",temp);
+	ini_Close(file_account);
 	return 1;
 }
 
@@ -76,19 +75,19 @@ stock account_OnGameModeInit()
 
 stock AccountRegister(playerid,password[])
 {
-	new temp[MAX_STRING],filename[MAX_STRING];
-	format(filename,sizeof(filename),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
-	new file = ini_Create(filename);
-	ini_Set(file,"Name",oGetPlayerName(playerid));
-	ini_Set(file,"Password",password);
-	ini_Set(file,"Email","admin@sa-mp.com");
+	new temp[MAX_STRING],filename_account[MAX_STRING];
+	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
+	new file_account = ini_Create(filename_account);
+	ini_Set(file_account,"Name",oGetPlayerName(playerid));
+	ini_Set(file_account,"Password",password);
+	ini_Set(file_account,"Email","admin@sa-mp.com");
 	new day,month,year,seconds,minutes,hours;
 	gettime(hours,minutes,seconds);
 	getdate(year,month,day);
-	format(temp,sizeof(temp),"%d.%02d.%d, %d:%02d",day,month,year,hours,minutes);
-	ini_Set(file,"Creation_Date",temp);
-	ini_Set(file,"Last_Login",temp);
-	ini_Close(file);
+	format(temp,sizeof(temp),"%02d.%02d.%d, %02d:%02d",day,month,year,hours,minutes);
+	ini_Set(file_account,"Creation_Date",temp);
+	ini_Set(file_account,"Last_Login",temp);
+	ini_Close(file_account);
 	CreatePlayer(playerid);
 	SendClientMessage(playerid,COLOUR_GREEN, lang_texts[1][12]);
 	AccountLogin(playerid,password);
@@ -156,12 +155,12 @@ stock AccountLogin(playerid,password[])
 
 stock account_login_db_dini(playerid,password[])
 {
-	new filename[MAX_STRING],string[MAX_STRING];
-	format(filename,sizeof(filename),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
+	new filename_account[MAX_STRING],string[MAX_STRING];
+	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
 	new dbpassword[MAX_NAME];
-	if(!ini_Exist(filename)) return 1;
-	new file = ini_Open(filename);
-	ini_Get(file,"Password",dbpassword,MAX_STRING);
+	if(!ini_Exist(filename_account)) return 1;
+	new file_account = ini_Open(filename_account);
+	ini_Get(file_account,"Password",dbpassword,MAX_STRING);
 	if(!equal(password,dbpassword,false))
 	{
 		new logstring[MAX_STRING];
@@ -173,15 +172,15 @@ stock account_login_db_dini(playerid,password[])
 		return 0;
 	}
 	PlayerPassword[playerid] = dbpassword;
-	ini_Get(file,"Email",PlayerEmail[playerid]);
-	ini_Get(file,"Creation_Date",PlayerCreationDate[playerid],MAX_STRING);
+	ini_Get(file_account,"Email",PlayerEmail[playerid]);
+	ini_Get(file_account,"Creation_Date",PlayerCreationDate[playerid],MAX_STRING);
 	PlayerRegistered[playerid] = 1;
 	new day,month,year,seconds,minutes,hours;
 	gettime(hours,minutes,seconds);
 	getdate(year,month,day);
-	format(string,sizeof(string),"%d.%02d.%d, %d:%02d",day,month,year,hours,minutes);
-	ini_Set(file,"Last_Login",string);
-	ini_Close(file);
+	format(string,sizeof(string),"%02d.%02d.%d, %02d:%02d",day,month,year,hours,minutes);
+	ini_Set(file_account,"Last_Login",string);
+	ini_Close(file_account);
 	return 1;
 }
 
@@ -214,9 +213,9 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 stock account_OnPlayerConnect(playerid)
 {
 	if(IsPlayerNPC(playerid)) return 1;
-	new filename[MAX_STRING],message[MAX_STRING];
-	format(filename,sizeof(filename),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
-	if(ini_Exist(filename))
+	new filename_account[MAX_STRING],message[MAX_STRING];
+	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
+	if(ini_Exist(filename_account))
 	{
  		format(message,sizeof(message),"Приветствую, %s!\n\nВведите пароль для входа!",oGetPlayerName(playerid));
 	    ShowPlayerDialog(playerid,AccountLogDialogid,DIALOG_STYLE_INPUT,"Вход в аккаунт",message,"Login","Cancel");

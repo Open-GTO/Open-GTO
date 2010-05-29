@@ -408,7 +408,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	if(!strcmp(cmd, "/allowport", true))
 	{
-		new receiverid = strval(strcharsplit(text, idx,strchar(" ")));
+		new receiverid = strval(strcharsplit(text,idx,strchar(" ")));
 		if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
 		{
 			SendPlayerFormattedText(playerid,lang_texts[12][2],0,COLOUR_RED);	// не тот ИД
@@ -426,6 +426,22 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		format(string,sizeof(string), "*** Вы разрешили %s(%d) телепорт по карте", oGetPlayerName(receiverid), receiverid );
 		SendPlayerFormattedText(playerid,string, 0,COLOUR_WHITE);
 		return 1;
+	}
+	if(!strcmp(cmd,"/setvip",true))
+	{//
+		new string[MAX_STRING];
+		new giveid = strval(strcharsplit(text,idx,strchar(" ")));
+		if(giveid < 0 || giveid >= MAX_PLAYERS) 
+			return SendClientMessage(playerid,COLOUR_WHITE,"Некорректный ввод, '/setvip id dd.mm.yyyy'");
+		set(Player[playerid][VIPDate],strcharsplit(text,idx,strchar(" ")));
+		if(strlen(Player[playerid][VIPDate]) < 10) return SendClientMessage(playerid,COLOUR_WHITE,"Некорректный ввод, '/setvip id dd.mm.yyyy'");
+		if(VIPCheck(Player[playerid][VIPDate])) Player[playerid][VIP] = true;
+		else Player[playerid][VIP] = false;
+		format(string,sizeof(string),"Вы установили VIP статус %s(%d), до %s",oGetPlayerName(giveid),giveid,Player[playerid][VIPDate]);
+		SendClientMessage(playerid,COLOUR_WHITE,string);
+		format(string,sizeof(string),"Вам установили VIP статус до %s",Player[playerid][VIPDate]);
+		SendClientMessage(giveid,COLOUR_WHITE,string);
+		return 1;	
 	}
 	//Скрыть себя ото всех (на радаре)
 	if(!strcmp(cmd,"/ahideme",true))

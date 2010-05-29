@@ -214,17 +214,15 @@ new Houses[MAX_HOUSES][HouseInfo] = {
 {"[BR]House WayV",200000,"Unknown","Unknown",120,0,0,1,0,0,0,"Unknown",50000,0,	-2524.967,2239.568,4.600,	247.5086,304.9248,999.1484}
 };
 
-new HousesDB[MAX_STRING] = "GTO/Housing/";
-
 stock HousesLoadAll()
 {
-	new file;
+	new file_housing;
 	if(ini_Exist(ConfigDB))
 	{
-		file = ini_Open(ConfigDB);
-		ini_Get(file,"Houses_DB",HousesDB);
-		ini_GetFloat(file,"House_DistanceOfShowLabel",HouseDistanceOfShowLabel);
-		ini_Close(file);
+		file_housing = ini_Open(ConfigDB);
+		ini_Get(file_housing,"Houses_DB",HousesDB);
+		ini_GetFloat(file_housing,"House_DistanceOfShowLabel",HouseDistanceOfShowLabel);
+		ini_Close(file_housing);
 	}
 	if(!ini_Exist(HousesDB))
 	{
@@ -241,37 +239,37 @@ stock HousesLoadAll()
 			fclose(fhnd);
 			HousesSaveAll();
 		}
-		file = ini_Open(housesdbname);
-		ini_Get(file,"Name",Houses[i][Houses_Name],MAX_STRING);
-		ini_GetInt(file,"Cost",Houses[i][Houses_Cost]);
-		ini_Get(file,"Owner",Houses[i][Houses_Owner],MAX_STRING);
-		ini_Get(file,"Gang",Houses[i][Houses_Gang],MAX_STRING);
-		ini_GetInt(file,"UpKeep",Houses[i][Houses_UpKeep]);
-		ini_GetInt(file,"UpKeepLeft",Houses[i][Houses_UpKeepLeft]);
-		ini_GetInt(file,"Buyout",Houses[i][Houses_Buyout]);
-		ini_GetInt(file,"Interior",Houses[i][Houses_Interior]);
-		ini_GetInt(file,"Car",Houses[i][Houses_Car]);
-		ini_GetInt(file,"Lock",Houses[i][Houses_Lock]);
-		ini_GetInt(file,"Rentabil",Houses[i][Houses_Rentabil]);
-		ini_Get(file,"RentName",Houses[i][Houses_RentName],MAX_STRING);
-		ini_GetInt(file,"RentCost",Houses[i][Houses_RentCost]);
-		ini_GetInt(file,"HealUpgrade",Houses[i][Houses_HealUpgrade]);
-		ini_GetFloat(file,"Coord_X",Houses[i][Houses_EnterX]);
-		ini_GetFloat(file,"Coord_Y",Houses[i][Houses_EnterY]);
-		ini_GetFloat(file,"Coord_Z",Houses[i][Houses_EnterZ]);
-		ini_Close(file);
+		file_housing = ini_Open(housesdbname);
+		ini_Get(file_housing,"Name",Houses[i][Houses_Name],MAX_STRING);
+		ini_GetInt(file_housing,"Cost",Houses[i][Houses_Cost]);
+		ini_Get(file_housing,"Owner",Houses[i][Houses_Owner],MAX_STRING);
+		ini_Get(file_housing,"Gang",Houses[i][Houses_Gang],MAX_STRING);
+		ini_GetInt(file_housing,"UpKeep",Houses[i][Houses_UpKeep]);
+		ini_GetInt(file_housing,"UpKeepLeft",Houses[i][Houses_UpKeepLeft]);
+		ini_GetInt(file_housing,"Buyout",Houses[i][Houses_Buyout]);
+		ini_GetInt(file_housing,"Interior",Houses[i][Houses_Interior]);
+		ini_GetInt(file_housing,"Car",Houses[i][Houses_Car]);
+		ini_GetInt(file_housing,"Lock",Houses[i][Houses_Lock]);
+		ini_GetInt(file_housing,"Rentabil",Houses[i][Houses_Rentabil]);
+		ini_Get(file_housing,"RentName",Houses[i][Houses_RentName],MAX_STRING);
+		ini_GetInt(file_housing,"RentCost",Houses[i][Houses_RentCost]);
+		ini_GetInt(file_housing,"HealUpgrade",Houses[i][Houses_HealUpgrade]);
+		ini_GetFloat(file_housing,"Coord_X",Houses[i][Houses_EnterX]);
+		ini_GetFloat(file_housing,"Coord_Y",Houses[i][Houses_EnterY]);
+		ini_GetFloat(file_housing,"Coord_Z",Houses[i][Houses_EnterZ]);
+		ini_Close(file_housing);
 	}
 	return;
 }
 
 stock HousesSaveAll()
 {
-	new file;
-	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
-	else file = ini_Open(ConfigDB);
-	ini_Set(file,"Houses_DB",HousesDB);
-	ini_SetFloat(file,"House_DistanceOfShowLabel",HouseDistanceOfShowLabel);
-	ini_Close(file);
+	new file_housing;
+	if(!ini_Exist(ConfigDB)) file_housing = ini_Create(ConfigDB);
+	else file_housing = ini_Open(ConfigDB);
+	ini_Set(file_housing,"Houses_DB",HousesDB);
+	ini_SetFloat(file_housing,"House_DistanceOfShowLabel",HouseDistanceOfShowLabel);
+	ini_Close(file_housing);
 	for(new housid=0;housid<MAX_HOUSES;housid++)
 	{
 		SaveHous(housid);
@@ -281,30 +279,29 @@ stock HousesSaveAll()
 
 stock SaveHous(housid)
 {
-	new housesdbname[MAX_STRING],file;
+	new housesdbname[MAX_STRING],file_housing;
 	format(housesdbname,sizeof(housesdbname),"%s%s.txt",HousesDB,Houses[housid][Houses_Name]);
-	if(!ini_Exist(housesdbname)) file = ini_Create(housesdbname);
-	else file = ini_Open(housesdbname);
-	ini_Set(file,"Name",Houses[housid][Houses_Name]);
-	ini_SetInt(file,"Cost",Houses[housid][Houses_Cost]);
-	ini_Set(file,"Owner",Houses[housid][Houses_Owner]);
-	ini_Set(file,"Gang",Houses[housid][Houses_Gang]);
-	ini_SetInt(file,"UpKeep",Houses[housid][Houses_UpKeep]);
-	ini_SetInt(file,"UpKeepLeft",Houses[housid][Houses_UpKeepLeft]);
-	ini_SetInt(file,"Buyout",Houses[housid][Houses_Buyout]);
-	ini_SetInt(file,"Interior",Houses[housid][Houses_Interior]);
-	ini_SetInt(file,"Car",Houses[housid][Houses_Car]);
-	ini_SetInt(file,"Lock",Houses[housid][Houses_Lock]);
-	ini_SetInt(file,"Rentabil",Houses[housid][Houses_Rentabil]);
-	ini_Set(file,"RentName",Houses[housid][Houses_RentName]);
-	ini_SetInt(file,"RentCost",Houses[housid][Houses_RentCost]);
-	ini_SetFloat(file,"Coord_X",Houses[housid][Houses_EnterX]);
-	ini_SetFloat(file,"Coord_Y",Houses[housid][Houses_EnterY]);
-	ini_SetFloat(file,"Coord_Z",Houses[housid][Houses_EnterZ]);
-	ini_Close(file);
+	if(!ini_Exist(housesdbname)) file_housing = ini_Create(housesdbname);
+	else file_housing = ini_Open(housesdbname);
+	ini_Set(file_housing,"Name",Houses[housid][Houses_Name]);
+	ini_SetInt(file_housing,"Cost",Houses[housid][Houses_Cost]);
+	ini_Set(file_housing,"Owner",Houses[housid][Houses_Owner]);
+	ini_Set(file_housing,"Gang",Houses[housid][Houses_Gang]);
+	ini_SetInt(file_housing,"UpKeep",Houses[housid][Houses_UpKeep]);
+	ini_SetInt(file_housing,"UpKeepLeft",Houses[housid][Houses_UpKeepLeft]);
+	ini_SetInt(file_housing,"Buyout",Houses[housid][Houses_Buyout]);
+	ini_SetInt(file_housing,"Interior",Houses[housid][Houses_Interior]);
+	ini_SetInt(file_housing,"Car",Houses[housid][Houses_Car]);
+	ini_SetInt(file_housing,"Lock",Houses[housid][Houses_Lock]);
+	ini_SetInt(file_housing,"Rentabil",Houses[housid][Houses_Rentabil]);
+	ini_Set(file_housing,"RentName",Houses[housid][Houses_RentName]);
+	ini_SetInt(file_housing,"RentCost",Houses[housid][Houses_RentCost]);
+	ini_SetFloat(file_housing,"Coord_X",Houses[housid][Houses_EnterX]);
+	ini_SetFloat(file_housing,"Coord_Y",Houses[housid][Houses_EnterY]);
+	ini_SetFloat(file_housing,"Coord_Z",Houses[housid][Houses_EnterZ]);
+	ini_Close(file_housing);
 	return 1;
 }
-
 stock housing_OnGameModeInit()
 {
 	HousesLoadAll();
@@ -312,6 +309,7 @@ stock housing_OnGameModeInit()
 	for(new id=0;id<MAX_HOUSES;id++)
 	{
 		housepickup[id] = CreateStreamPickup(1273,1,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.5);	//зеленый домик
+		CreateStreamPickup(1559,1,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ]+0.5);
 		CreateStreamMapIcon(31,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]);
 		format(string,sizeof(string),"Дом: %s\nСтоимость: %d\nКуплен: %s\nАрендуется: %s",Houses[id][Houses_Name],Houses[id][Houses_Cost],Houses[id][Houses_Owner],Houses[id][Houses_RentName]);
 		House3DTextLabel[id] = Create3DTextLabel(string,COLOUR_WHITE,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.75,HouseDistanceOfShowLabel,0,1);
@@ -424,10 +422,10 @@ stock RentRoom(playerid)
 		set(Houses[id][Houses_RentName],oGetPlayerName(playerid));
 		oGivePlayerMoney(playerid,-Houses[id][Houses_RentCost],0);
 		format(string,sizeof(string),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
-		new file = ini_Open(string);
-		ini_SetInt(file,"Rentabil",1);
-		ini_Set(file,"RentName",oGetPlayerName(playerid));
-		ini_Close(file);
+		new file_housing = ini_Open(string);
+		ini_SetInt(file_housing,"Rentabil",1);
+		ini_Set(file_housing,"RentName",oGetPlayerName(playerid));
+		ini_Close(file_housing);
 		SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][55]);
 	}
 	else
@@ -563,13 +561,13 @@ stock housing_OnPlayerCommandText(playerid,text[])
 		else if(!strcmp(cmd,"On",true))
 		{
 			Houses[id][Houses_Rentabil] = 1;
-			new filename[MAX_STRING];
-			format(filename,sizeof(filename),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
-			if(ini_Exist(filename))
+			new filename_housing[MAX_STRING];
+			format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+			if(ini_Exist(filename_housing))
 			{
-				new file = ini_Open(filename);
-				ini_SetInt(file,"Rentabil",Houses[id][Houses_Rentabil]);
-				ini_Close(file);
+				new file_housing = ini_Open(filename_housing);
+				ini_SetInt(file_housing,"Rentabil",Houses[id][Houses_Rentabil]);
+				ini_Close(file_housing);
 			}
 			SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][74]);
 			return 1;
@@ -577,13 +575,13 @@ stock housing_OnPlayerCommandText(playerid,text[])
 		else if(!strcmp(cmd,"Off",true))
 		{
 			Houses[id][Houses_Rentabil] = 0;
-			new filename[MAX_STRING];
-			format(filename,sizeof(filename),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
-			if(ini_Exist(filename))
+			new filename_housing[MAX_STRING];
+			format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+			if(ini_Exist(filename_housing))
 			{
-				new file = ini_Open(filename);
-				ini_SetInt(file,"Rentabil",Houses[id][Houses_Rentabil]);
-				ini_Close(file);
+				new file_housing = ini_Open(filename_housing);
+				ini_SetInt(file_housing,"Rentabil",Houses[id][Houses_Rentabil]);
+				ini_Close(file_housing);
 			}
 			SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][75]);
 			return 1;
@@ -677,15 +675,15 @@ stock FHouseBuy(playerid)
 		if(owner > -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][77]);
 		else
 		{
-			new filename[MAX_STRING];
-			format(filename,sizeof(filename),"%s%s.txt",PlayerDB,Houses[id][Houses_Owner]);
-			if(ini_Exist(filename))
+			new filename_housing[MAX_STRING];
+			format(filename_housing,sizeof(filename_housing),"%s%s.txt",PlayerDB,Houses[id][Houses_Owner]);
+			if(ini_Exist(filename_housing))
 			{
-				new file = ini_Open(filename);
+				new file_housing = ini_Open(filename_housing);
 				new tempmoney;
-				ini_GetInt(file,"Money",tempmoney);
-				ini_SetInt(file,"Money",tempmoney+price);
-				ini_Close(file);
+				ini_GetInt(file_housing,"Money",tempmoney);
+				ini_SetInt(file_housing,"Money",tempmoney+price);
+				ini_Close(file_housing);
 			}
 		}
 		set(Houses[id][Houses_Owner],oGetPlayerName(playerid));
@@ -693,15 +691,15 @@ stock FHouseBuy(playerid)
 		SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][69]);
 		SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][70]);
 		Houses[id][Houses_Buyout] = 0;
-		new filename[MAX_STRING],logstring[MAX_STRING];
-		format(filename,sizeof(filename),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
-		if(ini_Exist(filename))
+		new filename_housing[MAX_STRING],logstring[MAX_STRING];
+		format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+		if(ini_Exist(filename_housing))
 		{
-		    new file = ini_Open(filename);
-			ini_Set(file,"Owner",Houses[id][Houses_Owner]);
-			ini_Set(file,"Gang",Houses[id][Houses_Gang]);
-			ini_SetInt(file,"Buyout",Houses[id][Houses_Buyout]);
-			ini_Close(file);
+		    new file_housing = ini_Open(filename_housing);
+			ini_Set(file_housing,"Owner",Houses[id][Houses_Owner]);
+			ini_Set(file_housing,"Gang",Houses[id][Houses_Gang]);
+			ini_SetInt(file_housing,"Buyout",Houses[id][Houses_Buyout]);
+			ini_Close(file_housing);
 		}
 		format(temp,sizeof(temp),lang_texts[8][17],Houses[id][Houses_Name]);
 		SendClientMessage(playerid,COLOUR_GREEN,temp);
@@ -779,13 +777,13 @@ stock FHouseKeep(playerid)
 						Player[playerid][Money] = Player[playerid][Money] - Houses[id][Houses_UpKeepLeft];
 						SendPlayerFormattedText(playerid,  lang_texts[8][44] , 0,COLOUR_GREEN);
 						Houses[id][Houses_UpKeepLeft] = 0;
-						new filename[MAX_STRING];
-						format(filename,sizeof(filename),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
-						if(ini_Exist(filename))
+						new filename_housing[MAX_STRING];
+						format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+						if(ini_Exist(filename_housing))
 						{
-							new file = ini_Open(filename);
-							ini_SetInt(file,"UpKeepLeft",Houses[id][Houses_UpKeepLeft]);
-							ini_Close(file);
+							new file_housing = ini_Open(filename_housing);
+							ini_SetInt(file_housing,"UpKeepLeft",Houses[id][Houses_UpKeepLeft]);
+							ini_Close(file_housing);
 						}
 					} 
 					else SendPlayerFormattedText(playerid,lang_texts[8][45],0,COLOUR_RED);
@@ -823,7 +821,7 @@ stock ganghouse(playerid)
 
 stock gang2house(playerid,i)
 {
-	SetPlayerPos(playerid,Houses[i][Houses_PickupX],Houses[i][Houses_PickupY],Houses[i][Houses_PickupZ]);
+	SetPlayerPos(playerid,Houses[i][Houses_PickupX],Houses[i][Houses_PickupY],Houses[i][Houses_PickupZ]+0.5);
 }
 
 stock HouseKeepUp()
@@ -839,26 +837,26 @@ stock HouseKeepUp()
 			if(upkeepamount < upkeep*2800) 
 			{
 				Houses[id][Houses_UpKeepLeft] = upkeepamount;
-				new filename[MAX_STRING];
-				format(filename,sizeof(filename),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
-				if(ini_Exist(filename))
+				new filename_housing[MAX_STRING];
+				format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+				if(ini_Exist(filename_housing))
 				{
-					new file = ini_Open(filename);
-					ini_SetInt(file,"UpKeepLeft",upkeepamount);
-					ini_Close(file);
+					new file_housing = ini_Open(filename_housing);
+					ini_SetInt(file_housing,"UpKeepLeft",upkeepamount);
+					ini_Close(file_housing);
 				}
 			} 
 			else 
 			{ 
-				new filename[MAX_STRING];
-				format(filename,sizeof(filename),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
-				if(ini_Exist(filename))
+				new filename_housing[MAX_STRING];
+				format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+				if(ini_Exist(filename_housing))
 				{
-					new file = ini_Open(filename);
-					ini_Set(file,"Gang","Unknown");
-					ini_Set(file,"Owner","Unknown");
-					ini_Set(file,"UpKeepLeft","0");
-					ini_Close(file);
+					new file_housing = ini_Open(filename_housing);
+					ini_Set(file_housing,"Gang","Unknown");
+					ini_Set(file_housing,"Owner","Unknown");
+					ini_Set(file_housing,"UpKeepLeft","0");
+					ini_Close(file_housing);
 				}   
 			}
 		} 

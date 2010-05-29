@@ -12,7 +12,7 @@
 
 #include "utils\mxINI"
 
-#define VERSION "v0.6.2 R4"
+#define VERSION "v0.6.3 beta"
 
 #define MAX_STRING 128 // !!!Ќ≈ ћ≈Ќя“№!!!, а то мод будет плющить(ZiGGi)
 #define MAX_NAME 40 // number of char's a name/password/misc_word can be
@@ -76,10 +76,28 @@
 #define SOUND_DMKILL                 1056
 #define SOUND_DMDEATH                 1057
 
+#define PRESSED(%0) \
+	(((newkeys & (%0)) != (%0)) && ((oldkeys & (%0)) == (%0)))
+
 forward WeatherUpdate();
 
 new ConfigDB[MAX_STRING] = "GTO/Config/Base-cfg.txt";
 new LevelDB[MAX_STRING] = "GTO/Config/Levels-cfg.txt";
+new GangDB[MAX_STRING] = "GTO/Gang/";
+new AccountDB[MAX_STRING] = "GTO/Account/";
+new PlayerDB[MAX_STRING] = "GTO/Player/";
+new HousesDB[MAX_STRING] = "GTO/Housing/";
+new BusinessDB[MAX_STRING] = "GTO/Business/";
+new WeaponDB[MAX_STRING] = "GTO/Weapon/";
+
+new DeathmatchDB[MAX_STRING] = "GTO/Deathmatch/!Deathmatches.txt";
+new DMBaseDB[MAX_STRING] = "GTO/Deathmatch/";
+new DMRecordDB[MAX_STRING] = "GTO/Deathmatch/Record/";
+
+new RaceDB[MAX_STRING] = "GTO/Race/!Races.txt";
+new RaceBaseDB[MAX_STRING] = "GTO/Race/";
+new RaceRecordDB[MAX_STRING] = "GTO/Race/Record/";
+
 new VerboseSave=-1; // do we save extra un-needed db info like weapons, races, vehicels, deathmatches, etc
 new RealTime=0;
 new ForceOverwrite = 0;
@@ -170,48 +188,48 @@ new LevelList[MAX_LEVEL+1][LevelInfo] = { // experience required for each level
 
 stock BaseLoadConfig()
 {
-	new temp[MAX_STRING],file;
+	new temp[MAX_STRING],file_base;
 	if(ini_Exist(ConfigDB))
 	{
-		file = ini_Open(ConfigDB);
-		ini_Get(file,"Level_DB",LevelDB);
-		ini_GetInt(file,"Real_Time",RealTime);
-		ini_GetInt(file,"Verbose_Save",VerboseSave);
-		ini_Close(file);
+		file_base = ini_Open(ConfigDB);
+		ini_Get(file_base,"Level_DB",LevelDB);
+		ini_GetInt(file_base,"Real_Time",RealTime);
+		ini_GetInt(file_base,"Verbose_Save",VerboseSave);
+		ini_Close(file_base);
 	}
 	if(!ini_Exist(LevelDB)) BaseSaveConfig();
 	for(new i=0;i<=MAX_LEVEL;i++)
 	{
-	    file = ini_Open(LevelDB);
+	    file_base = ini_Open(LevelDB);
 		format(temp,sizeof(temp),"Level%d_Experience",i);
-		ini_GetInt(file,temp,LevelList[i][level_xp]);
+		ini_GetInt(file_base,temp,LevelList[i][level_xp]);
 	    format(temp,sizeof(temp),"Level%d_Rankname",i);
-		ini_Get(file,temp,LevelList[i][level_name],MAX_STRING);
-		ini_Close(file);
+		ini_Get(file_base,temp,LevelList[i][level_name],MAX_STRING);
+		ini_Close(file_base);
 	}
 	return;
 }
 
 stock BaseSaveConfig()
 {
-	new temp[MAX_STRING],file;
-	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
-	else file = ini_Open(ConfigDB);
-	ini_Set(file,"Level_DB",LevelDB);
-	ini_SetInt(file,"Real_Time",RealTime);
-	ini_SetInt(file,"Verbose_Save",VerboseSave);
-	ini_Close(file);
+	new temp[MAX_STRING],file_base;
+	if(!ini_Exist(ConfigDB)) file_base = ini_Create(ConfigDB);
+	else file_base = ini_Open(ConfigDB);
+	ini_Set(file_base,"Level_DB",LevelDB);
+	ini_SetInt(file_base,"Real_Time",RealTime);
+	ini_SetInt(file_base,"Verbose_Save",VerboseSave);
+	ini_Close(file_base);
 	
 	if(!ini_Exist(LevelDB)) {new File:fhnd = fopen(LevelDB,io_write);fclose(fhnd);}
 
 	for(new i=0;i<=MAX_LEVEL;i++)
 	{
-	    file = ini_Open(LevelDB);
+	    file_base = ini_Open(LevelDB);
 	    format(temp,sizeof(temp),"Level%d_Rankname",i);
-		ini_Set(file,temp,LevelList[i][level_name]);
+		ini_Set(file_base,temp,LevelList[i][level_name]);
 		format(temp,sizeof(temp),"Level%d_Experience",i);
-		ini_SetInt(file,temp,LevelList[i][level_xp]);
-		ini_Close(file);
+		ini_SetInt(file_base,temp,LevelList[i][level_xp]);
+		ini_Close(file_base);
 	}
 	return;
 }

@@ -79,10 +79,6 @@ new DMCentreCP[MAX_DM][CoordInfo];
 
 //--------------------------------------------------------------
 
-new DeathmatchDB[MAX_STRING] = "GTO/Deathmatch/!Deathmatches.txt";
-new DMBaseDB[MAX_STRING] = "GTO/Deathmatch/";
-new DMRecordDB[MAX_STRING] = "GTO/Deathmatch/Record/";
-
 stock DeathmatchLoadAll()
 {
 	if (ForceOverwrite) return;

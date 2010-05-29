@@ -71,7 +71,6 @@ new Businesses[MAX_BUSINESSES][BusinessInfo] = {
 };
 
 new BusinessPick[MAX_BUSINESSES],Text3D:Business3DTextLabel[MAX_BUSINESSES],Float:BusinessDistanceOfShowLabel=20.0;
-new BusinessDB[MAX_STRING] = "GTO/Business/";
 
 BusinessLoadAll()
 {

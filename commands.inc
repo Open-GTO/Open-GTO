@@ -3,16 +3,18 @@
 // Aurthor: Iain Gilbert
 //
 
-#if defined _commandhandler_included
+#if defined _commands_included
 #endinput
 #endif
 
-#define _commandhandler_included
-#pragma library commandhandler
+#define _commands_included
+#pragma library commands
+
 #include "base"
 #include "utils\gtoutils"
 #include "player"
 #include "account"
+#include "fightstyles"
 
 #define MONEY_CMD1 50000		//SkyDiving
 
@@ -97,7 +99,18 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		format(string, sizeof(string),lang_texts[15][38],Player[playerid][Level],Player[playerid][XP],Player[playerid][Money],Player[playerid][Bank],GetPlayerTotalMoney(playerid));
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,string);
 		format(string, sizeof(string),lang_texts[15][39],Player[playerid][Deaths],Player[playerid][Kills],Player[playerid][Jailed],Player[playerid][Muted]);
-		format(string, sizeof(string),"GTO: у вас %d выученных бойцовских стилей !",Player[playerid][FightStyle] );
+		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
+
+		format(
+			string,sizeof(string),"Ваш уровень стилей борьбы: %d, используемый стиль: %s(%d)",
+				Player[playerid][FightStyle],
+				ConvertFightIdToName(Player[playerid][FightStyleUsed]),
+				Player[playerid][FightStyleUsed]
+		);
+		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
+
+		if(Player[playerid][VIP]) format(string,sizeof(string),"Ваш vip статус: 1, доступно до: %s",Player[playerid][VIPDate]);
+		else format(string,sizeof(string),"Ваш vip статус: 0");
 		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
 		return 1;
 	}
@@ -207,10 +220,37 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	
 	if(!strcmp(cmd,"/repair",true)) return 0;
-	if(!strcmp(cmd,"/f1",true)) Player[playerid][FightStyle] = 1;
-	if(!strcmp(cmd,"/f2",true)) Player[playerid][FightStyle] = 2;
-	if(!strcmp(cmd,"/f3",true)) Player[playerid][FightStyle] = 3;
-	if(!strcmp(cmd,"/f4",true)) Player[playerid][FightStyle] = 4;
+	if(!strcmp(cmd,"/sk",true))
+	{
+		new string[MAX_STRING];
+		format(string,sizeof(string),"Твой скилл текущего оружия:%d",PlayerWeaponsSkills[playerid][ GetWeaponSkillID( GetPlayerWeapon(playerid) ) ]);
+		SendClientMessage(playerid,COLOUR_GREY,string);
+		return 1;
+	}
+	if(!strcmp(cmd,"/f",true))
+	{
+		new style = strval(strcharsplit(text, idx,strchar(" ")));
+		new string[MAX_STRING];
+		if(style < 4 || style > 7)
+		{
+			SendClientMessage(playerid,COLOUR_WHITE,"Применение: /f [4-7]");
+			for(new i=0;i<MAX_FIGHT;i++)
+			{
+				format(string,sizeof(string),"%d - %s",FightTreners[i][Style],FightTreners[i][StyleName]);
+				SendClientMessage(playerid,COLOUR_GREY,string);
+			}
+			return 1;
+		}
+		if(style > Player[playerid][FightStyle])
+			return SendClientMessage(playerid,COLOUR_GREY,"Вы ещё невыучили этот стиль!");
+
+		SetPlayerFightingStyle(playerid,(Player[playerid][FightStyleUsed] = style));
+
+		format(string,sizeof(string),"Теперь вы используете стиль: %s(%d)",ConvertFightIdToName(Player[playerid][FightStyleUsed]),Player[playerid][FightStyleUsed]);
+		SendClientMessage(playerid,COLOUR_GREY,string);
+		return 1;
+	}
+
 	if(!strcmp(cmd,"/changenick",true))
 	{
 		if(GetPlayerMoney(playerid) < 10000000) return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][36]);

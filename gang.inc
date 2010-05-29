@@ -17,7 +17,6 @@
 
 new GANG_CREATE_COST = 100000; // money cost to create a gang
 new GANG_COLOUR_COST = 20000; // cost to change gang colour
-new GangDB[MAX_STRING] = "GTO/Gang/";
 
 enum MemberInfo 
 {
@@ -69,6 +68,8 @@ new GangMemberInfo[MAX_GANGS*MAX_GANG_SIZE][MemberInfo]; //shit way of '3d' arra
 new GangMembers[MAX_GANGS][MAX_GANG_SIZE]; // shit
 new Gangs[MAX_GANGS][GangInfo];
 new GangInvite[MAX_PLAYERS];
+
+#define GetGangColour(%1) Gangs[%1][gang_colour]
 
 stock GangLoadConfig()
 {

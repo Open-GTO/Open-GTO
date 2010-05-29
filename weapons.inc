@@ -25,7 +25,6 @@
 #define smg_bullets 100
 
 new Menu:WeaponMenu,Menu:PistolMenu,Menu:MicroSMGMenu,Menu:ShotgunsMenu,Menu:AssaultMenu,WeapPickup[4];
-new WeaponDB[MAX_STRING] = "GTO/Weapon/";
 new Ammunations[AmmunationsCount][CoordInfo] = 
 {
 	{291.0004,-84.5168,1001.5156}, // LVammunation1
@@ -101,12 +100,12 @@ new Weapons[WeaponsSize][WeaponInfo] = {
 
 stock WeaponLoadAll()
 {
-	new file;
+	new file_weapons;
 	if(ini_Exist(ConfigDB))
 	{
-		file = ini_Open(ConfigDB);
-		ini_Get(file,"Weapon_DB",WeaponDB);
-		ini_Close(file);
+		file_weapons = ini_Open(ConfigDB);
+		ini_Get(file_weapons,"Weapon_DB",WeaponDB);
+		ini_Close(file_weapons);
 	}
 	if(!ini_Exist(WeaponDB))
 	{
@@ -118,24 +117,24 @@ stock WeaponLoadAll()
 	{
 		new weapondbname[MAX_STRING];
 		format(weapondbname,sizeof(weapondbname),"%s%s.txt",WeaponDB,Weapons[i][Weapon_Name]);
-		file = ini_Open(weapondbname);
-		ini_Get(file,"Name",Weapons[i][Weapon_Name],MAX_STRING);
-        ini_GetInt(file,"IsAllowed",Weapons[i][Weapon_Allowed]);
-        ini_GetInt(file,"Level",Weapons[i][Weapon_Level]);
-        ini_GetInt(file,"Price",Weapons[i][Weapon_Cost]);
-		ini_Close(file);
+		file_weapons = ini_Open(weapondbname);
+		ini_Get(file_weapons,"Name",Weapons[i][Weapon_Name],MAX_STRING);
+        ini_GetInt(file_weapons,"IsAllowed",Weapons[i][Weapon_Allowed]);
+        ini_GetInt(file_weapons,"Level",Weapons[i][Weapon_Level]);
+        ini_GetInt(file_weapons,"Price",Weapons[i][Weapon_Cost]);
+		ini_Close(file_weapons);
 	}
 	return;
 }
 
 stock WeaponSaveAll()
 {
-	new file;
+	new file_weapons;
 	if(ini_Exist(ConfigDB))
 	{
-		file = ini_Open(ConfigDB);
-		ini_Set(file,"Weapon_DB",WeaponDB);
-		ini_Close(file);
+		file_weapons = ini_Open(ConfigDB);
+		ini_Set(file_weapons,"Weapon_DB",WeaponDB);
+		ini_Close(file_weapons);
 	}
 	for(new i=0;i<WeaponsSize;i++)
 	{
@@ -146,12 +145,12 @@ stock WeaponSaveAll()
 			new File:fhnd = fopen(weapondbname,io_write);
 			fclose(fhnd);
 		}
-		file = ini_Open(weapondbname);
-		ini_Set(file,"Name",Weapons[i][Weapon_Name]);
-		ini_SetInt(file,"IsAllowed",Weapons[i][Weapon_Allowed]);
-		ini_SetInt(file,"Level",Weapons[i][Weapon_Level]);
-		ini_SetInt(file,"Price",Weapons[i][Weapon_Cost]);
-		ini_Close(file);
+		file_weapons = ini_Open(weapondbname);
+		ini_Set(file_weapons,"Name",Weapons[i][Weapon_Name]);
+		ini_SetInt(file_weapons,"IsAllowed",Weapons[i][Weapon_Allowed]);
+		ini_SetInt(file_weapons,"Level",Weapons[i][Weapon_Level]);
+		ini_SetInt(file_weapons,"Price",Weapons[i][Weapon_Cost]);
+		ini_Close(file_weapons);
 	}
 	return;
 }

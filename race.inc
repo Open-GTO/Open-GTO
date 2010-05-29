@@ -92,10 +92,6 @@ new BestScore[MAX_RACES][RaceScoreInfo];
 new RaceSize[MAX_RACES]; // number of checkpoints, including start and finish
 new Float:RaceCheckpoints[MAX_RACES][MAX_CP][CoordInfo];
 
-new RaceDB[MAX_STRING] = "GTO/Race/!Races.txt";
-new RaceBaseDB[MAX_STRING] = "GTO/Race/";
-new RaceRecordDB[MAX_STRING] = "GTO/Race/Record/";
-
 stock RaceLoadAll()
 {
 	new temp[MAX_STRING],file;
