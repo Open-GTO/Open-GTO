@@ -126,7 +126,10 @@ stock GetFreeMemberID()
 
 stock GangLoad(gangname[])
 {
-	WriteLog(DebugLog,"GangLoad(gangname[]) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"GangLoad(%s) - started",gangname);
+	WriteLog(DebugLog,logstring);
+
 	// search for gang in runtime memory
 	for(new id=1;id<MAX_GANGS;id++)
 	{
@@ -150,21 +153,27 @@ stock GangLoad(gangname[])
 		}
 	}
 	gang_load_db_ini(gangid,gangname);
-	new logstring[MAX_STRING];
+//	new logstring[MAX_STRING];
 	format(logstring,sizeof(logstring), "gang_loaded: %d",gangid);
 	WriteLog(GameLog,logstring);
-	WriteLog(DebugLog,"GangLoad(gangname[]) - stoped");
+
+	format(logstring,sizeof(logstring),"GangLoad(%s) - stopped",gangname);
+	WriteLog(DebugLog,logstring);
 	return gangid;
 }
 
 stock gang_load_db_ini(gangid,gangname[])
 {
-	WriteLog(DebugLog,"gang_load_db_ini(gangid,gangname[]) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"gang_load_db_ini(%d,%s) - started",gangid,gangname);
+	WriteLog(DebugLog,logstring);
+
 	new filename_gang[MAX_STRING];
 	format(filename_gang,sizeof(filename_gang),"%s%s.txt",GangDB,gangname);
 	if(!ini_Exist(filename_gang))
 	{
-		WriteLog(DebugLog,"gang_load_db_ini(gangid,gangname[]) - stoped");
+		format(logstring,sizeof(logstring),"gang_load_db_ini(%d,%s) - stopped",gangid,gangname);
+		WriteLog(DebugLog,logstring);
 		return 1;
 	}
 	new file_gang = ini_Open(filename_gang);
@@ -191,13 +200,17 @@ stock gang_load_db_ini(gangid,gangname[])
 		GangMemberInfo[memberid][member_playerid] = INVALID_PLAYER_ID;
 	}
 	ini_Close(file_gang);
-	WriteLog(DebugLog,"gang_load_db_ini(gangid,gangname[]) - stoped");
+
+	format(logstring,sizeof(logstring),"gang_load_db_ini(%d,%s) - stopped",gangid,gangname);
+	WriteLog(DebugLog,logstring);
 	return 1;
 }
 
 stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	WriteLog(DebugLog,"gang_OnPlayerCommandText(playerid,text[]) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"gang_OnPlayerCommandText(%d,%s) - started",playerid,text);
+	WriteLog(DebugLog,logstring);
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,strchar(" ")));
 	if(strlen(cmd) == 0) return 0;
@@ -206,6 +219,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 		return 1;
 	}
+	WriteLog(DebugLog,cmd);
 	if(!strcmp(cmd,"/g",true))
  	{
     	if(PlayerGangid[playerid] == 0) return 1;
@@ -346,7 +360,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
    			{
     			oGivePlayerMoney(playerid,-GANG_CREATE_COST,1);
     			SendClientMessage(playerid,COLOUR_GREEN,lang_texts[6][42]);
-    			new logstring[MAX_STRING];
+//				new logstring[MAX_STRING];
     			format(logstring,sizeof(logstring),"player: %d:  %s: created gang '%s' ",playerid,oGetPlayerName(playerid),gangname);
        			WriteLog(GameLog,logstring);
    			}
@@ -458,7 +472,9 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
    			return 1;
   		}
 	}
-	WriteLog(DebugLog,"gang_OnPlayerCommandText(playerid,text[]) - stoped");
+
+	format(logstring,sizeof(logstring),"gang_OnPlayerCommandText(%d,%s) - stoped",playerid,text);
+	WriteLog(DebugLog,logstring);
  	return 0;
 }
 
@@ -516,30 +532,44 @@ stock CheckGangLevel(gangid)
 
 stock gang_OnPlayerDeath(playerid,killerid,reason)
 {
-	WriteLog(DebugLog,"gang_OnPlayerDeath(playerid,killerid,reason) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"gang_OnPlayerDeath(%d,%d,%d) - started",playerid,killerid,reason);
+	WriteLog(DebugLog,logstring);
+
 	#pragma unused reason,playerid
 	new gangid = PlayerGangid[killerid];
 	GiveGangXP(gangid,(1+Gangs[gangid][gang_level]) * 20);
-	WriteLog(DebugLog,"gang_OnPlayerDeath(playerid,killerid,reason) - stopped");
+
+
+	format(logstring,sizeof(logstring),"gang_OnPlayerDeath(%d,%d,%d) - stoped",playerid,killerid,reason);
+	WriteLog(DebugLog,logstring);
 	return 1;
 }
 
 stock PlayerGangColour(playerid)
 {
-	WriteLog(DebugLog,"PlayerGangColour(playerid) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"PlayerGangColour(%d) - started",playerid);
+	WriteLog(DebugLog,logstring);
+
 	new gangid = PlayerGangid[playerid];
 	if(gangid != 0 && Gangs[gangid][gang_colour] != 0)
 	{
 		WriteLog(DebugLog,"PlayerGangColour(playerid) - stopped");
 		return Gangs[gangid][gang_colour];
 	}
-	WriteLog(DebugLog,"PlayerGangColour(playerid) - stopped");
+
+	format(logstring,sizeof(logstring),"PlayerGangColour(%d) - stopped",playerid);
+	WriteLog(DebugLog,logstring);
 	return COLOUR_PLAYER;
 }
 
 stock GangJoinMember(gangid,playerid)
 {
-	WriteLog(DebugLog,"GangJoinMember(gangid,playerid) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"GangJoinMember(%d,%d) - started",gangid,playerid);
+	WriteLog(DebugLog,logstring);
+
 	if(gangid == 0)
 	{
 		WriteLog(GameLog,"script_warning: invalid gang id.");
@@ -574,13 +604,18 @@ stock GangJoinMember(gangid,playerid)
 			return 1;
 		}
 	}
-	WriteLog(DebugLog,"GangJoinMember(gangid,playerid) - stopped");
+
+	format(logstring,sizeof(logstring),"GangJoinMember(%d,%d) - stopped",gangid,playerid);
+	WriteLog(DebugLog,logstring);
 	return 0;
 }
 
 stock GangRemoveMember(gangid,kickplayername[])
 {
-	WriteLog(DebugLog,"GangRemoveMember(gangid,kickplayername[]) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"GangRemoveMember(%d,%s) - started",gangid,kickplayername);
+	WriteLog(DebugLog,logstring);
+
 	new playerid = INVALID_PLAYER_ID,string[MAX_STRING];
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
@@ -604,17 +639,24 @@ stock GangRemoveMember(gangid,kickplayername[])
 			}
 			SetPlayerColor(playerid,PlayerGangColour(playerid));
 			if(GangOnlineCount(gangid) == 0) GangUnload(gangid);
-			WriteLog(DebugLog,"GangRemoveMember(gangid,kickplayername[]) - stopped");
+
+			format(logstring,sizeof(logstring),"GangRemoveMember(%d,%s) - stopped",gangid,kickplayername);
+			WriteLog(DebugLog,logstring);
 			return 1;
 		}
 	}
-	WriteLog(DebugLog,"GangRemoveMember(gangid,kickplayername[]) - stopped");
+
+	format(logstring,sizeof(logstring),"GangRemoveMember(%d,%s) - stopped",gangid,kickplayername);
+	WriteLog(DebugLog,logstring);
 	return 0;
 }
 
 stock GangCreate(leaderid,gangname[],gangcolour)
 {
-	WriteLog(DebugLog,"GangCreate(leaderid,gangname[],gangcolour) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"GangCreate(%d,%s,%d) - started",leaderid,gangname,gangcolour);
+	WriteLog(DebugLog,logstring);
+
 	if(!IsPlayerRegistered(leaderid))
 	{
 		WriteLog(DebugLog,"GangCreate(leaderid,gangname[],gangcolour) - stopped");
@@ -627,7 +669,9 @@ stock GangCreate(leaderid,gangname[],gangcolour)
 	if(ini_Exist(filename_gang))
 	{
 		SendClientMessage(leaderid,COLOUR_RED,lang_texts[6][73]);
-		WriteLog(DebugLog,"GangCreate(leaderid,gangname[],gangcolour) - stopped");
+
+		format(logstring,sizeof(logstring),"GangCreate(%d,%s,%d) - stopped",leaderid,gangname,gangcolour);
+		WriteLog(DebugLog,logstring);
 		return 0;
 	}
 	new gangid;
@@ -653,7 +697,9 @@ stock GangCreate(leaderid,gangname[],gangcolour)
 		if(memberid == 0)
 		{
 			WriteLog(GameLog,"script error: free gang member id not found.");
-			WriteLog(DebugLog,"GangCreate(leaderid,gangname[],gangcolour) - stopped");
+
+			format(logstring,sizeof(logstring),"GangCreate(%d,%s,%d) - stopped",leaderid,gangname,gangcolour);
+			WriteLog(DebugLog,logstring);
 			return 0;
 		}
 		GangMemberInfo[memberid][member_active] = 1;
@@ -669,16 +715,22 @@ stock GangCreate(leaderid,gangname[],gangcolour)
 	PlayerGangid[leaderid] = gangid;
 	GangSave(gangid);
 	SetPlayerColor(leaderid,PlayerGangColour(leaderid));
-	WriteLog(DebugLog,"GangCreate(leaderid,gangname[],gangcolour) - stopped");
+	
+	format(logstring,sizeof(logstring),"GangCreate(%d,%s,%d) - stopped",leaderid,gangname,gangcolour);
+	WriteLog(DebugLog,logstring);
 	return gangid;
 }
 
 stock GangCleanup(gangid)
 {
-	WriteLog(DebugLog,"GangCleanup(gangid) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"GangCleanup(%d) - started",gangid);
+	WriteLog(DebugLog,logstring);
+
 	if(!Gangs[gangid][gang_active])
 	{
-		WriteLog(DebugLog,"GangCleanup(gangid) - stopped");
+		format(logstring,sizeof(logstring),"GangCleanup(%d) - stopped",gangid);
+		WriteLog(DebugLog,logstring);
 		return;
 	}
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
@@ -695,7 +747,9 @@ stock GangCleanup(gangid)
 		}
 	}
 	if(GangOnlineCount(gangid) == 0) GangUnload(gangid);
-	WriteLog(DebugLog,"GangCleanup(gangid) - stopped");
+
+	format(logstring,sizeof(logstring),"GangCleanup(%d) - stopped",gangid);
+	WriteLog(DebugLog,logstring);
 	return;
 }
 
@@ -715,11 +769,15 @@ stock GangSaveAll()
 
 stock GangMemberLogout(playerid,gangid)
 {
-	WriteLog(DebugLog,"GangMemberLogout(playerid,gangid) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"GangMemberLogout(%d,%d) - started",playerid,gangid);
+	WriteLog(DebugLog,logstring);
+
 	GangInvite[playerid] = 0;
 	if(gangid == 0)
 	{
-		WriteLog(DebugLog,"GangMemberLogout(playerid,gangid) - stopped");
+		format(logstring,sizeof(logstring),"GangMemberLogout(%d,%d) - stopped",playerid,gangid);
+		WriteLog(DebugLog,logstring);
 		return;
 	}
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
@@ -740,36 +798,49 @@ stock GangMemberLogout(playerid,gangid)
 		SendGangMessage(gangid,string,COLOUR_GANG);
 	}
 	GangSave(gangid);
-	WriteLog(DebugLog,"GangMemberLogout(playerid,gangid) - stopped");
+
+	format(logstring,sizeof(logstring),"GangMemberLogout(%d,%d) - stopped",playerid,gangid);
+	WriteLog(DebugLog,logstring);
 	return;
 }
 
 stock GangSave(gangid)
 {
-	WriteLog(DebugLog,"GangSave(gangid) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"GangSave(%d) - started",gangid);
+	WriteLog(DebugLog,logstring);
+
 	if(gangid == 0)
 	{
-		WriteLog(DebugLog,"GangSave(gangid) - stopped");
+		format(logstring,sizeof(logstring),"GangSave(%d) - stopped",gangid);
+		WriteLog(DebugLog,logstring);
 		return 0;
 	}
 	if(!Gangs[gangid][gang_active])
 	{
-		WriteLog(DebugLog,"GangSave(gangid) - stopped");
+		format(logstring,sizeof(logstring),"GangSave(%d) - stopped",gangid);
+		WriteLog(DebugLog,logstring);
 		return 0;
 	}
 	if(!strlen(Gangs[gangid][gang_name]))
 	{
-		WriteLog(DebugLog,"GangSave(gangid) - stopped");
+		format(logstring,sizeof(logstring),"GangSave(%d) - stopped",gangid);
+		WriteLog(DebugLog,logstring);
 		return 0;
 	}
 	gang_save_db_ini(gangid);
-	WriteLog(DebugLog,"GangSave(gangid) - stopped");
+	
+	format(logstring,sizeof(logstring),"GangSave(%d) - stopped",gangid);
+	WriteLog(DebugLog,logstring);
 	return 1;
 }
 
 stock gang_save_db_ini(gangid)
 {
-	WriteLog(DebugLog,"gang_save_db_ini(gangid) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"gang_save_db_ini(%d) - started",gangid);
+	WriteLog(DebugLog,logstring);
+
 	new filename_gang[MAX_STRING],file_gang,string[MAX_STRING];
 	format(filename_gang,sizeof(filename_gang),"%s%s.txt",GangDB,Gangs[gangid][gang_name]);
 	if(!ini_Exist(filename_gang)) file_gang = ini_Create(filename_gang);
@@ -786,12 +857,17 @@ stock gang_save_db_ini(gangid)
 		ini_Set(file_gang,string,GangMemberInfo[GangMembers[gangid][gangmember]][member_name]);
 	}
 	ini_Close(file_gang);
-	WriteLog(DebugLog,"gang_save_db_ini(gangid) - stopped");
+
+	format(logstring,sizeof(logstring),"gang_save_db_ini(%d) - stopped",gangid);
+	WriteLog(DebugLog,logstring);
 }
 
 stock GangUnload(gangid)
 {
-	WriteLog(DebugLog,"GangUnload(gangid) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"GangUnload(%d) - started",gangid);
+	WriteLog(DebugLog,logstring);
+
 	GangSave(gangid);
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
@@ -801,13 +877,18 @@ stock GangUnload(gangid)
 		GangMemberInfo[memberid][member_playerid] = INVALID_PLAYER_ID;
 	}
 	Gangs[gangid][gang_active] = 0;
-	WriteLog(DebugLog,"GangUnload(gangid) - stopped");
+
+	format(logstring,sizeof(logstring),"GangUnload(%d) - stopped",gangid);
+	WriteLog(DebugLog,logstring);
 }
 
 stock GangKill(gangid,killerid,victimid,reason)
 {
 	#pragma unused reason
-	WriteLog(DebugLog,"GangKill(gangid,killerid,victimid,reason) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"GangKill(%d,%d,%d,%d) - started",gangid,killerid,victimid,reason);
+	WriteLog(DebugLog,logstring);
+
 	if(victimid != INVALID_PLAYER_ID) Gangs[gangid][gang_kills]++;
 	if(PlayerGangid[killerid] == PlayerGangid[victimid])
     {
@@ -817,17 +898,23 @@ stock GangKill(gangid,killerid,victimid,reason)
 		WriteLog(DebugLog,"GangKill(gangid,killerid,victimid,reason) - stopped");
 		return 1;
 	}
-	WriteLog(DebugLog,"GangKill(gangid,killerid,victimid,reason) - stopped");
+
+	format(logstring,sizeof(logstring),"GangKill(%d,%d,%d,%d) - stopped",gangid,killerid,victimid,reason);
+	WriteLog(DebugLog,logstring);
 	return 0;
 }
 
 stock GangMemberLogin(playerid,gangid)
 {
-	WriteLog(DebugLog,"GangMemberLogin(playerid,gangid) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"GangMemberLogin(%d,%d) - started",playerid,gangid);
+	WriteLog(DebugLog,logstring);
+
 	if(PlayerGangid[playerid] != 0) PlayerGangid[playerid] = 0;
 	if(gangid == 0)
 	{
-		WriteLog(DebugLog,"GangMemberLogin(playerid,gangid) - stopped");
+		format(logstring,sizeof(logstring),"GangMemberLogin(%d,%d) - stopped",playerid,gangid);
+		WriteLog(DebugLog,logstring);
 		return 0;
 	}
 	new string[MAX_STRING];
@@ -846,41 +933,58 @@ stock GangMemberLogin(playerid,gangid)
 			SendClientMessage(playerid,COLOUR_GANG,string);
 			GangInvite[playerid] = 0;
 			SetPlayerColor(playerid,Gangs[gangid][gang_colour]);
-			WriteLog(DebugLog,"GangMemberLogin(playerid,gangid) - stopped");
+
+			format(logstring,sizeof(logstring),"GangMemberLogin(%d,%d) - stopped",playerid,gangid);
+			WriteLog(DebugLog,logstring);
 			return 1;
 		}
 	}
-	WriteLog(DebugLog,"GangMemberLogin(playerid,gangid) - stopped");
+
+	format(logstring,sizeof(logstring),"GangMemberLogin(%d,%d) - stopped",playerid,gangid);
+	WriteLog(DebugLog,logstring);
 	return 0;
 }
 
 stock SendGangMessage(gangid,message[MAX_STRING],colour)
 {
-	WriteLog(DebugLog,"SendGangMessage(gangid,message[MAX_STRING],colour) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"SendGangMessage(%d,%s,%d) - started",gangid,message,colour);
+	WriteLog(DebugLog,logstring);
+
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
 		new memberid = GangMembers[gangid][gangmember]; // get memberid
 		if(GangMemberInfo[memberid][member_online]) SendClientMessage(GangMemberInfo[memberid][member_playerid],colour,message);
 	}
-	WriteLog(DebugLog,"SendGangMessage(gangid,message[MAX_STRING],colour) - stopped");
+
+	format(logstring,sizeof(logstring),"SendGangMessage(%d,%s,%d) - stopped",gangid,message,colour);
+	WriteLog(DebugLog,logstring);
 }
 
 stock GangOnlineCount(gangid)
 {
-	WriteLog(DebugLog,"GangOnlineCount(gangid) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"GangOnlineCount(gangid) - started",gangid);
+	WriteLog(DebugLog,logstring);
+
 	new memberscount;
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
 		new memberid = GangMembers[gangid][gangmember]; // get memberid
 		if(GangMemberInfo[memberid][member_online]) memberscount++;
 	}
-	WriteLog(DebugLog,"GangOnlineCount(gangid) - stopped");
+
+	format(logstring,sizeof(logstring),"GangOnlineCount(gangid) - stopped",gangid);
+	WriteLog(DebugLog,logstring);
 	return memberscount;
 }
 
 stock GangGiveXP(gangid,xpamount,giverid)
 {
-	WriteLog(DebugLog,"GangGiveXP(gangid,xpamount,giverid) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"GangGiveXP(%d,%d,%d) - started",gangid,xpamount,giverid);
+	WriteLog(DebugLog,logstring);
+
 	Gangs[gangid][gang_score] += xpamount;
 	new giveamount = xpamount / GangOnlineCount(gangid),string[MAX_STRING];
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
@@ -902,12 +1006,16 @@ stock GangGiveXP(gangid,xpamount,giverid)
 			}
 		}
 	}
-	WriteLog(DebugLog,"GangGiveXP(gangid,xpamount,giverid) - stopped");
+	format(logstring,sizeof(logstring),"GangGiveXP(%d,%d,%d) - stopped",gangid,xpamount,giverid);
+	WriteLog(DebugLog,logstring);
 }
 
 stock SetGangColour(gangid,colour)
 {
-	WriteLog(DebugLog,"SetGangColour(gangid,colour) - started");
+	new logstring[MAX_STRING];
+	format(logstring,sizeof(logstring),"SetGangColour(%d,%d) - started",gangid,colour);
+	WriteLog(DebugLog,logstring);
+
 	Gangs[gangid][gang_colour] = colour;
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
@@ -918,5 +1026,6 @@ stock SetGangColour(gangid,colour)
 			SetPlayerColor(playerid,colour);
 		}
 	}
-	WriteLog(DebugLog,"SetGangColour(gangid,colour) - stopped");
+	format(logstring,sizeof(logstring),"SetGangColour(%d,%d) - stopped",gangid,colour);
+	WriteLog(DebugLog,logstring);
 }
