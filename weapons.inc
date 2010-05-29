@@ -24,7 +24,7 @@
 #define shotgun_bullets 10
 #define smg_bullets 100
 
-new Menu:WeaponMenu,Menu:PistolMenu,Menu:MicroSMGMenu,Menu:ShotgunsMenu,Menu:AssaultMenu,WeapPickup[4];
+new Menu:WeaponMenu,Menu:PistolMenu,Menu:MicroSMGMenu,Menu:ShotgunsMenu,Menu:AssaultMenu;
 new Ammunations[AmmunationsCount][CoordInfo] = 
 {
 	{291.0004,-84.5168,1001.5156}, // LVammunation1
@@ -161,7 +161,7 @@ stock weapons_OnGameModeInit()
 	WeaponMenuInit();
 	for(new id=0;id<AmmunationsCount;id++)
 	{
-		WeapPickup[id] = CreateStreamPickup(1247,1,Ammunations[id][Coord_X],Ammunations[id][Coord_Y],Ammunations[id][Coord_Z]);
+		CreateStreamPickup(1247,1,Ammunations[id][Coord_X],Ammunations[id][Coord_Y],Ammunations[id][Coord_Z]);
 	}
 	WriteLog(GameLog,"Ammunition checkpoints initialised");
 }
@@ -169,7 +169,7 @@ stock weapons_OnGameModeInit()
 stock weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused oldkeys
-	if(newkeys == KEY_USING)
+	if(PRESSED( KEY_USING ))
 	{
 		for(new id=0;id<AmmunationsCount;id++)
 		{

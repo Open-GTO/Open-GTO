@@ -75,12 +75,12 @@ stock PayDay()
 					GivePlayerXP(id, BasePayX ,0);
 					CheckPlayerLevel(id);
 				}
-				format(string, sizeof(string), lang_texts[2][12], BasePayM, BasePayX );
-				SendClientMessage(id, COLOUR_MONEY_GOOD, string);
-				format(string, sizeof(string), lang_texts[2][13], BasePayM, BasePayX );
-				GameTextForPlayer(id, string ,999, 5);
-				PlayerPlaySound(id, 1190, 0.0, 0.0, 0.0);
-				PlayerPlaySound(id, 1101, 0.0, 0.0, 0.0);
+				format(string,sizeof(string),lang_texts[2][28],BasePayM,BasePayX);
+				SendClientMessage(id,COLOUR_MONEY_GOOD,string);
+				format(string,sizeof(string),lang_texts[2][29],BasePayM,BasePayX);
+				GameTextForPlayer(id,string ,999,5);
+				PlayerPlaySound(id,1190,0.0,0.0,0.0);
+				PlayerPlaySound(id,1101,0.0,0.0,0.0);
 			}
 		}
 	}

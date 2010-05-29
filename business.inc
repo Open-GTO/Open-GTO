@@ -70,7 +70,7 @@ new Businesses[MAX_BUSINESSES][BusinessInfo] = {
 	{"Four Dragons",2050000,16000,20,"Unknown",0,0,0,	1993.9758,1017.8945,994.8906}
 };
 
-new BusinessPick[MAX_BUSINESSES],Text3D:Business3DTextLabel[MAX_BUSINESSES],Float:BusinessDistanceOfShowLabel=20.0;
+new Text3D:Business3DTextLabel[MAX_BUSINESSES],Float:BusinessDistanceOfShowLabel=20.0;
 
 BusinessLoadAll()
 {
@@ -152,7 +152,7 @@ stock business_OnGameModeInit()
 	new string[MAX_STRING];
 	for(new id=0;id<MAX_BUSINESSES;id++)
 	{
-		BusinessPick[id] = CreateStreamPickup(1274,49,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.5);	//синий домик
+		CreateStreamPickup(1274,49,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.5);	//синий домик
 		CreateStreamMapIcon(52,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]);
 		format(string,sizeof(string),"Бизнес: %s\nСтоимость: %d\nПрибыль: %d\nСейчас принадлежит: %s\nМин.Уровень: %d\nУровень бизнеса: %d",Businesses[id][Business_Name],Businesses[id][Business_Cost],Businesses[id][Business_Value],Businesses[id][Business_Owner],Businesses[id][Business_Level],Businesses[id][Business_Upgrade]);
 		Business3DTextLabel[id] = Create3DTextLabel(string,COLOUR_WHITE,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.75,BusinessDistanceOfShowLabel,0,1);
@@ -601,7 +601,7 @@ stock business_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 stock business_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused oldkeys
-	if(newkeys == KEY_USING)
+	if(PRESSED( KEY_USING ))
 	{
 		for(new id=0;id<MAX_BUSINESSES;id++)
 		{

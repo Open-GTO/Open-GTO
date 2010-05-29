@@ -26,7 +26,6 @@ new Banks[BanksCount][CoordInfo] = {
 	{368.7201,-72.7097,1001.5078}, // LS burger bank7
 	{364.9761,-8.5396,1001.8516} // LS chicken bank5
 };
-new BankPickup[BanksCount];
 new ProfitCount = 2; // %
 new MAX_BANK = 15000000;
 
@@ -56,7 +55,7 @@ stock bank_OnGameModeInit()
 	BankLoadConfig();
 	for(new bankid;bankid<BanksCount;bankid++)
 	{
-	    BankPickup[bankid] = CreateStreamPickup(1274, 23, Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z]);
+	    CreateStreamPickup(1274, 23, Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z]);
 	}
 	return 1;
 }
@@ -70,8 +69,8 @@ stock bank_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 		SendPlayerFormattedText(playerid,lang_texts[2][1],ProfitCount,COLOUR_GREEN);
 		SendPlayerFormattedText(playerid,lang_texts[2][2],Player[playerid][Bank],COLOUR_GREEN);
 		new string[MAX_STRING];
-		format(string,sizeof(string),"Меню банка, сейчас на вашем счету: %d$",Player[playerid][Bank]);
-		return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,string,"Снять деньги\nПоложить деньги","ОК","Отмена");
+		format(string,sizeof(string),lang_texts[2][3],Player[playerid][Bank]);
+		return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,string,lang_texts[2][4],lang_texts[2][5],lang_texts[2][6]);
 	}
 	return 1;
 }
@@ -86,13 +85,13 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		{
 			case 0:
 			{
-				format(string,sizeof(string),"Введите сумму которую вы хотите снять с вашего счёта,\n сейчас на вашем счету: %d$",Player[playerid][Bank]);
-				ShowPlayerDialog(playerid,bank_Withdraw_DialogID,DIALOG_STYLE_INPUT,"Меню банка",string,"Снять","Назад");
+				format(string,sizeof(string),lang_texts[2][7],Player[playerid][Bank]);
+				ShowPlayerDialog(playerid,bank_Withdraw_DialogID,DIALOG_STYLE_INPUT,lang_texts[2][8],string,lang_texts[2][9],lang_texts[2][10]);
 			}
 			case 1:
 			{
-				format(string,sizeof(string),"Введите сумму которую вы хотите положить на ваш счёт,\n сейчас на вашем счету: %d$",Player[playerid][Bank]);
-				ShowPlayerDialog(playerid,bank_Deposit_DialogID,DIALOG_STYLE_INPUT,"Меню банка",string,"Положить","Назад");
+				format(string,sizeof(string),lang_texts[2][11],Player[playerid][Bank]);
+				ShowPlayerDialog(playerid,bank_Deposit_DialogID,DIALOG_STYLE_INPUT,lang_texts[2][12],string,lang_texts[2][13],lang_texts[2][14]);
 			}
 		}
 		return 1;
@@ -101,19 +100,19 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	{
 	    if(!response)
 		{
-			format(string,sizeof(string),"Меню банка, сейчас на вашем счету: %d$",Player[playerid][Bank]);
-			return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,string,"Снять деньги\nПоложить деньги","ОК","Отмена");
+			format(string,sizeof(string),lang_texts[2][15],Player[playerid][Bank]);
+			return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,string,lang_texts[2][16],lang_texts[2][17],lang_texts[2][18]);
 		}
 		if(!isNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
 		{
-			SendClientMessage(playerid,COLOUR_RED,"Вы не ввели или ввели неправильно количество денег.");
+			SendClientMessage(playerid,COLOUR_RED,lang_texts[2][19]);
 			return 0;
 		}
 		new amount = strval(inputtext);
 		if(amount > Player[playerid][Bank]) amount = Player[playerid][Bank];
 		oGivePlayerMoney(playerid,amount,0);
 		Player[playerid][Bank] -= amount;
-		format(string,sizeof(string), lang_texts[2][6],amount,Player[playerid][Bank]);
+		format(string,sizeof(string), lang_texts[2][9],amount,Player[playerid][Bank]);
 		SendClientMessage(playerid,COLOUR_GREEN,string);
 		new Float:playerx,Float:playery,Float:playerz;
 		GetPlayerPos(playerid,playerx,playery,playerz);
@@ -124,12 +123,12 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	{
 	    if(!response)
 		{
-			format(string,sizeof(string),"Меню банка, сейчас на вашем счету: %d$",Player[playerid][Bank]);
-			return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,string,"Снять деньги\nПоложить деньги","ОК","Отмена");
+			format(string,sizeof(string),lang_texts[2][20],Player[playerid][Bank]);
+			return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,string,lang_texts[2][21],lang_texts[2][22],lang_texts[2][23]);
 		}
 		if(!isNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
 		{
-			SendClientMessage(playerid,COLOUR_RED,"Вы не ввели или ввели неправильно количество денег.");
+			SendClientMessage(playerid,COLOUR_RED,lang_texts[2][24]);
 			return 0;
 		}
 		new amount = strval(inputtext);
@@ -137,7 +136,7 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(Player[playerid][Bank] + amount > MAX_BANK) amount = MAX_BANK - Player[playerid][Bank];
 		oGivePlayerMoney(playerid,-amount,0);
 		Player[playerid][Bank] += amount;
-		format(string,sizeof(string), lang_texts[2][10],amount,Player[playerid][Bank]);
+		format(string,sizeof(string),lang_texts[2][26],amount,Player[playerid][Bank]);
 		SendClientMessage(playerid,COLOUR_GREEN,string);
 		new Float:playerx,Float:playery,Float:playerz;
 		GetPlayerPos(playerid,playerx,playery,playerz);
@@ -150,17 +149,14 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 stock IsPlayerAtBank(playerid)
 {
 	for(new bankid;bankid<BanksCount;bankid++)
-	{
-		if(IsPlayerInRangeOfPoint(playerid,2,Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z])) return 1;
-	}
+		if(IsPlayerInRangeOfPoint(playerid,2,Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z]))
+			return 1;
 	return 0;
 }
 
 stock Profit()
 {
 	for(new playerid;playerid<MAX_PLAYERS;playerid++)
-	{
 		Player[playerid][Bank] += (Player[playerid][Bank] / 100) * ProfitCount;
-	}
 	return 1;
 }
