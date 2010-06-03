@@ -171,20 +171,14 @@ stock BisMenuInit(playerid)
 
 stock IsPlayerAtBusiness(playerid)
 {
-	for(new id=0;id<MAX_BUSINESSES;id++)
-	{
-		if(IsPlayerInRangeOfPoint(playerid,2,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z])) return 1;
-	}
+	for(new id=0;id<MAX_BUSINESSES;id++) if(IsPlayerInRangeOfPoint(playerid,2,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z])) return 1;
 	return 0;
 }
 
 stock GetBusinessID(playerid)
 {
 	new lookupid=-1;
-	for(new id=0;id<MAX_BUSINESSES;id++)
-	{
-		if(IsPlayerInRangeOfPoint(playerid,2,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z])) lookupid = id;
-	}
+	for(new id=0;id<MAX_BUSINESSES;id++) if(IsPlayerInRangeOfPoint(playerid,2,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z])) lookupid = id;
 	return lookupid;
 }
 
@@ -221,17 +215,16 @@ stock business_OnPlayerCommandText(playerid,text[]) // process player commands
 	set(cmd,strcharsplit(text, idx,strchar(" ")));
 	if (strlen(cmd) == 0) return 0;
 
-/*	if (!strcmp("/bmenu", cmd, true, 5))
+/*	if(!strcmp("/bmenu", cmd, true, 5))
 	{
-		if (!IsPlayerAtBusiness(playerid))
+		if(!IsPlayerAtBusiness(playerid))
 		{
 			SendPlayerFormattedText(playerid,  lang_texts[3][2]  , 0,COLOUR_RED);
 			return 1;
 		}
 		else BisMenuInit(playerid);
 	}
-	//-- businessinfo --
-	if((!strcmp(cmd, "/businessinfo", true)) || (!strcmp(cmd, "/binfo", true)))
+	if((!strcmp(cmd,"/businessinfo",true)) || (!strcmp(cmd,"/binfo",true)))
 	{
 		if (!IsPlayerAtBusiness(playerid))
 		{
@@ -240,8 +233,6 @@ stock business_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		else FBisInfo(playerid);
 	}
-
-	//-- buybusiness --
 	if((!strcmp(cmd, "/businessbuy", true)) || (!strcmp(cmd, "/bbuy", true)))
 	{
 		if (!IsPlayerAtBusiness(playerid))
@@ -251,8 +242,6 @@ stock business_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		else FBisBuy(playerid);
 	}
-
-	//-- sellbusiness --
 	if((!strcmp(cmd, "/businesssell", true)) || (!strcmp(cmd, "/bsell", true)))
 	{
 		if (!IsPlayerAtBusiness(playerid))
@@ -262,8 +251,7 @@ stock business_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		else FBisSell(playerid);
 	}
-	//-- collect vault --
-	if(!strcmp(cmd, "/collect", true))
+	if(!strcmp(cmd,"/collect",true))
 	{
 		if (!IsPlayerAtBusiness(playerid))
 		{
@@ -272,21 +260,17 @@ stock business_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		else FBisCollect(playerid);
 	}
-
-	//-- businesses list --
-	if(!strcmp(cmd, "/businesses", true)) FBisBises(playerid);
-	//--  my businesses list --
-	if(!strcmp(cmd, "/mybusinesses", true)) FBisMyBises(playerid);
-	// -- upgrade businesess
-	if(!strcmp(cmd, "/buyupgrade", true))
+	if(!strcmp(cmd,"/businesses",true)) FBisBises(playerid);
+	if(!strcmp(cmd,"/mybusinesses",true)) FBisMyBises(playerid);
+	if(!strcmp(cmd,"/buyupgrade",true))
 	{
 		if (!IsPlayerAtBusiness(playerid))
 		{
-		SendPlayerFormattedText(playerid,  lang_texts[3][46]  , 0,COLOUR_RED);
-		return 1;
+			SendPlayerFormattedText(playerid,  lang_texts[3][46]  , 0,COLOUR_RED);
+			return 1;
 		}
 		else BbuyUpgrade(playerid);
-	return 1;
+		return 1;
 	}*/
 	return 0;
 }
@@ -360,23 +344,17 @@ stock FBisBuy(playerid)
 	}
 	new price = Businesses[id][Business_Cost] + Businesses[id][Business_Buyout];
 	if(Player[playerid][Money] < price) return SendClientMessage(playerid,COLOUR_RED,lang_texts[3][24]);
-	if(!strcmp(Businesses[id][Business_Owner],oGetPlayerName(playerid), true))
-	{
-		SendClientMessage(playerid,COLOUR_RED,lang_texts[3][20]);
-	}
+	if(!strcmp(Businesses[id][Business_Owner],oGetPlayerName(playerid),true)) SendClientMessage(playerid,COLOUR_RED,lang_texts[3][20]);
 	else
 	{
 		new owner=-1;
-		for(new ownerid = 0; ownerid < MAX_PLAYERS; ownerid++)
+		for(new ownerid=0;ownerid<MAX_PLAYERS;ownerid++)
 		{
-			if(IsPlayerConnected(ownerid))
+			if(IsPlayerConnected(ownerid) && !strcmp(Businesses[id][Business_Owner],oGetPlayerName(ownerid),true))
 			{
-				if(!strcmp(Businesses[id][Business_Owner],oGetPlayerName(ownerid), true))
-				{
-					format(temp,sizeof(temp),lang_texts[3][21],Businesses[id][Business_Name],oGetPlayerName(playerid));
-					SendClientMessage(ownerid,COLOUR_RED,temp);
-					owner=ownerid;
-				}
+				format(temp,sizeof(temp),lang_texts[3][21],Businesses[id][Business_Name],oGetPlayerName(playerid));
+				SendClientMessage(ownerid,COLOUR_RED,temp);
+				owner=ownerid;
 			}
 		}
 		oGivePlayerMoney(playerid,0-price,1);
