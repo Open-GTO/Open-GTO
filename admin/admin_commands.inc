@@ -443,6 +443,23 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(giveid,COLOUR_WHITE,string);
 		return 1;	
 	}
+	if(strcmp(cmdtext,"/underwater",true) == 0) 
+	{ 
+		if(IsPlayerInAnyVehicle(playerid)) 
+		{ 
+			SetVehiclePos(GetPlayerVehicleID(playerid),-2888.677978,1423.499023,-36.533981); 
+			SetVehicleZAngle(GetPlayerVehicleID(playerid),244.428359); 
+			LinkVehicleToInterior(GetPlayerVehicleID(playerid),0); 
+		} 
+		if(!IsPlayerInAnyVehicle(playerid)) 
+		{ 
+			SetPlayerPos(playerid,-2888.677978,1423.499023,-36.533981); 
+			SetPlayerFacingAngle(playerid,244.428359); 
+		} 
+		SetPlayerInterior(playerid,0); 
+		SendClientMessage(playerid,0x0000FFAA,"Вы под водой."); 
+		return 1; 
+	}
 	//Скрыть себя ото всех (на радаре)
 	if(!strcmp(cmd,"/ahideme",true))
 	{
