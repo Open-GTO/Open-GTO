@@ -11,7 +11,7 @@
 
 #include "base"
 
-new lang_db[255] = "GTO/";
+new lang_db[10] = "GTO/";
 new lang[10] = "Russian";
 new lang_texts[20][99][255];
 
@@ -26,7 +26,7 @@ stock lang_OnGameModeInit()
 
 stock lang_read(filename[])
 {
-	new File:fohnd, tmpres[255], tmp1[255], tmp2[255], i;
+	new File:fohnd,tmpres[255],tmp1[255],tmp2[255],i;
 	fohnd=fopen(filename,io_read);
 	if(!fohnd) return 1;
 	while(fread(fohnd,tmpres,sizeof(tmpres)))

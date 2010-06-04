@@ -428,7 +428,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		return 1;
 	}
 	if(!strcmp(cmd,"/setvip",true))
-	{//
+	{
 		new string[MAX_STRING];
 		new giveid = strval(strcharsplit(text,idx,strchar(" ")));
 		if(giveid < 0 || giveid >= MAX_PLAYERS) 
@@ -443,7 +443,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(giveid,COLOUR_WHITE,string);
 		return 1;	
 	}
-	if(strcmp(cmdtext,"/underwater",true) == 0) 
+	if(!strcmp(cmd,"/underwater",true)) 
 	{ 
 		if(IsPlayerInAnyVehicle(playerid)) 
 		{ 
@@ -451,7 +451,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 			SetVehicleZAngle(GetPlayerVehicleID(playerid),244.428359); 
 			LinkVehicleToInterior(GetPlayerVehicleID(playerid),0); 
 		} 
-		if(!IsPlayerInAnyVehicle(playerid)) 
+		else
 		{ 
 			SetPlayerPos(playerid,-2888.677978,1423.499023,-36.533981); 
 			SetPlayerFacingAngle(playerid,244.428359); 

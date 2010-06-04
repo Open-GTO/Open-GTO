@@ -12,7 +12,7 @@
 
 #include "utils\mxINI"
 
-#define VERSION "v0.6.3 beta"
+#define VERSION "v0.6.3 beta 2"
 
 #define MAX_STRING 128 // !!!Ќ≈ ћ≈Ќя“№!!!, а то мод будет плющить(ZiGGi)
 #define MAX_NAME 40 // number of char's a name/password/misc_word can be
@@ -198,15 +198,15 @@ stock BaseLoadConfig()
 		ini_Close(file_base);
 	}
 	if(!ini_Exist(LevelDB)) BaseSaveConfig();
+	file_base = ini_Open(LevelDB);
 	for(new i=0;i<=MAX_LEVEL;i++)
 	{
-	    file_base = ini_Open(LevelDB);
 		format(temp,sizeof(temp),"Level%d_Experience",i);
 		ini_GetInt(file_base,temp,LevelList[i][level_xp]);
 	    format(temp,sizeof(temp),"Level%d_Rankname",i);
 		ini_Get(file_base,temp,LevelList[i][level_name],MAX_STRING);
-		ini_Close(file_base);
 	}
+	ini_Close(file_base);
 	return;
 }
 
@@ -219,26 +219,24 @@ stock BaseSaveConfig()
 	ini_SetInt(file_base,"Real_Time",RealTime);
 	ini_SetInt(file_base,"Verbose_Save",VerboseSave);
 	ini_Close(file_base);
-	
-	if(!ini_Exist(LevelDB)) {new File:fhnd = fopen(LevelDB,io_write);fclose(fhnd);}
 
+	new file_base_level;
+	if(ini_Exist(LevelDB)) file_base_level = ini_Open(LevelDB);
+	else file_base_level = ini_Create(LevelDB);
 	for(new i=0;i<=MAX_LEVEL;i++)
 	{
-	    file_base = ini_Open(LevelDB);
 	    format(temp,sizeof(temp),"Level%d_Rankname",i);
-		ini_Set(file_base,temp,LevelList[i][level_name]);
+		ini_Set(file_base_level,temp,LevelList[i][level_name]);
 		format(temp,sizeof(temp),"Level%d_Experience",i);
-		ini_SetInt(file_base,temp,LevelList[i][level_xp]);
-		ini_Close(file_base);
+		ini_SetInt(file_base_level,temp,LevelList[i][level_xp]);
 	}
+	ini_Close(file_base_level);
 	return;
 }
 
 stock base_OnGameModeInit()
 {
 	BaseLoadConfig();
-	//EnableTirePopping(1);
-	//EnableZoneNames(1);
 	UsePlayerPedAnims();
 	AllowAdminTeleport(1);
 	ShowPlayerMarkers(1);
@@ -249,7 +247,7 @@ stock base_OnGameModeInit()
 GetLevelName(level)
 {
 	new name[MAX_NAME];
-	if ((level < 0) || (level > MAX_LEVEL+1)) return name;
+	if((level < 0) || (level > MAX_LEVEL+1)) return name;
 	set(name,LevelList[level][level_name]);
 	return name;
 }

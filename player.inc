@@ -350,19 +350,19 @@ stock GivePlayerOwnedWeapons(playerid)
 stock SendPlayerOwnedWeapons(playerid)
 {
 	new string[MAX_STRING];
-	SendPlayerFormattedText(playerid,  lang_texts[9][7]  , 0,COLOUR_GREEN);
+	SendClientMessage(playerid,COLOUR_GREEN,lang_texts[9][7]);
 	for (new weaponslot=0;weaponslot<PLAYER_WEAPON_SLOTS;weaponslot++)
 	{
 		if (PlayerWeapons[playerid][weaponslot][pwid] <= 0) continue;
 		if (PlayerWeapons[playerid][weaponslot][pbullets] > 1)
 		{
-			format(string,sizeof(string), lang_texts[9][8] ,oGetWeaponName(PlayerWeapons[playerid][weaponslot][pwid]),PlayerWeapons[playerid][weaponslot][pbullets]);
-			SendPlayerFormattedText(playerid, string,0,COLOUR_MISC);
+			format(string,sizeof(string),lang_texts[9][8],oGetWeaponName(PlayerWeapons[playerid][weaponslot][pwid]),PlayerWeapons[playerid][weaponslot][pbullets]);
+			SendClientMessage(playerid,COLOUR_MISC,string);
 		}
 		else if (PlayerWeapons[playerid][weaponslot][pbullets] == 1)
 		{
 			format(string,sizeof(string), lang_texts[9][9] ,oGetWeaponName(PlayerWeapons[playerid][weaponslot][pwid]));
-			SendPlayerFormattedText(playerid, string,0,COLOUR_MISC);
+			SendClientMessage(playerid,COLOUR_MISC,string);
 		}
 	}
 }
@@ -484,7 +484,7 @@ stock IsPlayerRegistered(playerid)
 
 stock player_OnPlayerDisconnect(playerid,reason)
 {
-	PlaySoundForAll(1058);
+//	PlaySoundForAll(1058); // думаю, нахуй, а то достало(ZiGGi)
 	if(IsPlayerRegistered(playerid))
 	{
 		PlayerSave(playerid);
@@ -515,11 +515,11 @@ stock player_OnPlayerConnect(playerid)
 	set(playername,oGetPlayerName(playerid));
 	if(!NameCharCheck(playername))
 	{
-		SendPlayerFormattedText(playerid,  lang_texts[9][13] , 0,COLOUR_RED);
+		SendClientMessage(playerid,COLOUR_RED,lang_texts[9][13]);
 		KickPlayer(playerid,"Invalid character in playername."); // kick player
 	}
 	SetPlayerColor(playerid,COLOUR_PLAYER);
-	PlaySoundForAll(1058);
+//	PlaySoundForAll(1058); // думаю, нахуй, а то достало(ZiGGi)
 
 	new string[MAX_STRING];
 	format(string, sizeof(string),lang_texts[15][85], VERSION);

@@ -142,25 +142,6 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		SetPlayerHealth(playerid,0.0);
 		return 1;
 	}
-	if(!strcmp(cmd,"/handsup",true))
-	{
-		if(GetPlayerState(playerid) == PLAYER_STATE_ONFOOT)
-		{
-			SetPlayerSpecialAction(playerid,SPECIAL_ACTION_HANDSUP);
-			return 1;
-		}
-	}
- 	if(!strcmp(cmd,"/dance",true))
-	{
-		switch(strval(strcharsplit(text, idx,strchar(" "))))
-		{
-			case 1:SetPlayerSpecialAction(playerid,SPECIAL_ACTION_DANCE1);
-			case 2:SetPlayerSpecialAction(playerid,SPECIAL_ACTION_DANCE2);
-			case 3:SetPlayerSpecialAction(playerid,SPECIAL_ACTION_DANCE3);
-			default:SendClientMessage(playerid,COLOUR_RED,lang_texts[15][83]);
-		}
-		return 1;
-	}
 	if(!strcmp(cmd,"/admins",true))
 	{
 		new string[MAX_STRING];
@@ -267,15 +248,31 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		fremove(string);
 		return 1;
 	}
+
+ 	if(!strcmp(cmd,"/dance",true))
+	{
+		switch(strval(strcharsplit(text, idx,strchar(" "))))
+		{
+			case 1:SetPlayerSpecialAction(playerid,SPECIAL_ACTION_DANCE1);
+			case 2:SetPlayerSpecialAction(playerid,SPECIAL_ACTION_DANCE2);
+			case 3:SetPlayerSpecialAction(playerid,SPECIAL_ACTION_DANCE3);
+			case 4:SetPlayerSpecialAction(playerid,SPECIAL_ACTION_DANCE4);
+			default:SendClientMessage(playerid,COLOUR_RED,lang_texts[15][83]);
+		}
+		return 1;
+	}
+
+	if(!strcmp(cmd,"/handsup",true))
+		if(GetPlayerState(playerid) == PLAYER_STATE_ONFOOT)
+			return SetPlayerSpecialAction(playerid,SPECIAL_ACTION_HANDSUP);
+
 	if(!strcmp(cmd,"/piss",true))
-	{
-		SetPlayerSpecialAction(playerid,SPECIAL_ACTION_DUCK);
-		return 1;
-	}
+		if(GetPlayerState(playerid) == PLAYER_STATE_ONFOOT)
+			return SetPlayerSpecialAction(playerid,68);
+
 	if(!strcmp(cmd,"/smoke",true))
-	{
-		SetPlayerSpecialAction(playerid,SPECIAL_ACTION_SMOKE_CIGGY);
-		return 1;
-	}
+		if(GetPlayerState(playerid) == PLAYER_STATE_ONFOOT)
+			return SetPlayerSpecialAction(playerid,SPECIAL_ACTION_SMOKE_CIGGY);
+
 	return 0;
 }

@@ -140,7 +140,7 @@ stock mission_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	#pragma unused oldkeys
 	if(IsPlayerInAnyVehicle(playerid))
 	{
-		if(newkeys == KEY_SUBMISSION) 
+		if(PRESSED( KEY_SUBMISSION )) 
 		{
 			if(PlayerQuest[playerid] == 0) mission_Start(playerid);
 			else if(PlayerQuest[playerid] == MISSION_ID) 

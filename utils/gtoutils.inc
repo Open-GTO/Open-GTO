@@ -231,14 +231,12 @@ stock SetPlayerPosEx(playerid,Float:X,Float:Y,Float:Z,Float:Angle,Interior)
 
 new Float:x11,Float:y11,Float:z11;
 
-PlaySoundForAll(soundid)
+stock PlaySoundForAll(soundid)
 {
     for(new i=0;i<MAX_PLAYERS;i++)
 	{
-    	if(IsPlayerConnected(i))
-		{
-    		PlayerPlaySound(i,soundid,x11,y11,z11);
-		}
+    	if(!IsPlayerConnected(i)) continue;
+		PlayerPlaySound(i,soundid,x11,y11,z11);
 	}
 }
 
