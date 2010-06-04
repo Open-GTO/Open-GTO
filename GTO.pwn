@@ -7,6 +7,7 @@ Date start edit: 	5 November 2009(by Russian Scripter's)
 Current version: GTO 0.6.3
 SA-MP Versions:	0.3a
 */
+
 #include <a_samp>							// samp
 #include "base"								// holds base script values
 #include "utils\gtoutils"					// misc used utils
@@ -415,6 +416,7 @@ public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	bank_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 	weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
     fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+    mission_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 	return 1;
 }
 
