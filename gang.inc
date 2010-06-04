@@ -595,11 +595,11 @@ stock GangCleanup(gangid)
 		if(GangMemberInfo[memberid][member_playerid] == INVALID_PLAYER_ID) return;
 		if(IsPlayerRegistered(GangMemberInfo[memberid][member_playerid])) continue;
 		
-		GangMemberLogout(GangMemberInfo[memberid][member_playerid],gangid);
+		GangMemberLogout( GangMemberInfo[memberid][member_playerid] ,gangid);
 		GangMemberInfo[memberid][member_online] = false;
 	}
 	if(GangOnlineCount(gangid) == 0) GangUnload(gangid);
-	return;
+//	return;//!!!Fix
 }
 
 stock GangSaveAll()
@@ -631,8 +631,8 @@ stock GangMemberLogout(playerid,gangid)
 		format(string, sizeof(string),lang_texts[6][74],oGetPlayerName(playerid));
 		SendGangMessage(gangid,string,COLOUR_GANG);
 	}
-	GangSave(gangid);
-	return;
+/*	GangSave(gangid); //!!!Fix
+	return;*/
 }
 
 stock GangSave(gangid)
@@ -810,14 +810,12 @@ stock SetGangXP(gangid,xpamount)
 
 stock CalculateGangLevel(gangid)
 {
-	new level;
 	for(new i;i<=MAX_GANG_LEVEL;i++)
 	{
 		if(GetGangXP(gangid) < GangLevelList[i]) continue;
-		level = i;
-		break;
+		return i;
 	}
-	return level;
+	return -1;
 }
 
 stock CheckGangLevel(gangid) return Gangs[gangid][gang_level] = CalculateGangLevel(gangid);
