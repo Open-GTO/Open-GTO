@@ -301,9 +301,11 @@ stock equal(str1[],str2[],bool:ignorecase) {
 }
 /*
 */
-stock set(result[],source[])
+stock set(set_result[],set_source[])
 {
-	for(new i=0;i<strlen(source);i++) result[i] = source[i];
+	new count = strlen(set_source);
+	for(new i=0;i<count;i++) set_result[i] = set_source[i];
+	set_result[count] = 0;
 }
 /**
  *  Return a timestamp
