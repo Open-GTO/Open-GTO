@@ -467,7 +467,7 @@ stock player_ResetStats(playerid)
 	Player[playerid][MuteTime] = 0;
 	Player[playerid][Status] = 0;
 	Player[playerid][Hide] = 0;
-	Player[playerid][SkinModel] = 0;
+	Player[playerid][SkinModel] = 1;
 	Player[playerid][FightStyle] = 4;
 	Player[playerid][FightStyleUsed] = 4;
 	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
@@ -593,23 +593,29 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	PlayerCurrentKills[killerid]++;
 
 	// Give XP
-	new XP_give_player = -((GetPlayerXP(victimid) / 100) * PLAYER_XP_DEATH_MINUS_PROC);
+	new XP_give_victim = -((GetPlayerXP(victimid) / 100) * PLAYER_XP_DEATH_MINUS_PROC);
 	new XP_give_killer = (GetPlayerLevel(victimid) + 1) * 75;
 
 	if((Player[killerid][XP] + XP_give_killer) > MAX_LVLXP) SetPlayerXP(killerid,MAX_LVLXP);
-	else
+	else if(XP_give_killer != 0)
 	{
 		GivePlayerXP(killerid,XP_give_killer,1);
 		CheckPlayerLevel(killerid);
 	}
-	GivePlayerXP(victimid,XP_give_player,1);
-	CheckPlayerLevel(victimid);
+	if(XP_give_victim != 0)
+	{
+		GivePlayerXP(victimid,victim,1);
+		CheckPlayerLevel(victimid);
+	}
 	//
 	// Give Money
 	new stolencash = (oGetPlayerMoney(victimid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
-	oGivePlayerMoney(victimid,-stolencash,1);
-	if(oGetPlayerMoney(killerid) + stolencash > MAX_MONEY) oSetPlayerMoney(killerid,MAX_MONEY);
-	else oGivePlayerMoney(killerid,stolencash,1);
+	if(stolencash != 0)
+	{
+		oGivePlayerMoney(victimid,-stolencash,1);
+		if(oGetPlayerMoney(killerid) + stolencash > MAX_MONEY) oSetPlayerMoney(killerid,MAX_MONEY);
+		else oGivePlayerMoney(killerid,stolencash,1);
+	}
 	//
 
 	return;
