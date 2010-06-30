@@ -604,7 +604,7 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	}
 	if(XP_give_victim != 0)
 	{
-		GivePlayerXP(victimid,victim,1);
+		GivePlayerXP(victimid,XP_give_victim,1);
 		CheckPlayerLevel(victimid);
 	}
 	//
