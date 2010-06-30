@@ -1114,7 +1114,7 @@ stock IsWeaponAllowedInDM(weaponid,dmid)
 	return 0;
 }
 
-stock OnPlayerDMKill(playerid,victimid,weaponid)
+stock deathmatch_OnPlayerKill(playerid,victimid,weaponid)
 {
 
 	// check gang kill
