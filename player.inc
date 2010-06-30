@@ -53,6 +53,9 @@ new Player[MAX_PLAYERS][PlayerInfo];
 #define GetPlayerXP(%1) Player[%1][XP]
 #define SetPlayerXP(%1,%2) Player[%1][XP] = %2
 
+#define PLAYER_XP_DEATH_MINUS_PROC 3 // сколько процентов XP уберается от уже имеющегося опыта
+#define PLAYER_MONEY_DEATH_MINUS_PROC 20 // сколько процентов денег уберается
+
 #include "weapons"
 
 new PlayerSkin[MAX_PLAYERS];
@@ -435,6 +438,7 @@ stock player_OnPlayerSpawn(playerid)
 
 	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
 		SetPlayerSkillLevel(playerid,i,PlayerWeaponsSkills[playerid][i]);
+
 	Player[playerid][FightStyleUsed] = Player[playerid][FightStyle];
 	SetPlayerFightingStyle(playerid,Player[playerid][FightStyleUsed]);
 	return 1;
@@ -543,16 +547,10 @@ stock player_OnPlayerDeath(playerid,killerid,reason)
 	PlayerCurrentKills[playerid] = 0;
 	if(oGetPlayerHealth(killerid) > 100) KickPlayer(killerid,"Invalid health amount. (cheat?)");
 	oGivePlayerMoney(playerid,-100,0);
-	if((Player[playerid][XP] - (Player[playerid][XP] / 30)) > 0)
-	{
-		if(!IsPlayerAdmin(playerid))
-		{
-			GivePlayerXP(playerid,-(Player[playerid][XP] / 80),1); // take death penalty xp
-			Player[playerid][XP]=GetPlayerXP(playerid);
-			CheckPlayerLevel(playerid);
-		}
-	}
-	else SetPlayerXP(playerid,0);
+
+	new WeaponSkillID = GetWeaponSkillID(reason);
+	SetPlayerSkillLevel(killerid,WeaponSkillID,PlayerWeaponsSkills[killerid][WeaponSkillID] += 1);
+
 	modfunc_OnPlayerDeath(playerid,killerid,reason);
 }
 
@@ -594,46 +592,26 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	Player[killerid][Kills]++;
 	PlayerCurrentKills[killerid]++;
 
-	new WeaponSkillID = GetWeaponSkillID(reason);
-	SetPlayerSkillLevel(killerid,WeaponSkillID,PlayerWeaponsSkills[killerid][WeaponSkillID] += 1);
+	// Give XP
+	new XP_give_player = -((GetPlayerXP(victimid) / 100) * PLAYER_XP_DEATH_MINUS_PROC);
+	new XP_give_killer = (GetPlayerLevel(victimid) + 1) * 75;
 
-	// earn xp
-	new earnedXP = ((1+Player[victimid][Level]) * 75);
-	if (earnedXP > (1+Player[killerid][Level]) * 100)
+	if((Player[killerid][XP] + XP_give_killer) > MAX_LVLXP) SetPlayerXP(killerid,MAX_LVLXP);
+	else
 	{
-		earnedXP = ((1+Player[killerid][Level]) * 100);
+		GivePlayerXP(killerid,XP_give_killer,1);
+		CheckPlayerLevel(killerid);
 	}
-	if ((Player[killerid][XP] + earnedXP) <= MAX_LVLXP)
-	{
-		if (Player[killerid][XP] < MAX_LVLXP) 
-		{
-			GivePlayerXP(victimid,-earnedXP/2,1);
-			GivePlayerXP(killerid,earnedXP,1);
-			Player[killerid][XP]=GetPlayerXP(killerid);
-			Player[victimid][XP]=GetPlayerXP(victimid);
-			CheckPlayerLevel(victimid);
-			CheckPlayerLevel(killerid);
-		}
-		else
-		{
-			new string[MAX_STRING];
-			format(string, sizeof(string), lang_texts[9][17]);
-			SendClientMessage(killerid, COLOUR_RED, string);
-		}
-	}
-	else SetPlayerXP(killerid, MAX_LVLXP);
-
-	// steal cash
-	new stolencash;
-	if(oGetPlayerMoney(victimid) > 1000) stolencash = (oGetPlayerMoney(victimid) - (oGetPlayerMoney(victimid) / 7));
-	else stolencash = oGetPlayerMoney(victimid);
-
-	//ЕСЛИ У убийцы предел наличных, stolencash будет соответствовать!
-
-	if((MAX_MONEY-Player[killerid][Money]) < stolencash) stolencash = (MAX_MONEY-Player[killerid][Money]);
+	GivePlayerXP(victimid,XP_give_player,1);
+	CheckPlayerLevel(victimid);
+	//
+	// Give Money
+	new stolencash = (oGetPlayerMoney(victimid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
 	oGivePlayerMoney(victimid,-stolencash,1);
-	oGivePlayerMoney(killerid,stolencash,1);
-	
+	if(oGetPlayerMoney(killerid) + stolencash > MAX_MONEY) oSetPlayerMoney(killerid,MAX_MONEY);
+	else oGivePlayerMoney(killerid,stolencash,1);
+	//
+
 	return;
 }
  
@@ -898,8 +876,7 @@ stock oGetPlayerName(playerid)
 
 stock oSetPlayerHealth(playerid,Float:health)
 {
-	Player[playerid][Health] = health;
-	return SetPlayerHealth(playerid, health);
+	return SetPlayerHealth(playerid, (Player[playerid][Health] = health));
 }
 
 stock oGivePlayerWeapon(playerid,weaponid,ammo)

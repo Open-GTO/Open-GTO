@@ -1,10 +1,10 @@
 /*
-Project Name:	San Andreas: Multiplayer: Grand Theft Online.
+Project Name:	San Andreas - Multiplayer: Grand Theft Online.
 
 Date Created:		12 August 2006
 Date start edit: 	5 November 2009(by Russian Scripter's)
 
-Current version: GTO 0.6.3
+Current version: GTO 0.6.4
 SA-MP Versions:	0.3a
 */
 
@@ -168,11 +168,6 @@ public OnGameModeInit()
 	SetTimer("OneHourTimer",3600000,1); // 1 hour
 	SpawnWorld();
 	WorldSave();
-/*	if(VerboseSave == 1 || VerboseSave == -1)
-	{
-		WorldSave();
-		if(VerboseSave == -1) VerboseSave = 0;
-	}*/
 	printf("SERVER: %s initialization complete. [%02d:%02d]",gamemode,hour,minute);
 	new string[MAX_STRING];
 	format(string,sizeof(string),"SERVER: %s initialization complete. ",gamemode);
@@ -241,25 +236,33 @@ public OnPlayerEnterRaceCheckpoint(playerid)
 
 public OnPlayerDeath(playerid, killerid, reason)
 {
-	new logstring[MAX_STRING];
 	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
+
+	new logstring[MAX_STRING];
 	if(killerid == INVALID_PLAYER_ID) format(logstring, sizeof (logstring), "player: %d: %s: has died > Reason: (%d)",playerid,oGetPlayerName(playerid),reason);
 	else format(logstring, sizeof (logstring), "player: %d: %s: has killed player %s(%d)> Reason: (%d)",killerid,oGetPlayerName(killerid),oGetPlayerName(playerid),playerid,reason);
 	WriteLog(GameLog,logstring);
+
+	SendDeathMessage(killerid,playerid,reason);
+
 	mission_OnPlayerDeath(playerid,killerid,reason);
 	gang_OnPlayerDeath(playerid,killerid,reason);
-	SendDeathMessage(killerid,playerid,reason);
+	
 	if(!IsPlayerInAnyDM(playerid))
 	{
 		player_OnPlayerDeath(playerid,killerid,reason);
+		player_OnPlayerKill(killerid,playerid,reason);
 //		DropPlayerWeapons(playerid);
 		PlayCrimeReportForPlayer(killerid,killerid,random(18)+3);
 		PlayCrimeReportForPlayer(playerid,killerid,random(18)+3);
  	}
 	else deathmatch_OnPlayerDeath(playerid,killerid);
-	if(killerid == INVALID_PLAYER_ID) return 1;
-	if(!IsPlayerInAnyDM(playerid)) player_OnPlayerKill(killerid, playerid,reason);
-	else OnPlayerDMKill(killerid,playerid,reason);
+
+	if(killerid != INVALID_PLAYER_ID) return 1;
+	{
+		if(!IsPlayerInAnyDM(playerid)) player_OnPlayerKill(killerid, playerid,reason);
+		else deathmatch_OnPlayerKill(killerid,playerid,reason);
+	}
 	return 1;
 }
 
@@ -293,7 +296,19 @@ public OnPlayerSpawn(playerid)
 
 public OnPlayerRequestClass(playerid, classid)
 {
-	Player[playerid][SkinModel] = GetPlayerSkin(playerid);
+	// Фикс для выбора классов(поломалось в 0.3a)
+	static bool:player_class_zero[MAX_PLAYERS];
+	if(classid != 0)
+	{
+		Player[playerid][SkinModel] = GetPlayerSkin(playerid);
+		player_class_zero[playerid] = true;
+	}
+	else if(player_class_zero[playerid] == true) // classid == 0 тоже можно выбирать
+	{
+		Player[playerid][SkinModel] = GetPlayerSkin(playerid);
+		player_class_zero[playerid] = false;
+	}
+	//
 	switch(City[playerid])
 	{
 	    case 0:

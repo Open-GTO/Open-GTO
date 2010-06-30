@@ -16,14 +16,13 @@
 #define HousesDialogid 3
 
 #define MAX_HOUSEBUYSELL 500000
-#define MAX_HOUSES 164
+#define MAX_HOUSES 161
 #define int 15
 
 new Hous[MAX_PLAYERS],Haus[MAX_PLAYERS];
 new housepickup[MAX_HOUSES],Text3D:House3DTextLabel[MAX_HOUSES],Float:HouseDistanceOfShowLabel=20.0;
 
-enum HouseInfo 
-{
+enum HouseInfo {
 	Houses_Name[MAX_STRING],// house name
 	Houses_Cost,			// cost
 	Houses_Owner[MAX_NAME],	// owner
@@ -47,8 +46,8 @@ enum HouseInfo
 }
 
 new Houses[MAX_HOUSES][HouseInfo] = {
-	//NAME, COST, OWNER, GANG, UpKeep, UpKeepLeft, BUYOUT, интерьер, Car, Lock, Rentabil, RentName, Rent Cost, Heal upgrade,eX,eY,eZ,pX,pY,pZ
-{"[LV]Four Dragons Mansion",1250000,"Unknown","Unknown",500,0,0,1,0,0,0,"Unknown",50000,0,	991.8711,-668.1383,121.9763,	247.5086,304.9248,999.1484},
+//NAME, COST, OWNER, GANG, UpKeep, UpKeepLeft, BUYOUT, интерьер, Car, Lock, Rentabil, RentName, Rent Cost, Heal upgrade,eX,eY,eZ,pX,pY,pZ
+//{"[LV]Four Dragons Mansion",1250000,"Unknown","Unknown",500,0,0,1,0,0,0,"Unknown",50000,0,	991.8711,-668.1383,121.9763,	247.5086,304.9248,999.1484},
 {"[LV]Caligula Mansion",850000,"Unknown","Unknown",500,0,0,3,0,0,0,"Unknown",50000,0,	300.2951,-1154.5029,81.3909,	289.9850,307.3130,999.1484},
 {"[LS]Willowfield",17000,"Unknown","Unknown",50,0,0,5,0,0,0,"Unknown",50000,0,	2486.8389,-1997.4480,13.8343,	319.4555,312.5038,999.1484},
 {"[LS]Verdant Bluffs",17000,"Unknown","Unknown",50,0,0,2,0,0,0,"Unknown",50000,0,	1687.8954,-2100.4861,13.8343,	2451.1558,-1685.9690,1013.5078},
@@ -79,7 +78,7 @@ new Houses[MAX_HOUSES][HouseInfo] = {
 {"[LV]Old Venturas Strip",46000,"Unknown","Unknown",30,0,0,15,0,0,0,"Unknown",50000,0,	2371.1787,2169.1052,10.8257,	384.0571,1471.7700,1080.1875},
 {"[LV]Creek",110000,"Unknown","Unknown",50,0,0,15,0,0,0,"Unknown",50000,0,	2820.9004,2140.8269,14.6615,	374.5086,1417.2700,1081.3281},
 {"[LS]st.Manhatan 12",850000,"Unknown","Unknown",100,0,0,4,0,0,0,"Unknown",50000,0,	2487.073,-1646.585,13.265,	306.1966,307.8190,1003.3047},
-{"[LS]st.Manhatan 32",17000,"Unknown","Unknown",150,0,0,9,0,0,0,"Unknown",50000,0,	2495.479,-1690.834,13.960,	260.9170,1242.6680,1084.2578},
+//{"[LS]st.Manhatan 32",17000,"Unknown","Unknown",150,0,0,9,0,0,0,"Unknown",50000,0,	2495.479,-1690.834,13.960,	260.9170,1242.6680,1084.2578},
 {"[LS]st.Jarry 55",17000,"Unknown","Unknown",150,0,0,10,0,0,0,"Unknown",50000,0,	2396.199,-1647.489,12.732,	20.7300,1341.7350,1084.3750},
 {"[LS]st.Carson 2",30000,"Unknown","Unknown",150,0,0,4,0,0,0,"Unknown",50000,0,	2328.642,-1681.613,13.999,		221.6921,1149.8457,1082.6094},
 {"[LS]st.Mulholland 21",190000,"Unknown","Unknown",250,0,0,12,0,0,0,"Unknown",50000,0,	2067.023,-1700.507,13.343,	2324.6213,-1143.9209,1050.4922},
@@ -114,7 +113,7 @@ new Houses[MAX_HOUSES][HouseInfo] = {
 {"[LS-Elite]st.Twisty 17",1400000,"Unknown","Unknown",700,0,0,15,0,0,0,"Unknown",50000,0,	1051.354,-638.648,119.312,	295.3137,1478.6494,1080.2578},
 {"[LS-Elite]st.Twisty 21",2000000,"Unknown","Unknown",590,0,0,15,0,0,0,"Unknown",50000,0,	986.791,-671.282,121.171,	328.9125,1482.2545,1084.4375},
 {"[LS-Elite]st.Twisty 44",3000000,"Unknown","Unknown",650,0,0,15,0,0,0,"Unknown",50000,0,	874.889,-695.124,113.337,	384.0571,1471.7700,1080.1875},
-{"[LS-Elite]st.Twisty 63",2100000,"Unknown","Unknown",700,0,0,15,0,0,0,"Unknown",50000,0,	318.322,-1137.270,80.788,	374.5086,1417.2700,1081.3281},
+//{"[LS-Elite]st.Twisty 63",2100000,"Unknown","Unknown",700,0,0,15,0,0,0,"Unknown",50000,0,	318.322,-1137.270,80.788,	374.5086,1417.2700,1081.3281},
 {"[LS-Elite]st.Twisty 32",1500000,"Unknown","Unknown",700,0,0,4,0,0,0,"Unknown",50000,0,	252.211,-1227.374,73.802,	306.1966,307.8190,1003.3047},
 {"[LS-Elite]st.Twisty 28",1200000,"Unknown","Unknown",700,0,0,9,0,0,0,"Unknown",50000,0,	220.443,-1251.679,77.509,	260.9170,1242.6680,1084.2578},
 {"[LS-Elite]st.Twisty 19",1200000,"Unknown","Unknown",700,0,0,10,0,0,0,"Unknown",50000,0,	693.871,-1706.249,3.014,	20.7300,1341.7350,1084.3750},
@@ -142,14 +141,14 @@ new Houses[MAX_HOUSES][HouseInfo] = {
 {"[SF]st.Old Fiero Strip 37",460000,"Unknown","Unknown",130,0,0,3,0,0,0,"Unknown",50000,0,		-2353.556,1250.259,27.800,	289.9850,307.3130,999.1484},
 {"[SF]st.MiniLit 50",110000,"Unknown","Unknown",150,0,0,5,0,0,0,"Unknown",50000,0,		-2157.071,979.139,79.201,	319.4555,312.5038,999.1484},
 {"[SF-Elite]st.Mortynate 33",3000000,"Unknown","Unknown",800,0,0,2,0,0,0,"Unknown",50000,0,		-2624.417,1410.827,6.288,	2451.1558,-1685.9690,1013.5078},
-{"[SF-Elite]st.Mortynate 13",2000000,"Unknown","Unknown",750,0,0,1,0,0,0,"Unknown",50000,0,		-2105.307,899.656,75.905,	2535.0583,-1674.4338,1015.4986},
+//{"[SF-Elite]st.Mortynate 13",2000000,"Unknown","Unknown",750,0,0,1,0,0,0,"Unknown",50000,0,		-2105.307,899.656,75.905,	2535.0583,-1674.4338,1015.4986},
 {"[SF-Elite]st.Mortynate 34",3000000,"Unknown","Unknown",790,0,0,2,0,0,0,"Unknown",50000,0,		-2078.481,902.135,63.327,	272.0126,306.4208,999.1484},
 {"[LV]st.TutiDruti 43",300000,"Unknown","Unknown",150,0,0,3,0,0,0,"Unknown",50000,0,	2397.535,655.037,10.655,	235.1457,1190.7142,1080.2578},
 {"[LV]st.TutiDruti 23",190000,"Unknown","Unknown",250,0,0,2,0,0,0,"Unknown",50000,0,	2318.441,654.771,10.648,	221.4334,1240.8158,1082.1406},
 {"[LV]st.Bellion 42",400000,"Unknown","Unknown",180,0,0,5,0,0,0,"Unknown",50000,0,		2346.741,735.190,10.663,	239.2819,1114.1991,1080.9922},
 {"[LV]st.TutiDruti 22",700000,"Unknown","Unknown",110,0,0,15,0,0,0,"Unknown",50000,0,	2346.558,692.725,10.655,	295.3137,1478.6494,1080.2578},
 {"[LV]st.Ferrary Creek 14",390000,"Unknown","Unknown",150,0,0,15,0,0,0,"Unknown",50000,0,	2448.982,742.452,10.655,	328.9125,1482.2545,1084.4375},
-{"[LV]st.Blueberry 37",300000,"Unknown","Unknown",150,0,0,15,0,0,0,"Unknown",50000,0,	2539.768,719.439,13.934,	384.0571,1471.7700,1080.1875},
+//{"[LV]st.Blueberry 37",300000,"Unknown","Unknown",150,0,0,15,0,0,0,"Unknown",50000,0,	2539.768,719.439,13.934,	384.0571,1471.7700,1080.1875},
 {"[LV]st.Terramore 8",700000,"Unknown","Unknown",150,0,0,15,0,0,0,"Unknown",50000,0,	2004.935,2758.146,10.015,	374.5086,1417.2700,1081.3281},
 {"[LV]st.Angel Pine 22",800000,"Unknown","Unknown",150,0,0,4,0,0,0,"Unknown",50000,0,	2049.476,2761.351,10.015,	306.1966,307.8190,1003.3047},
 {"[LV]st.Whetstone 92",200000,"Unknown","Unknown",300,0,0,9,0,0,0,"Unknown",50000,0,	2093.317,731.819,10.648,	260.9170,1242.6680,1084.2578},
@@ -168,7 +167,7 @@ new Houses[MAX_HOUSES][HouseInfo] = {
 {"[LV]st.Pirates In Mens Pants 77",46000,"Unknown","Unknown",120,0,0,5,0,0,0,"Unknown",50000,0,		1967.051,1623.265,12.056,	239.2819,1114.1991,1080.9922},
 {"[LV]st.Gvard Toe 53",46000,"Unknown","Unknown",120,0,0,15,0,0,0,"Unknown",50000,0,		2367.264,2124.049,10.014,	295.3137,1478.6494,1080.2578},
 {"[LV]st.Rockshore West 23",120000,"Unknown","Unknown",100,0,0,15,0,0,0,"Unknown",50000,0,	2339.733,1621.617,10.015,	328.9125,1482.2545,1084.4375},
-{"[LV]st.BoomHack 1",99000,"Unknown","Unknown",120,0,0,15,0,0,0,"Unknown",50000,0,		2025.345,1916.193,11.525,	384.0571,1471.7700,1080.1875},
+//{"[LV]st.BoomHack 1",99000,"Unknown","Unknown",120,0,0,15,0,0,0,"Unknown",50000,0,		2025.345,1916.193,11.525,	384.0571,1471.7700,1080.1875},
 {"[LV]st.Old Strip Bar 37",46000,"Unknown","Unknown",130,0,0,15,0,0,0,"Unknown",50000,0,	2360.096,2378.085,10.015,	374.5086,1417.2700,1081.3281},
 {"[LV]st.Marihuana 50",110000,"Unknown","Unknown",150,0,0,4,0,0,0,"Unknown",50000,0,		2609.640,2392.888,17.015,	306.1966,307.8190,1003.3047},
 {"[LV-Elite]st.Million 12",3700000,"Unknown","Unknown",800,0,0,9,0,0,0,"Unknown",50000,0,	2535.262,998.084,13.467,	260.9170,1242.6680,1084.2578},
@@ -183,7 +182,7 @@ new Houses[MAX_HOUSES][HouseInfo] = {
 {"[LV-Motel]Motel Room 37",50000,"Unknown","Unknown",50,0,0,2,0,0,0,"Unknown",50000,0,		2660.460,749.261,13.934,	272.0126,306.4208,999.1484},
 {"[LV-Motel]Motel Room 93",50000,"Unknown","Unknown",50,0,0,3,0,0,0,"Unknown",50000,0,		2613.922,719.468,13.934,	235.1457,1190.7142,1080.2578},
 {"[LV-Motel]Motel Room 48",50000,"Unknown","Unknown",50,0,0,2,0,0,0,"Unknown",50000,0,		2525.864,749.313,13.934,	221.4334,1240.8158,1082.1406},
-{"[LV-Motel]Motel Room 38",50000,"Unknown","Unknown",50,0,0,5,0,0,0,"Unknown",50000,0,		2578.610,719.615,10.015,	239.2819,1114.1991,1080.9922},
+//{"[LV-Motel]Motel Room 38",50000,"Unknown","Unknown",50,0,0,5,0,0,0,"Unknown",50000,0,		2578.610,719.615,10.015,	239.2819,1114.1991,1080.9922},
 {"[LV-Motel]Motel Room 1",50000,"Unknown","Unknown",50,0,0,15,0,0,0,"Unknown",50000,0,		2820.047,2271.459,13.856,	295.3137,1478.6494,1080.2578},
 {"[LV-Motel]Motel Room 33",50000,"Unknown","Unknown",50,0,0,15,0,0,0,"Unknown",50000,0,		2793.985,2222.337,13.856,	328.9125,1482.2545,1084.4375},
 {"[LV-Motel]Motel Room 28",50000,"Unknown","Unknown",50,0,0,15,0,0,0,"Unknown",50000,0,		2549.181,2202.389,13.311,	384.0571,1471.7700,1080.1875},
@@ -211,7 +210,12 @@ new Houses[MAX_HOUSES][HouseInfo] = {
 {"[BR]House Figaro",200000,"Unknown","Unknown",120,0,0,10,0,0,0,"Unknown",50000,0,	-285.919,2757.093,61.707,	20.7300,1341.7350,1084.3750},
 {"[BR]House Pycucat",290000,"Unknown","Unknown",120,0,0,4,0,0,0,"Unknown",50000,0,	-2389.537,2410.905,8.072,	221.6921,1149.8457,1082.6094},
 {"[BR]House SAS",260000,"Unknown","Unknown",120,0,0,12,0,0,0,"Unknown",50000,0,	-2634.079,2403.307,10.475,	2324.6213,-1143.9209,1050.4922},
-{"[BR]House WayV",200000,"Unknown","Unknown",120,0,0,1,0,0,0,"Unknown",50000,0,	-2524.967,2239.568,4.600,	247.5086,304.9248,999.1484}
+{"[BR]House WayV",200000,"Unknown","Unknown",120,0,0,1,0,0,0,"Unknown",50000,0,	-2524.967,2239.568,4.600,	247.5086,304.9248,999.1484},
+
+{"[LS-Elite]Big House",20000000,"Unknown","Unknown",120,0,0,1,0,0,0,"Unknown",50000,0,	1122.7229,-2037.1871,69.8942,	247.5086,304.9248,999.1484},
+{"[LV]st.Blueberry 37",200000,"Unknown","Unknown",120,0,0,5,0,0,0,"Unknown",50000,0,	559.1950,-1076.3453,72.9220,	247.5086,304.9248,999.1484},
+{"[LS]Four Dragons Mansion",200000,"Unknown","Unknown",120,0,0,1,0,0,0,"Unknown",50000,0,				-2627.3208,2283.4939,8.3123,	247.5086,304.9248,999.1484},
+{"[LV-Motel]Motel Room 38",200000,"Unknown","Unknown",120,0,0,5,0,0,0,"Unknown",50000,0,	2206.3157,691.5402,11.4609,	239.2819,1114.1991,1080.9922}
 };
 
 stock HousesLoadAll()
@@ -521,7 +525,7 @@ stock housing_OnPlayerCommandText(playerid,text[])
 		new id = GetHouseID(playerid);
 		set(cmd,strcharsplit(text, idx,strchar(" ")));
 		if(strlen(cmd) < 1) SendClientMessage(playerid,COLOUR_RED,lang_texts[8][76]);
-		else if(!strcmp(cmd,"On",true))
+		else if(!strcmp(cmd,"on",true))
 		{
 			Houses[id][Houses_Rentabil] = 1;
 			new filename_housing[MAX_STRING];
@@ -535,7 +539,7 @@ stock housing_OnPlayerCommandText(playerid,text[])
 			SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][74]);
 			return 1;
 		}
-		else if(!strcmp(cmd,"Off",true))
+		else if(!strcmp(cmd,"off",true))
 		{
 			Houses[id][Houses_Rentabil] = 0;
 			new filename_housing[MAX_STRING];

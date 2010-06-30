@@ -192,9 +192,9 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 	if(!strcmp(cmd,"/changepass",true))
 	{
 		if(GetPlayerMoney(playerid) < 500000) return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][35]);
-		new string[MAX_STRING];
 		set(PlayerPassword[playerid],strcharsplit(text, idx,strchar(" ")));
 		AccountSave(playerid);
+		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[1][34],PlayerPassword[playerid]);
 		SendClientMessage(playerid,COLOUR_WHITE,string);
 		oGivePlayerMoney(playerid,-500000,1);
