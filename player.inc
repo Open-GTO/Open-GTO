@@ -1060,22 +1060,31 @@ stock player_load_db_ini(playerid)
     ini_GetInt(file_player,"Status",Player[playerid][Status]);
 	SetPlayerFightingStyle(playerid,Player[playerid][FightStyle]);
 	new gangname[MAX_NAME];
+	new tmpname[MAX_NAME];
 	ini_Get(file_player,"Gang",gangname);
 	if(strlen(gangname) > 0)
 	{
+		format(tmpname,sizeof(tmpname),"%s%s.txt",GangDB,gangname);
+		if(!ini_Exist(tmpname))
+		{
+			format(tmpname,sizeof(tmpname),"Банда `%s` была расформирована.",gangname);
+			SendClientMessage(playerid,COLOUR_ORANGE,tmpname);
+			ini_Set(file_player,"Gang","");
+			PlayerGangid[playerid] = 0;
+			goto not_gang;
+		}
 		set(PlayerGangName[playerid],gangname);
 		PlayerGangid[playerid] = GangLoad(gangname);
 		GangMemberLogin(playerid,PlayerGangid[playerid]);
 		if(PlayerGangid[playerid] == 0)
 		{
-			new tmpname[MAX_NAME];
 			set(PlayerGangName[playerid],tmpname);
 			PlayerGangName[playerid][0] = 0;
 			PlayerGangid[playerid] = 0;
 		}
 	}
 	else PlayerGangid[playerid] = 0; // no gang
-
+not_gang:
 	new wepstr[MAX_STRING];
 	ini_Get(file_player,"Weapons",wepstr);
 	SetWeaponsFromDBString(playerid,wepstr);
