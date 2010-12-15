@@ -1059,8 +1059,7 @@ stock player_load_db_ini(playerid)
 	PlayerSpawn[playerid][Coord_Z] = floatstr(strcharsplit(string,idx,strchar(",")));
     ini_GetInt(file_player,"Status",Player[playerid][Status]);
 	SetPlayerFightingStyle(playerid,Player[playerid][FightStyle]);
-	new gangname[MAX_NAME];
-	new tmpname[MAX_NAME];
+	new gangname[MAX_NAME],tmpname[MAX_STRING];
 	ini_Get(file_player,"Gang",gangname);
 	if(strlen(gangname) > 0)
 	{

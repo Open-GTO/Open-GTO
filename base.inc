@@ -12,7 +12,7 @@
 
 #include "utils\mxINI"
 
-#define VERSION "v0.6.3 beta 2"
+#define VERSION "v0.6.4"
 
 #define MAX_STRING 128 // !!!Ќ≈ ћ≈Ќя“№!!!, а то мод будет плющить(ZiGGi)
 #define MAX_NAME 40 // number of char's a name/password/misc_word can be
@@ -21,9 +21,6 @@
 #define MAX_QUESTS 255
 #define MAX_COUNTDOWN 5
 #define KEY_USING 	KEY_WALK //  нопка '’одьба' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
-
-
-#define TimerTick 1000 // used for how often timer function is called
 
 #define COLOUR_GREY 0xAFAFAFAA // grey
 #define COLOUR_GREEN 0x33AA33AA // green
@@ -62,19 +59,19 @@
 #define MIN_HEALTH 20
 #define MAX_HEALTH 100
 
-#define SOUND_MUSIC_CLASSSELECT      1185
-#define SOUND_MUSIC_RACEFINISH       1183
-#define SOUND_MUSIC_RACERECORD       1097
-#define SOUND_MUSIC_MISSIONCOMPLETE  1185
-#define SOUND_OFF                    1184
-#define SOUND_BLIP1                  1056
-#define SOUND_BLIP2                  1057
-#define SOUND_EXPLOSION              1159
-#define SOUND_PURCHASE               1149
-#define SOUND_CHECKPOINT             1058
-#define SOUND_DEATH                 1057
-#define SOUND_DMKILL                 1056
-#define SOUND_DMDEATH                 1057
+#define SOUND_MUSIC_CLASSSELECT      	1185
+#define SOUND_MUSIC_RACEFINISH       	1183
+#define SOUND_MUSIC_RACERECORD       	1097
+#define SOUND_MUSIC_MISSIONCOMPLETE  	1185
+#define SOUND_OFF                    	1184
+#define SOUND_BLIP1                  	1056
+#define SOUND_BLIP2                  	1057
+#define SOUND_EXPLOSION              	1159
+#define SOUND_PURCHASE               	1149
+#define SOUND_CHECKPOINT             	1058
+#define SOUND_DEATH						1057
+#define SOUND_DMKILL                 	1056
+#define SOUND_DMDEATH                 	1057
 
 #define PRESSED(%0) \
 	(((newkeys & (%0)) != (%0)) && ((oldkeys & (%0)) == (%0)))

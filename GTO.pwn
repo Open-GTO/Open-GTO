@@ -4,11 +4,11 @@ Project Name:	San Andreas - Multiplayer: Grand Theft Online.
 Date Created:		12 August 2006
 Date start edit: 	5 November 2009(by Russian Scripter's)
 
-Current version: GTO 0.6.4
-SA-MP Versions:	0.3a
+Current GM version:		GTO 0.6.4
+SA-MP Server Version:	0.3b R2
 */
 
-#include <a_samp>							// samp
+#include <..\compiler\includes\a_samp>							// samp
 #include "base"								// holds base script values
 #include "utils\gtoutils"					// misc used utils
 #include "utils\mxINI"
@@ -150,11 +150,11 @@ public OnGameModeInit()
 	dm_minigunmadness_init();
 	dm_poolday_init();
 	dm_usnavy_init();
-
+	//
 	#tryinclude "misc\mapicon"
 	#tryinclude "misc\pickups"
 	#tryinclude "misc\objects"
-	printf("SERVER: New Objects and Pickups init");
+	printf("SERVER: Objects and Pickups init");
 
 	new hour,minute,second;
 	gettime(hour,minute,second);

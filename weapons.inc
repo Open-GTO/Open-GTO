@@ -109,7 +109,6 @@ stock WeaponLoadAll()
 	}
 	if(!ini_Exist(WeaponDB))
 	{
-	    print("WeaponSaveAll();");
 		WeaponSaveAll();
 		return;
 	}

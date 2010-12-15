@@ -94,7 +94,7 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	}
 	if(dialogid == bank_Withdraw_DialogID)// снять деньги
 	{
-	    if(!response)  return bank_ShowDialog_First(playerid);
+	    if(!response) return bank_ShowDialog_First(playerid);
 		if(!isNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
 		{
 			SendClientMessage(playerid,COLOUR_RED,"Вы не ввели или ввели неправильно количество денег.");
