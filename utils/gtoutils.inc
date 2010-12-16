@@ -20,8 +20,6 @@ forward CharReplace(findchar,newchar,string[MAX_STRING]);
 forward Vary(source,varyamount);
 forward strcomp(str1[],str2[],bool:ignorecase);
 forward NameCharCheck(string[MAX_STRING]);
-forward SendPlayerFormattedText(playerid, const str[], define, colour);
-forward SendAllFormattedText(const str[], define);
 forward SendClientMessageToRegistered(colour, message[]);
 forward ConvertSeconds(time);
 forward encryptbykey(string[],key[MAX_STRING]);
@@ -162,21 +160,21 @@ public NameCharCheck(string[MAX_STRING])
 	return 1;
 }
 
-public SendPlayerFormattedText(playerid, const str[], define, colour)
+stock SendPlayerFormattedText(playerid, const str[], define, colour)
 {
 	new tmpbuf[MAX_STRING];
 	format(tmpbuf, sizeof(tmpbuf), str, define);
 	SendClientMessage(playerid, colour, tmpbuf);
 }
 
-public SendAllFormattedText(const str[], define)
+stock SendAllFormattedText(const str[], define)
 {
 	new tmpbuf[MAX_STRING];
 	format(tmpbuf, sizeof(tmpbuf), str, define);
 	SendClientMessageToAll(COLOUR_MISC, tmpbuf);
 }
 
-public SendClientMessageToRegistered(colour, message[])
+stock SendClientMessageToRegistered(colour, message[])
 {
 	for(new playerid=0;playerid<MAX_PLAYERS;playerid++)
 	{

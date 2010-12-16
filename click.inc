@@ -60,13 +60,13 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new unmuteid = Player[playerid][ClickedPlayerid];
 			if(IsPlayerConnected(unmuteid) == 0)
 			{
-				SendPlayerFormattedText(playerid,lang_texts[12][26],0,COLOUR_RED);
+				SendClientMessage(playerid,COLOUR_RED,lang_texts[12][26]);
 				return 1;
 			}
 			Player[unmuteid][MuteTime] = 0;
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][27],oGetPlayerName(playerid));
-			SendPlayerFormattedText(unmuteid,string, 0,COLOUR_GREEN);
+			SendClientMessage(unmuteid,COLOUR_GREEN,string);
 			SetPlayerWantedLevel(unmuteid, 0);
 			format(string,sizeof(string),lang_texts[12][51],oGetPlayerName(unmuteid));
 			SendClientMessageToAll(COLOUR_WHITE, string);
@@ -83,19 +83,17 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new unjailid = Player[playerid][ClickedPlayerid];
 			if(unjailid < 0 || unjailid >= MAX_PLAYERS || (IsPlayerAdmin(unjailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(unjailid) && IsPlayerMod(playerid)))
 			{
-				SendPlayerFormattedText(playerid,lang_texts[12][19],0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][19]);
 			}
 			if (IsPlayerConnected(unjailid) == 0)
 			{
-				SendPlayerFormattedText(playerid,lang_texts[12][20],0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][20]);
 			}
 			Player[unjailid][Jailed] = 0;
 			Player[unjailid][JailTime] = 0;
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][21],oGetPlayerName(playerid));
-			SendPlayerFormattedText(unjailid,string, 0,COLOUR_GREEN);
+			SendClientMessage(unjailid,COLOUR_GREEN,string);
 			UnJailPlayer(unjailid);
 			return 1;
 		}
@@ -130,30 +128,25 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new receiverid = Player[playerid][ClickedPlayerid];
 			if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
 			{
-				SendPlayerFormattedText(playerid,lang_texts[12][2],0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
 			if(IsPlayerConnected(receiverid) == 0)
 			{
-				SendPlayerFormattedText(playerid,lang_texts[12][3],0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 			}
 			SetPlayerHealth(receiverid,0);
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][62],oGetPlayerName(receiverid),receiverid);
-			SendPlayerFormattedText(playerid,string,0,COLOUR_XP_GOOD);
+			SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			format(string,sizeof(string),lang_texts[12][63],oGetPlayerName(playerid));
-			SendPlayerFormattedText(receiverid,string,0,COLOUR_XP_GOOD);
+			SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
 			return 1;
 		}
 		if(listitem == 10)
 		{
 			new receiverid = Player[playerid][ClickedPlayerid];
-			if(IsPlayerConnected(receiverid) == 0)
-			{
-				SendPlayerFormattedText(playerid, lang_texts[12][3] , 0,COLOUR_RED);
-				return 1;
-			}
+			if(!IsPlayerConnected(receiverid))
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 			new Float:X,Float:Y,Float:Z,Float:Angle;
 			if(IsPlayerInAnyVehicle(playerid))
 			{
@@ -173,7 +166,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			}
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][66],oGetPlayerName(receiverid),receiverid);
-			SendPlayerFormattedText(playerid,string, 0,COLOUR_XP_GOOD);
+			SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			return 1;
 		}
 		if(listitem == 11)
@@ -181,13 +174,11 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new receiverid = Player[playerid][ClickedPlayerid];
 			if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
 			{
-				SendPlayerFormattedText(playerid,lang_texts[12][2],0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
 			if((IsPlayerConnected(receiverid) == 0) && !IsPlayerInAnyDM(receiverid))
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][3] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 			}
 			new Float:X,Float:Y,Float:Z,Float:Angle;
 			if(IsPlayerInAnyVehicle(receiverid))
@@ -209,9 +200,9 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			}
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][66],oGetPlayerName(playerid),playerid);
-			SendPlayerFormattedText(receiverid,string,0,COLOUR_XP_GOOD);
+			SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
 			format(string,sizeof(string),lang_texts[12][67],oGetPlayerName(receiverid),receiverid);
-			SendPlayerFormattedText(playerid,string,0,COLOUR_XP_GOOD);
+			SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			return 1;
 		}
 		if(listitem == 12)
@@ -239,20 +230,18 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new receiverid = Player[playerid][ClickedPlayerid];
 			if ((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][9] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 			}
 			if (IsPlayerConnected(receiverid) == 0)
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][10] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][10]);
 			}
 			TogglePlayerControllable(receiverid,0);
 			new string[MAX_STRING];
 			format(string,sizeof(string), lang_texts[12][54] ,oGetPlayerName(playerid));
-			SendPlayerFormattedText(receiverid,string, 0,COLOUR_XP_GOOD);
+			SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
 			format(string,sizeof(string), lang_texts[12][55] ,oGetPlayerName(receiverid));
-			SendPlayerFormattedText(playerid,string, 0,COLOUR_XP_GOOD);
+			SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			return 1;
 		}
 		if(listitem == 17)
@@ -260,20 +249,18 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new receiverid = Player[playerid][ClickedPlayerid];
 			if ((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][9] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 			}
 			if (IsPlayerConnected(receiverid) == 0)
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][10] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][10]);
 			}
 			TogglePlayerControllable(receiverid,1);
 			new string[MAX_STRING];
 			format(string,sizeof(string), lang_texts[12][56] ,oGetPlayerName(playerid));
-			SendPlayerFormattedText(receiverid,string, 0,COLOUR_XP_GOOD);
+			SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
 			format(string,sizeof(string), lang_texts[12][57] ,oGetPlayerName(receiverid));
-			SendPlayerFormattedText(playerid,string, 0,COLOUR_XP_GOOD);
+			SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			return 1;
 		}
 		ShowPlayerDialog(playerid,ClickDialogResp,DIALOG_STYLE_INPUT,GuiHeader,GuiText,"Отправить","Отмена");
@@ -333,17 +320,15 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new receiverid = Player[playerid][ClickedPlayerid];
 			if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
 			{
-				SendPlayerFormattedText(playerid,lang_texts[12][2],0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
 			if(!IsPlayerConnected(receiverid))
 			{
-				SendPlayerFormattedText(playerid,lang_texts[12][3],0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 			}
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][60],oGetPlayerName(receiverid),receiverid,inputtext);
-			SendPlayerFormattedText(playerid,string,0,COLOUR_XP_GOOD);
+			SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			format(string,sizeof(string),lang_texts[12][61],oGetPlayerName(receiverid),receiverid,oGetPlayerName(playerid),inputtext);
 			SendClientMessageToAll(COLOUR_WHITE,string);
 			Kick(receiverid);
@@ -354,14 +339,12 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new muteid = Player[playerid][ClickedPlayerid];
 			if((muteid < 0) || (muteid >= MAX_PLAYERS))
 			{
-				SendPlayerFormattedText(playerid,lang_texts[12][2],0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
 			new mutetime = strval(inputtext);
 			if(mutetime < 1)
 			{
-				SendPlayerFormattedText(playerid," Не правильное время затычки!", 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,"Не правильное время затычки!");
 			}
 			if(IsPlayerConnected(muteid) == 1)
 			{
@@ -373,7 +356,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			Player[muteid][Muted]++;
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][24],oGetPlayerName(playerid));
-			SendPlayerFormattedText(muteid,string,0,COLOUR_RED);
+			SendClientMessage(muteid,COLOUR_RED,string);
 			format(string,sizeof(string),lang_texts[12][50],oGetPlayerName(muteid));
 			SendClientMessageToAll(COLOUR_WHITE,string);
 		}
@@ -382,13 +365,11 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new jailid = Player[playerid][ClickedPlayerid];
 			if((jailid < 0) || (jailid >= MAX_PLAYERS) || (IsPlayerAdmin(jailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(jailid) && IsPlayerMod(playerid)) )
 			{
-				SendPlayerFormattedText(playerid,lang_texts[12][2],0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
 			if(IsPlayerConnected(jailid) == 0)
 			{
-				SendPlayerFormattedText(playerid,lang_texts[12][3],0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 			}
 			static jailt=4320;
 			jailt = strval(inputtext);
@@ -396,7 +377,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			Player[jailid][Jailed] = 1;
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][18],oGetPlayerName(playerid));
-			SendPlayerFormattedText(jailid,string, 0,COLOUR_RED);
+			SendClientMessage(jailid,COLOUR_RED,string);
 			format(string,sizeof(string),"~r~%s ~w~has been Jailed",oGetPlayerName(jailid));
 			GameTextForAll(string,5000,4);
 			new string2[40];
@@ -412,19 +393,16 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new receiverid = Player[playerid][ClickedPlayerid];
 			if ((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][2] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
 			if (IsPlayerConnected(receiverid) == 0)
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][3] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 			}
 			new hltamount = strval(inputtext);
 			if ((hltamount < 10) || (hltamount > 300))
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][44] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][44]);
 			}
 			SetPlayerHealth(receiverid, hltamount);
 		}
@@ -433,19 +411,16 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new receiverid = Player[playerid][ClickedPlayerid];
 			if ((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][2] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
-			if (IsPlayerConnected(receiverid) == 0)
+			if (!IsPlayerConnected(receiverid))
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][3] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 			}
 			new armamount = strval(inputtext);
 			if ((armamount < 0) || (armamount > 300))
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][44] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][44]);
 			}
 			SetPlayerArmour(receiverid, armamount);
 		}
@@ -454,30 +429,22 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new receiverid = Player[playerid][ClickedPlayerid];
 			if ((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][2] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
 			if (IsPlayerConnected(receiverid) == 0)
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][3] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 			}
 			new xpamount = strval(inputtext);
 			if ((xpamount == 0) || (xpamount > MAX_LVLXP))
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][4] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][4]);
 			}
 			new xpamountkeep = GetPlayerXP(receiverid)+xpamount;
 			if ((!IsPlayerAdmin(receiverid) && xpamountkeep >MAX_LVLXP) || (IsPlayerAdmin(receiverid) && xpamountkeep > MAX_XP))
 			{
-    			SendPlayerFormattedText(playerid, lang_texts[12][40] , 0,COLOUR_RED);
-				if (IsPlayerAdmin(receiverid))
-				{
-					xpamount = xpamountkeep-MAX_XP;
-				} else {
-					xpamount = xpamountkeep-MAX_LVLXP;
-				}
+				SendClientMessage(playerid,COLOUR_RED,lang_texts[12][40]);
+				xpamount = xpamountkeep - (IsPlayerAdmin(receiverid)) ? MAX_XP : MAX_LVLXP;
 			}
 			SetPlayerXP(receiverid,Player[receiverid][XP]+xpamount);
 			Player[receiverid][XP]=GetPlayerXP(receiverid);
@@ -486,16 +453,16 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			if (xpamount > 0)
 			{
 				format(string,sizeof(string), lang_texts[12][5] ,oGetPlayerName(playerid),xpamount);
-				SendPlayerFormattedText(receiverid,string, 0,COLOUR_XP_GOOD);
+				SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
 				format(string,sizeof(string), lang_texts[12][6] ,oGetPlayerName(receiverid),xpamount,GetPlayerXP(receiverid));
-				SendPlayerFormattedText(playerid,string, 0,COLOUR_XP_GOOD);
+				SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			}
 			else
 			{
 				format(string,sizeof(string), lang_texts[12][7] ,oGetPlayerName(playerid),xpamount);
-				SendPlayerFormattedText(receiverid,string, 0,COLOUR_XP_GOOD);
+				SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
 				format(string,sizeof(string), lang_texts[12][8] ,oGetPlayerName(receiverid),xpamount,GetPlayerXP(receiverid));
-				SendPlayerFormattedText(playerid,string, 0,COLOUR_XP_GOOD);
+				SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			}
 		}
 		if(ListResponseType[playerid] == 15)
@@ -503,35 +470,32 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new receiverid = Player[playerid][ClickedPlayerid];
 			if ((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][9] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 			}
 			if (IsPlayerConnected(receiverid) == 0)
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][10] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][10]);
 			}
 			new cashamount = strval(inputtext);
 			if ((cashamount < -999999) || (cashamount == 0) || (cashamount > 999999))
 			{
-				SendPlayerFormattedText(playerid, lang_texts[12][11] , 0,COLOUR_RED);
-				return 1;
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][11]);
 			}
 			oGivePlayerMoney(receiverid,cashamount,1);
 			new string[MAX_STRING];
 			if (cashamount > 0)
 			{
 				format(string,sizeof(string), lang_texts[12][12] ,oGetPlayerName(playerid),cashamount);
-				SendPlayerFormattedText(receiverid,string, 0,COLOUR_XP_GOOD);
+				SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
 				format(string,sizeof(string), lang_texts[12][13] ,oGetPlayerName(receiverid),cashamount,GetPlayerMoney(receiverid));
-				SendPlayerFormattedText(playerid,string, 0,COLOUR_XP_GOOD);
+				SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			}
 			else
 			{
 				format(string,sizeof(string), lang_texts[12][14] ,oGetPlayerName(playerid),cashamount);
-				SendPlayerFormattedText(receiverid,string, 0,COLOUR_XP_GOOD);
+				SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
 				format(string,sizeof(string), lang_texts[12][15] ,oGetPlayerName(receiverid),cashamount,GetPlayerMoney(receiverid));
-				SendPlayerFormattedText(playerid,string, 0,COLOUR_XP_GOOD);
+				SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			}
 		}
 

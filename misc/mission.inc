@@ -1,6 +1,8 @@
 //
 // Created by GhostTT
-// Converted to GTO by ZiGGi
+// Converted to GTO by Elbi
+// Modified by ZiGGi
+//
 
 #if defined _mission_included
   #endinput
@@ -10,6 +12,11 @@
 #pragma library mission
 
 #define MISSION_ID 999
+
+#define TRAILER_TYPE_NORMAL 1
+#define TRAILER_TYPE_PETROL 2
+#define GIVE_XP_RATE 5
+#define RunnerMissionTime 300000
 
 forward EndMission(playerid);
 
@@ -94,7 +101,8 @@ stock mission_OnPlayerStateChange(playerid,newstate,oldstate)
 	if(Mission_Enabled != 1) return 1;
     if(newstate == PLAYER_STATE_DRIVER)
     {
-		if(GetPlayerVehicleID(playerid) == Linerunner[1] || GetPlayerVehicleID(playerid) == Linerunner[2] || GetPlayerVehicleID(playerid) == Linerunner[3])	SendClientMessage(playerid,COLOUR_PINK,"ХраП: Вы можете начать миссию дальнобойщика. Для этого нажмите Кнопку миссии (2 или +)");
+		if(IsVehicleIsRunner( GetPlayerVehicleID(playerid) ))
+			SendClientMessage(playerid,COLOUR_PINK,"ХраП: Вы можете начать миссию дальнобойщика. Для этого нажмите Кнопку миссии (2 или +)");
 		return 1;
     }
 	/*if(newstate == PLAYER_STATE_ONFOOT && driver[playerid] == 1)
@@ -109,14 +117,15 @@ stock mission_OnPlayerStateChange(playerid,newstate,oldstate)
 
 stock mission_Start(playerid)
 {
-	if(GetPlayerVehicleID(playerid) == Linerunner[1] || GetPlayerVehicleID(playerid) == Linerunner[2])
+	new TrailerType = GetTrailerType( GetPlayerVehicleID(playerid) );
+	if(TrailerType == TRAILER_TYPE_NORMAL)
     {
         driver[playerid] = 1;
         new rand = random(sizeof(LineCoord));
         oSetPlayerCheckpoint(playerid,LineCoord[rand][0],LineCoord[rand][1],LineCoord[rand][2],10);
         PlayerQuest[playerid] = MISSION_ID;
     }
-    else if(GetPlayerVehicleID(playerid) == Linerunner[3])
+    else if(TrailerType == TRAILER_TYPE_PETROL)
     {
 		driver[playerid] = 1;
         new rand = random(sizeof(PetrolCoord));
@@ -142,7 +151,13 @@ stock mission_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	{
 		if(PRESSED( KEY_SUBMISSION )) 
 		{
-			if(PlayerQuest[playerid] == 0) mission_Start(playerid);
+			if(PlayerQuest[playerid] == 0)
+			{
+				if(GetPVarInt(playerid,"RunnerMissionTime") > 0)
+					SendClientMessage(playerid,COLOUR_RED,"Пока никому ничего не нужно.");
+				else
+					mission_Start(playerid);
+			}
 			else if(PlayerQuest[playerid] == MISSION_ID) 
 			{
 				EndMission(playerid);
@@ -157,24 +172,17 @@ stock mission_OnPlayerEnterCheckpoint(playerid)
 {
 	if(Mission_Enabled != 1) return 1;
 	new vehicleid = GetPlayerVehicleID(playerid);
-	if(driver[playerid] == 1 && (vehicleid == Linerunner[1] || vehicleid == Linerunner[2] || vehicleid == Linerunner[3]))
+	if(driver[playerid] == 1 && IsVehicleIsRunner(vehicleid))
 	{
 	    if(!IsTrailerAttachedToVehicle(vehicleid)) return 1;
-		driver[playerid] = 0;
 		oGivePlayerMoney(playerid,10000,1);
-		new Trailr = GetVehicleTrailer(GetPlayerVehicleID(playerid));
+		new Trailr = GetVehicleTrailer(vehicleid);
 		DetachTrailerFromVehicle(vehicleid);
 		SetVehicleToRespawn(Trailr);
-		ResetQuest(playerid);
+		MissionStop(playerid);
 		SendClientMessage(playerid,COLOUR_WHITE,"ХраП: Поздравляем! Ты справился с миссией. Получи свои бабки!");
 		KillTimer(timer[playerid]);
-		new lvl = GetPlayerScore(playerid);
-		if(lvl < 10) GivePlayerXP(playerid,500,1);
-		else if(lvl > 10 && lvl < 20) GivePlayerXP(playerid,5000,1);
-		else if(lvl > 20 && lvl < 30) GivePlayerXP(playerid,10000,1);
-		else if(lvl > 30 && lvl < 40) GivePlayerXP(playerid,20000,1);
-		else if(lvl > 40 && lvl < 50) GivePlayerXP(playerid,50000,1);
-		else if(lvl > 50 && lvl < 60) GivePlayerXP(playerid,100000,1);
+		GivePlayerXP(playerid,(GetPlayerScore(playerid)+1) * (GetPlayerScore(playerid)+1) * GIVE_XP_RATE,1);
 	}
 	return 1;
 }
@@ -182,20 +190,16 @@ stock mission_OnPlayerEnterCheckpoint(playerid)
 stock mission_OnPlayerDisconnect(playerid,reason)
 {
 	#pragma unused reason
-	if(Mission_Enabled != 1) return 1;
-	if(driver[playerid] != 1) return 1;
-	driver[playerid] = 0;
-	ResetQuest(playerid);
+	if(Mission_Enabled != 1 || driver[playerid] != 1) return 1;
+	MissionStop(playerid);
 	return 1;
 }
 
 stock mission_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused killerid,reason
-	if(Mission_Enabled != 1) return 1;
-	if(driver[playerid] != 1) return 1;
-	driver[playerid] = 0;
-	ResetQuest(playerid);
+	if(Mission_Enabled != 1 || driver[playerid] != 1) return 1;
+	MissionStop(playerid);
 	SendClientMessage(playerid,COLOUR_RED,"ХраП: Ты не справился с миссией доставки груза");
 	return 1;
 }
@@ -203,10 +207,9 @@ stock mission_OnPlayerDeath(playerid, killerid, reason)
 stock mission_OnVehicleDeath(vehicleid, killerid)
 {
 	if(Mission_Enabled != 1) return 1;
-	if(vehicleid == Linerunner[1] || vehicleid == Linerunner[2] || vehicleid == Linerunner[3])
+	if(IsVehicleIsRunner(vehicleid))
 	{
-	    driver[killerid] = 0;
-		ResetQuest(killerid);
+		MissionStop(killerid);
 	    SendClientMessage(killerid,COLOUR_RED,"ХраП: Ты не справился с миссией, уничтожив свой транспорт");
 	}
 	return 1;
@@ -216,8 +219,44 @@ public EndMission(playerid)
 {
 	if(driver[playerid] == 1)
 	{
-	    driver[playerid] = 0;
-		ResetQuest(playerid);
-	    SendClientMessage(playerid,COLOUR_RED,"ХраП: Ты не справился с миссией.");
+		MissionStop(playerid);
+		SendClientMessage(playerid,COLOUR_RED,"ХраП: Ты не справился с миссией.");
 	}
+}
+
+stock MissionStop(playerid)
+{
+	driver[playerid] = 0;
+	ResetQuest(playerid);
+	SetPVarInt(playerid,"RunnerMissionTime",RunnerMissionTime);
+}
+
+forward RunnerMissionTimer();
+public RunnerMissionTimer()
+{
+	new buf;
+	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
+	{
+		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) continue;
+		if((buf = GetPVarInt(playerid,"RunnerMissionTime")) > 0)
+			SetPVarInt(playerid,"RunnerMissionTime",buf - 1000);
+	}
+}
+
+stock IsVehicleIsRunner(vehicleid)
+{
+	for(new i=1;i<sizeof(Linerunner);i++)
+	{
+		if(vehicleid == Linerunner[i]) return true;
+	}
+	return false;
+}
+
+stock GetTrailerType(vehicleid)
+{
+	if(vehicleid == Trailer[1] || vehicleid == Trailer[2])
+		return TRAILER_TYPE_NORMAL;
+	else if(vehicleid == Trailer[3])
+		return TRAILER_TYPE_PETROL;
+	return -1;
 }

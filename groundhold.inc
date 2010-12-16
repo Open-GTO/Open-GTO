@@ -1,6 +1,7 @@
 //
 // Created:     13.09.06
 // Aurthor:    Iain Gilbert
+// Modified by ZiGGi
 //
 
 #if defined _groundhold_included
@@ -51,9 +52,7 @@ stock groundhold_LoadConfig()
 
 stock groundhold_SaveConfig()
 {
-	new file;
-	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
-    else file = ini_Open(ConfigDB);
+	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_SetInt(file,"Groundhold_Enabled",Groundhold_Enabled);
 	ini_SetInt(file,"Groundhold_Enabled",Groundhold_Enabled);// НЕ удалять!!! Иначе в файл не запишется >_<
 	ini_Set(file,"Groundhold_DB",GroundholdDB);
@@ -126,99 +125,101 @@ stock groundhold_OnGameModeInit()
 stock CheckGround(ghid)
 {
 	new playergroundcount = CountPlayers(PlayerGroundHoldTime[ghid]);
-	for(new playerid=0;playerid<MAX_PLAYERS;playerid++)
+	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
 	{
-		if(IsPlayerConnected(playerid))
+		if(!IsPlayerConnected(playerid))
 		{
-			if((oIsPlayerInCheckpoint(playerid,Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z],Groundholds[ghid][gh_dist]))
-					|| (GetDistancePlayertoXYZ(playerid,Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]) < Groundholds[ghid][gh_dist]))
+			PlayerGroundHoldTime[ghid][playerid] = 0;
+			PlayerHoldingGround[ghid][playerid] = 0;
+			continue;
+		}
+		if(IsPlayerInRangeOfPoint(playerid,Groundholds[ghid][gh_dist],Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]))
+		{
+			new groundenemycount;
+			for(new i=GetMaxPlayers()-1;i>=0;--i)
 			{
-				new groundenemycount;
-				for(new i = 0;i<MAX_PLAYERS;i++)
+				if(!IsPlayerConnected(i) || IsPlayerNPC(i) || i == playerid) continue;
+				if(PlayerGroundHoldTime[ghid][i] > 0)
 				{
-					if(i == playerid) continue;
-					if(i == INVALID_PLAYER_ID) continue;
-					if(PlayerGroundHoldTime[ghid][i] > 0)
+					if((PlayerGangid[i] == 0) || (PlayerGangid[i] != PlayerGangid[playerid]))
 					{
-						if((PlayerGangid[i] == 0) || (PlayerGangid[i] != PlayerGangid[playerid]))
-						{
-							groundenemycount++;
-						}
-					}
-				}
-				if(PlayerGroundHoldTime[ghid][playerid] < Groundholds[ghid][gh_multi])
-				{
-					if((PlayerGroundHoldTime[ghid][playerid] == 0) && (PlayerHoldingGround[ghid][playerid] == 0))
-					{
-						new string[MAX_STRING];
-						format(string, sizeof(string),  lang_texts[7][1] , Groundholds[ghid][gh_name]);
-						SendClientMessage(playerid, COLOUR_GREEN, string);
-						new maxmoney=(Groundholds[ghid][gh_money]*Groundholds[ghid][gh_multi]);
-						new maxxp=(Groundholds[ghid][gh_xp]*Groundholds[ghid][gh_multi]);
-						format(string, sizeof(string),  lang_texts[7][2] ,maxmoney,maxxp);
-						SendClientMessage(playerid, COLOUR_GREEN, string);
-					}
-					if(PlayerGroundHoldTime[ghid][playerid] == 0) PlayerGroundHoldTime[ghid][playerid]++;
-					else if(groundenemycount == 0) PlayerGroundHoldTime[ghid][playerid]++;
-				}
-				PlayerHoldingGround[ghid][playerid] = 1;
-				if(PlayerGroundHoldTime[ghid][playerid] > 0)
-				{
-					if(groundenemycount > 0) // if more that 0 enimies on ground
-					{
-						if(PlayerGroundHoldTime[ghid][playerid] > 2) // if we have been holding this ground
-						{
-							new string[MAX_STRING];
-							format(string, sizeof(string),  lang_texts[7][3] , Groundholds[ghid][gh_name]);
-							SendClientMessage(playerid, COLOUR_RED, string);
-						}
-						if(PlayerGroundHoldTime[ghid][playerid] > 1) PlayerGroundHoldTime[ghid][playerid]--;
-					}
-
-					new moneyreward;
-					new xpreward = (Groundholds[ghid][gh_xp] * PlayerGroundHoldTime[ghid][playerid]);
-					if(playergroundcount <= 5) moneyreward = (Groundholds[ghid][gh_money] * PlayerGroundHoldTime[ghid][playerid]) / (1+(playergroundcount / 5));
-					else moneyreward = (Groundholds[ghid][gh_money] * PlayerGroundHoldTime[ghid][playerid]) / (1+(5 / 5));
-					if(moneyreward > 0) oGivePlayerMoney(playerid,moneyreward,0);
-					if(xpreward > 0 && GetPlayerXP(playerid) < MAX_LVLXP) GivePlayerXP(playerid,xpreward,0);
-					else 
-					{
-						new string[MAX_STRING];
-						format(string, sizeof(string),  lang_texts[9][17] );
-						SendClientMessage(playerid, COLOUR_RED, string);
+						groundenemycount++;
 					}
 				}
 			}
-			else 
+			if(PlayerGroundHoldTime[ghid][playerid] < Groundholds[ghid][gh_multi])
 			{
-				if(PlayerGroundHoldTime[ghid][playerid] > 0)
+				if((PlayerGroundHoldTime[ghid][playerid] == 0) && (PlayerHoldingGround[ghid][playerid] == 0))
 				{
-					if(PlayerHoldingGround[ghid][playerid] == 1)
+					new string[MAX_STRING];
+					format(string, sizeof(string),  lang_texts[7][1] , Groundholds[ghid][gh_name]);
+					SendClientMessage(playerid, COLOUR_GREEN, string);
+					new maxmoney=(Groundholds[ghid][gh_money]*Groundholds[ghid][gh_multi]);
+					new maxxp=(Groundholds[ghid][gh_xp]*Groundholds[ghid][gh_multi]);
+					format(string, sizeof(string),  lang_texts[7][2] ,maxmoney,maxxp);
+					SendClientMessage(playerid, COLOUR_GREEN, string);
+				}
+				if(PlayerGroundHoldTime[ghid][playerid] == 0)
+					PlayerGroundHoldTime[ghid][playerid]++;
+				else if(groundenemycount == 0)
+					PlayerGroundHoldTime[ghid][playerid]++;
+			}
+			PlayerHoldingGround[ghid][playerid] = 1;
+			if(PlayerGroundHoldTime[ghid][playerid] > 0)
+			{
+				if(groundenemycount > 0) // if more that 0 enimies on ground
+				{
+					if(PlayerGroundHoldTime[ghid][playerid] > 2) // if we have been holding this ground
 					{
 						new string[MAX_STRING];
-						format(string, sizeof(string),  lang_texts[7][4] );
+						format(string, sizeof(string),  lang_texts[7][3] , Groundholds[ghid][gh_name]);
 						SendClientMessage(playerid, COLOUR_RED, string);
-					}
-					if(PlayerGroundHoldTime[ghid][playerid] == 1)
-					{
-						new string[MAX_STRING];
-						format(string, sizeof(string),  lang_texts[7][5] , Groundholds[ghid][gh_name]);
-						SendClientMessage(playerid, COLOUR_RED, string);
-					}
-					PlayerGroundHoldTime[ghid][playerid]--;
-					if(PlayerGroundHoldTime[ghid][playerid] > 1)
-					{
-						PlayerGroundHoldTime[ghid][playerid]--;
 					}
 					if(PlayerGroundHoldTime[ghid][playerid] > 1) PlayerGroundHoldTime[ghid][playerid]--;
 				}
-				PlayerHoldingGround[ghid][playerid] = 0;
-			}
 
+				new moneyreward;
+				if(playergroundcount <= 5)
+					moneyreward = (Groundholds[ghid][gh_money] * PlayerGroundHoldTime[ghid][playerid]) / (1+(playergroundcount / 5));
+				else
+					moneyreward = (Groundholds[ghid][gh_money] * PlayerGroundHoldTime[ghid][playerid]) / (1+(5 / 5));
+				if(moneyreward > 0)
+					oGivePlayerMoney(playerid,moneyreward,0);
+				
+				new xpreward = (Groundholds[ghid][gh_xp] * PlayerGroundHoldTime[ghid][playerid]);
+				if(xpreward > 0 && GetPlayerXP(playerid) < MAX_LVLXP)
+					GivePlayerXP(playerid,xpreward,0);
+				else 
+				{
+					new string[MAX_STRING];
+					format(string, sizeof(string),  lang_texts[9][17] );
+					SendClientMessage(playerid, COLOUR_RED, string);
+				}
+			}
 		}
-		else
+		else 
 		{
-			PlayerGroundHoldTime[ghid][playerid] = 0;
+			if(PlayerGroundHoldTime[ghid][playerid] > 0)
+			{
+				if(PlayerHoldingGround[ghid][playerid] == 1)
+				{
+					new string[MAX_STRING];
+					format(string, sizeof(string),  lang_texts[7][4] );
+					SendClientMessage(playerid, COLOUR_RED, string);
+				}
+				if(PlayerGroundHoldTime[ghid][playerid] == 1)
+				{
+					new string[MAX_STRING];
+					format(string, sizeof(string),  lang_texts[7][5] , Groundholds[ghid][gh_name]);
+					SendClientMessage(playerid, COLOUR_RED, string);
+				}
+				PlayerGroundHoldTime[ghid][playerid]--;
+				if(PlayerGroundHoldTime[ghid][playerid] > 1)
+				{
+					PlayerGroundHoldTime[ghid][playerid]--;
+				}
+				if(PlayerGroundHoldTime[ghid][playerid] > 1) PlayerGroundHoldTime[ghid][playerid]--;
+			}
 			PlayerHoldingGround[ghid][playerid] = 0;
 		}
 	}
@@ -228,7 +229,7 @@ stock CheckGround(ghid)
 stock CountPlayers(players[])
 {
 	new count;
-	for(new i=0;i<MAX_PLAYERS;i++) if(players[i] > 0) count++;
+	for(new i=GetMaxPlayers()-1;i>=0;--i) if(players[i] > 0) count++;
 	return count;
 }
 

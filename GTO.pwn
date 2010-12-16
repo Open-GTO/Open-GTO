@@ -4,8 +4,8 @@ Project Name:	San Andreas - Multiplayer: Grand Theft Online.
 Date Created:		12 August 2006
 Date start edit: 	5 November 2009(by Russian Scripter's)
 
-Current GM version:		GTO 0.6.4
-SA-MP Server Version:	0.3b R2
+Current version: GTO 0.6.4
+SA-MP Versions:	0.3b R2
 */
 
 #include <..\compiler\includes\a_samp>							// samp
@@ -37,7 +37,6 @@ SA-MP Server Version:	0.3b R2
 #include "admin\adm_commands"
 #include "admin\mod_commands"
 #include "streamers\mapicon_stream"
-#include "streamers\pickups_stream"
 #include "misc\mission"
 #include "protections\antiidle"
 #include "protections\antirconhack"
@@ -84,21 +83,19 @@ main()
 	print(" ");
 	print(" ");
 	print("\n-----------------------------------------------------------\n");
-	printf("Running GTO %s\n",VERSION);
+	print("Running GTO "#VERSION"\n");
 	print("_____________________________________________________________\n");
 	print("Created by: Iain Gilbert (Bogart)\nContinued by: Peter Steenbergen (j1nx)\n\t\tRobin Kikkert (Dejavu)\n\t\tLajos Pacsek (asturel)");
 	print("\t\tDmitry Frolov (FP)\nGTO-Rus Team(®): GhostTT, heufix, Elbi, ZiGGi");
 	print("_____________________________________________________________\n");
 	print("Translated to Russian by Dmitry Borisoff (Beginner)");
-	print("Visit us at http://gto.sa-mp.ws/ or http://gto.zziggi.ru/");
+	print("Visit us at http://gto.zziggi.ru/");
 	print("\n------------------------------------------------------------\n");
 }   // CREDITS NOT DELETE !!!!!!!!!!!!!!!!!
 
 public OnGameModeInit()
 {
-	new gamemode[MAX_NAME];
-	format(gamemode,sizeof(gamemode),"GTO %s",VERSION);
-	SetGameModeText(gamemode);
+	SetGameModeText("GTO "#VERSION);
 	// Initialize everything that needs it
 	logging_OnGameModeInit();
 	base_OnGameModeInit();
@@ -150,11 +147,11 @@ public OnGameModeInit()
 	dm_minigunmadness_init();
 	dm_poolday_init();
 	dm_usnavy_init();
-	//
+
 	#tryinclude "misc\mapicon"
 	#tryinclude "misc\pickups"
 	#tryinclude "misc\objects"
-	printf("SERVER: Objects and Pickups init");
+	printf("SERVER: New Objects and Pickups init");
 
 	new hour,minute,second;
 	gettime(hour,minute,second);
@@ -168,10 +165,8 @@ public OnGameModeInit()
 	SetTimer("OneHourTimer",3600000,1); // 1 hour
 	SpawnWorld();
 	WorldSave();
-	printf("SERVER: %s initialization complete. [%02d:%02d]",gamemode,hour,minute);
-	new string[MAX_STRING];
-	format(string,sizeof(string),"SERVER: %s initialization complete. ",gamemode);
-	WriteLog(GameLog,string);
+	printf("SERVER: GTO "#VERSION" initialization complete. [%02d:%02d]",hour,minute);
+	WriteLog(GameLog,"SERVER: GTO "#VERSION" initialization complete. ");
 	return 1;
 }
 
@@ -183,7 +178,7 @@ public OnGameModeExit()
 
 public OnPlayerConnect(playerid)
 {
-    if(playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) return 1;
+    if(IsPlayerNPC(playerid)) return 1;
 	player_OnPlayerConnect(playerid);
    	account_OnPlayerConnect(playerid);
 	return 1;
@@ -297,16 +292,19 @@ public OnPlayerSpawn(playerid)
 public OnPlayerRequestClass(playerid, classid)
 {
 	// Фикс для выбора классов(поломалось в 0.3a)
-	static bool:player_class_zero[MAX_PLAYERS];
+	//static bool:player_class_zero[MAX_PLAYERS] = {false,...};
+	SetPVarInt(playerid,"player_class_zero",0);
 	if(classid != 0)
 	{
 		Player[playerid][SkinModel] = GetPlayerSkin(playerid);
-		player_class_zero[playerid] = true;
+		//player_class_zero[playerid] = true;
+		SetPVarInt(playerid,"player_class_zero",1);
 	}
-	else if(player_class_zero[playerid] == true) // classid == 0 тоже можно выбирать
+	else if(GetPVarInt(playerid,"player_class_zero") == 1) // classid == 0 тоже можно выбирать
 	{
 		Player[playerid][SkinModel] = GetPlayerSkin(playerid);
-		player_class_zero[playerid] = false;
+		//player_class_zero[playerid] = false;
+		SetPVarInt(playerid,"player_class_zero",0);
 	}
 	//
 	switch(City[playerid])

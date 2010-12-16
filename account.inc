@@ -52,8 +52,7 @@ stock account_save_db_ini(playerid)
 {
 	new filename_account[MAX_STRING];
 	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
-	if(!ini_Exist(filename_account)) {new File:fhnd = fopen(filename_account,io_write);fclose(fhnd);}
-	new file_account = ini_Open(filename_account);
+	new file_account = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_Set(file_account,"Name",oGetPlayerName(playerid));
 	ini_Set(file_account,"Password",PlayerPassword[playerid]);
 	ini_Set(file_account,"Email",PlayerEmail[playerid]);
@@ -134,19 +133,14 @@ stock AccountLogin(playerid,password[])
 		SendClientMessage(playerid,COLOUR_GREEN, lang_texts[1][2]);
 		SendDeathMessage(INACTIVE_PLAYER_ID, playerid, 200);
 	}
-	for(new idst;idst<MAX_PLAYERS;idst++)
+	for(new idst=GetMaxPlayers()-1;idst>=0;--idst)
 	{
-		if(IsPlayerConnected(idst))
-		{
-			if(IsPlayerAdmin(idst))
-			{
-				format(string,sizeof(string), lang_texts[1][17] ,oGetPlayerName(playerid),playerid);
-				SendPlayerFormattedText(idst,string, 0,COLOUR_WHITE);
-				new Float:playerx,Float:playery,Float:playerz;
-				GetPlayerPos(idst,playerx,playery,playerz);
-				PlayerPlaySound(idst,1150,playerx,playery,playerz);
-			}
-		}
+		if(!IsPlayerConnected(idst) || IsPlayerNPC(idst) || !IsPlayerAdmin(idst)) continue;
+		format(string,sizeof(string), lang_texts[1][17] ,oGetPlayerName(playerid),playerid);
+		SendClientMessage(idst,COLOUR_WHITE,string);
+		new Float:playerx,Float:playery,Float:playerz;
+		GetPlayerPos(idst,playerx,playery,playerz);
+		PlayerPlaySound(idst,1150,playerx,playery,playerz);
 	}
 	format(logstring, sizeof (logstring), "player: %d:  %s: logged in successfully [%s]",playerid,oGetPlayerName(playerid),string);
 	WriteLog(GameLog,logstring);

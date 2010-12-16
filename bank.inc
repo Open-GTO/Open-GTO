@@ -31,9 +31,7 @@ new MAX_BANK = 15000000;
 
 stock BankSaveConfig()
 {
-	new file;
-	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
-	else file = ini_Open(ConfigDB);
+	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_SetInt(file,"BANK_ProfitCount",ProfitCount);
 	ini_SetInt(file,"BANK_MAX_MONEY",MAX_BANK);
 	ini_Close(file);
@@ -55,7 +53,7 @@ stock bank_OnGameModeInit()
 	BankLoadConfig();
 	for(new bankid=0;bankid<BanksCount;bankid++)
 	{
-	    CreateStreamPickup(1274, 23, Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z]);
+	    CreatePickup(1274, 23, Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z]);
 	}
 	return 1;
 }
@@ -94,7 +92,7 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	}
 	if(dialogid == bank_Withdraw_DialogID)// снять деньги
 	{
-	    if(!response) return bank_ShowDialog_First(playerid);
+	    if(!response)  return bank_ShowDialog_First(playerid);
 		if(!isNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
 		{
 			SendClientMessage(playerid,COLOUR_RED,"Вы не ввели или ввели неправильно количество денег.");

@@ -1,5 +1,5 @@
 //
-// Made by GhostTT
+// Made by GhostTT, modified by ZiGGi
 //
 
 #include "player"
@@ -10,11 +10,19 @@ stock antivehicle_OnPlayerStateChange(playerid,newstate,oldstate)
 	#pragma unused oldstate
 	if(newstate == PLAYER_STATE_DRIVER)
 	{
-		new vehicleid = GetPlayerVehicleID(playerid);
-		if(!Player[playerid][VIP])
+		if(!Player[playerid][VIP] && IsVIPVehicle( GetPlayerVehicleID(playerid) ))
 		{
-			if(vehicleid == vipvehic[0] || vehicleid == vipvehic[1] || vehicleid == vipvehic[2] || vehicleid == vipvehic[3] || vehicleid == vipvehic[4]) RemovePlayerFromVehicle(playerid);
+			RemovePlayerFromVehicle(playerid);
 		}
 	}
 	return 1;
+}
+
+stock IsVIPVehicle(vehicleid)
+{
+	for(new i=0;i<sizeof(vipvehic);i++)
+	{
+		if(vehicleid == vipvehic[i]) return true;
+	}
+	return false;
 }

@@ -2378,7 +2378,7 @@ stock vehicles_OnPlayerCommandText(playerid, cmdtext[])
 		if(VehicleDoors[pv] == 1) newstate = 0;
 		else newstate = 1;
 		VehicleDoors[pv] = newstate;
-		for(new i;i<MAX_PLAYERS;i++)
+		for(new i=GetMaxPlayers()-1;i>=0;--i)
 		{
 			if(IsPlayerConnected(i) && i != playerid) SetVehicleParamsForPlayer(pv, i, 0, newstate);
 		}
@@ -2399,7 +2399,7 @@ stock vehicles_OnPlayerCommandText(playerid, cmdtext[])
 		if(!IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid,COLOUR_RED, lang_texts[5][24]);
 		new pv = GetPlayerVehicleID(playerid);
 		if(VehicleDoors[pv] == 1) return 1;
-		for(new i;i<MAX_PLAYERS;i++)
+		for(new i=GetMaxPlayers()-1;i>=0;--i)
 		{
 			if(IsPlayerConnected(i) && i != playerid) SetVehicleParamsForPlayer(pv, i, 0, 0);
 		}

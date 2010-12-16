@@ -33,7 +33,7 @@ stock fights_OnGameModeInit()
 {
 	for(new fightid=1;fightid<MAX_FIGHT;fightid++)
 	{
-	    CreateStreamPickup(1314,23,FightTreners[fightid][Coord_X],FightTreners[fightid][Coord_Y],FightTreners[fightid][Coord_Z]);
+	    CreatePickup(1314,23,FightTreners[fightid][Coord_X],FightTreners[fightid][Coord_Y],FightTreners[fightid][Coord_Z]);
 	}
 	print("Загрузка: Система стилей борьбы запущена.");
 	return 1;

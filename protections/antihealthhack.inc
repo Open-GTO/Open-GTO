@@ -15,9 +15,7 @@ stock AntiHealthHackLoadConfig()
 
 stock AntiHealthHackSaveConfig()
 {
-	new file;
-	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
-	else file = ini_Open(ConfigDB);
+	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_SetInt(file,"Anti_Health_Hack_Enabled",AntiHealthHackEnabled);
 	ini_Close(file);
 	return 1;
@@ -31,8 +29,7 @@ stock antihealthhack_OnGameModeInit()
 
 stock SyncHealth(playerid)
 {
-	if(!IsPlayerConnected(playerid)) return 1;
-	if(AntiHealthHackEnabled != 1) return 1;
+	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid) || AntiHealthHackEnabled != 1) return 1;
 	new Float:clienthealth = oGetPlayerHealth(playerid);
 	if(clienthealth < 0) return oSetPlayerHealth(playerid,0);
 	if(clienthealth == Player[playerid][Health]) return 1;

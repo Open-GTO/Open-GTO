@@ -55,7 +55,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 		if(IsPlayerConnected(receiverid) == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][34],oGetPlayerName(receiverid),receiverid);
-		SendPlayerFormattedText(playerid,string, 0,COLOUR_YELLOW);
+		SendClientMessage(playerid,COLOUR_YELLOW,string);
 		new sid = Player[receiverid][Status];
 		if(sid > 0 && sid < 10) format(string,sizeof(string),lang_texts[12][87],sid);
 		else if(sid > 10) format(string,sizeof(string),lang_texts[12][86],sid);
@@ -226,7 +226,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 					X=X+(random(2)-random(4));Y=Y+(random(2)-random(4));	
 					SetPlayerPos(id,X,Y,Z);
 					format(string,sizeof(string),lang_texts[12][66] ,oGetPlayerName(playerid),playerid);
-					SendPlayerFormattedText(id,string, 0,COLOUR_XP_GOOD);
+					SendClientMessage(id,COLOUR_XP_GOOD,string);
 				}
 			}
 		}
@@ -280,9 +280,8 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 		new xpamountkeep = GetPlayerXP(receiverid)+xpamount;
 		if((!IsPlayerAdmin(receiverid) && xpamountkeep >MAX_LVLXP) || (IsPlayerAdmin(receiverid) && xpamountkeep > MAX_XP))
 		{
-			SendPlayerFormattedText(playerid, lang_texts[12][40] , 0,COLOUR_RED);
-			if(IsPlayerAdmin(receiverid)) xpamount = xpamountkeep-MAX_XP;
-			else xpamount = xpamountkeep-MAX_LVLXP;
+			SendClientMessage(playerid,COLOUR_RED,lang_texts[12][40]);
+			xpamount = xpamountkeep - (IsPlayerAdmin(receiverid)) ? MAX_XP : MAX_LVLXP;
 		}
 		SetPlayerXP(receiverid,Player[receiverid][XP]+xpamount);
 		Player[receiverid][XP]=GetPlayerXP(receiverid);

@@ -142,7 +142,7 @@ stock gang_load_db_ini(gangid,gangname[])
 		GangMemberInfo[gangid][gangmember][member_online] = false;
 		new string[MAX_STRING];
 		format(string,sizeof(string),"Member%d",gangmember);
-		ini_Get(file_gang,string,GangMemberInfo[gangid][gangmember][member_name],MAX_PLAYER_NAME);
+		ini_Get(file_gang,string,GangMemberInfo[gangid][gangmember][member_name],MAX_PLAYER_NAME+1); // +1 - на всякий случай:)
 		GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
 	}
 	ini_Close(file_gang);
@@ -249,7 +249,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
       		for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
    			{
     			if(strlen(GangMemberInfo[gangid][gangmember][member_name]) <= 0) continue;
-           		if(GangMemberInfo[gangid][gangmember][member_online])
+           		if(GangMemberInfo[gangid][gangmember][member_online] == true)
            		{
       				set(status,"Online");
          			format(string,sizeof(string),lang_texts[6][31],GangMemberInfo[gangid][gangmember][member_name],status,GetPlayerLevel(GangMemberInfo[gangid][gangmember][member_playerid]));

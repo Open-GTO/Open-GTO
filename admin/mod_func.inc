@@ -69,20 +69,20 @@ stock modfunc_OnPlayerText(playerid,text[])
 			{
 				new message[MAX_STRING];
 				format(message,sizeof(message), lang_texts[12][79] ,oGetPlayerName(playerid),string);
-				SendPlayerFormattedText(adminid,message, 0,COLOUR_RED);
+				SendClientMessage(adminid,COLOUR_RED,message);
 				count++;
 			}
 		}
 		if(count == 0)
 		{
-			SendPlayerFormattedText(playerid, lang_texts[12][80] , 0,COLOUR_RED);
+			SendClientMessage(playerid,COLOUR_RED,lang_texts[12][80]);
 			return 0;
 		} 
 		else 
 		{
 			new message[MAX_STRING];
 			format(message,sizeof(message), lang_texts[12][81] ,string);
-			SendPlayerFormattedText(playerid,message, 0,COLOUR_GREEN);
+			SendClientMessage(playerid,COLOUR_GREEN,message);
 			return 0;
 		}
 	}

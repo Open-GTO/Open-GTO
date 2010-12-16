@@ -805,8 +805,8 @@ public OneSecTimer()
 	SpawnTimer();
 	TextScroller();
 	SyncPlayers();
-	MapIconsTimer();
-	StreamPickups();
+	MapIcons_Streaming();
+	RunnerMissionTimer();
 }
 
 public OneMinuteTimer()

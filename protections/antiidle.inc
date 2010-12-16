@@ -1,8 +1,8 @@
 //
 // Created:     17.09.06
 // Aurthor:    Iain Gilbert
+// Modified by ZiGGi
 //
-
 
 #if defined _antiidle_included
   #endinput
@@ -32,9 +32,7 @@ stock AntiIdleLoadConfig()
 
 stock AntiIdleSaveConfig()
 {
-	new file;
-	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
-	else file = ini_Open(ConfigDB);
+	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_SetInt(file,"Anti_Idle_Enabled",AntiIdleEnabled);
 	ini_SetInt(file,"Anti_Idle_Max_Idle_Minutes",MaxIdle);
 	ini_Close(file);
@@ -51,7 +49,7 @@ stock AntiIdle()
 {
 	if(!AntiIdleEnabled) return;
     new Float:x,Float:y,Float:z,string[MAX_STRING];
-    for(new playerid=0; playerid<MAX_PLAYERS; playerid++)
+	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
 	{
         if(IsPlayerConnected(playerid) && !IsPlayerNPC(playerid) && !IsPlayerAdmin(playerid) && IsPlayerInAnyKach(playerid))
 		{
@@ -89,7 +87,8 @@ stock IsPlayerInAnyKach(playerid)
 	GetPlayerPos(playerid,X,Y,Z);
 	for(new id=0;id<MAX_GROUNDHOLD;id++)
 	{
-		if(IsPlayerInRangeOfPoint(playerid,Groundholds[id][gh_dist],Groundholds[id][gh_x],Groundholds[id][gh_y],Groundholds[id][gh_z])) return true;
+		if(IsPlayerInRangeOfPoint(playerid,Groundholds[id][gh_dist],Groundholds[id][gh_x],Groundholds[id][gh_y],Groundholds[id][gh_z]))
+			return true;
 	}
 	return false;
 }

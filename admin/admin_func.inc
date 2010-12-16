@@ -23,20 +23,20 @@ stock adminfunc_OnPlayerText(playerid,text[])
 			{
 				new message[MAX_STRING];
 				format(message,sizeof(message),lang_texts[12][28],oGetPlayerName(playerid), string);
-				SendPlayerFormattedText(adminid,message,0,COLOUR_RED);
+				SendClientMessage(adminid,COLOUR_RED,message);
 				count++;
 			}
 		}
 		if(count == 0)
 		{
-			SendPlayerFormattedText(playerid,lang_texts[12][29],0,COLOUR_RED);
+			SendClientMessage(playerid,COLOUR_RED,lang_texts[12][29]);
 			return 0;
 		} 
 		else 
 		{
 			new message[MAX_STRING];
 			format(message,sizeof(message),lang_texts[12][30],string);
-			SendPlayerFormattedText(playerid,message,0,COLOUR_GREEN);
+			SendClientMessage(playerid,COLOUR_GREEN,message);
 			return 0;
 		}
 	}
@@ -56,7 +56,7 @@ stock SendMessageToAdmins(playerid, color, text[])
 			if(aid != playerid) 
 			{
 				format(message,sizeof(message), lang_texts[1][23] ,oGetPlayerName(playerid), playerid, Player[playerid][Status], string);
-				SendPlayerFormattedText(aid,message, 0,color);
+				SendClientMessage(aid,color,message);
 			}
 		}
 	}

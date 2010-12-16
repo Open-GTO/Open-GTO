@@ -309,8 +309,8 @@ stock housing_OnGameModeInit()
 	new string[MAX_STRING];
 	for(new id=0;id<MAX_HOUSES;id++)
 	{
-		housepickup[id] = CreateStreamPickup(1273,1,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.5);	//зеленый домик
-		CreateStreamPickup(1559,1,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ]+0.5);
+		housepickup[id] = CreatePickup(1273,1,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.5);	//зеленый домик
+		CreatePickup(1559,1,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ]+0.5);
 		CreateStreamMapIcon(31,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]);
 		format(string,sizeof(string),"Дом: %s\nСтоимость: %d\nКуплен: %s\nАрендуется: %s",Houses[id][Houses_Name],Houses[id][Houses_Cost],Houses[id][Houses_Owner],Houses[id][Houses_RentName]);
 		House3DTextLabel[id] = Create3DTextLabel(string,COLOUR_WHITE,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.75,HouseDistanceOfShowLabel,0,1);
@@ -424,9 +424,12 @@ stock DeleteRenter(playerid)
 	if(strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true) == 0) 
 	{
 		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[8][58]);
-		for(new i=0;i<MAX_PLAYERS;i++) if(IsPlayerConnected(i)) if(!strcmp(Houses[id][Houses_RentName],oGetPlayerName(i),true)) SendClientMessage(i,COLOUR_LIGHTRED,lang_texts[8][60]);
+		for(new i=GetMaxPlayers()-1;i>=0;--i)
+			if(IsPlayerConnected(i) && !strcmp(Houses[id][Houses_RentName],oGetPlayerName(i),true))
+				SendClientMessage(i,COLOUR_LIGHTRED,lang_texts[8][60]);
 	}
-	else if(strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true) == 0) SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][59]);
+	else if(!strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true))
+		SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][59]);
 	if(id > -1) set(Houses[id][Houses_RentName],"Unknown");
 	return 1;
 }
@@ -613,7 +616,9 @@ stock FHouseHouses(playerid)
 
 stock FHouseBuy(playerid) 
 {
-	for(new i=0;i<MAX_HOUSES;i++) if(!strcmp(oGetPlayerName(playerid),Houses[i][Houses_Owner],true)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][78]);
+	for(new i=0;i<MAX_HOUSES;i++)
+		if(!strcmp(oGetPlayerName(playerid),Houses[i][Houses_Owner],true))
+			return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][78]);
 	new temp[MAX_STRING];
 	new id = GetHouseID(playerid);
 	if(id <= -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][21]);
@@ -621,13 +626,17 @@ stock FHouseBuy(playerid)
 	if(PlayerGangid[playerid] == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][19]);
 	new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
 	if(Player[playerid][Money] < price) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][18]);
-	if(!strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true)) SendPlayerFormattedText(playerid,lang_texts[8][15],0,COLOUR_RED);
+	if(!strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true))
+		SendPlayerFormattedText(playerid,lang_texts[8][15],0,COLOUR_RED);
 	else
 	{
 		new owner=-1;
-		for(new ownerid=0;ownerid<MAX_PLAYERS;ownerid++) if(IsPlayerConnected(ownerid)) if(!strcmp(Houses[id][Houses_Owner],oGetPlayerName(ownerid),true)) owner = ownerid;
+		for(new ownerid=GetMaxPlayers()-1;ownerid>=0;--ownerid)
+			if(IsPlayerConnected(ownerid)) if(!strcmp(Houses[id][Houses_Owner],oGetPlayerName(ownerid),true))
+				owner = ownerid;
 		oGivePlayerMoney(playerid,0-price,1);
-		if(owner > -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][77]);
+		if(owner > -1)
+			return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][77]);
 		else
 		{
 			new filename_housing[MAX_STRING];
@@ -676,7 +685,8 @@ stock FHouseSell(playerid)
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[8][27]);
 		return 1;
 	}
-	if(strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true)) SendPlayerFormattedText(playerid,lang_texts[8][23],0,COLOUR_RED);
+	if(strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true))
+		SendPlayerFormattedText(playerid,lang_texts[8][23],0,COLOUR_RED);
 	else
 	{
 		new price = ((Houses[id][Houses_Cost] + Houses[id][Houses_Buyout]) * 85) / 100;

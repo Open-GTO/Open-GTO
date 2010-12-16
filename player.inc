@@ -534,7 +534,6 @@ stock player_OnPlayerConnect(playerid)
 	SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][90]);
 	SendClientMessage(playerid, COLOUR_GREEN, "_________________________________________________________________________________");
 
-	SetPlayerSkin(playerid,Player[playerid][SkinModel]);
 	#if defined _testserver_included
 	testserver_OnPlayerConnect(playerid);
 	#endif
@@ -1059,7 +1058,8 @@ stock player_load_db_ini(playerid)
 	PlayerSpawn[playerid][Coord_Z] = floatstr(strcharsplit(string,idx,strchar(",")));
     ini_GetInt(file_player,"Status",Player[playerid][Status]);
 	SetPlayerFightingStyle(playerid,Player[playerid][FightStyle]);
-	new gangname[MAX_NAME],tmpname[MAX_STRING];
+	new gangname[MAX_NAME];
+	new tmpname[MAX_NAME];
 	ini_Get(file_player,"Gang",gangname);
 	if(strlen(gangname) > 0)
 	{

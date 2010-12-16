@@ -17,9 +17,7 @@ stock AntiHightPingLoadConfig()
 
 stock AntiHightPingSaveConfig()
 {
-	new file;
-	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
-	else file = ini_Open(ConfigDB);
+	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_SetInt(file,"Anti_Hight_Ping_Enabled",AntiHightPingEnabled);
 	ini_SetInt(file,"Anti_Hight_Ping_MAX_PING",MAX_PING);
 	ini_Close(file);
@@ -34,8 +32,7 @@ stock antihightping_OnGameModeInit()
 
 stock CheckPing(playerid)
 {
-	if(AntiHightPingEnabled != 1) return 1;
-	if(GetPlayerPing(playerid) <= MAX_PING || IsPlayerNPC(playerid)) return 1;
+	if(AntiHightPingEnabled != 1 || IsPlayerNPC(playerid) || GetPlayerPing(playerid) <= MAX_PING) return 1;
 	new string[MAX_STRING];
 	format(string,sizeof(string),"Пинг больше %d.",MAX_PING);
 	KickPlayer(playerid,string);

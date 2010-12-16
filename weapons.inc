@@ -109,6 +109,7 @@ stock WeaponLoadAll()
 	}
 	if(!ini_Exist(WeaponDB))
 	{
+	    print("WeaponSaveAll();");
 		WeaponSaveAll();
 		return;
 	}
@@ -160,7 +161,7 @@ stock weapons_OnGameModeInit()
 	WeaponMenuInit();
 	for(new id=0;id<AmmunationsCount;id++)
 	{
-		CreateStreamPickup(1247,1,Ammunations[id][Coord_X],Ammunations[id][Coord_Y],Ammunations[id][Coord_Z]);
+		CreatePickup(1247,1,Ammunations[id][Coord_X],Ammunations[id][Coord_Y],Ammunations[id][Coord_Z]);
 	}
 	WriteLog(GameLog,"Ammunition checkpoints initialised");
 }

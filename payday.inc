@@ -21,8 +21,7 @@ new BasePayXP = 200;
 
 stock PaydayLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	new file = ini_Open(ConfigDB);
+	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_GetInt(file,"Payday_Base",BasePay);
 	ini_GetInt(file,"Payday_Cutoff",PayCutoff);
 	ini_GetInt(file,"BasePayXP",BasePayXP);
@@ -32,8 +31,7 @@ stock PaydayLoadConfig()
 
 stock PaydaySaveConfig()
 {
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	new file = ini_Open(ConfigDB);
+	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_SetInt(file,"Payday_Base",BasePay);
 	ini_SetInt(file,"Payday_Cutoff",PayCutoff);
 	ini_SetInt(file,"BasePayXP",BasePayXP);
@@ -57,7 +55,7 @@ stock PayDay()
 		if(admpayday==0) rpayday++;
 		new BasePayM,BasePayX,string[MAX_STRING];
 		admpayday=0;
-		for(new id=0;id<MAX_PLAYERS;id++)
+		for(new id=GetMaxPlayers()-1;id>=0;--id)
 		{
 			if(IsPlayerConnected(id))
 			{
