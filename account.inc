@@ -17,12 +17,6 @@
 #define AccountRegDialogid 0
 #define AccountLogDialogid 1
 
-new PlayerEmail[MAX_PLAYERS][MAX_NAME];
-new PlayerPassword[MAX_PLAYERS][MAX_NAME];
-new PlayerCreationDate[MAX_PLAYERS];
-new PlayerRegistered[MAX_PLAYERS];
-new City[MAX_PLAYERS];
-
 stock AccountLoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 1;
@@ -50,14 +44,18 @@ stock AccountSave(playerid)
 
 stock account_save_db_ini(playerid)
 {
-	new filename_account[MAX_STRING];
-	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
+	new filename_account[MAX_STRING],temp[MAX_STRING],player_name[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,player_name,sizeof(player_name));
+	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,player_name);
 	new file_account = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_account,"Name",oGetPlayerName(playerid));
-	ini_Set(file_account,"Password",PlayerPassword[playerid]);
-	ini_Set(file_account,"Email",PlayerEmail[playerid]);
-	ini_Set(file_account,"Creation_Date",PlayerCreationDate[playerid]);
-	new day,month,year,seconds,minutes,hours,temp[MAX_STRING];
+	ini_Set(file_account,"Name",player_name);
+	GetPVarString(playerid,"Password",temp,MAX_STRING);
+	ini_Set(file_account,"Password",temp);
+	GetPVarString(playerid,"Email",temp,MAX_STRING);
+	ini_Set(file_account,"Email",temp);
+	GetPVarString(playerid,"Creation_Date",temp,MAX_STRING);
+	ini_Set(file_account,"Creation_Date",temp);
+	new day,month,year,seconds,minutes,hours;
 	gettime(hours,minutes,seconds);
 	getdate(year,month,day);
 	format(temp,sizeof(temp),"%02d.%02d.%d, %02d:%02d",day,month,year,hours,minutes);
@@ -99,7 +97,7 @@ stock AccountRegister(playerid,password[])
 stock AccountLogin(playerid,password[])
 {
 	new string[MAX_STRING],logstring[MAX_STRING];
-	if(PlayerRegistered[playerid])
+	if(GetPVarInt(playerid,"PlayerRegistered") == 1)
 	{
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][1]);
 		return 0;
@@ -149,7 +147,7 @@ stock AccountLogin(playerid,password[])
 
 stock account_login_db_dini(playerid,password[])
 {
-	new filename_account[MAX_STRING],string[MAX_STRING];
+	new filename_account[MAX_STRING],temp[MAX_STRING];
 	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
 	new dbpassword[MAX_NAME];
 	if(!ini_Exist(filename_account)) return 1;
@@ -162,34 +160,37 @@ stock account_login_db_dini(playerid,password[])
 		WriteLog(GameLog,logstring);
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][6]);
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][7]);
-		KickPlayer(playerid,"Incorrect Password"); // kick them
+		KickPlayer(playerid,"Неправильный пароль"); // kick them
 		return 0;
 	}
-	PlayerPassword[playerid] = dbpassword;
-	ini_Get(file_account,"Email",PlayerEmail[playerid]);
-	ini_Get(file_account,"Creation_Date",PlayerCreationDate[playerid],MAX_STRING);
-	PlayerRegistered[playerid] = 1;
+	SetPVarString(playerid,"Password",dbpassword);
+	ini_Get(file_account,"Email",temp);
+	SetPVarString(playerid,"Email",temp);
+	ini_Get(file_account,"Creation_Date",temp,MAX_STRING);
+	SetPVarString(playerid,"Creation_Date",temp);
+	SetPVarInt(playerid,"PlayerRegistered",1);
 	new day,month,year,seconds,minutes,hours;
 	gettime(hours,minutes,seconds);
 	getdate(year,month,day);
-	format(string,sizeof(string),"%02d.%02d.%d, %02d:%02d",day,month,year,hours,minutes);
-	ini_Set(file_account,"Last_Login",string);
+	format(temp,sizeof(temp),"%02d.%02d.%d, %02d:%02d",day,month,year,hours,minutes);
+	ini_Set(file_account,"Last_Login",temp);
 	ini_Close(file_account);
 	return 1;
 }
 
 stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 {
-	if(!IsPlayerConnected(playerid)) return 0;
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,strchar(" ")));
 	if(!strcmp(cmd,"/changepass",true))
 	{
 		if(GetPlayerMoney(playerid) < 500000) return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][35]);
-		set(PlayerPassword[playerid],strcharsplit(text, idx,strchar(" ")));
+		new temp[MAX_STRING];
+		set(temp,strcharsplit(text, idx,strchar(" ")));
+		SetPVarString(playerid,"Password",temp);
 		AccountSave(playerid);
 		new string[MAX_STRING];
-		format(string,sizeof(string),lang_texts[1][34],PlayerPassword[playerid]);
+		format(string,sizeof(string),lang_texts[1][34],temp);
 		SendClientMessage(playerid,COLOUR_WHITE,string);
 		oGivePlayerMoney(playerid,-500000,1);
 		return 1;
@@ -206,37 +207,38 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 
 stock account_OnPlayerConnect(playerid)
 {
-	if(IsPlayerNPC(playerid)) return 1;
 	new filename_account[MAX_STRING],message[MAX_STRING];
 	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
 	if(ini_Exist(filename_account))
 	{
  		format(message,sizeof(message),"Приветствую, %s!\n\nВведите пароль для входа!",oGetPlayerName(playerid));
-	    ShowPlayerDialog(playerid,AccountLogDialogid,DIALOG_STYLE_INPUT,"Вход в аккаунт",message,"Login","Cancel");
+	    ShowPlayerDialog(playerid,AccountLogDialogid,DIALOG_STYLE_INPUT,"Вход в аккаунт",message,"Войти","");
 	}
 	else
 	{
 	    format(message,sizeof(message),"Приветствую, %s!\n\nВведите пароль для регистрации!",oGetPlayerName(playerid));
-		ShowPlayerDialog(playerid,AccountRegDialogid,DIALOG_STYLE_INPUT,"Регистрация",message,"Register","Cancel");
+		ShowPlayerDialog(playerid,AccountRegDialogid,DIALOG_STYLE_INPUT,"Регистрация",message,"Зарегать","");
 	}
-	City[playerid] = random(3);
+	SetPVarInt(playerid,"RequestCity",random(3));
 	return 1;
 }
 
 stock account_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 {
-	#pragma unused listitem
+	#pragma unused listitem,response
 	if(dialogid == AccountLogDialogid)
 	{
-		if(!response) return account_OnPlayerConnect(playerid);
-		if(strlen(inputtext) > 0) AccountLogin(playerid,inputtext);
-		else account_OnPlayerConnect(playerid);
+		if(strlen(inputtext) > 0)
+			AccountLogin(playerid,inputtext);
+		else
+			account_OnPlayerConnect(playerid);
 	}
 	if(dialogid == AccountRegDialogid)
 	{
-		if(!response) return account_OnPlayerConnect(playerid);
-		if(strlen(inputtext) > 0) AccountRegister(playerid,inputtext);
-		else account_OnPlayerConnect(playerid);
+		if(strlen(inputtext) > 0)
+			AccountRegister(playerid,inputtext);
+		else
+			account_OnPlayerConnect(playerid);
 	}
 	return 1;
 }

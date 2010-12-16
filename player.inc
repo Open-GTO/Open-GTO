@@ -388,8 +388,7 @@ stock GetRndPlayerSpawnByLevel(level)
 			idx++;
 		}
 	}
-	if(idx != 0) spawnid = leveledspawns[random(idx)];
-	else spawnid = leveledspawns[0];
+	spawnid = (idx != 0) ? leveledspawns[random(idx)] : leveledspawns[0];
 	return spawnid;
 }
 
@@ -446,7 +445,7 @@ stock player_OnPlayerSpawn(playerid)
 
 stock player_ResetStats(playerid)
 {
-	PlayerRegistered[playerid] = false;
+	SetPVarInt(playerid,"PlayerRegistered",0);
 	Player[playerid][Level] = 0;
 	Player[playerid][XP] = 0;
 	Player[playerid][Bank] = 0;
@@ -479,11 +478,8 @@ stock player_ResetStats(playerid)
 
 stock IsPlayerRegistered(playerid)
 {
-	if(playerid == INVALID_PLAYER_ID) return 0;
-	if(Player[playerid][IsActive] == 0) return 0;
-	if(!IsPlayerConnected(playerid)) return 0;
-	if(PlayerRegistered[playerid] == 0) return 0;
-	return 1;
+	if(!IsPlayerConnected(playerid) || GetPVarInt(playerid,"PlayerRegistered") == 0 || Player[playerid][IsActive] == 0) return false;
+	return true;
 }
 
 stock player_OnPlayerDisconnect(playerid,reason)

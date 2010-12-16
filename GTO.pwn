@@ -314,7 +314,7 @@ public OnPlayerRequestClass(playerid, classid)
 		SetPVarInt(playerid,"player_class_zero",0);
 	}
 	//
-	switch(City[playerid])
+	switch(GetPVarInt(playerid,"RequestCity"))
 	{
 	    case 0:
 	    {

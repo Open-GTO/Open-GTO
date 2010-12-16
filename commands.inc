@@ -223,7 +223,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 			return 1;
 		}
 		if(style > Player[playerid][FightStyle])
-			return SendClientMessage(playerid,COLOUR_GREY,"Вы ещё невыучили этот стиль!");
+			return SendClientMessage(playerid,COLOUR_GREY,"Вы ещё не выучили этот стиль!");
 
 		SetPlayerFightingStyle(playerid,(Player[playerid][FightStyleUsed] = style));
 
