@@ -116,6 +116,12 @@ stock FindGangFreeSlot()
 
 stock GangLoad(gangname[])
 {
+	for(new id=1;id<MAX_GANGS;id++)
+	{
+		if(Gangs[id][gang_active] == true && !strcmp(gangname,Gangs[id][gang_name],false))
+			return id; 
+	}
+
 	new gangid = FindGangFreeSlot();
 	if(gangid == -1) return print("[ERROR] Свободный слот для банды не найден");
 	Gangs[gangid][gang_active] = true;
