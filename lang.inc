@@ -26,7 +26,7 @@ stock lang_OnGameModeInit()
 
 stock lang_read(filename[])
 {
-	new File:fohnd,tmpres[255],tmp1[255],tmp2[255],i;
+	new File:fohnd,tmpres[255],tmp1[255],tmp2[255],i,buf;
 	fohnd=fopen(filename,io_read);
 	if(!fohnd) return 1;
 	while(fread(fohnd,tmpres,sizeof(tmpres)))
@@ -36,7 +36,14 @@ stock lang_read(filename[])
 		if(strfind(tmpres, ":", true) != -1)
 		{
 			strmid(tmp1, tmpres, 0, strfind(tmpres, ":", true));
-			strmid(tmp2, tmpres, strfind(tmpres, ":", true)+2, (strlen(tmpres)-strlen(tmp1))); 
+			strmid(tmp2, tmpres, strfind(tmpres, ":", true)+2, (strlen(tmpres)-strlen(tmp1)));
+				
+			if( (buf = strfind(tmp2,"[n]")) != -1 )
+			{
+				strdel(tmp2,buf,buf+3);
+				strins(tmp2,"\n",buf);
+			}
+			
 			lang_texts[i][strval(tmp1)] = tmp2;
 		} 
 		else if(strfind(tmpres, ":", true) == -1) i++;
