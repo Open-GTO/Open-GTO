@@ -1086,9 +1086,11 @@ not_gang:
 	ini_Get(file_player,"WeaponsSkills",wepstr);
 	SetWeaponsSkillsFromDBString(playerid,wepstr);
 	ini_GetInt(file_player,"SkinModel",Player[playerid][SkinModel]);
-	ini_Get(file_player,"VIP",Player[playerid][VIPDate]);
-	if(VIPCheck(Player[playerid][VIPDate])) Player[playerid][VIP] = true;
-	else Player[playerid][VIP] = false;
+	ini_Get(file_player,"VIP",Player[playerid][VIPDate],MAX_STRING);
+	if(VIPCheck(Player[playerid][VIPDate]))
+		Player[playerid][VIP] = true;
+	else
+		Player[playerid][VIP] = false;
 	UpdatePlayerScore(playerid);
 	set(Player[playerid][Last_Name],oGetPlayerName(playerid));
 	ini_Close(file_player);
@@ -1111,7 +1113,7 @@ stock VIPCheck(date[])
 		if(month > month1) return true;
 		else if(month == month1)
 		{
-			if(day > day1 || day == day1) return true;
+			if(day >= day1) return true;
 		}
 	}
 	return false;

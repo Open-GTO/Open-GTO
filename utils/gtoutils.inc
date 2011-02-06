@@ -249,6 +249,19 @@ public settime()
 	return 1;
 }
 
+stock StringCharCheck(string[MAX_STRING])
+{
+	for(new i=0;i<MAX_STRING;i++)
+	{
+		switch(string[i])
+		{
+			case 0: return 1;
+			case '/','=': return 0;
+		}
+	}
+	return 1;
+}
+
 //------------------------- THIS COPY-PASTED FROM DUTILS -----------------------
 
 
