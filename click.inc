@@ -18,8 +18,8 @@ stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
 	Player[playerid][ClickedPlayerid] = clickedplayerid;
 	new listitems[256]; // не менять!
 	listitems = "Отправить денег\nЛичное сообщение\nЖалоба";
-	if(IsPlayerMod(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nKick\nMute\nUnMute\nJail\nUnJail", sizeof(listitems));
-	if(IsPlayerAdm(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nИнфо\nУбить\nTele to\nTele here\nSet health\nSet arm\nGive XP\nДать денег\nFreeze\nUnfreeze", sizeof(listitems));
+	if(IsPlayerMod(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nКикнуть\nЗаткнуть\nРазоткнуть\nВ тюрьму\nИз тюрьмы", sizeof(listitems));
+	if(IsPlayerAdm(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nИнфо\nУбить\nТелепорт к\nТелепортировать к себе\nЗадать здоровье\nЗадать броню\nДать опыт\nДать денег\nЗаморозить\nРазморозить", sizeof(listitems));
 	ShowPlayerDialog(playerid,ClickDialog,DIALOG_STYLE_LIST,"Выберите действие",listitems," Выбрать"," Отмена");
 }
 
@@ -47,12 +47,12 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		}
 		if(listitem == 3)
 		{
-			GuiHeader = " Kick player";
+			GuiHeader = " Кикнуть игрока";
 		    GuiText =  " Введите причину\n\n";
 		}
 		if(listitem == 4)
 		{
-			GuiHeader = " Mute player";
+			GuiHeader = " Заткнуть игрока";
 		    GuiText =  " Введите время затыкания\n\n";
 		}
 		if(listitem == 5)
@@ -75,7 +75,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		}
 		if(listitem == 6)
 		{
-			GuiHeader = " Jail player";
+			GuiHeader = " В тюрьму игрока";
 		    GuiText =  " Введите время заключения\n\n";
 		}
 		if(listitem == 7)
@@ -134,7 +134,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 			}
-			SetPlayerHealth(receiverid,0);
+			oSetPlayerHealth(receiverid,0);
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][62],oGetPlayerName(receiverid),receiverid);
 			SendClientMessage(playerid,COLOUR_XP_GOOD,string);
@@ -207,17 +207,17 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		}
 		if(listitem == 12)
 		{
-			GuiHeader = " Set Health";
+			GuiHeader = " Задать здоровье";
 		    GuiText =  " Введите значение\n\n";
 		}
 		if(listitem == 13)
 		{
-			GuiHeader = " Set Armour";
+			GuiHeader = " Задать броню";
 		    GuiText =  " Введите значение\n\n";
 		}
 		if(listitem == 14)
 		{
-			GuiHeader = " Give EXP";
+			GuiHeader = " Дать опыт";
 		    GuiText =  " Введите значение\n\n";
 		}
 		if(listitem == 15)
@@ -404,7 +404,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][44]);
 			}
-			SetPlayerHealth(receiverid, hltamount);
+			oSetPlayerHealth(receiverid, hltamount);
 		}
 		if(ListResponseType[playerid] == 13)
 		{

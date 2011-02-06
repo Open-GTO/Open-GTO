@@ -25,7 +25,6 @@ forward IsPlayerInCasino(playerid);
 forward IsPlayerInStore(playerid);
 forward loccmp(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Float:z2);
 forward Float:GetDistancePlayertoXYZ(playerid,Float:x2,Float:y2,Float:z2);
-forward Float:GetDistanceXYZtoXYZ(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Float:z2);
 forward SyncTime();
 forward SyncActiveCP();
 forward AddActiveCheckpoint(Float:cpx,Float:cpy,Float:cpz,cpdist,cpsize);
@@ -55,10 +54,16 @@ enum ActiveCPInfo {	// active checkpoints are checkpoints around the world that 
 new ActiveCheckpoints[MAX_ACTIVECP][ActiveCPInfo];
 new LastWorldSave = 1;
 
+forward Float:GetDistanceXYZtoXYZ(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Float:z2);
 public Float:GetDistanceXYZtoXYZ(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Float:z2)
 {
-	new Float:dist = floatsqroot(floatpower(floatabs(floatsub(x2,x1)),2)+floatpower(floatabs(floatsub(y2,y1)),2)+floatpower(floatabs(floatsub(z2,z1)),2));
-	return dist;
+	return floatsqroot(
+		floatpower( x2 - x1 , 2 )
+		+
+		floatpower( y2 - y1 , 2 )
+		+
+		floatpower( z2 - z1 , 2 )
+	);
 }
 
 public WorldSave() // save all
@@ -816,6 +821,7 @@ public OneMinuteTimer()
 	MuteCheck();
 	JailTimer();
 	AntiIdle();
+	TurnAround();
 	WorldSave();
 }
 
@@ -828,7 +834,6 @@ public OneHourTimer()
 public FiveSecondTimer()
 {
 	CheckAllGround();
-	TurnAround();
 	PlayerHealthRegen();
 	HouseKeepUp();
 	SyncActiveCP();

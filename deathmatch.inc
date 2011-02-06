@@ -154,21 +154,38 @@ stock DeathmatchLoadBaseDB(dmid)
     ini_GetInt(file,"Max_Distance",Deathmatch[dmid][dm_distance]);
     set(Deathmatch[dmid][dm_weapons],DMDecodeWeaponsDB(temp));
     ini_GetInt(file,"Weapons",Deathmatch[dmid][dm_weapons]);
-    ini_Get(file,"Start_CP",temp);
 
 	new Float:X,Float:Y,Float:Z;
-	if(ini_Get(file,"Start_CP",temp) == INI_OK)
+	ini_Get(file,"Start_CP",temp);
+	if(strlen(temp) != 0)
 	{
 		new idx=0;
 		X = floatstr(strcharsplit(temp,idx,strchar(",")));
 		Y = floatstr(strcharsplit(temp,idx,strchar(",")));
 		Z = floatstr(strcharsplit(temp,idx,strchar(",")));
-		set(temp,nullstr);
 		if(( X != 0.0) || (Y != 0.0))
 		{
 			DMStartCP[dmid][Coord_X] = X;
 			DMStartCP[dmid][Coord_Y] = Y;
 			DMStartCP[dmid][Coord_Z] = Z;
+			X = 0.0;
+			Y = 0.0;
+			Z = 0.0;
+		}
+	}
+	
+	ini_Get(file,"Centre_CP",temp);
+	if (strlen(temp) != 0)
+	{
+		new idx=0;
+		X = floatstr(strcharsplit(temp,idx,strchar(",")));
+		Y = floatstr(strcharsplit(temp,idx,strchar(",")));
+		Z = floatstr(strcharsplit(temp,idx,strchar(",")));
+		if (( X != 0.0) || (Y != 0.0))
+		{
+			DMCentreCP[dmid][Coord_X] = X;
+			DMCentreCP[dmid][Coord_Y] = Y;
+			DMCentreCP[dmid][Coord_Z] = Z;
 			X = 0.0;
 			Y = 0.0;
 			Z = 0.0;
