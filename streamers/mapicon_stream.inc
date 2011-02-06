@@ -29,7 +29,7 @@ static IconsShowed[MAX_PLAYERS];
 stock CreateStreamMapIcon( markertype, Float:X, Float:Y, Float:Z )
 {
 	new icon_id = GetLastMapIconSlot();
-	if(icon_id > MAX_ICONS) return 1;
+	if(icon_id > MAX_ICONS) return -1;
 	MapIcons[icon_id][icon_type] = markertype;
 	if( icon_id == 0 ) // фикс для 0 иконки
 	{
@@ -42,13 +42,18 @@ stock CreateStreamMapIcon( markertype, Float:X, Float:Y, Float:Z )
 	MapIcons[icon_id][Coord_X] = X;
 	MapIcons[icon_id][Coord_Y] = Y;
 	MapIcons[icon_id][Coord_Z] = Z;
-	return 1;
+	return icon_id;
 }
 
 stock DeleteStreamMapIcon(icon_id)
 {
 	for(new i=GetMaxPlayers()-1;i>=0;--i)
 		RemovePlayerStreamMapIcon(i,icon_id);
+	MapIcons[icon_id][icon_type] = 0;
+	MapIcons[icon_id][Showed] = false;
+	MapIcons[icon_id][Coord_X] = 0.0;
+	MapIcons[icon_id][Coord_Y] = 0.0;
+	MapIcons[icon_id][Coord_Z] = 0.0;
 }
 
 stock RemovePlayerStreamMapIcon( playerid,icon_id )
@@ -83,6 +88,20 @@ stock MapIcons_Streaming()
 
 			if( GetDistanceToMapIcon(playerid,icon_id) <= MAP_ICON_STREAM_DISTANCE && IconsShowed[playerid] < MAX_SHOWED_ICONS) // если игрок в зоне отображения иконки
 			{
+				// for houses
+				for(new house_id=0,icon_buf;house_id<MAX_HOUSES;house_id++)
+				{
+					icon_buf = house_icon[house_id];
+					if(!strcmp(Houses[house_id][Houses_Owner],oGetPlayerName(playerid))
+					|| !strcmp(Houses[house_id][Houses_RentName],oGetPlayerName(playerid))
+					)
+						MapIcons[icon_buf][icon_type] = 35;
+					else if(strcmp(Houses[house_id][Houses_Gang],"Unknown"))
+						MapIcons[icon_buf][icon_type] = 32;
+					else
+						MapIcons[icon_buf][icon_type] = 31;
+				}
+				// //
 				SetPlayerMapIcon(playerid,MapIcons[icon_id][iconid],MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z],MapIcons[icon_id][icon_type],0);
 				MapIcons[icon_id][Showed] = true;
 				IconsShowed[playerid]++;
