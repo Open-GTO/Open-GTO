@@ -396,6 +396,10 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
    			set(kickplayername,text);
             strdel(kickplayername, 0, idx);
             if(!strlen(kickplayername)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][61]);
+			if(IsNumeric(kickplayername))
+			{
+				set(kickplayername,GangMemberInfo[gangid][strval(kickplayername)][member_name]);
+			}
             if(GangRemoveMember(gangid,kickplayername))
             {
        			format(string,sizeof(string),lang_texts[6][62],kickplayername);

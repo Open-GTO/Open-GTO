@@ -511,12 +511,10 @@ stock player_OnPlayerConnect(playerid)
 {
 	Player[playerid][IsActive] = 1;
 	player_ResetStats(playerid);
-	new playername[MAX_PLAYER_NAME];
-	set(playername,oGetPlayerName(playerid));
-	if(!NameCharCheck(playername))
+	if(!NameCharCheck( oGetPlayerName(playerid) ))
 	{
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[9][13]);
-		KickPlayer(playerid,"Этот ник запрещён.");
+		KickPlayer(playerid,"Такой ник запрещён.");
 	}
 	SetPlayerColor(playerid,COLOUR_PLAYER);
 	
@@ -1021,6 +1019,7 @@ stock PlayerLoadStats(playerid)
 	format(string,sizeof(string),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
 	if(!ini_Exist(string)) CreatePlayer(playerid);
 	player_load_db_ini(playerid);
+	SetPVarInt(playerid,"IsLogin",1);
 	return 1;
 }
 

@@ -29,10 +29,8 @@ enum gh_info
 
 #define MAX_GROUNDHOLD 3
 new Groundhold_Enabled = 1;
-new GroundholdDB[MAX_STRING] = "GTO/Groundhold/";
 new PlayerGroundHoldTime[MAX_GROUNDHOLD][MAX_PLAYERS];
 new PlayerHoldingGround[MAX_GROUNDHOLD][MAX_PLAYERS];
-new groundholdActiveCPID[MAX_GROUNDHOLD];
 new Groundholds[MAX_GROUNDHOLD][gh_info] = {
 	//      Name,       pay ,   xp multi dist,       x,          y,          z
 	{"Кач 900xp и 300$",6,18,50,50,-2146.9585,-217.1571,35.3203}, // 
@@ -40,70 +38,68 @@ new Groundholds[MAX_GROUNDHOLD][gh_info] = {
 	{"кач 300xp и 100$",10,30,10,50,-687.9928,948.6489,12.1502} // Авто маг.
 };
 
-stock groundhold_LoadConfig()
+stock groundhold_SaveConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-    new file = ini_Open(ConfigDB);
-	ini_GetInt(file,"Groundhold_Enabled",Groundhold_Enabled);
-	ini_Get(file,"Groundhold_DB",GroundholdDB);
-	ini_Close(file);
+	new file_gh_db = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_gh_db,"Groundhold_Enabled",Groundhold_Enabled);
+	ini_Set(file_gh_db,"Groundhold_DB",GroundholdDB);
+	ini_Close(file_gh_db);
 	return 1;
 }
 
-stock groundhold_SaveConfig()
+stock groundhold_LoadConfig()
 {
-	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file,"Groundhold_Enabled",Groundhold_Enabled);
-	ini_SetInt(file,"Groundhold_Enabled",Groundhold_Enabled);// НЕ удалять!!! Иначе в файл не запишется >_<
-	ini_Set(file,"Groundhold_DB",GroundholdDB);
-	ini_Close(file);
+	if(!ini_Exist(ConfigDB)) return 1;
+    new file_gh_db = ini_Open(ConfigDB);
+	ini_GetInt(file_gh_db,"Groundhold_Enabled",Groundhold_Enabled);
+	ini_Get(file_gh_db,"Groundhold_DB",GroundholdDB);
+	ini_Close(file_gh_db);
 	return 1;
 }
 
 stock groundhold_LoadAll()
 {
-	new file;
-	if(!ini_Exist(GroundholdDB))
+	new file_gh,filename_gh[MAX_STRING];
+	/*if(!ini_Exist(GroundholdDB))
 	{
 		groundhold_SaveAll();
 		return;
-	}
+	}*/
 	for(new i=0;i<MAX_GROUNDHOLD;i++)
 	{
-		new filename[MAX_STRING];
-		format(filename,sizeof(filename),"%s%s.txt",GroundholdDB,Groundholds[i][gh_name]);
-		if(!ini_Exist(filename)) groundhold_SaveAll();
-		file = ini_Open(filename);
-		ini_Get(file,"Name",Groundholds[i][gh_name],MAX_STRING);
-		ini_GetInt(file,"Money",Groundholds[i][gh_money]);
-		ini_GetInt(file,"XP",Groundholds[i][gh_xp]);
-		ini_GetInt(file,"Multi",Groundholds[i][gh_multi]);
-		ini_GetInt(file,"Dist",Groundholds[i][gh_dist]);
-		ini_GetFloat(file,"Coord_X",Groundholds[i][gh_x]);
-		ini_GetFloat(file,"Coord_Y",Groundholds[i][gh_y]);
-		ini_GetFloat(file,"Coord_Z",Groundholds[i][gh_z]);
-		ini_Close(file);
+		format(filename_gh,sizeof(filename_gh),"%s%s.txt",GroundholdDB,Groundholds[i][gh_name]);
+		if(!ini_Exist(filename_gh)) groundhold_SaveAll();
+		file_gh = ini_Open(filename_gh);
+		ini_Get(file_gh,"Name",Groundholds[i][gh_name],MAX_STRING);
+		ini_GetInt(file_gh,"Money",Groundholds[i][gh_money]);
+		ini_GetInt(file_gh,"XP",Groundholds[i][gh_xp]);
+		ini_GetInt(file_gh,"Multi",Groundholds[i][gh_multi]);
+		ini_GetInt(file_gh,"Dist",Groundholds[i][gh_dist]);
+		ini_GetFloat(file_gh,"Coord_X",Groundholds[i][gh_x]);
+		ini_GetFloat(file_gh,"Coord_Y",Groundholds[i][gh_y]);
+		ini_GetFloat(file_gh,"Coord_Z",Groundholds[i][gh_z]);
+		ini_Close(file_gh);
 	}
 	return;
 }
 
 stock groundhold_SaveAll()
 {
-	new file,filename[MAX_STRING];
+	new file_gh,filename_gh[MAX_STRING];
 	for(new i=0;i<MAX_GROUNDHOLD;i++)
 	{
-		format(filename,sizeof(filename),"%s%s.txt",GroundholdDB,Groundholds[i][gh_name]);
-		if(!ini_Exist(filename)) file = ini_Create(filename);
-		else file = ini_Open(filename);
-		ini_Set(file,"Name",Groundholds[i][gh_name]);
-		ini_SetInt(file,"Money",Groundholds[i][gh_money]);
-		ini_SetInt(file,"XP",Groundholds[i][gh_xp]);
-		ini_SetInt(file,"Multi",Groundholds[i][gh_multi]);
-		ini_SetInt(file,"Dist",Groundholds[i][gh_dist]);
-		ini_SetFloat(file,"Coord_X",Groundholds[i][gh_x]);
-		ini_SetFloat(file,"Coord_Y",Groundholds[i][gh_y]);
-		ini_SetFloat(file,"Coord_Z",Groundholds[i][gh_z]);
-		ini_Close(file);
+		format(filename_gh,sizeof(filename_gh),"%s%s.txt",GroundholdDB,Groundholds[i][gh_name]);
+		if(!ini_Exist(filename_gh)) file_gh = ini_Create(filename_gh);
+		else file_gh = ini_Open(filename_gh);
+		ini_Set(file_gh,"Name",Groundholds[i][gh_name]);
+		ini_SetInt(file_gh,"Money",Groundholds[i][gh_money]);
+		ini_SetInt(file_gh,"XP",Groundholds[i][gh_xp]);
+		ini_SetInt(file_gh,"Multi",Groundholds[i][gh_multi]);
+		ini_SetInt(file_gh,"Dist",Groundholds[i][gh_dist]);
+		ini_SetFloat(file_gh,"Coord_X",Groundholds[i][gh_x]);
+		ini_SetFloat(file_gh,"Coord_Y",Groundholds[i][gh_y]);
+		ini_SetFloat(file_gh,"Coord_Z",Groundholds[i][gh_z]);
+		ini_Close(file_gh);
 	}
 	return;
 }
@@ -115,7 +111,7 @@ stock groundhold_OnGameModeInit()
 	groundhold_LoadAll();
 	for(new i=0;i<MAX_GROUNDHOLD;i++)
 	{
-		groundholdActiveCPID[i] = AddActiveCheckpoint(Groundholds[i][gh_x],Groundholds[i][gh_y],Groundholds[i][gh_z],200,2);
+		AddActiveCheckpoint(Groundholds[i][gh_x],Groundholds[i][gh_y],Groundholds[i][gh_z],200,2);
 		CreateStreamMapIcon(56,Groundholds[i][gh_x],Groundholds[i][gh_y],Groundholds[i][gh_z]);
 	}
 	WriteLog(GameLog,"Groundhold checkpoints initialised");

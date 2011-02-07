@@ -1326,7 +1326,7 @@ stock dm_OnPlayerCommandText(playerid,text[]) // process player commands
 		{
 			if(PlayerQuest[playerid] == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[4][60]);
 			new dmid = GetPlayerDM(playerid);
-			if(dmid == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[4][61]);
+			if(dmid == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[4][60]);
 			PlayerLeaveDM(playerid,dmid);
 			return 1;
 		}

@@ -109,7 +109,7 @@ stock MapIcons_Streaming()
 						MapIcons[icon_buf][icon_type] = 31;
 				}
 				// //
-				SetPlayerMapIcon(playerid,MapIcons[icon_id][iconid],MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z],MapIcons[icon_id][icon_type],0);
+				SetPlayerMapIcon(playerid,MapIcons[icon_id][iconid],MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z],MapIcons[icon_id][icon_type],0,MAPICON_LOCAL);
 				MapIconsShowed[playerid][icon_id] = true;
 				SetPVarInt(playerid,"IconsShowed",GetPVarInt(playerid,"IconsShowed") + 1);
 			}

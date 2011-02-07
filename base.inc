@@ -89,6 +89,7 @@ new PlayerDB[MAX_STRING] = "GTO/Player/";
 new HousesDB[MAX_STRING] = "GTO/Housing/";
 new BusinessDB[MAX_STRING] = "GTO/Business/";
 new WeaponDB[MAX_STRING] = "GTO/Weapon/";
+new GroundholdDB[MAX_STRING] = "GTO/Groundhold/";
 
 new DeathmatchDB[MAX_STRING] = "GTO/Deathmatch/!Deathmatches.txt";
 new DMBaseDB[MAX_STRING] = "GTO/Deathmatch/";

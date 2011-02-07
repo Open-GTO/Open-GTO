@@ -127,7 +127,6 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 					DeleteStreamMapIcon(FindStreamMapIcon(Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]));
 					CheckGround(ghid);
 				}
-				groundhold_SaveConfig();
 				SendClientMessage(playerid,COLOUR_WHITE,"SYS: Groundhold_Enabled OFF");
 			}
 			case 1:
@@ -135,11 +134,10 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 				Groundhold_Enabled = 1;
 				for(new ghid=0;ghid<MAX_GROUNDHOLD;ghid++)
 				{
-					groundholdActiveCPID[ghid] = AddActiveCheckpoint(Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z],200,2);
+					AddActiveCheckpoint(Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z],200,2);
 					CreateStreamMapIcon(56,Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]);
 					CheckGround(ghid);
 				}
-				groundhold_SaveConfig();
 				SendClientMessage(playerid,COLOUR_WHITE,"SYS: Groundhold_Enabled ON");
 			}
 		}

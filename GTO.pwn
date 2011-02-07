@@ -117,13 +117,13 @@ public OnGameModeInit()
 	vehicles_OnGameModeInit();
     race_OnGameModeInit();
 	deathmatch_OnGameModeInit();
-	housing_OnGameModeInit();
+	groundhold_OnGameModeInit();
 	business_OnGameModeInit();
 	bank_OnGameModeInit();
-    groundhold_OnGameModeInit();
 	lang_OnGameModeInit();
 	fights_OnGameModeInit();
     mission_OnGameModeInit();
+	housing_OnGameModeInit();
     antiidle_OnGameModeInit();
     antihightping_OnGameModeInit();
     antihealthhack_OnGameModeInit();
@@ -341,6 +341,12 @@ public OnPlayerRequestClass(playerid, classid)
 			SetPlayerCameraLookAt(playerid,349.0453,193.2271,1014.1797);
 		}
 	}
+	return 1;
+}
+
+public OnPlayerRequestSpawn(playerid)
+{
+	if(GetPVarInt(playerid,"IsLogin") != 1) return 0;
 	return 1;
 }
 

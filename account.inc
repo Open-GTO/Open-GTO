@@ -20,18 +20,17 @@
 stock AccountLoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 1;
-	new file_account = ini_Open(ConfigDB);
-	ini_Get(file_account,"Account_DB",AccountDB);
-	ini_Close(file_account);
+	new file_account_db;
+	ini_Get(file_account_db,"Account_DB",AccountDB);
+	ini_Close(file_account_db);
 	return 1;
 }
 
 stock AccountSaveConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-	new file_account = ini_Open(ConfigDB);
-	ini_Set(file_account,"Account_DB",AccountDB);
-	ini_Close(file_account);
+	new file_account_db = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_Set(file_account_db,"Account_DB",AccountDB);
+	ini_Close(file_account_db);
 	return 1;
 }
 
@@ -47,7 +46,7 @@ stock account_save_db_ini(playerid)
 	new filename_account[MAX_STRING],temp[MAX_STRING],player_name[MAX_PLAYER_NAME];
 	GetPlayerName(playerid,player_name,sizeof(player_name));
 	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,player_name);
-	new file_account = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	new file_account = (!ini_Exist(filename_account)) ? ini_Create(filename_account) : ini_Open(filename_account);
 	ini_Set(file_account,"Name",player_name);
 	GetPVarString(playerid,"Password",temp,MAX_STRING);
 	ini_Set(file_account,"Password",temp);
@@ -72,10 +71,11 @@ stock account_OnGameModeInit()
 
 stock AccountRegister(playerid,password[])
 {
-	new temp[MAX_STRING],filename_account[MAX_STRING];
-	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
+	new temp[MAX_STRING],filename_account[MAX_STRING],plname[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,plname,sizeof(plname));
+	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,plname);
 	new file_account = ini_Create(filename_account);
-	ini_Set(file_account,"Name",oGetPlayerName(playerid));
+	ini_Set(file_account,"Name",plname);
 	ini_Set(file_account,"Password",password);
 	ini_Set(file_account,"Email","admin@sa-mp.com");
 	new day,month,year,seconds,minutes,hours;
@@ -102,7 +102,7 @@ stock AccountLogin(playerid,password[])
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][1]);
 		return 0;
 	}
-	if(!account_login_db_dini(playerid,password)) return 0;
+	if(!account_login_db_ini(playerid,password)) return 0;
 	PlayerLoadStats(playerid);
 	GivePlayerOwnedWeapons(playerid);
 	if(IsPlayerAdmin(playerid))
@@ -145,7 +145,7 @@ stock AccountLogin(playerid,password[])
 	return 1;
 }
 
-stock account_login_db_dini(playerid,password[])
+stock account_login_db_ini(playerid,password[])
 {
 	new filename_account[MAX_STRING],temp[MAX_STRING];
 	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
@@ -161,6 +161,7 @@ stock account_login_db_dini(playerid,password[])
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][6]);
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][7]);
 		KickPlayer(playerid,"Неправильный пароль"); // kick them
+		account_OnPlayerConnect(playerid); // если игрок админ, то опять выводим меню
 		return 0;
 	}
 	SetPVarString(playerid,"Password",dbpassword);

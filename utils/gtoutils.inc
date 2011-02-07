@@ -135,12 +135,11 @@ stock Vary(source,varyamount)
 
 stock NameCharCheck(string[MAX_PLAYER_NAME])
 {
-	if(!strcmp(string,"Unknown",true)) return 0;
+	if(!strcmp(string,"Unknown",true) || IsNumeric(string)) return 0;
 	for (new i=0;i<strlen(string);i++)
 	{
-	    if(string[i]==0) return 1; // null
-		if(string[i] < 32) return 0;
-		if(string[i] > 125) return 0;
+	    if(string[i] == 0) return 1; // null
+		if(string[i] < 32 || string[i] > 125) return 0;
 	}
 	return 1;
 }
@@ -238,6 +237,15 @@ stock StringCharCheck(string[MAX_STRING])
 			case 0: return 1;
 			case '/','=': return 0;
 		}
+	}
+	return 1;
+}
+
+stock IsNumeric(const string[])
+{
+	for (new i = 0, j = strlen(string); i < j; i++)
+	{
+		if (string[i] > '9' || string[i] < '0') return 0;
 	}
 	return 1;
 }

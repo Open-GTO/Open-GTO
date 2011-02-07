@@ -1,4 +1,3 @@
-CreateStreamMapIcon(56,0.0,0.0,50.0);
 CreateStreamMapIcon(49,-1992.4265,84.1924,27.6875);
 CreateStreamMapIcon(49,-2869.5742,482.2063,4.9141);
 
