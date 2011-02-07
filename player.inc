@@ -511,16 +511,15 @@ stock player_OnPlayerConnect(playerid)
 {
 	Player[playerid][IsActive] = 1;
 	player_ResetStats(playerid);
-	new playername[MAX_STRING];
+	new playername[MAX_PLAYER_NAME];
 	set(playername,oGetPlayerName(playerid));
 	if(!NameCharCheck(playername))
 	{
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[9][13]);
-		KickPlayer(playerid,"Invalid character in playername."); // kick player
+		KickPlayer(playerid,"Этот ник запрещён.");
 	}
 	SetPlayerColor(playerid,COLOUR_PLAYER);
-//	PlaySoundForAll(1058); // думаю, нахуй, а то достало(ZiGGi)
-
+	
 	new string[MAX_STRING];
 	format(string, sizeof(string),lang_texts[15][85], VERSION);
 	GameTextForPlayer(playerid,string,5500,1);
@@ -565,9 +564,7 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 			{
 				if(!IsWeaponHandToHand(reason))
 				{
-					new lostbullets;
-					lostbullets = Vary(2,1);
-					PlayerWeapons[killerid][slot][pbullets] = PlayerWeapons[killerid][slot][pbullets] - lostbullets;	
+					PlayerWeapons[killerid][slot][pbullets] -= Vary(2,1);	
 					if (PlayerWeapons[killerid][slot][pbullets] < 0) PlayerWeapons[killerid][slot][pbullets] = 0;	
 				}
 			}
@@ -1064,7 +1061,7 @@ stock player_load_db_ini(playerid)
 		{
 			format(tmpname,sizeof(tmpname),"Банда `%s` была расформирована.",gangname);
 			SendClientMessage(playerid,COLOUR_ORANGE,tmpname);
-			ini_Set(file_player,"Gang","");
+			ini_Set(file_player,"Gang",nullstr);
 			PlayerGangid[playerid] = 0;
 			goto not_gang;
 		}
@@ -1073,7 +1070,7 @@ stock player_load_db_ini(playerid)
 		GangMemberLogin(playerid,PlayerGangid[playerid]);
 		if(PlayerGangid[playerid] == 0)
 		{
-			set(PlayerGangName[playerid],tmpname);
+			set(PlayerGangName[playerid],nullstr);
 			PlayerGangName[playerid][0] = 0;
 			PlayerGangid[playerid] = 0;
 		}

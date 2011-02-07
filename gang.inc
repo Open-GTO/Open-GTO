@@ -219,9 +219,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
    			SendClientMessage(playerid,COLOUR_GREEN,lang_texts[6][22]);
    			for(new i=0;i<COLOURS_SIZE;i++)
    			{
-				new string[MAX_STRING];
-    			format(string,sizeof(string),lang_texts[6][23],GangColours[i][colour_name]);
-    			SendClientMessage(playerid,GangColours[i][colour_code],string);
+    			SendClientMessage(playerid,GangColours[i][colour_code],GangColours[i][colour_name]);
    			}
    			return 1;
   		}
@@ -258,13 +256,13 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
     			if(strlen(GangMemberInfo[gangid][gangmember][member_name]) <= 0) continue;
            		if(GangMemberInfo[gangid][gangmember][member_online] == true)
            		{
-      				set(status,"Online");
-         			format(string,sizeof(string),lang_texts[6][31],GangMemberInfo[gangid][gangmember][member_name],status,GetPlayerLevel(GangMemberInfo[gangid][gangmember][member_playerid]));
+      				set(status,"В игре");
+         			format(string,sizeof(string),lang_texts[6][31],gangmember,GangMemberInfo[gangid][gangmember][member_name],GangMemberInfo[gangid][gangmember][member_playerid],status,GetPlayerLevel(GangMemberInfo[gangid][gangmember][member_playerid]));
      			}
      			else
      			{
-      				set(status,"Offline");
-      				format(string,sizeof(string),lang_texts[6][32],GangMemberInfo[gangid][gangmember][member_name],status);
+      				set(status,"Не в игре");
+      				format(string,sizeof(string),lang_texts[6][32],gangmember,GangMemberInfo[gangid][gangmember][member_name],status);
      			}
      			SendClientMessage(playerid,COLOUR_MISC,string);
    			}
@@ -306,7 +304,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 
          	if(strlen(gangname) < MIN_GANG_NAME_LEN) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][39]);
    			if(strlen(gangname) > MAX_GANG_NAME_LEN) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][40]);
-   			if(!StringCharCheck(gangname))
+   			if(!StringCharCheck(gangname) || !strcmp(gangname,"Unknown",true))
     			return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][41]);
    			if(GangCreate(playerid,gangname,gangcolour) != 0)
    			{

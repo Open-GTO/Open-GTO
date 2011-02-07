@@ -12,20 +12,6 @@
 
 #include "base"
 
-forward SendPlayerScrollingText(playerid,text[]);
-forward TextScroller();
-forward strcharsplit(string[], &index,seperator);
-forward strchar(string[2]);
-forward CharReplace(findchar,newchar,string[MAX_STRING]);
-forward Vary(source,varyamount);
-forward strcomp(str1[],str2[],bool:ignorecase);
-forward NameCharCheck(string[MAX_STRING]);
-forward SendClientMessageToRegistered(colour, message[]);
-forward ConvertSeconds(time);
-forward encryptbykey(string[],key[MAX_STRING]);
-forward PlayerCount();
-forward settime();
-
 PlayerPlaySoundOnPlayer(playerid,soundid)
 {
 	new Float:playerx,Float:playery,Float:playerz;
@@ -68,7 +54,7 @@ FormatPosition(position)
 #define TEXT_SCROLL_SIZE 1023
 new ScrollingText[MAX_PLAYERS][TEXT_SCROLL_SIZE]; // hmmmmm
 
-public SendPlayerScrollingText(playerid,text[])
+stock SendPlayerScrollingText(playerid,text[])
 {
 	for(new i=0;i<strlen(text);i++)
 	{
@@ -115,15 +101,15 @@ ScrollText(id)
 	return;
 }
 
-public TextScroller()
+stock TextScroller()
 {
-	for(new id=0;id<MAX_PLAYERS;id++)
+	for(new id=GetMaxPlayers()-1;id>=0;--id)
 	{
-		if(IsPlayerConnected(id)) ScrollText(id);
+		if(IsPlayerConnected(id) && !IsPlayerNPC(id)) ScrollText(id);
 	}
 }
 
-strcharsplit(string[], &index,seperator)
+stock strcharsplit(string[], &index,seperator)
 {
 	new result[MAX_STRING];
 	new idxpos = index;
@@ -137,21 +123,20 @@ strcharsplit(string[], &index,seperator)
 	return result;
 }
 
-public strchar(string[2])
+stock strchar(string[2])
 {
 	return string[0];
 }
 
-public Vary(source,varyamount)
+stock Vary(source,varyamount)
 {
-	new rnd = random((varyamount*2)+1) - varyamount;
-	source = source + rnd;
-	return source;
+	return source + random((varyamount*2)+1) - varyamount;
 }
 
-public NameCharCheck(string[MAX_STRING])
+stock NameCharCheck(string[MAX_PLAYER_NAME])
 {
-	for (new i=0;i<MAX_STRING;i++)
+	if(!strcmp(string,"Unknown",true)) return 0;
+	for (new i=0;i<strlen(string);i++)
 	{
 	    if(string[i]==0) return 1; // null
 		if(string[i] < 32) return 0;
@@ -176,16 +161,14 @@ stock SendAllFormattedText(const str[], define)
 
 stock SendClientMessageToRegistered(colour, message[])
 {
-	for(new playerid=0;playerid<MAX_PLAYERS;playerid++)
+	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
 	{
-	    if(IsPlayerConnected(playerid))
-	    {
-	        if(IsPlayerRegistered(playerid)) SendClientMessage(playerid,colour,message);
-		}
+	    if(IsPlayerConnected(playerid) && IsPlayerRegistered(playerid))
+			SendClientMessage(playerid,colour,message);
 	}
 }
 
-ConvertSeconds(time)
+stock ConvertSeconds(time)
 {
 	new string[40],Float:minutes,Float:hours,seconds,minutes_int;
 	if(time < 60) format(string, sizeof(string), "%d seconds", time);
@@ -208,10 +191,10 @@ ConvertSeconds(time)
 	return string;
 }
 
-public PlayerCount()
+stock PlayerCount()
 {
 	new count = 0;
-	for(new playerid=0;playerid<MAX_PLAYERS;playerid++)
+	for(new playerid=GetMaxPlayers();playerid>=0;--playerid)
 	{
         if(IsPlayerConnected(playerid)) count++;
 	}
@@ -238,13 +221,10 @@ stock PlaySoundForAll(soundid)
 	}
 }
 
-public settime()
+stock settime()
 {
-    new second,minute,hour;
-    //new string[256];
-    gettime(hour,minute,second);
-    //if (minute <= 9) format(string,25,"%d:0%d",hour,minute);
-    //else format(string,25,"%d:%d",hour,minute);
+    new hour;
+    gettime(hour);
     SetWorldTime(hour);
 	return 1;
 }
