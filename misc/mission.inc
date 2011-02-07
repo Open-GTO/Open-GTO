@@ -118,9 +118,6 @@ stock mission_OnPlayerStateChange(playerid,newstate,oldstate)
 stock mission_Start(playerid)
 {
 	new TrailerType = GetTrailerType( GetPlayerVehicleID(playerid) );
-	new string[MAX_STRING];
-	format(string,sizeof(string),"TrailerType=%d",TrailerType);
-	SendClientMessage(playerid,COLOUR_RED,string);
 	if(TrailerType == TRAILER_TYPE_NORMAL)
     {
         driver[playerid] = 1;
@@ -138,7 +135,7 @@ stock mission_Start(playerid)
 	else return 1;
     timer[playerid] = SetTimerEx("EndMission",300000,0,"d",playerid);
     SendClientMessage(playerid,COLOUR_YELLOW,"ХраП: Бери груз, езжай на чекпоинт, доставь туда груз вовремя и получишь бабки + опыт");
-   
+	new string[MAX_STRING];
     format(string,sizeof(string),"ХраП: %s взял миссию по доставке груза",oGetPlayerName(playerid));
     for(new i=GetMaxPlayers()-1;i>=0;--i)
     {
