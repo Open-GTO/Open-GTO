@@ -506,11 +506,13 @@ stock GangRemoveMember(gangid,kickplayername[])
 		format(string,sizeof(string),"Лидер банды %s(%d) удалил банду '%s'.",kickplayername,GangMemberInfo[gangid][0][member_playerid],Gangs[gangid][gang_name]);
 		for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 		{
-			SendClientMessage(GangMemberInfo[gangid][gangmember][member_playerid],COLOUR_RED,string);
-			SetPlayerColor(GangMemberInfo[gangid][gangmember][member_playerid],PlayerGangColour(playerid));
+			if(!IsPlayerConnected(GangMemberInfo[gangid][gangmember][member_playerid])) continue;
+			playerid = GangMemberInfo[gangid][gangmember][member_playerid];
 			PlayerGangid[playerid] = 0;
 			set(PlayerGangName[playerid],nullstr);
 			set(GangMemberInfo[gangid][gangmember][member_name],nullstr);
+			SendClientMessage(playerid,COLOUR_RED,string);
+			SetPlayerColor(playerid,PlayerGangColour(playerid));
 			GangMemberInfo[gangid][gangmember][member_online] = false;
 			GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
 		}
@@ -519,6 +521,7 @@ stock GangRemoveMember(gangid,kickplayername[])
 		Gangs[gangid][gang_active] = false;
 		return 1;
 	}
+	playerid = INVALID_PLAYER_ID;
 	for(new gangmember=1;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
 		if(strcmp(GangMemberInfo[gangid][gangmember][member_name],kickplayername,true)) continue;

@@ -118,6 +118,9 @@ stock mission_OnPlayerStateChange(playerid,newstate,oldstate)
 stock mission_Start(playerid)
 {
 	new TrailerType = GetTrailerType( GetPlayerVehicleID(playerid) );
+	new string[MAX_STRING];
+	format(string,sizeof(string),"TrailerType=%d",TrailerType);
+	SendClientMessage(playerid,COLOUR_RED,string);
 	if(TrailerType == TRAILER_TYPE_NORMAL)
     {
         driver[playerid] = 1;
@@ -135,11 +138,11 @@ stock mission_Start(playerid)
 	else return 1;
     timer[playerid] = SetTimerEx("EndMission",300000,0,"d",playerid);
     SendClientMessage(playerid,COLOUR_YELLOW,"ХраП: Бери груз, езжай на чекпоинт, доставь туда груз вовремя и получишь бабки + опыт");
-    new string[MAX_STRING];
+   
     format(string,sizeof(string),"ХраП: %s взял миссию по доставке груза",oGetPlayerName(playerid));
-    for(new i=0;i<MAX_PLAYERS;i++)
+    for(new i=GetMaxPlayers()-1;i>=0;--i)
     {
-        if(IsPlayerConnected(i) && i!=playerid) SendClientMessage(i,COLOUR_LIGHTRED,string);
+        if(IsPlayerConnected(i) && i != playerid) SendClientMessage(i,COLOUR_LIGHTRED,string);
     }
 	return 1;
 }
@@ -151,6 +154,7 @@ stock mission_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	{
 		if(PRESSED( KEY_SUBMISSION )) 
 		{
+			
 			if(PlayerQuest[playerid] == 0)
 			{
 				if(GetPVarInt(playerid,"RunnerMissionTime") > 0)
@@ -254,9 +258,11 @@ stock IsVehicleIsRunner(vehicleid)
 
 stock GetTrailerType(vehicleid)
 {
-	if(vehicleid == Trailer[1] || vehicleid == Trailer[2])
-		return TRAILER_TYPE_NORMAL;
-	else if(vehicleid == Trailer[3])
-		return TRAILER_TYPE_PETROL;
+	new model = GetVehicleModel( GetVehicleTrailer(vehicleid) );
+	switch(model)
+	{
+		case 435,450,591: return TRAILER_TYPE_NORMAL;
+		case 584: return TRAILER_TYPE_PETROL;
+	}
 	return -1;
 }

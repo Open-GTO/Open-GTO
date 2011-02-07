@@ -410,6 +410,7 @@ stock RentRoom(playerid)
 		ini_Set(file_housing,"RentName",oGetPlayerName(playerid));
 		ini_Close(file_housing);
 		SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][55]);
+		UpdatePlayerStreamMapIcon(playerid,house_icon[id]);
 	}
 	else
 	{
@@ -432,6 +433,7 @@ stock DeleteRenter(playerid)
 	else if(!strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true))
 		SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][59]);
 	if(id > -1) set(Houses[id][Houses_RentName],"Unknown");
+	UpdatePlayerStreamMapIcon(playerid,house_icon[id]);
 	return 1;
 }
 
@@ -660,10 +662,7 @@ stock FHouseBuy(playerid)
 		SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][69]);
 		SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][70]);
 		Houses[id][Houses_Buyout] = 0;
-		
-		DeleteStreamMapIcon(house_icon[id]);
-		CreateStreamMapIcon(35,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]);
-		
+		UpdateStreamMapIcon(house_icon[id]);
 		new filename_housing[MAX_STRING],logstring[MAX_STRING];
 		format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
 		if(ini_Exist(filename_housing))
@@ -703,10 +702,7 @@ stock FHouseSell(playerid)
 		set(Houses[id][Houses_Owner],"Unknown");
 		set(Houses[id][Houses_Gang],"Unknown");
 		Houses[id][Houses_Buyout] = 0;
-
-		DeleteStreamMapIcon(house_icon[id]);
-		CreateStreamMapIcon(31,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]);
-		
+		UpdateStreamMapIcon(house_icon[id]);
 		SaveHous(id);
 		format(temp,sizeof(temp),lang_texts[8][24],Houses[id][Houses_Name]);
 		SendClientMessage(playerid,COLOUR_GREEN,temp);

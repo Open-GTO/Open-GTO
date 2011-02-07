@@ -16,7 +16,6 @@
 #define MAP_ICON_STREAM_DISTANCE 400
 
 enum info_MapIcon {
-	bool:Showed,
 	icon_type,
 	iconid,
 	Float:Coord_X,
@@ -24,7 +23,7 @@ enum info_MapIcon {
 	Float:Coord_Z
 };
 static MapIcons[MAX_ICONS][info_MapIcon];
-static IconsShowed[MAX_PLAYERS];
+static bool:MapIconsShowed[MAX_PLAYERS][MAX_ICONS];
 
 stock CreateStreamMapIcon( markertype, Float:X, Float:Y, Float:Z )
 {
@@ -47,23 +46,30 @@ stock CreateStreamMapIcon( markertype, Float:X, Float:Y, Float:Z )
 
 stock DeleteStreamMapIcon(icon_id)
 {
-	for(new i=GetMaxPlayers()-1;i>=0;--i)
-		RemovePlayerStreamMapIcon(i,icon_id);
 	MapIcons[icon_id][icon_type] = 0;
-	MapIcons[icon_id][Showed] = false;
 	MapIcons[icon_id][Coord_X] = 0.0;
 	MapIcons[icon_id][Coord_Y] = 0.0;
 	MapIcons[icon_id][Coord_Z] = 0.0;
+	for(new i=GetMaxPlayers()-1;i>=0;--i)
+	{
+		RemovePlayerMapIcon(i,icon_id);
+		MapIconsShowed[i][icon_id] = false;
+	}
 }
 
-stock RemovePlayerStreamMapIcon( playerid,icon_id )
+stock UpdatePlayerStreamMapIcon( playerid,icon_id )
 {
-	MapIcons[icon_id][icon_type] = 0;
-	MapIcons[icon_id][Showed] = false;
-	MapIcons[icon_id][Coord_X] = 0.0;
-	MapIcons[icon_id][Coord_Y] = 0.0;
-	MapIcons[icon_id][Coord_Z] = 0.0;
 	RemovePlayerMapIcon(playerid,icon_id);
+	MapIconsShowed[playerid][icon_id] = false;
+}
+
+stock UpdateStreamMapIcon( icon_id )
+{
+	for(new i=GetMaxPlayers()-1;i>=0;--i)
+	{
+		RemovePlayerMapIcon(i,icon_id);
+		MapIconsShowed[i][icon_id] = false;
+	}
 }
 
 stock MapIcons_Streaming()
@@ -76,17 +82,18 @@ stock MapIcons_Streaming()
 		{
 			if( GetDistanceToMapIcon(playerid,icon_id) > MAP_ICON_STREAM_DISTANCE
 				&& IsValidMapIcon(icon_id)
-				&& MapIcons[icon_id][Showed] == true
+				&& MapIconsShowed[playerid][icon_id] == true
 			) // если игрок не в зоне отображения иконки
 			{
 				RemovePlayerMapIcon(playerid,MapIcons[icon_id][iconid]);
-				MapIcons[icon_id][Showed] = false;
-				IconsShowed[playerid]--;
+				MapIconsShowed[playerid][icon_id] = false;
+				SetPVarInt(playerid,"IconsShowed",GetPVarInt(playerid,"IconsShowed") - 1);
 				continue;
 			}
-			if(	MapIcons[icon_id][Showed] == true || !IsValidMapIcon(icon_id) ) continue; // если иконка показана или иконки нет
-
-			if( GetDistanceToMapIcon(playerid,icon_id) <= MAP_ICON_STREAM_DISTANCE && IconsShowed[playerid] < MAX_SHOWED_ICONS) // если игрок в зоне отображения иконки
+			
+			if(	MapIconsShowed[playerid][icon_id] == true || !IsValidMapIcon(icon_id) ) continue; // если иконка показана или иконки нет
+			
+			if( GetDistanceToMapIcon(playerid,icon_id) <= MAP_ICON_STREAM_DISTANCE && GetPVarInt(playerid,"IconsShowed") < MAX_SHOWED_ICONS) // если игрок в зоне отображения иконки
 			{
 				// for houses
 				for(new house_id=0,icon_buf;house_id<MAX_HOUSES;house_id++)
@@ -103,8 +110,8 @@ stock MapIcons_Streaming()
 				}
 				// //
 				SetPlayerMapIcon(playerid,MapIcons[icon_id][iconid],MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z],MapIcons[icon_id][icon_type],0);
-				MapIcons[icon_id][Showed] = true;
-				IconsShowed[playerid]++;
+				MapIconsShowed[playerid][icon_id] = true;
+				SetPVarInt(playerid,"IconsShowed",GetPVarInt(playerid,"IconsShowed") + 1);
 			}
 		}
 	}
@@ -151,7 +158,7 @@ stock FindStreamMapIcon(Float:X,Float:Y,Float:Z)
 
 stock IsValidMapIcon(icon_id)
 {
-	if(	MapIcons[icon_id][icon_type] == 0 && MapIcons[icon_id][Showed] == false
+	if(	MapIcons[icon_id][icon_type] == 0
 		&& MapIcons[icon_id][Coord_X] == 0.0
 		&& MapIcons[icon_id][Coord_Y] == 0.0
 		&& MapIcons[icon_id][Coord_Z] == 0.0
@@ -163,7 +170,7 @@ stock GetLastMapIconSlot()
 {
 	for(new icon=0;icon<MAX_ICONS;icon++)
 	{
-		if(	MapIcons[icon][icon_type] == 0 && MapIcons[icon][Showed] == false
+		if(	MapIcons[icon][icon_type] == 0
 			&& MapIcons[icon][Coord_X] == 0.0
 			&& MapIcons[icon][Coord_Y] == 0.0
 			&& MapIcons[icon][Coord_Z] == 0.0
