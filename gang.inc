@@ -490,7 +490,7 @@ stock GangJoinMember(gangid,playerid)
 		GangMemberInfo[gangid][gangmember][member_online] = true;
 		PlayerGangid[playerid] = gangid;
 		set(PlayerGangName[playerid],Gangs[gangid][gang_name]);
-		GangMemberLogin(gangid,playerid);
+		GangMemberLogin(playerid,gangid);
 		SetPlayerColor(playerid,PlayerGangColour(playerid));
 		return 1;
 	}
