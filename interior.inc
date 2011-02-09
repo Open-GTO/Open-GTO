@@ -281,7 +281,7 @@ new ExitPositions[SIZE][PickInfo] = {
 };
 
 new EnterPickup[SIZE],IntPickup[SIZE];
-new pickup_icon[SIZE];
+//new pickup_icon[SIZE];
 
 stock interior_OnGameModeInit()
 {
@@ -290,7 +290,7 @@ stock interior_OnGameModeInit()
 	{
 		EnterPickup[i] = CreatePickup(1318,1,PickupPositions[i][X],PickupPositions[i][Y],PickupPositions[i][Z],-1);
 		IntPickup[i] = CreatePickup(1559,1,EnterPositions[i][X],EnterPositions[i][Y],EnterPositions[i][Z],-1);
-		pickup_icon[i] = CreateStreamMapIcon(2,PickupPositions[i][X],PickupPositions[i][Y],PickupPositions[i][Z]);
+		//pickup_icon[i] = CreateStreamMapIcon(2,PickupPositions[i][X],PickupPositions[i][Y],PickupPositions[i][Z]);
 	}
 	return 1;
 }
