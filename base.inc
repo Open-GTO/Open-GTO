@@ -22,6 +22,7 @@
 #define MAX_COUNTDOWN 5
 #define KEY_USING 	KEY_WALK //  нопка '’одьба' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
 
+#define message_DialogID 999
 
 #define TimerTick 1000 // used for how often timer function is called
 
@@ -251,4 +252,13 @@ GetLevelName(level)
 	if((level < 0) || (level > MAX_LEVEL+1)) return name;
 	set(name,LevelList[level][level_name]);
 	return name;
+}
+
+stock show_Msg_Dialog(playerid,string_head[],string_content[],button[])
+{
+	return ShowPlayerDialog(playerid,message_DialogID,DIALOG_STYLE_MSGBOX,
+		string_head,
+		string_content,
+		button,""
+	);
 }

@@ -57,6 +57,7 @@ Continued by: 	Peter Steenbergen (j1nx)
 //#include "testserver"
 #include "click"
 #include "fightstyles"
+#include "services\fastfood"
 #include "interior"
 // Races
 #tryinclude "races\race_monstertruck"		// Race: Monstertruck Madness
@@ -118,18 +119,20 @@ public OnGameModeInit()
 	vehicles_OnGameModeInit();
     race_OnGameModeInit();
 	deathmatch_OnGameModeInit();
-	housing_OnGameModeInit();
+	groundhold_OnGameModeInit();
 	business_OnGameModeInit();
+	housing_OnGameModeInit();
+	interior_OnGameModeInit();
 	bank_OnGameModeInit();
-    groundhold_OnGameModeInit();
 	lang_OnGameModeInit();
 	fights_OnGameModeInit();
     mission_OnGameModeInit();
+	fastfood_OnGameModeInit();
+	
     antiidle_OnGameModeInit();
     antihightping_OnGameModeInit();
     antihealthhack_OnGameModeInit();
     antimoneyhack_OnGameModeInit();
-	interior_OnGameModeInit();
 	//
 	race_thestrip_init();
 	race_riversiderun_init();
@@ -213,6 +216,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	fights_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+	fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+	player_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	return 1;
 }
 
@@ -346,6 +351,12 @@ public OnPlayerRequestClass(playerid, classid)
 	return 1;
 }
 
+public OnPlayerRequestSpawn(playerid)
+{
+	if(GetPVarInt(playerid,"IsLogin") != 1) return 0;
+	return 1;
+}
+
 public OnPlayerCommandText(playerid,cmdtext[])
 {
 	commands_OnPlayerCommandText(playerid,cmdtext);
@@ -433,13 +444,23 @@ public OnPlayerUpdate(playerid)
 
 public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
-	housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
-	business_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
-	bank_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
-	weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
-    fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
-    mission_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
-	interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+	if( PRESSED ( KEY_USING ) )
+	{
+		if( IsPlayerAtHouse(playerid) ) return housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		if( IsPlayerAtBusinesses(playerid) != -1 ) return business_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		if( IsPlayerAtBank(playerid) != -1 ) return bank_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		if( IsPlayerAtAmmunation(playerid) != -1 ) return weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		if( GetPlayerFightTrenerID(playerid) != -1 ) return fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		if( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		if( IsPlayerAtEnterExit(playerid) ) return interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		player_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		return 1;
+	}
+	if( PRESSED( KEY_SUBMISSION ) )
+	{
+		if( IsPlayerInAnyVehicle(playerid) ) mission_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		return 1;
+	}
 	return 1;
 }
 

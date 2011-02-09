@@ -168,18 +168,9 @@ stock weapons_OnGameModeInit()
 
 stock weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
-	#pragma unused oldkeys
-	if(PRESSED( KEY_USING ))
-	{
-		for(new id=0;id<AmmunationsCount;id++)
-		{
-			if(IsPlayerInRangeOfPoint(playerid,2,Ammunations[id][Coord_X],Ammunations[id][Coord_Y],Ammunations[id][Coord_Z]))
-			{
-				TogglePlayerControllable(playerid,false);
-				ShowMenuForPlayer(WeaponMenu,playerid);
-			}
-		}
-	}
+	#pragma unused oldkeys,newkeys
+	TogglePlayerControllable(playerid,false);
+	ShowMenuForPlayer(WeaponMenu,playerid);
 	return 1;
 }
 
@@ -187,9 +178,10 @@ stock IsPlayerAtAmmunation(playerid)
 {
 	for(new id=0;id<AmmunationsCount;id++)
 	{
-		if(IsPlayerInRangeOfPoint(playerid,2,Ammunations[id][Coord_X],Ammunations[id][Coord_Y],Ammunations[id][Coord_Z])) return 1;
+		if(IsPlayerInRangeOfPoint(playerid,2,Ammunations[id][Coord_X],Ammunations[id][Coord_Y],Ammunations[id][Coord_Z]))
+			return id;
 	}
-	return 0;
+	return -1;
 }
 
 stock oGetWeaponName(weaponid)

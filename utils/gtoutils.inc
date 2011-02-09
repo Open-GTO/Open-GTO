@@ -235,7 +235,7 @@ stock StringCharCheck(string[MAX_STRING])
 		switch(string[i])
 		{
 			case 0: return 1;
-			case '/','=': return 0;
+			case '/','=','.',':': return 0;
 		}
 	}
 	return 1;

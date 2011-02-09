@@ -60,20 +60,16 @@ stock bank_OnGameModeInit()
 
 stock bank_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
-	#pragma unused oldkeys
-	if(newkeys == KEY_USING)
-	{
-		if(!IsPlayerAtBank(playerid)) return 1;
-		new string[MAX_STRING];
+	#pragma unused oldkeys,newkeys
+	new string[MAX_STRING];
 
-		format(string,sizeof(string),"Вы в банке. Вы можете хранить здесь деньги и получать процент %d% в час.",ProfitCount);
-		SendClientMessage(playerid,COLOUR_GREEN,string);
+	format(string,sizeof(string),"Вы в банке. Вы можете хранить здесь деньги и получать процент %d% в час.",ProfitCount);
+	SendClientMessage(playerid,COLOUR_GREEN,string);
 
-		format(string,sizeof(string),"Ваш текущий баланс: $%d.",Player[playerid][Bank]);
-		SendClientMessage(playerid,COLOUR_GREEN,string);
+	format(string,sizeof(string),"Ваш текущий баланс: $%d.",Player[playerid][Bank]);
+	SendClientMessage(playerid,COLOUR_GREEN,string);
 
-		bank_ShowDialog_First(playerid);
-	}
+	bank_ShowDialog_First(playerid);
 	return 1;
 }
 
@@ -172,8 +168,8 @@ stock IsPlayerAtBank(playerid)
 {
 	for(new bankid;bankid<BanksCount;bankid++)
 		if(IsPlayerInRangeOfPoint(playerid,2,Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z]))
-			return 1;
-	return 0;
+			return bankid;
+	return -1;
 }
 
 stock Profit()

@@ -28,90 +28,6 @@ enum EnterInfo
 }
 #define SIZE 81
 
-new PickupPositions[SIZE][PickInfo] = {
-{2400.463378,-1981.036499,13.546875,182.964981},
-{2397.710449,-1898.155151,13.546875,186.098419},
-{2228.920410,-1722.154907,13.562500,326.858398},
-{2244.633300,-1664.544677,15.476562,160.476791},
-{2308.654541,-1643.916015,14.827047,286.186004},
-{2807.804931,-1176.960815,25.384168,357.745788},
-{2231.978759,-1159.786865,25.890625,271.494171},
-{2112.758789,-1212.521850,23.964426,4.145859},
-{2104.412109,-1806.434936,13.554687,270.530822},
-{1553.792114,-1674.960571,16.195312,267.758270},
-{1572.565429,-1334.585205,16.484375,203.404357},
-{1631.819824,-1170.936279,24.078125,179.289199},
-{1365.461669,-1278.885253,13.546875,264.818267},
-{1199.297973,-919.651489,43.111553,7.905916},
-{927.228637,-1352.673583,13.376535,270.530792},
-{813.074829,-1616.162109,13.546875,87.806640},
-{500.654998,-1358.671020,16.134819,152.065124},
-{-2093.105957,-2464.149658,30.625000,139.218368},
-{-2154.221191,-2460.834228,30.851562,55.194232},
-{241.160018,-178.520660,1.578125,271.205352},
-{203.322296,-204.691406,1.578125,359.855987},
-{628.695007,-571.675598,17.095149,95.399177},
-{1289.493286,270.552703,19.554687,63.728549},
-{1366.661987,248.687973,19.566932,250.453521},
-{2334.481689,74.950744,26.484064,89.777725},
-{2334.037353,61.277992,26.484714,88.578254},
-{2021.956787,1007.176391,10.820312,92.351676},
-{2156.976074,943.175598,10.820312,274.690002},
-{2415.010009,1123.744506,10.820312,90.303222},
-{2543.122314,1024.685424,10.820312,0.442347},
-{2636.291503,1671.390380,11.023437,268.227874},
-{2636.339843,1850.022705,11.023437,271.398345},
-{2194.699218,1676.525878,12.367187,269.661773},
-{2193.865722,1991.001098,12.296875,269.733642},
-{2393.155273,2042.108886,10.820312,184.443786},
-{2366.304687,2071.036376,10.820312,271.398345},
-{2441.200439,2064.611572,10.820312,7.533768},
-{2452.464111,2064.472656,10.820312,359.857360},
-{2472.204345,2034.027954,11.062500,267.734130},
-{2546.521240,1971.829101,10.820312,356.121917},
-{2538.484619,2084.107421,10.820312,271.450225},
-{2886.156005,2452.792968,11.068956,51.974933},
-{2839.790771,2406.077148,11.068956,50.758544},
-{2825.254150,2406.185302,11.062500,326.019500},
-{2801.816406,2429.217041,11.062500,334.317291},
-{2778.586181,2452.152587,11.062500,327.040191},
-{2506.777099,2121.654541,10.840141,177.671890},
-{2087.108398,2074.133300,10.972449,92.644783},
-{2351.634033,2531.564941,10.820312,358.745086},
-{2247.607177,2396.888671,10.820312,179.004745},
-{2286.949462,2431.605957,10.820312,0.313411},
-{2337.151855,2458.534912,14.968750,6.662178},
-{2170.567871,2795.750732,10.820312,92.066276},
-{1659.329345,2250.390380,11.070102,187.847457},
-{1936.747558,2307.243896,10.820312,267.168579},
-{1968.645385,2294.686035,16.455863,355.631927},
-{2103.366210,2257.320800,11.023437,84.581886},
-{2103.299316,2228.750244,11.023437,85.131607},
-{2090.650634,2223.554687,11.023437,3.852190},
-{2097.755859,2223.724609,11.023437,3.301678},
-{2083.452636,2223.520019,11.023437,5.471636},
-{1872.898803,2071.604248,11.062500,74.194061},
-{1159.049438,2072.087402,11.062500,91.884552},
-{172.020858,1175.125610,14.757812,331.377410},
-{-1213.174194,1831.107910,41.929687,140.862716},
-{-594.060180,2019.842895,60.381847,147.771224},
-{425.003356,2536.359130,16.148437,90.054061},
-{-1508.892944,2610.077636,55.835937,0.468554},
-{-2625.213867,1412.120361,7.093750,11.995606},
-{-1722.247192,1358.670898,7.187500,284.695190},
-{-2357.499511,1008.202209,50.898437,267.349670},
-{-2376.590576,910.125427,45.445312,277.770935},
-{-1911.244628,829.042846,35.171875,140.275314},
-{-1885.251586,863.674682,35.172843,312.591674},
-{-1807.683837,944.741699,24.890625,45.100429},
-{-2269.836425,-155.953536,35.320312,91.706848},
-{-2242.847900,128.678970,35.320312,269.380340},
-{-2625.659912,209.004028,4.621434,174.564865},
-{-2671.427001,259.271942,4.632812,180.000015},
-{-2492.770263,-29.114257,25.765625,273.712463},
-{-2336.289550,-166.706802,35.554687,92.285903}
-};
-
 new EnterPositions[SIZE][EnterInfo] = {
 {296.920013,-111.071998,1001.515625,359.903076,6},
 {365.674346,-10.712305,1001.851562,359.903076,9},
@@ -280,43 +196,49 @@ new ExitPositions[SIZE][PickInfo] = {
 {-2335.950439,-166.645248,35.554687,270.000000}
 };
 
-new EnterPickup[SIZE],IntPickup[SIZE];
-//new pickup_icon[SIZE];
-
 stock interior_OnGameModeInit()
 {
 	DisableInteriorEnterExits();
 	for(new i=0;i<SIZE;i++)
 	{
-		EnterPickup[i] = CreatePickup(1318,1,PickupPositions[i][X],PickupPositions[i][Y],PickupPositions[i][Z],-1);
-		IntPickup[i] = CreatePickup(1559,1,EnterPositions[i][X],EnterPositions[i][Y],EnterPositions[i][Z],-1);
-		//pickup_icon[i] = CreateStreamMapIcon(2,PickupPositions[i][X],PickupPositions[i][Y],PickupPositions[i][Z]);
+		CreatePickup(1318,1,ExitPositions[i][X],ExitPositions[i][Y],ExitPositions[i][Z],-1);
+		CreatePickup(1559,1,EnterPositions[i][X],EnterPositions[i][Y],EnterPositions[i][Z],-1);
+		//CreateStreamMapIcon(2,ExitPositions[i][X],ExitPositions[i][Y],ExitPositions[i][Z]);
 	}
 	return 1;
 }
 
 stock interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
-	#pragma unused oldkeys
-	if(newkeys == KEY_USING)
+	#pragma unused oldkeys,newkeys
+	for(new id=0;id<SIZE;id++)
 	{
-		for(new id=0;id<MAX_HOUSES;id++)
+		if(IsPlayerInRangeOfPoint(playerid,3,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5))
 		{
-			if(IsPlayerInRangeOfPoint(playerid,3,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5))
-			{
-				new idd = GetPVarInt(playerid,"InteriorIndex");
-				SetPlayerInterior(playerid,0);
-				SetPlayerPos(playerid,ExitPositions[idd][X],ExitPositions[idd][Y],ExitPositions[idd][Z]);
-				SetPlayerFacingAngle(playerid,ExitPositions[idd][FacingAngle]);
-			}
-			else if(IsPlayerInRangeOfPoint(playerid,2,PickupPositions[id][X],PickupPositions[id][Y],PickupPositions[id][Z]))
-			{
-				SetPVarInt(playerid,"InteriorIndex",id);
-				SetPlayerPos(playerid,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]);
-				SetPlayerFacingAngle(playerid,EnterPositions[id][FacingAngle]);
-				SetPlayerInterior(playerid,EnterPositions[id][interiorid]);
-			}
+			new idd = GetPVarInt(playerid,"InteriorIndex");
+			SetPlayerInterior(playerid,0);
+			SetPlayerPos(playerid,ExitPositions[idd][X],ExitPositions[idd][Y],ExitPositions[idd][Z]);
+			SetPlayerFacingAngle(playerid,ExitPositions[idd][FacingAngle]);
+		}
+		else if(IsPlayerInRangeOfPoint(playerid,2,ExitPositions[id][X],ExitPositions[id][Y],ExitPositions[id][Z]))
+		{
+			SetPVarInt(playerid,"InteriorIndex",id);
+			SetPlayerPos(playerid,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]);
+			SetPlayerFacingAngle(playerid,EnterPositions[id][FacingAngle]);
+			SetPlayerInterior(playerid,EnterPositions[id][interiorid]);
 		}
 	}
 	return 1;
+}
+
+stock IsPlayerAtEnterExit(playerid)
+{
+	for(new id=0;id<SIZE;id++)
+	{
+		if(IsPlayerInRangeOfPoint(playerid,3,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5))
+			return 1;
+		else if(IsPlayerInRangeOfPoint(playerid,2,ExitPositions[id][X],ExitPositions[id][Y],ExitPositions[id][Z]))
+			return 1;
+	}
+	return 0;
 }

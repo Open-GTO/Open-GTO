@@ -30,7 +30,7 @@ enum BusinessInfo {
 	Business_Buyout,            // Buyout price
 	Business_Vault,              // Vault
 	Business_Upgrade,
-	Icon,
+	Business_ShowIcon,
 	Float:Coord_X,
 	Float:Coord_Y,
 	Float:Coord_Z
@@ -38,50 +38,50 @@ enum BusinessInfo {
 
 new Businesses[MAX_BUSINESSES][BusinessInfo] = {
 	//NAME,COST,VALUE,LEVEL,OWNER,BUYOUT,upgrade,x,y,z,icon
-	{"Botique",35000,800,5,"Unknown",0,0,0,0,			418.5547,-80.1667,1001.8047},
-	{"Shithole Bar",25000,1300,8,"Unknown",0,0,0,0,		501.4927,-75.4323,998.7578},
-	{"Tattoo Parlor",40000,600,3,"Unknown",0,0,0,0,		-203.4864,-41.2045,1002.2734},
-	{"Binco Clothing",15000,800,5,"Unknown",0,0,0,0,	207.5640,-97.8188,1005.2578},
-	{"Train Hard Clothing",15000,800,5,"Unknown",0,0,0,0,210.1111,-129.1273,1003.5152},
-	{"Urban Clothing",15000,800,5,"Unknown",0,0,0,0,	203.8557,-40.4717,1001.8047},
-	{"Victim Clothing",15000,800,5,"Unknown",0,0,0,0,	210.3724,-8.1825,1005.2109},
-	{"Zip Clothing",15000,800,5,"Unknown",0,0,0,0,		161.1875,-79.9915,1001.8047},
-	{"DidierSachs Clothing",20000,950,7,"Unknown",0,0,0,0,204.2810,-157.2614,1000.5234},
-	{"Gym",20000,1000,7,"Unknown",0,0,0,0,				773.6138,-72.1616,1000.6484},
-	{"Zero RC",10000,900,3,"Unknown",0,0,0,1,			-2231.2478,131.9623,1035.4141},
-	{"Zombotech",35000,1600,12,"Unknown",0,0,0,1,		-1951.5938,704.3567,46.5625},
-	{"Verdant Meadows Air Strip",20000,1200,7,"Unknown",0,0,0,0,418.1210,2536.8762,10.0000},
-	{"Blueberry Liquor Store",15000,850,5,"Unknown",0,0,0,0,252.4851,-57.3515,1.5703},
-	{"Club-Disco",50000,1600,10,"Unknown",0,0,0,0,		500.7049,-13.3777,1000.6797},
-	{"Lil Probe-Inn",47000,1100,6,"Unknown",0,0,0,0,	-225.7790,1403.9459,27.7734},
-	{"Sex Shop",40000,950,7,"Unknown",0,0,0,0,			-103.5525,-22.4661,1000.7188},
-	{"Strip Club",60000,1400,10,"Unknown",0,0,0,1,		1212.3918,-10.9459,1000.9219},
-	{"The Big Spread Ranch",48000,1450,9,"Unknown",0,0,0,1,1208.5027,-32.6044,1000.9531},
-	{"Jizzys",58000,1675,13,"Unknown",0,0,0,1,			-2650.0667,1409.2106,906.2734},
-	{"The Sherman Dam",58000,1800,16,"Unknown",0,0,0,1,	-955.5327,1948.5414,9.0000},
-	{"Cobra Marital Arts",15000,800,5,"Unknown",0,0,0,1,768.2014,-36.9461,1000.6865},
-	{"City Planning Department",35000,1600,12,"Unknown",0,0,0,0,357.0584,173.5787,1008.3820},
-	{"Inside Track",20000,1200,7,"Unknown",0,0,0,1,		823.1819,3.2361,1004.1797},
-	{"Coutt and Schutz Auto",25000,1250,8,"Unknown",0,0,0,1,2131.6455,-1148.2836,24.3898},
-	{"Ottos Auto",25000,1250,8,"Unknown",0,0,0,1,		-1657.8334,1207.3041,7.2500},
-	{"Wang Cars",25000,1250,8,"Unknown",0,0,0,1,		-1957.5327,300.2131,35.4688},
-	{"Emerald Isle",160000,4100,17,"Unknown",0,0,0,1,	2127.5940,2370.4255,10.8203},
-	{"The Visage",145000,3800,17,"Unknown",0,0,0,1,		2022.5179,1916.6848,12.3397},
-	{"Caligulas",3750000,19900,20,"Unknown",0,0,0,1,	2235.5408,1679.0402,1008.3594},
-	{"Four Dragons",2050000,16000,20,"Unknown",0,0,0,1,	1993.9758,1017.8945,994.8906}
+	{"Botique",35000,800,5,"Unknown",0,0,1,0,			418.5547,-80.1667,1001.8047},
+	{"Shithole Bar",25000,1300,8,"Unknown",0,0,1,0,		501.4927,-75.4323,998.7578},
+	{"Tattoo Parlor",40000,600,3,"Unknown",0,0,1,0,		-203.4864,-41.2045,1002.2734},
+	{"Binco Clothing",15000,800,5,"Unknown",0,0,1,0,	207.5640,-97.8188,1005.2578},
+	{"Train Hard Clothing",15000,800,5,"Unknown",0,0,1,0,210.1111,-129.1273,1003.5152},
+	{"Urban Clothing",15000,800,5,"Unknown",0,0,1,0,	203.8557,-40.4717,1001.8047},
+	{"Victim Clothing",15000,800,5,"Unknown",0,0,1,0,	210.3724,-8.1825,1005.2109},
+	{"Zip Clothing",15000,800,5,"Unknown",0,0,1,0,		161.1875,-79.9915,1001.8047},
+	{"DidierSachs Clothing",20000,950,7,"Unknown",0,0,1,0,204.2810,-157.2614,1000.5234},
+	{"Gym",20000,1000,7,"Unknown",0,0,1,1,				773.6138,-72.1616,1000.6484},
+	{"Zero RC",10000,900,3,"Unknown",0,0,1,1,			-2231.2478,131.9623,1035.4141},
+	{"Zombotech",35000,1600,12,"Unknown",0,0,1,1,		-1951.5938,704.3567,46.5625},
+	{"Verdant Meadows Air Strip",20000,1200,7,"Unknown",0,0,1,0,418.1210,2536.8762,10.0000},
+	{"Blueberry Liquor Store",15000,850,5,"Unknown",0,0,1,0,252.4851,-57.3515,1.5703},
+	{"Club-Disco",50000,1600,10,"Unknown",0,0,1,0,		500.7049,-13.3777,1000.6797},
+	{"Lil Probe-Inn",47000,1100,6,"Unknown",0,0,1,0,	-225.7790,1403.9459,27.7734},
+	{"Sex Shop",40000,950,7,"Unknown",0,0,1,0,			-103.5525,-22.4661,1000.7188},
+	{"Strip Club",60000,1400,10,"Unknown",0,0,1,1,		1212.3918,-10.9459,1000.9219},
+	{"The Big Spread Ranch",48000,1450,9,"Unknown",0,0,1,1,1208.5027,-32.6044,1000.9531},
+	{"Jizzys",58000,1675,13,"Unknown",0,0,1,1,			-2650.0667,1409.2106,906.2734},
+	{"The Sherman Dam",58000,1800,16,"Unknown",0,0,1,1,	-955.5327,1948.5414,9.0000},
+	{"Cobra Marital Arts",15000,800,5,"Unknown",0,0,1,0,768.2014,-36.9461,1000.6865},
+	{"City Planning Department",35000,1600,12,"Unknown",0,0,1,0,357.0584,173.5787,1008.3820},
+	{"Inside Track",20000,1200,7,"Unknown",0,0,1,1,		823.1819,3.2361,1004.1797},
+	{"Coutt and Schutz Auto",25000,1250,8,"Unknown",0,0,1,0,2131.6455,-1148.2836,24.3898},
+	{"Ottos Auto",25000,1250,8,"Unknown",0,0,1,1,		-1657.8334,1207.3041,7.2500},
+	{"Wang Cars",25000,1250,8,"Unknown",0,0,1,1,		-1957.5327,300.2131,35.4688},
+	{"Emerald Isle",160000,4100,17,"Unknown",0,0,1,1,	2127.5940,2370.4255,10.8203},
+	{"The Visage",145000,3800,17,"Unknown",0,0,1,1,		2022.5179,1916.6848,12.3397},
+	{"Caligulas",3750000,19900,20,"Unknown",0,0,1,1,	2235.5408,1679.0402,1008.3594},
+	{"Four Dragons",2050000,16000,20,"Unknown",0,0,1,1,	1993.9758,1017.8945,994.8906}
 };
 
 new Text3D:Business3DTextLabel[MAX_BUSINESSES],Float:BusinessDistanceOfShowLabel=20.0;
 
 BusinessLoadAll()
 {
-    new file;
+    new file_business;
 	if(ini_Exist(ConfigDB))
 	{
-		file = ini_Open(ConfigDB);
-		ini_Get(file,"Business_DB",BusinessDB);
-		ini_GetFloat(file,"Business_DistanceOfShowLabel",BusinessDistanceOfShowLabel);
-		ini_Close(file);
+		file_business = ini_Open(ConfigDB);
+		ini_Get(file_business,"Business_DB",BusinessDB);
+		ini_GetFloat(file_business,"Business_DistanceOfShowLabel",BusinessDistanceOfShowLabel);
+		ini_Close(file_business);
 	}
 	if(!ini_Exist(BusinessDB))
 	{
@@ -98,51 +98,52 @@ BusinessLoadAll()
 			fclose(fb);
 			BusinessSaveAll();
 		}
-		file = ini_Open(businessdbname);
-		ini_Get(file,"Name",Businesses[i][Business_Name],MAX_STRING);
-        ini_GetInt(file,"Cost",Businesses[i][Business_Cost]);
-        ini_GetInt(file,"Value",Businesses[i][Business_Value]);
-		ini_GetInt(file,"Level",Businesses[i][Business_Level]);
-        ini_Get(file,"Owner",Businesses[i][Business_Owner],MAX_STRING);
-        ini_GetInt(file,"Buyout",Businesses[i][Business_Buyout]);
-        ini_GetInt(file,"Vault",Businesses[i][Business_Vault]);
-        ini_GetInt(file,"Upgrade",Businesses[i][Business_Upgrade]);
-		ini_GetFloat(file,"Coord_X",Businesses[i][Coord_X]);
-		ini_GetFloat(file,"Coord_Y",Businesses[i][Coord_Y]);
-		ini_GetFloat(file,"Coord_Z",Businesses[i][Coord_Z]);
-		ini_Close(file);
+		file_business = ini_Open(businessdbname);
+		ini_Get(file_business,"Name",Businesses[i][Business_Name],MAX_STRING);
+        ini_GetInt(file_business,"Cost",Businesses[i][Business_Cost]);
+        ini_GetInt(file_business,"Value",Businesses[i][Business_Value]);
+		ini_GetInt(file_business,"Level",Businesses[i][Business_Level]);
+        ini_Get(file_business,"Owner",Businesses[i][Business_Owner],MAX_STRING);
+        ini_GetInt(file_business,"Buyout",Businesses[i][Business_Buyout]);
+        ini_GetInt(file_business,"Vault",Businesses[i][Business_Vault]);
+        ini_GetInt(file_business,"Upgrade",Businesses[i][Business_Upgrade]);
+		ini_GetInt(file_business,"ShowIcon",Businesses[i][Business_ShowIcon]);
+		ini_GetFloat(file_business,"Coord_X",Businesses[i][Coord_X]);
+		ini_GetFloat(file_business,"Coord_Y",Businesses[i][Coord_Y]);
+		ini_GetFloat(file_business,"Coord_Z",Businesses[i][Coord_Z]);
+		ini_Close(file_business);
 	}
 	return;
 }
 
 BusinessSaveAll()
 {
-	new file;
+	new file_business;
 	if(ini_Exist(ConfigDB))
 	{
-		file = ini_Open(ConfigDB);
-		ini_Set(file,"Business_DB",BusinessDB);
-		ini_SetFloat(file,"Business_DistanceOfShowLabel",BusinessDistanceOfShowLabel);
-		ini_Close(file);
+		file_business = ini_Open(ConfigDB);
+		ini_Set(file_business,"Business_DB",BusinessDB);
+		ini_SetFloat(file_business,"Business_DistanceOfShowLabel",BusinessDistanceOfShowLabel);
+		ini_Close(file_business);
 	}
 	for(new i=0;i<MAX_BUSINESSES;i++)
 	{
 		new businessdbname[MAX_STRING];
 		format(businessdbname,sizeof(businessdbname),"%s%s.txt",BusinessDB,Businesses[i][Business_Name]);
-		if(!ini_Exist(businessdbname)) {new File:fgh = fopen(businessdbname,io_write);fclose(fgh);}
-		file = ini_Open(businessdbname);
-		ini_Set(file,"Name",Businesses[i][Business_Name]);
-		ini_SetInt(file,"Cost",Businesses[i][Business_Cost]);
-        ini_SetInt(file,"Value",Businesses[i][Business_Value]);
-		ini_SetInt(file,"Level",Businesses[i][Business_Level]);
-		ini_Set(file,"Owner",Businesses[i][Business_Owner]);
-        ini_SetInt(file,"Buyout",Businesses[i][Business_Buyout]);
-        ini_SetInt(file,"Vault",Businesses[i][Business_Vault]);
-        ini_SetInt(file,"Upgrade",Businesses[i][Business_Upgrade]);
-		ini_SetFloat(file,"Coord_X",Businesses[i][Coord_X]);
-		ini_SetFloat(file,"Coord_Y",Businesses[i][Coord_Y]);
-		ini_SetFloat(file,"Coord_Z",Businesses[i][Coord_Z]);
-		ini_Close(file);
+		file_business = (!ini_Exist(businessdbname)) ? ini_Create(businessdbname) : ini_Open(businessdbname);
+		ini_Set(file_business,"Name",Businesses[i][Business_Name]);
+		ini_SetInt(file_business,"Cost",Businesses[i][Business_Cost]);
+        ini_SetInt(file_business,"Value",Businesses[i][Business_Value]);
+		ini_SetInt(file_business,"Level",Businesses[i][Business_Level]);
+		ini_Set(file_business,"Owner",Businesses[i][Business_Owner]);
+        ini_SetInt(file_business,"Buyout",Businesses[i][Business_Buyout]);
+        ini_SetInt(file_business,"Vault",Businesses[i][Business_Vault]);
+        ini_SetInt(file_business,"Upgrade",Businesses[i][Business_Upgrade]);
+		ini_SetInt(file_business,"ShowIcon",Businesses[i][Business_ShowIcon]);
+		ini_SetFloat(file_business,"Coord_X",Businesses[i][Coord_X]);
+		ini_SetFloat(file_business,"Coord_Y",Businesses[i][Coord_Y]);
+		ini_SetFloat(file_business,"Coord_Z",Businesses[i][Coord_Z]);
+		ini_Close(file_business);
 	}
 	return;
 }
@@ -154,7 +155,7 @@ stock business_OnGameModeInit()
 	for(new id=0;id<MAX_BUSINESSES;id++)
 	{
 		CreatePickup(1274,49,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.5);	//синий домик
-		if(Businesses[id][Icon] == 1)
+		if(Businesses[id][Business_ShowIcon] == 1)
 			CreateStreamMapIcon(52,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]);
 		format(string,sizeof(string),"Бизнес: %s\nСтоимость: %d\nПрибыль: %d\nСейчас принадлежит: %s\nМин.Уровень: %d\nУровень бизнеса: %d",Businesses[id][Business_Name],Businesses[id][Business_Cost],Businesses[id][Business_Value],Businesses[id][Business_Owner],Businesses[id][Business_Level],Businesses[id][Business_Upgrade]);
 		Business3DTextLabel[id] = Create3DTextLabel(string,COLOUR_WHITE,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.75,BusinessDistanceOfShowLabel,0,1);
@@ -192,7 +193,7 @@ stock TurnAround()
 		if(strcmp(Businesses[id][Business_Owner], "Unknown", true))
 		{
 			vaultmax = Businesses[id][Business_Value] * 5;
-			vaultamount = Businesses[id][Business_Vault] + (Businesses[id][Business_Value] * Businesses[id][Business_Upgrade]) / 3;
+			vaultamount = Businesses[id][Business_Vault] + ((Businesses[id][Business_Value] * Businesses[id][Business_Upgrade]) / 3);
 			if(vaultamount < vaultmax)
 			{
 				Businesses[id][Business_Vault] = vaultamount;
@@ -419,7 +420,7 @@ stock FBisSell(playerid)
 		oGivePlayerMoney(playerid,0+price,1);
 		set(Businesses[id][Business_Owner],"Unknown");
 		Businesses[id][Business_Buyout] = 0;
-		Businesses[id][Business_Upgrade] = 0;
+		Businesses[id][Business_Upgrade] = 1;
 		new filename[MAX_STRING];
 		format(filename,sizeof(filename),"%s%s.txt",BusinessDB,Businesses[id][Business_Name]);
 		if(ini_Exist(filename))
@@ -579,21 +580,23 @@ stock business_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 
 stock business_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
-	#pragma unused oldkeys
-	if(PRESSED( KEY_USING ))
-	{
-		for(new id=0;id<MAX_BUSINESSES;id++)
-		{
-			if(IsPlayerInRangeOfPoint(playerid,10,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]))
-			{
-				new temp[MAX_STRING];
-				format(temp,sizeof(temp),lang_texts[3][1],Businesses[id][Business_Name]);
-				BisMenuInit(playerid);
-				SendClientMessage(playerid,COLOUR_GREEN,temp);
-			}
-		}
-	}
+	#pragma unused oldkeys,newkeys
+	new id = IsPlayerAtBusinesses(playerid);
+	new temp[MAX_STRING];
+	format(temp,sizeof(temp),lang_texts[3][1],Businesses[id][Business_Name]);
+	BisMenuInit(playerid);
+	SendClientMessage(playerid,COLOUR_GREEN,temp);
 	return 1;
+}
+
+stock IsPlayerAtBusinesses(playerid)
+{
+	for(new id=0;id<MAX_BUSINESSES;id++)
+	{
+		if(IsPlayerInRangeOfPoint(playerid,10,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]))
+			return id;
+	}
+	return -1;
 }
 
 stock business_Update3DTextLabelText()

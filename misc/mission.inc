@@ -146,25 +146,18 @@ stock mission_Start(playerid)
 
 stock mission_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
-	#pragma unused oldkeys
-	if(IsPlayerInAnyVehicle(playerid))
+	#pragma unused oldkeys,newkeys
+	if(PlayerQuest[playerid] == 0)
 	{
-		if(PRESSED( KEY_SUBMISSION )) 
-		{
-			
-			if(PlayerQuest[playerid] == 0)
-			{
-				if(GetPVarInt(playerid,"RunnerMissionTime") > 0)
-					SendClientMessage(playerid,COLOUR_RED,"Пока никому ничего не нужно.");
-				else
-					mission_Start(playerid);
-			}
-			else if(PlayerQuest[playerid] == MISSION_ID) 
-			{
-				EndMission(playerid);
-				KillTimer(timer[playerid]);
-			}
-		}
+		if(GetPVarInt(playerid,"RunnerMissionTime") > 0)
+			SendClientMessage(playerid,COLOUR_RED,"Пока никому ничего не нужно.");
+		else
+			mission_Start(playerid);
+	}
+	else if(PlayerQuest[playerid] == MISSION_ID) 
+	{
+		EndMission(playerid);
+		KillTimer(timer[playerid]);
 	}
 	return 1;
 }

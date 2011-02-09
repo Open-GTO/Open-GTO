@@ -25,7 +25,7 @@ enum FightInfo {
 new FightTreners[MAX_FIGHT][FightInfo] = {
 	{FIGHT_STYLE_NORMAL,"нормальный",0,0.0,0.0,0.0},
 	{FIGHT_STYLE_BOXING,"бокс",1000,767.6851,12.8269,1000.7025}, // LS
-	{FIGHT_STYLE_KNEEHEAD,"колено-голова",2000,768.1637,-36.9087,1000.6865}, // SF
+	{FIGHT_STYLE_KNEEHEAD,"колено-голова",2000,768.5967,-22.9764,1000.5859}, // SF
 	{FIGHT_STYLE_KUNGFU,"кунг-фу",3000,766.5240,-76.6523,1000.6563} // LV
 };
 
@@ -41,24 +41,20 @@ stock fights_OnGameModeInit()
 
 stock fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
-	#pragma unused oldkeys
-	if(PRESSED( KEY_USING ))
+	#pragma unused oldkeys,newkeys
+	new string[MAX_STRING];
+	new TrenerID = GetPlayerFightTrenerID(playerid);
+	if(FightTreners[TrenerID][Style] <= Player[playerid][FightStyle])
 	{
-		new TrenerID = GetPlayerFightTrenerID(playerid);
-		if(TrenerID == -1) return 1;
-		new string[MAX_STRING];
-		if(FightTreners[TrenerID][Style] <= Player[playerid][FightStyle])
-		{
-			format(string,sizeof(string),"Вы уже выучили стиль: %s(%d)",FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Style]);
-			return SendClientMessage(playerid,COLOUR_WHITE,string);
-		}
-		if(FightTreners[TrenerID][Style]-1 > Player[playerid][FightStyle])
-		{
-			return SendClientMessage(playerid,COLOUR_WHITE,"Вы сначала, должны выучить предидущие стили!");
-		}
-		format(string,sizeof(string),"Выучить стиль борьбы %s(%d), за %d$",FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Style],FightTreners[TrenerID][Cost]);
-		ShowPlayerDialog(playerid,fightstyles_DialogID,DIALOG_STYLE_MSGBOX,"Тренер",string,"Выучить","Отмена");
+		format(string,sizeof(string),"Вы уже выучили стиль: %s(%d)",FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Style]);
+		return SendClientMessage(playerid,COLOUR_WHITE,string);
 	}
+	if(FightTreners[TrenerID][Style]-1 > Player[playerid][FightStyle])
+	{
+		return SendClientMessage(playerid,COLOUR_WHITE,"Вы сначала, должны выучить предидущие стили!");
+	}
+	format(string,sizeof(string),"Выучить стиль борьбы %s(%d), за %d$",FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Style],FightTreners[TrenerID][Cost]);
+	ShowPlayerDialog(playerid,fightstyles_DialogID,DIALOG_STYLE_MSGBOX,"Тренер",string,"Выучить","Отмена");
 	return 1;
 }
 
