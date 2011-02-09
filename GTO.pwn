@@ -57,6 +57,7 @@ Continued by: 	Peter Steenbergen (j1nx)
 //#include "testserver"
 #include "click"
 #include "fightstyles"
+#include "interior"
 // Races
 #tryinclude "races\race_monstertruck"		// Race: Monstertruck Madness
 #tryinclude "races\race_thestrip"			// Race: Burnin Down The Strip. - Just a strait sprint down the strip and back
@@ -117,17 +118,18 @@ public OnGameModeInit()
 	vehicles_OnGameModeInit();
     race_OnGameModeInit();
 	deathmatch_OnGameModeInit();
-	groundhold_OnGameModeInit();
+	housing_OnGameModeInit();
 	business_OnGameModeInit();
 	bank_OnGameModeInit();
+    groundhold_OnGameModeInit();
 	lang_OnGameModeInit();
 	fights_OnGameModeInit();
     mission_OnGameModeInit();
-	housing_OnGameModeInit();
     antiidle_OnGameModeInit();
     antihightping_OnGameModeInit();
     antihealthhack_OnGameModeInit();
     antimoneyhack_OnGameModeInit();
+	interior_OnGameModeInit();
 	//
 	race_thestrip_init();
 	race_riversiderun_init();
@@ -344,12 +346,6 @@ public OnPlayerRequestClass(playerid, classid)
 	return 1;
 }
 
-public OnPlayerRequestSpawn(playerid)
-{
-	if(GetPVarInt(playerid,"IsLogin") != 1) return 0;
-	return 1;
-}
-
 public OnPlayerCommandText(playerid,cmdtext[])
 {
 	commands_OnPlayerCommandText(playerid,cmdtext);
@@ -443,6 +439,7 @@ public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
     fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
     mission_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+	interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 	return 1;
 }
 
