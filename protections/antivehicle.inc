@@ -13,6 +13,7 @@ stock antivehicle_OnPlayerStateChange(playerid,newstate,oldstate)
 		if(!Player[playerid][VIP] && IsVIPVehicle( GetPlayerVehicleID(playerid) ))
 		{
 			RemovePlayerFromVehicle(playerid);
+			SendClientMessage(playerid,COLOUR_RED,"Этот транспорт доступен только VIP игрокам!");
 		}
 	}
 	return 1;
