@@ -211,23 +211,26 @@ stock interior_OnGameModeInit()
 stock interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused oldkeys,newkeys
-	for(new id=0;id<SIZE;id++)
+	for(new id=0,idd;id<SIZE;id++)
 	{
-		if(IsPlayerInRangeOfPoint(playerid,3,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5))
+		if(IsPlayerInRangeOfPoint(playerid,1.5,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5))
 		{
-			new idd = GetPVarInt(playerid,"InteriorIndex");
+			idd = GetPVarInt(playerid,"InteriorIndex");
 			SetPlayerInterior(playerid,0);
 			SetPlayerPos(playerid,ExitPositions[idd][X],ExitPositions[idd][Y],ExitPositions[idd][Z]);
 			SetPlayerFacingAngle(playerid,ExitPositions[idd][FacingAngle]);
+			return 1;
 		}
-		else if(IsPlayerInRangeOfPoint(playerid,2,ExitPositions[id][X],ExitPositions[id][Y],ExitPositions[id][Z]))
+		else if(IsPlayerInRangeOfPoint(playerid,1.5,ExitPositions[id][X],ExitPositions[id][Y],ExitPositions[id][Z]))
 		{
 			SetPVarInt(playerid,"InteriorIndex",id);
 			SetPlayerPos(playerid,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]);
 			SetPlayerFacingAngle(playerid,EnterPositions[id][FacingAngle]);
 			SetPlayerInterior(playerid,EnterPositions[id][interiorid]);
+			return 1;
 		}
 	}
+
 	return 1;
 }
 
@@ -235,10 +238,11 @@ stock IsPlayerAtEnterExit(playerid)
 {
 	for(new id=0;id<SIZE;id++)
 	{
-		if(IsPlayerInRangeOfPoint(playerid,3,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5))
-			return 1;
-		else if(IsPlayerInRangeOfPoint(playerid,2,ExitPositions[id][X],ExitPositions[id][Y],ExitPositions[id][Z]))
-			return 1;
+		if(
+		IsPlayerInRangeOfPoint(playerid,1.5,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5)
+		|| 
+		IsPlayerInRangeOfPoint(playerid,1.5,ExitPositions[id][X],ExitPositions[id][Y],ExitPositions[id][Z])
+		) return 1;
 	}
 	return 0;
 }

@@ -446,13 +446,13 @@ public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	if( PRESSED ( KEY_USING ) )
 	{
+		if( IsPlayerAtEnterExit(playerid) ) return interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( IsPlayerAtHouse(playerid) ) return housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( IsPlayerAtBusinesses(playerid) != -1 ) return business_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( IsPlayerAtBank(playerid) != -1 ) return bank_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( IsPlayerAtAmmunation(playerid) != -1 ) return weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( GetPlayerFightTrenerID(playerid) != -1 ) return fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
-		if( IsPlayerAtEnterExit(playerid) ) return interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		player_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		return 1;
 	}

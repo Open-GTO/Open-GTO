@@ -323,29 +323,24 @@ stock housing_OnGameModeInit()
 	}
 	WriteLog(GameLog,"Housing checkpoints initialised");
 }
-stock IsPlayerInHouse(playerid)
-{
-	for(new id=0;id<MAX_HOUSES;id++)
-		if(
-		IsPlayerInRangeOfPoint(playerid,2,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ])
-		||
-		IsPlayerInRangeOfPoint(playerid,2,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ])
-		) return 1;
-	return 0;
 
-}
 stock IsPlayerAtHouse(playerid)
 {
 	for(new id=0;id<MAX_HOUSES;id++)
-		if(IsPlayerInRangeOfPoint(playerid,2,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]))
-			return 1;
+	{
+		if(
+		IsPlayerInRangeOfPoint(playerid,1.5,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ])
+		||
+		IsPlayerInRangeOfPoint(playerid,1.5,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ])
+		) return 1;
+	}
 	return 0;
 }
 
 stock GetHouseID(playerid)
 {
 	new lookupid=-1;
-	for(new id=0;id<MAX_HOUSES;id++) if(IsPlayerInRangeOfPoint(playerid,2,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ])) lookupid = id;
+	for(new id=0;id<MAX_HOUSES;id++) if(IsPlayerInRangeOfPoint(playerid,1.5,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ])) lookupid = id;
 	return lookupid;
 }
 
