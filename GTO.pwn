@@ -20,6 +20,7 @@ Continued by: 	Peter Steenbergen (j1nx)
 
 #include <..\compiler\includes\a_samp>		// samp
 #include "base"								// holds base script values
+#include "arrays"
 #include "utils\gtoutils"					// misc used utils
 #include "utils\mxINI"
 #include "logging"							// logging handler

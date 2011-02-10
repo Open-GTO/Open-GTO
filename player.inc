@@ -656,27 +656,41 @@ stock player_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					);
 					return show_User_Menu_Dialog(playerid,"Информация о персонаже",string);
 				}
-				case 1: // Стиль борьбы
+				case 1: // Мои бизнесы
+				{
+					new count = 0;
+					for(new id=0;id<MAX_BUSINESSES;id++)
+					{
+						if(!strcmp(Businesses[id][Business_Owner], oGetPlayerName(playerid), true))
+						{
+							count++;
+							format(string,sizeof(string),"%s'%s' прибыль составляет $%d\n",string,Businesses[id][Business_Name],Businesses[id][Business_Vault]);
+						}
+					}
+					if(count == 0) set(string,"Вы не владеете никаким бизнесом.");
+					return show_User_Menu_Dialog(playerid,"Мои бизнесы",string);
+				}
+				case 2: // Стиль борьбы
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 2: // Анимации
+				case 3: // Анимации
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 3: // Убиться
+				case 4: // Убиться
 				{
 					SetPlayerHealth(playerid,0.0);
 					return 1;
 				}
-				case 4: // Выбросить оружие
+				case 5: // Выбросить оружие
 				{
 					CheckPlayerLevel(playerid);
 					return show_User_Menu_Dialog(playerid,"Выбросить оружие","Вы добровольно избавились от всего оружия.");
 				}
-				case 5: // Администрация онлайн
+				case 6: // Администрация онлайн
 				{
 					new idsa = 0,
 						admins[MAX_STRING],
@@ -707,17 +721,17 @@ stock player_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					);
 					return show_User_Menu_Dialog(playerid,"Администрация онлайн",string);
 				}
-				case 6: // Связь с администрацией
+				case 7: // Связь с администрацией
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 7: // Настройки
+				case 8: // Настройки
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 8: // Версия
+				case 9: // Версия
 				{
 					show_User_Menu_Dialog(playerid,
 						"Информация о версии",
@@ -790,6 +804,7 @@ stock show_User_Menu(playerid)
 	return ShowPlayerDialog(playerid,user_menu_DialogID,DIALOG_STYLE_LIST,
 		"Меню игрока",
 		"Информация о персонаже\n\
+		Мои бизнесы\n\
 		Стиль борьбы\n\
 		Анимации\n\
 		Убиться\n\
