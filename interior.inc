@@ -297,7 +297,7 @@ stock interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	#pragma unused oldkeys,newkeys
 	for(new id=0,idd;id<SIZE;id++)
 	{
-		if(IsPlayerInRangeOfPoint(playerid,1.5,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5))
+		if(IsPlayerInRangeOfPoint(playerid,2,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5))
 		{
 			idd = GetPVarInt(playerid,"InteriorIndex");
 			SetPlayerInterior(playerid,0);
@@ -305,7 +305,7 @@ stock interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 			SetPlayerFacingAngle(playerid,ExitPositions[idd][FacingAngle]);
 			return 1;
 		}
-		else if(IsPlayerInRangeOfPoint(playerid,1.5,PickupPositions[id][X],PickupPositions[id][Y],PickupPositions[id][Z]))
+		else if(IsPlayerInRangeOfPoint(playerid,2,PickupPositions[id][X],PickupPositions[id][Y],PickupPositions[id][Z]))
 		{
 			SetPVarInt(playerid,"InteriorIndex",id);
 			SetPlayerPos(playerid,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]);
@@ -323,9 +323,9 @@ stock IsPlayerAtEnterExit(playerid)
 	for(new id=0;id<SIZE;id++)
 	{
 		if(
-		IsPlayerInRangeOfPoint(playerid,1.5,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5)
+		IsPlayerInRangeOfPoint(playerid,2,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5)
 		|| 
-		IsPlayerInRangeOfPoint(playerid,1.5,ExitPositions[id][X],ExitPositions[id][Y],ExitPositions[id][Z])
+		IsPlayerInRangeOfPoint(playerid,2,ExitPositions[id][X],ExitPositions[id][Y],ExitPositions[id][Z])
 		) return 1;
 	}
 	return 0;
