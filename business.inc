@@ -136,23 +136,21 @@ stock GetBusinessID(playerid)
 
 stock TurnAround()
 {
-	new file,vaultamount,vaultmax;
+	new file_busin;
 	for(new id=0;id<MAX_BUSINESSES;id++)
 	{
 		if(strcmp(Businesses[id][Business_Owner], "Unknown", true))
 		{
-			vaultmax = Businesses[id][Business_Value] * 5;
-			vaultamount = Businesses[id][Business_Vault] + ((Businesses[id][Business_Value] * Businesses[id][Business_Upgrade]) / 3);
-			if(vaultamount < vaultmax)
+			if(Businesses[id][Business_Vault] < Businesses[id][Business_Value] * Businesses[id][Business_Upgrade] * 50)
 			{
-				Businesses[id][Business_Vault] = vaultamount;
-				new filename[MAX_STRING];
-				format(filename,sizeof(filename),"%s%s.txt",BusinessDB,Businesses[id][Business_Name]);
-				if(ini_Exist(filename))
+				Businesses[id][Business_Vault] += (Businesses[id][Business_Value] * Businesses[id][Business_Upgrade]) / 100;
+				new filename_busin[MAX_STRING];
+				format(filename_busin,sizeof(filename_busin),"%s%s.txt",BusinessDB,Businesses[id][Business_Name]);
+				if(ini_Exist(filename_busin))
 				{
-				    file = ini_Open(filename);
-					ini_SetInt(file,"Vault",Businesses[id][Business_Vault]);
-					ini_Close(file);
+					file_busin = ini_Open(filename_busin);
+					ini_SetInt(file_busin,"Vault",Businesses[id][Business_Vault]);
+					ini_Close(file_busin);
 				}
 			}
 		}
