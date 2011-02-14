@@ -755,8 +755,7 @@ stock PlayerFinishDM(playerid,dmid,position)
 {
 	new string[MAX_STRING];
 
-	set(string,FormatPosition(position));
-	GameTextForPlayer(playerid,string,5000,6);
+	GameTextForPlayer(playerid,FormatPosition(position),5000,6);
 	PlayerPlaySoundOnPlayer(playerid,1057);
 
 	if (position == 1)
@@ -989,8 +988,7 @@ stock DMResetPlayerStats(playerid)
 stock GetPlayerDMScore(playerid,dmid)
 {
 	if (!IsPlayerInDM(playerid,dmid)) return 0;
-	new score;
-	score = DMPlayerStats[playerid][dm_player_kills] - DMPlayerStats[playerid][dm_player_deaths];
+	new score = DMPlayerStats[playerid][dm_player_kills] - DMPlayerStats[playerid][dm_player_deaths];
 	if (score < 0) score = 0;
 	return score;
 }

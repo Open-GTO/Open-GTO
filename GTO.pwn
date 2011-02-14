@@ -257,14 +257,13 @@ public OnPlayerDeath(playerid, killerid, reason)
 	WriteLog(GameLog,logstring);
 
 	SendDeathMessage(killerid,playerid,reason);
-
-	mission_OnPlayerDeath(playerid,killerid,reason);
-	gang_OnPlayerDeath(playerid,killerid,reason);
 	
 	if(!IsPlayerInAnyDM(playerid))
 	{
 		player_OnPlayerDeath(playerid,killerid,reason);
 		player_OnPlayerKill(killerid,playerid,reason);
+		mission_OnPlayerDeath(playerid,killerid,reason);
+		gang_OnPlayerDeath(playerid,killerid,reason);
 //		DropPlayerWeapons(playerid);
 		PlayCrimeReportForPlayer(killerid,killerid,random(18)+3);
 		PlayCrimeReportForPlayer(playerid,killerid,random(18)+3);

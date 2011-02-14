@@ -143,7 +143,7 @@ stock TurnAround()
 		{
 			if(Businesses[id][Business_Vault] < Businesses[id][Business_Value] * Businesses[id][Business_Upgrade] * 50)
 			{
-				Businesses[id][Business_Vault] += (Businesses[id][Business_Value] * Businesses[id][Business_Upgrade]) / 100;
+				Businesses[id][Business_Vault] += (Businesses[id][Business_Value] * Businesses[id][Business_Upgrade]) / 1000;
 				new filename_busin[MAX_STRING];
 				format(filename_busin,sizeof(filename_busin),"%s%s.txt",BusinessDB,Businesses[id][Business_Name]);
 				if(ini_Exist(filename_busin))
