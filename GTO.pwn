@@ -261,7 +261,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	if(!IsPlayerInAnyDM(playerid))
 	{
 		player_OnPlayerDeath(playerid,killerid,reason);
-		player_OnPlayerKill(killerid,playerid,reason);
+//		player_OnPlayerKill(killerid,playerid,reason);
 		mission_OnPlayerDeath(playerid,killerid,reason);
 		gang_OnPlayerDeath(playerid,killerid,reason);
 //		DropPlayerWeapons(playerid);
@@ -270,7 +270,7 @@ public OnPlayerDeath(playerid, killerid, reason)
  	}
 	else deathmatch_OnPlayerDeath(playerid,killerid);
 
-	if(killerid != INVALID_PLAYER_ID) return 1;
+	if(killerid != INVALID_PLAYER_ID)
 	{
 		if(!IsPlayerInAnyDM(playerid)) player_OnPlayerKill(killerid, playerid,reason);
 		else deathmatch_OnPlayerKill(killerid,playerid,reason);

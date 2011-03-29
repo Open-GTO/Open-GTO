@@ -969,9 +969,9 @@ stock GivePlayerXP(playerid, xpamount,showtext) // showtext = do we display "You
 			format(string, sizeof(string),  lang_texts[9][20] , xpamount);
 			SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 		}
-		else if(xpamount > 0)
+		else
 		{
-			format(string, sizeof(string),  lang_texts[9][21] , xpamount);
+			format(string, sizeof(string),  lang_texts[9][21] , -xpamount);
 			SendClientMessage(playerid, COLOUR_XP_BAD, string);
 		}
 	}
