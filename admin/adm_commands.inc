@@ -445,5 +445,40 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 		}
 		return 1;
 	}
+	
+	if(!strcmp(cmd,"/showpm",true))
+	{
+		if(GetPVarInt(playerid,"Admin_PMshowing") != 1)
+		{
+			SetPVarInt(playerid,"Admin_PMshowing",1);
+			SendClientMessage(playerid,COLOUR_RED,"Показ личных сообщений включен");
+		}
+		else
+		{
+			SetPVarInt(playerid,"Admin_PMshowing",0);
+			SendClientMessage(playerid,COLOUR_RED,"Показ личных сообщений выключен");
+		}
+		return 1;
+	}
+	
+	if(!strcmp(cmd,"/getip",true))
+	{
+		new string[MAX_STRING],LastIP[16],filename_account[MAX_STRING];
+		set(string,text);
+		strdel(string,0,idx);
+		
+		if(strlen(string) <= 0) return SendClientMessage(playerid,COLOUR_RED,"Неправильный ник");
+		
+		format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,string);
+		if(!ini_Exist(filename_account)) return SendClientMessage(playerid,COLOUR_RED,"Такого аккаунта не существует");
+		
+		new file_account_db_ad = ini_Open(filename_account);
+		ini_Get(file_account_db_ad,"LastIP",LastIP);
+		ini_Close(file_account_db_ad);
+		
+		format(string,sizeof(string),"Ник: %s, IP: %s",string,LastIP);
+		SendClientMessage(playerid,COLOUR_RED,string);
+		return 1;
+	}
 	return 0;
 }

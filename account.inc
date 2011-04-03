@@ -59,6 +59,9 @@ stock account_save_db_ini(playerid)
 	getdate(year,month,day);
 	format(temp,sizeof(temp),"%02d.%02d.%d, %02d:%02d",day,month,year,hours,minutes);
 	ini_Set(file_account,"Last_Login",temp);
+    new plrIP[16];
+    GetPlayerIp(playerid,plrIP,sizeof(plrIP));
+	ini_Set(file_account,"LastIP",plrIP);
 	ini_Close(file_account);
 	return 1;
 }

@@ -19,6 +19,7 @@
 #define MAX_UPGRADELEVEL 30
 #define TurnAroundDelay 200000 // Delay between businesses turnaround
 #define BusinessDialog 4
+#define UPGRADE_TARIF 10
 
 new Text3D:Business3DTextLabel[MAX_BUSINESSES],Float:BusinessDistanceOfShowLabel=20.0;
 
@@ -481,12 +482,15 @@ stock BbuyUpgrade(playerid)
 			SendClientMessage(playerid,COLOUR_RED,st);
 			return 1;
 		}
-		new price;
-		if(Businesses[id][Business_Upgrade] == MAX_UPGRADELEVEL) price = 35000;
-		else if(Businesses[id][Business_Upgrade] > 20) price = 28000;
-		else if(Businesses[id][Business_Upgrade] > 10) price = 22000;
-		else if(Businesses[id][Business_Upgrade] < 10) price = 15000;
-		if(Player[playerid][Money] < price) return SendClientMessage(playerid,COLOUR_RED,lang_texts[3][61]);
+		new str[MAX_STRING];
+		new price = (Businesses[id][Business_Upgrade]+1) * Businesses[id][Business_Value] * UPGRADE_TARIF;
+		
+		if(Player[playerid][Money] < price)
+		{
+			format(str,sizeof(str),lang_texts[3][61],price);
+			return SendClientMessage(playerid,COLOUR_RED,str);
+		}
+		
 		oGivePlayerMoney(playerid,-price,0);
 		new filename[MAX_STRING];
 		format(filename,sizeof(filename),"%s%s.txt",BusinessDB,Businesses[id][Business_Name]);
@@ -497,7 +501,7 @@ stock BbuyUpgrade(playerid)
 			ini_SetInt(file,"Upgrade",Businesses[id][Business_Upgrade]);
 			ini_Close(file);
 		}
-		new str[MAX_STRING];
+		
 		format(str,sizeof(str),lang_texts[3][58],Businesses[id][Business_Name],Businesses[id][Business_Upgrade]);
 		SendClientMessage(playerid,COLOUR_GREEN,str);
 	}

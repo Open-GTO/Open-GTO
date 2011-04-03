@@ -292,11 +292,17 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			format(string,sizeof(string),lang_texts[15][80],moneys, sendername, playerid);
 			SendClientMessage(Player[playerid][ClickedPlayerid],COLOUR_MONEY_GOOD,string);
 		}
-		if(ListResponseType[playerid] == 1)
+		if(ListResponseType[playerid] == 1) // pm
 		{
 			new sendername[MAX_PLAYER_NAME],receivename[MAX_PLAYER_NAME],string[MAX_STRING];
 			GetPlayerName(Player[playerid][ClickedPlayerid],receivename,sizeof(receivename));
 			GetPlayerName(playerid,sendername,sizeof(sendername));
+			for(new i=GetMaxPlayers()-1;i>=0;--i)
+			{
+				if(GetPVarInt(playerid,"Admin_PMshowing") != 1) continue;
+				format(string,sizeof(string),"* Админ: ЛС от %s к %s: %s",sendername,receivename,inputtext);
+				SendClientMessage(i,0xFFCC22FF,string);
+			}
 			format(string,sizeof(string),lang_texts[9][31],receivename,Player[playerid][ClickedPlayerid],inputtext);
 			SendClientMessage(playerid,0xFFCC22FF,string);
 			format(string,sizeof(string),lang_texts[9][32],sendername,playerid,inputtext);
