@@ -252,28 +252,30 @@ public OnPlayerDeath(playerid, killerid, reason)
 	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
 
 	new logstring[MAX_STRING];
-	if(killerid == INVALID_PLAYER_ID) format(logstring, sizeof (logstring), "player: %d: %s: has died > Reason: (%d)",playerid,oGetPlayerName(playerid),reason);
-	else format(logstring, sizeof (logstring), "player: %d: %s: has killed player %s(%d)> Reason: (%d)",killerid,oGetPlayerName(killerid),oGetPlayerName(playerid),playerid,reason);
+	if(killerid == INVALID_PLAYER_ID)
+		format(logstring, sizeof (logstring), "player: %d: %s: has died > Reason: (%d)",playerid,oGetPlayerName(playerid),reason);
+	else
+		format(logstring, sizeof (logstring), "player: %d: %s: has killed player %s(%d)> Reason: (%d)",killerid,oGetPlayerName(killerid),oGetPlayerName(playerid),playerid,reason);
 	WriteLog(GameLog,logstring);
 
 	SendDeathMessage(killerid,playerid,reason);
 	
+	if(killerid == INVALID_PLAYER_ID) return 1;
+	
 	if(!IsPlayerInAnyDM(playerid))
 	{
 		player_OnPlayerDeath(playerid,killerid,reason);
-//		player_OnPlayerKill(killerid,playerid,reason);
+		player_OnPlayerKill(killerid,playerid,reason);
 		mission_OnPlayerDeath(playerid,killerid,reason);
 		gang_OnPlayerDeath(playerid,killerid,reason);
 //		DropPlayerWeapons(playerid);
 		PlayCrimeReportForPlayer(killerid,killerid,random(18)+3);
 		PlayCrimeReportForPlayer(playerid,killerid,random(18)+3);
  	}
-	else deathmatch_OnPlayerDeath(playerid,killerid);
-
-	if(killerid != INVALID_PLAYER_ID)
+	else
 	{
-		if(!IsPlayerInAnyDM(playerid)) player_OnPlayerKill(killerid, playerid,reason);
-		else deathmatch_OnPlayerKill(killerid,playerid,reason);
+		deathmatch_OnPlayerDeath(playerid,killerid);
+		deathmatch_OnPlayerKill(killerid,playerid,reason);
 	}
 	return 1;
 }
