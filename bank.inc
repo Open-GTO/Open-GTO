@@ -63,7 +63,7 @@ stock bank_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	#pragma unused oldkeys,newkeys
 	new string[MAX_STRING];
 
-	format(string,sizeof(string),"Вы в банке. Вы можете хранить здесь деньги и получать процент %d% в час.",ProfitCount);
+	format(string,sizeof(string),"Вы в банке. Вы можете хранить здесь деньги и получать +%d процента в час.",ProfitCount);
 	SendClientMessage(playerid,COLOUR_GREEN,string);
 
 	format(string,sizeof(string),"Ваш текущий баланс: $%d.",Player[playerid][Bank]);
@@ -91,15 +91,15 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	    if(!response)  return bank_ShowDialog_First(playerid);
 		if(!isNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
 		{
-			SendClientMessage(playerid,COLOUR_RED,"Вы не ввели или ввели неправильно количество денег.");
+			show_Msg_Dialog(playerid,"Банк","Вы не ввели или ввели неправильно количество денег.","ОК");
 			return 0;
 		}
 		new amount = strval(inputtext);
 		if(amount > Player[playerid][Bank]) amount = Player[playerid][Bank];
 		oGivePlayerMoney(playerid,amount,0);
 		Player[playerid][Bank] -= amount;
-		format(string,sizeof(string),"Вы сняли $%d. Остаток: $%d.",amount,Player[playerid][Bank]);
-		SendClientMessage(playerid,COLOUR_GREEN,string);
+		format(string,sizeof(string),"Вы сняли $%d.\nОстаток: $%d.",amount,Player[playerid][Bank]);
+		show_Msg_Dialog(playerid,"Банк",string,"ОК");
 		new Float:playerx,Float:playery,Float:playerz;
 		GetPlayerPos(playerid,playerx,playery,playerz);
 		PlayerPlaySound(playerid,1084,playerx,playery,playerz);
@@ -110,7 +110,7 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	    if(!response) return bank_ShowDialog_First(playerid);
 		if(!isNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
 		{
-			SendClientMessage(playerid,COLOUR_RED,"Вы не ввели или ввели неправильно количество денег.");
+			show_Msg_Dialog(playerid,"Банк","Вы не ввели или ввели неправильно количество денег.","ОК");
 			return 0;
 		}
 		new amount = strval(inputtext);
@@ -118,8 +118,8 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(Player[playerid][Bank] + amount > MAX_BANK) amount = MAX_BANK - Player[playerid][Bank];
 		oGivePlayerMoney(playerid,-amount,0);
 		Player[playerid][Bank] += amount;
-		format(string,sizeof(string),"$%d положено на Ваш счет. Текущий баланс: $%d.",amount,Player[playerid][Bank]);
-		SendClientMessage(playerid,COLOUR_GREEN,string);
+		format(string,sizeof(string),"$%d положено на Ваш счет.\nТекущий баланс: $%d.",amount,Player[playerid][Bank]);
+		show_Msg_Dialog(playerid,"Банк",string,"ОК");
 		new Float:playerx,Float:playery,Float:playerz;
 		GetPlayerPos(playerid,playerx,playery,playerz);
 		PlayerPlaySound(playerid,1083,playerx,playery,playerz);
@@ -130,7 +130,7 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 stock bank_ShowDialog_First(playerid)
 {
 	new string[MAX_STRING];
-	format(string,sizeof(string),"Меню банка, сейчас на вашем счету: %d$",
+	format(string,sizeof(string),"Меню банка, сейчас на вашем счету: $%d",
 		Player[playerid][Bank]
 	);
 	return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,
@@ -142,7 +142,7 @@ stock bank_ShowDialog_First(playerid)
 stock bank_ShowDialog_Withdraw(playerid)
 {
 	new string[MAX_STRING];
-	format(string,sizeof(string),"Введите сумму которую вы хотите снять с вашего счёта,\n сейчас на вашем счету: %d$",
+	format(string,sizeof(string),"Введите сумму которую вы хотите снять с вашего счёта,\n сейчас на вашем счету: $%d",
 		Player[playerid][Bank]
 	);
 	ShowPlayerDialog(playerid,bank_Withdraw_DialogID,DIALOG_STYLE_INPUT,
@@ -154,7 +154,7 @@ stock bank_ShowDialog_Withdraw(playerid)
 stock bank_ShowDialog_Deposit(playerid)
 {
 	new string[MAX_STRING];
-	format(string,sizeof(string),"Введите сумму которую вы хотите положить на ваш счёт,\n сейчас на вашем счету: %d$",
+	format(string,sizeof(string),"Введите сумму которую вы хотите положить на ваш счёт,\n сейчас на вашем счету: $%d",
 		Player[playerid][Bank]
 	);
 	ShowPlayerDialog(playerid,bank_Deposit_DialogID,DIALOG_STYLE_INPUT,
@@ -174,7 +174,7 @@ stock IsPlayerAtBank(playerid)
 
 stock Profit()
 {
-	for(new playerid;playerid<MAX_PLAYERS;playerid++)
+	for(new playerid=GetMaxPlayers();playerid>=0;--playerid)
 		Player[playerid][Bank] += (Player[playerid][Bank] / 100) * ProfitCount;
 	return 1;
 }

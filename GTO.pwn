@@ -60,6 +60,7 @@ Continued by: 	Peter Steenbergen (j1nx)
 #include "fightstyles"
 #include "services\fastfood"
 #include "interior"
+#include "usermenu"
 // Races
 #tryinclude "races\race_monstertruck"		// Race: Monstertruck Madness
 #tryinclude "races\race_thestrip"			// Race: Burnin Down The Strip. - Just a strait sprint down the strip and back
@@ -218,7 +219,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	fights_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
-	player_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+	usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	return 1;
 }
 
@@ -455,7 +456,7 @@ public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 		if( IsPlayerAtAmmunation(playerid) != -1 ) return weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( GetPlayerFightTrenerID(playerid) != -1 ) return fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
-		player_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		usermenu_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		return 1;
 	}
 	if( PRESSED( KEY_SUBMISSION ) )

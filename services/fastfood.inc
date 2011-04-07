@@ -59,9 +59,10 @@ stock fastfood_ShowDialog(playerid)
 
 stock fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 {
-	#pragma unused response,inputtext
+	#pragma unused inputtext
 	if(dialogid == fastfood_DialogID)
 	{
+		if(!response) return 1;
 		if(oGetPlayerMoney(playerid) < Food[listitem][food_cost])
 			return show_Msg_Dialog(playerid,"Покупка еды","Вам не хватает денег!","ОК");
 		oGivePlayerMoney(playerid,-Food[listitem][food_cost],1);
@@ -70,7 +71,7 @@ stock fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		else
 			oSetPlayerHealth(playerid,oGetPlayerHealth(playerid) + Food[listitem][food_hp]);
 		new string[MAX_STRING];
-		format(string,sizeof(string),"Вы съели %s, за %d.",Food[listitem][food_name],Food[listitem][food_cost]);
+		format(string,sizeof(string),"Вы съели %s, за %d и насытились на %0.0f.",Food[listitem][food_name],Food[listitem][food_cost],Food[listitem][food_hp]);
 		show_Msg_Dialog(playerid,"Покупка еды",string,"ОК");
 		return 1;
 	}

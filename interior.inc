@@ -325,7 +325,7 @@ stock IsPlayerAtEnterExit(playerid)
 		if(
 		IsPlayerInRangeOfPoint(playerid,2,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5)
 		|| 
-		IsPlayerInRangeOfPoint(playerid,2,ExitPositions[id][X],ExitPositions[id][Y],ExitPositions[id][Z])
+		IsPlayerInRangeOfPoint(playerid,2,PickupPositions[id][X],PickupPositions[id][Y],PickupPositions[id][Z])
 		) return 1;
 	}
 	return 0;
