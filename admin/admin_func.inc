@@ -12,7 +12,6 @@
 
 stock adminfunc_OnPlayerText(playerid,text[])
 {
-	if(!IsPlayerConnected(playerid)) return 0;
 	if(text[0] == '@')
 	{
 		new string[MAX_STRING],count = 0;

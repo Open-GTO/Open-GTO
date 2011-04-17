@@ -17,7 +17,6 @@
 
 stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 {
-	if(!IsPlayerConnected(playerid)) return 0;
 	if((!IsPlayerAdmin(playerid)) && (!IsPlayerAdm(playerid))) return 0;
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,strchar(" ")));
@@ -215,19 +214,17 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 		GetPlayerPos(playerid,X,Y,Z);
 		GetPlayerFacingAngle(playerid,Angle);
 		new string[MAX_STRING];
-		for(new id=0;id<MAX_PLAYERS;id++)
+		for(new id=GetMaxPlayers()-1;id>=0;--id)
 		{
-			if((id < playerid) || (id > playerid))
+			if(id == playerid) continue;
+			if(IsPlayerConnected(id) && !IsPlayerNPC(id) && (Player[id][Jailed] == 0) && !IsPlayerAdmin(id)  && !IsPlayerInAnyDM(id))
 			{
-				if(IsPlayerConnected(id) && !IsPlayerNPC(playerid) && (Player[id][Jailed] == 0) && !IsPlayerAdmin(id)  && !IsPlayerInAnyDM(id))
-				{
-					if(IsPlayerConnected(id) == 0) return 0;
-					SetPlayerFacingAngle(id,Angle);
-					X=X+(random(2)-random(4));Y=Y+(random(2)-random(4));	
-					SetPlayerPos(id,X,Y,Z);
-					format(string,sizeof(string),lang_texts[12][66] ,oGetPlayerName(playerid),playerid);
-					SendClientMessage(id,COLOUR_XP_GOOD,string);
-				}
+				SetPlayerFacingAngle(id,Angle);
+				X += random(2) - random(4);
+				Y += random(2) - random(4);	
+				SetPlayerPos(id,X,Y,Z);
+				format(string,sizeof(string),lang_texts[12][66] ,oGetPlayerName(playerid),playerid);
+				SendClientMessage(id,COLOUR_XP_GOOD,string);
 			}
 		}
 		format(string,sizeof(string), lang_texts[12][74]);

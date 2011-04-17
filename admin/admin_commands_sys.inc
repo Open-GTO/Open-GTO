@@ -18,7 +18,6 @@ new sysweath = 0;	//WEATHER
 
 stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if(!IsPlayerConnected(playerid)) return 0;
 	if(!IsPlayerAdmin(playerid) && !IsPlayerAdm(playerid)) return 0;
 
 	new cmd[20],idx;
@@ -59,7 +58,7 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 		new MAX_ONLINESS = 0;
 		for(new idst = 0; idst < MAX_PLAYERS; idst++)
 		{
-			if(IsPlayerConnected(idst)) MAX_ONLINESS = MAX_ONLINESS + 1;
+			if(IsPlayerConnected(idst)) MAX_ONLINESS += 1;
 		}
 
 		format(string,sizeof(string),lang_texts[15][62] , MAX_ONLINESS, MAX_PLAYERS);

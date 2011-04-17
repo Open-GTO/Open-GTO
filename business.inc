@@ -157,16 +157,15 @@ stock TurnAround()
 		}
 	}
 }
-
+/*
 stock business_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if (!IsPlayerConnected(playerid)) return 0;
 	new cmd[20],idx;
 
 	set(cmd,strcharsplit(text, idx,strchar(" ")));
 	if (strlen(cmd) == 0) return 0;
 
-/*	if(!strcmp("/bmenu", cmd, true, 5))
+	if(!strcmp("/bmenu", cmd, true, 5))
 	{
 		if(!IsPlayerAtBusiness(playerid))
 		{
@@ -222,9 +221,9 @@ stock business_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		else BbuyUpgrade(playerid);
 		return 1;
-	}*/
+	}
 	return 0;
-}
+}*/
 //----------------RECOMPILED BUSINESSES----------------------------------------
 stock FBisInfo(playerid)
 {

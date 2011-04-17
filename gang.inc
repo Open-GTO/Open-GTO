@@ -104,7 +104,7 @@ stock gang_OnGameModeInit()
 }
 stock FindGangFreeSlot()
 {
-	new gangid=-1;
+	new gangid=0;
 	for(new id=1;id<MAX_GANGS;id++)
 	{
 		if(Gangs[id][gang_active] == true) continue;
@@ -123,7 +123,7 @@ stock GangLoad(gangname[])
 	}
 
 	new gangid = FindGangFreeSlot();
-	if(gangid == -1) return print("[ERROR] Свободный слот для банды не найден");
+	if(gangid == 0) return print("[ERROR] Свободный слот для банды не найден");
 	Gangs[gangid][gang_active] = true;
 	gang_load_db_ini(gangid,gangname);
 	new logstring[MAX_STRING];
@@ -561,7 +561,7 @@ stock GangCreate(leaderid,gangname[],gangcolour)
 		return 0;
 	}
 	new gangid = FindGangFreeSlot();
-	if(gangid == -1) return print("[ERROR] Свободный слот для банды не найден");
+	if(gangid == 0) return print("[ERROR] Свободный слот для банды не найден");
 	Gangs[gangid][gang_active] = true;
 	set(Gangs[gangid][gang_name],gangname);
 	Gangs[gangid][gang_colour] = gangcolour;
@@ -585,28 +585,6 @@ stock GangCreate(leaderid,gangname[],gangcolour)
 	return gangid;
 }
 
-stock GangCleanup(gangid)
-{
-	if(!Gangs[gangid][gang_active]) return;
-	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
-	{
-		if(GangMemberInfo[gangid][gangmember][member_online])
-		{
-			if(GangMemberInfo[gangid][gangmember][member_playerid] == INVALID_PLAYER_ID) return;
-			
-			if(!IsPlayerRegistered(GangMemberInfo[gangid][gangmember][member_playerid]))
-			{
-				GangMemberLogout(GangMemberInfo[gangid][gangmember][member_playerid],gangid);
-				GangMemberInfo[gangid][gangmember][member_online] = false;
-			}
-		}
-	}
-	if(GangOnlineCount(gangid) == 0)
-	{
-		GangUnload(gangid);
-	}
-}
-
 stock GangSaveAll()
 {
 	for(new i=1;i<MAX_GANGS;i++)
@@ -614,7 +592,7 @@ stock GangSaveAll()
 		if(Gangs[i][gang_active])
 		{
 			GangSave(i);
-			GangCleanup(i);
+			if(GangOnlineCount(i) == 0) GangUnload(i);
 		}
 	}
 }

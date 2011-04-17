@@ -14,9 +14,9 @@
 
 stock testserver_OnPlayerConnect(playerid)
 {
-	SendPlayerScrollingText(playerid,"Добро пожаловать в Grand Theft Online "#VERSION);
+	SendPlayerScrollingText(playerid,"Добро пожаловать в Open - Grand Theft Online "#VERSION);
 	SendPlayerScrollingText(playerid,"Этот сервер имеет некоторые изменения, поэтому возможно всё.");
-	SendPlayerScrollingText(playerid,"Все самые последние изменения в моде GTO будут тестироваться здесь.");
+	SendPlayerScrollingText(playerid,"Все самые последние изменения в моде Open-GTO будут тестироваться здесь.");
 	SendPlayerScrollingText(playerid,"Ошибки, крэши, торможения - это обычное дело для тестового режима.");
 	SendPlayerScrollingText(playerid,"Если вы увидели то, чего недолжно быть или у вас есть предложения, то обратитесь администратору сервера.");
 }

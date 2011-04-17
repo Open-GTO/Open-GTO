@@ -65,7 +65,6 @@ new Float:PointsH[POINTSHOMES][CoordInfo] = {
 
 stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if(!IsPlayerConnected(playerid)) return 0;
 	if(!IsPlayerAdmin(playerid)) return 0;
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,strchar(" ")));
@@ -162,7 +161,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 			SendPlayerFormattedText(playerid,lang_texts[12][2],0,COLOUR_RED);	// не тот ИД
 			return 1;
 		}
-		if(IsPlayerConnected(receiverid) == 0)
+		if(!IsPlayerConnected(receiverid))
 		{
 			SendPlayerFormattedText(playerid, lang_texts[12][3] , 0,COLOUR_RED);	//игрок в офф
 			return 1;
@@ -222,7 +221,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 			SendPlayerFormattedText(playerid,lang_texts[12][9],0,COLOUR_RED);
 			return 1;
 		}
-		if((IsPlayerConnected(receiverid) == 0) && !IsPlayerInAnyDM(receiverid))
+		if(!IsPlayerConnected(receiverid) && !IsPlayerInAnyDM(receiverid))
 		{
 			SendPlayerFormattedText(playerid,lang_texts[12][10],0,COLOUR_RED);
 			return 1;

@@ -308,7 +308,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			format(string,sizeof(string),lang_texts[9][32],sendername,playerid,inputtext);
 			SendClientMessage(Player[playerid][ClickedPlayerid],0xFFFF22FF,string);
 		}
-		if(ListResponseType[playerid] == 2)
+		if(ListResponseType[playerid] == 2) // report
 		{
 			new sendername[MAX_PLAYER_NAME],abusename[MAX_PLAYER_NAME],string[MAX_STRING];
 			GetPlayerName(Player[playerid][ClickedPlayerid],abusename,sizeof(abusename));

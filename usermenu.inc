@@ -203,7 +203,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						"Информация о версии",
 						"{AFE7FF}На сервере запущен:\n\
 						\n\
-						\t{FFFFFF}Grand Theft Online {AA3333}"VERSION"{FFFFFF}.\n\
+						\t{FFFFFF}Open - Grand Theft Online {AA3333}"VERSION"{FFFFFF}.\n\
 						\n\
 						\n\
 						{00C0DD}Created by {AFE7FF}Iain Gilbert.\n\
@@ -212,10 +212,10 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 									\t\tRobin Kikkert,\n\
 									\t\tAsturel,\n\
 									\t\tDmitry Frolov (FP),\n\
-									\t\tGTO-Rus Team,\n\
+									\t\tOpen-GTO Team,\n\
 									\t\tZiGGi.\n\
 						\n\
-						{00C0DD}GTO-Rus Team: {AFE7FF}GhostTT,\n\
+						{00C0DD}Open-GTO Team: {AFE7FF}GhostTT,\n\
 									\t\t  heufix,\n\
 									\t\t  ZiGGi,\n\
 									\t\t  Elbi."

@@ -29,7 +29,7 @@ stock antihealthhack_OnGameModeInit()
 
 stock SyncHealth(playerid)
 {
-	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid) || AntiHealthHackEnabled != 1) return 1;
+	if(AntiHealthHackEnabled != 1) return 1;
 	new Float:clienthealth = oGetPlayerHealth(playerid);
 	if(clienthealth < 0) return oSetPlayerHealth(playerid,0);
 	if(clienthealth == Player[playerid][Health]) return 1;

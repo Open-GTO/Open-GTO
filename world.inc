@@ -16,7 +16,6 @@
 #include "player"
 #include "payday"
 
-forward WorldSave();
 forward GetXYZZoneID(Float:x, Float:y, Float:z);
 forward IsXYZInZone(Float:x, Float:y, Float:z, zoneid);
 forward IsPlayerInZone(playerid, zoneid);
@@ -66,120 +65,66 @@ public Float:GetDistanceXYZtoXYZ(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Fl
 	);
 }
 
+forward WorldSave();
 public WorldSave() // save all
 {
 	if (PlayerCount() > 0)
 	{
-		new starttime = Now();
-		//SendClientMessageToRegistered(COLOUR_GREEN,"Saving world.");
-		for (new id = 0; id < MAX_PLAYERS; id++)
-		{
-			if (IsPlayerConnected(id))
-			{
-				if (IsPlayerRegistered(id))
-			    {
-					PlayerSave(id);
-					AccountSave(id);
-				}
-			}
-		}
-		BaseSaveConfig();
-		AccountSaveConfig();
-		PlayerSaveConfig();
-		GangSaveConfig();
-		PaydaySaveConfig();
-		LoggingSaveConfig();
-		BankSaveConfig();
-		vehicles_SaveConfig();
-		groundhold_SaveConfig();
-		groundhold_SaveAll();
-		mission_SaveConfig();
-		AntiIdleSaveConfig();
-		AntiHightPingSaveConfig();
-		AntiHealthHackSaveConfig();
-		AntiMoneyHackSaveConfig();
-		if ((VerboseSave == 1) || (VerboseSave == -1))
-		{
-			//SendClientMessageToRegistered(COLOUR_GREEN,"Performing verbose save. Please be patient.");
-			WeaponSaveAll();
-			RaceSaveAll();
-			DeathmatchSaveAll();
-			BusinessSaveAll();
-			HousesSaveAll();
-			if (VerboseSave == -1) VerboseSave = 0;
-		}
-		else
-		{
-			GangSaveAll();
-			RaceSaveScores();
-			DeathmatchSaveScores();
-		}
 		LastWorldSave = 1;
-		new string[MAX_STRING];
-		format(string,sizeof(string),"World save complete! Time taken: %s.",ConvertSeconds(Now() - starttime));
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "World save complete! Time taken: %s.",ConvertSeconds(Now() - starttime));
-		WriteLog(GameLog,logstring);
-		//SendClientMessageToRegistered(COLOUR_GREEN,string);
+	}
+	else if(LastWorldSave == 1)
+	{
+		LastWorldSave = 0;
+		goto nee;
+	}
+	if(LastWorldSave != 1) return 0;
+nee:
+	new starttime = Now();
+	for(new id=GetMaxPlayers()-1;id>=0;--id)
+	{
+		if(!IsPlayerConnected(id) || IsPlayerNPC(id) || !IsPlayerRegistered(id)) continue;
+		PlayerSave(id);
+		AccountSave(id);
+	}
+	BaseSaveConfig();
+	AccountSaveConfig();
+	PlayerSaveConfig();
+	GangSaveConfig();
+	PaydaySaveConfig();
+	LoggingSaveConfig();
+	BankSaveConfig();
+	vehicles_SaveConfig();
+	groundhold_SaveConfig();
+	groundhold_SaveAll();
+	mission_SaveConfig();
+	AntiIdleSaveConfig();
+	AntiHightPingSaveConfig();
+	AntiHealthHackSaveConfig();
+	AntiMoneyHackSaveConfig();
+	
+	if ((VerboseSave == 1) || (VerboseSave == -1))
+	{
+		//SendClientMessageToRegistered(COLOUR_GREEN,"Performing verbose save. Please be patient.");
+		WeaponSaveAll();
+		RaceSaveAll();
+		DeathmatchSaveAll();
+		BusinessSaveAll();
+		HousesSaveAll();
+		if (VerboseSave == -1) VerboseSave = 0;
 	}
 	else
 	{
-		if (LastWorldSave == 1)
-		{
-			new starttime = Now();
-			//SendClientMessageToRegistered(COLOUR_GREEN,"Saving world.");
-			for (new id = 0; id < MAX_PLAYERS; id++)
-			{
-				if (IsPlayerConnected(id))
-				{
-					if (IsPlayerRegistered(id))
-					{
-						PlayerSave(id);
-						AccountSave(id);
-					}
-				}
-			}
-			BaseSaveConfig();
-			AccountSaveConfig();
-			PlayerSaveConfig();
-			GangSaveConfig();
-			PaydaySaveConfig();
-			LoggingSaveConfig();
-			BankSaveConfig();
-			vehicles_SaveConfig();
-			groundhold_SaveConfig();
-			groundhold_SaveAll();
-			mission_SaveConfig();
-			AntiIdleSaveConfig();
-			AntiHightPingSaveConfig();
-			AntiHealthHackSaveConfig();
-			AntiMoneyHackSaveConfig();
-			if ((VerboseSave == 1) || (VerboseSave == -1))
-			{
-				//SendClientMessageToRegistered(COLOUR_GREEN,"Performing verbose save. Please be patient.");
-				WeaponSaveAll();
-				RaceSaveAll();
-				DeathmatchSaveAll();
-				BusinessSaveAll();
-				HousesSaveAll();
-				if (VerboseSave == -1) VerboseSave = 0;
-			}
-			else
-			{
-				GangSaveAll();
-				RaceSaveScores();
-				DeathmatchSaveScores();
-			}
-			LastWorldSave = 0;
-			
-			new string[MAX_STRING];
-			format(string,sizeof(string),"World save complete! Time taken: %s.",ConvertSeconds(Now() - starttime));
-			new logstring[256];
-			format(logstring, sizeof (logstring), "World save complete! Time taken: %s.",ConvertSeconds(Now() - starttime));
-			WriteLog(GameLog,logstring);
-			//SendClientMessageToRegistered(COLOUR_GREEN,string);
-		}
+		GangSaveAll();
+		RaceSaveScores();
+		DeathmatchSaveScores();
 	}
+	
+	//new string[MAX_STRING];
+	//format(string,sizeof(string),"World save complete! Time taken: %s.",ConvertSeconds(Now() - starttime));
+	new logstring[MAX_STRING];
+	format(logstring, sizeof (logstring), "World save complete! Time taken: %s.",ConvertSeconds(Now() - starttime));
+	WriteLog(GameLog,logstring);
+	return 1;
 }
 
 //----------------------

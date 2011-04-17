@@ -263,8 +263,9 @@ stock PlayerHealthRegen()
 // sync player hp/money and check for mismatch
 stock SyncPlayers()
 {
-	for(new playerid;playerid<MAX_PLAYERS;playerid++)
+	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
 	{
+		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) continue;
 		if(PlayerJustTeleported[playerid] > 0) PlayerJustTeleported[playerid]--;
 		SyncMoney(playerid);
 		SyncHealth(playerid);
@@ -394,7 +395,6 @@ stock GetRndPlayerSpawnByLevel(level)
 
 stock player_OnPlayerSpawn(playerid)
 {
-	if(IsPlayerNPC(playerid)) return 1;
 	new GH = ganghouse(playerid);
 	SpawnTime[playerid] = 0;
 	SetPlayerInterior(playerid,0);

@@ -1,21 +1,26 @@
 /*
-Project Name:	San Andreas - Multiplayer: Grand Theft Online (GTO).
+Project Name:	San Andreas - Multiplayer: Open - Grand Theft Online (Open-GTO).
 
 Current version:	0.6.4
 SA-MP Versions:		0.3c
 
-Web site:	http://gto.zziggi.ru/
+Web site:	http://open-gto.ru/
 
-Date Created:		12 August 2006
-Date start edit: 	5 November 2009(by Russian Scripter's)
+Date Created GTO:		12 August 2006
+Date start Open-GTO: 	5 November 2009
 
-Created by: 	Iain Gilbert (Bogart)
-Continued by: 	Peter Steenbergen (j1nx)
-				Robin Kikkert (Dejavu)
-				Lajos Pacsek (asturel)
-				Dmitry Frolov (FP)
-				GTO-Rus Team(®): GhostTT, heufix, Elbi, ZiGGi
-
+-------------------------------------------------------------------
+							  GTO
+-------------------------------------------------------------------
+0.0.0 – 0.5.7		Iain Gilbert
+0.5.7 – 0.5.8		Peter Steenbergen (j1nx)
+0.5.8 – 0.5.9		Robin Kikkert (dejavu), Lajos Pacsek (Asturel)
+0.5.9 – 0.6.0		SCALOLaz
+-------------------------------------------------------------------
+							Open-GTO
+-------------------------------------------------------------------
+0.0.0 – 1.0.0		ZiGGi, GhostTT, heufix, Elbi
+-------------------------------------------------------------------
 */
 
 #include <..\compiler\includes\a_samp>		// samp
@@ -97,19 +102,19 @@ main()
 	print(" ");
 	print(" ");
 	print("\n-----------------------------------------------------------\n");
-	print("Running GTO "#VERSION"\n");
+	print("Running Open-GTO "#VERSION"\n");
 	print("_____________________________________________________________\n");
 	print("Created by: Iain Gilbert (Bogart)\nContinued by: Peter Steenbergen (j1nx)\n\t\tRobin Kikkert (Dejavu)\n\t\tLajos Pacsek (asturel)");
 	print("\t\tDmitry Frolov (FP)\nGTO-Rus Team(®): GhostTT, heufix, Elbi, ZiGGi");
 	print("_____________________________________________________________\n");
 	print("Translated to Russian by Dmitry Borisoff (Beginner)");
-	print("Visit us at http://gto.zziggi.ru/");
+	print("Visit us at http://open-gto.ru/");
 	print("\n------------------------------------------------------------\n");
 }   // CREDITS NOT DELETE !!!!!!!!!!!!!!!!!
 
 public OnGameModeInit()
 {
-	SetGameModeText("GTO "#VERSION);
+	SetGameModeText("Open-GTO "#VERSION);
 	// Initialize everything that needs it
 	logging_OnGameModeInit();
 	base_OnGameModeInit();
@@ -182,8 +187,8 @@ public OnGameModeInit()
 	SetTimer("OneHourTimer",3600000,1); // 1 hour
 	SpawnWorld();
 	WorldSave();
-	printf("SERVER: GTO "#VERSION" initialization complete. [%02d:%02d]",hour,minute);
-	WriteLog(GameLog,"SERVER: GTO "#VERSION" initialization complete. ");
+	printf("SERVER: Open-GTO "#VERSION" initialization complete. [%02d:%02d]",hour,minute);
+	WriteLog(GameLog,"SERVER: Open-GTO "#VERSION" initialization complete. ");
 	return 1;
 }
 
@@ -283,7 +288,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 
 public OnPlayerSpawn(playerid)
 {
-	if(!IsPlayerConnected(playerid)) return 1;
+	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
 	SetPlayerSkin(playerid,Player[playerid][SkinModel]);
 	if(Player[playerid][Jailed] == 1)
 	{
@@ -303,8 +308,10 @@ public OnPlayerSpawn(playerid)
 		SetPlayerWantedLevel(playerid, 3);
 	}
 	new dmid = GetPlayerDM(playerid);
-	if(dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0) player_OnPlayerSpawn(playerid);
-	else deathmatch_OnPlayerSpawn(playerid,dmid);
+	if(dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0)
+		player_OnPlayerSpawn(playerid);
+	else
+		deathmatch_OnPlayerSpawn(playerid,dmid);
 	SetPlayerColor(playerid,PlayerGangColour(playerid));
 	return 1;
 }
@@ -374,7 +381,7 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	AdminSys_OnPlayerCommandText(playerid,cmdtext); //SYSTEM
 	Adm_OnPlayerCommandTextr(playerid,cmdtext); //admins
 	Mod_OnPlayerCommandText(playerid,cmdtext); //moderators
-	business_OnPlayerCommandText(playerid,cmdtext);
+	//business_OnPlayerCommandText(playerid,cmdtext);
 	housing_OnPlayerCommandText(playerid,cmdtext);
 	vehicles_OnPlayerCommandText(playerid,cmdtext);
 

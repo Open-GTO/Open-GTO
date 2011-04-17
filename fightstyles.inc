@@ -11,6 +11,7 @@
 #pragma library fightstyles
 
 #define fightstyles_DialogID 8
+#define fightstyles_user_DialogID 81
 #define MAX_FIGHT 4
 
 enum FightInfo {
@@ -46,21 +47,21 @@ stock fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	new TrenerID = GetPlayerFightTrenerID(playerid);
 	if(FightTreners[TrenerID][Style] <= Player[playerid][FightStyle])
 	{
-		format(string,sizeof(string),"Вы уже выучили стиль: %s(%d)",FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Style]);
-		return SendClientMessage(playerid,COLOUR_WHITE,string);
+		format(string,sizeof(string),"Вы уже выучили стиль %s",FightTreners[TrenerID][StyleName]);
+		return show_Msg_Dialog(playerid,"Стили борьбы",string,"ОК");
 	}
 	if(FightTreners[TrenerID][Style]-1 > Player[playerid][FightStyle])
 	{
-		return SendClientMessage(playerid,COLOUR_WHITE,"Вы сначала, должны выучить предидущие стили!");
+		return show_Msg_Dialog(playerid,"Стили борьбы","Сначала вы должны выучить предидущие стили!","ОК");
 	}
-	format(string,sizeof(string),"Выучить стиль борьбы %s(%d), за %d$",FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Style],FightTreners[TrenerID][Cost]);
+	format(string,sizeof(string),"Выучить стиль борьбы %s, за $%d",FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Cost]);
 	ShowPlayerDialog(playerid,fightstyles_DialogID,DIALOG_STYLE_MSGBOX,"Тренер",string,"Выучить","Отмена");
 	return 1;
 }
 
 stock fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
-	#pragma unused inputtext,listitem
+	#pragma unused inputtext
     new string[MAX_STRING];
 	if(dialogid == fightstyles_DialogID)
 	{
@@ -68,13 +69,22 @@ stock fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[
 		new TrenerID = GetPlayerFightTrenerID(playerid);
 		if(oGetPlayerMoney(playerid) < FightTreners[TrenerID][Cost])
 		{
-			format(string,sizeof(string),"Вам недостаточно денег, нужно %d$",FightTreners[TrenerID][Cost]);
-			return SendClientMessage(playerid,COLOUR_WHITE,string);
+			format(string,sizeof(string),"Вам недостаточно денег, нужно $%d",FightTreners[TrenerID][Cost]);
+			return show_Msg_Dialog(playerid,"Стили борьбы",string,"ОК");
 		}
 		Player[playerid][FightStyle] = FightTreners[TrenerID][Style];
 		oGivePlayerMoney(playerid,-FightTreners[TrenerID][Cost],0);
-		format(string,sizeof(string),"Вы изучили стиль борьбы: %s(%d), за: %d$. Включить стиль: '/f [4-7]'",FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Style],FightTreners[TrenerID][Cost]);
-		SendClientMessage(playerid,COLOUR_WHITE,string);
+		format(string,sizeof(string),"Вы изучили стиль борьбы %s, за: $%d. Включить стиль можно в личном меню.",FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Cost]);
+		show_Msg_Dialog(playerid,"Стили борьбы",string,"ОК");
+		return 1;
+	}
+	else if(dialogid == fightstyles_user_DialogID)
+	{
+		if(!response) return show_User_Menu(playerid);
+		listitem += 4; // теперь listitem является идом выбранного стиля
+		SetPlayerFightingStyle(playerid,(Player[playerid][FightStyleUsed] = listitem));
+		format(string,sizeof(string),"Теперь вы используете стиль %s",ConvertFightIdToName(Player[playerid][FightStyleUsed]));
+		show_User_Menu_Dialog(playerid,"Стиль борьбы",string);
 		return 1;
 	}
 	return 1;
@@ -87,6 +97,23 @@ stock GetPlayerFightTrenerID(playerid)
 			return fightid;
 	return -1;
 }
+
+// выбор стиля в меню игрока
+stock showFightStyleMenu(playerid)
+{
+	new string[MAX_STRING];
+	if(Player[playerid][FightStyle] >= FIGHT_STYLE_NORMAL) strcat(string,"Нормальный");
+	if(Player[playerid][FightStyle] >= FIGHT_STYLE_BOXING) strcat(string,"\nБокс");
+	if(Player[playerid][FightStyle] >= FIGHT_STYLE_KNEEHEAD) strcat(string,"\nКолено-голова");
+	if(Player[playerid][FightStyle] >= FIGHT_STYLE_KUNGFU) strcat(string,"\nКунг-фу");
+	return ShowPlayerDialog(
+		playerid,fightstyles_user_DialogID,DIALOG_STYLE_LIST,
+		"Стиль борьбы",
+		string,
+		"Применить","Назад"
+	);
+}
+//
 
 stock ConvertFightIdToName(fstyleid)
 {
