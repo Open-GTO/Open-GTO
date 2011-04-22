@@ -178,8 +178,8 @@ public OnGameModeInit()
 	new hour,minute,second;
 	gettime(hour,minute,second);
 	WorldTime = hour;
-	SetWorldTime(WorldTime);
-	printf("SERVER: Worldtime set as %d",WorldTime);
+	SetWorldTime(hour);
+	printf("SERVER: Worldtime set as %d",hour);
 	SetWeather(10);
 	SetTimer("OneSecTimer",1000,1); // 1 second
 	SetTimer("FiveSecondTimer",5000,1); // 5 second
@@ -225,6 +225,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	fights_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+	weapons_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	return 1;
 }
 
@@ -372,7 +373,6 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	commands_OnPlayerCommandText(playerid,cmdtext);
 	account_OnPlayerCommandText(playerid,cmdtext);
 	gang_OnPlayerCommandText(playerid,cmdtext);
-	weapons_OnPlayerCommandText(playerid,cmdtext);
 	race_OnPlayerCommandText(playerid,cmdtext);
 	AdminRace_OnPlayerCommandText(playerid,cmdtext);
 	Admin_OnPlayerCommandText(playerid,cmdtext); //rcon admins
@@ -476,13 +476,11 @@ public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 
 public OnPlayerSelectedMenuRow(playerid,row)
 {
-	weapons_OnPlayerSelectedMenuRow(playerid,row);
 	return 1;
 }
 
 public OnPlayerExitedMenu(playerid)
 {
-	weapons_OnPlayerExitedMenu(playerid);
 	return 1;
 }
 

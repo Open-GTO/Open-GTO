@@ -1,40 +1,34 @@
-//
-// Created: 05.09.06
-// Aurthor: Iain Gilbert
-//
+/*
+	Created: 05.09.06
+	Aurthor: Iain Gilbert
+	Modified by ZiGGi
+*/
 
 
 #if defined _weapons_included
-#endinput
+	#endinput
 #endif
 
 #define _weapons_included
 #pragma library weapons
 
 #include "base"
-#include "logging"
+//#include "logging"
 
-#define MAX_BULLETS 2999
-#define WeaponsSize 47
-#define MAX_WEAPONS 46
-#define AmmunationsCount 4
+#define MAX_BULLETS				2999
+#define MAX_WEAPONS				47
 
-#define pistol_bullets 14
-#define assault_bullets 30
-#define shotgun_bullets 10
-#define smg_bullets 100
+#define weapons_Select_DialogID	33
+#define weapons_Buy_DialogID	34
 
-new Menu:WeaponMenu,Menu:PistolMenu,Menu:MicroSMGMenu,Menu:ShotgunsMenu,Menu:AssaultMenu;
-new Ammunations[AmmunationsCount][CoordInfo] = 
-{
+new Ammunations[][CoordInfo] = {
 	{291.0004,-84.5168,1001.5156}, // LVammunation1
 	{293.2710,-108.9645,1001.5156}, // LSAmmunation1
 	{290.3177,-38.7184,1001.5156}, // LSAmmunation2
 	{316.4356,-165.1367,999.6010} // север карты
 };
 
-enum WeaponInfo 
-{
+enum WeaponInfo {
 	Weapon_ID, // id number of weapon
 	Weapon_Name[MAX_NAME], // weapon name
 	Weapon_Allowed, // is weapon allowed
@@ -43,8 +37,8 @@ enum WeaponInfo
 	Weapon_Level // player level required to buy this weapon
 }
 
-new Weapons[WeaponsSize][WeaponInfo] = {
-	//id, "Name" ,Allowed,bullets, cost , level
+new Weapons[MAX_WEAPONS][WeaponInfo] = {
+//id,	"Name" ,			Allowed,bullets,cost,level
 {0, 	"Невооружен" 			, 0 , 1 , 0 , 0},
 {1, 	"Кастет" 				, 1 , 1 , 6000 , 3},
 {2, 	"Клюшка для гольфа" 	, 1 , 1 , 6000 , 2},
@@ -113,7 +107,7 @@ stock WeaponLoadAll()
 		WeaponSaveAll();
 		return;
 	}
-	for(new i=0;i<WeaponsSize;i++)
+	for(new i=0;i<MAX_WEAPONS;i++)
 	{
 		new weapondbname[MAX_STRING];
 		format(weapondbname,sizeof(weapondbname),"%s%s.txt",WeaponDB,Weapons[i][Weapon_Name]);
@@ -136,16 +130,11 @@ stock WeaponSaveAll()
 		ini_Set(file_weapons,"Weapon_DB",WeaponDB);
 		ini_Close(file_weapons);
 	}
-	for(new i=0;i<WeaponsSize;i++)
+	for(new i=0;i<MAX_WEAPONS;i++)
 	{
 		new weapondbname[MAX_STRING];
 		format(weapondbname,sizeof(weapondbname),"%s%s.txt",WeaponDB,Weapons[i][Weapon_Name]);
-		if(!ini_Exist(weapondbname))
-		{
-			new File:fhnd = fopen(weapondbname,io_write);
-			fclose(fhnd);
-		}
-		file_weapons = ini_Open(weapondbname);
+		file_weapons = (!ini_Exist(weapondbname)) ? ini_Create(weapondbname) : ini_Open(weapondbname);
 		ini_Set(file_weapons,"Name",Weapons[i][Weapon_Name]);
 		ini_SetInt(file_weapons,"IsAllowed",Weapons[i][Weapon_Allowed]);
 		ini_SetInt(file_weapons,"Level",Weapons[i][Weapon_Level]);
@@ -157,9 +146,7 @@ stock WeaponSaveAll()
 
 stock weapons_OnGameModeInit()
 {
-	WeaponLoadAll();
-	WeaponMenuInit();
-	for(new id=0;id<AmmunationsCount;id++)
+	for(new id=0;id<sizeof(Ammunations);id++)
 	{
 		CreatePickup(1247,1,Ammunations[id][Coord_X],Ammunations[id][Coord_Y],Ammunations[id][Coord_Z]);
 	}
@@ -169,14 +156,13 @@ stock weapons_OnGameModeInit()
 stock weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused oldkeys,newkeys
-	TogglePlayerControllable(playerid,false);
-	ShowMenuForPlayer(WeaponMenu,playerid);
+	weapons_ShowDialog_Select(playerid);
 	return 1;
 }
 
 stock IsPlayerAtAmmunation(playerid)
 {
-	for(new id=0;id<AmmunationsCount;id++)
+	for(new id=0;id<sizeof(Ammunations);id++)
 	{
 		if(IsPlayerInRangeOfPoint(playerid,2,Ammunations[id][Coord_X],Ammunations[id][Coord_Y],Ammunations[id][Coord_Z]))
 			return id;
@@ -187,7 +173,7 @@ stock IsPlayerAtAmmunation(playerid)
 stock oGetWeaponName(weaponid)
 {
 	new name[MAX_NAME];
-	new lookupid=GetWeaponLookupID(weaponid);
+	new lookupid = GetWeaponLookupID(weaponid);
 	if(lookupid == -1) return name;
 	set(name,Weapons[lookupid][Weapon_Name]);
 	return name;
@@ -195,19 +181,17 @@ stock oGetWeaponName(weaponid)
 
 stock GetWeaponMaxAmmo(weaponid)
 {
-	new ammo;
-	new lookupid=GetWeaponLookupID(weaponid);
-	if(lookupid == -1) return ammo;
-	ammo = Weapons[lookupid][Weapon_MaxBullets];
-	return ammo;
+	new lookupid = GetWeaponLookupID(weaponid);
+	if(lookupid == -1) return 0;
+	return Weapons[lookupid][Weapon_MaxBullets];
 }
 
 stock IsPlayerAllowedWeapon(playerid,weaponid)
 {
-	new lookupid=GetWeaponLookupID(weaponid);
+	new lookupid = GetWeaponLookupID(weaponid);
 	if(lookupid == -1) return 0;
-	if(Weapons[lookupid][Weapon_Allowed] == 0) return 0;
-	if(Weapons[lookupid][Weapon_Level] > GetPlayerLevel(playerid)) return 0;
+	if(Weapons[lookupid][Weapon_Allowed] == 0 || Weapons[lookupid][Weapon_Level] > GetPlayerLevel(playerid))
+		return 0;
 	return 1;
 }
 
@@ -228,17 +212,19 @@ stock GetWeaponCost(weaponid)
 
 stock GetWeaponLookupID(weaponid)
 {
-	new lookupid = -1;
-	for(new i=0;i<WeaponsSize;i++)
+	for(new i=0;i<MAX_WEAPONS;i++)
 	{
-		if(weaponid == Weapons[i][Weapon_ID]) lookupid = i;
+		if(weaponid == Weapons[i][Weapon_ID]) return i;
 	}
-	return lookupid;
+	return -1;
 }
 
 stock IsWeapon(weaponid)
 {
-	if((weaponid >= 0) && (weaponid <= 46)) return 1;
+	switch(weaponid)
+	{
+		case 0..46: return 1;
+	}
 	return 0;
 }
 
@@ -279,7 +265,7 @@ stock BuyWeapon(playerid,weaponid,bullets)
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[16][8]);
 		return 0;
 	}
-	if(!IsPlayerAtAmmunation(playerid))
+	if(IsPlayerAtAmmunation(playerid) == -1)
 	{
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[16][9]);
 		return 0;
@@ -305,238 +291,82 @@ stock BuyWeapon(playerid,weaponid,bullets)
 	}
 	oGivePlayerMoney(playerid,-purchasecost,1);
 	oGivePlayerWeapon(playerid,weaponid,bullets);
-	if(bullets > 1) format(string,sizeof(string),lang_texts[16][13],bullets,oGetWeaponName(weaponid),purchasecost);
-	else format(string,sizeof(string),lang_texts[16][14],oGetWeaponName(weaponid),purchasecost);
+	if(bullets > 1)
+		format(string,sizeof(string),lang_texts[16][13],bullets,oGetWeaponName(weaponid),purchasecost);
+	else
+		format(string,sizeof(string),lang_texts[16][14],oGetWeaponName(weaponid),purchasecost);
 	SendClientMessage(playerid,COLOUR_RED,string);
 	SendClientMessage(playerid,COLOUR_RED,lang_texts[16][15]);
 	return 1;
 }
 
-stock weapons_OnPlayerCommandText(playerid,text[]) // process player commands
+stock weapons_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 {
-	if(!IsPlayerRegistered(playerid)) return 0; // non registered players dont use weapon commands
-	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,strchar(" ")));
-	if(strlen(cmd) == 0) return 0;
-	if(!strcmp(cmd,"/weapons",true))
+	switch(dialogid)
 	{
-		SendPlayerOwnedWeapons(playerid);
-		return 1;
-	}
-
-	if(!strcmp(cmd,"/weapon",true))
-	{
-		set(cmd,strcharsplit(text, idx,strchar(" ")));
-
-		if(!strcmp(cmd,"help",true)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[16][21]);
-		if(!strcmp(cmd,"list",true))
+		case weapons_Select_DialogID: // Выбераем оружие из списка
 		{
-			if(!IsPlayerAtAmmunation(playerid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[16][22]);
-			SendPlayerVendorWeapons(playerid);
+			if(!response) return 0;
+			new weaponid = GetSelectedWeaponID(playerid,listitem);
+			SetPVarInt(playerid,"Buy_Weapon_ID",weaponid);
+			weapons_ShowDialog_Buy(playerid,weaponid);
 			return 1;
 		}
-		if(!strcmp(cmd,"buy",true))
+		case weapons_Buy_DialogID: // Покупаем, вводим патроны
 		{
-			if(!IsPlayerAtAmmunation(playerid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[16][23]);
-			set(cmd,strcharsplit(text, idx,strchar(" ")));
-			if(strlen(cmd) == 0) return SendPlayerVendorWeapons(playerid);
-			new weaponid = strval(cmd);
-			if(weaponid <= 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[16][25]);
-			new bullets;
-			set(cmd,strcharsplit(text, idx,strchar(" ")));
-			if(strlen(cmd) == 0) bullets = 1;
-			else bullets = strval(cmd);
-			if(bullets < 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[16][26]);
-			BuyWeapon(playerid,weaponid,bullets);
+			if(!response) return weapons_ShowDialog_Select(playerid);
+			BuyWeapon(playerid,GetPVarInt(playerid,"Buy_Weapon_ID"),strval(inputtext));
+			weapons_ShowDialog_Select(playerid);
 			return 1;
+		}
+	}
+	return 1;
+}
+
+stock weapons_ShowDialog_Select(playerid)
+{
+	new string[1024]; // 1024 будет достаточно
+	for(new weaponid=1;weaponid<MAX_WEAPONS;weaponid++)
+	{
+		if(!IsPlayerAllowedWeapon(playerid,weaponid)) continue;
+		format(string,sizeof(string),"%s%s, цена $%d\n",string,oGetWeaponName(weaponid),GetWeaponCost(weaponid));
+	}
+	return ShowPlayerDialog(playerid,weapons_Select_DialogID,DIALOG_STYLE_LIST,
+		"Меню оружия",
+		string,
+		"Выбрать","Выход"
+	);
+}
+
+stock weapons_ShowDialog_Buy(playerid,weaponid)
+{
+	new string[MAX_STRING];
+	format(string,sizeof(string),
+		"Оружие: %s\nЦена за 1 патрон: $%d\n\nВведите количество патрон:",
+		oGetWeaponName(weaponid),GetWeaponCost(weaponid)
+	);
+	return ShowPlayerDialog(playerid,weapons_Buy_DialogID,DIALOG_STYLE_INPUT,
+		"Покупка оружия",
+		string,
+		"Купить","Назад"
+	);
+}
+
+// узнаёт ид оружия по нажатию в диалоге
+stock GetSelectedWeaponID(playerid,listitem)
+{
+	new k;
+	for(new weaponid=1;weaponid<MAX_WEAPONS;weaponid++)
+	{
+		if(IsPlayerAllowedWeapon(playerid,weaponid))
+		{
+			k++;
+			if(listitem+1 == k)
+			{
+				return weaponid;
+			}
 		}
 	}
 	return 0;
 }
-
-stock WeaponMenuInit()
-{
-	new cost[MAX_STRING],costt;
-	WeaponMenu = CreateMenu("Ammu-nation",1,50.0,200.0,100.0,200.0);
-	AddMenuItem(WeaponMenu,0,"Pistols");
-	AddMenuItem(WeaponMenu,0,"Micro SMG");
-	AddMenuItem(WeaponMenu,0,"Shotguns");
-	AddMenuItem(WeaponMenu,0,"Armor");
-	AddMenuItem(WeaponMenu,0,"Assault");
-	
-	PistolMenu = CreateMenu("Pistols",2,100.0,200.0,100.0,200.0);
-	SetMenuColumnHeader(PistolMenu,0,"Weapon");
-	SetMenuColumnHeader(PistolMenu,1,"Cost");
-	AddMenuItem(PistolMenu,0,"9mm");
-	costt = GetWeaponCost(WEAPON_COLT45)*pistol_bullets;
-	format(cost,sizeof(cost),"%d",costt);
-	AddMenuItem(PistolMenu,1,cost);
-	AddMenuItem(PistolMenu,0,"9mm silenced");
-	costt = GetWeaponCost(WEAPON_SILENCED)*pistol_bullets;
-	format(cost,sizeof(cost),"%d",costt);
-	AddMenuItem(PistolMenu,1,cost);
-	AddMenuItem(PistolMenu,0,"Deagle");
-	costt = GetWeaponCost(WEAPON_DEAGLE)*pistol_bullets;
-	format(cost,sizeof(cost),"%d",costt);
-	AddMenuItem(PistolMenu,1,cost);
-	
-	MicroSMGMenu = CreateMenu("Micro-SMG",2,100.0,200.0,100.0,200.0);
-	SetMenuColumnHeader(MicroSMGMenu,0,"Weapon");
-	SetMenuColumnHeader(MicroSMGMenu,1,"Cost");
-	AddMenuItem(MicroSMGMenu,0,"Uzi");
-	costt = GetWeaponCost(WEAPON_SHOTGUN)*smg_bullets;
-	format(cost,sizeof(cost),"%d",costt);
-	AddMenuItem(MicroSMGMenu,1,cost);
-	AddMenuItem(MicroSMGMenu,0,"MP5");
-	costt = GetWeaponCost(WEAPON_SAWEDOFF)*smg_bullets;
-	format(cost,sizeof(cost),"%d",costt);
-	AddMenuItem(MicroSMGMenu,1,cost);
-	AddMenuItem(MicroSMGMenu,0,"Tec9");
-	costt = GetWeaponCost(WEAPON_SHOTGSPA)*smg_bullets;
-	format(cost,sizeof(cost),"%d",costt);
-	AddMenuItem(MicroSMGMenu,1,cost);
-	
-	ShotgunsMenu = CreateMenu("Shotguns",2,100.0,200.0,100.0,200.0);
-	SetMenuColumnHeader(ShotgunsMenu,0,"Weapon");
-	SetMenuColumnHeader(ShotgunsMenu,1,"Cost");
-	AddMenuItem(ShotgunsMenu,0,"Shotgun");
-	costt = GetWeaponCost(WEAPON_SHOTGUN)*shotgun_bullets;
-	format(cost,sizeof(cost),"%d",costt);
-	AddMenuItem(ShotgunsMenu,1,cost);
-	AddMenuItem(ShotgunsMenu,0,"Sawedoff");
-	costt = GetWeaponCost(WEAPON_SAWEDOFF)*shotgun_bullets;
-	format(cost,sizeof(cost),"%d",costt);
-	AddMenuItem(ShotgunsMenu,1,cost);
-	AddMenuItem(ShotgunsMenu,0,"Shotgspa");
-	costt = GetWeaponCost(WEAPON_SHOTGSPA)*shotgun_bullets;
-	format(cost,sizeof(cost),"%d",costt);
-	AddMenuItem(ShotgunsMenu,1,cost);
-	
-	AssaultMenu = CreateMenu("Assault",2,100.0,200.0,50.0,100.0);
-	SetMenuColumnHeader(AssaultMenu,0,"Weapon");
-	SetMenuColumnHeader(AssaultMenu,1,"Cost");
-	AddMenuItem(AssaultMenu,0,"Ak47");
-	costt = GetWeaponCost(WEAPON_AK47)*assault_bullets;
-	format(cost,sizeof(cost),"%d",costt);
-	AddMenuItem(AssaultMenu,1,cost);
-	AddMenuItem(AssaultMenu,0,"M4");
-	costt = GetWeaponCost(WEAPON_M4)*assault_bullets;
-	format(cost,sizeof(cost),"%d",costt);
-	AddMenuItem(AssaultMenu,1,cost);
-}
-		
-stock weapons_OnPlayerSelectedMenuRow(playerid,row)
-{
-	new Menu:Current = GetPlayerMenu(playerid),bullets;
-	if(Current == WeaponMenu) 
-	{
-		switch(row) 
-		{
-			case 0: ShowMenuForPlayer(PistolMenu,playerid);
-			case 1: ShowMenuForPlayer(MicroSMGMenu,playerid);
-			case 2: ShowMenuForPlayer(ShotgunsMenu,playerid);
-			case 3: 
-			{
-				SetPlayerArmour(playerid,100);
-				ShowMenuForPlayer(WeaponMenu,playerid);
-			}
-			case 4: ShowMenuForPlayer(AssaultMenu,playerid);
-		}
-	}
-	if(Current == PistolMenu)
-	{
-		bullets = 14;
-		switch(row) 
-		{
-			case 0: 
-			{
-				BuyWeapon(playerid,22,bullets);
-				ShowMenuForPlayer(PistolMenu,playerid);
-			}
-			case 1: 
-			{
-				BuyWeapon(playerid,23,bullets);
-				ShowMenuForPlayer(PistolMenu,playerid);
-			}
-			case 2: 
-			{
-				BuyWeapon(playerid,24,bullets);
-				ShowMenuForPlayer(PistolMenu,playerid);
-			}
-		}
-	}
-	if(Current == MicroSMGMenu)
-	{
-		bullets = 100;
-		switch(row) 
-		{
-			case 0: 
-			{
-				BuyWeapon(playerid,28,bullets);
-				ShowMenuForPlayer(MicroSMGMenu,playerid);
-			}
-			case 1: 
-			{
-				BuyWeapon(playerid,29,bullets);
-				ShowMenuForPlayer(MicroSMGMenu,playerid);
-			}
-			case 2: 
-			{
-				BuyWeapon(playerid,32,bullets);
-				ShowMenuForPlayer(MicroSMGMenu,playerid);
-			}
-		}
-	}
-	if(Current == ShotgunsMenu)
-	{
-		bullets = 10;
-		switch(row) 
-		{
-			case 0: 
-			{
-				BuyWeapon(playerid,25,bullets);
-				ShowMenuForPlayer(ShotgunsMenu,playerid);
-			}
-			case 1: 
-			{
-				BuyWeapon(playerid,26,bullets);
-				ShowMenuForPlayer(ShotgunsMenu,playerid);
-			}
-			case 2: 
-			{
-				BuyWeapon(playerid,27,bullets);
-				ShowMenuForPlayer(ShotgunsMenu,playerid);
-			}
-		}
-	}
-	if(Current == AssaultMenu)
-	{
-		bullets = 30;
-		switch(row) 
-		{
-			case 0: 
-			{
-				BuyWeapon(playerid,30,bullets);
-				ShowMenuForPlayer(AssaultMenu,playerid);
-			}
-			case 1: 
-			{
-				BuyWeapon(playerid,31,bullets);
-				ShowMenuForPlayer(AssaultMenu,playerid);
-			}
-		}
-	}
-	return 1;
-}
-
-stock weapons_OnPlayerExitedMenu(playerid)
-{
-	new Menu:tmpMenu = GetPlayerMenu(playerid);
-	if(tmpMenu != WeaponMenu) ShowMenuForPlayer(WeaponMenu,playerid);
-	else 
-	{
-		HideMenuForPlayer(tmpMenu,playerid);
-		TogglePlayerControllable(playerid,true);
-	}
-	return 1;
-}
+//
