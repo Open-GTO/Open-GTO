@@ -94,23 +94,16 @@ new Weapons[MAX_WEAPONS][WeaponInfo] = {
 
 stock WeaponLoadAll()
 {
-	new file_weapons;
 	if(ini_Exist(ConfigDB))
 	{
-		file_weapons = ini_Open(ConfigDB);
-		ini_Get(file_weapons,"Weapon_DB",WeaponDB);
-		ini_Close(file_weapons);
+		new file_weapons_cfg = ini_Open(ConfigDB);
+		ini_Get(file_weapons_cfg,"Weapon_DB",WeaponDB);
+		ini_Close(file_weapons_cfg);
 	}
-	if(!ini_Exist(WeaponDB))
+	for(new i=0,file_weapons,weapondbname[MAX_STRING];i<MAX_WEAPONS;i++)
 	{
-	    print("WeaponSaveAll();");
-		WeaponSaveAll();
-		return;
-	}
-	for(new i=0;i<MAX_WEAPONS;i++)
-	{
-		new weapondbname[MAX_STRING];
 		format(weapondbname,sizeof(weapondbname),"%s%s.txt",WeaponDB,Weapons[i][Weapon_Name]);
+		if(!ini_Exist(weapondbname)) continue;
 		file_weapons = ini_Open(weapondbname);
 		ini_Get(file_weapons,"Name",Weapons[i][Weapon_Name],MAX_STRING);
         ini_GetInt(file_weapons,"IsAllowed",Weapons[i][Weapon_Allowed]);
@@ -118,21 +111,16 @@ stock WeaponLoadAll()
         ini_GetInt(file_weapons,"Price",Weapons[i][Weapon_Cost]);
 		ini_Close(file_weapons);
 	}
-	return;
+	return 1;
 }
 
 stock WeaponSaveAll()
 {
-	new file_weapons;
-	if(ini_Exist(ConfigDB))
+	new file_weapons_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_Set(file_weapons_cfg,"Weapon_DB",WeaponDB);
+	ini_Close(file_weapons_cfg);
+	for(new i=0,file_weapons,weapondbname[MAX_STRING];i<MAX_WEAPONS;i++)
 	{
-		file_weapons = ini_Open(ConfigDB);
-		ini_Set(file_weapons,"Weapon_DB",WeaponDB);
-		ini_Close(file_weapons);
-	}
-	for(new i=0;i<MAX_WEAPONS;i++)
-	{
-		new weapondbname[MAX_STRING];
 		format(weapondbname,sizeof(weapondbname),"%s%s.txt",WeaponDB,Weapons[i][Weapon_Name]);
 		file_weapons = (!ini_Exist(weapondbname)) ? ini_Create(weapondbname) : ini_Open(weapondbname);
 		ini_Set(file_weapons,"Name",Weapons[i][Weapon_Name]);
@@ -141,7 +129,7 @@ stock WeaponSaveAll()
 		ini_SetInt(file_weapons,"Price",Weapons[i][Weapon_Cost]);
 		ini_Close(file_weapons);
 	}
-	return;
+	return 1;
 }
 
 stock weapons_OnGameModeInit()

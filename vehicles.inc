@@ -2,7 +2,13 @@
 // Created:		10.09.06
 // Aurthor:		Iain Gilbert
 //
-#pragma tabsize 0
+
+#if defined _vehicle_included
+	#endinput
+#endif
+
+#define _vehicle_included
+#pragma library vehicle
 
 #include "base"
 #include "player"
@@ -2297,20 +2303,18 @@ stock LoadVehicles()
 
 stock vehicles_LoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-	new file = ini_Open(ConfigDB);
-	ini_GetInt(file,"CarsReSpawnTime",never);
-	ini_Close(file);
+	if(!ini_Exist(ConfigDB)) return 0;
+	new file_vehicle = ini_Open(ConfigDB);
+	ini_GetInt(file_vehicle,"CarsReSpawnTime",never);
+	ini_Close(file_vehicle);
 	return 1;
 }
 
 stock vehicles_SaveConfig()
 {
-	new file;
-	if(!ini_Exist(ConfigDB)) file = ini_Create(ConfigDB);
-	else file = ini_Open(ConfigDB);
-	ini_SetInt(file,"CarsReSpawnTime",never);
-	ini_Close(file);
+	new file_vehicle = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_vehicle,"CarsReSpawnTime",never);
+	ini_Close(file_vehicle);
 	return 1;
 }
 

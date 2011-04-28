@@ -81,28 +81,22 @@ new DMCentreCP[MAX_DM][CoordInfo];
 
 stock DeathmatchLoadAll()
 {
-	if (ForceOverwrite) return;
-	new temp[MAX_STRING],file;
+	if (ForceOverwrite) return 0;
+	new temp[MAX_STRING];
 	if(ini_Exist(ConfigDB))
 	{
-		file = ini_Open(ConfigDB);
-		ini_Get(file,"Deathmatch_DB",DeathmatchDB);
-		ini_Get(file,"Deathmatch_Base_DB",DMBaseDB);
-		ini_Get(file,"Deathmatch_Record_DB",DMRecordDB);
-		ini_Close(file);
+		new file_dm_cfg = ini_Open(ConfigDB);
+		ini_Get(file_dm_cfg,"Deathmatch_DB",DeathmatchDB);
+		ini_Get(file_dm_cfg,"Deathmatch_Base_DB",DMBaseDB);
+		ini_Get(file_dm_cfg,"Deathmatch_Record_DB",DMRecordDB);
+		ini_Close(file_dm_cfg);
 	}
-	if(!ini_Exist(DeathmatchDB))
+	if(!ini_Exist(DeathmatchDB)) return 0;
+	new file_dm = ini_Open(DeathmatchDB);
+	for(new dmdbid=0,cellname[MAX_STRING];dmdbid<MAX_DM;dmdbid++)
 	{
-		DeathmatchSaveAll();
-		return;
-	}
-	for(new dmdbid=0;dmdbid<MAX_DM;dmdbid++)
-	{ // load all our dms from db
-		new cellname[MAX_STRING];
 		format(cellname,sizeof(cellname),"Deathmatch%d",dmdbid);
-		file = ini_Open(DeathmatchDB);
-		ini_Get(file,cellname,temp);
-		ini_Close(file);
+		ini_Get(file_dm,cellname,temp);
 		if(strlen(temp) == 0) continue;
 		if(!DeathmatchBaseDBExists(temp)) continue;
 		new dmid = RegisterDM(temp);
@@ -110,7 +104,8 @@ stock DeathmatchLoadAll()
 		DeathmatchLoadBaseDB(dmid);
 		DeathmatchLoadRecordDB(dmid);
 	}
-	return;
+	ini_Close(file_dm);
+	return 1;
 }
 
 stock DeathmatchBaseDBExists(dmname[MAX_STRING])
@@ -124,11 +119,11 @@ stock DeathmatchBaseDBExists(dmname[MAX_STRING])
 stock DeathmatchLoadBaseDB(dmid)
 { // load dm from db
 	if (ForceOverwrite) return INVALID_DM_ID;
-	new temp[MAX_STRING],rdbname[MAX_STRING],file;
+	new temp[MAX_STRING],rdbname[MAX_STRING];
 	format(rdbname,sizeof(rdbname),"%s%s.txt",DMBaseDB,Deathmatch[dmid][dm_name]);
 	if(!ini_Exist(rdbname)) return INVALID_DM_ID;
-	file = ini_Open(rdbname);
-	ini_Get(file,"Name",Deathmatch[dmid][dm_name],128);
+	new file_dm = ini_Open(rdbname);
+	ini_Get(file_dm,"Name",Deathmatch[dmid][dm_name],MAX_STRING);
 
 	if(dmid <= 0)
 	{
@@ -138,25 +133,25 @@ stock DeathmatchLoadBaseDB(dmid)
 		WriteLog(GameLog,logstring);
 		return INVALID_DM_ID;
 	}
-    ini_GetInt(file,"Frequency",Deathmatch[dmid][dm_frequency]);
-    ini_GetInt(file,"Lineup_Delay",Deathmatch[dmid][dm_lineupdelay]);
-    ini_GetInt(file,"Min_Players",Deathmatch[dmid][dm_minplayers]);
-    ini_GetInt(file,"Min_Level",Deathmatch[dmid][dm_minlevel]);
-    ini_GetInt(file,"Cash_Prize",Deathmatch[dmid][dm_cashprize]);
-    ini_GetInt(file,"Cash_Entry",Deathmatch[dmid][dm_cashentry]);
-    ini_GetInt(file,"XP_Prize",Deathmatch[dmid][dm_xpprize]);
-    ini_GetInt(file,"XP_Bonus",Deathmatch[dmid][dm_xpbonus]);
-    ini_GetInt(file,"Max_Time",Deathmatch[dmid][dm_maxtime]);
+    ini_GetInt(file_dm,"Frequency",Deathmatch[dmid][dm_frequency]);
+    ini_GetInt(file_dm,"Lineup_Delay",Deathmatch[dmid][dm_lineupdelay]);
+    ini_GetInt(file_dm,"Min_Players",Deathmatch[dmid][dm_minplayers]);
+    ini_GetInt(file_dm,"Min_Level",Deathmatch[dmid][dm_minlevel]);
+    ini_GetInt(file_dm,"Cash_Prize",Deathmatch[dmid][dm_cashprize]);
+    ini_GetInt(file_dm,"Cash_Entry",Deathmatch[dmid][dm_cashentry]);
+    ini_GetInt(file_dm,"XP_Prize",Deathmatch[dmid][dm_xpprize]);
+    ini_GetInt(file_dm,"XP_Bonus",Deathmatch[dmid][dm_xpbonus]);
+    ini_GetInt(file_dm,"Max_Time",Deathmatch[dmid][dm_maxtime]);
 
-    ini_GetInt(file,"XP_Kill",Deathmatch[dmid][dm_xpkill]);
-    ini_GetInt(file,"XP_Death",Deathmatch[dmid][dm_xpdeath]);
-    ini_GetInt(file,"Join_Active",Deathmatch[dmid][dm_activedmjoin]);
-    ini_GetInt(file,"Max_Distance",Deathmatch[dmid][dm_distance]);
+    ini_GetInt(file_dm,"XP_Kill",Deathmatch[dmid][dm_xpkill]);
+    ini_GetInt(file_dm,"XP_Death",Deathmatch[dmid][dm_xpdeath]);
+    ini_GetInt(file_dm,"Join_Active",Deathmatch[dmid][dm_activedmjoin]);
+    ini_GetInt(file_dm,"Max_Distance",Deathmatch[dmid][dm_distance]);
     set(Deathmatch[dmid][dm_weapons],DMDecodeWeaponsDB(temp));
-    ini_GetInt(file,"Weapons",Deathmatch[dmid][dm_weapons]);
+    ini_GetInt(file_dm,"Weapons",Deathmatch[dmid][dm_weapons]);
 
 	new Float:X,Float:Y,Float:Z;
-	ini_Get(file,"Start_CP",temp);
+	ini_Get(file_dm,"Start_CP",temp);
 	if(strlen(temp) != 0)
 	{
 		new idx=0;
@@ -174,7 +169,7 @@ stock DeathmatchLoadBaseDB(dmid)
 		}
 	}
 	
-	ini_Get(file,"Centre_CP",temp);
+	ini_Get(file_dm,"Centre_CP",temp);
 	if (strlen(temp) != 0)
 	{
 		new idx=0;
@@ -193,12 +188,11 @@ stock DeathmatchLoadBaseDB(dmid)
 	}
 
 	new spsize;
-	for(new spid=0;spid<MAX_DM_SP;spid++)
+	for(new spid=0,cellname[MAX_STRING];spid<MAX_DM_SP;spid++)
 	{
-		new cellname[MAX_STRING];
 		format(cellname,sizeof(cellname),"SP%d",spid);
-		ini_Get(file,cellname,temp);
-		if(ini_Get(file,cellname,temp) != INI_OK) break;
+		ini_Get(file_dm,cellname,temp);
+		if(ini_Get(file_dm,cellname,temp) != INI_OK) break;
 		new idx=0;
 		X = floatstr(strcharsplit(temp,idx,strchar(",")));
 		Y = floatstr(strcharsplit(temp,idx,strchar(",")));
@@ -210,7 +204,7 @@ stock DeathmatchLoadBaseDB(dmid)
 		DMSpawnPoints[dmid][spid][Coord_Z] = Z;
 		spsize++;
 	}
-	ini_Close(file);
+	ini_Close(file_dm);
 	DMSpawnsSize[dmid] = spsize;
 	DeathmatchStats[dmid][dm_state] = DM_STATE_SLEEPING;
 	DeathmatchStats[dmid][dm_timer] = MakeDMSleepTime(dmid);
@@ -223,109 +217,100 @@ stock DeathmatchLoadBaseDB(dmid)
 
 stock DeathmatchLoadRecordDB(dmid)
 {
-	new rdbname[MAX_STRING],file;
+	new rdbname[MAX_STRING];
 	format(rdbname,sizeof(rdbname),"%s%s.txt",DMRecordDB,Deathmatch[dmid][dm_name]);
 	if(!ini_Exist(rdbname)) return;
-	file = ini_Open(rdbname);
-	ini_GetInt(file,"Best_Score_Record",DMBestScore[dmid][dm_score_record]);
-	ini_Get(file,"Best_Score_Player",DMBestScore[dmid][dm_score_player]);
-	ini_GetInt(file,"Best_Score_Kills",DMBestScore[dmid][dm_score_kills]);
-	ini_GetInt(file,"Best_Score_Deaths",DMBestScore[dmid][dm_score_deaths]);
-	ini_Close(file);
+	new file_dm = ini_Open(rdbname);
+	ini_GetInt(file_dm,"Best_Score_Record",DMBestScore[dmid][dm_score_record]);
+	ini_Get(file_dm,"Best_Score_Player",DMBestScore[dmid][dm_score_player],MAX_STRING);
+	ini_GetInt(file_dm,"Best_Score_Kills",DMBestScore[dmid][dm_score_kills]);
+	ini_GetInt(file_dm,"Best_Score_Deaths",DMBestScore[dmid][dm_score_deaths]);
+	ini_Close(file_dm);
 }
 
 stock DeathmatchSaveAll()
 {
-	new file;
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	file = ini_Open(ConfigDB);
-	ini_Set(file,"Deathmatch_Base_DB",DMBaseDB);
-	ini_Set(file,"Deathmatch_Record_DB",DMRecordDB);
-	ini_Close(file);
-	if(!ini_Exist(DeathmatchDB)) {new File:fhnd = fopen(DeathmatchDB,io_write);fclose(fhnd);}
-	for(new dmid=1;dmid<=DMCount;dmid++)
+	new file_dm_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_Set(file_dm_cfg,"Deathmatch_Base_DB",DMBaseDB);
+	ini_Set(file_dm_cfg,"Deathmatch_Record_DB",DMRecordDB);
+	ini_Close(file_dm_cfg);
+	
+	new file_dm = (!ini_Exist(DeathmatchDB)) ? ini_Create(DeathmatchDB) : ini_Open(DeathmatchDB);
+	for(new dmid=1,cellname[MAX_STRING];dmid<=DMCount;dmid++)
 	{ // load all our dms from db
 		if(DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED) continue;
-		new cellname[MAX_STRING];
 		format(cellname,sizeof(cellname),"Deathmatch%d",dmid);
-		file = ini_Open(DeathmatchDB);
-		ini_Set(file,cellname,Deathmatch[dmid][dm_name]);
-		ini_Close(file);
+		ini_Set(file_dm,cellname,Deathmatch[dmid][dm_name]);
 		DeathmatchSaveBaseDB(dmid);
 		DeathmatchSaveRecordDB(dmid);
 	}
+	ini_Close(file_dm);
 }
 
 stock DeathmatchSaveScores()
 {
-	new file;
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	file = ini_Open(ConfigDB);
-	ini_Set(file,"Deathmatch_Base_DB",DMBaseDB);
-	ini_Set(file,"Deathmatch_Record_DB",DMRecordDB);
-	ini_Close(file);
-	if(!ini_Exist(DeathmatchDB)) {new File:fhnd = fopen(DeathmatchDB,io_write);fclose(fhnd);}
-	for(new dmid=1;dmid<=DMCount;dmid++)
+	new file_dm_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_Set(file_dm_cfg,"Deathmatch_Base_DB",DMBaseDB);
+	ini_Set(file_dm_cfg,"Deathmatch_Record_DB",DMRecordDB);
+	ini_Close(file_dm_cfg);
+
+	new file_dm = (!ini_Exist(DeathmatchDB)) ? ini_Create(DeathmatchDB) : ini_Open(DeathmatchDB);
+	for(new dmid=1,cellname[MAX_STRING];dmid<=DMCount;dmid++)
 	{ // load all our dms from db
 		if (DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED) continue;
-		new cellname[MAX_STRING];
 		format(cellname,sizeof(cellname),"Deathmatch%d",dmid);
-		file = ini_Open(DeathmatchDB);
-		ini_Set(file,cellname,Deathmatch[dmid][dm_name]);
-		ini_Close(file);
+		ini_Set(file_dm,cellname,Deathmatch[dmid][dm_name]);
 		DeathmatchSaveRecordDB(dmid);
 	}
+	ini_Close(file_dm);
 }
 
 stock DeathmatchSaveBaseDB(dmid)
 { // save dm to db
 	if (DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED) return;
-	new temp[MAX_STRING],rdbname[MAX_STRING],file;
+	new temp[MAX_STRING],rdbname[MAX_STRING];
 	format(rdbname,sizeof(rdbname),"%s%s.txt",DMBaseDB,Deathmatch[dmid][dm_name]);
-	if(!ini_Exist(rdbname)) {new File:fhnd = fopen(rdbname,io_write);fclose(fhnd);}
-	file = ini_Open(rdbname);
-	ini_Set(file,"Name",Deathmatch[dmid][dm_name]);
-	ini_SetInt(file,"Frequency",Deathmatch[dmid][dm_frequency]);
-	ini_SetInt(file,"Lineup_Delay",Deathmatch[dmid][dm_lineupdelay]);
-	ini_SetInt(file,"Min_Players",Deathmatch[dmid][dm_minplayers]);
-	ini_SetInt(file,"Min_Level",Deathmatch[dmid][dm_minlevel]);
-	ini_SetInt(file,"Cash_Prize",Deathmatch[dmid][dm_cashprize]);
-	ini_SetInt(file,"Cash_Entry",Deathmatch[dmid][dm_cashentry]);
-	ini_SetInt(file,"XP_Prize",Deathmatch[dmid][dm_xpprize]);
-	ini_SetInt(file,"XP_Bonus",Deathmatch[dmid][dm_xpbonus]);
-	ini_SetInt(file,"Max_Time",Deathmatch[dmid][dm_maxtime]);
-	ini_SetInt(file,"XP_Kill",Deathmatch[dmid][dm_xpkill]);
-	ini_SetInt(file,"XP_Death",Deathmatch[dmid][dm_xpdeath]);
-	ini_SetInt(file,"Join_Active",Deathmatch[dmid][dm_activedmjoin]);
-	ini_SetInt(file,"Max_Distance",Deathmatch[dmid][dm_distance]);
-	ini_Set(file,"Weapons",DMEncodeWeaponsDB(dmid));
+	new file_dm = (!ini_Exist(rdbname)) ? ini_Create(rdbname) : ini_Open(rdbname);
+	ini_Set(file_dm,"Name",Deathmatch[dmid][dm_name]);
+	ini_SetInt(file_dm,"Frequency",Deathmatch[dmid][dm_frequency]);
+	ini_SetInt(file_dm,"Lineup_Delay",Deathmatch[dmid][dm_lineupdelay]);
+	ini_SetInt(file_dm,"Min_Players",Deathmatch[dmid][dm_minplayers]);
+	ini_SetInt(file_dm,"Min_Level",Deathmatch[dmid][dm_minlevel]);
+	ini_SetInt(file_dm,"Cash_Prize",Deathmatch[dmid][dm_cashprize]);
+	ini_SetInt(file_dm,"Cash_Entry",Deathmatch[dmid][dm_cashentry]);
+	ini_SetInt(file_dm,"XP_Prize",Deathmatch[dmid][dm_xpprize]);
+	ini_SetInt(file_dm,"XP_Bonus",Deathmatch[dmid][dm_xpbonus]);
+	ini_SetInt(file_dm,"Max_Time",Deathmatch[dmid][dm_maxtime]);
+	ini_SetInt(file_dm,"XP_Kill",Deathmatch[dmid][dm_xpkill]);
+	ini_SetInt(file_dm,"XP_Death",Deathmatch[dmid][dm_xpdeath]);
+	ini_SetInt(file_dm,"Join_Active",Deathmatch[dmid][dm_activedmjoin]);
+	ini_SetInt(file_dm,"Max_Distance",Deathmatch[dmid][dm_distance]);
+	ini_Set(file_dm,"Weapons",DMEncodeWeaponsDB(dmid));
 	format(temp,sizeof(temp),"%f,%f,%f",DMStartCP[dmid][Coord_X],DMStartCP[dmid][Coord_Y],DMStartCP[dmid][Coord_Z]);
-	ini_Set(file,"Start_CP",temp);
+	ini_Set(file_dm,"Start_CP",temp);
 	format(temp,sizeof(temp),"%f,%f,%f",DMCentreCP[dmid][Coord_X],DMCentreCP[dmid][Coord_Y],DMCentreCP[dmid][Coord_Z]);
-	ini_Set(file,"Centre_CP",temp);
+	ini_Set(file_dm,"Centre_CP",temp);
 
-	for(new spid=0;spid<DMSpawnsSize[dmid];spid++)
+	for(new spid=0,cellname[MAX_STRING];spid<DMSpawnsSize[dmid];spid++)
 	{
-		new cellname[MAX_STRING];
 		format(cellname,sizeof(cellname),"SP%d",spid);
 		format(temp,sizeof(temp),"%f,%f,%f",DMSpawnPoints[dmid][spid][Coord_X],DMSpawnPoints[dmid][spid][Coord_Y],DMSpawnPoints[dmid][spid][Coord_Z]);
-		ini_Set(file,cellname,temp);
+		ini_Set(file_dm,cellname,temp);
 	}
-	ini_Close(file);
+	ini_Close(file_dm);
 }
 
 stock DeathmatchSaveRecordDB(dmid)
 {
-	new rdbname[MAX_STRING],file;
+	new rdbname[MAX_STRING];
 	format(rdbname,sizeof(rdbname),"%s%s.txt",DMRecordDB,Deathmatch[dmid][dm_name]);
-	if(!ini_Exist(rdbname)) {new File:fhnd = fopen(rdbname,io_write);fclose(fhnd);}
-	file = ini_Open(rdbname);
-	ini_Set(file,"Name",Deathmatch[dmid][dm_name]);
-	ini_SetInt(file,"Best_Score_Record",DMBestScore[dmid][dm_score_record]);
-	ini_SetInt(file,"Best_Score_Player",DMBestScore[dmid][dm_score_player]);
-	ini_SetInt(file,"Best_Score_Kills",DMBestScore[dmid][dm_score_kills]);
-	ini_SetInt(file,"Best_Score_Deaths",DMBestScore[dmid][dm_score_deaths]);
-	ini_Close(file);
+	new file_dm = (!ini_Exist(rdbname)) ? ini_Create(rdbname) : ini_Open(rdbname);
+	ini_Set(file_dm,"Name",Deathmatch[dmid][dm_name]);
+	ini_SetInt(file_dm,"Best_Score_Record",DMBestScore[dmid][dm_score_record]);
+	ini_SetInt(file_dm,"Best_Score_Player",DMBestScore[dmid][dm_score_player]);
+	ini_SetInt(file_dm,"Best_Score_Kills",DMBestScore[dmid][dm_score_kills]);
+	ini_SetInt(file_dm,"Best_Score_Deaths",DMBestScore[dmid][dm_score_deaths]);
+	ini_Close(file_dm);
 	return;
 }
 

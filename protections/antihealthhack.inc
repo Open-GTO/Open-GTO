@@ -6,18 +6,18 @@ new AntiHealthHackEnabled = 1;
 
 stock AntiHealthHackLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-	new file = ini_Open(ConfigDB);
-	ini_GetInt(file,"Anti_Health_Hack_Enabled",AntiHealthHackEnabled);
-	ini_Close(file);
+	if(!ini_Exist(ConfigDB)) return 0;
+	new file_ahh = ini_Open(ConfigDB);
+	ini_GetInt(file_ahh,"Anti_Health_Hack_Enabled",AntiHealthHackEnabled);
+	ini_Close(file_ahh);
 	return 1;
 }
 
 stock AntiHealthHackSaveConfig()
 {
-	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file,"Anti_Health_Hack_Enabled",AntiHealthHackEnabled);
-	ini_Close(file);
+	new file_ahh = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_ahh,"Anti_Health_Hack_Enabled",AntiHealthHackEnabled);
+	ini_Close(file_ahh);
 	return 1;
 }
 

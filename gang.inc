@@ -78,13 +78,13 @@ new GangInvite[MAX_PLAYERS];
 
 stock GangLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return;
+	if(!ini_Exist(ConfigDB)) return 0;
 	new file_gang = ini_Open(ConfigDB);
 	ini_Get(file_gang,"Gang_DB",GangDB);
 	ini_GetInt(file_gang,"Gang_Create_Cost",GANG_CREATE_COST);
 	ini_GetInt(file_gang,"Gang_Colour_Cost",GANG_COLOUR_COST);
 	ini_Close(file_gang);
-	return;
+	return 1;
 }
 
 stock GangSaveConfig()

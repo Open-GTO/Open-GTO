@@ -193,7 +193,7 @@ new Float:LVDMPlayerSpawns[23][CoordInfo] = {
 
 stock PlayerLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
+	if(!ini_Exist(ConfigDB)) return 0;
 	new file_player = ini_Open(ConfigDB);
 	ini_Get(file_player,"Player_DB",PlayerDB);
 	ini_GetInt(file_player,"Player_Start_Money",PlayerStartMoney);
@@ -208,8 +208,7 @@ stock PlayerLoadConfig()
 
 stock PlayerSaveConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-	new file_player = ini_Open(ConfigDB);
+	new file_player = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_Set(file_player,"Player_DB",PlayerDB);
 	ini_SetInt(file_player,"Player_Start_Money",PlayerStartMoney);
 	ini_SetInt(file_player,"Player_Start_Weapon1",PlayerStartWeapon1);

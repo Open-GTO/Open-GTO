@@ -25,29 +25,17 @@ new Text3D:Business3DTextLabel[MAX_BUSINESSES],Float:BusinessDistanceOfShowLabel
 
 BusinessLoadAll()
 {
-    new file_business;
 	if(ini_Exist(ConfigDB))
 	{
-		file_business = ini_Open(ConfigDB);
-		ini_Get(file_business,"Business_DB",BusinessDB);
-		ini_GetFloat(file_business,"Business_DistanceOfShowLabel",BusinessDistanceOfShowLabel);
-		ini_Close(file_business);
+		new file_business_cfg = ini_Open(ConfigDB);
+		ini_Get(file_business_cfg,"Business_DB",BusinessDB);
+		ini_GetFloat(file_business_cfg,"Business_DistanceOfShowLabel",BusinessDistanceOfShowLabel);
+		ini_Close(file_business_cfg);
 	}
-	if(!ini_Exist(BusinessDB))
+	for(new i=0,file_business,businessdbname[MAX_STRING];i<MAX_BUSINESSES;i++)
 	{
-		BusinessSaveAll();
-		return;
-	}
-	for(new i=0;i<MAX_BUSINESSES;i++)
-	{
-		new businessdbname[MAX_STRING];
 		format(businessdbname,sizeof(businessdbname),"%s%s.txt",BusinessDB,Businesses[i][Business_Name]);
-		if(!ini_Exist(businessdbname))
-		{
-			new File:fb = fopen(businessdbname,io_write);
-			fclose(fb);
-			BusinessSaveAll();
-		}
+		if(!ini_Exist(businessdbname)) continue;
 		file_business = ini_Open(businessdbname);
 		ini_Get(file_business,"Name",Businesses[i][Business_Name],MAX_STRING);
         ini_GetInt(file_business,"Cost",Businesses[i][Business_Cost]);
@@ -68,17 +56,15 @@ BusinessLoadAll()
 
 BusinessSaveAll()
 {
-	new file_business;
 	if(ini_Exist(ConfigDB))
 	{
-		file_business = ini_Open(ConfigDB);
-		ini_Set(file_business,"Business_DB",BusinessDB);
-		ini_SetFloat(file_business,"Business_DistanceOfShowLabel",BusinessDistanceOfShowLabel);
-		ini_Close(file_business);
+		new file_business_cfg = ini_Open(ConfigDB);
+		ini_Set(file_business_cfg,"Business_DB",BusinessDB);
+		ini_SetFloat(file_business_cfg,"Business_DistanceOfShowLabel",BusinessDistanceOfShowLabel);
+		ini_Close(file_business_cfg);
 	}
-	for(new i=0;i<MAX_BUSINESSES;i++)
+	for(new i=0,file_business,businessdbname[MAX_STRING];i<MAX_BUSINESSES;i++)
 	{
-		new businessdbname[MAX_STRING];
 		format(businessdbname,sizeof(businessdbname),"%s%s.txt",BusinessDB,Businesses[i][Business_Name]);
 		file_business = (!ini_Exist(businessdbname)) ? ini_Create(businessdbname) : ini_Open(businessdbname);
 		ini_Set(file_business,"Name",Businesses[i][Business_Name]);

@@ -6,18 +6,18 @@ new AntiMoneyHackEnabled = 1;
 
 stock AntiMoneyHackLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-	new file = ini_Open(ConfigDB);
-	ini_GetInt(file,"Anti_Money_Hack_Enabled",AntiMoneyHackEnabled);
-	ini_Close(file);
+	if(!ini_Exist(ConfigDB)) return 0;
+	new file_amh = ini_Open(ConfigDB);
+	ini_GetInt(file_amh,"Anti_Money_Hack_Enabled",AntiMoneyHackEnabled);
+	ini_Close(file_amh);
 	return 1;
 }
 
 stock AntiMoneyHackSaveConfig()
 {
-	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file,"Anti_Money_Hack_Enabled",AntiMoneyHackEnabled);
-	ini_Close(file);
+	new file_amh = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_amh,"Anti_Money_Hack_Enabled",AntiMoneyHackEnabled);
+	ini_Close(file_amh);
 	return 1;
 }
 

@@ -611,10 +611,12 @@ public Float:GetDistancePlayertoXYZ(playerid,Float:x2,Float:y2,Float:z2)
 
 public SyncTime()
 {
-	if(RealTime < 1)
+	if(RealTime != 1)
 	{
-		if(WorldTime >= 23) WorldTime = 0;
-		else WorldTime++;
+		if(WorldTime >= 23)
+			WorldTime = 0;
+		else
+			WorldTime++;
 		SetWorldTime(WorldTime);
 	} 
 	else 

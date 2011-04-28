@@ -25,29 +25,18 @@ new house_icon[MAX_HOUSES],Text3D:House3DTextLabel[MAX_HOUSES],Float:HouseDistan
 
 stock HousesLoadAll()
 {
-	new file_housing;
 	if(ini_Exist(ConfigDB))
 	{
-		file_housing = ini_Open(ConfigDB);
-		ini_Get(file_housing,"Houses_DB",HousesDB);
-		ini_GetFloat(file_housing,"House_DistanceOfShowLabel",HouseDistanceOfShowLabel);
-		ini_Close(file_housing);
+		new file_housing_cfg = ini_Open(ConfigDB);
+		ini_Get(file_housing_cfg,"Houses_DB",HousesDB);
+		ini_GetFloat(file_housing_cfg,"House_DistanceOfShowLabel",HouseDistanceOfShowLabel);
+		ini_Close(file_housing_cfg);
 	}
-	if(!ini_Exist(HousesDB))
-	{
-		HousesSaveAll();
-		return;
-	}
-	for(new i=0;i<MAX_HOUSES;i++)
+	for(new i=0,file_housing;i<MAX_HOUSES;i++)
 	{
 		new housesdbname[MAX_STRING];
 		format(housesdbname,sizeof(housesdbname),"%s%s.txt",HousesDB,Houses[i][Houses_Name]);
-		if(!ini_Exist(housesdbname))
-		{
-			new File:fhnd = fopen(housesdbname,io_write);
-			fclose(fhnd);
-			HousesSaveAll();
-		}
+		if(!ini_Exist(housesdbname)) continue;
 		file_housing = ini_Open(housesdbname);
 		ini_Get(file_housing,"Name",Houses[i][Houses_Name],MAX_STRING);
 		ini_GetInt(file_housing,"Cost",Houses[i][Houses_Cost]);
@@ -73,9 +62,7 @@ stock HousesLoadAll()
 
 stock HousesSaveAll()
 {
-	new file_housing;
-	if(!ini_Exist(ConfigDB)) file_housing = ini_Create(ConfigDB);
-	else file_housing = ini_Open(ConfigDB);
+	new file_housing = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_Set(file_housing,"Houses_DB",HousesDB);
 	ini_SetFloat(file_housing,"House_DistanceOfShowLabel",HouseDistanceOfShowLabel);
 	ini_Close(file_housing);
@@ -85,10 +72,9 @@ stock HousesSaveAll()
 
 stock SaveHous(housid)
 {
-	new housesdbname[MAX_STRING],file_housing;
+	new housesdbname[MAX_STRING];
 	format(housesdbname,sizeof(housesdbname),"%s%s.txt",HousesDB,Houses[housid][Houses_Name]);
-	if(!ini_Exist(housesdbname)) file_housing = ini_Create(housesdbname);
-	else file_housing = ini_Open(housesdbname);
+	new file_housing = (!ini_Exist(housesdbname)) ? ini_Create(housesdbname) : ini_Open(housesdbname);
 	ini_Set(file_housing,"Name",Houses[housid][Houses_Name]);
 	ini_SetInt(file_housing,"Cost",Houses[housid][Houses_Cost]);
 	ini_Set(file_housing,"Owner",Houses[housid][Houses_Owner]);

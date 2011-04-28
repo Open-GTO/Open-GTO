@@ -57,19 +57,18 @@ new Float:LineCoord[16][3] = {
 
 stock mission_LoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-    new file = ini_Open(ConfigDB);
-	ini_GetInt(file,"Mission_Enabled",Mission_Enabled);
-	ini_Close(file);
+	if(!ini_Exist(ConfigDB)) return 0;
+    new file_mission = ini_Open(ConfigDB);
+	ini_GetInt(file_mission,"Mission_Enabled",Mission_Enabled);
+	ini_Close(file_mission);
 	return 1;
 }
 
 stock mission_SaveConfig()
 {
-	if(!ini_Exist(ConfigDB)) {new File:fgh = fopen(ConfigDB,io_write);fclose(fgh);}
-    new file = ini_Open(ConfigDB);
-	ini_SetInt(file,"Mission_Enabled",Mission_Enabled);
-	ini_Close(file);
+	new file_mission = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_mission,"Mission_Enabled",Mission_Enabled);
+	ini_Close(file_mission);
 	return 1;
 }
 
@@ -97,21 +96,10 @@ stock mission_OnGameModeInit()
 
 stock mission_OnPlayerStateChange(playerid,newstate,oldstate)
 {
-	#pragma unused oldstate
+	#pragma unused newstate,oldstate
 	if(Mission_Enabled != 1) return 1;
-    if(newstate == PLAYER_STATE_DRIVER)
-    {
-		if(IsVehicleIsRunner( GetPlayerVehicleID(playerid) ))
-			SendClientMessage(playerid,COLOUR_PINK,"ХраП: Вы можете начать миссию дальнобойщика. Для этого нажмите Кнопку миссии (2 или +)");
-		return 1;
-    }
-	/*if(newstate == PLAYER_STATE_ONFOOT && driver[playerid] == 1)
-	{
-	    driver[playerid] = 0;
-		ResetQuest(playerid);
-	    SendClientMessage(playerid,COLOUR_RED,"ХраП: Ты не справился с миссией.");
-		return 1;
-	}*/
+	if(IsVehicleIsRunner( GetPlayerVehicleID(playerid) ))
+		SendClientMessage(playerid,COLOUR_PINK,"ХраП: Вы можете начать миссию дальнобойщика. Для этого нажмите Кнопку миссии (2 или +)");
 	return 1;
 }
 

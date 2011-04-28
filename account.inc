@@ -2,7 +2,7 @@
 // Created:     05.09.06
 // Aurthor:    Iain Gilbert
 //
-// Updated:		08.11.09 
+// Updated:		28.04.2011 
 // Scripters:	GhostTT & ZiGGi
 
 #if defined _account_included
@@ -19,8 +19,8 @@
 
 stock AccountLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-	new file_account_db;
+	if(!ini_Exist(ConfigDB)) return 0;
+	new file_account_db = ini_Open(ConfigDB);
 	ini_Get(file_account_db,"Account_DB",AccountDB);
 	ini_Close(file_account_db);
 	return 1;

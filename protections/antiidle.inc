@@ -22,20 +22,20 @@ new Float:playerIdlePos[MAX_PLAYERS][CoordInfo];
 
 stock AntiIdleLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-	new file = ini_Open(ConfigDB);
-	ini_GetInt(file,"Anti_Idle_Enabled",AntiIdleEnabled);
-	ini_GetInt(file,"Anti_Idle_Max_Idle_Minutes",MaxIdle);
-	ini_Close(file);
+	if(!ini_Exist(ConfigDB)) return 0;
+	new file_ai = ini_Open(ConfigDB);
+	ini_GetInt(file_ai,"Anti_Idle_Enabled",AntiIdleEnabled);
+	ini_GetInt(file_ai,"Anti_Idle_Max_Idle_Minutes",MaxIdle);
+	ini_Close(file_ai);
 	return 1;
 }
 
 stock AntiIdleSaveConfig()
 {
-	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file,"Anti_Idle_Enabled",AntiIdleEnabled);
-	ini_SetInt(file,"Anti_Idle_Max_Idle_Minutes",MaxIdle);
-	ini_Close(file);
+	new file_ai = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_ai,"Anti_Idle_Enabled",AntiIdleEnabled);
+	ini_SetInt(file_ai,"Anti_Idle_Max_Idle_Minutes",MaxIdle);
+	ini_Close(file_ai);
 	return 1;
 }
 

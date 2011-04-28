@@ -9,10 +9,10 @@
 
 #define _payday_included
 #pragma library payday
+
 #include "base"
 #include "player"
 
-#define PayDayDelay 59999 // Delay between pays
 new admpayday,rpayday;
 
 new BasePay = 500; // Base amount player recieves each pay (pay = PocketMoney + (PocketMoney * level ))
@@ -21,21 +21,22 @@ new BasePayXP = 200;
 
 stock PaydayLoadConfig()
 {
-	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_GetInt(file,"Payday_Base",BasePay);
-	ini_GetInt(file,"Payday_Cutoff",PayCutoff);
-	ini_GetInt(file,"BasePayXP",BasePayXP);
-	ini_Close(file);
+	if(!ini_Exist(ConfigDB)) return 0;
+	new file_pd = ini_Open(ConfigDB);
+	ini_GetInt(file_pd,"Payday_Base",BasePay);
+	ini_GetInt(file_pd,"Payday_Cutoff",PayCutoff);
+	ini_GetInt(file_pd,"BasePayXP",BasePayXP);
+	ini_Close(file_pd);
 	return 1;
 }
 
 stock PaydaySaveConfig()
 {
-	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file,"Payday_Base",BasePay);
-	ini_SetInt(file,"Payday_Cutoff",PayCutoff);
-	ini_SetInt(file,"BasePayXP",BasePayXP);
-	ini_Close(file);
+	new file_pd = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_pd,"Payday_Base",BasePay);
+	ini_SetInt(file_pd,"Payday_Cutoff",PayCutoff);
+	ini_SetInt(file_pd,"BasePayXP",BasePayXP);
+	ini_Close(file_pd);
 	return 1;
 }
 

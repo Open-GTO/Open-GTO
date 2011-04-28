@@ -173,7 +173,7 @@ public OnGameModeInit()
 	#tryinclude "misc\mapicon"
 	#tryinclude "misc\pickups"
 	#tryinclude "misc\objects"
-	printf("SERVER: Objects and Pickups init");
+	print("SERVER: Objects and Pickups init");
 
 	new hour,minute,second;
 	gettime(hour,minute,second);
@@ -486,8 +486,11 @@ public OnPlayerExitedMenu(playerid)
 
 public OnPlayerStateChange(playerid,newstate,oldstate)
 {
-	mission_OnPlayerStateChange(playerid,newstate,oldstate);
-	antivehicle_OnPlayerStateChange(playerid,newstate,oldstate);
+	if(newstate == PLAYER_STATE_DRIVER)
+	{
+		mission_OnPlayerStateChange(playerid,newstate,oldstate);
+		antivehicle_OnPlayerStateChange(playerid,newstate,oldstate);
+	}
 	return 1;
 }
 

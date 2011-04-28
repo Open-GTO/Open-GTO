@@ -29,22 +29,22 @@ new Banks[BanksCount][CoordInfo] = {
 new ProfitCount = 2; // %
 new MAX_BANK = 15000000;
 
-stock BankSaveConfig()
+stock BankLoadConfig()
 {
-	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file,"BANK_ProfitCount",ProfitCount);
-	ini_SetInt(file,"BANK_MAX_MONEY",MAX_BANK);
-	ini_Close(file);
+	if(!ini_Exist(ConfigDB)) return 0;
+	new file_bank = ini_Open(ConfigDB);
+    ini_GetInt(file_bank,"BANK_ProfitCount",ProfitCount);
+    ini_GetInt(file_bank,"BANK_MAX_MONEY",MAX_BANK);
+	ini_Close(file_bank);
 	return 1;
 }
 
-stock BankLoadConfig()
+stock BankSaveConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-	new file = ini_Open(ConfigDB);
-    ini_GetInt(file,"BANK_ProfitCount",ProfitCount);
-    ini_GetInt(file,"BANK_MAX_MONEY",MAX_BANK);
-	ini_Close(file);
+	new file_bank = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_bank,"BANK_ProfitCount",ProfitCount);
+	ini_SetInt(file_bank,"BANK_MAX_MONEY",MAX_BANK);
+	ini_Close(file_bank);
 	return 1;
 }
 

@@ -49,7 +49,7 @@ stock groundhold_SaveConfig()
 
 stock groundhold_LoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
+	if(!ini_Exist(ConfigDB)) return 0;
     new file_gh_db = ini_Open(ConfigDB);
 	ini_GetInt(file_gh_db,"Groundhold_Enabled",Groundhold_Enabled);
 	ini_Get(file_gh_db,"Groundhold_DB",GroundholdDB);
@@ -89,8 +89,7 @@ stock groundhold_SaveAll()
 	for(new i=0;i<MAX_GROUNDHOLD;i++)
 	{
 		format(filename_gh,sizeof(filename_gh),"%s%s.txt",GroundholdDB,Groundholds[i][gh_name]);
-		if(!ini_Exist(filename_gh)) file_gh = ini_Create(filename_gh);
-		else file_gh = ini_Open(filename_gh);
+		file_gh = (!ini_Exist(filename_gh)) ? ini_Create(filename_gh) : ini_Open(filename_gh);
 		ini_Set(file_gh,"Name",Groundholds[i][gh_name]);
 		ini_SetInt(file_gh,"Money",Groundholds[i][gh_money]);
 		ini_SetInt(file_gh,"XP",Groundholds[i][gh_xp]);

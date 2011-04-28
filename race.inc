@@ -94,27 +94,20 @@ new Float:RaceCheckpoints[MAX_RACES][MAX_CP][CoordInfo];
 
 stock RaceLoadAll()
 {
-	new temp[MAX_STRING],file;
+	new temp[MAX_STRING];
 	if(ini_Exist(ConfigDB))
 	{
-		file = ini_Open(ConfigDB);
-		ini_Get(file,"Race_DB",RaceDB);
-		ini_Get(file,"Race_Base_DB",RaceBaseDB);
-		ini_Get(file,"Race_Record_DB",RaceRecordDB);
-		ini_Close(file);
+		new file_race_cfg = ini_Open(ConfigDB);
+		ini_Get(file_race_cfg,"Race_DB",RaceDB);
+		ini_Get(file_race_cfg,"Race_Base_DB",RaceBaseDB);
+		ini_Get(file_race_cfg,"Race_Record_DB",RaceRecordDB);
+		ini_Close(file_race_cfg);
 	}
-	if(!ini_Exist(RaceDB))
+	new file_race = ini_Open(RaceDB);
+	for(new racedbid=0,cellname[MAX_STRING];racedbid<MAX_RACES;racedbid++)
 	{
-		RaceSaveAll();
-		return;
-	}
-	for(new racedbid=0;racedbid<MAX_RACES;racedbid++)
-	{
-		new cellname[MAX_STRING];
 		format(cellname,sizeof(cellname),"Race%d",racedbid);
-		file = ini_Open(RaceDB);
-		ini_Get(file,cellname,temp);
-		ini_Close(file);
+		ini_Get(file_race,cellname,temp);
 		if(strlen(temp) == 0) continue;
 		if(!RaceBaseDBExists(temp)) continue;
 		new raceid = RegisterRace(temp);
@@ -122,7 +115,8 @@ stock RaceLoadAll()
 		RaceLoadBaseDB(raceid);
 		RaceLoadRecordDB(raceid);
 	}
-	return;
+	ini_Close(file_race);
+	return 1;
 }
 
 stock RaceBaseDBExists(racename[MAX_STRING])
@@ -135,11 +129,11 @@ stock RaceBaseDBExists(racename[MAX_STRING])
 
 stock RaceLoadBaseDB(raceid)
 { 
-	new temp[MAX_STRING],rdbname[MAX_STRING],file;
+	new temp[MAX_STRING],rdbname[MAX_STRING];
 	format(rdbname,sizeof(rdbname),"%s%s.txt",RaceBaseDB,Race[raceid][race_name]);
 	if(!ini_Exist(rdbname)) return INVALID_RACE_ID;
-	file = ini_Open(rdbname);
-	ini_Get(file,"Name",Race[raceid][race_name],MAX_STRING);
+	new file_race = ini_Open(rdbname);
+	ini_Get(file_race,"Name",Race[raceid][race_name],MAX_STRING);
 	if(raceid == INVALID_RACE_ID)
 	{
 		printf("Race: '%s' Failed to load. (db)",Race[raceid][race_name]);
@@ -148,16 +142,16 @@ stock RaceLoadBaseDB(raceid)
 		WriteLog(GameLog,logstring);
 		return INVALID_RACE_ID;
 	}
-	ini_GetInt(file,"Race_Frequency",Race[raceid][race_frequency]);
-	ini_GetInt(file,"Lineup_Delay",Race[raceid][race_lineupdelay]);
-	ini_GetInt(file,"Min_Racers",Race[raceid][race_minracers]);
-	ini_GetInt(file,"Min_Level",Race[raceid][race_minlevel]);
-	ini_GetInt(file,"Cash_Prize",Race[raceid][race_cashprize]);
-	ini_GetInt(file,"Cash_Entry",Race[raceid][race_cashentry]);
-	ini_GetInt(file,"XP_Prize",Race[raceid][race_xpprize]);
-	ini_GetInt(file,"XP_Bonus",Race[raceid][race_xpbonus]);
-	ini_GetInt(file,"Race_Time",Race[raceid][race_maxracetime]);
-	ini_GetFloat(file,"Startline_Heading",Race[raceid][race_startheading]);
+	ini_GetInt(file_race,"Race_Frequency",Race[raceid][race_frequency]);
+	ini_GetInt(file_race,"Lineup_Delay",Race[raceid][race_lineupdelay]);
+	ini_GetInt(file_race,"Min_Racers",Race[raceid][race_minracers]);
+	ini_GetInt(file_race,"Min_Level",Race[raceid][race_minlevel]);
+	ini_GetInt(file_race,"Cash_Prize",Race[raceid][race_cashprize]);
+	ini_GetInt(file_race,"Cash_Entry",Race[raceid][race_cashentry]);
+	ini_GetInt(file_race,"XP_Prize",Race[raceid][race_xpprize]);
+	ini_GetInt(file_race,"XP_Bonus",Race[raceid][race_xpbonus]);
+	ini_GetInt(file_race,"Race_Time",Race[raceid][race_maxracetime]);
+	ini_GetFloat(file_race,"Startline_Heading",Race[raceid][race_startheading]);
 
 //	CPSize = 8;
 	new cpcount=0;
@@ -165,7 +159,7 @@ stock RaceLoadBaseDB(raceid)
 	{
 		new cellname[MAX_STRING];
 		format(cellname,sizeof(cellname),"CP%d",cpid);
-		if(ini_Get(file,cellname,temp) != INI_OK) break;
+		if(ini_Get(file_race,cellname,temp) != INI_OK) break;
 		new Float:X,Float:Y,Float:Z,idx=0;
 		X = floatstr(strcharsplit(temp,idx,strchar(",")));
 		Y = floatstr(strcharsplit(temp,idx,strchar(",")));
@@ -176,7 +170,7 @@ stock RaceLoadBaseDB(raceid)
 		RaceCheckpoints[raceid][cpid][Coord_Z] = Z;
 		cpcount++;
 	}
-	ini_Close(file);
+	ini_Close(file_race);
 	RaceSize[raceid] = cpcount;
 	RaceStats[raceid][race_state] = RACE_STATE_SLEEPING;
 	RaceStats[raceid][race_timer] = MakeRaceSleepTime(raceid);
@@ -189,88 +183,83 @@ stock RaceLoadBaseDB(raceid)
 
 stock RaceLoadRecordDB(raceid)
 {
-	new rdbname[MAX_STRING],file;
+	new rdbname[MAX_STRING];
 	format(rdbname,sizeof(rdbname),"%s%s.txt",RaceRecordDB,Race[raceid][race_name]);
-	if(!ini_Exist(rdbname)) return;
-	file = ini_Open(rdbname);
+	if(!ini_Exist(rdbname)) return 0;
+	new file = ini_Open(rdbname);
 	ini_GetInt(file,"Best_Time_Record",BestScore[raceid][race_score_time]);
-    ini_Get(file,"Best_Time_Player",BestScore[raceid][race_score_player]);
-    ini_Get(file,"Best_Time_Vehicle",BestScore[raceid][race_score_vehicle]);
+    ini_Get(file,"Best_Time_Player",BestScore[raceid][race_score_player],MAX_STRING);
+    ini_Get(file,"Best_Time_Vehicle",BestScore[raceid][race_score_vehicle],MAX_STRING);
 	ini_Close(file);
+	return 1;
 }
 
 stock RaceSaveAll()
 {
-	new file;
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	file = ini_Open(ConfigDB);
-	ini_Set(file,"Race_Base_DB",RaceBaseDB);
-	ini_Set(file,"Race_Record_DB",RaceRecordDB);
-	ini_Close(file);
-	if(!ini_Exist(RaceDB)) {new File:fhnd = fopen(RaceDB,io_write);fclose(fhnd);}
+	new file_race_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_Set(file_race_cfg,"Race_Base_DB",RaceBaseDB);
+	ini_Set(file_race_cfg,"Race_Record_DB",RaceRecordDB);
+	ini_Close(file_race_cfg);
+	
+	new file_race = (!ini_Exist(RaceDB)) ? ini_Create(RaceDB) : ini_Open(RaceDB);
 	for(new raceid=1;raceid<=RacesCount;raceid++)
 	{ // load all our races from db
 		if(RaceStats[raceid][race_state] == RACE_STATE_DISABLED) continue;
 		new cellname[MAX_STRING];
 		format(cellname,sizeof(cellname),"Race%d",raceid);
-		file = ini_Open(RaceDB);
-		ini_Set(file,cellname,Race[raceid][race_name]);
-		ini_Close(file);
+		ini_Set(file_race,cellname,Race[raceid][race_name]);
 		RaceSaveBaseDB(raceid);
 		RaceSaveRecordDB(raceid);
 	}
+	ini_Close(file_race);
 }
 
 stock RaceSaveScores()
 {
-	new file;
-	if(!ini_Exist(ConfigDB)) {new File:fhnd = fopen(ConfigDB,io_write);fclose(fhnd);}
-	file = ini_Open(ConfigDB);
-	ini_Set(file,"Race_Base_DB",RaceBaseDB);
-	ini_Set(file,"Race_Record_DB",RaceRecordDB);
-	ini_Close(file);
+	new file_race_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_Set(file_race_cfg,"Race_Base_DB",RaceBaseDB);
+	ini_Set(file_race_cfg,"Race_Record_DB",RaceRecordDB);
+	ini_Close(file_race_cfg);
 
-	if(!ini_Exist(RaceDB)) {new File:fhnd = fopen(RaceDB,io_write);fclose(fhnd);}
+	new file_race = (!ini_Exist(RaceDB)) ? ini_Create(RaceDB) : ini_Open(RaceDB);
 	for(new raceid=1;raceid<=RacesCount;raceid++)
 	{ // load all our races from db
 		if(RaceStats[raceid][race_state] == RACE_STATE_DISABLED) continue;
 		new cellname[MAX_STRING];
 		format(cellname,sizeof(cellname),"Race%d",raceid);
-		file = ini_Open(RaceDB);
-		ini_Set(file,cellname,Race[raceid][race_name]);
-		ini_Close(file);
+		ini_Set(file_race,cellname,Race[raceid][race_name]);
 		RaceSaveRecordDB(raceid);
 	}
+	ini_Close(file_race);
 }
 
 stock RaceSaveBaseDB(raceid)
 { // save race to db
 	if (RaceStats[raceid][race_state] == RACE_STATE_DISABLED) return;
-	new temp[MAX_STRING],rdbname[MAX_STRING],file;
+	new rdbname[MAX_STRING];
 	format(rdbname,sizeof(rdbname),"%s%s.txt",RaceBaseDB,Race[raceid][race_name]);
-	if(!ini_Exist(rdbname)) {new File:fhnd = fopen(rdbname,io_write);fclose(fhnd);}
-	file = ini_Open(rdbname);
-	ini_Set(file,"Name",Race[raceid][race_name]);
-    ini_SetInt(file,"Race_Frequency",Race[raceid][race_frequency]);
-    ini_SetInt(file,"Lineup_Delay",Race[raceid][race_lineupdelay]);
-    ini_SetInt(file,"Min_Racers",Race[raceid][race_minracers]);
-    ini_SetInt(file,"Min_Level",Race[raceid][race_minlevel]);
-    ini_SetInt(file,"Cash_Prize",Race[raceid][race_cashprize]);
-    ini_SetInt(file,"Cash_Entry",Race[raceid][race_cashentry]);
-    ini_SetInt(file,"XP_Prize",Race[raceid][race_xpprize]);
-    ini_SetInt(file,"XP_Bonus",Race[raceid][race_xpbonus]);
-    ini_SetInt(file,"Race_Time",Race[raceid][race_maxracetime]);
-    ini_SetInt(file,"Cash_Entry",Race[raceid][race_cashentry]);
-    ini_SetFloat(file,"Startline_Heading",Race[raceid][race_startheading]);
+	new file_race = (!ini_Exist(rdbname)) ? ini_Create(rdbname) : ini_Open(rdbname);
+	ini_Set(file_race,"Name",Race[raceid][race_name]);
+    ini_SetInt(file_race,"Race_Frequency",Race[raceid][race_frequency]);
+    ini_SetInt(file_race,"Lineup_Delay",Race[raceid][race_lineupdelay]);
+    ini_SetInt(file_race,"Min_Racers",Race[raceid][race_minracers]);
+    ini_SetInt(file_race,"Min_Level",Race[raceid][race_minlevel]);
+    ini_SetInt(file_race,"Cash_Prize",Race[raceid][race_cashprize]);
+    ini_SetInt(file_race,"Cash_Entry",Race[raceid][race_cashentry]);
+    ini_SetInt(file_race,"XP_Prize",Race[raceid][race_xpprize]);
+    ini_SetInt(file_race,"XP_Bonus",Race[raceid][race_xpbonus]);
+    ini_SetInt(file_race,"Race_Time",Race[raceid][race_maxracetime]);
+    ini_SetInt(file_race,"Cash_Entry",Race[raceid][race_cashentry]);
+    ini_SetFloat(file_race,"Startline_Heading",Race[raceid][race_startheading]);
 
-	for(new cpid=0;cpid<RaceSize[raceid];cpid++)
+	for(new cpid=0,temp[MAX_STRING];cpid<RaceSize[raceid];cpid++)
 	{
 		new cellname[MAX_STRING];
 		format(cellname,sizeof(cellname),"CP%d",cpid);
 		format(temp,sizeof(temp),"%f,%f,%f",RaceCheckpoints[raceid][cpid][Coord_X],RaceCheckpoints[raceid][cpid][Coord_Y],RaceCheckpoints[raceid][cpid][Coord_Z]);
-		ini_Set(file,cellname,temp);
+		ini_Set(file_race,cellname,temp);
 	}
-	ini_Close(file);
+	ini_Close(file_race);
 	new logstring[MAX_STRING];
 	format(logstring,sizeof(logstring), "Race base saved: %s",Race[raceid][race_name]);
 	WriteLog(GameLog,logstring);
@@ -278,15 +267,14 @@ stock RaceSaveBaseDB(raceid)
 
 stock RaceSaveRecordDB(raceid)
 {
-	new rdbname[MAX_STRING],file;
+	new rdbname[MAX_STRING];
 	format(rdbname,sizeof(rdbname),"%s%s.txt",RaceRecordDB,Race[raceid][race_name]);
-	if(!ini_Exist(rdbname)) {new File:fhnd = fopen(rdbname,io_write);fclose(fhnd);}
-	file = ini_Open(rdbname);
-	ini_Set(file,"Name",Race[raceid][race_name]);
-	ini_SetInt(file,"Best_Time_Record",BestScore[raceid][race_score_time]);
-	ini_Set(file,"Best_Time_Player",BestScore[raceid][race_score_player]);
-	ini_Set(file,"Best_Time_Vehicle",BestScore[raceid][race_score_vehicle]);
-	ini_Close(file);
+	new file_race = (!ini_Exist(rdbname)) ? ini_Create(rdbname) : ini_Open(rdbname);
+	ini_Set(file_race,"Name",Race[raceid][race_name]);
+	ini_SetInt(file_race,"Best_Time_Record",BestScore[raceid][race_score_time]);
+	ini_Set(file_race,"Best_Time_Player",BestScore[raceid][race_score_player]);
+	ini_Set(file_race,"Best_Time_Vehicle",BestScore[raceid][race_score_vehicle]);
+	ini_Close(file_race);
 	return;
 }
 

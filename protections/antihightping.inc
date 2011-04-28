@@ -7,20 +7,20 @@ new AntiHightPingEnabled = 1;
 
 stock AntiHightPingLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-	new file = ini_Open(ConfigDB);
-	ini_GetInt(file,"Anti_Hight_Ping_Enabled",AntiHightPingEnabled);
-	ini_GetInt(file,"Anti_Hight_Ping_MAX_PING",MAX_PING);
-	ini_Close(file);
+	if(!ini_Exist(ConfigDB)) return 0;
+	new file_ahp = ini_Open(ConfigDB);
+	ini_GetInt(file_ahp,"Anti_Hight_Ping_Enabled",AntiHightPingEnabled);
+	ini_GetInt(file_ahp,"Anti_Hight_Ping_MAX_PING",MAX_PING);
+	ini_Close(file_ahp);
 	return 1;
 }
 
 stock AntiHightPingSaveConfig()
 {
-	new file = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file,"Anti_Hight_Ping_Enabled",AntiHightPingEnabled);
-	ini_SetInt(file,"Anti_Hight_Ping_MAX_PING",MAX_PING);
-	ini_Close(file);
+	new file_ahp = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_ahp,"Anti_Hight_Ping_Enabled",AntiHightPingEnabled);
+	ini_SetInt(file_ahp,"Anti_Hight_Ping_MAX_PING",MAX_PING);
+	ini_Close(file_ahp);
 	return 1;
 }
 

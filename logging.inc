@@ -2,7 +2,7 @@
 // Created:     27.03.07
 // Aurthor:    Peter Steenbergen
 //
-// Modified in 26.03.2010 by ZiGGi
+// Modified in 28.04.2011 by ZiGGi
 //
 
 #if defined _logging_included
@@ -19,34 +19,31 @@
 #define CMDLog 2
 #define DebugLog 3
 
-new File:LogFile;
-
-new LoggingToggle = 1;
-new LoggingDebug = 1;
-new LoggingChatToggle = 1;
-new LoggingCMDToggle = 1;
+new LoggingToggle = 1,
+	LoggingDebug = 1,
+	LoggingChatToggle = 1,
+	LoggingCMDToggle = 1;
 
 LoggingLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-	new file = ini_Open(ConfigDB);
-	ini_GetInt(file,"Logging_on",LoggingToggle);
-	ini_GetInt(file,"Debug_on",LoggingDebug);
-	ini_GetInt(file,"ChatLog_on",LoggingChatToggle);
-	ini_GetInt(file,"CMDLog_on",LoggingCMDToggle);
-	ini_Close(file);
+	if(!ini_Exist(ConfigDB)) return 0;
+	new file_logging = ini_Open(ConfigDB);
+	ini_GetInt(file_logging,"Logging_on",LoggingToggle);
+	ini_GetInt(file_logging,"Debug_on",LoggingDebug);
+	ini_GetInt(file_logging,"ChatLog_on",LoggingChatToggle);
+	ini_GetInt(file_logging,"CMDLog_on",LoggingCMDToggle);
+	ini_Close(file_logging);
 	return 1;
 }
 
 LoggingSaveConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 1;
-	new file = ini_Open(ConfigDB);
-	ini_SetInt(file,"Logging_on",LoggingToggle);
-	ini_SetInt(file,"Debug_on",LoggingDebug);
-	ini_SetInt(file,"ChatLog_on",LoggingChatToggle);
-	ini_SetInt(file,"CMDLog_on",LoggingCMDToggle);
-	ini_Close(file);
+	new file_logging = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_logging,"Logging_on",LoggingToggle);
+	ini_SetInt(file_logging,"Debug_on",LoggingDebug);
+	ini_SetInt(file_logging,"ChatLog_on",LoggingChatToggle);
+	ini_SetInt(file_logging,"CMDLog_on",LoggingCMDToggle);
+	ini_Close(file_logging);
 	return 1;
 }
 
@@ -61,7 +58,7 @@ stock MakeFilename()
 	new d,m,y;
 	getdate(y,m,d);
 	new string[MAX_STRING];
-	format(string,sizeof(string),"GTO_%02d-%02d-%02d.log",d,m,y);
+	format(string,sizeof(string),"%02d-%02d-%02d.log",d,m,y);
 	return string;
 }
 
@@ -102,7 +99,7 @@ stock WriteLog(log,string[])
 	}
 	new filestring[MAX_STRING];
 	format(filestring,sizeof(filestring),"%s%s",logS,MakeFilename());
-	LogFile = fopen(filestring,io_append);
+	new File:LogFile = fopen(filestring,io_append);
 	format(filestring,sizeof(filestring),"%s %s\r\n",MakeFormattedTime(),string);
 	for(new i=0;i<strlen(filestring);i++) fputchar(LogFile,filestring[i],false);
 	fclose(LogFile);

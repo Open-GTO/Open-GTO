@@ -10,6 +10,8 @@
 #define _base_included
 #pragma library base
 
+#pragma tabsize 0
+
 #include "utils\mxINI"
 
 #define VERSION "v0.6.4"
@@ -190,42 +192,39 @@ new LevelList[MAX_LEVEL+1][LevelInfo] = { // experience required for each level
 
 stock BaseLoadConfig()
 {
-	new temp[MAX_STRING],file_base;
 	if(ini_Exist(ConfigDB))
 	{
-		file_base = ini_Open(ConfigDB);
+		new file_base = ini_Open(ConfigDB);
 		ini_Get(file_base,"Level_DB",LevelDB);
 		ini_GetInt(file_base,"Real_Time",RealTime);
 		ini_GetInt(file_base,"Verbose_Save",VerboseSave);
 		ini_Close(file_base);
 	}
-	if(!ini_Exist(LevelDB)) BaseSaveConfig();
-	file_base = ini_Open(LevelDB);
-	for(new i=0;i<=MAX_LEVEL;i++)
+	if(ini_Exist(LevelDB))
 	{
-		format(temp,sizeof(temp),"Level%d_Experience",i);
-		ini_GetInt(file_base,temp,LevelList[i][level_xp]);
-	    format(temp,sizeof(temp),"Level%d_Rankname",i);
-		ini_Get(file_base,temp,LevelList[i][level_name],MAX_STRING);
+		new file_base_level = ini_Open(LevelDB);
+		for(new i=0,temp[MAX_STRING];i<=MAX_LEVEL;i++)
+		{
+			format(temp,sizeof(temp),"Level%d_Experience",i);
+			ini_GetInt(file_base_level,temp,LevelList[i][level_xp]);
+			format(temp,sizeof(temp),"Level%d_Rankname",i);
+			ini_Get(file_base_level,temp,LevelList[i][level_name],MAX_STRING);
+		}
+		ini_Close(file_base_level);
 	}
-	ini_Close(file_base);
-	return;
+	return 1;
 }
 
 stock BaseSaveConfig()
 {
-	new temp[MAX_STRING],file_base;
-	if(!ini_Exist(ConfigDB)) file_base = ini_Create(ConfigDB);
-	else file_base = ini_Open(ConfigDB);
+	new file_base = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_Set(file_base,"Level_DB",LevelDB);
 	ini_SetInt(file_base,"Real_Time",RealTime);
 	ini_SetInt(file_base,"Verbose_Save",VerboseSave);
 	ini_Close(file_base);
 
-	new file_base_level;
-	if(ini_Exist(LevelDB)) file_base_level = ini_Open(LevelDB);
-	else file_base_level = ini_Create(LevelDB);
-	for(new i=0;i<=MAX_LEVEL;i++)
+	new file_base_level = (ini_Exist(LevelDB)) ? ini_Open(LevelDB) : ini_Create(LevelDB);
+	for(new i=0,temp[MAX_STRING];i<=MAX_LEVEL;i++)
 	{
 	    format(temp,sizeof(temp),"Level%d_Rankname",i);
 		ini_Set(file_base_level,temp,LevelList[i][level_name]);
@@ -233,7 +232,7 @@ stock BaseSaveConfig()
 		ini_SetInt(file_base_level,temp,LevelList[i][level_xp]);
 	}
 	ini_Close(file_base_level);
-	return;
+	return 1;
 }
 
 stock base_OnGameModeInit()
