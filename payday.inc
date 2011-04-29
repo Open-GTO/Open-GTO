@@ -48,8 +48,8 @@ stock payday_OnGameModeInit()
 
 stock PayDay()
 {
-	new hour,minute,second;
-	gettime(hour,minute,second);
+	new minute;
+	gettime(_,minute);
 	if(minute>0) rpayday=0;
 	if(((minute==0) && (rpayday==0)) || (admpayday>0))
 	{
@@ -58,29 +58,28 @@ stock PayDay()
 		admpayday=0;
 		for(new id=GetMaxPlayers()-1;id>=0;--id)
 		{
-			if(IsPlayerConnected(id))
+			if(!IsPlayerConnected(id) || IsPlayerNPC(id)) continue;
+			BasePayM=0;
+			if(GetPlayerTotalMoney(id) < PayCutoff)	//MONEY
 			{
-				BasePayM=0;
-				if(GetPlayerTotalMoney(id) < PayCutoff)	//MONEY
-				{
-					BasePayM=BasePay+((BasePay*Player[id][Level])*Player[id][Level]);
-					oGivePlayerMoney(id, BasePayM, 0);
-				}
-
-				BasePayX=0;
-				if(GetPlayerXP(id) < MAX_LVLXP)		//XP
-				{
-					BasePayX=BasePayXP+(BasePayXP*Player[id][Level]); //200+(200*0) 200+(200*20)
-					GivePlayerXP(id, BasePayX ,0);
-					CheckPlayerLevel(id);
-				}
-				format(string,sizeof(string),lang_texts[2][28],BasePayM,BasePayX);
-				SendClientMessage(id,COLOUR_MONEY_GOOD,string);
-				format(string,sizeof(string),lang_texts[2][29],BasePayM,BasePayX);
-				GameTextForPlayer(id,string ,999,5);
-				PlayerPlaySound(id,1190,0.0,0.0,0.0);
-				PlayerPlaySound(id,1101,0.0,0.0,0.0);
+				BasePayM=BasePay+((BasePay*Player[id][Level])*Player[id][Level]);
+				oGivePlayerMoney(id, BasePayM, 0);
 			}
+
+			BasePayX=0;
+			if(GetPlayerXP(id) < MAX_LVLXP)		//XP
+			{
+				BasePayX=BasePayXP+(BasePayXP*Player[id][Level]); //200+(200*0) 200+(200*20)
+				GivePlayerXP(id, BasePayX ,0);
+				CheckPlayerLevel(id);
+			}
+			
+			format(string,sizeof(string),lang_texts[2][16],BasePayM,BasePayX);
+			SendClientMessage(id,COLOUR_MONEY_GOOD,string);
+			format(string,sizeof(string),lang_texts[2][17],BasePayM,BasePayX);
+			GameTextForPlayer(id,string ,999,5);
+			PlayerPlaySound(id,1190,0.0,0.0,0.0);
+			PlayerPlaySound(id,1101,0.0,0.0,0.0);
 		}
 	}
 }

@@ -2,7 +2,7 @@
 // Created:     17.09.06
 // Aurthor:    Iain Gilbert
 //
-// Modified in 27.03.2010 by ZiGGi
+// Modified by ZiGGi
 //
 
 #if defined _bank_included
@@ -63,10 +63,10 @@ stock bank_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	#pragma unused oldkeys,newkeys
 	new string[MAX_STRING];
 
-	format(string,sizeof(string),"Вы в банке. Вы можете хранить здесь деньги и получать +%d процента в час.",ProfitCount);
+	format(string,sizeof(string),lang_texts[2][1],ProfitCount);
 	SendClientMessage(playerid,COLOUR_GREEN,string);
 
-	format(string,sizeof(string),"Ваш текущий баланс: $%d.",Player[playerid][Bank]);
+	format(string,sizeof(string),lang_texts[2][2],Player[playerid][Bank]);
 	SendClientMessage(playerid,COLOUR_GREEN,string);
 
 	bank_ShowDialog_First(playerid);
@@ -91,15 +91,15 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	    if(!response)  return bank_ShowDialog_First(playerid);
 		if(!isNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
 		{
-			show_Msg_Dialog(playerid,"Банк","Вы не ввели или ввели неправильно количество денег.","ОК");
+			show_Msg_Dialog(playerid,lang_texts[2][3],lang_texts[2][13],lang_texts[2][5]);
 			return 0;
 		}
 		new amount = strval(inputtext);
 		if(amount > Player[playerid][Bank]) amount = Player[playerid][Bank];
 		oGivePlayerMoney(playerid,amount,0);
 		Player[playerid][Bank] -= amount;
-		format(string,sizeof(string),"Вы сняли $%d.\nОстаток: $%d.",amount,Player[playerid][Bank]);
-		show_Msg_Dialog(playerid,"Банк",string,"ОК");
+		format(string,sizeof(string),lang_texts[2][7],amount,Player[playerid][Bank]);
+		show_Msg_Dialog(playerid,lang_texts[2][3],string,lang_texts[2][5]);
 		new Float:playerx,Float:playery,Float:playerz;
 		GetPlayerPos(playerid,playerx,playery,playerz);
 		PlayerPlaySound(playerid,1084,playerx,playery,playerz);
@@ -110,16 +110,20 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	    if(!response) return bank_ShowDialog_First(playerid);
 		if(!isNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
 		{
-			show_Msg_Dialog(playerid,"Банк","Вы не ввели или ввели неправильно количество денег.","ОК");
+			show_Msg_Dialog(playerid,lang_texts[2][3],lang_texts[2][13],lang_texts[2][5]);
 			return 0;
 		}
 		new amount = strval(inputtext);
 		if(oGetPlayerMoney(playerid) < amount) amount = oGetPlayerMoney(playerid);
-		if(Player[playerid][Bank] + amount > MAX_BANK) amount = MAX_BANK - Player[playerid][Bank];
+		if(Player[playerid][Bank] + amount > MAX_BANK)
+		{
+			amount = MAX_BANK - Player[playerid][Bank];
+			SendClientMessage(playerid,COLOUR_RED,lang_texts[2][15]);
+		}
 		oGivePlayerMoney(playerid,-amount,0);
 		Player[playerid][Bank] += amount;
-		format(string,sizeof(string),"$%d положено на Ваш счет.\nТекущий баланс: $%d.",amount,Player[playerid][Bank]);
-		show_Msg_Dialog(playerid,"Банк",string,"ОК");
+		format(string,sizeof(string),lang_texts[2][14],amount,Player[playerid][Bank]);
+		show_Msg_Dialog(playerid,lang_texts[2][3],string,lang_texts[2][5]);
 		new Float:playerx,Float:playery,Float:playerz;
 		GetPlayerPos(playerid,playerx,playery,playerz);
 		PlayerPlaySound(playerid,1083,playerx,playery,playerz);
@@ -130,37 +134,37 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 stock bank_ShowDialog_First(playerid)
 {
 	new string[MAX_STRING];
-	format(string,sizeof(string),"Меню банка, сейчас на вашем счету: $%d",
+	format(string,sizeof(string),lang_texts[2][3],
 		Player[playerid][Bank]
 	);
 	return ShowPlayerDialog(playerid,bank_FirstList_DialogID,DIALOG_STYLE_LIST,
 		string,
-		"Снять деньги\nПоложить деньги",
-		"ОК","Отмена"
+		lang_texts[2][4],
+		lang_texts[2][5],lang_texts[2][6]
 	);
 }
 stock bank_ShowDialog_Withdraw(playerid)
 {
 	new string[MAX_STRING];
-	format(string,sizeof(string),"Введите сумму которую вы хотите снять с вашего счёта,\n сейчас на вашем счету: $%d",
+	format(string,sizeof(string),lang_texts[2][9],
 		Player[playerid][Bank]
 	);
 	ShowPlayerDialog(playerid,bank_Withdraw_DialogID,DIALOG_STYLE_INPUT,
-		"Меню банка",
+		lang_texts[2][3],
 		string,
-		"Снять","Назад"
+		lang_texts[2][10],lang_texts[2][12]
 	);
 }
 stock bank_ShowDialog_Deposit(playerid)
 {
 	new string[MAX_STRING];
-	format(string,sizeof(string),"Введите сумму которую вы хотите положить на ваш счёт,\n сейчас на вашем счету: $%d",
+	format(string,sizeof(string),lang_texts[2][8],
 		Player[playerid][Bank]
 	);
 	ShowPlayerDialog(playerid,bank_Deposit_DialogID,DIALOG_STYLE_INPUT,
-		"Меню банка",
+		lang_texts[2][3],
 		string,
-		"Положить","Назад"
+		lang_texts[2][11],lang_texts[2][12]
 	);
 }
 
