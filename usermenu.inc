@@ -206,9 +206,9 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						\t{FFFFFF}Open - Grand Theft Online {AA3333}"VERSION"{FFFFFF}.\n\
 						\n\
 						\n\
-						{00C0DD}Created by {AFE7FF}Iain Gilbert.\n\
+						{00C0DD}Создано {AFE7FF}Iain Gilbert.\n\
 						\n\
-						{00C0DD}Continued by  {AFE7FF}Peter Steenbergen,\n\
+						{00C0DD}Продолжено {AFE7FF}Peter Steenbergen,\n\
 									\t\tRobin Kikkert,\n\
 									\t\tAsturel,\n\
 									\t\tDmitry Frolov (FP),\n\
@@ -218,7 +218,11 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						{00C0DD}Open-GTO Team: {AFE7FF}GhostTT,\n\
 									\t\t  heufix,\n\
 									\t\t  ZiGGi,\n\
-									\t\t  Elbi."
+									\t\t  Elbi.\n\
+						\n\
+						{00C0DD}Косвенные разработчики: {AFE7FF}MX_Master(mxINI,Chat-Guard,antiquickreconnect),\n\
+						\n\
+						"
 					);
 					return 1;
 				}

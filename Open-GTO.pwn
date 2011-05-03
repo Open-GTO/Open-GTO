@@ -60,6 +60,8 @@ Date start Open-GTO: 	5 November 2009
 #include "protections\antimoneyhack"
 #include "protections\antihightping"
 #include "protections\antivehicle"
+#include "protections\chatguard"
+#include "protections\antiquickreconnect"
 //#include "testserver"
 #include "click"
 #include "fightstyles"
@@ -140,6 +142,7 @@ public OnGameModeInit()
     antihightping_OnGameModeInit();
     antihealthhack_OnGameModeInit();
     antimoneyhack_OnGameModeInit();
+	chatguard_OnGameModeInit();
 	//
 	race_thestrip_init();
 	race_riversiderun_init();
@@ -203,6 +206,8 @@ public OnPlayerConnect(playerid)
     if(IsPlayerNPC(playerid)) return 1;
 	player_OnPlayerConnect(playerid);
    	account_OnPlayerConnect(playerid);
+	chatguard_OnPlayerConnect(playerid);
+	aqr_OnPlayerConnect(playerid);
 	return 1;
 }
 
@@ -211,6 +216,9 @@ public OnPlayerDisconnect(playerid,reason)
 	if(playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) return 1;
 	player_OnPlayerDisconnect(playerid,reason);
 	mission_OnPlayerDisconnect(playerid, reason);
+	chatguard_OnPlayerDisconnect(playerid,reason);
+	aqr_OnPlayerDisconnect(playerid,reason);
+	
 	WorldSave();
 	return 1;
 }
@@ -393,6 +401,8 @@ public OnPlayerCommandText(playerid,cmdtext[])
 
 public OnPlayerText(playerid, text[])
 {
+	if(chatguard_OnPlayerText(playerid,text) == 0) return 0;
+	
 	new string[MAX_STRING];
 	switch(text[0])
 	{
