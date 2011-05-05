@@ -220,7 +220,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 									\t\t  ZiGGi,\n\
 									\t\t  Elbi.\n\
 						\n\
-						{00C0DD}Косвенные разработчики: {AFE7FF}MX_Master(mxINI,Chat-Guard,antiquickreconnect),\n\
+						{00C0DD}Косвенные разработчики: {AFE7FF}MX_Master(mxINI,Chat-Guard),\n\
 						\n\
 						"
 					);

@@ -61,7 +61,6 @@ Date start Open-GTO: 	5 November 2009
 #include "protections\antihightping"
 #include "protections\antivehicle"
 #include "protections\chatguard"
-#include "protections\antiquickreconnect"
 //#include "testserver"
 #include "click"
 #include "fightstyles"
@@ -207,7 +206,6 @@ public OnPlayerConnect(playerid)
 	player_OnPlayerConnect(playerid);
    	account_OnPlayerConnect(playerid);
 	chatguard_OnPlayerConnect(playerid);
-	aqr_OnPlayerConnect(playerid);
 	return 1;
 }
 
@@ -217,7 +215,6 @@ public OnPlayerDisconnect(playerid,reason)
 	player_OnPlayerDisconnect(playerid,reason);
 	mission_OnPlayerDisconnect(playerid, reason);
 	chatguard_OnPlayerDisconnect(playerid,reason);
-	aqr_OnPlayerDisconnect(playerid,reason);
 	
 	WorldSave();
 	return 1;
@@ -441,8 +438,8 @@ public OnPlayerText(playerid, text[])
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 		return 0;
 	}
-	format(string, sizeof(string),"[%d]: %s", playerid, text);
-	SendPlayerMessageToAll(playerid, string);
+	format(string, sizeof(string),"%s[%d]: {FFFFFF}%s",oGetPlayerName(playerid),playerid,text);
+	SendClientMessageToAll(GetPlayerColor(playerid),string);
 	format(string,sizeof(string),"Player: %s[%d]: %s",oGetPlayerName(playerid),playerid,text);
 	WriteLog(ChatLog,string);
 	return 0;
