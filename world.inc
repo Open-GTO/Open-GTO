@@ -97,10 +97,13 @@ nee:
 	groundhold_SaveConfig();
 	groundhold_SaveAll();
 	mission_SaveConfig();
+	// protections
 	AntiIdleSaveConfig();
 	AntiHightPingSaveConfig();
 	AntiHealthHackSaveConfig();
 	AntiMoneyHackSaveConfig();
+	ChatGuardSaveConfig();
+	//
 	
 	if ((VerboseSave == 1) || (VerboseSave == -1))
 	{

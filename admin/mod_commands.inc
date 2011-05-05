@@ -94,7 +94,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/kick",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
-		new receiverid = INACTIVE_PLAYER_ID;
+		new receiverid = INVALID_PLAYER_ID;
 		receiverid = strval(strcharsplit(text, idx,strchar(" ")));
 		if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
 		{

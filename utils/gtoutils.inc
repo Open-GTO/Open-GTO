@@ -2,6 +2,9 @@
 // Created:     05.09.06
 // Aurthor:    Iain Gilbert
 //
+/*
+	Модифицировал ZiGGi
+*/
 
 #if defined _gtoutils_included
   #endinput
@@ -10,7 +13,10 @@
 #define _gtoutils_included
 #pragma library gtoutils
 
-#include "base"
+
+
+
+#define GivePVarInt(%1,%2,%3) SetPVarInt(%1,%2,GetPVarInt(%1,%2)+%3)
 
 PlayerPlaySoundOnPlayer(playerid,soundid)
 {

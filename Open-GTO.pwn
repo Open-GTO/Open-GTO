@@ -24,10 +24,11 @@ Date start Open-GTO: 	5 November 2009
 */
 
 #include <..\compiler\includes\a_samp>		// samp
-#include "base"								// holds base script values
-#include "arrays"
-#include "utils\gtoutils"					// misc used utils
+#include "config"							// дефайны и настройки по умолчанию
 #include "utils\mxINI"
+#include "base"								// holds base script values
+#include "utils\gtoutils"					// misc used utils
+#include "arrays"
 #include "logging"							// logging handler
 #include "lang"
 #include "account"							// account handler
@@ -445,6 +446,7 @@ public OnPlayerText(playerid, text[])
 	return 0;
 }
 
+forward WeatherUpdate();
 public WeatherUpdate()
 {
 	if(sysweath != 1) return 1;

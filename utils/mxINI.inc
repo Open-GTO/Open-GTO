@@ -2139,17 +2139,3 @@ stock ini_getErrorInfo ( nErrorCode )
     return error_ms;
 }
 
-#define ini_Create		ini_createFile
-#define ini_Open		ini_openFile
-#define ini_Close		ini_closeFile
-#define ini_Set			ini_setString
-#define ini_SetInt		ini_setInteger
-#define ini_SetFloat	ini_setFloat
-#define ini_Get			ini_getString
-#define ini_GetInt		ini_getInteger
-#define ini_GetFloat	ini_getFloat
-#define ini_Remove		ini_removeKey
-#define ini_Remov(%0) \
-fremove(%0)
-#define ini_Exist(%0) \
-fexist(%0)

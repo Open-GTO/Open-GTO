@@ -22,6 +22,10 @@
             - если им€ игрока содержит IP адрес / домен
             - слишком частые сообщени€ (флуд)
 */
+/*
+	јдаптаци€ дл€ Open-GTO: ZiGGi, 05.05.2011
+*/
+new ChatGuardEnabled = 1; // 1 - включена по умолчанию
 
 /*
 chatguard_OnGameModeInit();
@@ -508,13 +512,27 @@ stock tooManyUpperChars ( string[] )
 
 
 
+stock ChatGuardLoadConfig()
+{
+	if(!ini_Exist(ConfigDB)) return;
+	new file_chg = ini_Open(ConfigDB);
+	ini_GetInt(file_chg,"Chat_Guard_Enabled",ChatGuardEnabled);
+	ini_Close(file_chg);
+}
 
-
-
+stock ChatGuardSaveConfig()
+{
+	new file_chg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_chg,"Chat_Guard_Enabled",ChatGuardEnabled);
+	ini_Close(file_chg);
+	return 1;
+}
 
 
 stock chatguard_OnGameModeInit()
 {
+	ChatGuardLoadConfig();
+	if(ChatGuardEnabled != 1) return;
     for ( new i; i < CHAT_HISTORY_SIZE; i++ ) ms[i][chPosterID] = -1;
 }
 
@@ -522,6 +540,7 @@ stock chatguard_OnGameModeInit()
 
 stock chatguard_OnPlayerConnect ( playerid )
 {
+	if(ChatGuardEnabled != 1) return 0;
     forbiddenName{playerid} = 0;
     return 1;
 }
@@ -529,6 +548,7 @@ stock chatguard_OnPlayerConnect ( playerid )
 stock chatguard_OnPlayerDisconnect ( playerid, reason )
 {
 	#pragma unused reason
+	if(ChatGuardEnabled != 1) return 0;
     forbiddenName{playerid} = 0;
     return 1;
 }
@@ -538,25 +558,24 @@ stock chatguard_OnPlayerDisconnect ( playerid, reason )
 
 
 #define WARN_MS_COLOR   0xFF5050AA
-#define WARN_MS_PREFIX  " * "
 
 stock chatguard_OnPlayerText ( playerid, text[] )
 {
+	if(ChatGuardEnabled != 1) return 0;
     new msgTick = GetTickCount();
-
 
 
     // проверка ника игрока на содержание любого IP/домена
     if ( playerHasForbiddenName(playerid) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, WARN_MS_PREFIX "¬ твоЄм нике засекли IP или запрещенный домен. „ат закрыт." );
+        SendClientMessage( playerid, WARN_MS_COLOR, lang_texts[11][8] );
         return 0;
     }
 
     // сообщени€ чата, похожие на попытку ввода команды чата - отображатьс€ не будут
     if ( incorrectCmdAttempt(text) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, WARN_MS_PREFIX "ѕопытка ввода команды? ѕовнимательней." );
+        SendClientMessage( playerid, WARN_MS_COLOR, lang_texts[11][9] );
         return 0;
     }
 
@@ -574,21 +593,21 @@ stock chatguard_OnPlayerText ( playerid, text[] )
     // нельз€ писать соообщени€, содержащие много букв в верхнем регистре
     if ( tooManyUpperChars(text) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, WARN_MS_PREFIX "ќтключи CAPS LOCK, горе луковое." );
+        SendClientMessage( playerid, WARN_MS_COLOR, lang_texts[11][10] );
         return 0;
     }
 
     // нельз€ писать сообщени€, содержащие IP адреса
     if ( containsAnyIP(text) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, WARN_MS_PREFIX "IP адреса писать нельз€." );
+        SendClientMessage( playerid, WARN_MS_COLOR, lang_texts[11][11] );
         return 0;
     }
 
     // нельз€ писать сообщени€, содержащие запрещенные доменные имена
     if ( containsDomainName(text) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, WARN_MS_PREFIX " ое-какие домены и сайты писать нельз€." );
+        SendClientMessage( playerid, WARN_MS_COLOR, lang_texts[11][12] );
         return 0;
     }
 
@@ -597,14 +616,14 @@ stock chatguard_OnPlayerText ( playerid, text[] )
     // нельз€ быстро написать неск сообщений подр€д
     if ( tooManyMessagesForShortTime( playerid, msgTick ) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, WARN_MS_PREFIX "Ќе флудить!" );
+        SendClientMessage( playerid, WARN_MS_COLOR, lang_texts[11][13] );
         return 0;
     }
 
     // нельз€ писать похожие сообщени€ подр€д
     if ( sameTextAsLastBefore( playerid, text ) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, WARN_MS_PREFIX "ѕохожие сообщени€ писать нельз€. «адумайс€." );
+        SendClientMessage( playerid, WARN_MS_COLOR, lang_texts[11][14] );
         return 0;
     }
 
@@ -618,4 +637,3 @@ stock chatguard_OnPlayerText ( playerid, text[] )
 }
 
 #undef WARN_MS_COLOR
-#undef WARN_MS_PREFIX

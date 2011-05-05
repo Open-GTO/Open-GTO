@@ -48,7 +48,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/pinfo",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
-		new receiverid = INACTIVE_PLAYER_ID;
+		new receiverid = INVALID_PLAYER_ID;
 		receiverid = strval(strcharsplit(text, idx,strchar(" ")));
 		if((receiverid < 0) || (receiverid >= MAX_PLAYERS)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		if(IsPlayerConnected(receiverid) == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
@@ -90,7 +90,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/akill",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
-		new receiverid = INACTIVE_PLAYER_ID;
+		new receiverid = INVALID_PLAYER_ID;
 		receiverid = strval(strcharsplit(text,idx,strchar(" ")));
 		if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
 		{

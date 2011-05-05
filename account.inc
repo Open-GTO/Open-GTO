@@ -125,14 +125,14 @@ stock AccountLogin(playerid,password[])
 		format(string,sizeof(string),"~w~Welcome ~n~~g~Moderator ~n~~y~%s",oGetPlayerName(playerid));
 		GameTextForPlayer(playerid,string,2000,1);
 		SendClientMessage(playerid,COLOUR_GREEN, lang_texts[1][27]);
-		SendDeathMessage(INACTIVE_PLAYER_ID, playerid, 200);
+		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	}
 	else
 	{
 		format(string,sizeof(string),"~w~Welcome ~n~~y~%s",oGetPlayerName(playerid));
 		GameTextForPlayer(playerid,string,2000,1);
 		SendClientMessage(playerid,COLOUR_GREEN, lang_texts[1][2]);
-		SendDeathMessage(INACTIVE_PLAYER_ID, playerid, 200);
+		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	}
 	for(new idst=GetMaxPlayers()-1;idst>=0;--idst)
 	{

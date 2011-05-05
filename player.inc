@@ -292,7 +292,6 @@ stock CheckPlayerKick(playerid)
 			format(logstring, sizeof (logstring), "player: %d:  %s: has been auto kicked",playerid,oGetPlayerName(playerid));
 			WriteLog(GameLog,logstring);
 			KickList[playerid] = 0;
-			GangMemberLogout(playerid,PlayerGangid[playerid]);
 			Kick(playerid);
 			return;
 		}
@@ -316,7 +315,7 @@ stock KickPlayer(playerid,reason[])
 		format(string,sizeof(string), lang_texts[9][5] ,reason);
 		SendClientMessage(playerid,COLOUR_RED, string);
 		format(string,sizeof(string), lang_texts[9][6] ,oGetPlayerName(playerid),reason);
-		SendClientMessageToRegistered(COLOUR_MISC, string);
+		SendClientMessageToAll(COLOUR_MISC, string);
 		new logstring[MAX_STRING];
 		format(logstring, sizeof (logstring), "player: %d:  %s: has been auto kicked. Reason: %s",playerid,oGetPlayerName(playerid),reason);
 		WriteLog(GameLog,logstring);
@@ -483,7 +482,6 @@ stock IsPlayerRegistered(playerid)
 
 stock player_OnPlayerDisconnect(playerid,reason)
 {
-//	PlaySoundForAll(1058); // думаю, нахуй, а то достало(ZiGGi)
 	if(IsPlayerRegistered(playerid))
 	{
 		PlayerSave(playerid);
@@ -498,16 +496,19 @@ stock player_OnPlayerDisconnect(playerid,reason)
 	    case 1: format(string,sizeof(string),"%s (Вышел)",string);
 	    case 2: format(string,sizeof(string),"%s (Кикнут)",string);
 	}
-	SendClientMessageToRegistered(COLOUR_GREY,string);
+	SendClientMessageToAll(COLOUR_GREY,string);
 	GangMemberLogout(playerid,PlayerGangid[playerid]);
 	Player[playerid][IsActive] = 0;
 	player_ResetStats(playerid);
 	DisablePlayerRaceCheckpoint(playerid);
-	SendDeathMessage(INACTIVE_PLAYER_ID,playerid,201);
+	SendDeathMessage(INVALID_PLAYER_ID,playerid,201);
 }
 
 stock player_OnPlayerConnect(playerid)
 {
+    new plrIP[16];
+    GetPlayerIp(playerid,plrIP,sizeof(plrIP));
+	SetPVarString(playerid,"IP",plrIP);
 	Player[playerid][IsActive] = 1;
 	player_ResetStats(playerid);
 	if(!NameCharCheck( oGetPlayerName(playerid) ))

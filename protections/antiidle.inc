@@ -16,9 +16,7 @@
 #include "groundhold"
 
 new AntiIdleEnabled = 1;
-new MaxIdle = 5;
-new playerIdle[MAX_PLAYERS];
-new Float:playerIdlePos[MAX_PLAYERS][CoordInfo];
+new MaxIdle = 5;// минут
 
 stock AntiIdleLoadConfig()
 {
@@ -47,44 +45,44 @@ stock antiidle_OnGameModeInit()
 
 stock AntiIdle()
 {
-	if(!AntiIdleEnabled) return;
-    new Float:x,Float:y,Float:z,string[MAX_STRING];
+	if(AntiIdleEnabled != 1) return;
+    new Float:pos[3],string[MAX_STRING];
 	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
 	{
-        if(IsPlayerConnected(playerid) && !IsPlayerNPC(playerid) && !IsPlayerAdmin(playerid) && IsPlayerInAnyKach(playerid))
+        if(IsPlayerConnected(playerid) && !IsPlayerNPC(playerid) && !IsPlayerAdmin(playerid)
+			&& IsPlayerInAnyKach(playerid) && Groundhold_Enabled == 1)
 		{
-            GetPlayerPos(playerid, x, y, z);
-            if(x == playerIdlePos[playerid][Coord_X] && y == playerIdlePos[playerid][Coord_Y] && z == playerIdlePos[playerid][Coord_Z])
+            GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
+            if(pos[0] == GetPVarFloat(playerid,"playerIdlePos_X")
+				&& pos[1] == GetPVarFloat(playerid,"playerIdlePos_Y")
+				&& pos[2] == GetPVarFloat(playerid,"playerIdlePos_Z"))
 			{
-                playerIdle[playerid]++;
-                if(playerIdle[playerid] > MaxIdle-1)
+				GivePVarInt(playerid,"playerIdle",1);
+                if(GetPVarInt(playerid,"playerIdle") > MaxIdle-1)
 				{
-					format(string,sizeof(string),"Вы стоите на месте уже %d минут.",MaxIdle-1);
+					format(string,sizeof(string),lang_texts[11][1],MaxIdle-1);
                     SendClientMessage(playerid,COLOUR_RED,string);
-					SendClientMessage(playerid,COLOUR_RED,"Если вы не начнёте двигаться в течении 1 минуты вы будете кикнуты.");
+					SendClientMessage(playerid,COLOUR_RED,lang_texts[11][2]);
                 }
-                if(playerIdle[playerid] > MaxIdle)
+                if(GetPVarInt(playerid,"playerIdle") > MaxIdle)
 				{
-				    SendClientMessage(playerid,COLOUR_RED,"Вы автоматически кикнуты из-за долгово простоя на месте.");
-                    playerIdle[playerid] = 0;
-					KickPlayer(playerid,"Долгий простой на месте.");
+					SetPVarInt(playerid,"playerIdle",0);
+					KickPlayer(playerid,lang_texts[11][3]);
 				}
 			}
             else
 			{
-                playerIdle[playerid] = 0;
+				SetPVarInt(playerid,"playerIdle",0);
             }
-            playerIdlePos[playerid][Coord_X] = x;
-            playerIdlePos[playerid][Coord_Y] = y;
-            playerIdlePos[playerid][Coord_Z] = z;
+			SetPVarFloat(playerid,"playerIdlePos_X",pos[0]);
+			SetPVarFloat(playerid,"playerIdlePos_Y",pos[1]);
+			SetPVarFloat(playerid,"playerIdlePos_Z",pos[2]);
    		}
    	}
 }
 
 stock IsPlayerInAnyKach(playerid)
 {
-	new Float:X,Float:Y,Float:Z;
-	GetPlayerPos(playerid,X,Y,Z);
 	for(new id=0;id<MAX_GROUNDHOLD;id++)
 	{
 		if(IsPlayerInRangeOfPoint(playerid,Groundholds[id][gh_dist],Groundholds[id][gh_x],Groundholds[id][gh_y],Groundholds[id][gh_z]))
