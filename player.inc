@@ -924,7 +924,7 @@ stock CreatePlayer(playerid)
 player_create_db_ini(playerid)
 {
 	new filename_player[MAX_STRING];
-	format(filename_player,sizeof(filename_player),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
+	format(filename_player,sizeof(filename_player),"%s%s"GTO_FILES_FORMAT,PlayerDB,oGetPlayerName(playerid));
 
 	if(ini_Exist(filename_player)) return SendClientMessage(playerid,COLOUR_RED, lang_texts[9][30]);
 	player_save_db_ini(playerid);
@@ -980,7 +980,7 @@ stock player_save_db_ini(playerid)
 {
 	if(strlen(oGetPlayerName(playerid)) < 1) return 1;
 	new filename_player[MAX_STRING];
-	format(filename_player,sizeof(filename_player),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
+	format(filename_player,sizeof(filename_player),"%s%s"GTO_FILES_FORMAT,PlayerDB,oGetPlayerName(playerid));
 	new file_player;
 	if(!ini_Exist(filename_player)) file_player = ini_Create(filename_player);
 	else file_player = ini_Open(filename_player);
@@ -1016,7 +1016,7 @@ stock PlayerLoadStats(playerid)
 {
 	if(!IsPlayerRegistered(playerid)) return 0; // login to acct first
 	new string[MAX_STRING];
-	format(string,sizeof(string),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
+	format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,PlayerDB,oGetPlayerName(playerid));
 	if(!ini_Exist(string)) CreatePlayer(playerid);
 	player_load_db_ini(playerid);
 	SetPVarInt(playerid,"IsLogin",1);
@@ -1026,7 +1026,7 @@ stock PlayerLoadStats(playerid)
 stock player_load_db_ini(playerid)
 {
 	new filename_player[MAX_STRING];
-	format(filename_player,sizeof(filename_player),"%s%s.txt",PlayerDB,oGetPlayerName(playerid));
+	format(filename_player,sizeof(filename_player),"%s%s"GTO_FILES_FORMAT,PlayerDB,oGetPlayerName(playerid));
 	if(!ini_Exist(filename_player)) return 1;
 	new file_player = ini_Open(filename_player);
     ini_GetInt(file_player,"Level",Player[playerid][Level]);
@@ -1055,7 +1055,7 @@ stock player_load_db_ini(playerid)
 	ini_Get(file_player,"Gang",gangname);
 	if(strlen(gangname) > 0)
 	{
-		format(tmpname,sizeof(tmpname),"%s%s.txt",GangDB,gangname);
+		format(tmpname,sizeof(tmpname),"%s%s"GTO_FILES_FORMAT,GangDB,gangname);
 		if(!ini_Exist(tmpname))
 		{
 			format(tmpname,sizeof(tmpname),"Банда `%s` была расформирована.",gangname);

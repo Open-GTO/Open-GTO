@@ -243,7 +243,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		SetPlayerName(playerid,nick);
 		AccountSave(playerid);
 		GangJoinMember(gangid,playerid);
-		format(string,sizeof(string),"%s%s.txt",AccountDB,Account_LastName[playerid]);
+		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_LastName[playerid]);
 		fremove(string);
 		return 1;
 	}

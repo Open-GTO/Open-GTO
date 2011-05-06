@@ -102,7 +102,7 @@ stock WeaponLoadAll()
 	}
 	for(new i=0,file_weapons,weapondbname[MAX_STRING];i<MAX_WEAPONS;i++)
 	{
-		format(weapondbname,sizeof(weapondbname),"%s%s.txt",WeaponDB,Weapons[i][Weapon_Name]);
+		format(weapondbname,sizeof(weapondbname),"%s%s"GTO_FILES_FORMAT,WeaponDB,Weapons[i][Weapon_Name]);
 		if(!ini_Exist(weapondbname)) continue;
 		file_weapons = ini_Open(weapondbname);
 		ini_Get(file_weapons,"Name",Weapons[i][Weapon_Name],MAX_STRING);
@@ -121,7 +121,7 @@ stock WeaponSaveAll()
 	ini_Close(file_weapons_cfg);
 	for(new i=0,file_weapons,weapondbname[MAX_STRING];i<MAX_WEAPONS;i++)
 	{
-		format(weapondbname,sizeof(weapondbname),"%s%s.txt",WeaponDB,Weapons[i][Weapon_Name]);
+		format(weapondbname,sizeof(weapondbname),"%s%s"GTO_FILES_FORMAT,WeaponDB,Weapons[i][Weapon_Name]);
 		file_weapons = (!ini_Exist(weapondbname)) ? ini_Create(weapondbname) : ini_Open(weapondbname);
 		ini_Set(file_weapons,"Name",Weapons[i][Weapon_Name]);
 		ini_SetInt(file_weapons,"IsAllowed",Weapons[i][Weapon_Allowed]);

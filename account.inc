@@ -45,7 +45,7 @@ stock account_save_db_ini(playerid)
 {
 	new filename_account[MAX_STRING],temp[MAX_STRING],player_name[MAX_PLAYER_NAME];
 	GetPlayerName(playerid,player_name,sizeof(player_name));
-	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,player_name);
+	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,player_name);
 	new file_account = (!ini_Exist(filename_account)) ? ini_Create(filename_account) : ini_Open(filename_account);
 	ini_Set(file_account,"Name",player_name);
 	GetPVarString(playerid,"Password",temp,MAX_STRING);
@@ -76,7 +76,7 @@ stock AccountRegister(playerid,password[])
 {
 	new temp[MAX_STRING],filename_account[MAX_STRING],plname[MAX_PLAYER_NAME];
 	GetPlayerName(playerid,plname,sizeof(plname));
-	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,plname);
+	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,plname);
 	new file_account = ini_Create(filename_account);
 	ini_Set(file_account,"Name",plname);
 	ini_Set(file_account,"Password",password);
@@ -151,7 +151,7 @@ stock AccountLogin(playerid,password[])
 stock account_login_db_ini(playerid,password[])
 {
 	new filename_account[MAX_STRING],temp[MAX_STRING];
-	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
+	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,oGetPlayerName(playerid));
 	new dbpassword[MAX_NAME];
 	if(!ini_Exist(filename_account)) return 1;
 	new file_account = ini_Open(filename_account);
@@ -212,7 +212,7 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 stock account_OnPlayerConnect(playerid)
 {
 	new filename_account[MAX_STRING],message[MAX_STRING];
-	format(filename_account,sizeof(filename_account),"%s%s.txt",AccountDB,oGetPlayerName(playerid));
+	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,oGetPlayerName(playerid));
 	if(ini_Exist(filename_account))
 	{
  		format(message,sizeof(message),"Приветствую, %s!\n\nВведите пароль для входа!",oGetPlayerName(playerid));

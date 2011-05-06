@@ -13,7 +13,9 @@
 
 #pragma tabsize 0
 
-#define VERSION				"v0.6.4"
+#define VERSION				"v1.0.0 alpha"
+#define GTO_FILES_FORMAT	".gto"
+#define GTO_FILES_FOLDER	"Open-GTO/"
 
 #define MAX_STRING			128 // не менять
 #define MAX_NAME			40 // number of char's a name/password/misc_word can be

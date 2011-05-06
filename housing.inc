@@ -35,7 +35,7 @@ stock HousesLoadAll()
 	for(new i=0,file_housing;i<MAX_HOUSES;i++)
 	{
 		new housesdbname[MAX_STRING];
-		format(housesdbname,sizeof(housesdbname),"%s%s.txt",HousesDB,Houses[i][Houses_Name]);
+		format(housesdbname,sizeof(housesdbname),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[i][Houses_Name]);
 		if(!ini_Exist(housesdbname)) continue;
 		file_housing = ini_Open(housesdbname);
 		ini_Get(file_housing,"Name",Houses[i][Houses_Name],MAX_STRING);
@@ -73,7 +73,7 @@ stock HousesSaveAll()
 stock SaveHous(housid)
 {
 	new housesdbname[MAX_STRING];
-	format(housesdbname,sizeof(housesdbname),"%s%s.txt",HousesDB,Houses[housid][Houses_Name]);
+	format(housesdbname,sizeof(housesdbname),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[housid][Houses_Name]);
 	new file_housing = (!ini_Exist(housesdbname)) ? ini_Create(housesdbname) : ini_Open(housesdbname);
 	ini_Set(file_housing,"Name",Houses[housid][Houses_Name]);
 	ini_SetInt(file_housing,"Cost",Houses[housid][Houses_Cost]);
@@ -201,7 +201,7 @@ stock RentRoom(playerid)
 		if(oGetPlayerMoney(playerid) < 50000) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][57]);
 		set(Houses[id][Houses_RentName],oGetPlayerName(playerid));
 		oGivePlayerMoney(playerid,-Houses[id][Houses_RentCost],0);
-		format(string,sizeof(string),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[id][Houses_Name]);
 		new file_housing = ini_Open(string);
 		ini_SetInt(file_housing,"Rentabil",1);
 		ini_Set(file_housing,"RentName",oGetPlayerName(playerid));
@@ -332,7 +332,7 @@ stock housing_OnPlayerCommandText(playerid,text[])
 		{
 			Houses[id][Houses_Rentabil] = 1;
 			new filename_housing[MAX_STRING];
-			format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+			format(filename_housing,sizeof(filename_housing),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[id][Houses_Name]);
 			if(ini_Exist(filename_housing))
 			{
 				new file_housing = ini_Open(filename_housing);
@@ -346,7 +346,7 @@ stock housing_OnPlayerCommandText(playerid,text[])
 		{
 			Houses[id][Houses_Rentabil] = 0;
 			new filename_housing[MAX_STRING];
-			format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+			format(filename_housing,sizeof(filename_housing),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[id][Houses_Name]);
 			if(ini_Exist(filename_housing))
 			{
 				new file_housing = ini_Open(filename_housing);
@@ -444,7 +444,7 @@ stock FHouseBuy(playerid)
 		else
 		{
 			new filename_housing[MAX_STRING];
-			format(filename_housing,sizeof(filename_housing),"%s%s.txt",PlayerDB,Houses[id][Houses_Owner]);
+			format(filename_housing,sizeof(filename_housing),"%s%s"GTO_FILES_FORMAT,PlayerDB,Houses[id][Houses_Owner]);
 			if(ini_Exist(filename_housing))
 			{
 				new file_housing = ini_Open(filename_housing);
@@ -461,7 +461,7 @@ stock FHouseBuy(playerid)
 		Houses[id][Houses_Buyout] = 0;
 		UpdateStreamMapIcon(house_icon[id]);
 		new filename_housing[MAX_STRING],logstring[MAX_STRING];
-		format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+		format(filename_housing,sizeof(filename_housing),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[id][Houses_Name]);
 		if(ini_Exist(filename_housing))
 		{
 		    new file_housing = ini_Open(filename_housing);
@@ -547,7 +547,7 @@ stock FHouseKeep(playerid)
 						SendPlayerFormattedText(playerid,  lang_texts[8][44] , 0,COLOUR_GREEN);
 						Houses[id][Houses_UpKeepLeft] = 0;
 						new filename_housing[MAX_STRING];
-						format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+						format(filename_housing,sizeof(filename_housing),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[id][Houses_Name]);
 						if(ini_Exist(filename_housing))
 						{
 							new file_housing = ini_Open(filename_housing);
@@ -606,7 +606,7 @@ stock HouseKeepUp()
 			{
 				Houses[id][Houses_UpKeepLeft] = upkeepamount;
 				new filename_housing[MAX_STRING];
-				format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+				format(filename_housing,sizeof(filename_housing),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[id][Houses_Name]);
 				if(ini_Exist(filename_housing))
 				{
 					new file_housing = ini_Open(filename_housing);
@@ -617,7 +617,7 @@ stock HouseKeepUp()
 			else 
 			{ 
 				new filename_housing[MAX_STRING];
-				format(filename_housing,sizeof(filename_housing),"%s%s.txt",HousesDB,Houses[id][Houses_Name]);
+				format(filename_housing,sizeof(filename_housing),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[id][Houses_Name]);
 				if(ini_Exist(filename_housing))
 				{
 					new file_housing = ini_Open(filename_housing);

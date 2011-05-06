@@ -67,7 +67,7 @@ stock groundhold_LoadAll()
 	}*/
 	for(new i=0;i<MAX_GROUNDHOLD;i++)
 	{
-		format(filename_gh,sizeof(filename_gh),"%s%s.txt",GroundholdDB,Groundholds[i][gh_name]);
+		format(filename_gh,sizeof(filename_gh),"%s%s"GTO_FILES_FORMAT,GroundholdDB,Groundholds[i][gh_name]);
 		if(!ini_Exist(filename_gh)) groundhold_SaveAll();
 		file_gh = ini_Open(filename_gh);
 		ini_Get(file_gh,"Name",Groundholds[i][gh_name],MAX_STRING);
@@ -88,7 +88,7 @@ stock groundhold_SaveAll()
 	new file_gh,filename_gh[MAX_STRING];
 	for(new i=0;i<MAX_GROUNDHOLD;i++)
 	{
-		format(filename_gh,sizeof(filename_gh),"%s%s.txt",GroundholdDB,Groundholds[i][gh_name]);
+		format(filename_gh,sizeof(filename_gh),"%s%s"GTO_FILES_FORMAT,GroundholdDB,Groundholds[i][gh_name]);
 		file_gh = (!ini_Exist(filename_gh)) ? ini_Create(filename_gh) : ini_Open(filename_gh);
 		ini_Set(file_gh,"Name",Groundholds[i][gh_name]);
 		ini_SetInt(file_gh,"Money",Groundholds[i][gh_money]);

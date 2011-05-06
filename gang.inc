@@ -135,7 +135,7 @@ stock GangLoad(gangname[])
 stock gang_load_db_ini(gangid,gangname[])
 {
 	new filename_gang[MAX_STRING];
-	format(filename_gang,sizeof(filename_gang),"%s%s.txt",GangDB,gangname);
+	format(filename_gang,sizeof(filename_gang),"%s%s"GTO_FILES_FORMAT,GangDB,gangname);
 	if(!ini_Exist(filename_gang)) return;
 	new file_gang = ini_Open(filename_gang);
 	ini_Get(file_gang,"Name",Gangs[gangid][gang_name],MAX_NAME);
@@ -518,7 +518,7 @@ stock GangRemoveMember(gangid,kickplayername[])
 			GangMemberInfo[gangid][gangmember][member_online] = false;
 			GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
 		}
-		format(string,sizeof(string),"%s%s.txt",GangDB,Gangs[gangid][gang_name]);
+		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,GangDB,Gangs[gangid][gang_name]);
 		ini_Remov(string);
 		Gangs[gangid][gang_active] = false;
 		return 1;
@@ -554,7 +554,7 @@ stock GangCreate(leaderid,gangname[],gangcolour)
 {
 	if(!IsPlayerRegistered(leaderid)) return 0;
 	new filename_gang[MAX_STRING];
-	format(filename_gang,sizeof(filename_gang),"%s%s.txt",GangDB,gangname);
+	format(filename_gang,sizeof(filename_gang),"%s%s"GTO_FILES_FORMAT,GangDB,gangname);
 	if(ini_Exist(filename_gang))
 	{
 		SendClientMessage(leaderid,COLOUR_RED,lang_texts[6][73]);
@@ -632,7 +632,7 @@ stock GangSave(gangid)
 stock gang_save_db_ini(gangid)
 {
 	new filename_gang[MAX_STRING];
-	format(filename_gang,sizeof(filename_gang),"%s%s.txt",GangDB,Gangs[gangid][gang_name]);
+	format(filename_gang,sizeof(filename_gang),"%s%s"GTO_FILES_FORMAT,GangDB,Gangs[gangid][gang_name]);
 	new file_gang = (!ini_Exist(filename_gang)) ? ini_Create(filename_gang) : ini_Open(filename_gang);
 	ini_Set(file_gang,"Name",Gangs[gangid][gang_name]);
 	ini_SetInt(file_gang,"Colour",Gangs[gangid][gang_colour]);

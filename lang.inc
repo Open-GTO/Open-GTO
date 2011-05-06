@@ -11,14 +11,14 @@
 
 #include "base"
 
-new lang_db[10] = "GTO/";
+new lang_db[10] = GTO_FILES_FOLDER"";
 new lang[10] = "Russian";
 new lang_texts[20][99][255];
 
 stock lang_OnGameModeInit()
 {
 	new lang_file[50];
-	format(lang_file,sizeof(lang_file),"%sLanguage-%s.txt",lang_db,lang);
+	format(lang_file,sizeof(lang_file),"%sLanguage-%s"GTO_FILES_FORMAT,lang_db,lang);
 	if(!ini_Exist(lang_file)) return printf("ERROR: No such file %s", lang_file);
 	lang_read(lang_file);
 	return 1;

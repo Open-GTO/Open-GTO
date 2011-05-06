@@ -111,7 +111,7 @@ stock DeathmatchLoadAll()
 stock DeathmatchBaseDBExists(dmname[MAX_STRING])
 { 
 	new rdbname[MAX_STRING];
-	format(rdbname,sizeof(rdbname),"%s%s.txt",DMBaseDB,dmname);
+	format(rdbname,sizeof(rdbname),"%s%s"GTO_FILES_FORMAT,DMBaseDB,dmname);
 	if(!ini_Exist(rdbname)) return 0;
 	return 1;
 }
@@ -120,7 +120,7 @@ stock DeathmatchLoadBaseDB(dmid)
 { // load dm from db
 	if (ForceOverwrite) return INVALID_DM_ID;
 	new temp[MAX_STRING],rdbname[MAX_STRING];
-	format(rdbname,sizeof(rdbname),"%s%s.txt",DMBaseDB,Deathmatch[dmid][dm_name]);
+	format(rdbname,sizeof(rdbname),"%s%s"GTO_FILES_FORMAT,DMBaseDB,Deathmatch[dmid][dm_name]);
 	if(!ini_Exist(rdbname)) return INVALID_DM_ID;
 	new file_dm = ini_Open(rdbname);
 	ini_Get(file_dm,"Name",Deathmatch[dmid][dm_name],MAX_STRING);
@@ -218,7 +218,7 @@ stock DeathmatchLoadBaseDB(dmid)
 stock DeathmatchLoadRecordDB(dmid)
 {
 	new rdbname[MAX_STRING];
-	format(rdbname,sizeof(rdbname),"%s%s.txt",DMRecordDB,Deathmatch[dmid][dm_name]);
+	format(rdbname,sizeof(rdbname),"%s%s"GTO_FILES_FORMAT,DMRecordDB,Deathmatch[dmid][dm_name]);
 	if(!ini_Exist(rdbname)) return;
 	new file_dm = ini_Open(rdbname);
 	ini_GetInt(file_dm,"Best_Score_Record",DMBestScore[dmid][dm_score_record]);
@@ -269,7 +269,7 @@ stock DeathmatchSaveBaseDB(dmid)
 { // save dm to db
 	if (DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED) return;
 	new temp[MAX_STRING],rdbname[MAX_STRING];
-	format(rdbname,sizeof(rdbname),"%s%s.txt",DMBaseDB,Deathmatch[dmid][dm_name]);
+	format(rdbname,sizeof(rdbname),"%s%s"GTO_FILES_FORMAT,DMBaseDB,Deathmatch[dmid][dm_name]);
 	new file_dm = (!ini_Exist(rdbname)) ? ini_Create(rdbname) : ini_Open(rdbname);
 	ini_Set(file_dm,"Name",Deathmatch[dmid][dm_name]);
 	ini_SetInt(file_dm,"Frequency",Deathmatch[dmid][dm_frequency]);
@@ -303,7 +303,7 @@ stock DeathmatchSaveBaseDB(dmid)
 stock DeathmatchSaveRecordDB(dmid)
 {
 	new rdbname[MAX_STRING];
-	format(rdbname,sizeof(rdbname),"%s%s.txt",DMRecordDB,Deathmatch[dmid][dm_name]);
+	format(rdbname,sizeof(rdbname),"%s%s"GTO_FILES_FORMAT,DMRecordDB,Deathmatch[dmid][dm_name]);
 	new file_dm = (!ini_Exist(rdbname)) ? ini_Create(rdbname) : ini_Open(rdbname);
 	ini_Set(file_dm,"Name",Deathmatch[dmid][dm_name]);
 	ini_SetInt(file_dm,"Best_Score_Record",DMBestScore[dmid][dm_score_record]);

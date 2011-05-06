@@ -34,7 +34,7 @@ BusinessLoadAll()
 	}
 	for(new i=0,file_business,businessdbname[MAX_STRING];i<MAX_BUSINESSES;i++)
 	{
-		format(businessdbname,sizeof(businessdbname),"%s%s.txt",BusinessDB,Businesses[i][Business_Name]);
+		format(businessdbname,sizeof(businessdbname),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[i][Business_Name]);
 		if(!ini_Exist(businessdbname)) continue;
 		file_business = ini_Open(businessdbname);
 		ini_Get(file_business,"Name",Businesses[i][Business_Name],MAX_STRING);
@@ -65,7 +65,7 @@ BusinessSaveAll()
 	}
 	for(new i=0,file_business,businessdbname[MAX_STRING];i<MAX_BUSINESSES;i++)
 	{
-		format(businessdbname,sizeof(businessdbname),"%s%s.txt",BusinessDB,Businesses[i][Business_Name]);
+		format(businessdbname,sizeof(businessdbname),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[i][Business_Name]);
 		file_business = (!ini_Exist(businessdbname)) ? ini_Create(businessdbname) : ini_Open(businessdbname);
 		ini_Set(file_business,"Name",Businesses[i][Business_Name]);
 		ini_SetInt(file_business,"Cost",Businesses[i][Business_Cost]);
@@ -132,7 +132,7 @@ stock TurnAround()
 			{
 				Businesses[id][Business_Vault] += (Businesses[id][Business_Value] * Businesses[id][Business_Upgrade]) / 1000;
 				new filename_busin[MAX_STRING];
-				format(filename_busin,sizeof(filename_busin),"%s%s.txt",BusinessDB,Businesses[id][Business_Name]);
+				format(filename_busin,sizeof(filename_busin),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
 				if(ini_Exist(filename_busin))
 				{
 					file_busin = ini_Open(filename_busin);
@@ -297,7 +297,7 @@ stock FBisBuy(playerid)
 		else
 		{
 			new filename[MAX_STRING];
-			format(filename,sizeof(filename),"%s%s.txt",PlayerDB,Businesses[id][Business_Owner]);
+			format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,PlayerDB,Businesses[id][Business_Owner]);
 			if(ini_Exist(filename))
 			{
 				new tempmoney,file = ini_Open(filename);
@@ -309,7 +309,7 @@ stock FBisBuy(playerid)
 		set(Businesses[id][Business_Owner],oGetPlayerName(playerid));
 		Businesses[id][Business_Buyout] = 0;
 		new filename[MAX_STRING];
-		format(filename,sizeof(filename),"%s%s.txt",BusinessDB,Businesses[id][Business_Name]);
+		format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
 		if(ini_Exist(filename))
 		{
 			new file = ini_Open(filename);
@@ -355,7 +355,7 @@ stock FBisSell(playerid)
 		Businesses[id][Business_Buyout] = 0;
 		Businesses[id][Business_Upgrade] = 1;
 		new filename[MAX_STRING];
-		format(filename,sizeof(filename),"%s%s.txt",BusinessDB,Businesses[id][Business_Name]);
+		format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
 		if(ini_Exist(filename))
 		{
 			new file = ini_Open(filename);
@@ -402,7 +402,7 @@ stock FBisCollect(playerid)
 			SendPlayerFormattedText(playerid,  lang_texts[3][48] , 0,COLOUR_GREEN);
 			Businesses[id][Business_Vault] = 0;
 			new filename[MAX_STRING];
-			format(filename,sizeof(filename),"%s%s.txt",BusinessDB,Businesses[id][Business_Name]);
+			format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
 			if(ini_Exist(filename))
 			{
 				new file = ini_Open(filename);
@@ -478,7 +478,7 @@ stock BbuyUpgrade(playerid)
 		
 		oGivePlayerMoney(playerid,-price,0);
 		new filename[MAX_STRING];
-		format(filename,sizeof(filename),"%s%s.txt",BusinessDB,Businesses[id][Business_Name]);
+		format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
 		Businesses[id][Business_Upgrade]++;
 		if(ini_Exist(filename))
 		{
