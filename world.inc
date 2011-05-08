@@ -96,7 +96,7 @@ nee:
 	vehicles_SaveConfig();
 	groundhold_SaveConfig();
 	groundhold_SaveAll();
-	mission_SaveConfig();
+	trucker_SaveConfig();
 	// protections
 	AntiIdleSaveConfig();
 	AntiHightPingSaveConfig();

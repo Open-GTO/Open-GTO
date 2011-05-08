@@ -4,23 +4,25 @@
 // Modified by ZiGGi
 //
 
-#if defined _mission_included
+#if defined _trucker_included
   #endinput
 #endif
 
-#define _mission_included
-#pragma library mission
+#define _trucker_included
+#pragma library trucker
 
-#define MISSION_ID 999
+#define trucker_ID 999
 
-#define TRAILER_TYPE_NORMAL 1
-#define TRAILER_TYPE_PETROL 2
-#define GIVE_XP_RATE 5
-#define RunnerMissionTime 300000
+enum {
+	TRAILER_TYPE_NORMAL,
+	TRAILER_TYPE_PETROL,
+}
+new trucker_GIVE_XP_RATE = 5,
+	trucker_RunnerMissionTime = 300000;
 
-forward EndMission(playerid);
 
-new Linerunner[4],Trailer[4],driver[MAX_PLAYERS],timer[MAX_PLAYERS],Mission_Enabled=1;
+new Linerunner[4],Trailer[4],
+	trucker_Enabled=1;
 
 new Float:PetrolCoord[11][3] = {
 {656.9401,1691.4619,6.9922},
@@ -55,27 +57,31 @@ new Float:LineCoord[16][3] = {
 {-1022.0163,-665.8869,32.0078}
 };
 
-stock mission_LoadConfig()
+stock trucker_LoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 0;
     new file_mission = ini_Open(ConfigDB);
-	ini_GetInt(file_mission,"Mission_Enabled",Mission_Enabled);
+	ini_GetInt(file_mission,"trucker_Enabled",trucker_Enabled);
+	ini_GetInt(file_mission,"trucker_GIVE_XP_RATE",trucker_GIVE_XP_RATE);
+	ini_GetInt(file_mission,"trucker_RunnerMissionTime",trucker_RunnerMissionTime);	
 	ini_Close(file_mission);
 	return 1;
 }
 
-stock mission_SaveConfig()
+stock trucker_SaveConfig()
 {
 	new file_mission = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_mission,"Mission_Enabled",Mission_Enabled);
+	ini_SetInt(file_mission,"trucker_Enabled",trucker_Enabled);
+	ini_SetInt(file_mission,"trucker_GIVE_XP_RATE",trucker_GIVE_XP_RATE);
+	ini_SetInt(file_mission,"trucker_RunnerMissionTime",trucker_RunnerMissionTime);	
 	ini_Close(file_mission);
 	return 1;
 }
 
-stock mission_OnGameModeInit()
+stock trucker_OnGameModeInit()
 {
-	//mission_LoadConfig();
-	if(Mission_Enabled != 1) return 1;
+	trucker_LoadConfig();
+	if(trucker_Enabled != 1) return 1;
 	Trailer[1] = AddStaticVehicleEx(435,1087.880,1298.273,10.481,0.0,-1,-1,300);
 	Trailer[2] = AddStaticVehicleEx(450,1077.959,1298.586,10.481,0.0,-1,-1,300);
 	Trailer[3] = AddStaticVehicleEx(584,1067.358,1297.892,11.481,0.0,-1,-1,300);
@@ -94,134 +100,142 @@ stock mission_OnGameModeInit()
 	return 1;
 }
 
-stock mission_OnPlayerStateChange(playerid,newstate,oldstate)
+stock trucker_OnPlayerStateChange(playerid,newstate,oldstate)
 {
 	#pragma unused newstate,oldstate
-	if(Mission_Enabled != 1) return 1;
+	if(trucker_Enabled != 1) return 1;
 	if(IsVehicleIsRunner( GetPlayerVehicleID(playerid) ))
 		SendClientMessage(playerid,COLOUR_PINK,"ХраП: Вы можете начать миссию дальнобойщика. Для этого нажмите Кнопку миссии (2 или +)");
 	return 1;
 }
 
-stock mission_Start(playerid)
+stock trucker_Start(playerid)
 {
-	new TrailerType = GetTrailerType( GetPlayerVehicleID(playerid) );
-	if(TrailerType == TRAILER_TYPE_NORMAL)
-    {
-        driver[playerid] = 1;
-        new rand = random(sizeof(LineCoord));
-        oSetPlayerCheckpoint(playerid,LineCoord[rand][0],LineCoord[rand][1],LineCoord[rand][2],10);
-        PlayerQuest[playerid] = MISSION_ID;
-    }
-    else if(TrailerType == TRAILER_TYPE_PETROL)
-    {
-		driver[playerid] = 1;
-        new rand = random(sizeof(PetrolCoord));
-        oSetPlayerCheckpoint(playerid,PetrolCoord[rand][0],PetrolCoord[rand][1],PetrolCoord[rand][2],10);
-        PlayerQuest[playerid] = MISSION_ID;
-    }
-	else return 1;
-    timer[playerid] = SetTimerEx("EndMission",300000,0,"d",playerid);
+	switch( GetTrailerType( GetPlayerVehicleID(playerid) ) )
+	{
+		case TRAILER_TYPE_NORMAL:
+		{
+			new rand = random(sizeof(LineCoord));
+			oSetPlayerCheckpoint(playerid,LineCoord[rand][0],LineCoord[rand][1],LineCoord[rand][2],10);
+		}
+		case TRAILER_TYPE_PETROL:
+		{
+			new rand = random(sizeof(PetrolCoord));
+			oSetPlayerCheckpoint(playerid,PetrolCoord[rand][0],PetrolCoord[rand][1],PetrolCoord[rand][2],10);
+		}
+		default: return 0;
+	}
+	SetPVarInt(playerid,"trucker_Driver",1);
+	PlayerQuest[playerid] = trucker_ID;
+	SetPVarInt(playerid,"trucker_Timer",
+		SetTimerEx("trucker_EndMission",300000,0,"d",playerid)
+	);
     SendClientMessage(playerid,COLOUR_YELLOW,"ХраП: Бери груз, езжай на чекпоинт, доставь туда груз вовремя и получишь бабки + опыт");
 	new string[MAX_STRING];
     format(string,sizeof(string),"ХраП: %s взял миссию по доставке груза",oGetPlayerName(playerid));
     for(new i=GetMaxPlayers()-1;i>=0;--i)
     {
-        if(IsPlayerConnected(i) && i != playerid) SendClientMessage(i,COLOUR_LIGHTRED,string);
+        if(IsPlayerConnected(i) && i != playerid && !IsPlayerNPC(i))
+			SendClientMessage(i,COLOUR_LIGHTRED,string);
     }
 	return 1;
 }
 
-stock mission_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
+stock trucker_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused oldkeys,newkeys
-	if(PlayerQuest[playerid] == 0)
+	switch(PlayerQuest[playerid])
 	{
-		if(GetPVarInt(playerid,"RunnerMissionTime") > 0)
-			SendClientMessage(playerid,COLOUR_RED,"Пока никому ничего не нужно.");
-		else
-			mission_Start(playerid);
-	}
-	else if(PlayerQuest[playerid] == MISSION_ID) 
-	{
-		EndMission(playerid);
-		KillTimer(timer[playerid]);
+		case 0:
+		{
+			if(GetPVarInt(playerid,"trucker_RunnerMissionTime") > 0)
+				SendClientMessage(playerid,COLOUR_RED,"Пока никому ничего не нужно.");
+			else
+				trucker_Start(playerid);
+		}
+		case trucker_ID:
+		{
+			trucker_EndMission(playerid);
+			KillTimer( GetPVarInt(playerid,"trucker_Timer") );
+			SetPVarInt(playerid,"trucker_RunnerMissionTime",trucker_RunnerMissionTime);
+		}
 	}
 	return 1;
 }
 
-stock mission_OnPlayerEnterCheckpoint(playerid)
+stock trucker_OnPlayerEnterCheckpoint(playerid)
 {
-	if(Mission_Enabled != 1) return 1;
+	if(trucker_Enabled != 1) return 1;
 	new vehicleid = GetPlayerVehicleID(playerid);
-	if(driver[playerid] == 1 && IsVehicleIsRunner(vehicleid))
+	if(GetPVarInt(playerid,"trucker_Driver") == 1&& IsVehicleIsRunner(vehicleid))
 	{
 	    if(!IsTrailerAttachedToVehicle(vehicleid)) return 1;
 		oGivePlayerMoney(playerid,10000,1);
 		new Trailr = GetVehicleTrailer(vehicleid);
 		DetachTrailerFromVehicle(vehicleid);
 		SetVehicleToRespawn(Trailr);
-		MissionStop(playerid);
+		trucker_Stop(playerid);
 		SendClientMessage(playerid,COLOUR_WHITE,"ХраП: Поздравляем! Ты справился с миссией. Получи свои бабки!");
-		KillTimer(timer[playerid]);
-		GivePlayerXP(playerid,(GetPlayerScore(playerid)+1) * (GetPlayerScore(playerid)+1) * GIVE_XP_RATE,1);
+		KillTimer( GetPVarInt(playerid,"trucker_Timer") );
+		GivePlayerXP(playerid,( (GetPlayerScore(playerid)+1) * 2 )^2 * trucker_GIVE_XP_RATE,1);
 	}
 	return 1;
 }
 
-stock mission_OnPlayerDisconnect(playerid,reason)
+stock trucker_OnPlayerDisconnect(playerid,reason)
 {
 	#pragma unused reason
-	if(Mission_Enabled != 1 || driver[playerid] != 1) return 1;
-	MissionStop(playerid);
+	if(trucker_Enabled != 1 || GetPVarInt(playerid,"trucker_Driver") != 1) return 1;
+	trucker_Stop(playerid);
 	return 1;
 }
 
-stock mission_OnPlayerDeath(playerid, killerid, reason)
+stock trucker_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused killerid,reason
-	if(Mission_Enabled != 1 || driver[playerid] != 1) return 1;
-	MissionStop(playerid);
+	if(trucker_Enabled != 1 || GetPVarInt(playerid,"trucker_Driver") != 1) return 1;
+	trucker_Stop(playerid);
 	SendClientMessage(playerid,COLOUR_RED,"ХраП: Ты не справился с миссией доставки груза");
 	return 1;
 }
 
-stock mission_OnVehicleDeath(vehicleid, killerid)
+stock trucker_OnVehicleDeath(vehicleid, killerid)
 {
-	if(Mission_Enabled != 1) return 1;
+	if(trucker_Enabled != 1) return 1;
 	if(IsVehicleIsRunner(vehicleid))
 	{
-		MissionStop(killerid);
+		trucker_Stop(killerid);
 	    SendClientMessage(killerid,COLOUR_RED,"ХраП: Ты не справился с миссией, уничтожив свой транспорт");
 	}
 	return 1;
 }
 
-public EndMission(playerid)
+forward trucker_EndMission(playerid);
+public trucker_EndMission(playerid)
 {
-	if(driver[playerid] == 1)
+	if(GetPVarInt(playerid,"trucker_Driver") == 1)
 	{
-		MissionStop(playerid);
+		trucker_Stop(playerid);
 		SendClientMessage(playerid,COLOUR_RED,"ХраП: Ты не справился с миссией.");
 	}
 }
 
-stock MissionStop(playerid)
+stock trucker_Stop(playerid)
 {
-	driver[playerid] = 0;
+	SetPVarInt(playerid,"trucker_Driver",0);
 	ResetQuest(playerid);
-	SetPVarInt(playerid,"RunnerMissionTime",RunnerMissionTime);
+	SetPVarInt(playerid,"trucker_RunnerMissionTime",trucker_RunnerMissionTime);
 }
 
-forward RunnerMissionTimer();
-public RunnerMissionTimer()
+forward trucker_RunnerTimer();
+public trucker_RunnerTimer()
 {
 	new buf;
 	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
 	{
 		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) continue;
-		if((buf = GetPVarInt(playerid,"RunnerMissionTime")) > 0)
-			SetPVarInt(playerid,"RunnerMissionTime",buf - 1000);
+		if((buf = GetPVarInt(playerid,"trucker_RunnerMissionTime")) > 0)
+			SetPVarInt(playerid,"trucker_RunnerMissionTime",buf - 1000);
 	}
 }
 

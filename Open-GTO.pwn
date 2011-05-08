@@ -54,7 +54,7 @@ Date start Open-GTO: 	5 November 2009
 #include "admin\adm_commands"
 #include "admin\mod_commands"
 #include "streamers\mapicon_stream"
-#include "misc\mission"
+#include "missions\trucker"
 #include "protections\antiidle"
 #include "protections\antirconhack"
 #include "protections\antihealthhack"
@@ -135,7 +135,7 @@ public OnGameModeInit()
 	bank_OnGameModeInit();
 	lang_OnGameModeInit();
 	fights_OnGameModeInit();
-    mission_OnGameModeInit();
+    trucker_OnGameModeInit();
 	fastfood_OnGameModeInit();
 	
     antiidle_OnGameModeInit();
@@ -214,7 +214,7 @@ public OnPlayerDisconnect(playerid,reason)
 {
 	if(playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) return 1;
 	player_OnPlayerDisconnect(playerid,reason);
-	mission_OnPlayerDisconnect(playerid, reason);
+	trucker_OnPlayerDisconnect(playerid, reason);
 	chatguard_OnPlayerDisconnect(playerid,reason);
 	
 	WorldSave();
@@ -250,7 +250,7 @@ public OnPlayerPickUpPickup(playerid,pickupid)
 public OnPlayerEnterCheckpoint(playerid)
 {
 	dm_OnPlayerEnterCheckpoint(playerid);
-	mission_OnPlayerEnterCheckpoint(playerid);
+	trucker_OnPlayerEnterCheckpoint(playerid);
 	return 1;
 }
 
@@ -279,7 +279,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	{
 		player_OnPlayerDeath(playerid,killerid,reason);
 		player_OnPlayerKill(killerid,playerid,reason);
-		mission_OnPlayerDeath(playerid,killerid,reason);
+		trucker_OnPlayerDeath(playerid,killerid,reason);
 		gang_OnPlayerDeath(playerid,killerid,reason);
 //		DropPlayerWeapons(playerid);
 		PlayCrimeReportForPlayer(killerid,killerid,random(18)+3);
@@ -477,7 +477,7 @@ public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	}
 	if( PRESSED( KEY_SUBMISSION ) )
 	{
-		if( IsPlayerInAnyVehicle(playerid) ) mission_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		if( IsPlayerInAnyVehicle(playerid) ) trucker_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		return 1;
 	}
 	return 1;
@@ -497,7 +497,7 @@ public OnPlayerStateChange(playerid,newstate,oldstate)
 {
 	if(newstate == PLAYER_STATE_DRIVER)
 	{
-		mission_OnPlayerStateChange(playerid,newstate,oldstate);
+		trucker_OnPlayerStateChange(playerid,newstate,oldstate);
 		antivehicle_OnPlayerStateChange(playerid,newstate,oldstate);
 	}
 	return 1;
@@ -528,7 +528,7 @@ public OnVehicleDamageStatusUpdate(vehicleid,playerid)
 
 public OnVehicleDeath(vehicleid,killerid)
 {
-	mission_OnVehicleDeath(vehicleid,killerid);
+	trucker_OnVehicleDeath(vehicleid,killerid);
 	return 1;
 }
 
