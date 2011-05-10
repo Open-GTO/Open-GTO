@@ -8,14 +8,13 @@ stock antirconhack_OnRconLoginAttempt(ip[], password[], success)
     if(!success)
     {
         printf(lang_texts[11][5],ip, password);
-        new pip[16];
-		for(new i=GetMaxPlayers()-1;i>=0;--i)
+		for(new playerid=GetMaxPlayers()-1,pip[16];playerid>=0;--playerid)
         {
-            GetPlayerIp(i, pip, sizeof(pip));
-            if(!strcmp(ip, pip, true))
+			GetPVarString(playerid,"IP",pip,sizeof(pip));
+            if(!strcmp(ip,pip,false))
             {
-                SendClientMessage(i,COLOUR_RED,lang_texts[11][6]);
-                Kick(i);
+                KickPlayer(playerid,lang_texts[11][6]);
+				return 1;
             }
         }
     }

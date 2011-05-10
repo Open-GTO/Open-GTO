@@ -70,9 +70,9 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 		SendClientMessage(playerid,COLOUR_WHITE,string);
 		format(string,sizeof(string),lang_texts[12][71],Player[receiverid][Jailed],Player[receiverid][Muted]);	//Jailed, Muted
 		SendClientMessage(playerid,COLOUR_WHITE,string);
-		new PlayerIP[MAX_STRING];
-		GetPlayerIp(receiverid,PlayerIP,sizeof(PlayerIP));
-		format(string,sizeof(string),lang_texts[12][72],GetPlayerPing(receiverid),PlayerIP);
+		new playerIP[16];
+		GetPVarString(receiverid,"IP",playerIP,sizeof(playerIP));
+		format(string,sizeof(string),lang_texts[12][72],GetPlayerPing(receiverid),playerIP);
 		SendClientMessage(playerid,COLOUR_WHITE,string);
 		return 1;
 	}
