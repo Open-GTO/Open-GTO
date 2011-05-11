@@ -146,23 +146,6 @@ new Float:LeveledPlayerSpawns[PLAYERSPAWNS_SIZE][PlayerSpawnInfo] = {
 	{18,2459.7744,-40.9547,26.4844,25.8460} // play12
 };
 
-enum CoordInfoJ {
-    Float:CJ_X,
-    Float:CJ_Y,
-    Float:CJ_Z,
-    Float:CJ_A
-}
-#define UNJP 8
-new Float:JPH[UNJP][CoordInfoJ] = {
-{633.365, -571.78, 16.340, 265.773},
-{1544.982, -1675.470, 13.600, 93.446},
-{-2164.396, -2388.342, 30.650, 140.551},
-{-1605.378, 717.512, 12.000, 310.972},
-{-1391.040, 2634.686, 55.984, 116.935},
-{-215.718, 985.399, 19.400, 240.854},
-{2335.229, 2455.809, 14.968, 136.734},
-{1225.165, 245.328, 19.554, 306.501}
-};
 
 // LVDMSpawns
 new Float:LVDMPlayerSpawns[23][CoordInfo] = {
@@ -1080,43 +1063,6 @@ stock VIPCheck(date[])
 		}
 	}
 	return false;
-}
-
-stock JailPlayer(playerid)
-{
-	if(Player[playerid][Jailed] == 1)
-	{
-		SetPlayerInterior(playerid,6);
-		SetPlayerPos(playerid,265.1273,77.6823,1001.0391);
-		SetPlayerFacingAngle(playerid,-90);
-		new spwl=Player[playerid][JailTime];
-		if(spwl==0 || spwl>6) spwl=6;
-		SetPlayerWantedLevel(playerid,spwl);
-		TogglePlayerControllable(playerid,0);
-		SetCameraBehindPlayer(playerid);
-		SetPlayerArmour(playerid, 0);
-	}
-}
-
-stock UnJailPlayer(playerid)
-{
-	if(Player[playerid][Jailed] == 0)
-	{
-		Player[playerid][Jailed] = 0;
-		Player[playerid][JailTime] = 0;
-	}
-	new u = random(UNJP);
-	SetPlayerInterior(playerid,0);
-	SetPlayerPos(playerid, JPH[u][CJ_X], JPH[u][CJ_Y], JPH[u][CJ_Z] );
-	SetPlayerFacingAngle(playerid,JPH[u][CJ_A]);
-	SetCameraBehindPlayer(playerid);
-	SetPlayerWantedLevel(playerid, 0);
-	TogglePlayerControllable(playerid,1);
-	new string[MAX_STRING];
-	format(string,sizeof(string), "~r~%s ~w~Now is Free", oGetPlayerName(playerid));
-	GameTextForAll(string,5000,4);
-	format(string,sizeof(string), "SERVER: %s был Выпущен из тюрьмы (Истекло время или Амнистия)", oGetPlayerName(playerid));
-	SendClientMessageToAll(COLOUR_WHITE, string);
 }
 
 stock ADMDropAmmo(playerid)
