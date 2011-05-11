@@ -404,7 +404,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	{
 		new tmp[MAX_STRING],var[32],string[MAX_STRING],params[MAX_STRING];
 		tmp	= strtok(cmd,idx);
-		if(isNumeric(tmp))
+		if(IsNumeric(tmp))
 		{
 			format(string,sizeof(string),"GTO/Bans/Names/%s.txt",oGetPlayerName(strval(tmp)));
 			new File:file = fopen(string,io_append);

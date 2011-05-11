@@ -626,39 +626,6 @@ stock ResetQuest(playerid)
 	PlayerQuest[playerid] = 0;
 }
 
-stock oSetPlayerCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size)
-{
-	#pragma unused size
-	DisablePlayerCheckpoint(playerid);
-	SetPlayerCheckpoint(playerid, 0.0, 0.0, 0.0, 8);//size); // TODO: size bugged
-	DisablePlayerCheckpoint(playerid);
-	PlayerCP[playerid][Coord_X] = x;
-	PlayerCP[playerid][Coord_Y] = y;
-	PlayerCP[playerid][Coord_Z] = z;
-	PlayerCPActive[playerid] = true;
-	SetPlayerCheckpoint(playerid, x, y, z, 8);//size); // TODO: size bugged
-}
-
-stock oDisablePlayerCheckpoint(playerid)
-{
-	DisablePlayerCheckpoint(playerid);
-	PlayerCPActive[playerid] = false;
-	PlayerCP[playerid][Coord_X] = 0.0;
-	PlayerCP[playerid][Coord_Y] = 0.0;
-	PlayerCP[playerid][Coord_Z] = 0.0;
-}
-
-stock oIsPlayerInCheckpoint(playerid,Float:cpx,Float:cpy,Float:cpz,dist)
-{
-	if (!IsPlayerConnected(playerid)) {return 0;}
-	if (!PlayerCPActive[playerid]) {return 0;}
-	if (!loccmp(cpx,cpy,cpz,PlayerCP[playerid][Coord_X],PlayerCP[playerid][Coord_Y],PlayerCP[playerid][Coord_Z])) return 0;
-	new Float:playerx,Float:playery,Float:playerz;
-	GetPlayerPos(playerid,playerx,playery,playerz);
-	if(GetDistanceXYZtoXYZ(playerx,playery,playerz,cpx,cpy,cpz) < dist) return IsPlayerInCheckpoint(playerid);
-	return 0;
-}
-
 stock GetXPToLevel(playerid,level)
 {
 	if(!IsPlayerConnected(playerid)) return 0;
@@ -1150,61 +1117,6 @@ stock UnJailPlayer(playerid)
 	GameTextForAll(string,5000,4);
 	format(string,sizeof(string), "SERVER: %s был Выпущен из тюрьмы (Истекло время или Амнистия)", oGetPlayerName(playerid));
 	SendClientMessageToAll(COLOUR_WHITE, string);
-}
-
-stock MuteCheck()
-{
-	for(new i=0;i<MAX_PLAYERS;i++)
-	{
-		if(IsPlayerConnected(i))
-		{
-			if(Player[i][MuteTime]>0)
-			{
-			    Player[i][MuteTime]--;
-			    if(Player[i][MuteTime]==0)
-			    {
-					new string[MAX_STRING];
-					format(string, sizeof(string)," Игрок %s снова может говорить",oGetPlayerName(i));
-					SendClientMessageToAll(COLOUR_YELLOW,string);
-				}
-			}
-		}
-	}
-}
-
-stock JailTimer()
-{
-	for(new i=0;i<MAX_PLAYERS;i++)
-	{
-		if(IsPlayerConnected(i))
-		{
-			if(Player[i][Jailed] == 1)
-			{
-				new spwl=Player[i][JailTime];
-				if(spwl == 0 || spwl > 6) spwl=6;
-				SetPlayerWantedLevel(i,spwl);
-			}
-			if(Player[i][Jailed] == 1 && Player[i][JailTime] >= 1)
-			{
-				Player[i][JailTime]--;
-				if(Player[i][JailTime]<=0)
-				{
-					Player[i][Jailed] = 0;
-					Player[i][JailTime] = 0;
-					UnJailPlayer(i);
-					printf("SERVER : %s Has Been auto-UNJailed",oGetPlayerName(i));
-					return 1;
-				}
-				else
-				{
-					new string[MAX_STRING];
-					format(string,sizeof(string), "SERVER: До окончания ареста осталось около %d мин", Player[i][JailTime]);
-					SendClientMessage(i,COLOUR_LIGHTRED, string);
-				}
-			}
-		}
-	}
-	return 1;
 }
 
 stock ADMDropAmmo(playerid)

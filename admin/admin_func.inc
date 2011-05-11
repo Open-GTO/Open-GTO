@@ -105,3 +105,54 @@ stock BanCheck(playerid)
 	}
 	return true;
 }
+
+stock MuteCheck()
+{
+	for(new i=GetMaxPlayers()-1;i>=0;--i)
+	{
+		if(!IsPlayerConnected(i) || IsPlayerNPC(i)) continue;
+		if(Player[i][MuteTime] > 0)
+		{
+		    Player[i][MuteTime]--;
+		    if(Player[i][MuteTime] == 0)
+		    {
+				new string[MAX_STRING];
+				format(string, sizeof(string)," Игрок %s(%d) снова может говорить",oGetPlayerName(i),i);
+				SendClientMessageToAll(COLOUR_YELLOW,string);
+			}
+		}
+	}
+}
+
+stock JailTimer()
+{
+	for(new i=GetMaxPlayers()-1;i>=0;--i)
+	{
+		if(!IsPlayerConnected(i) || IsPlayerNPC(i)) continue;
+		if(Player[i][Jailed] == 1)
+		{
+			new spwl = Player[i][JailTime];
+			if(spwl == 0 || spwl > 6) spwl = 6;
+			SetPlayerWantedLevel(i,spwl);
+		}
+		if(Player[i][Jailed] == 1 && Player[i][JailTime] >= 1)
+		{
+			Player[i][JailTime]--;
+			if(Player[i][JailTime] <= 0)
+			{
+				Player[i][Jailed] = 0;
+				Player[i][JailTime] = 0;
+				UnJailPlayer(i);
+				printf("SERVER : %s Has Been auto-UNJailed",oGetPlayerName(i));
+				return 1;
+			}
+			else
+			{
+				new string[MAX_STRING];
+				format(string,sizeof(string), "SERVER: До окончания ареста осталось около %d мин", Player[i][JailTime]);
+				SendClientMessage(i,COLOUR_LIGHTRED, string);
+			}
+		}
+	}
+	return 1;
+}

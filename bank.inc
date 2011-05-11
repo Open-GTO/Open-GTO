@@ -89,7 +89,7 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	if(dialogid == bank_Withdraw_DialogID)// снять деньги
 	{
 	    if(!response)  return bank_ShowDialog_First(playerid);
-		if(!isNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
+		if(!IsNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
 		{
 			show_Msg_Dialog(playerid,lang_texts[2][3],lang_texts[2][13],lang_texts[2][5]);
 			return 0;
@@ -108,7 +108,7 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	if(dialogid == bank_Deposit_DialogID)// положить деньги
 	{
 	    if(!response) return bank_ShowDialog_First(playerid);
-		if(!isNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
+		if(!IsNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
 		{
 			show_Msg_Dialog(playerid,lang_texts[2][3],lang_texts[2][13],lang_texts[2][5]);
 			return 0;

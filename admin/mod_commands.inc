@@ -184,30 +184,31 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/jail",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
+		
 		new jailid = strval(strcharsplit(text, idx,strchar(" ")));
-		if((jailid < 0) || (jailid >= MAX_PLAYERS) || (IsPlayerAdmin(jailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(jailid) && IsPlayerMod(playerid)) )
-		{
-			SendPlayerFormattedText(playerid,lang_texts[12][2],0,COLOUR_RED);
-			return 1;
-		}
-		if(IsPlayerConnected(jailid) == 0)
-		{
-			SendPlayerFormattedText(playerid,lang_texts[12][3],0,COLOUR_RED);
-			return 1;
-		}
-		static jailt=4320;
-		jailt = strval(strcharsplit(text, idx,strchar(" ")));
-		if(jailt>1 && jailt<=4320) Player[jailid][JailTime] = jailt;
+		if(!IsPlayerConnected(jailid) || (IsPlayerAdmin(jailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(jailid) && IsPlayerMod(playerid)) )
+			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
+
+		new jailt = strval(strcharsplit(text, idx,strchar(" ")));
+		if(jailt > 1 && jailt <= 4320)
+			Player[jailid][JailTime] = jailt;
+		
 		Player[jailid][Jailed] = 1;
+		
+		
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][18],oGetPlayerName(playerid));
-		SendPlayerFormattedText(jailid,string, 0,COLOUR_RED);
+		SendClientMessage(jailid,COLOUR_RED,string);
+		
 		format(string,sizeof(string),"~r~%s ~w~has been Jailed",oGetPlayerName(jailid));
 		GameTextForAll(string,5000,4);
+		
 		new string2[40];
-		if(jailt > 1 && jailt<=4320) format(string2,sizeof(string2),"%d мин",jailt);
-		else format(string2,sizeof(string2),"пожизненно");
-		format(string,sizeof(string),"SERVER: %s был Арестован на %s минут",oGetPlayerName(jailid),string2);
+		if(jailt > 1 && jailt <= 4320)
+			format(string2,sizeof(string2),"на %d минут",jailt);
+		else
+			set(string2,"навсегда");
+		format(string,sizeof(string),"SERVER: %s был арестован %s",oGetPlayerName(jailid),string2);
 		SendClientMessageToAll(COLOUR_WHITE,string);
 		JailPlayer(jailid);
 		return 1;
@@ -216,21 +217,14 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		new unjailid = strval(strcharsplit(text, idx,strchar(" ")));
-		if(unjailid < 0 || unjailid >= MAX_PLAYERS || (IsPlayerAdmin(unjailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(unjailid) && IsPlayerMod(playerid)))
-		{
-			SendPlayerFormattedText(playerid,lang_texts[12][19],0,COLOUR_RED);
-			return 1;
-		}
-		if (IsPlayerConnected(unjailid) == 0)
-		{
-			SendPlayerFormattedText(playerid,lang_texts[12][20],0,COLOUR_RED);
-			return 1;
-		}
+		if(!IsPlayerConnected(unjailid) || (IsPlayerAdmin(unjailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(unjailid) && IsPlayerMod(playerid)))
+			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][19]);
+
 		Player[unjailid][Jailed] = 0;
 		Player[unjailid][JailTime] = 0;
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][21],oGetPlayerName(playerid));
-		SendPlayerFormattedText(unjailid,string, 0,COLOUR_GREEN);
+		SendClientMessage(playerid,COLOUR_GREEN,string);
 		UnJailPlayer(unjailid);
 		return 1;
 	}

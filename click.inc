@@ -281,7 +281,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new moneys = strval(inputtext);
 			GetPlayerName(Player[playerid][ClickedPlayerid],giveplayer,sizeof(giveplayer));
 			GetPlayerName(playerid,sendername,sizeof(sendername));
-			if(oGetPlayerMoney(playerid) < strval(inputtext) || !isNumeric(inputtext) || strval(inputtext) < 0)
+			if(oGetPlayerMoney(playerid) < strval(inputtext) || !IsNumeric(inputtext) || strval(inputtext) < 0)
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[15][93]);
 			}

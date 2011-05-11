@@ -35,11 +35,14 @@ Date start Open-GTO: 	5 November 2009
 #include "player"							// holds player values
 #include "weapons"							// weapons and ammunation shop
 #include "vehicles"							// vehicles
+#include "zones"
 #include "world"							// functions for zone, location, world, etc
 #include "commands"							// command handler
 #include "gang"								// gang handler
 #include "housing"							// housing handler
 #include "business"							// business handler
+#include "streamers\mapicon_stream"
+#include "streamers\checkpoint_stream"
 #include "race"								// race handler, manages and runs all rasces
 #include "deathmatch"						// deathmatch handler
 #include "bank"								// bank money to keep it on death
@@ -53,7 +56,6 @@ Date start Open-GTO: 	5 November 2009
 #include "admin\admin_commands_sys"
 #include "admin\adm_commands"
 #include "admin\mod_commands"
-#include "streamers\mapicon_stream"
 #include "missions\trucker"
 #include "protections\antiidle"
 #include "protections\antirconhack"

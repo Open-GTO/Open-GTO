@@ -256,50 +256,40 @@ stock IsNumeric(const string[])
 	return 1;
 }
 
+stock loccmp(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Float:z2)
+{
+	if ((x1 == x2) && (y1 == y2) && (z1 == z2)) return 1;
+	return 0;
+}
+
+stock Float:GetDistancePlayertoXYZ(playerid,Float:x2,Float:y2,Float:z2)
+{
+	if (!IsPlayerConnected(playerid)) {return 65000.0;}
+	new Float:x1, Float:y1, Float:z1;
+	GetPlayerPos(playerid,x1,y1,z1);
+	new Float:dist = floatsqroot(floatpower(floatabs(floatsub(x2,x1)),2)+floatpower(floatabs(floatsub(y2,y1)),2)+floatpower(floatabs(floatsub(z2,z1)),2));
+	return dist;
+}
+
+stock Float:GetDistanceXYZtoXYZ(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Float:z2)
+{
+	return floatsqroot(
+		floatpower( x2 - x1 , 2 )
+		+
+		floatpower( y2 - y1 , 2 )
+		+
+		floatpower( z2 - z1 , 2 )
+	);
+}
+
 //------------------------- THIS COPY-PASTED FROM DUTILS -----------------------
 
-
-/**
- *  Copies items from one array/string into another.
- *  @param   dest
- *           source
- *           count
- */
-stock copy(dest[],source[],count) {
-	dest[0]=0;
-	if (count<0) return false;
-	if (count>strlen(source)) count=strlen(source);
-	new i=0;
-	for (i=0;i<count;i++) {
-		dest[i]=source[i];
-		if (source[i]==0) return true;
-	}
-	dest[count]=0;
-	return true;
-}
-/*
- * First version released by mike, this one created by DracoBlue
- * Has also a fix to use "-" and "+" in the beginning of the number.
- */
-stock isNumeric(const string[]) {
-	new length=strlen(string);
-	if (length==0) return false;
-	for (new i = 0; i < length; i++) {
-		if (
-		(string[i] > '9' || string[i] < '0' && string[i]!='-' && string[i]!='+') // Not a number,'+' or '-'
-		|| (string[i]=='-' && i!=0)                                             // A '-' but not at first.
-		|| (string[i]=='+' && i!=0)                                             // A '+' but not at first.
-		) return false;
-	}
-	if (length==1 && (string[0]=='-' || string[0]=='+')) return false;
-	return true;
-}
 /**
  *  Checks wether two strings are equal (case insensetive)
  *  @param   str1
  *           str2
  */
-stock equal(str1[],str2[],bool:ignorecase) {
+stock equal(str1[],str2[],bool:ignorecase=false) {
     if (strlen(str1)!=strlen(str2)) return false;
     if (strcmp(str1,str2,ignorecase)==0) return true;
     return false;

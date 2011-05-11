@@ -238,7 +238,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/disarmall",true))
 	{
 		new string[MAX_STRING];
-		for(new id=0;id<MAX_PLAYERS;id++)
+		for(new id=GetMaxPlayers()-1;id>=0;--id)
 		{
 			if(id != playerid)
 			{
@@ -260,19 +260,12 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/paralyzeall",true))
 	{
 		new string[MAX_STRING];
-		for(new id=0;id<MAX_PLAYERS;id++)
+		for(new id=GetMaxPlayers()-1;id>=0;--id)
 		{
-			if(id != playerid)
-			{
-				if(IsPlayerConnected(id) && Player[id][Jailed] == 0 && !IsPlayerInAnyDM(id))
-				{
-					if(IsPlayerConnected(id) == 0) return 0;
-					if(IsPlayerAdmin(id) == 1) return 0;
-					TogglePlayerControllable(id,0);
-					format(string,sizeof(string),lang_texts[12][54] ,oGetPlayerName(playerid));//игроку
-					SendPlayerFormattedText(id,string,0,COLOUR_XP_GOOD);
-				}
-			}
+			if(id == playerid || !IsPlayerConnected(id) || Player[id][Jailed] != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id)) continue;
+			TogglePlayerControllable(id,0);
+			format(string,sizeof(string),lang_texts[12][54] ,oGetPlayerName(playerid));//игроку
+			SendPlayerFormattedText(id,string,0,COLOUR_XP_GOOD);
 		}
 		format(string,sizeof(string), lang_texts[12][76]);
 		SendPlayerFormattedText(playerid,string, 0,COLOUR_XP_GOOD);
@@ -281,19 +274,12 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/deparalyzeall",true))
 	{
 		new string[MAX_STRING];
-		for(new id=0;id<MAX_PLAYERS;id++)
+		for(new id=GetMaxPlayers()-1;id>=0;--id)
 		{
-			if(id != playerid)
-			{
-				if(IsPlayerConnected(id) && Player[id][Jailed] == 0 && !IsPlayerInAnyDM(id))
-				{
-					if(IsPlayerConnected(id) == 0) return 0;
-					if(IsPlayerAdmin(id) == 1) return 0;
-					TogglePlayerControllable(id,1);
-					format(string,sizeof(string),lang_texts[12][56],oGetPlayerName(playerid));//игроку
-					SendPlayerFormattedText(id,string, 0,COLOUR_XP_GOOD);
-				}
-			}
+			if(id == playerid || !IsPlayerConnected(id) || Player[id][Jailed] != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id)) continue;
+			TogglePlayerControllable(id,1);
+			format(string,sizeof(string),lang_texts[12][56],oGetPlayerName(playerid));//игроку
+			SendPlayerFormattedText(id,string, 0,COLOUR_XP_GOOD);
 		}
 		format(string,sizeof(string),lang_texts[12][77]);
 		SendPlayerFormattedText(playerid,string,0,COLOUR_XP_GOOD);
