@@ -48,6 +48,7 @@ Date start Open-GTO: 	5 November 2009
 #include "bank"								// bank money to keep it on death
 #include "payday" 							// pay players money based on level
 #include "groundhold"						// hold ground to gain money, pirate ship, etc
+#include "admin\functions"
 #include "admin\admin_func"
 #include "admin\mod_func"
 #include "admin\admin_commands"				// admin commands
