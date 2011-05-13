@@ -1,10 +1,10 @@
-//
-// Created:     01.02.11
-// Aurthor:    ZiGGi
-//
+/*
+	Created: 01.02.11
+	Aurthor: ZiGGi
+*/
 
 #if defined _fastfood_included
-#endinput
+	#endinput
 #endif
 
 #define _fastfood_included
@@ -26,7 +26,10 @@ enum FoodInfo {
 }
 new Food[][FoodInfo] = {
 	{"Гнилой корень",10,10.0},
-	{"Петрушка с хреном",50,25.0}
+	{"Печеньки с молоком",15,25.0},
+	{"Петрушка с хреном",25,50.0},
+	{"Яйца в смятку",35,80.0},
+	{"Амлет с колбасой",45,100.0}
 };
 
 stock fastfood_OnGameModeInit()
@@ -47,7 +50,7 @@ stock fastfood_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 
 stock fastfood_ShowDialog(playerid)
 {
-	new string[MAX_STRING];
+	new string[256];
 	for(new i=0;i<sizeof(Food);i++)
 		format(string,sizeof(string),"%s%s(цена: %d, насыщение: %0.0f)\n",string,Food[i][food_name],Food[i][food_cost],Food[i][food_hp]);
 	return ShowPlayerDialog(playerid,fastfood_DialogID,DIALOG_STYLE_LIST,
@@ -66,6 +69,7 @@ stock fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(oGetPlayerMoney(playerid) < Food[listitem][food_cost])
 			return show_Msg_Dialog(playerid,"Покупка еды","Вам не хватает денег!","ОК");
 		oGivePlayerMoney(playerid,-Food[listitem][food_cost],1);
+		ApplyAnimation(playerid,"FOOD","EAT_Burger",4.0,1,1,1,1,1);
 		if(Food[listitem][food_hp] + oGetPlayerHealth(playerid) > GetMaxHealth(playerid))
 			oSetPlayerHealth(playerid,GetMaxHealth(playerid));
 		else

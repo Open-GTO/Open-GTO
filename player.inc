@@ -18,7 +18,6 @@
 
 enum PlayerInfo {
 	IsActive,      // is player online
-	Float:Health,   // health
 	Money,           // Money
 	Bank,            // Money in bank
 	Level,           // Level
@@ -53,9 +52,6 @@ new Player[MAX_PLAYERS][PlayerInfo];
 #define GetPlayerXP(%1) Player[%1][XP]
 #define SetPlayerXP(%1,%2) Player[%1][XP] = %2
 
-#define PLAYER_XP_DEATH_MINUS_PROC 3 // сколько процентов XP уберается от уже имеющегося опыта
-#define PLAYER_MONEY_DEATH_MINUS_PROC 20 // сколько процентов денег уберается
-
 #include "weapons"
 
 new PlayerSkin[MAX_PLAYERS];
@@ -89,12 +85,12 @@ new Float:PlayerCP[MAX_PLAYERS][CoordInfo];
 new bool:PlayerCPActive[MAX_PLAYERS];
 
 new PlayerJustTeleported[MAX_PLAYERS];
-new PlayerStartMoney = 500;
+new PlayerStartMoney = PLAYER_START_MONEY;
 new PlayerJailed = 0;
 new PlayerMuted = 0;
-new PlayerStartWeapon1 = WEAPON_COLT45;
-new PlayerStartWeapon2 = 0;
-new PlayerStartWeapon3 = 0;
+new PlayerStartWeapon1 = PLAYER_START_WEAPON_1;
+new PlayerStartWeapon2 = PLAYER_START_WEAPON_2;
+new PlayerStartWeapon3 = PLAYER_START_WEAPON_3;
 
 enum PlayerSpawnInfo {
 	playerspawn_level,
@@ -211,12 +207,8 @@ stock player_OnGameModeInit()
 
 stock Float:GetMaxHealth(playerid)
 {
-	if(!IsPlayerConnected(playerid)) return 0.0;
-	new Float:maxhealth=50.0;
-	if(Player[playerid][Level] == 0) return 50.0;
-	if(Player[playerid][Level] >= 10) return 100.0;
-	maxhealth = (50.0 + (Player[playerid][Level] * 5.0));
-	return maxhealth;
+	new Float:new_hp = MIN_HEALTH + (Player[playerid][Level] * HEALTH_TARIF);
+	return (new_hp > MAX_HEALTH) ? MAX_HEALTH : new_hp;
 }
 
 stock Float:oGetPlayerHealth(playerid)
@@ -248,6 +240,7 @@ stock SyncPlayers()
 	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
 	{
 		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) continue;
+		if(GetPVarInt(playerid,"Spawned") == 0) continue; // если игрок мертв, то защиты не срабатывают
 		if(PlayerJustTeleported[playerid] > 0) PlayerJustTeleported[playerid]--;
 		SyncMoney(playerid);
 		SyncHealth(playerid);
@@ -308,12 +301,12 @@ stock KickPlayer(playerid,reason[])
 
 stock HealthRegen(id)
 {
-	if((Player[id][Health] <= 0) || (Player[id][Health] >= 100)) return 1;
-	if(Player[id][Health] < MIN_HEALTH+(Player[id][Level]*5.0)) // if we regenerate health
+	new playerState = GetPlayerState(id);
+	if(playerState == PLAYER_STATE_WASTED || GetPVarFloat(id,"Health") >= MAX_HEALTH) return 0;
+	if(GetPVarFloat(id,"Health") < GetMaxHealth(id))
 	{
-		new Float:newhealth = Player[id][Health]+((Player[id][Level]*0.25));
-		if(newhealth > 100) newhealth = 100;
-		oSetPlayerHealth(id, newhealth); // give some health
+		new Float:newhealth = GetPVarFloat(id,"Health") + (Player[id][Level] * HEALTH_REGEN_TARIF);
+		oSetPlayerHealth(id, (newhealth > MAX_HEALTH) ? MAX_HEALTH : newhealth);
 	}
 	return 1;
 }
@@ -376,6 +369,7 @@ stock GetRndPlayerSpawnByLevel(level)
 
 stock player_OnPlayerSpawn(playerid)
 {
+	SetPVarInt(playerid,"Spawned",1);
 	new GH = ganghouse(playerid);
 	SpawnTime[playerid] = 0;
 	SetPlayerInterior(playerid,0);
@@ -518,9 +512,10 @@ stock player_OnPlayerConnect(playerid)
 stock player_OnPlayerDeath(playerid,killerid,reason)
 {
 	#pragma unused reason
+	SetPVarInt(playerid,"Spawned",0);
 	Player[playerid][Deaths]++;
 	PlayerCurrentKills[playerid] = 0;
-	if(oGetPlayerHealth(killerid) > 100) KickPlayer(killerid,"Invalid health amount. (cheat?)");
+	if(oGetPlayerHealth(killerid) > MAX_HEALTH) KickPlayer(killerid,"Invalid health amount. (cheat?)");
 	oGivePlayerMoney(playerid,-100,0);
 
 	new WeaponSkillID = GetWeaponSkillID(reason);
@@ -586,8 +581,7 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	if(stolencash != 0)
 	{
 		oGivePlayerMoney(victimid,-stolencash,1);
-		if(oGetPlayerMoney(killerid) + stolencash > MAX_MONEY) oSetPlayerMoney(killerid,MAX_MONEY);
-		else oGivePlayerMoney(killerid,stolencash,1);
+		oGivePlayerMoney(killerid,stolencash,1);
 	}
 	//
 
@@ -822,7 +816,8 @@ stock oGetPlayerName(playerid)
 
 stock oSetPlayerHealth(playerid,Float:health)
 {
-	return SetPlayerHealth(playerid, (Player[playerid][Health] = health));
+	SetPVarFloat(playerid,"Health",health);
+	return SetPlayerHealth(playerid,health);
 }
 
 stock oGivePlayerWeapon(playerid,weaponid,ammo)

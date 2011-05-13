@@ -23,8 +23,21 @@
 #define INVALID_QUEST_ID	0
 #define MAX_QUESTS			255
 
-#define MIN_HEALTH			20
-#define MAX_HEALTH			100
+// игрок
+#define MIN_HEALTH			20.0
+#define MAX_HEALTH			100.0
+#define HEALTH_TARIF		4.0	// степень увеличения максимального здоровья от лвл
+#define HEALTH_REGEN_TARIF	0.4
+
+// при смерти
+#define PLAYER_XP_DEATH_MINUS_PROC 3 // сколько процентов XP уберается от уже имеющегося опыта
+#define PLAYER_MONEY_DEATH_MINUS_PROC 20 // сколько процентов денег уберается
+
+// стартовые параметры игрока
+#define PLAYER_START_MONEY		1500
+#define PLAYER_START_WEAPON_1	WEAPON_COLT45
+#define PLAYER_START_WEAPON_2	0
+#define PLAYER_START_WEAPON_3	0
 
 #define MAX_COUNTDOWN		5
 #define KEY_USING			KEY_WALK // Кнопка 'Ходьба' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов

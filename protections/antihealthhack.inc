@@ -31,13 +31,10 @@ stock SyncHealth(playerid)
 {
 	if(AntiHealthHackEnabled != 1) return 1;
 	new Float:clienthealth = oGetPlayerHealth(playerid);
+	if(clienthealth == GetPVarFloat(playerid,"Health")) return 1;
+	if(clienthealth < GetPVarFloat(playerid,"Health")) return SetPVarFloat(playerid,"Health",clienthealth);
+	if(clienthealth > MAX_HEALTH) return oSetPlayerHealth(playerid,GetPVarFloat(playerid,"Health"));
+	if(clienthealth > GetPVarFloat(playerid,"Health")) return oSetPlayerHealth(playerid,GetPVarFloat(playerid,"Health"));
 	if(clienthealth < 0) return oSetPlayerHealth(playerid,0);
-	if(clienthealth == Player[playerid][Health]) return 1;
-	if(clienthealth < Player[playerid][Health])
-	{
-		Player[playerid][Health] = clienthealth;
-		return 1;
-	}
-	if(clienthealth > Player[playerid][Health]) return oSetPlayerHealth(playerid,Player[playerid][Health]);
 	return 1;
 }
