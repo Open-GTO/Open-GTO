@@ -181,9 +181,9 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 
 	//œÀ¿“Õ€≈  ŒÃ¿Õƒ€
-	if((!strcmp(cmd,"/skydive",true)) && !IsPlayerInAnyDM(playerid))
+	if(!strcmp(cmd,"/skydive",true))
 	{
-		if(Player[playerid][Jailed] == 1) return 0;
+		if(Player[playerid][Jailed] == 1 || GetPlayerInterior(playerid) != 0 || IsPlayerInAnyDM(playerid)) return 0;
 		new string[MAX_STRING];
 		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][19]);
 		new Float:playerx,Float:playery,Float:playerz;
