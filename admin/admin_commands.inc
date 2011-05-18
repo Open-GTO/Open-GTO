@@ -136,12 +136,11 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	if(!strcmp(cmd,"/about",true))
 	{
-		SendClientMessage(playerid, COLOUR_GREEN, "Administrator RCON:______________________________________________________________");
+		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][55]);
 		SendClientMessage(playerid, COLOUR_LIGHTRED, lang_texts[15][51]);
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][52]);
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][53]);
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][54]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[15][55]);
 	}
 	if(!strcmp(cmd,"/boom", true))
 	{
