@@ -523,9 +523,6 @@ stock JoinRace(raceid,playerid)
 		WriteLog(GameLog,logstring);
 	}
 	SendMessageToRacers(raceid,string,COLOUR_WHITE);
-
-//	Player[playerid][Hide] = 1;
-//	PushHide(playerid);
 	
 	oGivePlayerMoney(playerid,0-Race[raceid][race_cashentry],1);
 	GameTextForPlayer(playerid, "~g~Race Entered.",3000,6);
@@ -618,8 +615,6 @@ stock LeaveRace(raceid,playerid)
 		oGivePlayerMoney(playerid,Race[raceid][race_cashentry],1); // give player back thier cash entry
 		GameTextForPlayer(playerid, "~r~Race Aborted.",5000,6);
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[10][36]);
-//		Player[playerid][Hide] = 0;
-//		PushHide(playerid);
 	}
 	else
 	{
@@ -943,8 +938,6 @@ stock FinishRace(raceid,playerid)
 	}
 
 	LeaveRace(raceid,playerid);
-//	Player[playerid][Hide] = 0;
-//	PushHide(playerid);
 }
 
 stock StartRaceLineup(raceid)

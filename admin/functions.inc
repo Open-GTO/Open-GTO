@@ -87,8 +87,10 @@ stock SendMessageToAdmins(playerid, color, text[])
 stock PushHide(playerid)// скрыть/показать игрока
 {
 	new hidecont;
-	if(Player[playerid][Hide] > 0) hidecont = 0;
-	else hidecont = PlayerGangColour(playerid);
+	if(GetPVarInt(playerid,"Hide") > 0)
+		hidecont = 0;
+	else
+		hidecont = PlayerGangColour(playerid);
 	for(new id=GetMaxPlayers()-1;id>=0;--id)
 	{
 		if(IsPlayerConnected(id) && !IsPlayerNPC(id) && !IsPlayerAdmin(id) && id != playerid)
@@ -100,10 +102,10 @@ stock PushHide(playerid)// скрыть/показать игрока
 
 stock LoadHide(playerid) // скрытие игроков при входе в игру
 {
-	if(Player[playerid][Hide] == 1)	PushHide(playerid);
+	if(GetPVarInt(playerid,"Hide") == 1) PushHide(playerid);
 	for(new id=GetMaxPlayers()-1;id>=0;--id)
 	{
-		if(IsPlayerConnected(id) && !IsPlayerNPC(id) && (Player[id][Hide] == 1) && !IsPlayerAdmin(playerid))
+		if(IsPlayerConnected(id) && !IsPlayerNPC(id) && (GetPVarInt(playerid,"Hide") == 1) && !IsPlayerAdmin(playerid))
 			SetPlayerMarkerForPlayer(playerid,id,0);
 	}
 	return 1;
@@ -179,4 +181,13 @@ stock JailTimer()
 		}
 	}
 	return 1;
+}
+
+stock IsSkinValid(SkinID)
+{
+	switch(SkinID)
+	{
+		case 0,7,9..41,43..64,66..73,75..85,87..118,120..148,150..207,209..264,274..288,290..299: return true;
+	}
+	return false;
 }

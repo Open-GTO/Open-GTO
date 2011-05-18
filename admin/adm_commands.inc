@@ -1,14 +1,16 @@
 //
 // Created: 18.12.2007
 // Aurthor: Dmitry Frolov (FP)
+// Modified: ZiGGi
 //
 
 #if defined _adm_commands_included
-#endinput
+	#endinput
 #endif
 
 #define _adm_commands_included
 #pragma library adm_commands
+
 #include "base"
 #include "utils\gtoutils"
 #include "player"
@@ -108,10 +110,18 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/tele-set",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
-		GetPlayerPos(playerid,LocX[playerid],LocY[playerid],LocZ[playerid] );
-		GetPlayerFacingAngle(playerid,Ang[playerid]);
+		new Float:pos[4];
+		GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
+		GetPlayerFacingAngle(playerid,pos[3]);
+		SetPVarFloat(playerid,"LocX",pos[0]);
+		SetPVarFloat(playerid,"LocY",pos[1]);
+		SetPVarFloat(playerid,"LocZ",pos[2]);
+		SetPVarFloat(playerid,"Ang",pos[3]);
 		new string[MAX_STRING];
-		format(string,sizeof(string),lang_texts[12][68],LocX[playerid],LocY[playerid],LocZ[playerid],Ang[playerid]);
+		format(string,sizeof(string),
+			lang_texts[12][68],
+			GetPVarFloat(playerid,"LocX"),GetPVarFloat(playerid,"LocY"),GetPVarFloat(playerid,"LocZ"),GetPVarFloat(playerid,"Ang")
+		);
 		SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 		return 1;
 	}
@@ -119,7 +129,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, cmd);
-		if(LocX[playerid] == 0.0 && LocY[playerid] == 0.0 && LocZ[playerid] == 0.0) 
+		if(GetPVarFloat(playerid,"LocX") == 0.0 && GetPVarFloat(playerid,"LocY") == 0.0 && GetPVarFloat(playerid,"LocZ") == 0.0)
 		{
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][69]);
@@ -130,13 +140,13 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 			if(IsPlayerInAnyVehicle(playerid)) 
 			{
 				new VehicleID = GetPlayerVehicleID(playerid);
-				SetVehiclePos(VehicleID,LocX[playerid],LocY[playerid],LocZ[playerid]);
-				SetPlayerFacingAngle(playerid,Ang[playerid]);
+				SetVehiclePos(VehicleID,GetPVarFloat(playerid,"LocX"),GetPVarFloat(playerid,"LocY"),GetPVarFloat(playerid,"LocZ"));
+				SetPlayerFacingAngle(playerid,GetPVarFloat(playerid,"Ang"));
 			} 
 			else 
 			{
-				SetPlayerPos(playerid,LocX[playerid],LocY[playerid],LocZ[playerid]);
-				SetPlayerFacingAngle(playerid,Ang[playerid]);
+				SetPlayerPos(playerid,GetPVarFloat(playerid,"LocX"),GetPVarFloat(playerid,"LocY"),GetPVarFloat(playerid,"LocZ"));
+				SetPlayerFacingAngle(playerid,GetPVarFloat(playerid,"Ang"));
 			}
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][70]);

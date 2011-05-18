@@ -29,7 +29,6 @@ enum PlayerInfo {
 	CarKills,         // cars killed
 	Status,		      // 0-user,1>-moderator,admins
 	SkinModel,	     // Skin Model
-	Hide,		     // Hide on the radar
 	JailTime,	     // Time for Jails
 	MuteTime,	     // Time for Mute
 	ClickedPlayerid, // clicked player
@@ -440,7 +439,6 @@ stock player_ResetStats(playerid)
 	Player[playerid][JailTime] = 0;
 	Player[playerid][MuteTime] = 0;
 	Player[playerid][Status] = 0;
-	Player[playerid][Hide] = 0;
 	Player[playerid][SkinModel] = 1;
 	Player[playerid][FightStyle] = 4;
 	Player[playerid][FightStyleUsed] = 4;
