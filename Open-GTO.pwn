@@ -284,7 +284,6 @@ public OnPlayerDeath(playerid, killerid, reason)
 		player_OnPlayerKill(killerid,playerid,reason);
 		trucker_OnPlayerDeath(playerid,killerid,reason);
 		gang_OnPlayerDeath(playerid,killerid,reason);
-//		DropPlayerWeapons(playerid);
 		PlayCrimeReportForPlayer(killerid,killerid,random(18)+3);
 		PlayCrimeReportForPlayer(playerid,killerid,random(18)+3);
  	}
@@ -470,7 +469,7 @@ public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	{
 		if( IsPlayerAtEnterExit(playerid) ) return interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( IsPlayerAtHouse(playerid) ) return housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
-		if( IsPlayerAtBusinesses(playerid) != -1 ) return business_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		if( IsPlayerAtBusiness(playerid) ) return business_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( IsPlayerAtBank(playerid) != -1 ) return bank_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( IsPlayerAtAmmunation(playerid) != -1 ) return weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( GetPlayerFightTrenerID(playerid) != -1 ) return fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
