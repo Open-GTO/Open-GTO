@@ -70,7 +70,7 @@ stock groundhold_LoadAll()
 		format(filename_gh,sizeof(filename_gh),"%s%s"GTO_FILES_FORMAT,GroundholdDB,Groundholds[i][gh_name]);
 		if(!ini_Exist(filename_gh)) groundhold_SaveAll();
 		file_gh = ini_Open(filename_gh);
-		ini_Get(file_gh,"Name",Groundholds[i][gh_name],MAX_STRING);
+		ini_Get(file_gh,"Name",Groundholds[i][gh_name],MAX_NAME);
 		ini_GetInt(file_gh,"Money",Groundholds[i][gh_money]);
 		ini_GetInt(file_gh,"XP",Groundholds[i][gh_xp]);
 		ini_GetInt(file_gh,"Multi",Groundholds[i][gh_multi]);

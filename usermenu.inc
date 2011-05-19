@@ -125,7 +125,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				case 1: // Мои бизнесы
 				{
 					new count = 0;
-					for(new id=0;id<MAX_BUSINESSES;id++)
+					for(new id=0;id<sizeof(Businesses);id++)
 					{
 						if(!strcmp(Businesses[id][Business_Owner], oGetPlayerName(playerid), true))
 						{

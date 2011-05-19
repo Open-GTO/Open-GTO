@@ -181,8 +181,8 @@ public OnGameModeInit()
 	#tryinclude "misc\objects"
 	print("SERVER: Objects and Pickups init");
 
-	new hour,minute,second;
-	gettime(hour,minute,second);
+	new hour,minute;
+	gettime(hour,minute);
 	WorldTime = hour;
 	SetWorldTime(hour);
 	printf("SERVER: Worldtime set as %d",hour);
@@ -192,6 +192,7 @@ public OnGameModeInit()
 	SetTimer("OneMinuteTimer",60000,1); // 1 minute
 	SetTimer("OneHourTimer",3600000,1); // 1 hour
 	SpawnWorld();
+	
 	WorldSave();
 	printf("SERVER: Open-GTO "#VERSION" initialization complete. [%02d:%02d]",hour,minute);
 	WriteLog(GameLog,"SERVER: Open-GTO "#VERSION" initialization complete. ");
@@ -246,7 +247,6 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 
 public OnPlayerPickUpPickup(playerid,pickupid)
 {
-//	WeaponPickup(playerid,pickupid);
     return 1;
 }
 
@@ -340,33 +340,12 @@ public OnPlayerRequestClass(playerid, classid)
 		SetPVarInt(playerid,"player_class_zero",0);
 	}
 	//
-	switch(GetPVarInt(playerid,"RequestCity"))
-	{
-	    case 0:
-	    {
-			SetPlayerInterior(playerid,11);
-			SetPlayerPos(playerid,508.7362,-87.4335,998.9609);
-			SetPlayerFacingAngle(playerid,0.0);
-	    	SetPlayerCameraPos(playerid,508.7362,-83.4335,998.9609);
-			SetPlayerCameraLookAt(playerid,508.7362,-87.4335,998.9609);
-		}
-		case 1:
-		{
-			SetPlayerInterior(playerid,3);
-			SetPlayerPos(playerid,-2673.8381,1399.7424,918.3516);
-			SetPlayerFacingAngle(playerid,181.0);
-	    	SetPlayerCameraPos(playerid,-2673.2776,1394.3859,918.3516);
-			SetPlayerCameraLookAt(playerid,-2673.8381,1399.7424,918.3516);
-		}
-		case 2:
-		{
-			SetPlayerInterior(playerid,3);
-			SetPlayerPos(playerid,349.0453,193.2271,1014.1797);
-			SetPlayerFacingAngle(playerid,286.25);
-	    	SetPlayerCameraPos(playerid,352.9164,194.5702,1014.1875);
-			SetPlayerCameraLookAt(playerid,349.0453,193.2271,1014.1797);
-		}
-	}
+	new req_id = GetPVarInt(playerid,"RequestPlace");
+	SetPlayerInterior(playerid,RequestPlace[req_id][Interior]);
+	SetPlayerPos(playerid,RequestPlace[req_id][player_X],RequestPlace[req_id][player_Y],RequestPlace[req_id][player_Z]);
+	SetPlayerFacingAngle(playerid,RequestPlace[req_id][player_A]);
+	SetPlayerCameraPos(playerid,RequestPlace[req_id][camera_pos_X],RequestPlace[req_id][camera_pos_Y],RequestPlace[req_id][camera_pos_Z]);
+	SetPlayerCameraLookAt(playerid,RequestPlace[req_id][camera_look_X],RequestPlace[req_id][camera_look_Y],RequestPlace[req_id][camera_look_Z]);
 	return 1;
 }
 

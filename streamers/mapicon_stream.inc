@@ -175,7 +175,7 @@ stock GetIconSlot(playerid,icon_id)
 
 stock update_House_IconType(playerid,icon_id)
 {
-	for(new house_id=0;house_id<MAX_HOUSES;house_id++)
+	for(new house_id=0;house_id<sizeof(Houses);house_id++)
 	{
 		if(house_icon[house_id] != icon_id) continue;
 		if(!strcmp(Houses[house_id][Houses_Owner],oGetPlayerName(playerid))

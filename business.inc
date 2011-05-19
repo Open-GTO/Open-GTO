@@ -23,7 +23,7 @@
 #define bis_Msg_DialogID 600
 #define UPGRADE_TARIF 10
 
-new Text3D:Business3DTextLabel[MAX_BUSINESSES],Float:BusinessDistanceOfShowLabel=20.0;
+new Text3D:Business3DTextLabel[sizeof(Businesses)],Float:BusinessDistanceOfShowLabel=20.0;
 
 BusinessLoadAll()
 {
@@ -34,7 +34,7 @@ BusinessLoadAll()
 		ini_GetFloat(file_business_cfg,"Business_DistanceOfShowLabel",BusinessDistanceOfShowLabel);
 		ini_Close(file_business_cfg);
 	}
-	for(new i=0,file_business,businessdbname[MAX_STRING];i<MAX_BUSINESSES;i++)
+	for(new i=0,file_business,businessdbname[MAX_STRING];i<sizeof(Businesses);i++)
 	{
 		format(businessdbname,sizeof(businessdbname),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[i][Business_Name]);
 		if(!ini_Exist(businessdbname)) continue;
@@ -43,7 +43,7 @@ BusinessLoadAll()
         ini_GetInt(file_business,"Cost",Businesses[i][Business_Cost]);
         ini_GetInt(file_business,"Value",Businesses[i][Business_Value]);
 		ini_GetInt(file_business,"Level",Businesses[i][Business_Level]);
-        ini_Get(file_business,"Owner",Businesses[i][Business_Owner],MAX_STRING);
+        ini_Get(file_business,"Owner",Businesses[i][Business_Owner],MAX_NAME);
         ini_GetInt(file_business,"Buyout",Businesses[i][Business_Buyout]);
         ini_GetInt(file_business,"Vault",Businesses[i][Business_Vault]);
         ini_GetInt(file_business,"Upgrade",Businesses[i][Business_Upgrade]);
@@ -65,11 +65,11 @@ BusinessSaveAll()
 		ini_SetFloat(file_business_cfg,"Business_DistanceOfShowLabel",BusinessDistanceOfShowLabel);
 		ini_Close(file_business_cfg);
 	}
-	for(new i=0,file_business,businessdbname[MAX_STRING];i<MAX_BUSINESSES;i++)
+	for(new i=0,file_business,businessdbname[MAX_STRING];i<sizeof(Businesses);i++)
 	{
 		format(businessdbname,sizeof(businessdbname),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[i][Business_Name]);
 		file_business = (!ini_Exist(businessdbname)) ? ini_Create(businessdbname) : ini_Open(businessdbname);
-		ini_Set(file_business,"Name",Businesses[i][Business_Name]);
+		//ini_Set(file_business,"Name",Businesses[i][Business_Name]);
 		ini_SetInt(file_business,"Cost",Businesses[i][Business_Cost]);
         ini_SetInt(file_business,"Value",Businesses[i][Business_Value]);
 		ini_SetInt(file_business,"Level",Businesses[i][Business_Level]);
@@ -90,7 +90,7 @@ stock business_OnGameModeInit()
 {
 	BusinessLoadAll();
 	new string[MAX_STRING];
-	for(new id=0;id<MAX_BUSINESSES;id++)
+	for(new id=0;id<sizeof(Businesses);id++)
 	{
 		CreatePickup(1274,49,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.5);	//синий домик
 		if(Businesses[id][Business_ShowIcon] == 1)
@@ -120,7 +120,7 @@ stock bis_ShowDialog_General(playerid)
 
 stock IsPlayerAtBusiness(playerid)
 {
-	for(new id=0;id<MAX_BUSINESSES;id++)
+	for(new id=0;id<sizeof(Businesses);id++)
 		if(IsPlayerInRangeOfPoint(playerid,2,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]))
 			return 1;
 	return 0;
@@ -128,7 +128,7 @@ stock IsPlayerAtBusiness(playerid)
 
 stock GetBusinessID(playerid)
 {
-	for(new id=0;id<MAX_BUSINESSES;id++)
+	for(new id=0;id<sizeof(Businesses);id++)
 		if(IsPlayerInRangeOfPoint(playerid,2,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]))
 			return id;
 	return -1;
@@ -137,7 +137,7 @@ stock GetBusinessID(playerid)
 stock TurnAround()
 {
 	new file_busin;
-	for(new id=0;id<MAX_BUSINESSES;id++)
+	for(new id=0;id<sizeof(Businesses);id++)
 	{
 		if(strcmp(Businesses[id][Business_Owner], "Unknown", true))
 		{
@@ -333,10 +333,10 @@ stock bis_Buy(playerid)
 			format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,PlayerDB,Businesses[id][Business_Owner]);
 			if(ini_Exist(filename))
 			{
-				new tempmoney,file = ini_Open(filename);
-				ini_GetInt(file,"Money",tempmoney);
-				ini_SetInt(file,"Money",tempmoney+price);
-				ini_Close(file);
+				new tempmoney,file_busin = ini_Open(filename);
+				ini_GetInt(file_busin,"Money",tempmoney);
+				ini_SetInt(file_busin,"Money",tempmoney+price);
+				ini_Close(file_busin);
 			}
 		}
 		set(Businesses[id][Business_Owner],oGetPlayerName(playerid));
@@ -345,10 +345,10 @@ stock bis_Buy(playerid)
 		format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
 		if(ini_Exist(filename))
 		{
-			new file = ini_Open(filename);
-			ini_Set(file,"Owner",Businesses[id][Business_Owner]);
-			ini_SetInt(file,"Buyout",Businesses[id][Business_Buyout]);
-			ini_Close(file);
+			new file_busin = ini_Open(filename);
+			ini_Set(file_busin,"Owner",Businesses[id][Business_Owner]);
+			ini_SetInt(file_busin,"Buyout",Businesses[id][Business_Buyout]);
+			ini_Close(file_busin);
 		}
 		format(temp,sizeof(temp),lang_texts[3][22],Businesses[id][Business_Name]);
 		strcat(string,temp,sizeof(string));
@@ -389,11 +389,11 @@ stock bis_Sell(playerid)
 		format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
 		if(ini_Exist(filename))
 		{
-			new file = ini_Open(filename);
-			ini_Set(file,"Owner","Unknown");
-			ini_SetInt(file,"Buyout",Businesses[id][Business_Buyout]);
-			ini_SetInt(file,"Upgrade",Businesses[id][Business_Upgrade]);
-			ini_Close(file);
+			new file_busin = ini_Open(filename);
+			ini_Set(file_busin,"Owner","Unknown");
+			ini_SetInt(file_busin,"Buyout",Businesses[id][Business_Buyout]);
+			ini_SetInt(file_busin,"Upgrade",Businesses[id][Business_Upgrade]);
+			ini_Close(file_busin);
 		}
 		new string[MAX_STRING];
 		format(temp,sizeof(temp), lang_texts[3][30] ,Businesses[id][Business_Name]);
@@ -436,9 +436,9 @@ stock bis_Collect(playerid)
 			format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
 			if(ini_Exist(filename))
 			{
-				new file = ini_Open(filename);
-				ini_SetInt(file,"Vault",Businesses[id][Business_Vault]);
-				ini_Close(file);
+				new file_busin = ini_Open(filename);
+				ini_SetInt(file_busin,"Vault",Businesses[id][Business_Vault]);
+				ini_Close(file_busin);
 			}
 		}
 		else
@@ -452,7 +452,7 @@ stock bis_Collect(playerid)
 stock bis_ShowDialog_Bises(playerid)
 {
 	new temp[MAX_STRING],string[2048];
-	for(new id=0;id<MAX_BUSINESSES;id++)
+	for(new id=0;id<sizeof(Businesses);id++)
 	{
 		if(strcmp(Businesses[id][Business_Owner], "Unknown", true))
 		{
@@ -479,7 +479,7 @@ stock bis_ShowDialog_Bises(playerid)
 stock bis_ShowDialog_MyBises(playerid)
 {
 	new temp[MAX_STRING],string[2048],count = 0;
-	for(new id=0;id<MAX_BUSINESSES;id++)
+	for(new id=0;id<sizeof(Businesses);id++)
 	{
 		if(!strcmp(Businesses[id][Business_Owner], oGetPlayerName(playerid), true))
 		{
@@ -531,9 +531,9 @@ stock bis_buyUpgrade(playerid)
 		Businesses[id][Business_Upgrade]++;
 		if(ini_Exist(filename))
 		{
-		    new file = ini_Open(filename);
-			ini_SetInt(file,"Upgrade",Businesses[id][Business_Upgrade]);
-			ini_Close(file);
+		    new file_busin = ini_Open(filename);
+			ini_SetInt(file_busin,"Upgrade",Businesses[id][Business_Upgrade]);
+			ini_Close(file_busin);
 		}
 		
 		format(str,sizeof(str),lang_texts[3][58],Businesses[id][Business_Name],Businesses[id][Business_Upgrade]);
@@ -545,7 +545,7 @@ stock bis_buyUpgrade(playerid)
 stock business_Update3DTextLabelText()
 {
 	new string[MAX_STRING];
-	for(new id=0;id<MAX_BUSINESSES;id++)
+	for(new id=0;id<sizeof(Businesses);id++)
 	{
 		format(string,sizeof(string),"Бизнес: %s\nСтоимость: %d\nПрибыль: %d\nСейчас принадлежит: %s\nМин.Уровень: %d\nУровень бизнеса: %d",Businesses[id][Business_Name],Businesses[id][Business_Cost],Businesses[id][Business_Value],Businesses[id][Business_Owner],Businesses[id][Business_Level],Businesses[id][Business_Upgrade]);
 		Update3DTextLabelText(Business3DTextLabel[id],COLOUR_WHITE,string);

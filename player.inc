@@ -1025,7 +1025,7 @@ not_gang:
 	ini_Get(file_player,"WeaponsSkills",wepstr);
 	SetWeaponsSkillsFromDBString(playerid,wepstr);
 	ini_GetInt(file_player,"SkinModel",Player[playerid][SkinModel]);
-	ini_Get(file_player,"VIP",Player[playerid][VIPDate],MAX_STRING);
+	ini_Get(file_player,"VIP",Player[playerid][VIPDate],15);
 	if(VIPCheck(Player[playerid][VIPDate]))
 		Player[playerid][VIP] = true;
 	else

@@ -133,7 +133,7 @@ stock RaceLoadBaseDB(raceid)
 	format(rdbname,sizeof(rdbname),"%s%s"GTO_FILES_FORMAT,RaceBaseDB,Race[raceid][race_name]);
 	if(!ini_Exist(rdbname)) return INVALID_RACE_ID;
 	new file_race = ini_Open(rdbname);
-	ini_Get(file_race,"Name",Race[raceid][race_name],MAX_STRING);
+	ini_Get(file_race,"Name",Race[raceid][race_name],MAX_NAME);
 	if(raceid == INVALID_RACE_ID)
 	{
 		printf("Race: '%s' Failed to load. (db)",Race[raceid][race_name]);
@@ -188,8 +188,8 @@ stock RaceLoadRecordDB(raceid)
 	if(!ini_Exist(rdbname)) return 0;
 	new file = ini_Open(rdbname);
 	ini_GetInt(file,"Best_Time_Record",BestScore[raceid][race_score_time]);
-    ini_Get(file,"Best_Time_Player",BestScore[raceid][race_score_player],MAX_STRING);
-    ini_Get(file,"Best_Time_Vehicle",BestScore[raceid][race_score_vehicle],MAX_STRING);
+    ini_Get(file,"Best_Time_Player",BestScore[raceid][race_score_player],MAX_NAME);
+    ini_Get(file,"Best_Time_Vehicle",BestScore[raceid][race_score_vehicle],MAX_NAME);
 	ini_Close(file);
 	return 1;
 }

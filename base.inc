@@ -135,7 +135,7 @@ stock BaseLoadConfig()
 			format(temp,sizeof(temp),"Level%d_Experience",i);
 			ini_GetInt(file_base_level,temp,LevelList[i][level_xp]);
 			format(temp,sizeof(temp),"Level%d_Rankname",i);
-			ini_Get(file_base_level,temp,LevelList[i][level_name],MAX_STRING);
+			ini_Get(file_base_level,temp,LevelList[i][level_name],MAX_NAME);
 		}
 		ini_Close(file_base_level);
 	}
@@ -172,7 +172,7 @@ stock base_OnGameModeInit()
 	return 1;
 }
 
-GetLevelName(level)
+stock GetLevelName(level)
 {
 	new name[MAX_NAME];
 	if((level < 0) || (level > MAX_LEVEL+1)) return name;

@@ -123,7 +123,7 @@ stock DeathmatchLoadBaseDB(dmid)
 	format(rdbname,sizeof(rdbname),"%s%s"GTO_FILES_FORMAT,DMBaseDB,Deathmatch[dmid][dm_name]);
 	if(!ini_Exist(rdbname)) return INVALID_DM_ID;
 	new file_dm = ini_Open(rdbname);
-	ini_Get(file_dm,"Name",Deathmatch[dmid][dm_name],MAX_STRING);
+	ini_Get(file_dm,"Name",Deathmatch[dmid][dm_name],MAX_NAME);
 
 	if(dmid <= 0)
 	{
@@ -222,7 +222,7 @@ stock DeathmatchLoadRecordDB(dmid)
 	if(!ini_Exist(rdbname)) return;
 	new file_dm = ini_Open(rdbname);
 	ini_GetInt(file_dm,"Best_Score_Record",DMBestScore[dmid][dm_score_record]);
-	ini_Get(file_dm,"Best_Score_Player",DMBestScore[dmid][dm_score_player],MAX_STRING);
+	ini_Get(file_dm,"Best_Score_Player",DMBestScore[dmid][dm_score_player],MAX_NAME);
 	ini_GetInt(file_dm,"Best_Score_Kills",DMBestScore[dmid][dm_score_kills]);
 	ini_GetInt(file_dm,"Best_Score_Deaths",DMBestScore[dmid][dm_score_deaths]);
 	ini_Close(file_dm);

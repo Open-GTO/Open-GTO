@@ -105,7 +105,7 @@ stock WeaponLoadAll()
 		format(weapondbname,sizeof(weapondbname),"%s%s"GTO_FILES_FORMAT,WeaponDB,Weapons[i][Weapon_Name]);
 		if(!ini_Exist(weapondbname)) continue;
 		file_weapons = ini_Open(weapondbname);
-		ini_Get(file_weapons,"Name",Weapons[i][Weapon_Name],MAX_STRING);
+		ini_Get(file_weapons,"Name",Weapons[i][Weapon_Name],MAX_NAME);
         ini_GetInt(file_weapons,"IsAllowed",Weapons[i][Weapon_Allowed]);
         ini_GetInt(file_weapons,"Level",Weapons[i][Weapon_Level]);
         ini_GetInt(file_weapons,"Price",Weapons[i][Weapon_Cost]);

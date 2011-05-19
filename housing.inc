@@ -20,7 +20,7 @@
 //#define BUY_ALL_HOUSES // позволяет запретить покупать чужие дома
 
 new Hous[MAX_PLAYERS],Haus[MAX_PLAYERS];
-new house_icon[MAX_HOUSES],Text3D:House3DTextLabel[MAX_HOUSES],Float:HouseDistanceOfShowLabel=20.0;
+new house_icon[sizeof(Houses)],Text3D:House3DTextLabel[sizeof(Houses)],Float:HouseDistanceOfShowLabel=20.0;
 
 
 stock HousesLoadAll()
@@ -32,7 +32,7 @@ stock HousesLoadAll()
 		ini_GetFloat(file_housing_cfg,"House_DistanceOfShowLabel",HouseDistanceOfShowLabel);
 		ini_Close(file_housing_cfg);
 	}
-	for(new i=0,file_housing;i<MAX_HOUSES;i++)
+	for(new i=0,file_housing;i<sizeof(Houses);i++)
 	{
 		new housesdbname[MAX_STRING];
 		format(housesdbname,sizeof(housesdbname),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[i][Houses_Name]);
@@ -40,8 +40,8 @@ stock HousesLoadAll()
 		file_housing = ini_Open(housesdbname);
 		ini_Get(file_housing,"Name",Houses[i][Houses_Name],MAX_STRING);
 		ini_GetInt(file_housing,"Cost",Houses[i][Houses_Cost]);
-		ini_Get(file_housing,"Owner",Houses[i][Houses_Owner],MAX_STRING);
-		ini_Get(file_housing,"Gang",Houses[i][Houses_Gang],MAX_STRING);
+		ini_Get(file_housing,"Owner",Houses[i][Houses_Owner],MAX_NAME);
+		ini_Get(file_housing,"Gang",Houses[i][Houses_Gang],MAX_NAME);
 		ini_GetInt(file_housing,"UpKeep",Houses[i][Houses_UpKeep]);
 		ini_GetInt(file_housing,"UpKeepLeft",Houses[i][Houses_UpKeepLeft]);
 		ini_GetInt(file_housing,"Buyout",Houses[i][Houses_Buyout]);
@@ -49,7 +49,7 @@ stock HousesLoadAll()
 		ini_GetInt(file_housing,"Car",Houses[i][Houses_Car]);
 		ini_GetInt(file_housing,"Lock",Houses[i][Houses_Lock]);
 		ini_GetInt(file_housing,"Rentabil",Houses[i][Houses_Rentabil]);
-		ini_Get(file_housing,"RentName",Houses[i][Houses_RentName],MAX_STRING);
+		ini_Get(file_housing,"RentName",Houses[i][Houses_RentName],MAX_NAME);
 		ini_GetInt(file_housing,"RentCost",Houses[i][Houses_RentCost]);
 		ini_GetInt(file_housing,"HealUpgrade",Houses[i][Houses_HealUpgrade]);
 		ini_GetFloat(file_housing,"Coord_X",Houses[i][Houses_EnterX]);
@@ -66,7 +66,7 @@ stock HousesSaveAll()
 	ini_Set(file_housing,"Houses_DB",HousesDB);
 	ini_SetFloat(file_housing,"House_DistanceOfShowLabel",HouseDistanceOfShowLabel);
 	ini_Close(file_housing);
-	for(new housid=0;housid<MAX_HOUSES;housid++) SaveHous(housid);
+	for(new housid=0;housid<sizeof(Houses);housid++) SaveHous(housid);
 	return 1;
 }
 
@@ -98,7 +98,7 @@ stock housing_OnGameModeInit()
 {
 	HousesLoadAll();
 	new string[MAX_STRING];
-	for(new id=0;id<MAX_HOUSES;id++)
+	for(new id=0;id<sizeof(Houses);id++)
 	{
 		CreatePickup(1273,1,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.5);	//зеленый домик
 		CreatePickup(1559,1,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ]+0.5);
@@ -111,7 +111,7 @@ stock housing_OnGameModeInit()
 
 stock IsPlayerAtHouse(playerid)
 {
-	for(new id=0;id<MAX_HOUSES;id++)
+	for(new id=0;id<sizeof(Houses);id++)
 	{
 		if(
 		IsPlayerInRangeOfPoint(playerid,2,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ])
@@ -125,13 +125,13 @@ stock IsPlayerAtHouse(playerid)
 stock GetHouseID(playerid)
 {
 	new lookupid=-1;
-	for(new id=0;id<MAX_HOUSES;id++) if(IsPlayerInRangeOfPoint(playerid,1.5,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ])) lookupid = id;
+	for(new id=0;id<sizeof(Houses);id++) if(IsPlayerInRangeOfPoint(playerid,1.5,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ])) lookupid = id;
 	return lookupid;
 }
 
 stock IsPlayerRenter(playerid)
 {
-	for(new id=0;id<MAX_HOUSES;id++) if(strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true) == 0) return true;
+	for(new id=0;id<sizeof(Houses);id++) if(strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true) == 0) return true;
 	return false;
 }
 
@@ -398,7 +398,7 @@ stock FHouseInfo(playerid)
 stock FHouseHouses(playerid)
 {
 	new temp[MAX_STRING];
-	for(new id=0;id<MAX_HOUSES;id++)
+	for(new id=0;id<sizeof(Houses);id++)
 	{
 		if(strcmp(Houses[id][Houses_Owner],"Unknown",true))
 		{
@@ -416,7 +416,7 @@ stock FHouseHouses(playerid)
 
 stock FHouseBuy(playerid) 
 {
-	for(new i=0;i<MAX_HOUSES;i++)
+	for(new i=0;i<sizeof(Houses);i++)
 		if(!strcmp(oGetPlayerName(playerid),Houses[i][Houses_Owner],true))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][78]);
 	new temp[MAX_STRING];
@@ -515,7 +515,7 @@ stock FHouseMyHouses(playerid)
 {
 	new temp[MAX_STRING];
 	new count = 0;
-	for(new id=0;id<MAX_HOUSES;id++)
+	for(new id=0;id<sizeof(Houses);id++)
 	{
 		if(!strcmp(Houses[id][Houses_Gang],PlayerGangName[playerid],true))
 		{
@@ -574,7 +574,7 @@ stock ganghouse(playerid)
 {
 	new hova = -1,tmp[MAX_STRING];
 	if(!IsPlayerRegistered(playerid) || !strlen(PlayerGangName[playerid])) return hova;
-	for(new id=0;id<MAX_HOUSES;id++)
+	for(new id=0;id<sizeof(Houses);id++)
 	{
 		if(!strcmp(Houses[id][Houses_Gang],PlayerGangName[playerid],true)) 
 		{
@@ -595,7 +595,7 @@ stock gang2house(playerid,i)
 stock HouseKeepUp()
 {
 	new upkeepamount,upkeep,upkeepleft;
-	for(new id=0;id<MAX_HOUSES;id++)
+	for(new id=0;id<sizeof(Houses);id++)
 	{
 		if(strcmp(Houses[id][Houses_Gang],"Unknown",true) != 0) 
 		{
@@ -634,7 +634,7 @@ stock HouseKeepUp()
 stock housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused oldkeys,newkeys
-	for(new id=0;id<MAX_HOUSES;id++)
+	for(new id=0;id<sizeof(Houses);id++)
 	{
 		if(IsPlayerInRangeOfPoint(playerid,3,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.5))
 		{
@@ -693,7 +693,7 @@ stock housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 stock housing_Update3DTextLabelText()
 {
 	new string[MAX_STRING];
-	for(new id=0;id<MAX_HOUSES;id++)
+	for(new id=0;id<sizeof(Houses);id++)
 	{
 		format(string,sizeof(string),"Дом: %s\nСтоимость: %d\nКуплен: %s\nБанда: %s\nАрендуется: %s",Houses[id][Houses_Name],Houses[id][Houses_Cost],Houses[id][Houses_Owner],Houses[id][Houses_Gang],Houses[id][Houses_RentName]);
 		Update3DTextLabelText(House3DTextLabel[id],COLOUR_WHITE,string);

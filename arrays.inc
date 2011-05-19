@@ -11,7 +11,6 @@
 #pragma library arrays
 
 // ************************* ДОМА *********************************
-#define MAX_HOUSES 161
 enum HouseInfo {
 	Houses_Name[MAX_STRING],// house name
 	Houses_Cost,			// cost
@@ -35,7 +34,7 @@ enum HouseInfo {
 	Float:Houses_EnterZ	// Coord Z
 }
 
-new Houses[MAX_HOUSES][HouseInfo] = {
+new Houses[][HouseInfo] = {
 //NAME, COST, OWNER, GANG, UpKeep, UpKeepLeft, BUYOUT, интерьер, Car, Lock, Rentabil, RentName, Rent Cost, Heal upgrade,eX,eY,eZ,pX,pY,pZ
 //{"[LV]Four Dragons Mansion",1250000,"Unknown","Unknown",500,0,0,1,0,0,0,"Unknown",50000,0,	991.8711,-668.1383,121.9763,	247.5086,304.9248,999.1484},
 {"[LV]Caligula Mansion",850000,"Unknown","Unknown",500,0,0,3,0,0,0,"Unknown",50000,0,	300.2951,-1154.5029,81.3909,	289.9850,307.3130,999.1484},
@@ -209,7 +208,6 @@ new Houses[MAX_HOUSES][HouseInfo] = {
 };
 // ************************* ******* *********************************
 // ************************* БИЗНЕСЫ *********************************
-#define MAX_BUSINESSES 31
 enum BusinessInfo {
 	Business_Name[MAX_STRING],  // business name
 	Business_Cost,     // cost
@@ -224,7 +222,7 @@ enum BusinessInfo {
 	Float:Coord_Y,
 	Float:Coord_Z
 }
-new Businesses[MAX_BUSINESSES][BusinessInfo] = {
+new Businesses[][BusinessInfo] = {
 	//NAME,COST,VALUE,LEVEL,OWNER,BUYOUT,upgrade,x,y,z,icon
 	{"Botique",35000,800,5,"Unknown",0,0,1,0,			418.5547,-80.1667,1001.8047},
 	{"Shithole Bar",25000,1300,8,"Unknown",0,0,1,0,		501.4927,-75.4323,998.7578},
@@ -257,5 +255,25 @@ new Businesses[MAX_BUSINESSES][BusinessInfo] = {
 	{"The Visage",145000,3800,17,"Unknown",0,0,1,1,		2022.5179,1916.6848,12.3397},
 	{"Caligulas",3750000,19900,20,"Unknown",0,0,1,1,	2235.5408,1679.0402,1008.3594},
 	{"Four Dragons",2050000,16000,20,"Unknown",0,0,1,1,	1993.9758,1017.8945,994.8906}
+};
+// ************************* ********* *********************************
+// ******************** места для выбора скина *************************
+enum Request_Info {
+	Interior,
+	Float:player_X,
+	Float:player_Y,
+	Float:player_Z,
+	Float:player_A,
+	Float:camera_pos_X,
+	Float:camera_pos_Y,
+	Float:camera_pos_Z,
+	Float:camera_look_X,
+	Float:camera_look_Y,
+	Float:camera_look_Z,
+}
+new RequestPlace[][Request_Info] = {
+{11,	508.7362,-87.4335,998.9609,0.0,			508.7362,-83.4335,998.9609,		508.7362,-87.4335,998.9609},
+{3,		-2673.8381,1399.7424,918.3516,181.0,	-2673.2776,1394.3859,918.3516,	-2673.8381,1399.7424,918.3516},
+{3,		349.0453,193.2271,1014.1797,286.25,		352.9164,194.5702,1014.1875,	349.0453,193.2271,1014.1797}
 };
 // ************************* ********* *********************************

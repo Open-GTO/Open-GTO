@@ -48,11 +48,11 @@ stock account_save_db_ini(playerid)
 	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,player_name);
 	new file_account = (!ini_Exist(filename_account)) ? ini_Create(filename_account) : ini_Open(filename_account);
 	ini_Set(file_account,"Name",player_name);
-	GetPVarString(playerid,"Password",temp,MAX_STRING);
+	GetPVarString(playerid,"Password",temp,sizeof(temp));
 	ini_Set(file_account,"Password",temp);
-	GetPVarString(playerid,"Email",temp,MAX_STRING);
+	GetPVarString(playerid,"Email",temp,sizeof(temp));
 	ini_Set(file_account,"Email",temp);
-	GetPVarString(playerid,"Creation_Date",temp,MAX_STRING);
+	GetPVarString(playerid,"Creation_Date",temp,sizeof(temp));
 	ini_Set(file_account,"Creation_Date",temp);
 	new day,month,year,seconds,minutes,hours;
 	gettime(hours,minutes,seconds);
@@ -155,7 +155,7 @@ stock account_login_db_ini(playerid,password[])
 	new dbpassword[MAX_NAME];
 	if(!ini_Exist(filename_account)) return 1;
 	new file_account = ini_Open(filename_account);
-	ini_Get(file_account,"Password",dbpassword,MAX_STRING);
+	ini_Get(file_account,"Password",dbpassword);
 	if(!equal(password,dbpassword,false))
 	{
 		new logstring[MAX_STRING];
@@ -170,7 +170,7 @@ stock account_login_db_ini(playerid,password[])
 	SetPVarString(playerid,"Password",dbpassword);
 	ini_Get(file_account,"Email",temp);
 	SetPVarString(playerid,"Email",temp);
-	ini_Get(file_account,"Creation_Date",temp,MAX_STRING);
+	ini_Get(file_account,"Creation_Date",temp);
 	SetPVarString(playerid,"Creation_Date",temp);
 	SetPVarInt(playerid,"PlayerRegistered",1);
 	new day,month,year,seconds,minutes,hours;
@@ -223,7 +223,7 @@ stock account_OnPlayerConnect(playerid)
 	    format(message,sizeof(message),"Приветствую, %s!\n\nВведите пароль для регистрации!",oGetPlayerName(playerid));
 		ShowPlayerDialog(playerid,AccountRegDialogid,DIALOG_STYLE_INPUT,"Регистрация",message,"Зарегать","");
 	}
-	SetPVarInt(playerid,"RequestCity",random(3));
+	SetPVarInt(playerid,"RequestPlace",random( sizeof(RequestPlace) ));
 	return 1;
 }
 

@@ -13,7 +13,7 @@
 
 #pragma tabsize 0
 
-#define VERSION				"v1.0.0 alpha"
+#define VERSION				"v1.0.0 alpha 2"
 #define GTO_FILES_FORMAT	".gto"
 #define GTO_FILES_FOLDER	"Open-GTO/"
 
