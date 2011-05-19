@@ -15,12 +15,14 @@ new ListResponseType[MAX_PLAYERS];
 
 stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
 {
+	if(playerid == clickedplayerid) return show_menu(playerid);
 	Player[playerid][ClickedPlayerid] = clickedplayerid;
 	new listitems[256]; // не менять!
 	listitems = "Отправить денег\nЛичное сообщение\nЖалоба";
 	if(IsPlayerMod(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nКикнуть\nЗаткнуть\nРазоткнуть\nВ тюрьму\nИз тюрьмы", sizeof(listitems));
 	if(IsPlayerAdm(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nИнфо\nУбить\nТелепорт к\nТелепортировать к себе\nЗадать здоровье\nЗадать броню\nДать опыт\nДать денег\nЗаморозить\nРазморозить", sizeof(listitems));
 	ShowPlayerDialog(playerid,ClickDialog,DIALOG_STYLE_LIST,"Выберите действие",listitems," Выбрать"," Отмена");
+	return 1;
 }
 
 stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])

@@ -24,7 +24,7 @@
 #define MAX_QUESTS			255
 
 // игрок
-#define MIN_HEALTH			20.0
+#define MIN_HEALTH			35.0
 #define MAX_HEALTH			100.0
 #define HEALTH_TARIF		4.0	// степень увеличения максимального здоровья от лвл
 #define HEALTH_REGEN_TARIF	0.4
@@ -107,4 +107,4 @@
 #define SOUND_DMDEATH				1057
 
 #define PRESSED(%0) \
-	(((newkeys & (%0)) != (%0)) && ((oldkeys & (%0)) == (%0)))
+	(((newkeys & (%0)) == (%0)) && ((oldkeys & (%0)) != (%0)))

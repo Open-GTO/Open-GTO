@@ -21,7 +21,7 @@ stock show_menu(playerid)
 	}
 	else if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 	{
-		//return show_Vehicle_Menu(playerid);
+		return show_Vehicle_Menu(playerid);
 	}
 	return 0;
 }
@@ -58,21 +58,48 @@ stock show_User_Menu(playerid)
 
 stock show_Vehicle_Menu(playerid)
 {
+	new string[512],engine,lights,alarm,doors,bonnet,boot,objective;
+	new vehicleid = GetPlayerVehicleID(playerid);
+	GetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,boot,objective);
+	
+	strcat(string,"Перевернуть\n",sizeof(string));
+	strcat(string,"Заправить\n",sizeof(string));
+	strcat(string,"Изменить номер\n",sizeof(string));
+	strcat(string,"Изменить цвет\n",sizeof(string));
+	
+	if(lights == VEHICLE_PARAMS_ON) // фары
+		strcat(string,"{FF0000}Выключить  фары\n",sizeof(string));
+	else
+		strcat(string,"{00FF00}Включить фары\n",sizeof(string));
+	
+	if(engine == VEHICLE_PARAMS_ON) // двиг
+		strcat(string,"{FF0000}Выключить двигатель\n",sizeof(string));
+	else
+		strcat(string,"{00FF00}Включить двигатель\n",sizeof(string));
+
+	if(bonnet == VEHICLE_PARAMS_ON) // капот
+		strcat(string,"{FF0000}Закрыть капот\n",sizeof(string));
+	else
+		strcat(string,"{00FF00}Открыть капот\n",sizeof(string));
+	
+	if(boot == VEHICLE_PARAMS_ON) // багажник
+		strcat(string,"{FF0000}Закрыть багажник\n",sizeof(string));
+	else
+		strcat(string,"{00FF00}Открыть багажник\n",sizeof(string));
+		
 	return ShowPlayerDialog(playerid,vehicle_menu_DialogID,DIALOG_STYLE_LIST,
 		"Меню транспорта",
-		"\n\
-		\n\
-		",
+		string,
 		"ОК","Отмена"
 	);
 }
-
+/*
 stock usermenu_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused newkeys,oldkeys
 	show_menu(playerid);
 	return 1;
-}
+}*/
 
 stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 {
@@ -231,6 +258,65 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		}
 		case vehicle_menu_DialogID:
 		{
+			if(!response) return 1;
+			new engine,lights,alarm,doors,bonnet,boot,objective;
+			new vehicleid = GetPlayerVehicleID(playerid);
+			GetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,boot,objective);
+			switch(listitem)
+			{
+				case 0:// перевернуть
+				{
+					show_Vehicle_Menu(playerid);
+					return 1;
+				}
+				case 1:// заправить
+				{
+					show_Vehicle_Menu(playerid);
+					return 1;
+				}
+				case 2:// номер
+				{
+					show_Vehicle_Menu(playerid);
+					return 1;
+				}
+				case 3:// цвет
+				{
+					show_Vehicle_Menu(playerid);
+					return 1;
+				}
+				case 4:// фары
+				{
+					if(lights == VEHICLE_PARAMS_ON)
+						SetVehicleParamsEx(vehicleid,engine,VEHICLE_PARAMS_OFF,alarm,doors,bonnet,boot,objective);
+					else
+						SetVehicleParamsEx(vehicleid,engine,VEHICLE_PARAMS_ON,alarm,doors,bonnet,boot,objective);
+					return 1;
+				}
+				case 5:// двигатель
+				{
+					if(engine == VEHICLE_PARAMS_ON)
+						SetVehicleParamsEx(vehicleid,VEHICLE_PARAMS_OFF,lights,alarm,doors,bonnet,boot,objective);
+					else
+						SetVehicleParamsEx(vehicleid,VEHICLE_PARAMS_ON,lights,alarm,doors,bonnet,boot,objective);
+					return 1;
+				}
+				case 6:// капот
+				{
+					if(bonnet == VEHICLE_PARAMS_ON)
+						SetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,VEHICLE_PARAMS_OFF,boot,objective);
+					else
+						SetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,VEHICLE_PARAMS_ON,boot,objective);
+					return 1;
+				}
+				case 7:// багажник
+				{
+					if(boot == VEHICLE_PARAMS_ON)
+						SetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,VEHICLE_PARAMS_OFF,objective);
+					else
+						SetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,VEHICLE_PARAMS_ON,objective);
+					return 1;
+				}
+			}
 			return 1;
 		}
 	}

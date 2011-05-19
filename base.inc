@@ -169,6 +169,7 @@ stock base_OnGameModeInit()
 	AllowAdminTeleport(1);
 	ShowPlayerMarkers(1);
 	ShowNameTags(1);
+	ManualVehicleEngineAndLights();
 	return 1;
 }
 

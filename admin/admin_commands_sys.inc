@@ -52,7 +52,7 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_GREEN, "_________________________________________________________________________________");
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[15][60]);
 		new string[MAX_STRING];
-		format(string,sizeof(string),lang_texts[15][65] , never);
+		format(string,sizeof(string),lang_texts[15][65] , CarsReSpawnTime);
 		SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
 
 		new MAX_ONLINESS = 0;

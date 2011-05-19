@@ -453,7 +453,7 @@ public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 		if( IsPlayerAtAmmunation(playerid) != -1 ) return weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( GetPlayerFightTrenerID(playerid) != -1 ) return fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
-		usermenu_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		show_User_Menu(playerid);
 		return 1;
 	}
 	if( PRESSED( KEY_SUBMISSION ) )
@@ -502,9 +502,29 @@ public OnPlayerEnterVehicle(playerid,vehicleid,ispassenger)
 	return 1;
 }
 
+public OnPlayerStreamIn(playerid, forplayerid)
+{
+    return 1;
+}
+
+public OnPlayerStreamOut(playerid, forplayerid)
+{
+    return 1;
+}
+
 public OnVehicleDamageStatusUpdate(vehicleid,playerid)
 {
 	return 1;
+}
+
+public OnVehicleStreamIn(vehicleid, forplayerid)
+{
+    return 1;
+}
+
+public OnVehicleStreamOut(vehicleid, forplayerid)
+{
+    return 1;
 }
 
 public OnVehicleDeath(vehicleid,killerid)

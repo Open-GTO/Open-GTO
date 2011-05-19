@@ -15,8 +15,7 @@
 
 #define MAX_VEHICLE_SPAWNS 2000
 
-new never = 600;//cars respawn time (86400 - one day)
-new VehicleDoors[MAX_VEHICLE_SPAWNS];
+new CarsReSpawnTime = 600;//cars respawn time (86400 - one day)
 
 #define V_ADMIRAL 445
 #define V_ALPHA 602
@@ -2282,30 +2281,20 @@ stock LoadVehicles()
 	vipvehic[2] = AddStaticVehicle(520,245.406,1982.253,17.301,89.0,-1,-1);
 	vipvehic[3] = AddStaticVehicle(432,207.934,1974.734,17.301,270.0,-1,-1);
 	vipvehic[4] = AddStaticVehicle(432,208.515,1987.570,17.301,270.0,-1,-1);
-	for(new i=0;i<sizeof(VehicleModelSpawns);i++)
+	for(new i=0,veh_id;i<sizeof(VehicleModelSpawns);i++)
 	{
 		if(VehicleModelSpawns[i][vspawn_model] == 0) continue;
-		AddStaticVehicleEx(VehicleModelSpawns[i][vspawn_model],VehicleModelSpawns[i][vspawn_x],VehicleModelSpawns[i][vspawn_y],VehicleModelSpawns[i][vspawn_z],VehicleModelSpawns[i][vspawn_heading],VehicleModelSpawns[i][vspawn_colour1],VehicleModelSpawns[i][vspawn_colour2],never);
+		veh_id = AddStaticVehicleEx(VehicleModelSpawns[i][vspawn_model],VehicleModelSpawns[i][vspawn_x],VehicleModelSpawns[i][vspawn_y],VehicleModelSpawns[i][vspawn_z],VehicleModelSpawns[i][vspawn_heading],VehicleModelSpawns[i][vspawn_colour1],VehicleModelSpawns[i][vspawn_colour2],CarsReSpawnTime);
+		SetVehicleParamsEx(veh_id,VEHICLE_PARAMS_ON,0,0,0,0,0,0);
 	}
-/*	for (new i=1;i<sizeof(VehicleLevelSpawns);i++)
-	{
-		if((VehicleLevelSpawns[i][vspawn_model] >= 0) && (VehicleLevelSpawns[i][vspawn_model] <= 20))
-		{
-			new vspawnlevel=VehicleLevelSpawns[i][vspawn_model];
-		    new vehiclemodel = GetRndVModelByLevel(vspawnlevel);
-		    if((vehiclemodel >= VEHICLES_START) && (vehiclemodel <= (VEHICLES_START+VEHICLES_SIZE)))
-		    {
-				AddStaticVehicleEx(vehiclemodel,VehicleLevelSpawns[i][vspawn_x],VehicleLevelSpawns[i][vspawn_y],VehicleLevelSpawns[i][vspawn_z],VehicleLevelSpawns[i][vspawn_heading],VehicleLevelSpawns[i][vspawn_colour1],VehicleLevelSpawns[i][vspawn_colour2],never);
-			}
-		}
-	}*/
+	return 1;
 }
 
 stock vehicles_LoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 0;
 	new file_vehicle = ini_Open(ConfigDB);
-	ini_GetInt(file_vehicle,"CarsReSpawnTime",never);
+	ini_GetInt(file_vehicle,"CarsReSpawnTime",CarsReSpawnTime);
 	ini_Close(file_vehicle);
 	return 1;
 }
@@ -2313,7 +2302,7 @@ stock vehicles_LoadConfig()
 stock vehicles_SaveConfig()
 {
 	new file_vehicle = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_vehicle,"CarsReSpawnTime",never);
+	ini_SetInt(file_vehicle,"CarsReSpawnTime",CarsReSpawnTime);
 	ini_Close(file_vehicle);
 	return 1;
 }
@@ -2375,40 +2364,11 @@ stock GetVehicleSpeed(playerid)
 
 stock vehicles_OnPlayerCommandText(playerid, cmdtext[])
 {
-	if(!strcmp(cmdtext,"/carlock",true)) 
+	if(!strcmp(cmdtext,"/vmenu",true)) 
 	{
-		if(!IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid,COLOUR_RED, lang_texts[5][24]);
-		new newstate,pv = GetPlayerVehicleID(playerid);
-		if(VehicleDoors[pv] == 1) newstate = 0;
-		else newstate = 1;
-		VehicleDoors[pv] = newstate;
-		for(new i=GetMaxPlayers()-1;i>=0;--i)
-		{
-			if(IsPlayerConnected(i) && i != playerid) SetVehicleParamsForPlayer(pv, i, 0, newstate);
-		}
-		if(newstate == 1)
-		{
-			SendClientMessage(playerid,COLOUR_RED, lang_texts[5][25]);
-			GameTextForPlayer(playerid,"~r~Locked",999,1);
-		}
-		else
-		{
-			SendClientMessage(playerid,COLOUR_RED, lang_texts[5][26]);
-			GameTextForPlayer(playerid,"~g~Unlocked",999,1);
-		}
-		return 1;
-	}
-	if(!strcmp(cmdtext,"/carunlock",true))
-	{
-		if(!IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid,COLOUR_RED, lang_texts[5][24]);
-		new pv = GetPlayerVehicleID(playerid);
-		if(VehicleDoors[pv] == 1) return 1;
-		for(new i=GetMaxPlayers()-1;i>=0;--i)
-		{
-			if(IsPlayerConnected(i) && i != playerid) SetVehicleParamsForPlayer(pv, i, 0, 0);
-		}
-		SendClientMessage(playerid,COLOUR_RED, lang_texts[5][26]);
-		GameTextForPlayer(playerid,"~g~Unlocked",999,1);
+		if(!IsPlayerInAnyVehicle(playerid))
+			return SendClientMessage(playerid,COLOUR_RED, lang_texts[5][24]);
+		show_Vehicle_Menu(playerid);
 		return 1;
 	}
 	return 0;
