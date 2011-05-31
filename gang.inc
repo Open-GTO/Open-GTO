@@ -100,8 +100,10 @@ stock GangSaveConfig()
 stock gang_OnGameModeInit()
 {
 	GangLoadConfig();
+	GameMSG("SERVER: Gang module init");
 	return 1;
 }
+
 stock FindGangFreeSlot()
 {
 	new gangid=0;

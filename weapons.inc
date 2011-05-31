@@ -138,7 +138,7 @@ stock weapons_OnGameModeInit()
 	{
 		CreatePickup(1247,1,Ammunations[id][Coord_X],Ammunations[id][Coord_Y],Ammunations[id][Coord_Z]);
 	}
-	WriteLog(GameLog,"Ammunition checkpoints initialised");
+	GameMSG("SERVER: Weapons module init");
 }
 
 stock weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)

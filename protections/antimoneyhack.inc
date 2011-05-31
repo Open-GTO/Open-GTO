@@ -24,6 +24,7 @@ stock AntiMoneyHackSaveConfig()
 stock antimoneyhack_OnGameModeInit()
 {
 	AntiHealthHackLoadConfig();
+	GameMSG("SERVER: (protections)AntiMoneyHack module init");
 	return 1;
 }
 

@@ -55,6 +55,7 @@ stock bank_OnGameModeInit()
 	{
 	    CreatePickup(1274, 23, Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z]);
 	}
+	GameMSG("SERVER: Bank module init");
 	return 1;
 }
 

@@ -111,6 +111,6 @@ public race_riversiderun_init() // unique named init function (must be ran on ga
 
 	RaceStats[RaceID][race_timer] = MakeRaceSleepTime(RaceID);
     RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
-  	printf("Race: '%s' Loaded.",racename);
+  	GameMSG("Race: '%s' Loaded.",racename);
  }
 

@@ -69,6 +69,7 @@ stock account_save_db_ini(playerid)
 stock account_OnGameModeInit()
 {
 	AccountLoadConfig();
+	GameMSG("SERVER: Account module init");
 	return 1;
 }
 

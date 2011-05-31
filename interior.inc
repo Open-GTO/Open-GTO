@@ -289,6 +289,7 @@ stock interior_OnGameModeInit()
 		CreatePickup(1559,1,EnterPositions[i][X],EnterPositions[i][Y],EnterPositions[i][Z],-1);
 		//CreateStreamMapIcon(2,ExitPositions[i][X],ExitPositions[i][Y],ExitPositions[i][Z]);
 	}
+	GameMSG("SERVER: Interior module init");
 	return 1;
 }
 

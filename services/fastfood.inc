@@ -38,6 +38,7 @@ stock fastfood_OnGameModeInit()
 	{
 	    CreatePickup(1445,23,FastFoods[ff_id][Coord_X],FastFoods[ff_id][Coord_Y],FastFoods[ff_id][Coord_Z]);
 	}
+	GameMSG("SERVER: (services)Fastfood module init");
 	return 1;
 }
 

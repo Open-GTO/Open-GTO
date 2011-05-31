@@ -80,7 +80,7 @@ public dm_usnavy_init() // unique named init function (must be ran on gamemode i
 		DMSpawnPoints[dmid][spid][Coord_Z] = spawnpoints[spid][Coord_Z];
 	}
 
- 	printf("Deathmatch: '%s' Loaded.",name);
+ 	GameMSG("Deathmatch: '%s' Loaded.",name);
  }
  	
 

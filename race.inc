@@ -281,6 +281,7 @@ stock RaceSaveRecordDB(raceid)
 stock race_OnGameModeInit()
 {
 	RaceLoadAll();
+	GameMSG("SERVER: Race module init");
 	return 1;
 }
 

@@ -50,7 +50,7 @@ LoggingSaveConfig()
 stock logging_OnGameModeInit()
 {
 	LoggingLoadConfig();
-    WriteLog(GameLog,"========== GameMode (re)started ==========");
+	GameMSG("SERVER: Logging module init");
 }
 
 stock MakeFilename()

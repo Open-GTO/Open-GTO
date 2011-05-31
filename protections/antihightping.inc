@@ -27,6 +27,7 @@ stock AntiHightPingSaveConfig()
 stock antihightping_OnGameModeInit()
 {
 	AntiHightPingLoadConfig();
+	GameMSG("SERVER: (protections)AntiHightPing module init");
 	return 1;
 }
 

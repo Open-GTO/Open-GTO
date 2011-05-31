@@ -43,6 +43,7 @@ stock PaydaySaveConfig()
 stock payday_OnGameModeInit()
 {
 	PaydayLoadConfig();
+	GameMSG("SERVER: Payday module init");
 	return 1;
 }
 

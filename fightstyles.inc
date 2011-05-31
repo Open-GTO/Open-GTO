@@ -36,7 +36,7 @@ stock fights_OnGameModeInit()
 	{
 	    CreatePickup(1314,23,FightTreners[fightid][Coord_X],FightTreners[fightid][Coord_Y],FightTreners[fightid][Coord_Z]);
 	}
-	print("Загрузка: Система стилей борьбы запущена.");
+	GameMSG("SERVER: Fightstyles module init");
 	return 1;
 }
 

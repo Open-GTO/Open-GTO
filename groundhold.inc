@@ -113,7 +113,7 @@ stock groundhold_OnGameModeInit()
 		AddActiveCheckpoint(Groundholds[i][gh_x],Groundholds[i][gh_y],Groundholds[i][gh_z],200,2);
 		CreateStreamMapIcon(56,Groundholds[i][gh_x],Groundholds[i][gh_y],Groundholds[i][gh_z]);
 	}
-	WriteLog(GameLog,"Groundhold checkpoints initialised");
+	GameMSG("SERVER: Groundhold module init");
 	return 1;
 }
 

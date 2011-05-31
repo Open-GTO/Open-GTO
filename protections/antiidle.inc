@@ -40,6 +40,7 @@ stock AntiIdleSaveConfig()
 stock antiidle_OnGameModeInit()
 {
 	AntiIdleLoadConfig();
+	GameMSG("SERVER: (protections)AntiIdle module init");
 	return 1;
 }
 

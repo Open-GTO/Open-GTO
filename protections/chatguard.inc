@@ -534,6 +534,7 @@ stock chatguard_OnGameModeInit()
 	ChatGuardLoadConfig();
 	if(ChatGuardEnabled != 1) return;
     for ( new i; i < CHAT_HISTORY_SIZE; i++ ) ms[i][chPosterID] = -1;
+	GameMSG("SERVER: (protections)ChatGuard(by MX_Master) module init");
 }
 
 #undef CHAT_HISTORY_SIZE

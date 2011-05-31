@@ -19,8 +19,9 @@ stock lang_OnGameModeInit()
 {
 	new lang_file[50];
 	format(lang_file,sizeof(lang_file),"%sLanguage-%s"GTO_FILES_FORMAT,lang_db,lang);
-	if(!ini_Exist(lang_file)) return printf("ERROR: No such file %s", lang_file);
+	if(!ini_Exist(lang_file)) return GameMSG("ERROR: No such file %s", lang_file);
 	lang_read(lang_file);
+	GameMSG("SERVER: Lang module init(%s)", lang_file);
 	return 1;
 }
 

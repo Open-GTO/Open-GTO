@@ -201,6 +201,7 @@ stock PlayerSaveConfig()
 stock player_OnGameModeInit()
 {
 	PlayerLoadConfig();
+	GameMSG("SERVER: Player module init");
 	return 1;
 }
 

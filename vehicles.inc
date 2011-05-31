@@ -2311,6 +2311,7 @@ stock vehicles_OnGameModeInit()
 {
 	vehicles_LoadConfig();
 	LoadVehicles();
+	GameMSG("SERVER: Vehicles module init");
 	return 1;
 }
 

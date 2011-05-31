@@ -24,6 +24,7 @@ stock AntiHealthHackSaveConfig()
 stock antihealthhack_OnGameModeInit()
 {
 	AntiHealthHackLoadConfig();
+	GameMSG("SERVER: (protections)AntiHealthHack module init");
 	return 1;
 }
 

@@ -27,9 +27,9 @@ Date start Open-GTO: 	5 November 2009
 #include "config"							// дефайны и настройки по умолчанию
 #include "utils\mxINI"
 #include "base"								// holds base script values
+#include "logging"							// logging handler
 #include "utils\gtoutils"					// misc used utils
 #include "arrays"
-#include "logging"							// logging handler
 #include "lang"
 #include "account"							// account handler
 #include "player"							// holds player values
@@ -179,29 +179,32 @@ public OnGameModeInit()
 	#tryinclude "misc\mapicon"
 	#tryinclude "misc\pickups"
 	#tryinclude "misc\objects"
-	print("SERVER: Objects and Pickups init");
+	GameMSG("SERVER: Mapicons, Objects and Pickups init");
 
 	new hour,minute;
 	gettime(hour,minute);
 	WorldTime = hour;
 	SetWorldTime(hour);
-	printf("SERVER: Worldtime set as %d",hour);
+	GameMSG("SERVER: Worldtime set as %d",hour);
 	SetWeather(10);
 	SetTimer("OneSecTimer",1000,1); // 1 second
 	SetTimer("FiveSecondTimer",5000,1); // 5 second
 	SetTimer("OneMinuteTimer",60000,1); // 1 minute
 	SetTimer("OneHourTimer",3600000,1); // 1 hour
+	GameMSG("SERVER: Timers started");
 	SpawnWorld();
 	
 	WorldSave();
-	printf("SERVER: Open-GTO "#VERSION" initialization complete. [%02d:%02d]",hour,minute);
-	WriteLog(GameLog,"SERVER: Open-GTO "#VERSION" initialization complete. ");
+	GameMSG("SERVER: Open-GTO "#VERSION" initialization complete. [%02d:%02d]",hour,minute);
 	return 1;
 }
 
 public OnGameModeExit()
 {
 	WorldSave();
+	new hour,minute;
+	gettime(hour,minute);
+	GameMSG("SERVER: Open-GTO "#VERSION" turned off. [%02d:%02d]",hour,minute);
 	return 1;
 }
 
@@ -433,7 +436,7 @@ public WeatherUpdate()
 	if(sysweath != 1) return 1;
 	new rand = random(19);
 	SetWeather(rand);
-	printf("SERVER: Weather set to %d",rand);
+	GameMSG("SERVER: Weather set to %d",rand);
 	return 1;
 }
 

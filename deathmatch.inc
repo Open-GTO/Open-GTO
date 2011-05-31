@@ -317,6 +317,7 @@ stock DeathmatchSaveRecordDB(dmid)
 stock deathmatch_OnGameModeInit()
 {
 	DeathmatchLoadAll();
+	GameMSG("SERVER: Deathmatch module init");
 	return 1;
 }
 
@@ -1167,13 +1168,10 @@ stock deathmatch_OnPlayerKill(playerid,victimid,weaponid)
 
 stock deathmatch_OnPlayerDeath(playerid,killerid)
 {
+	#pragma unused killerid
 	new string[MAX_STRING];
 	Player[playerid][Deaths]++;
 	PlayerCurrentKills[playerid] = 0;
-	if (oGetPlayerHealth(killerid) > 100)
-	{
-		KickPlayer(killerid,"Invalid health amount. (cheat?)");
-	}
 
 	new dmid = GetPlayerDM(playerid);
 	if ((dmid == INVALID_DM_ID) || (!IsPlayerInDM(playerid,dmid)))

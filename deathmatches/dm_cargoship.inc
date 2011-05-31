@@ -80,7 +80,7 @@ public dm_cargoship_init() // unique named init function (must be ran on gamemod
 		DMSpawnPoints[dmid][spid][Coord_Z] = spawnpoints[spid][Coord_Z];
 	}
 
- 	printf("Deathmatch: '%s' Loaded.",name);
+ 	GameMSG("Deathmatch: '%s' Loaded.",name);
  }
  	
 

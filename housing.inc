@@ -106,7 +106,7 @@ stock housing_OnGameModeInit()
 		format(string,sizeof(string),"Дом: %s\nСтоимость: %d\nКуплен: %s\nБанда: %s\nАрендуется: %s",Houses[id][Houses_Name],Houses[id][Houses_Cost],Houses[id][Houses_Owner],Houses[id][Houses_Gang],Houses[id][Houses_RentName]);
 		House3DTextLabel[id] = Create3DTextLabel(string,COLOUR_WHITE,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.75,HouseDistanceOfShowLabel,0,1);
 	}
-	WriteLog(GameLog,"Housing checkpoints initialised");
+	GameMSG("SERVER: Housing module init");
 }
 
 stock IsPlayerAtHouse(playerid)

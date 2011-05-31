@@ -21,7 +21,7 @@ static xpbonus = 3000; // xp earned per player in dm
 static xpkill = 1800; // xp gained when killing someone in dm
 static xpdeath = 250; // xp lost on death in dm
 static maxtime = 300; // time dm runs for (seconds)
-static maxdistance = 100; // max distance player can wander from dm before being kicked
+static maxdistance = 120; // max distance player can wander from dm before being kicked
 static activedmjoin = 1; // can players join this dm while it is in progress
 static weapons[MAX_DMWEAPONS+1] = {24,27,30,0,...};
 static Float:startcp[CoordInfo] = {-16.79, 1517.15, 12.34}; // where startpoint is located
@@ -84,7 +84,7 @@ public dm_area51_init() // unique named init function (must be ran on gamemode i
 		DMSpawnPoints[dmid][spid][Coord_Z] = spawnpoints[spid][Coord_Z];
 	}
 
- 	printf("Deathmatch: '%s' Loaded.",name);
+ 	GameMSG("Deathmatch: '%s' Loaded.",name);
  }
  	
 

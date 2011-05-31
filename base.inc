@@ -170,6 +170,7 @@ stock base_OnGameModeInit()
 	ShowPlayerMarkers(1);
 	ShowNameTags(1);
 	ManualVehicleEngineAndLights();
+	GameMSG("SERVER: Base module init");
 	return 1;
 }
 
