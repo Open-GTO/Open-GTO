@@ -69,6 +69,7 @@ Date start Open-GTO: 	5 November 2009
 #include "click"
 #include "fightstyles"
 #include "services\fastfood"
+#include "services\bar"
 #include "interior"
 #include "usermenu"
 // Races
@@ -139,7 +140,10 @@ public OnGameModeInit()
 	lang_OnGameModeInit();
 	fights_OnGameModeInit();
     trucker_OnGameModeInit();
+	// services
 	fastfood_OnGameModeInit();
+	bar_OnGameModeInit();
+	//
 	
     antiidle_OnGameModeInit();
     antihightping_OnGameModeInit();
@@ -223,8 +227,6 @@ public OnPlayerDisconnect(playerid,reason)
 	player_OnPlayerDisconnect(playerid,reason);
 	trucker_OnPlayerDisconnect(playerid, reason);
 	chatguard_OnPlayerDisconnect(playerid,reason);
-	
-	WorldSave();
 	return 1;
 }
 
@@ -236,7 +238,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	fights_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+	// services
 	fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+	bar_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+	//
 	usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	weapons_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 	return 1;
@@ -456,6 +461,7 @@ public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 		if( IsPlayerAtAmmunation(playerid) != -1 ) return weapons_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( GetPlayerFightTrenerID(playerid) != -1 ) return fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		if( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		if( IsPlayerAtBar(playerid) ) return bar_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 		show_User_Menu(playerid);
 		return 1;
 	}

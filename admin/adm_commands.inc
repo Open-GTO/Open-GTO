@@ -26,7 +26,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	{
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/say <text>', '/pinfo <ID>'");
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/akill <ID>', '/paralyze <ID>', '/deparalyze <ID>'");
-		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/tele-set', '/tele-loc', '/tele-to <ID>', '/tele-here <ID>', '/tele-hereall'");
+		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/tele-set', '/tele-loc', '/tele-to <ID>', '/tele-here <ID>', '/tele-hereall', '/tele-xyzi <X> <Y> <Z> <Int>'");
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/sethealth <ID>', '/setarm <ID>', '/givexp <ID> <xp>', '/agivecash <ID> <cash>', '/givegun <ID> <IDgun>'");
 		return 1;
 	}
@@ -241,7 +241,17 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 		SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 		return 1;
 	}
-
+	if(!strcmp(cmd,"/tele-xyzi",true))
+	{
+		new Float:t_x,Float:t_y,Float:t_z,t_int;
+		t_x = floatstr(strcharsplit(text,idx,strchar(" ")));
+		t_y = floatstr(strcharsplit(text,idx,strchar(" ")));
+		t_z = floatstr(strcharsplit(text,idx,strchar(" ")));
+		t_int = strval(strcharsplit(text,idx,strchar(" ")));
+		SetPlayerInterior(playerid,t_int);
+		SetPlayerPos(playerid,t_x,t_y,t_z);
+		return 1;
+	}
 	if(!strcmp(cmd, "/sethealth", true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
