@@ -161,9 +161,9 @@ stock RaceLoadBaseDB(raceid)
 		format(cellname,sizeof(cellname),"CP%d",cpid);
 		if(ini_Get(file_race,cellname,temp) != INI_OK) break;
 		new Float:X,Float:Y,Float:Z,idx=0;
-		X = floatstr(strcharsplit(temp,idx,strchar(",")));
-		Y = floatstr(strcharsplit(temp,idx,strchar(",")));
-		Z = floatstr(strcharsplit(temp,idx,strchar(",")));
+		X = floatstr(strcharsplit(temp,idx,','));
+		Y = floatstr(strcharsplit(temp,idx,','));
+		Z = floatstr(strcharsplit(temp,idx,','));
 		if((X == 0.0) && (Y == 0.0)) break;
 		RaceCheckpoints[raceid][cpid][Coord_X] = X;
 		RaceCheckpoints[raceid][cpid][Coord_Y] = Y;
@@ -333,7 +333,7 @@ stock CheckRace() // must be ran by timer every second
 		}
 		else if (RaceStats[raceid][race_state] == RACE_STATE_COUNTDOWN)
 		{
-			for (new playerid=0; playerid<MAX_PLAYERS;playerid++)
+			for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 			{
 				if (IsPlayerConnected(playerid))
 				{
@@ -376,7 +376,7 @@ stock race_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!IsPlayerRegistered(playerid)) return 0;
 	new cmd[20],idx;
 
-	set(cmd,strcharsplit(text, idx,strchar(" ")));
+	set(cmd,strcharsplit(text, idx,' '));
 	if(strlen(cmd) == 0) return 0;
 
 	if(!strcmp(cmd,"/races",true))
@@ -387,25 +387,25 @@ stock race_OnPlayerCommandText(playerid,text[]) // process player commands
 
 	if(!strcmp(cmd,"/race",true))
 	{
-		set(cmd,strcharsplit(text, idx,strchar(" ")));
+		set(cmd,strcharsplit(text, idx,' '));
 		if(!strcmp(cmd,"help",true))
 		{
-			SendPlayerScrollingText(playerid, lang_texts[10][8] );
-			SendPlayerScrollingText(playerid, lang_texts[10][9] );
-			SendPlayerScrollingText(playerid, lang_texts[10][10] );
-			SendPlayerScrollingText(playerid, lang_texts[10][11] );
-			SendPlayerScrollingText(playerid, lang_texts[10][12] );
-			SendPlayerScrollingText(playerid, lang_texts[10][13] );
-			SendPlayerScrollingText(playerid, lang_texts[10][14] );
-			SendPlayerScrollingText(playerid, lang_texts[10][15] );
-			SendPlayerScrollingText(playerid, lang_texts[10][16] );
-			SendPlayerScrollingText(playerid, lang_texts[10][17] );
+			SendClientMessage(playerid,COLOUR_MISC, lang_texts[10][8] );
+			SendClientMessage(playerid,COLOUR_MISC, lang_texts[10][9] );
+			SendClientMessage(playerid,COLOUR_MISC, lang_texts[10][10] );
+			SendClientMessage(playerid,COLOUR_MISC, lang_texts[10][11] );
+			SendClientMessage(playerid,COLOUR_MISC, lang_texts[10][12] );
+			SendClientMessage(playerid,COLOUR_MISC, lang_texts[10][13] );
+			SendClientMessage(playerid,COLOUR_MISC, lang_texts[10][14] );
+			SendClientMessage(playerid,COLOUR_MISC, lang_texts[10][15] );
+			SendClientMessage(playerid,COLOUR_MISC, lang_texts[10][16] );
+			SendClientMessage(playerid,COLOUR_MISC, lang_texts[10][17] );
 			return 1;
 		}
 
 		if(!strcmp(cmd,"join",true))
 		{
-			new raceid = strval(strcharsplit(text, idx,strchar(" ")));
+			new raceid = strval(strcharsplit(text, idx,' '));
 			if(PlayerQuest[playerid] != 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[10][18]);
 			if((raceid == 0) || (raceid >= MAX_RACES)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[10][19]);
 			if(RaceStats[raceid][race_state] == RACE_STATE_DISABLED) return SendClientMessage(playerid,COLOUR_RED,lang_texts[10][20]);
@@ -478,7 +478,7 @@ stock StartRace(raceid)
 	RaceStats[raceid][race_state] = RACE_STATE_RACING;
 	RaceStats[raceid][race_timer]=0;
 	RaceRunning++;
-	for (new playerid=0; playerid<MAX_PLAYERS;playerid++)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if (IsPlayerConnected(playerid))
 		{
@@ -498,13 +498,13 @@ stock JoinRace(raceid,playerid)
 	if (oGetPlayerMoney(playerid) < Race[raceid][race_cashentry])
 	{
 		format(string, sizeof(string),  lang_texts[10][25] , Race[raceid][race_cashentry]);
-		SendPlayerFormattedText(playerid,string, 0,COLOUR_RED);
+		SendClientMessage(playerid,COLOUR_RED,string);
 		return;
 	}
 	if (GetPlayerLevel(playerid) < Race[raceid][race_minlevel])
 	{
 		format(string, sizeof(string),  lang_texts[10][26] , Race[raceid][race_minlevel]);
-		SendPlayerFormattedText(playerid,string, 0,COLOUR_RED);
+		SendClientMessage(playerid,COLOUR_RED,string);
 		return;
 	}
 
@@ -535,16 +535,16 @@ stock JoinRace(raceid,playerid)
 	if (RaceStats[raceid][race_state] == RACE_STATE_LINEUP)
 	{
 		format(string, sizeof(string),  lang_texts[10][29] ,(Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer]));
-		SendPlayerFormattedText(playerid, string, 0,COLOUR_RACE);
+		SendClientMessage(playerid,COLOUR_RACE,string);
 	}
 
 	if(PlayerState != PLAYER_STATE_DRIVER && PlayerState != PLAYER_STATE_PASSENGER)
 	{
-		SendPlayerFormattedText(playerid, lang_texts[10][30] , 0,COLOUR_RED);
+		SendClientMessage(playerid,COLOUR_RED,lang_texts[10][30]);
 	}
 	else if(PlayerState == PLAYER_STATE_PASSENGER)
 	{
-		SendPlayerFormattedText(playerid, lang_texts[10][31] , 0,COLOUR_RED);
+		SendClientMessage(playerid,COLOUR_RED,lang_texts[10][31]);
 	}
 	new playervehiclemodel = GetVehicleModel(GetPlayerVehicleID(playerid)); //-1
 
@@ -576,13 +576,13 @@ stock SendPlayerAllowedRaceVehicles(playerid,raceid)
 	}
 	else
 	{
-		SendPlayerScrollingText(playerid, lang_texts[10][33] );
+		SendClientMessage(playerid,COLOUR_MISC, lang_texts[10][33] );
 		for (new i=0;i<strlen(Race[raceid][race_vehicles]);i++)
 		{
 			if (Race[raceid][race_vehicles][i] == 0)  break;
 			new carmodel = Race[raceid][race_vehicles][i];
 			format(string,sizeof(string),"%s",GetVehicleName(carmodel));
-			SendPlayerScrollingText(playerid,string);
+			SendClientMessage(playerid,COLOUR_MISC,string);
 		}
 	}
 }
@@ -627,12 +627,12 @@ stock LeaveRace(raceid,playerid)
 
 stock SendMessageToRacers(raceid,string[],colour)
 {
-	for (new racerid=0; racerid<MAX_PLAYERS;racerid++)
+	for(new racerid=0;racerid<=GetPlayerLastID();racerid++)
 	{
 		if (!IsPlayerConnected(racerid)) continue;
 		if (PlayerQuest[racerid] == GetRaceQuestID(raceid)) // if player is in this race
 		{
-			SendPlayerFormattedText(racerid, string, 0,colour);
+			SendClientMessage(racerid,colour,string);
 		}
 	}
 }
@@ -707,7 +707,7 @@ stock SendPlayerCurrentRaces(playerid)
 	}
 	if(racefound == 0)
 	{
-		SendPlayerFormattedText(playerid,  lang_texts[10][43] , 0,COLOUR_RED);
+		SendClientMessage(playerid,COLOUR_RED,lang_texts[10][43]);
 		RaceRunning=0;
 	}
 	return 1;
@@ -734,7 +734,7 @@ stock GetRaceQuestID(raceid)
 
 stock CleanupRace(raceid)
 {
-	for(new playerid=0; playerid<MAX_PLAYERS;playerid++)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if(!IsPlayerConnected(playerid)) continue;
 		if(PlayerQuest[playerid] == GetRaceQuestID(raceid)) // if player is in this race
@@ -781,7 +781,7 @@ stock StartRaceCountdown(raceid)
 		RaceStats[raceid][race_activecpid] = 0;
 	}
 	new string[MAX_STRING];
-	for(new playerid=0; playerid<MAX_PLAYERS;playerid++)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if(!IsPlayerConnected(playerid)) continue;
 		if(PlayerQuest[playerid] == GetRaceQuestID(raceid)) // if player is in this race
@@ -803,20 +803,20 @@ stock StartRaceCountdown(raceid)
 			format(logstring, sizeof (logstring), "Race: '%s' did not run.",Race[raceid][race_name]);
 			WriteLog(GameLog,logstring);
 		}
-		SendClientMessageToRegistered(COLOUR_RED, string);
+		SendClientMessageToAll(COLOUR_RED, string);
 		CleanupRace(raceid);
 		RaceRunning=0;
 		return;
 	}
 
 	format(string, sizeof(string),  lang_texts[10][46] ,Race[raceid][race_name]);
-	SendClientMessageToRegistered(COLOUR_RACE, string);
+	SendClientMessageToAll(COLOUR_RACE, string);
 	new logstring[MAX_STRING];
 	format(logstring, sizeof (logstring), "Race: %s starting.",Race[raceid][race_name]);
 	WriteLog(GameLog,logstring);
 	RaceStats[raceid][race_state] = RACE_STATE_COUNTDOWN;
 
-	for(new playerid=0;playerid<MAX_PLAYERS;playerid++)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if(!IsPlayerConnected(playerid)) continue;
 		if(PlayerQuest[playerid] == GetRaceQuestID(raceid)) // if player is in this race
@@ -833,13 +833,13 @@ stock StartRaceCountdown(raceid)
 
 stock EndRace(raceid)
 {
-	for (new playerid=0; playerid<MAX_PLAYERS;playerid++)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if (!IsPlayerConnected(playerid)) continue;
 		if (PlayerQuest[playerid] == GetRaceQuestID(raceid)) // if player is in this race
 		{
 			GameTextForPlayer(playerid, "~r~Race Failed!",5000,6);
-			SendPlayerFormattedText(playerid,  lang_texts[10][47] , 0,COLOUR_RED);
+			SendClientMessage(playerid,COLOUR_RED,lang_texts[10][47]);
 			new logstring[MAX_STRING];
 			format(logstring, sizeof (logstring), "player: %d:  %s: his race ended. He failed to quilify.",playerid,oGetPlayerName(playerid));
 			WriteLog(GameLog,logstring);
@@ -863,7 +863,7 @@ stock FinishRace(raceid,playerid)
 		SendClientMessage(playerid,COLOUR_GREEN, string);
 
 		format(string, sizeof(string),  lang_texts[10][49] ,oGetPlayerName(playerid),Race[raceid][race_name],ConvertSeconds(RacePlayerStats[playerid][race_player_time]));
-		SendClientMessageToRegistered(COLOUR_RACE, string);
+		SendClientMessageToAll(COLOUR_RACE, string);
 		new logstring[MAX_STRING];
 		format(logstring, sizeof (logstring), "player: %d:  %s: has won race '%s'! Time: %s",playerid,oGetPlayerName(playerid),Race[raceid][race_name],ConvertSeconds(RacePlayerStats[playerid][race_player_time]));
 		WriteLog(GameLog,logstring);
@@ -882,7 +882,7 @@ stock FinishRace(raceid,playerid)
 		SendClientMessage(playerid,COLOUR_GREEN, string);
 
 		format(string, sizeof(string),  lang_texts[10][51] ,oGetPlayerName(playerid),FormatPosition(RaceStats[raceid][race_position]),Race[raceid][race_name],ConvertSeconds(RacePlayerStats[playerid][race_player_time]));
-		SendClientMessageToRegistered(COLOUR_RACE, string);
+		SendClientMessageToAll(COLOUR_RACE, string);
 		if (RaceStats[raceid][race_racercount] > 2)
 		{
 			oGivePlayerMoney(playerid,(Race[raceid][race_cashprize]/2),1);
@@ -900,7 +900,7 @@ stock FinishRace(raceid,playerid)
 		SendClientMessage(playerid,COLOUR_GREEN, string);
 
 		format(string, sizeof(string),  lang_texts[10][53] ,oGetPlayerName(playerid),FormatPosition(RaceStats[raceid][race_position]),Race[raceid][race_name],ConvertSeconds(RacePlayerStats[playerid][race_player_time]));
-		SendClientMessageToRegistered(COLOUR_RACE, string);
+		SendClientMessageToAll(COLOUR_RACE, string);
 		if (RaceStats[raceid][race_racercount] > 3)
 		{
 			oGivePlayerMoney(playerid,(Race[raceid][race_cashprize]/3),1);
@@ -926,7 +926,7 @@ stock FinishRace(raceid,playerid)
 	if ((RaceStats[raceid][race_timer] < BestScore[raceid][race_score_time]) || (BestScore[raceid][race_score_time] == 0))
 	{
 		format(string, sizeof(string),  lang_texts[10][55] ,oGetPlayerName(playerid),Race[raceid][race_name],ConvertSeconds(RacePlayerStats[playerid][race_player_time]),ConvertSeconds(BestScore[raceid][race_score_time]));
-		SendClientMessageToRegistered(COLOUR_RACE, string);
+		SendClientMessageToAll(COLOUR_RACE, string);
 		new logstring[MAX_STRING];
 		format(logstring, sizeof (logstring), "player: %d:  %s: has set a new record for race '%s'! Time: %s. Old record: %s.",playerid,oGetPlayerName(playerid),Race[raceid][race_name],ConvertSeconds(RacePlayerStats[playerid][race_player_time]),ConvertSeconds(BestScore[raceid][race_score_time]));
 		WriteLog(GameLog,logstring);
@@ -955,7 +955,7 @@ stock StartRaceLineup(raceid)
 		format(string2,sizeof(string2),lang_texts[10][57],Race[raceid][race_cashentry],Race[raceid][race_minlevel],Race[raceid][race_minracers]);
 	}
 	else format(string2,sizeof(string2),lang_texts[10][58],Race[raceid][race_cashentry],Race[raceid][race_minlevel]);
-	for(new playerid=0; playerid<MAX_PLAYERS;playerid++)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if(!IsPlayerConnected(playerid)) continue;
 		SendClientMessage(playerid,GetRaceColourForPlayer(playerid,raceid), string1);
@@ -1046,32 +1046,27 @@ stock IsVehicleAllowedInRace(raceid,vehiclemodel)
 
 stock oSetPlayerRaceCheckpoint(playerid, type, Float:x, Float:y, Float:z, Float:xn, Float:yn, Float:zn, Float:size)
 {
-	//Debug("player.inc > oSetPlayerRaceCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size) - Start");
 	oDisablePlayerRaceCheckpoint(playerid);
-	SetPlayerRaceCheckpoint(playerid, type, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, size);//size); // TODO: size bugged
+	SetPlayerRaceCheckpoint(playerid, type, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, size);
 	DisablePlayerRaceCheckpoint(playerid);
 	PlayerRaceCP[playerid][Coord_X] = x;
 	PlayerRaceCP[playerid][Coord_Y] = y;
 	PlayerRaceCP[playerid][Coord_Z] = z;
 	PlayerRaceCPActive[playerid] = true;
-	SetPlayerRaceCheckpoint(playerid, type, x, y, z, xn, yn, zn, size);//size); // TODO: size bugged
-	//Debug("player.inc > oSetPlayerRaceCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size) - Stop");
+	SetPlayerRaceCheckpoint(playerid, type, x, y, z, xn, yn, zn, size);
 }
 
 stock oDisablePlayerRaceCheckpoint(playerid)
 {
-	//Debug("player.inc > oDisablePlayerRaceCheckpoint(playerid) - Start");
 	DisablePlayerRaceCheckpoint(playerid);
 	PlayerRaceCPActive[playerid] = false;
 	PlayerRaceCP[playerid][Coord_X] = 0.0;
 	PlayerRaceCP[playerid][Coord_Y] = 0.0;
 	PlayerRaceCP[playerid][Coord_Z] = 0.0;
-	//Debug("player.inc > oDisablePlayerRaceCheckpoint(playerid) - Stop");
 }
 
 stock oIsPlayerInRaceCheckpoint(playerid, Float:cpx, Float:cpy, Float:cpz, dist)
 {
-	//Debug("player.inc > oIsPlayerInRaceCheckpoint(playerid,Float:cpx,Float:cpy,Float:cpz,dist) - Start");
 	if (!IsPlayerConnected(playerid)) {return 0;}
 	if (!PlayerRaceCPActive[playerid]) {return 0;}
 	if (!loccmp(cpx,cpy,cpz,PlayerRaceCP[playerid][Coord_X],PlayerRaceCP[playerid][Coord_Y],PlayerRaceCP[playerid][Coord_Z])) return 0;
@@ -1082,7 +1077,6 @@ stock oIsPlayerInRaceCheckpoint(playerid, Float:cpx, Float:cpy, Float:cpz, dist)
 	{
 		return IsPlayerInRaceCheckpoint(playerid);
 	}
-	//Debug("player.inc > oIsPlayerInRaceCheckpoint(playerid,Float:cpx,Float:cpy,Float:cpz,dist) - Stop");
 	return 0;
 }
 

@@ -312,7 +312,7 @@ stock bis_Buy(playerid)
 	{
 		new owner=-1;
 		new string[MAX_STRING];
-		for(new ownerid=0;ownerid<MAX_PLAYERS;ownerid++)
+		for(new ownerid=0;ownerid<=GetPlayerLastID();ownerid++)
 		{
 			if(!IsPlayerConnected(ownerid) || IsPlayerNPC(ownerid) || strcmp(Businesses[id][Business_Owner],oGetPlayerName(ownerid),true))
 				continue;

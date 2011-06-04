@@ -27,7 +27,7 @@ new ActiveCheckpoints[MAX_ACTIVECP][ActiveCPInfo];
 
 stock SyncActiveCP()
 {
-	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) continue;
 		if(PlayerQuest[playerid] == 0)
@@ -101,7 +101,7 @@ stock SetPlayerActiveCP(playerid,cpid)
 	{ // if player cp already == this cp
 		return 0;
 	}
-	oSetPlayerCheckpoint(playerid,ActiveCheckpoints[cpid][CP_X],ActiveCheckpoints[cpid][CP_Y],ActiveCheckpoints[cpid][CP_Z],ActiveCheckpoints[cpid][CP_Size]);
+	oSetPlayerCheckpoint(playerid,ActiveCheckpoints[cpid][CP_X],ActiveCheckpoints[cpid][CP_Y],ActiveCheckpoints[cpid][CP_Z],8.0);
 	return 1;
 }
 
@@ -122,6 +122,7 @@ stock GetPlayerClosestActiveCP(playerid)
 					retval = cpid;
 				}
 			}
+			
 		}
 	}
 	return retval;
@@ -131,15 +132,14 @@ stock GetPlayerClosestActiveCP(playerid)
 
 stock oSetPlayerCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size)
 {
-	#pragma unused size
 	DisablePlayerCheckpoint(playerid);
-	SetPlayerCheckpoint(playerid, 0.0, 0.0, 0.0, 8);//size); // TODO: size bugged
+	SetPlayerCheckpoint(playerid, 0.0, 0.0, 0.0, size);
 	DisablePlayerCheckpoint(playerid);
 	PlayerCP[playerid][Coord_X] = x;
 	PlayerCP[playerid][Coord_Y] = y;
 	PlayerCP[playerid][Coord_Z] = z;
 	PlayerCPActive[playerid] = true;
-	SetPlayerCheckpoint(playerid, x, y, z, 8);//size); // TODO: size bugged
+	SetPlayerCheckpoint(playerid, x, y, z, size);
 }
 
 stock oDisablePlayerCheckpoint(playerid)
@@ -153,8 +153,8 @@ stock oDisablePlayerCheckpoint(playerid)
 
 stock oIsPlayerInCheckpoint(playerid,Float:cpx,Float:cpy,Float:cpz,dist)
 {
-	if (!IsPlayerConnected(playerid)) {return 0;}
-	if (!PlayerCPActive[playerid]) {return 0;}
+	if (!IsPlayerConnected(playerid)) return 0;
+	if (!PlayerCPActive[playerid]) return 0;
 	if (!loccmp(cpx,cpy,cpz,PlayerCP[playerid][Coord_X],PlayerCP[playerid][Coord_Y],PlayerCP[playerid][Coord_Z])) return 0;
 	new Float:playerx,Float:playery,Float:playerz;
 	GetPlayerPos(playerid,playerx,playery,playerz);

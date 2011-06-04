@@ -57,7 +57,7 @@ stock PayDay()
 		if(admpayday==0) rpayday++;
 		new BasePayM,BasePayX,string[MAX_STRING];
 		admpayday=0;
-		for(new id=GetMaxPlayers()-1;id>=0;--id)
+		for(new id=0;id<=GetPlayerLastID();id++)
 		{
 			if(!IsPlayerConnected(id) || IsPlayerNPC(id)) continue;
 			BasePayM=0;

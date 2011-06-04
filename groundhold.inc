@@ -120,7 +120,7 @@ stock groundhold_OnGameModeInit()
 stock CheckGround(ghid)
 {
 	new playergroundcount = CountPlayers(PlayerGroundHoldTime[ghid]);
-	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if(!IsPlayerConnected(playerid))
 		{
@@ -131,7 +131,7 @@ stock CheckGround(ghid)
 		if(IsPlayerInRangeOfPoint(playerid,Groundholds[ghid][gh_dist],Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]))
 		{
 			new groundenemycount;
-			for(new i=GetMaxPlayers()-1;i>=0;--i)
+			for(new i=0;i<=GetPlayerLastID();i++)
 			{
 				if(!IsPlayerConnected(i) || IsPlayerNPC(i) || i == playerid) continue;
 				if(PlayerGroundHoldTime[ghid][i] > 0)
@@ -224,7 +224,7 @@ stock CheckGround(ghid)
 stock CountPlayers(players[])
 {
 	new count;
-	for(new i=GetMaxPlayers()-1;i>=0;--i) if(players[i] > 0) count++;
+	for(new i=0;i<=GetPlayerLastID();i++) if(players[i] > 0) count++;
 	return count;
 }
 

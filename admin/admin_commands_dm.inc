@@ -24,13 +24,13 @@ stock AdminDM_OnPlayerCommandText(playerid,text[]) // process player commands
 		return 0;
 	}
 	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,strchar(" ")));
+	set(cmd,strcharsplit(text, idx,' '));
 	if(!strcmp(cmd, "/dm", true))
 	{
-		set(cmd,strcharsplit(text, idx,strchar(" ")));
+		set(cmd,strcharsplit(text, idx,' '));
 		if(!strcmp(cmd, "start", true))
 		{
-			new dmid = strval(strcharsplit(text, idx,strchar(" ")));
+			new dmid = strval(strcharsplit(text, idx,' '));
 			if((dmid == 0) || (dmid >= MAX_DM)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[13][1]);
 			if(DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED) return SendClientMessage(playerid,COLOUR_RED,lang_texts[13][2]);
 			if(DeathmatchStats[dmid][dm_state] == DM_STATE_ACTIVE) return SendClientMessage(playerid,COLOUR_RED,lang_texts[13][3]);

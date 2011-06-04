@@ -29,6 +29,10 @@
 #define HEALTH_TARIF		4.0	// степень увеличения максимального здоровья от лвл
 #define HEALTH_REGEN_TARIF	0.4
 
+// text scroll
+#define TEXT_SCROLL_SPEED 1000
+#define TEXT_SCROLL_SIZE 1023
+
 // при смерти
 #define PLAYER_XP_DEATH_MINUS_PROC 3 // сколько процентов XP уберается от уже имеющегося опыта
 #define PLAYER_MONEY_DEATH_MINUS_PROC 20 // сколько процентов денег уберается

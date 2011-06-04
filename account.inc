@@ -135,7 +135,7 @@ stock AccountLogin(playerid,password[])
 		SendClientMessage(playerid,COLOUR_GREEN, lang_texts[1][2]);
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	}
-	for(new idst=GetMaxPlayers()-1;idst>=0;--idst)
+	for(new idst=0;idst<=GetPlayerLastID();idst++)
 	{
 		if(!IsPlayerConnected(idst) || IsPlayerNPC(idst) || !IsPlayerAdmin(idst)) continue;
 		format(string,sizeof(string), lang_texts[1][17] ,oGetPlayerName(playerid),playerid);
@@ -186,12 +186,12 @@ stock account_login_db_ini(playerid,password[])
 stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 {
 	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,strchar(" ")));
+	set(cmd,strcharsplit(text, idx,' '));
 	if(!strcmp(cmd,"/changepass",true))
 	{
 		if(GetPlayerMoney(playerid) < 500000) return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][35]);
 		new temp[MAX_STRING];
-		set(temp,strcharsplit(text, idx,strchar(" ")));
+		set(temp,strcharsplit(text, idx,' '));
 		SetPVarString(playerid,"Password",temp);
 		AccountSave(playerid);
 		new string[MAX_STRING];

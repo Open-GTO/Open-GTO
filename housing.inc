@@ -169,7 +169,7 @@ stock housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					if(Houses[id][Houses_Lock] == 1) return SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][56]);
 					else 
 					{
-						SetPlayerPosEx(playerid,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ],0,Houses[id][Houses_Interior]);
+						oSetPlayerPos(playerid,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ],0,Houses[id][Houses_Interior]);
 						Haus[playerid] = id;
 						SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][73]);
 					}
@@ -223,7 +223,7 @@ stock DeleteRenter(playerid)
 	if(strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true) == 0) 
 	{
 		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[8][58]);
-		for(new i=GetMaxPlayers()-1;i>=0;--i)
+		for(new i=0;i<=GetPlayerLastID();i++)
 			if(IsPlayerConnected(i) && !strcmp(Houses[id][Houses_RentName],oGetPlayerName(i),true))
 				SendClientMessage(i,COLOUR_LIGHTRED,lang_texts[8][60]);
 	}
@@ -238,7 +238,7 @@ stock housing_OnPlayerCommandText(playerid,text[])
 {
 	if(!IsPlayerConnected(playerid)) return 0;
 	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,strchar(" ")));
+	set(cmd,strcharsplit(text, idx,' '));
 	if(strlen(cmd) == 0) return 0;
 
 	if((!strcmp(cmd,"/houseinfo",true)) || (!strcmp(cmd,"/hinfo",true)))
@@ -283,7 +283,7 @@ stock housing_OnPlayerCommandText(playerid,text[])
 	{
 		if(Haus[playerid] == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][61]);
 		new id = Haus[playerid];
-		set(cmd,strcharsplit(text, idx,strchar(" ")));
+		set(cmd,strcharsplit(text, idx,' '));
 		if(strlen(cmd) == 0) SendClientMessage(playerid,COLOUR_GREY,lang_texts[8][66]);
 		if(!strcmp(cmd,"heal",true))
 		{
@@ -304,7 +304,7 @@ stock housing_OnPlayerCommandText(playerid,text[])
 		if((id > -1 || Haus[playerid] > -1) && !strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true))
 		{
 			id = Haus[playerid];
-			new rentcost = strval(strcharsplit(text, idx,strchar(" ")));
+			new rentcost = strval(strcharsplit(text, idx,' '));
 			if(rentcost < 1) return SendClientMessage(playerid,COLOUR_GREY,lang_texts[8][71]);
 			Houses[id][Houses_RentCost] = rentcost;
 			format(string,sizeof(string),lang_texts[8][72],rentcost);
@@ -326,7 +326,7 @@ stock housing_OnPlayerCommandText(playerid,text[])
 	if(!strcmp(cmd,"/rent",true))
 	{
 		new id = GetHouseID(playerid);
-		set(cmd,strcharsplit(text, idx,strchar(" ")));
+		set(cmd,strcharsplit(text, idx,' '));
 		if(strlen(cmd) < 1) SendClientMessage(playerid,COLOUR_RED,lang_texts[8][76]);
 		else if(!strcmp(cmd,"on",true))
 		{
@@ -403,12 +403,12 @@ stock FHouseHouses(playerid)
 		if(strcmp(Houses[id][Houses_Owner],"Unknown",true))
 		{
 			format(temp,sizeof(temp),lang_texts[8][38],Houses[id][Houses_Name],Houses[id][Houses_Gang],Houses[id][Houses_Owner]);
-			SendPlayerScrollingText(playerid,temp);
+			SendClientMessage(playerid,COLOUR_MISC,temp);
 		} 
 		else 
 		{
 			format(temp,sizeof(temp),lang_texts[8][39],Houses[id][Houses_Name]);
-			SendPlayerScrollingText(playerid,temp);
+			SendClientMessage(playerid,COLOUR_MISC,temp);
 		}
 	}
 	return 1;
@@ -427,7 +427,7 @@ stock FHouseBuy(playerid)
 	new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
 	if(Player[playerid][Money] < price) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][18]);
 	if(!strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true))
-		SendPlayerFormattedText(playerid,lang_texts[8][15],0,COLOUR_RED);
+		SendClientMessage(playerid,COLOUR_RED,lang_texts[8][15]);
 #if !defined BUY_ALL_HOUSES
 	else if(strcmp(Houses[id][Houses_Owner],"Unknown",true))
 		SendClientMessage(playerid,COLOUR_RED,"Этот дом уже куплен!");
@@ -435,7 +435,7 @@ stock FHouseBuy(playerid)
 	else
 	{
 		new owner=-1;
-		for(new ownerid=GetMaxPlayers()-1;ownerid>=0;--ownerid)
+		for(new ownerid=0;ownerid<=GetPlayerLastID();ownerid++)
 			if(IsPlayerConnected(ownerid)) if(!strcmp(Houses[id][Houses_Owner],oGetPlayerName(ownerid),true))
 				owner = ownerid;
 		oGivePlayerMoney(playerid,0-price,1);
@@ -491,7 +491,7 @@ stock FHouseSell(playerid)
 		return 1;
 	}
 	if(strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true))
-		SendPlayerFormattedText(playerid,lang_texts[8][23],0,COLOUR_RED);
+		SendClientMessage(playerid,COLOUR_RED,lang_texts[8][23]);
 	else
 	{
 		new price = ((Houses[id][Houses_Cost] + Houses[id][Houses_Buyout]) * 85) / 100;
@@ -521,12 +521,12 @@ stock FHouseMyHouses(playerid)
 		{
 			count++;
 			format(temp,sizeof(temp),lang_texts[8][40],Houses[id][Houses_Name],Houses[id][Houses_Owner],Houses[id][Houses_Cost]);
-			SendPlayerScrollingText(playerid,temp);
+			SendClientMessage(playerid,COLOUR_MISC,temp);
 			format(temp,sizeof(temp),lang_texts[8][41],Houses[id][Houses_UpKeep], Houses[id][Houses_UpKeepLeft]);
-			SendPlayerScrollingText(playerid,temp);
+			SendClientMessage(playerid,COLOUR_MISC,temp);
 		}
 	}
-	if(count < 1) SendPlayerFormattedText(playerid,lang_texts[8][42],0,COLOUR_RED);
+	if(count < 1) SendClientMessage(playerid,COLOUR_RED,lang_texts[8][42]);
 	return 1;
 }
 
@@ -544,7 +544,7 @@ stock FHouseKeep(playerid)
 					if(Houses[id][Houses_UpKeepLeft] > 0)
 					{
 						Player[playerid][Money] -= Houses[id][Houses_UpKeepLeft];
-						SendPlayerFormattedText(playerid,  lang_texts[8][44] , 0,COLOUR_GREEN);
+						SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][44]);
 						Houses[id][Houses_UpKeepLeft] = 0;
 						new filename_housing[MAX_STRING];
 						format(filename_housing,sizeof(filename_housing),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[id][Houses_Name]);
@@ -555,19 +555,19 @@ stock FHouseKeep(playerid)
 							ini_Close(file_housing);
 						}
 					} 
-					else SendPlayerFormattedText(playerid,lang_texts[8][45],0,COLOUR_RED);
+					else SendClientMessage(playerid,COLOUR_RED,lang_texts[8][45]);
 				}
-				else SendPlayerFormattedText(playerid,lang_texts[8][46],0,COLOUR_RED);
+				else SendClientMessage(playerid,COLOUR_RED,lang_texts[8][46]);
 			} 
-			else SendPlayerFormattedText(playerid,lang_texts[8][47],0,COLOUR_RED);
+			else SendClientMessage(playerid,COLOUR_RED,lang_texts[8][47]);
 		} 
 		else 
 		{
-			SendPlayerFormattedText(playerid,lang_texts[8][48],0,COLOUR_RED);
-			SendPlayerFormattedText(playerid,lang_texts[8][49],0,COLOUR_RED);
+			SendClientMessage(playerid,COLOUR_RED,lang_texts[8][48]);
+			SendClientMessage(playerid,COLOUR_RED,lang_texts[8][49]);
 		}
 	} 
-	else SendPlayerFormattedText(playerid,lang_texts[8][50],0,COLOUR_RED);
+	else SendClientMessage(playerid,COLOUR_RED,lang_texts[8][50]);
 }
 
 stock ganghouse(playerid) 

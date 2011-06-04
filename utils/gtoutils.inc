@@ -68,108 +68,32 @@ stock GameMSG(fstring[], {Float, _}:...)
 	return 1;
 }
 
-PlayerPlaySoundOnPlayer(playerid,soundid)
+stock PlayerPlaySoundOnPlayer(playerid,soundid)
 {
-	new Float:playerx,Float:playery,Float:playerz;
-	GetPlayerPos(playerid,playerx,playery,playerz);
-	PlayerPlaySound(playerid,soundid,playerx,playery,playerz);
+	new Float:pos[3];
+	GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
+	return PlayerPlaySound(playerid,soundid,pos[0],pos[1],pos[2]);
 }
 
-Float:GetPlayerX(playerid)
-{
-	new Float:playerx,Float:playery,Float:playerz;
-	GetPlayerPos(playerid,playerx,playery,playerz);
-	return playerx;
-}
-
-Float:GetPlayerY(playerid)
-{
-	new Float:playerx,Float:playery,Float:playerz;
-	GetPlayerPos(playerid,playerx,playery,playerz);
-	return playery;
-}
-
-Float:GetPlayerZ(playerid)
-{
-	new Float:playerx,Float:playery,Float:playerz;
-	GetPlayerPos(playerid,playerx,playery,playerz);
-	return playerz;
-}
-
-FormatPosition(position)
+stock FormatPosition(position)
 {
 	new string[MAX_STRING];
-	if(position == 1) format(string, sizeof(string), "%dst!",position);
-	else if (position == 2) format(string, sizeof(string), "%dnd!",position);
-	else if (position == 3) format(string, sizeof(string), "%drd!",position);
-	else format(string, sizeof(string), "%dth",position);
+	switch(position)
+	{
+		case 1: format(string, sizeof(string), "%dst!",position);
+		case 2: format(string, sizeof(string), "%dnd!",position);
+		case 3: format(string, sizeof(string), "%drd!",position);
+		default: format(string, sizeof(string), "%dth",position);
+	}
 	return string;
-}
-
-#define TEXT_SCROLL_SPEED 1000
-#define TEXT_SCROLL_SIZE 1023
-new ScrollingText[MAX_PLAYERS][TEXT_SCROLL_SIZE]; // hmmmmm
-
-stock SendPlayerScrollingText(playerid,text[])
-{
-	for(new i=0;i<strlen(text);i++)
-	{
-	    if(text[i] == 0) break;
-	    if(text[i] == strchar("\n")) text[i] = strchar("_");
-	}
-	if(strlen(text) > 150) //  not allowed
-	{
-		SendClientMessage(playerid, COLOUR_MISC, text);
-  		return;
-	}
-	new wbreak;
-	while ((strlen(ScrollingText[playerid]) > (TEXT_SCROLL_SIZE  - strlen(text))) && (wbreak < 5))
-	{
-		ScrollText(playerid);
-		wbreak++;
-	}
-	if (wbreak >=5) strdel(ScrollingText[playerid], 0, strlen(ScrollingText[playerid])-1);
-	strins(ScrollingText[playerid],text,strlen(ScrollingText[playerid]),TEXT_SCROLL_SIZE-1);
-	strins(ScrollingText[playerid],"\n",strlen(ScrollingText[playerid]),TEXT_SCROLL_SIZE-1);
-}
-
-ScrollText(id)
-{
-	if(IsPlayerConnected(id))
-	{
-	    if(strlen(ScrollingText[id]) == 0) return;
-		new string[MAX_STRING],idx,colour;
-	    set(string,strcharsplit(ScrollingText[id],idx,strchar("\n")));
-	    if(strlen(string) < 1) return;
-	    if((string[0] == strchar("~")) && (string[2] == strchar("~")))
-	    {
-	        if(string[1] == strchar("r")) colour = COLOUR_RED;
-	        else if(string[1] == strchar("g")) colour = COLOUR_GREEN;
-            else if(string[1] == strchar("b")) colour = COLOUR_BLUE;
-            else if(string[1] == strchar("y")) colour = COLOUR_YELLOW;
-            strdel(string, 0, 3);
-        }
-        if(colour != 0) SendClientMessage(id, colour, string);
-        else SendClientMessage(id,COLOUR_MISC,string);
-		strdel(ScrollingText[id], 0, idx);
-	}
-	else strdel(ScrollingText[id], 0, strlen(ScrollingText[id])-1);
-	return;
-}
-
-stock TextScroller()
-{
-	for(new id=GetMaxPlayers()-1;id>=0;--id)
-	{
-		if(IsPlayerConnected(id) && !IsPlayerNPC(id)) ScrollText(id);
-	}
 }
 
 stock strcharsplit(string[], &index,seperator)
 {
 	new result[MAX_STRING];
 	new idxpos = index;
-	for (new i=index;i<strlen(string);i++)
+	new len = strlen(string);
+	for (new i=index;i<len;i++)
 	{
 	    index++;
 		if (string[i] == seperator) break;
@@ -177,11 +101,6 @@ stock strcharsplit(string[], &index,seperator)
 		result[i-idxpos] = string[i];
 	}
 	return result;
-}
-
-stock strchar(string[2])
-{
-	return string[0];
 }
 
 stock Vary(source,varyamount)
@@ -192,35 +111,12 @@ stock Vary(source,varyamount)
 stock NameCharCheck(string[MAX_PLAYER_NAME])
 {
 	if(!strcmp(string,"Unknown",true) || IsNumeric(string)) return 0;
-	for (new i=0;i<strlen(string);i++)
+	for (new i=0,len=strlen(string);i<len;i++)
 	{
 	    if(string[i] == 0) return 1; // null
 		if(string[i] < 32 || string[i] > 125) return 0;
 	}
 	return 1;
-}
-
-stock SendPlayerFormattedText(playerid, const str[], define, colour)
-{
-	new tmpbuf[MAX_STRING];
-	format(tmpbuf, sizeof(tmpbuf), str, define);
-	SendClientMessage(playerid, colour, tmpbuf);
-}
-
-stock SendAllFormattedText(const str[], define)
-{
-	new tmpbuf[MAX_STRING];
-	format(tmpbuf, sizeof(tmpbuf), str, define);
-	SendClientMessageToAll(COLOUR_MISC, tmpbuf);
-}
-
-stock SendClientMessageToRegistered(colour, message[])
-{
-	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
-	{
-	    if(IsPlayerConnected(playerid) && IsPlayerRegistered(playerid))
-			SendClientMessage(playerid,colour,message);
-	}
 }
 
 stock ConvertSeconds(time)
@@ -249,31 +145,20 @@ stock ConvertSeconds(time)
 stock PlayerCount()
 {
 	new count = 0;
-	for(new playerid=GetMaxPlayers();playerid>=0;--playerid)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
         if(IsPlayerConnected(playerid)) count++;
 	}
 	return count;
 }
 
-stock SetPlayerPosEx(playerid,Float:X,Float:Y,Float:Z,Float:Angle,Interior)
+stock oSetPlayerPos(playerid,Float:X,Float:Y,Float:Z,Float:Angle,Interior)
 {
     SetPlayerInterior(playerid,Interior);
     SetPlayerFacingAngle(playerid,Angle);
     SetPlayerPos(playerid,X,Y,Z);
     SetCameraBehindPlayer(playerid);
     return 1;
-}
-
-new Float:x11,Float:y11,Float:z11;
-
-stock PlaySoundForAll(soundid)
-{
-    for(new i=0;i<MAX_PLAYERS;i++)
-	{
-    	if(!IsPlayerConnected(i)) continue;
-		PlayerPlaySound(i,soundid,x11,y11,z11);
-	}
 }
 
 stock settime()

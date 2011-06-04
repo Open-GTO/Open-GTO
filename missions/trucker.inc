@@ -134,7 +134,7 @@ stock trucker_Start(playerid)
     SendClientMessage(playerid,COLOUR_YELLOW,"ХраП: Бери груз, езжай на чекпоинт, доставь туда груз вовремя и получишь бабки + опыт");
 	new string[MAX_STRING];
     format(string,sizeof(string),"ХраП: %s взял миссию по доставке груза",oGetPlayerName(playerid));
-    for(new i=GetMaxPlayers()-1;i>=0;--i)
+    for(new i=0;i<=GetPlayerLastID();i++)
     {
         if(IsPlayerConnected(i) && i != playerid && !IsPlayerNPC(i))
 			SendClientMessage(i,COLOUR_LIGHTRED,string);
@@ -232,7 +232,7 @@ forward trucker_RunnerTimer();
 public trucker_RunnerTimer()
 {
 	new buf;
-	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) continue;
 		if((buf = GetPVarInt(playerid,"trucker_RunnerMissionTime")) > 0)

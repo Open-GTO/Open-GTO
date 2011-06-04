@@ -188,7 +188,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					new idsa = 0,
 						admins[MAX_STRING],
 						moders[MAX_STRING];
-					for(new id=GetMaxPlayers()-1;id>=0;--id)
+					for(new id=0;id<=GetPlayerLastID();id++)
 					{
 						if(!IsPlayerConnected(id) || IsPlayerNPC(id)) continue;
 						if(IsPlayerAdmin(id) || IsPlayerAdm(id))

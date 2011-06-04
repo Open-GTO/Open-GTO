@@ -220,7 +220,7 @@ stock Float:oGetPlayerHealth(playerid)
 
 stock SpawnTimer()
 {
-	for(new playerid;playerid<MAX_PLAYERS;playerid++)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if(IsPlayerConnected(playerid)) SpawnTime[playerid]++;
 	}
@@ -228,7 +228,7 @@ stock SpawnTimer()
 
 stock PlayerHealthRegen()
 {
-	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 		HealthRegen(playerid);
 	return 1;
 }
@@ -237,7 +237,7 @@ stock PlayerHealthRegen()
 // sync player hp/money and check for mismatch
 stock SyncPlayers()
 {
-	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) continue;
 		if(GetPVarInt(playerid,"Spawned") == 0) continue; // если игрок мертв, то защиты не срабатывают
@@ -880,8 +880,8 @@ stock SetWeaponsFromDBString(playerid,dbstring[])
 	new idx;
 	for(new i=0;i<PLAYER_WEAPON_SLOTS;i++)
 	{
-		PlayerWeapons[playerid][i][pwid] = strval(strcharsplit(dbstring,idx,strchar("/")));
-		PlayerWeapons[playerid][i][pbullets] = strval(strcharsplit(dbstring,idx,strchar("|")));
+		PlayerWeapons[playerid][i][pwid] = strval(strcharsplit(dbstring,idx,'/'));
+		PlayerWeapons[playerid][i][pbullets] = strval(strcharsplit(dbstring,idx,'|'));
 	}
 }
 
@@ -893,10 +893,10 @@ stock CreateWeaponDBString(playerid)
 		new temp[MAX_STRING];
 		valstr(temp,PlayerWeapons[playerid][i][pwid]);
 		strins(wepstr, temp, strlen(wepstr));
-		wepstr[strlen(wepstr)] = strchar("/");
+		wepstr[strlen(wepstr)] = '/';
 		valstr(temp,PlayerWeapons[playerid][i][pbullets]);
 		strins(wepstr, temp, strlen(wepstr));
-		wepstr[strlen(wepstr)] = strchar("|");
+		wepstr[strlen(wepstr)] = '|';
 	}
 	return wepstr;
 }
@@ -904,7 +904,7 @@ stock SetWeaponsSkillsFromDBString(playerid,dbstring[])
 {
 	new idx;
 	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
-		PlayerWeaponsSkills[playerid][i] = strval(strcharsplit(dbstring,idx,strchar("/")));
+		PlayerWeaponsSkills[playerid][i] = strval(strcharsplit(dbstring,idx,'/'));
 }
 stock CreateWeaponSkillsDBString(playerid)
 {
@@ -914,7 +914,7 @@ stock CreateWeaponSkillsDBString(playerid)
 		new temp[MAX_STRING];
 		valstr(temp,PlayerWeaponsSkills[playerid][i]);
 		strins(wepstr,temp,strlen(wepstr));
-		wepstr[strlen(wepstr)] = strchar("/");
+		wepstr[strlen(wepstr)] = '/';
 	}
 	return wepstr;
 }
@@ -989,9 +989,9 @@ stock player_load_db_ini(playerid)
     ini_GetInt(file_player,"Level",Player[playerid][Level]);
 	new string[MAX_STRING],idx=0;
 	ini_Get(file_player,"Coords",string);
-	PlayerSpawn[playerid][Coord_X] = floatstr(strcharsplit(string,idx,strchar(",")));
-	PlayerSpawn[playerid][Coord_Y] = floatstr(strcharsplit(string,idx,strchar(",")));
-	PlayerSpawn[playerid][Coord_Z] = floatstr(strcharsplit(string,idx,strchar(",")));
+	PlayerSpawn[playerid][Coord_X] = floatstr(strcharsplit(string,idx,','));
+	PlayerSpawn[playerid][Coord_Y] = floatstr(strcharsplit(string,idx,','));
+	PlayerSpawn[playerid][Coord_Z] = floatstr(strcharsplit(string,idx,','));
     ini_GetInt(file_player,"Status",Player[playerid][Status]);
 	SetPlayerFightingStyle(playerid,Player[playerid][FightStyle]);
 	new gangname[MAX_NAME];

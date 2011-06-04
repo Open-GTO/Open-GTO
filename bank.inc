@@ -179,7 +179,7 @@ stock IsPlayerAtBank(playerid)
 
 stock Profit()
 {
-	for(new playerid=GetMaxPlayers();playerid>=0;--playerid)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 		Player[playerid][Bank] += (Player[playerid][Bank] / 100) * ProfitCount;
 	return 1;
 }

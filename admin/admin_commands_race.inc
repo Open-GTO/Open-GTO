@@ -25,11 +25,11 @@ stock AdminRace_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 
 	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,strchar(" ")));
+	set(cmd,strcharsplit(text, idx,' '));
 
 	if(!strcmp(cmd, "/race", true))
 	{
-		set(cmd,strcharsplit(text, idx,strchar(" ")));
+		set(cmd,strcharsplit(text, idx,' '));
 		if(!strcmp(cmd, "create", true))
 		{
 			new racename[MAX_NAME];
@@ -120,7 +120,7 @@ stock AdminRace_OnPlayerCommandText(playerid,text[]) // process player commands
 
 		if(!strcmp(cmd, "start", true))
 		{
-			new raceid = strval(strcharsplit(text, idx,strchar(" ")));
+			new raceid = strval(strcharsplit(text, idx,' '));
 			if((raceid == 0) || (raceid >= MAX_RACES)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][19]);
 			if(RaceStats[raceid][race_state] == RACE_STATE_DISABLED) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][20]);
 			if(RaceStats[raceid][race_state] == RACE_STATE_RACING) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][21]);

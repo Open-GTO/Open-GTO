@@ -161,7 +161,7 @@ stock gang_load_db_ini(gangid,gangname[])
 stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 {
 	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,strchar(" ")));
+	set(cmd,strcharsplit(text, idx,' '));
 	if(strlen(cmd) == 0) return 0;
 
 	if(Player[playerid][MuteTime] != 0)
@@ -186,7 +186,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(!IsPlayerRegistered(playerid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][3]);
 
-  		set(cmd,strcharsplit(text, idx,strchar(" ")));
+  		set(cmd,strcharsplit(text, idx,' '));
   		if(strlen(cmd) == 0) return 0;
   		if(!strcmp(cmd,"help",true))
   		{
@@ -283,7 +283,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
        			return 1;
       		}
    			new gangname[MAX_STRING],colourname[MAX_NAME],gangcolour=255;
-   			set(colourname,strcharsplit(text, idx,strchar(" ")));
+   			set(colourname,strcharsplit(text, idx,' '));
    			if(!strlen(colourname))
    			{
                 SendClientMessage(playerid,COLOUR_RED,lang_texts[6][35]);
@@ -365,10 +365,10 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
       		if(strcmp(GangMemberInfo[gangid][0][member_name],oGetPlayerName(playerid),false))
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][52]);
 
-      		new inviteid = strval(strcharsplit(text,idx,strchar(" "))),
+      		new inviteid = strval(strcharsplit(text,idx,' ')),
 				string[MAX_STRING];
 
-            if(inviteid < 0 || inviteid >= MAX_PLAYERS || inviteid == INVALID_PLAYER_ID)
+            if(inviteid < 0 || inviteid >= GetPlayerLastID() || inviteid == INVALID_PLAYER_ID)
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][53]);
 
       		if(!IsPlayerRegistered(inviteid))
@@ -427,7 +427,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
     			return 1;
    			}
    			new colourname[MAX_NAME],gangcolour;
-   			set(colourname,strcharsplit(text, idx,strchar(" ")));
+   			set(colourname,strcharsplit(text, idx,' '));
    			if(!strlen(colourname)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][66]);
         	for(new colourid=0;colourid<COLOURS_SIZE;colourid++)
          	{

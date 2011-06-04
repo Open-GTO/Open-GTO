@@ -46,7 +46,7 @@ stock DeleteStreamMapIcon(icon_id)
 	MapIcons[icon_id][Coord_X] = 0.0;
 	MapIcons[icon_id][Coord_Y] = 0.0;
 	MapIcons[icon_id][Coord_Z] = 0.0;
-	for(new i=GetMaxPlayers()-1,slot;i>=0;--i)
+	for(new i=0,slot;i<=GetPlayerLastID();i++)
 	{
 		if(!IsPlayerConnected(i) || IsPlayerNPC(i)) continue;
 		slot = GetIconSlot(i,icon_id);
@@ -66,7 +66,7 @@ stock UpdatePlayerStreamMapIcon( playerid,icon_id )
 
 stock UpdateStreamMapIcon( icon_id )
 {
-	for(new i=GetMaxPlayers()-1;i>=0;--i)
+	for(new i=0;i<=GetPlayerLastID();i++)
 	{
 		if(!IsPlayerConnected(i) || IsPlayerNPC(i)) continue;
 		new slot = GetIconSlot(i,icon_id);
@@ -78,7 +78,7 @@ stock UpdateStreamMapIcon( icon_id )
 
 stock MapIcons_Streaming()
 {
-	for( new playerid=GetMaxPlayers()-1;playerid>=0;--playerid )
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if( !IsPlayerConnected(playerid) || IsPlayerNPC(playerid) ) continue;
 		for( new icon_id=1;icon_id<MAX_ICONS;icon_id++ )

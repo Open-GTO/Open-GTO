@@ -21,9 +21,9 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!IsPlayerAdmin(playerid) && !IsPlayerAdm(playerid)) return 0;
 
 	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,strchar(" ")));
+	set(cmd,strcharsplit(text, idx,' '));
 	if(strcmp(cmd, "/sys", true)) return 0;
-	set(cmd,strcharsplit(text, idx,strchar(" ")));
+	set(cmd,strcharsplit(text, idx,' '));
 
 	if(!strcmp(cmd,"cmdlist",true))
 	{
@@ -56,7 +56,7 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
 
 		new MAX_ONLINESS = 0;
-		for(new idst = 0; idst < MAX_PLAYERS; idst++)
+		for(new idst=0;idst<=GetPlayerLastID();idst++)
 		{
 			if(IsPlayerConnected(idst)) MAX_ONLINESS += 1;
 		}
@@ -90,7 +90,7 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"weath",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
-		new paramid = strval(strcharsplit(text, idx,strchar(" ")));
+		new paramid = strval(strcharsplit(text, idx,' '));
 		if(paramid == 0)
 		{
 			SetTimer("WeatherUpdate", 20*60000,0);
@@ -114,7 +114,7 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"groundhold",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
-		new paramid = strval(strcharsplit(text, idx,strchar(" ")));
+		new paramid = strval(strcharsplit(text, idx,' '));
 		switch(paramid)
 		{
 			case 0:
@@ -147,7 +147,7 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"lotto",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
-		new paramid = strval(strcharsplit(text, idx,strchar(" ")));
+		new paramid = strval(strcharsplit(text, idx,' '));
 		if(paramid == 0)
 		{
 			SetTimer("Lottery", 20*60000,0);
@@ -171,7 +171,7 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"bomb",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
-		new paramid = strval(strcharsplit(text, idx,strchar(" ")));
+		new paramid = strval(strcharsplit(text, idx,' '));
 		switch(paramid)
 		{
 			case 0:

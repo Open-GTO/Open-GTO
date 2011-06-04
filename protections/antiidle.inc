@@ -48,7 +48,7 @@ stock AntiIdle()
 {
 	if(AntiIdleEnabled != 1) return;
     new Float:pos[3],string[MAX_STRING];
-	for(new playerid=GetMaxPlayers()-1;playerid>=0;--playerid)
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
         if(IsPlayerConnected(playerid) && !IsPlayerNPC(playerid) && !IsPlayerAdmin(playerid)
 			&& IsPlayerInAnyKach(playerid) && Groundhold_Enabled == 1)

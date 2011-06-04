@@ -225,21 +225,6 @@ stock IsStoreWeapon(weaponid)
 	return 0;
 }
 
-stock SendPlayerVendorWeapons(playerid)
-{
-	new string[MAX_STRING];
-	SendClientMessage(playerid,COLOUR_GREEN,lang_texts[16][5]);
-	for(new weaponid=1;weaponid<MAX_WEAPONS;weaponid++)
-	{
-		if(IsPlayerAllowedWeapon(playerid,weaponid))
-		{
-			format(string,sizeof(string),lang_texts[16][6],oGetWeaponName(weaponid),GetWeaponCost(weaponid),weaponid);
-			SendPlayerScrollingText(playerid, string);
-		}
-	}
-	return 1;
-}
-
 stock BuyWeapon(playerid,weaponid,bullets)
 {
 	new string[MAX_STRING];

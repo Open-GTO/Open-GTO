@@ -21,14 +21,14 @@
 stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 {
 	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,strchar(" ")));
+	set(cmd,strcharsplit(text, idx,' '));
 	
 	if(!strcmp(cmd, "/sound", true))
 	{
 		new string[MAX_STRING];
 		set(string,text);
 		strdel(string, 0, idx);
-		new soundid = strval(strcharsplit(text, idx,strchar(" ")));
+		new soundid = strval(strcharsplit(text, idx,' '));
 		if(soundid <= 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[1][15]);
 		new Float:playerx,Float:playery,Float:playerz;
 		GetPlayerPos(playerid,playerx,playery,playerz);
@@ -146,7 +146,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		new idsa = 0;
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[1][28]);
-		for(new id=0;id<MAX_PLAYERS;id++)
+		for(new id=0;id<=GetPlayerLastID();id++)
 		{
 			if((IsPlayerConnected(id) && IsPlayerAdmin(id)) || (IsPlayerConnected(id) && IsPlayerAdm(id)))
 			{
@@ -155,7 +155,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 				idsa++;
 			}
 		}
-		for(new id=0;id<MAX_PLAYERS;id++)
+		for(new id=0;id<=GetPlayerLastID();id++)
 		{
 			if(IsPlayerConnected(id) && IsPlayerMod(id))
 			{
@@ -194,7 +194,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		format(string,sizeof(string), lang_texts[1][20]);
 		GameTextForPlayer(playerid,string,4000,5);
 		format(string,sizeof(string), lang_texts[1][21] ,oGetPlayerName(playerid),playerid);
-		SendClientMessageToRegistered(COLOUR_GREY, string);
+		SendClientMessageToAll(COLOUR_GREY, string);
 		PlayerPlaySound(playerid,1039,0,0,0);
 		return 1;
 	}
@@ -209,7 +209,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	if(!strcmp(cmd,"/f",true))
 	{
-		new style = strval(strcharsplit(text, idx,strchar(" ")));
+		new style = strval(strcharsplit(text, idx,' '));
 		new string[MAX_STRING];
 		if(style < 4 || style > 7)
 		{
@@ -239,7 +239,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		new gangid = PlayerGangid[playerid];
 		set(kickplayername,Account_LastName);
 		GangRemoveMember(gangid,kickplayername);
-		set(nick,strcharsplit(text, idx,strchar(" ")));
+		set(nick,strcharsplit(text, idx,' '));
 		SetPlayerName(playerid,nick);
 		AccountSave(playerid);
 		GangJoinMember(gangid,playerid);
@@ -250,7 +250,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 
  	if(!strcmp(cmd,"/dance",true))
 	{
-		switch(strval(strcharsplit(text, idx,strchar(" "))))
+		switch(strval(strcharsplit(text, idx,' ')))
 		{
 			case 1:SetPlayerSpecialAction(playerid,SPECIAL_ACTION_DANCE1);
 			case 2:SetPlayerSpecialAction(playerid,SPECIAL_ACTION_DANCE2);

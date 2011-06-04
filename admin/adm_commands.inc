@@ -21,7 +21,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 {
 	if((!IsPlayerAdmin(playerid)) && (!IsPlayerAdm(playerid))) return 0;
 	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,strchar(" ")));
+	set(cmd,strcharsplit(text, idx,' '));
 	if(!strcmp(cmd,"/cmdlist",true))
 	{
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/say <text>', '/pinfo <ID>'");
@@ -51,8 +51,8 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
 		new receiverid = INVALID_PLAYER_ID;
-		receiverid = strval(strcharsplit(text, idx,strchar(" ")));
-		if((receiverid < 0) || (receiverid >= MAX_PLAYERS)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
+		receiverid = strval(strcharsplit(text, idx,' '));
+		if((receiverid < 0) || (receiverid >= GetPlayerLastID())) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		if(IsPlayerConnected(receiverid) == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][34],oGetPlayerName(receiverid),receiverid);
@@ -93,8 +93,8 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
 		new receiverid = INVALID_PLAYER_ID;
-		receiverid = strval(strcharsplit(text,idx,strchar(" ")));
-		if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
+		receiverid = strval(strcharsplit(text,idx,' '));
+		if((receiverid < 0) || (receiverid >= GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		}
@@ -157,8 +157,8 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/tele-to",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
-		new receiverid = strval(strcharsplit(text, idx,strchar(" ")));
-		if((receiverid < 0) || (receiverid >= MAX_PLAYERS)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
+		new receiverid = strval(strcharsplit(text, idx,' '));
+		if((receiverid < 0) || (receiverid >= GetPlayerLastID())) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		if(!IsPlayerConnected(receiverid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 		new Float:X,Float:Y,Float:Z,Float:Angle;
 		if(IsPlayerInAnyVehicle(playerid)) 
@@ -185,8 +185,8 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/tele-here",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
-		new receiverid = strval(strcharsplit(text, idx,strchar(" ")));
-		if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
+		new receiverid = strval(strcharsplit(text, idx,' '));
+		if((receiverid < 0) || (receiverid >= GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		}
@@ -224,7 +224,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 		GetPlayerPos(playerid,X,Y,Z);
 		GetPlayerFacingAngle(playerid,Angle);
 		new string[MAX_STRING];
-		for(new id=GetMaxPlayers()-1;id>=0;--id)
+		for(new id=0;id<=GetPlayerLastID();id++)
 		{
 			if(id == playerid) continue;
 			if(IsPlayerConnected(id) && !IsPlayerNPC(id) && (Player[id][Jailed] == 0) && !IsPlayerAdmin(id)  && !IsPlayerInAnyDM(id))
@@ -244,10 +244,10 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/tele-xyzi",true))
 	{
 		new Float:t_x,Float:t_y,Float:t_z,t_int;
-		t_x = floatstr(strcharsplit(text,idx,strchar(" ")));
-		t_y = floatstr(strcharsplit(text,idx,strchar(" ")));
-		t_z = floatstr(strcharsplit(text,idx,strchar(" ")));
-		t_int = strval(strcharsplit(text,idx,strchar(" ")));
+		t_x = floatstr(strcharsplit(text,idx,' '));
+		t_y = floatstr(strcharsplit(text,idx,' '));
+		t_z = floatstr(strcharsplit(text,idx,' '));
+		t_int = strval(strcharsplit(text,idx,' '));
 		SetPlayerInterior(playerid,t_int);
 		SetPlayerPos(playerid,t_x,t_y,t_z);
 		return 1;
@@ -255,13 +255,13 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	if(!strcmp(cmd, "/sethealth", true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
-		new receiverid = strval(strcharsplit(text, idx,strchar(" ")));
-		if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
+		new receiverid = strval(strcharsplit(text, idx,' '));
+		if((receiverid < 0) || (receiverid >= GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		}
 		if(!IsPlayerConnected(receiverid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
-		new hltamount = strval(strcharsplit(text, idx,strchar(" ")));
+		new hltamount = strval(strcharsplit(text, idx,' '));
 		if((hltamount < 10) || (hltamount > 300)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][44]);
 		SetPlayerHealth(receiverid, hltamount);
 		return 1;
@@ -271,13 +271,13 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 
-		new receiverid = strval(strcharsplit(text, idx,strchar(" ")));
-		if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
+		new receiverid = strval(strcharsplit(text, idx,' '));
+		if((receiverid < 0) || (receiverid >= GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		}
 		if(!IsPlayerConnected(receiverid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
-		new armamount = strval(strcharsplit(text, idx,strchar(" ")));
+		new armamount = strval(strcharsplit(text, idx,' '));
 		if((armamount < 0) || (armamount > 300)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][44]);
 		SetPlayerArmour(receiverid, armamount);
 		return 1;
@@ -286,13 +286,13 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 
-		new receiverid = strval(strcharsplit(text, idx,strchar(" ")));
-		if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
+		new receiverid = strval(strcharsplit(text, idx,' '));
+		if((receiverid < 0) || (receiverid >= GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		}
 		if(!IsPlayerConnected(receiverid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
-		new xpamount = strval(strcharsplit(text, idx,strchar(" ")));
+		new xpamount = strval(strcharsplit(text, idx,' '));
 		if((xpamount == 0) || (xpamount > MAX_LVLXP)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][4]);
 		new xpamountkeep = GetPlayerXP(receiverid)+xpamount;
 		if((!IsPlayerAdmin(receiverid) && xpamountkeep >MAX_LVLXP) || (IsPlayerAdmin(receiverid) && xpamountkeep > MAX_XP))
@@ -327,13 +327,13 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	if(!strcmp(cmd, "/agivecash", true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
-		new receiverid = strval(strcharsplit(text, idx,strchar(" ")));
-		if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
+		new receiverid = strval(strcharsplit(text, idx,' '));
+		if((receiverid < 0) || (receiverid >= GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 		}
 		if(!IsPlayerConnected(receiverid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][10]);
-		new cashamount = strval(strcharsplit(text, idx,strchar(" ")));
+		new cashamount = strval(strcharsplit(text, idx,' '));
 		if((cashamount < -999999) || (cashamount == 0) || (cashamount > 999999))
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][11]);
@@ -363,13 +363,13 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/givegun",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
-		new receiverid = strval(strcharsplit(text, idx,strchar(" ")));
-		if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
+		new receiverid = strval(strcharsplit(text, idx,' '));
+		if((receiverid < 0) || (receiverid >= GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 		}
 		if(!IsPlayerConnected(receiverid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][10]);
-		new ammamount = strval(strcharsplit(text, idx,strchar(" ")));
+		new ammamount = strval(strcharsplit(text, idx,' '));
 		if((ammamount < 0) || (ammamount > 46)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][45]);
 		GivePlayerWeapon(receiverid,ammamount,1000);
 		new string[MAX_STRING];
@@ -385,8 +385,8 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 
-		new receiverid = strval(strcharsplit(text, idx,strchar(" ")));
-		if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
+		new receiverid = strval(strcharsplit(text, idx,' '));
+		if((receiverid < 0) || (receiverid >= GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 		}
@@ -405,8 +405,8 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 	if(!strcmp(cmd, "/deparalyze", true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
-		new receiverid = strval(strcharsplit(text, idx,strchar(" ")));
-		if((receiverid < 0) || (receiverid >= MAX_PLAYERS) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
+		new receiverid = strval(strcharsplit(text, idx,' '));
+		if((receiverid < 0) || (receiverid >= GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 		}

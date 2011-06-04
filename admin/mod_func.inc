@@ -13,7 +13,7 @@
 stock modfunc_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger)
 {	
 	#pragma unused ispassenger
-	for(new id=0;id<MAX_PLAYERS;id++)
+	for(new id=0;id<=GetPlayerLastID();id++)
 	{
 		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[id][SpecID] == playerid) PlayerSpectateVehicle(id,vehicleid);
 	}
@@ -23,7 +23,7 @@ stock modfunc_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger)
 stock modfunc_OnPlayerExitVehicle(playerid,vehicleid)
 {
 	#pragma unused vehicleid
-	for(new id=0;id<MAX_PLAYERS;id++)
+	for(new id=0;id<=GetPlayerLastID();id++)
 	{
 		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[id][SpecID] == playerid) PlayerSpectatePlayer(id,playerid);
 	}
@@ -33,7 +33,7 @@ stock modfunc_OnPlayerExitVehicle(playerid,vehicleid)
 stock modfunc_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
 {
 	#pragma unused oldinteriorid
-	for(new id=0;id<MAX_PLAYERS;id++)
+	for(new id=0;id<=GetPlayerLastID();id++)
 	{
 		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[id][SpecID] == playerid)	SetPlayerInterior(id,newinteriorid);
 	}
@@ -43,7 +43,7 @@ stock modfunc_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
 stock modfunc_OnPlayerDeath(playerid,killerid,reason)
 {
 	#pragma unused reason,killerid
-	for(new id=0;id<MAX_PLAYERS;id++) 
+	for(new id=0;id<=GetPlayerLastID();id++)
 	{
 		if(IsPlayerConnected(id) && Player[id][SpecID] == playerid  && Player[id][Spectating]) 
 		{ 
@@ -63,7 +63,7 @@ stock modfunc_OnPlayerText(playerid,text[])
 		new string[MAX_STRING];
 		strmid(string,text,1,strlen(text));
 		new count = 0;
-		for(new adminid=0; adminid<MAX_PLAYERS;adminid++)
+		for(new adminid=0;adminid<=GetPlayerLastID();adminid++)
 		{
 			if(IsPlayerMod(adminid))
 			{

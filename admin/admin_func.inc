@@ -16,7 +16,7 @@ stock adminfunc_OnPlayerText(playerid,text[])
 	{
 		new string[MAX_STRING],count = 0;
 		strmid(string,text,1,strlen(text));
-		for(new adminid=0;adminid<MAX_PLAYERS;adminid++)
+		for(new adminid=0;adminid<=GetPlayerLastID();adminid++)
 		{
 			if(IsPlayerAdmin(adminid) && IsPlayerAdm(adminid))
 			{

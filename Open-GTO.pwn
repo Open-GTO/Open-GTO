@@ -27,6 +27,7 @@ Date start Open-GTO: 	5 November 2009
 #include "config"							// дефайны и настройки по умолчанию
 #include "utils\mxINI"
 #include "base"								// holds base script values
+#include "utils\players_count"
 #include "logging"							// logging handler
 #include "utils\gtoutils"					// misc used utils
 #include "arrays"
@@ -215,6 +216,7 @@ public OnGameModeExit()
 public OnPlayerConnect(playerid)
 {
     if(IsPlayerNPC(playerid)) return 1;
+	plcount_OnPlayerConnect(playerid);
 	player_OnPlayerConnect(playerid);
    	account_OnPlayerConnect(playerid);
 	chatguard_OnPlayerConnect(playerid);
@@ -224,6 +226,7 @@ public OnPlayerConnect(playerid)
 public OnPlayerDisconnect(playerid,reason)
 {
 	if(playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) return 1;
+	plcount_OnPlayerDisconnect(playerid,reason);
 	player_OnPlayerDisconnect(playerid,reason);
 	trucker_OnPlayerDisconnect(playerid, reason);
 	chatguard_OnPlayerDisconnect(playerid,reason);
