@@ -3,12 +3,12 @@
 
 */
 
-#if defined _level_system_included
+#if defined _level_included
 	#endinput
 #endif
 
-#define _level_system_included
-#pragma library level_system
+#define _level_included
+#pragma library level
 
 
 #define GetPlayerLevel(%1) GetPVarInt(%1,"Level")
@@ -90,13 +90,13 @@ new LevelList[MAX_LEVEL+1][LevelInfo] = {
 {  60000000, "60 уровень" }
 };
 
-stock LevelSystem_LoadConfig()
+stock level_LoadConfig()
 {
 	if(ini_Exist(ConfigDB))
 	{
-		new file_ls = ini_Open(ConfigDB);
-		ini_Get(file_ls,"Level_DB",LevelDB);
-		ini_Close(file_ls);
+		new file_level = ini_Open(ConfigDB);
+		ini_Get(file_level,"Level_DB",LevelDB);
+		ini_Close(file_level);
 	}
 	if(ini_Exist(LevelDB))
 	{
@@ -113,11 +113,11 @@ stock LevelSystem_LoadConfig()
 	return 1;
 }
 
-stock LevelSystem_SaveConfig()
+stock level_SaveConfig()
 {
-	new file_ls = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_ls,"Level_DB",LevelDB);
-	ini_Close(file_ls);
+	new file_level = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_Set(file_level,"Level_DB",LevelDB);
+	ini_Close(file_level);
 	
 	new file_base_level = (ini_Exist(LevelDB)) ? ini_Open(LevelDB) : ini_Create(LevelDB);
 	for(new i=0,temp[MAX_STRING];i<=MAX_LEVEL;i++)
@@ -131,10 +131,10 @@ stock LevelSystem_SaveConfig()
 	return 1;
 }
 
-stock LevelSystem_OnGameModeInit()
+stock level_OnGameModeInit()
 {
-	LevelSystem_LoadConfig();
-	GameMSG("SERVER: (system)Level System module init");
+	level_LoadConfig();
+	GameMSG("SERVER: (player)Level module init");
 	return 1;
 }
 

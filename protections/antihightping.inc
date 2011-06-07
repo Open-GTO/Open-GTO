@@ -2,8 +2,6 @@
 // Made by ZiGGi
 //
 
-new MAX_PING = 500;
-new AntiHightPingEnabled = 1;
 
 stock AntiHightPingLoadConfig()
 {

@@ -81,7 +81,6 @@ new DMCentreCP[MAX_DM][CoordInfo];
 
 stock DeathmatchLoadAll()
 {
-	if (ForceOverwrite) return 0;
 	new temp[MAX_STRING];
 	if(ini_Exist(ConfigDB))
 	{
@@ -118,7 +117,6 @@ stock DeathmatchBaseDBExists(dmname[MAX_STRING])
 
 stock DeathmatchLoadBaseDB(dmid)
 { // load dm from db
-	if (ForceOverwrite) return INVALID_DM_ID;
 	new temp[MAX_STRING],rdbname[MAX_STRING];
 	format(rdbname,sizeof(rdbname),"%s%s"GTO_FILES_FORMAT,DMBaseDB,Deathmatch[dmid][dm_name]);
 	if(!ini_Exist(rdbname)) return INVALID_DM_ID;
@@ -1076,12 +1074,7 @@ stock IsWeaponAllowedInDM(weaponid,dmid)
 
 stock deathmatch_OnPlayerKill(playerid,victimid,weaponid)
 {
-
 	// check gang kill
-	//if (PlayerGangid[killerid] != 0)
-	//{
-	//    if (GangKill(PlayerGangid[killerid],killerid,victimid,reason) == 1) return;
-	//}
 
 	GivePVarInt(playerid,"Kills",1);
 	PlayerCurrentKills[playerid]++;

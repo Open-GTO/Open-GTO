@@ -11,15 +11,13 @@
 #define _trucker_included
 #pragma library trucker
 
+
 #define trucker_ID 999
 
 enum {
 	TRAILER_TYPE_NORMAL,
 	TRAILER_TYPE_PETROL,
 }
-new trucker_GIVE_XP_RATE = 5,
-	trucker_RunnerMissionTime = 300000;
-
 
 new Linerunner[4],Trailer[4],
 	trucker_Enabled=1;
@@ -178,7 +176,7 @@ stock trucker_OnPlayerEnterCheckpoint(playerid)
 		trucker_Stop(playerid);
 		SendClientMessage(playerid,COLOUR_WHITE,"ХраП: Поздравляем! Ты справился с миссией. Получи свои бабки!");
 		KillTimer( GetPVarInt(playerid,"trucker_Timer") );
-		GivePlayerXP(playerid,( (GetPlayerScore(playerid)+1) * 2 )^2 * trucker_GIVE_XP_RATE,1);
+		GivePlayerXP(playerid,( (GetPlayerLevel(playerid)+1) * 2 )^2 * trucker_GIVE_XP_RATE,1);
 	}
 	return 1;
 }

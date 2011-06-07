@@ -4,38 +4,37 @@
 
 */
 
-#if defined _health_system_included
+#if defined _health_included
 	#endinput
 #endif
 
-#define _health_system_included
-#pragma library health_system
+#define _health_included
+#pragma library health
 
 
-new AntiHealthHackEnabled = 1;
 #define oGetPlayerHealth(%0) GetPVarFloat(%0,"Health")
 
-stock HealthSystem_LoadConfig()
+stock health_LoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 0;
-	new file_hs = ini_Open(ConfigDB);
-	ini_GetInt(file_hs,"Anti_Health_Hack_Enabled",AntiHealthHackEnabled);
-	ini_Close(file_hs);
+	new file_health = ini_Open(ConfigDB);
+	ini_GetInt(file_health,"Anti_Health_Hack_Enabled",AntiHealthHackEnabled);
+	ini_Close(file_health);
 	return 1;
 }
 
-stock HealthSystem_SaveConfig()
+stock health_SaveConfig()
 {
-	new file_hs = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_hs,"Anti_Health_Hack_Enabled",AntiHealthHackEnabled);
-	ini_Close(file_hs);
+	new file_health = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_health,"Anti_Health_Hack_Enabled",AntiHealthHackEnabled);
+	ini_Close(file_health);
 	return 1;
 }
 
-stock HealthSystem_OnGameModeInit()
+stock health_OnGameModeInit()
 {
-	HealthSystem_LoadConfig();
-	GameMSG("SERVER: (protections)AntiHealthHack module init");
+	health_LoadConfig();
+	GameMSG("SERVER: (player)Health module init");
 	return 1;
 }
 

@@ -12,14 +12,11 @@
 #define _weapons_included
 #pragma library weapons
 
+
 #include "base"
-//#include "logging"
 
 #define MAX_BULLETS				2999
 #define MAX_WEAPONS				47
-
-#define weapons_Select_DialogID	33
-#define weapons_Buy_DialogID	34
 
 new Ammunations[][CoordInfo] = {
 	{291.0004,-84.5168,1001.5156}, // LVammunation1

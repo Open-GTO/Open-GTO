@@ -15,12 +15,7 @@
 #include "base"
 #include "player"
 
-#define BanksCount 4
-#define bank_FirstList_DialogID 5
-#define bank_Withdraw_DialogID 6
-#define bank_Deposit_DialogID 7
-
-new Banks[BanksCount][CoordInfo] = {
+new Banks[][CoordInfo] = {
 	{-22.9578,-54.8951,1003.5469}, // LV 24/7 bank
 	{371.2316,-125.5778,1001.4995}, // LS pizza bank
 	{368.7201,-72.7097,1001.5078}, // LS burger bank7
@@ -51,11 +46,11 @@ stock BankSaveConfig()
 stock bank_OnGameModeInit()
 {
 	BankLoadConfig();
-	for(new bankid=0;bankid<BanksCount;bankid++)
+	for(new bankid=0;bankid<sizeof(Banks);bankid++)
 	{
 	    CreatePickup(1274, 23, Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z]);
 	}
-	GameMSG("SERVER: Bank module init");
+	GameMSG(lang_texts[2][0]);
 	return 1;
 }
 
@@ -172,7 +167,7 @@ stock bank_ShowDialog_Deposit(playerid)
 
 stock IsPlayerAtBank(playerid)
 {
-	for(new bankid;bankid<BanksCount;bankid++)
+	for(new bankid;bankid<sizeof(Banks);bankid++)
 		if(IsPlayerInRangeOfPoint(playerid,2,Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z]))
 			return bankid;
 	return -1;

@@ -3,14 +3,6 @@
 // Aurthor:   ElBI
 //
 
-#define ClickDialog 16
-#define ClickDialogResp 17
-#define AdminDialogid 18
-
-#define MAX_SEND_SYMBOLS 64
-
-forward ClickPlayer(playerid, clickedplayerid);
-forward PlayerClickResponse(playerid,dialogid,response,listitem,inputtext[]);
 new ListResponseType[MAX_PLAYERS];
 
 stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
@@ -21,13 +13,13 @@ stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
 	listitems = "Отправить денег\nЛичное сообщение\nЖалоба";
 	if(IsPlayerMod(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nКикнуть\nЗаткнуть\nРазоткнуть\nВ тюрьму\nИз тюрьмы", sizeof(listitems));
 	if(IsPlayerAdm(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nИнфо\nУбить\nТелепорт к\nТелепортировать к себе\nЗадать здоровье\nЗадать броню\nДать опыт\nДать денег\nЗаморозить\nРазморозить", sizeof(listitems));
-	ShowPlayerDialog(playerid,ClickDialog,DIALOG_STYLE_LIST,"Выберите действие",listitems," Выбрать"," Отмена");
+	ShowPlayerDialog(playerid,click_DialogID,DIALOG_STYLE_LIST,"Выберите действие",listitems," Выбрать"," Отмена");
 	return 1;
 }
 
 stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 {
-	if(dialogid == ClickDialog)
+	if(dialogid == click_DialogID)
 	{
 		if(!response) return 1;
 		ListResponseType[playerid] = listitem;
@@ -265,9 +257,9 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			return 1;
 		}
-		ShowPlayerDialog(playerid,ClickDialogResp,DIALOG_STYLE_INPUT,GuiHeader,GuiText,"Отправить","Отмена");
+		ShowPlayerDialog(playerid,click_Resp_DialogID,DIALOG_STYLE_INPUT,GuiHeader,GuiText,"Отправить","Отмена");
 	}
-	if(dialogid == ClickDialogResp)
+	if(dialogid == click_Resp_DialogID)
 	{
 		if(!response) return 1;
 		if(strlen(inputtext) == 0) return 1;

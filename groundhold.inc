@@ -28,7 +28,6 @@ enum gh_info
 }
 
 #define MAX_GROUNDHOLD 3
-new Groundhold_Enabled = 1;
 new PlayerGroundHoldTime[MAX_GROUNDHOLD][MAX_PLAYERS];
 new PlayerHoldingGround[MAX_GROUNDHOLD][MAX_PLAYERS];
 new Groundholds[MAX_GROUNDHOLD][gh_info] = {
@@ -136,7 +135,7 @@ stock CheckGround(ghid)
 				if(!IsPlayerConnected(i) || IsPlayerNPC(i) || i == playerid) continue;
 				if(PlayerGroundHoldTime[ghid][i] > 0)
 				{
-					if((PlayerGangid[i] == 0) || (PlayerGangid[i] != PlayerGangid[playerid]))
+					if((GetPVarInt(i,"GangID") == 0) || (GetPVarInt(i,"GangID") != GetPVarInt(playerid,"GangID")))
 					{
 						groundenemycount++;
 					}

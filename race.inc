@@ -934,8 +934,7 @@ stock FinishRace(raceid,playerid)
 		GivePlayerXP(playerid,(Race[raceid][race_xpprize]*3),1);
 		BestScore[raceid][race_score_time] = RaceStats[raceid][race_timer];
 		set(BestScore[raceid][race_score_player],oGetPlayerName(playerid));
-		new playervehiclemodel = GetSpawnVehicleModel(GetPlayerVehicleID(playerid)-1);
-		set(BestScore[raceid][race_score_vehicle],GetVehicleName(playervehiclemodel));
+		set(BestScore[raceid][race_score_vehicle],GetVehicleName( GetVehicleModel( GetPlayerVehicleID(playerid) ) ));
 	}
 
 	LeaveRace(raceid,playerid);

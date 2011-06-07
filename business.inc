@@ -9,19 +9,12 @@
 #define _business_included
 #pragma library business
 
+
 #include "base"
 #include "utils\gtoutils"
 #include "account"
 #include "player"
 #include "world"
-
-#define MAX_BUSINESBUYSELL 1000000
-#define MAX_UPGRADELEVEL 30
-#define TurnAroundDelay 200000 // Delay between businesses turnaround
-#define BusinessDialog 4
-#define bis_Info_DialogID 500
-#define bis_Msg_DialogID 600
-#define UPGRADE_TARIF 10
 
 new Text3D:Business3DTextLabel[sizeof(Businesses)],Float:BusinessDistanceOfShowLabel=20.0;
 
@@ -105,7 +98,7 @@ stock bis_ShowDialog_General(playerid)
 {
 	new temp[MAX_STRING];
 	format(temp,sizeof(temp),lang_texts[3][3],Businesses[ GetBusinessID(playerid) ][Business_Name]);
-	ShowPlayerDialog(playerid,BusinessDialog,DIALOG_STYLE_LIST,
+	ShowPlayerDialog(playerid,bis_DialogID,DIALOG_STYLE_LIST,
 		temp,
 		"Купить\n\
 		Продать\n\
@@ -162,7 +155,7 @@ stock business_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 	#pragma unused inputtext
 	switch(dialogid)
 	{
-		case BusinessDialog:
+		case bis_DialogID:
 		{
 			if(!response) return 1;
 			switch(listitem)

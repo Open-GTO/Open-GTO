@@ -7,21 +7,14 @@
 #define _housing_included
 #pragma library housing
 
+
 #include "base"
 #include "account"
 #include "player"
 #include "world"
 
-#define HouseDialogid 2
-#define HousesDialogid 3
-
-#define MAX_HOUSEBUYSELL 500000
-#define int 15
-//#define BUY_ALL_HOUSES // позволяет запретить покупать чужие дома
-
 new Hous[MAX_PLAYERS],Haus[MAX_PLAYERS];
 new house_icon[sizeof(Houses)],Text3D:House3DTextLabel[sizeof(Houses)],Float:HouseDistanceOfShowLabel=20.0;
-
 
 stock HousesLoadAll()
 {
@@ -138,21 +131,21 @@ stock IsPlayerRenter(playerid)
 stock housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 {
 	#pragma unused inputtext
-	if(dialogid == HouseDialogid)
+	if(dialogid == house_DialogID)
 	{
 		if(response)
 		{
 			switch(Hous[playerid])
 			{
-				case 1:ShowPlayerDialog(playerid,HousesDialogid,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nАрендовать комнату\n","Выбрать","Отмена");
-				case 2:ShowPlayerDialog(playerid,HousesDialogid,DIALOG_STYLE_LIST,"Действия:","Продать дом\nВойти в дом\nВыгнать арендатора\n","Выбрать","Отмена");
-				case 3:ShowPlayerDialog(playerid,HousesDialogid,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nАрендовать комнату\n","Выбрать","Отмена");
-				case 4:ShowPlayerDialog(playerid,HousesDialogid,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nПрекратить арендовать\nЗаплатить за аренду","Выбрать","Отмена");
+				case 1:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nАрендовать комнату\n","Выбрать","Отмена");
+				case 2:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Продать дом\nВойти в дом\nВыгнать арендатора\n","Выбрать","Отмена");
+				case 3:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nАрендовать комнату\n","Выбрать","Отмена");
+				case 4:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nПрекратить арендовать\nЗаплатить за аренду","Выбрать","Отмена");
 			}
 		}
 		else Hous[playerid] = 0;
 	}
-	if(dialogid == HousesDialogid)
+	if(dialogid == houses_DialogID)
 	{
 		if(response)
 		{
@@ -423,7 +416,7 @@ stock FHouseBuy(playerid)
 	new id = GetHouseID(playerid);
 	if(id <= -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][21]);
 	if(!IsPlayerRegistered(playerid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][20]);
-	if(PlayerGangid[playerid] == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][19]);
+	if(GetPVarInt(playerid,"GangID") == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][19]);
 	new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
 	if(oGetPlayerMoney(playerid) < price) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][18]);
 	if(!strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true))

@@ -4,38 +4,37 @@
 
 */
 
-#if defined _money_system_included
+#if defined _money_included
 	#endinput
 #endif
 
-#define _money_system_included
-#pragma library money_system
+#define _money_included
+#pragma library money
 
 
-new AntiMoneyHackEnabled = 1;
 #define oGetPlayerMoney(%1) GetPVarInt(%1,"Money")
 
-stock MoneySystem_LoadConfig()
+stock money_LoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 0;
-	new file_ms = ini_Open(ConfigDB);
-	ini_GetInt(file_ms,"Anti_Money_Hack_Enabled",AntiMoneyHackEnabled);
-	ini_Close(file_ms);
+	new file_money = ini_Open(ConfigDB);
+	ini_GetInt(file_money,"Anti_Money_Hack_Enabled",AntiMoneyHackEnabled);
+	ini_Close(file_money);
 	return 1;
 }
 
-stock MoneySystem_SaveConfig()
+stock money_SaveConfig()
 {
-	new file_ms = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_ms,"Anti_Money_Hack_Enabled",AntiMoneyHackEnabled);
-	ini_Close(file_ms);
+	new file_money = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_money,"Anti_Money_Hack_Enabled",AntiMoneyHackEnabled);
+	ini_Close(file_money);
 	return 1;
 }
 
-stock MoneySystem_OnGameModeInit()
+stock money_OnGameModeInit()
 {
-	MoneySystem_LoadConfig();
-	GameMSG("SERVER: (system)Money System module init");
+	money_LoadConfig();
+	GameMSG("SERVER: (player)Money module init");
 	return 1;
 }
 

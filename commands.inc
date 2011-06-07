@@ -10,13 +10,6 @@
 #define _commands_included
 #pragma library commands
 
-#include "base"
-#include "utils\gtoutils"
-#include "player"
-#include "account"
-#include "fightstyles"
-
-#define MONEY_CMD1 50000		//SkyDiving
 
 stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 {
@@ -205,46 +198,6 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		format(string,sizeof(string),"Твой скилл текущего оружия:%d",PlayerWeaponsSkills[playerid][ GetWeaponSkillID( GetPlayerWeapon(playerid) ) ]);
 		SendClientMessage(playerid,COLOUR_GREY,string);
-		return 1;
-	}
-	if(!strcmp(cmd,"/f",true))
-	{
-		new style = strval(strcharsplit(text, idx,' '));
-		new string[MAX_STRING];
-		if(style < 4 || style > 7)
-		{
-			SendClientMessage(playerid,COLOUR_WHITE,"Применение: /f [4-7]");
-			for(new i=0;i<MAX_FIGHT;i++)
-			{
-				format(string,sizeof(string),"%d - %s",FightTreners[i][Style],FightTreners[i][StyleName]);
-				SendClientMessage(playerid,COLOUR_GREY,string);
-			}
-			return 1;
-		}
-		if(style > GetPlayerFightStyle(playerid))
-			return SendClientMessage(playerid,COLOUR_GREY,"Вы ещё не выучили этот стиль!");
-
-		SetPlayerFightingStyle(playerid,(Player[playerid][FightStyleUsed] = style));
-
-		format(string,sizeof(string),"Теперь вы используете стиль: %s(%d)",ConvertFightIdToName(Player[playerid][FightStyleUsed]),Player[playerid][FightStyleUsed]);
-		SendClientMessage(playerid,COLOUR_GREY,string);
-		return 1;
-	}
-
-	if(!strcmp(cmd,"/changenick",true))
-	{
-		if(GetPlayerMoney(playerid) < 10000000) return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][36]);
-		new nick[40],string[MAX_STRING],Account_LastName[MAX_STRING],kickplayername[MAX_STRING];
-		set(Account_LastName,oGetPlayerName(playerid));
-		new gangid = PlayerGangid[playerid];
-		set(kickplayername,Account_LastName);
-		GangRemoveMember(gangid,kickplayername);
-		set(nick,strcharsplit(text, idx,' '));
-		SetPlayerName(playerid,nick);
-		AccountSave(playerid);
-		GangJoinMember(gangid,playerid);
-		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_LastName[playerid]);
-		fremove(string);
 		return 1;
 	}
 

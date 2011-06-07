@@ -11,15 +11,11 @@
 #define _world_included
 #pragma library world
 
+
 #include "base"
 #include "account"
 #include "player"
 #include "payday"
-
-
-
-#define WorldSaveDelay 300000 	// How often we do a world save
-
 
 new LastWorldSave = 1;
 
@@ -56,9 +52,10 @@ nee:
 	groundhold_SaveAll();
 	trucker_SaveConfig();
 	// systems
-	LevelSystem_SaveConfig();
-	HealthSystem_SaveConfig();
-	MoneySystem_SaveConfig();
+	level_SaveConfig();
+	health_SaveConfig();
+	money_SaveConfig();
+	lang_SaveConfig();
 	// protections
 	AntiIdleSaveConfig();
 	AntiHightPingSaveConfig();

@@ -10,7 +10,6 @@
 #define _testserver_included
 #pragma library testserver
 
-#include "base"
 
 stock testserver_OnPlayerConnect(playerid)
 {

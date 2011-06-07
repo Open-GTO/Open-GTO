@@ -300,6 +300,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 			SendClientMessage(playerid,COLOUR_RED,lang_texts[12][40]);
 			xpamount = xpamountkeep - (IsPlayerAdmin(receiverid)) ? MAX_XP : MAX_LVLXP;
 		}
+		printf("%d",xpamount);
 		GivePlayerXP(receiverid, xpamount,1);
 		new string[MAX_STRING];
 		if(xpamount > 0)

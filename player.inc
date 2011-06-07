@@ -34,7 +34,7 @@ enum PlayerInfo {
 new Player[MAX_PLAYERS][PlayerInfo];
 
 #define GetPlayerTotalMoney(%0) GetPVarInt(%0,"Money")+GetPVarInt(%0,"BankMoney")
-#define GetPlayerGangName(%0) Gang[PlayerGangid[%0]][gang_name]
+#define GetPlayerGangName(%0) Gang[GetPVarInt(%0,"GangID")][gang_name]
 #define GetPlayerKills(%0) GetPVarInt(%0,"Kills")
 #define GetPlayerDeaths(%0) GetPVarInt(%0,"Deaths")
 #define GetPlayerBankMoney(%0) GetPVarInt(%0,"BankMoney")
@@ -60,7 +60,6 @@ new PlayerTempWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap];
 new PlayerWeaponsSkills[MAX_PLAYERS][PLAYER_WEAPON_SKILLS];
 
 new PlayerCurrentKills[MAX_PLAYERS];
-new PlayerGangid[MAX_PLAYERS];
 new PlayerGangName[MAX_PLAYERS][MAX_NAME];
 new PlayerSpawn[MAX_PLAYERS][CoordInfo];
 new SpawnTime[MAX_PLAYERS];
@@ -384,7 +383,6 @@ stock player_ResetStats(playerid)
 	KickList[playerid] = 0;
 	ResetQuest(playerid);
 	SpawnTime[playerid] = 0;
-	PlayerGangid[playerid] = 0;
 	set(PlayerGangName[playerid],nullstr);
 	PlayerSkin[playerid] = 0;
 	ADMDropAmmo(playerid);
@@ -426,7 +424,7 @@ stock player_OnPlayerDisconnect(playerid,reason)
 	    case 2: format(string,sizeof(string),"%s (Кикнут)",string);
 	}
 	SendClientMessageToAll(COLOUR_GREY,string);
-	GangMemberLogout(playerid,PlayerGangid[playerid]);
+	GangMemberLogout(playerid,GetPVarInt(playerid,"GangID"));
 	Player[playerid][IsActive] = 0;
 	player_ResetStats(playerid);
 	DisablePlayerRaceCheckpoint(playerid);
@@ -477,9 +475,9 @@ stock player_OnPlayerDeath(playerid,killerid,reason)
 
 stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 {
-	if(PlayerGangid[killerid] != 0)
+	if(GetPVarInt(killerid,"GangID") != 0)
 	{
-		if(GangKill(PlayerGangid[killerid],killerid,victimid,reason) == 1) return;
+		if(GangKill(GetPVarInt(killerid,"GangID"),killerid,victimid,reason) == 1) return;
 	}
 
 	new slot=GetWeaponSlot(reason);
@@ -763,20 +761,20 @@ stock player_load_db_ini(playerid)
 			format(tmpname,sizeof(tmpname),"Банда `%s` была расформирована.",gangname);
 			SendClientMessage(playerid,COLOUR_ORANGE,tmpname);
 			ini_Set(file_player,"Gang",nullstr);
-			PlayerGangid[playerid] = 0;
+			SetPVarInt(playerid,"GangID",0);
 			goto not_gang;
 		}
 		set(PlayerGangName[playerid],gangname);
-		PlayerGangid[playerid] = GangLoad(gangname);
-		GangMemberLogin(playerid,PlayerGangid[playerid]);
-		if(PlayerGangid[playerid] == 0)
+		SetPVarInt(playerid,"GangID",GangLoad(gangname));
+		GangMemberLogin(playerid,GetPVarInt(playerid,"GangID"));
+		if(GetPVarInt(playerid,"GangID") == 0)
 		{
 			set(PlayerGangName[playerid],nullstr);
 			PlayerGangName[playerid][0] = 0;
-			PlayerGangid[playerid] = 0;
+			SetPVarInt(playerid,"GangID",0);
 		}
 	}
-	else PlayerGangid[playerid] = 0; // no gang
+	else SetPVarInt(playerid,"GangID",0); // no gang
 not_gang:
 	new wepstr[MAX_STRING];
 	ini_Get(file_player,"Weapons",wepstr);

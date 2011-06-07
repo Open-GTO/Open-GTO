@@ -1,18 +1,14 @@
 /*
- Created: 29.05.2010
- Author: ZiGGi
+	Created: 29.05.2010
+	Author: ZiGGi
 */
 
 #if defined _fightstyles_included
-  #endinput
+	#endinput
 #endif
 
 #define _fightstyles_included
 #pragma library fightstyles
-
-#define fightstyles_DialogID 8
-#define fightstyles_user_DialogID 81
-#define MAX_FIGHT 4
 
 enum FightInfo {
 	Style,
@@ -23,7 +19,7 @@ enum FightInfo {
 	Float:Coord_Z,
 };
 
-new FightTreners[MAX_FIGHT][FightInfo] = {
+new FightTreners[][FightInfo] = {
 	{FIGHT_STYLE_NORMAL,"нормальный",0,0.0,0.0,0.0},
 	{FIGHT_STYLE_BOXING,"бокс",1000,767.6851,12.8269,1000.7025}, // LS
 	{FIGHT_STYLE_KNEEHEAD,"колено-голова",2000,768.5967,-22.9764,1000.5859}, // SF
@@ -32,11 +28,11 @@ new FightTreners[MAX_FIGHT][FightInfo] = {
 
 stock fights_OnGameModeInit()
 {
-	for(new fightid=1;fightid<MAX_FIGHT;fightid++)
+	for(new fight_id=1;fight_id<sizeof(FightTreners);fight_id++)
 	{
-	    CreatePickup(1314,23,FightTreners[fightid][Coord_X],FightTreners[fightid][Coord_Y],FightTreners[fightid][Coord_Z]);
+	    CreatePickup(1314,23,FightTreners[fight_id][Coord_X],FightTreners[fight_id][Coord_Y],FightTreners[fight_id][Coord_Z]);
 	}
-	GameMSG("SERVER: Fightstyles module init");
+	GameMSG(lang_texts[19][0]);
 	return 1;
 }
 
@@ -47,15 +43,15 @@ stock fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	new TrenerID = GetPlayerFightTrenerID(playerid);
 	if(FightTreners[TrenerID][Style] <= GetPlayerFightStyle(playerid))
 	{
-		format(string,sizeof(string),"Вы уже выучили стиль %s",FightTreners[TrenerID][StyleName]);
-		return show_Msg_Dialog(playerid,"Стили борьбы",string,"ОК");
+		format(string,sizeof(string),lang_texts[19][1],FightTreners[TrenerID][StyleName]);
+		return show_Msg_Dialog(playerid,lang_texts[19][2],string,lang_texts[19][3]);
 	}
 	if(FightTreners[TrenerID][Style]-1 > GetPlayerFightStyle(playerid))
 	{
-		return show_Msg_Dialog(playerid,"Стили борьбы","Сначала вы должны выучить предидущие стили!","ОК");
+		return show_Msg_Dialog(playerid,lang_texts[19][2],lang_texts[19][4],lang_texts[19][3]);
 	}
-	format(string,sizeof(string),"Выучить стиль борьбы %s, за $%d",FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Cost]);
-	ShowPlayerDialog(playerid,fightstyles_DialogID,DIALOG_STYLE_MSGBOX,"Тренер",string,"Выучить","Отмена");
+	format(string,sizeof(string),lang_texts[19][5],FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Cost]);
+	ShowPlayerDialog(playerid,fightstyles_DialogID,DIALOG_STYLE_MSGBOX,lang_texts[19][6],string,lang_texts[19][7],lang_texts[19][8]);
 	return 1;
 }
 
@@ -69,13 +65,13 @@ stock fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[
 		new TrenerID = GetPlayerFightTrenerID(playerid);
 		if(oGetPlayerMoney(playerid) < FightTreners[TrenerID][Cost])
 		{
-			format(string,sizeof(string),"Вам недостаточно денег, нужно $%d",FightTreners[TrenerID][Cost]);
-			return show_Msg_Dialog(playerid,"Стили борьбы",string,"ОК");
+			format(string,sizeof(string),lang_texts[19][9],FightTreners[TrenerID][Cost]);
+			return show_Msg_Dialog(playerid,lang_texts[19][2],string,lang_texts[19][3]);
 		}
 		SetPlayerFightStyle(playerid,FightTreners[TrenerID][Style]);
 		oGivePlayerMoney(playerid,-FightTreners[TrenerID][Cost],0);
-		format(string,sizeof(string),"Вы изучили стиль борьбы %s, за: $%d. Включить стиль можно в личном меню.",FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Cost]);
-		show_Msg_Dialog(playerid,"Стили борьбы",string,"ОК");
+		format(string,sizeof(string),lang_texts[19][10],FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Cost]);
+		show_Msg_Dialog(playerid,lang_texts[19][2],string,lang_texts[19][3]);
 		return 1;
 	}
 	else if(dialogid == fightstyles_user_DialogID)
@@ -83,8 +79,8 @@ stock fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[
 		if(!response) return show_User_Menu(playerid);
 		listitem += 4; // теперь listitem является идом выбранного стиля
 		SetPlayerFightingStyle(playerid,(Player[playerid][FightStyleUsed] = listitem));
-		format(string,sizeof(string),"Теперь вы используете стиль %s",ConvertFightIdToName(Player[playerid][FightStyleUsed]));
-		show_User_Menu_Dialog(playerid,"Стиль борьбы",string);
+		format(string,sizeof(string),lang_texts[19][11],ConvertFightIdToName(Player[playerid][FightStyleUsed]));
+		show_User_Menu_Dialog(playerid,lang_texts[19][2],string);
 		return 1;
 	}
 	return 1;
@@ -92,9 +88,9 @@ stock fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[
 
 stock GetPlayerFightTrenerID(playerid)
 {
-	for(new fightid=1;fightid<MAX_FIGHT;fightid++)
-		if(IsPlayerInRangeOfPoint(playerid,2.0,FightTreners[fightid][Coord_X],FightTreners[fightid][Coord_Y],FightTreners[fightid][Coord_Z]))
-			return fightid;
+	for(new fight_id=1;fight_id<sizeof(FightTreners);fight_id++)
+		if(IsPlayerInRangeOfPoint(playerid,2.0,FightTreners[fight_id][Coord_X],FightTreners[fight_id][Coord_Y],FightTreners[fight_id][Coord_Z]))
+			return fight_id;
 	return -1;
 }
 
@@ -102,15 +98,15 @@ stock GetPlayerFightTrenerID(playerid)
 stock showFightStyleMenu(playerid)
 {
 	new string[MAX_STRING];
-	if(GetPlayerFightStyle(playerid) >= FIGHT_STYLE_NORMAL) strcat(string,"Нормальный");
-	if(GetPlayerFightStyle(playerid) >= FIGHT_STYLE_BOXING) strcat(string,"\nБокс");
-	if(GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KNEEHEAD) strcat(string,"\nКолено-голова");
-	if(GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KUNGFU) strcat(string,"\nКунг-фу");
+	if(GetPlayerFightStyle(playerid) >= FIGHT_STYLE_NORMAL) strcat(string,lang_texts[19][15]);
+	if(GetPlayerFightStyle(playerid) >= FIGHT_STYLE_BOXING) strcat(string,lang_texts[19][16]);
+	if(GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KNEEHEAD) strcat(string,lang_texts[19][17]);
+	if(GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KUNGFU) strcat(string,lang_texts[19][18]);
 	return ShowPlayerDialog(
 		playerid,fightstyles_user_DialogID,DIALOG_STYLE_LIST,
-		"Стиль борьбы",
+		lang_texts[19][12],
 		string,
-		"Применить","Назад"
+		lang_texts[19][13],lang_texts[19][14]
 	);
 }
 //

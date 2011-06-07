@@ -12,10 +12,8 @@
 #define _account_included
 #pragma library account
 
-#include "base"
 
-#define AccountRegDialogid 0
-#define AccountLogDialogid 1
+#include "base"
 
 stock AccountLoadConfig()
 {
@@ -189,7 +187,7 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 	set(cmd,strcharsplit(text, idx,' '));
 	if(!strcmp(cmd,"/changepass",true))
 	{
-		if(GetPlayerMoney(playerid) < 500000) return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][35]);
+		if(GetPlayerMoney(playerid) < CHANGE_PASS_COST) return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][35]);
 		new temp[MAX_STRING];
 		set(temp,strcharsplit(text, idx,' '));
 		SetPVarString(playerid,"Password",temp);
@@ -198,6 +196,22 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 		format(string,sizeof(string),lang_texts[1][34],temp);
 		SendClientMessage(playerid,COLOUR_WHITE,string);
 		oGivePlayerMoney(playerid,-500000,1);
+		return 1;
+	}
+	if(!strcmp(cmd,"/changenick",true))
+	{
+		if(GetPlayerMoney(playerid) < CHANGE_NICK_COST) return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][36]);
+		new nick[40],string[MAX_STRING],Account_LastName[MAX_STRING],kickplayername[MAX_STRING];
+		set(Account_LastName,oGetPlayerName(playerid));
+		new gangid = GetPVarInt(playerid,"GangID");
+		set(kickplayername,Account_LastName);
+		GangRemoveMember(gangid,kickplayername);
+		set(nick,strcharsplit(text, idx,' '));
+		SetPlayerName(playerid,nick);
+		AccountSave(playerid);
+		GangJoinMember(gangid,playerid);
+		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_LastName[playerid]);
+		fremove(string);
 		return 1;
 	}
 	if(!strcmp(cmd,"/savechar",true))
@@ -217,12 +231,12 @@ stock account_OnPlayerConnect(playerid)
 	if(ini_Exist(filename_account))
 	{
  		format(message,sizeof(message),"Приветствую, %s!\n\nВведите пароль для входа!",oGetPlayerName(playerid));
-	    ShowPlayerDialog(playerid,AccountLogDialogid,DIALOG_STYLE_INPUT,"Вход в аккаунт",message,"Войти","");
+	    ShowPlayerDialog(playerid,account_Log_DialogID,DIALOG_STYLE_INPUT,"Вход в аккаунт",message,"Войти","");
 	}
 	else
 	{
 	    format(message,sizeof(message),"Приветствую, %s!\n\nВведите пароль для регистрации!",oGetPlayerName(playerid));
-		ShowPlayerDialog(playerid,AccountRegDialogid,DIALOG_STYLE_INPUT,"Регистрация",message,"Зарегать","");
+		ShowPlayerDialog(playerid,account_Reg_DialogID,DIALOG_STYLE_INPUT,"Регистрация",message,"Зарегать","");
 	}
 	SetPVarInt(playerid,"RequestPlace",random( sizeof(RequestPlace) ));
 	return 1;
@@ -231,14 +245,14 @@ stock account_OnPlayerConnect(playerid)
 stock account_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 {
 	#pragma unused listitem,response
-	if(dialogid == AccountLogDialogid)
+	if(dialogid == account_Log_DialogID)
 	{
 		if(strlen(inputtext) > 0)
 			AccountLogin(playerid,inputtext);
 		else
 			account_OnPlayerConnect(playerid);
 	}
-	if(dialogid == AccountRegDialogid)
+	if(dialogid == account_Reg_DialogID)
 	{
 		if(strlen(inputtext) > 0)
 			AccountRegister(playerid,inputtext);

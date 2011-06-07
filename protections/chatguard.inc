@@ -25,7 +25,6 @@
 /*
 	Адаптация для Open-GTO: ZiGGi, 05.05.2011
 */
-new ChatGuardEnabled = 1; // 1 - включена по умолчанию
 
 /*
 chatguard_OnGameModeInit();

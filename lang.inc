@@ -9,14 +9,31 @@
 #define _lang_included
 #pragma library lang
 
-#include "base"
 
 new lang_db[10] = GTO_FILES_FOLDER"";
 new lang[10] = "Russian";
 new lang_texts[20][99][255];
 
+stock lang_LoadConfig()
+{
+	if(!ini_Exist(ConfigDB)) return 0;
+	new file_lang = ini_Open(ConfigDB);
+    ini_Get(file_lang,"Language",lang);
+	ini_Close(file_lang);
+	return 1;
+}
+
+stock lang_SaveConfig()
+{
+	new file_lang = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_Set(file_lang,"Language",lang);
+	ini_Close(file_lang);
+	return 1;
+}
+
 stock lang_OnGameModeInit()
 {
+	lang_LoadConfig();
 	new lang_file[50];
 	format(lang_file,sizeof(lang_file),"%sLanguage-%s"GTO_FILES_FORMAT,lang_db,lang);
 	if(!ini_Exist(lang_file)) return GameMSG("ERROR: No such file %s", lang_file);
@@ -39,7 +56,7 @@ stock lang_read(filename[])
 			strmid(tmp1, tmpres, 0, strfind(tmpres, ":", true));
 			strmid(tmp2, tmpres, strfind(tmpres, ":", true)+2, (strlen(tmpres)-strlen(tmp1)));
 				
-			if( (buf = strfind(tmp2,"[n]")) != -1 )
+			if( (buf = strfind(tmp2,LANG_BB_N)) != -1 )
 			{
 				strdel(tmp2,buf,buf+3);
 				strins(tmp2,"\n",buf);

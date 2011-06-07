@@ -31,13 +31,11 @@ new RaceRecordDB[MAX_STRING] = GTO_FILES_FOLDER"Race/Record/";
 
 new VerboseSave=-1; // do we save extra un-needed db info like weapons, races, vehicels, deathmatches, etc
 new RealTime=0;
-new ForceOverwrite = 0;
 new KickList[MAX_PLAYERS];
 new WorldTime;
 new nullstr[MAX_STRING];
 
-enum CoordInfo 
-{
+enum CoordInfo {
     Float:Coord_X,
     Float:Coord_Y,
     Float:Coord_Z

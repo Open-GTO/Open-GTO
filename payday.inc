@@ -10,14 +10,8 @@
 #define _payday_included
 #pragma library payday
 
-#include "base"
-#include "player"
 
 new admpayday,rpayday;
-
-new BasePay = 500; // Base amount player recieves each pay (pay = PocketMoney + (PocketMoney * level ))
-new PayCutoff = MAX_MONEY/2; // amount of money player can horde before they stop getting payed (they can still get money by killing)
-new BasePayXP = 200;
 
 stock PaydayLoadConfig()
 {

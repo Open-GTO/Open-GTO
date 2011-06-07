@@ -11,8 +11,6 @@
 #pragma library bar
 
 
-#define bar_DialogID 11
-
 new Bars[][CoordInfo] = {
 	{495.3609,-76.0381,998.7578}, // green bar
 	{681.5761,-453.8308,-25.6172}, // Welcome Pump(Dillimore)

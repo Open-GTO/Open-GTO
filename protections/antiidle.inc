@@ -5,7 +5,7 @@
 //
 
 #if defined _antiidle_included
-  #endinput
+	#endinput
 #endif
 
 #define _antiidle_included
@@ -14,9 +14,6 @@
 #include "base"
 #include "player"
 #include "groundhold"
-
-new AntiIdleEnabled = 1;
-new MaxIdle = 5;// минут
 
 stock AntiIdleLoadConfig()
 {

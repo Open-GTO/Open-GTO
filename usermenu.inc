@@ -10,8 +10,6 @@
 #define _user_menu_included
 #pragma library user_menu
 
-#define user_menu_DialogID 998
-#define vehicle_menu_DialogID 997
 
 stock show_menu(playerid)
 {

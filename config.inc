@@ -5,7 +5,7 @@
 */
 
 #if defined _config_included
-  #endinput
+	#endinput
 #endif
 
 #define _config_included
@@ -13,40 +13,109 @@
 
 #pragma tabsize 0
 
-#define VERSION					"v1.0.0 alpha 2"
-#define GTO_FILES_FORMAT		".gto"
-#define GTO_FILES_FOLDER		"Open-GTO/"
+#define VERSION					"v1.0.0 alpha 2" // версия мода
+#define GTO_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе Linux не рекомендуется)
+#define GTO_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
-#define MAX_STRING				128 // не менять
-#define MAX_NAME				40 // number of char's a name/password/misc_word can be
+#define LANG_BB_N				"[n]" // переход на новую строку
 
-#define MAX_MONEY				50000000
+#define MAX_STRING				128 // не менять, кол-во символов для большинства строковых переменных
+#define MAX_NAME				40 // кол-во символов для имён, паролей и пр.
+
+#define MAX_MONEY				50000000 // максимальное кол-во денег, которое может иметь игрок
 #define UpdatePlayerScore(%1)	SetPlayerScore(%1,GetPVarInt(%1,"Level"))
+#define MAX_SEND_SYMBOLS		64 // максимальное кол-во отправляемых символов в ПМ через click
 
 #define INVALID_QUEST_ID		0
 #define MAX_QUESTS				255
 
-// игрок
-#define MIN_HEALTH				35.0
-#define MAX_HEALTH				100.0
-#define HEALTH_TARIF			4.0	// степень увеличения максимального здоровья от лвл
-#define HEALTH_REGEN_TARIF		0.4
+// античит(параметры по умолчанию)
+new AntiHealthHackEnabled = 1, // защита от чита на здоровье
+	AntiMoneyHackEnabled = 1, // защита от чита на деньги
+	
+	AntiHightPingEnabled = 1, // защита от высокого пинга
+	MAX_PING = 500, // пинг, при котором кикает
 
+	AntiIdleEnabled = 1, // защита от АФК на точках прокачки
+	MaxIdle = 5, // кол-во минут, после которых кикает
+	
+	ChatGuardEnabled = 1; // защита чата
+
+// прочее
+new Groundhold_Enabled = 1, // точки прокачки
+	
+	BasePay = 500, // PayDay тариф на деньги
+	PayCutoff = MAX_MONEY / 2, // кол-во денег, при котором перестаётся даваться деньги за PayDay
+	BasePayXP = 200; // PayDay тариф на опыт
+
+// дома
+//#define BUY_ALL_HOUSES // позволяет запретить покупать чужие дома(если закомментировано то чужие дома можно покупать)
+//
+
+// бизнесы
+#define MAX_UPGRADELEVEL	30 // максимальный уровень поднятия бизнеса
+#define UPGRADE_TARIF		10 // тариф денег на повышение уровня, формула: (Businesses[id][Business_Upgrade]+1) * Businesses[id][Business_Value] * UPGRADE_TARIF
+//
+
+// транспорт
+new CarsReSpawnTime = 600; // время респавна транспорта в секундах (86400 - один день)
+//
+
+// банды
+#define MAX_GANGS			MAX_PLAYERS // максимум банд онлайн
+#define MAX_GANG_SIZE		12 // максимальное кол-во людей в банде
+
+#define MIN_GANG_NAME_LEN	3 // минимальная длина имени банды
+#define MAX_GANG_NAME_LEN	40 // максимальная длина имени банды
+
+new GANG_CREATE_COST = 100000; // кол-во денег, требуемое на создание банды
+new GANG_COLOUR_COST = 20000; // кол-во денег, требуемое на смены цвета банды
+//
+
+// игрок
+#define MIN_HEALTH				35.0 // минимальное(стартовое) кол-во здоровья
+#define MAX_HEALTH				100.0 // максимальное кол-во здоровья
+#define HEALTH_TARIF			4.0	// степень увеличения максимального здоровья от лвл, формула: MIN_HEALTH + (GetPlayerLevel(playerid) * HEALTH_TARIF)
+#define HEALTH_REGEN_TARIF		0.4 // степень кол-ва востанавливаемого здоровья, формула: (GetPlayerLevel(id) * HEALTH_REGEN_TARIF)
+
+#define CHANGE_NICK_COST			10000000 // кол-во денег, требуемых для смены ника
+#define CHANGE_PASS_COST			500000 // кол-во денег, требуемых для смены пароля
+// МИССИИ
+	// trucker
+	new trucker_GIVE_XP_RATE = 5, // кол-во опыта за завоз, формула: ( (GetPlayerLevel(playerid)+1) * 2 )^2 * trucker_GIVE_XP_RATE
+		trucker_RunnerMissionTime = 300000; // время перерыва между миссиями, в милисекундах
+	//
+	
+//
 // при смерти
 #define PLAYER_XP_DEATH_MINUS_PROC		3 // сколько процентов XP уберается от уже имеющегося опыта
 #define PLAYER_MONEY_DEATH_MINUS_PROC	20 // сколько процентов денег уберается
 
 // стартовые параметры игрока
-#define PLAYER_START_MONEY		1500
-#define PLAYER_START_WEAPON_1	WEAPON_COLT45
-#define PLAYER_START_WEAPON_2	0
-#define PLAYER_START_WEAPON_3	0
+#define PLAYER_START_MONEY		1500 // кол-во стартовых денег
+#define PLAYER_START_WEAPON_1	WEAPON_COLT45 // ид первого стартового оружия
+#define PLAYER_START_WEAPON_2	0 // ид второго стартового оружия
+#define PLAYER_START_WEAPON_3	0 // ид третьего стартового оружия
 
-#define MAX_COUNTDOWN		5
+#define MAX_COUNTDOWN		5 // кол-во секунд для отсчёта гонок и дм
 #define KEY_USING			KEY_WALK // Кнопка 'Ходьба' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
 
-#define message_DialogID	999
+// диалоги
+enum {
+	message_DialogID,
+	account_Reg_DialogID, account_Log_DialogID,
+	bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID,
+	click_DialogID, click_Resp_DialogID,
+	house_DialogID, houses_DialogID,
+	bis_DialogID, bis_Info_DialogID, bis_Msg_DialogID,
+	fightstyles_DialogID, fightstyles_user_DialogID,
+	user_menu_DialogID, vehicle_menu_DialogID,
+	weapons_Select_DialogID, weapons_Buy_DialogID,
+	bar_DialogID,
+	fastfood_DialogID,
+}
 
+// прочее
 #define ini_Create		ini_createFile
 #define ini_Open		ini_openFile
 #define ini_Close		ini_closeFile

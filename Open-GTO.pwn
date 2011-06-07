@@ -32,9 +32,9 @@ Date start Open-GTO: 	5 November 2009
 #include "utils\gtoutils"					// misc used utils
 #include "arrays"
 #include "lang"
-#include "systems\level_system"
-#include "systems\money_system"
-#include "systems\health_system"
+#include "player\level"
+#include "player\money"
+#include "player\health"
 #include "account"							// account handler
 #include "player"							// holds player values
 #include "weapons"							// weapons and ammunation shop
@@ -146,11 +146,11 @@ public OnGameModeInit()
 	fastfood_OnGameModeInit();
 	bar_OnGameModeInit();
 	//
-	LevelSystem_OnGameModeInit();
+	level_OnGameModeInit();
     antiidle_OnGameModeInit();
     antihightping_OnGameModeInit();
-    HealthSystem_OnGameModeInit();
-    MoneySystem_OnGameModeInit();
+    health_OnGameModeInit();
+    money_OnGameModeInit();
 	chatguard_OnGameModeInit();
 	//
 	race_thestrip_init();
@@ -221,6 +221,10 @@ public OnPlayerConnect(playerid)
 	player_OnPlayerConnect(playerid);
    	account_OnPlayerConnect(playerid);
 	chatguard_OnPlayerConnect(playerid);
+	
+#if defined _testserver_included
+	testserver_OnPlayerConnect(playerid);
+#endif
 	return 1;
 }
 
@@ -399,7 +403,7 @@ public OnPlayerText(playerid, text[])
 	{
 	    case '!':
 	    {
-			if((PlayerGangid[playerid] == 0) || (Player[playerid][MuteTime] != 0))    //Игрок заткнут
+			if(GetPVarInt(playerid,"GangID") == 0 || Player[playerid][MuteTime] != 0)    //Игрок заткнут
 			{
 				SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 				return 0;
@@ -407,7 +411,7 @@ public OnPlayerText(playerid, text[])
 			strmid(string,text,1,strlen(text));
 			if(!strlen(string)) return 1;
 			format(string,sizeof(string), "%s[%d] банде: %s", oGetPlayerName(playerid), playerid, string);
-			SendGangMessage(PlayerGangid[playerid],string,COLOUR_GANG_CHAT);
+			SendGangMessage(GetPVarInt(playerid,"GangID"),string,COLOUR_GANG_CHAT);
 			format(string,sizeof(string), "Player: %s[%d]: <GANG CHAT>:   %s",oGetPlayerName(playerid),playerid,text);
 			WriteLog(ChatLog,string);
 			return 0;

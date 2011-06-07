@@ -11,8 +11,6 @@
 #pragma library fastfood
 
 
-#define fastfood_DialogID 10
-
 new FastFoods[][CoordInfo] = {
 	{373.4858,-119.4608,1001.4922}, // LS pizza
 	{377.4426,-67.5379,1001.5078}, // LS burger

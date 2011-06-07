@@ -10,12 +10,9 @@
 #define _vehicle_included
 #pragma library vehicle
 
+
 #include "base"
 #include "player"
-
-#define MAX_VEHICLE_SPAWNS 2000
-
-new CarsReSpawnTime = 600;//cars respawn time (86400 - one day)
 
 #define V_ADMIRAL 445
 #define V_ALPHA 602
@@ -2272,7 +2269,7 @@ new VehicleModelSpawns[][VehicleSpawnInfo] = {
 	{538,1700.7551,-1953.6531,14.8756,200.0,-1,-1}
 };
 
-new ActiveVehicles[MAX_VEHICLE_SPAWNS],vipvehic[5];
+new vipvehic[5];
 
 stock LoadVehicles()
 {
@@ -2332,11 +2329,6 @@ stock GetRndVModelByLevel(level)
 	new vmodel;
 	vmodel = leveledvehicles[rnd];
 	return vmodel;
-}
-
-stock GetSpawnVehicleModel(vehicleid)
-{
-	return ActiveVehicles[vehicleid];
 }
 
 stock GetVehicleName(vehiclemodel)
