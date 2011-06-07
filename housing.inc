@@ -425,7 +425,7 @@ stock FHouseBuy(playerid)
 	if(!IsPlayerRegistered(playerid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][20]);
 	if(PlayerGangid[playerid] == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][19]);
 	new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
-	if(Player[playerid][Money] < price) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][18]);
+	if(oGetPlayerMoney(playerid) < price) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][18]);
 	if(!strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true))
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[8][15]);
 #if !defined BUY_ALL_HOUSES
@@ -543,7 +543,7 @@ stock FHouseKeep(playerid)
 				{
 					if(Houses[id][Houses_UpKeepLeft] > 0)
 					{
-						Player[playerid][Money] -= Houses[id][Houses_UpKeepLeft];
+						oGivePlayerMoney(playerid,-Houses[id][Houses_UpKeepLeft],0);
 						SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][44]);
 						Houses[id][Houses_UpKeepLeft] = 0;
 						new filename_housing[MAX_STRING];

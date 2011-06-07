@@ -39,7 +39,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		new ccount;
 		for(new id=0;id<=GetPlayerLastID();id++)
 		{
-			if(IsPlayerConnected(id) && Player[id][Jailed] == 1)
+			if(IsPlayerConnected(id) && GetPlayerJailed(id) == 1)
 			{
 				new string[MAX_STRING];
 				if(Player[id][JailTime] > 0) format(string,sizeof(string),lang_texts[18][3],oGetPlayerName(id),id,Player[id][JailTime]);
@@ -63,7 +63,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(receiverid < 0 || (receiverid >= GetPlayerLastID()) || IsPlayerAdmin(receiverid))
+		if(receiverid < 0 || (receiverid > GetPlayerLastID()) || IsPlayerAdmin(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		if(!IsPlayerConnected(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
@@ -90,7 +90,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
 		new receiverid = INVALID_PLAYER_ID;
 		receiverid = strval(strcharsplit(text, idx,' '));
-		if((receiverid < 0) || (receiverid >= GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
+		if((receiverid < 0) || (receiverid > GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		if(IsPlayerConnected(receiverid) == 0)
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
@@ -115,7 +115,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		new muteid = strval(strcharsplit(text, idx,' '));
-		if((muteid < 0) || (muteid >= GetPlayerLastID()))
+		if((muteid < 0) || (muteid > GetPlayerLastID()))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		new mutetime = strval(strcharsplit(text, idx,' '));
 		if(IsPlayerConnected(muteid) == 1)
@@ -139,7 +139,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		new unmuteid = strval(strcharsplit(text, idx,' '));
-		if((unmuteid < 0) || (unmuteid >= GetPlayerLastID()))
+		if((unmuteid < 0) || (unmuteid > GetPlayerLastID()))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][25]);
 		if(IsPlayerConnected(unmuteid) == 0)
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][26]);
@@ -169,7 +169,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(jailt > 1 && jailt <= 4320)
 			Player[jailid][JailTime] = jailt;
 		
-		Player[jailid][Jailed] = 1;
+		SetPlayerJailed(jailid,1);
 		
 		
 		new string[MAX_STRING];
@@ -196,7 +196,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(!IsPlayerConnected(unjailid) || (IsPlayerAdmin(unjailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(unjailid) && IsPlayerMod(playerid)))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][19]);
 
-		Player[unjailid][Jailed] = 0;
+		SetPlayerJailed(unjailid,0);
 		Player[unjailid][JailTime] = 0;
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][21],oGetPlayerName(playerid));

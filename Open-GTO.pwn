@@ -32,6 +32,9 @@ Date start Open-GTO: 	5 November 2009
 #include "utils\gtoutils"					// misc used utils
 #include "arrays"
 #include "lang"
+#include "systems\level_system"
+#include "systems\money_system"
+#include "systems\health_system"
 #include "account"							// account handler
 #include "player"							// holds player values
 #include "weapons"							// weapons and ammunation shop
@@ -61,8 +64,6 @@ Date start Open-GTO: 	5 November 2009
 #include "missions\trucker"
 #include "protections\antiidle"
 #include "protections\antirconhack"
-#include "protections\antihealthhack"
-#include "protections\antimoneyhack"
 #include "protections\antihightping"
 #include "protections\antivehicle"
 #include "protections\chatguard"
@@ -145,11 +146,11 @@ public OnGameModeInit()
 	fastfood_OnGameModeInit();
 	bar_OnGameModeInit();
 	//
-	
+	LevelSystem_OnGameModeInit();
     antiidle_OnGameModeInit();
     antihightping_OnGameModeInit();
-    antihealthhack_OnGameModeInit();
-    antimoneyhack_OnGameModeInit();
+    HealthSystem_OnGameModeInit();
+    MoneySystem_OnGameModeInit();
 	chatguard_OnGameModeInit();
 	//
 	race_thestrip_init();
@@ -310,7 +311,7 @@ public OnPlayerSpawn(playerid)
 {
 	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
 	SetPlayerSkin(playerid,Player[playerid][SkinModel]);
-	if(Player[playerid][Jailed] == 1)
+	if(GetPlayerJailed(playerid) == 1)
 	{
 		SetPlayerInterior(playerid,6);
 		SetPlayerPos(playerid,265.1273,77.6823,1001.0391);

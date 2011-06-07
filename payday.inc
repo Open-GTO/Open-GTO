@@ -63,14 +63,14 @@ stock PayDay()
 			BasePayM=0;
 			if(GetPlayerTotalMoney(id) < PayCutoff)	//MONEY
 			{
-				BasePayM=BasePay+((BasePay*Player[id][Level])*Player[id][Level]);
+				BasePayM=BasePay+((BasePay*GetPlayerLevel(id))*GetPlayerLevel(id));
 				oGivePlayerMoney(id, BasePayM, 0);
 			}
 
 			BasePayX=0;
 			if(GetPlayerXP(id) < MAX_LVLXP)		//XP
 			{
-				BasePayX=BasePayXP+(BasePayXP*Player[id][Level]); //200+(200*0) 200+(200*20)
+				BasePayX=BasePayXP+(BasePayXP*GetPlayerLevel(id)); //200+(200*0) 200+(200*20)
 				GivePlayerXP(id, BasePayX ,0);
 				CheckPlayerLevel(id);
 			}

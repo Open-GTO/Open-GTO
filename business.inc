@@ -294,14 +294,14 @@ stock bis_Buy(playerid)
 	if(id <= -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[3][27]);
 	new head[MAX_STRING];
 	format(head,sizeof(head),lang_texts[3][3],Businesses[id][Business_Name]);
-	if(Player[playerid][Level] < Businesses[id][Business_Level])
+	if(GetPlayerLevel(playerid) < Businesses[id][Business_Level])
 	{
 		format(temp,sizeof(temp), lang_texts[3][25],Businesses[id][Business_Level]);
 		bis_ShowDialog_Msg(playerid,id,temp);
 		return 1;
 	}
 	new price = Businesses[id][Business_Cost] + Businesses[id][Business_Buyout];
-	if(Player[playerid][Money] < price)
+	if(oGetPlayerMoney(playerid) < price)
 		return bis_ShowDialog_Msg(playerid,id,lang_texts[3][24]);
 	
 	if(!strcmp(Businesses[id][Business_Owner],oGetPlayerName(playerid),true))
@@ -519,7 +519,7 @@ stock bis_buyUpgrade(playerid)
 		new str[MAX_STRING];
 		new price = (Businesses[id][Business_Upgrade]+1) * Businesses[id][Business_Value] * UPGRADE_TARIF;
 		
-		if(Player[playerid][Money] < price)
+		if(oGetPlayerMoney(playerid) < price)
 		{
 			format(str,sizeof(str),lang_texts[3][61],price);
 			return SendClientMessage(playerid,COLOUR_RED,str);

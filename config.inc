@@ -13,29 +13,28 @@
 
 #pragma tabsize 0
 
-#define VERSION				"v1.0.0 alpha 2"
-#define GTO_FILES_FORMAT	".gto"
-#define GTO_FILES_FOLDER	"Open-GTO/"
+#define VERSION					"v1.0.0 alpha 2"
+#define GTO_FILES_FORMAT		".gto"
+#define GTO_FILES_FOLDER		"Open-GTO/"
 
-#define MAX_STRING			128 // не менять
-#define MAX_NAME			40 // number of char's a name/password/misc_word can be
+#define MAX_STRING				128 // не менять
+#define MAX_NAME				40 // number of char's a name/password/misc_word can be
 
-#define INVALID_QUEST_ID	0
-#define MAX_QUESTS			255
+#define MAX_MONEY				50000000
+#define UpdatePlayerScore(%1)	SetPlayerScore(%1,GetPVarInt(%1,"Level"))
+
+#define INVALID_QUEST_ID		0
+#define MAX_QUESTS				255
 
 // игрок
-#define MIN_HEALTH			35.0
-#define MAX_HEALTH			100.0
-#define HEALTH_TARIF		4.0	// степень увеличения максимального здоровья от лвл
-#define HEALTH_REGEN_TARIF	0.4
-
-// text scroll
-#define TEXT_SCROLL_SPEED 1000
-#define TEXT_SCROLL_SIZE 1023
+#define MIN_HEALTH				35.0
+#define MAX_HEALTH				100.0
+#define HEALTH_TARIF			4.0	// степень увеличения максимального здоровья от лвл
+#define HEALTH_REGEN_TARIF		0.4
 
 // при смерти
-#define PLAYER_XP_DEATH_MINUS_PROC 3 // сколько процентов XP уберается от уже имеющегося опыта
-#define PLAYER_MONEY_DEATH_MINUS_PROC 20 // сколько процентов денег уберается
+#define PLAYER_XP_DEATH_MINUS_PROC		3 // сколько процентов XP уберается от уже имеющегося опыта
+#define PLAYER_MONEY_DEATH_MINUS_PROC	20 // сколько процентов денег уберается
 
 // стартовые параметры игрока
 #define PLAYER_START_MONEY		1500

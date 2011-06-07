@@ -45,12 +45,12 @@ stock fights_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	#pragma unused oldkeys,newkeys
 	new string[MAX_STRING];
 	new TrenerID = GetPlayerFightTrenerID(playerid);
-	if(FightTreners[TrenerID][Style] <= Player[playerid][FightStyle])
+	if(FightTreners[TrenerID][Style] <= GetPlayerFightStyle(playerid))
 	{
 		format(string,sizeof(string),"Вы уже выучили стиль %s",FightTreners[TrenerID][StyleName]);
 		return show_Msg_Dialog(playerid,"Стили борьбы",string,"ОК");
 	}
-	if(FightTreners[TrenerID][Style]-1 > Player[playerid][FightStyle])
+	if(FightTreners[TrenerID][Style]-1 > GetPlayerFightStyle(playerid))
 	{
 		return show_Msg_Dialog(playerid,"Стили борьбы","Сначала вы должны выучить предидущие стили!","ОК");
 	}
@@ -72,7 +72,7 @@ stock fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[
 			format(string,sizeof(string),"Вам недостаточно денег, нужно $%d",FightTreners[TrenerID][Cost]);
 			return show_Msg_Dialog(playerid,"Стили борьбы",string,"ОК");
 		}
-		Player[playerid][FightStyle] = FightTreners[TrenerID][Style];
+		SetPlayerFightStyle(playerid,FightTreners[TrenerID][Style]);
 		oGivePlayerMoney(playerid,-FightTreners[TrenerID][Cost],0);
 		format(string,sizeof(string),"Вы изучили стиль борьбы %s, за: $%d. Включить стиль можно в личном меню.",FightTreners[TrenerID][StyleName],FightTreners[TrenerID][Cost]);
 		show_Msg_Dialog(playerid,"Стили борьбы",string,"ОК");
@@ -102,10 +102,10 @@ stock GetPlayerFightTrenerID(playerid)
 stock showFightStyleMenu(playerid)
 {
 	new string[MAX_STRING];
-	if(Player[playerid][FightStyle] >= FIGHT_STYLE_NORMAL) strcat(string,"Нормальный");
-	if(Player[playerid][FightStyle] >= FIGHT_STYLE_BOXING) strcat(string,"\nБокс");
-	if(Player[playerid][FightStyle] >= FIGHT_STYLE_KNEEHEAD) strcat(string,"\nКолено-голова");
-	if(Player[playerid][FightStyle] >= FIGHT_STYLE_KUNGFU) strcat(string,"\nКунг-фу");
+	if(GetPlayerFightStyle(playerid) >= FIGHT_STYLE_NORMAL) strcat(string,"Нормальный");
+	if(GetPlayerFightStyle(playerid) >= FIGHT_STYLE_BOXING) strcat(string,"\nБокс");
+	if(GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KNEEHEAD) strcat(string,"\nКолено-голова");
+	if(GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KUNGFU) strcat(string,"\nКунг-фу");
 	return ShowPlayerDialog(
 		playerid,fightstyles_user_DialogID,DIALOG_STYLE_LIST,
 		"Стиль борьбы",

@@ -93,16 +93,16 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		else format(string,sizeof(string),lang_texts[12][88]);
 
 		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
-		format(string, sizeof(string),lang_texts[15][37],GetLevelName(Player[playerid][Level]),PlayerGangName[playerid]);
+		format(string, sizeof(string),lang_texts[15][37],GetLevelName(GetPlayerLevel(playerid)),PlayerGangName[playerid]);
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,string);
-		format(string, sizeof(string),lang_texts[15][38],Player[playerid][Level],Player[playerid][XP],Player[playerid][Money],Player[playerid][Bank],GetPlayerTotalMoney(playerid));
+		format(string, sizeof(string),lang_texts[15][38],GetPlayerLevel(playerid),GetPlayerXP(playerid),oGetPlayerMoney(playerid),GetPlayerBankMoney(playerid),GetPlayerTotalMoney(playerid));
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,string);
-		format(string, sizeof(string),lang_texts[15][39],Player[playerid][Deaths],Player[playerid][Kills],Player[playerid][Jailed],Player[playerid][Muted]);
+		format(string,sizeof(string),lang_texts[15][39],GetPlayerDeaths(playerid),GetPlayerKills(playerid),GetPlayerJailed(playerid),Player[playerid][Muted]);
 		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
 
 		format(
 			string,sizeof(string),"Ваш уровень стилей борьбы: %d, используемый стиль: %s(%d)",
-				Player[playerid][FightStyle],
+				GetPlayerFightStyle(playerid),
 				ConvertFightIdToName(Player[playerid][FightStyleUsed]),
 				Player[playerid][FightStyleUsed]
 		);
@@ -118,11 +118,11 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		CheckPlayerLevel(playerid);
 		new string[MAX_STRING];
 		SendClientMessage(playerid,COLOUR_GREEN,  lang_texts[15][70] );
-		format(string, sizeof(string),  lang_texts[15][71] , Player[playerid][Level]);
+		format(string, sizeof(string),  lang_texts[15][71] , GetPlayerLevel(playerid));
 		SendClientMessage(playerid,COLOUR_XP_GOOD, string);
-		format(string, sizeof(string),  lang_texts[15][72] , Player[playerid][XP]);
+		format(string, sizeof(string),  lang_texts[15][72] , GetPlayerXP(playerid));
 		SendClientMessage(playerid,COLOUR_XP_GOOD, string);
-		format(string, sizeof(string),  lang_texts[15][73] , GetXPToLevel(playerid, Player[playerid][Level] + 1));
+		format(string, sizeof(string),  lang_texts[15][73] , GetXPToLevel(playerid, GetPlayerLevel(playerid) + 1));
 		SendClientMessage(playerid,COLOUR_XP_BAD, string);
 		return 1;
 	}
@@ -183,7 +183,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 	//ПЛАТНЫЕ КОМАНДЫ
 	if(!strcmp(cmd,"/skydive",true))
 	{
-		if(Player[playerid][Jailed] == 1 || GetPlayerInterior(playerid) != 0 || IsPlayerInAnyDM(playerid)) return 0;
+		if(GetPlayerJailed(playerid) == 1 || GetPlayerInterior(playerid) != 0 || IsPlayerInAnyDM(playerid)) return 0;
 		new string[MAX_STRING];
 		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][19]);
 		new Float:playerx,Float:playery,Float:playerz;
@@ -221,7 +221,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 			}
 			return 1;
 		}
-		if(style > Player[playerid][FightStyle])
+		if(style > GetPlayerFightStyle(playerid))
 			return SendClientMessage(playerid,COLOUR_GREY,"Вы ещё не выучили этот стиль!");
 
 		SetPlayerFightingStyle(playerid,(Player[playerid][FightStyleUsed] = style));

@@ -196,14 +196,14 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		new Float:playerx,Float:playery,Float:playerz;
 		for(new id=0;id<=GetPlayerLastID();id++)
 		{
-			if(IsPlayerConnected(id) && (Player[id][Jailed] == 0) && !IsPlayerInAnyDM(id))
+			if(IsPlayerConnected(id) && (GetPlayerJailed(id) == 0) && !IsPlayerInAnyDM(id))
 			{
 				GivePlayerWeapon(id,46,1);
 				GetPlayerPos(id,playerx,playery,playerz);
 				PlayerPlaySound(id,1058,0,0,0);
 				SetPlayerPos(id,playerx,playery,playerz+1200);
 			}
-			if(Player[id][Jailed] == 1)
+			if(GetPlayerJailed(id) == 1)
 				SendClientMessage(id,COLOUR_LIGHTRED,lang_texts[1][22]);
 		}
 		SendClientMessageToAll(COLOUR_WHITE,lang_texts[1][19]);
@@ -231,7 +231,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		for(new id=0;id<=GetPlayerLastID();id++)
 		{
-			if(!IsPlayerConnected(id) || id == playerid || Player[id][Jailed] != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id) == 1)
+			if(!IsPlayerConnected(id) || id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id) == 1)
 				continue;
 			ResetPlayerWeapons(id);
 			ADMDropAmmo(id);
@@ -247,7 +247,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		for(new id=0;id<=GetPlayerLastID();id++)
 		{
-			if(id == playerid || !IsPlayerConnected(id) || Player[id][Jailed] != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id))
+			if(id == playerid || !IsPlayerConnected(id) || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id))
 				continue;
 			TogglePlayerControllable(id,0);
 			format(string,sizeof(string),lang_texts[12][54] ,oGetPlayerName(playerid));//игроку
@@ -262,7 +262,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		for(new id=0;id<=GetPlayerLastID();id++)
 		{
-			if(id == playerid || !IsPlayerConnected(id) || Player[id][Jailed] != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id))
+			if(id == playerid || !IsPlayerConnected(id) || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id))
 				continue;
 			TogglePlayerControllable(id,1);
 			format(string,sizeof(string),lang_texts[12][56],oGetPlayerName(playerid));
@@ -291,7 +291,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		for(new id=0;id<=GetPlayerLastID();id++)
 		{
-			if(!IsPlayerConnected(id) || id == playerid || Player[id][Jailed] != 0 || IsPlayerAdmin(id) == 1) continue;
+			if(!IsPlayerConnected(id) || id == playerid || GetPlayerJailed(id) != 0 || IsPlayerAdmin(id) == 1) continue;
 			ResetPlayerMoney(id);
 			format(string,sizeof(string),lang_texts[12][58],oGetPlayerName(playerid));
 			SendClientMessage(id,COLOUR_XP_GOOD,string);

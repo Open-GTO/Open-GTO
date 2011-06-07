@@ -55,11 +55,13 @@ nee:
 	groundhold_SaveConfig();
 	groundhold_SaveAll();
 	trucker_SaveConfig();
+	// systems
+	LevelSystem_SaveConfig();
+	HealthSystem_SaveConfig();
+	MoneySystem_SaveConfig();
 	// protections
 	AntiIdleSaveConfig();
 	AntiHightPingSaveConfig();
-	AntiHealthHackSaveConfig();
-	AntiMoneyHackSaveConfig();
 	ChatGuardSaveConfig();
 	//
 	

@@ -343,3 +343,28 @@ stock GetSelectedWeaponID(playerid,listitem)
 	return 0;
 }
 //
+
+// показывает доступное оружие на уровне
+stock ShowWeaponsOnLevel(playerid,level)
+{
+	new string[MAX_STRING],
+		wepfound;
+	for(new weaponid=1;weaponid<MAX_WEAPONS;weaponid++)
+	{
+		new lookupid = GetWeaponLookupID(weaponid);
+		if(lookupid == -1) continue;
+		if(Weapons[lookupid][Weapon_Allowed] == 0) continue;
+		if(Weapons[lookupid][Weapon_Level] == level)
+		{
+			if(wepfound == 0)
+			{
+				SendClientMessage(playerid, COLOUR_GREEN,  lang_texts[9][24] );
+				wepfound = 1;
+			}
+			format(string, sizeof(string),  lang_texts[9][25] ,oGetWeaponName(weaponid),GetWeaponCost(weaponid));
+			SendClientMessage(playerid, COLOUR_MISC, string);
+		}
+	}
+	return 1;
+}
+//

@@ -667,7 +667,6 @@ stock deathmatch_OnPlayerSpawn(playerid,dmid)
 
 	spid = random(DMSpawnsSize[dmid]);
 	oSetPlayerHealth(playerid,GetMaxHealth(playerid)); // set health based on level
-	oSetPlayerMoney(playerid,Player[playerid][Money]);
 	GivePlayerDMWeapons(playerid,dmid);
 	DMPlayerStats[playerid][dm_player_active] = 1;
 	oSetPlayerCheckpoint(playerid,DMCentreCP[dmid][Coord_X],DMCentreCP[dmid][Coord_Y],DMCentreCP[dmid][Coord_Z],DMCPSize);
@@ -1084,7 +1083,7 @@ stock deathmatch_OnPlayerKill(playerid,victimid,weaponid)
 	//    if (GangKill(PlayerGangid[killerid],killerid,victimid,reason) == 1) return;
 	//}
 
-	Player[playerid][Kills]++;
+	GivePVarInt(playerid,"Kills",1);
 	PlayerCurrentKills[playerid]++;
 
 	new dmid = GetPlayerDM(playerid);
@@ -1130,7 +1129,7 @@ stock deathmatch_OnPlayerDeath(playerid,killerid)
 {
 	#pragma unused killerid
 	new string[MAX_STRING];
-	Player[playerid][Deaths]++;
+	GivePVarInt(playerid,"Deaths",1);
 	PlayerCurrentKills[playerid] = 0;
 
 	new dmid = GetPlayerDM(playerid);

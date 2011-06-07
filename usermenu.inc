@@ -135,14 +135,14 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						\n\
 						Стиль борьбы: %s\n\
 						VIP статус: %s",
-						Player[playerid][Level],
-						GetXPToLevel(playerid, Player[playerid][Level] + 1),
+						GetPlayerLevel(playerid),
+						GetXPToLevel(playerid, GetPlayerLevel(playerid) + 1),
 						
-						PlayerGangName[playerid],GetLevelName(Player[playerid][Level]),
+						PlayerGangName[playerid],GetLevelName(GetPlayerLevel(playerid)),
 						
-						Player[playerid][Money],Player[playerid][Bank],GetPlayerTotalMoney(playerid),
+						oGetPlayerMoney(playerid),GetPVarInt(playerid,"BankMoney"),GetPlayerTotalMoney(playerid),
 						
-						Player[playerid][Kills],Player[playerid][Deaths],Player[playerid][Jailed],Player[playerid][Muted],
+						GetPlayerKills(playerid),GetPlayerDeaths(playerid),GetPlayerJailed(playerid),Player[playerid][Muted],
 						
 						ConvertFightIdToName(Player[playerid][FightStyleUsed]),
 						vip_status

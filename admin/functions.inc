@@ -33,7 +33,7 @@ new Float:JPH[UNJP][CoordInfoJ] = {
 
 stock JailPlayer(playerid)
 {
-	if(Player[playerid][Jailed] == 1)
+	if(GetPlayerJailed(playerid) == 1)
 	{
 		SetPlayerInterior(playerid,6);
 		SetPlayerPos(playerid,265.1273,77.6823,1001.0391);
@@ -49,9 +49,9 @@ stock JailPlayer(playerid)
 
 stock UnJailPlayer(playerid)
 {
-	if(Player[playerid][Jailed] == 0)
+	if(GetPlayerJailed(playerid) == 0)
 	{
-		Player[playerid][Jailed] = 0;
+		SetPlayerJailed(playerid,0);
 		Player[playerid][JailTime] = 0;
 	}
 	new u = random(UNJP);
@@ -155,18 +155,18 @@ stock JailTimer()
 	for(new i=0;i<=GetPlayerLastID();i++)
 	{
 		if(!IsPlayerConnected(i) || IsPlayerNPC(i)) continue;
-		if(Player[i][Jailed] == 1)
+		if(GetPlayerJailed(i) == 1)
 		{
 			new spwl = Player[i][JailTime];
 			if(spwl == 0 || spwl > 6) spwl = 6;
 			SetPlayerWantedLevel(i,spwl);
 		}
-		if(Player[i][Jailed] == 1 && Player[i][JailTime] >= 1)
+		if(GetPlayerJailed(i) == 1 && Player[i][JailTime] >= 1)
 		{
 			Player[i][JailTime]--;
 			if(Player[i][JailTime] <= 0)
 			{
-				Player[i][Jailed] = 0;
+				SetPlayerJailed(i,0);
 				Player[i][JailTime] = 0;
 				UnJailPlayer(i);
 				printf("SERVER : %s Has Been auto-UNJailed",oGetPlayerName(i));

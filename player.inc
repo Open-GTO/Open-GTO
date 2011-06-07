@@ -14,17 +14,8 @@
 #include "utils\gtoutils"
 #include "account"
 
-#define MAX_MONEY 50000000
-
 enum PlayerInfo {
 	IsActive,      // is player online
-	Money,           // Money
-	Bank,            // Money in bank
-	Level,           // Level
-	XP,              // XP
-	Deaths,          // Deaths
-	Kills,           // Kills
-	Jailed,           // Jailed status
 	Muted,            // Muted status
 	CarKills,         // cars killed
 	Status,		      // 0-user,1>-moderator,admins
@@ -32,7 +23,6 @@ enum PlayerInfo {
 	JailTime,	     // Time for Jails
 	MuteTime,	     // Time for Mute
 	ClickedPlayerid, // clicked player
-	FightStyle,
 	FightStyleUsed,
 	bool:Spectating,
 	SpecID,
@@ -43,13 +33,16 @@ enum PlayerInfo {
 
 new Player[MAX_PLAYERS][PlayerInfo];
 
-#define GetPlayerTotalMoney(%1) Player[%1][Money]+Player[%1][Bank]
-#define oGetPlayerMoney(%1) Player[%1][Money]
-#define UpdatePlayerScore(%1) SetPlayerScore(%1,Player[%1][Level])
-#define GetPlayerGangName(%1) Gang[PlayerGangid[%1]][gang_name]
-#define GetPlayerLevel(%1) Player[%1][Level]
-#define GetPlayerXP(%1) Player[%1][XP]
-#define SetPlayerXP(%1,%2) Player[%1][XP] = %2
+#define GetPlayerTotalMoney(%0) GetPVarInt(%0,"Money")+GetPVarInt(%0,"BankMoney")
+#define GetPlayerGangName(%0) Gang[PlayerGangid[%0]][gang_name]
+#define GetPlayerKills(%0) GetPVarInt(%0,"Kills")
+#define GetPlayerDeaths(%0) GetPVarInt(%0,"Deaths")
+#define GetPlayerBankMoney(%0) GetPVarInt(%0,"BankMoney")
+#define GetPlayerJailed(%0) GetPVarInt(%0,"Jailed")
+#define SetPlayerJailed(%0,%1) SetPVarInt(%0,"Jailed",%1)
+#define GetPlayerFightStyle(%0) GetPVarInt(%0,"FightStyle")
+#define SetPlayerFightStyle(%0,%1) SetPVarInt(%0,"FightStyle",%1)
+
 
 #include "weapons"
 
@@ -205,32 +198,12 @@ stock player_OnGameModeInit()
 	return 1;
 }
 
-stock Float:GetMaxHealth(playerid)
-{
-	new Float:new_hp = MIN_HEALTH + (Player[playerid][Level] * HEALTH_TARIF);
-	return (new_hp > MAX_HEALTH) ? MAX_HEALTH : new_hp;
-}
-
-stock Float:oGetPlayerHealth(playerid)
-{
-	new Float:health;
-	GetPlayerHealth(playerid, health);
-	return health;
-}
-
 stock SpawnTimer()
 {
 	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if(IsPlayerConnected(playerid)) SpawnTime[playerid]++;
 	}
-}
-
-stock PlayerHealthRegen()
-{
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
-		HealthRegen(playerid);
-	return 1;
 }
 
 // needs to be ran by a timer
@@ -295,18 +268,6 @@ stock KickPlayer(playerid,reason[])
 		new logstring[MAX_STRING];
 		format(logstring, sizeof (logstring), "player: %d:  %s: has been auto kicked. Reason: %s",playerid,oGetPlayerName(playerid),reason);
 		WriteLog(GameLog,logstring);
-	}
-	return 1;
-}
-
-stock HealthRegen(id)
-{
-	new playerState = GetPlayerState(id);
-	if(playerState == PLAYER_STATE_WASTED || GetPVarFloat(id,"Health") >= MAX_HEALTH) return 0;
-	if(GetPVarFloat(id,"Health") < GetMaxHealth(id))
-	{
-		new Float:newhealth = GetPVarFloat(id,"Health") + (Player[id][Level] * HEALTH_REGEN_TARIF);
-		oSetPlayerHealth(id, (newhealth > MAX_HEALTH) ? MAX_HEALTH : newhealth);
 	}
 	return 1;
 }
@@ -384,7 +345,7 @@ stock player_OnPlayerSpawn(playerid)
 		}
 		else
 		{
-			if(Player[playerid][Level] > 12)
+			if(GetPlayerLevel(playerid) > 12)
 			{
 				new rand = random(sizeof(LVDMPlayerSpawns));
 				SetPlayerPos(playerid,LVDMPlayerSpawns[rand][Coord_X],LVDMPlayerSpawns[rand][Coord_Y],LVDMPlayerSpawns[rand][Coord_Z]); // Warp the player
@@ -392,7 +353,7 @@ stock player_OnPlayerSpawn(playerid)
 			}
 			else
 			{
-				new spawnid = GetRndPlayerSpawnByLevel(Player[playerid][Level]);
+				new spawnid = GetRndPlayerSpawnByLevel(GetPlayerLevel(playerid));
 				SetPlayerPos(playerid,LeveledPlayerSpawns[spawnid][playerspawn_x],LeveledPlayerSpawns[spawnid][playerspawn_y],LeveledPlayerSpawns[spawnid][playerspawn_z]); // Warp the player
 			}
 		}
@@ -406,14 +367,12 @@ stock player_OnPlayerSpawn(playerid)
 	}
 	GivePlayerOwnedWeapons(playerid);
 	oSetPlayerHealth(playerid,GetMaxHealth(playerid)); // set health based on level
-	oSetPlayerMoney(playerid,Player[playerid][Money]);
-	SetPlayerXP(playerid,Player[playerid][XP]);
 	PlayerJustTeleported[playerid]+=5;
 
 	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
 		SetPlayerSkillLevel(playerid,i,PlayerWeaponsSkills[playerid][i]);
 
-	Player[playerid][FightStyleUsed] = Player[playerid][FightStyle];
+	Player[playerid][FightStyleUsed] = GetPlayerFightStyle(playerid);
 	SetPlayerFightingStyle(playerid,Player[playerid][FightStyleUsed]);
 	return 1;
 }
@@ -421,12 +380,7 @@ stock player_OnPlayerSpawn(playerid)
 stock player_ResetStats(playerid)
 {
 	SetPVarInt(playerid,"PlayerRegistered",0);
-	Player[playerid][Level] = 0;
-	Player[playerid][XP] = 0;
-	Player[playerid][Bank] = 0;
 	oSetPlayerMoney(playerid,0);
-	Player[playerid][Kills] = 0;
-	Player[playerid][Deaths] = 0;
 	KickList[playerid] = 0;
 	ResetQuest(playerid);
 	SpawnTime[playerid] = 0;
@@ -435,13 +389,12 @@ stock player_ResetStats(playerid)
 	PlayerSkin[playerid] = 0;
 	ADMDropAmmo(playerid);
 	PlayerJustTeleported[playerid] = 5;
-	Player[playerid][Jailed] = 0;
 	Player[playerid][Muted] = 0;
 	Player[playerid][JailTime] = 0;
 	Player[playerid][MuteTime] = 0;
 	Player[playerid][Status] = 0;
 	Player[playerid][SkinModel] = 1;
-	Player[playerid][FightStyle] = 4;
+	SetPlayerFightStyle(playerid,4);
 	Player[playerid][FightStyleUsed] = 4;
 	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
 	{
@@ -512,9 +465,8 @@ stock player_OnPlayerDeath(playerid,killerid,reason)
 {
 	#pragma unused reason
 	SetPVarInt(playerid,"Spawned",0);
-	Player[playerid][Deaths]++;
+	GivePVarInt(playerid,"Deaths",1);
 	PlayerCurrentKills[playerid] = 0;
-	if(oGetPlayerHealth(killerid) > MAX_HEALTH) KickPlayer(killerid,"Invalid health amount. (cheat?)");
 	oGivePlayerMoney(playerid,-100,0);
 
 	new WeaponSkillID = GetWeaponSkillID(reason);
@@ -556,14 +508,14 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 		}
 	}
 
-	Player[killerid][Kills]++;
+	GivePVarInt(killerid,"Kills",1);
 	PlayerCurrentKills[killerid]++;
 
 	// Give XP
 	new XP_give_victim = -((GetPlayerXP(victimid) / 100) * PLAYER_XP_DEATH_MINUS_PROC);
 	new XP_give_killer = (GetPlayerLevel(victimid) + 1) * 75;
 
-	if((Player[killerid][XP] + XP_give_killer) > MAX_LVLXP) SetPlayerXP(killerid,MAX_LVLXP);
+	if((GetPlayerXP(killerid) + XP_give_killer) > MAX_LVLXP) SetPlayerXP(killerid,MAX_LVLXP);
 	else if(XP_give_killer != 0)
 	{
 		GivePlayerXP(killerid,XP_give_killer,1);
@@ -602,221 +554,11 @@ stock ResetQuest(playerid)
 	PlayerQuest[playerid] = 0;
 }
 
-stock GetXPToLevel(playerid,level)
-{
-	if(!IsPlayerConnected(playerid)) return 0;
-	if((level <= MAX_LEVEL) && (level > Player[playerid][Level]))
-	{
-		return (LevelList[level][level_xp] - Player[playerid][XP]);
-	}
-	else return 0;
-}
-
-stock CalculatePlayerLevel(playerid)
-{
-	if (!IsPlayerConnected(playerid)) return 0;
-	new level;
-	for(new i;i<=MAX_LEVEL;i++)
-	{
-		if(GetPlayerXP(playerid) >=LevelList[i][level_xp]) level = i;
-	}
-	return level;
-}
-
-stock GivePlayerXP(playerid, xpamount,showtext) // showtext = do we display "You gain %d XP"  to client
-{
-	if(!IsPlayerConnected(playerid)) return 1;
-	if(PlayerGangid[playerid] != 0)
-	{
-		if(xpamount > 100)
-		{
-			new gangxp = xpamount / 4;
-			GangGiveXP(PlayerGangid[playerid],gangxp,playerid);
-		}
-	}
-	
-	new texttime;
-	if(xpamount <= 50) texttime = 500;
-	else if(xpamount < 200) texttime = 1000;
-	else if(xpamount < 500) texttime = 1500;
-	else if(xpamount < 1000) texttime = 2000;
-	else if(xpamount < 2000) texttime = 4000;
-	else texttime = 5000;
-	
-	new string[MAX_STRING];
-	if((GetPlayerXP(playerid) + xpamount) < 0) // if after add xp, playerxp < 0
-	{
-		SetPlayerXP(playerid, 0);
-		if (showtext == 1)
-		{
-			format(string, sizeof(string),  lang_texts[9][15] , xpamount);
-			SendClientMessage(playerid, COLOUR_XP_BAD, string);
-		}
-		return 1;
-	}
-
-	if((GetPlayerXP(playerid) + xpamount) > MAX_LVLXP) // if after add, playerxp > MAX
-	{
-		if(showtext == 1)
-		{
-			format(string, sizeof(string),  lang_texts[9][16] , MAX_LVLXP - GetPlayerXP(playerid));
-			SendClientMessage(playerid, COLOUR_XP_GOOD, string);
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[9][17] );
-		}
-		SetPlayerXP(playerid, MAX_LVLXP);
-		return 1;
-	}
-
-	if(xpamount >= 0)
-	{
-		format(string, sizeof(string),  lang_texts[9][18] , xpamount);
-		GameTextForPlayer(playerid,string,texttime,3);
-	}
-	else
-	{
-		new levelxp = LevelList[GetPlayerLevel(playerid)][level_xp];
-		new xpfromlevel = GetPlayerXP(playerid) - levelxp;
-		if ((xpfromlevel + xpamount) < levelxp)
-		{
-			xpamount = 0-xpfromlevel;
-		}
-		if(xpamount > 0)
-		{
-			format(string, sizeof(string),  lang_texts[9][19] , xpamount);
-			GameTextForPlayer(playerid,string,texttime,3);
-		}
-	}
-
-	SetPlayerXP(playerid, (GetPlayerXP(playerid) + xpamount));
-	if(showtext == 1)
-	{
-		if(xpamount > 0)
-		{
-			format(string, sizeof(string),  lang_texts[9][20] , xpamount);
-			SendClientMessage(playerid, COLOUR_XP_GOOD, string);
-		}
-		else
-		{
-			format(string, sizeof(string),  lang_texts[9][21] , -xpamount);
-			SendClientMessage(playerid, COLOUR_XP_BAD, string);
-		}
-	}
-	Player[playerid][XP]=GetPlayerXP(playerid);
-	CheckPlayerLevel(playerid);
-	return 1;
-}
-
-stock CheckPlayerLevel(playerid)
-{
-	if(!IsPlayerConnected(playerid)) return 1;
-	new level = CalculatePlayerLevel(playerid);
-	if(Player[playerid][Level] < level) PlayerLevelUp(playerid,level);
-	else if(Player[playerid][Level] > level) PlayerLevelDown(playerid,level);
-	Player[playerid][XP]=GetPlayerXP(playerid);
-	return 1;
-}
-
-stock PlayerLevelDown(playerid,level)
-{
-	if(!IsPlayerConnected(playerid)) return 1;
-	new string[MAX_STRING];
-	Player[playerid][Level] = level;
-	format(string, sizeof(string),  lang_texts[9][22] , Player[playerid][Level]);
-	SendClientMessage(playerid, COLOUR_XP_BAD, string);
-	new logstring[MAX_STRING];
-	format(logstring, sizeof (logstring), "player: %d:  %s: decreased his level to %d",playerid,oGetPlayerName(playerid),Player[playerid][Level]);
-	WriteLog(GameLog,logstring);
-	new Float:playerx,Float:playery,Float:playerz;
-	GetPlayerPos(playerid,playerx,playery,playerz);
-	PlayerPlaySound(playerid,1057,playerx,playery,playerz);
-	UpdatePlayerScore(playerid);
-	return 1;
-}
-
-stock PlayerLevelUp(playerid,level)
-{
-	if(!IsPlayerConnected(playerid)) return 1;
-	new string[MAX_STRING];
-	Player[playerid][Level] = level;
-	oSetPlayerHealth(playerid,GetMaxHealth(playerid));
-	format(string, sizeof(string),  lang_texts[9][23] , Player[playerid][Level]);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
-	new logstring[MAX_STRING];
-	format(logstring, sizeof (logstring), "player: %d:  %s: increased his level to %d",playerid,oGetPlayerName(playerid),Player[playerid][Level]);
-	WriteLog(GameLog,logstring);
-	new Float:playerx,Float:playery,Float:playerz;
-	GetPlayerPos(playerid,playerx,playery,playerz);
-	PlayerPlaySound(playerid,1057,playerx,playery,playerz);
-	UpdatePlayerScore(playerid);
-
-	new wepfound;
-	for(new weaponid=1;weaponid<MAX_WEAPONS;weaponid++)
-	{
-		new lookupid=GetWeaponLookupID(weaponid);
-		if(lookupid == -1) continue;
-		if(Weapons[lookupid][Weapon_Allowed] == 0) continue;
-		if(Weapons[lookupid][Weapon_Level] == GetPlayerLevel(playerid))
-		{
-			if(wepfound == 0)
-			{
-				SendClientMessage(playerid, COLOUR_GREEN,  lang_texts[9][24] );
-				wepfound=1;
-			}
-			format(string, sizeof(string),  lang_texts[9][25] ,oGetWeaponName(weaponid),GetWeaponCost(weaponid));
-			SendClientMessage(playerid, COLOUR_MISC, string);
-		}
-	}
-	return 1;
-}
-
-stock oSetPlayerMoney(playerid,money)
-{
-    Player[playerid][Money] = money;
-	ResetPlayerMoney(playerid);
-	return GivePlayerMoney(playerid,money);
-}
-
-stock oGivePlayerMoney(playerid,money,showtext)
-{
-	new string[MAX_STRING];
-	if((Player[playerid][Money] + money) > MAX_MONEY)
-	{
-		oSetPlayerMoney(playerid,MAX_MONEY);
-		format(string, sizeof(string),  lang_texts[9][26] , money);
-		SendClientMessage(playerid, COLOUR_MONEY_GOOD, string);
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "player: %d:  %s: is on max money",playerid,oGetPlayerName(playerid));
-		WriteLog(GameLog,logstring);
-		return 1;
-	}
-
-	if(showtext == 1)
-	{
-		if(money >= 0)
-		{
-			format(string, sizeof(string), lang_texts[9][28], money);
-			SendClientMessage(playerid, COLOUR_MONEY_GOOD, string);
-		}
-		else
-		{
-			format(string, sizeof(string), lang_texts[9][29], money);
-			SendClientMessage(playerid, COLOUR_MONEY_BAD, string);
-		}
-	}
-	return oSetPlayerMoney(playerid,Player[playerid][Money] + money);
-}
-
 stock oGetPlayerName(playerid)
 {
 	new name[MAX_PLAYER_NAME];
 	GetPlayerName(playerid, name, sizeof(name));
 	return name;
-}
-
-stock oSetPlayerHealth(playerid,Float:health)
-{
-	SetPVarFloat(playerid,"Health",health);
-	return SetPlayerHealth(playerid,health);
 }
 
 stock oGivePlayerWeapon(playerid,weaponid,ammo)
@@ -930,17 +672,17 @@ stock player_save_db_ini(playerid)
 	else file_player = ini_Open(filename_player);
 	ini_Set(file_player,"Name",oGetPlayerName(playerid));
 	ini_Set(file_player,"Gang",PlayerGangName[playerid]);
-	ini_SetInt(file_player,"Level",Player[playerid][Level]);
-	ini_SetInt(file_player,"XP",Player[playerid][XP]);
-	ini_SetInt(file_player,"Money",Player[playerid][Money]);
-	ini_SetInt(file_player,"BankMoney",Player[playerid][Bank]);
-	ini_SetInt(file_player,"Deaths",Player[playerid][Deaths]);
-	ini_SetInt(file_player,"Kills",Player[playerid][Kills]);
-	ini_SetInt(file_player,"Jailed",Player[playerid][Jailed]);
+	ini_SetInt(file_player,"Level",GetPlayerLevel(playerid));
+	ini_SetInt(file_player,"XP",GetPlayerXP(playerid));
+	ini_SetInt(file_player,"Money",oGetPlayerMoney(playerid));
+	ini_SetInt(file_player,"BankMoney",GetPlayerBankMoney(playerid));
+	ini_SetInt(file_player,"Deaths",GetPlayerDeaths(playerid));
+	ini_SetInt(file_player,"Kills",GetPlayerKills(playerid));
+	ini_SetInt(file_player,"Jailed",GetPlayerJailed(playerid));
 	ini_SetInt(file_player,"Muted",Player[playerid][Muted]);
-	ini_SetInt(file_player,"JailTime",Player[playerid][JailTime]);
+	ini_SetInt(file_player,"JailTime",GetPlayerFightStyle(playerid));
 	ini_SetInt(file_player,"MuteTime",Player[playerid][MuteTime]);
-	ini_SetInt(file_player,"FightStyle",Player[playerid][FightStyle]);
+	ini_SetInt(file_player,"FightStyle",GetPlayerFightStyle(playerid));
 	new Float:x,Float:y,Float:z;
 	GetPlayerPos(playerid,x,y,z);
 	if(z > 900) {x=0;y=0;z=0;}
@@ -973,27 +715,43 @@ stock player_load_db_ini(playerid)
 	format(filename_player,sizeof(filename_player),"%s%s"GTO_FILES_FORMAT,PlayerDB,oGetPlayerName(playerid));
 	if(!ini_Exist(filename_player)) return 1;
 	new file_player = ini_Open(filename_player);
-    ini_GetInt(file_player,"Level",Player[playerid][Level]);
-    ini_GetInt(file_player,"XP",Player[playerid][XP]);
-	new money;
-    ini_GetInt(file_player,"Money",money);
-    oSetPlayerMoney(playerid,money);
-    ini_GetInt(file_player,"BankMoney",Player[playerid][Bank]);
-    ini_GetInt(file_player,"Deaths",Player[playerid][Deaths]);
-    ini_GetInt(file_player,"Kills",Player[playerid][Kills]);
-    ini_GetInt(file_player,"Jailed",Player[playerid][Jailed]);
+	new buf;
+	
+    ini_GetInt(file_player,"Level",buf);
+	SetPlayerLevel(playerid,buf);
+	
+    ini_GetInt(file_player,"XP",buf);
+	SetPlayerXP(playerid,buf);
+	
+    ini_GetInt(file_player,"Money",buf);
+    oSetPlayerMoney(playerid,buf);
+	
+    ini_GetInt(file_player,"BankMoney",buf);
+	SetPVarInt(playerid,"BankMoney",buf);
+	
+    ini_GetInt(file_player,"Deaths",buf);
+    SetPVarInt(playerid,"Deaths",buf);
+	
+	ini_GetInt(file_player,"Kills",buf);
+	SetPVarInt(playerid,"Kills",buf);
+	
+    ini_GetInt(file_player,"Jailed",buf);
+	SetPlayerJailed(playerid,buf);
+	
     ini_GetInt(file_player,"Muted",Player[playerid][Muted]);
-    ini_GetInt(file_player,"JailTime",Player[playerid][JailTime]);
+    ini_GetInt(file_player,"JailTime",buf);
+	SetPlayerFightStyle(playerid,buf);
+	
     ini_GetInt(file_player,"MuteTime",Player[playerid][MuteTime]);
-    ini_GetInt(file_player,"FightStyle",Player[playerid][FightStyle]);
-    ini_GetInt(file_player,"Level",Player[playerid][Level]);
+    ini_GetInt(file_player,"FightStyle",buf);
+	SetPlayerFightStyle(playerid,buf);
 	new string[MAX_STRING],idx=0;
 	ini_Get(file_player,"Coords",string);
 	PlayerSpawn[playerid][Coord_X] = floatstr(strcharsplit(string,idx,','));
 	PlayerSpawn[playerid][Coord_Y] = floatstr(strcharsplit(string,idx,','));
 	PlayerSpawn[playerid][Coord_Z] = floatstr(strcharsplit(string,idx,','));
     ini_GetInt(file_player,"Status",Player[playerid][Status]);
-	SetPlayerFightingStyle(playerid,Player[playerid][FightStyle]);
+	SetPlayerFightingStyle(playerid,GetPlayerFightStyle(playerid));
 	new gangname[MAX_NAME];
 	new tmpname[MAX_NAME];
 	ini_Get(file_player,"Gang",gangname);
