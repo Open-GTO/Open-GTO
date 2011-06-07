@@ -177,7 +177,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		format(string,sizeof(string), lang_texts[12][43] ,oGetPlayerName(receiverid),sknamount,sknkeep);
 		SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 	
-		Player[playerid][SkinModel]=sknamount;
+		SetPlayerSkinModel(playerid,sknamount);
 		player_save_db_ini(receiverid);
 		return 1;
 	}
@@ -389,9 +389,9 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		
 		set(Player[giveid][VIPDate],string);
 		if(VIPCheck(string))
-			Player[giveid][VIP] = true;
+			SetPlayerVIP(giveid,1);
 		else
-			Player[giveid][VIP] = false;
+			SetPlayerVIP(giveid,0);
 		
 		format(string,sizeof(string),"Вы установили VIP статус %s(%d), до %s",oGetPlayerName(giveid),giveid,Player[giveid][VIPDate]);
 		SendClientMessage(playerid,COLOUR_WHITE,string);

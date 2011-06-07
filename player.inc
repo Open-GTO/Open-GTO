@@ -15,34 +15,48 @@
 #include "account"
 
 enum PlayerInfo {
-	IsActive,      // is player online
-	Muted,            // Muted status
-	CarKills,         // cars killed
 	Status,		      // 0-user,1>-moderator,admins
-	SkinModel,	     // Skin Model
 	JailTime,	     // Time for Jails
 	MuteTime,	     // Time for Mute
-	ClickedPlayerid, // clicked player
-	FightStyleUsed,
-	bool:Spectating,
-	SpecID,
-	bool:VIP,
-	VIPDate[15],
-	Last_Name[MAX_PLAYER_NAME]
+	VIPDate[15]
 }
 
 new Player[MAX_PLAYERS][PlayerInfo];
 
-#define GetPlayerTotalMoney(%0) GetPVarInt(%0,"Money")+GetPVarInt(%0,"BankMoney")
+#define GetPlayerTotalMoney(%0)	GetPVarInt(%0,"Money")+GetPVarInt(%0,"BankMoney")
 #define GetPlayerGangName(%0) Gang[GetPVarInt(%0,"GangID")][gang_name]
 #define GetPlayerKills(%0) GetPVarInt(%0,"Kills")
 #define GetPlayerDeaths(%0) GetPVarInt(%0,"Deaths")
+
 #define GetPlayerBankMoney(%0) GetPVarInt(%0,"BankMoney")
+#define GivePlayerBankMoney(%0,%1) SetPVarInt(%0,"BankMoney",GetPVarInt(%0,"BankMoney") + %1)
+
 #define GetPlayerJailed(%0) GetPVarInt(%0,"Jailed")
 #define SetPlayerJailed(%0,%1) SetPVarInt(%0,"Jailed",%1)
+
 #define GetPlayerFightStyle(%0) GetPVarInt(%0,"FightStyle")
 #define SetPlayerFightStyle(%0,%1) SetPVarInt(%0,"FightStyle",%1)
 
+#define GetPlayerFightStyleUsed(%0) GetPVarInt(%0,"FightStyleUsed")
+#define SetPlayerFightStyleUsed(%0,%1) SetPVarInt(%0,"FightStyleUsed",%1)
+
+#define GetPlayerMuted(%0) GetPVarInt(%0,"Muted")
+#define SetPlayerMuted(%0,%1) SetPVarInt(%0,"Muted",%1)
+
+#define GetPlayerSkinModel(%0) GetPVarInt(%0,"SkinModel")
+#define SetPlayerSkinModel(%0,%1) SetPVarInt(%0,"SkinModel",%1)
+
+#define GetPlayerSpecID(%0) GetPVarInt(%0,"SpecID")
+#define SetPlayerSpecID(%0,%1) SetPVarInt(%0,"SpecID",%1)
+
+#define GetPlayerSpectating(%0) GetPVarInt(%0,"Spectating")
+#define SetPlayerSpectating(%0,%1) SetPVarInt(%0,"Spectating",%1)
+
+#define GetPlayerClickedPlayerid(%0) GetPVarInt(%0,"ClickedPlayerid")
+#define SetPlayerClickedPlayerid(%0,%1) SetPVarInt(%0,"ClickedPlayerid",%1)
+
+#define GetPlayerVIP(%0) GetPVarInt(%0,"VIP")
+#define SetPlayerVIP(%0,%1) SetPVarInt(%0,"VIP",%1)
 
 #include "weapons"
 
@@ -371,8 +385,8 @@ stock player_OnPlayerSpawn(playerid)
 	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
 		SetPlayerSkillLevel(playerid,i,PlayerWeaponsSkills[playerid][i]);
 
-	Player[playerid][FightStyleUsed] = GetPlayerFightStyle(playerid);
-	SetPlayerFightingStyle(playerid,Player[playerid][FightStyleUsed]);
+	SetPlayerFightStyleUsed(playerid,GetPlayerFightStyle(playerid));
+	SetPlayerFightingStyle(playerid,GetPlayerFightStyleUsed(playerid));
 	return 1;
 }
 
@@ -387,13 +401,12 @@ stock player_ResetStats(playerid)
 	PlayerSkin[playerid] = 0;
 	ADMDropAmmo(playerid);
 	PlayerJustTeleported[playerid] = 5;
-	Player[playerid][Muted] = 0;
 	Player[playerid][JailTime] = 0;
 	Player[playerid][MuteTime] = 0;
 	Player[playerid][Status] = 0;
-	Player[playerid][SkinModel] = 1;
+	SetPlayerSkinModel(playerid,1);
 	SetPlayerFightStyle(playerid,4);
-	Player[playerid][FightStyleUsed] = 4;
+	SetPlayerFightStyleUsed(playerid,4);
 	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
 	{
 		PlayerWeaponsSkills[playerid][i] = 0;
@@ -403,7 +416,7 @@ stock player_ResetStats(playerid)
 
 stock IsPlayerRegistered(playerid)
 {
-	if(!IsPlayerConnected(playerid) || GetPVarInt(playerid,"PlayerRegistered") == 0 || Player[playerid][IsActive] == 0) return false;
+	if(!IsPlayerConnected(playerid) || GetPVarInt(playerid,"PlayerRegistered") == 0) return false;
 	return true;
 }
 
@@ -425,7 +438,6 @@ stock player_OnPlayerDisconnect(playerid,reason)
 	}
 	SendClientMessageToAll(COLOUR_GREY,string);
 	GangMemberLogout(playerid,GetPVarInt(playerid,"GangID"));
-	Player[playerid][IsActive] = 0;
 	player_ResetStats(playerid);
 	DisablePlayerRaceCheckpoint(playerid);
 	SendDeathMessage(INVALID_PLAYER_ID,playerid,201);
@@ -436,7 +448,6 @@ stock player_OnPlayerConnect(playerid)
     new plrIP[16];
     GetPlayerIp(playerid,plrIP,sizeof(plrIP));
 	SetPVarString(playerid,"IP",plrIP);
-	Player[playerid][IsActive] = 1;
 	player_ResetStats(playerid);
 	if(!NameCharCheck( oGetPlayerName(playerid) ))
 	{
@@ -677,7 +688,7 @@ stock player_save_db_ini(playerid)
 	ini_SetInt(file_player,"Deaths",GetPlayerDeaths(playerid));
 	ini_SetInt(file_player,"Kills",GetPlayerKills(playerid));
 	ini_SetInt(file_player,"Jailed",GetPlayerJailed(playerid));
-	ini_SetInt(file_player,"Muted",Player[playerid][Muted]);
+	ini_SetInt(file_player,"Muted",GetPlayerMuted(playerid));
 	ini_SetInt(file_player,"JailTime",GetPlayerFightStyle(playerid));
 	ini_SetInt(file_player,"MuteTime",Player[playerid][MuteTime]);
 	ini_SetInt(file_player,"FightStyle",GetPlayerFightStyle(playerid));
@@ -690,7 +701,7 @@ stock player_save_db_ini(playerid)
 	ini_SetInt(file_player,"Status",Player[playerid][Status]);
 	ini_Set(file_player,"Weapons",CreateWeaponDBString(playerid));
 	ini_Set(file_player,"WeaponsSkills",CreateWeaponSkillsDBString(playerid));
-	ini_SetInt(file_player,"SkinModel",Player[playerid][SkinModel]);
+	ini_SetInt(file_player,"SkinModel",GetPlayerSkinModel(playerid));
 	ini_Set(file_player,"VIP",Player[playerid][VIPDate]);
 	ini_Close(file_player);
 	return 1;
@@ -736,7 +747,9 @@ stock player_load_db_ini(playerid)
     ini_GetInt(file_player,"Jailed",buf);
 	SetPlayerJailed(playerid,buf);
 	
-    ini_GetInt(file_player,"Muted",Player[playerid][Muted]);
+    ini_GetInt(file_player,"Muted",buf);
+	SetPlayerMuted(playerid,buf);
+	
     ini_GetInt(file_player,"JailTime",buf);
 	SetPlayerFightStyle(playerid,buf);
 	
@@ -781,14 +794,16 @@ not_gang:
 	SetWeaponsFromDBString(playerid,wepstr);
 	ini_Get(file_player,"WeaponsSkills",wepstr);
 	SetWeaponsSkillsFromDBString(playerid,wepstr);
-	ini_GetInt(file_player,"SkinModel",Player[playerid][SkinModel]);
+	
+	ini_GetInt(file_player,"SkinModel",buf);
+	SetPlayerSkinModel(playerid,buf);
+	
 	ini_Get(file_player,"VIP",Player[playerid][VIPDate],15);
 	if(VIPCheck(Player[playerid][VIPDate]))
-		Player[playerid][VIP] = true;
+		SetPlayerVIP(playerid,1);
 	else
-		Player[playerid][VIP] = false;
+		SetPlayerVIP(playerid,0);
 	UpdatePlayerScore(playerid);
-	set(Player[playerid][Last_Name],oGetPlayerName(playerid));
 	ini_Close(file_player);
 	return 1;
 }

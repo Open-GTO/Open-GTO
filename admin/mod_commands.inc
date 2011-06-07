@@ -127,7 +127,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(mutetime < 1)
 			return SendClientMessage(playerid,COLOUR_RED," Не правильное время затычки!введите '/mute <id> <minutes>'");
 		Player[muteid][MuteTime] = mutetime;
-		Player[muteid][Muted]++;               // сколько раз всего затыкали игрока.
+		SetPlayerMuted(muteid,GetPlayerMuted(muteid) + 1); // сколько раз всего затыкали игрока
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][24],oGetPlayerName(playerid));
 		SendClientMessage(muteid,COLOUR_RED,string);
@@ -217,14 +217,14 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/spec",true))
 	{
 		new specid = strval(strcharsplit(text, idx,' '));
-		if(Player[playerid][Spectating]) TogglePlayerSpectating(playerid,0);
+		if(GetPlayerSpectating(playerid)) TogglePlayerSpectating(playerid,0);
 		if(specid < 0 || specid > GetPlayerLastID() || !IsPlayerConnected(specid) || specid == playerid)
 		{
 			SendClientMessage(playerid,COLOUR_RED,"Вы не можете следить за несуществующими игроками");
 			return 1;
 		}
-		Player[playerid][SpecID] = specid;
-		Player[playerid][Spectating] = true;
+		SetPlayerSpecID(playerid,specid);
+		SetPlayerSpectating(playerid,1);
 		TogglePlayerSpectating(playerid,1);
 		SendClientMessage(playerid,COLOUR_BLUE,"Чтобы выключить спектатор, введите /spec-off");
 		if(IsPlayerInAnyVehicle(specid)) PlayerSpectateVehicle(playerid,GetPlayerVehicleID(specid));
@@ -233,13 +233,16 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	if(!strcmp(cmd,"/spec-off",true))
 	{
-		if(!Player[playerid][Spectating]) return 1;
+		if(GetPlayerSpectating(playerid) == 0)
+		{
+			return 1;
+		}
 		else 
 		{
 			SetPlayerInterior(playerid,0);
 			TogglePlayerSpectating(playerid,0);
-			Player[playerid][SpecID] = INVALID_PLAYER_ID;
-			Player[playerid][Spectating] = false;
+			SetPlayerSpecID(playerid,INVALID_PLAYER_ID);
+			SetPlayerSpectating(playerid,0);
 		}
 		return 1;
 	}

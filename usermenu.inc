@@ -138,11 +138,11 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						
 						PlayerGangName[playerid],GetLevelName(GetPlayerLevel(playerid)),
 						
-						oGetPlayerMoney(playerid),GetPVarInt(playerid,"BankMoney"),GetPlayerTotalMoney(playerid),
+						oGetPlayerMoney(playerid),GetPlayerBankMoney(playerid),GetPlayerTotalMoney(playerid),
 						
-						GetPlayerKills(playerid),GetPlayerDeaths(playerid),GetPlayerJailed(playerid),Player[playerid][Muted],
+						GetPlayerKills(playerid),GetPlayerDeaths(playerid),GetPlayerJailed(playerid),GetPlayerMuted(playerid),
 						
-						ConvertFightIdToName(Player[playerid][FightStyleUsed]),
+						ConvertFightIdToName( GetPlayerFightStyleUsed(playerid) ),
 						vip_status
 					);
 					return show_User_Menu_Dialog(playerid,"Информация о персонаже",string);

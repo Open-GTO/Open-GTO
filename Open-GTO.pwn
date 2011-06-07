@@ -314,7 +314,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 public OnPlayerSpawn(playerid)
 {
 	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
-	SetPlayerSkin(playerid,Player[playerid][SkinModel]);
+	SetPlayerSkin(playerid,GetPlayerSkinModel(playerid));
 	if(GetPlayerJailed(playerid) == 1)
 	{
 		SetPlayerInterior(playerid,6);
@@ -347,12 +347,12 @@ public OnPlayerRequestClass(playerid, classid)
 	SetPVarInt(playerid,"player_class_zero",0);
 	if(classid != 0)
 	{
-		Player[playerid][SkinModel] = GetPlayerSkin(playerid);
+		SetPlayerSkinModel(playerid,GetPlayerSkin(playerid));
 		SetPVarInt(playerid,"player_class_zero",1);
 	}
 	else if(GetPVarInt(playerid,"player_class_zero") == 1) // classid == 0 тоже можно выбирать
 	{
-		Player[playerid][SkinModel] = GetPlayerSkin(playerid);
+		SetPlayerSkinModel(playerid,GetPlayerSkin(playerid));
 		SetPVarInt(playerid,"player_class_zero",0);
 	}
 	//

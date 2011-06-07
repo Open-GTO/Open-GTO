@@ -94,7 +94,7 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(amount > GetPlayerBankMoney(playerid))
 			amount = GetPlayerBankMoney(playerid);
 		oGivePlayerMoney(playerid,amount,0);
-		SetPVarInt(playerid,"BankMoney",-amount);
+		GivePlayerBankMoney(playerid,-amount);
 		format(string,sizeof(string),lang_texts[2][7],amount,GetPlayerBankMoney(playerid));
 		show_Msg_Dialog(playerid,lang_texts[2][3],string,lang_texts[2][5]);
 		new Float:playerx,Float:playery,Float:playerz;
@@ -118,7 +118,7 @@ stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			SendClientMessage(playerid,COLOUR_RED,lang_texts[2][15]);
 		}
 		oGivePlayerMoney(playerid,-amount,0);
-		GivePVarInt(playerid,"BankMoney",amount);
+		GivePlayerBankMoney(playerid,amount);
 		format(string,sizeof(string),lang_texts[2][14],amount,GetPlayerBankMoney(playerid));
 		show_Msg_Dialog(playerid,lang_texts[2][3],string,lang_texts[2][5]);
 		new Float:playerx,Float:playery,Float:playerz;
@@ -176,6 +176,6 @@ stock IsPlayerAtBank(playerid)
 stock Profit()
 {
 	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
-		GivePVarInt(playerid,"BankMoney",(GetPlayerBankMoney(playerid) / 100) * ProfitCount);
+		GivePlayerBankMoney(playerid,-(GetPlayerBankMoney(playerid) / 100) * ProfitCount);
 	return 1;
 }

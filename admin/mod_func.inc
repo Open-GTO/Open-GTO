@@ -15,7 +15,7 @@ stock modfunc_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger)
 	#pragma unused ispassenger
 	for(new id=0;id<=GetPlayerLastID();id++)
 	{
-		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[id][SpecID] == playerid) PlayerSpectateVehicle(id,vehicleid);
+		if(IsPlayerConnected(id) && GetPlayerSpectating(id) == 1 && SetPlayerSpecID(id,playerid)) PlayerSpectateVehicle(id,vehicleid);
 	}
 	return 1;
 }
@@ -25,7 +25,7 @@ stock modfunc_OnPlayerExitVehicle(playerid,vehicleid)
 	#pragma unused vehicleid
 	for(new id=0;id<=GetPlayerLastID();id++)
 	{
-		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[id][SpecID] == playerid) PlayerSpectatePlayer(id,playerid);
+		if(IsPlayerConnected(id) && GetPlayerSpectating(id) == 1 && SetPlayerSpecID(id,playerid)) PlayerSpectatePlayer(id,playerid);
 	}
 	return 1;
 }
@@ -35,7 +35,7 @@ stock modfunc_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
 	#pragma unused oldinteriorid
 	for(new id=0;id<=GetPlayerLastID();id++)
 	{
-		if(IsPlayerConnected(id) && Player[id][Spectating] && Player[id][SpecID] == playerid)	SetPlayerInterior(id,newinteriorid);
+		if(IsPlayerConnected(id) && GetPlayerSpectating(id) == 1 && SetPlayerSpecID(id,playerid))	SetPlayerInterior(id,newinteriorid);
 	}
 	return 1;
 }
@@ -45,11 +45,11 @@ stock modfunc_OnPlayerDeath(playerid,killerid,reason)
 	#pragma unused reason,killerid
 	for(new id=0;id<=GetPlayerLastID();id++)
 	{
-		if(IsPlayerConnected(id) && Player[id][SpecID] == playerid  && Player[id][Spectating]) 
+		if(IsPlayerConnected(id) && SetPlayerSpecID(id,playerid) && GetPlayerSpectating(id) == 1) 
 		{ 
-			TogglePlayerSpectating(id,false); 
-			Player[id][Spectating] = false; 
-			Player[id][SpecID] = INVALID_PLAYER_ID; 
+			TogglePlayerSpectating(id,false);
+			SetPlayerSpectating(id,0);
+			SetPlayerSpecID(id,INVALID_PLAYER_ID);
 		}
 	}
 	return 1;

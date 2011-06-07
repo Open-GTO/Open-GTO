@@ -78,8 +78,9 @@ stock fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[
 	{
 		if(!response) return show_User_Menu(playerid);
 		listitem += 4; // теперь listitem является идом выбранного стиля
-		SetPlayerFightingStyle(playerid,(Player[playerid][FightStyleUsed] = listitem));
-		format(string,sizeof(string),lang_texts[19][11],ConvertFightIdToName(Player[playerid][FightStyleUsed]));
+		SetPlayerFightStyleUsed(playerid,listitem);
+		SetPlayerFightingStyle(playerid,listitem);
+		format(string,sizeof(string),lang_texts[19][11],ConvertFightIdToName( GetPlayerFightStyleUsed(playerid) ));
 		show_User_Menu_Dialog(playerid,lang_texts[19][2],string);
 		return 1;
 	}

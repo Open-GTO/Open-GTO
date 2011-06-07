@@ -8,7 +8,7 @@
 stock antivehicle_OnPlayerStateChange(playerid,newstate,oldstate)
 {
 	#pragma unused newstate,oldstate
-	if(!Player[playerid][VIP] && IsVIPVehicle( GetPlayerVehicleID(playerid) ))
+	if(GetPlayerVIP(playerid) == 0 && IsVIPVehicle( GetPlayerVehicleID(playerid) ))
 	{
 		RemovePlayerFromVehicle(playerid);
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[11][7]);

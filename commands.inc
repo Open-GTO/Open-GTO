@@ -90,18 +90,18 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,string);
 		format(string, sizeof(string),lang_texts[15][38],GetPlayerLevel(playerid),GetPlayerXP(playerid),oGetPlayerMoney(playerid),GetPlayerBankMoney(playerid),GetPlayerTotalMoney(playerid));
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,string);
-		format(string,sizeof(string),lang_texts[15][39],GetPlayerDeaths(playerid),GetPlayerKills(playerid),GetPlayerJailed(playerid),Player[playerid][Muted]);
+		format(string,sizeof(string),lang_texts[15][39],GetPlayerDeaths(playerid),GetPlayerKills(playerid),GetPlayerJailed(playerid),GetPlayerMuted(playerid));
 		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
 
 		format(
 			string,sizeof(string),"Ваш уровень стилей борьбы: %d, используемый стиль: %s(%d)",
 				GetPlayerFightStyle(playerid),
-				ConvertFightIdToName(Player[playerid][FightStyleUsed]),
-				Player[playerid][FightStyleUsed]
+				ConvertFightIdToName(GetPlayerFightStyleUsed(playerid)),
+				GetPlayerFightStyleUsed(playerid)
 		);
 		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
 
-		if(Player[playerid][VIP]) format(string,sizeof(string),"Ваш vip статус: 1, доступно до: %s",Player[playerid][VIPDate]);
+		if(GetPlayerVIP(playerid) == 1) format(string,sizeof(string),"Ваш vip статус: 1, доступно до: %s",Player[playerid][VIPDate]);
 		else format(string,sizeof(string),"Ваш vip статус: 0");
 		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
 		return 1;
