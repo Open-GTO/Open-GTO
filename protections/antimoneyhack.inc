@@ -34,6 +34,7 @@ stock SyncMoney(playerid)
 	new clientmoney = GetPlayerMoney(playerid);
 	if(clientmoney < 0) return oSetPlayerMoney(playerid,0);
 	if(clientmoney == Player[playerid][Money]) return 1;
+	if(clientmoney < Player[playerid][Money]) return Player[playerid][Money] = clientmoney;
 	if(clientmoney > Player[playerid][Money]) return oSetPlayerMoney(playerid,Player[playerid][Money]);
 	return 1;
 }
