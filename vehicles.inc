@@ -2269,15 +2269,13 @@ new VehicleModelSpawns[][VehicleSpawnInfo] = {
 	{538,1700.7551,-1953.6531,14.8756,200.0,-1,-1}
 };
 
-new vipvehic[5];
-
 stock LoadVehicles()
 {
-	vipvehic[0] = AddStaticVehicle(447,230.772,1953.617,17.301,0.0,-1,-1);
-	vipvehic[1] = AddStaticVehicle(520,245.733,1968.859,17.301,89.0,-1,-1);
-	vipvehic[2] = AddStaticVehicle(520,245.406,1982.253,17.301,89.0,-1,-1);
-	vipvehic[3] = AddStaticVehicle(432,207.934,1974.734,17.301,270.0,-1,-1);
-	vipvehic[4] = AddStaticVehicle(432,208.515,1987.570,17.301,270.0,-1,-1);
+	for(new i=0;i<sizeof(vip_Vehicle);i++)
+	{
+		vip_LastVehicleID = AddStaticVehicleEx(vip_Vehicle[i][Model],vip_Vehicle[i][Coord_X],vip_Vehicle[i][Coord_Y],vip_Vehicle[i][Coord_Z],vip_Vehicle[i][Coord_A],vip_Vehicle[i][Color_1],vip_Vehicle[i][Color_2],CarsReSpawnTime);
+		SetVehicleParamsEx(vip_LastVehicleID,VEHICLE_PARAMS_ON,0,0,0,0,0,0);
+	}
 	for(new i=0,veh_id;i<sizeof(VehicleModelSpawns);i++)
 	{
 		if(VehicleModelSpawns[i][vspawn_model] == 0) continue;

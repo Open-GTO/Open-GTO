@@ -61,8 +61,6 @@ new GangColours[COLOURS_SIZE][ColourInfo] = {
 {"Purple",		COLOUR_PURPLE}
 };
 
-new GangInvite[MAX_PLAYERS];
-
 stock GangLoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 0;
@@ -151,7 +149,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 	set(cmd,strcharsplit(text, idx,' '));
 	if(strlen(cmd) == 0) return 0;
 
-	if(Player[playerid][MuteTime] != 0)
+	if(GetPlayerMuteTime(playerid) != 0)
 		return SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 
 	if(!strcmp(cmd,"/g",true))
@@ -311,14 +309,14 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
       		if(GetPVarInt(playerid,"GangID") != 0)
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][44]);
 
-      		if(GangInvite[playerid] == 0)
+      		if(GetPVarInt(playerid,"GangInvite") == 0)
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][45]);
 
-   			new gangid = GangInvite[playerid],string[MAX_STRING];
+   			new gangid = GetPVarInt(playerid,"GangInvite"),string[MAX_STRING];
    			if(GangOnlineCount(gangid) >= MAX_GANG_SIZE)
    			{
     			SendClientMessage(playerid,COLOUR_RED,lang_texts[6][46]);
-    			GangInvite[playerid] = 0;
+				SetPVarInt(playerid,"GangInvite",0);
     			return 1;
    			}
       		if(GangJoinMember(gangid,playerid) == 1)
@@ -371,7 +369,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
    			SendClientMessage(inviteid,COLOUR_GANG,string);
    			format(string,sizeof(string),lang_texts[6][59],oGetPlayerName(inviteid),Gangs[gangid][gang_name]);
    			SendClientMessage(playerid,COLOUR_GANG,string);
-   			GangInvite[inviteid] = gangid;
+			SetPVarInt(inviteid,"GangInvite",gangid);
    			format(string,sizeof(string),"player: %d:  %s: has invited %s to join gang '%s'.",playerid,oGetPlayerName(playerid),oGetPlayerName(inviteid),Gangs[gangid][gang_name]);
       		WriteLog(GameLog,string);
    			return 1;
@@ -478,7 +476,7 @@ stock GangJoinMember(gangid,playerid)
 		GangMemberInfo[gangid][gangmember][member_playerid] = playerid;
 		GangMemberInfo[gangid][gangmember][member_online] = true;
 		SetPVarInt(playerid,"GangID",gangid);
-		set(PlayerGangName[playerid],Gangs[gangid][gang_name]);
+		SetPlayerGangName(playerid,Gangs[gangid][gang_name]);
 		GangMemberLogin(playerid,gangid);
 		SetPlayerColor(playerid,PlayerGangColour(playerid));
 		return 1;
@@ -500,7 +498,7 @@ stock GangRemoveMember(gangid,kickplayername[])
 			if(!IsPlayerConnected(GangMemberInfo[gangid][gangmember][member_playerid])) continue;
 			playerid = GangMemberInfo[gangid][gangmember][member_playerid];
 			SetPVarInt(playerid,"GangID",0);
-			set(PlayerGangName[playerid],nullstr);
+			SetPlayerGangName(playerid,nullstr);
 			set(GangMemberInfo[gangid][gangmember][member_name],nullstr);
 			SendClientMessage(playerid,COLOUR_RED,string);
 			SetPlayerColor(playerid,PlayerGangColour(playerid));
@@ -530,7 +528,7 @@ stock GangRemoveMember(gangid,kickplayername[])
 			format(string,sizeof(string),lang_texts[6][71],Gangs[gangid][gang_name]);
 			SendClientMessage(playerid,COLOUR_GANG,string);
 			SetPVarInt(playerid,"GangID",0);
-			set(PlayerGangName[playerid],nullstr);
+			SetPlayerGangName(playerid,nullstr);
 		}
 		SetPlayerColor(playerid,PlayerGangColour(playerid));
 		if(GangOnlineCount(gangid) == 0) GangUnload(gangid);
@@ -567,7 +565,7 @@ stock GangCreate(leaderid,gangname[],gangcolour)
 	set(GangMemberInfo[gangid][0][member_name],oGetPlayerName(leaderid));
 	GangMemberInfo[gangid][0][member_playerid] = leaderid;
 	GangMemberInfo[gangid][0][member_online] = true;
-	set(PlayerGangName[leaderid],gangname);
+	SetPlayerGangName(leaderid,gangname);
 	SetPVarInt(leaderid,"GangID",gangid);
 	SetPlayerColor(leaderid,PlayerGangColour(leaderid));
 	GangSave(gangid);
@@ -588,7 +586,7 @@ stock GangSaveAll()
 
 stock GangMemberLogout(playerid,gangid)
 {
-	GangInvite[playerid] = 0;
+	SetPVarInt(playerid,"GangInvite",0);
 	if(gangid == 0) return;
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
@@ -675,10 +673,10 @@ stock GangMemberLogin(playerid,gangid)
 		GangMemberInfo[gangid][gangmember][member_online] = true;
 		GangMemberInfo[gangid][gangmember][member_playerid] = playerid;
 		SetPVarInt(playerid,"GangID",gangid);
-		set(PlayerGangName[playerid],Gangs[gangid][gang_name]);
+		SetPlayerGangName(playerid,Gangs[gangid][gang_name]);
 		format(string,sizeof(string),lang_texts[6][78],Gangs[gangid][gang_name],GangOnlineCount(gangid)-1);
 		SendClientMessage(playerid,COLOUR_GANG,string);
-		GangInvite[playerid] = 0;
+		SetPVarInt(playerid,"GangInvite",0);
 		SetPlayerColor(playerid,Gangs[gangid][gang_colour]);
 		return 1;
 	}

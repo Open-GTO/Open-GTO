@@ -658,7 +658,6 @@ stock deathmatch_OnPlayerSpawn(playerid,dmid)
 		return;
 	}
 
-	PlayerJustTeleported[playerid]+=5;
 	SetPlayerInterior(playerid,0);
 	new spid = random(DMSpawnsSize[dmid]);
 	SetPlayerPos(playerid,DMSpawnPoints[dmid][spid][Coord_X], DMSpawnPoints[dmid][spid][Coord_Y], DMSpawnPoints[dmid][spid][Coord_Z]); // Warp the player
@@ -862,7 +861,6 @@ stock PlayerLeaveDM(playerid,dmid)
 	if (DMPlayerStats[playerid][dm_player_active])
 	{
 		ResetPlayerDMWeapons(playerid);
-		PlayerJustTeleported[playerid]+=5;
 		SetPlayerPos(playerid,DMStartCP[dmid][Coord_X], DMStartCP[dmid][Coord_Y], DMStartCP[dmid][Coord_Z]);
 
 		SetPlayerInterior(playerid,0);
@@ -1077,7 +1075,6 @@ stock deathmatch_OnPlayerKill(playerid,victimid,weaponid)
 	// check gang kill
 
 	GivePVarInt(playerid,"Kills",1);
-	PlayerCurrentKills[playerid]++;
 
 	new dmid = GetPlayerDM(playerid);
 	if ((dmid == INVALID_DM_ID) || (!IsPlayerInDM(playerid,dmid)))
@@ -1123,7 +1120,6 @@ stock deathmatch_OnPlayerDeath(playerid,killerid)
 	#pragma unused killerid
 	new string[MAX_STRING];
 	GivePVarInt(playerid,"Deaths",1);
-	PlayerCurrentKills[playerid] = 0;
 
 	new dmid = GetPlayerDM(playerid);
 	if ((dmid == INVALID_DM_ID) || (!IsPlayerInDM(playerid,dmid)))

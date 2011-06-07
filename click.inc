@@ -3,6 +3,10 @@
 // Aurthor:   ElBI
 //
 
+
+#define GetPlayerClickedPlayerid(%0) GetPVarInt(%0,"ClickedPlayerid")
+#define SetPlayerClickedPlayerid(%0,%1) SetPVarInt(%0,"ClickedPlayerid",%1)
+
 new ListResponseType[MAX_PLAYERS];
 
 stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
@@ -57,7 +61,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				SendClientMessage(playerid,COLOUR_RED,lang_texts[12][26]);
 				return 1;
 			}
-			Player[unmuteid][MuteTime] = 0;
+			SetPlayerMuteTime(unmuteid,0);
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][27],oGetPlayerName(playerid));
 			SendClientMessage(unmuteid,COLOUR_GREEN,string);
@@ -84,7 +88,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][20]);
 			}
 			SetPlayerJailed(unjailid,0);
-			Player[unjailid][JailTime] = 0;
+			SetPlayerJailTime(unjailid,0);
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][21],oGetPlayerName(playerid));
 			SendClientMessage(unjailid,COLOUR_GREEN,string);
@@ -98,7 +102,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][34],oGetPlayerName(receiverid),receiverid);
 			SendClientMessage(playerid,COLOUR_YELLOW,string);
-			new sid = Player[receiverid][Status];
+			new sid = GetPlayerStatus(receiverid);
 			if(sid > 0 && sid < 10) format(string,sizeof(string),lang_texts[12][87],sid);
 			else if(sid > 10) format(string,sizeof(string),lang_texts[12][86],sid);
 			else format(string,sizeof(string),lang_texts[12][88]);
@@ -353,7 +357,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				format(string, sizeof(string)," %s заткнул %s на %d минут",oGetPlayerName(playerid),oGetPlayerName(muteid),mutetime);
 				SendClientMessageToAll(COLOUR_YELLOW,string);
 			}
-			Player[muteid][MuteTime] = mutetime;
+			SetPlayerMuteTime(muteid,mutetime);
 			SetPlayerMuted(muteid,GetPlayerMuted(muteid) + 1);
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][24],oGetPlayerName(playerid));
@@ -374,7 +378,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			}
 			static jailt=4320;
 			jailt = strval(inputtext);
-			if(jailt>1 && jailt<=4320) Player[jailid][JailTime] = jailt;
+			if(jailt>1 && jailt<=4320) SetPlayerJailTime(jailid,jailt);
 			SetPlayerJailed(jailid,1);
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][18],oGetPlayerName(playerid));

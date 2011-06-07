@@ -118,7 +118,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				case 0: // Информация о персонаже
 				{
 					new vip_status[MAX_NAME];
-					if(Player[playerid][VIPDate]) format(vip_status,sizeof(vip_status),"до %s",Player[playerid][VIPDate]);
+					if(GetPlayerVIP(playerid) == 1) format(vip_status,sizeof(vip_status),"до %s",GetPlayerVIPDate(playerid));
 					else set(vip_status,"нет");
 					format(string,sizeof(string),
 						"Уровень: %d, Опыт до уровня: %d\n\
@@ -136,7 +136,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						GetPlayerLevel(playerid),
 						GetXPToLevel(playerid, GetPlayerLevel(playerid) + 1),
 						
-						PlayerGangName[playerid],GetLevelName(GetPlayerLevel(playerid)),
+						GetPlayerGangName(playerid),GetLevelName(GetPlayerLevel(playerid)),
 						
 						oGetPlayerMoney(playerid),GetPlayerBankMoney(playerid),GetPlayerTotalMoney(playerid),
 						

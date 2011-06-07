@@ -57,7 +57,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][34],oGetPlayerName(receiverid),receiverid);
 		SendClientMessage(playerid,COLOUR_YELLOW,string);
-		new sid = Player[receiverid][Status];
+		new sid = GetPlayerStatus(receiverid);
 		if(sid > 0 && sid < 10) format(string,sizeof(string),lang_texts[12][87],sid);
 		else if(sid > 10) format(string,sizeof(string),lang_texts[12][86],sid);
 		else format(string,sizeof(string),lang_texts[12][88]);
@@ -70,7 +70,7 @@ stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
 		SendClientMessage(playerid,COLOUR_WHITE,string);
 		format(string,sizeof(string),lang_texts[12][38],GetPlayerDeaths(receiverid),GetPlayerKills(receiverid));	//Kills, Deaths
 		SendClientMessage(playerid,COLOUR_WHITE,string);
-		format(string,sizeof(string),lang_texts[12][71],GetPlayerJailed(receiverid),Player[receiverid][Muted]);	//Jailed, Muted
+		format(string,sizeof(string),lang_texts[12][71],GetPlayerJailed(receiverid),GetPlayerMuted(receiverid));	//Jailed, Muted
 		SendClientMessage(playerid,COLOUR_WHITE,string);
 		new playerIP[16];
 		GetPVarString(receiverid,"IP",playerIP,sizeof(playerIP));

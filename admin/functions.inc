@@ -38,7 +38,7 @@ stock JailPlayer(playerid)
 		SetPlayerInterior(playerid,6);
 		SetPlayerPos(playerid,265.1273,77.6823,1001.0391);
 		SetPlayerFacingAngle(playerid,-90);
-		new spwl=Player[playerid][JailTime];
+		new spwl=GetPlayerJailTime(playerid);
 		if(spwl==0 || spwl>6) spwl=6;
 		SetPlayerWantedLevel(playerid,spwl);
 		TogglePlayerControllable(playerid,0);
@@ -52,7 +52,7 @@ stock UnJailPlayer(playerid)
 	if(GetPlayerJailed(playerid) == 0)
 	{
 		SetPlayerJailed(playerid,0);
-		Player[playerid][JailTime] = 0;
+		SetPlayerJailTime(playerid,0);
 	}
 	new u = random(UNJP);
 	SetPlayerInterior(playerid,0);
@@ -78,7 +78,7 @@ stock SendMessageToAdmins(playerid, color, text[])
 	for(new aid=0;aid<=GetPlayerLastID();aid++)
 	{
 		if(!IsPlayerConnected(aid) || IsPlayerNPC(aid) || aid == playerid || (!IsPlayerAdmin(aid) && !IsPlayerAdm(aid))) continue;
-		format(message,sizeof(message), lang_texts[1][23] ,oGetPlayerName(playerid), playerid, Player[playerid][Status], string);
+		format(message,sizeof(message), lang_texts[1][23] ,oGetPlayerName(playerid), playerid, GetPlayerStatus(playerid), string);
 		SendClientMessage(aid,color,message);
 	}
 	return 0;
@@ -137,10 +137,10 @@ stock MuteCheck()
 	for(new i=0;i<=GetPlayerLastID();i++)
 	{
 		if(!IsPlayerConnected(i) || IsPlayerNPC(i)) continue;
-		if(Player[i][MuteTime] > 0)
+		if(GetPlayerMuteTime(i) > 0)
 		{
-		    Player[i][MuteTime]--;
-		    if(Player[i][MuteTime] == 0)
+			SetPlayerMuteTime(i,GetPlayerMuteTime(i) - 1);
+		    if(GetPlayerMuteTime(i) == 0)
 		    {
 				new string[MAX_STRING];
 				format(string, sizeof(string)," Игрок %s(%d) снова может говорить",oGetPlayerName(i),i);
@@ -157,17 +157,17 @@ stock JailTimer()
 		if(!IsPlayerConnected(i) || IsPlayerNPC(i)) continue;
 		if(GetPlayerJailed(i) == 1)
 		{
-			new spwl = Player[i][JailTime];
+			new spwl = GetPlayerJailTime(i);
 			if(spwl == 0 || spwl > 6) spwl = 6;
 			SetPlayerWantedLevel(i,spwl);
 		}
-		if(GetPlayerJailed(i) == 1 && Player[i][JailTime] >= 1)
+		if(GetPlayerJailed(i) == 1 && GetPlayerJailTime(i) >= 1)
 		{
-			Player[i][JailTime]--;
-			if(Player[i][JailTime] <= 0)
+			SetPlayerJailTime(i,GetPlayerJailTime(i) - 1);
+			if(GetPlayerJailTime(i) <= 0)
 			{
 				SetPlayerJailed(i,0);
-				Player[i][JailTime] = 0;
+				SetPlayerJailTime(i,0);
 				UnJailPlayer(i);
 				printf("SERVER : %s Has Been auto-UNJailed",oGetPlayerName(i));
 				return 1;
@@ -175,7 +175,7 @@ stock JailTimer()
 			else
 			{
 				new string[MAX_STRING];
-				format(string,sizeof(string), "SERVER: До окончания ареста осталось около %d мин", Player[i][JailTime]);
+				format(string,sizeof(string), "SERVER: До окончания ареста осталось около %d мин", GetPlayerJailTime(i));
 				SendClientMessage(i,COLOUR_LIGHTRED, string);
 			}
 		}
@@ -190,4 +190,16 @@ stock IsSkinValid(SkinID)
 		case 0,7,9..41,43..64,66..73,75..85,87..118,120..148,150..207,209..264,274..288,290..299: return true;
 	}
 	return false;
+}
+
+stock IsPlayerAdm(playerid)
+{
+	if(GetPlayerStatus(playerid) >= 11) return 1;
+	return 0;
+}
+
+stock IsPlayerMod(playerid)
+{
+	if(GetPlayerStatus(playerid) > 0) return 1;
+	return 0;
 }

@@ -1,7 +1,7 @@
 //
 // Created:     05.09.06
 // Aurthor:    Iain Gilbert
-// Updated in 27.03.2010 by ZiGGi
+// Updated in 07.06.2011 by ZiGGi
 
 #if defined _player_included
 #endinput
@@ -10,38 +10,26 @@
 #define _player_included
 #pragma library player
 
+
 #include "base"
 #include "utils\gtoutils"
 #include "account"
+#include "weapons"
 
-enum PlayerInfo {
-	Status,		      // 0-user,1>-moderator,admins
-	JailTime,	     // Time for Jails
-	MuteTime,	     // Time for Mute
-	VIPDate[15]
-}
-
-new Player[MAX_PLAYERS][PlayerInfo];
-
-#define GetPlayerTotalMoney(%0)	GetPVarInt(%0,"Money")+GetPVarInt(%0,"BankMoney")
-#define GetPlayerGangName(%0) Gang[GetPVarInt(%0,"GangID")][gang_name]
 #define GetPlayerKills(%0) GetPVarInt(%0,"Kills")
 #define GetPlayerDeaths(%0) GetPVarInt(%0,"Deaths")
-
-#define GetPlayerBankMoney(%0) GetPVarInt(%0,"BankMoney")
-#define GivePlayerBankMoney(%0,%1) SetPVarInt(%0,"BankMoney",GetPVarInt(%0,"BankMoney") + %1)
 
 #define GetPlayerJailed(%0) GetPVarInt(%0,"Jailed")
 #define SetPlayerJailed(%0,%1) SetPVarInt(%0,"Jailed",%1)
 
-#define GetPlayerFightStyle(%0) GetPVarInt(%0,"FightStyle")
-#define SetPlayerFightStyle(%0,%1) SetPVarInt(%0,"FightStyle",%1)
-
-#define GetPlayerFightStyleUsed(%0) GetPVarInt(%0,"FightStyleUsed")
-#define SetPlayerFightStyleUsed(%0,%1) SetPVarInt(%0,"FightStyleUsed",%1)
+#define GetPlayerJailTime(%0) GetPVarInt(%0,"JailTime")
+#define SetPlayerJailTime(%0,%1) SetPVarInt(%0,"JailTime",%1)
 
 #define GetPlayerMuted(%0) GetPVarInt(%0,"Muted")
 #define SetPlayerMuted(%0,%1) SetPVarInt(%0,"Muted",%1)
+
+#define GetPlayerMuteTime(%0) GetPVarInt(%0,"MuteTime")
+#define SetPlayerMuteTime(%0,%1) SetPVarInt(%0,"MuteTime",%1)
 
 #define GetPlayerSkinModel(%0) GetPVarInt(%0,"SkinModel")
 #define SetPlayerSkinModel(%0,%1) SetPVarInt(%0,"SkinModel",%1)
@@ -52,31 +40,17 @@ new Player[MAX_PLAYERS][PlayerInfo];
 #define GetPlayerSpectating(%0) GetPVarInt(%0,"Spectating")
 #define SetPlayerSpectating(%0,%1) SetPVarInt(%0,"Spectating",%1)
 
-#define GetPlayerClickedPlayerid(%0) GetPVarInt(%0,"ClickedPlayerid")
-#define SetPlayerClickedPlayerid(%0,%1) SetPVarInt(%0,"ClickedPlayerid",%1)
+#define GetPlayerStatus(%0) GetPVarInt(%0,"Status")
+#define SetPlayerStatus(%0,%1) SetPVarInt(%0,"Status",%1)
 
-#define GetPlayerVIP(%0) GetPVarInt(%0,"VIP")
-#define SetPlayerVIP(%0,%1) SetPVarInt(%0,"VIP",%1)
 
-#include "weapons"
-
-new PlayerSkin[MAX_PLAYERS];
-
-#define PLAYER_WEAPON_SLOTS 13//  drop weapons
-enum PWeap {
-	pwid,
-	pbullets
+stock GetPlayerGangName(playerid)
+{
+	new string[MAX_NAME];
+	GetPVarString(playerid,"GangName",string,sizeof(string));
+	return string;
 }
-new PlayerWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap]; // 0 - weaponid, 1 - ammo
-new PlayerTempWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap];
-
-#define PLAYER_WEAPON_SKILLS 10
-new PlayerWeaponsSkills[MAX_PLAYERS][PLAYER_WEAPON_SKILLS];
-
-new PlayerCurrentKills[MAX_PLAYERS];
-new PlayerGangName[MAX_PLAYERS][MAX_NAME];
-new PlayerSpawn[MAX_PLAYERS][CoordInfo];
-new SpawnTime[MAX_PLAYERS];
+#define SetPlayerGangName(%0,%1) SetPVarString(%0,"GangName",%1)
 
 enum Quest_Stats {
 	Quest_Name[MAX_NAME]
@@ -89,10 +63,7 @@ new QuestCount;
 new Float:PlayerCP[MAX_PLAYERS][CoordInfo];
 new bool:PlayerCPActive[MAX_PLAYERS];
 
-new PlayerJustTeleported[MAX_PLAYERS];
 new PlayerStartMoney = PLAYER_START_MONEY;
-new PlayerJailed = 0;
-new PlayerMuted = 0;
 new PlayerStartWeapon1 = PLAYER_START_WEAPON_1;
 new PlayerStartWeapon2 = PLAYER_START_WEAPON_2;
 new PlayerStartWeapon3 = PLAYER_START_WEAPON_3;
@@ -184,8 +155,6 @@ stock PlayerLoadConfig()
 	ini_GetInt(file_player,"Player_Start_Weapon1",PlayerStartWeapon1);
 	ini_GetInt(file_player,"Player_Start_Weapon2",PlayerStartWeapon2);
 	ini_GetInt(file_player,"Player_Start_Weapon3",PlayerStartWeapon3);
-	ini_GetInt(file_player,"Player_Jailed",PlayerJailed);
-	ini_GetInt(file_player,"Player_Muted",PlayerMuted);
 	ini_Close(file_player);
 	return 1;
 }
@@ -198,8 +167,6 @@ stock PlayerSaveConfig()
 	ini_SetInt(file_player,"Player_Start_Weapon1",PlayerStartWeapon1);
 	ini_SetInt(file_player,"Player_Start_Weapon2",PlayerStartWeapon2);
 	ini_SetInt(file_player,"Player_Start_Weapon3",PlayerStartWeapon3);
-	ini_SetInt(file_player,"Player_Jailed",PlayerJailed);
-	ini_SetInt(file_player,"Player_Muted",PlayerMuted);
 	ini_Close(file_player);
 	return 1;
 }
@@ -211,150 +178,19 @@ stock player_OnGameModeInit()
 	return 1;
 }
 
-stock SpawnTimer()
-{
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
-	{
-		if(IsPlayerConnected(playerid)) SpawnTime[playerid]++;
-	}
-}
-
-// needs to be ran by a timer
-// sync player hp/money and check for mismatch
-stock SyncPlayers()
-{
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
-	{
-		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) continue;
-		if(GetPVarInt(playerid,"Spawned") == 0) continue; // если игрок мертв, то защиты не срабатывают
-		if(PlayerJustTeleported[playerid] > 0) PlayerJustTeleported[playerid]--;
-		SyncMoney(playerid);
-		SyncHealth(playerid);
-		CheckPlayerKick(playerid);
-		JailPlayer(playerid);
-		CheckPing(playerid);
-	}
-	return 1;
-}
-
-// Check if any players have been marked to kick, and kicks them
-stock CheckPlayerKick(playerid)
-{
-	if(IsPlayerConnected(playerid))
-	{
-		if (KickList[playerid] == 1) // if we wanna kick this player
-		{
-			GameTextForPlayer(playerid,"~r~Connection Lost.",999,5); //  send msg first
-			TogglePlayerControllable(playerid,0);
-			KickList[playerid]=2;
-		}
-		else if (KickList[playerid] >=2) // wait a second before doing the kicking (for msg to get through)
-		{
-			new logstring[MAX_STRING];
-			format(logstring, sizeof (logstring), "player: %d:  %s: has been auto kicked",playerid,oGetPlayerName(playerid));
-			WriteLog(GameLog,logstring);
-			KickList[playerid] = 0;
-			Kick(playerid);
-			return;
-		}
-	}
-}
-
-stock KickPlayer(playerid,reason[])
-{
-	if(!IsPlayerConnected(playerid)) return 1;
-	new string[MAX_STRING];
-	if(IsPlayerAdmin(playerid))
-	{
-		format(string,sizeof(string), lang_texts[9][4], reason);
-		SendClientMessage(playerid,COLOUR_YELLOW, string);
-		return 1;
-	}
-	if(KickList[playerid] != 0) return 1;
-	KickList[playerid]++;
-	if(strlen(reason) > 0)
-	{
-		format(string,sizeof(string), lang_texts[9][5] ,reason);
-		SendClientMessage(playerid,COLOUR_RED, string);
-		format(string,sizeof(string), lang_texts[9][6] ,oGetPlayerName(playerid),reason);
-		SendClientMessageToAll(COLOUR_MISC, string);
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "player: %d:  %s: has been auto kicked. Reason: %s",playerid,oGetPlayerName(playerid),reason);
-		WriteLog(GameLog,logstring);
-	}
-	return 1;
-}
-
-stock GivePlayerOwnedWeapons(playerid)
-{
-	ResetPlayerWeapons(playerid);
-	for(new weaponslot=0;weaponslot<PLAYER_WEAPON_SLOTS;weaponslot++)
-	{
-		if(PlayerWeapons[playerid][weaponslot][pwid] <= 0) continue;
-		if(!IsPlayerAllowedWeapon(playerid,PlayerWeapons[playerid][weaponslot][pwid])) continue;
-		if(PlayerWeapons[playerid][weaponslot][pwid] > 0)
-		{
-			GivePlayerWeapon(playerid,PlayerWeapons[playerid][weaponslot][pwid],PlayerWeapons[playerid][weaponslot][pbullets]);
-		}
-	}
-}
-
-stock SendPlayerOwnedWeapons(playerid)
-{
-	new string[MAX_STRING];
-	SendClientMessage(playerid,COLOUR_GREEN,lang_texts[9][7]);
-	for (new weaponslot=0;weaponslot<PLAYER_WEAPON_SLOTS;weaponslot++)
-	{
-		if (PlayerWeapons[playerid][weaponslot][pwid] <= 0) continue;
-		if (PlayerWeapons[playerid][weaponslot][pbullets] > 1)
-		{
-			format(string,sizeof(string),lang_texts[9][8],oGetWeaponName(PlayerWeapons[playerid][weaponslot][pwid]),PlayerWeapons[playerid][weaponslot][pbullets]);
-			SendClientMessage(playerid,COLOUR_MISC,string);
-		}
-		else if (PlayerWeapons[playerid][weaponslot][pbullets] == 1)
-		{
-			format(string,sizeof(string), lang_texts[9][9] ,oGetWeaponName(PlayerWeapons[playerid][weaponslot][pwid]));
-			SendClientMessage(playerid,COLOUR_MISC,string);
-		}
-	}
-}
-
-stock GetRndPlayerSpawnByLevel(level)
-{
-	new spawnlevel=0,leveledspawns[PLAYERSPAWNS_SIZE+1],idx=0,spawnid;
-	for(new lookupid=0;lookupid<PLAYERSPAWNS_SIZE;lookupid++)
-	{
-		if((LeveledPlayerSpawns[lookupid][playerspawn_level] <= level) && (LeveledPlayerSpawns[lookupid][playerspawn_level] > spawnlevel))
-		{
-			spawnlevel = LeveledPlayerSpawns[lookupid][playerspawn_level];
-		}
-	}
-	for(new lookupid=0;lookupid<PLAYERSPAWNS_SIZE;lookupid++)
-	{
-		if(LeveledPlayerSpawns[lookupid][playerspawn_level] == spawnlevel)
-		{
-			leveledspawns[idx] = lookupid;
-			idx++;
-		}
-	}
-	spawnid = (idx != 0) ? leveledspawns[random(idx)] : leveledspawns[0];
-	return spawnid;
-}
-
 stock player_OnPlayerSpawn(playerid)
 {
 	SetPVarInt(playerid,"Spawned",1);
 	new GH = ganghouse(playerid);
-	SpawnTime[playerid] = 0;
 	SetPlayerInterior(playerid,0);
 	if(GH == -1)
-	{ 
-		if((PlayerSpawn[playerid][Coord_X] !=0.0) && (PlayerSpawn[playerid][Coord_Y] !=0.0) && (PlayerSpawn[playerid][Coord_Z] !=0.0))
+	{
+		if(GetPVarFloat(playerid,"Coord_X") != 0.0 && GetPVarFloat(playerid,"Coord_Y") != 0.0 && GetPVarFloat(playerid,"Coord_Z") != 0.0)
 		{
-			SetPlayerPos(playerid,PlayerSpawn[playerid][Coord_X],PlayerSpawn[playerid][Coord_Y],PlayerSpawn[playerid][Coord_Z]); // Warp the player
-			PlayerSpawn[playerid][Coord_X] = 0.0;
-			PlayerSpawn[playerid][Coord_Y] = 0.0;
-			PlayerSpawn[playerid][Coord_Z] = 0.0;
+			SetPlayerPos(playerid,GetPVarFloat(playerid,"Coord_X"),GetPVarFloat(playerid,"Coord_Y"),GetPVarFloat(playerid,"Coord_Z")); // Warp the player
+			SetPVarFloat(playerid,"Coord_X",0.0);
+			SetPVarFloat(playerid,"Coord_Y",0.0);
+			SetPVarFloat(playerid,"Coord_Z",0.0);
 		}
 		else
 		{
@@ -362,7 +198,6 @@ stock player_OnPlayerSpawn(playerid)
 			{
 				new rand = random(sizeof(LVDMPlayerSpawns));
 				SetPlayerPos(playerid,LVDMPlayerSpawns[rand][Coord_X],LVDMPlayerSpawns[rand][Coord_Y],LVDMPlayerSpawns[rand][Coord_Z]); // Warp the player
-				SetPlayerFacingAngle(playerid,271.8075);
 			}
 			else
 			{
@@ -372,6 +207,8 @@ stock player_OnPlayerSpawn(playerid)
 		}
 	}
 	else gang2house(playerid,GH);
+	SetPlayerFacingAngle(playerid,GetPVarFloat(playerid,"Coord_A"));
+	
 	if(!IsPlayerRegistered(playerid))
 	{
 		SendClientMessage(playerid,COLOUR_RED, lang_texts[9][10]);
@@ -380,44 +217,10 @@ stock player_OnPlayerSpawn(playerid)
 	}
 	GivePlayerOwnedWeapons(playerid);
 	oSetPlayerHealth(playerid,GetMaxHealth(playerid)); // set health based on level
-	PlayerJustTeleported[playerid]+=5;
-
-	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
-		SetPlayerSkillLevel(playerid,i,PlayerWeaponsSkills[playerid][i]);
-
+	weapon_SetSkills(playerid);
 	SetPlayerFightStyleUsed(playerid,GetPlayerFightStyle(playerid));
 	SetPlayerFightingStyle(playerid,GetPlayerFightStyleUsed(playerid));
 	return 1;
-}
-
-stock player_ResetStats(playerid)
-{
-	SetPVarInt(playerid,"PlayerRegistered",0);
-	oSetPlayerMoney(playerid,0);
-	KickList[playerid] = 0;
-	ResetQuest(playerid);
-	SpawnTime[playerid] = 0;
-	set(PlayerGangName[playerid],nullstr);
-	PlayerSkin[playerid] = 0;
-	ADMDropAmmo(playerid);
-	PlayerJustTeleported[playerid] = 5;
-	Player[playerid][JailTime] = 0;
-	Player[playerid][MuteTime] = 0;
-	Player[playerid][Status] = 0;
-	SetPlayerSkinModel(playerid,1);
-	SetPlayerFightStyle(playerid,4);
-	SetPlayerFightStyleUsed(playerid,4);
-	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
-	{
-		PlayerWeaponsSkills[playerid][i] = 0;
-		SetPlayerSkillLevel(playerid,i,0);
-	}
-}
-
-stock IsPlayerRegistered(playerid)
-{
-	if(!IsPlayerConnected(playerid) || GetPVarInt(playerid,"PlayerRegistered") == 0) return false;
-	return true;
 }
 
 stock player_OnPlayerDisconnect(playerid,reason)
@@ -475,12 +278,7 @@ stock player_OnPlayerDeath(playerid,killerid,reason)
 	#pragma unused reason
 	SetPVarInt(playerid,"Spawned",0);
 	GivePVarInt(playerid,"Deaths",1);
-	PlayerCurrentKills[playerid] = 0;
 	oGivePlayerMoney(playerid,-100,0);
-
-	new WeaponSkillID = GetWeaponSkillID(reason);
-	SetPlayerSkillLevel(killerid,WeaponSkillID,PlayerWeaponsSkills[killerid][WeaponSkillID] += 1);
-
 	modfunc_OnPlayerDeath(playerid,killerid,reason);
 }
 
@@ -491,34 +289,7 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 		if(GangKill(GetPVarInt(killerid,"GangID"),killerid,victimid,reason) == 1) return;
 	}
 
-	new slot=GetWeaponSlot(reason);
-	if(IsWeapon(reason))
-	{
-		if (PlayerTempWeapons[killerid][slot][pwid] > 0)
-		{
-			if (PlayerWeapons[killerid][slot][pbullets] > 0)
-			{
-				if(!IsWeaponHandToHand(reason))
-				{
-					PlayerWeapons[killerid][slot][pbullets] -= Vary(2,1);	
-					if (PlayerWeapons[killerid][slot][pbullets] < 0) PlayerWeapons[killerid][slot][pbullets] = 0;	
-				}
-			}
-			else if(reason != 0)
-			{
-				if(!IsStoreWeapon(reason))
-				{
-					new string[MAX_STRING];
-					format(string,sizeof(string), lang_texts[9][14] ,reason);
-					KickPlayer(killerid,string); //kick player, they used illegal weapon
-					return;
-				}
-			}
-		}
-	}
-
 	GivePVarInt(killerid,"Kills",1);
-	PlayerCurrentKills[killerid]++;
 
 	// Give XP
 	new XP_give_victim = -((GetPlayerXP(victimid) / 100) * PLAYER_XP_DEATH_MINUS_PROC);
@@ -548,6 +319,111 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	return;
 }
 
+// needs to be ran by a timer
+// sync player hp/money and check for mismatch
+stock SyncPlayers()
+{
+	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	{
+		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) continue;
+		if(GetPVarInt(playerid,"Spawned") == 0) continue; // если игрок мертв, то защиты не срабатывают
+		SyncMoney(playerid);
+		SyncHealth(playerid);
+		CheckPlayerKick(playerid);
+		JailPlayer(playerid);
+		CheckPing(playerid);
+	}
+	return 1;
+}
+
+// Check if any players have been marked to kick, and kicks them
+stock CheckPlayerKick(playerid)
+{
+	if(IsPlayerConnected(playerid))
+	{
+		if (KickList[playerid] == 1) // if we wanna kick this player
+		{
+			GameTextForPlayer(playerid,"~r~Connection Lost.",999,5); //  send msg first
+			TogglePlayerControllable(playerid,0);
+			KickList[playerid]=2;
+		}
+		else if (KickList[playerid] >=2) // wait a second before doing the kicking (for msg to get through)
+		{
+			new logstring[MAX_STRING];
+			format(logstring, sizeof (logstring), "player: %d:  %s: has been auto kicked",playerid,oGetPlayerName(playerid));
+			WriteLog(GameLog,logstring);
+			KickList[playerid] = 0;
+			Kick(playerid);
+			return;
+		}
+	}
+}
+
+stock KickPlayer(playerid,reason[])
+{
+	if(!IsPlayerConnected(playerid)) return 1;
+	new string[MAX_STRING];
+	if(IsPlayerAdmin(playerid))
+	{
+		format(string,sizeof(string), lang_texts[9][4], reason);
+		SendClientMessage(playerid,COLOUR_YELLOW, string);
+		return 1;
+	}
+	if(KickList[playerid] != 0) return 1;
+	KickList[playerid]++;
+	if(strlen(reason) > 0)
+	{
+		format(string,sizeof(string), lang_texts[9][5] ,reason);
+		SendClientMessage(playerid,COLOUR_RED, string);
+		format(string,sizeof(string), lang_texts[9][6] ,oGetPlayerName(playerid),reason);
+		SendClientMessageToAll(COLOUR_MISC, string);
+		new logstring[MAX_STRING];
+		format(logstring, sizeof (logstring), "player: %d:  %s: has been auto kicked. Reason: %s",playerid,oGetPlayerName(playerid),reason);
+		WriteLog(GameLog,logstring);
+	}
+	return 1;
+}
+
+stock GetRndPlayerSpawnByLevel(level)
+{
+	new spawnlevel=0,leveledspawns[PLAYERSPAWNS_SIZE+1],idx=0,spawnid;
+	for(new lookupid=0;lookupid<PLAYERSPAWNS_SIZE;lookupid++)
+	{
+		if((LeveledPlayerSpawns[lookupid][playerspawn_level] <= level) && (LeveledPlayerSpawns[lookupid][playerspawn_level] > spawnlevel))
+		{
+			spawnlevel = LeveledPlayerSpawns[lookupid][playerspawn_level];
+		}
+	}
+	for(new lookupid=0;lookupid<PLAYERSPAWNS_SIZE;lookupid++)
+	{
+		if(LeveledPlayerSpawns[lookupid][playerspawn_level] == spawnlevel)
+		{
+			leveledspawns[idx] = lookupid;
+			idx++;
+		}
+	}
+	spawnid = (idx != 0) ? leveledspawns[random(idx)] : leveledspawns[0];
+	return spawnid;
+}
+
+stock player_ResetStats(playerid)
+{
+	SetPVarInt(playerid,"PlayerRegistered",0);
+	oSetPlayerMoney(playerid,0);
+	KickList[playerid] = 0;
+	ResetQuest(playerid);
+	SetPlayerSkinModel(playerid,1);
+	SetPlayerFightStyle(playerid,4);
+	SetPlayerFightStyleUsed(playerid,4);
+	weapon_ResetSkills(playerid);
+}
+
+stock IsPlayerRegistered(playerid)
+{
+	if(!IsPlayerConnected(playerid) || GetPVarInt(playerid,"PlayerRegistered") == 0) return false;
+	return true;
+}
+
 stock RegisterQuest(name[])
 {
 	if (QuestCount >= MAX_QUESTS) return INVALID_QUEST_ID;
@@ -568,26 +444,6 @@ stock oGetPlayerName(playerid)
 	new name[MAX_PLAYER_NAME];
 	GetPlayerName(playerid, name, sizeof(name));
 	return name;
-}
-
-stock oGivePlayerWeapon(playerid,weaponid,ammo)
-{
-	if(!IsPlayerAllowedWeapon(playerid,weaponid)) return;
-	new slot = GetWeaponSlot(weaponid);
-	if(ammo > 0)
-	{
-		if(!IsWeaponHandToHand(weaponid))
-		{
-			PlayerWeapons[playerid][slot][pwid] = weaponid;
-			PlayerWeapons[playerid][slot][pbullets] += ammo;
-		}
-		else
-		{
-			PlayerWeapons[playerid][slot][pwid] = weaponid;
-			PlayerWeapons[playerid][slot][pbullets] = 1;
-		}
-		GivePlayerWeapon(playerid,weaponid,ammo);
-	}
 }
 
 stock PlayerSave(playerid)
@@ -626,51 +482,6 @@ player_create_db_ini(playerid)
 	return 1;
 }
 
-stock SetWeaponsFromDBString(playerid,dbstring[])
-{
-	new idx;
-	for(new i=0;i<PLAYER_WEAPON_SLOTS;i++)
-	{
-		PlayerWeapons[playerid][i][pwid] = strval(strcharsplit(dbstring,idx,'/'));
-		PlayerWeapons[playerid][i][pbullets] = strval(strcharsplit(dbstring,idx,'|'));
-	}
-}
-
-stock CreateWeaponDBString(playerid)
-{
-	new wepstr[MAX_STRING];
-	for (new i=0;i<PLAYER_WEAPON_SLOTS;i++)
-	{
-		new temp[MAX_STRING];
-		valstr(temp,PlayerWeapons[playerid][i][pwid]);
-		strins(wepstr, temp, strlen(wepstr));
-		wepstr[strlen(wepstr)] = '/';
-		valstr(temp,PlayerWeapons[playerid][i][pbullets]);
-		strins(wepstr, temp, strlen(wepstr));
-		wepstr[strlen(wepstr)] = '|';
-	}
-	return wepstr;
-}
-stock SetWeaponsSkillsFromDBString(playerid,dbstring[])
-{
-	new idx;
-	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
-		PlayerWeaponsSkills[playerid][i] = strval(strcharsplit(dbstring,idx,'/'));
-}
-stock CreateWeaponSkillsDBString(playerid)
-{
-	new wepstr[MAX_STRING];
-	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
-	{
-		new temp[MAX_STRING];
-		valstr(temp,PlayerWeaponsSkills[playerid][i]);
-		strins(wepstr,temp,strlen(wepstr));
-		wepstr[strlen(wepstr)] = '/';
-	}
-	return wepstr;
-}
-
-
 stock player_save_db_ini(playerid)
 {
 	if(strlen(oGetPlayerName(playerid)) < 1) return 1;
@@ -680,7 +491,7 @@ stock player_save_db_ini(playerid)
 	if(!ini_Exist(filename_player)) file_player = ini_Create(filename_player);
 	else file_player = ini_Open(filename_player);
 	ini_Set(file_player,"Name",oGetPlayerName(playerid));
-	ini_Set(file_player,"Gang",PlayerGangName[playerid]);
+	ini_Set(file_player,"Gang",GetPlayerGangName(playerid));
 	ini_SetInt(file_player,"Level",GetPlayerLevel(playerid));
 	ini_SetInt(file_player,"XP",GetPlayerXP(playerid));
 	ini_SetInt(file_player,"Money",oGetPlayerMoney(playerid));
@@ -690,19 +501,20 @@ stock player_save_db_ini(playerid)
 	ini_SetInt(file_player,"Jailed",GetPlayerJailed(playerid));
 	ini_SetInt(file_player,"Muted",GetPlayerMuted(playerid));
 	ini_SetInt(file_player,"JailTime",GetPlayerFightStyle(playerid));
-	ini_SetInt(file_player,"MuteTime",Player[playerid][MuteTime]);
+	ini_SetInt(file_player,"MuteTime",GetPlayerMuteTime(playerid));
 	ini_SetInt(file_player,"FightStyle",GetPlayerFightStyle(playerid));
-	new Float:x,Float:y,Float:z;
-	GetPlayerPos(playerid,x,y,z);
-	if(z > 900) {x=0;y=0;z=0;}
+	new Float:pos[4];
+	GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
+	GetPlayerFacingAngle(playerid,pos[3]);
+	if(pos[2] > 900) {pos[0] = 0; pos[1] = 0; pos[2] = 0; pos[3] = 0;}
 	new string[MAX_STRING];
-	format(string,sizeof(string),"%f,%f,%f",x,y,z);
-	ini_Set(file_player,"Coord",string);
-	ini_SetInt(file_player,"Status",Player[playerid][Status]);
+	format(string,sizeof(string),"%f,%f,%f,%f",pos[0],pos[1],pos[2],pos[3]);
+	ini_Set(file_player,"Coords",string);
+	ini_SetInt(file_player,"Status",GetPlayerStatus(playerid));
 	ini_Set(file_player,"Weapons",CreateWeaponDBString(playerid));
 	ini_Set(file_player,"WeaponsSkills",CreateWeaponSkillsDBString(playerid));
 	ini_SetInt(file_player,"SkinModel",GetPlayerSkinModel(playerid));
-	ini_Set(file_player,"VIP",Player[playerid][VIPDate]);
+	ini_Set(file_player,"VIP",GetPlayerVIPDate(playerid));
 	ini_Close(file_player);
 	return 1;
 }
@@ -753,15 +565,22 @@ stock player_load_db_ini(playerid)
     ini_GetInt(file_player,"JailTime",buf);
 	SetPlayerFightStyle(playerid,buf);
 	
-    ini_GetInt(file_player,"MuteTime",Player[playerid][MuteTime]);
+    ini_GetInt(file_player,"MuteTime",buf);
+	SetPlayerMuteTime(playerid,buf);
+	
     ini_GetInt(file_player,"FightStyle",buf);
 	SetPlayerFightStyle(playerid,buf);
+	
 	new string[MAX_STRING],idx=0;
 	ini_Get(file_player,"Coords",string);
-	PlayerSpawn[playerid][Coord_X] = floatstr(strcharsplit(string,idx,','));
-	PlayerSpawn[playerid][Coord_Y] = floatstr(strcharsplit(string,idx,','));
-	PlayerSpawn[playerid][Coord_Z] = floatstr(strcharsplit(string,idx,','));
-    ini_GetInt(file_player,"Status",Player[playerid][Status]);
+	SetPVarFloat(playerid,"Coord_X",floatstr(strcharsplit(string,idx,',')));
+	SetPVarFloat(playerid,"Coord_Y",floatstr(strcharsplit(string,idx,',')));
+	SetPVarFloat(playerid,"Coord_Z",floatstr(strcharsplit(string,idx,',')));
+	SetPVarFloat(playerid,"Coord_A",floatstr(strcharsplit(string,idx,',')));
+	
+	ini_GetInt(file_player,"Status",buf);
+	SetPlayerStatus(playerid,buf);
+	
 	SetPlayerFightingStyle(playerid,GetPlayerFightStyle(playerid));
 	new gangname[MAX_NAME];
 	new tmpname[MAX_NAME];
@@ -777,13 +596,12 @@ stock player_load_db_ini(playerid)
 			SetPVarInt(playerid,"GangID",0);
 			goto not_gang;
 		}
-		set(PlayerGangName[playerid],gangname);
+		SetPlayerGangName(playerid,gangname);
 		SetPVarInt(playerid,"GangID",GangLoad(gangname));
 		GangMemberLogin(playerid,GetPVarInt(playerid,"GangID"));
 		if(GetPVarInt(playerid,"GangID") == 0)
 		{
-			set(PlayerGangName[playerid],nullstr);
-			PlayerGangName[playerid][0] = 0;
+			SetPlayerGangName(playerid,nullstr);
 			SetPVarInt(playerid,"GangID",0);
 		}
 	}
@@ -798,147 +616,15 @@ not_gang:
 	ini_GetInt(file_player,"SkinModel",buf);
 	SetPlayerSkinModel(playerid,buf);
 	
-	ini_Get(file_player,"VIP",Player[playerid][VIPDate],15);
-	if(VIPCheck(Player[playerid][VIPDate]))
+	ini_Get(file_player,"VIP",string);
+	SetPlayerVIPDate(playerid,string);
+	
+	if(VIPCheck( GetPlayerVIPDate(playerid) ))
 		SetPlayerVIP(playerid,1);
 	else
 		SetPlayerVIP(playerid,0);
-	UpdatePlayerScore(playerid);
+	
 	ini_Close(file_player);
+	UpdatePlayerScore(playerid);
 	return 1;
-}
-
-stock VIPCheck(date[])
-{
-	new h[5],day,month,year,day1,month1,year1;
-	strmid(h,date,0,2); 
-	day=strval(h);
-	strmid(h,date,3,5); 
-	month=strval(h);
-	strmid(h,date,6,10); 
-	year=strval(h);
-	getdate(year1,month1,day1);
-	if(year > year1) return true;
-	else if(year == year1)
-	{
-		if(month > month1) return true;
-		else if(month == month1)
-		{
-			if(day >= day1) return true;
-		}
-	}
-	return false;
-}
-
-stock ADMDropAmmo(playerid)
-{
-	if(IsPlayerConnected(playerid)==0) return 0;
-	for(new i=0;i<PLAYER_WEAPON_SLOTS;i++)
-	{
-		PlayerWeapons[playerid][i][pwid] = 0;
-		PlayerWeapons[playerid][i][pbullets] = 0;
-	}
-	PlayerWeapons[playerid][0][pwid] = 0; // fists
-	PlayerWeapons[playerid][0][pbullets] = 1;
-	return 1;
-}
-
-stock IsPlayerAdm(playerid)
-{
-	if(Player[playerid][Status] >= 11) return 1;
-	return 0;
-}
-
-stock IsPlayerMod(playerid)
-{
-	if(Player[playerid][Status] > 0) return 1;
-	return 0;
-}
-
-stock GetWeaponModel(weaponid)
-{
-	new model;
-	switch(weaponid)
-	{
-		case 1: model=331; case 2: model=333; case 3: model=334;
-		case 4: model=335;  case 5: model=336; case 6: model=337;
-		case 7: model=338;  case 8: model=339; case 9: model=341;
-		case 10: model=321; case 11: model=322; case 12: model=323;
-		case 13: model=324; case 14: model=325; case 15: model=326;
-		case 16: model=342; case 17: model=343; case 18: model=344;
-		case 22: model=346; case 23: model=347; case 24: model=348;
-		case 25: model=349; case 26: model=350; case 27: model=351;
-		case 28: model=352; case 29: model=353; case 30: model=355;
-		case 31: model=356; case 32: model=372; case 33: model=357;
-		case 34: model=358; case 35: model=359; case 36: model=360;
-		case 37: model=361; case 38: model=362; case 39: model=363;
-		case 41: model=365; case 42: model=366; case 46: model=371;
-	}
-	if(model<300 || model>371) return -1;
-	return model;
-}
-
-stock GetWeaponBulletsDown(weaponid)
-{
-	new dbw;
-	switch(weaponid)
-	{
-		case 1: dbw=1; case 2: dbw=1;  case 3: dbw=1;
-		case 4: dbw=1;  case 5: dbw=1;  case 6: dbw=1;
-		case 7: dbw=1;  case 8: dbw=1;  case 9: dbw=1;
-		case 10: dbw=1;  case 11: dbw=1;  case 12: dbw=1;
-		case 13: dbw=1;  case 14: dbw=1;  case 15: dbw=1;
-		case 16: dbw=8;  case 17: dbw=1;  case 18: dbw=1;
-		case 22: dbw=30;  case 23: dbw=10;  case 24: dbw=10;
-		case 25: dbw=15;  case 26: dbw=10;  case 27: dbw=10;
-		case 28: dbw=60;  case 29: dbw=60;  case 30: dbw=80;
-		case 31: dbw=80;  case 32: dbw=60;  case 33: dbw=20;
-		case 34: dbw=10;  case 35: dbw=4;  case 36: dbw=3;
-		case 37: dbw=10;  case 38: dbw=500;  case 39: dbw=5;
-		case 41: dbw=500;  case 42: dbw=500;  case 46: dbw=1;
-	}
-	if(dbw<1 || dbw>500) return 1;
-	return dbw;
-}
-#define DeletePickup(%1) DestroyStreamPickup(%1)
-
-stock GetWeaponSkillID(weaponid)
-{
-	switch(weaponid)
-	{
-		case 22: return WEAPONSKILL_PISTOL;
-		case 23: return WEAPONSKILL_PISTOL_SILENCED;
-		case 24: return WEAPONSKILL_DESERT_EAGLE;
-		case 25: return WEAPONSKILL_SHOTGUN;
-		case 26: return WEAPONSKILL_SAWNOFF_SHOTGUN;
-		case 27: return WEAPONSKILL_SPAS12_SHOTGUN;
-		case 28: return WEAPONSKILL_MICRO_UZI;
-		case 29: return WEAPONSKILL_MP5;
-		case 30: return WEAPONSKILL_AK47;
-		case 31: return WEAPONSKILL_M4;
-		case 34: return WEAPONSKILL_SNIPERRIFLE;
-	}
-	return -1;
-}
-
-stock GetWeaponSlot(weaponid)
-{
-	switch(weaponid)
-	{
-	    case 0,1: return 0;
-	    case 2..9: return 1;
-	    case 22..24: return 2;
-	    case 25..27: return 3;
-	    case 28,29,32: return 4;
-	    case 30,31: return 5;
-	    case 33,34: return 6;
-	    case 35..38: return 7;
-	    case 16..18,39: return 8;
-	    case 41..43: return 9;
-		case 10..15: return 10;
-		case 45,46: return 11;
-		case 40: return 12;
-		default: return -1;
-	}
-	return -1;
 }

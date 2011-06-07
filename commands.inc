@@ -80,13 +80,13 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		SendClientMessage(playerid,COLOUR_GREEN,lang_texts[15][35]);
 
-		new sid = Player[playerid][Status];
+		new sid = GetPlayerStatus(playerid);
 		if(sid>=1 && sid<=10) format(string,sizeof(string),lang_texts[12][87],sid);
 		else if (sid>10) format(string,sizeof(string),lang_texts[12][86],sid);
 		else format(string,sizeof(string),lang_texts[12][88]);
 
 		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
-		format(string, sizeof(string),lang_texts[15][37],GetLevelName(GetPlayerLevel(playerid)),PlayerGangName[playerid]);
+		format(string, sizeof(string),lang_texts[15][37],GetLevelName(GetPlayerLevel(playerid)),GetPlayerGangName(playerid));
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,string);
 		format(string, sizeof(string),lang_texts[15][38],GetPlayerLevel(playerid),GetPlayerXP(playerid),oGetPlayerMoney(playerid),GetPlayerBankMoney(playerid),GetPlayerTotalMoney(playerid));
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,string);
@@ -101,7 +101,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		);
 		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
 
-		if(GetPlayerVIP(playerid) == 1) format(string,sizeof(string),"Ваш vip статус: 1, доступно до: %s",Player[playerid][VIPDate]);
+		if(GetPlayerVIP(playerid) == 1) format(string,sizeof(string),"Ваш vip статус: 1, доступно до: %s",GetPlayerVIPDate(playerid));
 		else format(string,sizeof(string),"Ваш vip статус: 0");
 		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
 		return 1;

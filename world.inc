@@ -120,7 +120,6 @@ public OneSecTimer()
 {
 	CheckDM();
 	CheckRace();
-	SpawnTimer();
 	SyncPlayers();
 	MapIcons_Streaming();
 	trucker_RunnerTimer();

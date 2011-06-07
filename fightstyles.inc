@@ -10,6 +10,13 @@
 #define _fightstyles_included
 #pragma library fightstyles
 
+
+#define GetPlayerFightStyle(%0) GetPVarInt(%0,"FightStyle")
+#define SetPlayerFightStyle(%0,%1) SetPVarInt(%0,"FightStyle",%1)
+
+#define GetPlayerFightStyleUsed(%0) GetPVarInt(%0,"FightStyleUsed")
+#define SetPlayerFightStyleUsed(%0,%1) SetPVarInt(%0,"FightStyleUsed",%1)
+
 enum FightInfo {
 	Style,
 	StyleName[MAX_STRING],

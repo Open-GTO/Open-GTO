@@ -104,7 +104,7 @@ stock AccountLogin(playerid,password[])
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][1]);
 		return 0;
 	}
-	if(!account_login_db_ini(playerid,password)) return 0;
+	if(account_login_db_ini(playerid,password) == 0) return 0;
 	PlayerLoadStats(playerid);
 	GivePlayerOwnedWeapons(playerid);
 	if(IsPlayerAdmin(playerid))

@@ -42,15 +42,15 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 			if(IsPlayerConnected(id) && GetPlayerJailed(id) == 1)
 			{
 				new string[MAX_STRING];
-				if(Player[id][JailTime] > 0) format(string,sizeof(string),lang_texts[18][3],oGetPlayerName(id),id,Player[id][JailTime]);
+				if(GetPlayerJailTime(id) > 0) format(string,sizeof(string),lang_texts[18][3],oGetPlayerName(id),id,GetPlayerJailTime(id));
 				else format(string,sizeof(string),lang_texts[18][4],oGetPlayerName(id),id);
 				SendClientMessage(playerid,COLOUR_LIGHTRED,string);
 				ccount++;
 			}
-			if(IsPlayerConnected(id) && Player[id][MuteTime] != 0)
+			if(IsPlayerConnected(id) && GetPlayerMuteTime(id) != 0)
 			{
 				new string[MAX_STRING];
-				if(Player[id][MuteTime] != 0) format(string,sizeof(string),lang_texts[18][5],oGetPlayerName(id),id,Player[id][MuteTime]);
+				if(GetPlayerMuteTime(id) != 0) format(string,sizeof(string),lang_texts[18][5],oGetPlayerName(id),id,GetPlayerMuteTime(id));
 				else format(string,sizeof(string),lang_texts[18][6],oGetPlayerName(id),id);
 				SendClientMessage(playerid,COLOUR_LIGHTGREEN,string);
 				ccount++;
@@ -126,7 +126,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		if(mutetime < 1)
 			return SendClientMessage(playerid,COLOUR_RED," Ќе правильное врем€ затычки!введите '/mute <id> <minutes>'");
-		Player[muteid][MuteTime] = mutetime;
+		SetPlayerMuteTime(muteid,mutetime);
 		SetPlayerMuted(muteid,GetPlayerMuted(muteid) + 1); // сколько раз всего затыкали игрока
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][24],oGetPlayerName(playerid));
@@ -143,7 +143,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][25]);
 		if(IsPlayerConnected(unmuteid) == 0)
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][26]);
-		Player[unmuteid][MuteTime] = 0;
+		SetPlayerMuteTime(unmuteid,0);
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][27],oGetPlayerName(playerid));
 		SendClientMessage(unmuteid,COLOUR_GREEN,string);
@@ -167,7 +167,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 
 		new jailt = strval(strcharsplit(text, idx,' '));
 		if(jailt > 1 && jailt <= 4320)
-			Player[jailid][JailTime] = jailt;
+			SetPlayerJailTime(jailid,jailt);
 		
 		SetPlayerJailed(jailid,1);
 		
@@ -197,7 +197,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][19]);
 
 		SetPlayerJailed(unjailid,0);
-		Player[unjailid][JailTime] = 0;
+		SetPlayerJailTime(unjailid,0);
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][21],oGetPlayerName(playerid));
 		SendClientMessage(playerid,COLOUR_GREEN,string);

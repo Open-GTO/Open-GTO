@@ -218,7 +218,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][10]);
 
 		ResetPlayerWeapons(receiverid);
-		ADMDropAmmo(receiverid);
+		DropAmmo(receiverid);
 		new string[MAX_STRING];
 		format(string,sizeof(string), lang_texts[12][48] ,oGetPlayerName(playerid));			//игроку
 		SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
@@ -234,7 +234,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 			if(!IsPlayerConnected(id) || id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id) == 1)
 				continue;
 			ResetPlayerWeapons(id);
-			ADMDropAmmo(id);
+			DropAmmo(id);
 			format(string,sizeof(string),lang_texts[12][48],oGetPlayerName(playerid));	//игроку
 			SendClientMessage(id,COLOUR_XP_GOOD,string);
 		}
@@ -358,7 +358,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 			format(string,sizeof(string),lang_texts[12][85],oGetPlayerName(receiverid),receiverid);
 			SendClientMessage(playerid,COLOUR_WHITE,string);
 		}
-		Player[receiverid][Status] = sid;
+		SetPlayerStatus(receiverid,sid);
 		player_save_db_ini(receiverid);
 		return 1;
 	}
@@ -387,15 +387,15 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(strlen(string) < 10)
 			return SendClientMessage(playerid,COLOUR_WHITE,"Некорректный ввод, '/setvip id dd.mm.yyyy'");
 		
-		set(Player[giveid][VIPDate],string);
+		SetPlayerVIPDate(giveid,string);
 		if(VIPCheck(string))
 			SetPlayerVIP(giveid,1);
 		else
 			SetPlayerVIP(giveid,0);
 		
-		format(string,sizeof(string),"Вы установили VIP статус %s(%d), до %s",oGetPlayerName(giveid),giveid,Player[giveid][VIPDate]);
+		format(string,sizeof(string),"Вы установили VIP статус %s(%d), до %s",oGetPlayerName(giveid),giveid,GetPlayerVIPDate(giveid));
 		SendClientMessage(playerid,COLOUR_WHITE,string);
-		format(string,sizeof(string),"Вам установили VIP статус до %s",Player[giveid][VIPDate]);
+		format(string,sizeof(string),"Вам установили VIP статус до %s",GetPlayerVIPDate(giveid));
 		SendClientMessage(giveid,COLOUR_WHITE,string);
 		return 1;	
 	}

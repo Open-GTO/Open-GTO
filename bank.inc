@@ -6,14 +6,15 @@
 //
 
 #if defined _bank_included
-#endinput
+	#endinput
 #endif
 
 #define _bank_included
 #pragma library bank
 
-#include "base"
-#include "player"
+
+#define GetPlayerBankMoney(%0) GetPVarInt(%0,"BankMoney")
+#define GivePlayerBankMoney(%0,%1) SetPVarInt(%0,"BankMoney",GetPVarInt(%0,"BankMoney") + %1)
 
 new Banks[][CoordInfo] = {
 	{-22.9578,-54.8951,1003.5469}, // LV 24/7 bank
@@ -21,8 +22,6 @@ new Banks[][CoordInfo] = {
 	{368.7201,-72.7097,1001.5078}, // LS burger bank7
 	{364.9761,-8.5396,1001.8516} // LS chicken bank5
 };
-new ProfitCount = 2; // %
-new MAX_BANK = 15000000;
 
 stock BankLoadConfig()
 {

@@ -188,7 +188,7 @@ stock RentRoom(playerid)
 	if(id <= -1) return 1;
 	if(IsPlayerRenter(playerid)) return 1;
 	if(Houses[id][Houses_Rentabil] == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][68]);
-	if(strlen(PlayerGangName[playerid]) > 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][79]);
+	if(strlen(GetPlayerGangName(playerid)) > 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][79]);
 	if(!strcmp(Houses[id][Houses_RentName],"Unknown",true))
 	{
 		if(oGetPlayerMoney(playerid) < 50000) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][57]);
@@ -367,7 +367,7 @@ stock FHouseInfo(playerid)
 		SendClientMessage(playerid,COLOUR_GREEN,temp);
 		new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
 		new UpKeep = Houses[id][Houses_UpKeep];
-		if(strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true) || strcmp(Houses[id][Houses_Gang], PlayerGangName[playerid], true))
+		if(strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true) || strcmp(Houses[id][Houses_Gang], GetPlayerGangName(playerid), true))
 		{
 			format(temp,sizeof(temp),lang_texts[8][5],price);
 			SendClientMessage(playerid,COLOUR_GREEN,temp);
@@ -448,7 +448,7 @@ stock FHouseBuy(playerid)
 			}
 		}
 		set(Houses[id][Houses_Owner],oGetPlayerName(playerid));
-		set(Houses[id][Houses_Gang],PlayerGangName[playerid]);
+		set(Houses[id][Houses_Gang],GetPlayerGangName(playerid));
 		SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][69]);
 		SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][70]);
 		Houses[id][Houses_Buyout] = 0;
@@ -510,7 +510,7 @@ stock FHouseMyHouses(playerid)
 	new count = 0;
 	for(new id=0;id<sizeof(Houses);id++)
 	{
-		if(!strcmp(Houses[id][Houses_Gang],PlayerGangName[playerid],true))
+		if(!strcmp(Houses[id][Houses_Gang],GetPlayerGangName(playerid),true))
 		{
 			count++;
 			format(temp,sizeof(temp),lang_texts[8][40],Houses[id][Houses_Name],Houses[id][Houses_Owner],Houses[id][Houses_Cost]);
@@ -530,7 +530,7 @@ stock FHouseKeep(playerid)
 	{
 		if(IsPlayerRegistered(playerid))
 		{
-			if(strcmp(Houses[id][Houses_Gang],PlayerGangName[playerid],true) == 0)
+			if(strcmp(Houses[id][Houses_Gang],GetPlayerGangName(playerid),true) == 0)
 			{
 				if(oGetPlayerMoney(playerid) > Houses[id][Houses_UpKeepLeft]) 
 				{
@@ -566,10 +566,10 @@ stock FHouseKeep(playerid)
 stock ganghouse(playerid) 
 {
 	new hova = -1,tmp[MAX_STRING];
-	if(!IsPlayerRegistered(playerid) || !strlen(PlayerGangName[playerid])) return hova;
+	if(!IsPlayerRegistered(playerid) || !strlen( GetPlayerGangName(playerid) )) return hova;
 	for(new id=0;id<sizeof(Houses);id++)
 	{
-		if(!strcmp(Houses[id][Houses_Gang],PlayerGangName[playerid],true)) 
+		if(!strcmp(Houses[id][Houses_Gang],GetPlayerGangName(playerid),true)) 
 		{
 			hova = id;
 			format(tmp,sizeof(tmp),lang_texts[8][51],Houses[id][Houses_Name],Houses[id][Houses_UpKeepLeft],Houses[id][Houses_UpKeep]*2800);
@@ -637,7 +637,7 @@ stock housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 			new UpKeep = Houses[id][Houses_UpKeep];
 			if(strcmp(Houses[id][Houses_Owner],"Unknown",true) && strcmp(Houses[id][Houses_Gang],"Unknown",true))
 			{
-				if(strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true) || strcmp(Houses[id][Houses_Gang],PlayerGangName[playerid],true))
+				if(strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true) || strcmp(Houses[id][Houses_Gang],GetPlayerGangName(playerid),true))
 				{
 					if(strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true) != 0) Hous[playerid] = 1;
 					else Hous[playerid] = 4;

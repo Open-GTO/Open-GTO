@@ -35,6 +35,10 @@ Date start Open-GTO: 	5 November 2009
 #include "player\level"
 #include "player\money"
 #include "player\health"
+#include "player\vip"
+#include "player\weapon"
+#include "bank"								// bank money to keep it on death
+#include "fightstyles"
 #include "account"							// account handler
 #include "player"							// holds player values
 #include "weapons"							// weapons and ammunation shop
@@ -49,7 +53,6 @@ Date start Open-GTO: 	5 November 2009
 #include "streamers\checkpoint_stream"
 #include "race"								// race handler, manages and runs all rasces
 #include "deathmatch"						// deathmatch handler
-#include "bank"								// bank money to keep it on death
 #include "payday" 							// pay players money based on level
 #include "groundhold"						// hold ground to gain money, pirate ship, etc
 #include "admin\functions"
@@ -65,11 +68,9 @@ Date start Open-GTO: 	5 November 2009
 #include "protections\antiidle"
 #include "protections\antirconhack"
 #include "protections\antihightping"
-#include "protections\antivehicle"
 #include "protections\chatguard"
 //#include "testserver"
 #include "click"
-#include "fightstyles"
 #include "services\fastfood"
 #include "services\bar"
 #include "interior"
@@ -300,6 +301,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 		player_OnPlayerKill(killerid,playerid,reason);
 		trucker_OnPlayerDeath(playerid,killerid,reason);
 		gang_OnPlayerDeath(playerid,killerid,reason);
+		weapon_OnPlayerDeath(playerid,killerid,reason);
 		PlayCrimeReportForPlayer(killerid,killerid,random(18)+3);
 		PlayCrimeReportForPlayer(playerid,killerid,random(18)+3);
  	}
@@ -327,7 +329,7 @@ public OnPlayerSpawn(playerid)
 		ResetPlayerWeapons(playerid);
 		PlayerPlaySound(playerid,1082,198.3797,160.8905,1003.0300);
 	}
-	if(Player[playerid][MuteTime] != 0)
+	if(GetPlayerMuteTime(playerid) != 0)
 	{
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 		SetPlayerWantedLevel(playerid, 3);
@@ -403,7 +405,7 @@ public OnPlayerText(playerid, text[])
 	{
 	    case '!':
 	    {
-			if(GetPVarInt(playerid,"GangID") == 0 || Player[playerid][MuteTime] != 0)    //Игрок заткнут
+			if(GetPVarInt(playerid,"GangID") == 0 || GetPlayerMuteTime(playerid) != 0)    //Игрок заткнут
 			{
 				SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 				return 0;
@@ -431,7 +433,7 @@ public OnPlayerText(playerid, text[])
 			return 0;
 		}
 	}
-	if(Player[playerid][MuteTime] != 0)  //Заткнут
+	if(GetPlayerMuteTime(playerid) != 0)  //Заткнут
 	{
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 		return 0;
@@ -496,7 +498,7 @@ public OnPlayerStateChange(playerid,newstate,oldstate)
 	if(newstate == PLAYER_STATE_DRIVER)
 	{
 		trucker_OnPlayerStateChange(playerid,newstate,oldstate);
-		antivehicle_OnPlayerStateChange(playerid,newstate,oldstate);
+		vip_OnPlayerStateChange(playerid,newstate,oldstate);
 	}
 	return 1;
 }
