@@ -16,6 +16,9 @@
 #define GetPlayerBankMoney(%0) GetPVarInt(%0,"BankMoney")
 #define GivePlayerBankMoney(%0,%1) SetPVarInt(%0,"BankMoney",GetPVarInt(%0,"BankMoney") + %1)
 
+new ProfitCount = BANK_PROFIT, 
+	MAX_BANK = MAX_BANK_MONEY;
+
 new Banks[][CoordInfo] = {
 	{-22.9578,-54.8951,1003.5469}, // LV 24/7 bank
 	{371.2316,-125.5778,1001.4995}, // LS pizza bank

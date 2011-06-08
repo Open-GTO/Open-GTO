@@ -12,6 +12,7 @@
 #pragma library money
 
 
+new AntiMoneyHackEnabled = ANTI_MONEY_HACK_ENABLED;
 #define GetPlayerTotalMoney(%0)	GetPVarInt(%0,"Money")+GetPVarInt(%0,"BankMoney")
 #define oGetPlayerMoney(%1) GetPVarInt(%1,"Money")
 

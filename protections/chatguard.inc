@@ -26,6 +26,8 @@
 	Адаптация для Open-GTO: ZiGGi, 05.05.2011
 */
 
+new ChatGuardEnabled = CHAT_GUARD_ENABLED;
+
 /*
 chatguard_OnGameModeInit();
 chatguard_OnPlayerConnect(playerid);

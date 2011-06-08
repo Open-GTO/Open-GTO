@@ -15,6 +15,9 @@
 #include "player"
 #include "groundhold"
 
+new AntiIdleEnabled = ANTI_IDLE_ENABLED,
+	MaxIdle = MAX_IDLE_TIME;
+
 stock AntiIdleLoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 0;

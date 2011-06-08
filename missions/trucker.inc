@@ -14,6 +14,9 @@
 
 #define trucker_ID 999
 
+new trucker_GIVE_XP_RATE = TRUCKER_GIVE_XP_RATE,
+	trucker_RunnerMissionTime = TRUCKER_RUNNER_MISSION_TIME;
+
 enum {
 	TRAILER_TYPE_NORMAL,
 	TRAILER_TYPE_PETROL,

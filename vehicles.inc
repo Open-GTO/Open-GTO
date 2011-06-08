@@ -227,6 +227,8 @@
 #define V_YOSEMITE 554
 #define V_ZR350 477
 
+new CarsReSpawnTime = CARS_RESPAWN_TIME;
+
 enum VehicleInfo {
 	vehicle_model,
     vehicle_name[MAX_NAME],

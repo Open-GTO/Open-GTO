@@ -12,6 +12,7 @@
 #pragma library health
 
 
+new AntiHealthHackEnabled = ANTI_HEALTH_HACK_ENABLED;
 #define oGetPlayerHealth(%0) GetPVarFloat(%0,"Health")
 
 stock health_LoadConfig()

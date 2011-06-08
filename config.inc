@@ -30,26 +30,26 @@
 #define MAX_QUESTS				255
 
 // античит(параметры по умолчанию)
-new AntiHealthHackEnabled = 1, // защита от чита на здоровье
-	AntiMoneyHackEnabled = 1, // защита от чита на деньги
-	
-	AntiHightPingEnabled = 1, // защита от высокого пинга
-	MAX_PING = 500, // пинг, при котором кикает
+#define ANTI_HEALTH_HACK_ENABLED	1 // защита от чита на здоровье
+#define ANTI_MONEY_HACK_ENABLED		1 // защита от чита на деньги
 
-	AntiIdleEnabled = 1, // защита от АФК на точках прокачки
-	MaxIdle = 5, // кол-во минут, после которых кикает
-	
-	ChatGuardEnabled = 1; // защита чата
+#define ANTI_HIGHT_PING_ENABLED		1 // защита от высокого пинга
+#define MAXIMAL_PING				500 // пинг, при котором кикает
+
+#define ANTI_IDLE_ENABLED	1 // защита от АФК на точках прокачки
+#define MAX_IDLE_TIME		5 // кол-во минут, после которых кикает
+
+#define CHAT_GUARD_ENABLED	1 // защита чата
 
 // прочее
-new Groundhold_Enabled = 1, // точки прокачки
-	
-	ProfitCount = 2, // процент начисления прибыли за хранение в банке
-	MAX_BANK = 15000000, // максимальное количество денег, которых можно хранить в банке
-	
-	BasePay = 500, // PayDay тариф на деньги
-	PayCutoff = MAX_MONEY / 2, // кол-во денег, при котором перестаётся даваться деньги за PayDay
-	BasePayXP = 200; // PayDay тариф на опыт
+#define GROUNDHOID_ENABLED	1 // точки прокачки
+
+#define BANK_PROFIT		2 // процент начисления прибыли за хранение в банке
+#define MAX_BANK_MONEY	15000000 // максимальное количество денег, которых можно хранить в банке
+
+#define PAYDAY_BASE_PAY		500 // PayDay тариф на деньги
+#define PAYDAY_CUTOFF		MAX_MONEY / 2 // кол-во денег, при котором перестаётся даваться деньги за PayDay
+#define	PAYDAY_PAYXP		200 // PayDay тариф на опыт
 
 // дома
 //#define BUY_ALL_HOUSES // позволяет запретить покупать чужие дома(если закомментировано то чужие дома можно покупать)
@@ -61,7 +61,7 @@ new Groundhold_Enabled = 1, // точки прокачки
 //
 
 // транспорт
-new CarsReSpawnTime = 600; // время респавна транспорта в секундах (86400 - один день)
+#define CARS_RESPAWN_TIME	600 // время респавна транспорта в секундах (86400 - один день) 
 //
 
 // банды
@@ -71,8 +71,8 @@ new CarsReSpawnTime = 600; // время респавна транспорта в секундах (86400 - один
 #define MIN_GANG_NAME_LEN	3 // минимальная длина имени банды
 #define MAX_GANG_NAME_LEN	40 // максимальная длина имени банды
 
-new GANG_CREATE_COST = 100000; // кол-во денег, требуемое на создание банды
-new GANG_COLOUR_COST = 20000; // кол-во денег, требуемое на смены цвета банды
+#define GANG_CREATE_COST	100000 // кол-во денег, требуемое на создание банды
+#define GANG_COLOUR_COST	20000 // кол-во денег, требуемое на смены цвета банды
 //
 
 // игрок
@@ -85,8 +85,8 @@ new GANG_COLOUR_COST = 20000; // кол-во денег, требуемое на смены цвета банды
 #define CHANGE_PASS_COST			500000 // кол-во денег, требуемых для смены пароля
 // МИССИИ
 	// trucker
-	new trucker_GIVE_XP_RATE = 5, // кол-во опыта за завоз, формула: ( (GetPlayerLevel(playerid)+1) * 2 )^2 * trucker_GIVE_XP_RATE
-		trucker_RunnerMissionTime = 300000; // время перерыва между миссиями, в милисекундах
+	#define TRUCKER_GIVE_XP_RATE	5 // кол-во опыта за завоз, формула: ( (GetPlayerLevel(playerid)+1) * 2 )^2 * trucker_GIVE_XP_RATE
+	#define TRUCKER_RUNNER_MISSION_TIME 300000 // время перерыва между миссиями, в милисекундах
 	//
 	
 //

@@ -2,6 +2,8 @@
 // Made by ZiGGi
 //
 
+new AntiHightPingEnabled = ANTI_HIGHT_PING_ENABLED,
+	MAX_PING = MAXIMAL_PING;
 
 stock AntiHightPingLoadConfig()
 {

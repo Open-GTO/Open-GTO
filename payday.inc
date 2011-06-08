@@ -10,7 +10,9 @@
 #define _payday_included
 #pragma library payday
 
-
+new BasePay = PAYDAY_BASE_PAY,
+	PayCutoff = PAYDAY_CUTOFF,
+	BasePayXP = PAYDAY_PAYXP;
 new admpayday,rpayday;
 
 stock PaydayLoadConfig()

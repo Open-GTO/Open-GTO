@@ -28,6 +28,7 @@ enum gh_info
 }
 
 #define MAX_GROUNDHOLD 3
+new Groundhold_Enabled = GROUNDHOID_ENABLED;
 new PlayerGroundHoldTime[MAX_GROUNDHOLD][MAX_PLAYERS];
 new PlayerHoldingGround[MAX_GROUNDHOLD][MAX_PLAYERS];
 new Groundholds[MAX_GROUNDHOLD][gh_info] = {
