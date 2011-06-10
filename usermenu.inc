@@ -27,7 +27,7 @@ stock show_menu(playerid)
 // MSG диалог возвращающий в user menu
 stock show_User_Menu_Dialog(playerid,string_0[],string[])
 {
-	return ShowPlayerDialog(playerid,1000,DIALOG_STYLE_MSGBOX,
+	return ShowPlayerDialog(playerid,user_menu_Return_DialogID,DIALOG_STYLE_MSGBOX,
 		string_0,
 		string,
 		"Назад","Выход"
@@ -104,7 +104,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	#pragma unused inputtext
 	switch(dialogid)
 	{
-		case 1000:
+		case user_menu_Return_DialogID:
 		{
 			if(response) show_menu(playerid);
 			else return 1;

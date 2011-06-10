@@ -17,26 +17,12 @@
 #include "account"
 #include "race"
 
-stock Adm_OnPlayerCommandTextr(playerid,text[]) // process player commands
+stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 {
 	if((!IsPlayerAdmin(playerid)) && (!IsPlayerAdm(playerid))) return 0;
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,' '));
-	if(!strcmp(cmd,"/cmdlist",true))
-	{
-		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/say <text>', '/pinfo <ID>'");
-		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/akill <ID>', '/paralyze <ID>', '/deparalyze <ID>'");
-		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/tele-set', '/tele-loc', '/tele-to <ID>', '/tele-here <ID>', '/tele-hereall', '/tele-xyzi <X> <Y> <Z> <Int>'");
-		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/sethealth <ID>', '/setarm <ID>', '/givexp <ID> <xp>', '/agivecash <ID> <cash>', '/givegun <ID> <IDgun>'");
-		return 1;
-	}
-	if(!strcmp(cmd,"/about",true))
-	{
-		SendClientMessage(playerid,COLOUR_LIGHTBLUE,lang_texts[15][47]);
-		SendClientMessage(playerid,COLOUR_LIGHTBLUE,lang_texts[15][48]);
-		SendClientMessage(playerid,COLOUR_LIGHTBLUE,lang_texts[15][49]);
-		return 1;
-	}
+
 	if(!strcmp(cmd,"/say",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);

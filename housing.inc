@@ -133,51 +133,52 @@ stock housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	#pragma unused inputtext
 	if(dialogid == house_DialogID)
 	{
-		if(response)
+		if(!response)
 		{
-			switch(Hous[playerid])
-			{
-				case 1:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nАрендовать комнату\n","Выбрать","Отмена");
-				case 2:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Продать дом\nВойти в дом\nВыгнать арендатора\n","Выбрать","Отмена");
-				case 3:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nАрендовать комнату\n","Выбрать","Отмена");
-				case 4:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nПрекратить арендовать\nЗаплатить за аренду","Выбрать","Отмена");
-			}
+			Hous[playerid] = 0;
+			return 0;
 		}
-		else Hous[playerid] = 0;
+		switch(Hous[playerid])
+		{
+			case 1:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nАрендовать комнату\n","Выбрать","Отмена");
+			case 2:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Продать дом\nВойти в дом\nВыгнать арендатора\n","Выбрать","Отмена");
+			case 3:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nАрендовать комнату\n","Выбрать","Отмена");
+			case 4:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nПрекратить арендовать\nЗаплатить за аренду","Выбрать","Отмена");
+		}
+		return 1;
 	}
 	if(dialogid == houses_DialogID)
 	{
-		if(response)
+		if(!response) return 0;
+		if(listitem == 0)
 		{
-			if(listitem == 0)
+			if(Hous[playerid] != 2)	FHouseBuy(playerid);
+			else FHouseSell(playerid);
+		}
+		if(listitem == 1) 
+		{
+			new id = GetHouseID(playerid);
+			if(id > -1)
 			{
-				if(Hous[playerid] != 2)	FHouseBuy(playerid);
-				else FHouseSell(playerid);
-			}
-			if(listitem == 1) 
-			{
-				new id = GetHouseID(playerid);
-				if(id > -1)
+				if(Houses[id][Houses_Lock] == 1) return SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][56]);
+				else 
 				{
-					if(Houses[id][Houses_Lock] == 1) return SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][56]);
-					else 
-					{
-						oSetPlayerPos(playerid,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ],0,Houses[id][Houses_Interior]);
-						Haus[playerid] = id;
-						SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][73]);
-					}
-				}
-			}
-			if(listitem == 2)
-			{
-				switch(Hous[playerid])
-				{
-					case 1,3:RentRoom(playerid);
-					case 2,4:DeleteRenter(playerid);
+					oSetPlayerPos(playerid,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ],0,Houses[id][Houses_Interior]);
+					Haus[playerid] = id;
+					SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][73]);
 				}
 			}
 		}
+		if(listitem == 2)
+		{
+			switch(Hous[playerid])
+			{
+				case 1,3:RentRoom(playerid);
+				case 2,4:DeleteRenter(playerid);
+			}
+		}
 		Hous[playerid] = 0;
+		return 1;
 	}
 	return 1;
 }
@@ -648,7 +649,7 @@ stock housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 					if(strcmp(Houses[id][Houses_RentName],"Unknown",true) == 0) format(string6,sizeof(string6),lang_texts[8][53],Houses[id][Houses_RentCost]);
 					else format(string6,sizeof(string6),lang_texts[8][52],Houses[id][Houses_RentName]);
 					format(dialog,sizeof(dialog),"%s\n%s\n%s\n%s\n%s\n",string2,string3,string4,string5,string6);
-					ShowPlayerDialog(playerid,2,DIALOG_STYLE_MSGBOX,string,dialog,"Действия","Отмена");
+					ShowPlayerDialog(playerid,house_DialogID,DIALOG_STYLE_MSGBOX,string,dialog,"Действия","Отмена");
 				}
 				else
 				{
@@ -658,7 +659,7 @@ stock housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 					else format(string4,sizeof(string4),lang_texts[8][52],Houses[id][Houses_RentName]);
 					format(dialog,sizeof(dialog),"%s\n%s\n%s\n",string2,string3,string4);
 					Hous[playerid] = 2;
-					ShowPlayerDialog(playerid,2,DIALOG_STYLE_MSGBOX,string,dialog,"Действия","Отмена");
+					ShowPlayerDialog(playerid,house_DialogID,DIALOG_STYLE_MSGBOX,string,dialog,"Действия","Отмена");
 				}
 			}
 			else
@@ -670,7 +671,7 @@ stock housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 				format(string4,sizeof(string4),lang_texts[8][11],Houses[id][Houses_UpKeep],Houses[id][Houses_UpKeepLeft]);
 				format(string5,sizeof(string5),lang_texts[8][53],Houses[id][Houses_RentCost]);
 				format(dialog,sizeof(dialog),"%s\n%s\n%s\n%s\n",string2,string3,string4,string5);
-				ShowPlayerDialog(playerid,2,DIALOG_STYLE_MSGBOX,string,dialog,"Действия","Отмена");
+				ShowPlayerDialog(playerid,house_DialogID,DIALOG_STYLE_MSGBOX,string,dialog,"Действия","Отмена");
 			}
 		}
 		else if(IsPlayerInRangeOfPoint(playerid,2,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ]))

@@ -125,6 +125,7 @@ public OnGameModeInit()
 {
 	SetGameModeText("Open-GTO "#VERSION);
 	// Initialize everything that needs it
+	lang_OnGameModeInit();
 	logging_OnGameModeInit();
 	base_OnGameModeInit();
 	account_OnGameModeInit();
@@ -140,7 +141,6 @@ public OnGameModeInit()
 	housing_OnGameModeInit();
 	interior_OnGameModeInit();
 	bank_OnGameModeInit();
-	lang_OnGameModeInit();
 	fights_OnGameModeInit();
     trucker_OnGameModeInit();
 	// services
@@ -198,6 +198,7 @@ public OnGameModeInit()
 	SetTimer("FiveSecondTimer",5000,1); // 5 second
 	SetTimer("OneMinuteTimer",60000,1); // 1 minute
 	SetTimer("OneHourTimer",3600000,1); // 1 hour
+	SetTimer("WorldSave",WORLD_SAVE_TIME,1);
 	GameMSG("SERVER: Timers started");
 	SpawnWorld();
 	
@@ -241,18 +242,43 @@ public OnPlayerDisconnect(playerid,reason)
 
 public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
-	account_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
-	housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
-	business_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-	click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
-	bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
-	fights_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
-	// services
-	fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
-	bar_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
-	//
-	usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
-	weapons_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+	switch(dialogid)
+	{
+		case account_Log_DialogID,account_Reg_DialogID:
+		{
+			account_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+		}
+		case house_DialogID, houses_DialogID:
+		{
+			housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+		}
+		case bis_DialogID, bis_Info_DialogID, bis_Msg_DialogID:
+		{
+			business_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
+		}
+		case fightstyles_DialogID, fightstyles_user_DialogID:
+		{
+			fights_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+		}
+		case user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID:
+		{
+			usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+		}
+		case weapons_Select_DialogID, weapons_Buy_DialogID:
+		{
+			weapons_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+		}
+		case bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID:
+		{
+			bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+		}
+		case click_DialogID, click_Resp_DialogID:
+		{
+			click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+		}
+		case bar_DialogID: bar_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+		case fastfood_DialogID: fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+	}
 	return 1;
 }
 
@@ -375,25 +401,146 @@ public OnPlayerRequestSpawn(playerid)
 
 public OnPlayerCommandText(playerid,cmdtext[])
 {
-	commands_OnPlayerCommandText(playerid,cmdtext);
-	account_OnPlayerCommandText(playerid,cmdtext);
-	gang_OnPlayerCommandText(playerid,cmdtext);
-	race_OnPlayerCommandText(playerid,cmdtext);
-	AdminRace_OnPlayerCommandText(playerid,cmdtext);
-	Admin_OnPlayerCommandText(playerid,cmdtext); //rcon admins
-	dm_OnPlayerCommandText(playerid,cmdtext);
-	AdminDM_OnPlayerCommandText(playerid,cmdtext);
-	AdminSys_OnPlayerCommandText(playerid,cmdtext); //SYSTEM
-	Adm_OnPlayerCommandTextr(playerid,cmdtext); //admins
-	Mod_OnPlayerCommandText(playerid,cmdtext); //moderators
+	// commands.inc
+	command_register(cmdtext,"/help",5,commands);
+	command_register(cmdtext,"/kill",5,commands);
+	command_register(cmdtext,"/info",5,commands);
+	command_register(cmdtext,"/objective",10,commands);
+	command_register(cmdtext,"/dropammo",9,commands);
+	command_register(cmdtext,"/sound",6,commands);
+	command_register(cmdtext,"/stats",6,commands);
+	command_register(cmdtext,"/status",7,commands);
+	command_register(cmdtext,"/stat",5,commands);
+	command_register(cmdtext,"/level",6,commands);
+	command_register(cmdtext,"/version",8,commands);
+	command_register(cmdtext,"/admins",7,commands);
+	command_register(cmdtext,"/time",5,commands);
+	command_register(cmdtext,"/skydive",8,commands);
+	command_register(cmdtext,"/sk",3,commands);
+	command_register(cmdtext,"/dance",6,commands);
+	command_register(cmdtext,"/handsup",8,commands);
+	command_register(cmdtext,"/piss",5,commands);
+	command_register(cmdtext,"/smoke",6,commands);
+	
+	// account
+	command_register(cmdtext,"/changepass",11,account);
+	command_register(cmdtext,"/changenick",11,account);
+	command_register(cmdtext,"/savechar",9,account);
+	
+	// gangs
+	command_register(cmdtext,"/g",2,gang);
+	command_register(cmdtext,"/gang",5,gang);
+	
+	// race
+	command_register(cmdtext,"/races",6,race);
+	command_register(cmdtext,"/race",5,race);
+	
+	// admin race
+	command_register(cmdtext,"/arace",6,AdminRace);
+	
+	
+	// all admins
+	command_register(cmdtext,"/cmdlist",8,aad);
+	command_register(cmdtext,"/about",6,aad);
+	// rcon admins
+	command_register(cmdtext,"/int",4,Admin);
+	command_register(cmdtext,"/carinfo",8,Admin);
+	command_register(cmdtext,"/carrep",7,Admin);
+	command_register(cmdtext,"/go",3,Admin);
+	command_register(cmdtext,"/an",3,Admin);
+	command_register(cmdtext,"/payday",7,Admin);
+	command_register(cmdtext,"/boom",5,Admin);
+	command_register(cmdtext,"/setskin",8,Admin);
+	command_register(cmdtext,"/ssay",5,Admin);
+	command_register(cmdtext,"/skydiveall",11,Admin);
+	command_register(cmdtext,"/disarm",7,Admin);
+	command_register(cmdtext,"/disarmall",10,Admin);
+	command_register(cmdtext,"/paralyzeall",12,Admin);
+	command_register(cmdtext,"/deparalyzeall",14,Admin);
+	command_register(cmdtext,"/remcash",8,Admin);
+	command_register(cmdtext,"/remcashall",11,Admin);
+	command_register(cmdtext,"/setlvl",7,Admin);
+	command_register(cmdtext,"/setstatus",10,Admin);
+	command_register(cmdtext,"/allowport",10,Admin);
+	command_register(cmdtext,"/setvip",7,Admin);
+	command_register(cmdtext,"/underwater",11,Admin);
+	command_register(cmdtext,"/ahideme",8,Admin);
+	command_register(cmdtext,"/ashowme",8,Admin);
+
+	// dm
+	command_register(cmdtext,"/deathmatches",13,dm);
+	command_register(cmdtext,"/dms",4,dm);
+	command_register(cmdtext,"/dm",3,dm);
+	
+	// admin dm
+	command_register(cmdtext,"/adm",4,dm);
+	
+	// admin sys
+	command_register(cmdtext,"/sys",4,AdminSys);
+	
+	// admins
+	command_register(cmdtext,"/say",4,Adm);
+	command_register(cmdtext,"/pinfo",6,Adm);
+	command_register(cmdtext,"/admincnn",9,Adm);
+	command_register(cmdtext,"/akill",6,Adm);
+	command_register(cmdtext,"/tele-set",9,Adm);
+	command_register(cmdtext,"/tele-loc",9,Adm);
+	command_register(cmdtext,"/tele-to",8,Adm);
+	command_register(cmdtext,"/tele-here",10,Adm);
+	command_register(cmdtext,"/tele-hereall",13,Adm);
+	command_register(cmdtext,"/tele-xyzi",10,Adm);
+	command_register(cmdtext,"/sethealth",10,Adm);
+	command_register(cmdtext,"/setarm",7,Adm);
+	command_register(cmdtext,"/givexp",7,Adm);
+	command_register(cmdtext,"/agivecash",10,Adm);
+	command_register(cmdtext,"/givegun",8,Adm);
+	command_register(cmdtext,"/paralyze",9,Adm);
+	command_register(cmdtext,"/deparalyze",11,Adm);
+	command_register(cmdtext,"/ban",4,Adm);
+	command_register(cmdtext,"/showpm",7,Adm);
+	command_register(cmdtext,"/getip",6,Adm);
+	
+	// moderators
+	command_register(cmdtext,"/plist",6,Mod);
+	command_register(cmdtext,"/remcar",7,Mod);
+	command_register(cmdtext,"/kick",5,Mod);
+	command_register(cmdtext,"/carresp",8,Mod);
+	command_register(cmdtext,"/mute",5,Mod);
+	command_register(cmdtext,"/unmute",7,Mod);
+	command_register(cmdtext,"/jail",5,Mod);
+	command_register(cmdtext,"/unjail",7,Mod);
+	command_register(cmdtext,"/mole",5,Mod);
+	command_register(cmdtext,"/spec",5,Mod);
+	command_register(cmdtext,"/spec-off",9,Mod);
+	
+	// business
 	//business_OnPlayerCommandText(playerid,cmdtext);
+	
+	// housing
 	housing_OnPlayerCommandText(playerid,cmdtext);
-	vehicles_OnPlayerCommandText(playerid,cmdtext);
+	command_register(cmdtext,"/houseinfo",10,housing);
+	command_register(cmdtext,"/hinfo",6,housing);
+	command_register(cmdtext,"/housebuy",9,housing);
+	command_register(cmdtext,"/hbuy",5,housing);
+	command_register(cmdtext,"/housesell",10,housing);
+	command_register(cmdtext,"/hsell",6,housing);
+	command_register(cmdtext,"/myhouses",9,housing);
+	command_register(cmdtext,"/houses",7,housing);
+	command_register(cmdtext,"/upkeep",7,housing);
+	command_register(cmdtext,"/heal",5,housing);
+	command_register(cmdtext,"/houseupgrade",13,housing);
+	command_register(cmdtext,"/setrentcost",12,housing);
+	command_register(cmdtext,"/hlock",6,housing);
+	command_register(cmdtext,"/hunlock",8,housing);
+	command_register(cmdtext,"/rent",5,housing);
+	
+	// vehicles
+	command_register(cmdtext,"/vmenu",6,vehicles);
 
 	new logstring[MAX_STRING];
 	format(logstring,sizeof(logstring),"Player: %s[%d]: %s",oGetPlayerName(playerid),playerid,cmdtext);
 	WriteLog(CMDLog,logstring);
-	return 1;
+	return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[15][0]);
 }
 
 public OnPlayerText(playerid, text[])

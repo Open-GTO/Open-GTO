@@ -25,7 +25,7 @@ stock AdminDM_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,' '));
-	if(!strcmp(cmd, "/dm", true))
+	if(!strcmp(cmd, "/adm", true))
 	{
 		set(cmd,strcharsplit(text, idx,' '));
 		if(!strcmp(cmd, "start", true))

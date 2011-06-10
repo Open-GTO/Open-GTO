@@ -62,16 +62,6 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,' '));
 	
-	if(!strcmp(cmd,"/cmdlist",true))
-	{
-		SendClientMessage(playerid, COLOUR_GREEN, "Administrator RCON:______________________________________________________________");
-		SendClientMessage(playerid, COLOUR_WHITE, "R: '/ssay <text>', '/an <type> <LATtext>', '/setlvl <ID> <lvl>', '/setstatus <ID> <status> (0,1-10,11-256)'");
-		SendClientMessage(playerid, COLOUR_WHITE, "R: '/disarm <ID>', '/disarmall', '/skydiveall', '/paralyzeall', '/deparalyzeall', '/remcash <ID>', '/remcashall'");
-		SendClientMessage(playerid, COLOUR_WHITE, "R: '/payday', /go <point> (0,1, 2-4(tune) - 27)', '/allowport <ID> <allow>', '/setskin <ID> <IDskin>'");
-		SendClientMessage(playerid, COLOUR_WHITE, "R: '/carrep', '/carinfo', '/int', '/boom <IDboom>'");
-		SendClientMessage(playerid, COLOUR_YELLOW, "S: '/sys cmdlist', '/sys about', '/sys info'");
-		return 1;
-	}
 	if(!strcmp(cmd,"/int",true))
 	{
 		new string[MAX_STRING];
@@ -138,15 +128,6 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		admpayday = 256;
 		PayDay();
 		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[12][90]);
-		return 1;
-	}
-	if(!strcmp(cmd,"/about",true))
-	{
-		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][55]);
-		SendClientMessage(playerid, COLOUR_LIGHTRED, lang_texts[15][51]);
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][52]);
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][53]);
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][54]);
 		return 1;
 	}
 	if(!strcmp(cmd,"/boom", true))

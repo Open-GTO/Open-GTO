@@ -1,9 +1,11 @@
-//
-// Updated in 27.03.2010 by ZiGGi
-//
+/*
+	
+	Updated in 10.06.2011 by ZiGGi
+	
+*/
 
 #if defined _lang_included
-  #endinput
+	#endinput
 #endif
 
 #define _lang_included
@@ -11,8 +13,8 @@
 
 
 new lang_db[10] = GTO_FILES_FOLDER"";
-new lang[10] = "Russian";
-new lang_texts[20][99][255];
+new lang[10] = LANGUAGE_USE;
+new lang_texts[20][99][MAX_STRING];
 
 stock lang_LoadConfig()
 {
@@ -36,7 +38,6 @@ stock lang_OnGameModeInit()
 	lang_LoadConfig();
 	new lang_file[50];
 	format(lang_file,sizeof(lang_file),"%sLanguage-%s"GTO_FILES_FORMAT,lang_db,lang);
-	if(!ini_Exist(lang_file)) return GameMSG("ERROR: No such file %s", lang_file);
 	lang_read(lang_file);
 	GameMSG("SERVER: Lang module init(%s)", lang_file);
 	return 1;
@@ -44,27 +45,31 @@ stock lang_OnGameModeInit()
 
 stock lang_read(filename[])
 {
-	new File:fohnd,tmpres[255],tmp1[255],tmp2[255],i,buf;
+	new File:fohnd,
+		tmpres[MAX_STRING],tmp1[MAX_STRING],tmp2[MAX_STRING],
+		i,buf,len,pos_s;
 	fohnd=fopen(filename,io_read);
-	if(!fohnd) return 1;
+	if(!fohnd) return GameMSG("ERROR: No such language file '%s'", filename);
 	while(fread(fohnd,tmpres,sizeof(tmpres)))
 	{
-		if(strlen(tmpres) == 0) return 1;
-		if(strfind(tmpres, "//",true) != -1) continue;
-		if(strfind(tmpres, ":", true) != -1)
+		len = strlen(tmpres);
+		if(len == 0) continue;
+		if(strfind(tmpres, "//",true) == 0) continue;
+		pos_s = strfind(tmpres, ":", true);
+		if(pos_s != -1)
 		{
-			strmid(tmp1, tmpres, 0, strfind(tmpres, ":", true));
-			strmid(tmp2, tmpres, strfind(tmpres, ":", true)+2, (strlen(tmpres)-strlen(tmp1)));
-				
+			strmid(tmp1, tmpres, 0, pos_s);
+			strmid(tmp2, tmpres, pos_s+2, len-strlen(tmp1));
+			
 			if( (buf = strfind(tmp2,LANG_BB_N)) != -1 )
 			{
-				strdel(tmp2,buf,buf+3);
+				strdel(tmp2,buf,buf+strlen(LANG_BB_N));
 				strins(tmp2,"\n",buf);
 			}
 			
 			lang_texts[i][strval(tmp1)] = tmp2;
-		} 
-		else if(strfind(tmpres, ":", true) == -1) i++;
+		}
+		else i++;
 	}
 	fclose(fohnd);
 	return 1;

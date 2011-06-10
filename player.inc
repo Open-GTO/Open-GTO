@@ -326,10 +326,10 @@ stock SyncPlayers()
 	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
 		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) continue;
+		CheckPlayerKick(playerid);
 		if(GetPVarInt(playerid,"Spawned") == 0) continue; // если игрок мертв, то защиты не срабатывают
 		SyncMoney(playerid);
 		SyncHealth(playerid);
-		CheckPlayerKick(playerid);
 		JailPlayer(playerid);
 		CheckPing(playerid);
 	}
@@ -339,23 +339,20 @@ stock SyncPlayers()
 // Check if any players have been marked to kick, and kicks them
 stock CheckPlayerKick(playerid)
 {
-	if(IsPlayerConnected(playerid))
+	if (KickList[playerid] == 1) // if we wanna kick this player
 	{
-		if (KickList[playerid] == 1) // if we wanna kick this player
-		{
-			GameTextForPlayer(playerid,"~r~Connection Lost.",999,5); //  send msg first
-			TogglePlayerControllable(playerid,0);
-			KickList[playerid]=2;
-		}
-		else if (KickList[playerid] >=2) // wait a second before doing the kicking (for msg to get through)
-		{
-			new logstring[MAX_STRING];
-			format(logstring, sizeof (logstring), "player: %d:  %s: has been auto kicked",playerid,oGetPlayerName(playerid));
-			WriteLog(GameLog,logstring);
-			KickList[playerid] = 0;
-			Kick(playerid);
-			return;
-		}
+		GameTextForPlayer(playerid,"~r~Connection Lost.",999,5); //  send msg first
+		TogglePlayerControllable(playerid,0);
+		KickList[playerid]=2;
+	}
+	else if (KickList[playerid] >=2) // wait a second before doing the kicking (for msg to get through)
+	{
+		new logstring[MAX_STRING];
+		format(logstring, sizeof (logstring), "player: %d:  %s: has been auto kicked",playerid,oGetPlayerName(playerid));
+		WriteLog(GameLog,logstring);
+		KickList[playerid] = 0;
+		Kick(playerid);
+		return;
 	}
 }
 

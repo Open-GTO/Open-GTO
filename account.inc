@@ -187,31 +187,70 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 	set(cmd,strcharsplit(text, idx,' '));
 	if(!strcmp(cmd,"/changepass",true))
 	{
-		if(GetPlayerMoney(playerid) < CHANGE_PASS_COST) return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][35]);
-		new temp[MAX_STRING];
-		set(temp,strcharsplit(text, idx,' '));
-		SetPVarString(playerid,"Password",temp);
-		AccountSave(playerid);
 		new string[MAX_STRING];
-		format(string,sizeof(string),lang_texts[1][34],temp);
+		if(GetPlayerMoney(playerid) < CHANGE_PASS_COST)
+		{
+			format(string,sizeof(string),lang_texts[1][35],CHANGE_PASS_COST);
+			return SendClientMessage(playerid,COLOUR_WHITE,string);
+		}
+		new pass[MAX_STRING];
+		set(pass,strcharsplit(text, idx,' '));
+		if(strlen(pass) < MIN_PASS_LEN)
+		{
+			format(string,sizeof(string),lang_texts[1][13],MIN_PASS_LEN);
+			return SendClientMessage(playerid,COLOUR_WHITE,string);
+		}
+		SetPVarString(playerid,"Password",pass);
+		AccountSave(playerid);
+		format(string,sizeof(string),lang_texts[1][34],pass);
 		SendClientMessage(playerid,COLOUR_WHITE,string);
-		oGivePlayerMoney(playerid,-500000,1);
+		oGivePlayerMoney(playerid,-CHANGE_PASS_COST,1);
 		return 1;
 	}
 	if(!strcmp(cmd,"/changenick",true))
 	{
-		if(GetPlayerMoney(playerid) < CHANGE_NICK_COST) return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][36]);
-		new nick[40],string[MAX_STRING],Account_LastName[MAX_STRING],kickplayername[MAX_STRING];
+		new string[MAX_STRING];
+		if(GetPlayerMoney(playerid) < CHANGE_NICK_COST)
+		{
+			format(string,sizeof(string),lang_texts[1][36],CHANGE_NICK_COST);
+			return SendClientMessage(playerid,COLOUR_WHITE,string);
+		}
+		new Account_NewName[MAX_PLAYER_NAME],
+			Account_LastName[MAX_PLAYER_NAME];
 		set(Account_LastName,oGetPlayerName(playerid));
+		set(Account_NewName,strcharsplit(text, idx,' '));
+		if(strlen(Account_NewName) <= MIN_NICK_LEN)
+		{
+			format(string,sizeof(string),lang_texts[1][37],MIN_NICK_LEN);
+			return SendClientMessage(playerid,COLOUR_WHITE,string);
+		}
+		
+		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_NewName);
+		// если файл есть, то выходим стразу-же
+		if(fexist(string))
+			return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][9]);
+		if(SetPlayerName(playerid,Account_NewName) != 1)
+			return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][9]);
+		
 		new gangid = GetPVarInt(playerid,"GangID");
-		set(kickplayername,Account_LastName);
-		GangRemoveMember(gangid,kickplayername);
-		set(nick,strcharsplit(text, idx,' '));
-		SetPlayerName(playerid,nick);
+		if(gangid != 0)
+		{
+			GangRemoveMember(gangid,Account_LastName);
+			GangJoinMember(gangid,playerid);
+		}
+		
+		PlayerSave(playerid);
 		AccountSave(playerid);
-		GangJoinMember(gangid,playerid);
-		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_LastName[playerid]);
-		fremove(string);
+		
+		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_LastName);
+		if(fexist(string)) fremove(string);
+		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,PlayerDB,Account_LastName);
+		if(fexist(string)) fremove(string);
+		
+		oGivePlayerMoney(playerid,-CHANGE_NICK_COST,1);
+		
+		format(string,sizeof(string),lang_texts[1][38],Account_LastName,Account_NewName);
+		SendClientMessage(playerid,COLOUR_WHITE,string);
 		return 1;
 	}
 	if(!strcmp(cmd,"/savechar",true))
@@ -235,7 +274,7 @@ stock account_OnPlayerConnect(playerid)
 	}
 	else
 	{
-	    format(message,sizeof(message),"Приветствую, %s!\n\nВведите пароль для регистрации!",oGetPlayerName(playerid));
+	    format(message,sizeof(message),"Приветствую, %s!\n\nВведите пароль для регистрации!\n\nМинимальная длина пароля - "#MIN_PASS_LEN" символа",oGetPlayerName(playerid));
 		ShowPlayerDialog(playerid,account_Reg_DialogID,DIALOG_STYLE_INPUT,"Регистрация",message,"Зарегать","");
 	}
 	SetPVarInt(playerid,"RequestPlace",random( sizeof(RequestPlace) ));
@@ -247,17 +286,19 @@ stock account_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	#pragma unused listitem,response
 	if(dialogid == account_Log_DialogID)
 	{
-		if(strlen(inputtext) > 0)
+		if(strlen(inputtext) >= MIN_PASS_LEN)
 			AccountLogin(playerid,inputtext);
 		else
 			account_OnPlayerConnect(playerid);
+		return 1;
 	}
 	if(dialogid == account_Reg_DialogID)
 	{
-		if(strlen(inputtext) > 0)
+		if(strlen(inputtext) >= MIN_PASS_LEN)
 			AccountRegister(playerid,inputtext);
 		else
 			account_OnPlayerConnect(playerid);
+		return 1;
 	}
 	return 1;
 }

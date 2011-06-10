@@ -14,24 +14,10 @@
 
 stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if(!IsPlayerConnected(playerid)) return 0;
 	if(!IsPlayerMod(playerid) && !IsPlayerAdmin(playerid) && !IsPlayerAdm(playerid)) return 0;
 	new cmd[20],idx;	
 	set(cmd,strcharsplit(text, idx,' '));
-	if(!strcmp(cmd, "/cmdlist", true))
-	{
-		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, "M: '/carresp', '/remcar <ID>', '/kick <ID>'");
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, "M: '/cmdlist', '/about', '/mute <ID> <Time>', '/unmute <ID>', '/jail <ID>', '/unjail <ID>', '/plist'");
-	}
-	if(!strcmp(cmd,"/about",true))
-	{
-		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
-		SendClientMessage(playerid,COLOUR_LIGHTGREEN,lang_texts[15][41]);
-		SendClientMessage(playerid,COLOUR_LIGHTGREEN,lang_texts[15][42]);
-		SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[15][43]);
-		SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[15][44]);
-	}
+
 	if(!strcmp(cmd, "/plist", true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);

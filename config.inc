@@ -17,6 +17,7 @@
 #define GTO_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе Linux не рекомендуется)
 #define GTO_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
+#define LANGUAGE_USE			"Russian" // используемый язык
 #define LANG_BB_N				"[n]" // переход на новую строку
 
 #define MAX_STRING				128 // не менять, кол-во символов для большинства строковых переменных
@@ -29,6 +30,7 @@
 #define INVALID_QUEST_ID		0
 #define MAX_QUESTS				255
 
+#define WORLD_SAVE_TIME			300000
 // античит(параметры по умолчанию)
 #define ANTI_HEALTH_HACK_ENABLED	1 // защита от чита на здоровье
 #define ANTI_MONEY_HACK_ENABLED		1 // защита от чита на деньги
@@ -81,8 +83,10 @@
 #define HEALTH_TARIF			4.0	// степень увеличения максимального здоровья от лвл, формула: MIN_HEALTH + (GetPlayerLevel(playerid) * HEALTH_TARIF)
 #define HEALTH_REGEN_TARIF		0.4 // степень кол-ва востанавливаемого здоровья, формула: (GetPlayerLevel(id) * HEALTH_REGEN_TARIF)
 
-#define CHANGE_NICK_COST			10000000 // кол-во денег, требуемых для смены ника
-#define CHANGE_PASS_COST			500000 // кол-во денег, требуемых для смены пароля
+#define CHANGE_NICK_COST			10000 // кол-во денег, требуемых для смены ника
+#define MIN_NICK_LEN				3
+#define CHANGE_PASS_COST			5000 // кол-во денег, требуемых для смены пароля
+#define MIN_PASS_LEN				3
 // МИССИИ
 	// trucker
 	#define TRUCKER_GIVE_XP_RATE	5 // кол-во опыта за завоз, формула: ( (GetPlayerLevel(playerid)+1) * 2 )^2 * trucker_GIVE_XP_RATE
@@ -112,7 +116,7 @@ enum {
 	house_DialogID, houses_DialogID,
 	bis_DialogID, bis_Info_DialogID, bis_Msg_DialogID,
 	fightstyles_DialogID, fightstyles_user_DialogID,
-	user_menu_DialogID, vehicle_menu_DialogID,
+	user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID,
 	weapons_Select_DialogID, weapons_Buy_DialogID,
 	bar_DialogID,
 	fastfood_DialogID,

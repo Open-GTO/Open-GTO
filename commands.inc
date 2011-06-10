@@ -191,8 +191,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		PlayerPlaySound(playerid,1039,0,0,0);
 		return 1;
 	}
-	
-	if(!strcmp(cmd,"/repair",true)) return 0;
+
 	if(!strcmp(cmd,"/sk",true))
 	{
 		new string[MAX_STRING];

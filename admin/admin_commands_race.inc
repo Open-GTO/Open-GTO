@@ -27,7 +27,7 @@ stock AdminRace_OnPlayerCommandText(playerid,text[]) // process player commands
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,' '));
 
-	if(!strcmp(cmd, "/race", true))
+	if(!strcmp(cmd, "/arace", true))
 	{
 		set(cmd,strcharsplit(text, idx,' '));
 		if(!strcmp(cmd, "create", true))

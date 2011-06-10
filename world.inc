@@ -134,7 +134,6 @@ public OneMinuteTimer()
 	JailTimer();
 	AntiIdle();
 	TurnAround();
-	WorldSave();
 }
 
 forward OneHourTimer();

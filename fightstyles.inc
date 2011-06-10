@@ -83,7 +83,7 @@ stock fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[
 	}
 	else if(dialogid == fightstyles_user_DialogID)
 	{
-		if(!response) return show_User_Menu(playerid);
+		if(response) return show_User_Menu(playerid);
 		listitem += 4; // теперь listitem является идом выбранного стиля
 		SetPlayerFightStyleUsed(playerid,listitem);
 		SetPlayerFightingStyle(playerid,listitem);
@@ -114,7 +114,7 @@ stock showFightStyleMenu(playerid)
 		playerid,fightstyles_user_DialogID,DIALOG_STYLE_LIST,
 		lang_texts[19][12],
 		string,
-		lang_texts[19][13],lang_texts[19][14]
+		lang_texts[19][14],lang_texts[19][13]
 	);
 }
 //
