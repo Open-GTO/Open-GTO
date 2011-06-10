@@ -31,66 +31,6 @@ new Float:JPH[UNJP][CoordInfoJ] = {
 {1225.165, 245.328, 19.554, 306.501}
 };
 
-stock aad_OnPlayerCommandText(playerid,text[])
-{
-	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,' '));
-	#pragma unused idx
-	
-	if(!strcmp(cmd,"/cmdlist",true))
-	{
-		if(IsPlayerAdmin(playerid))
-		{
-			SendClientMessage(playerid, COLOUR_GREEN, "Administrator RCON:______________________________________________________________");
-			SendClientMessage(playerid, COLOUR_WHITE, "R: '/ssay <text>', '/an <type> <LATtext>', '/setlvl <ID> <lvl>', '/setstatus <ID> <status> (0,1-10,11-256)'");
-			SendClientMessage(playerid, COLOUR_WHITE, "R: '/disarm <ID>', '/disarmall', '/skydiveall', '/paralyzeall', '/deparalyzeall', '/remcash <ID>', '/remcashall'");
-			SendClientMessage(playerid, COLOUR_WHITE, "R: '/payday', /go <point> (0,1, 2-4(tune) - 27)', '/allowport <ID> <allow>', '/setskin <ID> <IDskin>'");
-			SendClientMessage(playerid, COLOUR_WHITE, "R: '/carrep', '/carinfo', '/int', '/boom <IDboom>'");
-			SendClientMessage(playerid, COLOUR_YELLOW, "S: '/sys cmdlist', '/sys about', '/sys info'");
-		}
-		if(IsPlayerAdmin(playerid) || IsPlayerAdm(playerid))
-		{
-			SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/say <text>', '/pinfo <ID>'");
-			SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/akill <ID>', '/paralyze <ID>', '/deparalyze <ID>'");
-			SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/tele-set', '/tele-loc', '/tele-to <ID>', '/tele-here <ID>', '/tele-hereall', '/tele-xyzi <X> <Y> <Z> <Int>'");
-			SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/sethealth <ID>', '/setarm <ID>', '/givexp <ID> <xp>', '/agivecash <ID> <cash>', '/givegun <ID> <IDgun>'");
-		}
-		if(IsPlayerMod(playerid) || IsPlayerAdmin(playerid) || IsPlayerAdm(playerid))
-		{
-			SendClientMessage(playerid, COLOUR_LIGHTGREEN, "M: '/carresp', '/remcar <ID>', '/kick <ID>'");
-			SendClientMessage(playerid, COLOUR_LIGHTGREEN, "M: '/cmdlist', '/about', '/mute <ID> <Time>', '/unmute <ID>', '/jail <ID>', '/unjail <ID>', '/plist'");
-		}
-		return 1;
-	}
-	if(!strcmp(cmd,"/about",true))
-	{
-		if(IsPlayerAdmin(playerid))
-		{
-			SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][55]);
-			SendClientMessage(playerid, COLOUR_LIGHTRED, lang_texts[15][51]);
-			SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][52]);
-			SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][53]);
-			SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][54]);
-		}
-		if(IsPlayerAdmin(playerid) || IsPlayerAdm(playerid))
-		{
-			SendClientMessage(playerid,COLOUR_LIGHTBLUE,lang_texts[15][47]);
-			SendClientMessage(playerid,COLOUR_LIGHTBLUE,lang_texts[15][48]);
-			SendClientMessage(playerid,COLOUR_LIGHTBLUE,lang_texts[15][49]);
-		}
-		if(IsPlayerMod(playerid) || IsPlayerAdmin(playerid) || IsPlayerAdm(playerid))
-		{
-			SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
-			SendClientMessage(playerid,COLOUR_LIGHTGREEN,lang_texts[15][41]);
-			SendClientMessage(playerid,COLOUR_LIGHTGREEN,lang_texts[15][42]);
-			SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[15][43]);
-			SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[15][44]);
-		}
-		return 1;
-	}
-	return 0;
-}
-
 stock JailPlayer(playerid)
 {
 	if(GetPlayerJailed(playerid) == 1)

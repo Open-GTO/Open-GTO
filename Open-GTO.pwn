@@ -276,8 +276,14 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
-		case bar_DialogID: bar_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
-		case fastfood_DialogID: fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+		case bar_DialogID:
+		{
+			bar_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+		}
+		case fastfood_DialogID:
+		{
+			fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+		}
 	}
 	return 1;
 }
@@ -309,13 +315,10 @@ public OnPlayerEnterRaceCheckpoint(playerid)
 public OnPlayerDeath(playerid, killerid, reason)
 {
 	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
-
-	new logstring[MAX_STRING];
 	if(killerid == INVALID_PLAYER_ID)
-		format(logstring, sizeof (logstring), "player: %d: %s: has died > Reason: (%d)",playerid,oGetPlayerName(playerid),reason);
+		GameMSG("player: %d: %s: has died > Reason: (%d)",playerid,oGetPlayerName(playerid),reason);
 	else
-		format(logstring, sizeof (logstring), "player: %d: %s: has killed player %s(%d)> Reason: (%d)",killerid,oGetPlayerName(killerid),oGetPlayerName(playerid),playerid,reason);
-	WriteLog(GameLog,logstring);
+		GameMSG("player: %d: %s: has killed player %s(%d)> Reason: (%d)",killerid,oGetPlayerName(killerid),oGetPlayerName(playerid),playerid,reason);
 
 	SendDeathMessage(killerid,playerid,reason);
 	
@@ -433,16 +436,14 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	
 	// race
 	command_register(cmdtext,"/races",6,race);
-	command_register(cmdtext,"/race",5,race);
+	command_registerNR(cmdtext,"/race",5,race);
 	
 	// admin race
-	command_register(cmdtext,"/arace",6,AdminRace);
+	command_registerNR(cmdtext,"/race",5,AdminRace);
 	
-	
-	// all admins
-	command_register(cmdtext,"/cmdlist",8,aad);
-	command_register(cmdtext,"/about",6,aad);
 	// rcon admins
+	command_registerNR(cmdtext,"/cmdlist",8,Admin);
+	command_registerNR(cmdtext,"/about",6,Admin);
 	command_register(cmdtext,"/int",4,Admin);
 	command_register(cmdtext,"/carinfo",8,Admin);
 	command_register(cmdtext,"/carrep",7,Admin);
@@ -470,15 +471,17 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	// dm
 	command_register(cmdtext,"/deathmatches",13,dm);
 	command_register(cmdtext,"/dms",4,dm);
-	command_register(cmdtext,"/dm",3,dm);
+	command_registerNR(cmdtext,"/dm",3,dm);
 	
 	// admin dm
-	command_register(cmdtext,"/adm",4,dm);
+	command_registerNR(cmdtext,"/dm",3,dm);
 	
 	// admin sys
 	command_register(cmdtext,"/sys",4,AdminSys);
 	
 	// admins
+	command_registerNR(cmdtext,"/cmdlist",8,Adm);
+	command_registerNR(cmdtext,"/about",6,Adm);
 	command_register(cmdtext,"/say",4,Adm);
 	command_register(cmdtext,"/pinfo",6,Adm);
 	command_register(cmdtext,"/admincnn",9,Adm);
@@ -501,6 +504,8 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	command_register(cmdtext,"/getip",6,Adm);
 	
 	// moderators
+	command_registerNR(cmdtext,"/cmdlist",8,Mod);
+	command_registerNR(cmdtext,"/about",6,Mod);
 	command_register(cmdtext,"/plist",6,Mod);
 	command_register(cmdtext,"/remcar",7,Mod);
 	command_register(cmdtext,"/kick",5,Mod);
@@ -540,7 +545,7 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	new logstring[MAX_STRING];
 	format(logstring,sizeof(logstring),"Player: %s[%d]: %s",oGetPlayerName(playerid),playerid,cmdtext);
 	WriteLog(CMDLog,logstring);
-	return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[15][0]);
+	return 1;
 }
 
 public OnPlayerText(playerid, text[])

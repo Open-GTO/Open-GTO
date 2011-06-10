@@ -27,9 +27,10 @@ stock AdminRace_OnPlayerCommandText(playerid,text[]) // process player commands
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,' '));
 
-	if(!strcmp(cmd, "/arace", true))
+	if(!strcmp(cmd, "/race", true))
 	{
 		set(cmd,strcharsplit(text, idx,' '));
+		if(strlen(cmd) == 0) return 0;
 		if(!strcmp(cmd, "create", true))
 		{
 			new racename[MAX_NAME];
