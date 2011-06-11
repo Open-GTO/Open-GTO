@@ -55,36 +55,27 @@ stock modfunc_OnPlayerDeath(playerid,killerid,reason)
 	return 1;
 }
 
-stock modfunc_OnPlayerText(playerid,text[])
+stock SendClientMessageToModers(senderid,text[])
 {
-	if (!IsPlayerConnected(playerid)) return 0;
-	if(text[0] == '#')
+	new message[MAX_STRING],count = 0;
+	format(message,sizeof(message),lang_texts[12][79],oGetPlayerName(senderid),senderid,text);
+	for(new adminid=0;adminid<=GetPlayerLastID();adminid++)
 	{
-		new string[MAX_STRING];
-		strmid(string,text,1,strlen(text));
-		new count = 0;
-		for(new adminid=0;adminid<=GetPlayerLastID();adminid++)
+		if(IsPlayerMod(adminid))
 		{
-			if(IsPlayerMod(adminid))
-			{
-				new message[MAX_STRING];
-				format(message,sizeof(message), lang_texts[12][79] ,oGetPlayerName(playerid),string);
-				SendClientMessage(adminid,COLOUR_RED,message);
-				count++;
-			}
-		}
-		if(count == 0)
-		{
-			SendClientMessage(playerid,COLOUR_RED,lang_texts[12][80]);
-			return 0;
-		} 
-		else 
-		{
-			new message[MAX_STRING];
-			format(message,sizeof(message), lang_texts[12][81] ,string);
-			SendClientMessage(playerid,COLOUR_GREEN,message);
-			return 0;
+			SendClientMessage(adminid,COLOUR_RED,message);
+			count++;
 		}
 	}
-	return 0;
+	if(count == 0)
+	{
+		SendClientMessage(senderid,COLOUR_RED,lang_texts[12][80]);
+		return 0;
+	} 
+	else 
+	{
+		format(message,sizeof(message),lang_texts[12][81],text);
+		SendClientMessage(senderid,COLOUR_GREEN,message);
+		return 0;
+	}
 }

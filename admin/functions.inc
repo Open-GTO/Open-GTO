@@ -71,14 +71,13 @@ stock UnJailPlayer(playerid)
 
 stock SendMessageToAdmins(playerid, color, text[])
 {
-	new string[MAX_STRING],message[MAX_STRING];
-	strmid(string,text,0,strlen(text));
-	format(message,sizeof(message),lang_texts[1][24],oGetPlayerName(playerid),playerid,string);
+	new message[MAX_STRING];
+	format(message,sizeof(message),lang_texts[1][24],oGetPlayerName(playerid),playerid,text);
 	printf("%s",message);
 	for(new aid=0;aid<=GetPlayerLastID();aid++)
 	{
 		if(!IsPlayerConnected(aid) || IsPlayerNPC(aid) || aid == playerid || (!IsPlayerAdmin(aid) && !IsPlayerAdm(aid))) continue;
-		format(message,sizeof(message), lang_texts[1][23] ,oGetPlayerName(playerid), playerid, GetPlayerStatus(playerid), string);
+		format(message,sizeof(message), lang_texts[1][23] ,oGetPlayerName(playerid), playerid, GetPlayerStatus(playerid), text);
 		SendClientMessage(aid,color,message);
 	}
 	return 0;

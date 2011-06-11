@@ -51,6 +51,7 @@ stock bank_OnGameModeInit()
 	for(new bankid=0;bankid<sizeof(Banks);bankid++)
 	{
 	    CreatePickup(1274, 23, Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z]);
+		CreatePickupText("Банк",Banks[bankid][Coord_X],Banks[bankid][Coord_Y],Banks[bankid][Coord_Z]);
 	}
 	GameMSG(lang_texts[2][0]);
 	return 1;
@@ -59,80 +60,91 @@ stock bank_OnGameModeInit()
 stock bank_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused oldkeys,newkeys
-	new string[MAX_STRING];
-
-	format(string,sizeof(string),lang_texts[2][1],ProfitCount);
-	SendClientMessage(playerid,COLOUR_GREEN,string);
-
-	format(string,sizeof(string),lang_texts[2][2],GetPlayerBankMoney(playerid));
-	SendClientMessage(playerid,COLOUR_GREEN,string);
-
-	bank_ShowDialog_First(playerid);
+	bank_ShowDialog_Start(playerid);
 	return 1;
 }
 
 stock bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 {
-	new string[MAX_STRING];
-	if(dialogid == bank_FirstList_DialogID)
+	switch(dialogid)
 	{
-	    if(!response) return 1;
-		switch(listitem)
+		case bank_Start_DialogID:
 		{
-			case 0: bank_ShowDialog_Withdraw(playerid);
-			case 1: bank_ShowDialog_Deposit(playerid);
+			if(!response) return 0;
+			bank_ShowDialog_List(playerid);
+			return 1;
 		}
-		return 1;
-	}
-	if(dialogid == bank_Withdraw_DialogID)// снять деньги
-	{
-	    if(!response)  return bank_ShowDialog_First(playerid);
-		if(!IsNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
+		case bank_FirstList_DialogID:
 		{
-			show_Msg_Dialog(playerid,lang_texts[2][3],lang_texts[2][13],lang_texts[2][5]);
-			return 0;
+			if(!response) return 0;
+			switch(listitem)
+			{
+				case 0: bank_ShowDialog_Withdraw(playerid);
+				case 1: bank_ShowDialog_Deposit(playerid);
+			}
+			return 1;
 		}
-		new amount = strval(inputtext);
-		if(amount > GetPlayerBankMoney(playerid))
-			amount = GetPlayerBankMoney(playerid);
-		oGivePlayerMoney(playerid,amount,0);
-		GivePlayerBankMoney(playerid,-amount);
-		format(string,sizeof(string),lang_texts[2][7],amount,GetPlayerBankMoney(playerid));
-		show_Msg_Dialog(playerid,lang_texts[2][3],string,lang_texts[2][5]);
-		new Float:playerx,Float:playery,Float:playerz;
-		GetPlayerPos(playerid,playerx,playery,playerz);
-		PlayerPlaySound(playerid,1084,playerx,playery,playerz);
-		return 1;
-	}
-	if(dialogid == bank_Deposit_DialogID)// положить деньги
-	{
-	    if(!response) return bank_ShowDialog_First(playerid);
-		if(!IsNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
+		case bank_Withdraw_DialogID: // снять деньги
 		{
-			show_Msg_Dialog(playerid,lang_texts[2][3],lang_texts[2][13],lang_texts[2][5]);
-			return 0;
+			if(!response) return bank_ShowDialog_List(playerid);
+			if(!IsNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
+			{
+				show_Msg_Dialog(playerid,lang_texts[2][3],lang_texts[2][13],lang_texts[2][5]);
+				return 0;
+			}
+			new amount = strval(inputtext);
+			if(amount > GetPlayerBankMoney(playerid))
+				amount = GetPlayerBankMoney(playerid);
+			oGivePlayerMoney(playerid,amount,0);
+			GivePlayerBankMoney(playerid,-amount);
+			new string[MAX_STRING];
+			format(string,sizeof(string),lang_texts[2][7],amount,GetPlayerBankMoney(playerid));
+			show_Msg_Dialog(playerid,lang_texts[2][3],string,lang_texts[2][5]);
+			PlayerPlaySoundOnPlayer(playerid,1084);
+			return 1;
 		}
-		new amount = strval(inputtext);
-		if(oGetPlayerMoney(playerid) < amount) amount = oGetPlayerMoney(playerid);
-		if(GetPlayerBankMoney(playerid) + amount > MAX_BANK)
+		case bank_Deposit_DialogID: // положить деньги
 		{
-			amount = MAX_BANK - GetPlayerBankMoney(playerid);
-			SendClientMessage(playerid,COLOUR_RED,lang_texts[2][15]);
+			if(!response) return bank_ShowDialog_List(playerid);
+			if(!IsNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
+			{
+				show_Msg_Dialog(playerid,lang_texts[2][3],lang_texts[2][13],lang_texts[2][5]);
+				return 0;
+			}
+			new amount = strval(inputtext);
+			if(oGetPlayerMoney(playerid) < amount) amount = oGetPlayerMoney(playerid);
+			if(GetPlayerBankMoney(playerid) + amount > MAX_BANK)
+			{
+				amount = MAX_BANK - GetPlayerBankMoney(playerid);
+				SendClientMessage(playerid,COLOUR_RED,lang_texts[2][15]);
+			}
+			oGivePlayerMoney(playerid,-amount,0);
+			GivePlayerBankMoney(playerid,amount);
+			new string[MAX_STRING];
+			format(string,sizeof(string),lang_texts[2][14],amount,GetPlayerBankMoney(playerid));
+			show_Msg_Dialog(playerid,lang_texts[2][3],string,lang_texts[2][5]);
+			PlayerPlaySoundOnPlayer(playerid,1084);
+			return 1;
 		}
-		oGivePlayerMoney(playerid,-amount,0);
-		GivePlayerBankMoney(playerid,amount);
-		format(string,sizeof(string),lang_texts[2][14],amount,GetPlayerBankMoney(playerid));
-		show_Msg_Dialog(playerid,lang_texts[2][3],string,lang_texts[2][5]);
-		new Float:playerx,Float:playery,Float:playerz;
-		GetPlayerPos(playerid,playerx,playery,playerz);
-		PlayerPlaySound(playerid,1083,playerx,playery,playerz);
-		return 1;
 	}
 	return 1;
 }
-stock bank_ShowDialog_First(playerid)
+
+stock bank_ShowDialog_Start(playerid)
 {
 	new string[MAX_STRING];
+	format(string,sizeof(string),lang_texts[2][1],
+		ProfitCount,GetPlayerBankMoney(playerid)
+	);
+	return ShowPlayerDialog(playerid,bank_Start_DialogID,DIALOG_STYLE_MSGBOX,
+		lang_texts[2][3],
+		string,
+		lang_texts[2][18],lang_texts[2][6]
+	);
+}
+stock bank_ShowDialog_List(playerid)
+{
+	new string[64];
 	format(string,sizeof(string),lang_texts[2][3],
 		GetPlayerBankMoney(playerid)
 	);
@@ -178,6 +190,9 @@ stock IsPlayerAtBank(playerid)
 stock Profit()
 {
 	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
-		GivePlayerBankMoney(playerid,-(GetPlayerBankMoney(playerid) / 100) * ProfitCount);
+	{
+		if(IsPlayerRegistered(playerid))
+			GivePlayerBankMoney(playerid,-(GetPlayerBankMoney(playerid) / 100) * ProfitCount);
+	}
 	return 1;
 }

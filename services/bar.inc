@@ -39,8 +39,9 @@ stock bar_OnGameModeInit()
 	for(new b_id=0;b_id<sizeof(Bars);b_id++)
 	{
 	    CreatePickup(1551,23,Bars[b_id][Coord_X],Bars[b_id][Coord_Y],Bars[b_id][Coord_Z]);
+		CreatePickupText("Бар",Bars[b_id][Coord_X],Bars[b_id][Coord_Y],Bars[b_id][Coord_Z]);
 	}
-	GameMSG("SERVER: (services)Bar module init");
+	GameMSG(lang_texts[17][12]);
 	return 1;
 }
 
@@ -55,11 +56,11 @@ stock bar_ShowDialog(playerid)
 {
 	new string[256];
 	for(new i=0;i<sizeof(Drinks);i++)
-		format(string,sizeof(string),"%s%s($%d, спирт: %0.1f%%, насыщение: %0.0f)\n",string,Drinks[i][Name],Drinks[i][Cost],Drinks[i][Alcohol],Drinks[i][Hp]);
+		format(string,sizeof(string),lang_texts[17][13],string,Drinks[i][Name],Drinks[i][Cost],Drinks[i][Alcohol],Drinks[i][Hp]);
 	return ShowPlayerDialog(playerid,bar_DialogID,DIALOG_STYLE_LIST,
-		"Меню покупки напитков",
+		lang_texts[17][14],
 		string,
-		"Съесть","Отмена"
+		lang_texts[17][15],lang_texts[17][16]
 	);
 }
 
@@ -70,7 +71,7 @@ stock bar_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	{
 		if(!response) return 1;
 		if(oGetPlayerMoney(playerid) < Drinks[listitem][Cost])
-			return show_Msg_Dialog(playerid,"Покупка напитков","Вам не хватает денег!","ОК");
+			return show_Msg_Dialog(playerid,lang_texts[17][14],lang_texts[17][17],lang_texts[17][18]);
 		oGivePlayerMoney(playerid,-Drinks[listitem][Cost],1);
 		SetPlayerSpecialAction(playerid,Drinks[listitem][Action]);
 		SetPlayerDrunkLevel(playerid,GetPlayerDrunkLevel(playerid) + floatround(Drinks[listitem][Alcohol]*100,floatround_round));
@@ -79,8 +80,8 @@ stock bar_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		else
 			oSetPlayerHealth(playerid,oGetPlayerHealth(playerid) + Drinks[listitem][Hp]);
 		new string[MAX_STRING];
-		format(string,sizeof(string),"Вы выпили %s, за $%d, крепкостью %0.1f%% и насытились на %0.0f.",Drinks[listitem][Name],Drinks[listitem][Cost],Drinks[listitem][Alcohol],Drinks[listitem][Hp]);
-		show_Msg_Dialog(playerid,"Покупка напитков",string,"ОК");
+		format(string,sizeof(string),lang_texts[17][19],Drinks[listitem][Name],Drinks[listitem][Cost],Drinks[listitem][Alcohol],Drinks[listitem][Hp]);
+		show_Msg_Dialog(playerid,lang_texts[17][14],string,lang_texts[17][18]);
 		return 1;
 	}
 	return 1;

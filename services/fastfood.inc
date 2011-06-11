@@ -35,8 +35,9 @@ stock fastfood_OnGameModeInit()
 	for(new ff_id=0;ff_id<sizeof(FastFoods);ff_id++)
 	{
 	    CreatePickup(1445,23,FastFoods[ff_id][Coord_X],FastFoods[ff_id][Coord_Y],FastFoods[ff_id][Coord_Z]);
+		CreatePickupText("Фастфуд",FastFoods[ff_id][Coord_X],FastFoods[ff_id][Coord_Y],FastFoods[ff_id][Coord_Z]);
 	}
-	GameMSG("SERVER: (services)Fastfood module init");
+	GameMSG(lang_texts[17][1]);
 	return 1;
 }
 
@@ -51,11 +52,11 @@ stock fastfood_ShowDialog(playerid)
 {
 	new string[256];
 	for(new i=0;i<sizeof(Food);i++)
-		format(string,sizeof(string),"%s%s(цена: %d, насыщение: %0.0f)\n",string,Food[i][food_name],Food[i][food_cost],Food[i][food_hp]);
+		format(string,sizeof(string),lang_texts[17][2],string,Food[i][food_name],Food[i][food_cost],Food[i][food_hp]);
 	return ShowPlayerDialog(playerid,fastfood_DialogID,DIALOG_STYLE_LIST,
-		"Меню покупки еды",
+		lang_texts[17][3],
 		string,
-		"Съесть","Отмена"
+		lang_texts[17][4],lang_texts[17][5]
 	);
 }
 
@@ -66,7 +67,7 @@ stock fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	{
 		if(!response) return 1;
 		if(oGetPlayerMoney(playerid) < Food[listitem][food_cost])
-			return show_Msg_Dialog(playerid,"Покупка еды","Вам не хватает денег!","ОК");
+			return show_Msg_Dialog(playerid,lang_texts[17][6],lang_texts[17][7],lang_texts[17][8]);
 		oGivePlayerMoney(playerid,-Food[listitem][food_cost],1);
 		ApplyAnimation(playerid,"FOOD","EAT_Burger",4.0,1,1,1,1,1);
 		if(Food[listitem][food_hp] + oGetPlayerHealth(playerid) > GetMaxHealth(playerid))
@@ -74,8 +75,8 @@ stock fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		else
 			oSetPlayerHealth(playerid,oGetPlayerHealth(playerid) + Food[listitem][food_hp]);
 		new string[MAX_STRING];
-		format(string,sizeof(string),"Вы съели %s, за %d и насытились на %0.0f.",Food[listitem][food_name],Food[listitem][food_cost],Food[listitem][food_hp]);
-		show_Msg_Dialog(playerid,"Покупка еды",string,"ОК");
+		format(string,sizeof(string),lang_texts[17][9],Food[listitem][food_name],Food[listitem][food_cost],Food[listitem][food_hp]);
+		show_Msg_Dialog(playerid,lang_texts[17][6],string,lang_texts[17][8]);
 		return 1;
 	}
 	return 1;

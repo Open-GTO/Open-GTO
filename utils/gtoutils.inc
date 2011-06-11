@@ -57,13 +57,16 @@ stock GameMSG(fstring[], {Float, _}:...)
 		#emit LOAD.S.alt		n
 		#emit ADD
 		#emit SCTRL				4
-
+	#if defined GameMSG_USE_PRINT
 		printf(message);
+	#endif
 		WriteLog(GameLog,message);
 	}
 	else
 	{
+	#if defined GameMSG_USE_PRINT
 		printf(fstring);
+	#endif
 		WriteLog(GameLog,fstring);
 	}
 	return 1;

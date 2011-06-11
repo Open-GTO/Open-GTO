@@ -268,7 +268,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			weapons_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
-		case bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID:
+		case bank_Start_DialogID, bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID:
 		{
 			bank_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
@@ -316,9 +316,9 @@ public OnPlayerDeath(playerid, killerid, reason)
 {
 	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
 	if(killerid == INVALID_PLAYER_ID)
-		GameMSG("player: %d: %s: has died > Reason: (%d)",playerid,oGetPlayerName(playerid),reason);
+		GameMSG("player: %s(%d): has died > Reason: (%d)",oGetPlayerName(playerid),playerid,reason);
 	else
-		GameMSG("player: %d: %s: has killed player %s(%d)> Reason: (%d)",killerid,oGetPlayerName(killerid),oGetPlayerName(playerid),playerid,reason);
+		GameMSG("player: %s(%d): has killed player %s(%d)> Reason: (%d)",oGetPlayerName(killerid),killerid,oGetPlayerName(playerid),playerid,reason);
 
 	SendDeathMessage(killerid,playerid,reason);
 	
@@ -543,7 +543,7 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	command_register(cmdtext,"/vmenu",6,vehicles);
 
 	new logstring[MAX_STRING];
-	format(logstring,sizeof(logstring),"Player: %s[%d]: %s",oGetPlayerName(playerid),playerid,cmdtext);
+	format(logstring,sizeof(logstring),"Player: %s"CHAT_SHOW_ID": %s",oGetPlayerName(playerid),playerid,cmdtext);
 	WriteLog(CMDLog,logstring);
 	return 1;
 }
@@ -557,30 +557,31 @@ public OnPlayerText(playerid, text[])
 	{
 	    case '!':
 	    {
-			if(GetPVarInt(playerid,"GangID") == 0 || GetPlayerMuteTime(playerid) != 0)    //Игрок заткнут
+			if(GetPVarInt(playerid,"GangID") == 0 || GetPlayerMuteTime(playerid) > 0)    //Игрок заткнут
 			{
 				SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 				return 0;
 			}
-			strmid(string,text,1,strlen(text));
-			if(!strlen(string)) return 1;
-			format(string,sizeof(string), "%s[%d] банде: %s", oGetPlayerName(playerid), playerid, string);
+			if(strlen(text[1]) < 2) return 1;
+			format(string,sizeof(string), "%s"CHAT_SHOW_ID" банде: {FFFFFF}%s", oGetPlayerName(playerid), playerid, text[1]);
 			SendGangMessage(GetPVarInt(playerid,"GangID"),string,COLOUR_GANG_CHAT);
-			format(string,sizeof(string), "Player: %s[%d]: <GANG CHAT>:   %s",oGetPlayerName(playerid),playerid,text);
+			format(string,sizeof(string), "Player: %s"CHAT_SHOW_ID": <GANG CHAT>: %s",oGetPlayerName(playerid),playerid,text[1]);
 			WriteLog(ChatLog,string);
 			return 0;
 		}
-		case '@':
+		case '@','"':
 		{
-			adminfunc_OnPlayerText(playerid,text);
-			format(string,sizeof(string), "Player: %s[%d]: <ADMIN TALK>:   %s",oGetPlayerName(playerid),playerid,text);
+			if(strlen(text[1]) < 2) return 1;
+			SendClientMessageToAdmins(playerid,text[1]);
+			format(string,sizeof(string), "Player: %s"CHAT_SHOW_ID": <ADMIN TALK>: %s",oGetPlayerName(playerid),playerid,text[1]);
 			WriteLog(ChatLog,string);
 			return 0;
 		}
-		case '#':
+		case '#','№':
 		{
-			modfunc_OnPlayerText(playerid,text);
-			format(string,sizeof(string), "Player: %s[%d]: <MODERATOR TALK>:   %s",oGetPlayerName(playerid),playerid,text);
+			if(strlen(text[1]) < 2) return 1;
+			SendClientMessageToModers(playerid,text[1]);
+			format(string,sizeof(string), "Player: %s"CHAT_SHOW_ID": <MODERATOR TALK>: %s",oGetPlayerName(playerid),playerid,text[1]);
 			WriteLog(ChatLog,string);
 			return 0;
 		}
@@ -590,9 +591,9 @@ public OnPlayerText(playerid, text[])
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 		return 0;
 	}
-	format(string, sizeof(string),"%s[%d]: {FFFFFF}%s",oGetPlayerName(playerid),playerid,text);
+	format(string, sizeof(string),"%s"CHAT_SHOW_ID": {FFFFFF}%s",oGetPlayerName(playerid),playerid,text);
 	SendClientMessageToAll(GetPlayerColor(playerid),string);
-	format(string,sizeof(string),"Player: %s[%d]: %s",oGetPlayerName(playerid),playerid,text);
+	format(string,sizeof(string),"Player: %s"CHAT_SHOW_ID": %s",oGetPlayerName(playerid),playerid,text);
 	WriteLog(ChatLog,string);
 	return 0;
 }
@@ -649,6 +650,9 @@ public OnPlayerStateChange(playerid,newstate,oldstate)
 {
 	if(newstate == PLAYER_STATE_DRIVER)
 	{
+	#if defined OLD_ENGINE_DO
+		vehicle_Engine(GetPlayerVehicleID(playerid),VEHICLE_PARAMS_ON);
+	#endif
 		trucker_OnPlayerStateChange(playerid,newstate,oldstate);
 		vip_OnPlayerStateChange(playerid,newstate,oldstate);
 	}
@@ -657,6 +661,9 @@ public OnPlayerStateChange(playerid,newstate,oldstate)
 
 public OnPlayerExitVehicle(playerid,vehicleid)
 {
+#if defined OLD_ENGINE_DO
+	vehicle_Engine(vehicleid,VEHICLE_PARAMS_OFF);
+#endif
 	modfunc_OnPlayerExitVehicle(playerid,vehicleid);
 	return 1;
 }

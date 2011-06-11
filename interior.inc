@@ -286,7 +286,9 @@ stock interior_OnGameModeInit()
 	for(new i=0;i<SIZE;i++)
 	{
 		CreatePickup(1318,1,PickupPositions[i][X],PickupPositions[i][Y],PickupPositions[i][Z],-1);
+		CreatePickupText("Вход",PickupPositions[i][X],PickupPositions[i][Y],PickupPositions[i][Z]);
 		CreatePickup(1559,1,EnterPositions[i][X],EnterPositions[i][Y],EnterPositions[i][Z],-1);
+		CreatePickupText("Выход",EnterPositions[i][X],EnterPositions[i][Y],EnterPositions[i][Z]);
 		//CreateStreamMapIcon(2,ExitPositions[i][X],ExitPositions[i][Y],ExitPositions[i][Z]);
 	}
 	GameMSG("SERVER: Interior module init");

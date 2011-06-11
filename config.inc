@@ -1,4 +1,5 @@
 /*
+	
 	Описание: дефайны и настройки по умолчанию
 	Автор: ZiGGi
 
@@ -13,7 +14,7 @@
 
 #pragma tabsize 0
 
-#define VERSION					"v1.0.0 alpha 3" // версия мода
+#define VERSION					"v1.0.0 alpha(3)" // версия мода
 #define GTO_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе Linux не рекомендуется)
 #define GTO_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
@@ -30,7 +31,8 @@
 #define INVALID_QUEST_ID		0
 #define MAX_QUESTS				255
 
-#define WORLD_SAVE_TIME			300000
+#define WORLD_SAVE_TIME			300000		// 1 раз, за это кол-во милисекунд выполняется сохранение всего мира(300000 - 5 минут)
+//#define GameMSG_USE_PRINT // если задефайнен, то функция GameMSG выводит сообщение в консоль сервера
 // античит(параметры по умолчанию)
 #define ANTI_HEALTH_HACK_ENABLED	1 // защита от чита на здоровье
 #define ANTI_MONEY_HACK_ENABLED		1 // защита от чита на деньги
@@ -53,6 +55,8 @@
 #define PAYDAY_CUTOFF		MAX_MONEY / 2 // кол-во денег, при котором перестаётся даваться деньги за PayDay
 #define	PAYDAY_PAYXP		200 // PayDay тариф на опыт
 
+#define CHAT_SHOW_ID		"(%d)" // вид отображения ида в чате
+
 // дома
 //#define BUY_ALL_HOUSES // позволяет запретить покупать чужие дома(если закомментировано то чужие дома можно покупать)
 //
@@ -64,6 +68,7 @@
 
 // транспорт
 #define CARS_RESPAWN_TIME	600 // время респавна транспорта в секундах (86400 - один день) 
+#define OLD_ENGINE_DO // сел в транспорт - завелось, вышел - заглох(если задефайнено)
 //
 
 // банды
@@ -106,12 +111,14 @@
 
 #define MAX_COUNTDOWN		5 // кол-во секунд для отсчёта гонок и дм
 #define KEY_USING			KEY_WALK // Кнопка 'Ходьба' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
-
+#define KEY_NAME			"Ходьба"
+#define PICKUP_TEXT			"\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'"
+#define CreatePickupText(%0,%1,%2,%3)	Create3DTextLabel(%0PICKUP_TEXT,0x00FFFFEE,%1,%2,%3,20.0,0,1)
 // диалоги
 enum {
 	message_DialogID,
 	account_Reg_DialogID, account_Log_DialogID,
-	bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID,
+	bank_Start_DialogID, bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID,
 	click_DialogID, click_Resp_DialogID,
 	house_DialogID, houses_DialogID,
 	bis_DialogID, bis_Info_DialogID, bis_Msg_DialogID,
@@ -123,6 +130,7 @@ enum {
 }
 
 // прочее
+// 'переименование' функций mxINI
 #define ini_Create		ini_createFile
 #define ini_Open		ini_openFile
 #define ini_Close		ini_closeFile
@@ -136,6 +144,7 @@ enum {
 #define ini_Remov(%0)	fremove(%0)
 #define ini_Exist(%0)	fexist(%0)
 
+// цвета
 #define COLOUR_GREY 0xAFAFAFAA // grey
 #define COLOUR_GREEN 0x33AA33AA // green
 #define COLOUR_LIGHTGREEN 0x9ACD32AA //lightgreen
@@ -170,20 +179,6 @@ enum {
 #define COLOUR_DM 0xFF0066AA // red - purple
 #define COLOUR_DM_BAD 0xFF0066AA // red - purple
 
-
-#define SOUND_MUSIC_CLASSSELECT		1185
-#define SOUND_MUSIC_RACEFINISH		1183
-#define SOUND_MUSIC_RACERECORD		1097
-#define SOUND_MUSIC_MISSIONCOMPLETE	1185
-#define SOUND_OFF					1184
-#define SOUND_BLIP1					1056
-#define SOUND_BLIP2					1057
-#define SOUND_EXPLOSION				1159
-#define SOUND_PURCHASE				1149
-#define SOUND_CHECKPOINT			1058
-#define SOUND_DEATH					1057
-#define SOUND_DMKILL				1056
-#define SOUND_DMDEATH				1057
-
+// по кнопкам
 #define PRESSED(%0) \
 	(((newkeys & (%0)) == (%0)) && ((oldkeys & (%0)) != (%0)))

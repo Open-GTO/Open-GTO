@@ -4,11 +4,37 @@
 //
 
 #if defined _admin_func_included
- #endinput
+	#endinput
 #endif
 
 #define _admin_func_included
 #pragma library admin_func
+
+
+stock SendClientMessageToAdmins(senderid,text[])
+{
+	new message[MAX_STRING],count = 0;
+	format(message,sizeof(message),lang_texts[12][28],oGetPlayerName(senderid),senderid,text);
+	for(new adminid=0;adminid<=GetPlayerLastID();adminid++)
+	{
+		if(IsPlayerAdmin(adminid) || IsPlayerAdm(adminid))
+		{
+			SendClientMessage(adminid,COLOUR_RED,message);
+			count++;
+		}
+	}
+	if(count == 0)
+	{
+		SendClientMessage(senderid,COLOUR_RED,lang_texts[12][29]);
+		return 0;
+	} 
+	else 
+	{
+		format(message,sizeof(message),lang_texts[12][30],text);
+		SendClientMessage(senderid,COLOUR_GREEN,message);
+		return 0;
+	}
+}
 
 stock adminfunc_OnPlayerText(playerid,text[])
 {
@@ -18,7 +44,7 @@ stock adminfunc_OnPlayerText(playerid,text[])
 		strmid(string,text,1,strlen(text));
 		for(new adminid=0;adminid<=GetPlayerLastID();adminid++)
 		{
-			if(IsPlayerAdmin(adminid) && IsPlayerAdm(adminid))
+			if(IsPlayerAdmin(adminid) || IsPlayerAdm(adminid))
 			{
 				new message[MAX_STRING];
 				format(message,sizeof(message),lang_texts[12][28],oGetPlayerName(playerid), string);

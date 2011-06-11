@@ -2276,13 +2276,11 @@ stock LoadVehicles()
 	for(new i=0;i<sizeof(vip_Vehicle);i++)
 	{
 		vip_LastVehicleID = AddStaticVehicleEx(vip_Vehicle[i][Model],vip_Vehicle[i][Coord_X],vip_Vehicle[i][Coord_Y],vip_Vehicle[i][Coord_Z],vip_Vehicle[i][Coord_A],vip_Vehicle[i][Color_1],vip_Vehicle[i][Color_2],CarsReSpawnTime);
-		SetVehicleParamsEx(vip_LastVehicleID,VEHICLE_PARAMS_ON,0,0,0,0,0,0);
 	}
-	for(new i=0,veh_id;i<sizeof(VehicleModelSpawns);i++)
+	for(new i=0;i<sizeof(VehicleModelSpawns);i++)
 	{
 		if(VehicleModelSpawns[i][vspawn_model] == 0) continue;
-		veh_id = AddStaticVehicleEx(VehicleModelSpawns[i][vspawn_model],VehicleModelSpawns[i][vspawn_x],VehicleModelSpawns[i][vspawn_y],VehicleModelSpawns[i][vspawn_z],VehicleModelSpawns[i][vspawn_heading],VehicleModelSpawns[i][vspawn_colour1],VehicleModelSpawns[i][vspawn_colour2],CarsReSpawnTime);
-		SetVehicleParamsEx(veh_id,VEHICLE_PARAMS_ON,0,0,0,0,0,0);
+		AddStaticVehicleEx(VehicleModelSpawns[i][vspawn_model],VehicleModelSpawns[i][vspawn_x],VehicleModelSpawns[i][vspawn_y],VehicleModelSpawns[i][vspawn_z],VehicleModelSpawns[i][vspawn_heading],VehicleModelSpawns[i][vspawn_colour1],VehicleModelSpawns[i][vspawn_colour2],CarsReSpawnTime);
 	}
 	return 1;
 }
@@ -2308,7 +2306,7 @@ stock vehicles_OnGameModeInit()
 {
 	vehicles_LoadConfig();
 	LoadVehicles();
-	GameMSG("SERVER: Vehicles module init");
+	GameMSG(lang_texts[5][0]);
 	return 1;
 }
 
@@ -2325,10 +2323,7 @@ stock GetRndVModelByLevel(level)
 	    	idx++;
 	    }
 	}
-	new rnd = random(idx);
-	new vmodel;
-	vmodel = leveledvehicles[rnd];
-	return vmodel;
+	return leveledvehicles[ random(idx) ];
 }
 
 stock GetVehicleName(vehiclemodel)
@@ -2348,11 +2343,11 @@ stock GetVehicleName(vehiclemodel)
 
 stock GetVehicleSpeed(playerid)
 {
-    new Float:Vx,Float:Vy,Float:Vz,Float:rtn;
-    if(IsPlayerInAnyVehicle(playerid)) GetVehicleVelocity(GetPlayerVehicleID(playerid),Vx,Vy,Vz);
+    new Float:Vx,Float:Vy,Float:Vz,
+		vehicleid = GetPlayerVehicleID(playerid);
+    if(vehicleid != 0) GetVehicleVelocity(vehicleid,Vx,Vy,Vz);
 	else return 1;
-    rtn = floatsqroot(floatabs(floatpower(Vx + Vy + Vz,2)));
-    return floatround(rtn * 100 * 1.61);
+    return floatround(floatsqroot(floatabs(floatpower(Vx + Vy + Vz,2))) * 100 * 1.61);
 }
 
 stock vehicles_OnPlayerCommandText(playerid, cmdtext[])
@@ -2360,9 +2355,17 @@ stock vehicles_OnPlayerCommandText(playerid, cmdtext[])
 	if(!strcmp(cmdtext,"/vmenu",true)) 
 	{
 		if(!IsPlayerInAnyVehicle(playerid))
-			return SendClientMessage(playerid,COLOUR_RED, lang_texts[5][24]);
+			return SendClientMessage(playerid,COLOUR_RED, lang_texts[5][1]);
 		show_Vehicle_Menu(playerid);
 		return 1;
 	}
 	return 0;
+}
+
+stock vehicle_Engine(vehicleid,newstate)
+{
+	new engine,lights,alarm,doors,bonnet,boot,objective;
+	GetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,boot,objective);
+	SetVehicleParamsEx(vehicleid,newstate,lights,alarm,doors,bonnet,boot,objective);
+	return 1;
 }
