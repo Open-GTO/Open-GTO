@@ -69,6 +69,7 @@ Date start Open-GTO: 	5 November 2009
 #include "protections\antirconhack"
 #include "protections\antihightping"
 #include "protections\chatguard"
+#include "protections\banweapons"
 //#include "testserver"
 #include "click"
 #include "services\fastfood"
@@ -314,6 +315,8 @@ public OnPlayerEnterRaceCheckpoint(playerid)
 
 public OnPlayerDeath(playerid, killerid, reason)
 {
+	banweapons_OnPlayerDeath(playerid, killerid, reason);
+	
 	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
 	if(killerid == INVALID_PLAYER_ID)
 		GameMSG("player: %s(%d): has died > Reason: (%d)",oGetPlayerName(playerid),playerid,reason);
