@@ -60,6 +60,7 @@ nee:
 	AntiIdleSaveConfig();
 	AntiHightPingSaveConfig();
 	ChatGuardSaveConfig();
+	BanWeaponsSaveConfig();
 	//
 	
 	if ((VerboseSave == 1) || (VerboseSave == -1))

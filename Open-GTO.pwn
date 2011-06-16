@@ -315,8 +315,6 @@ public OnPlayerEnterRaceCheckpoint(playerid)
 
 public OnPlayerDeath(playerid, killerid, reason)
 {
-	banweapons_OnPlayerDeath(playerid, killerid, reason);
-	
 	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
 	if(killerid == INVALID_PLAYER_ID)
 		GameMSG("player: %s(%d): has died > Reason: (%d)",oGetPlayerName(playerid),playerid,reason);
@@ -327,6 +325,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	
 	if(killerid == INVALID_PLAYER_ID) return 1;
 	
+	banweapons_OnPlayerDeath(playerid, killerid, reason);
 	if(!IsPlayerInAnyDM(playerid))
 	{
 		player_OnPlayerDeath(playerid,killerid,reason);
