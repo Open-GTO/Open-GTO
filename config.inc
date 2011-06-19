@@ -58,6 +58,19 @@
 #define CHAT_SHOW_ID		"(%d)" // вид отображения ида в чате
 
 #define BAN_WEAPONS			38, 39 // запрещённое оружие
+
+// стандартные иконки(by wups, модфицированно)
+#define MAPICON_PAY_SPRAY
+//#define MAPICON_BARBER
+#define MAPICON_PIZZA
+#define MAPICON_BURGER
+#define MAPICON_CLUCKIN
+//#define MAPICON_TATTOO
+#define MAPICON_CLOTHES
+#define MAPICON_AMMUNATION
+#define MAPICON_TUNE
+//
+
 // дома
 //#define BUY_ALL_HOUSES // позволяет запретить покупать чужие дома(если закомментировано то чужие дома можно покупать)
 //

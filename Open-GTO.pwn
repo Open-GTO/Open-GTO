@@ -19,7 +19,8 @@ Date start Open-GTO: 	5 November 2009
 -------------------------------------------------------------------
 							Open-GTO
 -------------------------------------------------------------------
-0.0.0 – 1.0.0		ZiGGi, GhostTT, heufix, Elbi
+0.0.0 – 1.0.0		Current: ZiGGi, SLICK
+					Previous: GhostTT, heufix, Elbi
 -------------------------------------------------------------------
 */
 
@@ -108,19 +109,34 @@ Date start Open-GTO: 	5 November 2009
 #tryinclude "deathmatches\dm_usnavy"		// Deathmatch - The US Navy
 
 main()
-{	// CREDITS NOT DELETE !!!!!!!!!!!!!!!!!
-	print(" ");
-	print(" ");
-	print("\n-----------------------------------------------------------\n");
-	print("Running Open-GTO "#VERSION"\n");
-	print("_____________________________________________________________\n");
-	print("Created by: Iain Gilbert (Bogart)\nContinued by: Peter Steenbergen (j1nx)\n\t\tRobin Kikkert (Dejavu)\n\t\tLajos Pacsek (asturel)");
-	print("\t\tDmitry Frolov (FP)\nGTO-Rus Team(®): GhostTT, heufix, Elbi, ZiGGi");
-	print("_____________________________________________________________\n");
-	print("Translated to Russian by Dmitry Borisoff (Beginner)");
-	print("Visit us at http://open-gto.ru/");
-	print("\n------------------------------------------------------------\n");
-}   // CREDITS NOT DELETE !!!!!!!!!!!!!!!!!
+{
+	print("\n\n\n\
+		-------------------------------------------------------------\n\
+		\n\
+		\t\tRunning Open-GTO "#VERSION"\n\
+		\n\
+		_____________________________________________________________\n\
+	");
+	print("\
+		Created by: Iain Gilbert (Bogart)\n\
+		Continued by:\n\
+			\tPeter Steenbergen (j1nx)\n\
+			\tRobin Kikkert (Dejavu)\n\
+			\tLajos Pacsek (asturel)\n\
+			\tDmitry Frolov (FP)\n\
+			\tOpen-GTO Team:\n\
+				\t\tCurrent: ZiGGi, SLICK\n\
+				\t\tPrevious: GhostTT, heufix, Elbi\n\
+	");
+	print("\
+		_____________________________________________________________\n\
+		\n\
+		Translated to Russian by Dmitry Borisoff (Beginner)\n\
+		Visit us at http://open-gto.ru/\n\
+		\n\
+		------------------------------------------------------------\n\
+	");
+}
 
 public OnGameModeInit()
 {

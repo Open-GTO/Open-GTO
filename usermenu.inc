@@ -231,21 +231,20 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						\t{FFFFFF}Open - Grand Theft Online {AA3333}"VERSION"{FFFFFF}.\n\
 						\n\
 						\n\
-						{00C0DD}Создано {AFE7FF}Iain Gilbert.\n\
+						{00C0DD}Создал {AFE7FF}Iain Gilbert\n\
 						\n\
-						{00C0DD}Продолжено {AFE7FF}Peter Steenbergen,\n\
-									\t\tRobin Kikkert,\n\
-									\t\tAsturel,\n\
-									\t\tDmitry Frolov (FP),\n\
-									\t\tOpen-GTO Team,\n\
-									\t\tZiGGi.\n\
+						{00C0DD}Продолжили:{AFE7FF}\n\
+									\t\tPeter Steenbergen\n\
+									\t\tRobin Kikkert\n\
+									\t\tAsturel\n\
+									\t\tDmitry Frolov (FP)\n\
+									\t\tOpen-GTO Team:\n\
+									\t\t\tCurrent: ZiGGi, SLICK\n\
+									\t\t\tPrevious: GhostTT, heufix, Elbi\n\
 						\n\
-						{00C0DD}Open-GTO Team: {AFE7FF}GhostTT,\n\
-									\t\t  heufix,\n\
-									\t\t  ZiGGi,\n\
-									\t\t  Elbi.\n\
-						\n\
-						{00C0DD}Косвенные разработчики: {AFE7FF}MX_Master(mxINI,Chat-Guard),\n\
+						{00C0DD}Косвенные разработчики: {AFE7FF}\n\
+									\t\tMX_Master(mxINI,Chat-Guard)\n\
+									\t\twups(Default map icons)\n\
 						\n\
 						"
 					);
