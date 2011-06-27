@@ -32,7 +32,7 @@
 #define MAX_QUESTS				255
 
 #define WORLD_SAVE_TIME			300000		// 1 раз, за это кол-во милисекунд выполняется сохранение всего мира(300000 - 5 минут)
-//#define GameMSG_USE_PRINT // если задефайнен, то функция GameMSG выводит сообщение в консоль сервера
+#define GameMSG_USE_PRINT // если задефайнен, то функция GameMSG выводит сообщение в консоль сервера
 // античит(параметры по умолчанию)
 #define ANTI_HEALTH_HACK_ENABLED	1 // защита от чита на здоровье
 #define ANTI_MONEY_HACK_ENABLED		1 // защита от чита на деньги
