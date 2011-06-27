@@ -46,6 +46,8 @@
 #define CHAT_GUARD_ENABLED	1 // защита чата
 
 // прочее
+#define MAX_GULPS			5 // максимальное количество глотков из бутылки
+
 #define GROUNDHOID_ENABLED	1 // точки прокачки
 
 #define BANK_PROFIT		2 // процент начисления прибыли за хранение в банке

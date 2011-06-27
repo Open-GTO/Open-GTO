@@ -633,6 +633,10 @@ public OnPlayerUpdate(playerid)
 
 public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
+	if( PRESSED( KEY_FIRE ) )
+	{
+		if( GetPVarInt(playerid,"bar_Drinking") == 1 ) return bar_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+	}
 	if( PRESSED ( KEY_USING ) )
 	{
 		if( IsPlayerAtEnterExit(playerid) ) return interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);

@@ -48,7 +48,31 @@ stock bar_OnGameModeInit()
 stock bar_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused oldkeys,newkeys
-	bar_ShowDialog(playerid);
+	if( PRESSED ( KEY_USING ) )
+	{
+		return bar_ShowDialog(playerid);
+	}
+	if( GetPVarInt(playerid,"bar_Drinking") == 1 && GetPVarInt(playerid,"bar_Gulping") == 0 )
+	{
+		GivePVarInt(playerid,"bar_Gulps",1);
+		SetPVarInt(playerid,"bar_Gulping",1);
+		SetTimerEx("bar_Gulp",2000,0,"d",playerid);
+		return 1;
+	}
+	return 1;
+}
+
+forward bar_Gulp(playerid);
+public bar_Gulp(playerid)
+{
+	if(GetPVarInt(playerid,"bar_Gulps") >= MAX_GULPS)
+	{
+		SetPlayerSpecialAction(playerid,SPECIAL_ACTION_NONE);
+		SetPVarInt(playerid,"bar_Drinking",0);
+		SetPVarInt(playerid,"bar_Gulps",0);
+		SetPVarInt(playerid,"bar_Gulping",0);
+	}
+	SetPVarInt(playerid,"bar_Gulping",0);
 	return 1;
 }
 
