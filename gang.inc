@@ -365,7 +365,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
        			SendClientMessage(playerid,COLOUR_RED,lang_texts[6][56]);
                 return 1;
    			}
-   			if(GetPVarInt(playerid,"GangID") != 0)
+   			if(GetPVarInt(inviteid,"GangID") != 0)
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][57]);
 
          	format(string,sizeof(string),lang_texts[6][58],oGetPlayerName(playerid),Gangs[gangid][gang_name]);
