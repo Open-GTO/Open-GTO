@@ -26,9 +26,9 @@ enum EnterInfo
 	Float:FacingAngle,
 	interiorid
 }
-#define SIZE 81
+#define INTERIORS_SIZE 81
 
-new PickupPositions[SIZE][PickInfo] = {
+new PickupPositions[INTERIORS_SIZE][PickInfo] = {
 {2400.463378,-1981.036499,13.546875,182.964981},
 {2397.710449,-1898.155151,13.546875,186.098419},
 {2228.920410,-1722.154907,13.562500,326.858398},
@@ -112,7 +112,7 @@ new PickupPositions[SIZE][PickInfo] = {
 {-2336.289550,-166.706802,35.554687,92.285903}
 };
 
-new EnterPositions[SIZE][EnterInfo] = {
+new EnterPositions[INTERIORS_SIZE][EnterInfo] = {
 {296.920013,-111.071998,1001.515625,359.903076,6},
 {365.674346,-10.712305,1001.851562,359.903076,9},
 {772.111999,-3.898649,1000.728820,0.000000,5},
@@ -196,7 +196,7 @@ new EnterPositions[SIZE][EnterInfo] = {
 {363.412994,-74.578697,1001.507812,314.700012,10}
 };
 
-new ExitPositions[SIZE][PickInfo] = {
+new ExitPositions[INTERIORS_SIZE][PickInfo] = {
 {2400.502685,-1978.478393,13.546875,0.000000},
 {2397.830078,-1895.650024,13.382812,0.000000},
 {2227.713623,-1723.650268,13.551807,136.999954},
@@ -283,7 +283,7 @@ new ExitPositions[SIZE][PickInfo] = {
 stock interior_OnGameModeInit()
 {
 	DisableInteriorEnterExits();
-	for(new i=0;i<SIZE;i++)
+	for(new i=0;i<INTERIORS_SIZE;i++)
 	{
 		CreatePickup(1318,1,PickupPositions[i][X],PickupPositions[i][Y],PickupPositions[i][Z],-1);
 		CreatePickupText("¬ход",PickupPositions[i][X],PickupPositions[i][Y],PickupPositions[i][Z]);
@@ -298,7 +298,7 @@ stock interior_OnGameModeInit()
 stock interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused oldkeys,newkeys
-	for(new id=0,idd;id<SIZE;id++)
+	for(new id=0,idd;id<INTERIORS_SIZE;id++)
 	{
 		if(IsPlayerInRangeOfPoint(playerid,2,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5))
 		{
@@ -323,7 +323,7 @@ stock interior_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 
 stock IsPlayerAtEnterExit(playerid)
 {
-	for(new id=0;id<SIZE;id++)
+	for(new id=0;id<INTERIORS_SIZE;id++)
 	{
 		if(
 		IsPlayerInRangeOfPoint(playerid,2,EnterPositions[id][X],EnterPositions[id][Y],EnterPositions[id][Z]+0.5)

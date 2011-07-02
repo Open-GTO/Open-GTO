@@ -143,7 +143,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[1][28]);
 		for(new id=0;id<=GetPlayerLastID();id++)
 		{
-			if((IsPlayerConnected(id) && IsPlayerAdmin(id)) || (IsPlayerConnected(id) && IsPlayerAdm(id)))
+			if(IsPlayerAdmin(id) || IsPlayerAdm(id))
 			{
 				format(string, sizeof(string), lang_texts[1][29] , oGetPlayerName(id), id);
 				SendClientMessage(playerid, COLOUR_LIGHTBLUE,string);
@@ -152,7 +152,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		for(new id=0;id<=GetPlayerLastID();id++)
 		{
-			if(IsPlayerConnected(id) && IsPlayerMod(id))
+			if(IsPlayerMod(id))
 			{
 				format(string,sizeof(string),lang_texts[1][30],oGetPlayerName(id),id);
 				SendClientMessage(playerid,COLOUR_LIGHTGREEN,string);
@@ -175,7 +175,6 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		return 1;
 	}
 
-	//ÏËÀÒÍÛÅ ÊÎÌÀÍÄÛ
 	if(!strcmp(cmd,"/skydive",true))
 	{
 		if(GetPlayerJailed(playerid) == 1 || GetPlayerInterior(playerid) != 0 || IsPlayerInAnyDM(playerid)) return 0;

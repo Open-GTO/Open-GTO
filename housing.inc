@@ -230,7 +230,6 @@ stock DeleteRenter(playerid)
 
 stock housing_OnPlayerCommandText(playerid,text[]) 
 {
-	if(!IsPlayerConnected(playerid)) return 0;
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,' '));
 	if(strlen(cmd) == 0) return 0;
