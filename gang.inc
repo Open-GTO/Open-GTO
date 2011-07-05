@@ -19,7 +19,7 @@ new Gang_Create_Cost = GANG_CREATE_COST,
 enum MemberInfo 
 {
 	bool:member_online,
-	member_name[MAX_NAME],
+	member_name[MAX_PLAYER_NAME],
 	member_playerid
 }
 
@@ -94,14 +94,12 @@ stock gang_OnGameModeInit()
 
 stock FindGangFreeSlot()
 {
-	new gangid=0;
 	for(new id=1;id<MAX_GANGS;id++)
 	{
-		if(Gangs[id][gang_active] == true) continue;
-		gangid = id;
-		break;
+		if(Gangs[id][gang_active] != true)
+			return id;
 	}
-	return gangid;
+	return 0;
 }
 
 stock GangLoad(gangname[])
@@ -113,12 +111,10 @@ stock GangLoad(gangname[])
 	}
 
 	new gangid = FindGangFreeSlot();
-	if(gangid == 0) return print("[ERROR] Свободный слот для банды не найден");
+	if(gangid == 0) return GameMSG("ERROR: Свободный слот для банды не найден");
 	Gangs[gangid][gang_active] = true;
 	gang_load_db_ini(gangid,gangname);
-	new logstring[MAX_STRING];
-	format(logstring,sizeof(logstring), "gang_loaded: %d",gangid);
-	WriteLog(GameLog,logstring);
+	GameMSG("gang_loaded: id=%d, name=%s",gangid,gangname);
 	return gangid;
 }
 
@@ -134,12 +130,11 @@ stock gang_load_db_ini(gangid,gangname[])
 	ini_GetInt(file_gang,"Score",Gangs[gangid][gang_score]);
 	ini_GetInt(file_gang,"XP",Gangs[gangid][gang_xp]);
 	ini_GetInt(file_gang,"Level",Gangs[gangid][gang_level]);
-	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
+	for(new gangmember=0,string[MAX_STRING];gangmember<MAX_GANG_SIZE;gangmember++)
 	{
 		GangMemberInfo[gangid][gangmember][member_online] = false;
-		new string[MAX_STRING];
 		format(string,sizeof(string),"Member%d",gangmember);
-		ini_Get(file_gang,string,GangMemberInfo[gangid][gangmember][member_name],MAX_PLAYER_NAME+1); // +1 - на всякий случай:)
+		ini_Get(file_gang,string,GangMemberInfo[gangid][gangmember][member_name],MAX_PLAYER_NAME);
 		GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
 	}
 	ini_Close(file_gang);
@@ -458,17 +453,17 @@ stock GangJoinMember(gangid,playerid)
 {
 	if(gangid == 0)
 	{
-		WriteLog(GameLog,"script_warning: invalid gang id.");
+		GameMSG("script_warning: invalid gang id.");
 		return 0;
 	}
 	if(GetPVarInt(playerid,"GangID") != 0)
 	{
-    	WriteLog(GameLog,"script_warning: player already in a gang!");
+		GameMSG("script_warning: player already in a gang!");
     	return 0;
     }
 	if(GangOnlineCount(gangid) >= MAX_GANG_SIZE)
 	{
-		WriteLog(GameLog,"script_warning: Gang is already full.");
+		GameMSG("script_warning: Gang is already full.");
 		return 0;
 	}
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
@@ -608,7 +603,6 @@ stock GangMemberLogout(playerid,gangid)
 		format(string, sizeof(string),lang_texts[6][74],oGetPlayerName(playerid));
 		SendGangMessage(gangid,string,COLOUR_GANG);
 	}
-//	GangSave(gangid); //!!!Fix
 	return;
 }
 
@@ -665,13 +659,14 @@ stock GangKill(gangid,killerid,victimid,reason)
 
 stock GangMemberLogin(playerid,gangid)
 {
-	if(GetPVarInt(playerid,"GangID") != 0) SetPVarInt(playerid,"GangID",0);
 	if(gangid == 0) return 0;
+	new pl_name[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,pl_name,sizeof(pl_name));
 	for(new gangmember=0,string[MAX_STRING];gangmember<MAX_GANG_SIZE;gangmember++)
 	{
-		if(strcmp(GangMemberInfo[gangid][gangmember][member_name],oGetPlayerName(playerid),false)) continue;
+		if(strcmp(GangMemberInfo[gangid][gangmember][member_name],pl_name,false)) continue;
 		
-		format(string,sizeof(string),lang_texts[6][77],oGetPlayerName(playerid));
+		format(string,sizeof(string),lang_texts[6][77],pl_name);
 		SendGangMessage(gangid,string,COLOUR_GANG);
 		GangMemberInfo[gangid][gangmember][member_online] = true;
 		GangMemberInfo[gangid][gangmember][member_playerid] = playerid;

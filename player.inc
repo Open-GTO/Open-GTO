@@ -580,10 +580,10 @@ stock player_load_db_ini(playerid)
 	
 	SetPlayerFightingStyle(playerid,GetPlayerFightStyle(playerid));
 	new gangname[MAX_NAME];
-	new tmpname[MAX_NAME];
 	ini_Get(file_player,"Gang",gangname);
 	if(strlen(gangname) > 0)
 	{
+		new tmpname[MAX_NAME];
 		format(tmpname,sizeof(tmpname),"%s%s"GTO_FILES_FORMAT,GangDB,gangname);
 		if(!ini_Exist(tmpname))
 		{
@@ -591,19 +591,14 @@ stock player_load_db_ini(playerid)
 			SendClientMessage(playerid,COLOUR_ORANGE,tmpname);
 			ini_Set(file_player,"Gang",nullstr);
 			SetPVarInt(playerid,"GangID",0);
-			goto not_gang;
 		}
-		SetPlayerGangName(playerid,gangname);
-		SetPVarInt(playerid,"GangID",GangLoad(gangname));
-		GangMemberLogin(playerid,GetPVarInt(playerid,"GangID"));
-		if(GetPVarInt(playerid,"GangID") == 0)
+		else
 		{
-			SetPlayerGangName(playerid,nullstr);
-			SetPVarInt(playerid,"GangID",0);
+			GangMemberLogin(playerid,GangLoad(gangname));
 		}
 	}
 	else SetPVarInt(playerid,"GangID",0); // no gang
-not_gang:
+
 	new wepstr[MAX_STRING];
 	ini_Get(file_player,"Weapons",wepstr);
 	SetWeaponsFromDBString(playerid,wepstr);
