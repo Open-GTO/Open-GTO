@@ -144,8 +144,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	if(!strcmp(cmd,"/payday",true))
 	{
-		admpayday = 256;
-		PayDay();
+		GivePay();
 		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[12][90]);
 		return 1;
 	}

@@ -135,13 +135,13 @@ public OneMinuteTimer()
 	JailTimer();
 	AntiIdle();
 	TurnAround();
+	PayDay();
 }
 
 forward OneHourTimer();
 public OneHourTimer()
 {
 	Profit();
-	PayDay();
 }
 
 forward FiveSecondTimer();

@@ -1,7 +1,12 @@
-//
-// Created:     06.09.06
-// Aurthor:    Iain Gilbert
-//
+/*
+	
+	Created:	06.09.06
+	Aurthor:    Iain Gilbert
+	
+	Modified:	ZiGGi
+	Date:		07.07.2011
+	
+*/
 
 #if defined _payday_included
   #endinput
@@ -10,10 +15,10 @@
 #define _payday_included
 #pragma library payday
 
+
 new BasePay = PAYDAY_BASE_PAY,
 	PayCutoff = PAYDAY_CUTOFF,
 	BasePayXP = PAYDAY_PAYXP;
-new admpayday,rpayday;
 
 stock PaydayLoadConfig()
 {
@@ -39,7 +44,7 @@ stock PaydaySaveConfig()
 stock payday_OnGameModeInit()
 {
 	PaydayLoadConfig();
-	GameMSG("SERVER: Payday module init");
+	GameMSG(lang_texts[2][17]);
 	return 1;
 }
 
@@ -47,36 +52,36 @@ stock PayDay()
 {
 	new minute;
 	gettime(_,minute);
-	if(minute>0) rpayday=0;
-	if(((minute==0) && (rpayday==0)) || (admpayday>0))
+	if(minute == 0)
 	{
-		if(admpayday==0) rpayday++;
-		new BasePayM,BasePayX,string[MAX_STRING];
-		admpayday=0;
-		for(new id=0;id<=GetPlayerLastID();id++)
-		{
-			if(!IsPlayerConnected(id) || IsPlayerNPC(id)) continue;
-			BasePayM=0;
-			if(GetPlayerTotalMoney(id) < PayCutoff)	//MONEY
-			{
-				BasePayM=BasePay+((BasePay*GetPlayerLevel(id))*GetPlayerLevel(id));
-				oGivePlayerMoney(id, BasePayM, 0);
-			}
+		GivePay();
+	}
+}
 
-			BasePayX=0;
-			if(GetPlayerXP(id) < MAX_LVLXP)		//XP
-			{
-				BasePayX=BasePayXP+(BasePayXP*GetPlayerLevel(id)); //200+(200*0) 200+(200*20)
-				GivePlayerXP(id, BasePayX ,0);
-				CheckPlayerLevel(id);
-			}
-			
-			format(string,sizeof(string),lang_texts[2][16],BasePayM,BasePayX);
-			SendClientMessage(id,COLOUR_MONEY_GOOD,string);
-			format(string,sizeof(string),lang_texts[2][17],BasePayM,BasePayX);
-			GameTextForPlayer(id,string ,999,5);
-			PlayerPlaySound(id,1190,0.0,0.0,0.0);
-			PlayerPlaySound(id,1101,0.0,0.0,0.0);
+stock GivePay()
+{
+	for( new id=0,BasePayM,BasePayX,string[MAX_STRING]; id<=GetPlayerLastID() ;id++ )
+	{
+		if(!IsPlayerConnected(id) || IsPlayerNPC(id)) continue;
+		BasePayM = 0;
+		if(GetPlayerTotalMoney(id) < PayCutoff)	// money
+		{
+			BasePayM = BasePay + ((BasePay * GetPlayerLevel(id)) * GetPlayerLevel(id));
+			oGivePlayerMoney(id, BasePayM, 0);
 		}
+		
+		BasePayX = 0;
+		if(GetPlayerXP(id) < MAX_LVLXP)	// xp
+		{
+			BasePayX = BasePayXP + (BasePayXP * GetPlayerLevel(id));
+			GivePlayerXP(id, BasePayX ,0);
+		}
+			
+		format(string,sizeof(string),lang_texts[2][18],BasePayM,BasePayX);
+		SendClientMessage(id,COLOUR_MONEY_GOOD,string);
+		format(string,sizeof(string),lang_texts[2][19],BasePayM,BasePayX);
+		GameTextForPlayer(id,string,999,5);
+		PlayerPlaySound(id,1190,0.0,0.0,0.0);
+		PlayerPlaySound(id,1101,0.0,0.0,0.0);
 	}
 }

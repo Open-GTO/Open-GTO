@@ -33,6 +33,12 @@
 
 #define WORLD_SAVE_TIME			300000		// 1 раз, за это кол-во милисекунд выполняется сохранение всего мира(300000 - 5 минут)
 #define GameMSG_USE_PRINT // если задефайнен, то функция GameMSG выводит сообщение в консоль сервера
+
+// логи(параметры по умолчанию) 1 вкл, 0 выкл
+#define LOGGING_GAME_LOG_ENABLED		1
+#define LOGGING_DEBUG_LOG_ENABLED		1
+#define LOGGING_CHAT_LOG_ENABLED		1
+#define LOGGING_CMD_LOG_ENABLED			1
 // античит(параметры по умолчанию)
 #define ANTI_HEALTH_HACK_ENABLED	1 // защита от чита на здоровье
 #define ANTI_MONEY_HACK_ENABLED		1 // защита от чита на деньги

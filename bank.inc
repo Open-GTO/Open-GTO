@@ -139,7 +139,7 @@ stock bank_ShowDialog_Start(playerid)
 	return ShowPlayerDialog(playerid,bank_Start_DialogID,DIALOG_STYLE_MSGBOX,
 		lang_texts[2][3],
 		string,
-		lang_texts[2][18],lang_texts[2][6]
+		lang_texts[2][16],lang_texts[2][6]
 	);
 }
 stock bank_ShowDialog_List(playerid)

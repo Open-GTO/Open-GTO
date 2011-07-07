@@ -14,21 +14,23 @@
 
 #include "base"
 
-#define GameLog 0
-#define ChatLog 1
-#define CMDLog 2
-#define DebugLog 3
+enum {
+	GameLog,
+	ChatLog,
+	CMDLog,
+	DebugLog,
+}
 
-new LoggingToggle = 1,
-	LoggingDebug = 1,
-	LoggingChatToggle = 1,
-	LoggingCMDToggle = 1;
+new LoggingGameToggle = LOGGING_GAME_LOG,
+	LoggingDebug = LOGGING_DEBUG_LOG,
+	LoggingChatToggle = LOGGING_CHAT_LOG,
+	LoggingCMDToggle = LOGGING_CMD_LOG;
 
 LoggingLoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 0;
 	new file_logging = ini_Open(ConfigDB);
-	ini_GetInt(file_logging,"Logging_on",LoggingToggle);
+	ini_GetInt(file_logging,"Logging_on",LoggingGameToggle);
 	ini_GetInt(file_logging,"Debug_on",LoggingDebug);
 	ini_GetInt(file_logging,"ChatLog_on",LoggingChatToggle);
 	ini_GetInt(file_logging,"CMDLog_on",LoggingCMDToggle);
@@ -39,7 +41,7 @@ LoggingLoadConfig()
 LoggingSaveConfig()
 {
 	new file_logging = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_logging,"Logging_on",LoggingToggle);
+	ini_SetInt(file_logging,"Logging_on",LoggingGameToggle);
 	ini_SetInt(file_logging,"Debug_on",LoggingDebug);
 	ini_SetInt(file_logging,"ChatLog_on",LoggingChatToggle);
 	ini_SetInt(file_logging,"CMDLog_on",LoggingCMDToggle);
@@ -58,7 +60,7 @@ stock MakeFilename()
 	new d,m,y;
 	getdate(y,m,d);
 	new string[MAX_STRING];
-	format(string,sizeof(string),"%02d-%02d-%02d.log",d,m,y);
+	format(string,sizeof(string),"%02d-%02d-%04d.log",d,m,y);
 	return string;
 }
 
@@ -78,7 +80,7 @@ stock WriteLog(log,string[])
 	{
 		case GameLog:
 		{
-			if(LoggingToggle != 1) return 1;
+			if(LoggingGameToggle != 1) return 1;
 			logS = GTO_FILES_FOLDER"Logging/GameLog/";
 		}
 		case ChatLog:
@@ -101,7 +103,7 @@ stock WriteLog(log,string[])
 	format(filestring,sizeof(filestring),"%s%s",logS,MakeFilename());
 	new File:LogFile = fopen(filestring,io_append);
 	format(filestring,sizeof(filestring),"%s %s\r\n",MakeFormattedTime(),string);
-	for(new i=0;i<strlen(filestring);i++) fputchar(LogFile,filestring[i],false);
+	for(new i=0,len=strlen(filestring);i<len;i++) fputchar(LogFile,filestring[i],false);
 	fclose(LogFile);
 	return 1;
 }
