@@ -21,10 +21,10 @@ enum {
 	DebugLog,
 }
 
-new LoggingGameToggle = LOGGING_GAME_LOG,
-	LoggingDebug = LOGGING_DEBUG_LOG,
-	LoggingChatToggle = LOGGING_CHAT_LOG,
-	LoggingCMDToggle = LOGGING_CMD_LOG;
+new LoggingGameToggle = LOGGING_GAME_LOG_ENABLED,
+	LoggingDebug = LOGGING_DEBUG_LOG_ENABLED,
+	LoggingChatToggle = LOGGING_CHAT_LOG_ENABLED,
+	LoggingCMDToggle = LOGGING_CMD_LOG_ENABLED;
 
 LoggingLoadConfig()
 {
