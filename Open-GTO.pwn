@@ -424,6 +424,7 @@ public OnPlayerCommandText(playerid,cmdtext[])
 {
 	// commands.inc
 	command_register(cmdtext,"/help",5,commands);
+	command_register(cmdtext,"/commands",9,commands);
 	command_register(cmdtext,"/kill",5,commands);
 	command_register(cmdtext,"/info",5,commands);
 	command_register(cmdtext,"/objective",10,commands);
