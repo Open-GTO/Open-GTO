@@ -16,9 +16,17 @@ stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
 	new listitems[256]; // не менять!
 	listitems = "Отправить денег\nЛичное сообщение\nЖалоба";
 	if(IsPlayerMod(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nКикнуть\nЗаткнуть\nРазоткнуть\nВ тюрьму\nИз тюрьмы", sizeof(listitems));
-	if(IsPlayerAdm(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nИнфо\nУбить\nТелепорт к\nТелепортировать к себе\nЗадать здоровье\nЗадать броню\nДать опыт\nДать денег\nЗаморозить\nРазморозить", sizeof(listitems));
+	if(IsPlayerAdm(playerid) || IsPlayerAdmin(playerid)) strcat(listitems, "\nИнфо\nУбить\nТелепорт к\nТелепортировать к себе\nЗадать здоровье\nЗадать броню\nДать опыт\nДать денег\nЗаморозить\nРазморозить\nNetStats", sizeof(listitems));
 	ShowPlayerDialog(playerid,click_DialogID,DIALOG_STYLE_LIST,"Выберите действие",listitems," Выбрать"," Отмена");
 	return 1;
+}
+
+forward PlayerNetStatsShow(playerid,receiverid);
+public PlayerNetStatsShow(playerid,receiverid)
+{
+	new netstats_str[2048+1];
+	GetPlayerNetworkStats(receiverid,netstats_str, 2048);
+	ShowPlayerDialog(playerid,click_Resp_DialogID,DIALOG_STYLE_MSGBOX,"Player NetStats",netstats_str,"ОК","");
 }
 
 stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
@@ -261,10 +269,31 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			return 1;
 		}
+		if(listitem == 18) // NetStats
+		{
+			new receiverid = GetPlayerClickedPlayerid(playerid);
+			PlayerNetStatsShow(playerid,receiverid);
+			SetPVarInt(playerid,
+				"NetStats_TimerID",
+				SetTimerEx("PlayerNetStatsShow",3000,1,"dd",playerid,receiverid)
+			);
+			return 1;
+		}
 		ShowPlayerDialog(playerid,click_Resp_DialogID,DIALOG_STYLE_INPUT,GuiHeader,GuiText,"Отправить","Отмена");
 	}
 	if(dialogid == click_Resp_DialogID)
 	{
+		// для однокнопочных
+		switch(ListResponseType[playerid])
+		{
+			case 18:
+			{
+				new timer = GetPVarInt(playerid,"NetStats_TimerID");
+				if(timer != 0) KillTimer(timer);
+				return 1;
+			}
+		}
+		//
 		if(!response) return 1;
 		if(strlen(inputtext) == 0) return 1;
 		if(strlen(inputtext) > MAX_SEND_SYMBOLS)

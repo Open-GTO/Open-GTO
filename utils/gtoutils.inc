@@ -201,26 +201,6 @@ stock loccmp(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Float:z2)
 	return 0;
 }
 
-stock Float:GetDistancePlayertoXYZ(playerid,Float:x2,Float:y2,Float:z2)
-{
-	if (!IsPlayerConnected(playerid)) {return 65000.0;}
-	new Float:x1, Float:y1, Float:z1;
-	GetPlayerPos(playerid,x1,y1,z1);
-	new Float:dist = floatsqroot(floatpower(floatabs(floatsub(x2,x1)),2)+floatpower(floatabs(floatsub(y2,y1)),2)+floatpower(floatabs(floatsub(z2,z1)),2));
-	return dist;
-}
-
-stock Float:GetDistanceXYZtoXYZ(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Float:z2)
-{
-	return floatsqroot(
-		floatpower( x2 - x1 , 2 )
-		+
-		floatpower( y2 - y1 , 2 )
-		+
-		floatpower( z2 - z1 , 2 )
-	);
-}
-
 //------------------------- THIS COPY-PASTED FROM DUTILS -----------------------
 
 /**

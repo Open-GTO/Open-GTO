@@ -51,7 +51,7 @@ stock AntiIdle()
 	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
 	{
         if(IsPlayerConnected(playerid) && !IsPlayerNPC(playerid) && !IsPlayerAdmin(playerid)
-			&& IsPlayerInAnyKach(playerid) && Groundhold_Enabled == 1)
+			&& IsPlayerInAnyGround(playerid) && Groundhold_Enabled == 1)
 		{
             GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
             if(pos[0] == GetPVarFloat(playerid,"playerIdlePos_X")
@@ -80,14 +80,4 @@ stock AntiIdle()
 			SetPVarFloat(playerid,"playerIdlePos_Z",pos[2]);
    		}
    	}
-}
-
-stock IsPlayerInAnyKach(playerid)
-{
-	for(new id=0;id<MAX_GROUNDHOLD;id++)
-	{
-		if(IsPlayerInRangeOfPoint(playerid,Groundholds[id][gh_dist],Groundholds[id][gh_x],Groundholds[id][gh_y],Groundholds[id][gh_z]))
-			return true;
-	}
-	return false;
 }

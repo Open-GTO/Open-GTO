@@ -113,7 +113,7 @@ stock GetPlayerClosestActiveCP(playerid)
 	{
 		if (ActiveCheckpoints[cpid][IsActive])
 		{
-			new Float:playerdist=GetDistancePlayertoXYZ(playerid,ActiveCheckpoints[cpid][CP_X],ActiveCheckpoints[cpid][CP_Y],ActiveCheckpoints[cpid][CP_Z]);
+			new Float:playerdist=GetPlayerDistanceFromPoint(playerid,ActiveCheckpoints[cpid][CP_X],ActiveCheckpoints[cpid][CP_Y],ActiveCheckpoints[cpid][CP_Z]);
 			if (playerdist < ActiveCheckpoints[cpid][CP_Dist])
 			{
 				if (playerdist < cpdist)
@@ -156,8 +156,6 @@ stock oIsPlayerInCheckpoint(playerid,Float:cpx,Float:cpy,Float:cpz,dist)
 	if (!IsPlayerConnected(playerid)) return 0;
 	if (!PlayerCPActive[playerid]) return 0;
 	if (!loccmp(cpx,cpy,cpz,PlayerCP[playerid][Coord_X],PlayerCP[playerid][Coord_Y],PlayerCP[playerid][Coord_Z])) return 0;
-	new Float:playerx,Float:playery,Float:playerz;
-	GetPlayerPos(playerid,playerx,playery,playerz);
-	if(GetDistanceXYZtoXYZ(playerx,playery,playerz,cpx,cpy,cpz) < dist) return IsPlayerInCheckpoint(playerid);
+	if(GetPlayerDistanceFromPoint(playerid,cpx,cpy,cpz) < dist) return IsPlayerInCheckpoint(playerid);
 	return 0;
 }

@@ -417,10 +417,7 @@ stock CheckDMPlayersInZone(dmid)
 		}
 		if (!IsPlayerInDM(playerid,dmid)) continue;
 		if (DMPlayerStats[playerid][dm_player_active] == 0) continue;
-		new Float:playerdistance;
-		new Float:x,Float:y,Float:z;
-		GetPlayerPos(playerid, x, y, z);
-		playerdistance = GetDistanceXYZtoXYZ(x,y,z,DMCentreCP[dmid][Coord_X],DMCentreCP[dmid][Coord_Y],DMCentreCP[dmid][Coord_Z]);
+		new Float:playerdistance = GetPlayerDistanceFromPoint(playerid,DMCentreCP[dmid][Coord_X],DMCentreCP[dmid][Coord_Y],DMCentreCP[dmid][Coord_Z]);
 		if (playerdistance > Deathmatch[dmid][dm_distance])
 		{
 			DMPlayerStats[playerid][dm_player_outzone]++;

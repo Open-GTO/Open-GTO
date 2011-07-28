@@ -1,22 +1,22 @@
-//
-// Created:     13.09.06
-// Aurthor:    Iain Gilbert
-// Modified by ZiGGi
-//
+/*
+	Created:     13.09.06
+	Aurthor:    Iain Gilbert
+	Modified by ZiGGi
+*/
 
 #if defined _groundhold_included
-#endinput
+	#endinput
 #endif
 
 #define _groundhold_included
 #pragma library groundhold
 
+
 #include "base"
 #include "player"
 #include "world"
 
-enum gh_info 
-{
+enum gh_info {
 	gh_name[MAX_NAME], // name of ground
 	gh_money, // base amount of money recieved for holding this ground
 	gh_xp, // base amount of xp recieved for holding this ground
@@ -27,16 +27,15 @@ enum gh_info
 	Float:gh_z
 }
 
-#define MAX_GROUNDHOLD 3
 new Groundhold_Enabled = GROUNDHOID_ENABLED;
-new PlayerGroundHoldTime[MAX_GROUNDHOLD][MAX_PLAYERS];
-new PlayerHoldingGround[MAX_GROUNDHOLD][MAX_PLAYERS];
-new Groundholds[MAX_GROUNDHOLD][gh_info] = {
-	//      Name,       pay ,   xp multi dist,       x,          y,          z
+new Groundholds[][gh_info] = {
+	//      Name,     pay,xp,multi,dist,x,y,z
 	{"Кач 900xp и 300$",6,18,50,50,-2146.9585,-217.1571,35.3203}, // 
 	{"Кач 600xp и 200$",10,30,20,30,1221.3528,-1814.8983,16.5938}, // респаун
 	{"кач 300xp и 100$",10,30,10,50,-687.9928,948.6489,12.1502} // Авто маг.
 };
+new PlayerGroundHoldTime[ sizeof(Groundholds) ][MAX_PLAYERS];
+new PlayerHoldingGround[ sizeof(Groundholds) ][MAX_PLAYERS];
 
 stock groundhold_SaveConfig()
 {
@@ -60,15 +59,10 @@ stock groundhold_LoadConfig()
 stock groundhold_LoadAll()
 {
 	new file_gh,filename_gh[MAX_STRING];
-	/*if(!ini_Exist(GroundholdDB))
-	{
-		groundhold_SaveAll();
-		return;
-	}*/
-	for(new i=0;i<MAX_GROUNDHOLD;i++)
+	for(new i=0;i<sizeof(Groundholds);i++)
 	{
 		format(filename_gh,sizeof(filename_gh),"%s%s"GTO_FILES_FORMAT,GroundholdDB,Groundholds[i][gh_name]);
-		if(!ini_Exist(filename_gh)) groundhold_SaveAll();
+		if(!ini_Exist(filename_gh)) continue;
 		file_gh = ini_Open(filename_gh);
 		ini_Get(file_gh,"Name",Groundholds[i][gh_name],MAX_NAME);
 		ini_GetInt(file_gh,"Money",Groundholds[i][gh_money]);
@@ -86,7 +80,7 @@ stock groundhold_LoadAll()
 stock groundhold_SaveAll()
 {
 	new file_gh,filename_gh[MAX_STRING];
-	for(new i=0;i<MAX_GROUNDHOLD;i++)
+	for(new i=0;i<sizeof(Groundholds);i++)
 	{
 		format(filename_gh,sizeof(filename_gh),"%s%s"GTO_FILES_FORMAT,GroundholdDB,Groundholds[i][gh_name]);
 		file_gh = (!ini_Exist(filename_gh)) ? ini_Create(filename_gh) : ini_Open(filename_gh);
@@ -108,7 +102,7 @@ stock groundhold_OnGameModeInit()
 	groundhold_LoadConfig();
 	if(Groundhold_Enabled != 1) return 1;
 	groundhold_LoadAll();
-	for(new i=0;i<MAX_GROUNDHOLD;i++)
+	for(new i=0;i<sizeof(Groundholds);i++)
 	{
 		AddActiveCheckpoint(Groundholds[i][gh_x],Groundholds[i][gh_y],Groundholds[i][gh_z],200,2);
 		CreateStreamMapIcon(56,Groundholds[i][gh_x],Groundholds[i][gh_y],Groundholds[i][gh_z]);
@@ -231,6 +225,16 @@ stock CountPlayers(players[])
 stock CheckAllGround()
 {
 	if(Groundhold_Enabled != 1) return 1;
-	for(new ghid=0;ghid<MAX_GROUNDHOLD;ghid++) CheckGround(ghid);
+	for(new ghid=0;ghid<sizeof(Groundholds);ghid++) CheckGround(ghid);
 	return 1;
+}
+
+stock IsPlayerInAnyGround(playerid)
+{
+	for(new id=0;id<sizeof(Groundholds);id++)
+	{
+		if(IsPlayerInRangeOfPoint(playerid,Groundholds[id][gh_dist],Groundholds[id][gh_x],Groundholds[id][gh_y],Groundholds[id][gh_z]))
+			return true;
+	}
+	return false;
 }

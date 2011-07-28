@@ -115,7 +115,7 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 			case 0:
 			{
 				Groundhold_Enabled = 0;
-				for(new ghid=0;ghid<MAX_GROUNDHOLD;ghid++)
+				for(new ghid=0;ghid<sizeof(Groundholds);ghid++)
 				{
 					RemoveActiveCheckpoint(FindActiveCheckpoint(Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]));
 					DeleteStreamMapIcon(FindStreamMapIcon(Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]));
@@ -126,7 +126,7 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 			case 1:
 			{
 				Groundhold_Enabled = 1;
-				for(new ghid=0;ghid<MAX_GROUNDHOLD;ghid++)
+				for(new ghid=0;ghid<sizeof(Groundholds);ghid++)
 				{
 					AddActiveCheckpoint(Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z],200,2);
 					CreateStreamMapIcon(56,Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]);

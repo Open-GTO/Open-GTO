@@ -1069,10 +1069,7 @@ stock oIsPlayerInRaceCheckpoint(playerid, Float:cpx, Float:cpy, Float:cpz, dist)
 	if (!IsPlayerConnected(playerid)) {return 0;}
 	if (!PlayerRaceCPActive[playerid]) {return 0;}
 	if (!loccmp(cpx,cpy,cpz,PlayerRaceCP[playerid][Coord_X],PlayerRaceCP[playerid][Coord_Y],PlayerRaceCP[playerid][Coord_Z])) return 0;
-	new Float:playerx,Float:playery,Float:playerz;
-	GetPlayerPos(playerid,playerx,playery,playerz);
-
-	if (GetDistanceXYZtoXYZ(playerx,playery,playerz,cpx,cpy,cpz) < dist)
+	if (GetPlayerDistanceFromPoint(playerid,cpx,cpy,cpz) < dist)
 	{
 		return IsPlayerInRaceCheckpoint(playerid);
 	}
