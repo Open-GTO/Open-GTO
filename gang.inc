@@ -186,7 +186,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 			new string[MAX_STRING];
    			SendClientMessage(playerid,COLOUR_MISC,lang_texts[6][10]);
 			format(string,sizeof(string),lang_texts[6][11],Gang_Create_Cost);
-   			SendClientMessage(playerid,COLOUR_MISC,lang_texts[6][11]);
+   			SendClientMessage(playerid,COLOUR_MISC,string);
             SendClientMessage(playerid,COLOUR_MISC,lang_texts[6][12]);
    			SendClientMessage(playerid,COLOUR_MISC,lang_texts[6][13]);
    			SendClientMessage(playerid,COLOUR_MISC,lang_texts[6][14]);
@@ -196,7 +196,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
    			SendClientMessage(playerid,COLOUR_MISC,lang_texts[6][18]);
             SendClientMessage(playerid,COLOUR_MISC,lang_texts[6][19]);
 			format(string,sizeof(string),lang_texts[6][20],Gang_Colour_Cost);
-   			SendClientMessage(playerid,COLOUR_MISC,lang_texts[6][20]);
+   			SendClientMessage(playerid,COLOUR_MISC,string);
    			return 1;
   		}
   		if(!strcmp(cmd,"colours",true))
