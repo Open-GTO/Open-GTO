@@ -184,9 +184,9 @@ stock player_OnGameModeInit()
 stock player_OnPlayerSpawn(playerid)
 {
 	SetPVarInt(playerid,"Spawned",1);
-	new GH = ganghouse(playerid);
+	new house_id = GetPlayerHouseID(playerid);
 	SetPlayerInterior(playerid,0);
-	if(GH == -1)
+	if(house_id == -1)
 	{
 		if(GetPVarFloat(playerid,"Coord_X") != 0.0 && GetPVarFloat(playerid,"Coord_Y") != 0.0 && GetPVarFloat(playerid,"Coord_Z") != 0.0)
 		{
@@ -209,7 +209,10 @@ stock player_OnPlayerSpawn(playerid)
 			}
 		}
 	}
-	else gang2house(playerid,GH);
+	else
+	{
+		SetPlayerPosToHouse(playerid,house_id);
+	}
 	SetPlayerFacingAngle(playerid,GetPVarFloat(playerid,"Coord_A"));
 	
 	if(!IsPlayerRegistered(playerid))

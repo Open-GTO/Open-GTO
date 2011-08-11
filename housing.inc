@@ -562,24 +562,38 @@ stock FHouseKeep(playerid)
 	else SendClientMessage(playerid,COLOUR_RED,lang_texts[8][50]);
 }
 
-stock ganghouse(playerid) 
+stock GetPlayerHouseID(playerid) 
 {
-	new hova = -1,tmp[MAX_STRING];
-	if(!IsPlayerRegistered(playerid) || !strlen( GetPlayerGangName(playerid) )) return hova;
+	new tmp[MAX_STRING];
+	if(!IsPlayerRegistered(playerid) || !strlen( GetPlayerGangName(playerid) )) return -1;
+	new playername[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,playername,sizeof(playername));
 	for(new id=0;id<sizeof(Houses);id++)
 	{
-		if(!strcmp(Houses[id][Houses_Gang],GetPlayerGangName(playerid),true)) 
+		// если у игрока есть свой дом, то используем его
+		if(!strcmp(Houses[id][Houses_Owner],playername,true))
 		{
-			hova = id;
 			format(tmp,sizeof(tmp),lang_texts[8][51],Houses[id][Houses_Name],Houses[id][Houses_UpKeepLeft],Houses[id][Houses_UpKeep]*2800);
 			SendClientMessage(playerid,COLOUR_RED,tmp);
+			return id;
 		}
-		if(!strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true)) hova = id;
+		// если игрок арендует дом, то используем его
+		if(!strcmp(Houses[id][Houses_RentName],playername,true))
+		{
+			return id;
+		}
+		// если у игрока нету своего дома, то используем дом банды
+		if(!strcmp(Houses[id][Houses_Gang],GetPlayerGangName(playerid),true)) 
+		{
+			format(tmp,sizeof(tmp),lang_texts[8][51],Houses[id][Houses_Name],Houses[id][Houses_UpKeepLeft],Houses[id][Houses_UpKeep]*2800);
+			SendClientMessage(playerid,COLOUR_RED,tmp);
+			return id;
+		}
 	}
-	return hova;
+	return -1;
 }
 
-stock gang2house(playerid,i)
+stock SetPlayerPosToHouse(playerid,i)
 {
 	SetPlayerPos(playerid,Houses[i][Houses_PickupX],Houses[i][Houses_PickupY],Houses[i][Houses_PickupZ]+0.5);
 }
@@ -675,7 +689,7 @@ stock housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 		else if(IsPlayerInRangeOfPoint(playerid,2,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ]))
 		{
 			SetPlayerInterior(playerid,0);
-			gang2house(playerid,Haus[playerid]);
+			SetPlayerPosToHouse(playerid,Haus[playerid]);
 			Haus[playerid] = -1;
 		}
 	}
