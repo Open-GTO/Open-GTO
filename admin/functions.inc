@@ -92,21 +92,10 @@ stock PushHide(playerid)// скрыть/показать игрока
 		hidecont = PlayerGangColour(playerid);
 	for(new id=0;id<=GetPlayerLastID();id++)
 	{
-		if(IsPlayerConnected(id) && !IsPlayerNPC(id) && !IsPlayerAdmin(id) && id != playerid)
+		if(IsPlayerConnected(id) && !IsPlayerNPC(id) && id != playerid)
 			SetPlayerMarkerForPlayer(id,playerid,hidecont);
 	}
-	SetPlayerColor(playerid,PlayerGangColour(playerid));
-	return 1;
-}
-
-stock LoadHide(playerid) // скрытие игроков при входе в игру
-{
-	if(GetPVarInt(playerid,"Hide") == 1) PushHide(playerid);
-	for(new id=0;id<=GetPlayerLastID();id++)
-	{
-		if(IsPlayerConnected(id) && !IsPlayerNPC(id) && (GetPVarInt(playerid,"Hide") == 1) && !IsPlayerAdmin(playerid))
-			SetPlayerMarkerForPlayer(playerid,id,0);
-	}
+	//SetPlayerColor(playerid,PlayerGangColour(playerid));
 	return 1;
 }
 

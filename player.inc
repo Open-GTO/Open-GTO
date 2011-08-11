@@ -43,6 +43,9 @@
 #define GetPlayerStatus(%0) GetPVarInt(%0,"Status")
 #define SetPlayerStatus(%0,%1) SetPVarInt(%0,"Status",%1)
 
+#define GetPlayerHideStatus(%0) GetPVarInt(%0,"Hide")
+#define SetPlayerHideStatus(%0,%1) SetPVarInt(%0,"Hide",%1)
+
 
 stock GetPlayerGangName(playerid)
 {
@@ -220,6 +223,7 @@ stock player_OnPlayerSpawn(playerid)
 	weapon_SetSkills(playerid);
 	SetPlayerFightStyleUsed(playerid,GetPlayerFightStyle(playerid));
 	SetPlayerFightingStyle(playerid,GetPlayerFightStyleUsed(playerid));
+	PushHide(playerid);
 	return 1;
 }
 
@@ -512,6 +516,7 @@ stock player_save_db_ini(playerid)
 	ini_Set(file_player,"WeaponsSkills",CreateWeaponSkillsDBString(playerid));
 	ini_SetInt(file_player,"SkinModel",GetPlayerSkinModel(playerid));
 	ini_Set(file_player,"VIP",GetPlayerVIPDate(playerid));
+	ini_SetInt(file_player,"Hide",GetPlayerHideStatus(playerid));
 	ini_Close(file_player);
 	return 1;
 }
@@ -615,6 +620,9 @@ stock player_load_db_ini(playerid)
 		SetPlayerVIP(playerid,1);
 	else
 		SetPlayerVIP(playerid,0);
+	
+	ini_GetInt(file_player,"Hide",buf);
+	SetPlayerHideStatus(playerid,buf);
 	
 	ini_Close(file_player);
 	UpdatePlayerScore(playerid);
