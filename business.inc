@@ -62,7 +62,7 @@ BusinessSaveAll()
 	{
 		format(businessdbname,sizeof(businessdbname),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[i][Business_Name]);
 		file_business = (!ini_Exist(businessdbname)) ? ini_Create(businessdbname) : ini_Open(businessdbname);
-		//ini_Set(file_business,"Name",Businesses[i][Business_Name]);
+		ini_Set(file_business,"Name",Businesses[i][Business_Name]);
 		ini_SetInt(file_business,"Cost",Businesses[i][Business_Cost]);
         ini_SetInt(file_business,"Value",Businesses[i][Business_Value]);
 		ini_SetInt(file_business,"Level",Businesses[i][Business_Level]);

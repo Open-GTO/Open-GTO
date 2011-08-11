@@ -393,7 +393,6 @@ public OnPlayerSpawn(playerid)
 public OnPlayerRequestClass(playerid, classid)
 {
 	// Фикс для выбора классов(поломалось в 0.3a)
-	SetPVarInt(playerid,"player_class_zero",0);
 	if(classid != 0)
 	{
 		SetPlayerSkinModel(playerid,GetPlayerSkin(playerid));

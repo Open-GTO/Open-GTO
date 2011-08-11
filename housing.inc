@@ -25,9 +25,8 @@ stock HousesLoadAll()
 		ini_GetFloat(file_housing_cfg,"House_DistanceOfShowLabel",HouseDistanceOfShowLabel);
 		ini_Close(file_housing_cfg);
 	}
-	for(new i=0,file_housing;i<sizeof(Houses);i++)
+	for(new i=0,file_housing,housesdbname[MAX_STRING];i<sizeof(Houses);i++)
 	{
-		new housesdbname[MAX_STRING];
 		format(housesdbname,sizeof(housesdbname),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[i][Houses_Name]);
 		if(!ini_Exist(housesdbname)) continue;
 		file_housing = ini_Open(housesdbname);

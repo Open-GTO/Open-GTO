@@ -29,9 +29,10 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		SendClientMessage(playerid, COLOUR_YELLOW,lang_texts[15][57]);
-		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys cmdlist', '/sys about', '/sys info'");
+		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys cmdlist', '/sys about', '/sys info', '/sys gmx'");
 		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys weath <param>', - Автосмена погоды (0/1-20 min)");
 		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys groundhold <param>' - Точки прокачки (0/1)");
+		SendClientMessage(playerid, COLOUR_YELLOW,"S: '/sys gmx' - Перезагрузить сервер");
 		return 1;
 	}
 
@@ -136,6 +137,17 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 			}
 		}
 		groundhold_SaveConfig();
+		return 1;
+	}
+	if(!strcmp(cmd,"gmx",true))
+	{
+		for(new id=0;id<=GetPlayerLastID();id++)
+		{
+			if(!IsPlayerConnected(id) || IsPlayerNPC(id) || !IsPlayerRegistered(id)) continue;
+			PlayerSave(id);
+			AccountSave(id);
+		}
+		SendRconCommand("gmx");
 		return 1;
 	}
 	return 0;

@@ -13,7 +13,7 @@
 
 #define GetPlayerLastID()	players_lastID
 
-new players_lastID;
+new players_lastID = -1;
 
 stock plcount_OnPlayerConnect(playerid)
 {
@@ -24,7 +24,7 @@ stock plcount_OnPlayerConnect(playerid)
 stock plcount_OnPlayerDisconnect(playerid,reason)
 {
 	#pragma unused reason
-    if(players_lastID == playerid)
+    if(players_lastID == playerid && playerid != 0)
 	{
 		do players_lastID--;
 		while((IsPlayerNPC(playerid) || (!IsPlayerConnected(players_lastID))) && (players_lastID > 0));
