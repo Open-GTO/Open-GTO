@@ -34,6 +34,10 @@
 #define WORLD_SAVE_TIME			300000		// 1 раз, за это кол-во милисекунд выполняется сохранение всего мира(300000 - 5 минут)
 #define GameMSG_USE_PRINT // если задефайнен, то функция GameMSG выводит сообщение в консоль сервера
 
+// цены
+#define HOUSE_UPGRADE_ARMOUR_COST 100000
+#define HOUSE_UPGRADE_HEALTH_COST 100000
+
 // логи(параметры по умолчанию) 1 вкл, 0 выкл
 #define LOGGING_GAME_LOG_ENABLED		1
 #define LOGGING_DEBUG_LOG_ENABLED		1
@@ -142,7 +146,7 @@ enum {
 	account_Reg_DialogID, account_Log_DialogID,
 	bank_Start_DialogID, bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID,
 	click_DialogID, click_Resp_DialogID,
-	house_DialogID, houses_DialogID,
+	house_DialogID, houses_DialogID, houses_upgrades_DialogID,
 	bis_DialogID, bis_Info_DialogID, bis_Msg_DialogID,
 	fightstyles_DialogID, fightstyles_user_DialogID,
 	user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID,

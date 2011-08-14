@@ -265,7 +265,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			account_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
-		case house_DialogID, houses_DialogID:
+		case house_DialogID, houses_DialogID, houses_upgrades_DialogID:
 		{
 			housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
@@ -540,22 +540,11 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	//business_OnPlayerCommandText(playerid,cmdtext);
 	
 	// housing
-	housing_OnPlayerCommandText(playerid,cmdtext);
-	command_register(cmdtext,"/houseinfo",10,housing);
-	command_register(cmdtext,"/hinfo",6,housing);
-	command_register(cmdtext,"/housebuy",9,housing);
-	command_register(cmdtext,"/hbuy",5,housing);
-	command_register(cmdtext,"/housesell",10,housing);
-	command_register(cmdtext,"/hsell",6,housing);
-	command_register(cmdtext,"/myhouses",9,housing);
-	command_register(cmdtext,"/houses",7,housing);
+	command_register(cmdtext,"/ganghouses",11,housing);
 	command_register(cmdtext,"/upkeep",7,housing);
 	command_register(cmdtext,"/heal",5,housing);
-	command_register(cmdtext,"/houseupgrade",13,housing);
+	command_register(cmdtext,"/armour",7,housing);
 	command_register(cmdtext,"/setrentcost",12,housing);
-	command_register(cmdtext,"/hlock",6,housing);
-	command_register(cmdtext,"/hunlock",8,housing);
-	command_register(cmdtext,"/rent",5,housing);
 	
 	// vehicles
 	command_register(cmdtext,"/vmenu",6,vehicles);

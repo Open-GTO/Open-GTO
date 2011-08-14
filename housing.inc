@@ -13,8 +13,8 @@
 #include "player"
 #include "world"
 
-new Hous[MAX_PLAYERS],Haus[MAX_PLAYERS];
-new house_icon[sizeof(Houses)],Text3D:House3DTextLabel[sizeof(Houses)],Float:HouseDistanceOfShowLabel=20.0;
+new Haus[MAX_PLAYERS];
+new house_icon[ sizeof(Houses) ],Text3D:House3DTextLabel[ sizeof(Houses) ],Float:HouseDistanceOfShowLabel=20.0;
 
 stock HousesLoadAll()
 {
@@ -44,6 +44,7 @@ stock HousesLoadAll()
 		ini_Get(file_housing,"RentName",Houses[i][Houses_RentName],MAX_NAME);
 		ini_GetInt(file_housing,"RentCost",Houses[i][Houses_RentCost]);
 		ini_GetInt(file_housing,"HealUpgrade",Houses[i][Houses_HealUpgrade]);
+		ini_GetInt(file_housing,"ArmourUpgrade",Houses[i][Houses_ArmourUpgrade]);
 		ini_GetFloat(file_housing,"Coord_X",Houses[i][Houses_EnterX]);
 		ini_GetFloat(file_housing,"Coord_Y",Houses[i][Houses_EnterY]);
 		ini_GetFloat(file_housing,"Coord_Z",Houses[i][Houses_EnterZ]);
@@ -80,6 +81,8 @@ stock SaveHous(housid)
 	ini_SetInt(file_housing,"Rentabil",Houses[housid][Houses_Rentabil]);
 	ini_Set(file_housing,"RentName",Houses[housid][Houses_RentName]);
 	ini_SetInt(file_housing,"RentCost",Houses[housid][Houses_RentCost]);
+	ini_SetInt(file_housing,"HealUpgrade",Houses[housid][Houses_HealUpgrade]);
+	ini_SetInt(file_housing,"ArmourUpgrade",Houses[housid][Houses_ArmourUpgrade]);
 	ini_SetFloat(file_housing,"Coord_X",Houses[housid][Houses_EnterX]);
 	ini_SetFloat(file_housing,"Coord_Y",Houses[housid][Houses_EnterY]);
 	ini_SetFloat(file_housing,"Coord_Z",Houses[housid][Houses_EnterZ]);
@@ -93,12 +96,13 @@ stock housing_OnGameModeInit()
 	for(new id=0;id<sizeof(Houses);id++)
 	{
 		CreatePickup(1273,1,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.5);	//зеленый домик
-		CreatePickup(1559,1,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ]+0.5);
+		CreatePickup(1559,1,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ]+0.5,id+1);
 		house_icon[id] = CreateStreamMapIcon(31,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]);
 		format(string,sizeof(string),"Дом: %s\nСтоимость: %d\nКуплен: %s\nБанда: %s\nАрендуется: %s",Houses[id][Houses_Name],Houses[id][Houses_Cost],Houses[id][Houses_Owner],Houses[id][Houses_Gang],Houses[id][Houses_RentName]);
 		House3DTextLabel[id] = Create3DTextLabel(string,COLOUR_WHITE,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.75,HouseDistanceOfShowLabel,0,1);
+		Houses[id][Houses_VirtualWorld] = id+1;
 	}
-	GameMSG("SERVER: Housing module init");
+	GameMSG(lang_texts[8][0]);
 }
 
 stock IsPlayerAtHouse(playerid)
@@ -114,17 +118,62 @@ stock IsPlayerAtHouse(playerid)
 	return 0;
 }
 
-stock GetHouseID(playerid)
-{
-	new lookupid=-1;
-	for(new id=0;id<sizeof(Houses);id++) if(IsPlayerInRangeOfPoint(playerid,1.5,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ])) lookupid = id;
-	return lookupid;
-}
-
 stock IsPlayerRenter(playerid)
 {
 	for(new id=0;id<sizeof(Houses);id++) if(strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true) == 0) return true;
 	return false;
+}
+
+stock show_House_Menu(playerid)
+{
+	new id = Haus[playerid];
+	new string[MAX_STRING],playername[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,playername,sizeof(playername));
+	
+	new isowner = !strcmp(Houses[id][Houses_Owner],playername,true);
+	
+	if(isowner)
+		strcat(string,"Продать дом\n",sizeof(string));
+	else
+		strcat(string,"Купить дом\n",sizeof(string));
+	
+	strcat(string,"Войти в дом\n",sizeof(string));
+	
+	if(!isowner)
+	{
+		if(!strcmp(Houses[id][Houses_RentName],playername,true))
+			strcat(string,"Прекратить арендовать\n",sizeof(string));
+		else
+			strcat(string,"Арендовать комнату\n",sizeof(string));
+	}
+	else
+	{
+		if(!strcmp(Houses[id][Houses_RentName],"Unknown",true))
+		{
+			if(Houses[id][Houses_Rentabil] == 1)
+				strcat(string,"Выключить аренду\n",sizeof(string));
+			else
+				strcat(string,"Включить аренду\n",sizeof(string));
+		}
+		else
+			strcat(string,"Выгнать арендатора\n",sizeof(string));
+	}
+	
+	if(isowner)
+	{
+		if(Houses[id][Houses_Lock] == 1)
+			strcat(string,"Открыть дом\n",sizeof(string));
+		else
+			strcat(string,"Закрыть дом\n",sizeof(string));
+			
+		strcat(string,"Апгрейды\n",sizeof(string));
+	}
+	
+	return ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,
+		"Действия",
+		string,
+		"Выбрать","Отмена"
+	);
 }
 
 stock housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
@@ -132,51 +181,133 @@ stock housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	#pragma unused inputtext
 	if(dialogid == house_DialogID)
 	{
-		if(!response)
-		{
-			Hous[playerid] = 0;
-			return 0;
-		}
-		switch(Hous[playerid])
-		{
-			case 1:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nАрендовать комнату\n","Выбрать","Отмена");
-			case 2:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Продать дом\nВойти в дом\nВыгнать арендатора\n","Выбрать","Отмена");
-			case 3:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nАрендовать комнату\n","Выбрать","Отмена");
-			case 4:ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,"Действия:","Купить дом\nВойти в дом\nПрекратить арендовать\nЗаплатить за аренду","Выбрать","Отмена");
-		}
+		if(!response) return 1;
+		show_House_Menu(playerid);
 		return 1;
 	}
 	if(dialogid == houses_DialogID)
 	{
 		if(!response) return 0;
-		if(listitem == 0)
+		new id = Haus[playerid];
+		new playername[MAX_PLAYER_NAME];
+		GetPlayerName(playerid,playername,sizeof(playername));
+		switch(listitem)
 		{
-			if(Hous[playerid] != 2)	FHouseBuy(playerid);
-			else FHouseSell(playerid);
-		}
-		if(listitem == 1) 
-		{
-			new id = GetHouseID(playerid);
-			if(id > -1)
+			case 0:
 			{
-				if(Houses[id][Houses_Lock] == 1) return SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][56]);
-				else 
+				if(!strcmp(Houses[id][Houses_Owner],playername,true))
+					house_Sell(playerid);
+				else
+					house_Buy(playerid);
+				return 1;
+			}
+			case 1:
+			{
+				if(Houses[id][Houses_Lock] == 1)
+					return SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][56]);
+				oSetPlayerPos(playerid,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ],0,Houses[id][Houses_Interior],Houses[id][Houses_VirtualWorld]);
+				SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][73]);
+				return 1;
+			}
+			case 2:
+			{
+				if(strcmp(Houses[id][Houses_Owner],playername,true))
 				{
-					oSetPlayerPos(playerid,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ],0,Houses[id][Houses_Interior]);
-					Haus[playerid] = id;
-					SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][73]);
+					if(!strcmp(Houses[id][Houses_RentName],playername,true))
+						DeleteRenter(playerid);
+					else
+						RentRoom(playerid);
 				}
+				else
+				{
+					if(!strcmp(Houses[id][Houses_RentName],"Unknown",true))
+					{
+						if(Houses[id][Houses_Rentabil] == 1)
+						{
+							Houses[id][Houses_Rentabil] = 0;
+							SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][75]);
+						}
+						else
+						{
+							Houses[id][Houses_Rentabil] = 1;
+							SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][74]);
+						}
+					}
+					else
+						DeleteRenter(playerid);
+				}
+				return 1;
 			}
-		}
-		if(listitem == 2)
-		{
-			switch(Hous[playerid])
+			case 3:
 			{
-				case 1,3:RentRoom(playerid);
-				case 2,4:DeleteRenter(playerid);
+				if(Houses[id][Houses_Lock] == 1)
+				{
+					Houses[id][Houses_Lock] = 0;
+					SendClientMessage(playerid,COLOUR_GREEN,"Вы открыли дом");
+					
+				}
+				else
+				{
+					Houses[id][Houses_Lock] = 1;
+					SendClientMessage(playerid,COLOUR_GREEN,"Вы закрыли дом");
+				}
+				return 1;
+			}
+			case 4:
+			{
+				ShowPlayerDialog(playerid,houses_upgrades_DialogID,DIALOG_STYLE_LIST,
+					"Апгрейды",
+					"Восстановление здоровья\n\
+					Бесплатная броня\n",
+					"Выбрать","Отмена"
+				);
+				return 1;
 			}
 		}
-		Hous[playerid] = 0;
+		return 1;
+	}
+	if(dialogid == houses_upgrades_DialogID)
+	{
+		if(!response)
+			return show_House_Menu(playerid);
+		new id = Haus[playerid];
+		switch(listitem)
+		{
+			case 0:
+			{
+				new string[MAX_STRING];
+				if(oGetPlayerMoney(playerid) < HOUSE_UPGRADE_HEALTH_COST)
+				{
+					format(string,sizeof(string),lang_texts[8][63],HOUSE_UPGRADE_HEALTH_COST);
+					return show_Msg_Dialog(playerid,"Апгрейд Здоровье",string,"ОК");
+				}
+				
+				if(Houses[id][Houses_HealUpgrade] != 0)
+					return show_Msg_Dialog(playerid,"Апгрейд Здоровье",lang_texts[8][65],"ОК");
+				
+				Houses[id][Houses_HealUpgrade] = 1;
+				oGivePlayerMoney(playerid,-HOUSE_UPGRADE_HEALTH_COST,0);
+				show_Msg_Dialog(playerid,"Апгрейд",lang_texts[8][64],"ОК");
+				return 1;
+			}
+			case 1:
+			{
+				new string[MAX_STRING];
+				if(oGetPlayerMoney(playerid) < HOUSE_UPGRADE_ARMOUR_COST)
+				{
+					format(string,sizeof(string),lang_texts[8][63],HOUSE_UPGRADE_ARMOUR_COST);
+					return show_Msg_Dialog(playerid,"Апгрейд Броня",string,"ОК");
+				}
+				
+				if(Houses[id][Houses_ArmourUpgrade] != 0)
+					return show_Msg_Dialog(playerid,"Апгрейд Броня",lang_texts[8][65],"ОК");
+				
+				Houses[id][Houses_ArmourUpgrade] = 1;
+				oGivePlayerMoney(playerid,-HOUSE_UPGRADE_ARMOUR_COST,0);
+				show_Msg_Dialog(playerid,"Апгрейд",lang_texts[8][64],"ОК");
+				return 1;
+			}
+		}
 		return 1;
 	}
 	return 1;
@@ -184,16 +315,17 @@ stock housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 
 stock RentRoom(playerid)
 {
-	new id = GetHouseID(playerid),string[MAX_STRING];
+	new id = Haus[playerid],string[MAX_STRING];
 	if(id <= -1) return 1;
 	if(IsPlayerRenter(playerid)) return 1;
 	if(Houses[id][Houses_Rentabil] == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][68]);
 	if(strlen(GetPlayerGangName(playerid)) > 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][79]);
 	if(!strcmp(Houses[id][Houses_RentName],"Unknown",true))
 	{
-		if(oGetPlayerMoney(playerid) < 50000) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][57]);
+		if(oGetPlayerMoney(playerid) < Houses[id][Houses_RentCost]) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][57]);
 		set(Houses[id][Houses_RentName],oGetPlayerName(playerid));
 		oGivePlayerMoney(playerid,-Houses[id][Houses_RentCost],0);
+		Houses[id][Houses_UpKeep] -= Houses[id][Houses_RentCost];
 		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[id][Houses_Name]);
 		new file_housing = ini_Open(string);
 		ini_SetInt(file_housing,"Rentabil",1);
@@ -212,8 +344,8 @@ stock RentRoom(playerid)
 
 stock DeleteRenter(playerid)
 {
-	new id = GetHouseID(playerid);
-	if(strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true) == 0) 
+	new id = Haus[playerid];
+	if(!strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true)) 
 	{
 		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[8][58]);
 		for(new i=0;i<=GetPlayerLastID();i++)
@@ -221,7 +353,9 @@ stock DeleteRenter(playerid)
 				SendClientMessage(i,COLOUR_LIGHTRED,lang_texts[8][60]);
 	}
 	else if(!strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true))
+	{
 		SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][59]);
+	}
 	if(id > -1) set(Houses[id][Houses_RentName],"Unknown");
 	UpdatePlayerStreamMapIcon(playerid,house_icon[id]);
 	return 1;
@@ -231,71 +365,44 @@ stock housing_OnPlayerCommandText(playerid,text[])
 {
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,' '));
-	if(strlen(cmd) == 0) return 0;
+	new id = Haus[playerid];
 
-	if((!strcmp(cmd,"/houseinfo",true)) || (!strcmp(cmd,"/hinfo",true)))
-	{
-		if(!IsPlayerAtHouse(playerid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][2]);
-		FHouseInfo(playerid);
-		return 1;
-	}
-	if((!strcmp(cmd,"/housebuy",true)) || (!strcmp(cmd,"/hbuy",true)))
-	{
-		if(!IsPlayerAtHouse(playerid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][14]);
-		FHouseBuy(playerid);
-		return 1;
-	}
-	if((!strcmp(cmd,"/housesell",true)) || (!strcmp(cmd,"/hsell",true)))
-	{
-		if(!IsPlayerAtHouse(playerid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][22]);
-		FHouseSell(playerid);
-		return 1;
-	}
-	if(!strcmp(cmd,"/myhouses",true)) FHouseMyHouses(playerid);
-	if(!strcmp(cmd,"/houses",true)) FHouseHouses(playerid);
+	if(!strcmp(cmd,"/ganghouses",true))
+		return gang_Houses(playerid);
+
 	if(!strcmp(cmd,"/upkeep",true))
 	{
 		if(!IsPlayerAtHouse(playerid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][43]); 
-		FHouseKeep(playerid);
+		house_Keep(playerid);
 		return 1;
 	}
 	if(!strcmp(cmd,"/heal",true))
 	{
-		if(Haus[playerid] <= -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][61]);
-		new id = Haus[playerid];
-		if(Houses[id][Houses_HealUpgrade] != 0)
-		{
-			SetPlayerArmour(playerid,100);
-			SetPlayerHealth(playerid,1000);
-		}
-		else SendClientMessage(playerid,COLOUR_RED,lang_texts[8][62]);
+		if(id <= -1)
+			return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][61]);
+		if(Houses[id][Houses_HealUpgrade] != 1)
+			return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][62]);
+
+		oSetPlayerHealth(playerid,GetMaxHealth(playerid));
+		SendClientMessage(playerid,COLOUR_RED,"Вы восстановили здоровье.");
 		return 1;
 	}
-	if(!strcmp(cmd,"/houseupgrade",true))
+	if(!strcmp(cmd,"/armour",true))
 	{
-		if(Haus[playerid] == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][61]);
-		new id = Haus[playerid];
-		set(cmd,strcharsplit(text, idx,' '));
-		if(strlen(cmd) == 0) SendClientMessage(playerid,COLOUR_GREY,lang_texts[8][66]);
-		if(!strcmp(cmd,"heal",true))
-		{
-			if(GetPlayerMoney(playerid) >= 100000)
-			{
-				if(Houses[id][Houses_HealUpgrade] != 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][65]);
-				Houses[id][Houses_HealUpgrade] = 1;
-				oGivePlayerMoney(playerid,-100000,0);
-				SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][64]);
-			}
-			else SendClientMessage(playerid,COLOUR_RED,lang_texts[8][63]);
-		}
+		if(id <= -1)
+			return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][61]);
+		if(Houses[id][Houses_ArmourUpgrade] != 1)
+			return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][62]);
+
+		SetPlayerArmour(playerid,100);
+		SendClientMessage(playerid,COLOUR_RED,"Вы воспользовались бронёй");
 		return 1;
 	}
 	if(!strcmp(cmd,"/setrentcost",true))
 	{
-		new id = GetHouseID(playerid),string[MAX_STRING];
-		if((id > -1 || Haus[playerid] > -1) && !strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true))
+		new string[MAX_STRING];
+		if(id > -1 && !strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true))
 		{
-			id = Haus[playerid];
 			new rentcost = strval(strcharsplit(text, idx,' '));
 			if(rentcost < 1) return SendClientMessage(playerid,COLOUR_GREY,lang_texts[8][71]);
 			Houses[id][Houses_RentCost] = rentcost;
@@ -304,115 +411,16 @@ stock housing_OnPlayerCommandText(playerid,text[])
 		}
 		return 1;
 	}
-	if(!strcmp(cmd,"/hlock",true))
-	{
-		if(Haus[playerid] > -1) if(!strcmp(Houses[Haus[playerid]][Houses_Owner],oGetPlayerName(playerid),true)) Houses[Haus[playerid]][Houses_Lock] = 1;
-		return 1;
-	}
-	if(!strcmp(cmd,"/hunlock",true))
-	{
-		new id = GetHouseID(playerid);
-		if(id > -1) if(!strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true)) Houses[id][Houses_Lock] = 0;
-		return 1;
-	}
-	if(!strcmp(cmd,"/rent",true))
-	{
-		new id = GetHouseID(playerid);
-		set(cmd,strcharsplit(text, idx,' '));
-		if(strlen(cmd) < 1) SendClientMessage(playerid,COLOUR_RED,lang_texts[8][76]);
-		else if(!strcmp(cmd,"on",true))
-		{
-			Houses[id][Houses_Rentabil] = 1;
-			new filename_housing[MAX_STRING];
-			format(filename_housing,sizeof(filename_housing),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[id][Houses_Name]);
-			if(ini_Exist(filename_housing))
-			{
-				new file_housing = ini_Open(filename_housing);
-				ini_SetInt(file_housing,"Rentabil",Houses[id][Houses_Rentabil]);
-				ini_Close(file_housing);
-			}
-			SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][74]);
-			return 1;
-		}
-		else if(!strcmp(cmd,"off",true))
-		{
-			Houses[id][Houses_Rentabil] = 0;
-			new filename_housing[MAX_STRING];
-			format(filename_housing,sizeof(filename_housing),"%s%s"GTO_FILES_FORMAT,HousesDB,Houses[id][Houses_Name]);
-			if(ini_Exist(filename_housing))
-			{
-				new file_housing = ini_Open(filename_housing);
-				ini_SetInt(file_housing,"Rentabil",Houses[id][Houses_Rentabil]);
-				ini_Close(file_housing);
-			}
-			SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][75]);
-			return 1;
-		}
-		return 1;
-	}
 	return 0;
 }
 
-stock FHouseInfo(playerid) 
-{
-	new id=GetHouseID(playerid);
-	if(id <= -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][13]);
-	new temp[MAX_STRING];
-	format(temp,sizeof(temp),lang_texts[8][3],Houses[id][Houses_Name]);
-	SendClientMessage(playerid,COLOUR_GREEN,temp);
-	if(strcmp(Houses[id][Houses_Owner],"Unknown",true) && strcmp(Houses[id][Houses_Gang],"Unknown",true))
-	{
-		format(temp,sizeof(temp),lang_texts[8][4],Houses[id][Houses_Gang],Houses[id][Houses_Owner]);
-		SendClientMessage(playerid,COLOUR_GREEN,temp);
-		new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
-		new UpKeep = Houses[id][Houses_UpKeep];
-		if(strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true) || strcmp(Houses[id][Houses_Gang], GetPlayerGangName(playerid), true))
-		{
-			format(temp,sizeof(temp),lang_texts[8][5],price);
-			SendClientMessage(playerid,COLOUR_GREEN,temp);
-			format(temp,sizeof(temp),lang_texts[8][6],UpKeep);
-			SendClientMessage(playerid,COLOUR_GREEN,temp);
-			format(temp,sizeof(temp),lang_texts[8][7],Houses[id][Houses_UpKeepLeft],UpKeep*2800);
-			SendClientMessage(playerid,COLOUR_GREEN,temp);
-		}
-	}
-	else
-	{
-		SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][9]);
-		format(temp,sizeof(temp),lang_texts[8][10],Houses[id][Houses_Cost]);
-		SendClientMessage(playerid,COLOUR_GREEN,temp);
-		format(temp,sizeof(temp),lang_texts[8][11],Houses[id][Houses_UpKeep],Houses[id][Houses_UpKeepLeft]);
-		SendClientMessage(playerid,COLOUR_GREEN,temp);
-	}
-	return 1;
-}
-
-stock FHouseHouses(playerid)
-{
-	new temp[MAX_STRING];
-	for(new id=0;id<sizeof(Houses);id++)
-	{
-		if(strcmp(Houses[id][Houses_Owner],"Unknown",true))
-		{
-			format(temp,sizeof(temp),lang_texts[8][38],Houses[id][Houses_Name],Houses[id][Houses_Gang],Houses[id][Houses_Owner]);
-			SendClientMessage(playerid,COLOUR_MISC,temp);
-		} 
-		else 
-		{
-			format(temp,sizeof(temp),lang_texts[8][39],Houses[id][Houses_Name]);
-			SendClientMessage(playerid,COLOUR_MISC,temp);
-		}
-	}
-	return 1;
-}
-
-stock FHouseBuy(playerid) 
+stock house_Buy(playerid) 
 {
 	for(new i=0;i<sizeof(Houses);i++)
 		if(!strcmp(oGetPlayerName(playerid),Houses[i][Houses_Owner],true))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][78]);
 	new temp[MAX_STRING];
-	new id = GetHouseID(playerid);
+	new id = Haus[playerid];
 	if(id <= -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][21]);
 	if(!IsPlayerRegistered(playerid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][20]);
 	if(GetPVarInt(playerid,"GangID") == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][19]);
@@ -470,11 +478,11 @@ stock FHouseBuy(playerid)
 	return 1;
 }
 
-stock FHouseSell(playerid) 
+stock house_Sell(playerid) 
 {
-	FHouseKeep(playerid);
+	house_Keep(playerid);
 	new temp[MAX_STRING];
-	new id = GetHouseID(playerid);
+	new id = Haus[playerid];
 	if(id <= -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][28]);
 	if(!IsPlayerRegistered(playerid))
 	{
@@ -503,7 +511,7 @@ stock FHouseSell(playerid)
 	return 1;
 }
 
-stock FHouseMyHouses(playerid) 
+stock gang_Houses(playerid) 
 {
 	new temp[MAX_STRING];
 	new count = 0;
@@ -522,14 +530,14 @@ stock FHouseMyHouses(playerid)
 	return 1;
 }
 
-stock FHouseKeep(playerid) 
+stock house_Keep(playerid) 
 {
-	new id=GetHouseID(playerid);
+	new id = Haus[playerid];
 	if(id > -1)
 	{
 		if(IsPlayerRegistered(playerid))
 		{
-			if(strcmp(Houses[id][Houses_Gang],GetPlayerGangName(playerid),true) == 0)
+			if(!strcmp(Houses[id][Houses_Gang],GetPlayerGangName(playerid),true))
 			{
 				if(oGetPlayerMoney(playerid) > Houses[id][Houses_UpKeepLeft]) 
 				{
@@ -543,7 +551,7 @@ stock FHouseKeep(playerid)
 						if(ini_Exist(filename_housing))
 						{
 							new file_housing = ini_Open(filename_housing);
-							ini_SetInt(file_housing,"UpKeepLeft",Houses[id][Houses_UpKeepLeft]);
+							ini_SetInt(file_housing,"UpKeepLeft",0);
 							ini_Close(file_housing);
 						}
 					} 
@@ -595,7 +603,7 @@ stock GetPlayerHouseID(playerid)
 
 stock SetPlayerPosToHouse(playerid,i)
 {
-	SetPlayerPos(playerid,Houses[i][Houses_PickupX],Houses[i][Houses_PickupY],Houses[i][Houses_PickupZ]+0.5);
+	oSetPlayerPos(playerid,Houses[i][Houses_PickupX],Houses[i][Houses_PickupY],Houses[i][Houses_PickupZ]+0.5,0,0,0);
 }
 
 stock HouseKeepUp()
@@ -603,7 +611,7 @@ stock HouseKeepUp()
 	new upkeepamount,upkeep,upkeepleft;
 	for(new id=0;id<sizeof(Houses);id++)
 	{
-		if(strcmp(Houses[id][Houses_Gang],"Unknown",true) != 0) 
+		if(strcmp(Houses[id][Houses_Gang],"Unknown",true))
 		{
 			upkeep = Houses[id][Houses_UpKeep];
 			upkeepleft = Houses[id][Houses_UpKeepLeft];
@@ -640,57 +648,63 @@ stock HouseKeepUp()
 stock housing_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused oldkeys,newkeys
-	for(new id=0;id<sizeof(Houses);id++)
+	for(new id=0,player_vw;id<sizeof(Houses);id++)
 	{
+		Haus[playerid] = id;
+		player_vw = GetPlayerVirtualWorld(playerid);
 		if(IsPlayerInRangeOfPoint(playerid,3,Houses[id][Houses_PickupX],Houses[id][Houses_PickupY],Houses[id][Houses_PickupZ]+0.5))
 		{
-			new string[MAX_STRING],string2[MAX_STRING],string3[MAX_STRING],string4[MAX_STRING],string5[MAX_STRING],string6[MAX_STRING],dialog[MAX_STRING];
-			format(string,sizeof(string),lang_texts[8][3],Houses[id][Houses_Name]);
-			new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
-			new UpKeep = Houses[id][Houses_UpKeep];
+			new head[MAX_STRING],string[1024];
+			format(head,sizeof(head),lang_texts[8][3],Houses[id][Houses_Name]);
+			new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout],
+				UpKeep = Houses[id][Houses_UpKeep],
+				playername[MAX_PLAYER_NAME];
+			GetPlayerName(playerid,playername,sizeof(playername));
 			if(strcmp(Houses[id][Houses_Owner],"Unknown",true) && strcmp(Houses[id][Houses_Gang],"Unknown",true))
 			{
-				if(strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true) || strcmp(Houses[id][Houses_Gang],GetPlayerGangName(playerid),true))
+				if(strcmp(Houses[id][Houses_Owner],playername,true) || strcmp(Houses[id][Houses_Gang],GetPlayerGangName(playerid),true))
 				{
-					if(strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true) != 0) Hous[playerid] = 1;
-					else Hous[playerid] = 4;
-					format(string2,sizeof(string2),lang_texts[8][5],price);
-					format(string3,sizeof(string3),lang_texts[8][6],UpKeep);
-					format(string4,sizeof(string4),lang_texts[8][7],Houses[id][Houses_UpKeepLeft],UpKeep*2800);
-					format(string5,sizeof(string5),lang_texts[8][4],Houses[id][Houses_Gang],Houses[id][Houses_Owner]);
-					if(strcmp(Houses[id][Houses_RentName],"Unknown",true) == 0) format(string6,sizeof(string6),lang_texts[8][53],Houses[id][Houses_RentCost]);
-					else format(string6,sizeof(string6),lang_texts[8][52],Houses[id][Houses_RentName]);
-					format(dialog,sizeof(dialog),"%s\n%s\n%s\n%s\n%s\n",string2,string3,string4,string5,string6);
-					ShowPlayerDialog(playerid,house_DialogID,DIALOG_STYLE_MSGBOX,string,dialog,"Действия","Отмена");
+					format(string,sizeof(string),
+						lang_texts[8][1],
+						price,UpKeep,Houses[id][Houses_UpKeepLeft],UpKeep*2800,Houses[id][Houses_Gang],Houses[id][Houses_Owner]
+					);
+					
+					new buf[MAX_STRING];
+					if(!strcmp(Houses[id][Houses_RentName],"Unknown",true))
+						format(buf,sizeof(buf),lang_texts[8][53],Houses[id][Houses_RentCost]);
+					else
+						format(buf,sizeof(buf),lang_texts[8][52],Houses[id][Houses_RentName]);
+					
+					strcat(string,buf,sizeof(string));
+					return ShowPlayerDialog(playerid,house_DialogID,DIALOG_STYLE_MSGBOX,head,string,"Действия","Отмена");
 				}
 				else
 				{
-					format(string2,sizeof(string2),lang_texts[8][5],price);
-					format(string3,sizeof(string3),lang_texts[8][6],UpKeep);
-					if(strcmp(Houses[id][Houses_RentName],"Unknown",true) == 0) format(string4,sizeof(string4),lang_texts[8][53],Houses[id][Houses_RentCost]);
-					else format(string4,sizeof(string4),lang_texts[8][52],Houses[id][Houses_RentName]);
-					format(dialog,sizeof(dialog),"%s\n%s\n%s\n",string2,string3,string4);
-					Hous[playerid] = 2;
-					ShowPlayerDialog(playerid,house_DialogID,DIALOG_STYLE_MSGBOX,string,dialog,"Действия","Отмена");
+					format(string,sizeof(string),lang_texts[8][8],price,UpKeep);
+					
+					new buf[MAX_STRING];
+					if(!strcmp(Houses[id][Houses_RentName],"Unknown",true))
+						format(buf,sizeof(buf),lang_texts[8][53],Houses[id][Houses_RentCost]);
+					else
+						format(buf,sizeof(buf),lang_texts[8][52],Houses[id][Houses_RentName]);
+					
+					strcat(string,buf,sizeof(string));
+					return ShowPlayerDialog(playerid,house_DialogID,DIALOG_STYLE_MSGBOX,head,string,"Действия","Отмена");
 				}
 			}
 			else
 			{
-				if(strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true) != 0) Hous[playerid] = 3;
-				else Hous[playerid] = 4;
-				format(string2,sizeof(string2),lang_texts[8][9]);
-				format(string3,sizeof(string3),lang_texts[8][10],Houses[id][Houses_Cost]);
-				format(string4,sizeof(string4),lang_texts[8][11],Houses[id][Houses_UpKeep],Houses[id][Houses_UpKeepLeft]);
-				format(string5,sizeof(string5),lang_texts[8][53],Houses[id][Houses_RentCost]);
-				format(dialog,sizeof(dialog),"%s\n%s\n%s\n%s\n",string2,string3,string4,string5);
-				ShowPlayerDialog(playerid,house_DialogID,DIALOG_STYLE_MSGBOX,string,dialog,"Действия","Отмена");
+				format(string,sizeof(string),lang_texts[8][12],
+					Houses[id][Houses_Cost],Houses[id][Houses_UpKeep],Houses[id][Houses_UpKeepLeft],Houses[id][Houses_RentCost]
+				);
+				
+				return ShowPlayerDialog(playerid,house_DialogID,DIALOG_STYLE_MSGBOX,head,string,"Действия","Отмена");
 			}
 		}
-		else if(IsPlayerInRangeOfPoint(playerid,2,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ]))
+		else if(IsPlayerInRangeOfPoint(playerid,2,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ]) && player_vw == Houses[id][Houses_VirtualWorld])
 		{
-			SetPlayerInterior(playerid,0);
-			SetPlayerPosToHouse(playerid,Haus[playerid]);
-			Haus[playerid] = -1;
+			SetPlayerPosToHouse(playerid,id);
+			break;
 		}
 	}
 	return 1;
