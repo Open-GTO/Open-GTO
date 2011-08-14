@@ -226,7 +226,7 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 		}
 		
 		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_NewName);
-		// если файл есть, то выходим стразу-же
+		// если файл есть, то выходим сразу-же
 		if(fexist(string))
 			return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][9]);
 		if(SetPlayerName(playerid,Account_NewName) != 1)

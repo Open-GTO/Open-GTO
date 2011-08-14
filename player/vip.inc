@@ -40,7 +40,7 @@ stock IsVIPVehicle(vehicleid)
 
 stock GetPlayerVIPDate(playerid)
 {
-	new string[10];
+	new string[11];
 	GetPVarString(playerid,"VIPDate",string,sizeof(string));
 	return string;
 }

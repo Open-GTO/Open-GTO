@@ -376,11 +376,11 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	if(!strcmp(cmd,"/setvip",true))
 	{
-		new string[MAX_STRING];
 		new giveid = strval(strcharsplit(text,idx,' '));
 		if(!IsPlayerConnected(giveid)) 
 			return SendClientMessage(playerid,COLOUR_WHITE,"Некорректный ввод, '/setvip id dd.mm.yyyy'");
 		
+		new string[MAX_STRING];
 		set(string,strcharsplit(text,idx,' '));
 		
 		if(strlen(string) < 10)

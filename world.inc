@@ -61,23 +61,16 @@ nee:
 	AntiHightPingSaveConfig();
 	ChatGuardSaveConfig();
 	BanWeaponsSaveConfig();
+	// other
+	WeaponSaveAll();
+	RaceSaveAll();
+	DeathmatchSaveAll();
+	BusinessSaveAll();
+	HousesSaveAll();
+	GangSaveAll();
+	RaceSaveScores();
+	DeathmatchSaveScores();
 	//
-	
-	if ((VerboseSave == 1) || (VerboseSave == -1))
-	{
-		WeaponSaveAll();
-		RaceSaveAll();
-		DeathmatchSaveAll();
-		BusinessSaveAll();
-		HousesSaveAll();
-		if (VerboseSave == -1) VerboseSave = 0;
-	}
-	else
-	{
-		GangSaveAll();
-		RaceSaveScores();
-		DeathmatchSaveScores();
-	}
 	GameMSG("World save complete! Time taken: %s.",ConvertSeconds(Now() - starttime));
 	return 1;
 }
