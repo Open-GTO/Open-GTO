@@ -265,7 +265,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			account_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
-		case house_DialogID, houses_DialogID, houses_upgrades_DialogID:
+		case house_DialogID, houses_DialogID, houses_upgrades_DialogID, houses_setrent_DialogID:
 		{
 			housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}

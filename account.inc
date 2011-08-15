@@ -227,25 +227,31 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 		
 		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_NewName);
 		// если файл есть, то выходим сразу-же
-		if(fexist(string))
+		if(ini_Exist(string))
 			return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][9]);
+		// переименовываем
 		if(SetPlayerName(playerid,Account_NewName) != 1)
 			return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][9]);
 		
 		new gangid = GetPVarInt(playerid,"GangID");
 		if(gangid != 0)
 		{
-			GangRemoveMember(gangid,Account_LastName);
-			GangJoinMember(gangid,playerid);
+			gang_RenameMember(gangid,Account_LastName,Account_NewName);
 		}
+		
+		housing_RenameOwner(Account_LastName,Account_NewName);
+		business_RenameOwner(Account_LastName,Account_NewName);
+		
+		races_RenameBestPlayer(Account_LastName,Account_NewName);
+		dm_RenameBestPlayer(Account_LastName,Account_NewName);
 		
 		PlayerSave(playerid);
 		AccountSave(playerid);
 		
 		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_LastName);
-		if(fexist(string)) fremove(string);
+		if(ini_Exist(string)) ini_Remov(string);
 		format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,PlayerDB,Account_LastName);
-		if(fexist(string)) fremove(string);
+		if(ini_Exist(string)) ini_Remov(string);
 		
 		oGivePlayerMoney(playerid,-CHANGE_NICK_COST,1);
 		

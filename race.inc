@@ -1115,3 +1115,15 @@ stock MakeRaceSleepTime(raceid)
 	sleeptime = ((Race[raceid][race_frequency] * RacesCount) * 75);
 	return sleeptime;
 }
+
+stock races_RenameBestPlayer(old_name[MAX_PLAYER_NAME],new_name[MAX_PLAYER_NAME])
+{
+	for(new raceid=0;raceid<sizeof(BestScore);raceid++)
+	{
+		if( !strcmp(BestScore[raceid][race_score_player],old_name,true) )
+		{
+			set(BestScore[raceid][race_score_player],new_name);
+		}
+	}
+	return 0;
+}

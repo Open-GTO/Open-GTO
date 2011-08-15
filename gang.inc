@@ -741,6 +741,18 @@ stock GangGivePlayerXP(playerid,xpamount)
 	return;
 }
 
+stock gang_RenameMember(gangid,old_name[MAX_PLAYER_NAME],new_name[MAX_PLAYER_NAME])
+{
+	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
+	{
+		if( !strcmp(GangMemberInfo[gangid][gangmember][member_name],old_name,true) )
+		{
+			set(GangMemberInfo[gangid][gangmember][member_name],new_name);
+			return 1;
+		}
+	}
+	return 0;
+}
 // ************************************* GANG LEVEL ******************************************************
 #define MAX_GANG_LEVEL 10
 #define MAX_GANG_XP  60000000

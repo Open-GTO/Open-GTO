@@ -1289,3 +1289,15 @@ stock DMDecodeWeaponsDB(wepstr[])
 	}
 	return weps;
 }
+
+stock dm_RenameBestPlayer(old_name[MAX_PLAYER_NAME],new_name[MAX_PLAYER_NAME])
+{
+	for(new dmid=0;dmid<sizeof(DMBestScore);dmid++)
+	{
+		if( !strcmp(DMBestScore[dmid][dm_score_player],old_name,true) )
+		{
+			set(DMBestScore[dmid][dm_score_player],new_name);
+		}
+	}
+	return 0;
+}

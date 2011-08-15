@@ -146,7 +146,7 @@ enum {
 	account_Reg_DialogID, account_Log_DialogID,
 	bank_Start_DialogID, bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID,
 	click_DialogID, click_Resp_DialogID,
-	house_DialogID, houses_DialogID, houses_upgrades_DialogID,
+	house_DialogID, houses_DialogID, houses_upgrades_DialogID, houses_setrent_DialogID,
 	bis_DialogID, bis_Info_DialogID, bis_Msg_DialogID,
 	fightstyles_DialogID, fightstyles_user_DialogID,
 	user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID,

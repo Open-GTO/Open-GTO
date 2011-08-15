@@ -556,3 +556,16 @@ stock bis_ShowDialog_Msg(playerid,bis_id,string[])
 		"Назад","Отмена"
 	);
 }
+
+stock business_RenameOwner(old_name[MAX_PLAYER_NAME],new_name[MAX_PLAYER_NAME])
+{
+	for(new i=0;i<sizeof(Businesses);i++)
+	{
+		if( !strcmp(Businesses[i][Business_Owner],old_name,true) )
+		{
+			set(Businesses[i][Business_Owner],new_name);
+			return 1;
+		}
+	}
+	return 0;
+}
