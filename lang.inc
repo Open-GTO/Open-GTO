@@ -61,8 +61,7 @@ stock lang_read(filename[])
 			strmid(tmp1, tmpres, 0, pos_s);
 			strmid(tmp2, tmpres, pos_s+2, len-strlen(tmp1));
 			
-			if(check_BB(tmp2) == 1)
-				check_BB(tmp2);
+			while( check_BB(tmp2) == 1) {}
 			
 			lang_texts[i][strval(tmp1)] = tmp2;
 		}

@@ -277,7 +277,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			fights_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
-		case user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID:
+		case user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID, spawnselect_menu_DialogID:
 		{
 			usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}

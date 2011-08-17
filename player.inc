@@ -46,6 +46,8 @@
 #define GetPlayerHideStatus(%0) GetPVarInt(%0,"Hide")
 #define SetPlayerHideStatus(%0,%1) SetPVarInt(%0,"Hide",%1)
 
+#define GetPlayerSpawnHouseID(%0) GetPVarInt(%0,"SpawnHouseID")
+#define SetPlayerSpawnHouseID(%0,%1) SetPVarInt(%0,"SpawnHouseID",%1)
 
 stock GetPlayerGangName(playerid)
 {
@@ -184,7 +186,7 @@ stock player_OnGameModeInit()
 stock player_OnPlayerSpawn(playerid)
 {
 	SetPVarInt(playerid,"Spawned",1);
-	new house_id = GetPlayerHouseID(playerid);
+	new house_id = GetPlayerSpawnHouseID(playerid);
 	SetPlayerInterior(playerid,0);
 	if(house_id == -1)
 	{
@@ -420,6 +422,7 @@ stock player_ResetStats(playerid)
 	SetPlayerFightStyle(playerid,4);
 	SetPlayerFightStyleUsed(playerid,4);
 	weapon_ResetSkills(playerid);
+	SetPlayerSpawnHouseID(playerid,-1);
 }
 
 stock IsPlayerRegistered(playerid)
@@ -520,6 +523,7 @@ stock player_save_db_ini(playerid)
 	ini_SetInt(file_player,"SkinModel",GetPlayerSkinModel(playerid));
 	ini_Set(file_player,"VIP",GetPlayerVIPDate(playerid));
 	ini_SetInt(file_player,"Hide",GetPlayerHideStatus(playerid));
+	ini_SetInt(file_player,"SpawnHouseID",GetPlayerSpawnHouseID(playerid));
 	ini_Close(file_player);
 	return 1;
 }
@@ -626,6 +630,9 @@ stock player_load_db_ini(playerid)
 	
 	ini_GetInt(file_player,"Hide",buf);
 	SetPlayerHideStatus(playerid,buf);
+	
+	ini_GetInt(file_player,"SpawnHouseID",buf);
+	SetPlayerSpawnHouseID(playerid,buf);
 	
 	ini_Close(file_player);
 	UpdatePlayerScore(playerid);

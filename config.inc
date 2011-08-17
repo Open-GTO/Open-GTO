@@ -34,6 +34,7 @@
 #define WORLD_SAVE_TIME			300000		// 1 раз, за это кол-во милисекунд выполняется сохранение всего мира(300000 - 5 минут)
 #define GameMSG_USE_PRINT // если задефайнен, то функция GameMSG выводит сообщение в консоль сервера
 
+#define MAX_PLAYER_HOUSES		3 // количество домов, которые может иметь игрок(много ставить не рекомендуется)
 // цены
 #define HOUSE_UPGRADE_ARMOUR_COST 100000
 #define HOUSE_UPGRADE_HEALTH_COST 100000
@@ -149,7 +150,7 @@ enum {
 	house_DialogID, houses_DialogID, houses_upgrades_DialogID, houses_setrent_DialogID,
 	bis_DialogID, bis_Info_DialogID, bis_Msg_DialogID,
 	fightstyles_DialogID, fightstyles_user_DialogID,
-	user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID,
+	user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID, spawnselect_menu_DialogID,
 	weapons_Select_DialogID, weapons_Buy_DialogID,
 	bar_DialogID,
 	fastfood_DialogID,

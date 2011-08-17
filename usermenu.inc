@@ -45,6 +45,7 @@ stock show_User_Menu(playerid)
 		Анимации\n\
 		Убиться\n\
 		Выбросить оружие\n\
+		Место спавна\n\
 		Администрация онлайн\n\
 		Связь с администрацией\n\
 		Настройки\n\
@@ -87,6 +88,26 @@ stock show_Vehicle_Menu(playerid)
 		
 	return ShowPlayerDialog(playerid,vehicle_menu_DialogID,DIALOG_STYLE_LIST,
 		"Меню транспорта",
+		string,
+		"ОК","Отмена"
+	);
+}
+
+stock show_SpawnSelect_Menu(playerid)
+{
+	new string[MAX_NAME * MAX_PLAYER_HOUSES],
+		playername[MAX_STRING];
+	GetPlayerName(playerid,playername,sizeof(playername));
+	for(new i=0;i<sizeof(Houses);i++)
+	{
+		if(!strcmp(Houses[i][Houses_Owner],playername,true))
+		{
+			strcat(string,Houses[i][Houses_Name],sizeof(string));
+			strcat(string,"\n",sizeof(string));
+		}
+	}
+	return ShowPlayerDialog(playerid,spawnselect_menu_DialogID,DIALOG_STYLE_LIST,
+		"Меню выбора спавна",
 		string,
 		"ОК","Отмена"
 	);
@@ -181,7 +202,11 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					CheckPlayerLevel(playerid);
 					return show_User_Menu_Dialog(playerid,"Выбросить оружие","Вы добровольно избавились от всего оружия.");
 				}
-				case 6: // Администрация онлайн
+				case 6: // Место спавна
+				{
+					return show_SpawnSelect_Menu(playerid);
+				}
+				case 7: // Администрация онлайн
 				{
 					new idsa = 0,
 						admins[MAX_STRING],
@@ -212,17 +237,17 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					);
 					return show_User_Menu_Dialog(playerid,"Администрация онлайн",string);
 				}
-				case 7: // Связь с администрацией
+				case 8: // Связь с администрацией
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 8: // Настройки
+				case 9: // Настройки
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 9: // Версия
+				case 10: // Версия
 				{
 					show_User_Menu_Dialog(playerid,
 						"Информация о версии",
@@ -313,6 +338,26 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						SetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,VEHICLE_PARAMS_ON,objective);
 					return 1;
 				}
+			}
+			return 1;
+		}
+		case spawnselect_menu_DialogID:
+		{
+			if(!response)
+				return show_User_Menu(playerid);
+			
+			new playername[MAX_PLAYER_NAME];
+			GetPlayerName(playerid,playername,sizeof(playername));
+			for(new i=0,count;i<sizeof(Houses);i++)
+			{
+				if(strcmp(Houses[i][Houses_Owner],playername,true)) continue;
+				if(listitem == count)
+				{
+					SetPlayerSpawnHouseID(playerid,i);
+					SendClientMessage(playerid,COLOUR_WHITE,"Место спавна изменено.");
+					return 1;
+				}
+				count++;
 			}
 			return 1;
 		}

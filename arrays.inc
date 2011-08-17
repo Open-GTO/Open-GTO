@@ -12,7 +12,7 @@
 
 // ************************* днлю *********************************
 enum HouseInfo {
-	Houses_Name[MAX_STRING],// house name
+	Houses_Name[MAX_NAME],// house name
 	Houses_Cost,			// cost
 	Houses_Owner[MAX_NAME],	// owner
 	Houses_Gang[MAX_NAME],  // gang
