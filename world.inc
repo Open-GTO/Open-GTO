@@ -137,12 +137,17 @@ public OneHourTimer()
 	Profit();
 }
 
+forward TenMinuteTimer();
+public TenMinuteTimer()
+{
+	HouseKeepUp();
+}
+
 forward FiveSecondTimer();
 public FiveSecondTimer()
 {
 	CheckAllGround();
 	PlayerHealthRegen();
-	HouseKeepUp();
 	SyncActiveCP();
 	business_Update3DTextLabelText();
 	housing_Update3DTextLabelText();

@@ -214,6 +214,7 @@ public OnGameModeInit()
 	SetTimer("OneSecTimer",1000,1); // 1 second
 	SetTimer("FiveSecondTimer",5000,1); // 5 second
 	SetTimer("OneMinuteTimer",60000,1); // 1 minute
+	SetTimer("TenMinuteTimer",600000,1); // 10 minute
 	SetTimer("OneHourTimer",3600000,1); // 1 hour
 	SetTimer("WorldSave",WORLD_SAVE_TIME,1);
 	GameMSG("SERVER: Timers started");
@@ -541,10 +542,6 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	
 	// housing
 	command_register(cmdtext,"/ganghouses",11,housing);
-	command_register(cmdtext,"/upkeep",7,housing);
-	command_register(cmdtext,"/heal",5,housing);
-	command_register(cmdtext,"/armour",7,housing);
-	command_register(cmdtext,"/setrentcost",12,housing);
 	
 	// vehicles
 	command_register(cmdtext,"/vmenu",6,vehicles);
@@ -662,7 +659,8 @@ public OnPlayerStateChange(playerid,newstate,oldstate)
 	if(newstate == PLAYER_STATE_DRIVER)
 	{
 	#if defined OLD_ENGINE_DO
-		vehicle_Engine(GetPlayerVehicleID(playerid),VEHICLE_PARAMS_ON);
+		if(GetPlayerVehicleSeat(playerid) == 0)
+			vehicle_Engine(GetPlayerVehicleID(playerid),VEHICLE_PARAMS_ON);
 	#endif
 		trucker_OnPlayerStateChange(playerid,newstate,oldstate);
 		vip_OnPlayerStateChange(playerid,newstate,oldstate);
@@ -673,7 +671,8 @@ public OnPlayerStateChange(playerid,newstate,oldstate)
 public OnPlayerExitVehicle(playerid,vehicleid)
 {
 #if defined OLD_ENGINE_DO
-	vehicle_Engine(vehicleid,VEHICLE_PARAMS_OFF);
+	if(GetPlayerVehicleSeat(playerid) == 0)
+		vehicle_Engine(vehicleid,VEHICLE_PARAMS_OFF);
 #endif
 	modfunc_OnPlayerExitVehicle(playerid,vehicleid);
 	return 1;

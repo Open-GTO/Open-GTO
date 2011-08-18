@@ -214,6 +214,12 @@ stock player_OnPlayerSpawn(playerid)
 	else
 	{
 		SetPlayerPosToHouse(playerid,house_id);
+		new tmp[MAX_STRING];
+		format(tmp,sizeof(tmp),
+			lang_texts[8][51],
+			Houses[house_id][Houses_Name],Houses[house_id][Houses_UpKeepLeft],Houses[house_id][Houses_UpKeep]*2800
+		);
+		SendClientMessage(playerid,COLOUR_RED,tmp);
 	}
 	SetPlayerFacingAngle(playerid,GetPVarFloat(playerid,"Coord_A"));
 	
