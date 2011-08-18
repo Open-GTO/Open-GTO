@@ -16,7 +16,7 @@
 #include "player"
 #include "world"
 
-new Text3D:Business3DTextLabel[sizeof(Businesses)],Float:BusinessDistanceOfShowLabel=20.0;
+new Text3D:Business3DTextLabel[ sizeof(Businesses) ],Float:BusinessDistanceOfShowLabel=20.0;
 
 BusinessLoadAll()
 {
@@ -32,7 +32,7 @@ BusinessLoadAll()
 		format(businessdbname,sizeof(businessdbname),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[i][Business_Name]);
 		if(!ini_Exist(businessdbname)) continue;
 		file_business = ini_Open(businessdbname);
-		ini_Get(file_business,"Name",Businesses[i][Business_Name],MAX_STRING);
+		ini_Get(file_business,"Name",Businesses[i][Business_Name],MAX_NAME);
         ini_GetInt(file_business,"Cost",Businesses[i][Business_Cost]);
         ini_GetInt(file_business,"Value",Businesses[i][Business_Value]);
 		ini_GetInt(file_business,"Level",Businesses[i][Business_Level]);
@@ -91,7 +91,7 @@ stock business_OnGameModeInit()
 		format(string,sizeof(string),"Бизнес: %s\nСтоимость: %d\nПрибыль: %d\nСейчас принадлежит: %s\nМин.Уровень: %d\nУровень бизнеса: %d",Businesses[id][Business_Name],Businesses[id][Business_Cost],Businesses[id][Business_Value],Businesses[id][Business_Owner],Businesses[id][Business_Level],Businesses[id][Business_Upgrade]);
 		Business3DTextLabel[id] = Create3DTextLabel(string,COLOUR_WHITE,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.75,BusinessDistanceOfShowLabel,0,1);
 	}
-	GameMSG("SERVER: Business module init");
+	GameMSG(lang_texts[3][0]);
 }
 
 stock bis_ShowDialog_General(playerid)
@@ -129,7 +129,6 @@ stock GetBusinessID(playerid)
 
 stock TurnAround()
 {
-	new file_busin;
 	for(new id=0;id<sizeof(Businesses);id++)
 	{
 		if(strcmp(Businesses[id][Business_Owner], "Unknown", true))
@@ -137,14 +136,6 @@ stock TurnAround()
 			if(Businesses[id][Business_Vault] < Businesses[id][Business_Value] * Businesses[id][Business_Upgrade] * 50)
 			{
 				Businesses[id][Business_Vault] += (Businesses[id][Business_Value] * Businesses[id][Business_Upgrade]) / 1000;
-				new filename_busin[MAX_STRING];
-				format(filename_busin,sizeof(filename_busin),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
-				if(ini_Exist(filename_busin))
-				{
-					file_busin = ini_Open(filename_busin);
-					ini_SetInt(file_busin,"Vault",Businesses[id][Business_Vault]);
-					ini_Close(file_busin);
-				}
 			}
 		}
 	}
@@ -189,31 +180,20 @@ stock bis_ShowDialog_Info(playerid)
 	new id = GetBusinessID(playerid);
 	if(id <= -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[3][18]);
 	
-	
-	new temp[MAX_STRING],tmp[64],string[MAX_STRING];
-	format(temp,sizeof(temp),lang_texts[3][3],Businesses[id][Business_Name]);
+	new head[MAX_STRING],string[MAX_STRING];
+	format(head,sizeof(head),lang_texts[3][3],Businesses[id][Business_Name]);
 	
 	if(!strcmp(Businesses[id][Business_Owner],oGetPlayerName(playerid), true))
 	{
 		// если мой
-		set(string,"Это ваш бизнес");
-		
-		format(tmp,sizeof(tmp),lang_texts[3][11],((Businesses[id][Business_Cost] + Businesses[id][Business_Buyout]) * 85) / 100);
-		strcat(string,"\n",sizeof(string));
-		strcat(string,tmp,sizeof(string));
-		
-		if(Businesses[id][Business_Vault] > 0)
-		{
-			format(tmp,sizeof(tmp),lang_texts[3][9],Businesses[id][Business_Vault]);
-			strcat(string,"\n",sizeof(string));
-			strcat(string,tmp,sizeof(string));
-		}
-		format(tmp,sizeof(tmp),lang_texts[3][57],Businesses[id][Business_Upgrade]);
-		strcat(string,"\n",sizeof(string));
-		strcat(string,tmp,sizeof(string));
+		format(string,sizeof(string),lang_texts[3][11],
+			((Businesses[id][Business_Cost] + Businesses[id][Business_Buyout]) * 85) / 100,
+			Businesses[id][Business_Vault],
+			Businesses[id][Business_Upgrade]
+		);
 			
 		ShowPlayerDialog(playerid,bis_Info_DialogID,DIALOG_STYLE_MSGBOX,
-			temp,
+			head,
 			string,
 			"Действия","Отмена"
 		);
@@ -223,26 +203,15 @@ stock bis_ShowDialog_Info(playerid)
 		if(!strcmp(Businesses[id][Business_Owner],"Unknown", true))
 		{
 			// если ничей
-			strcat(string,lang_texts[3][13],sizeof(string));
-			
-			format(tmp,sizeof(tmp), lang_texts[3][14] ,Businesses[id][Business_Cost]);
-			strcat(string,"\n",sizeof(string));
-			strcat(string,tmp,sizeof(string));
-			
-			format(tmp,sizeof(tmp), lang_texts[3][15] ,Businesses[id][Business_Level]);
-			strcat(string,"\n",sizeof(string));
-			strcat(string,tmp,sizeof(string));
-			
-			format(tmp,sizeof(tmp), lang_texts[3][16] ,Businesses[id][Business_Value]);
-			strcat(string,"\n",sizeof(string));
-			strcat(string,tmp,sizeof(string));
-			
-			format(tmp,sizeof(tmp), lang_texts[3][57] ,Businesses[id][Business_Upgrade]);
-			strcat(string,"\n",sizeof(string));
-			strcat(string,tmp,sizeof(string));
+			format(string,sizeof(string),lang_texts[3][13],
+				Businesses[id][Business_Cost],
+				Businesses[id][Business_Level],
+				Businesses[id][Business_Value],
+				Businesses[id][Business_Upgrade]
+			);
 
 			ShowPlayerDialog(playerid,bis_Info_DialogID,DIALOG_STYLE_MSGBOX,
-				temp,
+				head,
 				string,
 				"Действия","Отмена"
 			);
@@ -250,29 +219,16 @@ stock bis_ShowDialog_Info(playerid)
 		else
 		{
 			// если кого-то
-			
-			format(tmp,sizeof(tmp),lang_texts[3][4],Businesses[id][Business_Owner]);
-			strcat(string,"\n",sizeof(string));
-			strcat(string,tmp,sizeof(string));
-		
-			format(tmp,sizeof(tmp),lang_texts[3][5],Businesses[id][Business_Cost] + Businesses[id][Business_Buyout]);
-			strcat(string,"\n",sizeof(string));
-			strcat(string,tmp,sizeof(string));
-
-			format(tmp,sizeof(tmp),lang_texts[3][6],Businesses[id][Business_Level]);
-			strcat(string,"\n",sizeof(string));
-			strcat(string,tmp,sizeof(string));
-			
-			format(tmp,sizeof(tmp),lang_texts[3][7],Businesses[id][Business_Value]);
-			strcat(string,"\n",sizeof(string));
-			strcat(string,tmp,sizeof(string));
-			
-			format(tmp,sizeof(tmp),lang_texts[3][57],Businesses[id][Business_Upgrade]);
-			strcat(string,"\n",sizeof(string));
-			strcat(string,tmp,sizeof(string));
+			format(string,sizeof(string),lang_texts[3][4],
+				Businesses[id][Business_Owner],
+				Businesses[id][Business_Cost] + Businesses[id][Business_Buyout],
+				Businesses[id][Business_Level],
+				Businesses[id][Business_Value],
+				Businesses[id][Business_Upgrade]
+			);
 			
 			ShowPlayerDialog(playerid,bis_Info_DialogID,DIALOG_STYLE_MSGBOX,
-				temp,
+				head,
 				string,
 				"Действия","Отмена"
 			);
@@ -283,13 +239,12 @@ stock bis_ShowDialog_Info(playerid)
 
 stock bis_Buy(playerid)
 {
-	new id = GetBusinessID(playerid),temp[MAX_STRING];
+	new id = GetBusinessID(playerid);
 	if(id <= -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[3][27]);
-	new head[MAX_STRING];
-	format(head,sizeof(head),lang_texts[3][3],Businesses[id][Business_Name]);
 	if(GetPlayerLevel(playerid) < Businesses[id][Business_Level])
 	{
-		format(temp,sizeof(temp), lang_texts[3][25],Businesses[id][Business_Level]);
+		new temp[MAX_STRING];
+		format(temp,sizeof(temp),lang_texts[3][25],Businesses[id][Business_Level]);
 		bis_ShowDialog_Msg(playerid,id,temp);
 		return 1;
 	}
@@ -298,75 +253,45 @@ stock bis_Buy(playerid)
 		return bis_ShowDialog_Msg(playerid,id,lang_texts[3][24]);
 	
 	if(!strcmp(Businesses[id][Business_Owner],oGetPlayerName(playerid),true))
-	{
 		bis_ShowDialog_Msg(playerid,id,lang_texts[3][20]);
-	}
+#if !defined BUY_ALL_BUSINESS
+	else if(strcmp(Businesses[id][Business_Owner],"Unknown",true))
+		SendClientMessage(playerid,COLOUR_RED,lang_texts[3][12]);
+#endif
 	else
 	{
-		new owner=-1;
-		new string[MAX_STRING];
+	#if defined BUY_ALL_BUSINESS
 		for(new ownerid=0;ownerid<=GetPlayerLastID();ownerid++)
 		{
-			if(!IsPlayerConnected(ownerid) || IsPlayerNPC(ownerid) || strcmp(Businesses[id][Business_Owner],oGetPlayerName(ownerid),true))
-				continue;
-			format(temp,sizeof(temp),lang_texts[3][21],Businesses[id][Business_Name],oGetPlayerName(playerid));
-			strcat(string,temp,sizeof(string));
-			strcat(string,"\n",sizeof(string));
-			owner=ownerid;
-			break;
-		}
-		oGivePlayerMoney(playerid,0-price,1);
-		if(owner > -1)
-		{
-			oGivePlayerMoney(owner,price,1);
-		}
-		else
-		{
-			new filename[MAX_STRING];
-			format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,PlayerDB,Businesses[id][Business_Owner]);
-			if(ini_Exist(filename))
+			if(IsPlayerConnected(ownerid) && !IsPlayerNPC(ownerid) && !strcmp(Businesses[id][Business_Owner],oGetPlayerName(ownerid),true))
 			{
-				new tempmoney,file_busin = ini_Open(filename);
-				ini_GetInt(file_busin,"Money",tempmoney);
-				ini_SetInt(file_busin,"Money",tempmoney+price);
-				ini_Close(file_busin);
+				new temp[MAX_STRING];
+				format(temp,sizeof(temp),lang_texts[3][21],oGetPlayerName(playerid),Businesses[id][Business_Name]);
+				SendClientMessage(ownerid,COLOUR_RED,temp);
+				oGivePlayerMoney(ownerid,price,1);
+				break;
 			}
 		}
+	#endif
+		oGivePlayerMoney(playerid,-price,1);
 		set(Businesses[id][Business_Owner],oGetPlayerName(playerid));
 		Businesses[id][Business_Buyout] = 0;
-		new filename[MAX_STRING];
-		format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
-		if(ini_Exist(filename))
-		{
-			new file_busin = ini_Open(filename);
-			ini_Set(file_busin,"Owner",Businesses[id][Business_Owner]);
-			ini_SetInt(file_busin,"Buyout",Businesses[id][Business_Buyout]);
-			ini_Close(file_busin);
-		}
-		format(temp,sizeof(temp),lang_texts[3][22],Businesses[id][Business_Name]);
-		strcat(string,temp,sizeof(string));
-
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "player: %d:  %s: bought the '%s' (business)",playerid,oGetPlayerName(playerid),Businesses[id][Business_Name]);
-		WriteLog(GameLog,logstring);
-
-		if(Businesses[id][Business_Vault] > 0)
-		{
-			format(temp,sizeof(temp),lang_texts[3][23] ,Businesses[id][Business_Vault]);
-			strcat(string,"\n",sizeof(string));
-			strcat(string,temp,sizeof(string));
-		}
+		new string[MAX_STRING];
+		format(string,sizeof(string),lang_texts[3][22],
+			Businesses[id][Business_Name],
+			Businesses[id][Business_Vault]
+		);
 		bis_ShowDialog_Msg(playerid,id,string);
+		
+		GameMSG("player: %s(%d): bought the '%s' (business)",oGetPlayerName(playerid),playerid,Businesses[id][Business_Name]);
 	}
 	return 1;
 }
 
 stock bis_Sell(playerid)
 {
-	new id = GetBusinessID(playerid),temp[MAX_STRING];
+	new id = GetBusinessID(playerid);
 	if(id <= -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[3][36]);
-	new head[MAX_STRING];
-	format(head,sizeof(head),lang_texts[3][3],Businesses[id][Business_Name]);
 	if(strcmp(Businesses[id][Business_Owner], oGetPlayerName(playerid), true))
 	{
 		bis_ShowDialog_Msg(playerid,id,lang_texts[3][29]);
@@ -378,32 +303,15 @@ stock bis_Sell(playerid)
 		set(Businesses[id][Business_Owner],"Unknown");
 		Businesses[id][Business_Buyout] = 0;
 		Businesses[id][Business_Upgrade] = 1;
-		new filename[MAX_STRING];
-		format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
-		if(ini_Exist(filename))
-		{
-			new file_busin = ini_Open(filename);
-			ini_Set(file_busin,"Owner","Unknown");
-			ini_SetInt(file_busin,"Buyout",Businesses[id][Business_Buyout]);
-			ini_SetInt(file_busin,"Upgrade",Businesses[id][Business_Upgrade]);
-			ini_Close(file_busin);
-		}
+		
 		new string[MAX_STRING];
-		format(temp,sizeof(temp), lang_texts[3][30] ,Businesses[id][Business_Name]);
-		strcat(string,temp,sizeof(string));
-		strcat(string,"\n",sizeof(string));
-		strcat(string,lang_texts[3][31],sizeof(string));
-		if(Businesses[id][Business_Vault] > 0)
-		{
-			format(temp,sizeof(temp),lang_texts[3][32],Businesses[id][Business_Vault]);
-			strcat(string,temp,sizeof(string));
-			strcat(string,"\n",sizeof(string));
-			strcat(string,lang_texts[3][33],sizeof(string));
-		}
+		format(string,sizeof(string),lang_texts[3][30],
+			Businesses[id][Business_Name],
+			Businesses[id][Business_Vault]
+		);
 		bis_ShowDialog_Msg(playerid,id,string);
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "player: %d:  %s: sold the '%s' (business)",playerid,oGetPlayerName(playerid),Businesses[id][Business_Name]);
-		WriteLog(GameLog,logstring);
+
+		GameMSG("player: %s(%d): sold the '%s' (business)",oGetPlayerName(playerid),playerid,Businesses[id][Business_Name]);
 	}
 	return 1;
 }
@@ -412,8 +320,6 @@ stock bis_Collect(playerid)
 {
 	new id = GetBusinessID(playerid);
 	if(id <= -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[3][52]);
-	new head[MAX_STRING];
-	format(head,sizeof(head),lang_texts[3][3],Businesses[id][Business_Name]);
 	if(strcmp(Businesses[id][Business_Owner], oGetPlayerName(playerid), true))
 	{
 		bis_ShowDialog_Msg(playerid,id,lang_texts[3][47]);
@@ -425,14 +331,6 @@ stock bis_Collect(playerid)
 			oGivePlayerMoney(playerid,Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade],1);
 			bis_ShowDialog_Msg(playerid,id,lang_texts[3][48]);
 			Businesses[id][Business_Vault] = 0;
-			new filename[MAX_STRING];
-			format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
-			if(ini_Exist(filename))
-			{
-				new file_busin = ini_Open(filename);
-				ini_SetInt(file_busin,"Vault",Businesses[id][Business_Vault]);
-				ini_Close(file_busin);
-			}
 		}
 		else
 		{
@@ -451,17 +349,15 @@ stock bis_ShowDialog_Bises(playerid)
 		{
 			format(temp,sizeof(temp),lang_texts[3][53],Businesses[id][Business_Name],Businesses[id][Business_Owner]);
 			strcat(string,temp,sizeof(string));
-			strcat(string,"\n",sizeof(string));
 		}
 		else
 		{
 			format(temp,sizeof(temp),lang_texts[3][54],Businesses[id][Business_Name]);
 			strcat(string,temp,sizeof(string));
-			strcat(string,"\n",sizeof(string));
 		}
 	}
 	new head[MAX_STRING];
-	format(head,sizeof(head),lang_texts[3][3],Businesses[GetBusinessID(playerid)][Business_Name]);
+	format(head,sizeof(head),lang_texts[3][3],Businesses[ GetBusinessID(playerid) ][Business_Name]);
 	return ShowPlayerDialog(playerid,bis_Msg_DialogID,DIALOG_STYLE_LIST,
 		head,
 		string,
@@ -479,12 +375,15 @@ stock bis_ShowDialog_MyBises(playerid)
 			count++;
 			format(temp,sizeof(temp),lang_texts[3][55],Businesses[id][Business_Name],Businesses[id][Business_Vault]);
 			strcat(string,temp,sizeof(string));
-			strcat(string,"\n",sizeof(string));
 		}
 	}
-	if(count < 1) strcat(string,lang_texts[3][56],sizeof(string));
+	new id = GetBusinessID(playerid);
+	if(count < 1)
+	{
+		return bis_ShowDialog_Msg(playerid,id,lang_texts[3][56]);
+	}
 	new head[MAX_STRING];
-	format(head,sizeof(head),lang_texts[3][3],Businesses[GetBusinessID(playerid)][Business_Name]);
+	format(head,sizeof(head),lang_texts[3][3],Businesses[id][Business_Name]);
 	return ShowPlayerDialog(playerid,bis_Msg_DialogID,DIALOG_STYLE_LIST,
 		head,
 		string,
@@ -509,28 +408,19 @@ stock bis_buyUpgrade(playerid)
 			SendClientMessage(playerid,COLOUR_RED,st);
 			return 1;
 		}
-		new str[MAX_STRING];
+		new string[MAX_STRING];
 		new price = (Businesses[id][Business_Upgrade]+1) * Businesses[id][Business_Value] * UPGRADE_TARIF;
 		
 		if(oGetPlayerMoney(playerid) < price)
 		{
-			format(str,sizeof(str),lang_texts[3][61],price);
-			return SendClientMessage(playerid,COLOUR_RED,str);
+			format(string,sizeof(string),lang_texts[3][61],price);
+			return SendClientMessage(playerid,COLOUR_RED,string);
 		}
 		
 		oGivePlayerMoney(playerid,-price,0);
-		new filename[MAX_STRING];
-		format(filename,sizeof(filename),"%s%s"GTO_FILES_FORMAT,BusinessDB,Businesses[id][Business_Name]);
 		Businesses[id][Business_Upgrade]++;
-		if(ini_Exist(filename))
-		{
-		    new file_busin = ini_Open(filename);
-			ini_SetInt(file_busin,"Upgrade",Businesses[id][Business_Upgrade]);
-			ini_Close(file_busin);
-		}
-		
-		format(str,sizeof(str),lang_texts[3][58],Businesses[id][Business_Name],Businesses[id][Business_Upgrade]);
-		SendClientMessage(playerid,COLOUR_GREEN,str);
+		format(string,sizeof(string),lang_texts[3][58],Businesses[id][Business_Name],Businesses[id][Business_Upgrade]);
+		SendClientMessage(playerid,COLOUR_GREEN,string);
 	}
 	return 1;
 }

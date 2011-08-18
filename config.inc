@@ -85,12 +85,13 @@
 //
 
 // дома
-//#define BUY_ALL_HOUSES // позволяет запретить покупать чужие дома(если закомментировано то чужие дома можно покупать)
+//#define BUY_ALL_HOUSES // позволяет запретить покупать чужие дома(если закомментировано то чужие дома нельзя покупать)
 //
 
 // бизнесы
 #define MAX_UPGRADELEVEL	30 // максимальный уровень поднятия бизнеса
 #define UPGRADE_TARIF		10 // тариф денег на повышение уровня, формула: (Businesses[id][Business_Upgrade]+1) * Businesses[id][Business_Value] * UPGRADE_TARIF
+//#define BUY_ALL_BUSINESS // позволяет запретить покупать чужие бизнесы(если закомментировано то чужие бизнесы нельзя покупать)
 //
 
 // транспорт
@@ -105,7 +106,7 @@
 #define MIN_GANG_NAME_LEN	3 // минимальная длина имени банды
 #define MAX_GANG_NAME_LEN	40 // максимальная длина имени банды
 
-#define GANG_CREATE_COST	100000 // кол-во денег, требуемое на создание банды
+#define GANG_CREATE_COST	500000 // кол-во денег, требуемое на создание банды
 #define GANG_COLOUR_COST	20000 // кол-во денег, требуемое на смены цвета банды
 //
 
@@ -115,7 +116,7 @@
 #define HEALTH_TARIF			4.0	// степень увеличения максимального здоровья от лвл, формула: MIN_HEALTH + (GetPlayerLevel(playerid) * HEALTH_TARIF)
 #define HEALTH_REGEN_TARIF		0.4 // степень кол-ва востанавливаемого здоровья, формула: (GetPlayerLevel(id) * HEALTH_REGEN_TARIF)
 
-#define CHANGE_NICK_COST			10000 // кол-во денег, требуемых для смены ника
+#define CHANGE_NICK_COST			100000 // кол-во денег, требуемых для смены ника
 #define MIN_NICK_LEN				3
 #define CHANGE_PASS_COST			5000 // кол-во денег, требуемых для смены пароля
 #define MIN_PASS_LEN				3

@@ -437,16 +437,18 @@ stock house_Buy(playerid)
 #endif
 	else
 	{
-		new owner=-1;
+	#if defined BUY_ALL_HOUSES
 		for(new ownerid=0;ownerid<=GetPlayerLastID();ownerid++)
 		{
-			if(IsPlayerConnected(ownerid) && !strcmp(Houses[id][Houses_Owner],oGetPlayerName(ownerid),true))
-				owner = ownerid;
+			if(IsPlayerConnected(ownerid) && !IsPlayerNPC(ownerid) && !strcmp(Houses[id][Houses_Owner],oGetPlayerName(ownerid),true))
+			{
+				format(temp,sizeof(temp),lang_texts[8][17],oGetPlayerName(playerid),Houses[id][Houses_Name]);
+				SendClientMessage(ownerid,COLOUR_RED,temp);
+				oGivePlayerMoney(ownerid,price,1);
+				break;
+			}
 		}
-		if(owner != -1)
-		{
-			return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][77]);
-		}
+	#endif
 		oGivePlayerMoney(playerid,-price,1);
 		set(Houses[id][Houses_Owner],playername);
 		set(Houses[id][Houses_Gang],GetPlayerGangName(playerid));

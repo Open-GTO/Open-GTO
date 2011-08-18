@@ -211,7 +211,7 @@ new Houses[][HouseInfo] = {
 // ************************* ******* *********************************
 // ************************* ¡»«Õ≈—€ *********************************
 enum BusinessInfo {
-	Business_Name[MAX_STRING],  // business name
+	Business_Name[MAX_NAME],  // business name
 	Business_Cost,     // cost
 	Business_Value,        // value
 	Business_Level,            // minumum level
