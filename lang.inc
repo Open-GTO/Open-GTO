@@ -46,7 +46,7 @@ stock lang_OnGameModeInit()
 stock lang_read(filename[])
 {
 	new File:fohnd,
-		tmpres[MAX_STRING],tmp1[MAX_STRING],tmp2[MAX_STRING],
+		tmpres[MAX_STRING+5],tmp1[MAX_STRING],tmp2[MAX_STRING],
 		i,len,pos_s;
 	fohnd=fopen(filename,io_read);
 	if(!fohnd) return GameMSG("ERROR: No such language file '%s'", filename);
