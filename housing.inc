@@ -131,6 +131,9 @@ stock show_House_Menu(playerid)
 	new string[512],playername[MAX_PLAYER_NAME];
 	GetPlayerName(playerid,playername,sizeof(playername));
 	
+	new head[MAX_STRING];
+	format(head,sizeof(head),lang_texts[8][3],Houses[id][Houses_Name]);
+	
 	new isowner = !strcmp(Houses[id][Houses_Owner],playername,true);
 	
 	if(isowner)
@@ -173,9 +176,9 @@ stock show_House_Menu(playerid)
 		
 		strcat(string,lang_texts[8][76],sizeof(string));
 	}
-	
+
 	return ShowPlayerDialog(playerid,houses_DialogID,DIALOG_STYLE_LIST,
-		lang_texts[8][80],
+		head,
 		string,
 		lang_texts[8][81],lang_texts[8][82]
 	);

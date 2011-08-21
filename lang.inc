@@ -1,6 +1,6 @@
 /*
 	
-	Updated in 10.06.2011 by ZiGGi
+	Updated in 21.08.2011 by ZiGGi
 	
 */
 
@@ -14,7 +14,7 @@
 
 new lang_db[10] = GTO_FILES_FOLDER"";
 new lang[10] = LANGUAGE_USE;
-new lang_texts[20][99][MAX_STRING];
+new lang_texts[20][99][MAX_STRING+10];
 
 stock lang_LoadConfig()
 {
@@ -46,24 +46,21 @@ stock lang_OnGameModeInit()
 stock lang_read(filename[])
 {
 	new File:fohnd,
-		tmpres[MAX_STRING+5],tmp1[MAX_STRING],tmp2[MAX_STRING],
-		i,len,pos_s;
-	fohnd=fopen(filename,io_read);
+		tmpres[MAX_STRING+32],tmp1[4],
+		i,pos_s;
+	fohnd = fopen(filename,io_read);
 	if(!fohnd) return GameMSG("ERROR: No such language file '%s'", filename);
 	while(fread(fohnd,tmpres,sizeof(tmpres)))
 	{
-		len = strlen(tmpres);
-		if(len == 0) continue;
+		if(strlen(tmpres) == 0) continue;
 		if(strfind(tmpres, "//",true) == 0) continue;
 		pos_s = strfind(tmpres, ":", true);
 		if(pos_s != -1)
 		{
+			while( check_BB(tmpres) == 1) {}
+			
 			strmid(tmp1, tmpres, 0, pos_s);
-			strmid(tmp2, tmpres, pos_s+2, len-strlen(tmp1));
-			
-			while( check_BB(tmp2) == 1) {}
-			
-			lang_texts[i][strval(tmp1)] = tmp2;
+			strmid(lang_texts[i][strval(tmp1)], tmpres, pos_s+2, strlen(tmpres) - pos_s);
 		}
 		else i++;
 	}
@@ -71,13 +68,13 @@ stock lang_read(filename[])
 	return 1;
 }
 
-stock check_BB(string[MAX_STRING])
+stock check_BB(string[])
 {
 	new buf;
 	if( (buf = strfind(string,LANG_BB_N)) != -1 )
 	{
 		strdel(string,buf,buf+strlen(LANG_BB_N));
-		strins(string,"\n",buf);
+		strins(string,"\n",buf,MAX_STRING+32);
 		return 1;
 	}
 	return 0;

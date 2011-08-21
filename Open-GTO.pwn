@@ -270,7 +270,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
-		case bis_DialogID, bis_Info_DialogID, bis_Msg_DialogID:
+		case bis_DialogID, bis_Msg_DialogID:
 		{
 			business_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
@@ -278,7 +278,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			fights_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
-		case user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID, spawnselect_menu_DialogID:
+		case user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID, spawnselect_menu_DialogID, business_menu_DialogID:
 		{
 			usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}

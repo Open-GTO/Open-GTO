@@ -46,14 +46,17 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	if((!strcmp(cmd,"/objective",true)) || (!strcmp(cmd,"/info",true)))
 	{
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[15][6]);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[15][7]);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[15][8]);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[15][9]);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[15][10]);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[15][11]);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[15][12]);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[15][13]);
+		new string[MAX_STRING * 9];
+		strcat(string,lang_texts[15][6],sizeof(string));
+		strcat(string,lang_texts[15][7],sizeof(string));
+		strcat(string,lang_texts[15][8],sizeof(string));
+		strcat(string,lang_texts[15][9],sizeof(string));
+		strcat(string,lang_texts[15][10],sizeof(string));
+		strcat(string,lang_texts[15][11],sizeof(string));
+		strcat(string,lang_texts[15][12],sizeof(string));
+		strcat(string,lang_texts[15][13],sizeof(string));
+		strcat(string,lang_texts[15][14],sizeof(string));
+		show_Msg_Dialog(playerid,"Информация",string,"ОК");
 		return 1;
 	}
 	if(!strcmp(cmd,"/commands",true))
@@ -64,12 +67,8 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_PURPLE, lang_texts[15][18]);
 		SendClientMessage(playerid, COLOUR_PURPLE, lang_texts[15][19]);
 		SendClientMessage(playerid, COLOUR_PURPLE, lang_texts[15][20]);
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[15][21]);
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][22]);
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][23]);
 		SendClientMessage(playerid, COLOUR_PURPLE, lang_texts[15][24]);
 		SendClientMessage(playerid, COLOUR_PURPLE, lang_texts[15][25]);
-		SendClientMessage(playerid, COLOUR_LIGHTRED, lang_texts[15][26]);
 		SendClientMessage(playerid, COLOUR_PURPLE, lang_texts[15][27]);
 		SendClientMessage(playerid, COLOUR_LIGHTRED, lang_texts[15][28]);
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][29]);

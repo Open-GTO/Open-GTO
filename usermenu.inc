@@ -46,6 +46,7 @@ stock show_User_Menu(playerid)
 		Убиться\n\
 		Выбросить оружие\n\
 		Место спавна\n\
+		Мои бизнесы\n\
 		Администрация онлайн\n\
 		Связь с администрацией\n\
 		Настройки\n\
@@ -96,20 +97,59 @@ stock show_Vehicle_Menu(playerid)
 stock show_SpawnSelect_Menu(playerid)
 {
 	new string[MAX_NAME * MAX_PLAYER_HOUSES],
-		playername[MAX_STRING];
+		count = 0,
+		playername[MAX_PLAYER_NAME];
 	GetPlayerName(playerid,playername,sizeof(playername));
 	for(new i=0;i<sizeof(Houses);i++)
 	{
 		if(!strcmp(Houses[i][Houses_Owner],playername,true))
 		{
+			count++;
 			strcat(string,Houses[i][Houses_Name],sizeof(string));
 			strcat(string,"\n",sizeof(string));
 		}
+	}
+	if(count < 1)
+	{
+		return ShowPlayerDialog(playerid,spawnselect_menu_DialogID,DIALOG_STYLE_MSGBOX,
+			"Меню выбора спавна",
+			"У вас нет доступных спавнов",
+			"ОК",""
+		);
 	}
 	return ShowPlayerDialog(playerid,spawnselect_menu_DialogID,DIALOG_STYLE_LIST,
 		"Меню выбора спавна",
 		string,
 		"ОК","Отмена"
+	);
+}
+
+stock show_Businesses_Menu(playerid)
+{
+	new string[MAX_STRING * MAX_PLAYER_BUSINESS],
+		count = 0,
+		playername[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,playername,sizeof(playername));
+	for(new id=0;id<sizeof(Businesses);id++)
+	{
+		if(!strcmp(Businesses[id][Business_Owner],playername,true))
+		{
+			count++;
+			format(string,sizeof(string),lang_texts[3][23],string,Businesses[id][Business_Name],Businesses[id][Business_Vault]);
+		}
+	}
+	if(count < 1)
+	{
+		return ShowPlayerDialog(playerid,business_menu_DialogID,DIALOG_STYLE_LIST,
+			"Мои бизнесы",
+			"У вас нет бизнесов",
+			"Назад","Отмена"
+		);
+	}
+	return ShowPlayerDialog(playerid,business_menu_DialogID,DIALOG_STYLE_LIST,
+		"Мои бизнесы",
+		string,
+		"Назад","Отмена"
 	);
 }
 /*
@@ -206,7 +246,11 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				{
 					return show_SpawnSelect_Menu(playerid);
 				}
-				case 7: // Администрация онлайн
+				case 7:
+				{
+					return show_Businesses_Menu(playerid);
+				}
+				case 8: // Администрация онлайн
 				{
 					new idsa = 0,
 						admins[MAX_STRING],
@@ -237,17 +281,17 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					);
 					return show_User_Menu_Dialog(playerid,"Администрация онлайн",string);
 				}
-				case 8: // Связь с администрацией
+				case 9: // Связь с администрацией
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 9: // Настройки
+				case 10: // Настройки
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 10: // Версия
+				case 11: // Версия
 				{
 					show_User_Menu_Dialog(playerid,
 						"Информация о версии",

@@ -34,11 +34,6 @@
 #define WORLD_SAVE_TIME			300000		// 1 раз, за это кол-во милисекунд выполняется сохранение всего мира(300000 - 5 минут)
 #define GameMSG_USE_PRINT // если задефайнен, то функция GameMSG выводит сообщение в консоль сервера
 
-#define MAX_PLAYER_HOUSES		3 // количество домов, которые может иметь игрок(много ставить не рекомендуется)
-// цены
-#define HOUSE_UPGRADE_ARMOUR_COST 100000
-#define HOUSE_UPGRADE_HEALTH_COST 100000
-
 // логи(параметры по умолчанию) 1 вкл, 0 выкл
 #define LOGGING_GAME_LOG_ENABLED		1
 #define LOGGING_DEBUG_LOG_ENABLED		1
@@ -85,12 +80,16 @@
 //
 
 // дома
+#define MAX_PLAYER_HOUSES		3 // количество домов, которые может иметь игрок(много ставить не рекомендуется)
+#define HOUSE_UPGRADE_ARMOUR_COST 100000
+#define HOUSE_UPGRADE_HEALTH_COST 100000
 //#define BUY_ALL_HOUSES // позволяет запретить покупать чужие дома(если закомментировано то чужие дома нельзя покупать)
 //
 
 // бизнесы
-#define MAX_UPGRADELEVEL	30 // максимальный уровень поднятия бизнеса
-#define UPGRADE_TARIF		10 // тариф денег на повышение уровня, формула: (Businesses[id][Business_Upgrade]+1) * Businesses[id][Business_Value] * UPGRADE_TARIF
+#define MAX_PLAYER_BUSINESS		3 // количество бизнесов, которые может иметь игрок(много ставить не рекомендуется)
+#define MAX_BUSINESS_LEVEL		30 // максимальный уровень поднятия бизнеса
+#define UPGRADE_TARIF			10 // тариф денег на повышение уровня, формула: (Businesses[id][Business_Upgrade]+1) * Businesses[id][Business_Value] * UPGRADE_TARIF
 //#define BUY_ALL_BUSINESS // позволяет запретить покупать чужие бизнесы(если закомментировано то чужие бизнесы нельзя покупать)
 //
 
@@ -149,9 +148,9 @@ enum {
 	bank_Start_DialogID, bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID,
 	click_DialogID, click_Resp_DialogID,
 	house_DialogID, houses_DialogID, houses_upgrades_DialogID, houses_setrent_DialogID,
-	bis_DialogID, bis_Info_DialogID, bis_Msg_DialogID,
+	bis_DialogID, bis_Msg_DialogID,
 	fightstyles_DialogID, fightstyles_user_DialogID,
-	user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID, spawnselect_menu_DialogID,
+	user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID, spawnselect_menu_DialogID, business_menu_DialogID,
 	weapons_Select_DialogID, weapons_Buy_DialogID,
 	bar_DialogID,
 	fastfood_DialogID,
