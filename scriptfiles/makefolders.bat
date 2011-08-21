@@ -1,6 +1,4 @@
 md Open-GTO\Account
-md Open-GTO\Bans
-md Open-GTO\Bans\Names
 md Open-GTO\Business
 md Open-GTO\Config
 md Open-GTO\Deathmatch

@@ -278,7 +278,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			fights_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
-		case user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID, spawnselect_menu_DialogID, business_menu_DialogID:
+		case user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID, spawnselect_menu_DialogID:
 		{
 			usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
@@ -518,7 +518,6 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	command_register(cmdtext,"/givegun",8,Adm);
 	command_register(cmdtext,"/paralyze",9,Adm);
 	command_register(cmdtext,"/deparalyze",11,Adm);
-	command_register(cmdtext,"/ban",4,Adm);
 	command_register(cmdtext,"/showpm",7,Adm);
 	command_register(cmdtext,"/getip",6,Adm);
 	

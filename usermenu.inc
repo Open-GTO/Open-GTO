@@ -40,7 +40,6 @@ stock show_User_Menu(playerid)
 	return ShowPlayerDialog(playerid,user_menu_DialogID,DIALOG_STYLE_LIST,
 		"Меню игрока",
 		"Информация о персонаже\n\
-		Мои бизнесы\n\
 		Стиль борьбы\n\
 		Анимации\n\
 		Убиться\n\
@@ -140,16 +139,12 @@ stock show_Businesses_Menu(playerid)
 	}
 	if(count < 1)
 	{
-		return ShowPlayerDialog(playerid,business_menu_DialogID,DIALOG_STYLE_MSGBOX,
-			"Мои бизнесы",
-			"У вас нет бизнесов",
-			"Назад","Отмена"
-		);
+		return show_User_Menu_Dialog(playerid,"Мои бизнесы","У вас нет бизнесов");
 	}
-	return ShowPlayerDialog(playerid,business_menu_DialogID,DIALOG_STYLE_LIST,
+	return ShowPlayerDialog(playerid,user_menu_Return_DialogID,DIALOG_STYLE_LIST,
 		"Мои бизнесы",
 		string,
-		"Назад","Отмена"
+		"Назад","Выход"
 	);
 }
 /*
@@ -208,49 +203,35 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					);
 					return show_User_Menu_Dialog(playerid,"Информация о персонаже",string);
 				}
-				case 1: // Мои бизнесы
-				{
-					new count = 0;
-					for(new id=0;id<sizeof(Businesses);id++)
-					{
-						if(!strcmp(Businesses[id][Business_Owner], oGetPlayerName(playerid), true))
-						{
-							count++;
-							format(string,sizeof(string),"%s'%s' прибыль составляет $%d\n",string,Businesses[id][Business_Name],Businesses[id][Business_Vault]);
-						}
-					}
-					if(count == 0) set(string,"Вы не владеете никаким бизнесом.");
-					return show_User_Menu_Dialog(playerid,"Мои бизнесы",string);
-				}
-				case 2: // Стиль борьбы
+				case 1: // Стиль борьбы
 				{
 					showFightStyleMenu(playerid);
 					return 1;
 				}
-				case 3: // Анимации
+				case 2: // Анимации
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 4: // Убиться
+				case 3: // Убиться
 				{
 					SetPlayerHealth(playerid,0.0);
 					return 1;
 				}
-				case 5: // Выбросить оружие
+				case 4: // Выбросить оружие
 				{
 					CheckPlayerLevel(playerid);
 					return show_User_Menu_Dialog(playerid,"Выбросить оружие","Вы добровольно избавились от всего оружия.");
 				}
-				case 6: // Место спавна
+				case 5: // Место спавна
 				{
 					return show_SpawnSelect_Menu(playerid);
 				}
-				case 7: // Мои бизнесы
+				case 6: // Мои бизнесы
 				{
 					return show_Businesses_Menu(playerid);
 				}
-				case 8: // Администрация онлайн
+				case 7: // Администрация онлайн
 				{
 					new idsa = 0,
 						admins[MAX_STRING],
@@ -281,17 +262,17 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					);
 					return show_User_Menu_Dialog(playerid,"Администрация онлайн",string);
 				}
-				case 9: // Связь с администрацией
+				case 8: // Связь с администрацией
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 10: // Настройки
+				case 9: // Настройки
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 11: // Версия
+				case 10: // Версия
 				{
 					show_User_Menu_Dialog(playerid,
 						"Информация о версии",

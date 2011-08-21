@@ -150,7 +150,7 @@ enum {
 	house_DialogID, houses_DialogID, houses_upgrades_DialogID, houses_setrent_DialogID,
 	bis_DialogID, bis_Msg_DialogID,
 	fightstyles_DialogID, fightstyles_user_DialogID,
-	user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID, spawnselect_menu_DialogID, business_menu_DialogID,
+	user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID, spawnselect_menu_DialogID,
 	weapons_Select_DialogID, weapons_Buy_DialogID,
 	bar_DialogID,
 	fastfood_DialogID,
