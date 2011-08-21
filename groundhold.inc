@@ -30,9 +30,9 @@ enum gh_info {
 new Groundhold_Enabled = GROUNDHOID_ENABLED;
 new Groundholds[][gh_info] = {
 	//      Name,     pay,xp,multi,dist,x,y,z
-	{"Кач 900xp и 300$",6,18,50,50,-2146.9585,-217.1571,35.3203}, // 
-	{"Кач 600xp и 200$",10,30,20,30,1221.3528,-1814.8983,16.5938}, // респаун
-	{"кач 300xp и 100$",10,30,10,50,-687.9928,948.6489,12.1502} // Авто маг.
+	{"Заброшеный склад",6,18,50,50,-2146.9585,-217.1571,35.3203},
+	{"Автомагазин",10,30,20,30,1221.3528,-1814.8983,16.5938},
+	{"Домик в деревне",10,30,10,50,-687.9928,948.6489,12.1502}
 };
 new PlayerGroundHoldTime[ sizeof(Groundholds) ][MAX_PLAYERS];
 new PlayerHoldingGround[ sizeof(Groundholds) ][MAX_PLAYERS];

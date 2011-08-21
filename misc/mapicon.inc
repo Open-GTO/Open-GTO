@@ -1,7 +1,7 @@
 //CARYERES ICONES
 CreateStreamMapIcon(11,777.150329,834.015563,6.862725);
 //GRUZ ICONES
-CreateStreamMapIcon(51,-69.993255,-1122.022460,0.924500);
+CreateStreamMapIcon(51,1077.959,1298.586,10.481);
 CreateStreamMapIcon(23,1166.0970,1353.1891,10.9219);
 
 // ------- by wups, modified -------

@@ -18,7 +18,7 @@
 
 #define SetPlayerToBusinessID(%0,%1) SetPVarInt(%0,"BusID",%1)
 #define GetPlayerToBusinessID(%0) GetPVarInt(%0,"BusID")
-new Text3D:Business3DTextLabel[ sizeof(Businesses) ],Float:BusinessDistanceOfShowLabel=20.0;
+new business_icon[ sizeof(Houses) ],Text3D:Business3DTextLabel[ sizeof(Businesses) ],Float:BusinessDistanceOfShowLabel=20.0;
 #define show_Business_MsgDialog(%0,%1,%2) ShowPlayerDialog(%0,bis_Msg_DialogID,DIALOG_STYLE_MSGBOX,%1,%2,lang_texts[3][10],lang_texts[3][8])
 
 BusinessLoadAll()
@@ -90,7 +90,7 @@ stock business_OnGameModeInit()
 	{
 		CreatePickup(1274,49,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.5);	//синий домик
 		if(Businesses[id][Business_ShowIcon] == 1)
-			CreateStreamMapIcon(52,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]);
+			business_icon[id] = CreateStreamMapIcon(52,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]);
 		format(string,sizeof(string),lang_texts[3][1],Businesses[id][Business_Name],Businesses[id][Business_Cost],Businesses[id][Business_Value],Businesses[id][Business_Owner],Businesses[id][Business_Level],Businesses[id][Business_Upgrade]);
 		Business3DTextLabel[id] = Create3DTextLabel(string,COLOUR_WHITE,Businesses[id][Coord_X],Businesses[id][Coord_Y],Businesses[id][Coord_Z]+0.75,BusinessDistanceOfShowLabel,0,1);
 	}
@@ -309,6 +309,7 @@ stock bis_Buy(playerid)
 		oGivePlayerMoney(playerid,-price,1);
 		set(Businesses[id][Business_Owner],playername);
 		Businesses[id][Business_Buyout] = 0;
+		UpdatePlayerStreamMapIcon(playerid,business_icon[id]);
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[3][16],
 			Businesses[id][Business_Name],
@@ -338,6 +339,7 @@ stock bis_Sell(playerid)
 		set(Businesses[id][Business_Owner],"Unknown");
 		Businesses[id][Business_Buyout] = 0;
 		Businesses[id][Business_Upgrade] = 1;
+		UpdatePlayerStreamMapIcon(playerid,business_icon[id]);
 		
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[3][20],

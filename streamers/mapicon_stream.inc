@@ -61,6 +61,7 @@ stock UpdatePlayerStreamMapIcon( playerid,icon_id )
 	new slot = GetIconSlot(playerid,icon_id);
 	RemovePlayerMapIcon(playerid,slot);
 	update_House_IconType(playerid,icon_id);
+	update_Business_IconType(playerid,icon_id);
 	SetPlayerMapIcon(playerid,slot,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z],MapIcons[icon_id][icon_type],0,MAPICON_LOCAL);
 }
 
@@ -72,6 +73,7 @@ stock UpdateStreamMapIcon( icon_id )
 		new slot = GetIconSlot(i,icon_id);
 		RemovePlayerMapIcon(i,slot);
 		update_House_IconType(i,icon_id);
+		update_Business_IconType(i,icon_id);
 		SetPlayerMapIcon(i,slot,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z],MapIcons[icon_id][icon_type],0,MAPICON_LOCAL);
 	}
 }
@@ -102,6 +104,7 @@ stock MapIcons_Streaming()
 			if( IsPlayerInRangeOfPoint(playerid,MAP_ICON_STREAM_DISTANCE,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z]) ) // если игрок в зоне отображения иконки
 			{
 				update_House_IconType(playerid,icon_id);
+				update_Business_IconType(playerid,icon_id);
 				new slot = GetLastRealMapIconSlot(playerid);
 				SlotIcons[playerid]{slot} = icon_id;
 				SetPlayerMapIcon(playerid,slot,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z],MapIcons[icon_id][icon_type],0,MAPICON_LOCAL);
@@ -175,16 +178,34 @@ stock GetIconSlot(playerid,icon_id)
 
 stock update_House_IconType(playerid,icon_id)
 {
+	new playername[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,playername,sizeof(playername));
 	for(new house_id=0;house_id<sizeof(Houses);house_id++)
 	{
 		if(house_icon[house_id] != icon_id) continue;
-		if(!strcmp(Houses[house_id][Houses_Owner],oGetPlayerName(playerid))
-			|| !strcmp(Houses[house_id][Houses_RentName],oGetPlayerName(playerid))
+		if(!strcmp(Houses[house_id][Houses_Owner],playername)
+			|| !strcmp(Houses[house_id][Houses_RentName],playername)
 		)
 			MapIcons[icon_id][icon_type] = 35;
-		else if(strcmp(Houses[house_id][Houses_Gang],"Unknown"))
+		else if(strcmp(Houses[house_id][Houses_Owner],"Unknown"))
 			MapIcons[icon_id][icon_type] = 32;
 		else
 			MapIcons[icon_id][icon_type] = 31;
+	}
+}
+
+stock update_Business_IconType(playerid,icon_id)
+{
+	new playername[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,playername,sizeof(playername));
+	for(new bis_id=0;bis_id<sizeof(Businesses);bis_id++)
+	{
+		if(business_icon[bis_id] != icon_id) continue;
+		if(!strcmp(Businesses[bis_id][Business_Owner],playername))
+			MapIcons[icon_id][icon_type] = 38;
+		else if(strcmp(Businesses[bis_id][Business_Owner],"Unknown"))
+			MapIcons[icon_id][icon_type] = 36;
+		else
+			MapIcons[icon_id][icon_type] = 52;
 	}
 }
