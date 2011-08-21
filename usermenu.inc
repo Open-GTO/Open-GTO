@@ -140,7 +140,7 @@ stock show_Businesses_Menu(playerid)
 	}
 	if(count < 1)
 	{
-		return ShowPlayerDialog(playerid,business_menu_DialogID,DIALOG_STYLE_LIST,
+		return ShowPlayerDialog(playerid,business_menu_DialogID,DIALOG_STYLE_MSGBOX,
 			"Мои бизнесы",
 			"У вас нет бизнесов",
 			"Назад","Отмена"
@@ -246,7 +246,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				{
 					return show_SpawnSelect_Menu(playerid);
 				}
-				case 7:
+				case 7: // Мои бизнесы
 				{
 					return show_Businesses_Menu(playerid);
 				}

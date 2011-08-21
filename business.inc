@@ -258,6 +258,19 @@ stock business_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 
 stock bis_Buy(playerid)
 {
+	new playername[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,playername,sizeof(playername));
+	for(new i=0,pl_business=0;i<sizeof(Businesses);i++)
+	{
+		if(!strcmp(Businesses[i][Business_Owner],playername,true))
+		{
+			pl_business++;
+			if(pl_business >= MAX_PLAYER_BUSINESS)
+			{
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[3][27]);
+			}
+		}
+	}
 	new id = GetPlayerToBusinessID(playerid);
 	if(id <= -1) return SendClientMessage(playerid,COLOUR_RED,lang_texts[3][2]);
 	new head[MAX_STRING];
@@ -272,7 +285,7 @@ stock bis_Buy(playerid)
 	if(oGetPlayerMoney(playerid) < price)
 		return show_Business_MsgDialog(playerid,head,lang_texts[3][17]);
 	
-	if(!strcmp(Businesses[id][Business_Owner],oGetPlayerName(playerid),true))
+	if(!strcmp(Businesses[id][Business_Owner],playername,true))
 		show_Business_MsgDialog(playerid,head,lang_texts[3][14]);
 #if !defined BUY_ALL_BUSINESS
 	else if(strcmp(Businesses[id][Business_Owner],"Unknown",true))
@@ -286,7 +299,7 @@ stock bis_Buy(playerid)
 			if(IsPlayerConnected(ownerid) && !IsPlayerNPC(ownerid) && !strcmp(Businesses[id][Business_Owner],oGetPlayerName(ownerid),true))
 			{
 				new temp[MAX_STRING];
-				format(temp,sizeof(temp),lang_texts[3][15],oGetPlayerName(playerid),Businesses[id][Business_Name]);
+				format(temp,sizeof(temp),lang_texts[3][15],playername,Businesses[id][Business_Name]);
 				SendClientMessage(ownerid,COLOUR_RED,temp);
 				oGivePlayerMoney(ownerid,price,1);
 				break;
@@ -294,7 +307,7 @@ stock bis_Buy(playerid)
 		}
 	#endif
 		oGivePlayerMoney(playerid,-price,1);
-		set(Businesses[id][Business_Owner],oGetPlayerName(playerid));
+		set(Businesses[id][Business_Owner],playername);
 		Businesses[id][Business_Buyout] = 0;
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[3][16],
@@ -303,7 +316,7 @@ stock bis_Buy(playerid)
 		);
 		show_Business_MsgDialog(playerid,head,string);
 		
-		GameMSG("player: %s(%d): bought the '%s' (business)",oGetPlayerName(playerid),playerid,Businesses[id][Business_Name]);
+		GameMSG("player: %s(%d): bought the '%s' (business)",playername,playerid,Businesses[id][Business_Name]);
 	}
 	return 1;
 }
