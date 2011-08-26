@@ -18,7 +18,7 @@
 new PlayerDMEdit[MAX_PLAYERS]=INVALID_DM_ID; // will hold id of dm a player is currently creating
 stock AdminDM_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if(!IsPlayerAdmin(playerid))
+	if(!IsPlayerAdm(playerid) && !IsPlayerAdmin(playerid))
 	{
 		PlayerDMEdit[playerid]=INVALID_DM_ID;
 		return 0;

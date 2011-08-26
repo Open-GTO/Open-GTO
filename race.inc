@@ -869,11 +869,11 @@ stock FinishRace(raceid,playerid)
 		WriteLog(GameLog,logstring);
 		oGivePlayerMoney(playerid,Race[raceid][race_cashprize],1);
 
-		if ( (GetPlayerXP(playerid) + (Race[raceid][race_xpprize] + (Race[raceid][race_xpbonus] * RaceStats[raceid][race_racercount])) ) <= MAX_LVLXP)
+		if ( (GetPlayerXP(playerid) + (Race[raceid][race_xpprize] + (Race[raceid][race_xpbonus] * RaceStats[raceid][race_racercount])) ) <= MAX_XP)
 		{
 		GivePlayerXP(playerid,Race[raceid][race_xpprize] + (Race[raceid][race_xpbonus] * RaceStats[raceid][race_racercount]),1);
 		} else {
-			GivePlayerXP(playerid,MAX_LVLXP - (Race[raceid][race_xpprize] + (Race[raceid][race_xpbonus] * RaceStats[raceid][race_racercount])),1);
+			GivePlayerXP(playerid,MAX_XP - (Race[raceid][race_xpprize] + (Race[raceid][race_xpbonus] * RaceStats[raceid][race_racercount])),1);
 			}
 	}
 	else if (RaceStats[raceid][race_position] == 2)

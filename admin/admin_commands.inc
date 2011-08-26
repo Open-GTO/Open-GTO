@@ -58,7 +58,7 @@ new Float:PointsH[][CoordInfo] = {
 
 stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if(!IsPlayerAdmin(playerid)) return 0;
+	if(!IsPlayerAdmin(playerid) && !IsPlayerRconAdmin(playerid)) return 0;
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,' '));
 	

@@ -176,7 +176,7 @@ stock CheckGround(ghid)
 					oGivePlayerMoney(playerid,moneyreward,0);
 				
 				new xpreward = (Groundholds[ghid][gh_xp] * PlayerGroundHoldTime[ghid][playerid]);
-				if(xpreward > 0 && GetPlayerXP(playerid) < MAX_LVLXP)
+				if(xpreward > 0 && GetPlayerXP(playerid) < MAX_XP)
 					GivePlayerXP(playerid,xpreward,0);
 				else 
 				{

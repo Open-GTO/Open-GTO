@@ -99,27 +99,6 @@ stock PushHide(playerid)// скрыть/показать игрока
 	return 1;
 }
 
-stock BanCheck(playerid)
-{
-    new player[MAX_PLAYER_NAME],string[MAX_STRING],filestr[MAX_STRING];
-    GetPlayerName(playerid,player,sizeof player);
-	format(string,sizeof(string),"GTO/Bans/Names/%s.txt",player);
-	format(player,sizeof(player),"Banned");
-	new File:file = fopen(string,io_read);
-	if(file)
-	{
-	    while(fread(file,filestr,sizeof(filestr)))
-	    {
-	    	if(strfind(filestr,"Banned",true) != -1)
-	    	{
-	    	    SendClientMessage(playerid,red,"XpaП: Ou caaaiai ia na?aa?a NOOEA!");
-	    	    return Kick(playerid);
-	    	}
-		}
-	}
-	return true;
-}
-
 stock MuteCheck()
 {
 	for(new i=0;i<=GetPlayerLastID();i++)
@@ -180,14 +159,20 @@ stock IsSkinValid(SkinID)
 	return false;
 }
 
+stock IsPlayerRconAdmin(playerid)
+{
+	if(GetPlayerStatus(playerid) >= 3) return 1;
+	return 0;
+}
+
 stock IsPlayerAdm(playerid)
 {
-	if(GetPlayerStatus(playerid) >= 11) return 1;
+	if(GetPlayerStatus(playerid) >= 2) return 1;
 	return 0;
 }
 
 stock IsPlayerMod(playerid)
 {
-	if(GetPlayerStatus(playerid) > 0) return 1;
+	if(GetPlayerStatus(playerid) >= 1) return 1;
 	return 0;
 }

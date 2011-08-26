@@ -71,7 +71,7 @@ stock GivePay()
 		}
 		
 		BasePayX = 0;
-		if(GetPlayerXP(id) < MAX_LVLXP)	// xp
+		if(GetPlayerXP(id) < MAX_XP)	// xp
 		{
 			BasePayX = BasePayXP + (BasePayXP * GetPlayerLevel(id));
 			GivePlayerXP(id, BasePayX ,0);

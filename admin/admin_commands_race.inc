@@ -18,7 +18,7 @@
 new PlayerRaceEdit[MAX_PLAYERS]=INVALID_RACE_ID; // will hold id of race a player is currently creating
 stock AdminRace_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if(!IsPlayerAdmin(playerid))
+	if(!IsPlayerAdm(playerid) && !IsPlayerAdmin(playerid))
 	{
 		PlayerRaceEdit[playerid]=INVALID_RACE_ID;
 		return 0;

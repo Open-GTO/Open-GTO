@@ -24,7 +24,6 @@ enum LevelInfo
 
 #define MAX_LEVEL	60
 #define MAX_XP		60000000
-#define MAX_LVLXP	60000000
 
 new LevelList[MAX_LEVEL+1][LevelInfo] = {
 {  0,		"0 уровень" },
@@ -178,10 +177,10 @@ stock GivePlayerXP(playerid, xpamount,showtext=0) // showtext = do we display "Y
 	{
 		xpamount = -GetPlayerXP(playerid);
 	}
-	if(GetPlayerXP(playerid) + xpamount >= MAX_LVLXP)
+	if(GetPlayerXP(playerid) + xpamount >= MAX_XP)
 	{
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[9][17] );
-		xpamount = MAX_LVLXP - GetPlayerXP(playerid);
+		xpamount = MAX_XP - GetPlayerXP(playerid);
 	}
 	new string[MAX_STRING];
 	if(xpamount > 0)

@@ -110,10 +110,13 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][34],oGetPlayerName(receiverid),receiverid);
 			SendClientMessage(playerid,COLOUR_YELLOW,string);
-			new sid = GetPlayerStatus(receiverid);
-			if(sid > 0 && sid < 10) format(string,sizeof(string),lang_texts[12][87],sid);
-			else if(sid > 10) format(string,sizeof(string),lang_texts[12][86],sid);
-			else format(string,sizeof(string),lang_texts[12][88]);
+			switch( GetPlayerStatus(receiverid) )
+			{
+				case 1: set(string,lang_texts[12][87]);
+				case 2: set(string,lang_texts[12][86]);
+				case 3: set(string,lang_texts[12][94]);
+				default: set(string,lang_texts[12][88]);
+			}
 			SendClientMessage(playerid,COLOUR_LIGHTRED,string);
 			format(string,sizeof(string),lang_texts[12][35],GetPlayerLevel(receiverid),GetPlayerXP(receiverid));	//Level, XP
 			SendClientMessage(playerid,COLOUR_WHITE,string);
@@ -470,15 +473,15 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 			}
 			new xpamount = strval(inputtext);
-			if ((xpamount == 0) || (xpamount > MAX_LVLXP))
+			if ((xpamount == 0) || (xpamount > MAX_XP))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][4]);
 			}
 			new xpamountkeep = GetPlayerXP(receiverid)+xpamount;
-			if ((!IsPlayerAdmin(receiverid) && xpamountkeep >MAX_LVLXP) || (IsPlayerAdmin(receiverid) && xpamountkeep > MAX_XP))
+			if(xpamountkeep > MAX_XP)
 			{
 				SendClientMessage(playerid,COLOUR_RED,lang_texts[12][40]);
-				xpamount = xpamountkeep - (IsPlayerAdmin(receiverid)) ? MAX_XP : MAX_LVLXP;
+				xpamount = xpamountkeep - MAX_XP;
 			}
 			SetPlayerXP(receiverid,GetPlayerXP(receiverid)+xpamount);
 			CheckPlayerLevel(receiverid);

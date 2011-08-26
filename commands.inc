@@ -79,10 +79,13 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		SendClientMessage(playerid,COLOUR_GREEN,lang_texts[15][35]);
 
-		new sid = GetPlayerStatus(playerid);
-		if(sid>=1 && sid<=10) format(string,sizeof(string),lang_texts[12][87],sid);
-		else if (sid>10) format(string,sizeof(string),lang_texts[12][86],sid);
-		else format(string,sizeof(string),lang_texts[12][88]);
+		switch( GetPlayerStatus(playerid) )
+		{
+			case 1: set(string,lang_texts[12][87]);
+			case 2: set(string,lang_texts[12][86]);
+			case 3: set(string,lang_texts[12][94]);
+			default: set(string,lang_texts[12][88]);
+		}
 
 		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
 		format(string, sizeof(string),lang_texts[15][37],GetLevelName(GetPlayerLevel(playerid)),GetPlayerGangName(playerid));

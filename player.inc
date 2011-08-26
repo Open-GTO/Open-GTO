@@ -310,7 +310,7 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	new XP_give_victim = -((GetPlayerXP(victimid) / 100) * PLAYER_XP_DEATH_MINUS_PROC);
 	new XP_give_killer = (GetPlayerLevel(victimid) + 1) * 75;
 
-	if((GetPlayerXP(killerid) + XP_give_killer) > MAX_LVLXP) SetPlayerXP(killerid,MAX_LVLXP);
+	if((GetPlayerXP(killerid) + XP_give_killer) > MAX_XP) SetPlayerXP(killerid,MAX_XP);
 	else if(XP_give_killer != 0)
 	{
 		GivePlayerXP(killerid,XP_give_killer,1);
@@ -523,6 +523,7 @@ stock player_save_db_ini(playerid)
 	new string[MAX_STRING];
 	format(string,sizeof(string),"%f,%f,%f,%f",pos[0],pos[1],pos[2],pos[3]);
 	ini_Set(file_player,"Coords",string);
+	if(IsPlayerAdmin(playerid)) SetPlayerStatus(playerid,3);
 	ini_SetInt(file_player,"Status",GetPlayerStatus(playerid));
 	ini_Set(file_player,"Weapons",CreateWeaponDBString(playerid));
 	ini_Set(file_player,"WeaponsSkills",CreateWeaponSkillsDBString(playerid));

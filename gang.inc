@@ -709,7 +709,7 @@ stock GangGiveXP(gangid,xpamount,giverid)
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
 		if((GangMemberInfo[gangid][gangmember][member_online] == false) || (giverid == GangMemberInfo[gangid][gangmember][member_playerid])) continue;
-		if(GetPlayerXP(GangMemberInfo[gangid][gangmember][member_playerid]) < MAX_LVLXP) 
+		if(GetPlayerXP(GangMemberInfo[gangid][gangmember][member_playerid]) < MAX_XP) 
 		{
 			GivePlayerXP(GangMemberInfo[gangid][gangmember][member_playerid],giveamount,0);
 			format(string,sizeof(string),lang_texts[6][79],xpamount,oGetPlayerName(giverid));
