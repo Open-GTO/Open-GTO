@@ -688,11 +688,11 @@ stock SendPlayerCurrentRaces(playerid)
 			}
 			if (RaceStats[raceid][race_racercount] >= Race[raceid][race_minracers])
 			{
-				format(string, sizeof(string),lang_texts[10][40],Race[raceid][race_name],raceid,Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer],RaceStats[raceid][race_racercount],GetRaceCPZoneName(raceid,0));
+				format(string, sizeof(string),lang_texts[10][40],Race[raceid][race_name],raceid,Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer],RaceStats[raceid][race_racercount],GetRaceCPZoneName(raceid,0),Race[raceid][race_minlevel],Race[raceid][race_cashentry]);
 			}
 			else 
 			{
-				format(string, sizeof(string),lang_texts[10][41],Race[raceid][race_name],raceid,Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer],RaceStats[raceid][race_racercount],Race[raceid][race_minracers],GetRaceCPZoneName(raceid,0));
+				format(string, sizeof(string),lang_texts[10][41],Race[raceid][race_name],raceid,Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer],RaceStats[raceid][race_racercount],Race[raceid][race_minracers],GetRaceCPZoneName(raceid,0),Race[raceid][race_minlevel],Race[raceid][race_cashentry]);
 			}
 			SendClientMessage(playerid,GetRaceColourForPlayer(playerid,raceid),string);
 		}
