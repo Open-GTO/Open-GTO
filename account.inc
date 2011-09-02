@@ -41,11 +41,10 @@ stock AccountSave(playerid)
 
 stock account_save_db_ini(playerid)
 {
-	new filename_account[MAX_STRING],temp[MAX_STRING],player_name[MAX_PLAYER_NAME];
-	GetPlayerName(playerid,player_name,sizeof(player_name));
-	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,player_name);
+	new filename_account[MAX_STRING],temp[MAX_STRING],playername[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,playername,sizeof(playername));
+	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,playername);
 	new file_account = (!ini_Exist(filename_account)) ? ini_Create(filename_account) : ini_Open(filename_account);
-	ini_Set(file_account,"Name",player_name);
 	GetPVarString(playerid,"Password",temp,sizeof(temp));
 	ini_Set(file_account,"Password",temp);
 	GetPVarString(playerid,"Email",temp,sizeof(temp));
@@ -77,7 +76,6 @@ stock AccountRegister(playerid,password[])
 	GetPlayerName(playerid,playername,sizeof(playername));
 	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,playername);
 	new file_account = ini_Create(filename_account);
-	ini_Set(file_account,"Name",playername);
 	ini_Set(file_account,"Password",password);
 	new temp[MAX_STRING],day,month,year,seconds,minutes,hours;
 	gettime(hours,minutes,seconds);
@@ -106,7 +104,7 @@ stock AccountLogin(playerid,password[])
 	GivePlayerOwnedWeapons(playerid);
 	new playername[MAX_PLAYER_NAME],string[MAX_STRING];
 	GetPlayerName(playerid,playername,sizeof(playername));
-	if(IsPlayerAdmin(playerid))
+	if(IsPlayerAdmin(playerid) || IsPlayerRconAdmin(playerid))
 	{
 		format(string,sizeof(string),lang_texts[1][39],playername);
 		SendClientMessage(playerid,COLOUR_GREEN, lang_texts[1][25]);
@@ -131,10 +129,9 @@ stock AccountLogin(playerid,password[])
 	GameTextForPlayer(playerid,string,2000,1);
 	for(new idst=0;idst<=GetPlayerLastID();idst++)
 	{
-		if(!IsPlayerConnected(idst) || IsPlayerNPC(idst) || !IsPlayerAdmin(idst)) continue;
+		if(!IsPlayerConnected(idst) || IsPlayerNPC(idst) || IsPlayerAdmin(playerid) || IsPlayerRconAdmin(playerid)) continue;
 		format(string,sizeof(string),lang_texts[1][17],playername,playerid);
 		SendClientMessage(idst,COLOUR_WHITE,string);
-		PlayerPlaySoundOnPlayer(idst,1150);
 	}
 	GameMSG("player: %s(%d): logged in successfully.",playername,playerid);
 	return 1;
@@ -145,9 +142,9 @@ stock account_login_db_ini(playerid,password[])
 	new filename_account[MAX_STRING],temp[MAX_STRING],playername[MAX_PLAYER_NAME];
 	GetPlayerName(playerid,playername,sizeof(playername));
 	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,playername);
-	new dbpassword[MAX_NAME];
 	if(!ini_Exist(filename_account)) return 1;
 	new file_account = ini_Open(filename_account);
+	new dbpassword[MAX_NAME];
 	ini_Get(file_account,"Password",dbpassword);
 	if(strcmp(password,dbpassword,false))
 	{
@@ -180,7 +177,7 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 	if(!strcmp(cmd,"/changepass",true))
 	{
 		new string[MAX_STRING];
-		if(GetPlayerMoney(playerid) < CHANGE_PASS_COST)
+		if(oGetPlayerMoney(playerid) < CHANGE_PASS_COST)
 		{
 			format(string,sizeof(string),lang_texts[1][35],CHANGE_PASS_COST);
 			return SendClientMessage(playerid,COLOUR_WHITE,string);
@@ -202,7 +199,7 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 	if(!strcmp(cmd,"/changenick",true))
 	{
 		new string[MAX_STRING];
-		if(GetPlayerMoney(playerid) < CHANGE_NICK_COST)
+		if(oGetPlayerMoney(playerid) < CHANGE_NICK_COST)
 		{
 			format(string,sizeof(string),lang_texts[1][36],CHANGE_NICK_COST);
 			return SendClientMessage(playerid,COLOUR_WHITE,string);

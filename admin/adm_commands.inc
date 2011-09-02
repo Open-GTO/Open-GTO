@@ -339,7 +339,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 			format(string,sizeof(string),lang_texts[12][12],oGetPlayerName(playerid),cashamount);
 			SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
 
-			format(string,sizeof(string),lang_texts[12][13],oGetPlayerName(receiverid),cashamount,GetPlayerMoney(receiverid));
+			format(string,sizeof(string),lang_texts[12][13],oGetPlayerName(receiverid),cashamount,oGetPlayerMoney(receiverid));
 			SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 		}
 		else
@@ -347,7 +347,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 			format(string,sizeof(string), lang_texts[12][14] ,oGetPlayerName(playerid),cashamount);
 			SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
 
-			format(string,sizeof(string), lang_texts[12][15] ,oGetPlayerName(receiverid),cashamount,GetPlayerMoney(receiverid));
+			format(string,sizeof(string), lang_texts[12][15] ,oGetPlayerName(receiverid),cashamount,oGetPlayerMoney(receiverid));
 			SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 		}
 		return 1;

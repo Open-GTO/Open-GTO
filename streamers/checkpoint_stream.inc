@@ -25,6 +25,9 @@ enum ActiveCPInfo {	// active checkpoints are checkpoints around the world that 
 }
 new ActiveCheckpoints[MAX_ACTIVECP][ActiveCPInfo];
 
+new Float:PlayerCP[MAX_PLAYERS][CoordInfo];
+new bool:PlayerCPActive[MAX_PLAYERS];
+
 stock SyncActiveCP()
 {
 	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
@@ -107,13 +110,14 @@ stock SetPlayerActiveCP(playerid,cpid)
 
 stock GetPlayerClosestActiveCP(playerid)
 {
- 	new Float:cpdist=CP_SHOW_DIST;
-	new retval=0;
+ 	new Float:cpdist = CP_SHOW_DIST,
+		retval=0,
+		Float:playerdist;
 	for (new cpid=1;cpid<MAX_ACTIVECP;cpid++)
 	{
 		if (ActiveCheckpoints[cpid][IsActive])
 		{
-			new Float:playerdist=GetPlayerDistanceFromPoint(playerid,ActiveCheckpoints[cpid][CP_X],ActiveCheckpoints[cpid][CP_Y],ActiveCheckpoints[cpid][CP_Z]);
+			playerdist = GetPlayerDistanceFromPoint(playerid,ActiveCheckpoints[cpid][CP_X],ActiveCheckpoints[cpid][CP_Y],ActiveCheckpoints[cpid][CP_Z]);
 			if (playerdist < ActiveCheckpoints[cpid][CP_Dist])
 			{
 				if (playerdist < cpdist)

@@ -1,10 +1,10 @@
 //
 // Created:     05.09.06
 // Aurthor:    Iain Gilbert
-// Updated in 07.06.2011 by ZiGGi
+// Updated in 02.09.2011 by ZiGGi
 
 #if defined _player_included
-#endinput
+	#endinput
 #endif
 
 #define _player_included
@@ -64,9 +64,6 @@ enum Quest_Stats {
 new PlayerQuest[MAX_PLAYERS]; // holds id of quest player is currently doing
 new Quests[MAX_QUESTS][Quest_Stats]; // table of all registered quests
 new QuestCount;
-
-new Float:PlayerCP[MAX_PLAYERS][CoordInfo];
-new bool:PlayerCPActive[MAX_PLAYERS];
 
 new PlayerStartMoney = PLAYER_START_MONEY;
 new PlayerStartWeapon1 = PLAYER_START_WEAPON_1;
@@ -201,7 +198,7 @@ stock player_OnPlayerSpawn(playerid)
 		{
 			if(GetPlayerLevel(playerid) > 12)
 			{
-				new rand = random(sizeof(LVDMPlayerSpawns));
+				new rand = random( sizeof(LVDMPlayerSpawns) );
 				SetPlayerPos(playerid,LVDMPlayerSpawns[rand][Coord_X],LVDMPlayerSpawns[rand][Coord_Y],LVDMPlayerSpawns[rand][Coord_Z]); // Warp the player
 			}
 			else
@@ -250,9 +247,9 @@ stock player_OnPlayerDisconnect(playerid,reason)
 	format(string,sizeof(string),lang_texts[1][18],oGetPlayerName(playerid),playerid);
 	switch(reason)
 	{
-	    case 0: format(string,sizeof(string),"%s (Вылетел)",string);
-	    case 1: format(string,sizeof(string),"%s (Вышел)",string);
-	    case 2: format(string,sizeof(string),"%s (Кикнут)",string);
+	    case 0: strcat(string," (Вылетел)",sizeof(string));
+	    case 1: strcat(string," (Вышел)",sizeof(string));
+	    case 2: strcat(string," (Кикнут)",sizeof(string));
 	}
 	SendClientMessageToAll(COLOUR_GREY,string);
 	GangMemberLogout(playerid,GetPVarInt(playerid,"GangID"));
@@ -283,9 +280,9 @@ stock player_OnPlayerConnect(playerid)
 	SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][90]);
 	SendClientMessage(playerid, COLOUR_GREEN, "_________________________________________________________________________________");
 
-	#if defined _testserver_included
+#if defined _testserver_included
 	testserver_OnPlayerConnect(playerid);
-	#endif
+#endif
 }
 
 stock player_OnPlayerDeath(playerid,killerid,reason)
@@ -362,9 +359,7 @@ stock CheckPlayerKick(playerid)
 	}
 	else if (KickList[playerid] >=2) // wait a second before doing the kicking (for msg to get through)
 	{
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "player: %d:  %s: has been auto kicked",playerid,oGetPlayerName(playerid));
-		WriteLog(GameLog,logstring);
+		GameMSG("player: %s(%d): has been kicked",oGetPlayerName(playerid),playerid);
 		KickList[playerid] = 0;
 		Kick(playerid);
 		return;
@@ -375,7 +370,7 @@ stock KickPlayer(playerid,reason[])
 {
 	if(!IsPlayerConnected(playerid)) return 1;
 	new string[MAX_STRING];
-	if(IsPlayerAdmin(playerid))
+	if(IsPlayerAdmin(playerid) || IsPlayerRconAdmin(playerid))
 	{
 		format(string,sizeof(string), lang_texts[9][4], reason);
 		SendClientMessage(playerid,COLOUR_YELLOW, string);
@@ -383,16 +378,17 @@ stock KickPlayer(playerid,reason[])
 	}
 	if(KickList[playerid] != 0) return 1;
 	KickList[playerid]++;
-	if(strlen(reason) > 0)
+	new playername[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,playername,sizeof(playername));
+	if(strlen(reason) == 0)
 	{
-		format(string,sizeof(string), lang_texts[9][5] ,reason);
-		SendClientMessage(playerid,COLOUR_RED, string);
-		format(string,sizeof(string), lang_texts[9][6] ,oGetPlayerName(playerid),reason);
-		SendClientMessageToAll(COLOUR_MISC, string);
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "player: %d:  %s: has been auto kicked. Reason: %s",playerid,oGetPlayerName(playerid),reason);
-		WriteLog(GameLog,logstring);
+		set(reason,"None");
 	}
+	format(string,sizeof(string),lang_texts[9][5],reason);
+	SendClientMessage(playerid,COLOUR_RED, string);
+	format(string,sizeof(string),lang_texts[9][6],playername,reason);
+	SendClientMessageToAll(COLOUR_MISC, string);
+	GameMSG("player: %s(%d): has been kicked. Reason: %s",playername,playerid,reason);
 	return 1;
 }
 
@@ -441,7 +437,7 @@ stock RegisterQuest(name[])
 {
 	if (QuestCount >= MAX_QUESTS) return INVALID_QUEST_ID;
 	QuestCount++;
-	new questid =QuestCount;
+	new questid = QuestCount;
 	set(Quests[questid][Quest_Name],name);
 	return questid;
 }
@@ -463,9 +459,7 @@ stock PlayerSave(playerid)
 {
 	if(!IsPlayerRegistered(playerid)) return 0;
 	player_save_db_ini(playerid);
-	new logstring[MAX_STRING];
-	format(logstring, sizeof (logstring), "player: %d:  %s: player_saved successfully",playerid,oGetPlayerName(playerid));
-	WriteLog(GameLog,logstring);
+	GameMSG("player: %s(%d): player_saved successfully",oGetPlayerName(playerid),playerid);
 	return 1;
 }
 
@@ -479,13 +473,11 @@ stock CreatePlayer(playerid)
 	if(PlayerStartWeapon2 != 0) oGivePlayerWeapon(playerid,PlayerStartWeapon2,bullets);
 	if(PlayerStartWeapon3 != 0) oGivePlayerWeapon(playerid,PlayerStartWeapon3,bullets);
 	player_create_db_ini(playerid);
-	new logstring[MAX_STRING];
-	format(logstring, sizeof(logstring), "player: %d:  %s: player_created successfully",playerid,oGetPlayerName(playerid));
-	WriteLog(GameLog,logstring);
+	GameMSG("player: %s(%d): player_created successfully",oGetPlayerName(playerid),playerid);
 	return 1;
 }
 
-player_create_db_ini(playerid)
+stock player_create_db_ini(playerid)
 {
 	new filename_player[MAX_STRING];
 	format(filename_player,sizeof(filename_player),"%s%s"GTO_FILES_FORMAT,PlayerDB,oGetPlayerName(playerid));
@@ -497,13 +489,11 @@ player_create_db_ini(playerid)
 
 stock player_save_db_ini(playerid)
 {
-	if(strlen(oGetPlayerName(playerid)) < 1) return 1;
-	new filename_player[MAX_STRING];
-	format(filename_player,sizeof(filename_player),"%s%s"GTO_FILES_FORMAT,PlayerDB,oGetPlayerName(playerid));
-	new file_player;
-	if(!ini_Exist(filename_player)) file_player = ini_Create(filename_player);
-	else file_player = ini_Open(filename_player);
-	ini_Set(file_player,"Name",oGetPlayerName(playerid));
+	new filename_player[MAX_STRING],playername[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,playername,sizeof(playername));
+	format(filename_player,sizeof(filename_player),"%s%s"GTO_FILES_FORMAT,PlayerDB,playername);
+	new file_player = (!ini_Exist(filename_player)) ? ini_Create(filename_player) : ini_Open(filename_player);
+	ini_Set(file_player,"Name",playername);
 	ini_Set(file_player,"Gang",GetPlayerGangName(playerid));
 	ini_SetInt(file_player,"Level",GetPlayerLevel(playerid));
 	ini_SetInt(file_player,"XP",GetPlayerXP(playerid));
@@ -552,7 +542,7 @@ stock player_load_db_ini(playerid)
 	format(filename_player,sizeof(filename_player),"%s%s"GTO_FILES_FORMAT,PlayerDB,oGetPlayerName(playerid));
 	if(!ini_Exist(filename_player)) return 1;
 	new file_player = ini_Open(filename_player);
-	new buf;
+	new buf,s_buf[MAX_STRING];
 	
     ini_GetInt(file_player,"Level",buf);
 	SetPlayerLevel(playerid,buf);
@@ -587,48 +577,47 @@ stock player_load_db_ini(playerid)
     ini_GetInt(file_player,"FightStyle",buf);
 	SetPlayerFightStyle(playerid,buf);
 	
-	new string[MAX_STRING],idx=0;
-	ini_Get(file_player,"Coords",string);
-	SetPVarFloat(playerid,"Coord_X",floatstr(strcharsplit(string,idx,',')));
-	SetPVarFloat(playerid,"Coord_Y",floatstr(strcharsplit(string,idx,',')));
-	SetPVarFloat(playerid,"Coord_Z",floatstr(strcharsplit(string,idx,',')));
-	SetPVarFloat(playerid,"Coord_A",floatstr(strcharsplit(string,idx,',')));
+	buf=0;
+	ini_Get(file_player,"Coords",s_buf);
+	SetPVarFloat(playerid,"Coord_X",floatstr(strcharsplit(s_buf,buf,',')));
+	SetPVarFloat(playerid,"Coord_Y",floatstr(strcharsplit(s_buf,buf,',')));
+	SetPVarFloat(playerid,"Coord_Z",floatstr(strcharsplit(s_buf,buf,',')));
+	SetPVarFloat(playerid,"Coord_A",floatstr(strcharsplit(s_buf,buf,',')));
 	
 	ini_GetInt(file_player,"Status",buf);
 	SetPlayerStatus(playerid,buf);
 	
 	SetPlayerFightingStyle(playerid,GetPlayerFightStyle(playerid));
-	new gangname[MAX_NAME];
-	ini_Get(file_player,"Gang",gangname);
-	if(strlen(gangname) > 0)
+
+	ini_Get(file_player,"Gang",s_buf);
+	if(strlen(s_buf) > 0)
 	{
 		new tmpname[MAX_NAME];
-		format(tmpname,sizeof(tmpname),"%s%s"GTO_FILES_FORMAT,GangDB,gangname);
+		format(tmpname,sizeof(tmpname),"%s%s"GTO_FILES_FORMAT,GangDB,s_buf);
 		if(!ini_Exist(tmpname))
 		{
-			format(tmpname,sizeof(tmpname),"Банда `%s` была расформирована.",gangname);
+			format(tmpname,sizeof(tmpname),"Банда `%s` была расформирована.",s_buf);
 			SendClientMessage(playerid,COLOUR_ORANGE,tmpname);
 			ini_Set(file_player,"Gang",nullstr);
 			SetPVarInt(playerid,"GangID",0);
 		}
 		else
 		{
-			GangMemberLogin(playerid,GangLoad(gangname));
+			GangMemberLogin(playerid,GangLoad(s_buf));
 		}
 	}
 	else SetPVarInt(playerid,"GangID",0); // no gang
 
-	new wepstr[MAX_STRING];
-	ini_Get(file_player,"Weapons",wepstr);
-	SetWeaponsFromDBString(playerid,wepstr);
-	ini_Get(file_player,"WeaponsSkills",wepstr);
-	SetWeaponsSkillsFromDBString(playerid,wepstr);
+	ini_Get(file_player,"Weapons",s_buf);
+	SetWeaponsFromDBString(playerid,s_buf);
+	ini_Get(file_player,"WeaponsSkills",s_buf);
+	SetWeaponsSkillsFromDBString(playerid,s_buf);
 	
 	ini_GetInt(file_player,"SkinModel",buf);
 	SetPlayerSkinModel(playerid,buf);
 	
-	ini_Get(file_player,"VIP",string);
-	SetPlayerVIPDate(playerid,string);
+	ini_Get(file_player,"VIP",s_buf);
+	SetPlayerVIPDate(playerid,s_buf);
 	
 	if(VIPCheck( GetPlayerVIPDate(playerid) ))
 		SetPlayerVIP(playerid,1);

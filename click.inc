@@ -523,14 +523,14 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			{
 				format(string,sizeof(string), lang_texts[12][12] ,oGetPlayerName(playerid),cashamount);
 				SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
-				format(string,sizeof(string), lang_texts[12][13] ,oGetPlayerName(receiverid),cashamount,GetPlayerMoney(receiverid));
+				format(string,sizeof(string), lang_texts[12][13] ,oGetPlayerName(receiverid),cashamount,oGetPlayerMoney(receiverid));
 				SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			}
 			else
 			{
 				format(string,sizeof(string), lang_texts[12][14] ,oGetPlayerName(playerid),cashamount);
 				SendClientMessage(receiverid,COLOUR_XP_GOOD,string);
-				format(string,sizeof(string), lang_texts[12][15] ,oGetPlayerName(receiverid),cashamount,GetPlayerMoney(receiverid));
+				format(string,sizeof(string), lang_texts[12][15] ,oGetPlayerName(receiverid),cashamount,oGetPlayerMoney(receiverid));
 				SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			}
 		}
