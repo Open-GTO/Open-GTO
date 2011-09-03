@@ -34,9 +34,9 @@ public WorldSave() // save all
 	if(LastWorldSave != 1) return 0;
 nee:
 	new starttime = Now();
-	for(new id=0;id<=GetPlayerLastID();id++)
+	foreach(Player,id)
 	{
-		if(!IsPlayerConnected(id) || IsPlayerNPC(id) || !IsPlayerRegistered(id)) continue;
+		if(!IsPlayerRegistered(id)) continue;
 		PlayerSave(id);
 		AccountSave(id);
 	}

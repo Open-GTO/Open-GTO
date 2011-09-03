@@ -30,9 +30,8 @@ new bool:PlayerCPActive[MAX_PLAYERS];
 
 stock SyncActiveCP()
 {
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) continue;
 		if(PlayerQuest[playerid] == 0)
 		{
 	    	new cpid = GetPlayerClosestActiveCP(playerid);

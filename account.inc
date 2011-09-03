@@ -127,9 +127,9 @@ stock AccountLogin(playerid,password[])
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	}
 	GameTextForPlayer(playerid,string,2000,1);
-	for(new idst=0;idst<=GetPlayerLastID();idst++)
+	foreach(Player,idst)
 	{
-		if(!IsPlayerConnected(idst) || IsPlayerNPC(idst) || IsPlayerAdmin(playerid) || IsPlayerRconAdmin(playerid)) continue;
+		if(IsPlayerAdmin(playerid) || IsPlayerRconAdmin(playerid)) continue;
 		format(string,sizeof(string),lang_texts[1][17],playername,playerid);
 		SendClientMessage(idst,COLOUR_WHITE,string);
 	}

@@ -13,9 +13,10 @@
 stock modfunc_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger)
 {	
 	#pragma unused ispassenger
-	for(new id=0;id<=GetPlayerLastID();id++)
+	foreach(Player,id)
 	{
-		if(IsPlayerConnected(id) && GetPlayerSpectating(id) == 1 && SetPlayerSpecID(id,playerid)) PlayerSpectateVehicle(id,vehicleid);
+		if(GetPlayerSpectating(id) == 1 && SetPlayerSpecID(id,playerid))
+			PlayerSpectateVehicle(id,vehicleid);
 	}
 	return 1;
 }
@@ -23,9 +24,10 @@ stock modfunc_OnPlayerEnterVehicle(playerid,vehicleid,ispassenger)
 stock modfunc_OnPlayerExitVehicle(playerid,vehicleid)
 {
 	#pragma unused vehicleid
-	for(new id=0;id<=GetPlayerLastID();id++)
+	foreach(Player,id)
 	{
-		if(IsPlayerConnected(id) && GetPlayerSpectating(id) == 1 && SetPlayerSpecID(id,playerid)) PlayerSpectatePlayer(id,playerid);
+		if(GetPlayerSpectating(id) == 1 && SetPlayerSpecID(id,playerid))
+			PlayerSpectatePlayer(id,playerid);
 	}
 	return 1;
 }
@@ -33,9 +35,10 @@ stock modfunc_OnPlayerExitVehicle(playerid,vehicleid)
 stock modfunc_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
 {
 	#pragma unused oldinteriorid
-	for(new id=0;id<=GetPlayerLastID();id++)
+	foreach(Player,id)
 	{
-		if(IsPlayerConnected(id) && GetPlayerSpectating(id) == 1 && SetPlayerSpecID(id,playerid))	SetPlayerInterior(id,newinteriorid);
+		if(GetPlayerSpectating(id) == 1 && SetPlayerSpecID(id,playerid))
+			SetPlayerInterior(id,newinteriorid);
 	}
 	return 1;
 }
@@ -43,9 +46,9 @@ stock modfunc_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
 stock modfunc_OnPlayerDeath(playerid,killerid,reason)
 {
 	#pragma unused reason,killerid
-	for(new id=0;id<=GetPlayerLastID();id++)
+	foreach(Player,id)
 	{
-		if(IsPlayerConnected(id) && SetPlayerSpecID(id,playerid) && GetPlayerSpectating(id) == 1) 
+		if(SetPlayerSpecID(id,playerid) && GetPlayerSpectating(id) == 1) 
 		{ 
 			TogglePlayerSpectating(id,false);
 			SetPlayerSpectating(id,0);
@@ -59,7 +62,7 @@ stock SendClientMessageToModers(senderid,text[])
 {
 	new message[MAX_STRING],count = 0;
 	format(message,sizeof(message),lang_texts[12][79],oGetPlayerName(senderid),senderid,text);
-	for(new adminid=0;adminid<=GetPlayerLastID();adminid++)
+	foreach(Player,adminid)
 	{
 		if(IsPlayerMod(adminid))
 		{

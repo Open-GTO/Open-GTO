@@ -232,7 +232,6 @@ stock CreateWeaponSkillsDBString(playerid)
 // уничтожает всё 'всегдашнее' оружие
 stock DropAmmo(playerid)
 {
-	if(IsPlayerConnected(playerid)==0) return 0;
 	for(new i=0;i<PLAYER_WEAPON_SLOTS;i++)
 	{
 		PlayerWeapons[playerid][i][pwid] = 0;

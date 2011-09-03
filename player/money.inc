@@ -42,7 +42,7 @@ stock money_OnGameModeInit()
 
 stock SyncMoney(playerid)
 {
-	if(!IsPlayerConnected(playerid) || AntiMoneyHackEnabled != 1) return 1;
+	if(AntiMoneyHackEnabled != 1) return 1;
 	new clientmoney = GetPlayerMoney(playerid);
 	new servermoney = oGetPlayerMoney(playerid);
 	if(clientmoney < 0) return oSetPlayerMoney(playerid,0);

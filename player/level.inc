@@ -147,7 +147,6 @@ stock GetLevelName(level)
 
 stock GetXPToLevel(playerid,level)
 {
-	if(!IsPlayerConnected(playerid)) return 0;
 	if((level <= MAX_LEVEL) && (level > GetPlayerLevel(playerid)))
 	{
 		return (LevelList[level][level_xp] - GetPlayerXP(playerid));
@@ -157,7 +156,6 @@ stock GetXPToLevel(playerid,level)
 
 stock CalculatePlayerLevel(playerid)
 {
-	if (!IsPlayerConnected(playerid)) return 0;
 	new level;
 	for(new i;i<=MAX_LEVEL;i++)
 	{
@@ -168,7 +166,7 @@ stock CalculatePlayerLevel(playerid)
 
 stock GivePlayerXP(playerid, xpamount,showtext=0) // showtext = do we display "You gain %d XP"  to client
 {
-	if(!IsPlayerConnected(playerid) || xpamount == 0) return 0;
+	if(xpamount == 0) return 0;
 	GangGivePlayerXP(playerid,xpamount);
 
 	new texttime = (xpamount > 5000) ? 2000 : 1000;
@@ -210,7 +208,6 @@ stock GivePlayerXP(playerid, xpamount,showtext=0) // showtext = do we display "Y
 
 stock CheckPlayerLevel(playerid)
 {
-	if(!IsPlayerConnected(playerid)) return 1;
 	new level = CalculatePlayerLevel(playerid);
 	if(GetPlayerLevel(playerid) < level)
 		PlayerLevelUp(playerid,level);
@@ -221,20 +218,18 @@ stock CheckPlayerLevel(playerid)
 
 stock PlayerLevelDown(playerid,level)
 {
-	if(!IsPlayerConnected(playerid)) return 1;
 	SetPVarInt(playerid,"Level",level);
 	PlayerPlaySoundOnPlayer(playerid,1057);
 	UpdatePlayerScore(playerid);
 	new string[MAX_STRING];
 	format(string, sizeof(string),  lang_texts[9][22] , GetPlayerLevel(playerid));
 	SendClientMessage(playerid, COLOUR_XP_BAD, string);
-	GameMSG("player: %d:  %s: decreased his level to %d",playerid,oGetPlayerName(playerid),GetPlayerLevel(playerid));
+	GameMSG("player: %s(%d): decreased his level to %d",oGetPlayerName(playerid),playerid,GetPlayerLevel(playerid));
 	return 1;
 }
 
 stock PlayerLevelUp(playerid,level)
 {
-	if(!IsPlayerConnected(playerid)) return 1;
 	SetPVarInt(playerid,"Level",level);
 	SetMaxPlayerHealth(playerid);
 	PlayerPlaySoundOnPlayer(playerid,1057);

@@ -189,7 +189,7 @@ stock IsPlayerAtBank(playerid)
 
 stock Profit()
 {
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
 		if(IsPlayerRegistered(playerid))
 			GivePlayerBankMoney(playerid,-(GetPlayerBankMoney(playerid) / 100) * ProfitCount);

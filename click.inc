@@ -87,7 +87,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(listitem == 7)
 		{
 			new unjailid = GetPlayerClickedPlayerid(playerid);
-			if(unjailid < 0 || unjailid > GetPlayerLastID() || (IsPlayerAdmin(unjailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(unjailid) && IsPlayerMod(playerid)))
+			if((IsPlayerAdmin(unjailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(unjailid) && IsPlayerMod(playerid)))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][19]);
 			}
@@ -135,7 +135,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(listitem == 9)
 		{
 			new receiverid = GetPlayerClickedPlayerid(playerid);
-			if((receiverid < 0) || (receiverid > GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
+			if(IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
@@ -181,7 +181,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(listitem == 11)
 		{
 			new receiverid = GetPlayerClickedPlayerid(playerid);
-			if((receiverid < 0) || (receiverid > GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
+			if(IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
@@ -237,7 +237,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(listitem == 16)
 		{
 			new receiverid = GetPlayerClickedPlayerid(playerid);
-			if ((receiverid < 0) || (receiverid > GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
+			if(IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 			}
@@ -256,7 +256,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(listitem == 17)
 		{
 			new receiverid = GetPlayerClickedPlayerid(playerid);
-			if ((receiverid < 0) || (receiverid > GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
+			if (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 			}
@@ -327,7 +327,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			new sendername[MAX_PLAYER_NAME],receivename[MAX_PLAYER_NAME],string[MAX_STRING];
 			GetPlayerName(GetPlayerClickedPlayerid(playerid),receivename,sizeof(receivename));
 			GetPlayerName(playerid,sendername,sizeof(sendername));
-			for(new i=0;i<=GetPlayerLastID();i++)
+			foreach(Player,i)
 			{
 				if(GetPVarInt(playerid,"Admin_PMshowing") != 1) continue;
 				format(string,sizeof(string),"* Админ: ЛС от %s к %s: %s",sendername,receivename,inputtext);
@@ -346,7 +346,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			format(string,sizeof(string),lang_texts[15][91],abusename,GetPlayerClickedPlayerid(playerid),inputtext);
 			SendClientMessage(playerid,COLOUR_RED,string);
 			format(string,sizeof(string),lang_texts[15][92],sendername,playerid,abusename,GetPlayerClickedPlayerid(playerid),inputtext);
-			for(new id=0;id<=GetPlayerLastID();id++)
+			foreach(Player,id)
 			{
 				if(IsPlayerMod(id) || IsPlayerAdm(id) || IsPlayerAdmin(id))
 					SendClientMessage(id,COLOUR_RED,string);
@@ -355,7 +355,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(ListResponseType[playerid] == 3)
 		{
 			new receiverid = GetPlayerClickedPlayerid(playerid);
-			if((receiverid < 0) || (receiverid > GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
+			if(IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
@@ -374,10 +374,6 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(ListResponseType[playerid] == 4)
 		{
 			new muteid = GetPlayerClickedPlayerid(playerid);
-			if((muteid < 0) || (muteid > GetPlayerLastID()))
-			{
-				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
-			}
 			new mutetime = strval(inputtext);
 			if(mutetime < 1)
 			{
@@ -400,7 +396,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(ListResponseType[playerid] == 6)
 		{
 			new jailid = GetPlayerClickedPlayerid(playerid);
-			if((jailid < 0) || (jailid > GetPlayerLastID()) || (IsPlayerAdmin(jailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(jailid) && IsPlayerMod(playerid)) )
+			if((IsPlayerAdmin(jailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(jailid) && IsPlayerMod(playerid)))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
@@ -428,7 +424,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(ListResponseType[playerid] == 12)
 		{
 			new receiverid = GetPlayerClickedPlayerid(playerid);
-			if ((receiverid < 0) || (receiverid > GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
+			if (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
@@ -446,7 +442,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(ListResponseType[playerid] == 13)
 		{
 			new receiverid = GetPlayerClickedPlayerid(playerid);
-			if ((receiverid < 0) || (receiverid > GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
+			if (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
@@ -464,7 +460,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(ListResponseType[playerid] == 14)
 		{
 			new receiverid = GetPlayerClickedPlayerid(playerid);
-			if ((receiverid < 0) || (receiverid > GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
+			if (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 			}
@@ -504,7 +500,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(ListResponseType[playerid] == 15)
 		{
 			new receiverid = GetPlayerClickedPlayerid(playerid);
-			if ((receiverid < 0) || (receiverid > GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)) )
+			if (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 			}

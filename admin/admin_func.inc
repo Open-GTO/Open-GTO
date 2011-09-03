@@ -15,7 +15,7 @@ stock SendClientMessageToAdmins(senderid,text[])
 {
 	new message[MAX_STRING],count = 0;
 	format(message,sizeof(message),lang_texts[12][28],oGetPlayerName(senderid),senderid,text);
-	for(new adminid=0;adminid<=GetPlayerLastID();adminid++)
+	foreach(Player,adminid)
 	{
 		if(IsPlayerAdmin(adminid) || IsPlayerAdm(adminid))
 		{
@@ -42,7 +42,7 @@ stock adminfunc_OnPlayerText(playerid,text[])
 	{
 		new string[MAX_STRING],count = 0;
 		strmid(string,text,1,strlen(text));
-		for(new adminid=0;adminid<=GetPlayerLastID();adminid++)
+		foreach(Player,adminid)
 		{
 			if(IsPlayerAdmin(adminid) || IsPlayerAdm(adminid))
 			{

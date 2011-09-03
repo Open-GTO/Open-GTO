@@ -58,7 +58,7 @@ new Float:PointsH[][CoordInfo] = {
 
 stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if(!IsPlayerAdmin(playerid) && !IsPlayerRconAdmin(playerid)) return 0;
+	if(!IsPlayerAdmin(playerid)) return 0;
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,' '));
 	
@@ -193,9 +193,9 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		new string[MAX_STRING];
 		new Float:playerx,Float:playery,Float:playerz;
-		for(new id=0;id<=GetPlayerLastID();id++)
+		foreach(Player,id)
 		{
-			if(IsPlayerConnected(id) && (GetPlayerJailed(id) == 0) && !IsPlayerInAnyDM(id))
+			if(!GetPlayerJailed(id) && !IsPlayerInAnyDM(id))
 			{
 				GivePlayerWeapon(id,46,1);
 				GetPlayerPos(id,playerx,playery,playerz);
@@ -228,9 +228,9 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/disarmall",true))
 	{
 		new string[MAX_STRING];
-		for(new id=0;id<=GetPlayerLastID();id++)
+		foreach(Player,id)
 		{
-			if(!IsPlayerConnected(id) || id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id) == 1)
+			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id) == 1)
 				continue;
 			ResetPlayerWeapons(id);
 			DropAmmo(id);
@@ -244,9 +244,9 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/paralyzeall",true))
 	{
 		new string[MAX_STRING];
-		for(new id=0;id<=GetPlayerLastID();id++)
+		foreach(Player,id)
 		{
-			if(id == playerid || !IsPlayerConnected(id) || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id))
+			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id))
 				continue;
 			TogglePlayerControllable(id,0);
 			format(string,sizeof(string),lang_texts[12][54] ,oGetPlayerName(playerid));//игроку
@@ -259,9 +259,9 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/deparalyzeall",true))
 	{
 		new string[MAX_STRING];
-		for(new id=0;id<=GetPlayerLastID();id++)
+		foreach(Player,id)
 		{
-			if(id == playerid || !IsPlayerConnected(id) || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id))
+			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id))
 				continue;
 			TogglePlayerControllable(id,1);
 			format(string,sizeof(string),lang_texts[12][56],oGetPlayerName(playerid));
@@ -288,9 +288,9 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/remcashall",true))
 	{
 		new string[MAX_STRING];
-		for(new id=0;id<=GetPlayerLastID();id++)
+		foreach(Player,id)
 		{
-			if(!IsPlayerConnected(id) || id == playerid || GetPlayerJailed(id) != 0 || IsPlayerAdmin(id) == 1) continue;
+			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerAdmin(id) == 1) continue;
 			ResetPlayerMoney(id);
 			format(string,sizeof(string),lang_texts[12][58],oGetPlayerName(playerid));
 			SendClientMessage(id,COLOUR_XP_GOOD,string);

@@ -294,9 +294,9 @@ stock bis_Buy(playerid)
 	else
 	{
 	#if defined BUY_ALL_BUSINESS
-		for(new ownerid=0;ownerid<=GetPlayerLastID();ownerid++)
+		foreach(Player,ownerid)
 		{
-			if(IsPlayerConnected(ownerid) && !IsPlayerNPC(ownerid) && !strcmp(Businesses[id][Business_Owner],oGetPlayerName(ownerid),true))
+			if(!strcmp(Businesses[id][Business_Owner],oGetPlayerName(ownerid),true))
 			{
 				new temp[MAX_STRING];
 				format(temp,sizeof(temp),lang_texts[3][15],playername,Businesses[id][Business_Name]);

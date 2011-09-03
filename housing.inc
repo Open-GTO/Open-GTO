@@ -386,8 +386,8 @@ stock DeleteRenter(playerid)
 	if(!strcmp(Houses[id][Houses_Owner],oGetPlayerName(playerid),true)) 
 	{
 		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[8][58]);
-		for(new i=0;i<=GetPlayerLastID();i++)
-			if(IsPlayerConnected(i) && !strcmp(Houses[id][Houses_RentName],oGetPlayerName(i),true))
+		foreach(Player,i)
+			if(!strcmp(Houses[id][Houses_RentName],oGetPlayerName(i),true))
 				SendClientMessage(i,COLOUR_LIGHTRED,lang_texts[8][60]);
 	}
 	else if(!strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true))
@@ -441,9 +441,9 @@ stock house_Buy(playerid)
 	else
 	{
 	#if defined BUY_ALL_HOUSES
-		for(new ownerid=0;ownerid<=GetPlayerLastID();ownerid++)
+		foreach(Player,ownerid)
 		{
-			if(IsPlayerConnected(ownerid) && !IsPlayerNPC(ownerid) && !strcmp(Houses[id][Houses_Owner],oGetPlayerName(ownerid),true))
+			if(!strcmp(Houses[id][Houses_Owner],oGetPlayerName(ownerid),true))
 			{
 				format(temp,sizeof(temp),lang_texts[8][17],oGetPlayerName(playerid),Houses[id][Houses_Name]);
 				SendClientMessage(ownerid,COLOUR_RED,temp);

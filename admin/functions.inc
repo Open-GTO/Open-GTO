@@ -74,9 +74,9 @@ stock SendMessageToAdmins(playerid, color, text[])
 	new message[MAX_STRING];
 	format(message,sizeof(message),lang_texts[1][24],oGetPlayerName(playerid),playerid,text);
 	printf("%s",message);
-	for(new aid=0;aid<=GetPlayerLastID();aid++)
+	foreach(Player,aid)
 	{
-		if(!IsPlayerConnected(aid) || IsPlayerNPC(aid) || aid == playerid || (!IsPlayerAdmin(aid) && !IsPlayerAdm(aid))) continue;
+		if(aid == playerid || (!IsPlayerAdmin(aid) && !IsPlayerAdm(aid))) continue;
 		format(message,sizeof(message), lang_texts[1][23] ,oGetPlayerName(playerid), playerid, GetPlayerStatus(playerid), text);
 		SendClientMessage(aid,color,message);
 	}
@@ -90,9 +90,9 @@ stock PushHide(playerid)// скрыть/показать игрока
 		hidecont = 0;
 	else
 		hidecont = PlayerGangColour(playerid);
-	for(new id=0;id<=GetPlayerLastID();id++)
+	foreach(Player,id)
 	{
-		if(IsPlayerConnected(id) && !IsPlayerNPC(id) && id != playerid)
+		if(id != playerid)
 			SetPlayerMarkerForPlayer(id,playerid,hidecont);
 	}
 	//SetPlayerColor(playerid,PlayerGangColour(playerid));
@@ -101,9 +101,8 @@ stock PushHide(playerid)// скрыть/показать игрока
 
 stock MuteCheck()
 {
-	for(new i=0;i<=GetPlayerLastID();i++)
+	foreach(Player,i)
 	{
-		if(!IsPlayerConnected(i) || IsPlayerNPC(i)) continue;
 		if(GetPlayerMuteTime(i) > 0)
 		{
 			SetPlayerMuteTime(i,GetPlayerMuteTime(i) - 1);
@@ -119,9 +118,8 @@ stock MuteCheck()
 
 stock JailTimer()
 {
-	for(new i=0;i<=GetPlayerLastID();i++)
+	foreach(Player,i)
 	{
-		if(!IsPlayerConnected(i) || IsPlayerNPC(i)) continue;
 		if(GetPlayerJailed(i) == 1)
 		{
 			new spwl = GetPlayerJailTime(i);

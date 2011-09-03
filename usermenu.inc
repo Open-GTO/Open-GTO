@@ -236,9 +236,8 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					new idsa = 0,
 						admins[MAX_STRING],
 						moders[MAX_STRING];
-					for(new id=0;id<=GetPlayerLastID();id++)
+					foreach(Player,id)
 					{
-						if(!IsPlayerConnected(id) || IsPlayerNPC(id)) continue;
 						if(IsPlayerAdmin(id) || IsPlayerAdm(id))
 						{
 							format(admins,sizeof(admins),"%s%s(%d)\n",admins,oGetPlayerName(id),id);
@@ -289,8 +288,8 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 									\t\tAsturel\n\
 									\t\tDmitry Frolov (FP)\n\
 									\t\tOpen-GTO Team:\n\
-									\t\t\tCurrent: ZiGGi, SLICK\n\
-									\t\t\tPrevious: GhostTT, heufix, Elbi\n\
+									\t\t\tCurrent: ZiGGi\n\
+									\t\t\tPrevious: GhostTT, heufix, Elbi, SLICK\n\
 						\n\
 						{00C0DD}Косвенные разработчики: {AFE7FF}\n\
 									\t\tMX_Master(mxINI,Chat-Guard)\n\

@@ -52,7 +52,6 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		new receiverid = INVALID_PLAYER_ID;
 		receiverid = strval(strcharsplit(text, idx,' '));
-		if((receiverid < 0) || (receiverid > GetPlayerLastID())) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		if(!IsPlayerConnected(receiverid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][34],oGetPlayerName(receiverid),receiverid);
@@ -92,7 +91,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		new receiverid = INVALID_PLAYER_ID;
 		receiverid = strval(strcharsplit(text,idx,' '));
-		if((receiverid < 0) || (receiverid > GetPlayerLastID()) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
+		if(IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		}
@@ -152,7 +151,6 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/tele-to",true))
 	{
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if((receiverid < 0) || (receiverid > GetPlayerLastID())) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		if(!IsPlayerConnected(receiverid)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
 		new Float:X,Float:Y,Float:Z,Float:Angle;
 		if(IsPlayerInAnyVehicle(playerid)) 
@@ -216,10 +214,10 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 		GetPlayerFacingAngle(playerid,Angle);
 		new string[MAX_STRING],playername[MAX_PLAYER_NAME];
 		GetPlayerName(playerid,playername,sizeof(playername));
-		for(new id=0;id<=GetPlayerLastID();id++)
+		foreach(Player,id)
 		{
 			if(id == playerid) continue;
-			if(IsPlayerConnected(id) && !IsPlayerNPC(id) && GetPlayerJailed(id) == 0 && !IsPlayerAdmin(id)  && !IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id))
+			if(GetPlayerJailed(id) == 0 && !IsPlayerAdmin(id)  && !IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id))
 			{
 				X += random(2) - random(4);
 				Y += random(2) - random(4);	

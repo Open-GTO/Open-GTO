@@ -129,8 +129,8 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid,COLOUR_GREEN,string);
 		SendClientMessage(playerid,COLOUR_MISC,lang_texts[15][76]);
 		SendClientMessage(playerid,COLOUR_MISC,"Open-GTO Team: ");
-		SendClientMessage(playerid,COLOUR_MISC,"      Current: ZiGGi, SLICK");
-		SendClientMessage(playerid,COLOUR_MISC,"      Previous: GhostTT, heufix, Elbi");
+		SendClientMessage(playerid,COLOUR_MISC,"      Current: ZiGGi");
+		SendClientMessage(playerid,COLOUR_MISC,"      Previous: GhostTT, heufix, Elbi, SLICK");
 		return 1;
 	}
 	if((!strcmp(cmd,"/kill",true)) && !IsPlayerInAnyDM(playerid))
@@ -143,7 +143,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		new idsa = 0;
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[1][28]);
-		for(new id=0;id<=GetPlayerLastID();id++)
+		foreach(Player,id)
 		{
 			if(IsPlayerAdmin(id) || IsPlayerAdm(id))
 			{
@@ -152,7 +152,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 				idsa++;
 			}
 		}
-		for(new id=0;id<=GetPlayerLastID();id++)
+		foreach(Player,id)
 		{
 			if(IsPlayerMod(id))
 			{

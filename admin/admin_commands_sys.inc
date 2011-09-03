@@ -18,7 +18,7 @@ new sysweath = 0;	//WEATHER
 
 stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if(!IsPlayerRconAdmin(playerid) && !IsPlayerAdmin(playerid)) return 0;
+	if(!IsPlayerAdmin(playerid) && !IsPlayerAdm(playerid)) return 0;
 
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,' '));
@@ -54,13 +54,7 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 		format(string,sizeof(string),lang_texts[15][65] , CarsReSpawnTime);
 		SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
 
-		new MAX_ONLINESS = 0;
-		for(new idst=0;idst<=GetPlayerLastID();idst++)
-		{
-			if(IsPlayerConnected(idst)) MAX_ONLINESS += 1;
-		}
-
-		format(string,sizeof(string),lang_texts[15][62] , MAX_ONLINESS, MAX_PLAYERS);
+		format(string,sizeof(string),lang_texts[15][62] , PlayerCount(), GetMaxPlayers());
 		SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
 
 		new stringas[MAX_STRING];
@@ -141,9 +135,9 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	if(!strcmp(cmd,"gmx",true))
 	{
-		for(new id=0;id<=GetPlayerLastID();id++)
+		foreach(Player,id)
 		{
-			if(!IsPlayerConnected(id) || IsPlayerNPC(id) || !IsPlayerRegistered(id)) continue;
+			if(!IsPlayerRegistered(id)) continue;
 			PlayerSave(id);
 			AccountSave(id);
 		}

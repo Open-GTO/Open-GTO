@@ -111,23 +111,27 @@ stock groundhold_OnGameModeInit()
 	return 1;
 }
 
+stock gh_OnPlayerDisconnect(playerid,reason)
+{
+	#pragma unused reason
+	for(new ghid=0;ghid<sizeof(Groundholds);ghid++)
+	{
+		PlayerGroundHoldTime[ghid][playerid] = 0;
+		PlayerHoldingGround[ghid][playerid] = 0;
+	}
+}
+
 stock CheckGround(ghid)
 {
 	new playergroundcount = CountPlayers(PlayerGroundHoldTime[ghid]);
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if(!IsPlayerConnected(playerid))
-		{
-			PlayerGroundHoldTime[ghid][playerid] = 0;
-			PlayerHoldingGround[ghid][playerid] = 0;
-			continue;
-		}
 		if(IsPlayerInRangeOfPoint(playerid,Groundholds[ghid][gh_dist],Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]))
 		{
 			new groundenemycount;
-			for(new i=0;i<=GetPlayerLastID();i++)
+			foreach(Player,i)
 			{
-				if(!IsPlayerConnected(i) || IsPlayerNPC(i) || i == playerid) continue;
+				if(i == playerid) continue;
 				if(PlayerGroundHoldTime[ghid][i] > 0)
 				{
 					if((GetPVarInt(i,"GangID") == 0) || (GetPVarInt(i,"GangID") != GetPVarInt(playerid,"GangID")))
@@ -218,14 +222,16 @@ stock CheckGround(ghid)
 stock CountPlayers(players[])
 {
 	new count;
-	for(new i=0;i<=GetPlayerLastID();i++) if(players[i] > 0) count++;
+	foreach(Player,i)
+		if(players[i] > 0) count++;
 	return count;
 }
 
 stock CheckAllGround()
 {
 	if(Groundhold_Enabled != 1) return 1;
-	for(new ghid=0;ghid<sizeof(Groundholds);ghid++) CheckGround(ghid);
+	for(new ghid=0;ghid<sizeof(Groundholds);ghid++)
+		CheckGround(ghid);
 	return 1;
 }
 

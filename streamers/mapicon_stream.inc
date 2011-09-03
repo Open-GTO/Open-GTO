@@ -46,9 +46,9 @@ stock DeleteStreamMapIcon(icon_id)
 	MapIcons[icon_id][Coord_X] = 0.0;
 	MapIcons[icon_id][Coord_Y] = 0.0;
 	MapIcons[icon_id][Coord_Z] = 0.0;
-	for(new i=0,slot;i<=GetPlayerLastID();i++)
+	new slot;
+	foreach(Player,i)
 	{
-		if(!IsPlayerConnected(i) || IsPlayerNPC(i)) continue;
 		slot = GetIconSlot(i,icon_id);
 		RemovePlayerMapIcon(i,slot);
 		SlotIcons[i]{slot} = 0;
@@ -67,10 +67,10 @@ stock UpdatePlayerStreamMapIcon( playerid,icon_id )
 
 stock UpdateStreamMapIcon( icon_id )
 {
-	for(new i=0;i<=GetPlayerLastID();i++)
+	new slot;
+	foreach(Player,i)
 	{
-		if(!IsPlayerConnected(i) || IsPlayerNPC(i)) continue;
-		new slot = GetIconSlot(i,icon_id);
+		slot = GetIconSlot(i,icon_id);
 		RemovePlayerMapIcon(i,slot);
 		update_House_IconType(i,icon_id);
 		update_Business_IconType(i,icon_id);
@@ -80,9 +80,8 @@ stock UpdateStreamMapIcon( icon_id )
 
 stock MapIcons_Streaming()
 {
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if( !IsPlayerConnected(playerid) || IsPlayerNPC(playerid) ) continue;
 		for( new icon_id=1;icon_id<MAX_ICONS;icon_id++ )
 		{
 			if( !IsPlayerInRangeOfPoint(playerid,MAP_ICON_STREAM_DISTANCE,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z])

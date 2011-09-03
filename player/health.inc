@@ -77,9 +77,9 @@ stock HealthRegen(id)
 
 stock PlayerHealthRegen()
 {
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid) || GetPVarInt(playerid,"Spawned") == 0) continue;
+		if(GetPVarInt(playerid,"Spawned") == 0) continue;
 		HealthRegen(playerid);
 	}
 	return 1;

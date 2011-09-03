@@ -48,10 +48,9 @@ stock AntiIdle()
 {
 	if(AntiIdleEnabled != 1) return;
     new Float:pos[3],string[MAX_STRING];
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-        if(IsPlayerConnected(playerid) && !IsPlayerNPC(playerid) && !IsPlayerAdmin(playerid)
-			&& IsPlayerInAnyGround(playerid) && Groundhold_Enabled == 1)
+        if(!IsPlayerAdmin(playerid) && IsPlayerInAnyGround(playerid) && Groundhold_Enabled == 1)
 		{
             GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
             if(pos[0] == GetPVarFloat(playerid,"playerIdlePos_X")

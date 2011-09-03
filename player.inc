@@ -335,9 +335,8 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 // sync player hp/money and check for mismatch
 stock SyncPlayers()
 {
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) continue;
 		CheckPlayerKick(playerid);
 		if(GetPVarInt(playerid,"Spawned") == 0) continue; // если игрок мертв, то защиты не срабатывают
 		SyncMoney(playerid);
@@ -416,7 +415,7 @@ stock GetRndPlayerSpawnByLevel(level)
 
 stock player_ResetStats(playerid)
 {
-	SetPVarInt(playerid,"PlayerRegistered",0);
+	DeletePVar(playerid,"PlayerRegistered");
 	oSetPlayerMoney(playerid,0);
 	KickList[playerid] = 0;
 	ResetQuest(playerid);
@@ -429,7 +428,7 @@ stock player_ResetStats(playerid)
 
 stock IsPlayerRegistered(playerid)
 {
-	if(!IsPlayerConnected(playerid) || GetPVarInt(playerid,"PlayerRegistered") == 0) return false;
+	if(GetPVarInt(playerid,"PlayerRegistered") == 0) return false;
 	return true;
 }
 

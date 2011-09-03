@@ -149,9 +149,9 @@ stock ConvertSeconds(time)
 stock PlayerCount()
 {
 	new count = 0;
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-        if(IsPlayerConnected(playerid)) count++;
+		count++;
 	}
 	return count;
 }
@@ -204,16 +204,6 @@ stock loccmp(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Float:z2)
 
 //------------------------- THIS COPY-PASTED FROM DUTILS -----------------------
 
-/**
- *  Checks wether two strings are equal (case insensetive)
- *  @param   str1
- *           str2
- */
-stock equal(str1[],str2[],bool:ignorecase=false) {
-    if (strlen(str1)!=strlen(str2)) return false;
-    if (strcmp(str1,str2,ignorecase)==0) return true;
-    return false;
-}
 /*
 */
 stock set(set_result[],set_source[])

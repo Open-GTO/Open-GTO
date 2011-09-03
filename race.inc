@@ -333,25 +333,22 @@ stock CheckRace() // must be ran by timer every second
 		}
 		else if (RaceStats[raceid][race_state] == RACE_STATE_COUNTDOWN)
 		{
-			for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+			foreach(Player,playerid)
 			{
-				if (IsPlayerConnected(playerid))
+				if (PlayerQuest[playerid] == GetRaceQuestID(raceid)) // if player is in this race
 				{
-					if (PlayerQuest[playerid] == GetRaceQuestID(raceid)) // if player is in this race
+					new Countdown = MAX_COUNTDOWN - RaceStats[raceid][race_timer];
+					if (Countdown >= 1)
 					{
-						new Countdown = MAX_COUNTDOWN - RaceStats[raceid][race_timer];
-						if (Countdown >= 1)
-						{
-							format(string, sizeof(string), "%d",Countdown);
-							PlayerPlaySound(playerid,1056,GetRaceCPX(raceid,RacePlayerStats[playerid][race_player_cp]),GetRaceCPY(raceid,RacePlayerStats[playerid][race_player_cp]),GetRaceCPZ(raceid,RacePlayerStats[playerid][race_player_cp]));
-						}
-						else
-						{
-							format(string, sizeof(string), "GO!");
-							PlayerPlaySound(playerid,1057,GetRaceCPX(raceid,RacePlayerStats[playerid][race_player_cp]),GetRaceCPY(raceid,RacePlayerStats[playerid][race_player_cp]),GetRaceCPZ(raceid,RacePlayerStats[playerid][race_player_cp]));
-						}
-						GameTextForPlayer(playerid, string,1000,6);
+						format(string, sizeof(string), "%d",Countdown);
+						PlayerPlaySound(playerid,1056,GetRaceCPX(raceid,RacePlayerStats[playerid][race_player_cp]),GetRaceCPY(raceid,RacePlayerStats[playerid][race_player_cp]),GetRaceCPZ(raceid,RacePlayerStats[playerid][race_player_cp]));
 					}
+					else
+					{
+						format(string, sizeof(string), "GO!");
+						PlayerPlaySound(playerid,1057,GetRaceCPX(raceid,RacePlayerStats[playerid][race_player_cp]),GetRaceCPY(raceid,RacePlayerStats[playerid][race_player_cp]),GetRaceCPZ(raceid,RacePlayerStats[playerid][race_player_cp]));
+					}
+					GameTextForPlayer(playerid, string,1000,6);
 				}
 			}
 			if (RaceStats[raceid][race_timer] >= MAX_COUNTDOWN)
@@ -478,15 +475,12 @@ stock StartRace(raceid)
 	RaceStats[raceid][race_state] = RACE_STATE_RACING;
 	RaceStats[raceid][race_timer]=0;
 	RaceRunning++;
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if (IsPlayerConnected(playerid))
+		if (PlayerQuest[playerid] == GetRaceQuestID(raceid)) // if player is in this race
 		{
-			if (PlayerQuest[playerid] == GetRaceQuestID(raceid)) // if player is in this race
-			{
-				TogglePlayerControllable(playerid, 1);
-				NextRaceCP(raceid,playerid);
-			}
+			TogglePlayerControllable(playerid, 1);
+			NextRaceCP(raceid,playerid);
 		}
 	}
 }
@@ -627,9 +621,8 @@ stock LeaveRace(raceid,playerid)
 
 stock SendMessageToRacers(raceid,string[],colour)
 {
-	for(new racerid=0;racerid<=GetPlayerLastID();racerid++)
+	foreach(Player,racerid)
 	{
-		if (!IsPlayerConnected(racerid)) continue;
 		if (PlayerQuest[racerid] == GetRaceQuestID(raceid)) // if player is in this race
 		{
 			SendClientMessage(racerid,colour,string);
@@ -734,9 +727,8 @@ stock GetRaceQuestID(raceid)
 
 stock CleanupRace(raceid)
 {
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if(!IsPlayerConnected(playerid)) continue;
 		if(PlayerQuest[playerid] == GetRaceQuestID(raceid)) // if player is in this race
 		{
 			LeaveRace(raceid,playerid);
@@ -781,9 +773,8 @@ stock StartRaceCountdown(raceid)
 		RaceStats[raceid][race_activecpid] = 0;
 	}
 	new string[MAX_STRING];
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if(!IsPlayerConnected(playerid)) continue;
 		if(PlayerQuest[playerid] == GetRaceQuestID(raceid)) // if player is in this race
 		{
 			if(!oIsPlayerInRaceCheckpoint(playerid,GetRaceCPX(raceid,0),GetRaceCPY(raceid,0),GetRaceCPZ(raceid,0),60))
@@ -816,9 +807,8 @@ stock StartRaceCountdown(raceid)
 	WriteLog(GameLog,logstring);
 	RaceStats[raceid][race_state] = RACE_STATE_COUNTDOWN;
 
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if(!IsPlayerConnected(playerid)) continue;
 		if(PlayerQuest[playerid] == GetRaceQuestID(raceid)) // if player is in this race
 		{
 			TogglePlayerControllable(playerid, 0);
@@ -833,9 +823,8 @@ stock StartRaceCountdown(raceid)
 
 stock EndRace(raceid)
 {
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if (!IsPlayerConnected(playerid)) continue;
 		if (PlayerQuest[playerid] == GetRaceQuestID(raceid)) // if player is in this race
 		{
 			GameTextForPlayer(playerid, "~r~Race Failed!",5000,6);
@@ -954,9 +943,8 @@ stock StartRaceLineup(raceid)
 		format(string2,sizeof(string2),lang_texts[10][57],Race[raceid][race_cashentry],Race[raceid][race_minlevel],Race[raceid][race_minracers]);
 	}
 	else format(string2,sizeof(string2),lang_texts[10][58],Race[raceid][race_cashentry],Race[raceid][race_minlevel]);
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if(!IsPlayerConnected(playerid)) continue;
 		SendClientMessage(playerid,GetRaceColourForPlayer(playerid,raceid), string1);
 		SendClientMessage(playerid,GetRaceColourForPlayer(playerid,raceid), string2);
 	}

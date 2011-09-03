@@ -77,6 +77,11 @@ new DMSpawnsSize[MAX_DM]; // number of spawnpoints
 new DMStartCP[MAX_DM][CoordInfo];
 new DMCentreCP[MAX_DM][CoordInfo];
 
+#define GetDMCPX(%0) DMStartCP[%0][Coord_X]
+#define GetDMCPY(%0) DMStartCP[%0][Coord_Y]
+#define GetDMCPZ(%0) DMStartCP[%0][Coord_Z]
+
+#define GetDMStartZoneName(%0) GetXYZZoneName(GetDMCPX(%0),GetDMCPY(%0),GetDMCPZ(%0))
 //--------------------------------------------------------------
 
 stock DeathmatchLoadAll()
@@ -125,10 +130,7 @@ stock DeathmatchLoadBaseDB(dmid)
 
 	if(dmid <= 0)
 	{
-		printf("Deathmatch (DB): %s Failed to load", Deathmatch[dmid][dm_name]);
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "Deathmatch (DB): %s Failed to load", Deathmatch[dmid][dm_name]);
-		WriteLog(GameLog,logstring);
+		GameMSG("Deathmatch (DB): '%s' Failed to load.",Deathmatch[dmid][dm_name]);
 		return INVALID_DM_ID;
 	}
     ini_GetInt(file_dm,"Frequency",Deathmatch[dmid][dm_frequency]);
@@ -206,10 +208,7 @@ stock DeathmatchLoadBaseDB(dmid)
 	DMSpawnsSize[dmid] = spsize;
 	DeathmatchStats[dmid][dm_state] = DM_STATE_SLEEPING;
 	DeathmatchStats[dmid][dm_timer] = MakeDMSleepTime(dmid);
-	printf("Deathmatch (DB): '%s' Loaded.",Deathmatch[dmid][dm_name]);
-	new logstring[MAX_STRING];
-	format(logstring, sizeof (logstring), "Deathmatch (DB): %s loaded", Deathmatch[dmid][dm_name]);
-	WriteLog(GameLog,logstring);
+	GameMSG("Deathmatch (DB): '%s' Loaded.",Deathmatch[dmid][dm_name]);
 	return dmid;
 }
 
@@ -319,13 +318,9 @@ stock deathmatch_OnGameModeInit()
 	return 1;
 }
 
-stock Float:GetDMCPX(dmid) return DMStartCP[dmid][Coord_X];
-stock Float:GetDMCPY(dmid) return DMStartCP[dmid][Coord_Y];
-stock Float:GetDMCPZ(dmid) return DMStartCP[dmid][Coord_Z];
-
 stock CheckDM() // must be ran by timer every second
 {
-	new string [MAX_STRING];
+	new string[MAX_STRING];
 	for (new dmid=1; dmid<=DMCount;dmid++)
 	{
 		if (DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED) continue;
@@ -366,27 +361,24 @@ stock CheckDM() // must be ran by timer every second
 		}
 		else if (DeathmatchStats[dmid][dm_state] == DM_STATE_COUNTDOWN)
 		{
-			for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+			foreach(Player,playerid)
 			{
-				if (IsPlayerConnected(playerid))
+				if (PlayerQuest[playerid] == GetDMQuestID(dmid)) // if player is in this dm
 				{
-					if (PlayerQuest[playerid] == GetDMQuestID(dmid)) // if player is in this dm
+					if (DMPlayerStats[playerid][dm_player_active] == 1)
 					{
-						if (DMPlayerStats[playerid][dm_player_active] == 1)
+						new Countdown = MAX_COUNTDOWN - DeathmatchStats[dmid][dm_timer];
+						if (Countdown >= 1)
 						{
-							new Countdown = MAX_COUNTDOWN - DeathmatchStats[dmid][dm_timer];
-							if (Countdown >= 1)
-							{
-								format(string, sizeof(string), "%d",Countdown);
-								PlayerPlaySoundOnPlayer(playerid,1056);
-							}
-							else
-							{
-								format(string, sizeof(string), "GO!");
-								PlayerPlaySoundOnPlayer(playerid,1056);
-							}
-							GameTextForPlayer(playerid, string,1000,6);
+							format(string, sizeof(string), "%d",Countdown);
+							PlayerPlaySoundOnPlayer(playerid,1056);
 						}
+						else
+						{
+							format(string, sizeof(string), "GO!");
+							PlayerPlaySoundOnPlayer(playerid,1056);
+						}
+						GameTextForPlayer(playerid, string,1000,6);
 					}
 				}
 			}
@@ -408,17 +400,15 @@ stock CheckDM() // must be ran by timer every second
 
 stock CheckDMPlayersInZone(dmid)
 {
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if (!IsPlayerConnected(playerid))
-		{
-			//DMResetPlayerStats(playerid);
-			continue;
-		}
 		if (!IsPlayerInDM(playerid,dmid)) continue;
 		if (DMPlayerStats[playerid][dm_player_active] == 0) continue;
-		new Float:playerdistance = GetPlayerDistanceFromPoint(playerid,DMCentreCP[dmid][Coord_X],DMCentreCP[dmid][Coord_Y],DMCentreCP[dmid][Coord_Z]);
-		if (playerdistance > Deathmatch[dmid][dm_distance])
+		if (
+			GetPlayerDistanceFromPoint(playerid,DMCentreCP[dmid][Coord_X],DMCentreCP[dmid][Coord_Y],DMCentreCP[dmid][Coord_Z])
+			>
+			Deathmatch[dmid][dm_distance]
+		)
 		{
 			DMPlayerStats[playerid][dm_player_outzone]++;
 			if (DMPlayerStats[playerid][dm_player_outzone] > 12)
@@ -474,12 +464,13 @@ stock StartDMLineup(dmid)
 	DeathmatchStats[dmid][dm_timer] = 0;
 	DeathmatchStats[dmid][dm_playercount] = 0;
 	new string1[MAX_STRING],string2[MAX_STRING];
-	format(string1, sizeof(string1),  lang_texts[4][4] ,Deathmatch[dmid][dm_name],dmid,Deathmatch[dmid][dm_lineupdelay],GetDMStartZoneName(dmid));
-	if (Deathmatch[dmid][dm_minplayers] > 1) format(string2, sizeof(string2),  lang_texts[4][5] ,Deathmatch[dmid][dm_cashentry],Deathmatch[dmid][dm_minlevel],Deathmatch[dmid][dm_minplayers]);
-	else format(string2, sizeof(string2),  lang_texts[4][6] ,Deathmatch[dmid][dm_cashentry],Deathmatch[dmid][dm_minlevel]);
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	format(string1,sizeof(string1),lang_texts[4][4],Deathmatch[dmid][dm_name],dmid,Deathmatch[dmid][dm_lineupdelay],GetDMStartZoneName(dmid));
+	if (Deathmatch[dmid][dm_minplayers] > 1)
+		format(string2,sizeof(string2),lang_texts[4][5],Deathmatch[dmid][dm_cashentry],Deathmatch[dmid][dm_minlevel],Deathmatch[dmid][dm_minplayers]);
+	else
+		format(string2,sizeof(string2),lang_texts[4][6],Deathmatch[dmid][dm_cashentry],Deathmatch[dmid][dm_minlevel]);
+	foreach(Player,playerid)
 	{
-		if (!IsPlayerConnected(playerid)) continue;
 		SendClientMessage(playerid,GetDMColourForPlayer(playerid,dmid), string1);
 		SendClientMessage(playerid,GetDMColourForPlayer(playerid,dmid), string2);
 		if(PlayerQuest[playerid] == 0) // if player not on a quest
@@ -487,16 +478,14 @@ stock StartDMLineup(dmid)
 			DMResetPlayerStats(playerid);
 		}
 	}
-//	DeathmatchStats[dmid][dm_activecpid] = AddActiveCheckpoint(GetDMCPX(dmid),GetDMCPY(dmid),GetDMCPZ(dmid),10000,8);
 }
 
 stock StartDMCountdown(dmid)
 {
 	DeathmatchStats[dmid][dm_timer]=0;
 	new string[MAX_STRING];
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if (!IsPlayerConnected(playerid)) continue;
 		if (PlayerQuest[playerid] == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			if (!oIsPlayerInCheckpoint(playerid,GetDMCPX(dmid),GetDMCPY(dmid),GetDMCPZ(dmid),50))
@@ -522,9 +511,8 @@ stock StartDMCountdown(dmid)
 			WriteLog(GameLog,logstring);
 		}
 		//CleanupDM без удаления чекпоинтов
-		for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+		foreach(Player,playerid)
 		{
-			if(!IsPlayerConnected(playerid)) continue;
 			if(PlayerQuest[playerid] == GetDMQuestID(dmid)) // if player is in this dm
 			{
 				PlayerLeaveDM(playerid,dmid);
@@ -548,9 +536,8 @@ stock StartDMCountdown(dmid)
 	format(logstring, sizeof (logstring), "Deathmatch: %s starting.",Deathmatch[dmid][dm_name]);
 	WriteLog(GameLog,logstring);
 	DeathmatchStats[dmid][dm_state] = DM_STATE_COUNTDOWN;
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if (!IsPlayerConnected(playerid)) continue;
 		if (PlayerQuest[playerid] == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			if (oIsPlayerInCheckpoint(playerid,GetDMCPX(dmid),GetDMCPY(dmid),GetDMCPZ(dmid),50))
@@ -567,14 +554,11 @@ stock StartDM(dmid)
 {
 	DeathmatchStats[dmid][dm_timer]=0;
 	DeathmatchStats[dmid][dm_state] = DM_STATE_ACTIVE;
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if (IsPlayerConnected(playerid))
+		if (PlayerQuest[playerid] == GetDMQuestID(dmid)) // if player is in this dm
 		{
-			if (PlayerQuest[playerid] == GetDMQuestID(dmid)) // if player is in this dm
-			{
-				TogglePlayerControllable(playerid, 1);
-			}
+			TogglePlayerControllable(playerid, 1);
 		}
 	}
 }
@@ -658,20 +642,17 @@ stock deathmatch_OnPlayerSpawn(playerid,dmid)
 	SetPlayerInterior(playerid,0);
 	new spid = random(DMSpawnsSize[dmid]);
 	SetPlayerPos(playerid,DMSpawnPoints[dmid][spid][Coord_X], DMSpawnPoints[dmid][spid][Coord_Y], DMSpawnPoints[dmid][spid][Coord_Z]); // Warp the player
-
-	spid = random(DMSpawnsSize[dmid]);
 	oSetPlayerHealth(playerid,GetMaxHealth(playerid)); // set health based on level
 	GivePlayerDMWeapons(playerid,dmid);
 	DMPlayerStats[playerid][dm_player_active] = 1;
 	oSetPlayerCheckpoint(playerid,DMCentreCP[dmid][Coord_X],DMCentreCP[dmid][Coord_Y],DMCentreCP[dmid][Coord_Z],DMCPSize);
-	//oDisablePlayerCheckpoint(playerid);
 }
 
 stock GetPlayerDMPosition(playerid,dmid)
 {
 	if (!IsPlayerInDM(playerid,dmid)) return 0;
 	new position=1;
-	for(new i=0;i<=GetPlayerLastID();i++)
+	foreach(Player,i)
 	{
 		if (!IsPlayerInDM(i,dmid)) continue;
 		new iscore = DMPlayerStats[i][dm_player_kills] - DMPlayerStats[i][dm_player_deaths];
@@ -693,9 +674,8 @@ stock GetPlayerDMPosition(playerid,dmid)
 
 stock EndDM(dmid)
 {
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if (!IsPlayerConnected(playerid)) continue;
 		if (PlayerQuest[playerid] == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			new playerpos = GetPlayerDMPosition(playerid,dmid);
@@ -707,17 +687,13 @@ stock EndDM(dmid)
 
 stock CleanupDM(dmid)
 {
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if (!IsPlayerConnected(playerid)) continue;
 		if (PlayerQuest[playerid] == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			PlayerLeaveDM(playerid,dmid);
 		}
-		if (IsPlayerConnected(playerid))
-		{
-			oDisablePlayerCheckpoint(playerid);
-		}
+		oDisablePlayerCheckpoint(playerid);
 	}
 	DeathmatchStats[dmid][dm_playercount] = 0;
 	DeathmatchStats[dmid][dm_timer] = MakeDMSleepTime(dmid);
@@ -737,77 +713,71 @@ stock PlayerFinishDM(playerid,dmid,position)
 	GameTextForPlayer(playerid,FormatPosition(position),5000,6);
 	PlayerPlaySoundOnPlayer(playerid,1057);
 
-	if (position == 1)
+	switch(position)
 	{
-		format(string, sizeof(string),  lang_texts[4][20] ,Deathmatch[dmid][dm_name],FormatPosition(position),GetPlayerDMScore(playerid,dmid));
-		SendClientMessage(playerid,COLOUR_GREEN, string);
-
-		format(string, sizeof(string),  lang_texts[4][21] ,oGetPlayerName(playerid),Deathmatch[dmid][dm_name],GetPlayerDMScore(playerid,dmid));
-		SendClientMessageToAll(COLOUR_DM, string);
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "player: %d:  %s: has won deathmatch '%s'! Score: %d",playerid,oGetPlayerName(playerid),Deathmatch[dmid][dm_name],GetPlayerDMScore(playerid,dmid));
-		WriteLog(GameLog,logstring);
-		oGivePlayerMoney(playerid,Deathmatch[dmid][dm_cashprize],1);
-		GivePlayerXP(playerid,Deathmatch[dmid][dm_xpprize] + (Deathmatch[dmid][dm_xpbonus] * DeathmatchStats[dmid][dm_playercount]),1);
-
-	}
-	else if (position == 2)
-	{
-		format(string, sizeof(string),  lang_texts[4][22] ,Deathmatch[dmid][dm_name],FormatPosition(position),GetPlayerDMScore(playerid,dmid));
-		SendClientMessage(playerid,COLOUR_GREEN, string);
-
-		//format(string, sizeof(string),  lang_texts[4][23] ,oGetPlayerName(playerid),FormatPosition(Position[dmid]),Deathmatch[dmid][dm_name],GetPlayerDMScore(playerid));
-		//SendClientMessageToAll(COLOUR_DM, string);
-		if (DeathmatchStats[dmid][dm_playercount] > 2)
+		case 1:
 		{
-			oGivePlayerMoney(playerid,(Deathmatch[dmid][dm_cashprize]/2),1);
-			GivePlayerXP(playerid,(Deathmatch[dmid][dm_xpprize]/2) + (Deathmatch[dmid][dm_xpbonus] * DeathmatchStats[dmid][dm_playercount]),1);
+			format(string, sizeof(string),  lang_texts[4][20] ,Deathmatch[dmid][dm_name],FormatPosition(position),GetPlayerDMScore(playerid,dmid));
+			SendClientMessage(playerid,COLOUR_GREEN, string);
 
+			format(string, sizeof(string),  lang_texts[4][21] ,oGetPlayerName(playerid),Deathmatch[dmid][dm_name],GetPlayerDMScore(playerid,dmid));
+			SendClientMessageToAll(COLOUR_DM, string);
+			GameMSG("player: %d:  %s: has won deathmatch '%s'! Score: %d",playerid,oGetPlayerName(playerid),Deathmatch[dmid][dm_name],GetPlayerDMScore(playerid,dmid));
+			oGivePlayerMoney(playerid,Deathmatch[dmid][dm_cashprize],1);
+			GivePlayerXP(playerid,Deathmatch[dmid][dm_xpprize] + (Deathmatch[dmid][dm_xpbonus] * DeathmatchStats[dmid][dm_playercount]),1);
 		}
-		else
+		case 2:
 		{
+			format(string, sizeof(string),  lang_texts[4][22] ,Deathmatch[dmid][dm_name],FormatPosition(position),GetPlayerDMScore(playerid,dmid));
+			SendClientMessage(playerid,COLOUR_GREEN, string);
+
+			if (DeathmatchStats[dmid][dm_playercount] > 2)
+			{
+				oGivePlayerMoney(playerid,(Deathmatch[dmid][dm_cashprize]/2),1);
+				GivePlayerXP(playerid,(Deathmatch[dmid][dm_xpprize]/2) + (Deathmatch[dmid][dm_xpbonus] * DeathmatchStats[dmid][dm_playercount]),1);
+			}
+			else
+			{
+				GivePlayerXP(playerid,Deathmatch[dmid][dm_xpbonus] * DeathmatchStats[dmid][dm_playercount],1);
+			}
+		}
+		case 3:
+		{
+			if(DeathmatchStats[dmid][dm_playercount] > 3)
+			{
+				format(string, sizeof(string),  lang_texts[4][24] ,Deathmatch[dmid][dm_name],FormatPosition(position),GetPlayerDMScore(playerid,dmid));
+				SendClientMessage(playerid,COLOUR_GREEN, string);
+
+				if (DeathmatchStats[dmid][dm_playercount] > 3)
+				{
+					oGivePlayerMoney(playerid,(Deathmatch[dmid][dm_cashprize]/3),1);
+					GivePlayerXP(playerid,(Deathmatch[dmid][dm_xpprize]/3) + (Deathmatch[dmid][dm_xpbonus] * DeathmatchStats[dmid][dm_playercount]),1);
+				}
+				else
+				{
+					GivePlayerXP(playerid,Deathmatch[dmid][dm_xpbonus] * DeathmatchStats[dmid][dm_playercount],1);
+				}
+			}
+		}
+		default:
+		{
+			format(string, sizeof(string),  lang_texts[4][26] ,Deathmatch[dmid][dm_name],FormatPosition(position),GetPlayerDMScore(playerid,dmid));
+			SendClientMessage(playerid,COLOUR_GREEN, string);
 			GivePlayerXP(playerid,Deathmatch[dmid][dm_xpbonus] * DeathmatchStats[dmid][dm_playercount],1);
 		}
-	}
-	else if ((position == 3) && (DeathmatchStats[dmid][dm_playercount] > 3))
-	{
-		format(string, sizeof(string),  lang_texts[4][24] ,Deathmatch[dmid][dm_name],FormatPosition(position),GetPlayerDMScore(playerid,dmid));
-		SendClientMessage(playerid,COLOUR_GREEN, string);
-
-		//format(string, sizeof(string),  lang_texts[4][25] ,oGetPlayerName(playerid),FormatPosition(Position[dmid]),Deathmatch[dmid][dm_name],GetPlayerDMScore(playerid));
-		//SendClientMessageToAll(COLOUR_DM, string);
-		if (DeathmatchStats[dmid][dm_playercount] > 3)
-		{
-			oGivePlayerMoney(playerid,(Deathmatch[dmid][dm_cashprize]/3),1);
-			GivePlayerXP(playerid,(Deathmatch[dmid][dm_xpprize]/3) + (Deathmatch[dmid][dm_xpbonus] * DeathmatchStats[dmid][dm_playercount]),1);
-
-		}
-		else
-		{
-			GivePlayerXP(playerid,Deathmatch[dmid][dm_xpbonus] * DeathmatchStats[dmid][dm_playercount],1);
-		}
-	}
-	else
-	{
-		format(string, sizeof(string),  lang_texts[4][26] ,Deathmatch[dmid][dm_name],FormatPosition(position),GetPlayerDMScore(playerid,dmid));
-		SendClientMessage(playerid,COLOUR_GREEN, string);
-		GivePlayerXP(playerid,Deathmatch[dmid][dm_xpbonus] * DeathmatchStats[dmid][dm_playercount],1);
 	}
 
 	if ((GetPlayerDMScore(playerid,dmid) > DMBestScore[dmid][dm_score_record]) || (DMBestScore[dmid][dm_score_record] == 0))
 	{
 		format(string, sizeof(string),  lang_texts[4][27] ,oGetPlayerName(playerid),Deathmatch[dmid][dm_name],GetPlayerDMScore(playerid,dmid),DMBestScore[dmid][dm_score_record]);
 		SendClientMessageToAll(COLOUR_DM, string);
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "player: %d:  %s: has set a new record for deathmatch '%s'! Score: %d. Old record: %d.",playerid,oGetPlayerName(playerid),Deathmatch[dmid][dm_name],GetPlayerDMScore(playerid,dmid),DMBestScore[dmid][dm_score_record]);
-		WriteLog(GameLog,logstring);
+		GameMSG("player: %d:  %s: has set a new record for deathmatch '%s'! Score: %d. Old record: %d.",playerid,oGetPlayerName(playerid),Deathmatch[dmid][dm_name],GetPlayerDMScore(playerid,dmid),DMBestScore[dmid][dm_score_record]);
 		oGivePlayerMoney(playerid,(Deathmatch[dmid][dm_cashprize]*3),1);
 		GivePlayerXP(playerid,(Deathmatch[dmid][dm_xpprize]*3),1);
 		DMBestScore[dmid][dm_score_record] = GetPlayerDMScore(playerid,dmid);
 		DMBestScore[dmid][dm_score_kills] = DMPlayerStats[playerid][dm_player_kills];
 		DMBestScore[dmid][dm_score_deaths] = DMPlayerStats[playerid][dm_player_deaths];
 		set(DMBestScore[dmid][dm_score_player],oGetPlayerName(playerid));
-
 	}
 
 	PlayerLeaveDM(playerid,dmid);
@@ -829,16 +799,12 @@ stock PlayerLeaveDM(playerid,dmid)
 		if (Deathmatch[dmid][dm_minplayers] > 1)
 		{
 			format(string, sizeof(string),  lang_texts[4][28] , oGetPlayerName(playerid),DeathmatchStats[dmid][dm_playercount],Deathmatch[dmid][dm_minplayers]);
-			new logstring[MAX_STRING];
-			format(logstring, sizeof (logstring), "player: %d:  %s: has left the dm. (Players:%d/%d)",playerid,oGetPlayerName(playerid),DeathmatchStats[dmid][dm_playercount],Deathmatch[dmid][dm_minplayers]);
-			WriteLog(GameLog,logstring);
+			GameMSG("player: %s(%d): has left the dm. (Players:%d/%d)",oGetPlayerName(playerid),playerid,DeathmatchStats[dmid][dm_playercount],Deathmatch[dmid][dm_minplayers]);
 		}
 		else
 		{
 			format(string, sizeof(string),  lang_texts[4][29] , oGetPlayerName(playerid),DeathmatchStats[dmid][dm_playercount]);
-			new logstring[MAX_STRING];
-			format(logstring, sizeof (logstring), "player: %d:  %s: has left the dm. (Players:%d)",playerid,oGetPlayerName(playerid),DeathmatchStats[dmid][dm_playercount]);
-			WriteLog(GameLog,logstring);
+			GameMSG("player: %s(%d): has left the dm. (Players:%d)",oGetPlayerName(playerid),playerid,DeathmatchStats[dmid][dm_playercount]);
 		}
 		SendMessageToDMPlayers(dmid,string,COLOUR_GREY);
 		oGivePlayerMoney(playerid,Deathmatch[dmid][dm_cashentry],1); // give player back thier cash entry
@@ -849,9 +815,7 @@ stock PlayerLeaveDM(playerid,dmid)
 	{
 		format(string, sizeof(string),  lang_texts[4][31] , oGetPlayerName(playerid),DeathmatchStats[dmid][dm_playercount]);
 		SendMessageToDMPlayers(dmid,string,COLOUR_GREY);
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "player: %d:  %s: has left the dm. (Players:%d)",playerid,oGetPlayerName(playerid),DeathmatchStats[dmid][dm_playercount]);
-		WriteLog(GameLog,logstring);
+		GameMSG("player: %s(%d): has left the dm. (Players:%d)",oGetPlayerName(playerid),playerid,DeathmatchStats[dmid][dm_playercount]);
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[4][32]);
 	}
 
@@ -870,15 +834,14 @@ stock PlayerLeaveDM(playerid,dmid)
 
 stock GivePlayerDMWeapons(playerid,dmid)
 {
-     new weapons[MAX_DMWEAPONS+1];
-     set(weapons,Deathmatch[dmid][dm_weapons]);
-     ResetPlayerWeapons(playerid);
-     for (new i=0;i<strlen(weapons);i++)
-     {
-          if (weapons[i] == 0)  break;
-          new ammo = GetWeaponMaxAmmo(weapons[i]);
-          GivePlayerWeapon(playerid,weapons[i],ammo);
-     }
+	new weapons[MAX_DMWEAPONS+1];
+	set(weapons,Deathmatch[dmid][dm_weapons]);
+	ResetPlayerWeapons(playerid);
+	for (new i=0,len=strlen(weapons);i<len;i++)
+	{
+		if (weapons[i] == 0) break;
+		GivePlayerWeapon(playerid,weapons[i],GetWeaponMaxAmmo(weapons[i]));
+	}
 }
 
 stock ResetPlayerDMWeapons(playerid)
@@ -888,9 +851,8 @@ stock ResetPlayerDMWeapons(playerid)
 
 stock SendMessageToDMPlayers(dmid,string[],colour)
 {
-	for(new dmplayerid=0;dmplayerid<=GetPlayerLastID();dmplayerid++)
+	foreach(Player,dmplayerid)
 	{
-		if (!IsPlayerConnected(dmplayerid)) continue;
 		if (PlayerQuest[dmplayerid] == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			SendClientMessage(dmplayerid,colour,string);
@@ -1010,20 +972,12 @@ stock GetDMQuestID(dmid)
 
 //----------------------------------------
 
-stock GetDMStartZoneName(dmid)
-{
-	new zone[MAX_NAME];
-	zone = GetXYZZoneName(GetDMCPX(dmid),GetDMCPY(dmid),GetDMCPZ(dmid));
-	return zone;
-}
-
 stock GetDMWinner(dmid)
 {
 	new winnerid=INVALID_PLAYER_ID;
 	new winnerscore;
-	for(new playerid=0;playerid<=GetPlayerLastID();playerid++)
+	foreach(Player,playerid)
 	{
-		if (!IsPlayerConnected(playerid)) continue;
 		if (PlayerQuest[playerid] == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			if (DMPlayerStats[playerid][dm_player_kills] - DMPlayerStats[playerid][dm_player_deaths] > winnerscore)
@@ -1035,7 +989,6 @@ stock GetDMWinner(dmid)
 	}
 	return winnerid;
 }
-
 
 stock UpdateDMScore(dmid)
 {
@@ -1050,10 +1003,9 @@ stock UpdateDMScore(dmid)
 
 stock MakeDMSleepTime(dmid)
 {
-	new sleeptime;
-	if (Deathmatch[dmid][dm_frequency] == 0) Deathmatch[dmid][dm_frequency] = 5;
-	sleeptime = ((Deathmatch[dmid][dm_frequency] * DMCount) * 125);
-	return sleeptime;
+	if(Deathmatch[dmid][dm_frequency] == 0)
+		Deathmatch[dmid][dm_frequency] = 5;
+	return ((Deathmatch[dmid][dm_frequency] * DMCount) * 125);
 }
 
 stock IsWeaponAllowedInDM(weaponid,dmid)
@@ -1061,7 +1013,7 @@ stock IsWeaponAllowedInDM(weaponid,dmid)
 	if (weaponid == 0) return 1; //unarmed always allowed
 	new weapons[MAX_DMWEAPONS+1];
 	set(weapons,Deathmatch[dmid][dm_weapons]);
-	for (new i=0;i<strlen(weapons);i++)
+	for (new i=0,len=strlen(weapons);i<len;i++)
 	{
 		if (weapons[i] == weaponid) return 1;
 	}
@@ -1070,12 +1022,10 @@ stock IsWeaponAllowedInDM(weaponid,dmid)
 
 stock deathmatch_OnPlayerKill(playerid,victimid,weaponid)
 {
-	// check gang kill
-
 	GivePVarInt(playerid,"Kills",1);
 
 	new dmid = GetPlayerDM(playerid);
-	if ((dmid == INVALID_DM_ID) || (!IsPlayerInDM(playerid,dmid)))
+	if (dmid == INVALID_DM_ID || !IsPlayerInDM(playerid,dmid))
 	{
 		DMResetPlayerStats(playerid);
 		return; // player not in a dm
@@ -1097,11 +1047,9 @@ stock deathmatch_OnPlayerKill(playerid,victimid,weaponid)
 	DMPlayerStats[playerid][dm_player_kills]++;
 
 	if ((GetPlayerXP(playerid) + Deathmatch[dmid][dm_xpkill]) <= MAX_XP)
-	{
-	GivePlayerXP(playerid,Deathmatch[dmid][dm_xpkill],1);
-	} else {
+		GivePlayerXP(playerid,Deathmatch[dmid][dm_xpkill],1);
+	else
 		GivePlayerXP(playerid,(MAX_XP - Deathmatch[dmid][dm_xpkill]),1);
-		}
 
 	if (GetDMWinner(dmid) == playerid)
 	{
@@ -1109,31 +1057,30 @@ stock deathmatch_OnPlayerKill(playerid,victimid,weaponid)
 	}
 	new string[MAX_STRING];
 	format(string, sizeof(string),  lang_texts[4][41] ,FormatPosition(GetPlayerDMPosition(playerid,dmid)),DMPlayerStats[playerid][dm_player_deaths],DMPlayerStats[playerid][dm_player_kills]);
-	PlayerPlaySoundOnPlayer(playerid,1056);
 	GameTextForPlayer(playerid, string,3000,6);
+	PlayerPlaySoundOnPlayer(playerid,1056);
 }
 
 stock deathmatch_OnPlayerDeath(playerid,killerid)
 {
 	#pragma unused killerid
-	new string[MAX_STRING];
 	GivePVarInt(playerid,"Deaths",1);
 
 	new dmid = GetPlayerDM(playerid);
-	if ((dmid == INVALID_DM_ID) || (!IsPlayerInDM(playerid,dmid)))
+	if(dmid == INVALID_DM_ID || !IsPlayerInDM(playerid,dmid))
 	{
 		DMResetPlayerStats(playerid);
 		return; // player not in a dm
 	}
 	DMPlayerStats[playerid][dm_player_deaths]++;
 
-	GivePlayerXP(playerid,0-Deathmatch[dmid][dm_xpdeath],1);
+	GivePlayerXP(playerid,-Deathmatch[dmid][dm_xpdeath],1);
 	deathmatch_OnPlayerSpawn(playerid,dmid);
-	format(string, sizeof(string),  lang_texts[4][42] ,FormatPosition(GetPlayerDMPosition(playerid,dmid)),DMPlayerStats[playerid][dm_player_deaths],DMPlayerStats[playerid][dm_player_kills]);
+	new string[MAX_STRING];
+	format(string, sizeof(string),lang_texts[4][42],FormatPosition(GetPlayerDMPosition(playerid,dmid)),DMPlayerStats[playerid][dm_player_deaths],DMPlayerStats[playerid][dm_player_kills]);
 	PlayerPlaySoundOnPlayer(playerid,1057);
 	GameTextForPlayer(playerid, string,3000,6);
 }
-
 
 stock dm_OnPlayerEnterCheckpoint(playerid)
 {
@@ -1141,57 +1088,59 @@ stock dm_OnPlayerEnterCheckpoint(playerid)
 	new string[MAX_STRING];
 	for (new dmid=1; dmid<=DMCount;dmid++) //  for each dm
 	{
-		if (DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED) break;
-
-		if (DeathmatchStats[dmid][dm_state] == DM_STATE_LINEUP)
+		switch(DeathmatchStats[dmid][dm_state])
 		{
-			if (PlayerQuest[playerid] == 0) // if player not on a quest
+			case DM_STATE_DISABLED: return;
+			case DM_STATE_LINEUP:
 			{
-				// if player at startline
-				if (oIsPlayerInCheckpoint(playerid,GetDMCPX(dmid),GetDMCPY(dmid),GetDMCPZ(dmid),DMCPSize*3))
+				if (PlayerQuest[playerid] == 0) // if player not on a quest
 				{
-					JoinDM(playerid,dmid);
-				}
-			}
-			else if (playerdmid == dmid)
-			{
-				if (oIsPlayerInCheckpoint(playerid,GetDMCPX(dmid),GetDMCPY(dmid),GetDMCPZ(dmid),DMCPSize*3))
-				{
-					format(string,sizeof(string), lang_texts[4][43] ,(Deathmatch[dmid][dm_lineupdelay] - DeathmatchStats[dmid][dm_timer]));
-					SendClientMessage(playerid,COLOUR_GREEN, string);
-				}
-			}
-		}
-		else if (DeathmatchStats[dmid][dm_state] == DM_STATE_ACTIVE)
-		{
-			if (PlayerQuest[playerid] == 0) // if player not on a quest
-			{
-				// if player at startline
-				if (oIsPlayerInCheckpoint(playerid,GetDMCPX(dmid),GetDMCPY(dmid),GetDMCPZ(dmid),DMCPSize*3))
-				{
-					//JoinDM(playerid,dmid);
-					format(string,sizeof(string), lang_texts[4][44] ,Deathmatch[dmid][dm_name],dmid);
-					SendClientMessage(playerid,COLOUR_GREEN, string);
-				}
-			}
-			else if (playerdmid == dmid)
-			{
-				if (oIsPlayerInCheckpoint(playerid,GetDMCPX(dmid),GetDMCPY(dmid),GetDMCPZ(dmid),DMCPSize*3))
-				{
-					deathmatch_OnPlayerSpawn(playerid,dmid);
-					format(string, sizeof(string), "GO!");
-					PlayerPlaySoundOnPlayer(playerid,1057);
-					GameTextForPlayer(playerid, string,1000,6);
-				}
-				else if (DMPlayerStats[playerid][dm_player_gotcentre] == 0)
-				{
-					if (oIsPlayerInCheckpoint(playerid,DMCentreCP[dmid][Coord_X],DMCentreCP[dmid][Coord_Y],DMCentreCP[dmid][Coord_Z],DMCPSize*3))
+					// if player at startline
+					if (oIsPlayerInCheckpoint(playerid,GetDMCPX(dmid),GetDMCPY(dmid),GetDMCPZ(dmid),DMCPSize*3))
 					{
-						new xpbonus = Deathmatch[dmid][dm_xpprize]/3;
-						format(string,sizeof(string), lang_texts[4][45] ,xpbonus);
-						SendClientMessage(playerid,COLOUR_GREEN,string);
-						GivePlayerXP(playerid,xpbonus,1);
-						DMPlayerStats[playerid][dm_player_gotcentre] = 1;
+						JoinDM(playerid,dmid);
+					}
+				}
+				else if (playerdmid == dmid)
+				{
+					if (oIsPlayerInCheckpoint(playerid,GetDMCPX(dmid),GetDMCPY(dmid),GetDMCPZ(dmid),DMCPSize*3))
+					{
+						format(string,sizeof(string), lang_texts[4][43] ,(Deathmatch[dmid][dm_lineupdelay] - DeathmatchStats[dmid][dm_timer]));
+						SendClientMessage(playerid,COLOUR_GREEN, string);
+					}
+				}
+			}
+			case DM_STATE_ACTIVE:
+			{
+				if (PlayerQuest[playerid] == 0) // if player not on a quest
+				{
+					// if player at startline
+					if (oIsPlayerInCheckpoint(playerid,GetDMCPX(dmid),GetDMCPY(dmid),GetDMCPZ(dmid),DMCPSize*3))
+					{
+						//JoinDM(playerid,dmid);
+						format(string,sizeof(string), lang_texts[4][44] ,Deathmatch[dmid][dm_name],dmid);
+						SendClientMessage(playerid,COLOUR_GREEN, string);
+					}
+				}
+				else if (playerdmid == dmid)
+				{
+					if (oIsPlayerInCheckpoint(playerid,GetDMCPX(dmid),GetDMCPY(dmid),GetDMCPZ(dmid),DMCPSize*3))
+					{
+						deathmatch_OnPlayerSpawn(playerid,dmid);
+						format(string, sizeof(string), "GO!");
+						PlayerPlaySoundOnPlayer(playerid,1057);
+						GameTextForPlayer(playerid, string,1000,6);
+					}
+					else if (DMPlayerStats[playerid][dm_player_gotcentre] == 0)
+					{
+						if (oIsPlayerInCheckpoint(playerid,DMCentreCP[dmid][Coord_X],DMCentreCP[dmid][Coord_Y],DMCentreCP[dmid][Coord_Z],DMCPSize*3))
+						{
+							new xpbonus = Deathmatch[dmid][dm_xpprize]/3;
+							format(string,sizeof(string), lang_texts[4][45] ,xpbonus);
+							SendClientMessage(playerid,COLOUR_GREEN,string);
+							GivePlayerXP(playerid,xpbonus,1);
+							DMPlayerStats[playerid][dm_player_gotcentre] = 1;
+						}
 					}
 				}
 			}
@@ -1213,7 +1162,8 @@ stock dm_OnPlayerCommandText(playerid,text[]) // process player commands
 	set(cmd,strcharsplit(text, idx,' '));
 	if (strlen(cmd) == 0) return 0;
 
-	if((!strcmp(cmd, "/deathmatches",true)) || (!strcmp(cmd, "/dms", true))) return SendPlayerCurrentDeathmatches(playerid);
+	if(!strcmp(cmd, "/deathmatches",true) || !strcmp(cmd, "/dms", true))
+		return SendPlayerCurrentDeathmatches(playerid);
 
 	if(!strcmp(cmd,"/dm",true))
 	{
@@ -1266,7 +1216,7 @@ stock DMEncodeWeaponsDB(dmid)
 {
 	new weps[MAX_DMWEAPONS+1],retstr[MAX_STRING];
 	set(weps,Deathmatch[dmid][dm_weapons]);
-	for (new i=0;i<strlen(weps);i++)
+	for (new i=0,len=strlen(weps);i<len;i++)
 	{
 		if (weps[i] == 0) break;
 		new tempstr[10];
@@ -1281,7 +1231,7 @@ stock DMDecodeWeaponsDB(wepstr[])
 {
 	new weps[MAX_DMWEAPONS],tmpwepstr[20],idx;
 
-	for(new i=0;((i<strlen(wepstr)) && (i<MAX_DMWEAPONS));i++)
+	for(new i=0,len=strlen(wepstr);(i<len && i<MAX_DMWEAPONS);i++)
 	{
 		set(tmpwepstr,strcharsplit(wepstr, idx,'/'));
 		if(strlen(tmpwepstr) == 0) break;

@@ -351,9 +351,6 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
       		new inviteid = strval(strcharsplit(text,idx,' ')),
 				string[MAX_STRING];
 
-            if(inviteid < 0 || inviteid > GetPlayerLastID() || inviteid == INVALID_PLAYER_ID)
-				return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][53]);
-
       		if(!IsPlayerRegistered(inviteid))
       		{
        			SendClientMessage(playerid,COLOUR_RED,lang_texts[6][55]);
