@@ -193,10 +193,9 @@ stock SetWeaponsFromDBString(playerid,dbstring[])
 // возвращает строку для сохранения оружия
 stock CreateWeaponDBString(playerid)
 {
-	new wepstr[MAX_STRING];
+	new wepstr[MAX_STRING],temp[MAX_STRING];
 	for (new i=0;i<PLAYER_WEAPON_SLOTS;i++)
 	{
-		new temp[MAX_STRING];
 		valstr(temp,PlayerWeapons[playerid][i][pwid]);
 		strins(wepstr, temp, strlen(wepstr));
 		wepstr[strlen(wepstr)] = '/';
@@ -217,10 +216,9 @@ stock SetWeaponsSkillsFromDBString(playerid,dbstring[])
 // возвращает строку для сохранения скиллов оружий
 stock CreateWeaponSkillsDBString(playerid)
 {
-	new wepstr[MAX_STRING];
+	new wepstr[MAX_STRING],temp[MAX_STRING];
 	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
 	{
-		new temp[MAX_STRING];
 		valstr(temp,PlayerWeaponsSkills[playerid][i]);
 		strins(wepstr,temp,strlen(wepstr));
 		wepstr[strlen(wepstr)] = '/';

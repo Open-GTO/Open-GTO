@@ -281,8 +281,6 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd, "/givexp", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(IsPlayerRconAdmin(receiverid) || IsPlayerAdmin(receiverid))
-			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 
 		if(!IsPlayerConnected(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
@@ -320,8 +318,6 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd, "/agivecash", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(IsPlayerRconAdmin(receiverid) || IsPlayerAdmin(receiverid))
-			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 
 		if(!IsPlayerConnected(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][10]);
@@ -353,8 +349,6 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/givegun",true))
 	{
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(IsPlayerRconAdmin(receiverid) || !IsPlayerAdmin(receiverid))
-			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 
 		if(!IsPlayerConnected(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][10]);

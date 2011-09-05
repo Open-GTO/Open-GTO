@@ -16,8 +16,7 @@
 #define GetPlayerXP(%1) GetPVarInt(%1,"XP")
 #define SetPlayerXP(%1,%2) SetPVarInt(%1,"XP",%2)
 
-enum LevelInfo 
-{
+enum LevelInfo {
 	level_xp,
     level_name[MAX_NAME]
 }
