@@ -33,26 +33,25 @@ new Float:JPH[UNJP][CoordInfoJ] = {
 
 stock JailPlayer(playerid)
 {
-	if(GetPlayerJailed(playerid) == 1)
-	{
-		SetPlayerInterior(playerid,6);
-		SetPlayerPos(playerid,265.1273,77.6823,1001.0391);
-		SetPlayerFacingAngle(playerid,-90);
-		new spwl=GetPlayerJailTime(playerid);
-		if(spwl==0 || spwl>6) spwl=6;
-		SetPlayerWantedLevel(playerid,spwl);
-		TogglePlayerControllable(playerid,0);
-		SetCameraBehindPlayer(playerid);
-		SetPlayerArmour(playerid, 0);
-	}
+	if(GetPlayerJailed(playerid) != 1) return 0;
+	SetPlayerInterior(playerid,6);
+	SetPlayerPos(playerid,265.1273,77.6823,1001.0391);
+	SetPlayerFacingAngle(playerid,-90);
+	new jail_time = GetPlayerJailTime(playerid);
+	SetPlayerWantedLevel(playerid,(jail_time == 0 || jail_time > 6) ? 6 : jail_time);
+	TogglePlayerControllable(playerid,0);
+	SetCameraBehindPlayer(playerid);
+	SetPlayerArmour(playerid, 0);
+	PlayerPlaySound(playerid,1082,198.3797,160.8905,1003.0300);
+	return 1;
 }
 
 stock UnJailPlayer(playerid)
 {
 	if(GetPlayerJailed(playerid) == 0)
 	{
-		SetPlayerJailed(playerid,0);
 		SetPlayerJailTime(playerid,0);
+		return 0;
 	}
 	new u = random(UNJP);
 	SetPlayerInterior(playerid,0);
@@ -66,18 +65,20 @@ stock UnJailPlayer(playerid)
 	GameTextForAll(string,5000,4);
 	format(string,sizeof(string), "SERVER: %s был Выпущен из тюрьмы (Истекло время или Амнистия)", oGetPlayerName(playerid));
 	SendClientMessageToAll(COLOUR_WHITE, string);
+	return 1;
 }
 
 
 stock SendMessageToAdmins(playerid, color, text[])
 {
-	new message[MAX_STRING];
-	format(message,sizeof(message),lang_texts[1][24],oGetPlayerName(playerid),playerid,text);
+	new message[MAX_STRING],playername[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,playername,sizeof(playername));
+	format(message,sizeof(message),lang_texts[1][24],playername,playerid,text);
 	printf("%s",message);
+	format(message,sizeof(message),lang_texts[1][23],playername,playerid,GetPlayerStatus(playerid),text);
 	foreach(Player,aid)
 	{
 		if(aid == playerid || (!IsPlayerAdmin(aid) && !IsPlayerAdm(aid))) continue;
-		format(message,sizeof(message), lang_texts[1][23] ,oGetPlayerName(playerid), playerid, GetPlayerStatus(playerid), text);
 		SendClientMessage(aid,color,message);
 	}
 	return 0;
@@ -101,6 +102,7 @@ stock PushHide(playerid)// скрыть/показать игрока
 
 stock MuteCheck()
 {
+	new string[MAX_STRING];
 	foreach(Player,i)
 	{
 		if(GetPlayerMuteTime(i) > 0)
@@ -108,7 +110,6 @@ stock MuteCheck()
 			SetPlayerMuteTime(i,GetPlayerMuteTime(i) - 1);
 		    if(GetPlayerMuteTime(i) == 0)
 		    {
-				new string[MAX_STRING];
 				format(string, sizeof(string)," Игрок %s(%d) снова может говорить",oGetPlayerName(i),i);
 				SendClientMessageToAll(COLOUR_YELLOW,string);
 			}
@@ -118,29 +119,27 @@ stock MuteCheck()
 
 stock JailTimer()
 {
+	new string[MAX_STRING];
 	foreach(Player,i)
 	{
-		if(GetPlayerJailed(i) == 1)
+		if(GetPlayerJailed(i) != 1) continue;
+		
+		new jail_time = GetPlayerJailTime(i);
+		SetPlayerWantedLevel(i,(jail_time == 0 || jail_time > 6) ? 6 : jail_time);
+		
+		if(jail_time >= 1)
 		{
-			new spwl = GetPlayerJailTime(i);
-			if(spwl == 0 || spwl > 6) spwl = 6;
-			SetPlayerWantedLevel(i,spwl);
-		}
-		if(GetPlayerJailed(i) == 1 && GetPlayerJailTime(i) >= 1)
-		{
-			SetPlayerJailTime(i,GetPlayerJailTime(i) - 1);
-			if(GetPlayerJailTime(i) <= 0)
+			SetPlayerJailTime(i,jail_time - 1);
+			if(jail_time <= 0)
 			{
 				SetPlayerJailed(i,0);
 				SetPlayerJailTime(i,0);
 				UnJailPlayer(i);
 				printf("SERVER : %s Has Been auto-UNJailed",oGetPlayerName(i));
-				return 1;
 			}
 			else
 			{
-				new string[MAX_STRING];
-				format(string,sizeof(string), "SERVER: До окончания ареста осталось около %d мин", GetPlayerJailTime(i));
+				format(string,sizeof(string), "SERVER: До окончания ареста осталось около %d мин", jail_time);
 				SendClientMessage(i,COLOUR_LIGHTRED, string);
 			}
 		}

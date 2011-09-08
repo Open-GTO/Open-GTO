@@ -364,18 +364,7 @@ public OnPlayerSpawn(playerid)
 {
 	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
 	SetPlayerSkin(playerid,GetPlayerSkinModel(playerid));
-	if(GetPlayerJailed(playerid) == 1)
-	{
-		SetPlayerInterior(playerid,6);
-		SetPlayerPos(playerid,265.1273,77.6823,1001.0391);
-	    SetPlayerFacingAngle(playerid,0);
-	    SetPlayerWantedLevel(playerid, 6);
-		SetPlayerArmour(playerid, 0);
-		SetPlayerHealth(playerid, 10);
-		ResetPlayerMoney(playerid);
-		ResetPlayerWeapons(playerid);
-		PlayerPlaySound(playerid,1082,198.3797,160.8905,1003.0300);
-	}
+	JailPlayer(playerid);
 	if(GetPlayerMuteTime(playerid) != 0)
 	{
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);

@@ -162,7 +162,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 
 		new jailt = strval(strcharsplit(text, idx,' '));
-		if(jailt > 1 && jailt <= 4320)
+		if(1 < jailt <= 4320)
 			SetPlayerJailTime(jailid,jailt);
 		
 		SetPlayerJailed(jailid,1);
@@ -176,7 +176,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		GameTextForAll(string,5000,4);
 		
 		new string2[40];
-		if(jailt > 1 && jailt <= 4320)
+		if(1 < jailt <= 4320)
 			format(string2,sizeof(string2),"на %d минут",jailt);
 		else
 			set(string2,"навсегда");

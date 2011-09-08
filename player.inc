@@ -501,8 +501,8 @@ stock player_save_db_ini(playerid)
 	ini_SetInt(file_player,"Deaths",GetPlayerDeaths(playerid));
 	ini_SetInt(file_player,"Kills",GetPlayerKills(playerid));
 	ini_SetInt(file_player,"Jailed",GetPlayerJailed(playerid));
+	ini_SetInt(file_player,"JailTime",GetPlayerJailTime(playerid));
 	ini_SetInt(file_player,"Muted",GetPlayerMuted(playerid));
-	ini_SetInt(file_player,"JailTime",GetPlayerFightStyle(playerid));
 	ini_SetInt(file_player,"MuteTime",GetPlayerMuteTime(playerid));
 	ini_SetInt(file_player,"FightStyle",GetPlayerFightStyle(playerid));
 	new Float:pos[4];
@@ -564,11 +564,11 @@ stock player_load_db_ini(playerid)
     ini_GetInt(file_player,"Jailed",buf);
 	SetPlayerJailed(playerid,buf);
 	
+    ini_GetInt(file_player,"JailTime",buf);
+	SetPlayerJailTime(playerid,buf);
+	
     ini_GetInt(file_player,"Muted",buf);
 	SetPlayerMuted(playerid,buf);
-	
-    ini_GetInt(file_player,"JailTime",buf);
-	SetPlayerFightStyle(playerid,buf);
 	
     ini_GetInt(file_player,"MuteTime",buf);
 	SetPlayerMuteTime(playerid,buf);
