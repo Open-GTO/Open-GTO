@@ -128,7 +128,6 @@ public OneMinuteTimer()
 	JailTimer();
 	AntiIdle();
 	TurnAround();
-	PayDay();
 }
 
 forward OneHourTimer();
@@ -151,4 +150,5 @@ public FiveSecondTimer()
 	SyncActiveCP();
 	business_Update3DTextLabelText();
 	housing_Update3DTextLabelText();
+	PayDay();
 }

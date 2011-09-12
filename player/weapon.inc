@@ -26,33 +26,16 @@ new PlayerWeaponsSkills[MAX_PLAYERS][PLAYER_WEAPON_SKILLS];
 
 stock weapon_OnPlayerDeath(playerid,killerid,reason)
 {
+	if(!IsWeapon(reason)) return 1;
 	new WeaponSkillID = GetWeaponSkillID(reason);
 	SetPlayerSkillLevel(killerid,WeaponSkillID,PlayerWeaponsSkills[killerid][WeaponSkillID] += 1);
 	
+	if(IsWeaponHandToHand(reason)) return 1;
 	new slot = GetWeaponSlot(reason);
-	if(IsWeapon(reason))
+	if (PlayerTempWeapons[playerid][slot][pwid] > 0 && PlayerWeapons[playerid][slot][pbullets] > 0)
 	{
-		if (PlayerTempWeapons[playerid][slot][pwid] > 0)
-		{
-			if (PlayerWeapons[playerid][slot][pbullets] > 0)
-			{
-				if(!IsWeaponHandToHand(reason))
-				{
-					PlayerWeapons[playerid][slot][pbullets] -= Vary(2,1);	
-					if (PlayerWeapons[playerid][slot][pbullets] < 0) PlayerWeapons[playerid][slot][pbullets] = 0;	
-				}
-			}
-			else if(reason != 0)
-			{
-				if(!IsStoreWeapon(reason))
-				{
-					new string[MAX_STRING];
-					format(string,sizeof(string), lang_texts[9][14] ,reason);
-					KickPlayer(playerid,string); //kick player, they used illegal weapon
-					return 1;
-				}
-			}
-		}
+		PlayerWeapons[playerid][slot][pbullets] -= Vary(2,1);	
+		if (PlayerWeapons[playerid][slot][pbullets] < 0) PlayerWeapons[playerid][slot][pbullets] = 0;	
 	}
 	return 1;
 }
@@ -129,8 +112,16 @@ stock oGivePlayerWeapon(playerid,weaponid,ammo)
 	{
 		if(!IsWeaponHandToHand(weaponid))
 		{
+			// если оружия разные, то обнуляем патроны
+			if(PlayerWeapons[playerid][slot][pwid] == weaponid)
+			{
+				PlayerWeapons[playerid][slot][pbullets] += ammo;
+			}
+			else
+			{
+				PlayerWeapons[playerid][slot][pbullets] = ammo;
+			}
 			PlayerWeapons[playerid][slot][pwid] = weaponid;
-			PlayerWeapons[playerid][slot][pbullets] += ammo;
 		}
 		else
 		{

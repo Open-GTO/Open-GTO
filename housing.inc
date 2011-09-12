@@ -412,9 +412,9 @@ stock housing_OnPlayerCommandText(playerid,text[])
 
 stock house_Buy(playerid) 
 {
-	new playername[MAX_PLAYER_NAME];
+	new playername[MAX_PLAYER_NAME],pl_houses=0;
 	GetPlayerName(playerid,playername,sizeof(playername));
-	for(new i=0,pl_houses=0;i<sizeof(Houses);i++)
+	for(new i=0;i<sizeof(Houses);i++)
 	{
 		if(!strcmp(Houses[i][Houses_Owner],playername,true))
 		{
@@ -456,6 +456,8 @@ stock house_Buy(playerid)
 		set(Houses[id][Houses_Owner],playername);
 		set(Houses[id][Houses_Gang],GetPlayerGangName(playerid));
 		Houses[id][Houses_Buyout] = 0;
+		// если игрок купил свой первый дом, то ставим спавн к нему
+		if(pl_houses == 0) SetPlayerSpawnHouseID(playerid,id);
 		UpdateStreamMapIcon(house_icon[id]);
 		format(temp,sizeof(temp),lang_texts[8][17],Houses[id][Houses_Name]);
 		SendClientMessage(playerid,COLOUR_GREEN,temp);

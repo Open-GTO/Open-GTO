@@ -57,17 +57,16 @@ stock CreateBanWeaponDBString()
 
 stock banweapons_OnPlayerDeath(playerid, killerid, reason)
 {
-	#pragma unused playerid, reason
-	new weapid = GetPlayerWeapon(killerid);
+	#pragma unused playerid
+	new string[MAX_STRING];
 	for(new i=0; i<sizeof(BanWeapons); i++)
 	{
-		if(weapid == BanWeapons[i])
+		if(reason == BanWeapons[i])
 		{
-			new str[MAX_STRING];
 			ResetPlayerWeapons(killerid);
-			GetWeaponName(BanWeapons[i], str, sizeof(str));
-			format(str, sizeof(str), "Использование запрещённого оружия ( %s )", str);
-			KickPlayer(killerid,str);
+			GetWeaponName(BanWeapons[i], string, sizeof(string));
+			format(string,sizeof(string),lang_texts[9][14],string);
+			KickPlayer(killerid,string);
 			return 1;
 		}
 	}

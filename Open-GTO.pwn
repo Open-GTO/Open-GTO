@@ -341,9 +341,9 @@ public OnPlayerDeath(playerid, killerid, reason)
 	
 	if(killerid == INVALID_PLAYER_ID) return 1;
 	
-	banweapons_OnPlayerDeath(playerid, killerid, reason);
 	if(!IsPlayerInAnyDM(playerid))
 	{
+		banweapons_OnPlayerDeath(playerid, killerid, reason);
 		player_OnPlayerDeath(playerid,killerid,reason);
 		player_OnPlayerKill(killerid,playerid,reason);
 		trucker_OnPlayerDeath(playerid,killerid,reason);

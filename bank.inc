@@ -192,7 +192,7 @@ stock Profit()
 	foreach(Player,playerid)
 	{
 		if(IsPlayerRegistered(playerid))
-			GivePlayerBankMoney(playerid,-(GetPlayerBankMoney(playerid) / 100) * ProfitCount);
+			GivePlayerBankMoney(playerid,(GetPlayerBankMoney(playerid) / 100) * ProfitCount);
 	}
 	return 1;
 }

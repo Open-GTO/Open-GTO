@@ -213,15 +213,6 @@ stock IsWeapon(weaponid)
 	return 0;
 }
 
-stock IsStoreWeapon(weaponid)
-{
-	switch(weaponid)
-	{
-	    case 22..34,16..18,41..43,37,39: return 1;
-	}
-	return 0;
-}
-
 stock BuyWeapon(playerid,weaponid,bullets)
 {
 	new string[MAX_STRING];
