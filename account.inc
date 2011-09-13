@@ -45,10 +45,11 @@ stock account_save_db_ini(playerid)
 	GetPlayerName(playerid,playername,sizeof(playername));
 	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,playername);
 	new file_account = (!ini_Exist(filename_account)) ? ini_Create(filename_account) : ini_Open(filename_account);
-	GetPVarString(playerid,"Password",temp,sizeof(temp));
+	GetPVarString(playerid,"Password",temp,MAX_PASS_LEN);
+#if defined USE_PASSWORD_ENCRYPT
+	encrypt(temp);
+#endif
 	ini_Set(file_account,"Password",temp);
-	GetPVarString(playerid,"Email",temp,sizeof(temp));
-	ini_Set(file_account,"Email",temp);
 	GetPVarString(playerid,"Creation_Date",temp,sizeof(temp));
 	ini_Set(file_account,"Creation_Date",temp);
 	new day,month,year,seconds,minutes,hours;
@@ -72,18 +73,15 @@ stock account_OnGameModeInit()
 
 stock AccountRegister(playerid,password[])
 {
-	new filename_account[MAX_STRING],playername[MAX_PLAYER_NAME];
-	GetPlayerName(playerid,playername,sizeof(playername));
-	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,playername);
-	new file_account = ini_Create(filename_account);
-	ini_Set(file_account,"Password",password);
+	SetPVarString(playerid,"Password",password);
+	
 	new temp[MAX_STRING],day,month,year,seconds,minutes,hours;
 	gettime(hours,minutes,seconds);
 	getdate(year,month,day);
 	format(temp,sizeof(temp),"%02d.%02d.%d, %02d:%02d",day,month,year,hours,minutes);
-	ini_Set(file_account,"Creation_Date",temp);
-	ini_Set(file_account,"Last_Login",temp);
-	ini_Close(file_account);
+	SetPVarString(playerid,"Creation_Date",temp);
+	
+	account_save_db_ini(playerid);
 	CreatePlayer(playerid);
 	SendClientMessage(playerid,COLOUR_GREEN, lang_texts[1][12]);
 	AccountLogin(playerid,password);
@@ -98,7 +96,8 @@ stock AccountLogin(playerid,password[])
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][1]);
 		return 0;
 	}
-	if(account_login_db_ini(playerid,password) == 0) return 0;
+	SetPVarString(playerid,"Password",password);
+	if(account_login_db_ini(playerid) == 0) return 0;
 	SetPVarInt(playerid,"PlayerRegistered",1);
 	PlayerLoadStats(playerid);
 	GivePlayerOwnedWeapons(playerid);
@@ -137,25 +136,32 @@ stock AccountLogin(playerid,password[])
 	return 1;
 }
 
-stock account_login_db_ini(playerid,password[])
+stock account_login_db_ini(playerid)
 {
 	new filename_account[MAX_STRING],temp[MAX_STRING],playername[MAX_PLAYER_NAME];
 	GetPlayerName(playerid,playername,sizeof(playername));
 	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,playername);
 	if(!ini_Exist(filename_account)) return 1;
 	new file_account = ini_Open(filename_account);
-	new dbpassword[MAX_NAME];
+	new dbpassword[MAX_PASS_LEN],password[MAX_PASS_LEN];
 	ini_Get(file_account,"Password",dbpassword);
+	GetPVarString(playerid,"Password",password,MAX_PASS_LEN);
+#if defined USE_PASSWORD_ENCRYPT
+	encrypt(password);
+#endif
 	if(strcmp(password,dbpassword,false))
 	{
+	#if defined USE_PASSWORD_ENCRYPT
+		GameMSG("player_login: failed: incorrect password by %s(%d)",playername,playerid);
+	#else
 		GameMSG("player_login: failed: incorrect password by %s(%d), used password `%s`",playername,playerid,password);
+	#endif
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][6]);
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][7]);
 		KickPlayer(playerid,lang_texts[1][4]);
 		account_OnPlayerConnect(playerid); // если игрок админ, то опять выводим меню
 		return 0;
 	}
-	SetPVarString(playerid,"Password",dbpassword);
 	
 	ini_Get(file_account,"Creation_Date",temp);
 	SetPVarString(playerid,"Creation_Date",temp);
@@ -184,15 +190,18 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 		}
 		new pass[MAX_STRING];
 		set(pass,strcharsplit(text, idx,' '));
-		if(strlen(pass) < MIN_PASS_LEN)
+		if(MAX_PASS_LEN < strlen(pass) < MIN_PASS_LEN)
 		{
-			format(string,sizeof(string),lang_texts[1][13],MIN_PASS_LEN);
+			format(string,sizeof(string),lang_texts[1][13],MIN_PASS_LEN,MAX_PASS_LEN);
 			return SendClientMessage(playerid,COLOUR_WHITE,string);
 		}
-		SetPVarString(playerid,"Password",pass);
-		AccountSave(playerid);
 		format(string,sizeof(string),lang_texts[1][34],pass);
 		SendClientMessage(playerid,COLOUR_WHITE,string);
+		SetPVarString(playerid,"Password",pass);
+	#if defined USE_PASSWORD_ENCRYPT
+		encrypt(pass);
+	#endif
+		AccountSave(playerid);
 		oGivePlayerMoney(playerid,-CHANGE_PASS_COST,1);
 		return 1;
 	}
@@ -253,6 +262,7 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 		if(!IsPlayerRegistered(playerid)) return 1;
 		PlayerSave(playerid);
 		AccountSave(playerid);
+		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][45]);
 		return 1;
 	}
 	return 0;
@@ -270,7 +280,7 @@ stock account_OnPlayerConnect(playerid)
 	}
 	else
 	{
-	    format(message,sizeof(message),lang_texts[1][44],playername,MIN_PASS_LEN);
+	    format(message,sizeof(message),lang_texts[1][44],playername,MIN_PASS_LEN,MAX_PASS_LEN);
 		ShowPlayerDialog(playerid,account_Reg_DialogID,DIALOG_STYLE_INPUT,"Регистрация",message,"Зарегать","");
 	}
 	SetPVarInt(playerid,"RequestPlace",random( sizeof(RequestPlace) ));
@@ -282,7 +292,7 @@ stock account_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	#pragma unused listitem,response
 	if(dialogid == account_Log_DialogID)
 	{
-		if(strlen(inputtext) >= MIN_PASS_LEN)
+		if(MAX_PASS_LEN >= strlen(inputtext) >= MIN_PASS_LEN)
 			AccountLogin(playerid,inputtext);
 		else
 			account_OnPlayerConnect(playerid);
@@ -290,7 +300,7 @@ stock account_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 	}
 	else if(dialogid == account_Reg_DialogID)
 	{
-		if(strlen(inputtext) >= MIN_PASS_LEN)
+		if(MAX_PASS_LEN >= strlen(inputtext) >= MIN_PASS_LEN)
 			AccountRegister(playerid,inputtext);
 		else
 			account_OnPlayerConnect(playerid);

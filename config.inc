@@ -14,7 +14,7 @@
 
 #pragma tabsize 0
 
-#define VERSION					"v1.0.0 alpha(7)" // версия мода
+#define VERSION					"v1.0.0 alpha(8)" // версия мода
 #define GTO_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе Linux не рекомендуется)
 #define GTO_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
@@ -23,6 +23,11 @@
 
 #define MAX_STRING				128 // не менять, кол-во символов для большинства строковых переменных
 #define MAX_NAME				40 // кол-во символов для имён, паролей и пр.
+
+//#define USE_PASSWORD_ENCRYPT // если задефайнено, то пароль в файле игрока будет шифроваться
+#if defined USE_PASSWORD_ENCRYPT
+new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]$4%5a`Jdny¦IUW@G7s6&l:k;i~ YsoMЈ.cBq#|}NrTtA,";
+#endif
 
 #define MAX_MONEY				50000000 // максимальное кол-во денег, которое может иметь игрок
 #define UpdatePlayerScore(%1)	SetPlayerScore(%1,GetPVarInt(%1,"Level"))
@@ -119,6 +124,7 @@
 #define MIN_NICK_LEN				3
 #define CHANGE_PASS_COST			5000 // кол-во денег, требуемых для смены пароля
 #define MIN_PASS_LEN				3
+#define MAX_PASS_LEN				40
 // МИССИИ
 	// trucker
 	#define TRUCKER_GIVE_XP_RATE	5 // кол-во опыта за завоз, формула: ( (GetPlayerLevel(playerid)+1) * 2 )^2 * trucker_GIVE_XP_RATE

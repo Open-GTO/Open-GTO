@@ -202,6 +202,24 @@ stock loccmp(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Float:z2)
 	return 0;
 }
 
+#if defined USE_PASSWORD_ENCRYPT
+// encrypt(string[]) by Alex "Y_Less" Cole, Based on code by Jeremy Cole
+// modified by ZiGGi
+stock encrypt(string[])
+{
+	new size = strlen(ENCRYPTION_KEY),
+		j = strlen(string),
+		k = ((j >> 4) + 1) << 4,
+		sum = j,
+		tmp[] = {0, 0};
+	for (new i = 0; i < k; i++)
+	{
+		tmp[0] = (i < j) ? string[i] : ' ';
+		sum = ((sum + strfind(ENCRYPTION_KEY, tmp) + 1) % size);
+		string[i] = ENCRYPTION_KEY[sum];
+	}
+}
+#endif
 //------------------------- THIS COPY-PASTED FROM DUTILS -----------------------
 
 /*
