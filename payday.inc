@@ -18,7 +18,8 @@
 
 new BasePayMoney = PAYDAY_BASE_PAY,
 	PayCutoff = PAYDAY_CUTOFF,
-	BasePayXP = PAYDAY_PAYXP;
+	BasePayXP = PAYDAY_PAYXP,
+	pay_gived = 0;
 
 stock PaydayLoadConfig()
 {
@@ -52,9 +53,14 @@ stock PayDay()
 {
 	new minute;
 	gettime(_,minute);
-	if(minute == 0)
+	if(minute == 0 && pay_gived == 0)
 	{
+		pay_gived = 1;
 		GivePay();
+	}
+	else if(minute > 0)
+	{
+		pay_gived = 0;
 	}
 }
 
