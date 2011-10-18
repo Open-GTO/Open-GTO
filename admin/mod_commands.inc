@@ -63,7 +63,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(IsPlayerAdmin(receiverid))
+		if(IsPlayerRconAdmin(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		if(!IsPlayerConnected(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
@@ -90,7 +90,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
 		new receiverid = INVALID_PLAYER_ID;
 		receiverid = strval(strcharsplit(text, idx,' '));
-		if(IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
+		if(IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid) && !IsPlayerAdmin(playerid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		if(IsPlayerConnected(receiverid) == 0)
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
@@ -158,7 +158,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		
 		new jailid = strval(strcharsplit(text, idx,' '));
-		if(!IsPlayerConnected(jailid) || (IsPlayerAdmin(jailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(jailid) && IsPlayerMod(playerid)) )
+		if(!IsPlayerConnected(jailid) || (IsPlayerRconAdmin(jailid) && !IsPlayerRconAdmin(playerid)))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 
 		new jailt = strval(strcharsplit(text, idx,' '));
@@ -189,7 +189,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		new unjailid = strval(strcharsplit(text, idx,' '));
-		if(!IsPlayerConnected(unjailid) || (IsPlayerAdmin(unjailid) && !IsPlayerAdmin(playerid)) || (IsPlayerAdm(unjailid) && IsPlayerMod(playerid)))
+		if(!IsPlayerConnected(unjailid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][19]);
 
 		SetPlayerJailed(unjailid,0);

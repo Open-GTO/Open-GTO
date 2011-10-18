@@ -689,7 +689,7 @@ stock SendPlayerCurrentRaces(playerid)
 			}
 			SendClientMessage(playerid,GetRaceColourForPlayer(playerid,raceid),string);
 		}
-		else if (IsPlayerAdmin(playerid))
+		else if(IsPlayerRconAdmin(playerid))
 		{
 			if (strlen(Race[raceid][race_name]) > 0)
 			{

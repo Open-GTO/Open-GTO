@@ -238,7 +238,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						moders[MAX_STRING];
 					foreach(Player,id)
 					{
-						if(IsPlayerAdmin(id) || IsPlayerAdm(id))
+						if(IsPlayerAdm(id))
 						{
 							format(admins,sizeof(admins),"%s%s(%d)\n",admins,oGetPlayerName(id),id);
 							idsa++;

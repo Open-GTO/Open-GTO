@@ -937,7 +937,7 @@ stock SendPlayerCurrentDeathmatches(playerid)
 			}
 			SendClientMessage(playerid,GetDMColourForPlayer(playerid,dmid),string);
 		}
-		else if(IsPlayerAdm(playerid) || IsPlayerAdmin(playerid))
+		else if(IsPlayerAdm(playerid))
 		{
 			if(strlen(Deathmatch[dmid][dm_name]) > 0)
 			{

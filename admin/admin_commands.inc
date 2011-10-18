@@ -161,7 +161,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		new receiverid = INVALID_PLAYER_ID;
 		receiverid = strval(strcharsplit(text, idx,' '));
-		if(!IsPlayerConnected(receiverid) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
+		if(!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid)))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 
 		new sknamount = strval(strcharsplit(text, idx,' '));
@@ -230,7 +230,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		foreach(Player,id)
 		{
-			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id) == 1)
+			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
 				continue;
 			ResetPlayerWeapons(id);
 			DropAmmo(id);
@@ -246,7 +246,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		foreach(Player,id)
 		{
-			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id))
+			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
 				continue;
 			TogglePlayerControllable(id,0);
 			format(string,sizeof(string),lang_texts[12][54] ,oGetPlayerName(playerid));//игроку
@@ -261,7 +261,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		foreach(Player,id)
 		{
-			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerAdmin(id))
+			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
 				continue;
 			TogglePlayerControllable(id,1);
 			format(string,sizeof(string),lang_texts[12][56],oGetPlayerName(playerid));
@@ -274,7 +274,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/remcash",true))
 	{
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(!IsPlayerConnected(receiverid) || IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
+		if(!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid)))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 
 		ResetPlayerMoney(receiverid);
@@ -290,7 +290,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		new string[MAX_STRING];
 		foreach(Player,id)
 		{
-			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerAdmin(id) == 1) continue;
+			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerRconAdmin(id)) continue;
 			ResetPlayerMoney(id);
 			format(string,sizeof(string),lang_texts[12][58],oGetPlayerName(playerid));
 			SendClientMessage(id,COLOUR_XP_GOOD,string);
@@ -302,15 +302,12 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/setlvl",true))
 	{
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(!IsPlayerConnected(receiverid) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
+		if(!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid)))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 
 		new lvlamount = strval(strcharsplit(text, idx,' '));
-		if((lvlamount < 0) || (lvlamount > MAX_LEVEL))
+		if(0 > lvlamount > MAX_LEVEL)
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][33]);
-		
-		if(!IsPlayerAdmin(receiverid) && (lvlamount >MAX_LEVEL-1))
-			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][39]);
 
 		new lvlthisday = CalculatePlayerLevel(receiverid);
 		SetPlayerXP(receiverid,LevelList[lvlamount][level_xp]);
@@ -329,20 +326,21 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		
 		new sid = strval(strcharsplit(text, idx,' '));
-		if((sid < 0) || (sid > 255))
+		if((sid < 0) || (sid > 3))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][44]);
 		
-		if(sid < 255 && IsPlayerAdmin(receiverid))
+		if(IsPlayerRconAdmin(receiverid) && !IsPlayerAdmin(playerid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][89]);
 		
 		new string[MAX_STRING],sidstring[MAX_STRING];
 		
-		if(sid > 10)
-			format(sidstring,sizeof(sidstring),lang_texts[12][86],sid);
-		else if((sid >= 1) && (sid <= 10))
-			format(sidstring,sizeof(sidstring),lang_texts[12][87],sid);
-		else
-			format(sidstring,sizeof(sidstring),lang_texts[12][88]);
+		switch(sid)
+		{
+			case 0: format(sidstring,sizeof(sidstring),lang_texts[12][88]);
+			case 1: format(sidstring,sizeof(sidstring),lang_texts[12][87],sid);
+			case 2: format(sidstring,sizeof(sidstring),lang_texts[12][86],sid);
+			case 3: format(sidstring,sizeof(sidstring),lang_texts[12][86],sid);
+		}
 		if(sid > 1)
 		{
 			format(string,sizeof(string),lang_texts[12][82],oGetPlayerName(playerid), playerid, sidstring);
@@ -358,13 +356,12 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 			SendClientMessage(playerid,COLOUR_WHITE,string);
 		}
 		SetPlayerStatus(receiverid,sid);
-		player_save_db_ini(receiverid);
 		return 1;
 	}
 	if(!strcmp(cmd, "/allowport", true))
 	{
 		new receiverid = strval(strcharsplit(text,idx,' '));
-		if(!IsPlayerConnected(receiverid) || (IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid)))
+		if(!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid)))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		new setport = strval(strcharsplit(text, idx,' '));
 		if((setport < 0) || (setport > 1)) return 0;

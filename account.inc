@@ -103,7 +103,7 @@ stock AccountLogin(playerid,password[])
 	GivePlayerOwnedWeapons(playerid);
 	new playername[MAX_PLAYER_NAME],string[MAX_STRING];
 	GetPlayerName(playerid,playername,sizeof(playername));
-	if(IsPlayerAdmin(playerid) || IsPlayerRconAdmin(playerid))
+	if(IsPlayerRconAdmin(playerid))
 	{
 		format(string,sizeof(string),lang_texts[1][39],playername);
 		SendClientMessage(playerid,COLOUR_GREEN, lang_texts[1][25]);
@@ -128,7 +128,7 @@ stock AccountLogin(playerid,password[])
 	GameTextForPlayer(playerid,string,2000,1);
 	foreach(Player,idst)
 	{
-		if(IsPlayerAdmin(playerid) || IsPlayerRconAdmin(playerid)) continue;
+		if(IsPlayerRconAdmin(playerid)) continue;
 		format(string,sizeof(string),lang_texts[1][17],playername,playerid);
 		SendClientMessage(idst,COLOUR_WHITE,string);
 	}

@@ -145,7 +145,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[1][28]);
 		foreach(Player,id)
 		{
-			if(IsPlayerAdmin(id) || IsPlayerAdm(id))
+			if(IsPlayerAdm(id))
 			{
 				format(string, sizeof(string), lang_texts[1][29] , oGetPlayerName(id), id);
 				SendClientMessage(playerid, COLOUR_LIGHTBLUE,string);
@@ -154,7 +154,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		foreach(Player,id)
 		{
-			if(IsPlayerMod(id) && !IsPlayerAdmin(id) && !IsPlayerAdm(id))
+			if(IsPlayerMod(id) && !IsPlayerAdm(id))
 			{
 				format(string,sizeof(string),lang_texts[1][30],oGetPlayerName(id),id);
 				SendClientMessage(playerid,COLOUR_LIGHTGREEN,string);

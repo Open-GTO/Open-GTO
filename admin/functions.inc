@@ -84,7 +84,7 @@ stock SendMessageToAdmins(playerid, color, text[])
 	format(message,sizeof(message),lang_texts[1][23],playername,playerid,GetPlayerStatus(playerid),text);
 	foreach(Player,aid)
 	{
-		if(aid == playerid || (!IsPlayerAdmin(aid) && !IsPlayerAdm(aid))) continue;
+		if(aid == playerid || !IsPlayerAdm(aid)) continue;
 		SendClientMessage(aid,color,message);
 	}
 	return 0;

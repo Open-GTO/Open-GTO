@@ -369,7 +369,7 @@ stock KickPlayer(playerid,reason[])
 {
 	if(!IsPlayerConnected(playerid)) return 1;
 	new string[MAX_STRING];
-	if(IsPlayerAdmin(playerid) || IsPlayerRconAdmin(playerid))
+	if(IsPlayerRconAdmin(playerid))
 	{
 		format(string,sizeof(string), lang_texts[9][4], reason);
 		SendClientMessage(playerid,COLOUR_YELLOW, string);
@@ -512,7 +512,6 @@ stock player_save_db_ini(playerid)
 	new string[MAX_STRING];
 	format(string,sizeof(string),"%f,%f,%f,%f",pos[0],pos[1],pos[2],pos[3]);
 	ini_Set(file_player,"Coords",string);
-	if(IsPlayerAdmin(playerid)) SetPlayerStatus(playerid,3);
 	ini_SetInt(file_player,"Status",GetPlayerStatus(playerid));
 	ini_Set(file_player,"Weapons",CreateWeaponDBString(playerid));
 	ini_Set(file_player,"WeaponsSkills",CreateWeaponSkillsDBString(playerid));
@@ -585,6 +584,7 @@ stock player_load_db_ini(playerid)
 	
 	ini_GetInt(file_player,"Status",buf);
 	SetPlayerStatus(playerid,buf);
+	if(IsPlayerAdmin(playerid)) SetPlayerStatus(playerid,3);
 	
 	SetPlayerFightingStyle(playerid,GetPlayerFightStyle(playerid));
 

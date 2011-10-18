@@ -20,7 +20,7 @@
 
 stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if(!IsPlayerAdm(playerid) && !IsPlayerAdmin(playerid)) return 0;
+	if(!IsPlayerAdm(playerid)) return 0;
 	SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text,idx,' '));
@@ -91,7 +91,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		new receiverid = INVALID_PLAYER_ID;
 		receiverid = strval(strcharsplit(text,idx,' '));
-		if(IsPlayerAdmin(receiverid) && !IsPlayerAdmin(playerid))
+		if(IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))
 		{
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		}
@@ -177,7 +177,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/tele-here",true))
 	{
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(IsPlayerAdmin(receiverid) || IsPlayerRconAdmin(receiverid))
+		if(IsPlayerRconAdmin(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		
 		if(!IsPlayerConnected(receiverid) || IsPlayerNPC(receiverid) || IsPlayerInAnyDM(receiverid) || IsPlayerInAnyRace(receiverid))
@@ -217,7 +217,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 		foreach(Player,id)
 		{
 			if(id == playerid) continue;
-			if(GetPlayerJailed(id) == 0 && !IsPlayerAdmin(id)  && !IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id))
+			if(GetPlayerJailed(id) == 0 && !IsPlayerRconAdmin(id)  && !IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id))
 			{
 				X += random(2) - random(4);
 				Y += random(2) - random(4);	
@@ -245,7 +245,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd, "/sethealth", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(IsPlayerRconAdmin(receiverid) || IsPlayerAdmin(receiverid))
+		if(IsPlayerRconAdmin(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		
 		if(!IsPlayerConnected(receiverid))
@@ -265,7 +265,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd, "/setarm", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(IsPlayerRconAdmin(receiverid) || IsPlayerAdmin(receiverid))
+		if(IsPlayerRconAdmin(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 
 		if(!IsPlayerConnected(receiverid))
@@ -367,7 +367,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/paralyze",true))
 	{
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(IsPlayerRconAdmin(receiverid) || IsPlayerAdmin(receiverid))
+		if(IsPlayerRconAdmin(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 
 		if(!IsPlayerConnected(receiverid))
@@ -386,7 +386,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd, "/deparalyze", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(IsPlayerRconAdmin(receiverid) || IsPlayerAdmin(receiverid))
+		if(IsPlayerRconAdmin(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][9]);
 		
 		if(!IsPlayerConnected(receiverid))
