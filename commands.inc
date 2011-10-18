@@ -154,7 +154,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		foreach(Player,id)
 		{
-			if(IsPlayerMod(id))
+			if(IsPlayerMod(id) && !IsPlayerAdmin(id) && !IsPlayerAdm(id))
 			{
 				format(string,sizeof(string),lang_texts[1][30],oGetPlayerName(id),id);
 				SendClientMessage(playerid,COLOUR_LIGHTGREEN,string);

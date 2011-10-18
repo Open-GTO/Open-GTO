@@ -710,7 +710,27 @@ public OnVehicleDeath(vehicleid,killerid)
 
 public OnRconLoginAttempt(ip[], password[], success)
 {
-    antirconhack_OnRconLoginAttempt(ip,password,success);
+	switch(success)
+	{
+		case 0:
+		{
+			antirconhack_OnRconLoginAttempt(ip,password,success);
+		}
+		case 1:
+		{
+			// если игрок заходит ркон админом, то дадим ему полные права
+			new pip[16];
+			foreach(Player,playerid)
+			{
+				GetPVarString(playerid,"IP",pip,sizeof(pip));
+				if(!strcmp(ip,pip,false))
+				{
+					SetPlayerStatus(playerid,3);
+					break;
+				}
+			}
+		}
+	}
 	return 1;
 }
 

@@ -243,14 +243,14 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 							format(admins,sizeof(admins),"%s%s(%d)\n",admins,oGetPlayerName(id),id);
 							idsa++;
 						}
-						if(IsPlayerMod(id))
+						else if(IsPlayerMod(id))
 						{
 							format(moders,sizeof(moders),"%s%s(%d)\n",moders,oGetPlayerName(id),id);
 							idsa++;
 						}
 					}
 					if(idsa == 0)
-						format(string,sizeof(string),"В данный момент в игре нет Администраторов, но это не значит что они не могут за вами наблюдать.");
+						format(string,sizeof(string),lang_texts[1][31]);
 					else format(string,sizeof(string),
 						"Администрация:\n\
 						%s\n\

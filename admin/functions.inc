@@ -19,8 +19,8 @@ enum CoordInfoJ {
     Float:CJ_Z,
     Float:CJ_A
 }
-#define UNJP 8
-new Float:JPH[UNJP][CoordInfoJ] = {
+
+new Float:Jail_PH[][CoordInfoJ] = {
 {633.365, -571.78, 16.340, 265.773},
 {1544.982, -1675.470, 13.600, 93.446},
 {-2164.396, -2388.342, 30.650, 140.551},
@@ -34,11 +34,14 @@ new Float:JPH[UNJP][CoordInfoJ] = {
 stock JailPlayer(playerid)
 {
 	if(GetPlayerJailed(playerid) != 1) return 0;
-	SetPlayerInterior(playerid,6);
-	SetPlayerPos(playerid,265.1273,77.6823,1001.0391);
-	SetPlayerFacingAngle(playerid,-90);
 	new jail_time = GetPlayerJailTime(playerid);
 	SetPlayerWantedLevel(playerid,(jail_time == 0 || jail_time > 6) ? 6 : jail_time);
+	SetPlayerJailed(playerid,1);
+	SetPlayerJailTime(playerid,jail_time);
+	// телепортируем в тюрьму
+	SetPlayerInterior(playerid,6);
+	SetPlayerPos(playerid,265.1273,77.6823,1001.0391);
+	SetPlayerFacingAngle(playerid,-90);	
 	TogglePlayerControllable(playerid,0);
 	SetCameraBehindPlayer(playerid);
 	SetPlayerArmour(playerid, 0);
@@ -53,13 +56,16 @@ stock UnJailPlayer(playerid)
 		SetPlayerJailTime(playerid,0);
 		return 0;
 	}
-	new u = random(UNJP);
-	SetPlayerInterior(playerid,0);
-	SetPlayerPos(playerid, JPH[u][CJ_X], JPH[u][CJ_Y], JPH[u][CJ_Z] );
-	SetPlayerFacingAngle(playerid,JPH[u][CJ_A]);
-	SetCameraBehindPlayer(playerid);
+	SetPlayerJailed(playerid,0);
+	SetPlayerJailTime(playerid,0);
 	SetPlayerWantedLevel(playerid, 0);
 	TogglePlayerControllable(playerid,1);
+	// ставим игрока в рандомное место из всех мест освобождений
+	new j_id = random( sizeof(Jail_PH) );
+	SetPlayerInterior(playerid,0);
+	SetPlayerPos(playerid, Jail_PH[j_id][CJ_X], Jail_PH[j_id][CJ_Y], Jail_PH[j_id][CJ_Z] );
+	SetPlayerFacingAngle(playerid,Jail_PH[j_id][CJ_A]);
+	SetCameraBehindPlayer(playerid);
 	new string[MAX_STRING];
 	format(string,sizeof(string), "~r~%s ~w~Now is Free", oGetPlayerName(playerid));
 	GameTextForAll(string,5000,4);

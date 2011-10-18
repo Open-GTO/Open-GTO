@@ -18,7 +18,7 @@ new sysweath = 0;	//WEATHER
 
 stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if(!IsPlayerAdmin(playerid) && !IsPlayerAdm(playerid)) return 0;
+	if(!IsPlayerAdm(playerid)) return 0;
 
 	new cmd[20],idx;
 	set(cmd,strcharsplit(text, idx,' '));
