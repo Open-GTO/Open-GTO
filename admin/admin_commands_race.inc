@@ -4,23 +4,27 @@
 //
 
 #if defined _admin_commands_race_included
-#endinput
+	#endinput
 #endif
 
 #define _admin_commands_race_included
 #pragma library admin_commands_race
+
+
 #include "base"
 #include "utils\gtoutils"
 #include "player"
 #include "account"
 #include "race"
 
-new PlayerRaceEdit[MAX_PLAYERS]=INVALID_RACE_ID; // will hold id of race a player is currently creating
+#define SetPlayerRaceEditID(%0,%1) SetPVarInt(%0,"race_edit_id",%1)
+#define GetPlayerRaceEditID(%0) GetPVarInt(%0,"race_edit_id")
+
 stock AdminRace_OnPlayerCommandText(playerid,text[]) // process player commands
 {
 	if(!IsPlayerAdm(playerid))
 	{
-		PlayerRaceEdit[playerid]=INVALID_RACE_ID;
+		SetPlayerRaceEditID(playerid,INVALID_RACE_ID);
 		return 0;
 	}
 
@@ -36,19 +40,22 @@ stock AdminRace_OnPlayerCommandText(playerid,text[]) // process player commands
 			new racename[MAX_NAME];
 			set(racename,text);
 			strdel(racename, 0, idx);
-			if(strlen(racename) < 3) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][1]);
-			if(strlen(racename) > 40) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][2]);
+			if(strlen(racename) < 3)
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][1]);
+			if(strlen(racename) > MAX_NAME)
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][2]);
 
-			new tempname[MAX_STRING];
+/*			new tempname[MAX_STRING];
 			set(tempname,racename);
-//			if(!StringCharCheck(tempname)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][3]);
-
+			if(!StringCharCheck(tempname)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][3]);
+*/
 			new raceid = RegisterRace(racename);
-			if(raceid == INVALID_RACE_ID) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][4]);
+			if(raceid == INVALID_RACE_ID)
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][4]);
 
 			// ok we good to go
 
-			PlayerRaceEdit[playerid] = raceid;
+			SetPlayerRaceEditID(playerid,raceid);
 			Race[raceid][race_startheading] = 0.0;
 			RaceSize[raceid] = 0;
 			//StartHeading[raceid] = GetPlayerHeading(playerid);
@@ -65,11 +72,12 @@ stock AdminRace_OnPlayerCommandText(playerid,text[]) // process player commands
 
 		if(!strcmp(cmd, "cp", true))
 		{
-			if(PlayerRaceEdit[playerid] == INVALID_RACE_ID) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][10]);
-			new raceid = PlayerRaceEdit[playerid];
-			if(RaceStats[raceid][race_state] != RACE_STATE_DISABLED) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][11]);
-
-			// ok, all good
+			new raceid = GetPlayerRaceEditID(playerid);
+			if(raceid == INVALID_RACE_ID)
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][10]);
+			if(RaceStats[raceid][race_state] != RACE_STATE_DISABLED)
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][11]);
+			
 			new Float:x, Float:y, Float:z;
 			GetPlayerPos(playerid,x,y,z);
 			AddRaceCP(raceid,x,y,z);
@@ -79,11 +87,12 @@ stock AdminRace_OnPlayerCommandText(playerid,text[]) // process player commands
 
 		if(!strcmp(cmd, "cpremove", true))
 		{
-			if(PlayerRaceEdit[playerid] == INVALID_RACE_ID) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][13]);
-			new raceid = PlayerRaceEdit[playerid];
-			if (RaceStats[raceid][race_state] != RACE_STATE_DISABLED) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][14]);
-
-			// ok, all good
+			new raceid = GetPlayerRaceEditID(playerid);
+			if(raceid == INVALID_RACE_ID)
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][13]);
+			if (RaceStats[raceid][race_state] != RACE_STATE_DISABLED)
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][14]);
+			
 			new Float:x, Float:y, Float:z;
 			GetPlayerPos(playerid,x,y,z);
 			RemoveLastRaceCP(raceid);
@@ -93,13 +102,11 @@ stock AdminRace_OnPlayerCommandText(playerid,text[]) // process player commands
 
 		if(!strcmp(cmd, "save", true))
 		{
-			if(PlayerRaceEdit[playerid] == INVALID_RACE_ID) return SendClientMessage(playerid,COLOUR_GREEN,lang_texts[14][16]);
-
-			new raceid = PlayerRaceEdit[playerid];
-			if (RaceStats[raceid][race_state] != RACE_STATE_DISABLED) return SendClientMessage(playerid,COLOUR_GREEN,lang_texts[14][17]);
-
-			// ok, all good
-
+			new raceid = GetPlayerRaceEditID(playerid);
+			if(raceid == INVALID_RACE_ID)
+				return SendClientMessage(playerid,COLOUR_GREEN,lang_texts[14][16]);
+			if (RaceStats[raceid][race_state] != RACE_STATE_DISABLED)
+				return SendClientMessage(playerid,COLOUR_GREEN,lang_texts[14][17]);
 			// set default values
 			Race[raceid][race_frequency] = 5;
 			Race[raceid][race_lineupdelay] = 45;
@@ -112,7 +119,7 @@ stock AdminRace_OnPlayerCommandText(playerid,text[]) // process player commands
 			Race[raceid][race_maxracetime] = 300;
 			RaceStats[raceid][race_state] = RACE_STATE_SLEEPING;
 			RaceSaveBaseDB(raceid);
-			PlayerRaceEdit[playerid] = INVALID_RACE_ID;
+			SetPlayerRaceEditID(playerid,INVALID_RACE_ID);
 			RaceStats[raceid][race_timer] = 5;
 
 			SendClientMessage(playerid,COLOUR_GREEN,lang_texts[14][18]);
@@ -122,28 +129,29 @@ stock AdminRace_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(!strcmp(cmd, "start", true))
 		{
 			new raceid = strval(strcharsplit(text, idx,' '));
-			if((raceid == 0) || (raceid >= MAX_RACES)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][19]);
-			if(RaceStats[raceid][race_state] == RACE_STATE_DISABLED) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][20]);
-			if(RaceStats[raceid][race_state] == RACE_STATE_RACING) return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][21]);
-			if(RaceStats[raceid][race_state] == RACE_STATE_LINEUP)
+			
+			if(raceid == 0 || raceid >= MAX_RACES)
+				return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][19]);
+			
+			switch(RaceStats[raceid][race_state])
 			{
-				RaceStats[raceid][race_timer] = 0;
-				StartRaceCountdown(raceid);
-				return 1;
-			}
-			if(RaceStats[raceid][race_state] == RACE_STATE_SLEEPING)
-			{
-				RaceStats[raceid][race_timer] = 0;
-				StartRaceLineup(raceid);
-				return 1;
+				case RACE_STATE_DISABLED: return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][20]);
+				case RACE_STATE_RACING: return SendClientMessage(playerid,COLOUR_RED,lang_texts[14][21]);
+				case RACE_STATE_LINEUP:
+				{
+					RaceStats[raceid][race_timer] = 0;
+					StartRaceCountdown(raceid);
+					return 1;
+				}
+				case RACE_STATE_SLEEPING:
+				{
+					RaceStats[raceid][race_timer] = 0;
+					StartRaceLineup(raceid);
+					return 1;
+				}
 			}
 			return 1;
 		}
 	}
 	return 0;
 }
-
-
-
-
-

@@ -19,10 +19,11 @@
 
 new LastWorldSave = 1;
 
-forward WorldSave();
-public WorldSave() // save all
+forward WorldSave(necessarily);
+public WorldSave(necessarily) // save all
 {
-	if (PlayerCount() > 0)
+	if(necessarily == 1) goto nee;
+	if(PlayerCount() > 0)
 	{
 		LastWorldSave = 1;
 	}

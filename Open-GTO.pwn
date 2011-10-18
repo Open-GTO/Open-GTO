@@ -216,18 +216,18 @@ public OnGameModeInit()
 	SetTimer("OneMinuteTimer",60000,1); // 1 minute
 	SetTimer("TenMinuteTimer",600000,1); // 10 minute
 	SetTimer("OneHourTimer",3600000,1); // 1 hour
-	SetTimer("WorldSave",WORLD_SAVE_TIME,1);
+	SetTimerEx("WorldSave",WORLD_SAVE_TIME,1,"d",0);
 	GameMSG("SERVER: Timers started");
 	SpawnWorld();
 	
-	WorldSave();
+	WorldSave(0);
 	GameMSG("SERVER: Open-GTO "#VERSION" initialization complete. [%02d:%02d]",hour,minute);
 	return 1;
 }
 
 public OnGameModeExit()
 {
-	WorldSave();
+	WorldSave(1);
 	new hour,minute;
 	gettime(hour,minute);
 	GameMSG("SERVER: Open-GTO "#VERSION" turned off. [%02d:%02d]",hour,minute);
@@ -481,7 +481,7 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	command_registerNR(cmdtext,"/dm",3,dm);
 	
 	// admin dm
-	command_registerNR(cmdtext,"/dm",3,dm);
+	command_registerNR(cmdtext,"/dm",3,AdminDM);
 	
 	// admin sys
 	command_register(cmdtext,"/sys",4,AdminSys);
