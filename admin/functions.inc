@@ -36,8 +36,6 @@ stock JailPlayer(playerid)
 	if(GetPlayerJailed(playerid) != 1) return 0;
 	new jail_time = GetPlayerJailTime(playerid);
 	SetPlayerWantedLevel(playerid,(jail_time == 0 || jail_time > 6) ? 6 : jail_time);
-	SetPlayerJailed(playerid,1);
-	SetPlayerJailTime(playerid,jail_time);
 	// телепортируем в тюрьму
 	SetPlayerInterior(playerid,6);
 	SetPlayerPos(playerid,265.1273,77.6823,1001.0391);
@@ -51,12 +49,7 @@ stock JailPlayer(playerid)
 
 stock UnJailPlayer(playerid)
 {
-	if(GetPlayerJailed(playerid) == 0)
-	{
-		SetPlayerJailTime(playerid,0);
-		return 0;
-	}
-	SetPlayerJailed(playerid,0);
+	if(GetPlayerJailed(playerid) != 0) return 0;
 	SetPlayerJailTime(playerid,0);
 	SetPlayerWantedLevel(playerid, 0);
 	TogglePlayerControllable(playerid,1);
