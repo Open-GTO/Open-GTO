@@ -159,9 +159,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
         if(!strlen(gangmessage)) return 1;
      	format(gangmessage,sizeof(gangmessage),lang_texts[6][2],oGetPlayerName(playerid),gangmessage);
         SendGangMessage(GetPVarInt(playerid,"GangID"),gangmessage,COLOUR_GANG_CHAT);
-		new string[MAX_STRING];
-  		format(string,sizeof(string),"player: %d:  %s:    %s",playerid,oGetPlayerName(playerid),gangmessage);
-     	WriteLog(ChatLog,string);
+		GameMSG("player: %d:  %s:    %s",playerid,oGetPlayerName(playerid),gangmessage);
         return 1;
 	}
     if(!strcmp(cmd,"/gang",true))
@@ -287,17 +285,17 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
       		set(gangname,text);
          	strdel(gangname,0,idx);
 
-         	if(strlen(gangname) < MIN_GANG_NAME_LEN) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][39]);
-   			if(strlen(gangname) > MAX_GANG_NAME_LEN) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][40]);
+         	if(MIN_GANG_NAME_LEN > strlen(gangname) > MAX_GANG_NAME_LEN) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][39]);
    			if(!StringCharCheck(gangname) || !strcmp(gangname,"Unknown",true))
-    			return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][41]);
+			{
+				format(string,sizeof(string),lang_texts[6][41],ALLOWED_STRING_SYMBOLS_STR);
+    			return SendClientMessage(playerid,COLOUR_RED,string);
+			}
    			if(GangCreate(playerid,gangname,gangcolour) != 0)
    			{
     			oGivePlayerMoney(playerid,-Gang_Create_Cost,1);
     			SendClientMessage(playerid,COLOUR_GREEN,lang_texts[6][42]);
-				new logstring[MAX_STRING];
-    			format(logstring,sizeof(logstring),"player: %d:  %s: created gang '%s' ",playerid,oGetPlayerName(playerid),gangname);
-       			WriteLog(GameLog,logstring);
+				GameMSG("player: %d:  %s: created gang '%s' ",playerid,oGetPlayerName(playerid),gangname);
    			}
    			else SendClientMessage(playerid,COLOUR_GREEN,lang_texts[6][43]);
   			return 1;
@@ -323,8 +321,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
     			SendClientMessage(playerid,COLOUR_GANG,string);
     			format(string,sizeof(string),lang_texts[6][48],oGetPlayerName(playerid));
     			SendGangMessage(gangid,string,COLOUR_GANG);
-    			format(string,sizeof(string),"player: %d:  %s: have joined '%s' gang.",playerid,oGetPlayerName(playerid),Gangs[gangid][gang_name]);
-    			WriteLog(GameLog,string);
+				GameMSG("player: %d:  %s: have joined '%s' gang.",playerid,oGetPlayerName(playerid),Gangs[gangid][gang_name]);
     			return 1;
    			}
    			else
@@ -365,8 +362,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
    			format(string,sizeof(string),lang_texts[6][59],oGetPlayerName(inviteid),Gangs[gangid][gang_name]);
    			SendClientMessage(playerid,COLOUR_GANG,string);
 			SetPVarInt(inviteid,"GangInvite",gangid);
-   			format(string,sizeof(string),"player: %d:  %s: has invited %s to join gang '%s'.",playerid,oGetPlayerName(playerid),oGetPlayerName(inviteid),Gangs[gangid][gang_name]);
-      		WriteLog(GameLog,string);
+			GameMSG("player: %d:  %s: has invited %s to join gang '%s'.",playerid,oGetPlayerName(playerid),oGetPlayerName(inviteid),Gangs[gangid][gang_name]);
    			return 1;
   		}
   		if(!strcmp(cmd,"kick",true))
@@ -516,8 +512,7 @@ stock GangRemoveMember(gangid,kickplayername[])
 		set(GangMemberInfo[gangid][gangmember][member_name],nullstr);
 		format(string,sizeof(string),lang_texts[6][70],kickplayername);
 		SendGangMessage(gangid,string,COLOUR_GANG);
-		format(string,sizeof(string),"%s has been removed from gang '%s'",kickplayername,Gangs[gangid][gang_name]);
-		WriteLog(GameLog,string);
+		GameMSG("%s has been removed from gang '%s'",kickplayername,Gangs[gangid][gang_name]);
 		if(playerid != INVALID_PLAYER_ID)
 		{
 			format(string,sizeof(string),lang_texts[6][71],Gangs[gangid][gang_name]);

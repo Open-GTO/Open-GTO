@@ -227,6 +227,12 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 		// если файл есть, то выходим сразу-же
 		if(ini_Exist(string))
 			return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][9]);
+		// проверим ник
+		if(!NameCharCheck(Account_NewName))
+		{
+			format(string,sizeof(string),lang_texts[1][9],ALLOWED_NICK_SYMBOLS_STR);
+			return SendClientMessage(playerid,COLOUR_WHITE,string);
+		}
 		// переименовываем
 		if(SetPlayerName(playerid,Account_NewName) != 1)
 			return SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][9]);

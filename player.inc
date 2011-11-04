@@ -260,18 +260,18 @@ stock player_OnPlayerDisconnect(playerid,reason)
 
 stock player_OnPlayerConnect(playerid)
 {
-    new plrIP[16];
+    new plrIP[16],string[MAX_STRING];
     GetPlayerIp(playerid,plrIP,sizeof(plrIP));
 	SetPVarString(playerid,"IP",plrIP);
 	player_ResetStats(playerid);
 	if(!NameCharCheck( oGetPlayerName(playerid) ))
 	{
-		SendClientMessage(playerid,COLOUR_RED,lang_texts[9][13]);
+		format(string,sizeof(string),lang_texts[9][13],ALLOWED_NICK_SYMBOLS_STR);
+		SendClientMessage(playerid,COLOUR_RED,string);
 		KickPlayer(playerid,"Такой ник запрещён.");
 	}
 	SetPlayerColor(playerid,COLOUR_PLAYER);
 	
-	new string[MAX_STRING];
 	format(string, sizeof(string),lang_texts[15][85], VERSION);
 	GameTextForPlayer(playerid,string,5500,1);
 	SendClientMessage(playerid, COLOUR_LIGHTRED, lang_texts[15][86]);

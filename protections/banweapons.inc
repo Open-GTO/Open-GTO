@@ -1,9 +1,10 @@
 /*
 	Author:	SLICK
 	Created: 15.06.11
+	Modified by ZiGGi
 */
 
-new BanWeapons[MAX_WEAPONS] = {BAN_WEAPONS};
+new BanWeapons[] = {BAN_WEAPONS};
 
 stock BanWeaponsLoadConfig()
 {
@@ -35,7 +36,7 @@ stock banweapons_OnGameModeInit()
 stock SetBanWeaponsFromDBString(dbstring[])
 {
 	new idx;
-	for(new i=0;i<MAX_WEAPONS;i++)
+	for(new i=0;i<sizeof(BanWeapons);i++)
 	{
 		BanWeapons[i] = strval(strcharsplit(dbstring,idx,'/'));
 	}
@@ -44,7 +45,7 @@ stock SetBanWeaponsFromDBString(dbstring[])
 stock CreateBanWeaponDBString()
 {
 	new wepstr[MAX_STRING],temp[MAX_STRING];
-	for(new i=0;i<MAX_WEAPONS;i++)
+	for(new i=0;i<sizeof(BanWeapons);i++)
 	{
 		if(BanWeapons[i] == 0) break;
 		valstr(temp,BanWeapons[i]);
@@ -59,7 +60,7 @@ stock banweapons_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused playerid
 	new string[MAX_STRING];
-	for(new i=0; i<sizeof(BanWeapons); i++)
+	for(new i=0;i<sizeof(BanWeapons);i++)
 	{
 		if(reason == BanWeapons[i])
 		{

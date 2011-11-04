@@ -115,10 +115,13 @@ stock Vary(source,varyamount)
 stock NameCharCheck(string[MAX_PLAYER_NAME])
 {
 	if(!strcmp(string,"Unknown",true) || IsNumeric(string)) return 0;
-	for (new i=0,len=strlen(string);i<len;i++)
+	for(new i=strlen(string)-1;i>=0;i--)
 	{
-	    if(string[i] == 0) return 1; // null
-		if(string[i] < 32 || string[i] > 125) return 0;
+		switch(string[i])
+		{
+			case ALLOWED_NICK_SYMBOLS: continue;
+			default: return 0;
+		}
 	}
 	return 1;
 }
@@ -176,12 +179,12 @@ stock settime()
 
 stock StringCharCheck(string[MAX_STRING])
 {
-	for(new i=0;i<MAX_STRING;i++)
+	for(new i=sizeof(string)-1;i>=0;i--)
 	{
 		switch(string[i])
 		{
-			case 0: return 1;
-			case '/','=','.',':': return 0;
+			case ALLOWED_STRING_SYMBOLS: continue;
+			default: return 0;
 		}
 	}
 	return 1;
