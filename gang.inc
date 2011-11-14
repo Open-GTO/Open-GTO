@@ -16,8 +16,7 @@
 new Gang_Create_Cost = GANG_CREATE_COST,
 	Gang_Colour_Cost = GANG_COLOUR_COST; 
 
-enum MemberInfo 
-{
+enum MemberInfo {
 	bool:member_online,
 	member_name[MAX_PLAYER_NAME],
 	member_playerid
@@ -25,8 +24,7 @@ enum MemberInfo
 
 new GangMemberInfo[MAX_GANGS][MAX_GANG_SIZE][MemberInfo];
 
-enum GangInfo 
-{
+enum GangInfo {
 	bool:gang_active, //bool
 	gang_name[MAX_NAME],
     gang_colour,

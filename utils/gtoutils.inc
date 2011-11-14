@@ -179,7 +179,7 @@ stock settime()
 
 stock StringCharCheck(string[MAX_STRING])
 {
-	for(new i=sizeof(string)-1;i>=0;i--)
+	for(new i=strlen(string)-1;i>=0;i--)
 	{
 		switch(string[i])
 		{
