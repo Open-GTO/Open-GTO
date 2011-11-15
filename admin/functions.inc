@@ -62,7 +62,7 @@ stock UnJailPlayer(playerid)
 	new string[MAX_STRING];
 	format(string,sizeof(string), "~r~%s ~w~Now is Free", oGetPlayerName(playerid));
 	GameTextForAll(string,5000,4);
-	format(string,sizeof(string), "SERVER: %s был Выпущен из тюрьмы (Истекло время или Амнистия)", oGetPlayerName(playerid));
+	format(string,sizeof(string), "SERVER: %s был выпущен из тюрьмы (истекло время или амнистия)", oGetPlayerName(playerid));
 	SendClientMessageToAll(COLOUR_WHITE, string);
 	return 1;
 }
@@ -85,11 +85,7 @@ stock SendMessageToAdmins(playerid, color, text[])
 
 stock PushHide(playerid)// скрыть/показать игрока
 {
-	new hidecont;
-	if(GetPVarInt(playerid,"Hide") > 0)
-		hidecont = 0;
-	else
-		hidecont = PlayerGangColour(playerid);
+	new hidecont = (GetPVarInt(playerid,"Hide") == 1) ? 0 : PlayerGangColour(playerid);
 	foreach(Player,id)
 	{
 		if(id != playerid)
@@ -104,12 +100,14 @@ stock MuteCheck()
 	new string[MAX_STRING];
 	foreach(Player,i)
 	{
-		if(GetPlayerMuteTime(i) > 0)
+		new mute_time = GetPlayerMuteTime(i);
+		if (mute_time > 0)
 		{
-			SetPlayerMuteTime(i,GetPlayerMuteTime(i) - 1);
-		    if(GetPlayerMuteTime(i) == 0)
+			mute_time--;
+			SetPlayerMuteTime(i,mute_time);
+		    if (mute_time <= 0)
 		    {
-				format(string, sizeof(string)," Игрок %s(%d) снова может говорить",oGetPlayerName(i),i);
+				format(string,sizeof(string),"Игрок %s(%d) снова может говорить",oGetPlayerName(i),i);
 				SendClientMessageToAll(COLOUR_YELLOW,string);
 			}
 		}
@@ -119,17 +117,18 @@ stock MuteCheck()
 stock JailTimer()
 {
 	new string[MAX_STRING];
-	foreach(Player,i)
+	foreach (Player,i)
 	{
-		if(GetPlayerJailed(i) != 1) continue;
+		if (GetPlayerJailed(i) != 1) continue;
 		
 		new jail_time = GetPlayerJailTime(i);
 		SetPlayerWantedLevel(i,(jail_time == 0 || jail_time > 6) ? 6 : jail_time);
 		
-		if(jail_time >= 1)
+		if (1 <= jail_time <= 4320)
 		{
-			SetPlayerJailTime(i,jail_time - 1);
-			if(jail_time <= 0)
+			jail_time--;
+			SetPlayerJailTime(i,jail_time);
+			if (jail_time <= 0)
 			{
 				SetPlayerJailed(i,0);
 				SetPlayerJailTime(i,0);
@@ -138,7 +137,7 @@ stock JailTimer()
 			}
 			else
 			{
-				format(string,sizeof(string), "SERVER: До окончания ареста осталось около %d мин", jail_time);
+				format(string,sizeof(string),"SERVER: До окончания ареста осталось около %d мин",jail_time);
 				SendClientMessage(i,COLOUR_LIGHTRED, string);
 			}
 		}
@@ -157,18 +156,15 @@ stock IsSkinValid(SkinID)
 
 stock IsPlayerRconAdmin(playerid)
 {
-	if(GetPlayerStatus(playerid) >= 3) return 1;
-	return 0;
+	return (GetPlayerStatus(playerid) >= 3) ? 1 : 0;
 }
 
 stock IsPlayerAdm(playerid)
 {
-	if(GetPlayerStatus(playerid) >= 2) return 1;
-	return 0;
+	return (GetPlayerStatus(playerid) >= 2) ? 1 : 0;
 }
 
 stock IsPlayerMod(playerid)
 {
-	if(GetPlayerStatus(playerid) >= 1) return 1;
-	return 0;
+	return (GetPlayerStatus(playerid) >= 1) ? 1 : 0;
 }
