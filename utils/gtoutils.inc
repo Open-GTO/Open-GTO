@@ -17,6 +17,7 @@
 #define command_register(%0,%1,%2,%3) if(!strcmp(%0,%1,true,%2) && ((%0[%2] == ' ') || (%0[%2] == 0))) return %3_OnPlayerCommandText(playerid,%0)
 #define command_registerNR(%0,%1,%2,%3) if(!strcmp(%0,%1,true,%2) && ((%0[%2] == ' ') || (%0[%2] == 0))) %3_OnPlayerCommandText(playerid,%0)
 #define GivePVarInt(%1,%2,%3) SetPVarInt(%1,%2,GetPVarInt(%1,%2)+%3)
+#define set(%0,%1) strmid(%0,%1,0,160,MAX_STRING + 32)
 
 #define BYTES_PER_CELL			4
 
@@ -92,16 +93,15 @@ stock FormatPosition(position)
 	return string;
 }
 
-stock strcharsplit(string[], &index,seperator)
+stock strcharsplit(const string[], &index,seperator)
 {
-	new result[MAX_STRING];
-	new idxpos = index;
-	new len = strlen(string);
+	new result[20],
+		idxpos = index,
+		len = strlen(string);
 	for (new i=index;i<len;i++)
 	{
 	    index++;
-		if (string[i] == seperator) break;
-		if (string[i] == 0) break;
+		if (string[i] == seperator || string[i] == 0) break;
 		result[i-idxpos] = string[i];
 	}
 	return result;
@@ -224,15 +224,6 @@ stock encrypt(string[])
 }
 #endif
 //------------------------- THIS COPY-PASTED FROM DUTILS -----------------------
-
-/*
-*/
-stock set(set_result[],set_source[])
-{
-	new count = strlen(set_source);
-	for(new i=0;i<count;i++) set_result[i] = set_source[i];
-	set_result[count] = 0;
-}
 /**
  *  Return a timestamp
  */
@@ -273,27 +264,4 @@ stock mktime(hour,minute,second,day,month,year) {
 	}
 
 	return timestamp2;
-}
-/**
- *  Returns an element of a string splitted by ' ', default index is 0.
- *  @param   string
- *           index
- */
-stock strtok(const string[], &index,seperator=' ')
-{
-	new length = strlen(string);
-	new offset = index;
-	new result[MAX_STRING];
-	while ((index < length) && (string[index] != seperator) && ((index - offset) < (sizeof(result) - 1)))
-	{
-		result[index - offset] = string[index];
-		index++;
-	}
-
-	result[index - offset] = EOS;
-	if ((index < length) && (string[index] == seperator))
-	{
-		index++;
-	}
-	return result;
 }
