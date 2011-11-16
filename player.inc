@@ -605,7 +605,11 @@ stock player_load_db_ini(playerid)
 			GangMemberLogin(playerid,GangLoad(s_buf));
 		}
 	}
-	else SetPVarInt(playerid,"GangID",0); // no gang
+	else
+	{
+		// no gang
+		SetPVarInt(playerid,"GangID",0);
+	}
 
 	ini_Get(file_player,"Weapons",s_buf);
 	SetWeaponsFromDBString(playerid,s_buf);

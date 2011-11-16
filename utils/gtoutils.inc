@@ -73,6 +73,36 @@ stock GameMSG(fstring[], {Float, _}:...)
 	return 1;
 }
 
+stock strcmpEx(const string1[], const string2[], bool:ignorecase=false, length=cellmax)
+{
+    if (string1[0])
+    {
+        if (string2[0])
+        {
+            return strcmp(string1, string2, ignorecase, length);
+        }
+        else
+        {
+            // Positive as st1 is greater (strcmp spec).
+            return 1;
+        }
+    }
+    else
+    {
+        if (string2[0])
+        {
+            // Negative as str2 is greater.
+            return -1;
+        }
+        else
+        {
+            // The strings are the same (empty).
+            return 0;
+        }
+    }
+}
+#define strcmp strcmpEx
+
 stock PlayerPlaySoundOnPlayer(playerid,soundid)
 {
 	new Float:pos[3];
