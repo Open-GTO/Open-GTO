@@ -125,14 +125,11 @@ stock FormatPosition(position)
 
 stock strcharsplit(const string[], &index,seperator)
 {
-	new result[20],
-		idxpos = index,
-		len = strlen(string);
-	for (new i=index;i<len;i++)
+	new result[20], i = 0;
+	if(index != 0) index++;
+	while (string[index] && string[index] != seperator)
 	{
-	    index++;
-		if (string[i] == seperator || string[i] == 0) break;
-		result[i-idxpos] = string[i];
+		result[i++] = string[index++];
 	}
 	return result;
 }

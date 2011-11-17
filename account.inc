@@ -45,7 +45,7 @@ stock account_save_db_ini(playerid)
 	GetPlayerName(playerid,playername,sizeof(playername));
 	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,playername);
 	new file_account = (!ini_Exist(filename_account)) ? ini_Create(filename_account) : ini_Open(filename_account);
-	GetPVarString(playerid,"Password",temp,MAX_PASS_LEN);
+	GetPVarString(playerid,"Password",temp,sizeof(temp));
 #if defined USE_PASSWORD_ENCRYPT
 	encrypt(temp);
 #endif
@@ -96,8 +96,7 @@ stock AccountLogin(playerid,password[])
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][1]);
 		return 0;
 	}
-	SetPVarString(playerid,"Password",password);
-	if(account_login_db_ini(playerid) == 0) return 0;
+	if(account_login_db_ini(playerid,password) == 0) return 0;
 	SetPVarInt(playerid,"PlayerRegistered",1);
 	PlayerLoadStats(playerid);
 	GivePlayerOwnedWeapons(playerid);
@@ -136,16 +135,15 @@ stock AccountLogin(playerid,password[])
 	return 1;
 }
 
-stock account_login_db_ini(playerid)
+stock account_login_db_ini(playerid,password[])
 {
 	new filename_account[MAX_STRING],temp[MAX_STRING],playername[MAX_PLAYER_NAME];
 	GetPlayerName(playerid,playername,sizeof(playername));
 	format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT,AccountDB,playername);
 	if(!ini_Exist(filename_account)) return 1;
 	new file_account = ini_Open(filename_account);
-	new dbpassword[MAX_PASS_LEN],password[MAX_PASS_LEN];
+	new dbpassword[MAX_PASS_LEN];
 	ini_Get(file_account,"Password",dbpassword);
-	GetPVarString(playerid,"Password",password,MAX_PASS_LEN);
 #if defined USE_PASSWORD_ENCRYPT
 	encrypt(password);
 #endif
@@ -162,6 +160,7 @@ stock account_login_db_ini(playerid)
 		account_OnPlayerConnect(playerid); // если игрок админ, то опять выводим меню
 		return 0;
 	}
+	SetPVarString(playerid,"Password",password);
 	
 	ini_Get(file_account,"Creation_Date",temp);
 	SetPVarString(playerid,"Creation_Date",temp);

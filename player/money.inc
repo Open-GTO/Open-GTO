@@ -55,8 +55,7 @@ stock SyncMoney(playerid)
 stock oSetPlayerMoney(playerid,money)
 {
 	SetPVarInt(playerid,"Money",money);
-	ResetPlayerMoney(playerid);
-	return GivePlayerMoney(playerid,money);
+	return GivePlayerMoney(playerid,(money - oGetPlayerMoney(playerid)));
 }
 
 stock oGivePlayerMoney(playerid,money,showtext=0)
@@ -81,5 +80,6 @@ stock oGivePlayerMoney(playerid,money,showtext=0)
 			SendClientMessage(playerid, COLOUR_MONEY_BAD, string);
 		}
 	}
-	return oSetPlayerMoney(playerid,oGetPlayerMoney(playerid) + money);
+	GivePVarInt(playerid,"Money",money);
+	return GivePlayerMoney(playerid,money);
 }
