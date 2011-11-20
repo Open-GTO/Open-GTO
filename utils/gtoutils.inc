@@ -123,14 +123,14 @@ stock FormatPosition(position)
 	return string;
 }
 
-stock strcharsplit(const string[], &index,seperator)
+stock strcharsplit(const string[], &index, seperator=' ')
 {
 	new result[20], i = 0;
-	if(index != 0) index++;
 	while (string[index] && string[index] != seperator)
 	{
 		result[i++] = string[index++];
 	}
+	index++;
 	return result;
 }
 
