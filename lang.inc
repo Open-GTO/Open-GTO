@@ -12,7 +12,7 @@
 #pragma library lang
 
 
-new lang_db[10] = GTO_FILES_FOLDER"";
+new lang_db[10] = GTO_FILES_FOLDER;
 new lang[10] = LANGUAGE_USE;
 new lang_texts[20][99][MAX_STRING+10];
 
