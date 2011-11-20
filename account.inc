@@ -178,7 +178,7 @@ stock account_login_db_ini(playerid,password[])
 stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 {
 	new cmd[20],idx;
-	set(cmd,strcharsplit(text,idx,' '));
+	cmd = strcharsplit(text,idx,' ');
 	if(!strcmp(cmd,"/changepass",true))
 	{
 		new string[MAX_STRING];
@@ -188,7 +188,7 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 			return SendClientMessage(playerid,COLOUR_WHITE,string);
 		}
 		new pass[MAX_STRING];
-		set(pass,strcharsplit(text, idx,' '));
+		pass = strcharsplit(text, idx,' ');
 		if(MAX_PASS_LEN < strlen(pass) < MIN_PASS_LEN)
 		{
 			format(string,sizeof(string),lang_texts[1][13],MIN_PASS_LEN,MAX_PASS_LEN);
@@ -215,7 +215,7 @@ stock account_OnPlayerCommandText(playerid,text[]) // process account commands
 		new Account_NewName[MAX_PLAYER_NAME],
 			Account_LastName[MAX_PLAYER_NAME];
 		set(Account_LastName,oGetPlayerName(playerid));
-		set(Account_NewName,strcharsplit(text, idx,' '));
+		Account_NewName = strcharsplit(text, idx,' ');
 		if(strlen(Account_NewName) <= MIN_NICK_LEN)
 		{
 			format(string,sizeof(string),lang_texts[1][37],MIN_NICK_LEN);

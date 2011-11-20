@@ -115,9 +115,9 @@ stock FormatPosition(position)
 	new string[MAX_STRING];
 	switch(position)
 	{
-		case 1: format(string, sizeof(string), "%dst!",position);
-		case 2: format(string, sizeof(string), "%dnd!",position);
-		case 3: format(string, sizeof(string), "%drd!",position);
+		case 1: set(string,"1st!");
+		case 2: set(string,"2nd!");
+		case 3: set(string,"3rd!");
 		default: format(string, sizeof(string), "%dth",position);
 	}
 	return string;
@@ -155,23 +155,28 @@ stock NameCharCheck(string[MAX_PLAYER_NAME])
 
 stock ConvertSeconds(time)
 {
-	new string[40],Float:minutes,Float:hours,seconds,minutes_int;
-	if(time < 60) format(string, sizeof(string), "%d seconds", time);
-	else if(time == 60)	string = "1 minute";
-	else if(time > 60 && time < 3600)
+	new string[64],Float:minutes,Float:hours,seconds;
+
+	switch(time)
 	{
-		minutes = time / 60;
-		seconds = time % 60;
-		format(string, sizeof(string), "%.0f minutes and %d seconds", minutes, seconds);
-	}
-	else if(time == 3600) string = "1 hour";
-	else if(time > 3600)
-	{
-		hours = time / 3600;
-		minutes_int = time % 3600;
-		minutes = minutes_int / 60;
-		seconds = minutes_int % 60;
-		format(string,sizeof(string),"%s of hours, %s of minutes and %d seconds",hours,minutes,seconds);
+		case 0..59: format(string, sizeof(string), "%d seconds", time);
+		case 60: string = "1 minute";
+		case 61..3599:
+		{
+			minutes = time / 60;
+			seconds = time % 60;
+			format(string, sizeof(string), "%.0f minutes and %d seconds", minutes, seconds);
+		}
+		case 3600: string = "1 hour";
+		default:
+		{
+			new minutes_int;
+			hours = time / 3600;
+			minutes_int = time % 3600;
+			minutes = minutes_int / 60;
+			seconds = minutes_int % 60;
+			format(string,sizeof(string),"%s of hours, %s of minutes and %d seconds",hours,minutes,seconds);
+		}
 	}
 	return string;
 }
@@ -221,7 +226,10 @@ stock IsNumeric(const string[])
 {
 	for (new i = 0, j = strlen(string); i < j; i++)
 	{
-		if (string[i] > '9' || string[i] < '0') return 0;
+		switch(string[i])
+		{
+			case 0..9: return 0;
+		}
 	}
 	return 1;
 }
@@ -250,45 +258,3 @@ stock encrypt(string[])
 	}
 }
 #endif
-//------------------------- THIS COPY-PASTED FROM DUTILS -----------------------
-/**
- *  Return a timestamp
- */
-stock Now() {
-  new hour,minute,second;
-  new year, month,day;
-  gettime(hour, minute, second);
-  getdate(year, month, day);
-  return mktime(hour,minute,second,day,month,year);
-}
-/*
- * Originally created by mabako, tuned by DracoBlue
- */
-stock mktime(hour,minute,second,day,month,year) {
-	new timestamp2;
-
-	timestamp2 = second + (minute * 60) + (hour * 3600);
-
-	new days_of_month[12];
-
-	if ( ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0) ) {
-			days_of_month = {31,29,31,30,31,30,31,31,30,31,30,31}; // Schaltjahr
-		} else {
-			days_of_month = {31,28,31,30,31,30,31,31,30,31,30,31}; // keins
-		}
-	new days_this_year = 0;
-	days_this_year = day;
-	if(month > 1) { // No January Calculation, because its always the 0 past months
-		for(new i=0; i<month-1;i++) {
-			days_this_year += days_of_month[i];
-		}
-	}
-	timestamp2 += days_this_year * 86400;
-
-	for(new j=1970;j<year;j++) {
-		timestamp2 += 31536000;
-		if ( ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0) )  timestamp2 += 86400; // Schaltjahr + 1 Tag
-	}
-
-	return timestamp2;
-}

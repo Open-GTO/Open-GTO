@@ -30,7 +30,7 @@ enum DrinkInfo {
 new Drinks[][DrinkInfo] = {
 	{"Водка Зелёная марка",100,30.0,40.0,SPECIAL_ACTION_DRINK_SPRUNK},
 	{"Пиво Жигулёвское",30,10.0,4.5,SPECIAL_ACTION_DRINK_BEER},
-	{"Вино Красное Сладкое",30,10.0,10.0,SPECIAL_ACTION_DRINK_WINE},
+	{"Глинтвейн",30,10.0,10.0,SPECIAL_ACTION_DRINK_WINE},
 	{"Чай с лимоном и сахаром",15,10.0,-20.0,SPECIAL_ACTION_DRINK_SPRUNK}
 };
 

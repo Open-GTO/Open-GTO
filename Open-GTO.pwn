@@ -125,8 +125,8 @@ main()
 			\tLajos Pacsek (asturel)\n\
 			\tDmitry Frolov (FP)\n\
 			\tOpen-GTO Team:\n\
-				\t\tCurrent: ZiGGi, SLICK\n\
-				\t\tPrevious: GhostTT, heufix, Elbi\n\
+				\t\tCurrent: ZiGGi\n\
+				\t\tPrevious: GhostTT, heufix, Elbi, SLICK\n\
 	");
 	print("\
 		_____________________________________________________________\n\
@@ -523,9 +523,6 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	command_register(cmdtext,"/mole",5,Mod);
 	command_register(cmdtext,"/spec",5,Mod);
 	command_register(cmdtext,"/spec-off",9,Mod);
-	
-	// business
-	//business_OnPlayerCommandText(playerid,cmdtext);
 	
 	// housing
 	command_register(cmdtext,"/ganghouses",11,housing);

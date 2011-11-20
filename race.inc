@@ -373,7 +373,7 @@ stock race_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!IsPlayerRegistered(playerid)) return 0;
 	new cmd[20],idx;
 
-	set(cmd,strcharsplit(text, idx,' '));
+	cmd = strcharsplit(text, idx,' ');
 	if(strlen(cmd) == 0) return 0;
 
 	if(!strcmp(cmd,"/races",true))
@@ -384,7 +384,7 @@ stock race_OnPlayerCommandText(playerid,text[]) // process player commands
 
 	if(!strcmp(cmd,"/race",true))
 	{
-		set(cmd,strcharsplit(text, idx,' '));
+		cmd = strcharsplit(text, idx,' ');
 		if(!strcmp(cmd,"help",true))
 		{
 			SendClientMessage(playerid,COLOUR_MISC, lang_texts[10][8] );

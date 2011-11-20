@@ -1159,7 +1159,7 @@ stock dm_OnPlayerCommandText(playerid,text[]) // process player commands
 	new idx;
 	//new string[MAX_STRING];
 
-	set(cmd,strcharsplit(text, idx,' '));
+	cmd = strcharsplit(text, idx,' ');
 	if (strlen(cmd) == 0) return 0;
 
 	if(!strcmp(cmd, "/deathmatches",true) || !strcmp(cmd, "/dms", true))
@@ -1167,7 +1167,7 @@ stock dm_OnPlayerCommandText(playerid,text[]) // process player commands
 
 	if(!strcmp(cmd,"/dm",true))
 	{
-		set(cmd,strcharsplit(text, idx,' '));
+		cmd = strcharsplit(text, idx,' ');
 		if(!strcmp(cmd,"help",true))
 		{
 			SendClientMessage(playerid,COLOUR_MISC, lang_texts[4][46] );
@@ -1233,7 +1233,7 @@ stock DMDecodeWeaponsDB(wepstr[])
 
 	for(new i=0,len=strlen(wepstr);(i<len && i<MAX_DMWEAPONS);i++)
 	{
-		set(tmpwepstr,strcharsplit(wepstr, idx,'/'));
+		tmpwepstr = strcharsplit(wepstr, idx,'/');
 		if(strlen(tmpwepstr) == 0) break;
 		weps[i] = strval(tmpwepstr);
 		if(weps[i] == 0) break;

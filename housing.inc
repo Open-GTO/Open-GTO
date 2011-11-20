@@ -402,7 +402,7 @@ stock DeleteRenter(playerid)
 stock housing_OnPlayerCommandText(playerid,text[]) 
 {
 	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,' '));
+	cmd = strcharsplit(text, idx,' ');
 
 	if(!strcmp(cmd,"/ganghouses",true))
 		return gang_Houses(playerid);

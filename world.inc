@@ -34,7 +34,7 @@ public WorldSave(necessarily) // save all
 	}
 	if(LastWorldSave != 1) return 0;
 nee:
-	new starttime = Now();
+	new starttime = gettime();
 	foreach(Player,id)
 	{
 		if(!IsPlayerRegistered(id)) continue;
@@ -72,7 +72,7 @@ nee:
 	RaceSaveScores();
 	DeathmatchSaveScores();
 	//
-	GameMSG("World save complete! Time taken: %s.",ConvertSeconds(Now() - starttime));
+	GameMSG("World save complete! Time taken: %d seconds.",(gettime() - starttime));
 	return 1;
 }
 

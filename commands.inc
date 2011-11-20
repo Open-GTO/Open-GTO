@@ -14,7 +14,7 @@
 stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 {
 	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,' '));
+	cmd = strcharsplit(text, idx,' ');
 	
 	if(!strcmp(cmd, "/sound", true))
 	{

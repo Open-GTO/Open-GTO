@@ -18,7 +18,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 {
 	if(!IsPlayerMod(playerid)) return 0;
 	new cmd[20],idx;	
-	set(cmd,strcharsplit(text, idx,' '));
+	cmd = strcharsplit(text, idx,' ');
 	
 	if(!strcmp(cmd, "/cmdlist", true))
 	{

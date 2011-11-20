@@ -60,7 +60,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 {
 	if(!IsPlayerRconAdmin(playerid)) return 0;
 	new cmd[20],idx;
-	set(cmd,strcharsplit(text, idx,' '));
+	cmd = strcharsplit(text, idx,' ');
 	
 	if(!strcmp(cmd,"/cmdlist",true))
 	{
@@ -378,7 +378,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 			return SendClientMessage(playerid,COLOUR_WHITE,"Некорректный ввод, '/setvip id dd.mm.yyyy'");
 		
 		new string[MAX_STRING];
-		set(string,strcharsplit(text,idx,' '));
+		string = strcharsplit(text,idx,' ');
 		
 		if(strlen(string) < 10)
 			return SendClientMessage(playerid,COLOUR_WHITE,"Некорректный ввод, '/setvip id dd.mm.yyyy'");
