@@ -228,7 +228,7 @@ stock IsNumeric(const string[])
 	{
 		switch(string[i])
 		{
-			case 0..9: return 0;
+			case '0'..'9': return 0;
 		}
 	}
 	return 1;
