@@ -134,7 +134,7 @@ stock trucker_Start(playerid)
 	);
     SendClientMessage(playerid,COLOUR_YELLOW,"ХраП: Бери груз, езжай на чекпоинт, доставь туда груз вовремя и получишь бабки + опыт");
 	new string[MAX_STRING];
-    format(string,sizeof(string),"ХраП: %s взял миссию по доставке груза",oGetPlayerName(playerid));
+    format(string,sizeof(string),"ХраП: %s(%d) взял миссию по доставке груза",oGetPlayerName(playerid),playerid);
     foreach(Player,i)
     {
         if(i != playerid)
@@ -151,9 +151,15 @@ stock trucker_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 		case 0:
 		{
 			if(GetPVarInt(playerid,"trucker_RunnerMissionTime") > 0)
-				SendClientMessage(playerid,COLOUR_RED,"Пока никому ничего не нужно.");
+			{
+				new string[MAX_STRING];
+				format(string,sizeof(string),"Пока никому ничего не нужно. приходите через %d секунд",GetPVarInt(playerid,"trucker_RunnerMissionTime"));
+				SendClientMessage(playerid,COLOUR_RED,string);
+			}
 			else
+			{
 				trucker_Start(playerid);
+			}
 		}
 		case trucker_ID:
 		{
@@ -169,7 +175,7 @@ stock trucker_OnPlayerEnterCheckpoint(playerid)
 {
 	if(trucker_Enabled != 1) return 1;
 	new vehicleid = GetPlayerVehicleID(playerid);
-	if(GetPVarInt(playerid,"trucker_Driver") == 1&& IsVehicleIsRunner(vehicleid))
+	if(GetPVarInt(playerid,"trucker_Driver") == 1 && IsVehicleIsRunner(vehicleid))
 	{
 	    if(!IsTrailerAttachedToVehicle(vehicleid)) return 1;
 		oGivePlayerMoney(playerid,10000,1);
@@ -229,14 +235,12 @@ stock trucker_Stop(playerid)
 	SetPVarInt(playerid,"trucker_RunnerMissionTime",trucker_RunnerMissionTime);
 }
 
-forward trucker_RunnerTimer();
-public trucker_RunnerTimer()
+stock trucker_RunnerTimer()
 {
-	new buf;
 	foreach(Player,playerid)
 	{
-		if((buf = GetPVarInt(playerid,"trucker_RunnerMissionTime")) > 0)
-			SetPVarInt(playerid,"trucker_RunnerMissionTime",buf - 1000);
+		if(GetPVarInt(playerid,"trucker_RunnerMissionTime") > 0)
+			GivePVarInt(playerid,"trucker_RunnerMissionTime",-1);
 	}
 }
 
@@ -251,8 +255,7 @@ stock IsVehicleIsRunner(vehicleid)
 
 stock GetTrailerType(vehicleid)
 {
-	new model = GetVehicleModel( GetVehicleTrailer(vehicleid) );
-	switch(model)
+	switch( GetVehicleModel( GetVehicleTrailer(vehicleid) ) )
 	{
 		case 435,450,591: return TRAILER_TYPE_NORMAL;
 		case 584: return TRAILER_TYPE_PETROL;

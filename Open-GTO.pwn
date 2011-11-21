@@ -163,6 +163,8 @@ public OnGameModeInit()
 	// services
 	fastfood_OnGameModeInit();
 	bar_OnGameModeInit();
+	// streamers
+	mapicon_OnGameModeInit();
 	//
 	level_OnGameModeInit();
     antiidle_OnGameModeInit();

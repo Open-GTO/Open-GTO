@@ -25,12 +25,19 @@ static MapIcons[MAX_ICONS][info_MapIcon];
 static bool:MapIconsShowed[MAX_PLAYERS][MAX_ICONS];
 static SlotIcons[MAX_PLAYERS][MAX_SHOWED_ICONS char];
 
+stock mapicon_OnGameModeInit()
+{
+	SetTimer("MapIcons_Streaming",1000,1);
+	GameMSG("(streamers)Mapicon streamer init.");
+	return 1;
+}
+
 stock CreateStreamMapIcon( markertype, Float:X, Float:Y, Float:Z )
 {
 	new icon_id = GetLastMapIconSlot();
 	if(icon_id == 0)
 	{
-		print(" оличество иконок достигло максимума!("#MAX_ICONS")");
+		GameMSG(" оличество иконок достигло максимума!("#MAX_ICONS")");
 		return 0;
 	}
 	MapIcons[icon_id][icon_type] = markertype;
@@ -78,7 +85,8 @@ stock UpdateStreamMapIcon( icon_id )
 	}
 }
 
-stock MapIcons_Streaming()
+forward MapIcons_Streaming();
+public MapIcons_Streaming()
 {
 	foreach(Player,playerid)
 	{
@@ -94,7 +102,7 @@ stock MapIcons_Streaming()
 				
 				RemovePlayerMapIcon(playerid,slot);
 				MapIconsShowed[playerid][icon_id] = false;
-				SetPVarInt(playerid,"IconsShowed",GetPVarInt(playerid,"IconsShowed") - 1);
+				GivePVarInt(playerid,"IconsShowed",-1);
 				continue;
 			}
 			
@@ -108,7 +116,7 @@ stock MapIcons_Streaming()
 				SlotIcons[playerid]{slot} = icon_id;
 				SetPlayerMapIcon(playerid,slot,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z],MapIcons[icon_id][icon_type],0,MAPICON_LOCAL);
 				MapIconsShowed[playerid][icon_id] = true;
-				SetPVarInt(playerid,"IconsShowed",GetPVarInt(playerid,"IconsShowed") + 1);
+				GivePVarInt(playerid,"IconsShowed",1);
 			}
 		}
 	}
