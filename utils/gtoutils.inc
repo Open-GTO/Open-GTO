@@ -224,11 +224,12 @@ stock StringCharCheck(string[MAX_STRING])
 
 stock IsNumeric(const string[])
 {
-	for (new i = 0, j = strlen(string); i < j; i++)
+	for (new i=strlen(string)-1;i>=0;i--)
 	{
 		switch(string[i])
 		{
-			case '0'..'9': return 0;
+			case 0..9: continue;
+			default: return 0;
 		}
 	}
 	return 1;
