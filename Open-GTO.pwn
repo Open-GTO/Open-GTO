@@ -65,6 +65,7 @@ Date start Open-GTO: 	5 November 2009
 #include "admin\admin_commands_sys"
 #include "admin\adm_commands"
 #include "admin\mod_commands"
+#include "missions"
 #include "missions\trucker"
 #include "protections\antiidle"
 #include "protections\antirconhack"
@@ -159,12 +160,12 @@ public OnGameModeInit()
 	interior_OnGameModeInit();
 	bank_OnGameModeInit();
 	fights_OnGameModeInit();
+	// missions
+	mission_OnGameModeInit();
     trucker_OnGameModeInit();
 	// services
 	fastfood_OnGameModeInit();
 	bar_OnGameModeInit();
-	// streamers
-	mapicon_OnGameModeInit();
 	//
 	level_OnGameModeInit();
     antiidle_OnGameModeInit();
@@ -624,7 +625,11 @@ public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	}
 	if( PRESSED( KEY_SUBMISSION ) )
 	{
-		if( IsPlayerInAnyVehicle(playerid) ) trucker_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		new vehicleid = GetPlayerVehicleID(playerid);
+		if( vehicleid != 0 && IsVehicleIsRunner(vehicleid) )
+		{
+			trucker_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+		}
 		return 1;
 	}
 	return 1;

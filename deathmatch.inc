@@ -447,7 +447,7 @@ stock RegisterDM(name[])
 	if (DMCount >= MAX_DM) return INVALID_DM_ID;
 	DMCount++;
 	new dmid = DMCount;
-	DeathmatchStats[dmid][dm_questid] = RegisterQuest(name);
+	DeathmatchStats[dmid][dm_questid] = RegisterQuest();
 	if (DeathmatchStats[dmid][dm_questid] == INVALID_QUEST_ID)
 	{
 		DMCount--;

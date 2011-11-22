@@ -57,12 +57,7 @@ stock GetPlayerGangName(playerid)
 }
 #define SetPlayerGangName(%0,%1) SetPVarString(%0,"GangName",%1)
 
-enum Quest_Stats {
-	Quest_Name[MAX_NAME]
-}
-
 new PlayerQuest[MAX_PLAYERS]; // holds id of quest player is currently doing
-new Quests[MAX_QUESTS][Quest_Stats]; // table of all registered quests
 new QuestCount;
 
 new PlayerStartMoney = PLAYER_START_MONEY;
@@ -333,17 +328,14 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 
 // needs to be ran by a timer
 // sync player hp/money and check for mismatch
-stock SyncPlayers()
+stock SyncPlayers(playerid)
 {
-	foreach(Player,playerid)
-	{
-		CheckPlayerKick(playerid);
-		if(GetPVarInt(playerid,"Spawned") == 0) continue; // если игрок мертв, то защиты не срабатывают
-		SyncMoney(playerid);
-		SyncHealth(playerid);
-		JailPlayer(playerid);
-		CheckPing(playerid);
-	}
+	CheckPlayerKick(playerid);
+	if(GetPVarInt(playerid,"Spawned") == 0) return 0; // если игрок мертв, то защиты не срабатывают
+	SyncMoney(playerid);
+	SyncHealth(playerid);
+	JailPlayer(playerid);
+	CheckPing(playerid);
 	return 1;
 }
 
@@ -432,19 +424,17 @@ stock IsPlayerRegistered(playerid)
 	return true;
 }
 
-stock RegisterQuest(name[])
+stock RegisterQuest()
 {
 	if (QuestCount >= MAX_QUESTS) return INVALID_QUEST_ID;
 	QuestCount++;
-	new questid = QuestCount;
-	set(Quests[questid][Quest_Name],name);
-	return questid;
+	return QuestCount;
 }
 
 stock ResetQuest(playerid)
 {
 	oDisablePlayerCheckpoint(playerid);
-	PlayerQuest[playerid] = 0;
+	PlayerQuest[playerid] = INVALID_QUEST_ID;
 }
 
 stock oGetPlayerName(playerid)
@@ -465,6 +455,7 @@ stock PlayerSave(playerid)
 stock CreatePlayer(playerid)
 {
 	oSetPlayerMoney(playerid,PlayerStartMoney);
+	SetPlayerLevel(playerid,1);
 	SetPlayerXP(playerid,0);
 	ResetPlayerWeapons(playerid);
 	new bullets = 100;

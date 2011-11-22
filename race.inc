@@ -460,7 +460,7 @@ stock RegisterRace(name[])
 	RacesCount++;
 	if (RacesCount >= MAX_RACES) return INVALID_RACE_ID;
 	new raceid = RacesCount;
-	RaceStats[raceid][race_questid] = RegisterQuest(name);
+	RaceStats[raceid][race_questid] = RegisterQuest();
 	if (RaceStats[raceid][race_questid] == INVALID_RACE_ID)
 	{
 		RacesCount--;

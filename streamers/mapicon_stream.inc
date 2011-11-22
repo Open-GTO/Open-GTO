@@ -25,13 +25,6 @@ static MapIcons[MAX_ICONS][info_MapIcon];
 static bool:MapIconsShowed[MAX_PLAYERS][MAX_ICONS];
 static SlotIcons[MAX_PLAYERS][MAX_SHOWED_ICONS char];
 
-stock mapicon_OnGameModeInit()
-{
-	SetTimer("MapIcons_Streaming",1000,1);
-	GameMSG("(streamers)Mapicon streamer init.");
-	return 1;
-}
-
 stock CreateStreamMapIcon( markertype, Float:X, Float:Y, Float:Z )
 {
 	new icon_id = GetLastMapIconSlot();
@@ -85,39 +78,35 @@ stock UpdateStreamMapIcon( icon_id )
 	}
 }
 
-forward MapIcons_Streaming();
-public MapIcons_Streaming()
+stock MapIcons_Streaming(playerid)
 {
-	foreach(Player,playerid)
+	for( new icon_id=1;icon_id<MAX_ICONS;icon_id++ )
 	{
-		for( new icon_id=1;icon_id<MAX_ICONS;icon_id++ )
+		if( !IsPlayerInRangeOfPoint(playerid,MAP_ICON_STREAM_DISTANCE,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z])
+			&& IsValidMapIcon(icon_id)
+			&& MapIconsShowed[playerid][icon_id] == true
+		) // если игрок не в зоне отображения иконки, но иконка ототбражается
 		{
-			if( !IsPlayerInRangeOfPoint(playerid,MAP_ICON_STREAM_DISTANCE,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z])
-				&& IsValidMapIcon(icon_id)
-				&& MapIconsShowed[playerid][icon_id] == true
-			) // если игрок не в зоне отображения иконки, но иконка ототбражается
-			{
-				new slot = GetIconSlot(playerid,icon_id);
-				SlotIcons[playerid]{slot} = 0;
-				
-				RemovePlayerMapIcon(playerid,slot);
-				MapIconsShowed[playerid][icon_id] = false;
-				GivePVarInt(playerid,"IconsShowed",-1);
-				continue;
-			}
+			new slot = GetIconSlot(playerid,icon_id);
+			SlotIcons[playerid]{slot} = 0;
 			
-			if(	MapIconsShowed[playerid][icon_id] == true || !IsValidMapIcon(icon_id) || GetPVarInt(playerid,"IconsShowed") > MAX_SHOWED_ICONS ) continue; // если иконка показана или иконки нет
-			
-			if( IsPlayerInRangeOfPoint(playerid,MAP_ICON_STREAM_DISTANCE,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z]) ) // если игрок в зоне отображения иконки
-			{
-				update_House_IconType(playerid,icon_id);
-				update_Business_IconType(playerid,icon_id);
-				new slot = GetLastRealMapIconSlot(playerid);
-				SlotIcons[playerid]{slot} = icon_id;
-				SetPlayerMapIcon(playerid,slot,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z],MapIcons[icon_id][icon_type],0,MAPICON_LOCAL);
-				MapIconsShowed[playerid][icon_id] = true;
-				GivePVarInt(playerid,"IconsShowed",1);
-			}
+			RemovePlayerMapIcon(playerid,slot);
+			MapIconsShowed[playerid][icon_id] = false;
+			GivePVarInt(playerid,"IconsShowed",-1);
+			continue;
+		}
+		
+		if(	MapIconsShowed[playerid][icon_id] == true || !IsValidMapIcon(icon_id) || GetPVarInt(playerid,"IconsShowed") > MAX_SHOWED_ICONS ) continue; // если иконка показана или иконки нет
+		
+		if( IsPlayerInRangeOfPoint(playerid,MAP_ICON_STREAM_DISTANCE,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z]) ) // если игрок в зоне отображения иконки
+		{
+			update_House_IconType(playerid,icon_id);
+			update_Business_IconType(playerid,icon_id);
+			new slot = GetLastRealMapIconSlot(playerid);
+			SlotIcons[playerid]{slot} = icon_id;
+			SetPlayerMapIcon(playerid,slot,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z],MapIcons[icon_id][icon_type],0,MAPICON_LOCAL);
+			MapIconsShowed[playerid][icon_id] = true;
+			GivePVarInt(playerid,"IconsShowed",1);
 		}
 	}
 }

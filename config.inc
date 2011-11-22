@@ -132,8 +132,11 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define MAX_PASS_LEN				40
 // МИССИИ
 	// trucker
-	#define TRUCKER_GIVE_XP_RATE	20 // кол-во опыта за завоз, формула: ( (GetPlayerLevel(playerid)+1) * 2 )^2 * trucker_GIVE_XP_RATE
-	#define TRUCKER_RUNNER_MISSION_TIME 300 // время перерыва между миссиями, в секундах
+	#define TRUCKER_XP_RATE					20 // кол-во опыта за завоз, формула: ( (GetPlayerLevel(playerid)+1) * 2 )^2 * trucker_GIVE_XP_RATE
+	#define TRUCKER_MONEY_RATE				100
+	#define TRUCKER_MISSION_TIME			300 // время дающееся на прохождение миссии
+	#define TRUCKER_RUNNER_MISSION_TIME		300 // время перерыва между миссиями, в секундах
+	#define TRUCKER_CAR_SPAWN_TIME			300
 	//
 	
 //

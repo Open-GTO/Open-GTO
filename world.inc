@@ -51,7 +51,7 @@ nee:
 	vehicles_SaveConfig();
 	groundhold_SaveConfig();
 	groundhold_SaveAll();
-	trucker_SaveConfig();
+	mission_SaveConfig();
 	// systems
 	level_SaveConfig();
 	health_SaveConfig();
@@ -113,11 +113,15 @@ stock SpawnWorld() // run at startup to spawn world
 forward OneSecTimer();
 public OneSecTimer()
 {
+	foreach (Player,playerid)
+	{
+		MapIcons_Streaming(playerid);
+		trucker_RunnerTimer(playerid);
+		SyncPlayers(playerid);
+	}
+	
 	CheckDM();
 	CheckRace();
-	SyncPlayers();
-	MapIcons_Streaming();
-	trucker_RunnerTimer();
 }
 
 forward OneMinuteTimer();
