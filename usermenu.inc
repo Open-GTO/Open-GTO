@@ -147,6 +147,35 @@ stock show_Businesses_Menu(playerid)
 		"Назад","Выход"
 	);
 }
+
+stock show_Setting_Menu(playerid)
+{
+	return ShowPlayerDialog(playerid,settings_menu_DialogID,DIALOG_STYLE_LIST,
+		"Мои настройки",
+		"Сохранить аккаунт\n\
+		Изменить ник\n\
+		Изменить пароль\n",
+		"Выбрать","Назад"
+	);
+}
+
+stock show_ChangeNick_Menu(playerid)
+{
+	return ShowPlayerDialog(playerid,changenick_menu_DialogID,DIALOG_STYLE_INPUT,
+		"Мои настройки",
+		"Введите желаемый ник",
+		"ОК","Назад"
+	);
+}
+
+stock show_ChangePass_Menu(playerid)
+{
+	return ShowPlayerDialog(playerid,changepass_menu_DialogID,DIALOG_STYLE_INPUT,
+		"Мои настройки",
+		"Введите желаемый пароль",
+		"ОК","Назад"
+	);
+}
 /*
 stock usermenu_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
@@ -220,7 +249,8 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				}
 				case 4: // Выбросить оружие
 				{
-					CheckPlayerLevel(playerid);
+					//DropAmmo(playerid);
+					ResetPlayerWeapons(playerid);
 					return show_User_Menu_Dialog(playerid,"Выбросить оружие","Вы добровольно избавились от всего оружия.");
 				}
 				case 5: // Место спавна
@@ -268,8 +298,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				}
 				case 9: // Настройки
 				{
-					show_User_Menu(playerid);
-					return 1;
+					return show_Setting_Menu(playerid);
 				}
 				case 10: // Версия
 				{
@@ -383,6 +412,123 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				}
 				count++;
 			}
+			return 1;
+		}
+		case settings_menu_DialogID:
+		{
+			if(!response)
+				return show_User_Menu(playerid);
+			
+			switch(listitem)
+			{
+				case 0: // Сохранить аккаунт
+				{
+					PlayerSave(playerid);
+					AccountSave(playerid);
+					show_User_Menu_Dialog(playerid,"Сохранение аккаунта",lang_texts[1][45]);
+					return 1;
+				}
+				case 1: // Изменить ник
+				{
+					return show_ChangeNick_Menu(playerid);
+				}
+				case 2: // Изменить пароль
+				{
+					return show_ChangePass_Menu(playerid);
+				}
+			}
+			return 1;
+		}
+		case changenick_menu_DialogID:
+		{
+			if(!response)
+				return show_User_Menu(playerid);
+			
+			new string[MAX_STRING];
+			if(oGetPlayerMoney(playerid) < CHANGE_NICK_COST)
+			{
+				format(string,sizeof(string),lang_texts[1][36],CHANGE_NICK_COST);
+				return show_User_Menu_Dialog(playerid,"Изменение ника",string);
+			}
+			new Account_NewName[MAX_PLAYER_NAME],
+				Account_LastName[MAX_PLAYER_NAME];
+			set(Account_LastName,oGetPlayerName(playerid));
+			set(Account_NewName,inputtext);
+			if(strlen(Account_NewName) <= MIN_NICK_LEN)
+			{
+				format(string,sizeof(string),lang_texts[1][37],MIN_NICK_LEN);
+				return show_User_Menu_Dialog(playerid,"Изменение ника",string);
+			}
+			
+			format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_NewName);
+			// если файл есть, то выходим сразу-же
+			if(ini_Exist(string))
+				return show_User_Menu_Dialog(playerid,"Изменение ника",lang_texts[1][9]);
+			// проверим ник
+			if(!NameCharCheck(Account_NewName))
+			{
+				format(string,sizeof(string),lang_texts[1][9],ALLOWED_NICK_SYMBOLS_STR);
+				return show_User_Menu_Dialog(playerid,"Изменение ника",string);
+			}
+			// переименовываем
+			if(SetPlayerName(playerid,Account_NewName) != 1)
+			{
+				format(string,sizeof(string),lang_texts[1][9],ALLOWED_NICK_SYMBOLS_STR);
+				return show_User_Menu_Dialog(playerid,"Изменение ника",string);
+			}
+			
+			new gangid = GetPVarInt(playerid,"GangID");
+			if(gangid != 0)
+			{
+				gang_RenameMember(gangid,Account_LastName,Account_NewName);
+			}
+			
+			housing_RenameOwner(Account_LastName,Account_NewName);
+			business_RenameOwner(Account_LastName,Account_NewName);
+			
+			races_RenameBestPlayer(Account_LastName,Account_NewName);
+			dm_RenameBestPlayer(Account_LastName,Account_NewName);
+			
+			PlayerSave(playerid);
+			AccountSave(playerid);
+			
+			format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_LastName);
+			if(ini_Exist(string)) ini_Remov(string);
+			format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,PlayerDB,Account_LastName);
+			if(ini_Exist(string)) ini_Remov(string);
+			
+			oGivePlayerMoney(playerid,-CHANGE_NICK_COST,1);
+			
+			format(string,sizeof(string),lang_texts[1][38],Account_LastName,Account_NewName);
+			show_User_Menu_Dialog(playerid,"Изменение ника",string);
+			return 1;
+		}
+		case changepass_menu_DialogID:
+		{
+			if(!response)
+				return show_User_Menu(playerid);
+			
+			new string[MAX_STRING];
+			if(oGetPlayerMoney(playerid) < CHANGE_PASS_COST)
+			{
+				format(string,sizeof(string),lang_texts[1][35],CHANGE_PASS_COST);
+				return show_User_Menu_Dialog(playerid,"Изменение пароля",string);
+			}
+			new pass[MAX_STRING];
+			set(pass,inputtext);
+			if(MAX_PASS_LEN < strlen(pass) < MIN_PASS_LEN)
+			{
+				format(string,sizeof(string),lang_texts[1][13],MIN_PASS_LEN,MAX_PASS_LEN);
+				return show_User_Menu_Dialog(playerid,"Изменение пароля",string);
+			}
+			format(string,sizeof(string),lang_texts[1][34],pass);
+			show_User_Menu_Dialog(playerid,"Изменение пароля",string);
+			SetPVarString(playerid,"Password",pass);
+		#if defined USE_PASSWORD_ENCRYPT
+			encrypt(pass);
+		#endif
+			AccountSave(playerid);
+			oGivePlayerMoney(playerid,-CHANGE_PASS_COST,1);
 			return 1;
 		}
 	}

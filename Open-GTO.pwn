@@ -282,7 +282,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			fights_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
-		case user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID, spawnselect_menu_DialogID:
+		case user_menu_DialogID, user_menu_Return_DialogID, vehicle_menu_DialogID, spawnselect_menu_DialogID,
+			settings_menu_DialogID, changenick_menu_DialogID, changepass_menu_DialogID:
 		{
 			usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
@@ -440,11 +441,6 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	command_register(cmdtext,"/handsup",8,commands);
 	command_register(cmdtext,"/piss",5,commands);
 	command_register(cmdtext,"/smoke",6,commands);
-	
-	// account
-	command_register(cmdtext,"/changepass",11,account);
-	command_register(cmdtext,"/changenick",11,account);
-	command_register(cmdtext,"/savechar",9,account);
 	
 	// gangs
 	command_register(cmdtext,"/g",2,gang);
