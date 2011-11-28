@@ -315,7 +315,7 @@ stock incorrectCmdAttempt ( string[] )
 
 #define CHAT_STR_SIZE           128 // макс кол-во символов в сообщении чата
 #define CHAT_HISTORY_SIZE       20 // кол-во сохраненных сообщений чата
-#define DUBLPOSTS_SIMILARITY    40 // допустимый % похожести, идущих подряд, сообщений игрока
+#define DUBLPOSTS_SIMILARITY    60 // допустимый % похожести, идущих подряд, сообщений игрока
 #define MAX_MESSAGES_PER_TIME   3 // максимум сообщений за, указанную ниже, единицу времени
 #define MAX_MESSAGES_TIME       3000 // мс. За указанное время должно быть не более MAX_FAST_MESSAGES сообщений игрока
 

@@ -14,7 +14,7 @@
 
 new AntiMoneyHackEnabled = ANTI_MONEY_HACK_ENABLED;
 #define GetPlayerTotalMoney(%0)	GetPVarInt(%0,"Money")+GetPVarInt(%0,"BankMoney")
-#define oGetPlayerMoney(%1) GetPVarInt(%1,"Money")
+#define oGetPlayerMoney(%0) GetPVarInt(%0,"Money")
 
 stock money_LoadConfig()
 {
@@ -54,8 +54,9 @@ stock SyncMoney(playerid)
 
 stock oSetPlayerMoney(playerid,money)
 {
+	GivePlayerMoney(playerid,(money - oGetPlayerMoney(playerid)));
 	SetPVarInt(playerid,"Money",money);
-	return GivePlayerMoney(playerid,(money - oGetPlayerMoney(playerid)));
+	return 1;
 }
 
 stock oGivePlayerMoney(playerid,money,showtext=0)
@@ -80,6 +81,5 @@ stock oGivePlayerMoney(playerid,money,showtext=0)
 			SendClientMessage(playerid, COLOUR_MONEY_BAD, string);
 		}
 	}
-	GivePVarInt(playerid,"Money",money);
-	return GivePlayerMoney(playerid,money);
+	return oSetPlayerMoney(playerid,oGetPlayerMoney(playerid) + money);
 }
