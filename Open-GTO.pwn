@@ -76,6 +76,7 @@ Date start Open-GTO: 	5 November 2009
 #include "click"
 #include "services\fastfood"
 #include "services\bar"
+#include "services\skinshop"
 #include "interior"
 #include "usermenu"
 // Races
@@ -166,6 +167,7 @@ public OnGameModeInit()
 	// services
 	fastfood_OnGameModeInit();
 	bar_OnGameModeInit();
+	ss_OnGameModeInit();
 	//
 	level_OnGameModeInit();
     antiidle_OnGameModeInit();
@@ -303,6 +305,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		case fastfood_DialogID:
 		{
 			fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
+		}
+		case SkinShop_DialogID, SkinShop_Buy_DialogID:
+		{
+			ss_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
 	}
 	return 1;
@@ -609,6 +615,10 @@ public OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 	if( PRESSED( KEY_FIRE ) )
 	{
 		if( GetPVarInt(playerid,"bar_Drinking") == 1 ) return bar_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
+	}
+	if( PRESSED ( KEY_USING ) || PRESSED ( KEY_FIRE ) || PRESSED ( KEY_HANDBRAKE ) )
+	{
+		if( IsPlayerAtSkinShop(playerid) ) return ss_OnPlayerKeyStateChange(playerid,newkeys,oldkeys);
 	}
 	if( PRESSED ( KEY_USING ) )
 	{

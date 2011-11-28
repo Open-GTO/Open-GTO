@@ -59,6 +59,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 // прочее
 #define MAX_GULPS			5 // максимальное количество глотков из бутылки
 
+#define SKINS_COST			0 // цена покупки скина
+
 #define GROUNDHOID_ENABLED	1 // точки прокачки
 
 #define BANK_PROFIT		2 // процент начисления прибыли за хранение в банке
@@ -168,6 +170,7 @@ enum {
 	weapons_Select_DialogID, weapons_Buy_DialogID,
 	bar_DialogID,
 	fastfood_DialogID,
+	SkinShop_DialogID, SkinShop_Buy_DialogID,
 }
 
 // прочее
