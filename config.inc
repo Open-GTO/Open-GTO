@@ -148,9 +148,6 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 // стартовые параметры игрока
 #define PLAYER_START_MONEY		1500 // кол-во стартовых денег
-#define PLAYER_START_WEAPON_1	WEAPON_COLT45 // ид первого стартового оружия
-#define PLAYER_START_WEAPON_2	0 // ид второго стартового оружия
-#define PLAYER_START_WEAPON_3	0 // ид третьего стартового оружия
 
 #define MAX_COUNTDOWN		5 // кол-во секунд для отсчёта гонок и дм
 #define KEY_USING			KEY_WALK // Кнопка 'Ходьба' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов

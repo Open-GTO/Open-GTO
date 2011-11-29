@@ -57,13 +57,14 @@ stock GetPlayerGangName(playerid)
 }
 #define SetPlayerGangName(%0,%1) SetPVarString(%0,"GangName",%1)
 
-new PlayerQuest[MAX_PLAYERS]; // holds id of quest player is currently doing
+#define GetPlayerQuestID(%0) GetPVarInt(%0,"PlayerQuest")
+#define SetPlayerQuestID(%0,%1) SetPVarInt(%0,"PlayerQuest",%1)
 new QuestCount;
 
+#define GetPlayerKickStatus(%0) GetPVarInt(%0,"KickStatus")
+#define SetPlayerKickStatus(%0,%1) SetPVarInt(%0,"KickStatus",%1)
+
 new PlayerStartMoney = PLAYER_START_MONEY;
-new PlayerStartWeapon1 = PLAYER_START_WEAPON_1;
-new PlayerStartWeapon2 = PLAYER_START_WEAPON_2;
-new PlayerStartWeapon3 = PLAYER_START_WEAPON_3;
 
 enum PlayerSpawnInfo {
 	playerspawn_level,
@@ -149,9 +150,9 @@ stock PlayerLoadConfig()
 	new file_player = ini_Open(ConfigDB);
 	ini_Get(file_player,"Player_DB",PlayerDB);
 	ini_GetInt(file_player,"Player_Start_Money",PlayerStartMoney);
-	ini_GetInt(file_player,"Player_Start_Weapon1",PlayerStartWeapon1);
-	ini_GetInt(file_player,"Player_Start_Weapon2",PlayerStartWeapon2);
-	ini_GetInt(file_player,"Player_Start_Weapon3",PlayerStartWeapon3);
+	new s_buf[MAX_STRING];
+	ini_Get(file_player,"Player_Start_Weapon",s_buf);
+	SetPSWFromDBString(s_buf);
 	ini_Close(file_player);
 	return 1;
 }
@@ -161,9 +162,7 @@ stock PlayerSaveConfig()
 	new file_player = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_Set(file_player,"Player_DB",PlayerDB);
 	ini_SetInt(file_player,"Player_Start_Money",PlayerStartMoney);
-	ini_SetInt(file_player,"Player_Start_Weapon1",PlayerStartWeapon1);
-	ini_SetInt(file_player,"Player_Start_Weapon2",PlayerStartWeapon2);
-	ini_SetInt(file_player,"Player_Start_Weapon3",PlayerStartWeapon3);
+	ini_Set(file_player,"Player_Start_Weapon",CreatePSWDBString());
 	ini_Close(file_player);
 	return 1;
 }
@@ -330,7 +329,6 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 // sync player hp/money and check for mismatch
 stock SyncPlayers(playerid)
 {
-	CheckPlayerKick(playerid);
 	if(GetPVarInt(playerid,"Spawned") == 0) return 0; // если игрок мертв, то защиты не срабатывают
 	SyncMoney(playerid);
 	SyncHealth(playerid);
@@ -339,39 +337,19 @@ stock SyncPlayers(playerid)
 	return 1;
 }
 
-// Check if any players have been marked to kick, and kicks them
-stock CheckPlayerKick(playerid)
-{
-	if (KickList[playerid] == 1) // if we wanna kick this player
-	{
-		GameTextForPlayer(playerid,"~r~Connection Lost.",999,5); //  send msg first
-		TogglePlayerControllable(playerid,0);
-		KickList[playerid]=2;
-	}
-	else if (KickList[playerid] >=2) // wait a second before doing the kicking (for msg to get through)
-	{
-		GameMSG("player: %s(%d): has been kicked",oGetPlayerName(playerid),playerid);
-		KickList[playerid] = 0;
-		Kick(playerid);
-		return;
-	}
-}
-
 stock KickPlayer(playerid,reason[])
 {
-	if(!IsPlayerConnected(playerid)) return 1;
+	if(!IsPlayerConnected(playerid)) return 0;
 	new string[MAX_STRING];
 	if(IsPlayerRconAdmin(playerid))
 	{
 		format(string,sizeof(string), lang_texts[9][4], reason);
 		SendClientMessage(playerid,COLOUR_YELLOW, string);
-		return 1;
+		return 0;
 	}
-	if(KickList[playerid] != 0) return 1;
-	KickList[playerid]++;
 	new playername[MAX_PLAYER_NAME];
 	GetPlayerName(playerid,playername,sizeof(playername));
-	if(strlen(reason) == 0)
+	if(!strlen(reason))
 	{
 		set(reason,"None");
 	}
@@ -379,13 +357,16 @@ stock KickPlayer(playerid,reason[])
 	SendClientMessage(playerid,COLOUR_RED, string);
 	format(string,sizeof(string),lang_texts[9][6],playername,reason);
 	SendClientMessageToAll(COLOUR_MISC, string);
+	GameTextForPlayer(playerid,"~r~Connection Lost.",1000,5); //  send msg first
+	TogglePlayerControllable(playerid,0);
+	Kick(playerid);
 	GameMSG("player: %s(%d): has been kicked. Reason: %s",playername,playerid,reason);
 	return 1;
 }
 
 stock GetRndPlayerSpawnByLevel(level)
 {
-	new spawnlevel=0,leveledspawns[PLAYERSPAWNS_SIZE+1],idx=0,spawnid;
+	new spawnlevel=0,leveledspawns[PLAYERSPAWNS_SIZE+1],idx=0;
 	for(new lookupid=0;lookupid<PLAYERSPAWNS_SIZE;lookupid++)
 	{
 		if((LeveledPlayerSpawns[lookupid][playerspawn_level] <= level) && (LeveledPlayerSpawns[lookupid][playerspawn_level] > spawnlevel))
@@ -401,15 +382,13 @@ stock GetRndPlayerSpawnByLevel(level)
 			idx++;
 		}
 	}
-	spawnid = (idx != 0) ? leveledspawns[random(idx)] : leveledspawns[0];
-	return spawnid;
+	return ((idx != 0) ? leveledspawns[random(idx)] : leveledspawns[0]);
 }
 
 stock player_ResetStats(playerid)
 {
 	DeletePVar(playerid,"PlayerRegistered");
 	oSetPlayerMoney(playerid,0);
-	KickList[playerid] = 0;
 	ResetQuest(playerid);
 	SetPlayerSkinModel(playerid,1);
 	SetPlayerFightStyle(playerid,4);
@@ -434,7 +413,7 @@ stock RegisterQuest()
 stock ResetQuest(playerid)
 {
 	oDisablePlayerCheckpoint(playerid);
-	PlayerQuest[playerid] = INVALID_QUEST_ID;
+	SetPlayerQuestID(playerid,INVALID_QUEST_ID);
 }
 
 stock oGetPlayerName(playerid)
@@ -458,10 +437,10 @@ stock CreatePlayer(playerid)
 	SetPlayerLevel(playerid,1);
 	SetPlayerXP(playerid,0);
 	ResetPlayerWeapons(playerid);
-	new bullets = 100;
-	if(PlayerStartWeapon1 != 0) oGivePlayerWeapon(playerid,PlayerStartWeapon1,bullets);
-	if(PlayerStartWeapon2 != 0) oGivePlayerWeapon(playerid,PlayerStartWeapon2,bullets);
-	if(PlayerStartWeapon3 != 0) oGivePlayerWeapon(playerid,PlayerStartWeapon3,bullets);
+	for (new i=0; i<sizeof(PlayerStartWeapon); i++)
+	{
+		oGivePlayerWeapon(playerid,PlayerStartWeapon[i][psw_id],PlayerStartWeapon[i][psw_bull]);
+	}
 	player_create_db_ini(playerid);
 	GameMSG("player: %s(%d): player_created successfully",oGetPlayerName(playerid),playerid);
 	return 1;

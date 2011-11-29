@@ -95,18 +95,13 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/kick",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN,text);
-		new receiverid = INVALID_PLAYER_ID;
-		receiverid = strval(strcharsplit(text, idx,' '));
+		new receiverid = strval(strcharsplit(text, idx,' '));
 		if(IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid) && !IsPlayerAdmin(playerid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
-		if(IsPlayerConnected(receiverid) == 0)
+		if(!IsPlayerConnected(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
-		new string[MAX_STRING];
-		format(string,sizeof(string),lang_texts[12][60],oGetPlayerName(receiverid),receiverid);
-		SendClientMessage(playerid,COLOUR_XP_GOOD,string);
-		format(string,sizeof(string),lang_texts[12][61],oGetPlayerName(receiverid),receiverid);
-		SendClientMessageToAll(COLOUR_WHITE,string);
-		Kick(receiverid);
+		
+		KickPlayer(receiverid,"");
 		return 1;
 	}
 	if(!strcmp(cmd,"/carresp",true))

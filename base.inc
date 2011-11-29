@@ -30,7 +30,6 @@ new RaceBaseDB[MAX_STRING] = GTO_FILES_FOLDER"Race/";
 new RaceRecordDB[MAX_STRING] = GTO_FILES_FOLDER"Race/Record/";
 
 new RealTime=0;
-new KickList[MAX_PLAYERS];
 new WorldTime;
 new nullstr[MAX_STRING];
 

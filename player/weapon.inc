@@ -13,16 +13,24 @@
 #pragma library weapon
 
 
-#define PLAYER_WEAPON_SLOTS 13//  drop weapons
+#define PLAYER_WEAPON_SLOTS 13
 enum PWeap {
 	pwid,
 	pbullets
 }
-new PlayerWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap]; // 0 - weaponid, 1 - ammo
+new PlayerWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap];
 new PlayerTempWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap];
 
 #define PLAYER_WEAPON_SKILLS 10
 new PlayerWeaponsSkills[MAX_PLAYERS][PLAYER_WEAPON_SKILLS];
+
+enum psw_Info {
+	psw_id,
+	psw_bull,
+}
+new PlayerStartWeapon[][psw_Info] = {
+	{WEAPON_COLT45,200}
+};
 
 stock weapon_OnPlayerDeath(playerid,killerid,reason)
 {
@@ -217,6 +225,30 @@ stock CreateWeaponSkillsDBString(playerid)
 	return wepstr;
 }
 //
+// парсит строку, устанавливая нужные значения
+stock SetPSWFromDBString(dbstring[])
+{
+	for(new i=0,idx=0;i<sizeof(PlayerStartWeapon);i++)
+	{
+		PlayerStartWeapon[i][psw_id] = strval(strcharsplit(dbstring,idx,'/'));
+		PlayerStartWeapon[i][psw_bull] = strval(strcharsplit(dbstring,idx,'|'));
+	}
+}
+// возвращает строку для сохранения оружия
+stock CreatePSWDBString()
+{
+	new wepstr[MAX_STRING],temp[MAX_STRING];
+	for (new i=0;i<sizeof(PlayerStartWeapon);i++)
+	{
+		valstr(temp,PlayerStartWeapon[i][psw_id]);
+		strins(wepstr, temp, strlen(wepstr));
+		wepstr[strlen(wepstr)] = '/';
+		valstr(temp,PlayerStartWeapon[i][psw_bull]);
+		strins(wepstr, temp, strlen(wepstr));
+		wepstr[strlen(wepstr)] = '|';
+	}
+	return wepstr;
+}
 
 // уничтожает всё 'всегдашнее' оружие
 stock DropAmmo(playerid)

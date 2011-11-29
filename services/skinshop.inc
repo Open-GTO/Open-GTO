@@ -40,7 +40,7 @@ stock ss_OnGameModeInit()
 	    CreatePickup(1275,23,SkinShops[id][Coord_X],SkinShops[id][Coord_Y],SkinShops[id][Coord_Z]);
 		CreatePickupText("Одежда",SkinShops[id][Coord_X],SkinShops[id][Coord_Y],SkinShops[id][Coord_Z]);
 	}
-	GameMSG(lang_texts[17][23]);
+	GameMSG(lang_texts[17][22]);
 	return 1;
 }
 

@@ -86,7 +86,7 @@ stock mission_OnGameModeInit()
 
 stock IsPlayerInMission(playerid,missionid)
 {
-	if(PlayerQuest[playerid] == mission_questid[missionid]) return 1;
+	if(GetPlayerQuestID(playerid) == mission_questid[missionid]) return 1;
 	return 0;
 }
 

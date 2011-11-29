@@ -129,7 +129,7 @@ stock trucker_Start(playerid)
 			return 0;
 		}
 	}
-	PlayerQuest[playerid] = mission_questid[mission_trucker];
+	SetPlayerQuestID(playerid,mission_questid[mission_trucker]);
 	SetPVarInt(playerid,"trucker_Timer",
 		SetTimerEx("trucker_EndMission",TRUCKER_MISSION_TIME * 1000,0,"d",playerid)
 	);

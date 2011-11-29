@@ -368,7 +368,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			format(string,sizeof(string),lang_texts[12][61],oGetPlayerName(receiverid),receiverid,oGetPlayerName(playerid),inputtext);
 			SendClientMessageToAll(COLOUR_WHITE,string);
-			Kick(receiverid);
+			KickPlayer(receiverid,"");
 			print(string);
 		}
 		if(ListResponseType[playerid] == 4)
