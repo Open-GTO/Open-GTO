@@ -35,33 +35,6 @@ enum GangInfo {
 }
 new Gangs[MAX_GANGS][GangInfo];
 
-enum ColourInfo 
-{
-	colour_name[MAX_NAME],
-	colour_code
-}
-#define COLOURS_SIZE 18
-new GangColours[COLOURS_SIZE][ColourInfo] = {
-{"Red",			COLOUR_RED},
-{"LightRed",	COLOUR_LIGHTRED},
-{"Crimson",		COLOUR_CRIMSON},
-{"Grey",		COLOUR_GREY},
-{"Orange",		COLOUR_ORANGE},
-{"Yellow",		COLOUR_YELLOW},
-{"Green",		COLOUR_GREEN},
-{"LightGreen",	COLOUR_LIGHTGREEN},
-{"LimeGreen",	COLOUR_LIMEGREEN},
-{"Aqua",		COLOUR_AQUA},
-{"Blue",		COLOUR_BLUE},
-{"LightBlue",	COLOUR_LIGHTBLUE},
-{"Flblue",		COLOUR_FLBLUE},
-{"Magenta",		COLOUR_MAGENTA},
-{"Gold",		COLOUR_GOLD},
-{"White",		COLOUR_WHITE},
-{"Pink",		COLOUR_PINK},
-{"Purple",		COLOUR_PURPLE}
-};
-
 stock GangLoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 0;
@@ -198,9 +171,9 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
   		if(!strcmp(cmd,"colours",true))
   		{
    			SendClientMessage(playerid,COLOUR_GREEN,lang_texts[6][22]);
-   			for(new i=0;i<COLOURS_SIZE;i++)
+   			for(new i=0;i<sizeof(colors_Array);i++)
    			{
-    			SendClientMessage(playerid,GangColours[i][colour_code],GangColours[i][colour_name]);
+    			SendClientMessage(playerid,colors_Array[i][color_code],colors_Array[i][color_name]);
    			}
    			return 1;
   		}
@@ -269,10 +242,10 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
                 SendClientMessage(playerid,COLOUR_RED,lang_texts[6][36]);
     			return 1;
          	}
-         	for(new colourid=0;colourid<COLOURS_SIZE;colourid++)
+         	for(new colourid=0;colourid<sizeof(colors_Array);colourid++)
          	{
-             	if(strcmp(colourname,GangColours[colourid][colour_name],true)) continue;
-				gangcolour = GangColours[colourid][colour_code];
+             	if(strcmp(colourname,colors_Array[colourid][color_name],true)) continue;
+				gangcolour = colors_Array[colourid][color_code];
          	}
          	if(gangcolour == 255)
          	{
@@ -403,10 +376,10 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
    			new colourname[MAX_NAME],gangcolour;
    			colourname = strcharsplit(text, idx,' ');
    			if(!strlen(colourname)) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][66]);
-        	for(new colourid=0;colourid<COLOURS_SIZE;colourid++)
+        	for(new colourid=0;colourid<sizeof(colors_Array);colourid++)
          	{
-            	if(strcmp(colourname,GangColours[colourid][colour_name],true)) continue;
-				gangcolour = GangColours[colourid][colour_code];
+            	if(strcmp(colourname,colors_Array[colourid][color_name],true)) continue;
+				gangcolour = colors_Array[colourid][color_code];
          	}
          	if(gangcolour == 0)
          	{

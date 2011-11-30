@@ -298,3 +298,29 @@ new vip_Vehicle[][vipveh_Info] = {
 };
 new vip_LastVehicleID;
 // ************************* ********* *********************************
+enum ColorInfo {
+	color_name[MAX_NAME],
+	color_code,
+	color_vehicle,
+}
+
+new colors_Array[][ColorInfo] = {
+	{"Red",			COLOUR_RED			,3},
+	{"LightRed",	COLOUR_LIGHTRED		,21},
+	{"Crimson",		COLOUR_CRIMSON		,151},
+	{"Grey",		COLOUR_GREY			,13},
+	{"Orange",		COLOUR_ORANGE		,6},
+	{"Yellow",		COLOUR_YELLOW		,6},
+	{"Green",		COLOUR_GREEN		,16},
+	{"LightGreen",	COLOUR_LIGHTGREEN	,144},
+	{"LimeGreen",	COLOUR_LIMEGREEN	,86},
+	{"Aqua",		COLOUR_AQUA			,26},
+	{"Blue",		COLOUR_BLUE			,2},
+	{"LightBlue",	COLOUR_LIGHTBLUE	,7},
+	{"Flblue",		COLOUR_FLBLUE		,106},
+	{"Magenta",		COLOUR_MAGENTA		,146},
+	{"Gold",		COLOUR_GOLD			,6},
+	{"White",		COLOUR_WHITE		,1},
+	{"Pink",		COLOUR_PINK			,126},
+	{"Purple",		COLOUR_PURPLE		,8}
+};

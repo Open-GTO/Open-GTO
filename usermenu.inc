@@ -63,7 +63,6 @@ stock show_Vehicle_Menu(playerid)
 	
 	strcat(string,"Перевернуть\n",sizeof(string));
 	strcat(string,"Заправить\n",sizeof(string));
-	strcat(string,"Изменить номер\n",sizeof(string));
 	strcat(string,"Изменить цвет\n",sizeof(string));
 	
 	if(lights == VEHICLE_PARAMS_ON) // фары
@@ -90,6 +89,20 @@ stock show_Vehicle_Menu(playerid)
 		"Меню транспорта",
 		string,
 		"ОК","Отмена"
+	);
+}
+
+stock show_ChangeColor_Menu(playerid)
+{
+	new string[32 * sizeof(colors_Array)];
+	for (new i=0;i<sizeof(colors_Array);i++)
+	{
+		format(string,sizeof(string),"%s{%06x}%s\n",string,colors_Array[i][color_code] >>> 8,colors_Array[i][color_name]);
+	}
+	return ShowPlayerDialog(playerid,vehicle_color_menu_DialogID,DIALOG_STYLE_LIST,
+		"Изменить цвет",
+		string,
+		"ОК","Назад"
 	);
 }
 
@@ -341,7 +354,9 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			{
 				case 0:// перевернуть
 				{
-					show_Vehicle_Menu(playerid);
+					new Float:float_tmp;
+					GetVehicleZAngle(vehicleid,float_tmp);
+					SetVehicleZAngle(vehicleid,float_tmp);
 					return 1;
 				}
 				case 1:// заправить
@@ -349,17 +364,11 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					show_Vehicle_Menu(playerid);
 					return 1;
 				}
-				case 2:// номер
+				case 2:// цвет
 				{
-					show_Vehicle_Menu(playerid);
-					return 1;
+					return show_ChangeColor_Menu(playerid);
 				}
-				case 3:// цвет
-				{
-					show_Vehicle_Menu(playerid);
-					return 1;
-				}
-				case 4:// фары
+				case 3:// фары
 				{
 					if(lights == VEHICLE_PARAMS_ON)
 						SetVehicleParamsEx(vehicleid,engine,VEHICLE_PARAMS_OFF,alarm,doors,bonnet,boot,objective);
@@ -367,7 +376,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						SetVehicleParamsEx(vehicleid,engine,VEHICLE_PARAMS_ON,alarm,doors,bonnet,boot,objective);
 					return 1;
 				}
-				case 5:// двигатель
+				case 4:// двигатель
 				{
 					if(engine == VEHICLE_PARAMS_ON)
 						SetVehicleParamsEx(vehicleid,VEHICLE_PARAMS_OFF,lights,alarm,doors,bonnet,boot,objective);
@@ -375,7 +384,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						SetVehicleParamsEx(vehicleid,VEHICLE_PARAMS_ON,lights,alarm,doors,bonnet,boot,objective);
 					return 1;
 				}
-				case 6:// капот
+				case 5:// капот
 				{
 					if(bonnet == VEHICLE_PARAMS_ON)
 						SetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,VEHICLE_PARAMS_OFF,boot,objective);
@@ -383,7 +392,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						SetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,VEHICLE_PARAMS_ON,boot,objective);
 					return 1;
 				}
-				case 7:// багажник
+				case 6:// багажник
 				{
 					if(boot == VEHICLE_PARAMS_ON)
 						SetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,VEHICLE_PARAMS_OFF,objective);
@@ -392,6 +401,15 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					return 1;
 				}
 			}
+			return 1;
+		}
+		case vehicle_color_menu_DialogID:
+		{
+			if(!response)
+				return show_Vehicle_Menu(playerid);
+			
+			new vehicleid = GetPlayerVehicleID(playerid);
+			ChangeVehicleColor(vehicleid, colors_Array[listitem][color_vehicle], colors_Array[listitem][color_vehicle]);
 			return 1;
 		}
 		case spawnselect_menu_DialogID:
