@@ -60,7 +60,6 @@ stock base_OnGameModeInit()
 {
 	BaseLoadConfig();
 	UsePlayerPedAnims();
-	AllowAdminTeleport(1);
 	ShowPlayerMarkers(1);
 	ShowNameTags(1);
 	ManualVehicleEngineAndLights();

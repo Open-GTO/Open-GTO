@@ -2,7 +2,7 @@
 Project Name:	San Andreas - Multiplayer: Open - Grand Theft Online (Open-GTO).
 
 Current version:	1.0.0 alpha
-SA-MP Versions:		0.3c
+SA-MP Versions:		0.3d
 
 Web site:	http://open-gto.ru/
 
@@ -745,3 +745,9 @@ public OnRconLoginAttempt(ip[], password[], success)
 	return 1;
 }
 
+public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+{
+	admin_OnPlayerClickMap(playerid, fX, fY, fZ);
+	player_OnPlayerClickMap(playerid, fX, fY, fZ);
+	return 1;
+}

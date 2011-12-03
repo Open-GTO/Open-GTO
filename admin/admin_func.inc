@@ -35,3 +35,12 @@ stock SendClientMessageToAdmins(senderid,text[])
 		return 0;
 	}
 }
+
+stock admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+{
+	if (!IsPlayerAdm(playerid)) return 0;
+	SetPlayerPos(playerid,fX,fY,fZ);
+	SetPlayerInterior(playerid, 0);
+	SetPlayerVirtualWorld(playerid, 0);
+	return 1;
+}

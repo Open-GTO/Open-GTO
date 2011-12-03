@@ -64,6 +64,9 @@ new QuestCount;
 #define GetPlayerKickStatus(%0) GetPVarInt(%0,"KickStatus")
 #define SetPlayerKickStatus(%0,%1) SetPVarInt(%0,"KickStatus",%1)
 
+#define AllowPlayerTeleport(%0,%1) SetPVarInt(%0,"AllowTeleport",%1)
+#define GetAllowPlayerTeleport(%0) GetPVarInt(%0,"AllowTeleport")
+
 new PlayerStartMoney = PLAYER_START_MONEY;
 
 enum PlayerSpawnInfo {
@@ -323,6 +326,15 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	//
 
 	return;
+}
+
+stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+{
+	if (GetAllowPlayerTeleport(playerid) != 1) return 0;
+	SetPlayerPos(playerid,fX,fY,fZ);
+	SetPlayerInterior(playerid, 0);
+	SetPlayerVirtualWorld(playerid, 0);
+	return 1;
 }
 
 // needs to be ran by a timer
