@@ -675,7 +675,7 @@ stock GangGiveXP(gangid,xpamount,giverid)
 		if(GetPlayerXP(GangMemberInfo[gangid][gangmember][member_playerid]) < MAX_XP) 
 		{
 			GivePlayerXP(GangMemberInfo[gangid][gangmember][member_playerid],giveamount,0);
-			format(string,sizeof(string),lang_texts[6][79],xpamount,oGetPlayerName(giverid));
+			format(string,sizeof(string),lang_texts[6][79],giveamount,oGetPlayerName(giverid));
 			SendClientMessage(GangMemberInfo[gangid][gangmember][member_playerid],COLOUR_XP_GOOD,string);
 			CheckPlayerLevel(GangMemberInfo[gangid][gangmember][member_playerid]);
 		} 
