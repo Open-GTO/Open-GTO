@@ -98,7 +98,7 @@ stock MapIcons_Streaming(playerid)
 		
 		if(	MapIconsShowed[playerid][icon_id] == true || !IsValidMapIcon(icon_id) || GetPVarInt(playerid,"IconsShowed") > MAX_SHOWED_ICONS ) continue; // если иконка показана или иконки нет
 		
-		if( IsPlayerInRangeOfPoint(playerid,MAP_ICON_STREAM_DISTANCE,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z]) ) // если игрок в зоне отображения иконки
+		if( IsPlayerInRangeOfPoint(playerid,MAP_ICON_STREAM_DISTANCE,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z]) && GetPlayerInterior(playerid) == 0 ) // если игрок в зоне отображения иконки
 		{
 			update_House_IconType(playerid,icon_id);
 			update_Business_IconType(playerid,icon_id);
