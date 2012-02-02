@@ -331,9 +331,19 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
 	if (GetAllowPlayerTeleport(playerid) != 1) return 0;
-	SetPlayerPos(playerid,fX,fY,fZ);
-	SetPlayerInterior(playerid, 0);
-	SetPlayerVirtualWorld(playerid, 0);
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if (vehicleid != -1)
+	{
+		SetVehiclePos(vehicleid,fX,fY,fZ);
+		LinkVehicleToInterior(vehicleid,0);
+		SetVehicleVirtualWorld(vehicleid,0);
+	}
+	else
+	{
+		SetPlayerPos(playerid,fX,fY,fZ);
+		SetPlayerInterior(playerid, 0);
+		SetPlayerVirtualWorld(playerid, 0);
+	}
 	return 1;
 }
 
