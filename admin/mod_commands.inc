@@ -24,7 +24,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		SendClientMessage(playerid, COLOUR_LIGHTGREEN, "M: '/carresp', '/remcar <ID>', '/kick <ID>'");
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, "M: '/cmdlist', '/about', '/mute <ID> <Time>', '/unmute <ID>', '/jail <ID>', '/unjail <ID>', '/plist'");
+		SendClientMessage(playerid, COLOUR_LIGHTGREEN, "M: '/cmdlist', '/about', '/mute <ID> <Time>', '/unmute <ID>', '/jail <ID>', '/unjail <ID>', '/plist', '/spec <ID>'");
 		return 1;
 	}
 	if(!strcmp(cmd,"/about",true))
@@ -71,10 +71,10 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(IsPlayerRconAdmin(receiverid))
-			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		if(!IsPlayerConnected(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
+		if(IsPlayerRconAdmin(receiverid))
+			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 
 		new string[MAX_STRING];
 		if(IsPlayerInAnyVehicle(receiverid))
@@ -155,8 +155,6 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		printf("SERVER : %s Has Been UNMuted by %s",oGetPlayerName(unmuteid),oGetPlayerName(playerid));
 		return 1;
 	}
-
-	//Внимание! - Посаженный в тюрьму или "заткнутый" - не сможет обойти это - ни выходом, ни самоубийством!
 	if(!strcmp(cmd,"/jail",true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
@@ -216,30 +214,29 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	if(!strcmp(cmd,"/spec",true))
 	{
-		new specid = strval(strcharsplit(text, idx,' '));
-		if(GetPlayerSpectating(playerid)) TogglePlayerSpectating(playerid,0);
+		new tmp[20];
+		tmp = strcharsplit(text, idx,' ');
+		if(GetPlayerSpectating(playerid) && strlen(tmp) == 0)
+		{
+			TogglePlayerSpectating(playerid,0);
+			SetPlayerSpecID(playerid,INVALID_PLAYER_ID);
+			SetPlayerSpectating(playerid,0);
+			return 1;
+		}
+		new specid = strval(tmp);
 		if(!IsPlayerConnected(specid) || specid == playerid)
-			return SendClientMessage(playerid,COLOUR_RED,"Вы не можете следить за несуществующими игроками");
+			return SendClientMessage(playerid,COLOUR_RED,"Вы не можете следить за несуществующими игроками или за собой.");
 		
 		SetPlayerSpecID(playerid,specid);
 		SetPlayerSpectating(playerid,1);
 		TogglePlayerSpectating(playerid,1);
-		SendClientMessage(playerid,COLOUR_BLUE,"Чтобы выключить спектатор, введите /spec-off");
+		SendClientMessage(playerid,COLOUR_BLUE,"Чтобы выключить слежку, введите /spec");
 		
-		if(IsPlayerInAnyVehicle(specid))
-			PlayerSpectateVehicle(playerid,GetPlayerVehicleID(specid));
+		new vehid = GetPlayerVehicleID(specid);
+		if(vehid != -1)
+			PlayerSpectateVehicle(playerid,vehid);
 		else
 			PlayerSpectatePlayer(playerid,specid);
-		return 1;
-	}
-	if(!strcmp(cmd,"/spec-off",true))
-	{
-		if(GetPlayerSpectating(playerid) == 0) return 1;
-		
-		SetPlayerInterior(playerid,0);
-		TogglePlayerSpectating(playerid,0);
-		SetPlayerSpecID(playerid,INVALID_PLAYER_ID);
-		SetPlayerSpectating(playerid,0);
 		return 1;
 	}
 	return 0;
