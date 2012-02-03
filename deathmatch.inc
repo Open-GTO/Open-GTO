@@ -929,11 +929,11 @@ stock SendPlayerCurrentDeathmatches(playerid)
 
 			if(DeathmatchStats[dmid][dm_playercount] >= Deathmatch[dmid][dm_minplayers])
 			{
-				format(string, sizeof(string),lang_texts[4][35],Deathmatch[dmid][dm_name],dmid,DeathmatchStats[dmid][dm_playercount],Deathmatch[dmid][dm_lineupdelay] - DeathmatchStats[dmid][dm_timer],GetDMStartZoneName(dmid),Deathmatch[dmid][dm_minlevel],Deathmatch[dmid][dm_cashentry]);
+				format(string, sizeof(string),lang_texts[4][35],Deathmatch[dmid][dm_name],dmid,Deathmatch[dmid][dm_lineupdelay] - DeathmatchStats[dmid][dm_timer],DeathmatchStats[dmid][dm_playercount],GetDMStartZoneName(dmid),Deathmatch[dmid][dm_minlevel],Deathmatch[dmid][dm_cashentry]);
 			}
 			else 
 			{
-				format(string, sizeof(string),lang_texts[4][36],Deathmatch[dmid][dm_name],dmid,DeathmatchStats[dmid][dm_playercount],Deathmatch[dmid][dm_lineupdelay] - DeathmatchStats[dmid][dm_timer],Deathmatch[dmid][dm_minplayers],GetDMStartZoneName(dmid),Deathmatch[dmid][dm_minlevel],Deathmatch[dmid][dm_cashentry]);
+				format(string, sizeof(string),lang_texts[4][36],Deathmatch[dmid][dm_name],dmid,Deathmatch[dmid][dm_lineupdelay] - DeathmatchStats[dmid][dm_timer],DeathmatchStats[dmid][dm_playercount],Deathmatch[dmid][dm_minplayers],GetDMStartZoneName(dmid),Deathmatch[dmid][dm_minlevel],Deathmatch[dmid][dm_cashentry]);
 			}
 			SendClientMessage(playerid,GetDMColourForPlayer(playerid,dmid),string);
 		}
