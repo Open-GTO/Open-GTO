@@ -100,9 +100,9 @@ stock SyncTime()
 
 stock SpawnWorld() // run at startup to spawn world
 {
-	for(new i;i<300;i++)
+	for(new i=0;i<300;i++)
  	{
-	 	if(i!=0 && i!=3 && i!=4 && i!=5 && i!=6 && i!=8 && i!=42 && i!=65 && i!=74 && i!=86 && i!=119 && i!=149 && i!=208 && i!=273 && i!=289)
+	 	if(i!=0 && i!=74)
 		{
 			AddPlayerClass(i,0.0,0.0,0.0,0.0,0,0,0,0,0,0);
 		}
