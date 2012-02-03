@@ -230,10 +230,12 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		SetPlayerSpecID(playerid,specid);
 		SetPlayerSpectating(playerid,1);
 		TogglePlayerSpectating(playerid,1);
+		SetPlayerInterior(playerid,GetPlayerInterior(specid));
+		
 		SendClientMessage(playerid,COLOUR_BLUE,"Чтобы выключить слежку, введите /spec");
 		
 		new vehid = GetPlayerVehicleID(specid);
-		if(vehid != -1)
+		if(vehid != 0)
 			PlayerSpectateVehicle(playerid,vehid);
 		else
 			PlayerSpectatePlayer(playerid,specid);

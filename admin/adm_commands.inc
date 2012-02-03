@@ -131,7 +131,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 		else 
 		{
 			new VehicleID = GetPlayerVehicleID(playerid);
-			if(VehicleID != -1) 
+			if(VehicleID != 0) 
 			{
 				SetVehiclePos(VehicleID,GetPVarFloat(playerid,"LocX"),GetPVarFloat(playerid,"LocY"),GetPVarFloat(playerid,"LocZ"));
 				SetPlayerFacingAngle(playerid,GetPVarFloat(playerid,"Ang"));
