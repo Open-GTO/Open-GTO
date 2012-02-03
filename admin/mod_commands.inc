@@ -108,11 +108,20 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		if(!IsPlayerInAnyVehicle(playerid)) return 0;
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
-		//SetVehicleHealth(GetPlayerVehicleID(playerid), 1.0);
 		SetVehicleToRespawn(GetPlayerVehicleID(playerid));
 		new string[MAX_STRING];
 		format(string,sizeof(string), "*** Траспорт (ИД %d) возвращен на свой респавн.", GetPlayerVehicleID(playerid) );
 		SendClientMessage(playerid,COLOUR_WHITE,string);
+		return 1;
+	}
+	if(!strcmp(cmd,"/carrespall",true))
+	{
+		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
+		for (new vehid=1; vehid<=MAX_VEHICLES; vehid++)
+		{
+			SetVehicleToRespawn(vehid);
+		}
+		SendClientMessage(playerid,COLOUR_WHITE,"*** Весь транспорт возвращен на свой респавн.");
 		return 1;
 	}
 	if(!strcmp(cmd,"/mute",true))
@@ -216,11 +225,18 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		new tmp[20];
 		tmp = strcharsplit(text, idx,' ');
-		if(GetPlayerSpectating(playerid) && strlen(tmp) == 0)
+		if (strlen(tmp) == 0)
 		{
-			TogglePlayerSpectating(playerid,0);
-			SetPlayerSpecID(playerid,INVALID_PLAYER_ID);
-			SetPlayerSpectating(playerid,0);
+			if (GetPlayerSpectating(playerid))
+			{
+				TogglePlayerSpectating(playerid,0);
+				SetPlayerSpecID(playerid,INVALID_PLAYER_ID);
+				SetPlayerSpectating(playerid,0);
+			}
+			else
+			{
+				SendClientMessage(playerid,COLOUR_RED,"Для наблюдения за игроком используйте команду /spec <ID>. Для выхода - /spec");
+			}
 			return 1;
 		}
 		new specid = strval(tmp);
