@@ -522,6 +522,7 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	command_register(cmdtext,"/remcar",7,Mod);
 	command_register(cmdtext,"/kick",5,Mod);
 	command_register(cmdtext,"/carresp",8,Mod);
+	command_register(cmdtext,"/carrespall",11,Mod);
 	command_register(cmdtext,"/mute",5,Mod);
 	command_register(cmdtext,"/unmute",7,Mod);
 	command_register(cmdtext,"/jail",5,Mod);
