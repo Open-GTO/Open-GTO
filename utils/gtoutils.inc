@@ -155,29 +155,25 @@ stock NameCharCheck(string[MAX_PLAYER_NAME])
 
 stock ConvertSeconds(time)
 {
-	new string[64],Float:minutes,Float:hours,seconds;
-
-	switch(time)
+	new string[64],minutes,hours,seconds;
+	
+	hours = time / 3600;
+	time %= 3600;
+	minutes = time / 60;
+	time %= 60;
+	seconds = time;
+	
+	if (hours == 0)
 	{
-		case 0..59: format(string, sizeof(string), "%d seconds", time);
-		case 60: string = "1 minute";
-		case 61..3599:
+		if (minutes == 0)
 		{
-			minutes = time / 60;
-			seconds = time % 60;
-			format(string, sizeof(string), "%.0f minutes and %d seconds", minutes, seconds);
+			format(string, sizeof(string), "%d seconds", time);
+			return string;
 		}
-		case 3600: string = "1 hour";
-		default:
-		{
-			new minutes_int;
-			hours = time / 3600;
-			minutes_int = time % 3600;
-			minutes = minutes_int / 60;
-			seconds = minutes_int % 60;
-			format(string,sizeof(string),"%s of hours, %s of minutes and %d seconds",hours,minutes,seconds);
-		}
+		format(string, sizeof(string), "%d minutes and %d seconds", minutes, seconds);
+		return string;
 	}
+	format(string,sizeof(string),"%d of hours, %d of minutes and %d seconds",hours,minutes,seconds);
 	return string;
 }
 
