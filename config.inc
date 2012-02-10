@@ -14,7 +14,7 @@
 
 #pragma tabsize 0
 
-#define VERSION					"v1.0.0 alpha(11)" // версия мода
+#define VERSION					"v1.0.0 alpha(12)" // версия мода
 #define GTO_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе Linux не рекомендуется)
 #define GTO_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
@@ -73,6 +73,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define CHAT_SHOW_ID		"(%d)" // вид отображения ида в чате
 
 #define BAN_WEAPONS			35,36,38,40 // запрещённое оружие
+#define WEAPON_SKILL_SPEED	5 // количество даваемого скилла за одно убийство
 
 // разрешённые символы в названиях
 #define ALLOWED_STRING_SYMBOLS		'a'..'z','A'..'Z','0'..'9','_','[',']','=','(',')',' '

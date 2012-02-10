@@ -36,7 +36,7 @@ stock weapon_OnPlayerDeath(playerid,killerid,reason)
 {
 	if(!IsWeapon(reason)) return 1;
 	new WeaponSkillID = GetWeaponSkillID(reason);
-	SetPlayerSkillLevel(killerid,WeaponSkillID,PlayerWeaponsSkills[killerid][WeaponSkillID] += 1);
+	SetPlayerSkillLevel(killerid,WeaponSkillID,PlayerWeaponsSkills[killerid][WeaponSkillID] += WEAPON_SKILL_SPEED);
 	
 	if(IsWeaponHandToHand(reason)) return 1;
 	new slot = GetWeaponSlot(reason);
