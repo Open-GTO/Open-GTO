@@ -81,22 +81,22 @@ stock WriteLog(log,string[])
 		case GameLog:
 		{
 			if(LoggingGameToggle != 1) return 1;
-			logS = GTO_FILES_FOLDER"Logging/GameLog/";
+			logS = GTO_FILES_FOLDER "Logging/GameLog/";
 		}
 		case ChatLog:
 		{
 			if(LoggingChatToggle != 1) return 1;
-			logS = GTO_FILES_FOLDER"Logging/ChatLog/";
+			logS = GTO_FILES_FOLDER "Logging/ChatLog/";
 		}
 		case CMDLog:
 		{
 			if(LoggingCMDToggle != 1) return 1;
-			logS = GTO_FILES_FOLDER"Logging/CMDLog/";
+			logS = GTO_FILES_FOLDER "Logging/CMDLog/";
 		}
 		case DebugLog:
 		{
 			if(LoggingDebug != 1) return 1;
-			logS = GTO_FILES_FOLDER"Logging/DebugLog/";
+			logS = GTO_FILES_FOLDER "Logging/DebugLog/";
 		}
 	}
 	new filestring[MAX_STRING];
