@@ -59,6 +59,7 @@ stock UnJailPlayer(playerid)
 	SetPlayerPos(playerid, Jail_PH[j_id][CJ_X], Jail_PH[j_id][CJ_Y], Jail_PH[j_id][CJ_Z] );
 	SetPlayerFacingAngle(playerid,Jail_PH[j_id][CJ_A]);
 	SetCameraBehindPlayer(playerid);
+	new string[MAX_STRING];
 	format(string,sizeof(string), "SERVER: %s был выпущен из тюрьмы (истекло время или амнистия)", oGetPlayerName(playerid));
 	SendClientMessageToAll(COLOUR_WHITE, string);
 	return 1;
