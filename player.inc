@@ -332,7 +332,7 @@ stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
 	if (GetAllowPlayerTeleport(playerid) != 1) return 0;
 	new vehicleid = GetPlayerVehicleID(playerid);
-	if (vehicleid != -1)
+	if (vehicleid != 0)
 	{
 		SetVehiclePos(vehicleid,fX,fY,fZ);
 		LinkVehicleToInterior(vehicleid,0);
