@@ -767,7 +767,7 @@ stock PlayerFinishDM(playerid,dmid,position)
 		}
 	}
 
-	if ((GetPlayerDMScore(playerid,dmid) > DMBestScore[dmid][dm_score_record]) || (DMBestScore[dmid][dm_score_record] == 0))
+	if (GetPlayerDMScore(playerid,dmid) > DMBestScore[dmid][dm_score_record])
 	{
 		format(string, sizeof(string),  lang_texts[4][27] ,oGetPlayerName(playerid),Deathmatch[dmid][dm_name],GetPlayerDMScore(playerid,dmid),DMBestScore[dmid][dm_score_record]);
 		SendClientMessageToAll(COLOUR_DM, string);
@@ -889,8 +889,7 @@ stock GetPlayerDMScore(playerid,dmid)
 {
 	if (!IsPlayerInDM(playerid,dmid)) return 0;
 	new score = DMPlayerStats[playerid][dm_player_kills] - DMPlayerStats[playerid][dm_player_deaths];
-	if (score < 0) score = 0;
-	return score;
+	return (score < 0 ? 0 : score);
 }
 
 stock GetDMColourForPlayer(playerid,dmid)

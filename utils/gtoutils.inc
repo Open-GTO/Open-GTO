@@ -153,30 +153,6 @@ stock NameCharCheck(string[MAX_PLAYER_NAME])
 	return 1;
 }
 
-stock ConvertSeconds(time)
-{
-	new string[64],minutes,hours,seconds;
-	
-	hours = time / 3600;
-	time %= 3600;
-	minutes = time / 60;
-	time %= 60;
-	seconds = time;
-	
-	if (hours == 0)
-	{
-		if (minutes == 0)
-		{
-			format(string, sizeof(string), "%d seconds", time);
-			return string;
-		}
-		format(string, sizeof(string), "%d minutes and %d seconds", minutes, seconds);
-		return string;
-	}
-	format(string,sizeof(string),"%d of hours, %d of minutes and %d seconds",hours,minutes,seconds);
-	return string;
-}
-
 stock PlayerCount()
 {
 	new count = 0;
