@@ -94,7 +94,7 @@ const
     // настройки
 
     // –≈ ќћ≈Ќƒ”≈“—я »«ћ≈Ќ»“№ ѕќƒ —≈Ѕя
-    INI_MAX_OPENED_FILES    = 10,        // максимум, открытых одновременно, файлов
+    INI_MAX_OPENED_FILES    = 6,        // максимум, открытых одновременно, файлов
     INI_MAX_FILE_SIZE       = 65536,    // байт,        макс. размер файла
     INI_MAX_FILENAME_SIZE   = 128,      // символов,    макс. размер пути к файлу
     INI_MAX_KEYS_IN_FILE    = 2048,     // максимум ключей в открытом файле
@@ -253,7 +253,7 @@ stock ini_createFile ( szFilePath[], szDefaultContent[] = "" )
         {
             // ------------
             _ini_nSlotUsed[slot]        = 1; // застолбим найденное место
-            _ini_nFileChanged[slot]     = 0; // файл не был изменен
+            _ini_nFileChanged[slot]     = 1; // файл не был изменен
             _ini_nFileSize[slot]        = nFileSize; // скопируем размер файла в слот
             _ini_nKeysCount[slot]       = 0; // кол-во ключей выставим 0
             // ------------

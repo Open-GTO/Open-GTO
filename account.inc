@@ -147,7 +147,7 @@ stock account_login_db_ini(playerid,password[])
 #if defined USE_PASSWORD_ENCRYPT
 	encrypt(password);
 #endif
-	GameMSG("player_login: user %s(%d), used password `%s`, real password `%s`",playername,playerid,password,dbpassword);
+	GameMSG("player_login: user %s(%d), used password `%s`",playername,playerid,password);
 	if(strcmp(password,dbpassword,false))
 	{
 	#if defined USE_PASSWORD_ENCRYPT
