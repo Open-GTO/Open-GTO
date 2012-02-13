@@ -14,7 +14,7 @@
 #include "base"
 #include "player"
 
-new sysweath = 0;	//WEATHER
+new sys_weather = SYS_WEATHER_UPDATE;
 
 stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 {
@@ -69,7 +69,7 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid,COLOUR_LIGHTGREEN,string);
 
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[15][66]);
-		format(string,sizeof(string)," '/sys weath' = %d (Автосмена погоды)" , sysweath);
+		format(string,sizeof(string)," '/sys weath' = %d (Автосмена погоды)" , sys_weather);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		format(string,sizeof(string)," '/sys groundhold' = %d (Точки прокачки)" , Groundhold_Enabled);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
@@ -81,22 +81,21 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
 		new paramid = strval(strcharsplit(text, idx,' '));
-		if(paramid == 0)
+		switch (paramid)
 		{
-			SetTimer("WeatherUpdate", 20*60000,0);
-			sysweath=0;
-			SendClientMessage(playerid,COLOUR_WHITE,"SYS: Weather AutoChange OFF");
-		}
-		else if((paramid >= 1) && (paramid <= 20))
-		{
-			SetTimer("WeatherUpdate",paramid*60000, 1);
-			sysweath=1;
-			SendClientMessage(playerid,COLOUR_WHITE,"SYS: Weather AutoChange ON");
-		}
-		else
-		{
-			SendClientMessage(playerid,COLOUR_RED,lang_texts[15][67]);
-			return 0;
+			case 0:
+			{
+				sys_weather = 0;
+				SendClientMessage(playerid,COLOUR_WHITE,"SYS: Автоматическое изменение погоды Выкл");
+			}
+			case 1..20:
+			{
+				sys_weather = paramid;
+				new string[MAX_STRING];
+				format(string,sizeof(string),"SYS: Автоматическое изменение погоды Вкл, изменение раз в %d минут",paramid);
+				SendClientMessage(playerid,COLOUR_WHITE,string);
+			}
+			default: SendClientMessage(playerid,COLOUR_RED,lang_texts[15][67]);
 		}
 		return 1;
 	}

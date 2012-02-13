@@ -80,6 +80,7 @@ Date start Open-GTO: 	5 November 2009
 #include "services\skinshop"
 #include "interior"
 #include "usermenu"
+#include "weather"
 // Races
 #tryinclude "races\race_monstertruck"		// Race: Monstertruck Madness
 #tryinclude "races\race_thestrip"			// Race: Burnin Down The Strip. - Just a strait sprint down the strip and back
@@ -217,7 +218,7 @@ public OnGameModeInit()
 	WorldTime = hour;
 	SetWorldTime(hour);
 	GameMSG("SERVER: Worldtime set as %d",hour);
-	SetWeather(10);
+	SetWeather( mathrandom(9,18) );
 	SetTimer("OneSecTimer",1000,1); // 1 second
 	SetTimer("FiveSecondTimer",5000,1); // 5 second
 	SetTimer("OneMinuteTimer",60000,1); // 1 minute
@@ -331,7 +332,7 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 public OnPlayerPickUpPickup(playerid,pickupid)
 {
 	wd_OnPlayerPickUpPickup(playerid, pickupid);
-    return 1;
+	return 1;
 }
 
 public OnPlayerEnterCheckpoint(playerid)
@@ -584,16 +585,6 @@ public OnPlayerText(playerid, text[])
 	format(string,sizeof(string),"Player: %s"CHAT_SHOW_ID": %s",playername,playerid,text);
 	WriteLog(ChatLog,string);
 	return 0;
-}
-
-forward WeatherUpdate();
-public WeatherUpdate()
-{
-	if(sysweath != 1) return 1;
-	new rand = random(19);
-	SetWeather(rand);
-	GameMSG("SERVER: Weather set to %d",rand);
-	return 1;
 }
 
 public OnPlayerUpdate(playerid)

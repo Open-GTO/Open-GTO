@@ -139,6 +139,11 @@ stock Vary(source,varyamount)
 	return source + random((varyamount*2)+1) - varyamount;
 }
 
+stock mathrandom(min,max)
+{
+	return (random(max - min + 1) + min);
+}
+
 stock NameCharCheck(string[MAX_PLAYER_NAME])
 {
 	if(!strcmp(string,"Unknown",true) || IsNumeric(string)) return 0;

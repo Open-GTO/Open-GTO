@@ -80,6 +80,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 #define SKYDIVE_TIME		5 // время, через которое игром может вновь использовать /skydive, в минутах
 
+#define SYS_WEATHER_UPDATE	20 // время, через которое обновится состояние погоды, в минутах, если 0, то выключено
+
 // разрешённые символы в названиях
 #define ALLOWED_STRING_SYMBOLS		'a'..'z','A'..'Z','0'..'9','_','[',']','=','(',')',' '
 #define ALLOWED_STRING_SYMBOLS_STR	"'a'..'z','A'..'Z','0'..'9','_','[',']','=','(',')',' '"
