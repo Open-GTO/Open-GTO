@@ -1,6 +1,7 @@
 /*
 
-
+	Описание: функции для работы с оружием у игрока
+	Автор: Iain Gilbert, ZiGGi
 
 */
 
@@ -58,6 +59,7 @@ stock weapon_OnPlayerDisconnect(playerid,reason)
 stock weapon_OnPlayerDeath(playerid,killerid,reason)
 {
 	if(!IsWeapon(reason)) return 1;
+	// set skill
 	new WeaponSkillID = GetWeaponSkillID(reason);
 	if (PlayerWeaponsSkills[killerid][WeaponSkillID] < 1000)
 	{
@@ -68,7 +70,7 @@ stock weapon_OnPlayerDeath(playerid,killerid,reason)
 		}
 		SetPlayerSkillLevel(killerid,WeaponSkillID,PlayerWeaponsSkills[killerid][WeaponSkillID]);
 	}
-	
+	// drop bullets
 	if(IsWeaponHandToHand(reason)) return 1;
 	new slot = GetWeaponSlot(reason);
 	if (PlayerTempWeapons[playerid][slot][pwid] > 0 && PlayerWeapons[playerid][slot][pbullets] > 0)

@@ -1,0 +1,151 @@
+/*
+	
+	Описание: выпадение пикапов с оружием после смерти
+	Автор: ZiGGi
+
+*/
+
+
+#if defined _weapon_drop_included
+	#endinput
+#endif
+
+#define _weapon_drop_included
+#pragma library weapon_drop
+
+
+enum wd_Info {
+	wd_weaponid,
+	wd_bullets,
+	wd_pickupid,
+	wd_timer,
+}
+new weapons_dropped[MAX_DROPPED_WEAPONS][wd_Info];
+
+
+stock wd_OnGameModeInit()
+{
+	for (new wd_slot=0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
+	{
+		weapons_dropped[wd_slot][wd_weaponid] = -1;
+		weapons_dropped[wd_slot][wd_bullets] = -1;
+		weapons_dropped[wd_slot][wd_pickupid] = -1;
+		weapons_dropped[wd_slot][wd_timer] = -1;
+	}
+	return 1;
+}
+
+stock wd_OnPlayerPickUpPickup(playerid, pickupid)
+{
+    for(new wd_slot=0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
+    {
+		if (pickupid == weapons_dropped[wd_slot][wd_pickupid])
+		{
+			GivePlayerWeapon(playerid,weapons_dropped[wd_slot][wd_weaponid],weapons_dropped[wd_slot][wd_bullets]);
+			wd_DropPickup(pickupid, wd_slot);
+		}
+	}
+	return 1;
+}
+
+stock wd_OnPlayerDeath(playerid)
+{
+	// drop pickups
+	new weapons[PLAYER_WEAPON_SLOTS][PWeap],Float:pos[3],pickupmodel,wd_slot;
+	for (new slot=0; slot < PLAYER_WEAPON_SLOTS; slot++)
+	{
+		GetPlayerWeaponData(playerid, slot, weapons[slot][pwid], weapons[slot][pbullets]);
+		pickupmodel = GetWeaponPickupModel(weapons[slot][pwid]);
+		if (pickupmodel == -1) continue;
+		GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
+		wd_slot = wd_FindFreeSlot();
+		if (wd_slot == -1)
+		{
+			GameMSG("ERROR: Drop Weapon: Не найден свободный слот в массиве");
+			return 1;
+		}
+		weapons_dropped[wd_slot][wd_pickupid] = CreatePickup(pickupmodel, 3, pos[0] + (random(5) - random(5)) / 2, pos[1] + (random(5) - random(5)) / 2, pos[2], -1);
+		if (weapons_dropped[wd_slot][wd_pickupid] == -1)
+		{
+			GameMSG("ERROR: Drop Weapon: Превышен лимит пикапов");
+			return 1;
+		}
+		weapons_dropped[wd_slot][wd_weaponid] = weapons[slot][pwid];
+		weapons_dropped[wd_slot][wd_bullets] = weapons[slot][pbullets];
+		// запустим таймер рассинхронно, чтобы пикапы удалялись постепенно
+		weapons_dropped[wd_slot][wd_timer] = SetTimerEx("wd_DropPickup", (WEAPON_DROP_TIME * 1000) + slot*300, 0, "dd", weapons_dropped[wd_slot][wd_pickupid],slot);
+	}
+	return 1;
+}
+
+stock wd_FindFreeSlot()
+{
+	for (new wd_slot=0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
+	{
+		if (weapons_dropped[wd_slot][wd_weaponid] == -1
+			&& weapons_dropped[wd_slot][wd_bullets] == -1
+			&& weapons_dropped[wd_slot][wd_pickupid] == -1
+			&& weapons_dropped[wd_slot][wd_timer] == -1
+		) return wd_slot;
+	}
+	return -1;
+}
+
+forward wd_DropPickup(pickupid, wd_slot);
+public wd_DropPickup(pickupid, wd_slot)
+{
+	weapons_dropped[wd_slot][wd_weaponid] = -1;
+	weapons_dropped[wd_slot][wd_bullets] = -1;
+	weapons_dropped[wd_slot][wd_pickupid] = -1;
+	KillTimer(weapons_dropped[wd_slot][wd_timer]);
+	weapons_dropped[wd_slot][wd_timer] = -1;
+	DestroyPickup(pickupid);
+	return 1;
+}
+
+stock GetWeaponPickupModel(weaponid)
+{
+	 switch(weaponid)
+	 {
+	    case 1: return 331;
+	    case 2: return 333;
+	    case 3: return 334;
+		case 4: return 335;
+		case 5: return 336;
+		case 6: return 337;
+		case 7: return 338;
+		case 8: return 339;
+		case 9: return 341;
+		case 10: return 321;
+		case 11: return 322;
+		case 12: return 323;
+		case 13: return 324;
+		case 14: return 325;
+		case 15: return 326;
+		case 16: return 342;
+		case 17: return 343;
+		case 18: return 344;
+		case 22: return 346;
+		case 23: return 347;
+		case 24: return 348;
+		case 25: return 349;
+		case 26: return 350;
+		case 27: return 351;
+		case 28: return 352;
+		case 29: return 353;
+		case 30: return 355;
+		case 31: return 356;
+		case 32: return 372;
+		case 33: return 357;
+		case 34: return 358;
+		case 35: return 359;
+		case 36: return 360;
+		case 37: return 361;
+		case 38: return 362;
+		case 39: return 363;
+		case 41: return 365; 
+		case 42: return 366;
+		case 46: return 371;
+	 }
+	 return -1;
+}

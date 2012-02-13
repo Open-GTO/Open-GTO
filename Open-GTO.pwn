@@ -38,6 +38,7 @@ Date start Open-GTO: 	5 November 2009
 #include "player\health"
 #include "player\vip"
 #include "player\weapon"
+#include "player\weapon_drop"
 #include "bank"								// bank money to keep it on death
 #include "fightstyles"
 #include "account"							// account handler
@@ -161,6 +162,7 @@ public OnGameModeInit()
 	interior_OnGameModeInit();
 	bank_OnGameModeInit();
 	fights_OnGameModeInit();
+	wd_OnGameModeInit();
 	// missions
 	mission_OnGameModeInit();
     trucker_OnGameModeInit();
@@ -328,6 +330,7 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 
 public OnPlayerPickUpPickup(playerid,pickupid)
 {
+	wd_OnPlayerPickUpPickup(playerid, pickupid);
     return 1;
 }
 
@@ -366,6 +369,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 		weapon_OnPlayerDeath(playerid,killerid,reason);
 		level_HideTextDraws(playerid);
 		weapon_HideTextDraw(playerid);
+		wd_OnPlayerDeath(playerid);
 		PlayCrimeReportForPlayer(killerid,killerid,random(18)+3);
 		PlayCrimeReportForPlayer(playerid,killerid,random(18)+3);
  	}

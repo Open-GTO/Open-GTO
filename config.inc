@@ -75,6 +75,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 #define BAN_WEAPONS			35,36,38,40 // запрещённое оружие
 #define WEAPON_SKILL_SPEED	10 // количество даваемого скилла за одно убийство
+#define WEAPON_DROP_TIME	10 // время, после которого удалятся пикапы, выпавшие из игрока, в секундах
+#define MAX_DROPPED_WEAPONS 64 // максимальное количество выпавшего оружия единовременно(у всех игроков)
 
 #define SKYDIVE_TIME		5 // время, через которое игром может вновь использовать /skydive, в минутах
 
