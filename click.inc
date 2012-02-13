@@ -324,19 +324,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		}
 		if(ListResponseType[playerid] == 1) // pm
 		{
-			new sendername[MAX_PLAYER_NAME],receivename[MAX_PLAYER_NAME],string[MAX_STRING];
-			GetPlayerName(GetPlayerClickedPlayerid(playerid),receivename,sizeof(receivename));
-			GetPlayerName(playerid,sendername,sizeof(sendername));
-			foreach(Player,i)
-			{
-				if(GetPVarInt(playerid,"Admin_PMshowing") != 1) continue;
-				format(string,sizeof(string),"* Админ: ЛС от %s к %s: %s",sendername,receivename,inputtext);
-				SendClientMessage(i,0xFFCC22FF,string);
-			}
-			format(string,sizeof(string),lang_texts[9][31],receivename,GetPlayerClickedPlayerid(playerid),inputtext);
-			SendClientMessage(playerid,0xFFCC22FF,string);
-			format(string,sizeof(string),lang_texts[9][32],sendername,playerid,inputtext);
-			SendClientMessage(GetPlayerClickedPlayerid(playerid),0xFFFF22FF,string);
+			return SendPM(playerid,GetPlayerClickedPlayerid(playerid),inputtext);
 		}
 		if(ListResponseType[playerid] == 2) // report
 		{

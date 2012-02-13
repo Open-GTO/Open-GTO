@@ -31,7 +31,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 #define MAX_MONEY				50000000 // максимальное кол-во денег, которое может иметь игрок
 #define UpdatePlayerScore(%1)	SetPlayerScore(%1,GetPVarInt(%1,"Level"))
-#define MAX_SEND_SYMBOLS		64 // максимальное кол-во отправляемых символов в ПМ через click
+#define MIN_SEND_SYMBOLS		3 // минимальное кол-во отправляемых символов в ПМ
+#define MAX_SEND_SYMBOLS		100 // максимальное кол-во отправляемых символов в ПМ
 
 #define INVALID_QUEST_ID		0
 #define MAX_QUESTS				255
@@ -73,7 +74,9 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define CHAT_SHOW_ID		"(%d)" // вид отображения ида в чате
 
 #define BAN_WEAPONS			35,36,38,40 // запрещённое оружие
-#define WEAPON_SKILL_SPEED	5 // количество даваемого скилла за одно убийство
+#define WEAPON_SKILL_SPEED	10 // количество даваемого скилла за одно убийство
+
+#define SKYDIVE_TIME		5 // время, через которое игром может вновь использовать /skydive, в минутах
 
 // разрешённые символы в названиях
 #define ALLOWED_STRING_SYMBOLS		'a'..'z','A'..'Z','0'..'9','_','[',']','=','(',')',' '
@@ -222,6 +225,8 @@ enum {
 #define COLOUR_GANG_CHAT 0xFFA500AA // orange
 #define COLOUR_DM 0xFF0066AA // red - purple
 #define COLOUR_DM_BAD 0xFF0066AA // red - purple
+#define COLOUR_PM 0xFFCC22FF
+#define WARN_MS_COLOR 0xFF5050AA
 
 // по кнопкам
 #define PRESSED(%0) \

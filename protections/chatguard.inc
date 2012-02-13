@@ -559,11 +559,10 @@ stock chatguard_OnPlayerDisconnect ( playerid, reason )
 
 
 
-#define WARN_MS_COLOR   0xFF5050AA
 
 stock chatguard_OnPlayerText ( playerid, text[] )
 {
-	if(ChatGuardEnabled != 1) return 0;
+	if(ChatGuardEnabled != 1 || IsPlayerAdm(playerid)) return 0;
     new msgTick = GetTickCount();
 
 

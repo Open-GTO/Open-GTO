@@ -27,7 +27,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 	
 	if(!strcmp(cmd,"/cmdlist",true))
 	{
-		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/say <text>', '/pinfo <ID>'");
+		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/say <text>', '/pinfo <ID>', '/showpm <ID>'");
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/akill <ID>', '/paralyze <ID>', '/deparalyze <ID>'");
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/tele-set', '/tele-loc', '/tele-to <ID>', '/tele-here <ID>', '/tele-hereall', '/tele-xyzi <X> <Y> <Z> <Int>'");
 		SendClientMessage(playerid,COLOUR_LIGHTBLUE,"A: '/sethealth <ID>', '/setarm <ID>', '/givexp <ID> <xp>', '/agivecash <ID> <cash>', '/givegun <ID> <IDgun>'");

@@ -49,6 +49,9 @@
 #define GetPlayerSpawnHouseID(%0) GetPVarInt(%0,"SpawnHouseID")
 #define SetPlayerSpawnHouseID(%0,%1) SetPVarInt(%0,"SpawnHouseID",%1)
 
+#define SetPlayerSkydiveTime(%0,%1) SetPVarInt(%0,"SkydiveTime",%1)
+#define GetPlayerSkydiveTime(%0) GetPVarInt(%0,"SkydiveTime")
+
 stock GetPlayerGangName(playerid)
 {
 	new string[MAX_NAME];
@@ -359,6 +362,30 @@ stock SyncPlayers(playerid)
 	return 1;
 }
 
+stock player_OnPlayerRequestClass(playerid, classid)
+{
+	SetPVarInt(playerid,"Spawned",0);
+	// Фикс для выбора классов(поломалось в 0.3a)
+	if(classid != 0)
+	{
+		SetPlayerSkinModel(playerid,GetPlayerSkin(playerid));
+		SetPVarInt(playerid,"player_class_zero",1);
+	}
+	else if(GetPVarInt(playerid,"player_class_zero") == 1) // classid == 0 тоже можно выбирать
+	{
+		SetPlayerSkinModel(playerid,GetPlayerSkin(playerid));
+		SetPVarInt(playerid,"player_class_zero",0);
+	}
+	//
+	new req_id = GetPVarInt(playerid,"RequestPlace");
+	SetPlayerInterior(playerid,RequestPlace[req_id][Interior]);
+	SetPlayerPos(playerid,RequestPlace[req_id][player_X],RequestPlace[req_id][player_Y],RequestPlace[req_id][player_Z]);
+	SetPlayerFacingAngle(playerid,RequestPlace[req_id][player_A]);
+	SetPlayerCameraPos(playerid,RequestPlace[req_id][camera_pos_X],RequestPlace[req_id][camera_pos_Y],RequestPlace[req_id][camera_pos_Z]);
+	SetPlayerCameraLookAt(playerid,RequestPlace[req_id][camera_look_X],RequestPlace[req_id][camera_look_Y],RequestPlace[req_id][camera_look_Z]);
+	return 1;
+}
+
 stock KickPlayer(playerid,reason[])
 {
 	if(!IsPlayerConnected(playerid)) return 0;
@@ -627,5 +654,38 @@ stock player_load_db_ini(playerid)
 	
 	ini_Close(file_player);
 	UpdatePlayerScore(playerid);
+	return 1;
+}
+
+stock SendPM(senderid,receiveid,message[])
+{
+	new string[MAX_STRING];
+	if(strlen(message) < MIN_SEND_SYMBOLS)
+	{
+		format(string,sizeof(string),lang_texts[12][95],MIN_SEND_SYMBOLS);
+		return SendClientMessage(senderid,COLOUR_PM,string);
+	}
+	if (strlen(message) > MAX_SEND_SYMBOLS)
+	{
+		format(string,sizeof(string),lang_texts[12][92],MAX_SEND_SYMBOLS);
+		return SendClientMessage(senderid,COLOUR_PM,string);
+	}
+
+	new sendername[MAX_PLAYER_NAME],receivename[MAX_PLAYER_NAME];
+	GetPlayerName(receiveid,receivename,sizeof(receivename));
+	GetPlayerName(senderid,sendername,sizeof(sendername));
+	
+	foreach(Player,i)
+	{
+		if(i == senderid || GetPVarInt(i,"Admin_PMshowing") != 1) continue;
+		format(string,sizeof(string),"* Админ: ЛС от %s к %s: %s",sendername,receivename,message);
+		SendClientMessage(i,COLOUR_PM,string);
+	}
+	
+	format(string,sizeof(string),lang_texts[9][31],receivename,receiveid,message);
+	SendClientMessage(senderid,COLOUR_PM,string);
+	
+	format(string,sizeof(string),lang_texts[9][32],sendername,senderid,message);
+	SendClientMessage(receiveid,COLOUR_PM,string);
 	return 1;
 }

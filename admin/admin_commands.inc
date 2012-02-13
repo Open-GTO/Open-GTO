@@ -81,16 +81,6 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][54]);
 		return 1;
 	}
-	if(!strcmp(cmd,"/int",true))
-	{
-		new string[MAX_STRING];
-		format(string,sizeof(string),
-			"*** Интерьер: %d, статус: %s (%d)",
-			GetPlayerInterior(playerid),GetPlayerState(playerid),GetPlayerState(playerid)
-		);
-		SendClientMessage(playerid,COLOUR_WHITE,string);
-		return 1;
-	}
 	if((!strcmp(cmd,"/carinfo",true)) && IsPlayerInAnyVehicle(playerid))
 	{
 		new Float:x3,Float:y3,Float:z3,Float:zangle3,Float:health3;

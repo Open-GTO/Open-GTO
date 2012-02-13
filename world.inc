@@ -118,6 +118,7 @@ public OneSecTimer()
 		MapIcons_Streaming(playerid);
 		trucker_RunnerTimer(playerid);
 		SyncPlayers(playerid);
+		UpdatePlayerWeaponTextDraws(playerid);
 	}
 	
 	CheckDM();
@@ -127,6 +128,13 @@ public OneSecTimer()
 forward OneMinuteTimer();
 public OneMinuteTimer()
 {
+	foreach (Player, playerid)
+	{
+		if (GetPlayerSkydiveTime(playerid) > 0)
+		{
+			SetPlayerSkydiveTime(playerid, GetPlayerSkydiveTime(playerid) - 1);
+		}
+	}
 	SyncTime();
 	settime();
 	MuteCheck();

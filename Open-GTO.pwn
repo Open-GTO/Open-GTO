@@ -245,6 +245,8 @@ public OnPlayerConnect(playerid)
 	player_OnPlayerConnect(playerid);
    	account_OnPlayerConnect(playerid);
 	chatguard_OnPlayerConnect(playerid);
+	level_OnPlayerConnect(playerid);
+	weapon_OnPlayerConnect(playerid);
 	
 #if defined _testserver_included
 	testserver_OnPlayerConnect(playerid);
@@ -259,6 +261,8 @@ public OnPlayerDisconnect(playerid,reason)
 	trucker_OnPlayerDisconnect(playerid, reason);
 	chatguard_OnPlayerDisconnect(playerid,reason);
 	gh_OnPlayerDisconnect(playerid,reason);
+	level_OnPlayerDisconnect(playerid,reason);
+	weapon_OnPlayerDisconnect(playerid,reason);
 	return 1;
 }
 
@@ -360,6 +364,8 @@ public OnPlayerDeath(playerid, killerid, reason)
 		trucker_OnPlayerDeath(playerid,killerid,reason);
 		gang_OnPlayerDeath(playerid,killerid,reason);
 		weapon_OnPlayerDeath(playerid,killerid,reason);
+		level_HideTextDraws(playerid);
+		weapon_HideTextDraw(playerid);
 		PlayCrimeReportForPlayer(killerid,killerid,random(18)+3);
 		PlayCrimeReportForPlayer(playerid,killerid,random(18)+3);
  	}
@@ -376,6 +382,9 @@ public OnPlayerSpawn(playerid)
 	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
 	SetPlayerSkin(playerid,GetPlayerSkinModel(playerid));
 	JailPlayer(playerid);
+	UpdatePlayerLevelTextDraws(playerid);
+	UpdatePlayerWeaponTextDraws(playerid);
+	
 	if(GetPlayerMuteTime(playerid) != 0)
 	{
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
@@ -392,24 +401,9 @@ public OnPlayerSpawn(playerid)
 
 public OnPlayerRequestClass(playerid, classid)
 {
-	// Фикс для выбора классов(поломалось в 0.3a)
-	if(classid != 0)
-	{
-		SetPlayerSkinModel(playerid,GetPlayerSkin(playerid));
-		SetPVarInt(playerid,"player_class_zero",1);
-	}
-	else if(GetPVarInt(playerid,"player_class_zero") == 1) // classid == 0 тоже можно выбирать
-	{
-		SetPlayerSkinModel(playerid,GetPlayerSkin(playerid));
-		SetPVarInt(playerid,"player_class_zero",0);
-	}
-	//
-	new req_id = GetPVarInt(playerid,"RequestPlace");
-	SetPlayerInterior(playerid,RequestPlace[req_id][Interior]);
-	SetPlayerPos(playerid,RequestPlace[req_id][player_X],RequestPlace[req_id][player_Y],RequestPlace[req_id][player_Z]);
-	SetPlayerFacingAngle(playerid,RequestPlace[req_id][player_A]);
-	SetPlayerCameraPos(playerid,RequestPlace[req_id][camera_pos_X],RequestPlace[req_id][camera_pos_Y],RequestPlace[req_id][camera_pos_Z]);
-	SetPlayerCameraLookAt(playerid,RequestPlace[req_id][camera_look_X],RequestPlace[req_id][camera_look_Y],RequestPlace[req_id][camera_look_Z]);
+	player_OnPlayerRequestClass(playerid, classid);
+	level_HideTextDraws(playerid);
+	weapon_HideTextDraw(playerid);
 	return 1;
 }
 
@@ -424,24 +418,20 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	// commands.inc
 	command_register(cmdtext,"/help",5,commands);
 	command_register(cmdtext,"/commands",9,commands);
-	command_register(cmdtext,"/kill",5,commands);
 	command_register(cmdtext,"/info",5,commands);
 	command_register(cmdtext,"/objective",10,commands);
-	command_register(cmdtext,"/dropammo",9,commands);
 	command_register(cmdtext,"/sound",6,commands);
 	command_register(cmdtext,"/stats",6,commands);
 	command_register(cmdtext,"/status",7,commands);
 	command_register(cmdtext,"/stat",5,commands);
-	command_register(cmdtext,"/level",6,commands);
 	command_register(cmdtext,"/version",8,commands);
-	command_register(cmdtext,"/admins",7,commands);
 	command_register(cmdtext,"/time",5,commands);
 	command_register(cmdtext,"/skydive",8,commands);
-	command_register(cmdtext,"/sk",3,commands);
 	command_register(cmdtext,"/dance",6,commands);
 	command_register(cmdtext,"/handsup",8,commands);
 	command_register(cmdtext,"/piss",5,commands);
 	command_register(cmdtext,"/smoke",6,commands);
+	command_register(cmdtext,"/pm",3,commands);
 	
 	// gangs
 	command_register(cmdtext,"/g",2,gang);
@@ -457,7 +447,6 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	// rcon admins
 	command_registerNR(cmdtext,"/cmdlist",8,Admin);
 	command_registerNR(cmdtext,"/about",6,Admin);
-	command_register(cmdtext,"/int",4,Admin);
 	command_register(cmdtext,"/carinfo",8,Admin);
 	command_register(cmdtext,"/carrep",7,Admin);
 	command_register(cmdtext,"/go",3,Admin);
@@ -531,9 +520,6 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	command_register(cmdtext,"/spec",5,Mod);
 	command_register(cmdtext,"/spec-off",9,Mod);
 	
-	// housing
-	command_register(cmdtext,"/ganghouses",11,housing);
-	
 	// vehicles
 	command_register(cmdtext,"/vmenu",6,vehicles);
 
@@ -546,6 +532,9 @@ public OnPlayerCommandText(playerid,cmdtext[])
 public OnPlayerText(playerid, text[])
 {
 	if(chatguard_OnPlayerText(playerid,text) == 0) return 0;
+
+	new playername[MAX_PLAYER_NAME];
+	GetPlayerName(playerid,playername,sizeof(playername));
 	
 	new string[MAX_STRING];
 	switch(text[0])
@@ -558,9 +547,9 @@ public OnPlayerText(playerid, text[])
 				return 0;
 			}
 			if(strlen(text[1]) < 2) return 1;
-			format(string,sizeof(string), "%s"CHAT_SHOW_ID" банде: {FFFFFF}%s", oGetPlayerName(playerid), playerid, text[1]);
+			format(string,sizeof(string), "%s"CHAT_SHOW_ID" банде: {FFFFFF}%s", playername, playerid, text[1]);
 			SendGangMessage(GetPVarInt(playerid,"GangID"),string,COLOUR_GANG_CHAT);
-			format(string,sizeof(string), "Player: %s"CHAT_SHOW_ID": <GANG CHAT>: %s",oGetPlayerName(playerid),playerid,text[1]);
+			format(string,sizeof(string), "Player: %s"CHAT_SHOW_ID": <GANG CHAT>: %s",playername,playerid,text[1]);
 			WriteLog(ChatLog,string);
 			return 0;
 		}
@@ -586,9 +575,9 @@ public OnPlayerText(playerid, text[])
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 		return 0;
 	}
-	format(string, sizeof(string),"%s"CHAT_SHOW_ID": {FFFFFF}%s",oGetPlayerName(playerid),playerid,text);
+	format(string, sizeof(string),"%s"CHAT_SHOW_ID": {FFFFFF}%s",playername,playerid,text);
 	SendClientMessageToAll(GetPlayerColor(playerid),string);
-	format(string,sizeof(string),"Player: %s"CHAT_SHOW_ID": %s",oGetPlayerName(playerid),playerid,text);
+	format(string,sizeof(string),"Player: %s"CHAT_SHOW_ID": %s",playername,playerid,text);
 	WriteLog(ChatLog,string);
 	return 0;
 }

@@ -42,7 +42,7 @@ stock show_User_Menu(playerid)
 		"Информация о персонаже\n\
 		Стиль борьбы\n\
 		Анимации\n\
-		Убиться\n\
+		Телепорты\n\
 		Выбросить оружие\n\
 		Место спавна\n\
 		Мои бизнесы\n\
@@ -255,9 +255,9 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 3: // Убиться
+				case 3: // Телепорты
 				{
-					SetPlayerHealth(playerid,0.0);
+					show_User_Menu(playerid);
 					return 1;
 				}
 				case 4: // Выбросить оружие
@@ -277,6 +277,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				case 7: // Администрация онлайн
 				{
 					new idsa = 0,
+						idsm = 0,
 						admins[MAX_STRING],
 						moders[MAX_STRING];
 					foreach(Player,id)
@@ -289,19 +290,24 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						else if(IsPlayerMod(id))
 						{
 							format(moders,sizeof(moders),"%s%s(%d)\n",moders,oGetPlayerName(id),id);
-							idsa++;
+							idsm++;
 						}
 					}
-					if(idsa == 0)
+					if(idsa == 0 && idsm == 0)
+					{
 						format(string,sizeof(string),lang_texts[1][31]);
-					else format(string,sizeof(string),
-						"Администрация:\n\
-						%s\n\
-						\n\
-						Модерация:\n\
-						%s\n",
-						admins,moders
-					);
+					}
+					else
+					{
+						if (idsa != 0)
+						{
+							format(string,sizeof(string),"Администрация:\n%s\n",admins);
+						}
+						if (idsm != 0)
+						{
+							format(string,sizeof(string),"%s\nМодерация:\n%s\n",string,admins,moders);
+						}
+					}
 					return show_User_Menu_Dialog(playerid,"Администрация онлайн",string);
 				}
 				case 8: // Связь с администрацией

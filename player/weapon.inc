@@ -32,11 +32,42 @@ new PlayerStartWeapon[][psw_Info] = {
 	{WEAPON_COLT45,200}
 };
 
+new Text:weapon_TextDraw_Level[MAX_PLAYERS];
+
+stock weapon_OnPlayerConnect(playerid)
+{
+	weapon_TextDraw_Level[playerid] = TextDrawCreate(499.000000, 13.000000, "999/1000");
+	TextDrawBackgroundColor(weapon_TextDraw_Level[playerid], 255);
+	TextDrawFont(weapon_TextDraw_Level[playerid], 1);
+	TextDrawLetterSize(weapon_TextDraw_Level[playerid], 0.240000, 1.000000);
+	TextDrawColor(weapon_TextDraw_Level[playerid], -1);
+	TextDrawSetOutline(weapon_TextDraw_Level[playerid], 0);
+	TextDrawSetProportional(weapon_TextDraw_Level[playerid], 1);
+	TextDrawSetShadow(weapon_TextDraw_Level[playerid], 1);
+	return 1;
+}
+
+stock weapon_OnPlayerDisconnect(playerid,reason)
+{
+	#pragma unused reason
+	weapon_HideTextDraw(playerid);
+	TextDrawDestroy(weapon_TextDraw_Level[playerid]);
+	return 1;
+}
+
 stock weapon_OnPlayerDeath(playerid,killerid,reason)
 {
 	if(!IsWeapon(reason)) return 1;
 	new WeaponSkillID = GetWeaponSkillID(reason);
-	SetPlayerSkillLevel(killerid,WeaponSkillID,PlayerWeaponsSkills[killerid][WeaponSkillID] += WEAPON_SKILL_SPEED);
+	if (PlayerWeaponsSkills[killerid][WeaponSkillID] < 1000)
+	{
+		PlayerWeaponsSkills[killerid][WeaponSkillID] += WEAPON_SKILL_SPEED;
+		if (PlayerWeaponsSkills[killerid][WeaponSkillID] > 1000)
+		{
+			PlayerWeaponsSkills[killerid][WeaponSkillID] = 1000;
+		}
+		SetPlayerSkillLevel(killerid,WeaponSkillID,PlayerWeaponsSkills[killerid][WeaponSkillID]);
+	}
 	
 	if(IsWeaponHandToHand(reason)) return 1;
 	new slot = GetWeaponSlot(reason);
@@ -77,7 +108,7 @@ stock GetWeaponSkillID(weaponid)
 		case 25: return WEAPONSKILL_SHOTGUN;
 		case 26: return WEAPONSKILL_SAWNOFF_SHOTGUN;
 		case 27: return WEAPONSKILL_SPAS12_SHOTGUN;
-		case 28: return WEAPONSKILL_MICRO_UZI;
+		case 28,32: return WEAPONSKILL_MICRO_UZI;
 		case 29: return WEAPONSKILL_MP5;
 		case 30: return WEAPONSKILL_AK47;
 		case 31: return WEAPONSKILL_M4;
@@ -263,3 +294,29 @@ stock DropAmmo(playerid)
 	return 1;
 }
 //
+
+stock weapon_HideTextDraw(playerid)
+{
+	TextDrawHideForPlayer(playerid,weapon_TextDraw_Level[playerid]);
+	return 1;
+}
+
+forward UpdatePlayerWeaponTextDraws(playerid);
+public UpdatePlayerWeaponTextDraws(playerid)
+{
+	if(GetPVarInt(playerid,"Spawned") == 0) return 0;
+	new string[MAX_STRING];
+	new skillid = GetWeaponSkillID( GetPlayerWeapon(playerid) );
+	if (skillid != -1)
+	{
+		format(string,sizeof(string),"%03d/1000",PlayerWeaponsSkills[playerid][skillid]);
+	}
+	else
+	{
+		TextDrawHideForPlayer(playerid,weapon_TextDraw_Level[playerid]);
+	}
+	TextDrawSetString(weapon_TextDraw_Level[playerid],string);
+	TextDrawShowForPlayer(playerid,weapon_TextDraw_Level[playerid]);
+	return 1;
+}
+

@@ -399,17 +399,6 @@ stock DeleteRenter(playerid)
 	return 1;
 }
 
-stock housing_OnPlayerCommandText(playerid,text[]) 
-{
-	new cmd[20],idx;
-	cmd = strcharsplit(text, idx,' ');
-
-	if(!strcmp(cmd,"/ganghouses",true))
-		return gang_Houses(playerid);
-
-	return 0;
-}
-
 stock house_Buy(playerid) 
 {
 	new playername[MAX_PLAYER_NAME],pl_houses=0;
@@ -496,25 +485,6 @@ stock house_Sell(playerid)
 		SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][25]);
 		GameMSG("player: %s(%d): sold the '%s' (house)",oGetPlayerName(playerid),playerid,Houses[id][Houses_Name]);
 	}
-	return 1;
-}
-
-stock gang_Houses(playerid) 
-{
-	new temp[MAX_STRING];
-	new count = 0;
-	for(new id=0;id<sizeof(Houses);id++)
-	{
-		if(!strcmp(Houses[id][Houses_Gang],GetPlayerGangName(playerid),true))
-		{
-			count++;
-			format(temp,sizeof(temp),lang_texts[8][40],Houses[id][Houses_Name],Houses[id][Houses_Owner],Houses[id][Houses_Cost]);
-			SendClientMessage(playerid,COLOUR_MISC,temp);
-			format(temp,sizeof(temp),lang_texts[8][41],Houses[id][Houses_UpKeep], Houses[id][Houses_UpKeepLeft]);
-			SendClientMessage(playerid,COLOUR_MISC,temp);
-		}
-	}
-	if(count < 1) SendClientMessage(playerid,COLOUR_RED,lang_texts[8][42]);
 	return 1;
 }
 

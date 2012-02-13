@@ -16,6 +16,9 @@
 #define GetPlayerXP(%1) GetPVarInt(%1,"XP")
 #define SetPlayerXP(%1,%2) SetPVarInt(%1,"XP",%2)
 
+new Text:level_TextDraw_Level[MAX_PLAYERS],
+	Text:level_TextDraw_XP[MAX_PLAYERS];
+
 enum LevelInfo {
 	level_xp,
     level_name[MAX_NAME]
@@ -136,6 +139,39 @@ stock level_OnGameModeInit()
 	return 1;
 }
 
+stock level_OnPlayerConnect(playerid)
+{
+	// Level
+	level_TextDraw_Level[playerid] = TextDrawCreate(5.000000, 412.000000, "Level: 1");
+	TextDrawBackgroundColor(level_TextDraw_Level[playerid], 255);
+	TextDrawFont(level_TextDraw_Level[playerid], 1);
+	TextDrawLetterSize(level_TextDraw_Level[playerid], 0.310000, 1.200000);
+	TextDrawColor(level_TextDraw_Level[playerid], -1);
+	TextDrawSetOutline(level_TextDraw_Level[playerid], 0);
+	TextDrawSetProportional(level_TextDraw_Level[playerid], 1);
+	TextDrawSetShadow(level_TextDraw_Level[playerid], 1);
+	// XP
+	level_TextDraw_XP[playerid] = TextDrawCreate(5.000000, 422.000000, "XP: Unknown/Unknown");
+	TextDrawBackgroundColor(level_TextDraw_XP[playerid], 255);
+	TextDrawFont(level_TextDraw_XP[playerid], 1);
+	TextDrawLetterSize(level_TextDraw_XP[playerid], 0.250000, 1.100000);
+	TextDrawColor(level_TextDraw_XP[playerid], -1);
+	TextDrawSetOutline(level_TextDraw_XP[playerid], 0);
+	TextDrawSetProportional(level_TextDraw_XP[playerid], 1);
+	TextDrawSetShadow(level_TextDraw_XP[playerid], 1);
+	//
+	return 1;
+}
+
+stock level_OnPlayerDisconnect(playerid,reason)
+{
+	#pragma unused reason
+	level_HideTextDraws(playerid);
+	TextDrawDestroy(level_TextDraw_Level[playerid]);
+	TextDrawDestroy(level_TextDraw_XP[playerid]);
+	return 1;
+}
+
 stock GetLevelName(level)
 {
 	new name[MAX_NAME];
@@ -158,7 +194,7 @@ stock CalculatePlayerLevel(playerid)
 	new level;
 	for(new i;i<=MAX_LEVEL;i++)
 	{
-		if(GetPlayerXP(playerid) >=LevelList[i][level_xp]) level = i;
+		if(GetPlayerXP(playerid) >= LevelList[i][level_xp]) level = i;
 	}
 	return level;
 }
@@ -201,6 +237,7 @@ stock GivePlayerXP(playerid, xpamount,showtext=0) // showtext = do we display "Y
 		}
 	}
 	SetPlayerXP(playerid,GetPlayerXP(playerid) + xpamount);
+	UpdatePlayerLevelTextDraws(playerid);
 	CheckPlayerLevel(playerid);
 	return 1;
 }
@@ -220,6 +257,7 @@ stock PlayerLevelDown(playerid,level)
 	SetPVarInt(playerid,"Level",level);
 	PlayerPlaySoundOnPlayer(playerid,1057);
 	UpdatePlayerScore(playerid);
+	UpdatePlayerLevelTextDraws(playerid);
 	new string[MAX_STRING];
 	format(string, sizeof(string),  lang_texts[9][22] , GetPlayerLevel(playerid));
 	SendClientMessage(playerid, COLOUR_XP_BAD, string);
@@ -233,6 +271,7 @@ stock PlayerLevelUp(playerid,level)
 	SetMaxPlayerHealth(playerid);
 	PlayerPlaySoundOnPlayer(playerid,1057);
 	UpdatePlayerScore(playerid);
+	UpdatePlayerLevelTextDraws(playerid);
 	new string[MAX_STRING];
 	format(string, sizeof(string),  lang_texts[9][23] , GetPlayerLevel(playerid));
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
@@ -240,5 +279,37 @@ stock PlayerLevelUp(playerid,level)
 	ShowWeaponsOnLevel(playerid,GetPlayerLevel(playerid));
 	
 	GameMSG("player: %d:  %s: increased his level to %d",playerid,oGetPlayerName(playerid),GetPlayerLevel(playerid));
+	return 1;
+}
+
+stock level_HideTextDraws(playerid)
+{
+	TextDrawHideForPlayer(playerid,level_TextDraw_Level[playerid]);
+	TextDrawHideForPlayer(playerid,level_TextDraw_XP[playerid]);
+	return 1;
+}
+
+stock UpdatePlayerLevelTextDraws(playerid)
+{
+	new string[64],
+		level = GetPlayerLevel(playerid);
+	format(string,sizeof(string),"Level: %d",level);
+	TextDrawSetString(level_TextDraw_Level[playerid], string);
+	TextDrawShowForPlayer(playerid,level_TextDraw_Level[playerid]);
+	
+	if (level >= MAX_LEVEL)
+	{
+		TextDrawHideForPlayer(playerid,level_TextDraw_XP[playerid]);
+		return 1;
+	}
+	else
+	{
+		format(string,sizeof(string),
+			"XP: %d/%d",
+			GetPlayerXP(playerid) - LevelList[level][level_xp], LevelList[level+1][level_xp] - LevelList[level][level_xp]
+		);
+		TextDrawSetString(level_TextDraw_XP[playerid], string);
+		TextDrawShowForPlayer(playerid,level_TextDraw_XP[playerid]);
+	}
 	return 1;
 }

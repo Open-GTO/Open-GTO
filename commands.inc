@@ -16,6 +16,20 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 	new cmd[20],idx;
 	cmd = strcharsplit(text, idx,' ');
 	
+	if(!strcmp(cmd,"/pm",true))
+	{
+		new tmp[MAX_STRING];
+		tmp = strcharsplit(text,idx,' ');
+		if(!strlen(tmp))
+			return SendClientMessage(playerid,COLOUR_PM,"USAGE: /PM <id> <сообщение>");
+		
+		new id = strval(tmp);
+		if(!IsPlayerConnected(id) || id == playerid)
+			return SendClientMessage(playerid,COLOUR_PM,"/pm: Неверный ID");
+		
+		SendPM(playerid,id,text[idx]);
+		return 1;
+	}
 	if(!strcmp(cmd, "/sound", true))
 	{
 		new string[MAX_STRING];
@@ -28,12 +42,6 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		PlayerPlaySound(playerid,soundid,playerx,playery,playerz);
 		format(string,sizeof(string), lang_texts[1][16] ,soundid);
 		SendClientMessage(playerid,COLOUR_XP_GOOD,string);
-		return 1;
-	}
-	if(!strcmp(cmd,"/dropammo",true))
-	{
-		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][33]);
-		CheckPlayerLevel(playerid);
 		return 1;
 	}
 	if(!strcmp(cmd,"/help",true))
@@ -108,19 +116,6 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid,COLOUR_LIGHTRED,string);
 		return 1;
 	}
-	if(!strcmp(cmd,"/level",true))
-	{
-		CheckPlayerLevel(playerid);
-		new string[MAX_STRING];
-		SendClientMessage(playerid,COLOUR_GREEN,  lang_texts[15][70] );
-		format(string, sizeof(string),  lang_texts[15][71] , GetPlayerLevel(playerid));
-		SendClientMessage(playerid,COLOUR_XP_GOOD, string);
-		format(string, sizeof(string),  lang_texts[15][72] , GetPlayerXP(playerid));
-		SendClientMessage(playerid,COLOUR_XP_GOOD, string);
-		format(string, sizeof(string),  lang_texts[15][73] , GetXPToLevel(playerid, GetPlayerLevel(playerid) + 1));
-		SendClientMessage(playerid,COLOUR_XP_BAD, string);
-		return 1;
-	}
 	if(!strcmp(cmd,"/version",true))
 	{
 		new string[MAX_STRING];
@@ -133,37 +128,6 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid,COLOUR_MISC,"      Previous: GhostTT, heufix, Elbi, SLICK");
 		return 1;
 	}
-	if((!strcmp(cmd,"/kill",true)) && !IsPlayerInAnyDM(playerid))
-	{
-		SetPlayerHealth(playerid,0.0);
-		return 1;
-	}
-	if(!strcmp(cmd,"/admins",true))
-	{
-		new string[MAX_STRING];
-		new idsa = 0;
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[1][28]);
-		foreach(Player,id)
-		{
-			if(IsPlayerAdm(id))
-			{
-				format(string, sizeof(string), lang_texts[1][29] , oGetPlayerName(id), id);
-				SendClientMessage(playerid, COLOUR_LIGHTBLUE,string);
-				idsa++;
-			}
-		}
-		foreach(Player,id)
-		{
-			if(IsPlayerMod(id) && !IsPlayerAdm(id))
-			{
-				format(string,sizeof(string),lang_texts[1][30],oGetPlayerName(id),id);
-				SendClientMessage(playerid,COLOUR_LIGHTGREEN,string);
-				idsa++;
-			}
-		}
-		if(idsa == 0) SendClientMessage(playerid, COLOUR_GREY,lang_texts[1][31]);
-		return 1;
-	}
 	if(!strcmp(cmd,"/time",true))
 	{
 		new string[MAX_STRING];
@@ -172,15 +136,17 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		format(string,sizeof(string),"%02d:%02d",hour,minute);
 		GameTextForPlayer(playerid,string,999,1);
 		PlayerPlaySound(playerid,1085,0,0,0);
-		format(string, sizeof(string),lang_texts[1][32], oGetPlayerName(playerid), playerid);
-		SendClientMessageToAll(COLOUR_GREY, string);
 		return 1;
 	}
-
 	if(!strcmp(cmd,"/skydive",true))
 	{
-		if(GetPlayerJailed(playerid) == 1 || GetPlayerInterior(playerid) != 0 || IsPlayerInAnyDM(playerid)) return 0;
+		if (GetPlayerJailed(playerid) == 1 || GetPlayerInterior(playerid) != 0 || IsPlayerInAnyDM(playerid)) return 0;
 		new string[MAX_STRING];
+		if (GetPlayerSkydiveTime(playerid) != 0)
+		{
+			format(string,sizeof(string),lang_texts[1][32],GetPlayerSkydiveTime(playerid));
+			return SendClientMessage(playerid,COLOUR_WHITE,string);
+		}
 		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][19]);
 		new Float:playerx,Float:playery,Float:playerz;
 		GivePlayerWeapon(playerid,46,1);
@@ -192,17 +158,9 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		format(string,sizeof(string), lang_texts[1][21] ,oGetPlayerName(playerid),playerid);
 		SendClientMessageToAll(COLOUR_GREY, string);
 		PlayerPlaySound(playerid,1039,0,0,0);
+		SetPlayerSkydiveTime(playerid,SKYDIVE_TIME);
 		return 1;
 	}
-
-	if(!strcmp(cmd,"/sk",true))
-	{
-		new string[MAX_STRING];
-		format(string,sizeof(string),"Твой скилл текущего оружия:%d",PlayerWeaponsSkills[playerid][ GetWeaponSkillID( GetPlayerWeapon(playerid) ) ]);
-		SendClientMessage(playerid,COLOUR_GREY,string);
-		return 1;
-	}
-
  	if(!strcmp(cmd,"/dance",true))
 	{
 		switch(strval(strcharsplit(text, idx,' ')))
