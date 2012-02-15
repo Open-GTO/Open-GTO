@@ -546,7 +546,7 @@ public OnPlayerText(playerid, text[])
 	{
 	    case '!':
 	    {
-			if(GetPVarInt(playerid,"GangID") == 0 || GetPlayerMuteTime(playerid) > 0)    //Игрок заткнут
+			if(GetPVarInt(playerid,"GangID") == 0 || GetPlayerMuteTime(playerid) > 0)
 			{
 				SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 				return 0;
@@ -562,7 +562,7 @@ public OnPlayerText(playerid, text[])
 		{
 			if(strlen(text[1]) < 2) return 1;
 			SendClientMessageToAdmins(playerid,text[1]);
-			format(string,sizeof(string), "Player: %s"CHAT_SHOW_ID": <ADMIN TALK>: %s",oGetPlayerName(playerid),playerid,text[1]);
+			format(string,sizeof(string), "Player: %s"CHAT_SHOW_ID": <ADMIN TALK>: %s",playername,playerid,text[1]);
 			WriteLog(ChatLog,string);
 			return 0;
 		}
@@ -570,7 +570,7 @@ public OnPlayerText(playerid, text[])
 		{
 			if(strlen(text[1]) < 2) return 1;
 			SendClientMessageToModers(playerid,text[1]);
-			format(string,sizeof(string), "Player: %s"CHAT_SHOW_ID": <MODERATOR TALK>: %s",oGetPlayerName(playerid),playerid,text[1]);
+			format(string,sizeof(string), "Player: %s"CHAT_SHOW_ID": <MODERATOR TALK>: %s",playername,playerid,text[1]);
 			WriteLog(ChatLog,string);
 			return 0;
 		}
