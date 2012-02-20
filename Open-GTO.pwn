@@ -73,6 +73,7 @@ Date start Open-GTO: 	5 November 2009
 #include "protections\antihightping"
 #include "protections\chatguard"
 #include "protections\banweapons"
+#include "protections\antijetpack"
 //#include "testserver"
 #include "click"
 #include "services\fastfood"
@@ -178,6 +179,8 @@ public OnGameModeInit()
     health_OnGameModeInit();
     money_OnGameModeInit();
 	chatguard_OnGameModeInit();
+	antijetpack_OnGameModeInit();
+	antirconhack_OnGameModeInit();
 	//
 	race_thestrip_init();
 	race_riversiderun_init();

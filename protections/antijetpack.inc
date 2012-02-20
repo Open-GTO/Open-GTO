@@ -1,0 +1,36 @@
+/*
+	Author:	ZiGGi
+*/
+
+new AntiJetPackEnabled = ANTI_JETPACK_ENABLED;
+
+stock AntiJetPackLoadConfig()
+{
+	if(!ini_Exist(ConfigDB)) return 0;
+	new file_ajp = ini_Open(ConfigDB);
+	ini_GetInt(file_ajp,"Anti_JetPack_Enabled",AntiJetPackEnabled);
+	ini_Close(file_ajp);
+	return 1;
+}
+
+stock AntiJetPackSaveConfig()
+{
+	new file_ajp = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_ajp,"Anti_JetPack_Enabled",AntiJetPackEnabled);
+	ini_Close(file_ajp);
+	return 1;
+}
+
+stock antijetpack_OnGameModeInit()
+{
+	AntiJetPackLoadConfig();
+	GameMSG("SERVER: (protections)AntiJetPack module init");
+	return 1;
+}
+
+stock CheckJetpack(playerid)
+{
+	if(AntiJetPackEnabled != 1 || GetPlayerSpecialAction(playerid) != SPECIAL_ACTION_USEJETPACK) return 1;
+	KickPlayer(playerid,lang_texts[11][4]);
+	return 1;
+}

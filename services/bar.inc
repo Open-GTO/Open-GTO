@@ -98,6 +98,7 @@ stock bar_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			return show_Msg_Dialog(playerid,lang_texts[17][14],lang_texts[17][17],lang_texts[17][18]);
 		oGivePlayerMoney(playerid,-Drinks[listitem][Cost],1);
 		SetPlayerSpecialAction(playerid,Drinks[listitem][Action]);
+		SetPVarInt(playerid,"bar_Drinking",1);
 		SetPlayerDrunkLevel(playerid,GetPlayerDrunkLevel(playerid) + floatround(Drinks[listitem][Alcohol]*100,floatround_round));
 		if(Drinks[listitem][Hp] + oGetPlayerHealth(playerid) > GetMaxHealth(playerid))
 			oSetPlayerHealth(playerid,GetMaxHealth(playerid));
