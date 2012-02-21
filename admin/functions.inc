@@ -31,25 +31,34 @@ new Float:Jail_PH[][CoordInfoJ] = {
 {1225.165, 245.328, 19.554, 306.501}
 };
 
-stock JailPlayer(playerid)
+stock JailPlayer(playerid, jail_time)
 {
-	if(GetPlayerJailed(playerid) != 1) return 0;
-	new jail_time = GetPlayerJailTime(playerid);
+	SetPlayerJailTime(playerid, jail_time);
+	SetPlayerJailed(playerid,1);
 	SetPlayerWantedLevel(playerid,(jail_time == 0 || jail_time > 6) ? 6 : jail_time);
-	// телепортируем в тюрьму
 	SetPlayerInterior(playerid,6);
 	SetPlayerPos(playerid,265.1273,77.6823,1001.0391);
 	SetPlayerFacingAngle(playerid,-90);	
 	TogglePlayerControllable(playerid,0);
 	SetCameraBehindPlayer(playerid);
 	SetPlayerArmour(playerid, 0);
-	PlayerPlaySound(playerid,1082,198.3797,160.8905,1003.0300);
+	PlayerPlaySound(playerid,1082,265.1273,77.6823,1001.0391);
+	return 1;
+}
+
+stock JailPlayerCheck(playerid)
+{
+	if(GetPlayerJailed(playerid) == 1 && !IsPlayerInRangeOfPoint(playerid, 5, 265.1273, 77.6823, 1001.0391))
+	{
+		KickPlayer(playerid,lang_texts[11][16]);
+	}
 	return 1;
 }
 
 stock UnJailPlayer(playerid)
 {
-	if(GetPlayerJailed(playerid) != 0) return 0;
+	SetPlayerJailed(playerid,0);
+	SetPlayerJailTime(playerid,0);
 	SetPlayerJailTime(playerid,0);
 	SetPlayerWantedLevel(playerid, 0);
 	TogglePlayerControllable(playerid,1);
@@ -128,8 +137,6 @@ stock JailTimer()
 			SetPlayerJailTime(i,jail_time);
 			if (jail_time <= 0)
 			{
-				SetPlayerJailed(i,0);
-				SetPlayerJailTime(i,0);
 				UnJailPlayer(i);
 				printf("SERVER : %s Has Been auto-UNJailed",oGetPlayerName(i));
 			}

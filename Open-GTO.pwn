@@ -389,7 +389,10 @@ public OnPlayerSpawn(playerid)
 {
 	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
 	SetPlayerSkin(playerid,GetPlayerSkinModel(playerid));
-	JailPlayer(playerid);
+	if(GetPlayerJailed(playerid) != 0)
+	{
+		JailPlayer(playerid,GetPlayerJailTime(playerid));
+	}
 	UpdatePlayerLevelTextDraws(playerid);
 	UpdatePlayerWeaponTextDraws(playerid);
 	

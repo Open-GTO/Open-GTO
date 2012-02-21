@@ -91,12 +91,10 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][19]);
 			}
-			if (IsPlayerConnected(unjailid) == 0)
+			if (!IsPlayerConnected(unjailid))
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][20]);
 			}
-			SetPlayerJailed(unjailid,0);
-			SetPlayerJailTime(unjailid,0);
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][21],oGetPlayerName(playerid));
 			SendClientMessage(unjailid,COLOUR_GREEN,string);
@@ -384,30 +382,24 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(ListResponseType[playerid] == 6)
 		{
 			new jailid = GetPlayerClickedPlayerid(playerid);
-			if((IsPlayerRconAdmin(jailid) && !IsPlayerRconAdmin(playerid)) || (IsPlayerAdm(jailid) && IsPlayerMod(playerid)))
-			{
+			if(!IsPlayerConnected(jailid) || (IsPlayerRconAdmin(jailid) && !IsPlayerRconAdmin(playerid)))
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
-			}
-			if(IsPlayerConnected(jailid) == 0)
-			{
-				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][3]);
-			}
-			static jailt=4320;
-			jailt = strval(inputtext);
-			if(jailt>1 && jailt<=4320) SetPlayerJailTime(jailid,jailt);
-			SetPlayerJailed(jailid,1);
+			
+			new jailt = strval(inputtext);
+			
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][18],oGetPlayerName(playerid));
 			SendClientMessage(jailid,COLOUR_RED,string);
-			format(string,sizeof(string),"~r~%s ~w~has been Jailed",oGetPlayerName(jailid));
-			GameTextForAll(string,5000,4);
+			
 			new string2[40];
-			if(jailt > 1 && jailt<=4320) format(string2,sizeof(string2),"%d мин",jailt);
-			else format(string2,sizeof(string2),"пожизненно");
-			format(string,sizeof(string),"SERVER: %s был Арестован на %s минут",oGetPlayerName(jailid),string2);
-			print(string);
+			if(1 <= jailt <= 4320)
+				format(string2,sizeof(string2),"на %d минут",jailt);
+			else
+				set(string2,"навсегда");
+			format(string,sizeof(string),"SERVER: %s был арестован %s",oGetPlayerName(jailid),string2);
 			SendClientMessageToAll(COLOUR_WHITE,string);
-			JailPlayer(jailid);
+			GameTextForPlayer(playerid,"~w~ You has been ~r~Jailed~w~!",5000,4);
+			JailPlayer(jailid,jailt);
 		}
 		if(ListResponseType[playerid] == 12)
 		{

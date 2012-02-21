@@ -173,18 +173,10 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 
 		new jailt = strval(strcharsplit(text, idx,' '));
-		if(1 <= jailt <= 4320)
-			SetPlayerJailTime(jailid,jailt);
-		
-		SetPlayerJailed(jailid,1);
-		
 		
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][18],oGetPlayerName(playerid));
 		SendClientMessage(jailid,COLOUR_RED,string);
-		
-		format(string,sizeof(string),"~r~%s ~w~has been Jailed",oGetPlayerName(jailid));
-		GameTextForAll(string,5000,4);
 		
 		new string2[40];
 		if(1 <= jailt <= 4320)
@@ -193,7 +185,8 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 			set(string2,"навсегда");
 		format(string,sizeof(string),"SERVER: %s был арестован %s",oGetPlayerName(jailid),string2);
 		SendClientMessageToAll(COLOUR_WHITE,string);
-		JailPlayer(jailid);
+		GameTextForPlayer(playerid,"~w~ You has been ~r~Jailed~w~!",5000,4);
+		JailPlayer(jailid,jailt);
 		return 1;
 	}
 	if(!strcmp(cmd, "/unjail", true))
@@ -202,9 +195,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 		new unjailid = strval(strcharsplit(text, idx,' '));
 		if(!IsPlayerConnected(unjailid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][19]);
-
-		SetPlayerJailed(unjailid,0);
-		SetPlayerJailTime(unjailid,0);
+		
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][21],oGetPlayerName(playerid));
 		SendClientMessage(playerid,COLOUR_GREEN,string);

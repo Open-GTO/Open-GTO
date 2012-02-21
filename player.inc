@@ -357,7 +357,7 @@ stock SyncPlayers(playerid)
 	if(GetPVarInt(playerid,"Spawned") == 0) return 0; // если игрок мертв, то защиты не срабатывают
 	SyncMoney(playerid);
 	SyncHealth(playerid);
-	JailPlayer(playerid);
+	JailPlayerCheck(playerid);
 	CheckPing(playerid);
 	return 1;
 }
