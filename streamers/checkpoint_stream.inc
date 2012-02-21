@@ -34,7 +34,7 @@ stock SyncActiveCP()
 	{
 		if(GetPlayerQuestID(playerid) == INVALID_QUEST_ID)
 		{
-	    	new cpid = GetPlayerClosestActiveCP(playerid);
+			new cpid = GetPlayerClosestActiveCP(playerid);
 			if(cpid != 0)
 				SetPlayerActiveCP(playerid,cpid);
 			else

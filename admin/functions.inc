@@ -37,11 +37,11 @@ stock JailPlayer(playerid, jail_time)
 	SetPlayerJailed(playerid,1);
 	SetPlayerWantedLevel(playerid,(jail_time == 0 || jail_time > 6) ? 6 : jail_time);
 	SetPlayerInterior(playerid,6);
-	SetPlayerPos(playerid,265.1273,77.6823,1001.0391);
+	oSetPlayerPos(playerid,265.1273,77.6823,1001.0391);
 	SetPlayerFacingAngle(playerid,-90);	
 	TogglePlayerControllable(playerid,0);
 	SetCameraBehindPlayer(playerid);
-	SetPlayerArmour(playerid, 0);
+	oSetPlayerArmour(playerid, 0);
 	PlayerPlaySound(playerid,1082,265.1273,77.6823,1001.0391);
 	return 1;
 }
@@ -65,7 +65,7 @@ stock UnJailPlayer(playerid)
 	// ставим игрока в рандомное место из всех мест освобождений
 	new j_id = random( sizeof(Jail_PH) );
 	SetPlayerInterior(playerid,0);
-	SetPlayerPos(playerid, Jail_PH[j_id][CJ_X], Jail_PH[j_id][CJ_Y], Jail_PH[j_id][CJ_Z] );
+	oSetPlayerPos(playerid, Jail_PH[j_id][CJ_X], Jail_PH[j_id][CJ_Y], Jail_PH[j_id][CJ_Z] );
 	SetPlayerFacingAngle(playerid,Jail_PH[j_id][CJ_A]);
 	SetCameraBehindPlayer(playerid);
 	new string[MAX_STRING];

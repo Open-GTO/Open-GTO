@@ -1,6 +1,6 @@
 /*
-	Created:     13.09.06
-	Aurthor:    Iain Gilbert
+	Created:	13.09.06
+	Aurthor:	Iain Gilbert
 	Modified by ZiGGi
 */
 
@@ -50,7 +50,7 @@ stock groundhold_SaveConfig()
 stock groundhold_LoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 0;
-    new file_gh_db = ini_Open(ConfigDB);
+	new file_gh_db = ini_Open(ConfigDB);
 	ini_GetInt(file_gh_db,"Groundhold_Enabled",Groundhold_Enabled);
 	ini_Get(file_gh_db,"Groundhold_DB",GroundholdDB);
 	ini_Close(file_gh_db);

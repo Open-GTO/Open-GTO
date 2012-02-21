@@ -2341,15 +2341,6 @@ stock GetVehicleName(vehiclemodel)
 	return VehicleName;
 }
 
-stock GetVehicleSpeed(playerid)
-{
-    new Float:Vx,Float:Vy,Float:Vz,
-		vehicleid = GetPlayerVehicleID(playerid);
-    if(vehicleid != 0) GetVehicleVelocity(vehicleid,Vx,Vy,Vz);
-	else return 1;
-    return floatround(floatsqroot(floatabs(floatpower(Vx + Vy + Vz,2))) * 100 * 1.61);
-}
-
 stock vehicles_OnPlayerCommandText(playerid, cmdtext[])
 {
 	if(!strcmp(cmdtext,"/vmenu",true)) 

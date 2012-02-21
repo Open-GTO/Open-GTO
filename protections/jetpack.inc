@@ -2,6 +2,14 @@
 	Author:	ZiGGi
 */
 
+#if defined _jetpack_included
+	#endinput
+#endif
+
+#define _jetpack_included
+#pragma library jetpack
+
+
 new AntiJetPackEnabled = ANTI_JETPACK_ENABLED;
 
 stock AntiJetPackLoadConfig()

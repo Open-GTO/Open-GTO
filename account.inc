@@ -1,6 +1,6 @@
 //
-// Created:     05.09.06
-// Aurthor:    Iain Gilbert
+// Created:		05.09.06
+// Aurthor:		Iain Gilbert
 //
 // Updated:		28.04.2011 
 // Scripters:	GhostTT & ZiGGi
@@ -184,11 +184,11 @@ stock account_OnPlayerConnect(playerid)
 	if(ini_Exist(filename_account))
 	{
  		format(message,sizeof(message),lang_texts[1][43],playername);
-	    ShowPlayerDialog(playerid,account_Log_DialogID,DIALOG_STYLE_PASSWORD,"Вход в аккаунт",message,"Войти","");
+		ShowPlayerDialog(playerid,account_Log_DialogID,DIALOG_STYLE_PASSWORD,"Вход в аккаунт",message,"Войти","");
 	}
 	else
 	{
-	    format(message,sizeof(message),lang_texts[1][44],playername,MIN_PASS_LEN,MAX_PASS_LEN);
+		format(message,sizeof(message),lang_texts[1][44],playername,MIN_PASS_LEN,MAX_PASS_LEN);
 		ShowPlayerDialog(playerid,account_Reg_DialogID,DIALOG_STYLE_PASSWORD,"Регистрация",message,"Зарегать","");
 	}
 	SetPVarInt(playerid,"RequestPlace",random( sizeof(RequestPlace) ));

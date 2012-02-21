@@ -103,9 +103,9 @@ stock WeaponLoadAll()
 		if(!ini_Exist(weapondbname)) continue;
 		file_weapons = ini_Open(weapondbname);
 		ini_Get(file_weapons,"Name",Weapons[i][Weapon_Name],MAX_NAME);
-        ini_GetInt(file_weapons,"IsAllowed",Weapons[i][Weapon_Allowed]);
-        ini_GetInt(file_weapons,"Level",Weapons[i][Weapon_Level]);
-        ini_GetInt(file_weapons,"Price",Weapons[i][Weapon_Cost]);
+		ini_GetInt(file_weapons,"IsAllowed",Weapons[i][Weapon_Allowed]);
+		ini_GetInt(file_weapons,"Level",Weapons[i][Weapon_Level]);
+		ini_GetInt(file_weapons,"Price",Weapons[i][Weapon_Cost]);
 		ini_Close(file_weapons);
 	}
 	return 1;
@@ -251,7 +251,7 @@ stock BuyWeapon(playerid,weaponid,bullets)
 		return 0;
 	}
 	oGivePlayerMoney(playerid,-purchasecost,1);
-	oGivePlayerWeapon(playerid,weaponid,(weaponid == 37) ? bullets*10 : bullets); // фикс для количества патрон огнемёта(37)
+	GivePlayerWeaponEx(playerid,weaponid,(weaponid == 37) ? bullets*10 : bullets); // фикс для количества патрон огнемёта(37)
 	if(bullets > 1)
 		format(string,sizeof(string),lang_texts[16][13],bullets,oGetWeaponName(weaponid),purchasecost);
 	else

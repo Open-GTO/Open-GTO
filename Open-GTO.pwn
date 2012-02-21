@@ -24,56 +24,50 @@ Date start Open-GTO: 	5 November 2009
 -------------------------------------------------------------------
 */
 
-#include <..\compiler\includes\a_samp>		// samp
+#include <..\compiler\includes\a_samp>
 #include "utils\foreach"
-#include "config"							// дефайны и настройки по умолчанию
+#include "config"
 #include "utils\mxINI"
-#include "base"								// holds base script values
-#include "logging"							// logging handler
-#include "utils\gtoutils"					// misc used utils
+#include "base"
+#include "logging"
+#include "utils\gtoutils"
 #include "arrays"
 #include "lang"
 #include "player\level"
-#include "player\money"
-#include "player\health"
 #include "player\vip"
 #include "player\weapon"
 #include "player\weapon_drop"
-#include "bank"								// bank money to keep it on death
+#include "player\money"
+#include "player\health"
+#include "bank"
 #include "fightstyles"
-#include "account"							// account handler
-#include "player"							// holds player values
-#include "weapons"							// weapons and ammunation shop
-#include "vehicles"							// vehicles
+#include "account"
+#include "player"
+#include "weapons"
+#include "vehicles"
 #include "zones"
-#include "world"							// functions for zone, location, world, etc
-#include "commands"							// command handler
-#include "gang"								// gang handler
-#include "housing"							// housing handler
-#include "business"							// business handler
+#include "world"
+#include "commands"
+#include "gang"
+#include "housing"
+#include "business"
 #include "streamers\mapicon_stream"
 #include "streamers\checkpoint_stream"
-#include "race"								// race handler, manages and runs all rasces
-#include "deathmatch"						// deathmatch handler
-#include "payday" 							// pay players money based on level
-#include "groundhold"						// hold ground to gain money, pirate ship, etc
+#include "race"
+#include "deathmatch"
+#include "payday"
+#include "groundhold"
 #include "admin\functions"
 #include "admin\admin_func"
 #include "admin\mod_func"
-#include "admin\admin_commands"				// admin commands
-#include "admin\admin_commands_race"		// admin commands for race creation/minipulation
-#include "admin\admin_commands_dm"			// admin commands for deathmatch creation/minipulation
+#include "admin\admin_commands"
+#include "admin\admin_commands_race"
+#include "admin\admin_commands_dm"
 #include "admin\admin_commands_sys"
 #include "admin\adm_commands"
 #include "admin\mod_commands"
 #include "missions"
 #include "missions\trucker"
-#include "protections\antiidle"
-#include "protections\antirconhack"
-#include "protections\antihightping"
-#include "protections\chatguard"
-#include "protections\banweapons"
-#include "protections\antijetpack"
 //#include "testserver"
 #include "click"
 #include "services\fastfood"
@@ -82,36 +76,46 @@ Date start Open-GTO: 	5 November 2009
 #include "interior"
 #include "usermenu"
 #include "weather"
+#include "pickup"
+#include "protections\idle"
+#include "protections\rconhack"
+#include "protections\hightping"
+#include "protections\chatguard"
+#include "protections\banweapons"
+#include "protections\jetpack"
+#include "protections\speedhack"
+#include "protections\weaponhack"
+#include "protections\armourhack"
 // Races
-#tryinclude "races\race_monstertruck"		// Race: Monstertruck Madness
-#tryinclude "races\race_thestrip"			// Race: Burnin Down The Strip. - Just a strait sprint down the strip and back
-#tryinclude "races\race_riversiderun"		// Race: Riverside Run. - Beat the clock down a riverside dirt track.
-#tryinclude "races\race_fleethecity"		// Race: Flee The City. - race to air strip
-#tryinclude "races\race_lostinsmoke"		// Race: Lost in Smoke - a quick race around the city.
-#tryinclude "races\race_backstreetbang"		// Race: Backstreet bang
-#tryinclude "races\race_flyingfree"			// Race: Flying Free
-#tryinclude "races\race_murderhorn"			// Race: Murderhorn - by |Insane|
-#tryinclude "races\race_roundwego"			// Race: Airport Round We Go - by |Insane|
-#tryinclude "races\race_striptease"			// Race: Strip Tease - by |Insane|
-#tryinclude "races\race_countrycruise"		// Race: Countryside cruise
-#tryinclude "races\race_thegrove"			// Race: Tearin Up The Grove
-#tryinclude "races\race_mullholland"		// Race: Mullholland Getaway
-#tryinclude "races\race_lv_julius"   		// RACE: BIG CIRCLE OF 3
-#tryinclude "races\race_ls_trailer1"        // RACE: Trailers race
+#tryinclude "races\race_monstertruck"
+#tryinclude "races\race_thestrip"
+#tryinclude "races\race_riversiderun"
+#tryinclude "races\race_fleethecity"
+#tryinclude "races\race_lostinsmoke"
+#tryinclude "races\race_backstreetbang"
+#tryinclude "races\race_flyingfree"
+#tryinclude "races\race_murderhorn"
+#tryinclude "races\race_roundwego"
+#tryinclude "races\race_striptease"
+#tryinclude "races\race_countrycruise"
+#tryinclude "races\race_thegrove"
+#tryinclude "races\race_mullholland"
+#tryinclude "races\race_lv_julius"
+#tryinclude "races\race_ls_trailer1"
 #tryinclude "races\race_sf_fuckinwood1"
 #tryinclude "races\race_ls_majestic1"
 
 // Deathmatches
-#tryinclude "deathmatches\dm_air"			// Deathmatch - Base Jump
-#tryinclude "deathmatches\dm_area51"		// Deathmatch - Area 51
-#tryinclude "deathmatches\dm_badandugly"	// Deathmatch - The Bad and the Ugly
-#tryinclude "deathmatches\dm_bluemountains"	// Deathmatch - Blue Mountains
-#tryinclude "deathmatches\dm_cargoship"		// Deathmatch - Cargo Ship
-#tryinclude "deathmatches\dm_dildo"			// Deathmatch - Dildo Farm Revenge
-#tryinclude "deathmatches\dm_mbase"			// Deathmatch - Millitary Base
-#tryinclude "deathmatches\dm_minigunmadness"// Deathmatch - Minigun Madness
-#tryinclude "deathmatches\dm_poolday"		// Deathmatch - fy_poolday
-#tryinclude "deathmatches\dm_usnavy"		// Deathmatch - The US Navy
+#tryinclude "deathmatches\dm_air"
+#tryinclude "deathmatches\dm_area51"
+#tryinclude "deathmatches\dm_badandugly"
+#tryinclude "deathmatches\dm_bluemountains"
+#tryinclude "deathmatches\dm_cargoship"
+#tryinclude "deathmatches\dm_dildo"
+#tryinclude "deathmatches\dm_mbase"
+#tryinclude "deathmatches\dm_minigunmadness"
+#tryinclude "deathmatches\dm_poolday"
+#tryinclude "deathmatches\dm_usnavy"
 
 main()
 {
@@ -174,13 +178,16 @@ public OnGameModeInit()
 	ss_OnGameModeInit();
 	//
 	level_OnGameModeInit();
-    antiidle_OnGameModeInit();
-    antihightping_OnGameModeInit();
-    health_OnGameModeInit();
-    money_OnGameModeInit();
+	antiidle_OnGameModeInit();
+	antihightping_OnGameModeInit();
+	health_OnGameModeInit();
+	aah_OnGameModeInit();
+	money_OnGameModeInit();
 	chatguard_OnGameModeInit();
 	antijetpack_OnGameModeInit();
 	antirconhack_OnGameModeInit();
+	ash_OnGameModeInit();
+	antiweaponhack_OnGameModeInit();
 	//
 	race_thestrip_init();
 	race_riversiderun_init();
@@ -335,6 +342,7 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 public OnPlayerPickUpPickup(playerid,pickupid)
 {
 	wd_OnPlayerPickUpPickup(playerid, pickupid);
+	aah_OnPlayerPickUpPickup(playerid, pickupid);
 	return 1;
 }
 
@@ -354,6 +362,7 @@ public OnPlayerEnterRaceCheckpoint(playerid)
 public OnPlayerDeath(playerid, killerid, reason)
 {
 	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
+	SetPVarInt(playerid,"Spawned",0);
 	if(killerid == INVALID_PLAYER_ID)
 		GameMSG("player: %s(%d): has died > Reason: (%d)",oGetPlayerName(playerid),playerid,reason);
 	else
@@ -387,31 +396,40 @@ public OnPlayerDeath(playerid, killerid, reason)
 
 public OnPlayerSpawn(playerid)
 {
-	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
+	if (IsPlayerNPC(playerid)) return 1;
 	SetPlayerSkin(playerid,GetPlayerSkinModel(playerid));
-	if(GetPlayerJailed(playerid) != 0)
+	if (GetPlayerJailed(playerid) != 0)
 	{
 		JailPlayer(playerid,GetPlayerJailTime(playerid));
 	}
 	UpdatePlayerLevelTextDraws(playerid);
 	UpdatePlayerWeaponTextDraws(playerid);
 	
-	if(GetPlayerMuteTime(playerid) != 0)
+	if (GetPlayerMuteTime(playerid) != 0)
 	{
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][14]);
 		SetPlayerWantedLevel(playerid, 3);
 	}
 	new dmid = GetPlayerDM(playerid);
-	if(dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0)
+	if (dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0)
 		player_OnPlayerSpawn(playerid);
 	else
 		deathmatch_OnPlayerSpawn(playerid,dmid);
 	SetPlayerColor(playerid,PlayerGangColour(playerid));
+	SetTimerEx("OnPlayerSpawned",1000,0,"d",playerid);
+	return 1;
+}
+
+forward OnPlayerSpawned(playerid);
+public OnPlayerSpawned(playerid)
+{
+	SetPVarInt(playerid,"Spawned",1);
 	return 1;
 }
 
 public OnPlayerRequestClass(playerid, classid)
 {
+	SetPVarInt(playerid,"Spawned",0);
 	player_OnPlayerRequestClass(playerid, classid);
 	level_HideTextDraws(playerid);
 	weapon_HideTextDraw(playerid);
@@ -645,6 +663,7 @@ public OnPlayerExitedMenu(playerid)
 
 public OnPlayerStateChange(playerid,newstate,oldstate)
 {
+	ash_OnPlayerStateChange(playerid, newstate, oldstate);
 	if(newstate == PLAYER_STATE_DRIVER)
 	{
 	#if defined OLD_ENGINE_DO

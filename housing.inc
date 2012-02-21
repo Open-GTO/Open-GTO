@@ -212,7 +212,7 @@ stock housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			{
 				if(Houses[id][Houses_Lock] == 1)
 					return SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][56]);
-				oSetPlayerPos(playerid,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ],0,Houses[id][Houses_Interior],Houses[id][Houses_VirtualWorld]);
+				SetPlayerPosEx(playerid,Houses[id][Houses_EnterX],Houses[id][Houses_EnterY],Houses[id][Houses_EnterZ],0,Houses[id][Houses_Interior],Houses[id][Houses_VirtualWorld]);
 				SendClientMessage(playerid,COLOUR_GREEN,lang_texts[8][73]);
 				return 1;
 			}
@@ -330,7 +330,7 @@ stock housing_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			{
 				if(Houses[id][Houses_ArmourUpgrade] == 1)
 				{
-					SetPlayerArmour(playerid,100);
+					oSetPlayerArmour(playerid,100);
 					return 1;
 				}
 				if(oGetPlayerMoney(playerid) < HOUSE_UPGRADE_ARMOUR_COST)
@@ -518,7 +518,7 @@ stock house_Keep(playerid)
 
 stock SetPlayerPosToHouse(playerid,i)
 {
-	oSetPlayerPos(playerid,Houses[i][Houses_PickupX],Houses[i][Houses_PickupY],Houses[i][Houses_PickupZ]+0.5,0,0,0);
+	SetPlayerPosEx(playerid,Houses[i][Houses_PickupX],Houses[i][Houses_PickupY],Houses[i][Houses_PickupZ]+0.5,0,0,0);
 }
 
 stock HouseKeepUp()

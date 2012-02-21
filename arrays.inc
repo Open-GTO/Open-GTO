@@ -1,6 +1,6 @@
 //
-// Created:     10.02.11
-// Aurthor:    ZiGGi
+// Created:		10.02.11
+// Aurthor:		ZiGGi
 //
 
 #if defined _arrays_included
@@ -211,13 +211,13 @@ new Houses[][HouseInfo] = {
 // ************************* ******* *********************************
 // ************************* ¡»«Õ≈—€ *********************************
 enum BusinessInfo {
-	Business_Name[MAX_NAME],  // business name
-	Business_Cost,     // cost
-	Business_Value,        // value
-	Business_Level,            // minumum level
-	Business_Owner[MAX_NAME],   // owner
-	Business_Buyout,            // Buyout price
-	Business_Vault,              // Vault
+	Business_Name[MAX_NAME],
+	Business_Cost,
+	Business_Value,
+	Business_Level, // minumum level
+	Business_Owner[MAX_NAME],
+	Business_Buyout, // Buyout price
+	Business_Vault,
 	Business_Upgrade,
 	Business_ShowIcon,
 	Float:Coord_X,
@@ -286,8 +286,8 @@ enum vipveh_Info {
 	Float:Coord_Y,
 	Float:Coord_Z,
 	Float:Coord_A,
-    Color_1,
-    Color_2
+	Color_1,
+	Color_2
 }
 new vip_Vehicle[][vipveh_Info] = {
 	{447,230.772,1953.617,17.301,0.0,-1,-1},

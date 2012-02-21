@@ -2,6 +2,14 @@
 	Author:	ZiGGi
 */
 
+#if defined _rconhack_included
+	#endinput
+#endif
+
+#define _rconhack_included
+#pragma library rconhack
+
+
 new AntiRconHackEnabled = ANTI_RCON_HACK_ENABLED;
 
 stock AntiRconHackLoadConfig()

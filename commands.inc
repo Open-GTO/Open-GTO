@@ -149,10 +149,10 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][19]);
 		new Float:playerx,Float:playery,Float:playerz;
-		GivePlayerWeapon(playerid,46,1);
+		oGivePlayerWeapon(playerid,46,1);
 		GetPlayerPos(playerid,playerx,playery,playerz);
 		PlayerPlaySound(playerid,1057,0,0,0);
-		SetPlayerPos(playerid,playerx,playery,playerz+1200);
+		oSetPlayerPos(playerid,playerx,playery,playerz+1200);
 		format(string,sizeof(string), lang_texts[1][20]);
 		GameTextForPlayer(playerid,string,4000,5);
 		format(string,sizeof(string), lang_texts[1][21] ,oGetPlayerName(playerid),playerid);

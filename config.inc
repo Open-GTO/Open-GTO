@@ -41,10 +41,10 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define GameMSG_USE_PRINT // если задефайнен, то функция GameMSG выводит сообщение в консоль сервера
 
 // логи(параметры по умолчанию) 1 вкл, 0 выкл
-#define LOGGING_GAME_LOG_ENABLED		1
-#define LOGGING_DEBUG_LOG_ENABLED		1
-#define LOGGING_CHAT_LOG_ENABLED		1
-#define LOGGING_CMD_LOG_ENABLED			1
+#define LOGGING_GAME_LOG_ENABLED	1
+#define LOGGING_DEBUG_LOG_ENABLED	1
+#define LOGGING_CHAT_LOG_ENABLED	1
+#define LOGGING_CMD_LOG_ENABLED		1
 // античит(параметры по умолчанию)
 #define ANTI_HEALTH_HACK_ENABLED	1 // защита от чита на здоровье
 #define ANTI_MONEY_HACK_ENABLED		1 // защита от чита на деньги
@@ -52,14 +52,14 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define ANTI_HIGHT_PING_ENABLED		1 // защита от высокого пинга
 #define MAXIMAL_PING				500 // пинг, при котором кикает
 
-#define ANTI_IDLE_ENABLED	1 // защита от АФК на точках прокачки
-#define MAX_IDLE_TIME		5 // кол-во минут, после которых кикает
+#define ANTI_IDLE_ENABLED			1 // защита от АФК на точках прокачки
+#define MAX_IDLE_TIME				5 // кол-во минут, после которых кикает
 
-#define CHAT_GUARD_ENABLED	1 // защита чата
-
-#define ANTI_JETPACK_ENABLED 1 // защита от использования JetPack
-
-#define ANTI_RCON_HACK_ENABLED 1 // защита от взлома rcon пароля
+#define CHAT_GUARD_ENABLED			1 // защита чата
+#define ANTI_JETPACK_ENABLED		1 // защита от использования JetPack
+#define ANTI_RCON_HACK_ENABLED		1 // защита от взлома rcon пароля
+#define ANTI_SPEED_HACK_ENABLED		1 // защита от speedhack, airbreak, телепортации
+#define ANTI_ARMOUR_HACK_ENABLED	1 // защита от чита на броню
 // прочее
 #define MAX_GULPS			5 // максимальное количество глотков из бутылки
 
@@ -67,8 +67,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 #define GROUNDHOID_ENABLED	1 // точки прокачки
 
-#define BANK_PROFIT		2 // процент начисления прибыли за хранение в банке
-#define MAX_BANK_MONEY	15000000 // максимальное количество денег, которых можно хранить в банке
+#define BANK_PROFIT			2 // процент начисления прибыли за хранение в банке
+#define MAX_BANK_MONEY		15000000 // максимальное количество денег, которых можно хранить в банке
 
 #define PAYDAY_BASE_PAY		500 // PayDay тариф на деньги
 #define PAYDAY_CUTOFF		MAX_MONEY / 2 // кол-во денег, при котором перестаётся даваться деньги за PayDay

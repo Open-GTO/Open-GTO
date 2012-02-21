@@ -145,7 +145,7 @@ stock GetWeaponSlot(weaponid)
 //
 
 // даёт оружие 'навсегда'
-stock oGivePlayerWeapon(playerid,weaponid,ammo)
+stock GivePlayerWeaponEx(playerid,weaponid,ammo)
 {
 	if(!IsPlayerAllowedWeapon(playerid,weaponid)) return;
 	new slot = GetWeaponSlot(weaponid);
@@ -169,7 +169,7 @@ stock oGivePlayerWeapon(playerid,weaponid,ammo)
 			PlayerWeapons[playerid][slot][pwid] = weaponid;
 			PlayerWeapons[playerid][slot][pbullets] = 1;
 		}
-		GivePlayerWeapon(playerid,weaponid,ammo);
+		oGivePlayerWeapon(playerid,weaponid,ammo);
 	}
 }
 //
@@ -177,14 +177,14 @@ stock oGivePlayerWeapon(playerid,weaponid,ammo)
 // даёт всё 'всегдашнее' оружие
 stock GivePlayerOwnedWeapons(playerid)
 {
-	ResetPlayerWeapons(playerid);
+	ac_ResetPlayerWeapons(playerid);
 	for(new weaponslot=0;weaponslot<PLAYER_WEAPON_SLOTS;weaponslot++)
 	{
 		if(PlayerWeapons[playerid][weaponslot][pwid] <= 0) continue;
 		if(!IsPlayerAllowedWeapon(playerid,PlayerWeapons[playerid][weaponslot][pwid])) continue;
 		if(PlayerWeapons[playerid][weaponslot][pwid] > 0)
 		{
-			GivePlayerWeapon(playerid,PlayerWeapons[playerid][weaponslot][pwid],PlayerWeapons[playerid][weaponslot][pbullets]);
+			oGivePlayerWeapon(playerid,PlayerWeapons[playerid][weaponslot][pwid],PlayerWeapons[playerid][weaponslot][pbullets]);
 		}
 	}
 }

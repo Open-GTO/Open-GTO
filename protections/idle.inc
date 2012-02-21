@@ -11,9 +11,6 @@
 #define _antiidle_included
 #pragma library antiidle
 
-#include "base"
-#include "player"
-#include "groundhold"
 
 new AntiIdleEnabled = ANTI_IDLE_ENABLED,
 	MaxIdle = MAX_IDLE_TIME;

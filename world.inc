@@ -60,6 +60,11 @@ nee:
 	// protections
 	AntiIdleSaveConfig();
 	AntiHightPingSaveConfig();
+	AntiSpeedHackSaveConfig();
+	AntiWeaponHackSaveConfig();
+	AntiRconHackSaveConfig();
+	AntiArmourHackSaveConfig();
+	AntiJetPackSaveConfig();
 	ChatGuardSaveConfig();
 	BanWeaponsSaveConfig();
 	// other
@@ -135,6 +140,7 @@ public OneMinuteTimer()
 			SetPlayerSkydiveTime(playerid, GetPlayerSkydiveTime(playerid) - 1);
 		}
 	}
+	weather_WeatherUpdate();
 	SyncTime();
 	settime();
 	MuteCheck();

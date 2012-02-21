@@ -48,7 +48,7 @@ stock admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 	}
 	else
 	{
-		SetPlayerPos(playerid,fX,fY,fZ);
+		oSetPlayerPos(playerid,fX,fY,fZ);
 		SetPlayerInterior(playerid, 0);
 		SetPlayerVirtualWorld(playerid, 0);
 	}

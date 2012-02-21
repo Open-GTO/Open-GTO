@@ -54,7 +54,8 @@ stock SyncMoney(playerid)
 
 stock oSetPlayerMoney(playerid,money)
 {
-	GivePlayerMoney(playerid,(money - oGetPlayerMoney(playerid)));
+	ResetPlayerMoney(playerid);
+	GivePlayerMoney(playerid,money);
 	SetPVarInt(playerid,"Money",money);
 	return 1;
 }

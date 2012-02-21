@@ -1,6 +1,6 @@
 //
-// Created:     09.11.09
-// Aurthor:   ElBI
+// Created:		09.11.09
+// Aurthor:	ElBI
 //
 
 
@@ -38,28 +38,28 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		new GuiHeader[32],GuiText[32];
 		if(listitem == 0)
 		{
-		    GuiHeader = " Отправить деньги";
-		    GuiText =  " Введите сумму $\n\n";
+			GuiHeader = " Отправить деньги";
+			GuiText =  " Введите сумму $\n\n";
 		}
 		if(listitem == 1)
 		{
 			GuiHeader = " Личное сообщение";
-		    GuiText =  " Введите сообщение\n\n";
+			GuiText =  " Введите сообщение\n\n";
 		}
 		if(listitem == 2)
 		{
 			GuiHeader = " Жалоба на игрока";
-		    GuiText =  " Введите текст\n\n";
+			GuiText =  " Введите текст\n\n";
 		}
 		if(listitem == 3)
 		{
 			GuiHeader = " Кикнуть игрока";
-		    GuiText =  " Введите причину\n\n";
+			GuiText =  " Введите причину\n\n";
 		}
 		if(listitem == 4)
 		{
 			GuiHeader = " Заткнуть игрока";
-		    GuiText =  " Введите время затыкания\n\n";
+			GuiText =  " Введите время затыкания\n\n";
 		}
 		if(listitem == 5)
 		{
@@ -82,7 +82,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(listitem == 6)
 		{
 			GuiHeader = " В тюрьму игрока";
-		    GuiText =  " Введите время заключения\n\n";
+			GuiText =  " Введите время заключения\n\n";
 		}
 		if(listitem == 7)
 		{
@@ -169,7 +169,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				GetPlayerFacingAngle(receiverid,Angle);
 				SetPlayerFacingAngle(playerid,Angle);
 				X=X+(random(2)-random(4));Y=Y+(random(2)-random(4));
-				SetPlayerPos(playerid, X, Y, Z + 1);
+				oSetPlayerPos(playerid, X, Y, Z + 1);
 			}
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][66],oGetPlayerName(receiverid),receiverid);
@@ -203,7 +203,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				SetPlayerFacingAngle(receiverid,Angle);
 				X=X+(random(2)-random(4));
 				Y=Y+(random(2)-random(4));
-				SetPlayerPos(receiverid,X,Y,Z+1);
+				oSetPlayerPos(receiverid,X,Y,Z+1);
 			}
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][66],oGetPlayerName(playerid),playerid);
@@ -215,22 +215,22 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if(listitem == 12)
 		{
 			GuiHeader = " Задать здоровье";
-		    GuiText =  " Введите значение\n\n";
+			GuiText =  " Введите значение\n\n";
 		}
 		if(listitem == 13)
 		{
 			GuiHeader = " Задать броню";
-		    GuiText =  " Введите значение\n\n";
+			GuiText =  " Введите значение\n\n";
 		}
 		if(listitem == 14)
 		{
 			GuiHeader = " Дать опыт";
-		    GuiText =  " Введите значение\n\n";
+			GuiText =  " Введите значение\n\n";
 		}
 		if(listitem == 15)
 		{
 			GuiHeader = " Дать денег";
-		    GuiText =  " Введите значение$$\n\n";
+			GuiText =  " Введите значение$$\n\n";
 		}
 		if(listitem == 16)
 		{
@@ -435,7 +435,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			{
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][44]);
 			}
-			SetPlayerArmour(receiverid, armamount);
+			oSetPlayerArmour(receiverid, armamount);
 		}
 		if(ListResponseType[playerid] == 14)
 		{

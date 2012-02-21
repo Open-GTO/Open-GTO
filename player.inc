@@ -182,14 +182,13 @@ stock player_OnGameModeInit()
 
 stock player_OnPlayerSpawn(playerid)
 {
-	SetPVarInt(playerid,"Spawned",1);
 	new house_id = GetPlayerSpawnHouseID(playerid);
 	SetPlayerInterior(playerid,0);
 	if(house_id == -1)
 	{
 		if(GetPVarFloat(playerid,"Coord_X") != 0.0 && GetPVarFloat(playerid,"Coord_Y") != 0.0 && GetPVarFloat(playerid,"Coord_Z") != 0.0)
 		{
-			SetPlayerPos(playerid,GetPVarFloat(playerid,"Coord_X"),GetPVarFloat(playerid,"Coord_Y"),GetPVarFloat(playerid,"Coord_Z")); // Warp the player
+			oSetPlayerPos(playerid,GetPVarFloat(playerid,"Coord_X"),GetPVarFloat(playerid,"Coord_Y"),GetPVarFloat(playerid,"Coord_Z")); // Warp the player
 			SetPVarFloat(playerid,"Coord_X",0.0);
 			SetPVarFloat(playerid,"Coord_Y",0.0);
 			SetPVarFloat(playerid,"Coord_Z",0.0);
@@ -199,12 +198,12 @@ stock player_OnPlayerSpawn(playerid)
 			if(GetPlayerLevel(playerid) > 12)
 			{
 				new rand = random( sizeof(LVDMPlayerSpawns) );
-				SetPlayerPos(playerid,LVDMPlayerSpawns[rand][Coord_X],LVDMPlayerSpawns[rand][Coord_Y],LVDMPlayerSpawns[rand][Coord_Z]); // Warp the player
+				oSetPlayerPos(playerid,LVDMPlayerSpawns[rand][Coord_X],LVDMPlayerSpawns[rand][Coord_Y],LVDMPlayerSpawns[rand][Coord_Z]); // Warp the player
 			}
 			else
 			{
 				new spawnid = GetRndPlayerSpawnByLevel(GetPlayerLevel(playerid));
-				SetPlayerPos(playerid,LeveledPlayerSpawns[spawnid][playerspawn_x],LeveledPlayerSpawns[spawnid][playerspawn_y],LeveledPlayerSpawns[spawnid][playerspawn_z]); // Warp the player
+				oSetPlayerPos(playerid,LeveledPlayerSpawns[spawnid][playerspawn_x],LeveledPlayerSpawns[spawnid][playerspawn_y],LeveledPlayerSpawns[spawnid][playerspawn_z]); // Warp the player
 			}
 		}
 	}
@@ -237,11 +236,8 @@ stock player_OnPlayerSpawn(playerid)
 
 stock player_OnPlayerDisconnect(playerid,reason)
 {
-	if(IsPlayerRegistered(playerid))
-	{
-		PlayerSave(playerid);
-		AccountSave(playerid);
-	}
+	PlayerSave(playerid);
+	AccountSave(playerid);
 	DMPlayerDisconnect(playerid);
 	new string[MAX_STRING];
 	format(string,sizeof(string),lang_texts[1][18],oGetPlayerName(playerid),playerid);
@@ -253,7 +249,6 @@ stock player_OnPlayerDisconnect(playerid,reason)
 	}
 	SendClientMessageToAll(COLOUR_GREY,string);
 	GangMemberLogout(playerid,GetPVarInt(playerid,"GangID"));
-	player_ResetStats(playerid);
 	DisablePlayerRaceCheckpoint(playerid);
 	SendDeathMessage(INVALID_PLAYER_ID,playerid,201);
 }
@@ -263,7 +258,6 @@ stock player_OnPlayerConnect(playerid)
     new plrIP[16],string[MAX_STRING];
     GetPlayerIp(playerid,plrIP,sizeof(plrIP));
 	SetPVarString(playerid,"IP",plrIP);
-	player_ResetStats(playerid);
 	if(!NameCharCheck( oGetPlayerName(playerid) ))
 	{
 		format(string,sizeof(string),lang_texts[9][13],ALLOWED_NICK_SYMBOLS_STR);
@@ -288,7 +282,6 @@ stock player_OnPlayerConnect(playerid)
 stock player_OnPlayerDeath(playerid,killerid,reason)
 {
 	#pragma unused reason
-	SetPVarInt(playerid,"Spawned",0);
 	GivePVarInt(playerid,"Deaths",1);
 	oGivePlayerMoney(playerid,-100,0);
 	modfunc_OnPlayerDeath(playerid,killerid,reason);
@@ -343,7 +336,7 @@ stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 	}
 	else
 	{
-		SetPlayerPos(playerid,fX,fY,fZ);
+		oSetPlayerPos(playerid,fX,fY,fZ);
 		SetPlayerInterior(playerid, 0);
 		SetPlayerVirtualWorld(playerid, 0);
 	}
@@ -354,9 +347,12 @@ stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 // sync player hp/money and check for mismatch
 stock SyncPlayers(playerid)
 {
-	if(GetPVarInt(playerid,"Spawned") == 0) return 0; // если игрок мертв, то защиты не срабатывают
+	if(GetPVarInt(playerid,"Spawned") != 1) return 0; // если игрок мертв, то защиты не срабатывают
+	SyncSpeed(playerid);
+	SyncWeapon(playerid);
 	SyncMoney(playerid);
 	SyncHealth(playerid);
+	SyncArmour(playerid);
 	JailPlayerCheck(playerid);
 	CheckPing(playerid);
 	return 1;
@@ -364,7 +360,6 @@ stock SyncPlayers(playerid)
 
 stock player_OnPlayerRequestClass(playerid, classid)
 {
-	SetPVarInt(playerid,"Spawned",0);
 	// Фикс для выбора классов(поломалось в 0.3a)
 	if(classid != 0)
 	{
@@ -379,7 +374,7 @@ stock player_OnPlayerRequestClass(playerid, classid)
 	//
 	new req_id = GetPVarInt(playerid,"RequestPlace");
 	SetPlayerInterior(playerid,RequestPlace[req_id][Interior]);
-	SetPlayerPos(playerid,RequestPlace[req_id][player_X],RequestPlace[req_id][player_Y],RequestPlace[req_id][player_Z]);
+	oSetPlayerPos(playerid,RequestPlace[req_id][player_X],RequestPlace[req_id][player_Y],RequestPlace[req_id][player_Z]);
 	SetPlayerFacingAngle(playerid,RequestPlace[req_id][player_A]);
 	SetPlayerCameraPos(playerid,RequestPlace[req_id][camera_pos_X],RequestPlace[req_id][camera_pos_Y],RequestPlace[req_id][camera_pos_Z]);
 	SetPlayerCameraLookAt(playerid,RequestPlace[req_id][camera_look_X],RequestPlace[req_id][camera_look_Y],RequestPlace[req_id][camera_look_Z]);
@@ -434,18 +429,6 @@ stock GetRndPlayerSpawnByLevel(level)
 	return ((idx != 0) ? leveledspawns[random(idx)] : leveledspawns[0]);
 }
 
-stock player_ResetStats(playerid)
-{
-	DeletePVar(playerid,"PlayerRegistered");
-	oSetPlayerMoney(playerid,0);
-	ResetQuest(playerid);
-	SetPlayerSkinModel(playerid,1);
-	SetPlayerFightStyle(playerid,4);
-	SetPlayerFightStyleUsed(playerid,4);
-	weapon_ResetSkills(playerid);
-	SetPlayerSpawnHouseID(playerid,-1);
-}
-
 stock IsPlayerRegistered(playerid)
 {
 	if(GetPVarInt(playerid,"PlayerRegistered") == 0) return false;
@@ -485,10 +468,10 @@ stock CreatePlayer(playerid)
 	oSetPlayerMoney(playerid,PlayerStartMoney);
 	SetPlayerLevel(playerid,1);
 	SetPlayerXP(playerid,LevelList[1][level_xp]);
-	ResetPlayerWeapons(playerid);
+	ac_ResetPlayerWeapons(playerid);
 	for (new i=0; i<sizeof(PlayerStartWeapon); i++)
 	{
-		oGivePlayerWeapon(playerid,PlayerStartWeapon[i][psw_id],PlayerStartWeapon[i][psw_bull]);
+		GivePlayerWeaponEx(playerid,PlayerStartWeapon[i][psw_id],PlayerStartWeapon[i][psw_bull]);
 	}
 	player_create_db_ini(playerid);
 	GameMSG("player: %s(%d): player_created successfully",oGetPlayerName(playerid),playerid);

@@ -11,7 +11,7 @@ stock BanWeaponsLoadConfig()
 	if(!ini_Exist(ConfigDB)) return 0;
 	new file_bw = ini_Open(ConfigDB);
 	new buffer[MAX_STRING];
-    ini_Get(file_bw,"BanWeapons",buffer);
+	ini_Get(file_bw,"BanWeapons",buffer);
 	SetBanWeaponsFromDBString(buffer);
 	ini_Close(file_bw);
 	return 1;
@@ -64,7 +64,7 @@ stock banweapons_OnPlayerDeath(playerid, killerid, reason)
 	{
 		if(reason == BanWeapons[i])
 		{
-			ResetPlayerWeapons(killerid);
+			ac_ResetPlayerWeapons(killerid);
 			GetWeaponName(BanWeapons[i], string, sizeof(string));
 			format(string,sizeof(string),lang_texts[9][14],string);
 			KickPlayer(killerid,string);

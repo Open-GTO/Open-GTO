@@ -41,7 +41,7 @@ stock wd_OnPlayerPickUpPickup(playerid, pickupid)
     {
 		if (pickupid == weapons_dropped[wd_slot][wd_pickupid])
 		{
-			GivePlayerWeapon(playerid,weapons_dropped[wd_slot][wd_weaponid],weapons_dropped[wd_slot][wd_bullets]);
+			oGivePlayerWeapon(playerid,weapons_dropped[wd_slot][wd_weaponid],weapons_dropped[wd_slot][wd_bullets]);
 			wd_DropPickup(pickupid, wd_slot);
 		}
 	}
@@ -107,9 +107,9 @@ stock GetWeaponPickupModel(weaponid)
 {
 	 switch(weaponid)
 	 {
-	    case 1: return 331;
-	    case 2: return 333;
-	    case 3: return 334;
+		case 1: return 331;
+		case 2: return 333;
+		case 3: return 334;
 		case 4: return 335;
 		case 5: return 336;
 		case 6: return 337;

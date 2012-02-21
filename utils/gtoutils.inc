@@ -168,12 +168,12 @@ stock PlayerCount()
 	return count;
 }
 
-stock oSetPlayerPos(playerid,Float:X,Float:Y,Float:Z,Float:Angle,Interior,World=0)
+stock SetPlayerPosEx(playerid,Float:X,Float:Y,Float:Z,Float:Angle,Interior,World=0)
 {
     SetPlayerInterior(playerid,Interior);
 	SetPlayerVirtualWorld(playerid,World);
     SetPlayerFacingAngle(playerid,Angle);
-    SetPlayerPos(playerid,X,Y,Z);
+    oSetPlayerPos(playerid,X,Y,Z);
     SetCameraBehindPlayer(playerid);
     return 1;
 }

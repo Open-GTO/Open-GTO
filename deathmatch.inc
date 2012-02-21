@@ -641,7 +641,7 @@ stock deathmatch_OnPlayerSpawn(playerid,dmid)
 
 	SetPlayerInterior(playerid,0);
 	new spid = random(DMSpawnsSize[dmid]);
-	SetPlayerPos(playerid,DMSpawnPoints[dmid][spid][Coord_X], DMSpawnPoints[dmid][spid][Coord_Y], DMSpawnPoints[dmid][spid][Coord_Z]); // Warp the player
+	oSetPlayerPos(playerid,DMSpawnPoints[dmid][spid][Coord_X], DMSpawnPoints[dmid][spid][Coord_Y], DMSpawnPoints[dmid][spid][Coord_Z]); // Warp the player
 	oSetPlayerHealth(playerid,GetMaxHealth(playerid)); // set health based on level
 	GivePlayerDMWeapons(playerid,dmid);
 	DMPlayerStats[playerid][dm_player_active] = 1;
@@ -822,7 +822,7 @@ stock PlayerLeaveDM(playerid,dmid)
 	if (DMPlayerStats[playerid][dm_player_active])
 	{
 		ResetPlayerDMWeapons(playerid);
-		SetPlayerPos(playerid,DMStartCP[dmid][Coord_X], DMStartCP[dmid][Coord_Y], DMStartCP[dmid][Coord_Z]);
+		oSetPlayerPos(playerid,DMStartCP[dmid][Coord_X], DMStartCP[dmid][Coord_Y], DMStartCP[dmid][Coord_Z]);
 
 		SetPlayerInterior(playerid,0);
 		oSetPlayerHealth(playerid,GetMaxHealth(playerid)); // set health based on level
@@ -840,7 +840,7 @@ stock GivePlayerDMWeapons(playerid,dmid)
 	for (new i=0,len=strlen(weapons);i<len;i++)
 	{
 		if (weapons[i] == 0) break;
-		GivePlayerWeapon(playerid,weapons[i],GetWeaponMaxAmmo(weapons[i]));
+		oGivePlayerWeapon(playerid,weapons[i],GetWeaponMaxAmmo(weapons[i]));
 	}
 }
 

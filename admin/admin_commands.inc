@@ -113,7 +113,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(IsPlayerInAnyVehicle(playerid)) 
 			SetVehiclePos( GetPlayerVehicleID(playerid),PointsH[pointt][Coord_X],PointsH[pointt][Coord_Y],PointsH[pointt][Coord_Z]);
 		else
-			SetPlayerPos(playerid,PointsH[pointt][Coord_X],PointsH[pointt][Coord_Y],PointsH[pointt][Coord_Z]);
+			oSetPlayerPos(playerid,PointsH[pointt][Coord_X],PointsH[pointt][Coord_Y],PointsH[pointt][Coord_Z]);
 		
 		new string[MAX_STRING];
 		format(string,sizeof(string),"*** Вы были перемещены в точку с ИД %d",pointt);
@@ -187,10 +187,10 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		{
 			if(!GetPlayerJailed(id) && !IsPlayerInAnyDM(id))
 			{
-				GivePlayerWeapon(id,46,1);
+				oGivePlayerWeapon(id,46,1);
 				GetPlayerPos(id,playerx,playery,playerz);
 				PlayerPlaySound(id,1058,0,0,0);
-				SetPlayerPos(id,playerx,playery,playerz+1200);
+				oSetPlayerPos(id,playerx,playery,playerz+1200);
 			}
 			if(GetPlayerJailed(id) == 1)
 				SendClientMessage(id,COLOUR_LIGHTRED,lang_texts[1][22]);
@@ -206,7 +206,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(!IsPlayerConnected(receiverid) && !IsPlayerInAnyDM(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][10]);
 
-		ResetPlayerWeapons(receiverid);
+		ac_ResetPlayerWeapons(receiverid);
 		DropAmmo(receiverid);
 		new string[MAX_STRING];
 		format(string,sizeof(string), lang_texts[12][48] ,oGetPlayerName(playerid));			//игроку
@@ -222,7 +222,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		{
 			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
 				continue;
-			ResetPlayerWeapons(id);
+			ac_ResetPlayerWeapons(id);
 			DropAmmo(id);
 			format(string,sizeof(string),lang_texts[12][48],oGetPlayerName(playerid));	//игроку
 			SendClientMessage(id,COLOUR_XP_GOOD,string);
@@ -396,7 +396,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		} 
 		else
 		{ 
-			SetPlayerPos(playerid,-2888.677978,1423.499023,-36.533981); 
+			oSetPlayerPos(playerid,-2888.677978,1423.499023,-36.533981); 
 			SetPlayerFacingAngle(playerid,244.428359); 
 		} 
 		SetPlayerInterior(playerid,0); 
