@@ -39,6 +39,6 @@ stock antijetpack_OnGameModeInit()
 stock CheckJetpack(playerid)
 {
 	if(AntiJetPackEnabled != 1 || GetPlayerSpecialAction(playerid) != SPECIAL_ACTION_USEJETPACK) return 1;
-	KickPlayer(playerid,lang_texts[11][4]);
+	KickPlayer(playerid,lang_texts[11][15]);
 	return 1;
 }
