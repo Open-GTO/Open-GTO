@@ -471,7 +471,7 @@ stock CreatePlayer(playerid)
 	oResetPlayerWeapons(playerid);
 	for (new i=0; i<sizeof(PlayerStartWeapon); i++)
 	{
-		GivePlayerWeaponEx(playerid,PlayerStartWeapon[i][psw_id],PlayerStartWeapon[i][psw_bull]);
+		GivePlayerOwnedWeapon(playerid,PlayerStartWeapon[i][psw_id],PlayerStartWeapon[i][psw_bull]);
 	}
 	player_create_db_ini(playerid);
 	GameMSG("player: %s(%d): player_created successfully",oGetPlayerName(playerid),playerid);

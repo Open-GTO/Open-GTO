@@ -145,7 +145,7 @@ stock GetWeaponSlot(weaponid)
 //
 
 // даёт оружие 'навсегда'
-stock GivePlayerWeaponEx(playerid,weaponid,ammo)
+stock GivePlayerOwnedWeapon(playerid,weaponid,ammo)
 {
 	if(!IsPlayerAllowedWeapon(playerid,weaponid)) return;
 	new slot = GetWeaponSlot(weaponid);

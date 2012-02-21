@@ -251,7 +251,7 @@ stock BuyWeapon(playerid,weaponid,bullets)
 		return 0;
 	}
 	oGivePlayerMoney(playerid,-purchasecost,1);
-	GivePlayerWeaponEx(playerid,weaponid,(weaponid == 37) ? bullets*10 : bullets); // фикс для количества патрон огнемёта(37)
+	GivePlayerOwnedWeapon(playerid,weaponid,(weaponid == 37) ? bullets*10 : bullets); // фикс для количества патрон огнемёта(37)
 	if(bullets > 1)
 		format(string,sizeof(string),lang_texts[16][13],bullets,oGetWeaponName(weaponid),purchasecost);
 	else
