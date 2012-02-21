@@ -42,7 +42,7 @@ stock aah_OnGameModeInit()
 stock aah_OnPlayerPickUpPickup(playerid, pickupid)
 {
 	if (AntiArmourHackEnabled != 1) return 0;
-	if (pickups[pickupid][pi_model] == 1242)
+	if (GetPickupModel(pickupid) == 1242)
 	{
 		oSetPlayerArmour(playerid,100);
 	}

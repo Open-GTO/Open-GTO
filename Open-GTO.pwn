@@ -187,7 +187,7 @@ public OnGameModeInit()
 	antijetpack_OnGameModeInit();
 	antirconhack_OnGameModeInit();
 	ash_OnGameModeInit();
-	antiweaponhack_OnGameModeInit();
+	awh_OnGameModeInit();
 	//
 	race_thestrip_init();
 	race_riversiderun_init();
@@ -343,6 +343,7 @@ public OnPlayerPickUpPickup(playerid,pickupid)
 {
 	wd_OnPlayerPickUpPickup(playerid, pickupid);
 	aah_OnPlayerPickUpPickup(playerid, pickupid);
+	awh_OnPlayerPickUpPickup(playerid,pickupid);
 	return 1;
 }
 

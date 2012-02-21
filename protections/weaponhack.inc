@@ -29,10 +29,30 @@ stock AntiWeaponHackSaveConfig()
 	return 1;
 }
 
-stock antiweaponhack_OnGameModeInit()
+stock awh_OnGameModeInit()
 {
 	AntiWeaponHackLoadConfig();
 	GameMSG("SERVER: (protections)AntiWeaponHack module init");
+	return 1;
+}
+
+stock awh_OnPlayerPickUpPickup(playerid,pickupid)
+{
+	switch (GetPickupModel(pickupid))
+	{
+		case 371: // парашют
+		{
+			oGivePlayerWeapon(playerid,46,1);
+		}
+		case 1240: // здоровье
+		{
+			oSetPlayerHealth(playerid,GetMaxHealth(playerid));
+		}
+		case 1242: // armour
+		{
+			oSetPlayerArmour(playerid,100);
+		}
+	}
 	return 1;
 }
 
