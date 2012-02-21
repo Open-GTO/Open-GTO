@@ -74,7 +74,7 @@ stock oGivePlayerWeapon(playerid,weaponid,ammo)
 	return 1;
 }
 
-stock ac_ResetPlayerWeapons(playerid)
+stock oResetPlayerWeapons(playerid)
 {
 	new string[MAX_STRING];
 	for(new i = 0; i < PLAYER_WEAPON_SLOTS; i++)

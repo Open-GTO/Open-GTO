@@ -177,7 +177,7 @@ stock GivePlayerWeaponEx(playerid,weaponid,ammo)
 // даёт всё 'всегдашнее' оружие
 stock GivePlayerOwnedWeapons(playerid)
 {
-	ac_ResetPlayerWeapons(playerid);
+	oResetPlayerWeapons(playerid);
 	for(new weaponslot=0;weaponslot<PLAYER_WEAPON_SLOTS;weaponslot++)
 	{
 		if(PlayerWeapons[playerid][weaponslot][pwid] <= 0) continue;

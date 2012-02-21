@@ -206,7 +206,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(!IsPlayerConnected(receiverid) && !IsPlayerInAnyDM(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][10]);
 
-		ac_ResetPlayerWeapons(receiverid);
+		oResetPlayerWeapons(receiverid);
 		DropAmmo(receiverid);
 		new string[MAX_STRING];
 		format(string,sizeof(string), lang_texts[12][48] ,oGetPlayerName(playerid));			//игроку
@@ -222,7 +222,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		{
 			if(id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
 				continue;
-			ac_ResetPlayerWeapons(id);
+			oResetPlayerWeapons(id);
 			DropAmmo(id);
 			format(string,sizeof(string),lang_texts[12][48],oGetPlayerName(playerid));	//игроку
 			SendClientMessage(id,COLOUR_XP_GOOD,string);

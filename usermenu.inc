@@ -263,7 +263,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				case 4: // Выбросить оружие
 				{
 					//DropAmmo(playerid);
-					ResetPlayerWeapons(playerid);
+					oResetPlayerWeapons(playerid);
 					return show_User_Menu_Dialog(playerid,"Выбросить оружие","Вы добровольно избавились от всего оружия.");
 				}
 				case 5: // Место спавна

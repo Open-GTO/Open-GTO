@@ -453,8 +453,14 @@
 14:  * Похожие сообщения писать нельзя. Задумайся.
 // antijetpack
 15: Использование JetPack
-// other
+// antispeedhack
 16: Телепортировался из тюрьмы
+17: SpeedHack
+18: AirBreak
+19: Teleport
+// antiweaponhack
+20: Взлом оружия
+21: Взлом патрон
 [12 admin_commands]
 1: SERVER: %s
 2: Неверный ID игрока.

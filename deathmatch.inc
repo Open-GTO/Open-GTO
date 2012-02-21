@@ -836,7 +836,7 @@ stock GivePlayerDMWeapons(playerid,dmid)
 {
 	new weapons[MAX_DMWEAPONS+1];
 	set(weapons,Deathmatch[dmid][dm_weapons]);
-	ResetPlayerWeapons(playerid);
+	oResetPlayerWeapons(playerid);
 	for (new i=0,len=strlen(weapons);i<len;i++)
 	{
 		if (weapons[i] == 0) break;
@@ -846,7 +846,7 @@ stock GivePlayerDMWeapons(playerid,dmid)
 
 stock ResetPlayerDMWeapons(playerid)
 {
-	ResetPlayerWeapons(playerid);
+	oResetPlayerWeapons(playerid);
 }
 
 stock SendMessageToDMPlayers(dmid,string[],colour)

@@ -468,7 +468,7 @@ stock CreatePlayer(playerid)
 	oSetPlayerMoney(playerid,PlayerStartMoney);
 	SetPlayerLevel(playerid,1);
 	SetPlayerXP(playerid,LevelList[1][level_xp]);
-	ac_ResetPlayerWeapons(playerid);
+	oResetPlayerWeapons(playerid);
 	for (new i=0; i<sizeof(PlayerStartWeapon); i++)
 	{
 		GivePlayerWeaponEx(playerid,PlayerStartWeapon[i][psw_id],PlayerStartWeapon[i][psw_bull]);

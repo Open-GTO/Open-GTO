@@ -64,7 +64,7 @@ stock banweapons_OnPlayerDeath(playerid, killerid, reason)
 	{
 		if(reason == BanWeapons[i])
 		{
-			ac_ResetPlayerWeapons(killerid);
+			oResetPlayerWeapons(killerid);
 			GetWeaponName(BanWeapons[i], string, sizeof(string));
 			format(string,sizeof(string),lang_texts[9][14],string);
 			KickPlayer(killerid,string);
