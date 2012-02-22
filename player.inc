@@ -355,6 +355,7 @@ stock SyncPlayers(playerid)
 	SyncArmour(playerid);
 	JailPlayerCheck(playerid);
 	CheckPing(playerid);
+	CheckJetpack(playerid);
 	return 1;
 }
 
