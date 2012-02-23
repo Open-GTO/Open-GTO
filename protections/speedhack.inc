@@ -61,6 +61,20 @@ stock oSetPlayerPos(playerid,Float:x,Float:y,Float:z)
 	return 1;
 }
 
+stock oSetVehiclePos(vehicleid, Float:x, Float:y, Float:z)
+{
+	foreach (Player, playerid)
+	{
+		if (GetPlayerVehicleID(playerid) == vehicleid)
+		{
+			SetPVarFloat(playerid,"ac_old_Coord_X",x);
+			SetPVarFloat(playerid,"ac_old_Coord_Y",y);
+		}
+	}
+	SetVehiclePos(vehicleid,x,y,z);
+	return 1;
+}
+
 stock Float:GetPlayerSpeed(playerid)
 {
 	new Float:pos[3];

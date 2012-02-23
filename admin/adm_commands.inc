@@ -133,12 +133,12 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 			new VehicleID = GetPlayerVehicleID(playerid);
 			if(VehicleID != 0) 
 			{
-				SetVehiclePos(VehicleID,GetPVarFloat(playerid,"LocX"),GetPVarFloat(playerid,"LocY"),GetPVarFloat(playerid,"LocZ"));
+				oSetVehiclePos(VehicleID,GetPVarFloat(playerid,"LocX"),GetPVarFloat(playerid,"LocY"),GetPVarFloat(playerid,"LocZ"));
 				SetPlayerFacingAngle(playerid,GetPVarFloat(playerid,"Ang"));
 			} 
 			else 
 			{
-				SetPlayerPos(playerid,GetPVarFloat(playerid,"LocX"),GetPVarFloat(playerid,"LocY"),GetPVarFloat(playerid,"LocZ"));
+				oSetPlayerPos(playerid,GetPVarFloat(playerid,"LocX"),GetPVarFloat(playerid,"LocY"),GetPVarFloat(playerid,"LocZ"));
 				SetPlayerFacingAngle(playerid,GetPVarFloat(playerid,"Ang"));
 			}
 			new string[MAX_STRING];
@@ -157,7 +157,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 			new VehicleID = GetPlayerVehicleID(playerid);
 			GetPlayerPos(receiverid,X,Y,Z);
 			GetPlayerFacingAngle(receiverid,Angle);
-			SetVehiclePos(VehicleID,X+3.01,Y+3.01,Z+1);
+			oSetVehiclePos(VehicleID,X+3.01,Y+3.01,Z+1);
 			SetPlayerFacingAngle(playerid,Angle);
 		} 
 		else 
@@ -167,7 +167,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 			SetPlayerFacingAngle(playerid,Angle);
 			X += (random(2)-random(4));
 			Y += (random(2)-random(4));	
-			SetPlayerPos(playerid, X, Y, Z + 1);
+			oSetPlayerPos(playerid, X, Y, Z + 1);
 		}
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[12][66],oGetPlayerName(receiverid),receiverid);
@@ -187,14 +187,14 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(IsPlayerInAnyVehicle(receiverid)) 
 		{
 			GetPlayerPos(playerid,X,Y,Z);
-			SetVehiclePos( GetPlayerVehicleID(receiverid) ,X+3.01,Y+3.01,Z+1);
+			oSetVehiclePos( GetPlayerVehicleID(receiverid) ,X+3.01,Y+3.01,Z+1);
 		} 
 		else 
 		{
 			GetPlayerPos(playerid,X,Y,Z);
 			X += random(2)-random(4);
 			Y += random(2)-random(4);	
-			SetPlayerPos(receiverid,X,Y,Z+1);
+			oSetPlayerPos(receiverid,X,Y,Z+1);
 			new Float:Angle;
 			GetPlayerFacingAngle(playerid,Angle);
 			SetPlayerFacingAngle(receiverid,Angle);
@@ -221,7 +221,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 			{
 				X += random(2) - random(4);
 				Y += random(2) - random(4);	
-				SetPlayerPos(id,X,Y,Z);
+				oSetPlayerPos(id,X,Y,Z);
 				SetPlayerFacingAngle(id,Angle);
 				format(string,sizeof(string),lang_texts[12][66],playername,playerid);
 				SendClientMessage(id,COLOUR_XP_GOOD,string);
@@ -239,7 +239,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 		t_z = floatstr(strcharsplit(text,idx,' '));
 		t_int = strval(strcharsplit(text,idx,' '));
 		SetPlayerInterior(playerid,t_int);
-		SetPlayerPos(playerid,t_x,t_y,t_z);
+		oSetPlayerPos(playerid,t_x,t_y,t_z);
 		return 1;
 	}
 	if(!strcmp(cmd, "/sethealth", true))
@@ -275,7 +275,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(0 > armamount > 300)
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][44]);
 		
-		SetPlayerArmour(receiverid, armamount);
+		oSetPlayerArmour(receiverid, armamount);
 		return 1;
 	}
 	if(!strcmp(cmd, "/givexp", true))
@@ -353,7 +353,7 @@ stock Adm_OnPlayerCommandText(playerid,text[]) // process player commands
 		
 		new ammamount = strval(strcharsplit(text, idx,' '));
 		if(0 > ammamount > 46) return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][45]);
-		GivePlayerWeapon(receiverid,ammamount,1000);
+		oGivePlayerWeapon(receiverid,ammamount,1000);
 		new string[MAX_STRING];
 		format(string,sizeof(string), lang_texts[12][46] ,oGetPlayerName(playerid),oGetWeaponName(ammamount), ammamount,1000);
 		SendClientMessage(receiverid,COLOUR_XP_GOOD,string);

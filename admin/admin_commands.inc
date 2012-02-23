@@ -111,7 +111,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(pointt < 0 || pointt >= sizeof(PointsH)) return 1;
 		
 		if(IsPlayerInAnyVehicle(playerid)) 
-			SetVehiclePos( GetPlayerVehicleID(playerid),PointsH[pointt][Coord_X],PointsH[pointt][Coord_Y],PointsH[pointt][Coord_Z]);
+			oSetVehiclePos( GetPlayerVehicleID(playerid),PointsH[pointt][Coord_X],PointsH[pointt][Coord_Y],PointsH[pointt][Coord_Z]);
 		else
 			oSetPlayerPos(playerid,PointsH[pointt][Coord_X],PointsH[pointt][Coord_Y],PointsH[pointt][Coord_Z]);
 		
@@ -390,7 +390,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		if(IsPlayerInAnyVehicle(playerid)) 
 		{
 			new veh_id = GetPlayerVehicleID(playerid);
-			SetVehiclePos(veh_id,-2888.677978,1423.499023,-36.533981); 
+			oSetVehiclePos(veh_id,-2888.677978,1423.499023,-36.533981); 
 			SetVehicleZAngle(veh_id,244.428359); 
 			LinkVehicleToInterior(veh_id,0); 
 		} 

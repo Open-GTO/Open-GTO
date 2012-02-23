@@ -160,7 +160,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				new VehicleID = GetPlayerVehicleID(playerid);
 				GetPlayerPos(receiverid,X,Y,Z);
 				GetPlayerFacingAngle(receiverid,Angle);
-				SetVehiclePos(VehicleID,X+3.01,Y+3.01,Z+1);
+				oSetVehiclePos(VehicleID,X+3.01,Y+3.01,Z+1);
 				SetPlayerFacingAngle(playerid,Angle);
 			}
 			else
@@ -192,7 +192,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			{
 				GetPlayerPos(playerid,X,Y,Z);
 				new VehicleID = GetPlayerVehicleID(receiverid);
-				SetVehiclePos(VehicleID,X+3.01,Y+3.01,Z+1);
+				oSetVehiclePos(VehicleID,X+3.01,Y+3.01,Z+1);
 				GetPlayerFacingAngle(playerid,Angle);
 				SetPlayerFacingAngle(receiverid,Angle);
 			}
