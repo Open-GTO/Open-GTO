@@ -471,6 +471,10 @@ stock CreatePlayer(playerid)
 	SetPlayerXP(playerid,LevelList[1][level_xp]);
 	oResetPlayerWeapons(playerid);
 	SetPlayerSpawnHouseID(playerid,-1);
+	SetPlayerSkinModel(playerid,1);
+	SetPlayerFightStyle(playerid,4);
+	SetPlayerFightStyleUsed(playerid,4);
+	weapon_ResetSkills(playerid);
 	for (new i=0; i<sizeof(PlayerStartWeapon); i++)
 	{
 		GivePlayerOwnedWeapon(playerid,PlayerStartWeapon[i][psw_id],PlayerStartWeapon[i][psw_bull]);
