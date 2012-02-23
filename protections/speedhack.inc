@@ -103,7 +103,7 @@ stock SyncSpeed(playerid)
 			{
 				switch (floatround(player_speed,floatround_round))
 				{
-					case 26..349: KickPlayer(playerid,lang_texts[11][17]);
+					case 50..349: KickPlayer(playerid,lang_texts[11][17]); // 26 - максимум на земле, 50 при полёте с парашютом
 					case 350..499: KickPlayer(playerid,lang_texts[11][18]);
 					default: KickPlayer(playerid,lang_texts[11][19]);
 				}
