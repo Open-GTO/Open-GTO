@@ -562,8 +562,7 @@ stock chatguard_OnPlayerDisconnect ( playerid, reason )
 
 stock chatguard_OnPlayerText ( playerid, text[] )
 {
-	if (ChatGuardEnabled != 1) return 0;
-	if (IsPlayerAdm(playerid)) return 1; // для администрации chatguard не работает
+	if (ChatGuardEnabled != 1 || IsPlayerAdm(playerid)) return 1;
     new msgTick = GetTickCount();
 
 
