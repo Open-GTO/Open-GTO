@@ -115,6 +115,7 @@ stock SyncSpeed(playerid)
 			{
 				case 481,509,510,462,448,471: max_speed = 40;
 				case 411: max_speed = 130;
+				case 519: max_speed = 165;
 				case 520: max_speed = 180;
 				default: max_speed = 150;
 			}
