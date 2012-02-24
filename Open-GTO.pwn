@@ -399,10 +399,6 @@ public OnPlayerSpawn(playerid)
 {
 	if (IsPlayerNPC(playerid)) return 1;
 	SetPlayerSkin(playerid,GetPlayerSkinModel(playerid));
-	if (GetPlayerJailed(playerid) != 0)
-	{
-		JailPlayer(playerid,GetPlayerJailTime(playerid));
-	}
 	UpdatePlayerLevelTextDraws(playerid);
 	UpdatePlayerWeaponTextDraws(playerid);
 	
@@ -417,6 +413,10 @@ public OnPlayerSpawn(playerid)
 	else
 		deathmatch_OnPlayerSpawn(playerid,dmid);
 	SetPlayerColor(playerid,PlayerGangColour(playerid));
+	if (GetPlayerJailed(playerid) != 0)
+	{
+		JailPlayer(playerid,GetPlayerJailTime(playerid));
+	}
 	SetTimerEx("OnPlayerSpawned",1000,0,"d",playerid);
 	return 1;
 }
