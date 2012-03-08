@@ -548,7 +548,7 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	command_register(cmdtext,"/unjail",7,Mod);
 	command_register(cmdtext,"/mole",5,Mod);
 	command_register(cmdtext,"/spec",5,Mod);
-	command_register(cmdtext,"/spec-off",9,Mod);
+	command_register(cmdtext,"/clearchat",10,Mod);
 	
 	// vehicles
 	command_register(cmdtext,"/vmenu",6,vehicles);
