@@ -348,7 +348,6 @@ stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 stock SyncPlayers(playerid)
 {
 	if(GetPVarInt(playerid,"Spawned") != 1) return 0; // если игрок мертв, то защиты не срабатывают
-	SyncSpeed(playerid);
 	SyncWeapon(playerid);
 	SyncMoney(playerid);
 	SyncHealth(playerid);

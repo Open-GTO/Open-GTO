@@ -234,6 +234,10 @@ public OnGameModeInit()
 	SetTimer("OneMinuteTimer",60000,1); // 1 minute
 	SetTimer("TenMinuteTimer",600000,1); // 10 minute
 	SetTimer("OneHourTimer",3600000,1); // 1 hour
+	if (AntiSpeedHackEnabled == 1)
+	{
+		SetTimer("AntiSpeedHackTimer",ANTI_SPEED_HACK_CHECK_TIME,1);
+	}
 	SetTimerEx("WorldSave",WORLD_SAVE_TIME,1,"d",0);
 	GameMSG("SERVER: Timers started");
 	SpawnWorld();

@@ -47,6 +47,15 @@ stock ash_OnPlayerStateChange(playerid, newstate, oldstate)
 	return 1;
 }
 
+forward AntiSpeedHackTimer();
+public AntiSpeedHackTimer()
+{
+	foreach (Player,playerid)
+	{
+		SyncSpeed(playerid);
+	}
+}
+
 forward NotSpeedHack(playerid);
 public NotSpeedHack(playerid)
 {
