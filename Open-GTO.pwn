@@ -549,6 +549,7 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	command_register(cmdtext,"/mole",5,Mod);
 	command_register(cmdtext,"/spec",5,Mod);
 	command_register(cmdtext,"/clearchat",10,Mod);
+	command_register(cmdtext,"/weather",8,Mod);
 	
 	// vehicles
 	command_register(cmdtext,"/vmenu",6,vehicles);

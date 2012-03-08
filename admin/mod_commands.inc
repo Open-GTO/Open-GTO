@@ -23,7 +23,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd, "/cmdlist", true))
 	{
 		SendMessageToAdmins(playerid,COLOUR_LIGHTGREEN, text);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, "M: '/carresp', '/remcar <ID>', '/kick <ID>', /clearchat");
+		SendClientMessage(playerid, COLOUR_LIGHTGREEN, "M: '/carresp', '/remcar <ID>', '/kick <ID>', /clearchat, /weather <ID>");
 		SendClientMessage(playerid, COLOUR_LIGHTGREEN, "M: '/cmdlist', '/about', '/mute <ID> <Time>', '/unmute <ID>', '/jail <ID>', '/unjail <ID>', '/plist', '/spec <ID>'");
 		return 1;
 	}
@@ -252,8 +252,20 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		for (new i = 0; i < 50; i++)
 		{
-			SendClientMessageToAll(0,"");
+			SendClientMessageToAll(0, "");
 		}
+		return 1;
+	}
+	if(!strcmp(cmd,"/weather",true))
+	{
+		new tmp[20];
+		tmp = strcharsplit(text, idx, ' ');
+		if (strlen(tmp) == 0)
+		{
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][96]);
+		}
+		new weatherid = strval(tmp);
+		SetWeather(weatherid);
 		return 1;
 	}
 	return 0;
