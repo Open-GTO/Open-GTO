@@ -153,6 +153,7 @@ forward OneHourTimer();
 public OneHourTimer()
 {
 	Profit();
+	CheckHousesOwners();
 }
 
 forward TenMinuteTimer();

@@ -111,6 +111,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define HOUSE_UPGRADE_ARMOUR_COST 100000
 #define HOUSE_UPGRADE_HEALTH_COST 100000
 //#define BUY_ALL_HOUSES // позволяет запретить покупать чужие дома(если закомментировано то чужие дома нельзя покупать)
+#define HOUSE_UNLOGIN_SELL_DAYS		14 // количество дней, через которое дом будет продан, если игрок не входил в игру
 //
 
 // бизнесы

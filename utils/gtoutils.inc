@@ -103,6 +103,41 @@ stock strcmpEx(const string1[], const string2[], bool:ignorecase=false, length=c
 }
 #define strcmp strcmpEx
 
+// http://hardforum.ru/t47097/
+stock DateToNum(year, month, day/*, hour, minute, second*/)
+{
+	// count day in month
+	static cdm[] = {0,31,59,90,120,151,181,212,243,273,304,334};
+	
+	if (month < 1)
+	{
+		month = 1;
+	}
+	else if (month > 12) 
+	{
+		year += (month-1) / 12;
+		month = ((month-1) % 12) + 1;
+	}
+	
+	// convert [y, mo, d] -> num
+	new num = 365 * year + (year / 4) - (year / 100) + (year / 400) + cdm[month - 1] + day;
+	
+	if (month > 2 && is_leap_year(year))
+	{
+		num++;
+	}
+	
+	// add to num: [h, mi, s] -> num
+	//num += (hour * 3600 + minute * 60 + second) / 86400;
+	
+	return num;
+}
+
+stock is_leap_year(year)
+{
+	return (year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0);
+}
+
 stock PlayerPlaySoundOnPlayer(playerid,soundid)
 {
 	new Float:pos[3];

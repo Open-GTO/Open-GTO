@@ -635,3 +635,33 @@ stock housing_RenameOwner(old_name[MAX_PLAYER_NAME],new_name[MAX_PLAYER_NAME])
 	}
 	return 0;
 }
+
+stock CheckHousesOwners()
+{
+	new filename_account[MAX_PLAYER_NAME], file_account, account_lastlogin[32], idx,
+		year, month, day, account_year, account_month, account_day;
+	
+	getdate(year,month,day);
+	for(new i = 0; i < sizeof(Houses); i++)
+	{
+		idx = 0;
+		format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT, AccountDB, Houses[i][Houses_Owner]);
+		file_account = ini_Open(filename_account);
+		
+		ini_Get(file_account,"Last_Login",account_lastlogin);
+		account_day = strval( strcharsplit(account_lastlogin,idx,'.') );
+		account_month = strval( strcharsplit(account_lastlogin,idx,'.') );
+		account_year = strval( strcharsplit(account_lastlogin,idx,' ') );
+		
+		if (DateToNum(year, month, day) > DateToNum(account_year, account_month, account_day) + HOUSE_UNLOGIN_SELL_DAYS)
+		{
+			set(Houses[i][Houses_Owner],"Unknown");
+			set(Houses[i][Houses_Gang],"Unknown");
+			Houses[i][Houses_Buyout] = 0;
+			Houses[i][Houses_Lock] = 0;
+			UpdateStreamMapIcon(house_icon[i]);
+		}
+		
+		ini_Close(file_account);
+	}
+}
