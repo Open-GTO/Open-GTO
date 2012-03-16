@@ -154,6 +154,7 @@ public OneHourTimer()
 {
 	Profit();
 	CheckHousesOwners();
+	CheckBusinessOwners();
 }
 
 forward TenMinuteTimer();

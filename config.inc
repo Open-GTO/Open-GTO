@@ -119,6 +119,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define MAX_BUSINESS_LEVEL		30 // максимальный уровень поднятия бизнеса
 #define UPGRADE_TARIF			10 // тариф денег на повышение уровня, формула: (Businesses[id][Business_Upgrade]+1) * Businesses[id][Business_Value] * UPGRADE_TARIF
 //#define BUY_ALL_BUSINESS // позволяет запретить покупать чужие бизнесы(если закомментировано то чужие бизнесы нельзя покупать)
+#define BUSINESS_UNLOGIN_SELL_DAYS	14 // количество дней, через которое бизнес будет продан, если игрок не входил в игру
 //
 
 // транспорт

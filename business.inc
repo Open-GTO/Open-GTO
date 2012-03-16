@@ -18,7 +18,7 @@
 
 #define SetPlayerToBusinessID(%0,%1) SetPVarInt(%0,"BusID",%1)
 #define GetPlayerToBusinessID(%0) GetPVarInt(%0,"BusID")
-new business_icon[ sizeof(Houses) ],Text3D:Business3DTextLabel[ sizeof(Businesses) ],Float:BusinessDistanceOfShowLabel=20.0;
+new business_icon[ sizeof(Businesses) ],Text3D:Business3DTextLabel[ sizeof(Businesses) ],Float:BusinessDistanceOfShowLabel=20.0;
 #define show_Business_MsgDialog(%0,%1,%2) ShowPlayerDialog(%0,bis_Msg_DialogID,DIALOG_STYLE_MSGBOX,%1,%2,lang_texts[3][10],lang_texts[3][8])
 
 BusinessLoadAll()
@@ -309,7 +309,7 @@ stock bis_Buy(playerid)
 		oGivePlayerMoney(playerid,-price,1);
 		set(Businesses[id][Business_Owner],playername);
 		Businesses[id][Business_Buyout] = 0;
-		UpdatePlayerStreamMapIcon(playerid,business_icon[id]);
+		UpdateStreamMapIcon(business_icon[id]);
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[3][16],
 			Businesses[id][Business_Name],
@@ -339,7 +339,7 @@ stock bis_Sell(playerid)
 		set(Businesses[id][Business_Owner],"Unknown");
 		Businesses[id][Business_Buyout] = 0;
 		Businesses[id][Business_Upgrade] = 1;
-		UpdatePlayerStreamMapIcon(playerid,business_icon[id]);
+		UpdateStreamMapIcon(business_icon[id]);
 		
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[3][20],
@@ -433,4 +433,33 @@ stock business_RenameOwner(old_name[MAX_PLAYER_NAME],new_name[MAX_PLAYER_NAME])
 		}
 	}
 	return 0;
+}
+
+stock CheckBusinessOwners()
+{
+	new filename_account[MAX_PLAYER_NAME], file_account, account_lastlogin[32], idx,
+		year, month, day, account_year, account_month, account_day;
+	
+	getdate(year,month,day);
+	for(new i = 0; i < sizeof(Businesses); i++)
+	{
+		idx = 0;
+		format(filename_account,sizeof(filename_account),"%s%s"GTO_FILES_FORMAT, AccountDB, Businesses[i][Business_Owner]);
+		file_account = ini_Open(filename_account);
+		
+		ini_Get(file_account,"Last_Login",account_lastlogin);
+		account_day = strval( strcharsplit(account_lastlogin,idx,'.') );
+		account_month = strval( strcharsplit(account_lastlogin,idx,'.') );
+		account_year = strval( strcharsplit(account_lastlogin,idx,' ') );
+		
+		if (DateToNum(year, month, day) > DateToNum(account_year, account_month, account_day) + BUSINESS_UNLOGIN_SELL_DAYS)
+		{
+			set(Businesses[i][Business_Owner],"Unknown");
+			Businesses[i][Business_Buyout] = 0;
+			Businesses[i][Business_Upgrade] = 1;
+			UpdateStreamMapIcon(business_icon[i]);
+		}
+		
+		ini_Close(file_account);
+	}
 }
