@@ -387,15 +387,19 @@ stock DeleteRenter(playerid)
 	{
 		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[8][58]);
 		foreach(Player,i)
+		{
 			if(!strcmp(Houses[id][Houses_RentName],oGetPlayerName(i),true))
+			{
 				SendClientMessage(i,COLOUR_LIGHTRED,lang_texts[8][60]);
+				UpdatePlayerStreamMapIcon(playerid,house_icon[id]);
+			}
+		}
 	}
 	else if(!strcmp(Houses[id][Houses_RentName],oGetPlayerName(playerid),true))
 	{
 		SendClientMessage(playerid,COLOUR_LIGHTRED,lang_texts[8][59]);
 	}
 	if(id > -1) set(Houses[id][Houses_RentName],"Unknown");
-	UpdatePlayerStreamMapIcon(playerid,house_icon[id]);
 	return 1;
 }
 
