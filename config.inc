@@ -190,6 +190,11 @@ enum {
 }
 
 // прочее
+
+// типы спавнов
+#define SPAWN_HOUSE_NONE	-1
+#define SPAWN_HOUSE_GANG	-2
+
 // 'переименование' функций mxINI
 #define ini_Create		ini_createFile
 #define ini_Open		ini_openFile

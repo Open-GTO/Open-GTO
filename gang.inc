@@ -11,6 +11,7 @@
 #define _gang_included
 #pragma library gang
 
+
 #include "base"
 
 new Gang_Create_Cost = GANG_CREATE_COST,
@@ -31,7 +32,8 @@ enum GangInfo {
 	gang_kills,
 	gang_score,
 	gang_xp,
-	gang_level
+	gang_level,
+	gang_house,
 }
 new Gangs[MAX_GANGS][GangInfo];
 
@@ -101,6 +103,7 @@ stock gang_load_db_ini(gangid,gangname[])
 	ini_GetInt(file_gang,"Score",Gangs[gangid][gang_score]);
 	ini_GetInt(file_gang,"XP",Gangs[gangid][gang_xp]);
 	ini_GetInt(file_gang,"Level",Gangs[gangid][gang_level]);
+	ini_GetInt(file_gang,"House",Gangs[gangid][gang_house]);
 	for(new gangmember=0,string[MAX_STRING];gangmember<MAX_GANG_SIZE;gangmember++)
 	{
 		GangMemberInfo[gangid][gangmember][member_online] = false;
@@ -123,13 +126,13 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 
 	if(!strcmp(cmd,"/g",true))
  	{
-		if(GetPVarInt(playerid,"GangID") == 0) return 1;
+		if(GetPlayerGangID(playerid) == 0) return 1;
 	 	new gangmessage[MAX_STRING];
 	 	set(gangmessage,text);
 		strdel(gangmessage, 0, idx);
 		if(!strlen(gangmessage)) return 1;
 	 	format(gangmessage,sizeof(gangmessage),lang_texts[6][2],oGetPlayerName(playerid),gangmessage);
-		SendGangMessage(GetPVarInt(playerid,"GangID"),gangmessage,COLOUR_GANG_CHAT);
+		SendGangMessage(GetPlayerGangID(playerid),gangmessage,COLOUR_GANG_CHAT);
 		GameMSG("player: %d:  %s:	%s",playerid,oGetPlayerName(playerid),gangmessage);
 		return 1;
 	}
@@ -179,10 +182,10 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
   		}
   		if((!strcmp(cmd,"stats",true)) || (!strcmp(cmd,"stat",true)) || (!strcmp(cmd,"status",true)))
   		{
-	  		if(GetPVarInt(playerid,"GangID") == 0)
+	  		if(GetPlayerGangID(playerid) == 0)
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][24]);
 
-	  		new gangid = GetPVarInt(playerid,"GangID"),string[MAX_STRING];
+	  		new gangid = GetPlayerGangID(playerid),string[MAX_STRING];
 	  		format(string,sizeof(string),lang_texts[6][25],Gangs[gangid][gang_name]);
 			SendClientMessage(playerid,Gangs[gangid][gang_colour],string);
 	  		format(string,sizeof(string),lang_texts[6][26],Gangs[gangid][gang_kills]);
@@ -199,10 +202,10 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
   		}
   		if(!strcmp(cmd,"members",true))
   		{
-	  		if(GetPVarInt(playerid,"GangID") == 0)
+	  		if(GetPlayerGangID(playerid) == 0)
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][29]);
 
-	  		new gangid = GetPVarInt(playerid,"GangID"),status[10],string[MAX_STRING];
+	  		new gangid = GetPlayerGangID(playerid),status[10],string[MAX_STRING];
 	  		format(string,sizeof(string),lang_texts[6][30],Gangs[gangid][gang_name]);
 			SendClientMessage(playerid,Gangs[gangid][gang_colour],string);
 	  		for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
@@ -225,7 +228,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
   		if(!strcmp(cmd,"create",true))
   		{
 			new string[MAX_STRING];
-	  		if(GetPVarInt(playerid,"GangID") != 0)
+	  		if(GetPlayerGangID(playerid) != 0)
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][33]);
 
 	  		if(oGetPlayerMoney(playerid) < Gang_Create_Cost)
@@ -273,7 +276,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
   		}
   		if((!strcmp(cmd,"accept",true)) || (!strcmp(cmd,"join",true)))
   		{
-	  		if(GetPVarInt(playerid,"GangID") != 0)
+	  		if(GetPlayerGangID(playerid) != 0)
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][44]);
 
 	  		if(GetPVarInt(playerid,"GangInvite") == 0)
@@ -302,12 +305,12 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 				return 1;
    			}
   		}
-		if(GetPVarInt(playerid,"GangID") == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][50]);
-  		new gangid = GetPVarInt(playerid,"GangID");
+		if(GetPlayerGangID(playerid) == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][50]);
+  		new gangid = GetPlayerGangID(playerid);
 
   		if((!strcmp(cmd,"quit",true)) || (!strcmp(cmd,"leave",true)))
   		{
-	  		if(GetPVarInt(playerid,"GangID") == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][51]);
+	  		if(GetPlayerGangID(playerid) == 0) return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][51]);
 	  		GangRemoveMember(gangid,oGetPlayerName(playerid));
 	  		return 1;
   		}
@@ -325,7 +328,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 	   			SendClientMessage(playerid,COLOUR_RED,lang_texts[6][56]);
 				return 1;
    			}
-   			if(GetPVarInt(inviteid,"GangID") != 0)
+   			if(GetPlayerGangID(inviteid) != 0)
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][57]);
 
 		 	format(string,sizeof(string),lang_texts[6][58],oGetPlayerName(playerid),Gangs[gangid][gang_name]);
@@ -400,14 +403,14 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 stock gang_OnPlayerDeath(playerid,killerid,reason)
 {
 	#pragma unused reason,playerid
-	new gangid = GetPVarInt(killerid,"GangID");
+	new gangid = GetPlayerGangID(killerid);
 	GiveGangXP(gangid,(1+Gangs[gangid][gang_level]) * 20);
 	return 1;
 }
 
 stock PlayerGangColour(playerid)
 {
-	new gangid = GetPVarInt(playerid,"GangID");
+	new gangid = GetPlayerGangID(playerid);
 	if(gangid != 0 && Gangs[gangid][gang_colour] != 0)
 		return Gangs[gangid][gang_colour];
 	return COLOUR_PLAYER;
@@ -420,7 +423,7 @@ stock GangJoinMember(gangid,playerid)
 		GameMSG("script_warning: invalid gang id.");
 		return 0;
 	}
-	if(GetPVarInt(playerid,"GangID") != 0)
+	if(GetPlayerGangID(playerid) != 0)
 	{
 		GameMSG("script_warning: player already in a gang!");
 		return 0;
@@ -437,10 +440,15 @@ stock GangJoinMember(gangid,playerid)
 		set(GangMemberInfo[gangid][gangmember][member_name],oGetPlayerName(playerid));
 		GangMemberInfo[gangid][gangmember][member_playerid] = playerid;
 		GangMemberInfo[gangid][gangmember][member_online] = true;
-		SetPVarInt(playerid,"GangID",gangid);
+		SetPlayerGangID(playerid,gangid);
 		SetPlayerGangName(playerid,Gangs[gangid][gang_name]);
 		GangMemberLogin(playerid,gangid);
 		SetPlayerColor(playerid,PlayerGangColour(playerid));
+		new houseid = gang_GetHouse(gangid);
+		if (houseid != -1)
+		{
+			SetPlayerSpawnHouseID(playerid,houseid);
+		}
 		return 1;
 	}
 	return 0;
@@ -459,8 +467,12 @@ stock GangRemoveMember(gangid,kickplayername[])
 		{
 			if(!IsPlayerConnected(GangMemberInfo[gangid][gangmember][member_playerid])) continue;
 			playerid = GangMemberInfo[gangid][gangmember][member_playerid];
-			SetPVarInt(playerid,"GangID",0);
+			SetPlayerGangID(playerid,0);
 			SetPlayerGangName(playerid,nullstr);
+			if (GetPlayerSpawnHouseID(playerid) == SPAWN_HOUSE_GANG)
+			{
+				SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+			}
 			set(GangMemberInfo[gangid][gangmember][member_name],nullstr);
 			SendClientMessage(playerid,COLOUR_RED,string);
 			SetPlayerColor(playerid,PlayerGangColour(playerid));
@@ -481,6 +493,10 @@ stock GangRemoveMember(gangid,kickplayername[])
 		GangMemberInfo[gangid][gangmember][member_online] = false;
 		GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
 		set(GangMemberInfo[gangid][gangmember][member_name],nullstr);
+		if (GetPlayerSpawnHouseID(playerid) == SPAWN_HOUSE_GANG)
+		{
+			SetPlayerSpawnHouseID(playerid,SPAWN_HOUSE_NONE);
+		}
 		format(string,sizeof(string),lang_texts[6][70],kickplayername);
 		SendGangMessage(gangid,string,COLOUR_GANG);
 		GameMSG("%s has been removed from gang '%s'",kickplayername,Gangs[gangid][gang_name]);
@@ -488,7 +504,7 @@ stock GangRemoveMember(gangid,kickplayername[])
 		{
 			format(string,sizeof(string),lang_texts[6][71],Gangs[gangid][gang_name]);
 			SendClientMessage(playerid,COLOUR_GANG,string);
-			SetPVarInt(playerid,"GangID",0);
+			SetPlayerGangID(playerid,0);
 			SetPlayerGangName(playerid,nullstr);
 		}
 		SetPlayerColor(playerid,PlayerGangColour(playerid));
@@ -517,6 +533,7 @@ stock GangCreate(leaderid,gangname[],gangcolour)
 	Gangs[gangid][gang_score] = 0;
 	Gangs[gangid][gang_level] = 0;
 	Gangs[gangid][gang_xp] = 0;
+	Gangs[gangid][gang_house] = GetPlayerSpawnHouseID(leaderid);
 	for(new gangmember=0;gangmember<MAX_GANG_SIZE;gangmember++)
 	{
 		GangMemberInfo[gangid][gangmember][member_online] = false;
@@ -527,7 +544,7 @@ stock GangCreate(leaderid,gangname[],gangcolour)
 	GangMemberInfo[gangid][0][member_playerid] = leaderid;
 	GangMemberInfo[gangid][0][member_online] = true;
 	SetPlayerGangName(leaderid,gangname);
-	SetPVarInt(leaderid,"GangID",gangid);
+	SetPlayerGangID(leaderid,gangid);
 	SetPlayerColor(leaderid,PlayerGangColour(leaderid));
 	GangSave(gangid);
 	return gangid;
@@ -587,6 +604,7 @@ stock gang_save_db_ini(gangid)
 	ini_SetInt(file_gang,"Score",Gangs[gangid][gang_score]);
 	ini_SetInt(file_gang,"XP",Gangs[gangid][gang_xp]);
 	ini_SetInt(file_gang,"Level",Gangs[gangid][gang_level]);
+	ini_SetInt(file_gang,"House",Gangs[gangid][gang_house]);
 	for(new gangmember=0,string[MAX_STRING];gangmember<MAX_GANG_SIZE;gangmember++)
 	{
 		format(string,sizeof(string),"Member%d",gangmember);
@@ -610,11 +628,11 @@ stock GangKill(gangid,killerid,victimid,reason)
 {
 	#pragma unused reason
 	if(victimid != INVALID_PLAYER_ID) Gangs[gangid][gang_kills]++;
-	if(GetPVarInt(killerid,"GangID") == GetPVarInt(victimid,"GangID"))
+	if(GetPlayerGangID(killerid) == GetPlayerGangID(victimid))
 	{
 		new string[MAX_STRING];
 		format(string,sizeof(string),lang_texts[6][76],oGetPlayerName(killerid));
-		SendGangMessage(GetPVarInt(killerid,"GangID"),string,COLOUR_GANG);
+		SendGangMessage(GetPlayerGangID(killerid),string,COLOUR_GANG);
 		return 1;
 	}
 	return 0;
@@ -633,7 +651,7 @@ stock GangMemberLogin(playerid,gangid)
 		SendGangMessage(gangid,string,COLOUR_GANG);
 		GangMemberInfo[gangid][gangmember][member_online] = true;
 		GangMemberInfo[gangid][gangmember][member_playerid] = playerid;
-		SetPVarInt(playerid,"GangID",gangid);
+		SetPlayerGangID(playerid,gangid);
 		SetPlayerGangName(playerid,Gangs[gangid][gang_name]);
 		format(string,sizeof(string),lang_texts[6][78],Gangs[gangid][gang_name],GangOnlineCount(gangid)-1);
 		SendClientMessage(playerid,COLOUR_GANG,string);
@@ -699,8 +717,8 @@ stock SetGangColour(gangid,colour)
 
 stock GangGivePlayerXP(playerid,xpamount)
 {
-	if(GetPVarInt(playerid,"GangID") == 0 || xpamount <= 100) return;
-	GangGiveXP(GetPVarInt(playerid,"GangID"),xpamount / 4,playerid);
+	if(GetPlayerGangID(playerid) == 0 || xpamount <= 100) return;
+	GangGiveXP(GetPlayerGangID(playerid),xpamount / 4,playerid);
 	return;
 }
 
@@ -715,6 +733,27 @@ stock gang_RenameMember(gangid,old_name[MAX_PLAYER_NAME],new_name[MAX_PLAYER_NAM
 		}
 	}
 	return 0;
+}
+
+
+stock gang_IsLeader(playerid)
+{
+	new gangid = GetPlayerGangID(playerid);
+	if (gangid != 0 && playerid == GangMemberInfo[gangid][0][member_playerid])
+	{
+		return 1;
+	}
+	return 0;
+}
+
+stock gang_SetHouse(gangid, houseid)
+{
+	Gangs[gangid][gang_house] = houseid;
+}
+
+stock gang_GetHouse(gangid)
+{
+	return Gangs[gangid][gang_house];
 }
 // ************************************* GANG LEVEL ******************************************************
 #define MAX_GANG_LEVEL 10

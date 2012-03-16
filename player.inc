@@ -60,6 +60,9 @@ stock GetPlayerGangName(playerid)
 }
 #define SetPlayerGangName(%0,%1) SetPVarString(%0,"GangName",%1)
 
+#define GetPlayerGangID(%0) GetPVarInt(%0,"GangID")
+#define SetPlayerGangID(%0,%1) SetPVarInt(%0,"GangID",%1)
+
 #define GetPlayerQuestID(%0) GetPVarInt(%0,"PlayerQuest")
 #define SetPlayerQuestID(%0,%1) SetPVarInt(%0,"PlayerQuest",%1)
 new QuestCount;
@@ -184,7 +187,22 @@ stock player_OnPlayerSpawn(playerid)
 {
 	new house_id = GetPlayerSpawnHouseID(playerid);
 	SetPlayerInterior(playerid,0);
-	if(house_id == -1)
+	
+	if (house_id == SPAWN_HOUSE_GANG)
+	{
+		new gangid = GetPlayerGangID(playerid);
+		new gang_houseid = gang_GetHouse(gangid);
+		if (gangid == 0 || gang_houseid == -1)
+		{
+			house_id = -1;
+			SetPlayerSpawnHouseID(playerid,-1);
+		}
+		else
+		{
+			SetPlayerPosToHouse(playerid, gang_houseid);
+		}
+	}
+	if (house_id == SPAWN_HOUSE_NONE)
 	{
 		if(GetPVarFloat(playerid,"Coord_X") != 0.0 && GetPVarFloat(playerid,"Coord_Y") != 0.0 && GetPVarFloat(playerid,"Coord_Z") != 0.0)
 		{
@@ -469,7 +487,7 @@ stock CreatePlayer(playerid)
 	SetPlayerLevel(playerid,1);
 	SetPlayerXP(playerid,LevelList[1][level_xp]);
 	oResetPlayerWeapons(playerid);
-	SetPlayerSpawnHouseID(playerid,-1);
+	SetPlayerSpawnHouseID(playerid,SPAWN_HOUSE_NONE);
 	SetPlayerSkinModel(playerid,1);
 	SetPlayerFightStyle(playerid,4);
 	SetPlayerFightStyleUsed(playerid,4);

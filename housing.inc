@@ -438,8 +438,8 @@ stock house_Buy(playerid)
 	new id = GetPlayerToHouseID(playerid);
 	if(id <= -1)
 		return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][21]);
-
-	if(GetPVarInt(playerid,"GangID") == 0)
+	
+	if(GetPlayerGangID(playerid) == 0)
 		return SendClientMessage(playerid,COLOUR_RED,lang_texts[8][19]);
 
 	new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
@@ -500,6 +500,12 @@ stock house_Sell(playerid)
 		new price = ((Houses[id][Houses_Cost] + Houses[id][Houses_Buyout]) * 85) / 100;
 		oGivePlayerMoney(playerid,price,1);
 		house_Free(id);
+		new gangid = GetPlayerGangID(playerid);
+		if (gang_GetHouse(gangid) == id)
+		{
+			gang_SetHouse(gangid, -1);
+		}
+		SetPlayerSpawnHouseID(playerid,SPAWN_HOUSE_NONE);
 		new temp[MAX_STRING];
 		format(temp,sizeof(temp),lang_texts[8][24],Houses[id][Houses_Name]);
 		SendClientMessage(playerid,COLOUR_GREEN,temp);
