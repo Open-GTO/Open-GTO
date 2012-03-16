@@ -64,6 +64,13 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define ANTI_SPEED_HACK_CHECK_TIME	900 // время таймера для защиты от спидхака, на локалхосте актуально 1000
 										// для более нагруженных серверов нужно устанавливать чуть меньшее значение
 
+
+// QuidemSys
+#define QUIDEMSYS_ENABLED	1
+#define QS_TD_FONT			2 // используемый id шрифта в текстдраве
+#define QS_FUEL_SPEED		2 // количество бензина, заправляемого за 1 секунду
+#define QS_FUEL_TARIF		1 // цена одного литра бензина, в долларах
+
 // прочее
 #define MAX_GULPS			5 // максимальное количество глотков из бутылки
 

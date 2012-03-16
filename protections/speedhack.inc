@@ -32,12 +32,14 @@ stock AntiSpeedHackSaveConfig()
 stock ash_OnGameModeInit()
 {
 	AntiSpeedHackLoadConfig();
+	if (AntiSpeedHackEnabled != 1) return 0;
 	GameMSG("SERVER: (protections)AntiSpeedHack module init");
 	return 1;
 }
 
 stock ash_OnPlayerStateChange(playerid, newstate, oldstate)
 {
+	if (AntiSpeedHackEnabled != 1) return 0;
 	// если выпрыгнул из транспорта
 	if(newstate == PLAYER_STATE_ONFOOT && oldstate == PLAYER_STATE_DRIVER)
 	{

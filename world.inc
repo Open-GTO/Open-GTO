@@ -52,6 +52,7 @@ nee:
 	groundhold_SaveConfig();
 	groundhold_SaveAll();
 	mission_SaveConfig();
+	QuidemSys_SaveConfig();
 	// systems
 	level_SaveConfig();
 	health_SaveConfig();

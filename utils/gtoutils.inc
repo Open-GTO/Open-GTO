@@ -253,6 +253,13 @@ stock loccmp(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Float:z2)
 	return 0;
 }
 
+stock GetVehicleSpeed(vehicleid)
+{
+	new Float:pos[3];
+	GetVehicleVelocity(vehicleid, pos[0], pos[1], pos[2]);
+	return floatround( floatsqroot(pos[0]*pos[0] + pos[1]*pos[1] + pos[2]*pos[2]) * 100 );
+}
+
 #if defined USE_PASSWORD_ENCRYPT
 // encrypt(string[]) by Alex "Y_Less" Cole, Based on code by Jeremy Cole
 // modified by ZiGGi

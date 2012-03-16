@@ -77,6 +77,7 @@ Date start Open-GTO: 	5 November 2009
 #include "usermenu"
 #include "weather"
 #include "pickup"
+#include "quidemsys"
 #include "protections\idle"
 #include "protections\rconhack"
 #include "protections\hightping"
@@ -169,6 +170,7 @@ public OnGameModeInit()
 	bank_OnGameModeInit();
 	fights_OnGameModeInit();
 	wd_OnGameModeInit();
+	quidemsys_OnGameModeInit();
 	// missions
 	mission_OnGameModeInit();
     trucker_OnGameModeInit();
@@ -264,6 +266,7 @@ public OnPlayerConnect(playerid)
 	chatguard_OnPlayerConnect(playerid);
 	level_OnPlayerConnect(playerid);
 	weapon_OnPlayerConnect(playerid);
+	qudemsys_OnPlayerConnect(playerid);
 	
 #if defined _testserver_included
 	testserver_OnPlayerConnect(playerid);
@@ -280,6 +283,7 @@ public OnPlayerDisconnect(playerid,reason)
 	gh_OnPlayerDisconnect(playerid,reason);
 	level_OnPlayerDisconnect(playerid,reason);
 	weapon_OnPlayerDisconnect(playerid,reason);
+	qudemsys_OnPlayerDisconnect(playerid, reason);
 	return 1;
 }
 
@@ -466,6 +470,10 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	command_register(cmdtext,"/piss",5,commands);
 	command_register(cmdtext,"/smoke",6,commands);
 	command_register(cmdtext,"/pm",3,commands);
+	
+	// QuidemSys
+	command_register(cmdtext,"/fill",5,quidemsys);
+	command_register(cmdtext,"/engine",7,quidemsys);
 	
 	// gangs
 	command_register(cmdtext,"/g",2,gang);
@@ -670,6 +678,7 @@ public OnPlayerExitedMenu(playerid)
 public OnPlayerStateChange(playerid,newstate,oldstate)
 {
 	ash_OnPlayerStateChange(playerid, newstate, oldstate);
+	qudemsys_OnPlayerStateChange(playerid, newstate, oldstate);
 	if(newstate == PLAYER_STATE_DRIVER)
 	{
 	#if defined OLD_ENGINE_DO
@@ -727,6 +736,12 @@ public OnVehicleStreamIn(vehicleid, forplayerid)
 public OnVehicleStreamOut(vehicleid, forplayerid)
 {
     return 1;
+}
+
+public OnVehicleSpawn(vehicleid)
+{
+	quidemsys_OnVehicleSpawn(vehicleid);
+	return 1;
 }
 
 public OnVehicleDeath(vehicleid,killerid)

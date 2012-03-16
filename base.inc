@@ -11,23 +11,23 @@
 #pragma library base
 
 
-new ConfigDB[MAX_STRING] = GTO_FILES_FOLDER"Config/Base-cfg"GTO_FILES_FORMAT;
-new LevelDB[MAX_STRING] = GTO_FILES_FOLDER"Config/Levels-cfg"GTO_FILES_FORMAT;
-new GangDB[MAX_STRING] = GTO_FILES_FOLDER"Gang/";
-new AccountDB[MAX_STRING] = GTO_FILES_FOLDER"Account/";
-new PlayerDB[MAX_STRING] = GTO_FILES_FOLDER"Player/";
-new HousesDB[MAX_STRING] = GTO_FILES_FOLDER"Housing/";
-new BusinessDB[MAX_STRING] = GTO_FILES_FOLDER"Business/";
-new WeaponDB[MAX_STRING] = GTO_FILES_FOLDER"Weapon/";
-new GroundholdDB[MAX_STRING] = GTO_FILES_FOLDER"Groundhold/";
+new ConfigDB[MAX_STRING] = GTO_FILES_FOLDER "Config/Base-cfg"GTO_FILES_FORMAT;
+new LevelDB[MAX_STRING] = GTO_FILES_FOLDER "Config/Levels-cfg"GTO_FILES_FORMAT;
+new GangDB[MAX_STRING] = GTO_FILES_FOLDER "Gang/";
+new AccountDB[MAX_STRING] = GTO_FILES_FOLDER "Account/";
+new PlayerDB[MAX_STRING] = GTO_FILES_FOLDER "Player/";
+new HousesDB[MAX_STRING] = GTO_FILES_FOLDER "Housing/";
+new BusinessDB[MAX_STRING] = GTO_FILES_FOLDER "Business/";
+new WeaponDB[MAX_STRING] = GTO_FILES_FOLDER "Weapon/";
+new GroundholdDB[MAX_STRING] = GTO_FILES_FOLDER "Groundhold/";
 
-new DeathmatchDB[MAX_STRING] = GTO_FILES_FOLDER"Deathmatch/!Deathmatches"GTO_FILES_FORMAT;
-new DMBaseDB[MAX_STRING] = GTO_FILES_FOLDER"Deathmatch/";
-new DMRecordDB[MAX_STRING] = GTO_FILES_FOLDER"Deathmatch/Record/";
+new DeathmatchDB[MAX_STRING] = GTO_FILES_FOLDER "Deathmatch/!Deathmatches"GTO_FILES_FORMAT;
+new DMBaseDB[MAX_STRING] = GTO_FILES_FOLDER "Deathmatch/";
+new DMRecordDB[MAX_STRING] = GTO_FILES_FOLDER "Deathmatch/Record/";
 
-new RaceDB[MAX_STRING] = GTO_FILES_FOLDER"Race/!Races"GTO_FILES_FORMAT;
-new RaceBaseDB[MAX_STRING] = GTO_FILES_FOLDER"Race/";
-new RaceRecordDB[MAX_STRING] = GTO_FILES_FOLDER"Race/Record/";
+new RaceDB[MAX_STRING] = GTO_FILES_FOLDER "Race/!Races"GTO_FILES_FORMAT;
+new RaceBaseDB[MAX_STRING] = GTO_FILES_FOLDER "Race/";
+new RaceRecordDB[MAX_STRING] = GTO_FILES_FOLDER "Race/Record/";
 
 new RealTime=0;
 new WorldTime;
