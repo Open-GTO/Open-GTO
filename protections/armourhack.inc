@@ -35,6 +35,7 @@ stock AntiArmourHackSaveConfig()
 stock aah_OnGameModeInit()
 {
 	AntiArmourHackLoadConfig();
+	if (AntiArmourHackEnabled != 1) return 0;
 	GameMSG("SERVER: (player)Armour module init");
 	return 1;
 }

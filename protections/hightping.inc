@@ -27,15 +27,19 @@ stock AntiHightPingSaveConfig()
 stock antihightping_OnGameModeInit()
 {
 	AntiHightPingLoadConfig();
+	if (AntiHightPingEnabled != 1) return 0;
 	GameMSG("SERVER: (protections)AntiHightPing module init");
 	return 1;
 }
 
 stock CheckPing(playerid)
 {
-	if(AntiHightPingEnabled != 1 || GetPlayerPing(playerid) <= MAX_PING) return 1;
-	new string[MAX_STRING];
-	format(string,sizeof(string),lang_texts[11][4],MAX_PING);
-	KickPlayer(playerid,string);
+	if (AntiHightPingEnabled != 1) return 0;
+	if (GetPlayerPing(playerid) > MAX_PING)
+	{
+		new string[MAX_STRING];
+		format(string,sizeof(string),lang_texts[11][4],MAX_PING);
+		KickPlayer(playerid,string);
+	}
 	return 1;
 }

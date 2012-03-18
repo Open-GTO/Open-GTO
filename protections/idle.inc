@@ -1,8 +1,9 @@
-//
-// Created:     17.09.06
-// Aurthor:    Iain Gilbert
-// Modified by ZiGGi
-//
+/*
+
+	Aurthor:    Iain Gilbert
+	Modified by ZiGGi
+
+*/
 
 #if defined _antiidle_included
 	#endinput
@@ -37,20 +38,21 @@ stock AntiIdleSaveConfig()
 stock antiidle_OnGameModeInit()
 {
 	AntiIdleLoadConfig();
+	if(AntiIdleEnabled != 1) return 0;
 	GameMSG("SERVER: (protections)AntiIdle module init");
 	return 1;
 }
 
 stock AntiIdle()
 {
-	if(AntiIdleEnabled != 1) return;
+	if(AntiIdleEnabled != 1) return 0;
     new Float:pos[3],string[MAX_STRING];
 	foreach(Player,playerid)
 	{
         if(!IsPlayerRconAdmin(playerid) && IsPlayerInAnyGround(playerid) && Groundhold_Enabled == 1)
 		{
             GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
-            if(pos[0] == GetPVarFloat(playerid,"playerIdlePos_X")
+            if(	   pos[0] == GetPVarFloat(playerid,"playerIdlePos_X")
 				&& pos[1] == GetPVarFloat(playerid,"playerIdlePos_Y")
 				&& pos[2] == GetPVarFloat(playerid,"playerIdlePos_Z"))
 			{
@@ -76,4 +78,5 @@ stock AntiIdle()
 			SetPVarFloat(playerid,"playerIdlePos_Z",pos[2]);
    		}
    	}
+   	return 1;
 }

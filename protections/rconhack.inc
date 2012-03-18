@@ -32,13 +32,14 @@ stock AntiRconHackSaveConfig()
 stock antirconhack_OnGameModeInit()
 {
 	AntiRconHackLoadConfig();
+	if (AntiRconHackEnabled != 1) return 0;
 	GameMSG("SERVER: (protections)AntiRconHack module init");
 	return 1;
 }
 
 stock antirconhack_OnRconLoginAttempt(ip[], password[], success)
 {
-	if (AntiRconHackEnabled != 1 || success) return 1;
+	if (AntiRconHackEnabled != 1 || success) return 0;
 	GameMSG(lang_texts[11][5],ip,password);
 	new pip[16];
 	foreach(Player,playerid)

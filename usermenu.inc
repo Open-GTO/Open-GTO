@@ -108,13 +108,28 @@ stock show_ChangeColor_Menu(playerid)
 
 stock show_SpawnSelect_Menu(playerid)
 {
-	new string[MAX_NAME * MAX_PLAYER_HOUSES],
+	new string[ MAX_NAME * (MAX_PLAYER_HOUSES + 1) + 8 + (2 * (MAX_PLAYER_HOUSES + 1)) ],
 		count = 0,
 		playername[MAX_PLAYER_NAME];
+	
 	GetPlayerName(playerid,playername,sizeof(playername));
-	for(new i=0;i<sizeof(Houses);i++)
+	
+	new gangid = GetPlayerGangID(playerid);
+	new gang_houseid = -1;
+	if (gangid != 0)
 	{
-		if(!strcmp(Houses[i][Houses_Owner],playername,true))
+		gang_houseid = gang_GetHouse(gangid);
+		if (gang_houseid != -1)
+		{
+			count++;
+			strcat(string,"[банда] ",sizeof(string));
+			strcat(string,Houses[gang_houseid][Houses_Name],sizeof(string));
+			strcat(string,"\n",sizeof(string));
+		}
+	}
+	for (new i = 0; i < sizeof(Houses); i++)
+	{
+		if (gang_houseid != i && !strcmp(Houses[i][Houses_Owner],playername,true))
 		{
 			count++;
 			strcat(string,Houses[i][Houses_Name],sizeof(string));
@@ -337,7 +352,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 									\t\tDmitry Frolov (FP)\n\
 									\t\tOpen-GTO Team:\n\
 									\t\t\tCurrent: ZiGGi\n\
-									\t\t\tPrevious: GhostTT, heufix, Elbi, SLICK\n\
+									\t\t\tPrevious: GhostTT, heufix, Elbi\n\
 						\n\
 						{00C0DD}Косвенные разработчики: {AFE7FF}\n\
 									\t\tMX_Master(mxINI,Chat-Guard)\n\
@@ -425,6 +440,21 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			
 			new playername[MAX_PLAYER_NAME];
 			GetPlayerName(playerid,playername,sizeof(playername));
+
+			if (listitem == 0)
+			{
+				new gangid = GetPlayerGangID(playerid);
+				if (gangid != 0)
+				{
+					if (gang_GetHouse(gangid) != -1)
+					{
+						SetPlayerSpawnHouseID(playerid,SPAWN_HOUSE_GANG);
+						SendClientMessage(playerid,COLOUR_WHITE,"Место спавна изменено.");
+						return 1;
+					}
+				}
+			}
+
 			for(new i=0,count;i<sizeof(Houses);i++)
 			{
 				if(strcmp(Houses[i][Houses_Owner],playername,true)) continue;
@@ -432,6 +462,12 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				{
 					SetPlayerSpawnHouseID(playerid,i);
 					SendClientMessage(playerid,COLOUR_WHITE,"Место спавна изменено.");
+					// если игрок, сменивший спавн - лидер банды, то устанавливаем домом банды этот дом
+					if (gang_IsLeader(playerid))
+					{
+						gang_SetHouse(GetPlayerGangID(playerid), i);
+						SendClientMessage(playerid,COLOUR_WHITE,"Место спавна для банды изменено.");
+					}
 					return 1;
 				}
 				count++;

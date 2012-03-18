@@ -125,7 +125,7 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		SendClientMessage(playerid,COLOUR_MISC,lang_texts[15][76]);
 		SendClientMessage(playerid,COLOUR_MISC,"Open-GTO Team: ");
 		SendClientMessage(playerid,COLOUR_MISC,"      Current: ZiGGi");
-		SendClientMessage(playerid,COLOUR_MISC,"      Previous: GhostTT, heufix, Elbi, SLICK");
+		SendClientMessage(playerid,COLOUR_MISC,"      Previous: GhostTT, heufix, Elbi");
 		return 1;
 	}
 	if(!strcmp(cmd,"/time",true))
@@ -149,14 +149,17 @@ stock commands_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		SendClientMessage(playerid,COLOUR_WHITE,lang_texts[1][19]);
 		new Float:playerx,Float:playery,Float:playerz;
-		oGivePlayerWeapon(playerid,46,1);
 		GetPlayerPos(playerid,playerx,playery,playerz);
+		oGivePlayerWeapon(playerid,46,1);
 		PlayerPlaySound(playerid,1057,0,0,0);
 		oSetPlayerPos(playerid,playerx,playery,playerz+1200);
+		
 		format(string,sizeof(string), lang_texts[1][20]);
 		GameTextForPlayer(playerid,string,4000,5);
+		
 		format(string,sizeof(string), lang_texts[1][21] ,oGetPlayerName(playerid),playerid);
 		SendClientMessageToAll(COLOUR_GREY, string);
+		
 		PlayerPlaySound(playerid,1039,0,0,0);
 		SetPlayerSkydiveTime(playerid,SKYDIVE_TIME);
 		return 1;

@@ -67,7 +67,6 @@ nee:
 	AntiArmourHackSaveConfig();
 	AntiJetPackSaveConfig();
 	ChatGuardSaveConfig();
-	BanWeaponsSaveConfig();
 	// other
 	WeaponSaveAll();
 	RaceSaveAll();

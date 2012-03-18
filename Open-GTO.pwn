@@ -20,7 +20,7 @@ Date start Open-GTO: 	5 November 2009
 							Open-GTO
 -------------------------------------------------------------------
 0.0.0 – 1.0.0		Current: ZiGGi
-					Previous: GhostTT, heufix, Elbi, SLICK
+					Previous: GhostTT, heufix, Elbi
 -------------------------------------------------------------------
 */
 
@@ -82,7 +82,6 @@ Date start Open-GTO: 	5 November 2009
 #include "protections\rconhack"
 #include "protections\hightping"
 #include "protections\chatguard"
-#include "protections\banweapons"
 #include "protections\jetpack"
 #include "protections\speedhack"
 #include "protections\weaponhack"
@@ -136,7 +135,7 @@ main()
 			\tDmitry Frolov (FP)\n\
 			\tOpen-GTO Team:\n\
 				\t\tCurrent: ZiGGi\n\
-				\t\tPrevious: GhostTT, heufix, Elbi, SLICK\n\
+				\t\tPrevious: GhostTT, heufix, Elbi\n\
 	");
 	print("\
 		_____________________________________________________________\n\
@@ -381,25 +380,22 @@ public OnPlayerDeath(playerid, killerid, reason)
 	
 	if(killerid == INVALID_PLAYER_ID) return 1;
 	
-	if(!IsPlayerInAnyDM(playerid))
-	{
-		banweapons_OnPlayerDeath(playerid, killerid, reason);
-		player_OnPlayerDeath(playerid,killerid,reason);
-		player_OnPlayerKill(killerid,playerid,reason);
-		trucker_OnPlayerDeath(playerid,killerid,reason);
-		gang_OnPlayerDeath(playerid,killerid,reason);
-		weapon_OnPlayerDeath(playerid,killerid,reason);
-		level_HideTextDraws(playerid);
-		weapon_HideTextDraw(playerid);
-		wd_OnPlayerDeath(playerid);
-		PlayCrimeReportForPlayer(killerid,killerid,random(18)+3);
-		PlayCrimeReportForPlayer(playerid,killerid,random(18)+3);
- 	}
-	else
+	if(IsPlayerInAnyDM(playerid))
 	{
 		deathmatch_OnPlayerDeath(playerid,killerid);
 		deathmatch_OnPlayerKill(killerid,playerid,reason);
+		return 1;
 	}
+	player_OnPlayerDeath(playerid,killerid,reason);
+	player_OnPlayerKill(killerid,playerid,reason);
+	trucker_OnPlayerDeath(playerid,killerid,reason);
+	gang_OnPlayerDeath(playerid,killerid,reason);
+	weapon_OnPlayerDeath(playerid,killerid,reason);
+	level_HideTextDraws(playerid);
+	weapon_HideTextDraw(playerid);
+	wd_OnPlayerDeath(playerid);
+	PlayCrimeReportForPlayer(killerid,killerid,random(18)+3);
+	PlayCrimeReportForPlayer(playerid,killerid,random(18)+3);
 	return 1;
 }
 

@@ -32,12 +32,14 @@ stock AntiWeaponHackSaveConfig()
 stock awh_OnGameModeInit()
 {
 	AntiWeaponHackLoadConfig();
+	if (AntiWeaponHackEnabled != 1) return 0;
 	GameMSG("SERVER: (protections)AntiWeaponHack module init");
 	return 1;
 }
 
 stock awh_OnPlayerPickUpPickup(playerid,pickupid)
 {
+	if (AntiWeaponHackEnabled != 1) return 0;
 	switch (GetPickupModel(pickupid))
 	{
 		case 371: // парашют

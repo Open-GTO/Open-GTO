@@ -32,13 +32,17 @@ stock AntiJetPackSaveConfig()
 stock antijetpack_OnGameModeInit()
 {
 	AntiJetPackLoadConfig();
+	if (AntiJetPackEnabled != 1) return 0;
 	GameMSG("SERVER: (protections)AntiJetPack module init");
 	return 1;
 }
 
 stock CheckJetpack(playerid)
 {
-	if(AntiJetPackEnabled != 1 || GetPlayerSpecialAction(playerid) != SPECIAL_ACTION_USEJETPACK) return 1;
-	KickPlayer(playerid,lang_texts[11][15]);
+	if (AntiJetPackEnabled != 1) return 0;
+	if (GetPlayerSpecialAction(playerid) == SPECIAL_ACTION_USEJETPACK)
+	{
+		KickPlayer(playerid,lang_texts[11][15]);
+	}
 	return 1;
 }
