@@ -387,18 +387,18 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	if(!strcmp(cmd,"/underwater",true)) 
 	{ 
-		if(IsPlayerInAnyVehicle(playerid)) 
+		new veh_id = GetPlayerVehicleID(playerid);
+		if(veh_id != 0)
 		{
-			new veh_id = GetPlayerVehicleID(playerid);
-			oSetVehiclePos(veh_id,-2888.677978,1423.499023,-36.533981); 
-			SetVehicleZAngle(veh_id,244.428359); 
-			LinkVehicleToInterior(veh_id,0); 
-		} 
+			oSetVehiclePos(veh_id,-2888.677978,1423.499023,-36.533981);
+			SetVehicleZAngle(veh_id,244.428359);
+			LinkVehicleToInterior(veh_id,0);
+		}
 		else
-		{ 
-			oSetPlayerPos(playerid,-2888.677978,1423.499023,-36.533981); 
-			SetPlayerFacingAngle(playerid,244.428359); 
-		} 
+		{
+			oSetPlayerPos(playerid,-2888.677978,1423.499023,-36.533981);
+			SetPlayerFacingAngle(playerid,244.428359);
+		}
 		SetPlayerInterior(playerid,0); 
 		SendClientMessage(playerid,0x0000FFAA,"Вы под водой."); 
 		return 1;
