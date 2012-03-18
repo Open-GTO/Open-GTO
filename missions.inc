@@ -19,12 +19,12 @@ enum {
 enum mission_Info {
 	mission_enabled,
 	mission_name[MAX_NAME],
-	mission_rmt,// RunnerMissionTime
+	mission_pausetime,
 	mission_money,
 	mission_xp,
 }
 new mission_array[][mission_Info] = {
-	{1,"trucker",TRUCKER_RUNNER_MISSION_TIME,TRUCKER_MONEY_RATE,TRUCKER_XP_RATE}
+	{TRUCKER_ENABLED,"trucker",TRUCKER_RUNNER_MISSION_TIME,TRUCKER_MONEY_RATE,TRUCKER_XP_RATE}
 };
 
 new mission_questid[ sizeof(mission_array) ];
@@ -35,7 +35,7 @@ stock mission_LoadConfig()
     new file_mission = ini_Open(ConfigDB);
 	
 	new string[MAX_STRING];
-	for (new id=0;id < sizeof(mission_array);id++)
+	for (new id = 0; id < sizeof(mission_array); id++)
 	{
 		format(string,sizeof(string),"%s_Enabled",mission_array[id][mission_name]);
 		ini_GetInt(file_mission,string,mission_array[id][mission_enabled]);
@@ -46,8 +46,8 @@ stock mission_LoadConfig()
 		format(string,sizeof(string),"%s_XP_Rate",mission_array[id][mission_name]);
 		ini_GetInt(file_mission,string,mission_array[id][mission_xp]);
 		
-		format(string,sizeof(string),"%s_RunnerMissionTime",mission_array[id][mission_name]);
-		ini_GetInt(file_mission,string,mission_array[id][mission_rmt]);
+		format(string,sizeof(string),"%s_PauseTime",mission_array[id][mission_name]);
+		ini_GetInt(file_mission,string,mission_array[id][mission_pausetime]);
 	}
 	
 	ini_Close(file_mission);
@@ -70,8 +70,8 @@ stock mission_SaveConfig()
 		format(string,sizeof(string),"%s_XP_Rate",mission_array[id][mission_name]);
 		ini_SetInt(file_mission,string,mission_array[id][mission_xp]);
 		
-		format(string,sizeof(string),"%s_RunnerMissionTime",mission_array[id][mission_name]);
-		ini_SetInt(file_mission,string,mission_array[id][mission_rmt]);
+		format(string,sizeof(string),"%s_PauseTime",mission_array[id][mission_name]);
+		ini_SetInt(file_mission,string,mission_array[id][mission_pausetime]);
 	}
 	
 	ini_Close(file_mission);
@@ -90,12 +90,42 @@ stock IsPlayerInMission(playerid,missionid)
 	return 0;
 }
 
-stock mission_CalculateXP(playerid,xp_rate)
+stock IsMissionEnabled(missionid)
 {
-	return (( (GetPlayerLevel(playerid)+1) * 2 )^2 * xp_rate);
+	return (mission_array[missionid][mission_enabled] == 1) ? 1 : 0;
 }
 
-stock mission_CalculateMoney(playerid,money_rate)
+stock mission_Register(missionid)
 {
-	return (( (GetPlayerLevel(playerid)+1) * 2 )^2 * money_rate);
+	mission_questid[missionid] = RegisterQuest();
 }
+
+stock mission_GetQuestID(missionid)
+{
+	return mission_questid[missionid];
+}
+
+stock mission_GetPauseTime(missionid)
+{
+	return mission_array[missionid][mission_pausetime];
+}
+
+stock mission_CalculateXP(playerid,missionid)
+{
+	return ( ( (GetPlayerLevel(playerid)+1) * 2 )^2 * mission_array[missionid][mission_xp] );
+}
+
+stock mission_CalculateMoney(playerid,missionid)
+{
+	return ( ( (GetPlayerLevel(playerid)+1) * 2 )^2 * mission_array[missionid][mission_money] );
+}
+
+/*
+#define IsPlayerInMission(%0,%1) (GetPlayerQuestID(%0) == mission_questid[%1]) ? 1 : 0
+#define IsMissionEnabled(%0) (mission_array[%0][mission_enabled] == 1) ? 1 : 0
+#define mission_Register(%0) mission_questid[%0] = RegisterQuest()
+#define mission_GetQuestID(%0) mission_questid[%0]
+#define mission_GetParam(%0,%1) mission_array[%0][%1]
+#define mission_CalculateXP(%0,%1) ( (GetPlayerLevel(%0)+1) * 2 )^2 * mission_array[%1][mission_xp]
+#define mission_CalculateMoney(%0,%1) ( (GetPlayerLevel(%0)+1) * 2 )^2 * mission_array[%1][mission_money]
+*/
