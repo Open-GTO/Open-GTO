@@ -57,10 +57,10 @@ stock logging_OnGameModeInit()
 
 stock MakeFilename()
 {
-	new d,m,y;
+	new y,m,d;
 	getdate(y,m,d);
-	new string[MAX_STRING];
-	format(string,sizeof(string),"%02d-%02d-%04d.log",d,m,y);
+	new string[16];
+	format(string,sizeof(string),"%04d-%02d-%02d.log",y,m,d);
 	return string;
 }
 
@@ -68,42 +68,45 @@ stock MakeFormattedTime()
 {
 	new h,m,s;
 	gettime(h,m,s);
-	new string[MAX_STRING];
+	new string[16];
 	format(string,sizeof(string),"[%02d:%02d:%02d]",h,m,s);
 	return string;
 }
 
 stock WriteLog(log,string[])
 {
-	new logS[MAX_STRING];
+	new log_str[MAX_STRING];
 	switch(log)
 	{
 		case GameLog:
 		{
 			if(LoggingGameToggle != 1) return 1;
-			logS = GTO_FILES_FOLDER "Logging/GameLog/";
+			log_str = GTO_FILES_FOLDER "Logging/GameLog/";
 		}
 		case ChatLog:
 		{
 			if(LoggingChatToggle != 1) return 1;
-			logS = GTO_FILES_FOLDER "Logging/ChatLog/";
+			log_str = GTO_FILES_FOLDER "Logging/ChatLog/";
 		}
 		case CMDLog:
 		{
 			if(LoggingCMDToggle != 1) return 1;
-			logS = GTO_FILES_FOLDER "Logging/CMDLog/";
+			log_str = GTO_FILES_FOLDER "Logging/CMDLog/";
 		}
 		case DebugLog:
 		{
 			if(LoggingDebug != 1) return 1;
-			logS = GTO_FILES_FOLDER "Logging/DebugLog/";
+			log_str = GTO_FILES_FOLDER "Logging/DebugLog/";
 		}
 	}
 	new filestring[MAX_STRING];
-	format(filestring,sizeof(filestring),"%s%s",logS,MakeFilename());
+	format(filestring,sizeof(filestring),"%s%s",log_str,MakeFilename());
 	new File:LogFile = fopen(filestring,io_append);
 	format(filestring,sizeof(filestring),"%s %s\r\n",MakeFormattedTime(),string);
-	for(new i=0,len=strlen(filestring);i<len;i++) fputchar(LogFile,filestring[i],false);
+	for (new i = 0, len = strlen(filestring); i < len; i++)
+	{
+		fputchar(LogFile,filestring[i],false);
+	}
 	fclose(LogFile);
 	return 1;
 }

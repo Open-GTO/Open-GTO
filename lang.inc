@@ -14,7 +14,7 @@
 
 new lang_db[10] = GTO_FILES_FOLDER;
 new lang[10] = LANGUAGE_USE;
-new lang_texts[20][99][MAX_STRING+10];
+new lang_texts[20][100][MAX_STRING+10];
 
 stock lang_LoadConfig()
 {

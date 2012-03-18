@@ -1,4 +1,7 @@
-// created by asturel based on business system, thx to Peter Steenbergen
+/*
+	Created by asturel based on business system, thx to Peter Steenbergen
+	Modified by ZiGGi
+*/
 
 #if defined _housing_included
 #endinput
@@ -7,11 +10,6 @@
 #define _housing_included
 #pragma library housing
 
-
-#include "base"
-#include "account"
-#include "player"
-#include "world"
 
 #define SetPlayerToHouseID(%0,%1) SetPVarInt(%0,"HausID",%1)
 #define GetPlayerToHouseID(%0) GetPVarInt(%0,"HausID")

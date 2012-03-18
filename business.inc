@@ -1,27 +1,22 @@
-//
-// Created:     27.11.06
-// Aurthor:     Peter Steenbergen
-//
+/*
+	Created by Peter Steenbergen
+	Modified by ZiGGi
+*/
+
 #if defined _business_included
-#endinput
+	#endinput
 #endif
 
 #define _business_included
 #pragma library business
 
 
-#include "base"
-#include "utils\gtoutils"
-#include "account"
-#include "player"
-#include "world"
-
 #define SetPlayerToBusinessID(%0,%1) SetPVarInt(%0,"BusID",%1)
 #define GetPlayerToBusinessID(%0) GetPVarInt(%0,"BusID")
 new business_icon[ sizeof(Businesses) ],Text3D:Business3DTextLabel[ sizeof(Businesses) ],Float:BusinessDistanceOfShowLabel=20.0;
 #define show_Business_MsgDialog(%0,%1,%2) ShowPlayerDialog(%0,bis_Msg_DialogID,DIALOG_STYLE_MSGBOX,%1,%2,lang_texts[3][10],lang_texts[3][8])
 
-BusinessLoadAll()
+stock BusinessLoadAll()
 {
 	if(ini_Exist(ConfigDB))
 	{
@@ -52,7 +47,7 @@ BusinessLoadAll()
 	return;
 }
 
-BusinessSaveAll()
+stock BusinessSaveAll()
 {
 	if(ini_Exist(ConfigDB))
 	{
