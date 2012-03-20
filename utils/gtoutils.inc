@@ -138,6 +138,24 @@ stock is_leap_year(year)
 	return (year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0);
 }
 
+stock SendClientMessageToBeside(playerid,dist,text[])
+{
+	new string[MAX_STRING],
+		Float:pos[3],
+		color = GetPlayerColor(playerid);
+	
+	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+	format(string, sizeof(string), "%s"CHAT_SHOW_ID": {FFFFFF}%s", oGetPlayerName(playerid), playerid, text);
+	foreach (Player, i)
+	{
+		if (IsPlayerInRangeOfPoint(i, pos[0], pos[1], pos[2]))
+		{
+			SendClientMessage(i,color,string);
+		}
+	}
+	return;
+}
+
 stock PlayerPlaySoundOnPlayer(playerid,soundid)
 {
 	new Float:pos[3];

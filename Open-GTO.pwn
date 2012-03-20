@@ -609,6 +609,14 @@ public OnPlayerText(playerid, text[])
 			WriteLog(ChatLog,string);
 			return 0;
 		}
+		case '$',';':
+		{
+			if(strlen(text[1]) < 2) return 1;
+			SendClientMessageToBeside(playerid,10,text[1]);
+			format(string,sizeof(string), "Player: %s"CHAT_SHOW_ID": <SAY>: %s",playername,playerid,text[1]);
+			WriteLog(ChatLog,string);
+			return 0;
+		}
 	}
 	if(GetPlayerMuteTime(playerid) != 0)  //Заткнут
 	{
