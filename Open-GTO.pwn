@@ -169,7 +169,6 @@ public OnGameModeInit()
 	bank_OnGameModeInit();
 	fights_OnGameModeInit();
 	wd_OnGameModeInit();
-	quidemsys_OnGameModeInit();
 	// missions
 	mission_OnGameModeInit();
     trucker_OnGameModeInit();
@@ -177,6 +176,8 @@ public OnGameModeInit()
 	fastfood_OnGameModeInit();
 	bar_OnGameModeInit();
 	ss_OnGameModeInit();
+	//
+	quidemsys_OnGameModeInit();
 	//
 	level_OnGameModeInit();
 	antiidle_OnGameModeInit();
