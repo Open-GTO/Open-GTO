@@ -161,11 +161,11 @@ stock FormatPosition(position)
 stock strcharsplit(const string[], &index, seperator=' ')
 {
 	new result[20], i = 0;
-	while (string[index] && string[index] != seperator)
+	if (index != 0 && string[index] != '\0') index++;
+	while (string[index] && string[index] != seperator && string[index] != '\r' && string[index] != '\n')
 	{
 		result[i++] = string[index++];
 	}
-	index++;
 	return result;
 }
 

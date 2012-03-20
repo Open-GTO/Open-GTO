@@ -18,7 +18,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 {
 	if(!IsPlayerMod(playerid)) return 0;
 	new cmd[20],idx;	
-	cmd = strcharsplit(text, idx,' ');
+	cmd = strcharsplit(text, idx, ' ');
 	
 	if(!strcmp(cmd, "/cmdlist", true))
 	{
@@ -215,7 +215,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/spec",true))
 	{
 		new tmp[20];
-		tmp = strcharsplit(text, idx,' ');
+		tmp = strcharsplit(text, idx, ' ');
 		if (strlen(tmp) == 0)
 		{
 			if (GetPlayerSpectating(playerid))
@@ -250,7 +250,7 @@ stock Mod_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	if(!strcmp(cmd,"/clearchat",true))
 	{
-		for (new i = 0; i < 50; i++)
+		for (new i = 0; i < 100; i++)
 		{
 			SendClientMessageToAll(0, "");
 		}

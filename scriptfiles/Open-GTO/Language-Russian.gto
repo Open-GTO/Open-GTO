@@ -784,4 +784,4 @@
 27: Ваш транспорт был заправлен за $%d.
 28: ~G~Opened
 29: ~R~Closed
-30: ~B~Speed: %skm/h~N~~B~Fuel: ~W~%0.1f lit.~N~~B~Health: ~W~%0.0f%%
+30: ~B~Speed: %s km/h~N~~B~Fuel: ~W~%0.1f lit.~N~~B~Health: ~W~%0.0f%%

@@ -100,11 +100,11 @@ stock quidemsys_OnGameModeInit()
 	black = TextDrawCreate(494.000000, 379.000000, "_");
 	TextDrawUseBox(black, 1);
 	TextDrawBoxColor(black, 0x00000085);
-	TextDrawTextSize(black, 626.000000, 0.000000);
+	TextDrawTextSize(black, 606.000000, 0.000000);
 	TextDrawAlignment(black, 0);
 	TextDrawBackgroundColor(black, 0x000000FF);
 	TextDrawFont(black, 2);
-	TextDrawLetterSize(black, 1.700000, 3.940000);
+	TextDrawLetterSize(black, 1.700000, 3.040000);
 	TextDrawColor(black, 0x000000FF);
 	TextDrawSetOutline(black, 1);
 	TextDrawSetProportional(black, 1);
@@ -113,11 +113,11 @@ stock quidemsys_OnGameModeInit()
 	white = TextDrawCreate(495.000000, 380.000000, "_");
 	TextDrawUseBox(white, 1);
 	TextDrawBoxColor(white, 0xAAAAAA77);
-	TextDrawTextSize(white, 625.500000, 0.000000);
+	TextDrawTextSize(white, 605.500000, 0.000000);
 	TextDrawAlignment(white, 0);
 	TextDrawBackgroundColor(white, 0x000000FF);
 	TextDrawFont(white, 2);
-	TextDrawLetterSize(white, 1.350000, 3.720000);
+	TextDrawLetterSize(white, 1.350000, 2.800000);
 	TextDrawColor(white, 0xAAAAAA88);
 	TextDrawSetOutline(white, 1);
 	TextDrawSetProportional(white, 1);
@@ -322,10 +322,7 @@ public speed_Timer()
 		valstr(speed_temp, speed_count);
 		strcat(speed, speed_temp);
 		
-		format(string,sizeof(string),
-			lang_texts[19][30],
-			speed, Fuel[vehicleid], health/10
-		);
+		format(string, sizeof(string), lang_texts[19][30], speed, Fuel[vehicleid], health/10);
 		
 		TextDrawSetString(speedom[playerid], string);
 		TextDrawShowForPlayer(playerid, speedom[playerid]);

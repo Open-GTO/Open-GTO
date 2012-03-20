@@ -58,6 +58,19 @@ stock awh_OnPlayerPickUpPickup(playerid,pickupid)
 	return 1;
 }
 
+stock awh_OnPlayerExitVehicle(playerid,vehicleid)
+{
+	switch ( GetVehicleModel(vehicleid) )
+	{
+		case 592,577,511,512,593,520,553,476,519,460,513,// самолёты
+			 548,425,417,487,488,497,563,447,469: // вертолёты
+		{
+			oGivePlayerWeapon(playerid,46,1);
+		}
+	}
+	return 1;
+}
+
 stock SyncWeapon(playerid)
 {
 	if (AntiWeaponHackEnabled != 1) return 0;

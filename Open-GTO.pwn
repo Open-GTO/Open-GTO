@@ -421,7 +421,7 @@ public OnPlayerSpawn(playerid)
 	{
 		JailPlayer(playerid,GetPlayerJailTime(playerid));
 	}
-	SetTimerEx("OnPlayerSpawned",1000,0,"d",playerid);
+	SetTimerEx("OnPlayerSpawned",1500,0,"d",playerid);
 	return 1;
 }
 
@@ -694,11 +694,13 @@ public OnPlayerExitVehicle(playerid,vehicleid)
 		vehicle_Engine(vehicleid,VEHICLE_PARAMS_OFF);
 #endif
 	modfunc_OnPlayerExitVehicle(playerid,vehicleid);
+	awh_OnPlayerExitVehicle(playerid,vehicleid);
 	return 1;
 }
 
 public OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
 {
+	ash_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid);
     modfunc_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid);
     return 1;
 }

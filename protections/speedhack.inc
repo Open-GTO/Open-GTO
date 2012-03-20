@@ -43,8 +43,26 @@ stock ash_OnPlayerStateChange(playerid, newstate, oldstate)
 	// если выпрыгнул из транспорта
 	if(newstate == PLAYER_STATE_ONFOOT && oldstate == PLAYER_STATE_DRIVER)
 	{
-		SetPVarInt(playerid,"ac_NotSpeedHack",1);
-		SetTimerEx("NotSpeedHack",2000,0,"d",playerid);
+		ash_Disable(playerid,4000);
+	}
+	return 1;
+}
+
+stock ash_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
+{
+	switch (oldinteriorid)
+	{
+		case 1,2,3:
+		{
+			ash_Disable(playerid,2000);
+		}
+	}
+	switch (newinteriorid)
+	{
+		case 1,2,3:
+		{
+			ash_Disable(playerid,2000);
+		}
 	}
 	return 1;
 }
@@ -56,6 +74,12 @@ public AntiSpeedHackTimer()
 	{
 		SyncSpeed(playerid);
 	}
+}
+
+stock ash_Disable(playerid,time)
+{
+	SetPVarInt(playerid,"ac_NotSpeedHack",1);
+	SetTimerEx("NotSpeedHack",time,0,"d",playerid);
 }
 
 forward NotSpeedHack(playerid);
@@ -110,7 +134,7 @@ stock SyncSpeed(playerid)
 	{
 		case PLAYER_STATE_ONFOOT:
 		{
-			if (player_speed > 25 && GetPVarInt(playerid,"ac_NotSpeedHack") != 1)
+			if (player_speed > 50 && GetPVarInt(playerid,"ac_NotSpeedHack") != 1)
 			{
 				switch (floatround(player_speed,floatround_round))
 				{
@@ -130,7 +154,7 @@ stock SyncSpeed(playerid)
 				case 520: max_speed = 180;
 				default: max_speed = 150;
 			}
-			if (player_speed > max_speed)
+			if (player_speed > max_speed && GetPVarInt(playerid,"ac_NotSpeedHack") != 1)
 			{
 				switch ( floatround(player_speed,floatround_round) )
 				{
