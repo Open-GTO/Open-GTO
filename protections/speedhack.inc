@@ -43,7 +43,7 @@ stock ash_OnPlayerStateChange(playerid, newstate, oldstate)
 	// если выпрыгнул из транспорта
 	if(newstate == PLAYER_STATE_ONFOOT && oldstate == PLAYER_STATE_DRIVER)
 	{
-		ash_Disable(playerid,4000);
+		ash_Disable(playerid,3000);
 	}
 	return 1;
 }
@@ -54,14 +54,14 @@ stock ash_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
 	{
 		case 1,2,3:
 		{
-			ash_Disable(playerid,2000);
+			ash_Disable(playerid,1000);
 		}
 	}
 	switch (newinteriorid)
 	{
 		case 1,2,3:
 		{
-			ash_Disable(playerid,2000);
+			ash_Disable(playerid,1000);
 		}
 	}
 	return 1;
@@ -90,6 +90,7 @@ public NotSpeedHack(playerid)
 
 stock oSetPlayerPos(playerid,Float:x,Float:y,Float:z)
 {
+	ash_Disable(playerid,1000);
 	SetPVarFloat(playerid,"ac_old_Coord_X",x);
 	SetPVarFloat(playerid,"ac_old_Coord_Y",y);
 	SetPlayerPos(playerid,x,y,z);
@@ -126,7 +127,10 @@ stock Float:GetPlayerSpeed(playerid)
 
 stock SyncSpeed(playerid)
 {
-	if (AntiSpeedHackEnabled != 1) return 0;
+	if (AntiSpeedHackEnabled != 1 || GetPVarInt(playerid,"ac_NotSpeedHack") == 1 || GetPVarInt(playerid,"Spawned") != 1)
+	{
+		return 0;
+	}
 	new Float:player_speed = GetPlayerSpeed(playerid),
 		max_speed;
 	
@@ -134,7 +138,7 @@ stock SyncSpeed(playerid)
 	{
 		case PLAYER_STATE_ONFOOT:
 		{
-			if (player_speed > 50 && GetPVarInt(playerid,"ac_NotSpeedHack") != 1)
+			if (player_speed > 50)
 			{
 				switch (floatround(player_speed,floatround_round))
 				{
@@ -154,7 +158,7 @@ stock SyncSpeed(playerid)
 				case 520: max_speed = 180;
 				default: max_speed = 150;
 			}
-			if (player_speed > max_speed && GetPVarInt(playerid,"ac_NotSpeedHack") != 1)
+			if (player_speed > max_speed)
 			{
 				switch ( floatround(player_speed,floatround_round) )
 				{
