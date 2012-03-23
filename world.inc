@@ -105,7 +105,7 @@ stock SyncTime()
 
 stock SpawnWorld() // run at startup to spawn world
 {
-	for(new i = SKINS_MINID; i < SKINS_MAXID; i++)
+	for(new i = SKINS_MINID; i <= SKINS_MAXID; i++)
  	{
 		switch (i)
 		{

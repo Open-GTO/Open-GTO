@@ -77,7 +77,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 // skins
 #define SKINS_COST			0 // цена покупки скина
 #define SKINS_IGNORE		0,74  // список игнорируемых скинов
-#define SKINS_MAXID			300
+#define SKINS_MAXID			299
 #define SKINS_MINID			1
 
 #define GROUNDHOID_ENABLED	1 // точки прокачки

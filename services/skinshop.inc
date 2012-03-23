@@ -37,35 +37,37 @@ stock ss_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	#pragma unused oldkeys
 	// если игрок не в примерочной
-	if(GetPVarInt(playerid,"SkinShop_AtFittingRoom") != 1)
+	if (GetPVarInt(playerid,"SkinShop_AtFittingRoom") != 1)
 	{
-		if( PRESSED ( KEY_USING ) )
+		if ( PRESSED ( KEY_USING ) )
 		{
 			SkinShop_SetPlayerFittingRoom(playerid);
 			SetPVarInt(playerid,"SkinShop_AtFittingRoom",1);
+			SetPVarInt(playerid,"SkinShop_Old",GetPlayerSkin(playerid));
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[17][24],KEY_NAME);
 			SendClientMessage(playerid,0,string);
-			SkinShop_SelectSkin(playerid,1,1);
+			SkinShop_SelectSkin(playerid,SKINS_MINID,SKINS_MINID);
 		}
 		return 0;
 	}
 	// если игрок в примерочной
-	if( PRESSED ( KEY_HANDBRAKE ) ) // право
+	new currskin = GetPVarInt(playerid, "SkinShop_CurrentSkin");
+	if ( PRESSED ( KEY_HANDBRAKE ) ) // право
 	{
-		return SkinShop_SelectSkin(playerid,GetPVarInt(playerid,"SkinShop_CurrentSkin"),GetPVarInt(playerid,"SkinShop_CurrentSkin") + 1);
+		return SkinShop_SelectSkin(playerid, currskin, currskin+1);
 	}
-    if( PRESSED ( KEY_FIRE ) ) // лево
+    if ( PRESSED ( KEY_FIRE ) ) // лево
 	{
-		return SkinShop_SelectSkin(playerid,GetPVarInt(playerid,"SkinShop_CurrentSkin"),GetPVarInt(playerid,"SkinShop_CurrentSkin") - 1);
+		return SkinShop_SelectSkin(playerid, currskin, currskin-1);
 	}
-	if( PRESSED ( KEY_USING ) )
+	if ( PRESSED ( KEY_USING ) )
 	{
-		if(GetPlayerMoney(playerid) < SKINS_COST)
+		if (GetPlayerMoney(playerid) < SKINS_COST)
 		{
 			new string[MAX_STRING];
-			format(string,sizeof(string),lang_texts[17][23],SKINS_COST);
-			return SendClientMessage(playerid,0,string);
+			format(string, sizeof(string), lang_texts[17][23], SKINS_COST);
+			return SendClientMessage(playerid, 0, string);
 		}
 		return SkinShop_ShowBuyDialog(playerid);
 	}
@@ -77,7 +79,7 @@ stock ss_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	#pragma unused inputtext,listitem
 	if (dialogid == SkinShop_Buy_DialogID)
 	{
-		if(!response)
+		if (!response)
 		{
 			SkinShop_Exit(playerid);
 			SkinShop_DeletePVars(playerid);
@@ -96,29 +98,21 @@ stock ss_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 stock SkinShop_SelectSkin(playerid,oldskin,newskin) // включить выбор скинов
 {
+	if (newskin > SKINS_MAXID)
+	{
+		newskin = SKINS_MINID;
+	}
+	else if (newskin < SKINS_MINID)
+	{
+		newskin = SKINS_MAXID;
+	}
 	switch (newskin)
 	{
 		case SKINS_IGNORE:
 		{
-			if (newskin > oldskin)
-			{
-				newskin++;
-				if (newskin > SKINS_MAXID)
-				{
-					newskin = SKINS_MINID;
-				}
-			}
-			else if (newskin < oldskin)
-			{
-				newskin--;
-				if (newskin < SKINS_MINID)
-				{
-					newskin = SKINS_MAXID;
-				}
-			}
+			newskin += (newskin > oldskin) ? 1 : -1;
 		}
 	}
-	
 	TogglePlayerControllable(playerid,0);
 	SetPlayerSkin(playerid,newskin);
 	SetPVarInt(playerid,"SkinShop_CurrentSkin",newskin);
@@ -141,8 +135,8 @@ stock SkinShop_DeletePVars(playerid)
 	DeletePVar(playerid,"SkinShop_Old");
 	DeletePVar(playerid,"SkinShop_CurrentSkin");
 	DeletePVar(playerid,"SkinShop_AtFittingRoom");
-	DeletePVar(playerid,"SkinShop_PlayerAtSkinShop");
 	DeletePVar(playerid,"SkinShop_Interior");
+	DeletePVar(playerid,"SkinShop_PlayerAtSkinShop");
 	DeletePVar(playerid,"SkinShop_Coords_X");
 	DeletePVar(playerid,"SkinShop_Coords_Y");
 	DeletePVar(playerid,"SkinShop_Coords_Z");
@@ -169,16 +163,15 @@ stock SkinShop_SetPlayerFittingRoom(playerid)
 
 stock IsPlayerAtSkinShop(playerid)
 {
-	if(GetPVarInt(playerid,"SkinShop_PlayerAtSkinShop") == 1) return 1;
-	for(new id=0;id<sizeof(SkinShops);id++)
+	if (GetPVarInt(playerid,"SkinShop_PlayerAtSkinShop") == 1) return 1;
+	for (new id = 0; id < sizeof(SkinShops); id++)
 	{
-		if(IsPlayerInRangeOfPoint(playerid,2,SkinShops[id][Coord_X],SkinShops[id][Coord_Y],SkinShops[id][Coord_Z]))
+		if (IsPlayerInRangeOfPoint(playerid,2,SkinShops[id][Coord_X],SkinShops[id][Coord_Y],SkinShops[id][Coord_Z]))
 		{
 			SetPVarInt(playerid,"SkinShop_PlayerAtSkinShop",1);
 			return 1;
 		}
 	}
-	DeletePVar(playerid,"SkinShop_PlayerAtSkinShop");
 	return 0;
 }
 
