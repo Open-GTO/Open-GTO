@@ -70,10 +70,12 @@ stock ash_OnPlayerInteriorChange(playerid,newinteriorid,oldinteriorid)
 forward AntiSpeedHackTimer();
 public AntiSpeedHackTimer()
 {
+	if (AntiSpeedHackEnabled != 1) return 0;
 	foreach (Player,playerid)
 	{
 		SyncSpeed(playerid);
 	}
+	return 1;
 }
 
 stock ash_Disable(playerid,time)
@@ -125,11 +127,20 @@ stock Float:GetPlayerSpeed(playerid)
 	return (Dis * 2.0);
 }
 
+stock sh_FixSpeed(playerid)
+{
+	new Float:pos[3];
+	GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
+	SetPVarFloat(playerid,"ac_old_Coord_X",pos[0]);
+	SetPVarFloat(playerid,"ac_old_Coord_Y",pos[1]);
+	return 1;
+}
+
 stock SyncSpeed(playerid)
 {
-	if (AntiSpeedHackEnabled != 1 || GetPVarInt(playerid,"ac_NotSpeedHack") == 1 || GetPVarInt(playerid,"Spawned") != 1)
+	if (GetPVarInt(playerid,"Spawned") != 1 || GetPVarInt(playerid,"ac_NotSpeedHack") == 1)
 	{
-		return 0;
+		return sh_FixSpeed(playerid);
 	}
 	new Float:player_speed = GetPlayerSpeed(playerid),
 		max_speed;
