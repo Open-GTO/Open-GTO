@@ -22,17 +22,6 @@ new SkinShops[][CoordInfo] = {
 	{203.9252,-43.7523,1001.8047}
 };
 
-new MenSkins[] = {
-	2,47,48,50,58,60,68,72,73,80,81,82,83,95,100,101,102,103,104,108,
-	109,110,121,122,123,135,142,143,144,146,153,154,155,156,158,159,
-	160,161,170,179,180,189,202,203,204,258,259,260,293,295,296,297
-};
-
-new WomanSkins[] = {
-	55,56,63,69,76,85,91,93,131,141,148,150,151,152,157,169,172,190,
-	192,193,194,195,198,201,214,216,219,225,233,237,251,263,298
-};
-
 stock ss_OnGameModeInit()
 {
 	for(new id=0;id<sizeof(SkinShops);id++)
@@ -52,18 +41,23 @@ stock ss_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	{
 		if( PRESSED ( KEY_USING ) )
 		{
-			SkinShop_ShowDialog(playerid);
+			SkinShop_SetPlayerFittingRoom(playerid);
+			SetPVarInt(playerid,"SkinShop_AtFittingRoom",1);
+			new string[MAX_STRING];
+			format(string,sizeof(string),lang_texts[17][24],KEY_NAME);
+			SendClientMessage(playerid,0,string);
+			SkinShop_SelectSkin(playerid,1,1);
 		}
 		return 0;
 	}
 	// если игрок в примерочной
 	if( PRESSED ( KEY_HANDBRAKE ) ) // право
 	{
-		return SkinShop_SelectSkin(playerid,GetPVarInt(playerid,"SkinShop_SkinType"),GetPVarInt(playerid,"SkinShop_CurrentSkinID") + 1);
+		return SkinShop_SelectSkin(playerid,GetPVarInt(playerid,"SkinShop_CurrentSkin"),GetPVarInt(playerid,"SkinShop_CurrentSkin") + 1);
 	}
     if( PRESSED ( KEY_FIRE ) ) // лево
 	{
-		return SkinShop_SelectSkin(playerid,GetPVarInt(playerid,"SkinShop_SkinType"),GetPVarInt(playerid,"SkinShop_CurrentSkinID") - 1);
+		return SkinShop_SelectSkin(playerid,GetPVarInt(playerid,"SkinShop_CurrentSkin"),GetPVarInt(playerid,"SkinShop_CurrentSkin") - 1);
 	}
 	if( PRESSED ( KEY_USING ) )
 	{
@@ -80,82 +74,54 @@ stock ss_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 stock ss_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
-	#pragma unused inputtext
-	switch(dialogid)
+	#pragma unused inputtext,listitem
+	if (dialogid == SkinShop_Buy_DialogID)
 	{
-		case SkinShop_DialogID:
+		if(!response)
 		{
-			SetPVarInt(playerid,"SkinShop_Old",GetPlayerSkin(playerid));
-			if(!response)
-			{
-				SkinShop_Exit(playerid);
-				SetPlayerSkin(playerid,GetPVarInt(playerid,"SkinShop_Old"));
-				SkinShop_DeletePVars(playerid);
-				return 0;
-			}
-			new string[MAX_STRING];
-			format(string,sizeof(string),lang_texts[17][24],KEY_NAME);
-			SendClientMessage(playerid,0,string);
-			SkinShop_SelectSkin(playerid,listitem,0);
-		}
-		case SkinShop_Buy_DialogID:
-		{
-			if(!response)
-			{
-				SkinShop_Exit(playerid);
-				SkinShop_DeletePVars(playerid);
-				return 0;
-			}
-			// покупка скина
 			SkinShop_Exit(playerid);
-			SetPlayerSkin(playerid,GetPVarInt(playerid,"SkinShop_CurrentSkin"));
-			SetPlayerSkinModel(playerid,GetPVarInt(playerid,"SkinShop_CurrentSkin"));
 			SkinShop_DeletePVars(playerid);
-			oGivePlayerMoney(playerid,-SKINS_COST);
-			SendClientMessage(playerid,0,lang_texts[17][25]);
+			return 0;
 		}
+		// покупка скина
+		SkinShop_Exit(playerid);
+		SetPlayerSkin(playerid,GetPVarInt(playerid,"SkinShop_CurrentSkin"));
+		SetPlayerSkinModel(playerid,GetPVarInt(playerid,"SkinShop_CurrentSkin"));
+		SkinShop_DeletePVars(playerid);
+		oGivePlayerMoney(playerid,-SKINS_COST);
+		SendClientMessage(playerid,0,lang_texts[17][25]);
 	}
 	return 1;
 }
 
-stock SkinShop_SelectSkin(playerid,type,pos) // включить выбор скинов
+stock SkinShop_SelectSkin(playerid,oldskin,newskin) // включить выбор скинов
 {
-	SetPVarInt(playerid,"SkinShop_CurrentSkinID",pos);
-	SetPVarInt(playerid,"SkinShop_SkinType",type);
-	TogglePlayerControllable(playerid,0);
-	switch(type)
+	switch (newskin)
 	{
-		case 0: // мужские
+		case SKINS_IGNORE:
 		{
-			if(pos > sizeof(MenSkins)-1)
+			if (newskin > oldskin)
 			{
-				SetPVarInt(playerid,"SkinShop_CurrentSkinID",0);
-				pos = 0;
+				newskin++;
+				if (newskin > SKINS_MAXID)
+				{
+					newskin = SKINS_MINID;
+				}
 			}
-			else if(pos < 0)
+			else if (newskin < oldskin)
 			{
-				SetPVarInt(playerid,"SkinShop_CurrentSkinID",sizeof(MenSkins)-1);
-				pos = sizeof(MenSkins)-1;
+				newskin--;
+				if (newskin < SKINS_MINID)
+				{
+					newskin = SKINS_MAXID;
+				}
 			}
-			SetPlayerSkin(playerid,MenSkins[pos]);
-			SetPVarInt(playerid,"SkinShop_CurrentSkin",MenSkins[pos]);
-		}
-		case 1: // женские
-		{
-			if(pos > sizeof(WomanSkins)-1)
-			{
-				SetPVarInt(playerid,"SkinShop_CurrentSkinID",0);
-				pos = 0;
-			}
-			else if(pos < 0)
-			{
-				SetPVarInt(playerid,"SkinShop_CurrentSkinID",sizeof(WomanSkins)-1);
-				pos = sizeof(WomanSkins)-1;
-			}
-			SetPlayerSkin(playerid,WomanSkins[pos]);
-			SetPVarInt(playerid,"SkinShop_CurrentSkin",WomanSkins[pos]);
 		}
 	}
+	
+	TogglePlayerControllable(playerid,0);
+	SetPlayerSkin(playerid,newskin);
+	SetPVarInt(playerid,"SkinShop_CurrentSkin",newskin);
 	return 1;
 }
 
@@ -173,9 +139,7 @@ stock SkinShop_Exit(playerid)
 stock SkinShop_DeletePVars(playerid)
 {
 	DeletePVar(playerid,"SkinShop_Old");
-	DeletePVar(playerid,"SkinShop_CurrentSkinID");
 	DeletePVar(playerid,"SkinShop_CurrentSkin");
-	DeletePVar(playerid,"SkinShop_SkinType");
 	DeletePVar(playerid,"SkinShop_AtFittingRoom");
 	DeletePVar(playerid,"SkinShop_PlayerAtSkinShop");
 	DeletePVar(playerid,"SkinShop_Interior");
@@ -185,16 +149,6 @@ stock SkinShop_DeletePVars(playerid)
 	DeletePVar(playerid,"SkinShop_Coords_A");
 }
 
-stock SkinShop_ShowDialog(playerid)
-{
-	SetPVarInt(playerid,"SkinShop_AtFittingRoom",1);
-	SkinShop_SetPlayerFittingRoom(playerid);
-	return ShowPlayerDialog(playerid,SkinShop_DialogID,DIALOG_STYLE_LIST,
-		lang_texts[17][26],
-		lang_texts[17][27],
-		lang_texts[17][28],lang_texts[17][29]
-	);
-}
 stock SkinShop_SetPlayerFittingRoom(playerid)
 {
 	new Float:pos[4];
@@ -232,7 +186,7 @@ stock SkinShop_ShowBuyDialog(playerid)
 {
 	return ShowPlayerDialog(playerid,SkinShop_Buy_DialogID,DIALOG_STYLE_MSGBOX,
 		lang_texts[17][26],
-		lang_texts[17][30],
-		lang_texts[17][31],lang_texts[17][32]
+		lang_texts[17][27],
+		lang_texts[17][28],lang_texts[17][29]
 	);
 }

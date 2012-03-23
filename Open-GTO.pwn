@@ -333,7 +333,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			fastfood_OnDialogResponse(playerid,dialogid,response,listitem,inputtext);
 		}
-		case SkinShop_DialogID, SkinShop_Buy_DialogID:
+		case SkinShop_Buy_DialogID:
 		{
 			ss_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}

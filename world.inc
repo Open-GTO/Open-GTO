@@ -105,11 +105,12 @@ stock SyncTime()
 
 stock SpawnWorld() // run at startup to spawn world
 {
-	for(new i=0;i<300;i++)
+	for(new i = SKINS_MINID; i < SKINS_MAXID; i++)
  	{
-	 	if(i!=0 && i!=74)
+		switch (i)
 		{
-			AddPlayerClass(i,0.0,0.0,0.0,0.0,0,0,0,0,0,0);
+			case SKINS_IGNORE: {}
+			default: AddPlayerClass(i,0.0,0.0,0.0,0.0,0,0,0,0,0,0);
 		}
 	}
 	GameMSG("SERVER: All Classes init");
