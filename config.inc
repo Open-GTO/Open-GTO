@@ -80,7 +80,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define SKINS_MAXID			299
 #define SKINS_MINID			1
 
-#define GROUNDHOID_ENABLED	1 // точки прокачки
+#define GROUNDHOLD_ENABLED		1 // точки прокачки
+#define GROUNDHOLD_HOLD_TIME	2 // скорость потери точки при выходе из зоны
 
 #define BANK_PROFIT			2 // процент начисления прибыли за хранение в банке
 #define MAX_BANK_MONEY		15000000 // максимальное количество денег, которых можно хранить в банке

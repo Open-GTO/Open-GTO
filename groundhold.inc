@@ -28,7 +28,7 @@ enum gh_info {
 	Float:gh_z
 }
 
-new Groundhold_Enabled = GROUNDHOID_ENABLED;
+new Groundhold_Enabled = GROUNDHOLD_ENABLED;
 new Groundholds[][gh_info] = {
 	//      Name,     pay,xp,multi,dist,x,y,z
 	{0,"«аброшеный склад",6,18,50,50,-2146.9585,-217.1571,35.3203},
@@ -49,7 +49,7 @@ stock groundhold_SaveConfig()
 
 stock groundhold_LoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_gh_db = ini_Open(ConfigDB);
 	ini_GetInt(file_gh_db,"Groundhold_Enabled",Groundhold_Enabled);
 	ini_Get(file_gh_db,"Groundhold_DB",GroundholdDB);
@@ -60,10 +60,10 @@ stock groundhold_LoadConfig()
 stock groundhold_LoadAll()
 {
 	new file_gh,filename_gh[MAX_STRING];
-	for(new i=0;i<sizeof(Groundholds);i++)
+	for (new i = 0; i < sizeof(Groundholds); i++)
 	{
 		format(filename_gh,sizeof(filename_gh),"%sid_%d"GTO_FILES_FORMAT,GroundholdDB,Groundholds[i][gh_id]);
-		if(!ini_Exist(filename_gh)) continue;
+		if (!ini_Exist(filename_gh)) continue;
 		file_gh = ini_Open(filename_gh);
 		ini_Get(file_gh,"Name",Groundholds[i][gh_name],MAX_NAME);
 		ini_GetInt(file_gh,"Money",Groundholds[i][gh_money]);
@@ -81,7 +81,7 @@ stock groundhold_LoadAll()
 stock groundhold_SaveAll()
 {
 	new file_gh,filename_gh[MAX_STRING];
-	for(new i=0;i<sizeof(Groundholds);i++)
+	for (new i = 0; i < sizeof(Groundholds); i++)
 	{
 		format(filename_gh,sizeof(filename_gh),"%sid_%d"GTO_FILES_FORMAT,GroundholdDB,Groundholds[i][gh_id]);
 		file_gh = (!ini_Exist(filename_gh)) ? ini_Create(filename_gh) : ini_Open(filename_gh);
@@ -101,9 +101,9 @@ stock groundhold_SaveAll()
 stock groundhold_OnGameModeInit()
 {
 	groundhold_LoadConfig();
-	if(Groundhold_Enabled != 1) return 1;
+	if (Groundhold_Enabled != 1) return 1;
 	groundhold_LoadAll();
-	for(new i=0;i<sizeof(Groundholds);i++)
+	for (new i = 0; i < sizeof(Groundholds); i++)
 	{
 		AddActiveCheckpoint(Groundholds[i][gh_x],Groundholds[i][gh_y],Groundholds[i][gh_z],200,2);
 		CreateStreamMapIcon(56,Groundholds[i][gh_x],Groundholds[i][gh_y],Groundholds[i][gh_z]);
@@ -115,7 +115,7 @@ stock groundhold_OnGameModeInit()
 stock gh_OnPlayerDisconnect(playerid,reason)
 {
 	#pragma unused reason
-	for(new ghid=0;ghid<sizeof(Groundholds);ghid++)
+	for (new ghid = 0; ghid < sizeof(Groundholds); ghid++)
 	{
 		PlayerGroundHoldTime[ghid][playerid] = 0;
 		PlayerHoldingGround[ghid][playerid] = 0;
@@ -124,95 +124,92 @@ stock gh_OnPlayerDisconnect(playerid,reason)
 
 stock CheckGround(ghid)
 {
-	new playergroundcount = CountPlayers(PlayerGroundHoldTime[ghid]);
-	foreach(Player,playerid)
+	foreach (Player, playerid)
 	{
-		if(IsPlayerInRangeOfPoint(playerid,Groundholds[ghid][gh_dist],Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]))
+		if (IsPlayerInGround(playerid, ghid) && !GetPlayerSpectating(playerid))
 		{
-			new groundenemycount;
-			foreach(Player,i)
+			// узнаЄм количество врагов на точке
+			new groundenemycount = 0;
+			foreach (Player,i)
 			{
-				if(i == playerid) continue;
-				if(PlayerGroundHoldTime[ghid][i] > 0)
+				if (i != playerid && !GetPlayerSpectating(i) && PlayerGroundHoldTime[ghid][i] > 0)
 				{
-					if((GetPVarInt(i,"GangID") == 0) || (GetPVarInt(i,"GangID") != GetPVarInt(playerid,"GangID")))
+					if (GetPlayerGangID(i) == 0 || GetPlayerGangID(i) != GetPlayerGangID(playerid))
 					{
 						groundenemycount++;
 					}
 				}
 			}
-			if(PlayerGroundHoldTime[ghid][playerid] < Groundholds[ghid][gh_multi])
+			if (PlayerGroundHoldTime[ghid][playerid] < Groundholds[ghid][gh_multi])
 			{
-				if((PlayerGroundHoldTime[ghid][playerid] == 0) && (PlayerHoldingGround[ghid][playerid] == 0))
+				// игрок только что попал на точку
+				if (PlayerGroundHoldTime[ghid][playerid] == 0 && PlayerHoldingGround[ghid][playerid] == 0)
 				{
 					new string[MAX_STRING];
-					format(string, sizeof(string),  lang_texts[7][1] , Groundholds[ghid][gh_name]);
+					
+					format(string, sizeof(string), lang_texts[7][1], Groundholds[ghid][gh_name]);
 					SendClientMessage(playerid, COLOUR_GREEN, string);
-					new maxmoney=(Groundholds[ghid][gh_money]*Groundholds[ghid][gh_multi]);
-					new maxxp=(Groundholds[ghid][gh_xp]*Groundholds[ghid][gh_multi]);
-					format(string, sizeof(string),  lang_texts[7][2] ,maxmoney,maxxp);
+					
+					format(string, sizeof(string),
+						lang_texts[7][2],
+						Groundholds[ghid][gh_money] * Groundholds[ghid][gh_multi],
+						Groundholds[ghid][gh_xp] * Groundholds[ghid][gh_multi]
+					);
 					SendClientMessage(playerid, COLOUR_GREEN, string);
 				}
-				if(PlayerGroundHoldTime[ghid][playerid] == 0)
+				// увеличиваем врем€, если можно
+				if (PlayerGroundHoldTime[ghid][playerid] == 0 || groundenemycount == 0)
+				{
 					PlayerGroundHoldTime[ghid][playerid]++;
-				else if(groundenemycount == 0)
-					PlayerGroundHoldTime[ghid][playerid]++;
+				}
 			}
 			PlayerHoldingGround[ghid][playerid] = 1;
-			if(PlayerGroundHoldTime[ghid][playerid] > 0)
+			if (PlayerGroundHoldTime[ghid][playerid] > 0)
 			{
-				if(groundenemycount > 0) // if more that 0 enimies on ground
+				// если на точке есть враги
+				if (groundenemycount > 0)
 				{
-					if(PlayerGroundHoldTime[ghid][playerid] > 2) // if we have been holding this ground
+					if (PlayerGroundHoldTime[ghid][playerid] > 2)
 					{
 						new string[MAX_STRING];
-						format(string, sizeof(string),  lang_texts[7][3] , Groundholds[ghid][gh_name]);
+						format(string, sizeof(string), lang_texts[7][3], Groundholds[ghid][gh_name]);
 						SendClientMessage(playerid, COLOUR_RED, string);
 					}
-					if(PlayerGroundHoldTime[ghid][playerid] > 1) PlayerGroundHoldTime[ghid][playerid]--;
+					if (PlayerGroundHoldTime[ghid][playerid] > 1)
+					{
+						PlayerGroundHoldTime[ghid][playerid]--;
+					}
 				}
-
-				new moneyreward;
-				if(playergroundcount <= 5)
-					moneyreward = (Groundholds[ghid][gh_money] * PlayerGroundHoldTime[ghid][playerid]) / (1+(playergroundcount / 5));
-				else
-					moneyreward = (Groundholds[ghid][gh_money] * PlayerGroundHoldTime[ghid][playerid]) / (1+(5 / 5));
-				if(moneyreward > 0)
-					oGivePlayerMoney(playerid,moneyreward,0);
 				
-				new xpreward = (Groundholds[ghid][gh_xp] * PlayerGroundHoldTime[ghid][playerid]);
-				if(xpreward > 0 && GetPlayerXP(playerid) < MAX_XP)
-					GivePlayerXP(playerid,xpreward,0);
+				// выдаЄм бонусы
+				oGivePlayerMoney(playerid, Groundholds[ghid][gh_money] * PlayerGroundHoldTime[ghid][playerid], 0);
+				
+				if (GetPlayerXP(playerid) < MAX_XP)
+				{
+					GivePlayerXP(playerid, Groundholds[ghid][gh_xp] * PlayerGroundHoldTime[ghid][playerid], 0);
+				}
 				else 
 				{
-					new string[MAX_STRING];
-					format(string, sizeof(string),  lang_texts[9][17] );
-					SendClientMessage(playerid, COLOUR_RED, string);
+					SendClientMessage(playerid, COLOUR_RED, lang_texts[9][17]);
 				}
 			}
 		}
-		else 
+		else
 		{
-			if(PlayerGroundHoldTime[ghid][playerid] > 0)
+			if (PlayerGroundHoldTime[ghid][playerid] > 0)
 			{
-				if(PlayerHoldingGround[ghid][playerid] == 1)
+				if (PlayerHoldingGround[ghid][playerid] == 1)
 				{
+					SendClientMessage(playerid, COLOUR_RED, lang_texts[7][4]);
+				}
+				PlayerGroundHoldTime[ghid][playerid] -= GROUNDHOLD_HOLD_TIME;
+				if (PlayerGroundHoldTime[ghid][playerid] < 1)
+				{
+					PlayerGroundHoldTime[ghid][playerid] = 0;
 					new string[MAX_STRING];
-					format(string, sizeof(string),  lang_texts[7][4] );
+					format(string, sizeof(string), lang_texts[7][5], Groundholds[ghid][gh_name]);
 					SendClientMessage(playerid, COLOUR_RED, string);
 				}
-				if(PlayerGroundHoldTime[ghid][playerid] == 1)
-				{
-					new string[MAX_STRING];
-					format(string, sizeof(string),  lang_texts[7][5] , Groundholds[ghid][gh_name]);
-					SendClientMessage(playerid, COLOUR_RED, string);
-				}
-				PlayerGroundHoldTime[ghid][playerid]--;
-				if(PlayerGroundHoldTime[ghid][playerid] > 1)
-				{
-					PlayerGroundHoldTime[ghid][playerid]--;
-				}
-				if(PlayerGroundHoldTime[ghid][playerid] > 1) PlayerGroundHoldTime[ghid][playerid]--;
 			}
 			PlayerHoldingGround[ghid][playerid] = 0;
 		}
@@ -220,28 +217,33 @@ stock CheckGround(ghid)
 	return;
 }
 
-stock CountPlayers(players[])
-{
-	new count;
-	foreach(Player,i)
-		if(players[i] > 0) count++;
-	return count;
-}
-
 stock CheckAllGround()
 {
-	if(Groundhold_Enabled != 1) return 1;
-	for(new ghid=0;ghid<sizeof(Groundholds);ghid++)
+	if (Groundhold_Enabled != 1) return 1;
+	for (new ghid = 0; ghid < sizeof(Groundholds); ghid++)
+	{
 		CheckGround(ghid);
+	}
 	return 1;
 }
 
 stock IsPlayerInAnyGround(playerid)
 {
-	for(new id=0;id<sizeof(Groundholds);id++)
+	for (new id = 0; id < sizeof(Groundholds); id++)
 	{
-		if(IsPlayerInRangeOfPoint(playerid,Groundholds[id][gh_dist],Groundholds[id][gh_x],Groundholds[id][gh_y],Groundholds[id][gh_z]))
-			return true;
+		if (IsPlayerInGround(playerid, id))
+		{
+			return 1;
+		}
 	}
-	return false;
+	return 0;
+}
+
+stock IsPlayerInGround(playerid, ghid)
+{
+	if (IsPlayerInRangeOfPoint(playerid,Groundholds[ghid][gh_dist],Groundholds[ghid][gh_x],Groundholds[ghid][gh_y],Groundholds[ghid][gh_z]))
+	{
+		return 1;
+	}
+	return 0;
 }
