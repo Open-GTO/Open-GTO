@@ -147,14 +147,9 @@ stock account_login_db_ini(playerid,password[])
 #if defined USE_PASSWORD_ENCRYPT
 	encrypt(password);
 #endif
-	GameMSG("player_login: user %s(%d), used password `%s`",playername,playerid,password);
 	if(strcmp(password,dbpassword,false))
 	{
-	#if defined USE_PASSWORD_ENCRYPT
 		GameMSG("player_login: failed: incorrect password by %s(%d)",playername,playerid);
-	#else
-		GameMSG("player_login: failed: incorrect password by %s(%d), used password `%s`",playername,playerid,password);
-	#endif
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][6]);
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][7]);
 		KickPlayer(playerid,lang_texts[1][4]);

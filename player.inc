@@ -684,7 +684,7 @@ stock SendPM(senderid,receiveid,message[])
 	foreach(Player,i)
 	{
 		if(i == senderid || GetPVarInt(i,"Admin_PMshowing") != 1) continue;
-		format(string,sizeof(string),"* Админ: ЛС от %s к %s: %s",sendername,receivename,message);
+		format(string,sizeof(string),"* Админ: ЛС от %s(%d) к %s(%d): %s",sendername,senderid,receivename,receiveid,message);
 		SendClientMessage(i,COLOUR_PM,string);
 	}
 	
@@ -693,5 +693,8 @@ stock SendPM(senderid,receiveid,message[])
 	
 	format(string,sizeof(string),lang_texts[9][32],sendername,senderid,message);
 	SendClientMessage(receiveid,COLOUR_PM,string);
+	
+	format(string,sizeof(string),"PM from %s(%d) to %s(%d): %s",sendername,senderid,receivename,receiveid,message);
+	WriteLog(ChatLog,string);
 	return 1;
 }

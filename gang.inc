@@ -87,7 +87,6 @@ stock GangLoad(gangname[])
 	if(gangid == 0) return GameMSG("ERROR: Свободный слот для банды не найден");
 	Gangs[gangid][gang_active] = true;
 	gang_load_db_ini(gangid,gangname);
-	GameMSG("gang_loaded: id=%d, name=%s",gangid,gangname);
 	return gangid;
 }
 
