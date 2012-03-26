@@ -96,6 +96,9 @@ stock trucker_OnGameModeInit()
 	CreateObject(971,1061.393,1353.401,11.713,0.0,0.0,-270.000);
 	CreateObject(971,1061.383,1344.549,11.715,0.0,0.0,90.000);
 	CreateObject(1233,1057.455,1368.078,11.305,0.0,0.0,-90.000);
+	
+	CreateStreamMapIcon(51,1077.959,1298.586,10.481);
+	
 	GameMSG("SERVER: (missions)Trucker module init");
 	return 1;
 }

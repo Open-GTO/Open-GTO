@@ -88,6 +88,11 @@ stock quidemsys_OnGameModeInit()
 {
 	QuidemSys_LoadConfig();
 	if (QuidemSysEnabled != 1) return 0;
+	for (new i = 0; i < sizeof(FuelStations); i++)
+	{
+		CreateStreamMapIcon(55, FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z]);
+	}
+	
 	new Float:max_fuel,model;
 	for (new i = 1; i < MAX_VEHICLES; i++)
 	{

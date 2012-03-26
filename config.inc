@@ -108,13 +108,6 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define ALLOWED_NICK_SYMBOLS_STR	"'a'..'z','A'..'Z','0'..'9','_','[',']','.','=','(',')'"
 // стандартные иконки(by wups, модфицированно)
 #define MAPICON_PAY_SPRAY
-//#define MAPICON_BARBER
-#define MAPICON_PIZZA
-#define MAPICON_BURGER
-#define MAPICON_CLUCKIN
-//#define MAPICON_TATTOO
-#define MAPICON_CLOTHES
-#define MAPICON_AMMUNATION
 #define MAPICON_TUNE
 //
 
