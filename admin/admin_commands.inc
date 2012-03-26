@@ -322,15 +322,8 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		if (IsPlayerRconAdmin(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][89]);
 		
-		new string[MAX_STRING],sidstring[MAX_STRING];
+		new string[MAX_STRING];
 		
-		switch (sid)
-		{
-			case 0: set(sidstring,lang_texts[12][88]);
-			case 1: set(sidstring,lang_texts[12][87]);
-			case 2: set(sidstring,lang_texts[12][86]);
-			case 3: set(sidstring,lang_texts[12][94]);
-		}
 		if (sid == 0)
 		{
 			format(string,sizeof(string),lang_texts[12][84],oGetPlayerName(playerid),playerid);
@@ -340,8 +333,17 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		}
 		else
 		{
+			new sidstring[64];
+			switch (sid)
+			{
+				case 1: set(sidstring,lang_texts[12][87]);
+				case 2: set(sidstring,lang_texts[12][86]);
+				case 3: set(sidstring,lang_texts[12][94]);
+			}
+			
 			format(string,sizeof(string),lang_texts[12][82],oGetPlayerName(playerid), playerid, sidstring);
 			SendClientMessage(receiverid,COLOUR_WHITE,string);
+			
 			format(string,sizeof(string),lang_texts[12][83],oGetPlayerName(receiverid), receiverid, sidstring);
 			SendClientMessage(playerid,COLOUR_WHITE,string);
 		}
