@@ -116,17 +116,13 @@ new interior_EnterExits[][iee_Info] = {
 stock interior_OnGameModeInit()
 {
 	DisableInteriorEnterExits();
-	new string[MAX_STRING];
 	for (new i = 0; i < sizeof(interior_EnterExits); i++)
 	{
 		CreatePickup(1318,1,interior_EnterExits[i][iee_enter_X],interior_EnterExits[i][iee_enter_Y],interior_EnterExits[i][iee_enter_Z],-1);
-		//CreatePickupText("Вход",interior_EnterExits[i][iee_enter_X],interior_EnterExits[i][iee_enter_Y],interior_EnterExits[i][iee_enter_Z]);
+		CreatePickupText("Вход",interior_EnterExits[i][iee_enter_X],interior_EnterExits[i][iee_enter_Y],interior_EnterExits[i][iee_enter_Z]);
 		
 		CreatePickup(1559,1,interior_EnterExits[i][iee_exit_X],interior_EnterExits[i][iee_exit_Y],interior_EnterExits[i][iee_exit_Z],-1);
 		CreatePickupText("Выход",interior_EnterExits[i][iee_exit_X],interior_EnterExits[i][iee_exit_Y],interior_EnterExits[i][iee_exit_Z]);
-		
-		format(string,sizeof(string),"%d, %d, %f, %f, %f",interior_EnterExits[i][iee_interior_ID],interior_EnterExits[i][iee_icon_ID],interior_EnterExits[i][iee_enter_X],interior_EnterExits[i][iee_enter_Y],interior_EnterExits[i][iee_enter_Z]);
-		Create3DTextLabel(string,0x00FFFFEE,interior_EnterExits[i][iee_enter_X],interior_EnterExits[i][iee_enter_Y],interior_EnterExits[i][iee_enter_Z],20.0,0,1);
 		
 		if (interior_EnterExits[i][iee_icon_ID] != -1)
 		{
