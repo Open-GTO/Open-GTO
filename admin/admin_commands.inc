@@ -312,37 +312,37 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 	if(!strcmp(cmd,"/setstatus",true))
 	{
 		new receiverid = strval(strcharsplit(text, idx,' '));
-		if(!IsPlayerConnected(receiverid))
+		if (!IsPlayerConnected(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
 		
 		new sid = strval(strcharsplit(text, idx,' '));
-		if((sid < 0) || (sid > 3))
+		if (sid < 0 || sid > 3)
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][44]);
 		
-		if(IsPlayerRconAdmin(receiverid) && !IsPlayerAdmin(playerid))
+		if (IsPlayerRconAdmin(receiverid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][89]);
 		
 		new string[MAX_STRING],sidstring[MAX_STRING];
 		
-		switch(sid)
+		switch (sid)
 		{
-			case 0: format(sidstring,sizeof(sidstring),lang_texts[12][88]);
-			case 1: format(sidstring,sizeof(sidstring),lang_texts[12][87],sid);
-			case 2: format(sidstring,sizeof(sidstring),lang_texts[12][86],sid);
-			case 3: format(sidstring,sizeof(sidstring),lang_texts[12][86],sid);
+			case 0: set(sidstring,lang_texts[12][88]);
+			case 1: set(sidstring,lang_texts[12][87]);
+			case 2: set(sidstring,lang_texts[12][86]);
+			case 3: set(sidstring,lang_texts[12][94]);
 		}
-		if(sid > 1)
-		{
-			format(string,sizeof(string),lang_texts[12][82],oGetPlayerName(playerid), playerid, sidstring);
-			SendClientMessage(receiverid,COLOUR_WHITE,string);
-			format(string,sizeof(string),lang_texts[12][83],oGetPlayerName(receiverid), receiverid, sidstring);
-			SendClientMessage(playerid,COLOUR_WHITE,string);
-		} 
-		else 
+		if (sid == 0)
 		{
 			format(string,sizeof(string),lang_texts[12][84],oGetPlayerName(playerid),playerid);
 			SendClientMessage(receiverid,COLOUR_WHITE,string);
 			format(string,sizeof(string),lang_texts[12][85],oGetPlayerName(receiverid),receiverid);
+			SendClientMessage(playerid,COLOUR_WHITE,string);
+		}
+		else
+		{
+			format(string,sizeof(string),lang_texts[12][82],oGetPlayerName(playerid), playerid, sidstring);
+			SendClientMessage(receiverid,COLOUR_WHITE,string);
+			format(string,sizeof(string),lang_texts[12][83],oGetPlayerName(receiverid), receiverid, sidstring);
 			SendClientMessage(playerid,COLOUR_WHITE,string);
 		}
 		SetPlayerStatus(receiverid,sid);
