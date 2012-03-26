@@ -319,7 +319,7 @@ stock Admin_OnPlayerCommandText(playerid,text[]) // process player commands
 		if (sid < 0 || sid > 3)
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][44]);
 		
-		if (IsPlayerRconAdmin(receiverid))
+		if (IsPlayerRconAdmin(receiverid) && !IsPlayerAdmin(playerid))
 			return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][89]);
 		
 		new string[MAX_STRING];
