@@ -444,12 +444,16 @@ public OnPlayerRequestClass(playerid, classid)
 
 public OnPlayerRequestSpawn(playerid)
 {
-	if(GetPVarInt(playerid,"IsLogin") != 1) return 0;
+	if (!IsPlayerLogin(playerid)) return 0;
 	return 1;
 }
 
 public OnPlayerCommandText(playerid,cmdtext[])
 {
+	if (!IsPlayerLogin(playerid))
+	{
+		return SendClientMessage(playerid,-1,lang_texts[1][46]);
+	}
 	// commands.inc
 	command_register(cmdtext,"/help",5,commands);
 	command_register(cmdtext,"/commands",9,commands);
@@ -471,6 +475,9 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	// QuidemSys
 	command_register(cmdtext,"/fill",5,quidemsys);
 	command_register(cmdtext,"/engine",7,quidemsys);
+	
+	// vehicles
+	command_register(cmdtext,"/vmenu",6,vehicles);
 	
 	// gangs
 	command_register(cmdtext,"/g",2,gang);
@@ -559,9 +566,6 @@ public OnPlayerCommandText(playerid,cmdtext[])
 	command_register(cmdtext,"/spec",5,Mod);
 	command_register(cmdtext,"/clearchat",10,Mod);
 	command_register(cmdtext,"/weather",8,Mod);
-	
-	// vehicles
-	command_register(cmdtext,"/vmenu",6,vehicles);
 
 	new logstring[MAX_STRING];
 	format(logstring,sizeof(logstring),"Player: %s"CHAT_SHOW_ID": %s",oGetPlayerName(playerid),playerid,cmdtext);
@@ -571,7 +575,12 @@ public OnPlayerCommandText(playerid,cmdtext[])
 
 public OnPlayerText(playerid, text[])
 {
-	if(chatguard_OnPlayerText(playerid,text) == 0) return 0;
+	if (!IsPlayerLogin(playerid))
+	{
+		SendClientMessage(playerid,-1,lang_texts[1][46]);
+		return 0;
+	}
+	if (chatguard_OnPlayerText(playerid,text) == 0) return 0;
 
 	new playername[MAX_PLAYER_NAME];
 	GetPlayerName(playerid,playername,sizeof(playername));

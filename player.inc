@@ -73,6 +73,9 @@ new QuestCount;
 #define AllowPlayerTeleport(%0,%1) SetPVarInt(%0,"AllowTeleport",%1)
 #define GetAllowPlayerTeleport(%0) GetPVarInt(%0,"AllowTeleport")
 
+#define IsPlayerLogin(%0) GetPVarInt(playerid,"IsLogin")
+#define SetPlayerLogin(%0,%1) SetPVarInt(playerid,"IsLogin",%1)
+
 new PlayerStartMoney = PLAYER_START_MONEY;
 
 enum PlayerSpawnInfo {
@@ -555,7 +558,7 @@ stock PlayerLoadStats(playerid)
 	format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,PlayerDB,oGetPlayerName(playerid));
 	if(!ini_Exist(string)) CreatePlayer(playerid);
 	player_load_db_ini(playerid);
-	SetPVarInt(playerid,"IsLogin",1);
+	SetPlayerLogin(playerid,1);
 	return 1;
 }
 

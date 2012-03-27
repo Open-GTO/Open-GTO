@@ -463,16 +463,17 @@ stock StartDMLineup(dmid)
 	DeathmatchStats[dmid][dm_state] = DM_STATE_LINEUP;
 	DeathmatchStats[dmid][dm_timer] = 0;
 	DeathmatchStats[dmid][dm_playercount] = 0;
-	new string1[MAX_STRING],string2[MAX_STRING];
+	new string1[MAX_STRING],string2[MAX_STRING],string3[MAX_STRING],color;
 	format(string1,sizeof(string1),lang_texts[4][4],Deathmatch[dmid][dm_name],dmid,Deathmatch[dmid][dm_lineupdelay],GetDMStartZoneName(dmid));
-	if (Deathmatch[dmid][dm_minplayers] > 1)
-		format(string2,sizeof(string2),lang_texts[4][5],Deathmatch[dmid][dm_cashentry],Deathmatch[dmid][dm_minlevel],Deathmatch[dmid][dm_minplayers]);
-	else
-		format(string2,sizeof(string2),lang_texts[4][6],Deathmatch[dmid][dm_cashentry],Deathmatch[dmid][dm_minlevel]);
+	format(string2,sizeof(string2),lang_texts[4][5],Deathmatch[dmid][dm_cashentry],Deathmatch[dmid][dm_minlevel],Deathmatch[dmid][dm_minplayers]);
+	format(string3,sizeof(string3),lang_texts[4][6],dmid);
+	
 	foreach(Player,playerid)
 	{
-		SendClientMessage(playerid,GetDMColourForPlayer(playerid,dmid), string1);
-		SendClientMessage(playerid,GetDMColourForPlayer(playerid,dmid), string2);
+		color = GetDMColourForPlayer(playerid,dmid);
+		SendClientMessage(playerid, color, string1);
+		SendClientMessage(playerid, color, string2);
+		SendClientMessage(playerid, color, string3);
 		if(GetPlayerQuestID(playerid) == INVALID_QUEST_ID) // if player not on a quest
 		{
 			DMResetPlayerStats(playerid);

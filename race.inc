@@ -932,21 +932,19 @@ stock FinishRace(raceid,playerid)
 stock StartRaceLineup(raceid)
 {
 	RaceStats[raceid][race_state] = RACE_STATE_LINEUP;
-	new string1[MAX_STRING],string2[MAX_STRING],string3[MAX_STRING];
-	format(string1, sizeof(string1),  lang_texts[10][56] ,Race[raceid][race_name],raceid,Race[raceid][race_lineupdelay],GetRaceCPZoneName(raceid,0));
+	new string1[MAX_STRING],string2[MAX_STRING],string3[MAX_STRING],color;
+	format(string1, sizeof(string1),  lang_texts[10][56],Race[raceid][race_name],raceid,Race[raceid][race_lineupdelay],GetRaceCPZoneName(raceid,0));
+	format(string2,sizeof(string2), lang_texts[10][57],Race[raceid][race_cashentry],Race[raceid][race_minlevel],Race[raceid][race_minracers]);
+	format(string3,sizeof(string3), lang_texts[10][58],raceid);
+	//format(string3, sizeof(string3), "~n~ ~n~ ~w~%s ~n~~r~...after~w~ %d~r~ sec." ,Race[raceid][race_name],Race[raceid][race_lineupdelay]);
+	//GameTextForAll(string3, 3000, 1);
 
-	format(string3, sizeof(string3), "~n~ ~n~ ~w~%s ~n~~r~...after~w~ %d~r~ sec." ,Race[raceid][race_name],Race[raceid][race_lineupdelay]);
-	GameTextForAll(string3, 3999, 1);
-
-	if(Race[raceid][race_minracers] > 1)
-	{
-		format(string2,sizeof(string2),lang_texts[10][57],Race[raceid][race_cashentry],Race[raceid][race_minlevel],Race[raceid][race_minracers]);
-	}
-	else format(string2,sizeof(string2),lang_texts[10][58],Race[raceid][race_cashentry],Race[raceid][race_minlevel]);
 	foreach(Player,playerid)
 	{
-		SendClientMessage(playerid,GetRaceColourForPlayer(playerid,raceid), string1);
-		SendClientMessage(playerid,GetRaceColourForPlayer(playerid,raceid), string2);
+		color = GetRaceColourForPlayer(playerid,raceid);
+		SendClientMessage(playerid, color, string1);
+		SendClientMessage(playerid, color, string2);
+		SendClientMessage(playerid, color, string3);
 	}
 	RaceStats[raceid][race_activecpid] = AddActiveRaceCheckpoint(GetRaceCPX(raceid,0),GetRaceCPY(raceid,0),GetRaceCPZ(raceid,0),10000,RCPSIZE);
 }

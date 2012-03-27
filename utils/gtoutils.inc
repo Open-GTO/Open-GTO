@@ -145,7 +145,7 @@ stock SendClientMessageToBeside(playerid, dist, text[])
 		color = GetPlayerColor(playerid);
 	
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	format(string, sizeof(string), "%s"CHAT_SHOW_ID": {FFFFFF}%s", oGetPlayerName(playerid), playerid, text);
+	format(string, sizeof(string), "$ %s"CHAT_SHOW_ID" говорит: {FFFFFF}%s", oGetPlayerName(playerid), playerid, text);
 	foreach (Player, i)
 	{
 		if (IsPlayerInRangeOfPoint(i, dist, pos[0], pos[1], pos[2]))
