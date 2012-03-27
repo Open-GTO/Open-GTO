@@ -37,7 +37,6 @@ nee:
 	new starttime = gettime();
 	foreach(Player,id)
 	{
-		if(!IsPlayerRegistered(id)) continue;
 		PlayerSave(id);
 		AccountSave(id);
 	}

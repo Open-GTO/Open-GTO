@@ -136,7 +136,6 @@ stock AdminSys_OnPlayerCommandText(playerid,text[]) // process player commands
 	{
 		foreach(Player,id)
 		{
-			if(!IsPlayerRegistered(id)) continue;
 			PlayerSave(id);
 			AccountSave(id);
 		}

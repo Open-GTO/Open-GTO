@@ -370,7 +370,6 @@ stock CheckRace() // must be ran by timer every second
 
 stock race_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if(!IsPlayerRegistered(playerid)) return 0;
 	new cmd[20],idx;
 
 	cmd = strcharsplit(text, idx,' ');

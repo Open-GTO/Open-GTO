@@ -34,7 +34,7 @@ stock AccountSaveConfig()
 
 stock AccountSave(playerid)
 {
-	if(!IsPlayerRegistered(playerid)) return 0;
+	if(!IsPlayerLogin(playerid)) return 0;
 	account_save_db_ini(playerid);
 	return 1;
 }
@@ -91,13 +91,7 @@ stock AccountRegister(playerid,password[])
 
 stock AccountLogin(playerid,password[])
 {
-	if(GetPVarInt(playerid,"PlayerRegistered") == 1)
-	{
-		SendClientMessage(playerid,COLOUR_RED,lang_texts[1][1]);
-		return 0;
-	}
 	if(account_login_db_ini(playerid,password) == 0) return 0;
-	SetPVarInt(playerid,"PlayerRegistered",1);
 	PlayerLoadStats(playerid);
 	GivePlayerOwnedWeapons(playerid);
 	new playername[MAX_PLAYER_NAME],string[MAX_STRING];

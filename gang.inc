@@ -137,9 +137,6 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 	}
 	if(!strcmp(cmd,"/gang",true))
 	{
-		if(!IsPlayerRegistered(playerid))
-			return SendClientMessage(playerid,COLOUR_RED,lang_texts[6][3]);
-
   		cmd = strcharsplit(text, idx,' ');
   		if(strlen(cmd) == 0) return 0;
   		if(!strcmp(cmd,"help",true))
@@ -321,7 +318,7 @@ stock gang_OnPlayerCommandText(playerid,text[]) // process player commands
 	  		new inviteid = strval(strcharsplit(text,idx,' ')),
 				string[MAX_STRING];
 
-	  		if(!IsPlayerRegistered(inviteid))
+	  		if(!IsPlayerLogin(inviteid))
 	  		{
 	   			SendClientMessage(playerid,COLOUR_RED,lang_texts[6][55]);
 	   			SendClientMessage(playerid,COLOUR_RED,lang_texts[6][56]);
@@ -515,7 +512,7 @@ stock GangRemoveMember(gangid,kickplayername[])
 
 stock GangCreate(leaderid,gangname[],gangcolour)
 {
-	if(!IsPlayerRegistered(leaderid)) return 0;
+	if(!IsPlayerLogin(leaderid)) return 0;
 	new filename_gang[MAX_STRING];
 	format(filename_gang,sizeof(filename_gang),"%s%s"GTO_FILES_FORMAT,GangDB,gangname);
 	if(ini_Exist(filename_gang))

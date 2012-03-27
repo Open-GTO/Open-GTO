@@ -1150,11 +1150,6 @@ stock dm_OnPlayerEnterCheckpoint(playerid)
 
 stock dm_OnPlayerCommandText(playerid,text[]) // process player commands
 {
-	if (!IsPlayerRegistered(playerid))
-	{
-		return 0; // non registered players dont use weapon commands
-	}
-
 	new cmd[20];
 	new idx;
 	//new string[MAX_STRING];

@@ -73,8 +73,9 @@ new QuestCount;
 #define AllowPlayerTeleport(%0,%1) SetPVarInt(%0,"AllowTeleport",%1)
 #define GetAllowPlayerTeleport(%0) GetPVarInt(%0,"AllowTeleport")
 
-#define IsPlayerLogin(%0) GetPVarInt(playerid,"IsLogin")
-#define SetPlayerLogin(%0,%1) SetPVarInt(playerid,"IsLogin",%1)
+//#define IsPlayerLogin(%0) GetPVarInt(%0,"IsLogin")
+stock IsPlayerLogin(playerid) return GetPVarInt(playerid,"IsLogin");
+#define SetPlayerLogin(%0,%1) SetPVarInt(%1,"IsLogin",%1)
 
 new PlayerStartMoney = PLAYER_START_MONEY;
 
@@ -240,12 +241,6 @@ stock player_OnPlayerSpawn(playerid)
 	}
 	SetPlayerFacingAngle(playerid,GetPVarFloat(playerid,"Coord_A"));
 	
-	if(!IsPlayerRegistered(playerid))
-	{
-		SendClientMessage(playerid,COLOUR_RED, lang_texts[9][10]);
-		SendClientMessage(playerid,COLOUR_RED, lang_texts[9][11]);
-		SendClientMessage(playerid,COLOUR_RED, lang_texts[9][12]);
-	}
 	GivePlayerOwnedWeapons(playerid);
 	oSetPlayerHealth(playerid,GetMaxHealth(playerid)); // set health based on level
 	weapon_SetSkills(playerid);
@@ -450,12 +445,6 @@ stock GetRndPlayerSpawnByLevel(level)
 	return ((idx != 0) ? leveledspawns[random(idx)] : leveledspawns[0]);
 }
 
-stock IsPlayerRegistered(playerid)
-{
-	if(GetPVarInt(playerid,"PlayerRegistered") == 0) return false;
-	return true;
-}
-
 stock RegisterQuest()
 {
 	if (QuestCount >= MAX_QUESTS) return INVALID_QUEST_ID;
@@ -478,7 +467,7 @@ stock oGetPlayerName(playerid)
 
 stock PlayerSave(playerid)
 {
-	if(!IsPlayerRegistered(playerid)) return 0;
+	if(!IsPlayerLogin(playerid)) return 0;
 	player_save_db_ini(playerid);
 	GameMSG("player: %s(%d): player_saved successfully",oGetPlayerName(playerid),playerid);
 	return 1;
@@ -553,7 +542,6 @@ stock player_save_db_ini(playerid)
 
 stock PlayerLoadStats(playerid)
 {
-	if(!IsPlayerRegistered(playerid)) return 0; // login to acct first
 	new string[MAX_STRING];
 	format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,PlayerDB,oGetPlayerName(playerid));
 	if(!ini_Exist(string)) CreatePlayer(playerid);
