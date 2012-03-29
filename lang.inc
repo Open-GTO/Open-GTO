@@ -57,8 +57,7 @@ stock lang_read(filename[])
 		pos_s = strfind(tmpres, ":", true);
 		if(pos_s != -1)
 		{
-			while( check_BB(tmpres) == 1) {}
-			
+			check_bb(tmpres);
 			strmid(tmp1, tmpres, 0, pos_s);
 			strmid(lang_texts[i][strval(tmp1)], tmpres, pos_s+2, strlen(tmpres) - pos_s);
 		}
@@ -68,14 +67,13 @@ stock lang_read(filename[])
 	return 1;
 }
 
-stock check_BB(string[])
+stock check_bb(string[])
 {
-	new buf;
-	if( (buf = strfind(string,LANG_BB_N)) != -1 )
+	new buf, len_n = strlen(LANG_BB_N);
+	
+	while ( (buf = strfind(string, LANG_BB_N)) != -1 )
 	{
-		strdel(string,buf,buf+strlen(LANG_BB_N));
-		strins(string,"\n",buf,MAX_STRING+32);
-		return 1;
+		strdel(string, buf, buf + len_n);
+		strins(string, "\n", buf, MAX_STRING + 32);
 	}
-	return 0;
 }
