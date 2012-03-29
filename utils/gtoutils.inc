@@ -19,59 +19,6 @@
 #define GivePVarInt(%1,%2,%3) SetPVarInt(%1,%2,GetPVarInt(%1,%2)+%3)
 #define set(%0,%1) strmid(%0,%1,0,160,MAX_STRING + 32)
 
-#define BYTES_PER_CELL			4
-
-stock GameMSG(fstring[], {Float, _}:...)
-{
-	static const STATIC_ARGS = 1;
-	new n = (numargs() - STATIC_ARGS) * BYTES_PER_CELL;
-	if(n)
-	{
-		new message[144],arg_start,arg_end;
-		#emit CONST.alt			fstring
-		#emit LCTRL				5
-		#emit ADD
-		#emit STOR.S.pri		arg_start
-
-		#emit LOAD.S.alt		n
-		#emit ADD
-		#emit STOR.S.pri		arg_end
-		do
-		{
-			#emit LOAD.I
-			#emit PUSH.pri
-			arg_end -= BYTES_PER_CELL;
-			#emit LOAD.S.pri	arg_end
-		}
-		while(arg_end > arg_start);
-
-		#emit PUSH.S			fstring
-		#emit PUSH.C			144
-		#emit PUSH.ADR			message
-
-		n += BYTES_PER_CELL * 3;
-		#emit PUSH.S			n
-		#emit SYSREQ.C			format
-
-		n += BYTES_PER_CELL;
-		#emit LCTRL				4
-		#emit LOAD.S.alt		n
-		#emit ADD
-		#emit SCTRL				4
-	#if defined GameMSG_USE_PRINT
-		printf(message);
-	#endif
-		WriteLog(GameLog,message);
-	}
-	else
-	{
-	#if defined GameMSG_USE_PRINT
-		printf(fstring);
-	#endif
-		WriteLog(GameLog,fstring);
-	}
-	return 1;
-}
 
 stock strcmpEx(const string1[], const string2[], bool:ignorecase=false, length=cellmax)
 {

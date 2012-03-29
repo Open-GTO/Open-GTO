@@ -39,6 +39,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 #define WORLD_SAVE_TIME			300000		// 1 раз, за это кол-во милисекунд выполняется сохранение всего мира(300000 - 5 минут)
 #define GameMSG_USE_PRINT // если задефайнен, то функция GameMSG выводит сообщение в консоль сервера
+#define DebugMSG_USE_PRINT // если задефайнен, то функция DMSG выводит сообщение в консоль сервера
 
 // логи(параметры по умолчанию) 1 вкл, 0 выкл
 #define LOGGING_GAME_LOG_ENABLED	1

@@ -94,7 +94,7 @@ const
     // настройки
 
     // –≈ ќћ≈Ќƒ”≈“—я »«ћ≈Ќ»“№ ѕќƒ —≈Ѕя
-    INI_MAX_OPENED_FILES    = 6,        // максимум, открытых одновременно, файлов
+    INI_MAX_OPENED_FILES    = 10,        // максимум, открытых одновременно, файлов
     INI_MAX_FILE_SIZE       = 65536,    // байт,        макс. размер файла
     INI_MAX_FILENAME_SIZE   = 128,      // символов,    макс. размер пути к файлу
     INI_MAX_KEYS_IN_FILE    = 2048,     // максимум ключей в открытом файле
@@ -297,7 +297,8 @@ stock ini_createFile ( szFilePath[], szDefaultContent[] = "" )
     //
     //  если свободный слот в пам€ти не найден
     //
-
+	
+	DebugMSG("Error: mxINI: Ћимит одновременоо открытых файлов исчерпан("#INI_MAX_OPENED_FILES").");
     return INI_NO_FREE_SLOT; // вернем код ошибки
     // ------------
 }
@@ -436,6 +437,7 @@ stock ini_openFile ( szFilePath[] )
     // ------------
     fclose(pFile); // закроем файл
 
+	DebugMSG("Error: mxINI: Ћимит одновременоо открытых файлов исчерпан("#INI_MAX_OPENED_FILES").");
     return INI_NO_FREE_SLOT; // вернем код ошибки
     // ------------
 }
