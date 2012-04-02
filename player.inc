@@ -314,7 +314,14 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 
 	// Give XP
 	new XP_give_victim = -((GetPlayerXP(victimid) / 100) * PLAYER_XP_DEATH_MINUS_PROC);
-	new XP_give_killer = (GetPlayerLevel(victimid) + 1) * 75;
+	new XP_give_killer = 0;
+	new level_difference = GetPlayerLevel(victimid) - GetPlayerLevel(killerid);
+	switch (level_difference)
+	{
+		case -MAX_LEVEL..-10: XP_give_killer = GetPlayerLevel(victimid) * PLAYER_XP_KILL_TARIF;
+		case -9..-1: XP_give_killer = (GetPlayerLevel(victimid)+1)^2 / (-level_difference) * PLAYER_XP_KILL_TARIF;
+		default: XP_give_killer = ( (GetPlayerLevel(victimid)+1) * 2 )^2 * PLAYER_XP_KILL_TARIF;
+	}
 
 	if((GetPlayerXP(killerid) + XP_give_killer) > MAX_XP) SetPlayerXP(killerid,MAX_XP);
 	else if(XP_give_killer != 0)
