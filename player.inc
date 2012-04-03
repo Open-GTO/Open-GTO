@@ -75,7 +75,7 @@ new QuestCount;
 
 //#define IsPlayerLogin(%0) GetPVarInt(%0,"IsLogin")
 stock IsPlayerLogin(playerid) return GetPVarInt(playerid,"IsLogin");
-#define SetPlayerLogin(%0,%1) SetPVarInt(%1,"IsLogin",%1)
+#define SetPlayerLogin(%0,%1) SetPVarInt(%0,"IsLogin",%1)
 
 new PlayerStartMoney = PLAYER_START_MONEY;
 
