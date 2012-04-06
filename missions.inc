@@ -112,12 +112,12 @@ stock mission_GetPauseTime(missionid)
 
 stock mission_CalculateXP(playerid,missionid)
 {
-	return ( ( (GetPlayerLevel(playerid)+1) * 2 )^2 * mission_array[missionid][mission_xp] );
+	return ( ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * mission_array[missionid][mission_xp] );
 }
 
 stock mission_CalculateMoney(playerid,missionid)
 {
-	return ( ( (GetPlayerLevel(playerid)+1) * 2 )^2 * mission_array[missionid][mission_money] );
+	return ( ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * mission_array[missionid][mission_money] );
 }
 
 /*

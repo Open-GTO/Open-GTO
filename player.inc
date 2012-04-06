@@ -319,8 +319,8 @@ stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 	switch (level_difference)
 	{
 		case -MAX_LEVEL..-10: XP_give_killer = GetPlayerLevel(victimid) * PLAYER_XP_KILL_TARIF;
-		case -9..-1: XP_give_killer = (GetPlayerLevel(victimid)+1)^2 / (-level_difference) * PLAYER_XP_KILL_TARIF;
-		default: XP_give_killer = ( (GetPlayerLevel(victimid)+1) * 2 )^2 * PLAYER_XP_KILL_TARIF;
+		case -9..-1: XP_give_killer = ( ((GetPlayerLevel(victimid)+1) * (GetPlayerLevel(victimid)+1)) / (-level_difference) ) * PLAYER_XP_KILL_TARIF;
+		default: XP_give_killer = ( (GetPlayerLevel(victimid)+1) * 2 ) * ( (GetPlayerLevel(victimid)+1) * 2 ) * PLAYER_XP_KILL_TARIF;
 	}
 
 	if((GetPlayerXP(killerid) + XP_give_killer) > MAX_XP) SetPlayerXP(killerid,MAX_XP);
