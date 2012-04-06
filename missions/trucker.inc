@@ -108,13 +108,15 @@ stock trucker_OnPlayerStateChange(playerid,newstate,oldstate)
 	#pragma unused newstate,oldstate
 	if (!IsMissionEnabled(mission_trucker)) return 1;
 	if (IsVehicleIsRunner( GetPlayerVehicleID(playerid) ))
+	{
 		SendClientMessage(playerid,COLOUR_PINK,"Диспетчер: Вы можете начать миссию дальнобойщика. Для этого возьмите груз рядом и нажмите кнопку миссии(2 или +).");
+	}
 	return 1;
 }
 
 stock trucker_Start(playerid)
 {
-	switch( GetTrailerType( GetPlayerVehicleID(playerid) ) )
+	switch ( GetTrailerType( GetPlayerVehicleID(playerid) ) )
 	{
 		case TRAILER_TYPE_NORMAL:
 		{
@@ -136,29 +138,30 @@ stock trucker_Start(playerid)
 	SetPVarInt(playerid,"trucker_Timer",
 		SetTimerEx("trucker_EndMission",TRUCKER_MISSION_TIME * 1000,0,"d",playerid)
 	);
-    SendClientMessage(playerid,COLOUR_YELLOW,"Диспетчер: Езжай на чекпоинт, доставь туда груз вовремя и получишь бабки + опыт");
+	SendClientMessage(playerid,COLOUR_YELLOW,"Диспетчер: Езжай на чекпоинт, доставь туда груз вовремя и получишь бабки + опыт");
 	new string[MAX_STRING];
-    format(string,sizeof(string),"Диспетчер: %s(%d) взял миссию по доставке груза",oGetPlayerName(playerid),playerid);
-    foreach(Player,i)
-    {
-        if(i != playerid)
+	format(string,sizeof(string),"Диспетчер: %s(%d) взял миссию по доставке груза",oGetPlayerName(playerid),playerid);
+	foreach (Player,i)
+	{
+		if (i != playerid)
+		{
 			SendClientMessage(i,COLOUR_LIGHTRED,string);
-    }
+		}
+	}
 	return 1;
 }
 
 stock trucker_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused oldkeys,newkeys
-	if(IsPlayerInMission(playerid,mission_trucker))
+	if (IsPlayerInMission(playerid,mission_trucker))
 	{
 		trucker_EndMission(playerid);
 		KillTimer( GetPVarInt(playerid,"trucker_Timer") );
-		SetPVarInt(playerid,"trucker_RunnerMissionTime",mission_GetPauseTime(mission_trucker));
 	}
 	else
 	{
-		if(GetPVarInt(playerid,"trucker_RunnerMissionTime") > 0)
+		if (GetPVarInt(playerid,"trucker_RunnerMissionTime") > 0)
 		{
 			new string[MAX_STRING];
 			format(string,sizeof(string),"Диспетчер: Пока никому ничего не нужно, приходите через %d секунд",GetPVarInt(playerid,"trucker_RunnerMissionTime"));
@@ -178,12 +181,12 @@ stock trucker_OnPlayerEnterCheckpoint(playerid)
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (IsPlayerInMission(playerid,mission_trucker) && IsVehicleIsRunner(vehicleid))
 	{
-	    if(!IsTrailerAttachedToVehicle(vehicleid))
+		new trailerid = GetVehicleTrailer(vehicleid);
+		if (trailerid == 0)
 		{
 			return SendClientMessage(playerid,COLOUR_WHITE,"Диспетчер: Груз то где?");
 		}
-		new trailerid = GetVehicleTrailer(vehicleid);
-		if(!IsTrailerIsTrue(trailerid))
+		if (!IsTrailerIsTrue(trailerid))
 		{
 			SendClientMessage(playerid,COLOUR_WHITE,"Диспетчер: Ты привёз пустой прицеп! Получай неустойку и пинок под зад!");
 			oGivePlayerMoney(playerid,-200,1);
@@ -195,8 +198,8 @@ stock trucker_OnPlayerEnterCheckpoint(playerid)
 		SetVehicleToRespawn(trailerid);
 		
 		trucker_Stop(playerid);
-		SendClientMessage(playerid,COLOUR_WHITE,"Диспетчер: Поздравляю! Ты справился с миссией. Держи свою зарплату!");
 		KillTimer( GetPVarInt(playerid,"trucker_Timer") );
+		SendClientMessage(playerid,COLOUR_WHITE,"Диспетчер: Поздравляю! Ты справился с миссией. Держи свою зарплату!");
 		oGivePlayerMoney(playerid,mission_CalculateMoney(playerid,mission_trucker),1);
 		GivePlayerXP(playerid,mission_CalculateXP(playerid,mission_trucker),1);
 	}
@@ -226,7 +229,7 @@ stock trucker_OnVehicleDeath(vehicleid, killerid)
 	if (IsVehicleIsRunner(vehicleid))
 	{
 		trucker_Stop(killerid);
-	    SendClientMessage(killerid,COLOUR_RED,"Диспетчер: Ты не справился с миссией, уничтожив свой транспорт");
+		SendClientMessage(killerid,COLOUR_RED,"Диспетчер: Ты не справился с миссией, уничтожив свой транспорт");
 	}
 	return 1;
 }
@@ -234,7 +237,7 @@ stock trucker_OnVehicleDeath(vehicleid, killerid)
 forward trucker_EndMission(playerid);
 public trucker_EndMission(playerid)
 {
-	if(IsPlayerInMission(playerid,mission_trucker))
+	if (IsPlayerInMission(playerid,mission_trucker))
 	{
 		trucker_Stop(playerid);
 		SendClientMessage(playerid,COLOUR_RED,"Диспетчер: Ты не справился с миссией.");
@@ -249,13 +252,15 @@ stock trucker_Stop(playerid)
 
 stock trucker_RunnerTimer(playerid)
 {
-	if(GetPVarInt(playerid,"trucker_RunnerMissionTime") > 0)
+	if (GetPVarInt(playerid,"trucker_RunnerMissionTime") > 0)
+	{
 		GivePVarInt(playerid,"trucker_RunnerMissionTime",-1);
+	}
 }
 
 stock IsVehicleIsRunner(vehicleid)
 {
-	if(linerunner_lastid - sizeof(linerunner_array) < vehicleid <= linerunner_lastid)
+	if (linerunner_lastid - sizeof(linerunner_array) < vehicleid <= linerunner_lastid)
 	{
 		return 1;
 	}
@@ -264,7 +269,7 @@ stock IsVehicleIsRunner(vehicleid)
 
 stock IsTrailerIsTrue(trailerid)
 {
-	if(trailer_lastid - sizeof(linerunner_array) < trailerid <= trailer_lastid)
+	if (trailer_lastid - sizeof(linerunner_array) < trailerid <= trailer_lastid)
 	{
 		return 1;
 	}
@@ -273,7 +278,7 @@ stock IsTrailerIsTrue(trailerid)
 
 stock GetTrailerType(vehicleid)
 {
-	switch( GetVehicleModel( GetVehicleTrailer(vehicleid) ) )
+	switch ( GetVehicleModel( GetVehicleTrailer(vehicleid) ) )
 	{
 		case 435,450,591: return TRAILER_TYPE_NORMAL;
 		case 584: return TRAILER_TYPE_PETROL;

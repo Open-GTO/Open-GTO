@@ -45,6 +45,12 @@ stock admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 		oSetVehiclePos(vehicleid,fX,fY,fZ);
 		LinkVehicleToInterior(vehicleid,0);
 		SetVehicleVirtualWorld(vehicleid,0);
+		new trailerid = GetVehicleTrailer(vehicleid);
+		if (trailerid != 0)
+		{
+			SetVehiclePos(trailerid, fX, fY, fZ);
+			AttachTrailerToVehicle(trailerid, vehicleid);
+		}
 	}
 	else
 	{
