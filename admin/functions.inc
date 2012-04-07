@@ -79,8 +79,7 @@ stock SendMessageToAdmins(playerid, color, text[])
 {
 	new message[MAX_STRING],playername[MAX_PLAYER_NAME];
 	GetPlayerName(playerid,playername,sizeof(playername));
-	format(message,sizeof(message),lang_texts[1][24],playername,playerid,text);
-	printf("%s",message);
+	printf(lang_texts[1][24],playername,playerid,text);
 	format(message,sizeof(message),lang_texts[1][23],playername,playerid,GetPlayerStatus(playerid),text);
 	foreach(Player,aid)
 	{
@@ -150,13 +149,13 @@ stock JailTimer()
 	return 1;
 }
 
-stock IsSkinValid(SkinID)
+stock IsSkinValid(skinid)
 {
-	switch(SkinID)
+	switch(skinid)
 	{
-		case 0,7,9..41,43..64,66..73,75..85,87..118,120..148,150..207,209..264,274..288,290..299: return true;
+		case SKINS_IGNORE: return 0;
 	}
-	return false;
+	return 1;
 }
 
 stock IsPlayerRconAdmin(playerid)
