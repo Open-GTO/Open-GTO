@@ -1051,9 +1051,12 @@ stock oDisablePlayerRaceCheckpoint(playerid)
 
 stock oIsPlayerInRaceCheckpoint(playerid, Float:cpx, Float:cpy, Float:cpz, dist)
 {
-	if (!IsPlayerConnected(playerid)) {return 0;}
-	if (!PlayerRaceCPActive[playerid]) {return 0;}
-	if (!loccmp(cpx,cpy,cpz,PlayerRaceCP[playerid][Coord_X],PlayerRaceCP[playerid][Coord_Y],PlayerRaceCP[playerid][Coord_Z])) return 0;
+	if (!IsPlayerConnected(playerid) || !PlayerRaceCPActive[playerid]
+		|| cpx != PlayerRaceCP[playerid][Coord_X] && cpy != PlayerRaceCP[playerid][Coord_Y] && cpz != PlayerRaceCP[playerid][Coord_Z]
+	)
+	{
+		return 0;
+	}
 	if (GetPlayerDistanceFromPoint(playerid,cpx,cpy,cpz) < dist)
 	{
 		return IsPlayerInRaceCheckpoint(playerid);

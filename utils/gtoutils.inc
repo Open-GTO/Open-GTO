@@ -14,10 +14,10 @@
 #pragma library gtoutils
 
 
-#define command_register(%0,%1,%2,%3) if(!strcmp(%0,%1,true,%2) && ((%0[%2] == ' ') || (%0[%2] == 0))) return %3_OnPlayerCommandText(playerid,%0)
-#define command_registerNR(%0,%1,%2,%3) if(!strcmp(%0,%1,true,%2) && ((%0[%2] == ' ') || (%0[%2] == 0))) %3_OnPlayerCommandText(playerid,%0)
-#define GivePVarInt(%1,%2,%3) SetPVarInt(%1,%2,GetPVarInt(%1,%2)+%3)
-#define set(%0,%1) strmid(%0,%1,0,160,MAX_STRING + 32)
+#define command_register(%0,%1,%2,%3) if(!strcmp(%0,%1, true,%2) && ((%0[%2] == ' ') || (%0[%2] == 0))) return %3_OnPlayerCommandText(playerid,%0)
+#define command_registerNR(%0,%1,%2,%3) if(!strcmp(%0,%1, true,%2) && ((%0[%2] == ' ') || (%0[%2] == 0))) %3_OnPlayerCommandText(playerid,%0)
+#define GivePVarInt(%1,%2,%3) SetPVarInt(%1,%2, GetPVarInt(%1,%2)+%3)
+#define set(%0,%1) strmid(%0,%1, 0, 160, MAX_STRING + 32)
 
 
 stock strcmpEx(const string1[], const string2[], bool:ignorecase=false, length=cellmax)
@@ -50,11 +50,11 @@ stock strcmpEx(const string1[], const string2[], bool:ignorecase=false, length=c
 }
 #define strcmp strcmpEx
 
-// http://hardforum.ru/t47097/
+// from hardforum.ru/t47097/
 stock DateToNum(year, month, day/*, hour, minute, second*/)
 {
 	// count day in month
-	static cdm[] = {0,31,59,90,120,151,181,212,243,273,304,334};
+	static cdm[] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
 	
 	if (month < 1)
 	{
@@ -103,22 +103,22 @@ stock SendClientMessageToBeside(playerid, dist, text[])
 	return;
 }
 
-stock PlayerPlaySoundOnPlayer(playerid,soundid)
+stock PlayerPlaySoundOnPlayer(playerid, soundid)
 {
 	new Float:pos[3];
-	GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
-	return PlayerPlaySound(playerid,soundid,pos[0],pos[1],pos[2]);
+	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+	return PlayerPlaySound(playerid, soundid, pos[0], pos[1], pos[2]);
 }
 
 stock FormatPosition(position)
 {
 	new string[MAX_STRING];
-	switch(position)
+	switch (position)
 	{
-		case 1: set(string,"1st!");
-		case 2: set(string,"2nd!");
-		case 3: set(string,"3rd!");
-		default: format(string, sizeof(string), "%dth",position);
+		case 1: set(string, "1st!");
+		case 2: set(string, "2nd!");
+		case 3: set(string, "3rd!");
+		default: format(string, sizeof(string), "%dth", position);
 	}
 	return string;
 }
@@ -134,22 +134,22 @@ stock strcharsplit(const string[], &index, seperator=' ')
 	return result;
 }
 
-stock Vary(source,varyamount)
+stock Vary(source, varyamount)
 {
 	return source + random((varyamount*2)+1) - varyamount;
 }
 
-stock mathrandom(min,max)
+stock mathrandom(min, max)
 {
 	return (random(max - min + 1) + min);
 }
 
 stock NameCharCheck(string[MAX_PLAYER_NAME])
 {
-	if(!strcmp(string,"Unknown",true) || IsNumeric(string)) return 0;
-	for(new i=strlen(string)-1;i>=0;i--)
+	if (!strcmp(string, "Unknown", true) || IsNumeric(string)) return 0;
+	for (new i = strlen(string)-1; i >= 0; i--)
 	{
-		switch(string[i])
+		switch (string[i])
 		{
 			case ALLOWED_NICK_SYMBOLS: continue;
 			default: return 0;
@@ -161,19 +161,19 @@ stock NameCharCheck(string[MAX_PLAYER_NAME])
 stock PlayerCount()
 {
 	new count = 0;
-	foreach(Player,playerid)
+	foreach (Player, playerid)
 	{
 		count++;
 	}
 	return count;
 }
 
-stock SetPlayerPosEx(playerid,Float:X,Float:Y,Float:Z,Float:Angle,Interior,World=0)
+stock SetPlayerPosEx(playerid, Float:X, Float:Y, Float:Z, Float:Angle, Interior, World=0)
 {
-    SetPlayerInterior(playerid,Interior);
-	SetPlayerVirtualWorld(playerid,World);
-    SetPlayerFacingAngle(playerid,Angle);
-    oSetPlayerPos(playerid,X,Y,Z);
+    SetPlayerInterior(playerid, Interior);
+	SetPlayerVirtualWorld(playerid, World);
+    SetPlayerFacingAngle(playerid, Angle);
+    oSetPlayerPos(playerid, X, Y, Z);
     SetCameraBehindPlayer(playerid);
     return 1;
 }
@@ -188,9 +188,9 @@ stock settime()
 
 stock StringCharCheck(string[MAX_STRING])
 {
-	for(new i=strlen(string)-1;i>=0;i--)
+	for(new i = strlen(string)-1; i >= 0; i--)
 	{
-		switch(string[i])
+		switch (string[i])
 		{
 			case ALLOWED_STRING_SYMBOLS: continue;
 			default: return 0;
@@ -201,21 +201,15 @@ stock StringCharCheck(string[MAX_STRING])
 
 stock IsNumeric(const string[])
 {
-	for (new i=strlen(string)-1;i>=0;i--)
+	for (new i = strlen(string)-1; i >= 0; i--)
 	{
-		switch(string[i])
+		switch (string[i])
 		{
 			case '0'..'9': continue;
 			default: return 0;
 		}
 	}
 	return 1;
-}
-
-stock loccmp(Float:x1,Float:y1,Float:z1,Float:x2,Float:y2,Float:z2)
-{
-	if ((x1 == x2) && (y1 == y2) && (z1 == z2)) return 1;
-	return 0;
 }
 
 stock GetVehicleSpeed(vehicleid)
