@@ -22,9 +22,6 @@ enum PWeap {
 new PlayerWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap];
 new PlayerTempWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap];
 
-#define PLAYER_WEAPON_SKILLS 10
-new PlayerWeaponsSkills[MAX_PLAYERS][PLAYER_WEAPON_SKILLS];
-
 enum psw_Info {
 	psw_id,
 	psw_bull,
@@ -33,97 +30,66 @@ new PlayerStartWeapon[][psw_Info] = {
 	{WEAPON_COLT45,200}
 };
 
-new Text:weapon_TextDraw_Level[MAX_PLAYERS];
+
+stock weapon_OnGameModeInit()
+{
+	wdrop_OnGameModeInit();
+	return 1;
+}
+
+stock weapon_OnPlayerPickUpPickup(playerid, pickupid)
+{
+	wdrop_OnPlayerPickUpPickup(playerid, pickupid);
+	return 1;
+}
 
 stock weapon_OnPlayerConnect(playerid)
 {
-	weapon_TextDraw_Level[playerid] = TextDrawCreate(499.000000, 13.000000, "999/1000");
-	TextDrawBackgroundColor(weapon_TextDraw_Level[playerid], 255);
-	TextDrawFont(weapon_TextDraw_Level[playerid], 1);
-	TextDrawLetterSize(weapon_TextDraw_Level[playerid], 0.240000, 1.000000);
-	TextDrawColor(weapon_TextDraw_Level[playerid], -1);
-	TextDrawSetOutline(weapon_TextDraw_Level[playerid], 0);
-	TextDrawSetProportional(weapon_TextDraw_Level[playerid], 1);
-	TextDrawSetShadow(weapon_TextDraw_Level[playerid], 1);
+	wskill_OnPlayerConnect(playerid);
 	return 1;
 }
 
-stock weapon_OnPlayerDisconnect(playerid,reason)
+stock weapon_OnPlayerDisconnect(playerid, reason)
 {
-	#pragma unused reason
-	weapon_HideTextDraw(playerid);
-	TextDrawDestroy(weapon_TextDraw_Level[playerid]);
+	wskill_OnPlayerDisconnect(playerid, reason);
 	return 1;
 }
 
-stock weapon_OnPlayerDeath(playerid,killerid,reason)
+stock weapon_OnPlayerDeath(playerid, killerid, reason)
 {
-	if(!IsWeapon(reason)) return 1;
-	// set skill
-	new WeaponSkillID = GetWeaponSkillID(reason);
-	if (PlayerWeaponsSkills[killerid][WeaponSkillID] < 1000)
-	{
-		PlayerWeaponsSkills[killerid][WeaponSkillID] += WEAPON_SKILL_SPEED;
-		if (PlayerWeaponsSkills[killerid][WeaponSkillID] > 1000)
-		{
-			PlayerWeaponsSkills[killerid][WeaponSkillID] = 1000;
-		}
-		SetPlayerSkillLevel(killerid,WeaponSkillID,PlayerWeaponsSkills[killerid][WeaponSkillID]);
-	}
+	#pragma unused killerid
+	if (!IsWeapon(reason)) return 1;
+	wskill_OnPlayerDeath(playerid, killerid, reason);
+	wskill_HideTextDraw(playerid);
+	
+	wdrop_OnPlayerDeath(playerid);
 	// drop bullets
-	if(IsWeaponHandToHand(reason)) return 1;
+	if (IsWeaponHandToHand(reason))
+	{
+		return 1;
+	}
 	new slot = GetWeaponSlot(reason);
 	if (PlayerTempWeapons[playerid][slot][pwid] > 0 && PlayerWeapons[playerid][slot][pbullets] > 0)
 	{
 		PlayerWeapons[playerid][slot][pbullets] -= Vary(2,1);	
-		if (PlayerWeapons[playerid][slot][pbullets] < 0) PlayerWeapons[playerid][slot][pbullets] = 0;	
+		if (PlayerWeapons[playerid][slot][pbullets] < 0)
+		{
+			PlayerWeapons[playerid][slot][pbullets] = 0;
+		}
 	}
 	return 1;
 }
 
-stock weapon_ResetSkills(playerid)
+stock weapon_OnPlayerRequestClass(playerid, classid)
 {
-	DropAmmo(playerid);
-	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
-	{
-		PlayerWeaponsSkills[playerid][i] = 0;
-		SetPlayerSkillLevel(playerid,i,0);
-	}
+	wskill_OnPlayerRequestClass(playerid, classid);
 	return 1;
 }
 
-stock weapon_SetSkills(playerid)
-{
-	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
-		SetPlayerSkillLevel(playerid,i,PlayerWeaponsSkills[playerid][i]);
-	return 1;
-}
-
-// ид скилла для ида оружия
-stock GetWeaponSkillID(weaponid)
-{
-	switch(weaponid)
-	{
-		case 22: return WEAPONSKILL_PISTOL;
-		case 23: return WEAPONSKILL_PISTOL_SILENCED;
-		case 24: return WEAPONSKILL_DESERT_EAGLE;
-		case 25: return WEAPONSKILL_SHOTGUN;
-		case 26: return WEAPONSKILL_SAWNOFF_SHOTGUN;
-		case 27: return WEAPONSKILL_SPAS12_SHOTGUN;
-		case 28,32: return WEAPONSKILL_MICRO_UZI;
-		case 29: return WEAPONSKILL_MP5;
-		case 30: return WEAPONSKILL_AK47;
-		case 31: return WEAPONSKILL_M4;
-		case 34: return WEAPONSKILL_SNIPERRIFLE;
-	}
-	return -1;
-}
-//
-
-// узнаёт в слот у оружия
+// узнаёт слот у оружия
 stock GetWeaponSlot(weaponid)
 {
-	switch(weaponid)
+	switch (weaponid)
 	{
 	    case 0,1: return 0;
 	    case 2..9: return 1;
@@ -147,14 +113,14 @@ stock GetWeaponSlot(weaponid)
 // даёт оружие 'навсегда'
 stock GivePlayerOwnedWeapon(playerid,weaponid,ammo)
 {
-	if(!IsPlayerAllowedWeapon(playerid,weaponid)) return;
+	if (!IsPlayerAllowedWeapon(playerid,weaponid)) return;
 	new slot = GetWeaponSlot(weaponid);
-	if(ammo > 0)
+	if (ammo > 0)
 	{
-		if(!IsWeaponHandToHand(weaponid))
+		if (!IsWeaponHandToHand(weaponid))
 		{
 			// если оружия разные, то обнуляем патроны
-			if(PlayerWeapons[playerid][slot][pwid] == weaponid)
+			if (PlayerWeapons[playerid][slot][pwid] == weaponid)
 			{
 				PlayerWeapons[playerid][slot][pbullets] += ammo;
 			}
@@ -178,11 +144,13 @@ stock GivePlayerOwnedWeapon(playerid,weaponid,ammo)
 stock GivePlayerOwnedWeapons(playerid)
 {
 	oResetPlayerWeapons(playerid);
-	for(new weaponslot=0;weaponslot<PLAYER_WEAPON_SLOTS;weaponslot++)
+	for (new weaponslot = 0; weaponslot < PLAYER_WEAPON_SLOTS; weaponslot++)
 	{
-		if(PlayerWeapons[playerid][weaponslot][pwid] <= 0) continue;
-		if(!IsPlayerAllowedWeapon(playerid,PlayerWeapons[playerid][weaponslot][pwid])) continue;
-		if(PlayerWeapons[playerid][weaponslot][pwid] > 0)
+		if (PlayerWeapons[playerid][weaponslot][pwid] <= 0 || !IsPlayerAllowedWeapon(playerid,PlayerWeapons[playerid][weaponslot][pwid]))
+		{
+			continue;
+		}
+		if (PlayerWeapons[playerid][weaponslot][pwid] > 0)
 		{
 			oGivePlayerWeapon(playerid,PlayerWeapons[playerid][weaponslot][pwid],PlayerWeapons[playerid][weaponslot][pbullets]);
 		}
@@ -200,12 +168,12 @@ stock SendPlayerOwnedWeapons(playerid)
 		if (PlayerWeapons[playerid][weaponslot][pwid] <= 0) continue;
 		if (PlayerWeapons[playerid][weaponslot][pbullets] > 1)
 		{
-			format(string,sizeof(string),lang_texts[9][8],oGetWeaponName(PlayerWeapons[playerid][weaponslot][pwid]),PlayerWeapons[playerid][weaponslot][pbullets]);
+			format(string,sizeof(string), lang_texts[9][8],oGetWeaponName(PlayerWeapons[playerid][weaponslot][pwid]),PlayerWeapons[playerid][weaponslot][pbullets]);
 			SendClientMessage(playerid,COLOUR_MISC,string);
 		}
 		else if (PlayerWeapons[playerid][weaponslot][pbullets] == 1)
 		{
-			format(string,sizeof(string), lang_texts[9][9] ,oGetWeaponName(PlayerWeapons[playerid][weaponslot][pwid]));
+			format(string,sizeof(string), lang_texts[9][9],oGetWeaponName(PlayerWeapons[playerid][weaponslot][pwid]));
 			SendClientMessage(playerid,COLOUR_MISC,string);
 		}
 	}
@@ -215,68 +183,24 @@ stock SendPlayerOwnedWeapons(playerid)
 // парсит строку, устанавливая нужные значения
 stock SetWeaponsFromDBString(playerid,dbstring[])
 {
-	new idx;
-	for(new i=0;i<PLAYER_WEAPON_SLOTS;i++)
+	new idx = 0;
+	for (new i = 0;i < PLAYER_WEAPON_SLOTS; i++)
 	{
-		PlayerWeapons[playerid][i][pwid] = strval(strcharsplit(dbstring,idx,'/'));
-		PlayerWeapons[playerid][i][pbullets] = strval(strcharsplit(dbstring,idx,'|'));
+		PlayerWeapons[playerid][i][pwid] = strval( strcharsplit(dbstring, idx, '/') );
+		PlayerWeapons[playerid][i][pbullets] = strval( strcharsplit(dbstring, idx, '|') );
 	}
 }
 // возвращает строку для сохранения оружия
 stock CreateWeaponDBString(playerid)
 {
-	new wepstr[MAX_STRING],temp[MAX_STRING];
-	for (new i=0;i<PLAYER_WEAPON_SLOTS;i++)
+	new wepstr[MAX_STRING], temp[MAX_STRING];
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
 	{
-		valstr(temp,PlayerWeapons[playerid][i][pwid]);
+		valstr(temp, PlayerWeapons[playerid][i][pwid]);
 		strins(wepstr, temp, strlen(wepstr));
 		wepstr[strlen(wepstr)] = '/';
-		valstr(temp,PlayerWeapons[playerid][i][pbullets]);
-		strins(wepstr, temp, strlen(wepstr));
-		wepstr[strlen(wepstr)] = '|';
-	}
-	return wepstr;
-}
-
-// парсит строку, устанавливая нужные значения
-stock SetWeaponsSkillsFromDBString(playerid,dbstring[])
-{
-	new idx;
-	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
-		PlayerWeaponsSkills[playerid][i] = strval(strcharsplit(dbstring,idx,'/'));
-}
-// возвращает строку для сохранения скиллов оружий
-stock CreateWeaponSkillsDBString(playerid)
-{
-	new wepstr[MAX_STRING],temp[MAX_STRING];
-	for(new i=0;i<PLAYER_WEAPON_SKILLS;i++)
-	{
-		valstr(temp,PlayerWeaponsSkills[playerid][i]);
-		strins(wepstr,temp,strlen(wepstr));
-		wepstr[strlen(wepstr)] = '/';
-	}
-	return wepstr;
-}
-//
-// парсит строку, устанавливая нужные значения
-stock SetPSWFromDBString(dbstring[])
-{
-	for(new i=0,idx=0;i<sizeof(PlayerStartWeapon);i++)
-	{
-		PlayerStartWeapon[i][psw_id] = strval(strcharsplit(dbstring,idx,'/'));
-		PlayerStartWeapon[i][psw_bull] = strval(strcharsplit(dbstring,idx,'|'));
-	}
-}
-// возвращает строку для сохранения оружия
-stock CreatePSWDBString()
-{
-	new wepstr[MAX_STRING],temp[MAX_STRING];
-	for (new i=0;i<sizeof(PlayerStartWeapon);i++)
-	{
-		valstr(temp,PlayerStartWeapon[i][psw_id]);
-		strins(wepstr, temp, strlen(wepstr));
-		wepstr[strlen(wepstr)] = '/';
-		valstr(temp,PlayerStartWeapon[i][psw_bull]);
+		
+		valstr(temp, PlayerWeapons[playerid][i][pbullets]);
 		strins(wepstr, temp, strlen(wepstr));
 		wepstr[strlen(wepstr)] = '|';
 	}
@@ -286,39 +210,41 @@ stock CreatePSWDBString()
 // уничтожает всё 'всегдашнее' оружие
 stock DropAmmo(playerid)
 {
-	for(new i=0;i<PLAYER_WEAPON_SLOTS;i++)
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
 	{
 		PlayerWeapons[playerid][i][pwid] = 0;
 		PlayerWeapons[playerid][i][pbullets] = 0;
 	}
-	PlayerWeapons[playerid][0][pwid] = 0; // fists
+	PlayerWeapons[playerid][0][pwid] = 0;
 	PlayerWeapons[playerid][0][pbullets] = 1;
 	return 1;
 }
 //
 
-stock weapon_HideTextDraw(playerid)
-{
-	TextDrawHideForPlayer(playerid,weapon_TextDraw_Level[playerid]);
-	return 1;
-}
 
-forward UpdatePlayerWeaponTextDraws(playerid);
-public UpdatePlayerWeaponTextDraws(playerid)
+// парсит строку, устанавливая нужные значения для стартового оружия
+stock SetPSWFromDBString(dbstring[])
 {
-	if(GetPVarInt(playerid,"Spawned") == 0) return 0;
-	new string[MAX_STRING];
-	new skillid = GetWeaponSkillID( GetPlayerWeapon(playerid) );
-	if (skillid != -1)
+	new idx = 0;
+	for (new i = 0; i < sizeof(PlayerStartWeapon); i++)
 	{
-		format(string,sizeof(string),"%03d/1000",PlayerWeaponsSkills[playerid][skillid]);
+		PlayerStartWeapon[i][psw_id] = strval( strcharsplit(dbstring, idx, '/') );
+		PlayerStartWeapon[i][psw_bull] = strval( strcharsplit(dbstring, idx, '|') );
 	}
-	else
-	{
-		TextDrawHideForPlayer(playerid,weapon_TextDraw_Level[playerid]);
-	}
-	TextDrawSetString(weapon_TextDraw_Level[playerid],string);
-	TextDrawShowForPlayer(playerid,weapon_TextDraw_Level[playerid]);
-	return 1;
 }
-
+// возвращает строку для сохранения стартового оружия
+stock CreatePSWDBString()
+{
+	new wepstr[MAX_STRING],temp[MAX_STRING];
+	for (new i = 0; i < sizeof(PlayerStartWeapon); i++)
+	{
+		valstr(temp, PlayerStartWeapon[i][psw_id]);
+		strins(wepstr, temp, strlen(wepstr));
+		wepstr[strlen(wepstr)] = '/';
+		
+		valstr(temp, PlayerStartWeapon[i][psw_bull]);
+		strins(wepstr, temp, strlen(wepstr));
+		wepstr[strlen(wepstr)] = '|';
+	}
+	return wepstr;
+}

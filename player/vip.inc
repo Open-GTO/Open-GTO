@@ -21,7 +21,7 @@
 stock vip_OnPlayerStateChange(playerid,newstate,oldstate)
 {
 	#pragma unused newstate,oldstate
-	if(GetPlayerVIP(playerid) == 0 && IsVIPVehicle( GetPlayerVehicleID(playerid) ))
+	if (GetPlayerVIP(playerid) == 0 && IsVIPVehicle( GetPlayerVehicleID(playerid) ))
 	{
 		RemovePlayerFromVehicle(playerid);
 		SendClientMessage(playerid,COLOUR_RED,lang_texts[11][7]);
@@ -31,38 +31,54 @@ stock vip_OnPlayerStateChange(playerid,newstate,oldstate)
 
 stock IsVIPVehicle(vehicleid)
 {
-	for(new i=1;i<=sizeof(vip_Vehicle);i++)
+	for  (new i = 1; i <= sizeof(vip_Vehicle); i++)
 	{
-		if(vehicleid == vip_LastVehicleID - sizeof(vip_Vehicle) + i) return true;
+		if (vehicleid == vip_LastVehicleID - sizeof(vip_Vehicle) + i)
+		{
+			return 1;
+		}
 	}
-	return false;
+	return 0;
 }
 
 stock GetPlayerVIPDate(playerid)
 {
 	new string[11];
-	GetPVarString(playerid,"VIPDate",string,sizeof(string));
+	GetPVarString(playerid, "VIPDate", string, sizeof(string));
 	return string;
 }
 
 stock VIPCheck(date[])
 {
-	new h[5],day,month,year,day1,month1,year1;
-	strmid(h,date,0,2); 
-	day=strval(h);
-	strmid(h,date,3,5); 
-	month=strval(h);
-	strmid(h,date,6,10); 
-	year=strval(h);
-	getdate(year1,month1,day1);
-	if(year > year1) return true;
-	else if(year == year1)
+	new bufer[5],day,month,year,current_day,current_month,current_year;
+	
+	strmid(bufer, date, 0, 2); 
+	day = strval(bufer);
+	
+	strmid(bufer, date, 3, 5); 
+	month = strval(bufer);
+	
+	strmid(bufer, date, 6, 10); 
+	year = strval(bufer);
+	
+	getdate(current_year, current_month, current_day);
+	if(year > current_year)
 	{
-		if(month > month1) return true;
-		else if(month == month1)
+		return 1;
+	}
+	else if(year == current_year)
+	{
+		if(month > current_month)
 		{
-			if(day >= day1) return true;
+			return 1;
+		}
+		else if (month == current_month)
+		{
+			if (day >= current_day)
+			{
+				return 1;
+			}
 		}
 	}
-	return false;
+	return 0;
 }

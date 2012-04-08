@@ -17,7 +17,7 @@ new AntiHealthHackEnabled = ANTI_HEALTH_HACK_ENABLED;
 
 stock health_LoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_health = ini_Open(ConfigDB);
 	ini_GetInt(file_health,"Anti_Health_Hack_Enabled",AntiHealthHackEnabled);
 	ini_Close(file_health);
@@ -41,7 +41,7 @@ stock health_OnGameModeInit()
 
 stock SyncHealth(playerid)
 {
-	if(AntiHealthHackEnabled != 1) return 1;
+	if (AntiHealthHackEnabled != 1) return 1;
 	new Float:clienthealth;
 	GetPlayerHealth(playerid,clienthealth);
 	new Float:serverhealth = oGetPlayerHealth(playerid);
@@ -66,8 +66,8 @@ stock SetMaxPlayerHealth(playerid)
 stock HealthRegen(id)
 {
 	new playerState = GetPlayerState(id);
-	if(playerState == PLAYER_STATE_WASTED || oGetPlayerHealth(id) >= MAX_HEALTH) return 0;
-	if(oGetPlayerHealth(id) < GetMaxHealth(id))
+	if (playerState == PLAYER_STATE_WASTED || oGetPlayerHealth(id) >= MAX_HEALTH) return 0;
+	if (oGetPlayerHealth(id) < GetMaxHealth(id))
 	{
 		new Float:newhealth = oGetPlayerHealth(id) + (GetPlayerLevel(id) * HEALTH_REGEN_TARIF);
 		oSetPlayerHealth(id, (newhealth > MAX_HEALTH) ? MAX_HEALTH : newhealth);
@@ -77,9 +77,9 @@ stock HealthRegen(id)
 
 stock PlayerHealthRegen()
 {
-	foreach(Player,playerid)
+	foreach (Player,playerid)
 	{
-		if(GetPVarInt(playerid,"Spawned") == 0) continue;
+		if (GetPVarInt(playerid,"Spawned") == 0) continue;
 		HealthRegen(playerid);
 	}
 	return 1;

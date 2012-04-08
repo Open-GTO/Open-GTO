@@ -37,7 +37,7 @@ Date start Open-GTO: 	5 November 2009
 #include "player\vip"
 #include "player\weapon"
 #include "player\weapon_drop"
-#include "player\money"
+#include "player\weapon_skill"
 #include "player\health"
 #include "bank"
 #include "fightstyles"
@@ -78,6 +78,7 @@ Date start Open-GTO: 	5 November 2009
 #include "weather"
 #include "pickup"
 #include "quidemsys"
+#include "protections\money"
 #include "protections\idle"
 #include "protections\rconhack"
 #include "protections\hightping"
@@ -168,7 +169,7 @@ public OnGameModeInit()
 	interior_OnGameModeInit();
 	bank_OnGameModeInit();
 	fights_OnGameModeInit();
-	wd_OnGameModeInit();
+	weapon_OnGameModeInit();
 	// missions
 	mission_OnGameModeInit();
     trucker_OnGameModeInit();
@@ -349,7 +350,7 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 
 public OnPlayerPickUpPickup(playerid,pickupid)
 {
-	wd_OnPlayerPickUpPickup(playerid, pickupid);
+	weapon_OnPlayerPickUpPickup(playerid, pickupid);
 	aah_OnPlayerPickUpPickup(playerid, pickupid);
 	awh_OnPlayerPickUpPickup(playerid,pickupid);
 	return 1;
@@ -393,8 +394,6 @@ public OnPlayerDeath(playerid, killerid, reason)
 	gang_OnPlayerDeath(playerid,killerid,reason);
 	weapon_OnPlayerDeath(playerid,killerid,reason);
 	level_HideTextDraws(playerid);
-	weapon_HideTextDraw(playerid);
-	wd_OnPlayerDeath(playerid);
 	PlayCrimeReportForPlayer(killerid,killerid,random(18)+3);
 	PlayCrimeReportForPlayer(playerid,killerid,random(18)+3);
 	return 1;
@@ -437,8 +436,8 @@ public OnPlayerRequestClass(playerid, classid)
 {
 	SetPVarInt(playerid,"Spawned",0);
 	player_OnPlayerRequestClass(playerid, classid);
+	weapon_OnPlayerRequestClass(playerid, classid);
 	level_HideTextDraws(playerid);
-	weapon_HideTextDraw(playerid);
 	return 1;
 }
 

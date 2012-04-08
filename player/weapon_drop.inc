@@ -23,9 +23,9 @@ enum wd_Info {
 new weapons_dropped[MAX_DROPPED_WEAPONS][wd_Info];
 
 
-stock wd_OnGameModeInit()
+stock wdrop_OnGameModeInit()
 {
-	for (new wd_slot=0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
+	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
 	{
 		weapons_dropped[wd_slot][wd_weaponid] = -1;
 		weapons_dropped[wd_slot][wd_bullets] = -1;
@@ -35,30 +35,30 @@ stock wd_OnGameModeInit()
 	return 1;
 }
 
-stock wd_OnPlayerPickUpPickup(playerid, pickupid)
+stock wdrop_OnPlayerPickUpPickup(playerid, pickupid)
 {
-    for(new wd_slot=0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
+    for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
     {
 		if (pickupid == weapons_dropped[wd_slot][wd_pickupid])
 		{
 			oGivePlayerWeapon(playerid,weapons_dropped[wd_slot][wd_weaponid],weapons_dropped[wd_slot][wd_bullets]);
-			wd_DropPickup(wd_slot);
+			wdrop_DropPickup(wd_slot);
 		}
 	}
 	return 1;
 }
 
-stock wd_OnPlayerDeath(playerid)
+stock wdrop_OnPlayerDeath(playerid)
 {
 	// drop pickups
-	new weapons[PLAYER_WEAPON_SLOTS][PWeap],Float:pos[3],pickupmodel,wd_slot;
-	for (new slot=0; slot < PLAYER_WEAPON_SLOTS; slot++)
+	new weapons[PLAYER_WEAPON_SLOTS][PWeap], Float:pos[3], pickupmodel, wd_slot;
+	for (new slot = 0; slot < PLAYER_WEAPON_SLOTS; slot++)
 	{
 		GetPlayerWeaponData(playerid, slot, weapons[slot][pwid], weapons[slot][pbullets]);
 		pickupmodel = GetWeaponPickupModel(weapons[slot][pwid]);
 		if (pickupmodel == -1) continue;
-		GetPlayerPos(playerid,pos[0],pos[1],pos[2]);
-		wd_slot = wd_FindFreeSlot();
+		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+		wd_slot = wdrop_FindFreeSlot();
 		if (wd_slot == -1)
 		{
 			GameMSG("ERROR: Drop Weapon: Не найден свободный слот в массиве");
@@ -78,9 +78,9 @@ stock wd_OnPlayerDeath(playerid)
 	return 1;
 }
 
-stock wd_FindFreeSlot()
+stock wdrop_FindFreeSlot()
 {
-	for (new wd_slot=0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
+	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
 	{
 		if (weapons_dropped[wd_slot][wd_weaponid] == -1
 			&& weapons_dropped[wd_slot][wd_bullets] == -1
@@ -91,8 +91,8 @@ stock wd_FindFreeSlot()
 	return -1;
 }
 
-forward wd_DropPickup(wd_slot);
-public wd_DropPickup(wd_slot)
+forward wdrop_DropPickup(wd_slot);
+public wdrop_DropPickup(wd_slot)
 {
 	weapons_dropped[wd_slot][wd_weaponid] = -1;
 	weapons_dropped[wd_slot][wd_bullets] = -1;
@@ -107,7 +107,7 @@ public wd_DropPickup(wd_slot)
 
 stock GetWeaponPickupModel(weaponid)
 {
-	 switch(weaponid)
+	 switch (weaponid)
 	 {
 		case 1: return 331;
 		case 2: return 333;
