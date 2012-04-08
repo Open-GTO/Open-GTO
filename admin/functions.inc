@@ -34,42 +34,42 @@ new Float:Jail_PH[][CoordInfoJ] = {
 stock JailPlayer(playerid, jail_time)
 {
 	SetPlayerJailTime(playerid, jail_time);
-	SetPlayerJailed(playerid,1);
-	SetPlayerWantedLevel(playerid,(jail_time == 0 || jail_time > 6) ? 6 : jail_time);
-	SetPlayerInterior(playerid,6);
-	oSetPlayerPos(playerid,265.1273,77.6823,1001.0391);
+	SetPlayerJailed(playerid, 1);
+	SetPlayerWantedLevel(playerid, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
+	SetPlayerInterior(playerid, 6);
+	oSetPlayerPos(playerid, 265.1273, 77.6823, 1001.0391);
 	SetPlayerFacingAngle(playerid,-90);	
-	TogglePlayerControllable(playerid,0);
+	TogglePlayerControllable(playerid, 0);
 	SetCameraBehindPlayer(playerid);
 	oSetPlayerArmour(playerid, 0);
-	PlayerPlaySound(playerid,1082,265.1273,77.6823,1001.0391);
+	PlayerPlaySound(playerid, 1082, 265.1273, 77.6823, 1001.0391);
 	return 1;
 }
 
 stock JailPlayerCheck(playerid)
 {
-	if(GetPlayerJailed(playerid) == 1 && !IsPlayerInRangeOfPoint(playerid, 5, 265.1273, 77.6823, 1001.0391))
+	if (GetPlayerJailed(playerid) == 1 && !IsPlayerInRangeOfPoint(playerid, 5, 265.1273, 77.6823, 1001.0391))
 	{
-		KickPlayer(playerid,lang_texts[11][16]);
+		KickPlayer(playerid, lang_texts[11][16]);
 	}
 	return 1;
 }
 
 stock UnJailPlayer(playerid)
 {
-	SetPlayerJailed(playerid,0);
-	SetPlayerJailTime(playerid,0);
-	SetPlayerJailTime(playerid,0);
+	SetPlayerJailed(playerid, 0);
+	SetPlayerJailTime(playerid, 0);
+	SetPlayerJailTime(playerid, 0);
 	SetPlayerWantedLevel(playerid, 0);
-	TogglePlayerControllable(playerid,1);
+	TogglePlayerControllable(playerid, 1);
 	// ставим игрока в рандомное место из всех мест освобождений
 	new j_id = random( sizeof(Jail_PH) );
-	SetPlayerInterior(playerid,0);
+	SetPlayerInterior(playerid, 0);
 	oSetPlayerPos(playerid, Jail_PH[j_id][CJ_X], Jail_PH[j_id][CJ_Y], Jail_PH[j_id][CJ_Z] );
-	SetPlayerFacingAngle(playerid,Jail_PH[j_id][CJ_A]);
+	SetPlayerFacingAngle(playerid, Jail_PH[j_id][CJ_A]);
 	SetCameraBehindPlayer(playerid);
 	new string[MAX_STRING];
-	format(string,sizeof(string), "SERVER: %s был выпущен из тюрьмы (истекло врем€ или амнисти€)", oGetPlayerName(playerid));
+	format(string, sizeof(string), "SERVER: %s был выпущен из тюрьмы (истекло врем€ или амнисти€)", oGetPlayerName(playerid));
 	SendClientMessageToAll(COLOUR_WHITE, string);
 	return 1;
 }
@@ -77,44 +77,48 @@ stock UnJailPlayer(playerid)
 
 stock SendMessageToAdmins(playerid, color, text[])
 {
-	new message[MAX_STRING],playername[MAX_PLAYER_NAME];
-	GetPlayerName(playerid,playername,sizeof(playername));
-	printf(lang_texts[1][24],playername,playerid,text);
-	format(message,sizeof(message),lang_texts[1][23],playername,playerid,GetPlayerStatus(playerid),text);
-	foreach(Player,aid)
+	new message[MAX_STRING], playername[MAX_PLAYER_NAME];
+	GetPlayerName(playerid, playername, sizeof(playername));
+	printf(lang_texts[1][24], playername, playerid, text);
+	format(message, sizeof(message), lang_texts[1][23], playername, playerid, GetPlayerStatus(playerid), text);
+	foreach (Player, aid)
 	{
-		if(aid == playerid || !IsPlayerAdm(aid)) continue;
-		SendClientMessage(aid,color,message);
+		if (aid == playerid || !IsPlayerAdm(aid))
+		{
+			continue;
+		}
+		SendClientMessage(aid, color, message);
 	}
 	return 0;
 }
 
-stock PushHide(playerid)// скрыть/показать игрока
+stock PushHide(playerid)
 {
-	new hidecont = (GetPVarInt(playerid,"Hide") == 1) ? 0 : PlayerGangColour(playerid);
-	foreach(Player,id)
+	new hidecont = (GetPVarInt(playerid, "Hide") == 1) ? 0 : PlayerGangColour(playerid);
+	foreach(Player, id)
 	{
-		if(id != playerid)
-			SetPlayerMarkerForPlayer(id,playerid,hidecont);
+		if (id != playerid)
+		{
+			SetPlayerMarkerForPlayer(id, playerid, hidecont);
+		}
 	}
-	//SetPlayerColor(playerid,PlayerGangColour(playerid));
 	return 1;
 }
 
 stock MuteCheck()
 {
 	new string[MAX_STRING];
-	foreach(Player,i)
+	foreach (Player, i)
 	{
 		new mute_time = GetPlayerMuteTime(i);
 		if (mute_time > 0)
 		{
 			mute_time--;
-			SetPlayerMuteTime(i,mute_time);
+			SetPlayerMuteTime(i, mute_time);
 		    if (mute_time <= 0)
 		    {
-				format(string,sizeof(string),"»грок %s(%d) снова может говорить",oGetPlayerName(i),i);
-				SendClientMessageToAll(COLOUR_YELLOW,string);
+				format(string, sizeof(string), "»грок %s(%d) снова может говорить", oGetPlayerName(i), i);
+				SendClientMessageToAll(COLOUR_YELLOW, string);
 			}
 		}
 	}
@@ -123,26 +127,29 @@ stock MuteCheck()
 stock JailTimer()
 {
 	new string[MAX_STRING];
-	foreach (Player,i)
+	foreach (Player, i)
 	{
-		if (GetPlayerJailed(i) != 1) continue;
+		if (GetPlayerJailed(i) != 1)
+		{
+			continue;
+		}
 		
 		new jail_time = GetPlayerJailTime(i);
-		SetPlayerWantedLevel(i,(jail_time == 0 || jail_time > 6) ? 6 : jail_time);
+		SetPlayerWantedLevel(i, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
 		
-		if (1 <= jail_time <= 4320)
+		if (jail_time >= 1 && jail_time <= 4320)
 		{
 			jail_time--;
-			SetPlayerJailTime(i,jail_time);
+			SetPlayerJailTime(i, jail_time);
 			if (jail_time <= 0)
 			{
 				UnJailPlayer(i);
-				printf("SERVER : %s Has Been auto-UNJailed",oGetPlayerName(i));
+				printf("SERVER : %s Has Been auto-UNJailed", oGetPlayerName(i));
 			}
 			else
 			{
-				format(string,sizeof(string),"SERVER: ƒо окончани€ ареста осталось около %d мин",jail_time);
-				SendClientMessage(i,COLOUR_LIGHTRED, string);
+				format(string, sizeof(string), "SERVER: ƒо окончани€ ареста осталось около %d мин", jail_time);
+				SendClientMessage(i, COLOUR_LIGHTRED, string);
 			}
 		}
 	}

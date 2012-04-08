@@ -398,7 +398,10 @@ new zones[][zoneinfo] = {
 stock GetXYZZoneName(Float:x, Float:y, Float:z) // will return first zone name that XYZ is found in
 {
 	new name[MAX_NAME] = "Unknown";
-	if (x == 0.0 && y = 0.0) return name;
+	if (x == 0.0 && y == 0.0)
+	{
+		return name;
+	}
 	for (new zoneid = 0; zoneid < sizeof(zones); zoneid++)
 	{
 		if (IsXYZInZone(x, y, z, zoneid))// we are in this zone

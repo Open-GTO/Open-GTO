@@ -11,27 +11,27 @@
 #pragma library admin_func
 
 
-stock SendClientMessageToAdmins(senderid,text[])
+stock SendClientMessageToAdmins(senderid, text[])
 {
-	new message[MAX_STRING],count = 0;
-	format(message,sizeof(message),lang_texts[12][28],oGetPlayerName(senderid),senderid,text);
-	foreach(Player,adminid)
+	new message[MAX_STRING], count = 0;
+	format(message, sizeof(message), lang_texts[12][28], oGetPlayerName(senderid), senderid, text);
+	foreach(Player, adminid)
 	{
-		if(IsPlayerAdm(adminid))
+		if (IsPlayerAdm(adminid))
 		{
-			SendClientMessage(adminid,COLOUR_RED,message);
+			SendClientMessage(adminid, COLOUR_RED, message);
 			count++;
 		}
 	}
-	if(count == 0)
+	if (count == 0)
 	{
-		SendClientMessage(senderid,COLOUR_RED,lang_texts[12][29]);
+		SendClientMessage(senderid, COLOUR_RED, lang_texts[12][29]);
 		return 0;
 	} 
 	else 
 	{
-		format(message,sizeof(message),lang_texts[12][30],text);
-		SendClientMessage(senderid,COLOUR_GREEN,message);
+		format(message, sizeof(message), lang_texts[12][30], text);
+		SendClientMessage(senderid, COLOUR_GREEN, message);
 		return 0;
 	}
 }
@@ -42,9 +42,9 @@ stock admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid != 0)
 	{
-		oSetVehiclePos(vehicleid,fX,fY,fZ);
-		LinkVehicleToInterior(vehicleid,0);
-		SetVehicleVirtualWorld(vehicleid,0);
+		oSetVehiclePos(vehicleid, fX, fY, fZ);
+		LinkVehicleToInterior(vehicleid, 0);
+		SetVehicleVirtualWorld(vehicleid, 0);
 		new trailerid = GetVehicleTrailer(vehicleid);
 		if (trailerid != 0)
 		{
@@ -54,7 +54,7 @@ stock admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 	}
 	else
 	{
-		oSetPlayerPos(playerid,fX,fY,fZ);
+		oSetPlayerPos(playerid, fX, fY, fZ);
 		SetPlayerInterior(playerid, 0);
 		SetPlayerVirtualWorld(playerid, 0);
 	}

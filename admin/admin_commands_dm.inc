@@ -17,26 +17,34 @@
 #include "account"
 #include "deathmatch"
 
-stock AdminDM_OnPlayerCommandText(playerid,text[]) // process player commands
+stock AdminDM_OnPlayerCommandText(playerid, text[]) // process player commands
 {
-	if(!IsPlayerAdm(playerid)) return 0;
-	new cmd[20],idx;
-	cmd = strcharsplit(text, idx,' ');
-	if(!strcmp(cmd, "/dm", true))
+	if (!IsPlayerAdm(playerid)) return 0;
+	new cmd[20], idx;
+	cmd = strcharsplit(text, idx, ' ');
+	if (!strcmp(cmd, "/dm", true))
 	{
-		cmd = strcharsplit(text, idx,' ');
-		if(strlen(cmd) == 0) return 0;
-		if(!strcmp(cmd, "start", true))
+		cmd = strcharsplit(text, idx, ' ');
+		if (strlen(cmd) == 0) return 0;
+		if (!strcmp(cmd, "start", true))
 		{
-			new dmid = strval(strcharsplit(text, idx,' '));
+			new dmid = strval(strcharsplit(text, idx, ' '));
 			
-			if(dmid == 0 || dmid >= MAX_DM)
-				return SendClientMessage(playerid,COLOUR_RED,lang_texts[13][1]);
-			
-			switch(DeathmatchStats[dmid][dm_state])
+			if (dmid == 0 || dmid >= MAX_DM)
 			{
-				case DM_STATE_DISABLED: return SendClientMessage(playerid,COLOUR_RED,lang_texts[13][2]);
-				case DM_STATE_ACTIVE: return SendClientMessage(playerid,COLOUR_RED,lang_texts[13][3]);
+				return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][1]);
+			}
+			
+			switch (DeathmatchStats[dmid][dm_state])
+			{
+				case DM_STATE_DISABLED:
+				{
+					return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][2]);
+				}
+				case DM_STATE_ACTIVE:
+				{
+					return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][3]);
+				}
 				case DM_STATE_LINEUP:
 				{
 					DeathmatchStats[dmid][dm_timer] = 0;
