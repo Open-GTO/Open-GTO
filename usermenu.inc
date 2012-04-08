@@ -13,11 +13,11 @@
 
 stock show_menu(playerid)
 {
-	if(GetPlayerState(playerid) == PLAYER_STATE_ONFOOT)
+	if (GetPlayerState(playerid) == PLAYER_STATE_ONFOOT)
 	{
 		return show_User_Menu(playerid);
 	}
-	else if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
+	else if (GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 	{
 		return show_Vehicle_Menu(playerid);
 	}
@@ -25,19 +25,19 @@ stock show_menu(playerid)
 }
 
 // MSG диалог возвращающий в user menu
-stock show_User_Menu_Dialog(playerid,string_0[],string[])
+stock show_User_Menu_Dialog(playerid, string_0[], string[])
 {
-	return ShowPlayerDialog(playerid,user_menu_Return_DialogID,DIALOG_STYLE_MSGBOX,
+	return ShowPlayerDialog(playerid, user_menu_Return_DialogID, DIALOG_STYLE_MSGBOX,
 		string_0,
 		string,
-		"Назад","Выход"
+		"Назад", "Выход"
 	);
 }
 //
 
 stock show_User_Menu(playerid)
 {
-	return ShowPlayerDialog(playerid,user_menu_DialogID,DIALOG_STYLE_LIST,
+	return ShowPlayerDialog(playerid, user_menu_DialogID, DIALOG_STYLE_LIST,
 		"Меню игрока",
 		"Информация о персонаже\n\
 		Стиль борьбы\n\
@@ -51,58 +51,74 @@ stock show_User_Menu(playerid)
 		Настройки\n\
 		Версия\n\
 		",
-		"ОК","Отмена"
+		"ОК", "Отмена"
 	);
 }
 
 stock show_Vehicle_Menu(playerid)
 {
-	new string[512],engine,lights,alarm,doors,bonnet,boot,objective;
+	new string[512], engine, lights, alarm, doors, bonnet, boot, objective;
 	new vehicleid = GetPlayerVehicleID(playerid);
-	GetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,boot,objective);
+	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 	
-	strcat(string,"Перевернуть\n",sizeof(string));
-	strcat(string,"Заправить\n",sizeof(string));
-	strcat(string,"Изменить цвет\n",sizeof(string));
+	strcat(string, "Перевернуть\n", sizeof(string));
+	strcat(string, "Заправить\n", sizeof(string));
+	strcat(string, "Изменить цвет\n", sizeof(string));
 	
-	if(lights == VEHICLE_PARAMS_ON) // фары
-		strcat(string,"{FF0000}Выключить  фары\n",sizeof(string));
+	if (lights == VEHICLE_PARAMS_ON) // фары
+	{
+		strcat(string, "{FF0000}Выключить  фары\n", sizeof(string));
+	}
 	else
-		strcat(string,"{00FF00}Включить фары\n",sizeof(string));
+	{
+		strcat(string, "{00FF00}Включить фары\n", sizeof(string));
+	}
 	
-	if(engine == VEHICLE_PARAMS_ON) // двиг
-		strcat(string,"{FF0000}Выключить двигатель\n",sizeof(string));
+	if (engine == VEHICLE_PARAMS_ON) // двиг
+	{
+		strcat(string, "{FF0000}Выключить двигатель\n", sizeof(string));
+	}
 	else
-		strcat(string,"{00FF00}Включить двигатель\n",sizeof(string));
+	{
+		strcat(string, "{00FF00}Включить двигатель\n", sizeof(string));
+	}
 
-	if(bonnet == VEHICLE_PARAMS_ON) // капот
-		strcat(string,"{FF0000}Закрыть капот\n",sizeof(string));
+	if (bonnet == VEHICLE_PARAMS_ON) // капот
+	{
+		strcat(string, "{FF0000}Закрыть капот\n", sizeof(string));
+	}
 	else
-		strcat(string,"{00FF00}Открыть капот\n",sizeof(string));
+	{
+		strcat(string, "{00FF00}Открыть капот\n", sizeof(string));
+	}
 	
 	if(boot == VEHICLE_PARAMS_ON) // багажник
-		strcat(string,"{FF0000}Закрыть багажник\n",sizeof(string));
+	{
+		strcat(string, "{FF0000}Закрыть багажник\n", sizeof(string));
+	}
 	else
-		strcat(string,"{00FF00}Открыть багажник\n",sizeof(string));
+	{
+		strcat(string, "{00FF00}Открыть багажник\n", sizeof(string));
+	}
 		
-	return ShowPlayerDialog(playerid,vehicle_menu_DialogID,DIALOG_STYLE_LIST,
+	return ShowPlayerDialog(playerid, vehicle_menu_DialogID, DIALOG_STYLE_LIST,
 		"Меню транспорта",
 		string,
-		"ОК","Отмена"
+		"ОК", "Отмена"
 	);
 }
 
 stock show_ChangeColor_Menu(playerid)
 {
 	new string[32 * sizeof(colors_Array)];
-	for (new i=0;i<sizeof(colors_Array);i++)
+	for (new i = 0; i < sizeof(colors_Array); i++)
 	{
-		format(string,sizeof(string),"%s{%06x}%s\n",string,colors_Array[i][color_code] >>> 8,colors_Array[i][color_name]);
+		format(string, sizeof(string), "%s{%06x}%s\n", string, colors_Array[i][color_code] >>> 8, colors_Array[i][color_name]);
 	}
-	return ShowPlayerDialog(playerid,vehicle_color_menu_DialogID,DIALOG_STYLE_LIST,
+	return ShowPlayerDialog(playerid, vehicle_color_menu_DialogID, DIALOG_STYLE_LIST,
 		"Изменить цвет",
 		string,
-		"ОК","Назад"
+		"ОК", "Назад"
 	);
 }
 
@@ -112,7 +128,7 @@ stock show_SpawnSelect_Menu(playerid)
 		count = 0,
 		playername[MAX_PLAYER_NAME];
 	
-	GetPlayerName(playerid,playername,sizeof(playername));
+	GetPlayerName(playerid, playername, sizeof(playername));
 	
 	new gangid = GetPlayerGangID(playerid);
 	new gang_houseid = -1;
@@ -122,32 +138,32 @@ stock show_SpawnSelect_Menu(playerid)
 		if (gang_houseid != -1)
 		{
 			count++;
-			strcat(string,"[банда] ",sizeof(string));
-			strcat(string,Houses[gang_houseid][Houses_Name],sizeof(string));
-			strcat(string,"\n",sizeof(string));
+			strcat(string, "[банда] ", sizeof(string));
+			strcat(string, Houses[gang_houseid][Houses_Name], sizeof(string));
+			strcat(string, "\n", sizeof(string));
 		}
 	}
 	for (new i = 0; i < sizeof(Houses); i++)
 	{
-		if (gang_houseid != i && !strcmp(Houses[i][Houses_Owner],playername,true))
+		if (gang_houseid != i && !strcmp(Houses[i][Houses_Owner], playername, true))
 		{
 			count++;
-			strcat(string,Houses[i][Houses_Name],sizeof(string));
-			strcat(string,"\n",sizeof(string));
+			strcat(string, Houses[i][Houses_Name], sizeof(string));
+			strcat(string, "\n", sizeof(string));
 		}
 	}
-	if(count < 1)
+	if (count < 1)
 	{
-		return ShowPlayerDialog(playerid,spawnselect_menu_DialogID,DIALOG_STYLE_MSGBOX,
+		return ShowPlayerDialog(playerid, spawnselect_menu_DialogID, DIALOG_STYLE_MSGBOX,
 			"Меню выбора спавна",
 			"У вас нет доступных спавнов",
-			"ОК",""
+			"ОК", ""
 		);
 	}
-	return ShowPlayerDialog(playerid,spawnselect_menu_DialogID,DIALOG_STYLE_LIST,
+	return ShowPlayerDialog(playerid, spawnselect_menu_DialogID, DIALOG_STYLE_LIST,
 		"Меню выбора спавна",
 		string,
-		"ОК","Отмена"
+		"ОК", "Отмена"
 	);
 }
 
@@ -156,84 +172,94 @@ stock show_Businesses_Menu(playerid)
 	new string[MAX_STRING * MAX_PLAYER_BUSINESS],
 		count = 0,
 		playername[MAX_PLAYER_NAME];
-	GetPlayerName(playerid,playername,sizeof(playername));
-	for(new id=0;id<sizeof(Businesses);id++)
+	
+	GetPlayerName(playerid, playername, sizeof(playername));
+	for (new id = 0; id < sizeof(Businesses); id++)
 	{
-		if(!strcmp(Businesses[id][Business_Owner],playername,true))
+		if (!strcmp(Businesses[id][Business_Owner], playername, true))
 		{
 			count++;
-			format(string,sizeof(string),lang_texts[3][23],string,Businesses[id][Business_Name],Businesses[id][Business_Vault]);
+			format(string, sizeof(string), lang_texts[3][23], string, Businesses[id][Business_Name], Businesses[id][Business_Vault]);
 		}
 	}
 	if(count < 1)
 	{
-		return show_User_Menu_Dialog(playerid,"Мои бизнесы","У вас нет бизнесов");
+		return show_User_Menu_Dialog(playerid, "Мои бизнесы", "У вас нет бизнесов");
 	}
-	return ShowPlayerDialog(playerid,user_menu_Return_DialogID,DIALOG_STYLE_LIST,
+	return ShowPlayerDialog(playerid, user_menu_Return_DialogID, DIALOG_STYLE_LIST,
 		"Мои бизнесы",
 		string,
-		"Назад","Выход"
+		"Назад", "Выход"
 	);
 }
 
 stock show_Setting_Menu(playerid)
 {
-	return ShowPlayerDialog(playerid,settings_menu_DialogID,DIALOG_STYLE_LIST,
+	return ShowPlayerDialog(playerid, settings_menu_DialogID, DIALOG_STYLE_LIST,
 		"Мои настройки",
 		"Сохранить аккаунт\n\
 		Изменить ник\n\
 		Изменить пароль\n",
-		"Выбрать","Назад"
+		"Выбрать", "Назад"
 	);
 }
 
 stock show_ChangeNick_Menu(playerid)
 {
-	return ShowPlayerDialog(playerid,changenick_menu_DialogID,DIALOG_STYLE_INPUT,
+	return ShowPlayerDialog(playerid, changenick_menu_DialogID, DIALOG_STYLE_INPUT,
 		"Мои настройки",
 		"Введите желаемый ник",
-		"ОК","Назад"
+		"ОК", "Назад"
 	);
 }
 
 stock show_ChangePass_Menu(playerid)
 {
-	return ShowPlayerDialog(playerid,changepass_menu_DialogID,DIALOG_STYLE_INPUT,
+	return ShowPlayerDialog(playerid, changepass_menu_DialogID, DIALOG_STYLE_INPUT,
 		"Мои настройки",
 		"Введите желаемый пароль",
-		"ОК","Назад"
+		"ОК", "Назад"
 	);
 }
 /*
-stock usermenu_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
+stock usermenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	#pragma unused newkeys,oldkeys
+	#pragma unused newkeys, oldkeys
 	show_menu(playerid);
 	return 1;
 }*/
 
-stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
+stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	#pragma unused inputtext
-	switch(dialogid)
+	switch (dialogid)
 	{
 		case user_menu_Return_DialogID:
 		{
-			if(response) show_menu(playerid);
-			else return 1;
+			if (response)
+			{
+				show_menu(playerid);
+			}
+			return 1;
 		}
 		case user_menu_DialogID:
 		{
-			if(!response) return 1;
+			if (!response) return 1;
 			new string[1024];
-			switch(listitem)
+			switch (listitem)
 			{
 				case 0: // Информация о персонаже
 				{
 					new vip_status[MAX_NAME];
-					if(GetPlayerVIP(playerid) == 1) format(vip_status,sizeof(vip_status),"до %s",GetPlayerVIPDate(playerid));
-					else set(vip_status,"нет");
-					format(string,sizeof(string),
+					if (GetPlayerVIP(playerid) == 1)
+					{
+						format(vip_status, sizeof(vip_status), "до %s", GetPlayerVIPDate(playerid));
+					}
+					else
+					{
+						set(vip_status, "нет");
+					}
+					format(string, sizeof(string),
 						"Уровень: %d, Опыт до уровня: %d\n\
 						\n\
 						Банда: %s, Звание: %s\n\
@@ -249,16 +275,16 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						GetPlayerLevel(playerid),
 						GetXPToLevel(playerid, GetPlayerLevel(playerid) + 1),
 						
-						GetPlayerGangName(playerid),GetLevelName(GetPlayerLevel(playerid)),
+						GetPlayerGangName(playerid), GetLevelName(GetPlayerLevel(playerid)),
 						
-						oGetPlayerMoney(playerid),GetPlayerBankMoney(playerid),GetPlayerTotalMoney(playerid),
+						oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid),
 						
-						GetPlayerKills(playerid),GetPlayerDeaths(playerid),GetPlayerJailed(playerid),GetPlayerMuted(playerid),
+						GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerJailed(playerid), GetPlayerMuted(playerid),
 						
 						ConvertFightIdToName( GetPlayerFightStyleUsed(playerid) ),
 						vip_status
 					);
-					return show_User_Menu_Dialog(playerid,"Информация о персонаже",string);
+					return show_User_Menu_Dialog(playerid, "Информация о персонаже", string);
 				}
 				case 1: // Стиль борьбы
 				{
@@ -279,7 +305,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				{
 					//DropAmmo(playerid);
 					oResetPlayerWeapons(playerid);
-					return show_User_Menu_Dialog(playerid,"Выбросить оружие","Вы добровольно избавились от всего оружия.");
+					return show_User_Menu_Dialog(playerid, "Выбросить оружие", "Вы добровольно избавились от всего оружия.");
 				}
 				case 5: // Место спавна
 				{
@@ -295,35 +321,36 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 						idsm = 0,
 						admins[MAX_STRING],
 						moders[MAX_STRING];
-					foreach(Player,id)
+					
+					foreach (Player, id)
 					{
-						if(IsPlayerAdm(id))
+						if (IsPlayerAdm(id))
 						{
-							format(admins,sizeof(admins),"%s%s(%d)\n",admins,oGetPlayerName(id),id);
+							format(admins, sizeof(admins), "%s%s(%d)\n", admins, oGetPlayerName(id), id);
 							idsa++;
 						}
-						else if(IsPlayerMod(id))
+						else if (IsPlayerMod(id))
 						{
-							format(moders,sizeof(moders),"%s%s(%d)\n",moders,oGetPlayerName(id),id);
+							format(moders, sizeof(moders), "%s%s(%d)\n", moders, oGetPlayerName(id), id);
 							idsm++;
 						}
 					}
-					if(idsa == 0 && idsm == 0)
+					if (idsa == 0 && idsm == 0)
 					{
-						format(string,sizeof(string),lang_texts[1][31]);
+						format(string, sizeof(string), lang_texts[1][31]);
 					}
 					else
 					{
 						if (idsa != 0)
 						{
-							format(string,sizeof(string),"Администрация:\n%s\n",admins);
+							format(string, sizeof(string), "Администрация:\n%s\n", admins);
 						}
 						if (idsm != 0)
 						{
-							format(string,sizeof(string),"%s\nМодерация:\n%s\n",string,admins,moders);
+							format(string, sizeof(string), "%s\nМодерация:\n%s\n", string, admins, moders);
 						}
 					}
-					return show_User_Menu_Dialog(playerid,"Администрация онлайн",string);
+					return show_User_Menu_Dialog(playerid, "Администрация онлайн", string);
 				}
 				case 8: // Связь с администрацией
 				{
@@ -355,7 +382,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 									\t\t\tPrevious: GhostTT, heufix, Elbi\n\
 						\n\
 						{00C0DD}Косвенные разработчики: {AFE7FF}\n\
-									\t\tMX_Master(mxINI,Chat-Guard)\n\
+									\t\tMX_Master(mxINI, Chat-Guard)\n\
 									\t\twups(Default map icons)\n\
 						\n\
 						"
@@ -367,17 +394,17 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		}
 		case vehicle_menu_DialogID:
 		{
-			if(!response) return 1;
-			new engine,lights,alarm,doors,bonnet,boot,objective;
+			if (!response) return 1;
+			new engine, lights, alarm, doors, bonnet, boot, objective;
 			new vehicleid = GetPlayerVehicleID(playerid);
-			GetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,boot,objective);
-			switch(listitem)
+			GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+			switch (listitem)
 			{
 				case 0:// перевернуть
 				{
 					new Float:float_tmp;
-					GetVehicleZAngle(vehicleid,float_tmp);
-					SetVehicleZAngle(vehicleid,float_tmp);
+					GetVehicleZAngle(vehicleid, float_tmp);
+					SetVehicleZAngle(vehicleid, float_tmp);
 					return 1;
 				}
 				case 1:// заправить
@@ -391,34 +418,50 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				}
 				case 3:// фары
 				{
-					if(lights == VEHICLE_PARAMS_ON)
-						SetVehicleParamsEx(vehicleid,engine,VEHICLE_PARAMS_OFF,alarm,doors,bonnet,boot,objective);
+					if (lights == VEHICLE_PARAMS_ON)
+					{
+						SetVehicleParamsEx(vehicleid, engine, VEHICLE_PARAMS_OFF, alarm, doors, bonnet, boot, objective);
+					}
 					else
-						SetVehicleParamsEx(vehicleid,engine,VEHICLE_PARAMS_ON,alarm,doors,bonnet,boot,objective);
+					{
+						SetVehicleParamsEx(vehicleid, engine, VEHICLE_PARAMS_ON, alarm, doors, bonnet, boot, objective);
+					}
 					return 1;
 				}
 				case 4:// двигатель
 				{
-					if(engine == VEHICLE_PARAMS_ON)
-						SetVehicleParamsEx(vehicleid,VEHICLE_PARAMS_OFF,lights,alarm,doors,bonnet,boot,objective);
+					if (engine == VEHICLE_PARAMS_ON)
+					{
+						SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, lights, alarm, doors, bonnet, boot, objective);
+					}
 					else
-						SetVehicleParamsEx(vehicleid,VEHICLE_PARAMS_ON,lights,alarm,doors,bonnet,boot,objective);
+					{
+						SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_ON, lights, alarm, doors, bonnet, boot, objective);
+					}
 					return 1;
 				}
 				case 5:// капот
 				{
-					if(bonnet == VEHICLE_PARAMS_ON)
-						SetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,VEHICLE_PARAMS_OFF,boot,objective);
+					if (bonnet == VEHICLE_PARAMS_ON)
+					{
+						SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, VEHICLE_PARAMS_OFF, boot, objective);
+					}
 					else
-						SetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,VEHICLE_PARAMS_ON,boot,objective);
+					{
+						SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, VEHICLE_PARAMS_ON, boot, objective);
+					}
 					return 1;
 				}
 				case 6:// багажник
 				{
-					if(boot == VEHICLE_PARAMS_ON)
-						SetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,VEHICLE_PARAMS_OFF,objective);
+					if (boot == VEHICLE_PARAMS_ON)
+					{
+						SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, VEHICLE_PARAMS_OFF, objective);
+					}
 					else
-						SetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,VEHICLE_PARAMS_ON,objective);
+					{
+						SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, VEHICLE_PARAMS_ON, objective);
+					}
 					return 1;
 				}
 			}
@@ -427,7 +470,9 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		case vehicle_color_menu_DialogID:
 		{
 			if(!response)
+			{
 				return show_Vehicle_Menu(playerid);
+			}
 			
 			new vehicleid = GetPlayerVehicleID(playerid);
 			ChangeVehicleColor(vehicleid, colors_Array[listitem][color_vehicle], colors_Array[listitem][color_vehicle]);
@@ -435,11 +480,11 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		}
 		case spawnselect_menu_DialogID:
 		{
-			if(!response)
+			if (!response)
 				return show_User_Menu(playerid);
 			
 			new playername[MAX_PLAYER_NAME];
-			GetPlayerName(playerid,playername,sizeof(playername));
+			GetPlayerName(playerid, playername, sizeof(playername));
 
 			if (listitem == 0)
 			{
@@ -448,25 +493,28 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				{
 					if (gang_GetHouse(gangid) != -1)
 					{
-						SetPlayerSpawnHouseID(playerid,SPAWN_HOUSE_GANG);
-						SendClientMessage(playerid,COLOUR_WHITE,"Место спавна изменено.");
+						SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_GANG);
+						SendClientMessage(playerid, COLOUR_WHITE, "Место спавна изменено.");
 						return 1;
 					}
 				}
 			}
 
-			for(new i=0,count;i<sizeof(Houses);i++)
+			for (new i = 0, count; i < sizeof(Houses); i++)
 			{
-				if(strcmp(Houses[i][Houses_Owner],playername,true)) continue;
-				if(listitem == count)
+				if (strcmp(Houses[i][Houses_Owner], playername, true))
 				{
-					SetPlayerSpawnHouseID(playerid,i);
-					SendClientMessage(playerid,COLOUR_WHITE,"Место спавна изменено.");
+					continue;
+				}
+				if (listitem == count)
+				{
+					SetPlayerSpawnHouseID(playerid, i);
+					SendClientMessage(playerid, COLOUR_WHITE, "Место спавна изменено.");
 					// если игрок, сменивший спавн - лидер банды, то устанавливаем домом банды этот дом
 					if (gang_IsLeader(playerid))
 					{
 						gang_SetHouse(GetPlayerGangID(playerid), i);
-						SendClientMessage(playerid,COLOUR_WHITE,"Место спавна для банды изменено.");
+						SendClientMessage(playerid, COLOUR_WHITE, "Место спавна для банды изменено.");
 					}
 					return 1;
 				}
@@ -477,7 +525,9 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		case settings_menu_DialogID:
 		{
 			if(!response)
+			{
 				return show_User_Menu(playerid);
+			}
 			
 			switch(listitem)
 			{
@@ -485,7 +535,7 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				{
 					PlayerSave(playerid);
 					AccountSave(playerid);
-					show_User_Menu_Dialog(playerid,"Сохранение аккаунта",lang_texts[1][45]);
+					show_User_Menu_Dialog(playerid, "Сохранение аккаунта", lang_texts[1][45]);
 					return 1;
 				}
 				case 1: // Изменить ник
@@ -501,94 +551,107 @@ stock usermenu_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		}
 		case changenick_menu_DialogID:
 		{
-			if(!response)
+			if (!response)
+			{
 				return show_User_Menu(playerid);
+			}
 			
 			new string[MAX_STRING];
-			if(oGetPlayerMoney(playerid) < CHANGE_NICK_COST)
+			if (oGetPlayerMoney(playerid) < CHANGE_NICK_COST)
 			{
-				format(string,sizeof(string),lang_texts[1][36],CHANGE_NICK_COST);
-				return show_User_Menu_Dialog(playerid,"Изменение ника",string);
+				format(string, sizeof(string), lang_texts[1][36], CHANGE_NICK_COST);
+				return show_User_Menu_Dialog(playerid, "Изменение ника", string);
 			}
 			new Account_NewName[MAX_PLAYER_NAME],
 				Account_LastName[MAX_PLAYER_NAME];
-			set(Account_LastName,oGetPlayerName(playerid));
-			set(Account_NewName,inputtext);
-			if(strlen(Account_NewName) <= MIN_NICK_LEN)
+			
+			set(Account_LastName, oGetPlayerName(playerid));
+			set(Account_NewName, inputtext);
+			if (strlen(Account_NewName) <= MIN_NICK_LEN)
 			{
-				format(string,sizeof(string),lang_texts[1][37],MIN_NICK_LEN);
-				return show_User_Menu_Dialog(playerid,"Изменение ника",string);
+				format(string, sizeof(string), lang_texts[1][37], MIN_NICK_LEN);
+				return show_User_Menu_Dialog(playerid, "Изменение ника", string);
 			}
 			
-			format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_NewName);
+			format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, AccountDB, Account_NewName);
 			// если файл есть, то выходим сразу-же
-			if(ini_Exist(string))
-				return show_User_Menu_Dialog(playerid,"Изменение ника",lang_texts[1][9]);
-			// проверим ник
-			if(!NameCharCheck(Account_NewName))
+			if (ini_Exist(string))
 			{
-				format(string,sizeof(string),lang_texts[1][9],ALLOWED_NICK_SYMBOLS_STR);
-				return show_User_Menu_Dialog(playerid,"Изменение ника",string);
+				return show_User_Menu_Dialog(playerid, "Изменение ника", lang_texts[1][9]);
+			}
+			// проверим ник
+			if (!NameCharCheck(Account_NewName))
+			{
+				format(string, sizeof(string), lang_texts[1][9], ALLOWED_NICK_SYMBOLS_STR);
+				return show_User_Menu_Dialog(playerid, "Изменение ника", string);
 			}
 			// переименовываем
-			if(SetPlayerName(playerid,Account_NewName) != 1)
+			if (SetPlayerName(playerid, Account_NewName) != 1)
 			{
-				format(string,sizeof(string),lang_texts[1][9],ALLOWED_NICK_SYMBOLS_STR);
-				return show_User_Menu_Dialog(playerid,"Изменение ника",string);
+				format(string, sizeof(string), lang_texts[1][9], ALLOWED_NICK_SYMBOLS_STR);
+				return show_User_Menu_Dialog(playerid, "Изменение ника", string);
 			}
 			
-			new gangid = GetPVarInt(playerid,"GangID");
-			if(gangid != 0)
+			new gangid = GetPVarInt(playerid, "GangID");
+			if (gangid != 0)
 			{
-				gang_RenameMember(gangid,Account_LastName,Account_NewName);
+				gang_RenameMember(gangid, Account_LastName, Account_NewName);
 			}
 			
-			housing_RenameOwner(Account_LastName,Account_NewName);
-			business_RenameOwner(Account_LastName,Account_NewName);
+			housing_RenameOwner(Account_LastName, Account_NewName);
+			business_RenameOwner(Account_LastName, Account_NewName);
 			
-			races_RenameBestPlayer(Account_LastName,Account_NewName);
-			dm_RenameBestPlayer(Account_LastName,Account_NewName);
+			races_RenameBestPlayer(Account_LastName, Account_NewName);
+			dm_RenameBestPlayer(Account_LastName, Account_NewName);
 			
 			PlayerSave(playerid);
 			AccountSave(playerid);
 			
-			format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,AccountDB,Account_LastName);
-			if(ini_Exist(string)) ini_Remov(string);
-			format(string,sizeof(string),"%s%s"GTO_FILES_FORMAT,PlayerDB,Account_LastName);
-			if(ini_Exist(string)) ini_Remov(string);
+			format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, AccountDB, Account_LastName);
+			if (ini_Exist(string))
+			{
+				ini_Remov(string);
+			}
+			format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, PlayerDB, Account_LastName);
+			if (ini_Exist(string))
+			{
+				ini_Remov(string);
+			}
 			
-			oGivePlayerMoney(playerid,-CHANGE_NICK_COST,1);
+			oGivePlayerMoney(playerid,-CHANGE_NICK_COST, 1);
 			
-			format(string,sizeof(string),lang_texts[1][38],Account_LastName,Account_NewName);
-			show_User_Menu_Dialog(playerid,"Изменение ника",string);
+			format(string, sizeof(string), lang_texts[1][38], Account_LastName, Account_NewName);
+			show_User_Menu_Dialog(playerid, "Изменение ника", string);
 			return 1;
 		}
 		case changepass_menu_DialogID:
 		{
-			if(!response)
+			if (!response)
+			{
 				return show_User_Menu(playerid);
+			}
 			
 			new string[MAX_STRING];
-			if(oGetPlayerMoney(playerid) < CHANGE_PASS_COST)
+			if (oGetPlayerMoney(playerid) < CHANGE_PASS_COST)
 			{
-				format(string,sizeof(string),lang_texts[1][35],CHANGE_PASS_COST);
-				return show_User_Menu_Dialog(playerid,"Изменение пароля",string);
+				format(string, sizeof(string), lang_texts[1][35], CHANGE_PASS_COST);
+				return show_User_Menu_Dialog(playerid, "Изменение пароля", string);
 			}
 			new pass[MAX_STRING];
-			set(pass,inputtext);
-			if(MAX_PASS_LEN < strlen(pass) < MIN_PASS_LEN)
+			set(pass, inputtext);
+			if (MAX_PASS_LEN < strlen(pass) < MIN_PASS_LEN)
 			{
-				format(string,sizeof(string),lang_texts[1][13],MIN_PASS_LEN,MAX_PASS_LEN);
-				return show_User_Menu_Dialog(playerid,"Изменение пароля",string);
+				format(string, sizeof(string), lang_texts[1][13], MIN_PASS_LEN, MAX_PASS_LEN);
+				return show_User_Menu_Dialog(playerid, "Изменение пароля", string);
 			}
-			format(string,sizeof(string),lang_texts[1][34],pass);
-			show_User_Menu_Dialog(playerid,"Изменение пароля",string);
-			SetPVarString(playerid,"Password",pass);
+			format(string, sizeof(string), lang_texts[1][34], pass);
+			show_User_Menu_Dialog(playerid, "Изменение пароля", string);
+			SetPVarString(playerid, "Password", pass);
 		#if defined USE_PASSWORD_ENCRYPT
 			encrypt(pass);
 		#endif
 			AccountSave(playerid);
-			oGivePlayerMoney(playerid,-CHANGE_PASS_COST,1);
+			oGivePlayerMoney(playerid,-CHANGE_PASS_COST, 1);
 			return 1;
 		}
 	}

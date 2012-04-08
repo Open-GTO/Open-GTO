@@ -621,10 +621,10 @@ stock player_load_db_ini(playerid)
 	
 	buf=0;
 	ini_Get(file_player, "Coords", s_buf);
-	SetPVarFloat(playerid, "Coord_X", floatstr(strcharsplit(s_buf, buf, ', ')));
-	SetPVarFloat(playerid, "Coord_Y", floatstr(strcharsplit(s_buf, buf, ', ')));
-	SetPVarFloat(playerid, "Coord_Z", floatstr(strcharsplit(s_buf, buf, ', ')));
-	SetPVarFloat(playerid, "Coord_A", floatstr(strcharsplit(s_buf, buf, ', ')));
+	SetPVarFloat(playerid, "Coord_X", floatstr(strcharsplit(s_buf, buf, ',')));
+	SetPVarFloat(playerid, "Coord_Y", floatstr(strcharsplit(s_buf, buf, ',')));
+	SetPVarFloat(playerid, "Coord_Z", floatstr(strcharsplit(s_buf, buf, ',')));
+	SetPVarFloat(playerid, "Coord_A", floatstr(strcharsplit(s_buf, buf, ',')));
 	
 	ini_GetInt(file_player, "Status", buf);
 	SetPlayerStatus(playerid, buf);
