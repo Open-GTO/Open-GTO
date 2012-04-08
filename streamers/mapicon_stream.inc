@@ -47,10 +47,10 @@ stock DeleteStreamMapIcon(icon_id)
 	MapIcons[icon_id][Coord_Y] = 0.0;
 	MapIcons[icon_id][Coord_Z] = 0.0;
 	new slot;
-	foreach (Player,i)
+	foreach (Player, i)
 	{
-		slot = GetIconSlot(i,icon_id);
-		RemovePlayerMapIcon(i,slot);
+		slot = GetIconSlot(i, icon_id);
+		RemovePlayerMapIcon(i, slot);
 		SlotIcons[i][slot] = 0;
 		MapIconsShowed[i][icon_id] = false;
 	}
@@ -58,23 +58,23 @@ stock DeleteStreamMapIcon(icon_id)
 
 stock UpdatePlayerStreamMapIcon(playerid, icon_id)
 {
-	new slot = GetIconSlot(playerid,icon_id);
-	RemovePlayerMapIcon(playerid,slot);
-	update_House_IconType(playerid,icon_id);
-	update_Business_IconType(playerid,icon_id);
-	SetPlayerMapIcon(playerid,slot,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z],MapIcons[icon_id][icon_type],0,MAPICON_LOCAL);
+	new slot = GetIconSlot(playerid, icon_id);
+	RemovePlayerMapIcon(playerid, slot);
+	update_House_IconType(playerid, icon_id);
+	update_Business_IconType(playerid, icon_id);
+	SetPlayerMapIcon(playerid, slot, MapIcons[icon_id][Coord_X], MapIcons[icon_id][Coord_Y], MapIcons[icon_id][Coord_Z], MapIcons[icon_id][icon_type], 0, MAPICON_LOCAL);
 }
 
 stock UpdateStreamMapIcon(icon_id)
 {
 	new slot;
-	foreach (Player,i)
+	foreach (Player, i)
 	{
-		slot = GetIconSlot(i,icon_id);
-		RemovePlayerMapIcon(i,slot);
-		update_House_IconType(i,icon_id);
-		update_Business_IconType(i,icon_id);
-		SetPlayerMapIcon(i,slot,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z],MapIcons[icon_id][icon_type],0,MAPICON_LOCAL);
+		slot = GetIconSlot(i, icon_id);
+		RemovePlayerMapIcon(i, slot);
+		update_House_IconType(i, icon_id);
+		update_Business_IconType(i, icon_id);
+		SetPlayerMapIcon(i, slot, MapIcons[icon_id][Coord_X], MapIcons[icon_id][Coord_Y], MapIcons[icon_id][Coord_Z], MapIcons[icon_id][icon_type], 0, MAPICON_LOCAL);
 	}
 }
 
@@ -83,21 +83,21 @@ stock MapIcons_Streaming(playerid)
 	new isrange;
 	for (new icon_id = 1; icon_id < MAX_ICONS; icon_id++)
 	{
-		isrange = IsPlayerInRangeOfPoint(playerid,MAP_ICON_STREAM_DISTANCE,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z]);
+		isrange = IsPlayerInRangeOfPoint(playerid, MAP_ICON_STREAM_DISTANCE, MapIcons[icon_id][Coord_X], MapIcons[icon_id][Coord_Y], MapIcons[icon_id][Coord_Z]);
 		// если игрок не в зоне отображения иконки, но иконка ототбражается
 		if (!isrange && IsValidMapIcon(icon_id) && MapIconsShowed[playerid][icon_id] == true) 
 		{
-			new slot = GetIconSlot(playerid,icon_id);
+			new slot = GetIconSlot(playerid, icon_id);
 			SlotIcons[playerid][slot] = 0;
 			
-			RemovePlayerMapIcon(playerid,slot);
+			RemovePlayerMapIcon(playerid, slot);
 			MapIconsShowed[playerid][icon_id] = false;
-			GivePVarInt(playerid,"IconsShowed",-1);
+			GivePVarInt(playerid, "IconsShowed", -1);
 			continue;
 		}
 		
 		// если иконка показана или иконки нет
-		if (MapIconsShowed[playerid][icon_id] == true || !IsValidMapIcon(icon_id) || GetPVarInt(playerid,"IconsShowed") > MAX_SHOWED_ICONS )
+		if (MapIconsShowed[playerid][icon_id] == true || !IsValidMapIcon(icon_id) || GetPVarInt(playerid, "IconsShowed") > MAX_SHOWED_ICONS )
 		{
 			continue;
 		}
@@ -105,20 +105,23 @@ stock MapIcons_Streaming(playerid)
 		// если игрок в зоне отображения иконки и нулевом интерьере
 		if (isrange && GetPlayerInterior(playerid) == 0) 
 		{
-			update_House_IconType(playerid,icon_id);
-			update_Business_IconType(playerid,icon_id);
+			update_House_IconType(playerid, icon_id);
+			update_Business_IconType(playerid, icon_id);
 			new slot = GetLastRealMapIconSlot(playerid);
 			SlotIcons[playerid][slot] = icon_id;
 			SetPlayerMapIcon(playerid, slot, MapIcons[icon_id][Coord_X], MapIcons[icon_id][Coord_Y], MapIcons[icon_id][Coord_Z], MapIcons[icon_id][icon_type], 0, MAPICON_LOCAL);
 			MapIconsShowed[playerid][icon_id] = true;
-			GivePVarInt(playerid,"IconsShowed",1);
+			GivePVarInt(playerid, "IconsShowed", 1);
 		}
 	}
 }
 
 stock GetMapIconPos(icon_id, &Float:icon_x, &Float:icon_y, &Float:icon_z)
 {
-	if (!IsValidMapIcon(icon_id)) return 0;
+	if (!IsValidMapIcon(icon_id))
+	{
+		return 0;
+	}
 	icon_x = MapIcons[icon_id][Coord_X];
 	icon_y = MapIcons[icon_id][Coord_Y];
 	icon_z = MapIcons[icon_id][Coord_Z];
@@ -129,9 +132,16 @@ stock FindStreamMapIcon(Float:X, Float:Y, Float:Z)
 {
 	for (new icon_id = 1; icon_id < MAX_ICONS; icon_id++)
 	{
-		if (!IsValidMapIcon(icon_id)) continue;
-		if (loccmp(X,Y,Z,MapIcons[icon_id][Coord_X],MapIcons[icon_id][Coord_Y],MapIcons[icon_id][Coord_Z]))
+		if (!IsValidMapIcon(icon_id))
+		{
+			continue;
+		}
+		if (   X == MapIcons[icon_id][Coord_X]
+			&& Y == MapIcons[icon_id][Coord_Y]
+			&& Z == MapIcons[icon_id][Coord_Z])
+		{
 			return icon_id;
+		}
 	}
 	return 0;
 }
@@ -163,32 +173,38 @@ stock GetLastRealMapIconSlot(playerid)
 {
 	for (new slot = 1; slot <= MAX_SHOWED_ICONS; slot++)
 	{
-		if (SlotIcons[playerid][slot] == 0) return slot;
+		if (SlotIcons[playerid][slot] == 0)
+		{
+			return slot;
+		}
 	}
 	return 0;
 }
 
-stock GetIconSlot(playerid,icon_id)
+stock GetIconSlot(playerid, icon_id)
 {
 	for (new slot = 1; slot <= MAX_SHOWED_ICONS; slot++)
 	{
-		if (SlotIcons[playerid][slot] == icon_id) return slot;
+		if (SlotIcons[playerid][slot] == icon_id)
+		{
+			return slot;
+		}
 	}
 	return 0;
 }
 
-stock update_House_IconType(playerid,icon_id)
+stock update_House_IconType(playerid, icon_id)
 {
 	new playername[MAX_PLAYER_NAME];
-	GetPlayerName(playerid,playername,sizeof(playername));
+	GetPlayerName(playerid, playername, sizeof(playername));
 	for (new house_id = 0; house_id < sizeof(Houses); house_id++)
 	{
 		if (house_icon[house_id] != icon_id) continue;
-		if (!strcmp(Houses[house_id][Houses_Owner],playername)|| !strcmp(Houses[house_id][Houses_RentName],playername))
+		if (!strcmp(Houses[house_id][Houses_Owner], playername)|| !strcmp(Houses[house_id][Houses_RentName], playername))
 		{
 			MapIcons[icon_id][icon_type] = 35;
 		}
-		else if (strcmp(Houses[house_id][Houses_Owner],"Unknown"))
+		else if (strcmp(Houses[house_id][Houses_Owner], "Unknown"))
 		{
 			MapIcons[icon_id][icon_type] = 32;
 		}
@@ -199,18 +215,18 @@ stock update_House_IconType(playerid,icon_id)
 	}
 }
 
-stock update_Business_IconType(playerid,icon_id)
+stock update_Business_IconType(playerid, icon_id)
 {
 	new playername[MAX_PLAYER_NAME];
-	GetPlayerName(playerid,playername,sizeof(playername));
+	GetPlayerName(playerid, playername, sizeof(playername));
 	for (new bis_id = 0; bis_id < sizeof(Businesses); bis_id++)
 	{
 		if (business_icon[bis_id] != icon_id) continue;
-		if (!strcmp(Businesses[bis_id][Business_Owner],playername))
+		if (!strcmp(Businesses[bis_id][Business_Owner], playername))
 		{
 			MapIcons[icon_id][icon_type] = 38;
 		}
-		else if (strcmp(Businesses[bis_id][Business_Owner],"Unknown"))
+		else if (strcmp(Businesses[bis_id][Business_Owner], "Unknown"))
 		{
 			MapIcons[icon_id][icon_type] = 36;
 		}

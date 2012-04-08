@@ -30,26 +30,31 @@ new bool:PlayerCPActive[MAX_PLAYERS];
 
 stock SyncActiveCP()
 {
-	foreach(Player,playerid)
+	foreach (Player, playerid)
 	{
-		if(GetPlayerQuestID(playerid) == INVALID_QUEST_ID)
+		if (GetPlayerQuestID(playerid) == INVALID_QUEST_ID)
 		{
 			new cpid = GetPlayerClosestActiveCP(playerid);
-			if(cpid != 0)
-				SetPlayerActiveCP(playerid,cpid);
+			if (cpid != 0)
+			{
+				SetPlayerActiveCP(playerid, cpid);
+			}
 			else
+			{
 				oDisablePlayerCheckpoint(playerid);
+			}
 		}
 	}
 }
 
-stock AddActiveCheckpoint(Float:cpx,Float:cpy,Float:cpz,cpdist,cpsize) //
+stock AddActiveCheckpoint(Float:cpx, Float:cpy, Float:cpz, cpdist, cpsize) //
 {
 	if (ActiveCPCount == MAX_ACTIVECP) return 0;
-	for (new cpid=1;cpid<=MAX_ACTIVECP;cpid++)
+	for (new cpid = 1; cpid <= MAX_ACTIVECP; cpid++)
 	{
+		// we have found an inactive cp to use
 		if (ActiveCheckpoints[cpid][IsActive] == false)
-		{ // we have found an inactive cp to use
+		{
 			ActiveCPCount++; // 0 will be invalid, so we ++ first
 			ActiveCheckpoints[cpid][CP_X] = cpx;
 			ActiveCheckpoints[cpid][CP_Y] = cpy;
@@ -65,7 +70,10 @@ stock AddActiveCheckpoint(Float:cpx,Float:cpy,Float:cpz,cpdist,cpsize) //
 
 stock RemoveActiveCheckpoint(cpid)
 {
-	if (ActiveCheckpoints[cpid][IsActive] == false) return 0;
+	if (ActiveCheckpoints[cpid][IsActive] == false)
+	{
+		return 0;
+	}
 	ActiveCheckpoints[cpid][CP_X] = 0;
 	ActiveCheckpoints[cpid][CP_Y] = 0;
 	ActiveCheckpoints[cpid][CP_Z] = 0;
@@ -75,13 +83,13 @@ stock RemoveActiveCheckpoint(cpid)
 	return 1;
 }
 
-stock FindActiveCheckpoint(Float:cpx,Float:cpy,Float:cpz)
+stock FindActiveCheckpoint(Float:cpx, Float:cpy, Float:cpz)
 {
-	for(new cpid=1;cpid<=ActiveCPCount;cpid++)
+	for (new cpid = 1; cpid <= ActiveCPCount; cpid++)
 	{
-		if(ActiveCheckpoints[cpid][IsActive])
+		if (ActiveCheckpoints[cpid][IsActive])
 		{
-			if(loccmp(cpx,cpy,cpz,ActiveCheckpoints[cpid][CP_X],ActiveCheckpoints[cpid][CP_Y],ActiveCheckpoints[cpid][CP_Z]))
+			if (cpx == ActiveCheckpoints[cpid][CP_X] && cpy == ActiveCheckpoints[cpid][CP_X] && cpz == ActiveCheckpoints[cpid][CP_Z])
 			{
 				return cpid;
 			}
@@ -90,20 +98,25 @@ stock FindActiveCheckpoint(Float:cpx,Float:cpy,Float:cpz)
 	return 0;
 }
 
-stock SetPlayerActiveCP(playerid,cpid)
+stock SetPlayerActiveCP(playerid, cpid)
 {
-	if(!IsPlayerConnected(playerid)) return 0;
-	if(!ActiveCheckpoints[cpid][IsActive]) return 0;
-	if(cpid == 0)
+	if (!IsPlayerConnected(playerid) || !ActiveCheckpoints[cpid][IsActive])
+	{
+		return 0;
+	}
+	if (cpid == 0)
 	{
 		oDisablePlayerCheckpoint(playerid); // cpid 0 is invalid
 		return 1;
 	}
-	if((PlayerCP[playerid][Coord_X] == ActiveCheckpoints[cpid][CP_X]) && (PlayerCP[playerid][Coord_Y] == ActiveCheckpoints[cpid][CP_Y]) && (PlayerCP[playerid][Coord_Z] == ActiveCheckpoints[cpid][CP_Z]))
-	{ // if player cp already == this cp
+	// if player cp already == this cp
+	if (   PlayerCP[playerid][Coord_X] == ActiveCheckpoints[cpid][CP_X]
+		&& PlayerCP[playerid][Coord_Y] == ActiveCheckpoints[cpid][CP_Y]
+		&& PlayerCP[playerid][Coord_Z] == ActiveCheckpoints[cpid][CP_Z])
+	{
 		return 0;
 	}
-	oSetPlayerCheckpoint(playerid,ActiveCheckpoints[cpid][CP_X],ActiveCheckpoints[cpid][CP_Y],ActiveCheckpoints[cpid][CP_Z],8.0);
+	oSetPlayerCheckpoint(playerid, ActiveCheckpoints[cpid][CP_X], ActiveCheckpoints[cpid][CP_Y], ActiveCheckpoints[cpid][CP_Z], 8.0);
 	return 1;
 }
 
@@ -112,11 +125,11 @@ stock GetPlayerClosestActiveCP(playerid)
  	new Float:cpdist = CP_SHOW_DIST,
 		retval=0,
 		Float:playerdist;
-	for (new cpid=1;cpid<MAX_ACTIVECP;cpid++)
+	for (new cpid = 1; cpid < MAX_ACTIVECP; cpid++)
 	{
 		if (ActiveCheckpoints[cpid][IsActive])
 		{
-			playerdist = GetPlayerDistanceFromPoint(playerid,ActiveCheckpoints[cpid][CP_X],ActiveCheckpoints[cpid][CP_Y],ActiveCheckpoints[cpid][CP_Z]);
+			playerdist = GetPlayerDistanceFromPoint(playerid, ActiveCheckpoints[cpid][CP_X], ActiveCheckpoints[cpid][CP_Y], ActiveCheckpoints[cpid][CP_Z]);
 			if (playerdist < ActiveCheckpoints[cpid][CP_Dist])
 			{
 				if (playerdist < cpdist)
@@ -154,11 +167,17 @@ stock oDisablePlayerCheckpoint(playerid)
 	PlayerCP[playerid][Coord_Z] = 0.0;
 }
 
-stock oIsPlayerInCheckpoint(playerid,Float:cpx,Float:cpy,Float:cpz,dist)
+stock oIsPlayerInCheckpoint(playerid, Float:cpx, Float:cpy, Float:cpz, dist)
 {
-	if (!IsPlayerConnected(playerid)) return 0;
-	if (!PlayerCPActive[playerid]) return 0;
-	if (!loccmp(cpx,cpy,cpz,PlayerCP[playerid][Coord_X],PlayerCP[playerid][Coord_Y],PlayerCP[playerid][Coord_Z])) return 0;
-	if(GetPlayerDistanceFromPoint(playerid,cpx,cpy,cpz) < dist) return IsPlayerInCheckpoint(playerid);
+	if (!IsPlayerConnected(playerid) || !PlayerCPActive[playerid]
+		|| cpx != PlayerCP[playerid][Coord_X] && cpy != PlayerCP[playerid][Coord_X] && cpz != PlayerCP[playerid][Coord_Z]
+	)
+	{
+		return 0;
+	}
+	if (GetPlayerDistanceFromPoint(playerid, cpx, cpy, cpz) < dist)
+	{
+		return IsPlayerInCheckpoint(playerid);
+	}
 	return 0;
 }
