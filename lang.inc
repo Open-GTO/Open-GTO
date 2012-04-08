@@ -20,7 +20,7 @@ stock lang_LoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 0;
 	new file_lang = ini_Open(ConfigDB);
-    ini_Get(file_lang,"Language",lang);
+    ini_Get(file_lang, "Language", lang);
 	ini_Close(file_lang);
 	return 1;
 }
@@ -28,7 +28,7 @@ stock lang_LoadConfig()
 stock lang_SaveConfig()
 {
 	new file_lang = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_lang,"Language",lang);
+	ini_Set(file_lang, "Language", lang);
 	ini_Close(file_lang);
 	return 1;
 }
@@ -37,7 +37,7 @@ stock lang_OnGameModeInit()
 {
 	lang_LoadConfig();
 	new lang_file[50];
-	format(lang_file,sizeof(lang_file),"%sLanguage-%s"GTO_FILES_FORMAT,lang_db,lang);
+	format(lang_file, sizeof(lang_file), "%sLanguage-%s"GTO_FILES_FORMAT, lang_db, lang);
 	lang_read(lang_file);
 	GameMSG("SERVER: Lang module init(%s)", lang_file);
 	return 1;
@@ -46,22 +46,28 @@ stock lang_OnGameModeInit()
 stock lang_read(filename[])
 {
 	new File:fohnd,
-		tmpres[MAX_STRING+32],tmp1[4],
-		i,pos_s;
-	fohnd = fopen(filename,io_read);
-	if(!fohnd) return GameMSG("ERROR: No such language file '%s'", filename);
-	while(fread(fohnd,tmpres,sizeof(tmpres)))
+		tmpres[MAX_STRING+32], tmp1[4],
+		i, pos_s;
+	
+	fohnd = fopen(filename, io_read);
+	if (!fohnd)
 	{
-		if(strlen(tmpres) == 0) continue;
-		if(strfind(tmpres, "//",true) == 0) continue;
+		return GameMSG("ERROR: No such language file '%s'", filename);
+	}
+	while (fread(fohnd, tmpres, sizeof(tmpres)))
+	{
+		if (strlen(tmpres) == 0 || strfind(tmpres, "//", true) == 0) continue;
 		pos_s = strfind(tmpres, ":", true);
-		if(pos_s != -1)
+		if (pos_s != -1)
 		{
 			check_bb(tmpres);
 			strmid(tmp1, tmpres, 0, pos_s);
 			strmid(lang_texts[i][strval(tmp1)], tmpres, pos_s+2, strlen(tmpres) - pos_s);
 		}
-		else i++;
+		else
+		{
+			i++;
+		}
 	}
 	fclose(fohnd);
 	return 1;
