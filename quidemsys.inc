@@ -47,18 +47,18 @@ new FuelStations[][CoordInfo] = {
 };
 
 new FuelList[] = {
-70,45,40,298,40,40,200,80,60,40,40,40,40,45,45,40,70,100,
-45,40,40,40,45,45,20,200,40,70,70,40,45,60,90,100,35,0,
-40,50,40,40,45,5,40,50,65,40,35,90,20,60,0,40,20,20,
-20,60,50,20,40,45,90,30,20,35,5,5,40,40,20,90,90,20,
-20,20,40,40,40,40,40,45,40,0,45,45,20,20,30,90,90,70,
-70,40,40,20,40,45,40,90,50,50,40,5,40,40,40,50,40,40,
-50,0,0,90,90,90,298,298,40,40,40,400,400,30,30,30,50,50,
-40,40,50,40,20,20,60,40,40,40,40,50,50,20,40,40,40,50,
-70,40,40,40,90,40,40,40,40,300,50,40,80,80,40,40,40,40,
-40,90,90,40,45,45,20,0,50,10,20,50,20,40,40,300,50,50,
-40,30,50,20,0,40,30,40,50,40,0,0,300,200,0,20,40,40,
-40,50,40,60,40,40,40,45,0,0,0,50,0,0,
+70, 45, 40, 298, 40, 40, 200, 80, 60, 40, 40, 40, 40, 45, 45, 40, 70, 100,
+45, 40, 40, 40, 45, 45, 20, 200, 40, 70, 70, 40, 45, 60, 90, 100, 35, 0,
+40, 50, 40, 40, 45, 5, 40, 50, 65, 40, 35, 90, 20, 60, 0, 40, 20, 20,
+20, 60, 50, 20, 40, 45, 90, 30, 20, 35, 5, 5, 40, 40, 20, 90, 90, 20,
+20, 20, 40, 40, 40, 40, 40, 45, 40, 0, 45, 45, 20, 20, 30, 90, 90, 70,
+70, 40, 40, 20, 40, 45, 40, 90, 50, 50, 40, 5, 40, 40, 40, 50, 40, 40,
+50, 0, 0, 90, 90, 90, 298, 298, 40, 40, 40, 400, 400, 30, 30, 30, 50, 50,
+40, 40, 50, 40, 20, 20, 60, 40, 40, 40, 40, 50, 50, 20, 40, 40, 40, 50,
+70, 40, 40, 40, 90, 40, 40, 40, 40, 300, 50, 40, 80, 80, 40, 40, 40, 40,
+40, 90, 90, 40, 45, 45, 20, 0, 50, 10, 20, 50, 20, 40, 40, 300, 50, 50,
+40, 30, 50, 20, 0, 40, 30, 40, 50, 40, 0, 0, 300, 200, 0, 20, 40, 40,
+40, 50, 40, 60, 40, 40, 40, 45, 0, 0, 0, 50, 0, 0,
 };
 
 new Text:white, Text:black, Text:speedom[MAX_PLAYERS];
@@ -69,9 +69,9 @@ new QuidemSysEnabled = QUIDEMSYS_ENABLED;
 
 stock QuidemSys_LoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_qs = ini_Open(ConfigDB);
-	ini_GetInt(file_qs,"QuidemSys_Enabled",QuidemSysEnabled);
+	ini_GetInt(file_qs, "QuidemSys_Enabled", QuidemSysEnabled);
 	ini_Close(file_qs);
 	return 1;
 }
@@ -79,7 +79,7 @@ stock QuidemSys_LoadConfig()
 stock QuidemSys_SaveConfig()
 {
 	new file_qs = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_qs,"QuidemSys_Enabled",QuidemSysEnabled);
+	ini_SetInt(file_qs, "QuidemSys_Enabled", QuidemSysEnabled);
 	ini_Close(file_qs);
 	return 1;
 }
@@ -93,7 +93,7 @@ stock quidemsys_OnGameModeInit()
 		CreateStreamMapIcon(55, FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z]);
 	}
 	
-	new Float:max_fuel,model;
+	new Float:max_fuel, model;
 	for (new i = 1; i < MAX_VEHICLES; i++)
 	{
 		if ((model = GetVehicleModel(i)) != 0)
@@ -133,7 +133,7 @@ stock quidemsys_OnGameModeInit()
 		create_playerTD(playerid);
 	}
 	
-	SetTimer("speed_Timer",500,1);
+	SetTimer("speed_Timer", 500, 1);
 	GameMSG(lang_texts[19][20]);
 	return 1;
 }
@@ -185,36 +185,46 @@ stock quidemsys_OnPlayerCommandText(playerid, cmdtext[])
 	if (!strcmp(cmdtext, "/fill", true))
 	{
 		if (vehicleid == 0)
+		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[19][21]);
+		}
 		
 		if (!IsPlayerAtFuelStation(playerid))
+		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[19][22]);
+		}
 		
-		if (GetPVarInt(playerid,"Refueling"))
+		if (GetPVarInt(playerid, "Refueling"))
+		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[19][23]);
+		}
 		
 		new vehiclemodel = GetVehicleModel(vehicleid);
 		switch (vehiclemodel)
 		{
-			case 481,509,510:
+			case 481, 509, 510:
 			{
 				return SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][24]);
 			}
 		}
 		
 		if (Fuel[vehicleid] >= FuelList[vehiclemodel-400])
+		{
 			return SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][25]);
+		}
 		
-		SetPVarFloat(playerid,"OldFuel",Fuel[vehicleid]);
+		SetPVarFloat(playerid, "OldFuel", Fuel[vehicleid]);
 		fill_TimerID[playerid] = SetTimerEx("fill_Timer", 1000, 1, "i", playerid);
-		SetPVarInt(playerid,"Refueling",1);
+		SetPVarInt(playerid, "Refueling", 1);
 		return 1;
 	}
 	
 	if (!strcmp(cmdtext, "/engine", true))
 	{
 		if (vehicleid == 0)
+		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[19][21]);
+		}
 		
 		if (Fuel[vehicleid] <= 0.1)
 		{
@@ -240,7 +250,7 @@ public fill_Timer(playerid)
 	Fuel[vehicleid] += QS_FUEL_SPEED;
 	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || Fuel[vehicleid] >= FuelList[ GetVehicleModel(vehicleid)-400 ])
 	{
-		new RefueledAmount = floatround( Fuel[vehicleid] - GetPVarFloat(playerid,"OldFuel") ) * QS_FUEL_TARIF;
+		new RefueledAmount = floatround( Fuel[vehicleid] - GetPVarFloat(playerid, "OldFuel") ) * QS_FUEL_TARIF;
 		GivePlayerMoney(playerid, -RefueledAmount);
 		
 		new string[MAX_STRING];
@@ -248,7 +258,7 @@ public fill_Timer(playerid)
 		SendClientMessage(playerid, COLOUR_YELLOW, string);
 		
 		if (fill_TimerID[playerid] != 0) KillTimer(fill_TimerID[playerid]);
-		SetPVarInt(playerid,"Refueling",0);
+		SetPVarInt(playerid, "Refueling", 0);
 	}
 	return 0;
 }
@@ -296,7 +306,7 @@ public speed_Timer()
 		speed[0] = '\0';
 		if (Fuel[vehicleid] == 0.0)
 		{
-			strcat(speed,"~W~");
+			strcat(speed, "~W~");
 		}
 		else
 		{
@@ -304,22 +314,22 @@ public speed_Timer()
 			{
 				case 0:
 				{
-					strcat(speed,"~G~");
+					strcat(speed, "~G~");
 					Fuel[vehicleid] -= 0.0002;
 				}
 				case 1..60:
 				{
-					strcat(speed,"~G~");
+					strcat(speed, "~G~");
 					Fuel[vehicleid] -= 0.003;
 				}
 				case 61..90:
 				{
-					strcat(speed,"~Y~");
+					strcat(speed, "~Y~");
 					Fuel[vehicleid] -= 0.006;
 				}
 				default:
 				{
-					strcat(speed,"~R~");
+					strcat(speed, "~R~");
 					Fuel[vehicleid] -= 0.010;
 				}
 			}
