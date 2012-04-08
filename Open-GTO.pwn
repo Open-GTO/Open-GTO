@@ -221,10 +221,10 @@ public OnGameModeInit()
 	dm_poolday_init();
 	dm_usnavy_init();
 
-	#tryinclude "misc\mapicon"
-	#tryinclude "misc\pickups"
-	#tryinclude "misc\objects"
-	GameMSG("SERVER: Mapicons, Objects and Pickups init");
+	#tryinclude "custom\mapicon"
+	#tryinclude "custom\pickups"
+	#tryinclude "custom\objects"
+	GameMSG("SERVER: Custom mapicons, objects and pickups init");
 
 	new hour,minute;
 	gettime(hour,minute);

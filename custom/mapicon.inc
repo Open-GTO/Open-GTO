@@ -1,3 +1,9 @@
+/*
+
+	Custom map icons
+
+*/
+
 // caryeres icon
 CreateStreamMapIcon(11,777.150329,834.015563,6.862725);
 
