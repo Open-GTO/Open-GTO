@@ -22,20 +22,23 @@ new LastWorldSave = 1;
 forward WorldSave(necessarily);
 public WorldSave(necessarily) // save all
 {
-	if(necessarily == 1) goto nee;
-	if(PlayerCount() > 0)
+	if (necessarily == 1) goto nee;
+	if (PlayerCount() > 0)
 	{
 		LastWorldSave = 1;
 	}
-	else if(LastWorldSave == 1)
+	else if (LastWorldSave == 1)
 	{
 		LastWorldSave = 0;
 		goto nee;
 	}
-	if(LastWorldSave != 1) return 0;
+	if (LastWorldSave != 1)
+	{
+		return 0;
+	}
 nee:
 	new starttime = gettime();
-	foreach(Player,id)
+	foreach (Player, id)
 	{
 		PlayerSave(id);
 		AccountSave(id);
@@ -76,7 +79,7 @@ nee:
 	RaceSaveScores();
 	DeathmatchSaveScores();
 	//
-	GameMSG("World save complete! Time taken: %d seconds.",(gettime() - starttime));
+	GameMSG("World save complete! Time taken: %d seconds.", (gettime() - starttime));
 	return 1;
 }
 
@@ -84,12 +87,16 @@ nee:
 
 stock SyncTime()
 {
-	if(RealTime != 1)
+	if (RealTime != 1)
 	{
-		if(WorldTime >= 23)
+		if (WorldTime >= 23)
+		{
 			WorldTime = 0;
+		}
 		else
+		{
 			WorldTime++;
+		}
 		SetWorldTime(WorldTime);
 	} 
 	else 
@@ -109,7 +116,7 @@ stock SpawnWorld() // run at startup to spawn world
 		switch (i)
 		{
 			case SKINS_IGNORE: {}
-			default: AddPlayerClass(i,0.0,0.0,0.0,0.0,0,0,0,0,0,0);
+			default: AddPlayerClass(i, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0);
 		}
 	}
 	GameMSG("SERVER: All Classes init");
@@ -118,7 +125,7 @@ stock SpawnWorld() // run at startup to spawn world
 forward OneSecTimer();
 public OneSecTimer()
 {
-	foreach (Player,playerid)
+	foreach (Player, playerid)
 	{
 		MapIcons_Streaming(playerid);
 		trucker_RunnerTimer(playerid);

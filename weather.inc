@@ -16,7 +16,10 @@
 forward weather_WeatherUpdate();
 public weather_WeatherUpdate()
 {
-	if (sys_weather == 0) return 0;
+	if (sys_weather == 0)
+	{
+		return 0;
+	}
 	static timer_ticks;
 	timer_ticks++;
 	if (sys_weather == timer_ticks)
@@ -25,11 +28,11 @@ public weather_WeatherUpdate()
 		new weatherid;
 		switch ( random(2) )
 		{
-			case 0: weatherid = mathrandom(0,7);
-			case 1: weatherid = mathrandom(9,18);
+			case 0: weatherid = mathrandom(0, 7);
+			case 1: weatherid = mathrandom(9, 18);
 		}
 		SetWeather(weatherid);
-		GameMSG("SERVER: Weather set to %d",weatherid);
+		GameMSG("SERVER: Weather set to %d", weatherid);
 	}
 	return 1;
 }

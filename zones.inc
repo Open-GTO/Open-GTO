@@ -23,11 +23,9 @@ enum zoneinfo {
     Float:zone_maxz
 }
 new zones[][zoneinfo] = {
-
 // Indoor zones
 { "Caligula's Palace",            2087.30,  1543.20,   900.00,  2437.30,  1703.20,   1200.90},
 { "The Four Dragons Casino",      1817.30,   863.20,   900.00,  2027.30,  1083.20,   1200.90},
-
 // Outdoor Zones list by mabako, from gta client files
 { "The Big Ear",                -410.00,  1403.30,    -3.00,  -137.90,  1681.20,   200.00},
 { "Aldea Malvada",               -1372.10,  2498.50,     0.00, -1277.50,  2615.30,   200.00},
@@ -400,12 +398,12 @@ new zones[][zoneinfo] = {
 stock GetXYZZoneName(Float:x, Float:y, Float:z) // will return first zone name that XYZ is found in
 {
 	new name[MAX_NAME] = "Unknown";
-	if ((x == 0.0) && (y = 0.0)) return name;
+	if (x == 0.0 && y = 0.0) return name;
 	for (new zoneid = 0; zoneid < sizeof(zones); zoneid++)
 	{
 		if (IsXYZInZone(x, y, z, zoneid))// we are in this zone
 		{
-			set(name,zones[zoneid][zone_name]);
+			set(name, zones[zoneid][zone_name]);
 			return name;
 		}
 	}
@@ -426,10 +424,11 @@ stock GetXYZZoneID(Float:x, Float:y, Float:z)
 
 stock IsXYZInZone(Float:x, Float:y, Float:z, zoneid)
 {
-	if(zoneid == -1) return 0;
-	if(x >= zones[zoneid][zone_minx] && x < zones[zoneid][zone_maxx]
-	&& y >= zones[zoneid][zone_miny] && y < zones[zoneid][zone_maxy]
-	&& z >= zones[zoneid][zone_minz] && z < zones[zoneid][zone_maxz])
+	if (zoneid == -1) return 0;
+	if (   x >= zones[zoneid][zone_minx] && x < zones[zoneid][zone_maxx]
+		&& y >= zones[zoneid][zone_miny] && y < zones[zoneid][zone_maxy]
+		&& z >= zones[zoneid][zone_minz] && z < zones[zoneid][zone_maxz]
+	)
 	{
 		return 1;
 	}
@@ -438,19 +437,22 @@ stock IsXYZInZone(Float:x, Float:y, Float:z, zoneid)
 
 stock IsPlayerInZone(playerid, zoneid)
 {
-	if(zoneid == -1) return 0;
+	if (zoneid == -1)
+	{
+		return 0;
+	}
 	new Float:x, Float:y, Float:z;
-	GetPlayerPos(playerid,x,y,z);
+	GetPlayerPos(playerid, x, y, z);
 	return IsXYZInZone(x, y, z, zoneid);
 }
 
 stock IsPlayerInZoneName(playerid, zonename[])
 {
 	new Float:x, Float:y, Float:z;
-	GetPlayerPos(playerid,x,y,z);
+	GetPlayerPos(playerid, x, y, z);
 	for (new zoneid = 0; zoneid < sizeof(zones); zoneid++)
 	{
-		if(!strcmp(zonename,zones[zoneid][zone_name],false))
+		if(!strcmp(zonename, zones[zoneid][zone_name], false))
 		{
 			return IsPlayerInZone(playerid, zoneid);
 		}
@@ -460,14 +462,14 @@ stock IsPlayerInZoneName(playerid, zonename[])
 
 stock IsPlayerInCasino(playerid)
 {
-	if (IsPlayerInZoneName(playerid,"Caligula's Palace") || 
-		IsPlayerInZoneName(playerid,"The Four Dragons Casino")
+	if (IsPlayerInZoneName(playerid, "Caligula's Palace") || 
+		IsPlayerInZoneName(playerid, "The Four Dragons Casino")
 	) return 1;
 	return 0;
 }
 
 stock IsPlayerInStore(playerid)
 { // TODO
-	if (IsPlayerInZoneName(playerid,"24/7")) return 1;
+	if (IsPlayerInZoneName(playerid, "24/7")) return 1;
 	return 0;
 }
