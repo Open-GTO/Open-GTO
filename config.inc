@@ -26,11 +26,11 @@
 
 //#define USE_PASSWORD_ENCRYPT // если задефайнено, то пароль в файле игрока будет шифроваться
 #if defined USE_PASSWORD_ENCRYPT
-new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]$4%5a`Jdny¦IUW@G7s6&l:k;i~ YsoMЈ.cBq#|}NrTtA,";
+new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]$4%5a`Jdny¦IUW@G7s6&l:k;i~ YsoMЈ.cBq#|}NrTtA, ";
 #endif
 
 #define MAX_MONEY				50000000 // максимальное кол-во денег, которое может иметь игрок
-#define UpdatePlayerScore(%1)	SetPlayerScore(%1,GetPVarInt(%1,"Level"))
+#define UpdatePlayerScore(%1)	SetPlayerScore(%1, GetPVarInt(%1, "Level"))
 #define MIN_SEND_SYMBOLS		3 // минимальное кол-во отправляемых символов в ПМ
 #define MAX_SEND_SYMBOLS		100 // максимальное кол-во отправляемых символов в ПМ
 
@@ -77,7 +77,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 // skins
 #define SKINS_COST			0 // цена покупки скина
-#define SKINS_IGNORE		0,74  // список игнорируемых скинов
+#define SKINS_IGNORE		0, 74  // список игнорируемых скинов
 #define SKINS_MAXID			299
 #define SKINS_MINID			1
 
@@ -178,7 +178,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define KEY_USING			KEY_WALK // Кнопка 'Ходьба' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
 #define KEY_NAME			"Ходьба"
 #define PICKUP_TEXT			"\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'"
-#define CreatePickupText(%0,%1,%2,%3)	Create3DTextLabel(%0PICKUP_TEXT,0x00FFFFEE,%1,%2,%3,20.0,0,1)
+#define CreatePickupText(%0,%1,%2,%3)	Create3DTextLabel(%0PICKUP_TEXT, 0x00FFFFEE,%1,%2,%3, 20.0, 0, 1)
 // диалоги
 enum {
 	message_DialogID,

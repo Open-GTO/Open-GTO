@@ -41,9 +41,9 @@ enum CoordInfo {
 
 stock BaseLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_base = ini_Open(ConfigDB);
-	ini_GetInt(file_base,"Real_Time",RealTime);
+	ini_GetInt(file_base, "Real_Time", RealTime);
 	ini_Close(file_base);
 	return 1;
 }
@@ -51,7 +51,7 @@ stock BaseLoadConfig()
 stock BaseSaveConfig()
 {
 	new file_base = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_base,"Real_Time",RealTime);
+	ini_SetInt(file_base, "Real_Time", RealTime);
 	ini_Close(file_base);
 	return 1;
 }
@@ -67,11 +67,11 @@ stock base_OnGameModeInit()
 	return 1;
 }
 
-stock show_Msg_Dialog(playerid,string_head[],string_content[],button[])
+stock show_Msg_Dialog(playerid, string_head[], string_content[], button[])
 {
-	return ShowPlayerDialog(playerid,message_DialogID,DIALOG_STYLE_MSGBOX,
+	return ShowPlayerDialog(playerid, message_DialogID, DIALOG_STYLE_MSGBOX,
 		string_head,
 		string_content,
-		button,""
+		button, ""
 	);
 }
