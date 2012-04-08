@@ -19,7 +19,7 @@ stock AntiArmourHackLoadConfig()
 {
 	if(!ini_Exist(ConfigDB)) return 0;
 	new file_aah = ini_Open(ConfigDB);
-	ini_GetInt(file_aah,"Anti_Armour_Hack_Enabled",AntiArmourHackEnabled);
+	ini_GetInt(file_aah, "Anti_Armour_Hack_Enabled", AntiArmourHackEnabled);
 	ini_Close(file_aah);
 	return 1;
 }
@@ -27,7 +27,7 @@ stock AntiArmourHackLoadConfig()
 stock AntiArmourHackSaveConfig()
 {
 	new file_aah = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_aah,"Anti_Armour_Hack_Enabled",AntiArmourHackEnabled);
+	ini_SetInt(file_aah, "Anti_Armour_Hack_Enabled", AntiArmourHackEnabled);
 	ini_Close(file_aah);
 	return 1;
 }
@@ -58,13 +58,13 @@ stock oSetPlayerArmour(playerid,Float:armour)
 
 stock SyncArmour(playerid)
 {
-	if(AntiArmourHackEnabled != 1) return 0;
+	if (AntiArmourHackEnabled != 1) return 0;
 	new Float:clientarmour;
-	GetPlayerArmour(playerid,clientarmour);
+	GetPlayerArmour(playerid, clientarmour);
 	new Float:serverarmour = oGetPlayerArmour(playerid);
-	if(clientarmour == serverarmour) return 1;
-	if(clientarmour < serverarmour) return SetPVarFloat(playerid,"Armour",clientarmour);
-	if(clientarmour > serverarmour) return oSetPlayerArmour(playerid,serverarmour);
-	if(clientarmour < 0) return oSetPlayerArmour(playerid,0);
+	if (clientarmour == serverarmour) return 1;
+	if (clientarmour < serverarmour) return SetPVarFloat(playerid, "Armour", clientarmour);
+	if (clientarmour > serverarmour) return oSetPlayerArmour(playerid, serverarmour);
+	if (clientarmour < 0) return oSetPlayerArmour(playerid, 0);
 	return 1;
 }
