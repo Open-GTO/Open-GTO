@@ -73,7 +73,7 @@ stock wdrop_OnPlayerDeath(playerid)
 		weapons_dropped[wd_slot][wd_weaponid] = weapons[slot][pwid];
 		weapons_dropped[wd_slot][wd_bullets] = weapons[slot][pbullets] * (WEAPON_DROP_BULL / 100);
 		// запустим таймер асинхронно, чтобы пикапы удалялись постепенно
-		weapons_dropped[wd_slot][wd_timer] = SetTimerEx("wd_DropPickup", (WEAPON_DROP_TIME * 1000) + slot*300, 0, "d", wd_slot);
+		weapons_dropped[wd_slot][wd_timer] = SetTimerEx("wdrop_DropPickup", (WEAPON_DROP_TIME * 1000) + slot*300, 0, "d", wd_slot);
 	}
 	return 1;
 }
