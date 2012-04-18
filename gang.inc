@@ -276,9 +276,8 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 				SendClientMessage(playerid, COLOUR_RED, lang_texts[6][38]);
 				return 1;
    			}
-	  		set(gangname, text);
-		 	strdel(gangname, 0, idx);
-
+	  		set(gangname, text[idx+1]);
+	  		
 		 	if (MIN_GANG_NAME_LEN > strlen(gangname) > MAX_GANG_NAME_LEN)
 		 	{
 				return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][39]);
@@ -292,7 +291,7 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
    			{
 				oGivePlayerMoney(playerid,-Gang_Create_Cost, 1);
 				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[6][42]);
-				GameMSG("player: %d:  %s: created gang '%s' ", playerid, oGetPlayerName(playerid), gangname);
+				GameMSG("player: %s(%d): created gang '%s' ", oGetPlayerName(playerid), playerid, gangname);
    			}
    			else
    			{
