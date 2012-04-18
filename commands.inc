@@ -37,8 +37,7 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 	if (!strcmp(cmd, "/sound", true))
 	{
 		new string[MAX_STRING];
-		set(string, text);
-		strdel(string, 0, idx);
+		set(string, text[idx+1]);
 		new soundid = strval(strcharsplit(text, idx,' '));
 		if(soundid <= 0)
 		{

@@ -139,12 +139,14 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 			return 1;
 		}
 	 	new gangmessage[MAX_STRING];
-	 	set(gangmessage, text);
-		strdel(gangmessage, 0, idx);
-		if(!strlen(gangmessage)) return 1;
+	 	set(gangmessage, text[idx+1]);
+		if(strlen(gangmessage) == 0)
+		{
+			return 1;
+		}
 	 	format(gangmessage, sizeof(gangmessage), lang_texts[6][2], oGetPlayerName(playerid), gangmessage);
 		SendGangMessage(GetPlayerGangID(playerid), gangmessage, COLOUR_GANG_CHAT);
-		GameMSG("player: %d:  %s:	%s", playerid, oGetPlayerName(playerid), gangmessage);
+		GameMSG("player: %s(%d): %s", oGetPlayerName(playerid), playerid, gangmessage);
 		return 1;
 	}
 	if (!strcmp(cmd, "/gang", true))
@@ -387,8 +389,8 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 			}
 
    			new kickplayername[MAX_NAME], string[MAX_STRING];
-   			set(kickplayername, text);
-			strdel(kickplayername, 0, idx);
+   			set(kickplayername, text[idx+1]);
+   			
 			if (!strlen(kickplayername))
 			{
 				return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][61]);

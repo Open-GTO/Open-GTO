@@ -38,8 +38,8 @@ stock AdminRace_OnPlayerCommandText(playerid, text[]) // process player commands
 		if (!strcmp(cmd, "create", true))
 		{
 			new racename[MAX_NAME];
-			set(racename, text);
-			strdel(racename, 0, idx);
+			set(racename, text[idx+1]);
+			
 			if (strlen(racename) < 3)
 			{
 				return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][1]);

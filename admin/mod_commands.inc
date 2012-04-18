@@ -236,9 +236,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 	{
 		SendMessageToAdmins(playerid, COLOUR_LIGHTGREEN, text);
 		new string[MAX_STRING];
-		set(string, text);
-		strdel(string, 0, idx);
-		format(string, sizeof(string), lang_texts[12][93], string);
+		format(string, sizeof(string), lang_texts[12][93], text[idx+1]);
 		SendClientMessageToAll(COLOUR_BLUE, string);
 		return 1;
 	}

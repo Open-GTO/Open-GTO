@@ -135,14 +135,16 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 	if (!strcmp(cmd, "/an", true))
 	{
 		new mtype = strval(strcharsplit(text, idx, ' '));
-		if (mtype < 0 || mtype == 2 || mtype > 9) return 1;
+		if (mtype < 0 || mtype == 2 || mtype > 9)
+		{
+			return 1;
+		}
 		new string[MAX_STRING];
-		set(string, text);
+		set(string, text[idx+1]);
 		if (string[0] == '~')
 		{
 			return 1;
 		}
-		strdel(string, 0, idx);
 		GameTextForAll(string, 4999, mtype);
 		return 1;
 	}
@@ -190,9 +192,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 	if (!strcmp(cmd, "/ssay", true))
 	{
 		new string[MAX_STRING];
-		set(string, text);
-		strdel(string, 0, idx);
-		format(string, sizeof(string), lang_texts[12][1], string);
+		format(string, sizeof(string), lang_texts[12][1], text[idx+1]);
 		SendClientMessageToAll(COLOUR_YELLOW, string);
 		return 1;
 	}

@@ -45,9 +45,8 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 	}
 	if (!strcmp(cmd, "/say", true))
 	{
-		strdel(text, 0, idx);
 		new string[MAX_STRING * 2];
-		format(string, sizeof(string), lang_texts[12][37], text);
+		format(string, sizeof(string), lang_texts[12][37], text[idx+1]);
 		SendClientMessageToAll(COLOUR_BLUE, string);
 		return 1;
 	}
@@ -88,8 +87,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 	}
 	if (!strcmp(cmd, "/admincnn", true))
 	{
-		strdel(text, 0, idx);
-		GameTextForAll(text, 4000, 6);
+		GameTextForAll(text[idx+1], 4000, 6);
 		return 1;
 	}
 	if (!strcmp(cmd, "/akill", true))
@@ -463,13 +461,18 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 	if (!strcmp(cmd, "/getip", true))
 	{
 		new string[MAX_STRING], LastIP[16], filename_account[MAX_STRING];
-		set(string, text);
-		strdel(string, 0, idx);
+		set(string, text[idx+1]);
 		
-		if(strlen(string) <= 0) return SendClientMessage(playerid, COLOUR_RED, "Неправильный ник");
+		if(strlen(string) <= 0)
+		{
+			return SendClientMessage(playerid, COLOUR_RED, "Неправильный ник");
+		}
 		
-		format(filename_account, sizeof(filename_account), "%s%s.txt", AccountDB, string);
-		if(!ini_Exist(filename_account)) return SendClientMessage(playerid, COLOUR_RED, "Такого аккаунта не существует");
+		format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, string);
+		if(!ini_Exist(filename_account))
+		{
+			return SendClientMessage(playerid, COLOUR_RED, "Такого аккаунта не существует");
+		}
 		
 		new file_account_db_ad = ini_Open(filename_account);
 		ini_Get(file_account_db_ad, "LastIP", LastIP);
