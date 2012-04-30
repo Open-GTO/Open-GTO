@@ -10,7 +10,7 @@
 #pragma library weaponhack
 
 
-new AntiWeaponHackEnabled = ANTI_SPEED_HACK_ENABLED;
+new AntiWeaponHackEnabled = ANTI_WEAPON_HACK_ENABLED;
 
 stock AntiWeaponHackLoadConfig()
 {

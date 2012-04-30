@@ -60,8 +60,9 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define ANTI_JETPACK_ENABLED		1 // защита от использования JetPack
 #define ANTI_RCON_HACK_ENABLED		1 // защита от взлома rcon пароля
 #define ANTI_ARMOUR_HACK_ENABLED	1 // защита от чита на броню
+#define ANTI_WEAPON_HACK_ENABLED	0 // защита от чита на оружие и патроны
 
-#define ANTI_SPEED_HACK_ENABLED		1 // защита от speedhack, airbreak, телепортации(если наблюдаются ложные срабатывания, подрегулируйте параметр ниже)
+#define ANTI_SPEED_HACK_ENABLED		0 // защита от speedhack, airbreak, телепортации(если наблюдаются ложные срабатывания, подрегулируйте параметр ниже)
 #define ANTI_SPEED_HACK_CHECK_TIME	900 // время таймера для защиты от спидхака, на локалхосте актуально 1000
 										// для более нагруженных серверов нужно устанавливать чуть меньшее значение
 
