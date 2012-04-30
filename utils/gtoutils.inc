@@ -171,11 +171,10 @@ stock PlayerCount()
 stock SetPlayerPosEx(playerid, Float:X, Float:Y, Float:Z, Float:Angle, Interior, World=0)
 {
     SetPlayerInterior(playerid, Interior);
-	SetPlayerVirtualWorld(playerid, World);
     SetPlayerFacingAngle(playerid, Angle);
+	SetPlayerVirtualWorld(playerid, World);
     oSetPlayerPos(playerid, X, Y, Z);
     SetCameraBehindPlayer(playerid);
-    return 1;
 }
 
 stock settime()

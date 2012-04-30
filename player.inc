@@ -192,20 +192,6 @@ stock player_OnPlayerSpawn(playerid)
 	new house_id = GetPlayerSpawnHouseID(playerid);
 	SetPlayerInterior(playerid, 0);
 	
-	if (house_id == SPAWN_HOUSE_GANG)
-	{
-		new gangid = GetPlayerGangID(playerid);
-		new gang_houseid = gang_GetHouse(gangid);
-		if (gangid == 0 || gang_houseid == -1)
-		{
-			house_id = -1;
-			SetPlayerSpawnHouseID(playerid,-1);
-		}
-		else
-		{
-			SetPlayerPosToHouse(playerid, gang_houseid);
-		}
-	}
 	if (house_id == SPAWN_HOUSE_NONE)
 	{
 		if (GetPVarFloat(playerid, "Coord_X") != 0.0 && GetPVarFloat(playerid, "Coord_Y") != 0.0 && GetPVarFloat(playerid, "Coord_Z") != 0.0)
@@ -227,6 +213,20 @@ stock player_OnPlayerSpawn(playerid)
 				new spawnid = GetRndPlayerSpawnByLevel(GetPlayerLevel(playerid));
 				oSetPlayerPos(playerid, LeveledPlayerSpawns[spawnid][playerspawn_x], LeveledPlayerSpawns[spawnid][playerspawn_y], LeveledPlayerSpawns[spawnid][playerspawn_z]); // Warp the player
 			}
+		}
+	}
+	else if (house_id == SPAWN_HOUSE_GANG)
+	{
+		new gangid = GetPlayerGangID(playerid);
+		new gang_houseid = gang_GetHouse(gangid);
+		if (gangid == 0 || gang_houseid == -1)
+		{
+			house_id = -1;
+			SetPlayerSpawnHouseID(playerid,-1);
+		}
+		else
+		{
+			SetPlayerPosToHouse(playerid, gang_houseid);
 		}
 	}
 	else
