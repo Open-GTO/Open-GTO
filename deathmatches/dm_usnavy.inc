@@ -4,11 +4,13 @@
 //
 
 #if defined _dm_usnavy_included
-  #endinput
+	#endinput
 #endif
 
 #define _dm_usnavy_included
 #pragma library dm_usnavy
+
+
 #include "deathmatch"
 
 static name[MAX_NAME] = "The US Navy"; // unique name of dm
@@ -29,22 +31,18 @@ static weapons[MAX_DMWEAPONS+1] = {27,29,31,0}; // combat shotgun, mp5, m4
 static Float:startcp[CoordInfo] = {2786.84, -2456.29, 13.63}; // where startpoint is located
 static Float:centrecp[CoordInfo] = {-1368.18, 493.72, 24.30}; // central point
 static Float:spawnpoints[][CoordInfo] = {
-{-1373.08, 500.86, 11.20}, // usnsp2
-{-1291.24, 490.64, 11.20}, // usnsp3
-{-1288.25, 513.94, 11.20}, // usnsp4
-{-1394.59, 488.72, 11.20}, // usnsp5
-{-1352.81, 517.50, 11.20}, // usnsp6
-{-1446.91, 501.29, 3.04}, //  usnsp7
-{-1376.54, 513.85, 3.04} //  usnsp8
+	{-1373.08, 500.86, 11.20}, // usnsp2
+	{-1291.24, 490.64, 11.20}, // usnsp3
+	{-1288.25, 513.94, 11.20}, // usnsp4
+	{-1394.59, 488.72, 11.20}, // usnsp5
+	{-1352.81, 517.50, 11.20}, // usnsp6
+	{-1446.91, 501.29, 3.04}, //  usnsp7
+	{-1376.54, 513.85, 3.04} //  usnsp8
 };
 
-static dmid; // this will hold the id this dm is assigned at init
-
-forward dm_usnavy_init();
-
-public dm_usnavy_init() // unique named init function (must be ran on gamemode init)
+stock dm_usnavy_init()
 {
-	dmid = RegisterDM(name);
+	new dmid = RegisterDM(name);
 	if (dmid == INVALID_RACE_ID) return;
 
 	Deathmatch[dmid][dm_frequency] = frequency;
@@ -73,7 +71,7 @@ public dm_usnavy_init() // unique named init function (must be ran on gamemode i
 	DMCentreCP[dmid][Coord_Z] = centrecp[Coord_Z];
 	
 	DMSpawnsSize[dmid] = sizeof(spawnpoints);
-	for (new spid=0;spid<sizeof(spawnpoints);spid++)
+	for (new spid = 0; spid < sizeof(spawnpoints); spid++)
 	{
 		DMSpawnPoints[dmid][spid][Coord_X] = spawnpoints[spid][Coord_X];
 		DMSpawnPoints[dmid][spid][Coord_Y] = spawnpoints[spid][Coord_Y];
@@ -81,6 +79,4 @@ public dm_usnavy_init() // unique named init function (must be ran on gamemode i
 	}
 
  	GameMSG("Deathmatch: '%s' Loaded.",name);
- }
- 	
-
+}

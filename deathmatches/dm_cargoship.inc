@@ -4,11 +4,13 @@
 //
 
 #if defined _dm_cargoship_included
-  #endinput
+	#endinput
 #endif
 
 #define _dm_cargoship_included
 #pragma library dm_cargoship
+
+
 #include "deathmatch"
 
 static name[MAX_NAME] = "Cargo Ship"; // unique name of dm
@@ -29,22 +31,18 @@ static weapons[MAX_DMWEAPONS+1] = {22,25,9,0}; // pistol, shotgun, chainsaw
 static Float:startcp[CoordInfo] = {2358.66, 533.56, 1.38}; // where startpoint is located
 static Float:centrecp[CoordInfo] = {-2472.95, 1547.36, 33.23}; // central point
 static Float:spawnpoints[][CoordInfo] = {
-{-2426.56, 1536.30, 2.12}, // cssp2
-{-2366.23, 1536.54, 2.12}, // cssp3
-{-2432.40, 1534.24, 34.40}, // cssp4
-{-2384.75, 1534.63, 26.05}, // cssp5
-{-2350.29, 1548.60, 23.14}, // cssp6
-{-2342.15, 1530.17, 17.33}, //  cssp7
-{-2302.86, 1544.25, 18.77} //  cssp8
+	{-2426.56, 1536.30, 2.12}, // cssp2
+	{-2366.23, 1536.54, 2.12}, // cssp3
+	{-2432.40, 1534.24, 34.40}, // cssp4
+	{-2384.75, 1534.63, 26.05}, // cssp5
+	{-2350.29, 1548.60, 23.14}, // cssp6
+	{-2342.15, 1530.17, 17.33}, //  cssp7
+	{-2302.86, 1544.25, 18.77} //  cssp8
 };
 
-static dmid; // this will hold the id this dm is assigned at init
-
-forward dm_cargoship_init();
-
-public dm_cargoship_init() // unique named init function (must be ran on gamemode init)
+stock dm_cargoship_init()
 {
-	dmid = RegisterDM(name);
+	new dmid = RegisterDM(name);
 	if (dmid == INVALID_RACE_ID) return;
 
 	Deathmatch[dmid][dm_frequency] = frequency;
@@ -73,7 +71,7 @@ public dm_cargoship_init() // unique named init function (must be ran on gamemod
 	DMCentreCP[dmid][Coord_Z] = centrecp[Coord_Z];
 	
 	DMSpawnsSize[dmid] = sizeof(spawnpoints);
-	for (new spid=0;spid<sizeof(spawnpoints);spid++)
+	for (new spid = 0; spid < sizeof(spawnpoints); spid++)
 	{
 		DMSpawnPoints[dmid][spid][Coord_X] = spawnpoints[spid][Coord_X];
 		DMSpawnPoints[dmid][spid][Coord_Y] = spawnpoints[spid][Coord_Y];
@@ -81,6 +79,4 @@ public dm_cargoship_init() // unique named init function (must be ran on gamemod
 	}
 
  	GameMSG("Deathmatch: '%s' Loaded.",name);
- }
- 	
-
+}

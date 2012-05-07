@@ -4,11 +4,13 @@
 //
 
 #if defined _dm_badandugly_included
-  #endinput
+	#endinput
 #endif
 
 #define _dm_badandugly_included
 #pragma library dm_badandugly
+
+
 #include "deathmatch"
 
 static name[MAX_NAME] = "The Bad And The Ugly"; // unique name of dm
@@ -29,20 +31,16 @@ static weapons[MAX_DMWEAPONS+1] = {27,0}; //combat shotgun
 static Float:startcp[CoordInfo] = {143.5471,-1567.5682,10.7642};  // where startpoint is located
 static Float:centrecp[CoordInfo] = {-384.6577,2239.5940,42.0938};  // where central
 static Float:spawnpoints[][CoordInfo] = {
-{-376.2137,2258.6445,43.0547}, // dm3sp1
-{-429.5800,2240.5718,42.9834}, // dm3sp2
-{-480.4542,2181.9944,41.8672}, // dm3sp3
-{-384.8060,2207.6897,42.4239}, // dm3sp4
-{-332.4991,2227.6526,42.4888} // dm3sp5
+	{-376.2137,2258.6445,43.0547}, // dm3sp1
+	{-429.5800,2240.5718,42.9834}, // dm3sp2
+	{-480.4542,2181.9944,41.8672}, // dm3sp3
+	{-384.8060,2207.6897,42.4239}, // dm3sp4
+	{-332.4991,2227.6526,42.4888} // dm3sp5
 };
 
-static dmid; // this will hold the id this dm is assigned at init
-
-forward dm_badandugly_init();
-
-public dm_badandugly_init() // unique named init function (must be ran on gamemode init)
+stock dm_badandugly_init()
 {
-	dmid = RegisterDM(name);
+	new dmid = RegisterDM(name);
 	if (dmid == INVALID_RACE_ID) return;
 
 	Deathmatch[dmid][dm_frequency] = frequency;
@@ -71,7 +69,7 @@ public dm_badandugly_init() // unique named init function (must be ran on gamemo
 	DMCentreCP[dmid][Coord_Z] = centrecp[Coord_Z];
 	
 	DMSpawnsSize[dmid] = sizeof(spawnpoints);
-	for (new spid=0;spid<sizeof(spawnpoints);spid++)
+	for (new spid = 0; spid < sizeof(spawnpoints); spid++)
 	{
 		DMSpawnPoints[dmid][spid][Coord_X] = spawnpoints[spid][Coord_X];
 		DMSpawnPoints[dmid][spid][Coord_Y] = spawnpoints[spid][Coord_Y];
@@ -79,6 +77,4 @@ public dm_badandugly_init() // unique named init function (must be ran on gamemo
 	}
 
  	GameMSG("Deathmatch: '%s' Loaded.",name);
- }
- 	
-
+}

@@ -2,11 +2,13 @@
 //
 
 #if defined _dm_air_included
-#endinput
+	#endinput
 #endif
 
 #define _dm_air_included
 #pragma library dm_air
+
+
 #include "deathmatch"
 
 static name[MAX_NAME] = "Base Jump"; // unique name of dm
@@ -37,13 +39,9 @@ static Float:spawnpoints[][CoordInfo] = {
 	{2323.78,1283.39,1299.50}
 };
 
-static dmid; // this will hold the id this dm is assigned at init
-
-forward dm_air_init();
-
-public dm_air_init() // unique named init function (must be ran on gamemode init)
+stock dm_air_init()
 {
-	dmid = RegisterDM(name);
+	new dmid = RegisterDM(name);
 	if (dmid == INVALID_RACE_ID) return;
 
 	Deathmatch[dmid][dm_frequency] = frequency;
@@ -72,7 +70,7 @@ public dm_air_init() // unique named init function (must be ran on gamemode init
 	DMCentreCP[dmid][Coord_Z] = centrecp[Coord_Z];
 	
 	DMSpawnsSize[dmid] = sizeof(spawnpoints);
-	for (new spid=0;spid<sizeof(spawnpoints);spid++)
+	for (new spid = 0; spid < sizeof(spawnpoints); spid++)
 	{
 		DMSpawnPoints[dmid][spid][Coord_X] = spawnpoints[spid][Coord_X];
 		DMSpawnPoints[dmid][spid][Coord_Y] = spawnpoints[spid][Coord_Y];
@@ -80,6 +78,4 @@ public dm_air_init() // unique named init function (must be ran on gamemode init
 	}
 
 	GameMSG("Deathmatch: '%s' Loaded.",name);
- }
- 	
-
+}

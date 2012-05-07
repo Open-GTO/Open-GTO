@@ -4,11 +4,13 @@
 //
 
 #if defined _dm_bluemountains_included
-  #endinput
+	#endinput
 #endif
 
 #define _dm_bluemountains_included
 #pragma library dm_bluemountains
+
+
 #include "deathmatch"
 
 static name[MAX_NAME] = "Blue Mountains"; // unique name of dm
@@ -29,20 +31,16 @@ static weapons[MAX_DMWEAPONS+1] = {8,23,0}; // silenced pistol, katana
 static Float:startcp[CoordInfo] = {1653.5696,-1051.1740,23.8984};  // where startpoint is located
 static Float:centrecp[CoordInfo] = {-2815.3022,-1523.8160,140.8438};  // where startpoint is located
 static Float:spawnpoints[][CoordInfo] = {
-{-2851.7197,-1580.4484,141.3203}, // sp2
-{-2809.9307,-1655.5942,141.5151}, // sp3
-{-2748.6201,-1376.3340,144.1691}, // sp4
-{-2835.4417,-1402.2345,134.0908}, // sp5
-{-2859.0232,-1481.2345,136.1464} // sp6
+	{-2851.7197,-1580.4484,141.3203}, // sp2
+	{-2809.9307,-1655.5942,141.5151}, // sp3
+	{-2748.6201,-1376.3340,144.1691}, // sp4
+	{-2835.4417,-1402.2345,134.0908}, // sp5
+	{-2859.0232,-1481.2345,136.1464} // sp6
 };
 
-static dmid; // this will hold the id this dm is assigned at init
-
-forward dm_bluemountains_init();
-
-public dm_bluemountains_init() // unique named init function (must be ran on gamemode init)
+stock dm_bluemountains_init()
 {
-	dmid = RegisterDM(name);
+	new dmid = RegisterDM(name);
 	if (dmid == INVALID_RACE_ID) return;
 
 	Deathmatch[dmid][dm_frequency] = frequency;
@@ -71,7 +69,7 @@ public dm_bluemountains_init() // unique named init function (must be ran on gam
 	DMCentreCP[dmid][Coord_Z] = centrecp[Coord_Z];
 	
 	DMSpawnsSize[dmid] = sizeof(spawnpoints);
-	for (new spid=0;spid<sizeof(spawnpoints);spid++)
+	for (new spid = 0; spid < sizeof(spawnpoints); spid++)
 	{
 		DMSpawnPoints[dmid][spid][Coord_X] = spawnpoints[spid][Coord_X];
 		DMSpawnPoints[dmid][spid][Coord_Y] = spawnpoints[spid][Coord_Y];
@@ -79,6 +77,4 @@ public dm_bluemountains_init() // unique named init function (must be ran on gam
 	}
 
  	GameMSG("Deathmatch: '%s' Loaded.",name);
- }
- 	
-
+}

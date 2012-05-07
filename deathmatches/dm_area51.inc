@@ -2,11 +2,13 @@
 //
 
 #if defined _dm_area51_included
-#endinput
+	#endinput
 #endif
 
 #define _dm_area51_included
 #pragma library dm_area51
+
+
 #include "deathmatch"
 
 static name[MAX_NAME] = "Area 51"; // unique name of dm
@@ -42,13 +44,9 @@ static Float:spawnpoints[][CoordInfo] = {
 	
 };
 
-static dmid; // this will hold the id this dm is assigned at init
-
-forward dm_area51_init();
-
-public dm_area51_init() // unique named init function (must be ran on gamemode init)
+stock dm_area51_init()
 {
-	dmid = RegisterDM(name);
+	new dmid = RegisterDM(name);
 	if (dmid == INVALID_RACE_ID) return;
 
 	Deathmatch[dmid][dm_frequency] = frequency;
@@ -77,7 +75,7 @@ public dm_area51_init() // unique named init function (must be ran on gamemode i
 	DMCentreCP[dmid][Coord_Z] = centrecp[Coord_Z];
 	
 	DMSpawnsSize[dmid] = sizeof(spawnpoints);
-	for (new spid=0;spid<sizeof(spawnpoints);spid++)
+	for (new spid = 0; spid < sizeof(spawnpoints); spid++)
 	{
 		DMSpawnPoints[dmid][spid][Coord_X] = spawnpoints[spid][Coord_X];
 		DMSpawnPoints[dmid][spid][Coord_Y] = spawnpoints[spid][Coord_Y];
@@ -85,6 +83,4 @@ public dm_area51_init() // unique named init function (must be ran on gamemode i
 	}
 
  	GameMSG("Deathmatch: '%s' Loaded.",name);
- }
- 	
-
+}

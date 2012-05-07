@@ -1,6 +1,6 @@
 //
-// Created:     26.09.06
-// Aurthor:    Iain Gilbert
+// Created:	26.09.06
+// Aurthor:	Iain Gilbert
 //
 
 #if defined _race_thegrove_included
@@ -66,6 +66,6 @@ stock race_thegrove_init()
 	}
 
 	RaceStats[RaceID][race_timer] = MakeRaceSleepTime(RaceID);
-    RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
+	RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
   	GameMSG("Race: '%s' Loaded.",racename);
 }

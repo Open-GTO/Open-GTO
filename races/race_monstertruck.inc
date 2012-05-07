@@ -1,6 +1,6 @@
 //
-// Created:     23.09.06
-// Aurthor:    Iain Gilbert
+// Created:	23.09.06
+// Aurthor:	Iain Gilbert
 //
 
 #if defined _race_monstertruck_included
@@ -77,6 +77,6 @@ stock race_monstertruck_init()
 	}
 
 	RaceStats[RaceID][race_timer] = MakeRaceSleepTime(RaceID);
-    RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
+	RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
   	GameMSG("Race: '%s' Loaded.",racename);
 }

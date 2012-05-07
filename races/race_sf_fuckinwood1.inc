@@ -1,6 +1,6 @@
 //
-// Created:     20.10.07
-// Aurthor:    Frolov Dmitry
+// Created:	20.10.07
+// Aurthor:	Frolov Dmitry
 //
 
 #if defined _race_sf_fuckinwood1_included
@@ -75,6 +75,6 @@ stock race_sf_fuckinwood1_init()
 	}
 
 	RaceStats[RaceID][race_timer] = MakeRaceSleepTime(RaceID);
-    RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
+	RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
   	GameMSG("Race: '%s' Loaded.",racename);
 }

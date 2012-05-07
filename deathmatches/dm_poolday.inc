@@ -4,11 +4,13 @@
 //
 
 #if defined _dm_poolday_included
-#endinput
+	#endinput
 #endif
 
 #define _dm_poolday_included
 #pragma library dm_poolday
+
+
 #include "deathmatch"
 
 static name[MAX_NAME] = "fy_poolday"; // unique name of dm
@@ -47,15 +49,11 @@ static Float:spawnpoints[][CoordInfo] = {
  	{1785.2344, 2768.9804, 11.0041},
  	{1782.2141, 2758.0842, 11.0041},
  	{1779.2082, 2746.6228, 11.0041}
- 	};
+};
 
-static dmid; // this will hold the id this dm is assigned at init
-
-forward dm_poolday_init();
-
-public dm_poolday_init() // unique named init function (must be ran on gamemode init)
+stock dm_poolday_init()
 {
-	dmid = RegisterDM(name);
+	new dmid = RegisterDM(name);
 	if (dmid == INVALID_RACE_ID) return;
 
 	Deathmatch[dmid][dm_frequency] = frequency;
@@ -84,7 +82,7 @@ public dm_poolday_init() // unique named init function (must be ran on gamemode 
 	DMCentreCP[dmid][Coord_Z] = centrecp[Coord_Z];
 	
 	DMSpawnsSize[dmid] = sizeof(spawnpoints);
-	for (new spid=0;spid<sizeof(spawnpoints);spid++)
+	for (new spid = 0; spid < sizeof(spawnpoints); spid++)
 	{
 		DMSpawnPoints[dmid][spid][Coord_X] = spawnpoints[spid][Coord_X];
 		DMSpawnPoints[dmid][spid][Coord_Y] = spawnpoints[spid][Coord_Y];
@@ -92,6 +90,4 @@ public dm_poolday_init() // unique named init function (must be ran on gamemode 
 	}
 
  	GameMSG("Deathmatch: '%s' Loaded.",name);
- }
- 	
-
+}

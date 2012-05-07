@@ -1,6 +1,6 @@
 //
-// Created:     13.October.2006
-// Aurthor:    |Insane|
+// Created:	13.October.2006
+// Aurthor:	|Insane|
 // Also Thanks to Iain for a little help about how to make it
 // Thanks Again
 
@@ -70,6 +70,6 @@ stock race_roundwego_init()
 	}
 
 	RaceStats[RaceID][race_timer] = MakeRaceSleepTime(RaceID);
-    RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
+	RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
   	GameMSG("Race: '%s' Loaded.",racename);
 }

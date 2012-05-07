@@ -1,6 +1,6 @@
 //
-// Created:     12.09.06
-// Aurthor:    Iain Gilbert
+// Created:	12.09.06
+// Aurthor:	Iain Gilbert
 //
 
 #if defined _race_lostinsmoke_included
@@ -78,6 +78,6 @@ stock race_lostinsmoke_init()
 	}
 
 	RaceStats[RaceID][race_timer] = MakeRaceSleepTime(RaceID);
-    RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
+	RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
   	GameMSG("Race: '%s' Loaded.",racename);
 }

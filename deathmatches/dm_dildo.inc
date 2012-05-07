@@ -4,11 +4,13 @@
 //
 
 #if defined _dm_dildo_included
-  #endinput
+	#endinput
 #endif
 
 #define _dm_dildo_included
 #pragma library dm_dildo
+
+
 #include "deathmatch"
 
 static name[MAX_NAME] = "Dildo Farm Revenge"; // unique name of dm
@@ -41,13 +43,9 @@ static Float:spawnpoints[][CoordInfo] = {
 	{-1449.7051,-1481.8016,101.7578}
 };
 
-static dmid; // this will hold the id this dm is assigned at init
-
-forward dm_dildo_init();
-
-public dm_dildo_init() // unique named init function (must be ran on gamemode init)
+stock dm_dildo_init()
 {
-	dmid = RegisterDM(name);
+	new dmid = RegisterDM(name);
 	if (dmid == INVALID_RACE_ID) return;
 
 	Deathmatch[dmid][dm_frequency] = frequency;
@@ -76,7 +74,7 @@ public dm_dildo_init() // unique named init function (must be ran on gamemode in
 	DMCentreCP[dmid][Coord_Z] = centrecp[Coord_Z];
 	
 	DMSpawnsSize[dmid] = sizeof(spawnpoints);
-	for (new spid=0;spid<sizeof(spawnpoints);spid++)
+	for (new spid = 0; spid < sizeof(spawnpoints); spid++)
 	{
 		DMSpawnPoints[dmid][spid][Coord_X] = spawnpoints[spid][Coord_X];
 		DMSpawnPoints[dmid][spid][Coord_Y] = spawnpoints[spid][Coord_Y];
@@ -84,6 +82,4 @@ public dm_dildo_init() // unique named init function (must be ran on gamemode in
 	}
 
  	GameMSG("Deathmatch: '%s' Loaded.",name);
- }
- 	
-
+}
