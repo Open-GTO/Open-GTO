@@ -151,6 +151,7 @@ stock account_login_db_ini(playerid, password[])
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][7]);
 		KickPlayer(playerid, lang_texts[1][4]);
 		account_OnPlayerConnect(playerid); // если игрок админ, то опять выводим меню
+		ini_Close(file_account);
 		return 0;
 	}
 	SetPVarString(playerid, "Password", password);

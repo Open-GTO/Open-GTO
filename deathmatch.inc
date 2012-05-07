@@ -142,6 +142,7 @@ stock DeathmatchLoadBaseDB(dmid)
 	if (dmid <= 0)
 	{
 		GameMSG("Deathmatch (DB): '%s' Failed to load.", Deathmatch[dmid][dm_name]);
+		ini_Close(file_dm);
 		return INVALID_DM_ID;
 	}
     ini_GetInt(file_dm, "Frequency", Deathmatch[dmid][dm_frequency]);

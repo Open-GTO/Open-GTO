@@ -146,6 +146,7 @@ stock RaceLoadBaseDB(raceid)
 	if (raceid == INVALID_RACE_ID)
 	{
 		GameMSG("Race (DB): %s Failed to load", Race[raceid][race_name]);
+		ini_Close(file_race);
 		return INVALID_RACE_ID;
 	}
 	ini_GetInt(file_race, "Race_Frequency", Race[raceid][race_frequency]);
