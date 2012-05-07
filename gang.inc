@@ -280,7 +280,7 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
    			}
 	  		set(gangname, text[idx+1]);
 	  		
-		 	if (MIN_GANG_NAME_LEN > strlen(gangname) > MAX_GANG_NAME_LEN)
+		 	if (strlen(gangname) > MAX_GANG_NAME_LEN || strlen(gangname) < MIN_GANG_NAME_LEN)
 		 	{
 				return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][39]);
 			}

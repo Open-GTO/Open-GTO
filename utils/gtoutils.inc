@@ -185,7 +185,7 @@ stock settime()
 	return 1;
 }
 
-stock StringCharCheck(string[MAX_STRING])
+stock StringCharCheck(string[])
 {
 	for(new i = strlen(string)-1; i >= 0; i--)
 	{

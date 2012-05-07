@@ -40,6 +40,7 @@ stock show_User_Menu(playerid)
 	return ShowPlayerDialog(playerid, user_menu_DialogID, DIALOG_STYLE_LIST,
 		"Меню игрока",
 		"Информация о персонаже\n\
+		Банда\n\
 		Стиль борьбы\n\
 		Анимации\n\
 		Телепорты\n\
@@ -221,13 +222,73 @@ stock show_ChangePass_Menu(playerid)
 		"ОК", "Назад"
 	);
 }
-/*
-stock usermenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+
+stock show_Gang_Menu(playerid)
 {
-	#pragma unused newkeys, oldkeys
-	show_menu(playerid);
-	return 1;
-}*/
+	new string[512];
+	// если игрок не в банде
+	new gangid = GetPlayerGangID(playerid);
+	if (gangid == 0)
+	{
+		strcat(string, "Создать банду\n", sizeof(string));
+		if (GetPVarInt(playerid, "GangInvite") != 0)
+		{
+			strcat(string, "Принять приглашение\n", sizeof(string));
+		}
+	}
+	else
+	{
+		strcat(string,
+			"Информация о банде\n\
+			Выйти из банды\n",
+			sizeof(string)
+		);
+		if (!strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
+		{
+			strcat(string,
+				"Пригласить игрока\n\
+				Изменить цвет\n",
+				sizeof(string)
+			);
+		}
+	}
+	
+	return ShowPlayerDialog(playerid, gang_menu_DialogID, DIALOG_STYLE_LIST,
+		"Меню банды",
+		string,
+		"ОК", "Назад"
+	);
+}
+
+stock show_GangCreate_Menu(playerid, step)
+{
+	new string[512];
+	SetPVarInt(playerid, "usermenu_Gang_Step", step);
+	switch (step)
+	{
+		case 0: // имя
+		{
+			set(string, "Введите имя банды");
+		}
+		case 1: // цвет
+		{
+			set(string, "Введите цвет банды:\n\t");
+			for (new i = 0; i < sizeof(colors_Array); i++)
+			{
+				format(string, sizeof(string), "%s  {%06x}%s", string, colors_Array[i][color_code] >>> 8, colors_Array[i][color_name]);
+				if ((i+1) % 5 == 0)
+				{
+					strcat(string, "\n\t", sizeof(string));
+				}
+			}
+		}
+	}
+	return ShowPlayerDialog(playerid, gang_create_menu_DialogID, DIALOG_STYLE_INPUT,
+		"Создание банды",
+		string,
+		"ОК", "Назад"
+	);
+}
 
 stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
@@ -286,36 +347,40 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					);
 					return show_User_Menu_Dialog(playerid, "Информация о персонаже", string);
 				}
-				case 1: // Стиль борьбы
+				case 1: // Банда
+				{
+					return show_Gang_Menu(playerid);
+				}
+				case 2: // Стиль борьбы
 				{
 					showFightStyleMenu(playerid);
 					return 1;
 				}
-				case 2: // Анимации
+				case 3: // Анимации
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 3: // Телепорты
+				case 4: // Телепорты
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 4: // Выбросить оружие
+				case 5: // Выбросить оружие
 				{
 					//DropAmmo(playerid);
 					oResetPlayerWeapons(playerid);
 					return show_User_Menu_Dialog(playerid, "Выбросить оружие", "Вы добровольно избавились от всего оружия.");
 				}
-				case 5: // Место спавна
+				case 6: // Место спавна
 				{
 					return show_SpawnSelect_Menu(playerid);
 				}
-				case 6: // Мои бизнесы
+				case 7: // Мои бизнесы
 				{
 					return show_Businesses_Menu(playerid);
 				}
-				case 7: // Администрация онлайн
+				case 8: // Администрация онлайн
 				{
 					new idsa = 0,
 						idsm = 0,
@@ -352,16 +417,16 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					return show_User_Menu_Dialog(playerid, "Администрация онлайн", string);
 				}
-				case 8: // Связь с администрацией
+				case 9: // Связь с администрацией
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 9: // Настройки
+				case 10: // Настройки
 				{
 					return show_Setting_Menu(playerid);
 				}
-				case 10: // Версия
+				case 11: // Версия
 				{
 					show_User_Menu_Dialog(playerid,
 						"Информация о версии",
@@ -652,6 +717,150 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 		#endif
 			AccountSave(playerid);
 			oGivePlayerMoney(playerid,-CHANGE_PASS_COST, 1);
+			return 1;
+		}
+		case gang_menu_DialogID:
+		{
+			if (!response)
+			{
+				return show_User_Menu(playerid);
+			}
+			new gangid = GetPlayerGangID(playerid);
+			if (gangid == 0)
+			{
+				switch (listitem)
+				{
+					case 0: // создать банду
+					{
+						return show_GangCreate_Menu(playerid, 0);
+					}
+					case 1: // принять приглашение
+					{
+						if (GetPVarInt(playerid, "GangInvite") == 0)
+						{
+							return 0;
+						}
+						return 1;
+					}
+				}
+			}
+			else
+			{
+				switch (listitem)
+				{
+					case 0: // информация о банде
+					{
+						return 1;
+					}
+					case 1: // выйти из банды
+					{
+						return 1;
+					}
+					case 2: // пригласить игрока
+					{
+						// если не лидер
+						if (strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
+						{
+							return 0;
+						}
+						return 1;
+					}
+					case 3: // изменить цвет
+					{
+						// если не лидер
+						if (strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
+						{
+							return 0;
+						}
+						return 1;
+					}
+				}
+			}
+			return 1;
+		}
+		case gang_create_menu_DialogID:
+		{
+			switch (GetPVarInt(playerid, "usermenu_Gang_Step"))
+			{
+				case 0: // имя
+				{
+					if (!response)
+					{
+						DeletePVar(playerid, "usermenu_Gang_Name");
+						return show_Gang_Menu(playerid);
+					}
+					
+					if (oGetPlayerMoney(playerid) < Gang_Create_Cost)
+					{
+						new string[MAX_STRING];
+						format(string, sizeof(string), lang_texts[6][34], Gang_Create_Cost);
+						show_User_Menu_Dialog(playerid, "Создание банды", string);
+						return 1;
+					}
+					if (strlen(inputtext) == 0)
+					{
+						show_User_Menu_Dialog(playerid, "Создание банды", "Вы не ввели имя");
+						return 1;
+					}
+					if (strlen(inputtext) > MAX_GANG_NAME_LEN || strlen(inputtext) < MIN_GANG_NAME_LEN)
+					{
+						show_User_Menu_Dialog(playerid, "Создание банды", lang_texts[6][39]);
+						return 1;
+					}
+					if (!StringCharCheck(inputtext) || !strcmp(inputtext, "Unknown", true))
+					{
+						new string[MAX_STRING];
+						format(string, sizeof(string), lang_texts[6][41], ALLOWED_STRING_SYMBOLS_STR);
+						show_User_Menu_Dialog(playerid, "Создание банды",  string);
+						return 1;
+					}
+					
+					SetPVarString(playerid, "usermenu_Gang_Name", inputtext);
+					show_GangCreate_Menu(playerid, 1);
+					return 1;
+				}
+				case 1: // цвет
+				{
+					if (!response)
+					{
+						DeletePVar(playerid, "usermenu_Gang_Name");
+						return show_GangCreate_Menu(playerid, 0);
+					}
+					
+					new gangcolour = 255;
+					for (new colourid = 0; colourid < sizeof(colors_Array); colourid++)
+					{
+						if (strcmp(inputtext, colors_Array[colourid][color_name], true))
+						{
+							continue;
+						}
+						gangcolour = colors_Array[colourid][color_code];
+					}
+					if (gangcolour == 255)
+					{
+						show_User_Menu_Dialog(playerid, "Создание банды", "Неверный цвет");
+						return 1;
+					}
+					
+					new gangname[MAX_NAME];
+					GetPVarString(playerid, "usermenu_Gang_Name", gangname, sizeof(gangname));
+					if (GangCreate(playerid, gangname, gangcolour) != 0)
+					{
+						oGivePlayerMoney(playerid,-Gang_Create_Cost, 1);
+						SendClientMessage(playerid, COLOUR_GREEN, lang_texts[6][42]);
+						show_User_Menu_Dialog(playerid, "Создание банды", lang_texts[6][42]);
+						GameMSG("player: %s(%d): created gang '%s' ", oGetPlayerName(playerid), playerid, gangname);
+					}
+					else
+					{
+						show_User_Menu_Dialog(playerid, "Создание банды", "Ошибка: Банда не создана!");
+					}
+					
+					DeletePVar(playerid, "usermenu_Gang_Step");
+					DeletePVar(playerid, "usermenu_Gang_Name");
+					return 1;
+				}
+			}
 			return 1;
 		}
 	}
