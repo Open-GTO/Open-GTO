@@ -4,11 +4,13 @@
 //
 
 #if defined _race_mullholland_included
-  #endinput
+	#endinput
 #endif
 
 #define _race_mullholland_included
 #pragma library race_mullholland
+
+
 #include "race"
 
 static racename[MAX_NAME] = "Mullholland Getaway"; // unique name of race
@@ -24,27 +26,23 @@ static maxracetime = 120; // time race runs for (seconds)
 static allowedcars[2]; // cars allowed in this race.
 static Float:startlineheading = 148.4892; // which way players face at startline
 static Float:racecheckpoints[][CoordInfo] = {
-{1244.7372,-820.5668,83.9473}, // race_mullholland
-{1245.2424,-769.0816,91.6533},
-{1353.1168,-685.2146,92.0110},
-{1399.3284,-594.3857,78.6258},
-{1169.5573,-631.0978,103.5522},
-{955.6980,-655.6189,120.8480},
-{757.2582,-804.3942,66.0920},
-{672.8386,-889.9088,66.1142},
-{738.2806,-958.3984,54.0768},
-{691.2849,-991.9446,51.8564},
-{681.5355,-674.7605,15.9911},
-{700.1636,-465.7200,16.1380}
+	{1244.7372,-820.5668,83.9473}, // race_mullholland
+	{1245.2424,-769.0816,91.6533},
+	{1353.1168,-685.2146,92.0110},
+	{1399.3284,-594.3857,78.6258},
+	{1169.5573,-631.0978,103.5522},
+	{955.6980,-655.6189,120.8480},
+	{757.2582,-804.3942,66.0920},
+	{672.8386,-889.9088,66.1142},
+	{738.2806,-958.3984,54.0768},
+	{691.2849,-991.9446,51.8564},
+	{681.5355,-674.7605,15.9911},
+	{700.1636,-465.7200,16.1380}
 };
 
-static RaceID; // this will hold the id this race is assigned at init
-
-forward race_mullholland_init();
-
-public race_mullholland_init() // unique named init function (must be ran on gamemode init)
+stock race_mullholland_init()
 {
-	RaceID = RegisterRace(racename);
+	new RaceID = RegisterRace(racename);
 	if (RaceID == INVALID_RACE_ID) return;
 
 	Race[RaceID][race_frequency] = racefrequency;
@@ -60,7 +58,7 @@ public race_mullholland_init() // unique named init function (must be ran on gam
 	set(Race[RaceID][race_vehicles],allowedcars);
 
 	RaceSize[RaceID] = sizeof(racecheckpoints);
-	for (new cpid=0;cpid<sizeof(racecheckpoints);cpid++)
+	for (new cpid = 0; cpid < sizeof(racecheckpoints); cpid++)
 	{
 		RaceCheckpoints[RaceID][cpid][Coord_X] = racecheckpoints[cpid][Coord_X];
 		RaceCheckpoints[RaceID][cpid][Coord_Y] = racecheckpoints[cpid][Coord_Y];
@@ -70,5 +68,4 @@ public race_mullholland_init() // unique named init function (must be ran on gam
 	RaceStats[RaceID][race_timer] = MakeRaceSleepTime(RaceID);
     RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
   	GameMSG("Race: '%s' Loaded.",racename);
- }
-
+}
