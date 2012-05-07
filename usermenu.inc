@@ -741,7 +741,8 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 							return 0;
 						}
 						
-						new gangid = GetPVarInt(playerid, "GangInvite"), string[MAX_STRING];
+						gangid = GetPVarInt(playerid, "GangInvite");
+						new string[MAX_STRING];
 						if (GangOnlineCount(gangid) >= MAX_GANG_SIZE)
 						{
 							show_User_Menu_Dialog(playerid, "Приглашение в банду",  lang_texts[6][46]);
@@ -757,13 +758,11 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 							SendGangMessage(gangid, string, COLOUR_GANG);
 							
 							GameMSG("player: %d:  %s: have joined '%s' gang.", playerid, oGetPlayerName(playerid), Gangs[gangid][gang_name]);
-							return 1;
 						}
 						else
 						{
 							format(string, sizeof(string), lang_texts[6][49], Gangs[gangid][gang_name]);
 							show_User_Menu_Dialog(playerid, "Приглашение в банду",  string);
-							return 1;
 						}
 						return 1;
 					}
@@ -775,6 +774,45 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 				{
 					case 0: // информация о банде
 					{
+						new members[64 * MAX_GANG_SIZE];
+						for (new gangmember = 0, status[10]; gangmember < MAX_GANG_SIZE; gangmember++)
+						{
+							if (strlen(GangMemberInfo[gangid][gangmember][member_name]) <= 0)
+							{
+								continue;
+							}
+							if (GangMemberInfo[gangid][gangmember][member_online] == true)
+							{
+								format(members, sizeof(members),
+									"%s   {AFAFAF}%02d\t{33AA33}%s\t{AFAFAF}ID: {FFFFFF}%d\t{AFAFAF}Уровень: {FFFFFF}%d\n",
+									members,
+									gangmember,
+									GangMemberInfo[gangid][gangmember][member_name],
+									GangMemberInfo[gangid][gangmember][member_playerid],
+									status,
+									GetPlayerLevel(GangMemberInfo[gangid][gangmember][member_playerid])
+								);
+							}
+							else
+							{
+								format(members, sizeof(members), "%s   {AFAFAF}%02d\t{AA3333}%s      \n",
+									members, gangmember, GangMemberInfo[gangid][gangmember][member_name], status
+								);
+							}
+						}
+						new string[MAX_STRING + sizeof(members)];
+						format(string, sizeof(string), "\
+							Убийства банды: %d\n\
+							Очки банды: %d\n\
+							XP банды: %d\n\
+							Уровень банды: %d\n\
+							Ваших онлайн: %d\n\n\
+							%s",
+							Gangs[gangid][gang_kills], Gangs[gangid][gang_score],
+							Gangs[gangid][gang_xp], Gangs[gangid][gang_level],
+							GangOnlineCount(gangid), members
+						);
+						show_User_Menu_Dialog(playerid, "Информация о банде", string);
 						return 1;
 					}
 					case 1: // выйти из банды
