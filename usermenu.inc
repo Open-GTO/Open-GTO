@@ -740,6 +740,31 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						{
 							return 0;
 						}
+						
+						new gangid = GetPVarInt(playerid, "GangInvite"), string[MAX_STRING];
+						if (GangOnlineCount(gangid) >= MAX_GANG_SIZE)
+						{
+							show_User_Menu_Dialog(playerid, "Приглашение в банду",  lang_texts[6][46]);
+							SetPVarInt(playerid, "GangInvite", 0);
+							return 1;
+						}
+						if (GangJoinMember(gangid, playerid) == 1)
+						{
+							format(string, sizeof(string), lang_texts[6][47], Gangs[gangid][gang_name]);
+							show_User_Menu_Dialog(playerid, "Приглашение в банду",  string);
+							
+							format(string, sizeof(string), lang_texts[6][48], oGetPlayerName(playerid));
+							SendGangMessage(gangid, string, COLOUR_GANG);
+							
+							GameMSG("player: %d:  %s: have joined '%s' gang.", playerid, oGetPlayerName(playerid), Gangs[gangid][gang_name]);
+							return 1;
+						}
+						else
+						{
+							format(string, sizeof(string), lang_texts[6][49], Gangs[gangid][gang_name]);
+							show_User_Menu_Dialog(playerid, "Приглашение в банду",  string);
+							return 1;
+						}
 						return 1;
 					}
 				}
