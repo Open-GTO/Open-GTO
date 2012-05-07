@@ -290,6 +290,15 @@ stock show_GangCreate_Menu(playerid, step)
 	);
 }
 
+stock show_GangInvite_Menu(playerid)
+{
+	return ShowPlayerDialog(playerid, gang_invite_menu_DialogID, DIALOG_STYLE_INPUT,
+		"Приглашение игрока",
+		"Введите ID игрока, которого вы хотите пригласить",
+		"ОК", "Назад"
+	);
+}
+
 stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	#pragma unused inputtext
@@ -827,6 +836,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						{
 							return 0;
 						}
+						show_GangInvite_Menu(playerid);
 						return 1;
 					}
 					case 3: // изменить цвет
@@ -840,6 +850,36 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 				}
 			}
+			return 1;
+		}
+		case gang_invite_menu_DialogID:
+		{
+			if (!response)
+			{
+				return show_Gang_Menu(playerid);
+			}
+			new inviteid = strval(inputtext);
+			if (strlen(inputtext) == 0 || !IsPlayerConnected(inviteid) || !IsPlayerLogin(inviteid))
+			{
+				return show_User_Menu_Dialog(playerid, "Приглашение в банду", lang_texts[6][55]);
+			}
+			
+   			if (GetPlayerGangID(inviteid) != 0)
+   			{
+				return show_User_Menu_Dialog(playerid, "Приглашение в банду", lang_texts[6][57]);
+			}
+			
+			new gangid = GetPlayerGangID(playerid);
+			SetPVarInt(inviteid, "GangInvite", gangid);
+			
+			new string[MAX_STRING];
+		 	format(string, sizeof(string), lang_texts[6][58], oGetPlayerName(playerid), Gangs[gangid][gang_name]);
+   			SendClientMessage(inviteid, COLOUR_GANG, string);
+   			
+   			format(string, sizeof(string), lang_texts[6][59], oGetPlayerName(inviteid), Gangs[gangid][gang_name]);
+   			show_User_Menu_Dialog(playerid, "Приглашение в банду", string);
+   			
+			GameMSG("player: %d:  %s: has invited %s to join gang '%s'.", playerid, oGetPlayerName(playerid), oGetPlayerName(inviteid), Gangs[gangid][gang_name]);
 			return 1;
 		}
 		case gang_create_menu_DialogID:
