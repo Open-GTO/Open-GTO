@@ -816,14 +816,13 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 									gangmember,
 									GangMemberInfo[gangid][gangmember][member_name],
 									GangMemberInfo[gangid][gangmember][member_playerid],
-									status,
 									GetPlayerLevel(GangMemberInfo[gangid][gangmember][member_playerid])
 								);
 							}
 							else
 							{
 								format(members, sizeof(members), "%s   {AFAFAF}%02d\t{AA3333}%s      \n",
-									members, gangmember, GangMemberInfo[gangid][gangmember][member_name], status
+									members, gangmember, GangMemberInfo[gangid][gangmember][member_name]
 								);
 							}
 						}
