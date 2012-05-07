@@ -802,7 +802,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					case 0: // информация о банде
 					{
 						new members[64 * MAX_GANG_SIZE];
-						for (new gangmember = 0, status[10]; gangmember < MAX_GANG_SIZE; gangmember++)
+						for (new gangmember = 0; gangmember < MAX_GANG_SIZE; gangmember++)
 						{
 							if (strlen(GangMemberInfo[gangid][gangmember][member_name]) <= 0)
 							{
