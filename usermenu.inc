@@ -779,6 +779,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					case 1: // выйти из банды
 					{
+						GangRemoveMember(gangid, oGetPlayerName(playerid));
 						return 1;
 					}
 					case 2: // пригласить игрока
