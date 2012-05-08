@@ -73,6 +73,7 @@ Date start Open-GTO: 	5 November 2009
 #include "services\fastfood"
 #include "services\bar"
 #include "services\skinshop"
+#include "services\lottery"
 #include "interior"
 #include "usermenu"
 #include "weather"
@@ -179,6 +180,7 @@ public OnGameModeInit()
 	ss_OnGameModeInit();
 	//
 	quidemsys_OnGameModeInit();
+	lottery_OnGameModeInit();
 	//
 	level_OnGameModeInit();
 	antiidle_OnGameModeInit();
@@ -471,6 +473,9 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	command_register(cmdtext, "/piss", 5, commands);
 	command_register(cmdtext, "/smoke", 6, commands);
 	command_register(cmdtext, "/pm", 3, commands);
+	
+	// Lottery
+	command_register(cmdtext, "/lottery", 8, lottery);
 	
 	// QuidemSys
 	command_register(cmdtext, "/fill", 5, quidemsys);

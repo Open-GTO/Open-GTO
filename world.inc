@@ -55,6 +55,7 @@ nee:
 	groundhold_SaveAll();
 	mission_SaveConfig();
 	QuidemSys_SaveConfig();
+	lottery_SaveConfig();
 	// systems
 	level_SaveConfig();
 	health_SaveConfig();
@@ -162,6 +163,7 @@ public OneHourTimer()
 	Profit();
 	CheckHousesOwners();
 	CheckBusinessOwners();
+	lottery_RunTimer();
 }
 
 forward TenMinuteTimer();

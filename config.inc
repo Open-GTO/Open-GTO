@@ -76,6 +76,12 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 // прочее
 #define MAX_GULPS			5 // максимальное количество глотков из бутылки
 
+// лотерея
+#define LOTTERY_ENABLED		1 // включен-ли скрипт лотереи
+#define LOTTERY_TIME		10 // время розыгрыша, в минутах
+#define LOTTERY_WIN_MONEY	200000 // количество денег победителю в лотерее
+#define LOTTERY_TICKET_COST	5000 // цена лотерейного билета
+
 // skins
 #define SKINS_COST			0 // цена покупки скина
 #define SKINS_IGNORE		0, 74  // список игнорируемых скинов
