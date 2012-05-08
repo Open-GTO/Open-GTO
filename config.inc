@@ -94,7 +94,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define BANK_PROFIT			2 // процент начисления прибыли за хранение в банке
 #define MAX_BANK_MONEY		15000000 // максимальное количество денег, которых можно хранить в банке
 
-#define PAYDAY_BASE_PAY		500 // PayDay тариф на деньги
+#define PAYDAY_BASE_PAY		25 // PayDay тариф на деньги
 #define PAYDAY_CUTOFF		MAX_MONEY / 2 // кол-во денег, при котором перестаётся даваться деньги за PayDay
 #define	PAYDAY_PAYXP		200 // PayDay тариф на опыт
 
