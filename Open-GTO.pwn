@@ -78,6 +78,7 @@ Date start Open-GTO: 	5 November 2009
 #include "usermenu"
 #include "weather"
 #include "pickup"
+#include "swagup"
 #include "quidemsys"
 #include "protections\money"
 #include "protections\idle"
@@ -181,6 +182,7 @@ public OnGameModeInit()
 	//
 	quidemsys_OnGameModeInit();
 	lottery_OnGameModeInit();
+	swagup_OnGameModeInit();
 	//
 	level_OnGameModeInit();
 	antiidle_OnGameModeInit();
@@ -356,6 +358,7 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 	weapon_OnPlayerPickUpPickup(playerid, pickupid);
 	aah_OnPlayerPickUpPickup(playerid, pickupid);
 	awh_OnPlayerPickUpPickup(playerid, pickupid);
+	swagup_OnPlayerPickUpPickup(playerid, pickupid);
 	return 1;
 }
 

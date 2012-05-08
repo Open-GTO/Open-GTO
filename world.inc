@@ -56,6 +56,7 @@ nee:
 	mission_SaveConfig();
 	QuidemSys_SaveConfig();
 	lottery_SaveConfig();
+	swagup_SaveConfig();
 	// systems
 	level_SaveConfig();
 	health_SaveConfig();
