@@ -439,7 +439,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						}
 						if (idsm != 0)
 						{
-							format(string, sizeof(string), "%s\nМодерация:\n%s\n", string, admins, moders);
+							format(string, sizeof(string), "%s\nМодерация:\n%s\n", string, moders);
 						}
 					}
 					return show_User_Menu_Dialog(playerid, "Администрация онлайн", string);
