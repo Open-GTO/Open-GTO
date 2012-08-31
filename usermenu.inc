@@ -93,7 +93,7 @@ stock show_Vehicle_Menu(playerid)
 		strcat(string, "{00FF00}Открыть капот\n", sizeof(string));
 	}
 	
-	if(boot == VEHICLE_PARAMS_ON) // багажник
+	if (boot == VEHICLE_PARAMS_ON) // багажник
 	{
 		strcat(string, "{FF0000}Закрыть багажник\n", sizeof(string));
 	}
@@ -127,7 +127,7 @@ stock show_SpawnSelect_Menu(playerid)
 {
 	new string[ MAX_NAME * (MAX_PLAYER_HOUSES + 1) + 8 + (2 * (MAX_PLAYER_HOUSES + 1)) ],
 		count = 0,
-		playername[MAX_PLAYER_NAME];
+		playername[MAX_PLAYER_NAME+1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
 	
@@ -172,7 +172,7 @@ stock show_Businesses_Menu(playerid)
 {
 	new string[MAX_STRING * MAX_PLAYER_BUSINESS],
 		count = 0,
-		playername[MAX_PLAYER_NAME];
+		playername[MAX_PLAYER_NAME+1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
 	for (new id = 0; id < sizeof(Businesses); id++)
@@ -183,7 +183,7 @@ stock show_Businesses_Menu(playerid)
 			format(string, sizeof(string), lang_texts[3][23], string, Businesses[id][Business_Name], Businesses[id][Business_Vault]);
 		}
 	}
-	if(count < 1)
+	if (count < 1)
 	{
 		return show_User_Menu_Dialog(playerid, "Мои бизнесы", "У вас нет бизнесов");
 	}
@@ -476,6 +476,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						{00C0DD}Косвенные разработчики: {AFE7FF}\n\
 									\t\tMX_Master(mxINI, Chat-Guard)\n\
 									\t\twups(Default map icons)\n\
+									\t\tY_Less(foreach)\n\
 						\n\
 						"
 					);
@@ -561,7 +562,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 		}
 		case vehicle_color_menu_DialogID:
 		{
-			if(!response)
+			if (!response)
 			{
 				return show_Vehicle_Menu(playerid);
 			}
@@ -575,7 +576,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			if (!response)
 				return show_User_Menu(playerid);
 			
-			new playername[MAX_PLAYER_NAME];
+			new playername[MAX_PLAYER_NAME+1];
 			GetPlayerName(playerid, playername, sizeof(playername));
 
 			if (listitem == 0)
@@ -616,7 +617,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 		}
 		case settings_menu_DialogID:
 		{
-			if(!response)
+			if (!response)
 			{
 				return show_User_Menu(playerid);
 			}
@@ -654,8 +655,8 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 				format(string, sizeof(string), lang_texts[1][36], CHANGE_NICK_COST);
 				return show_User_Menu_Dialog(playerid, "Изменение ника", string);
 			}
-			new Account_NewName[MAX_PLAYER_NAME],
-				Account_LastName[MAX_PLAYER_NAME];
+			new Account_NewName[MAX_PLAYER_NAME+1],
+				Account_LastName[MAX_PLAYER_NAME+1];
 			
 			set(Account_LastName, oGetPlayerName(playerid));
 			set(Account_NewName, inputtext);

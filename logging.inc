@@ -130,7 +130,7 @@ stock GameMSG(fstring[], {Float, _}:...)
 {
 	static const STATIC_ARGS = 1;
 	new n = (numargs() - STATIC_ARGS) * BYTES_PER_CELL;
-	if(n)
+	if (n)
 	{
 		new message[144], arg_start, arg_end;
 		#emit CONST.alt			fstring
@@ -182,7 +182,7 @@ stock DebugMSG(fstring[], {Float, _}:...)
 {
 	static const STATIC_ARGS = 1;
 	new n = (numargs() - STATIC_ARGS) * BYTES_PER_CELL;
-	if(n)
+	if (n)
 	{
 		new message[144], arg_start, arg_end;
 		#emit CONST.alt			fstring

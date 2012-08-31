@@ -123,7 +123,7 @@ stock IsPlayerAtHouse(playerid)
 
 stock IsPlayerRenter(playerid)
 {
-	new playername[MAX_PLAYER_NAME];
+	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	for (new id = 0; id < sizeof(Houses); id++)
 	{
@@ -138,7 +138,7 @@ stock IsPlayerRenter(playerid)
 stock show_House_Menu(playerid)
 {
 	new id = GetPlayerToHouseID(playerid);
-	new string[512], playername[MAX_PLAYER_NAME];
+	new string[512], playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	
 	new head[MAX_STRING];
@@ -159,7 +159,7 @@ stock show_House_Menu(playerid)
 	
 	if (!isowner)
 	{
-		if(!strcmp(Houses[id][Houses_RentName], playername, true))
+		if (!strcmp(Houses[id][Houses_RentName], playername, true))
 		{
 			strcat(string, lang_texts[8][10], sizeof(string));
 		}
@@ -191,7 +191,7 @@ stock show_House_Menu(playerid)
 	{
 		strcat(string, lang_texts[8][67], sizeof(string));
 		
-		if(Houses[id][Houses_Lock] == 1)
+		if (Houses[id][Houses_Lock] == 1)
 		{
 			strcat(string, lang_texts[8][68], sizeof(string));
 		}
@@ -216,7 +216,7 @@ stock housing_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 {
 	if (dialogid == house_DialogID)
 	{
-		if(!response) return 1;
+		if (!response) return 1;
 		show_House_Menu(playerid);
 		return 1;
 	}
@@ -224,7 +224,7 @@ stock housing_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 	{
 		if (!response) return 0;
 		new id = GetPlayerToHouseID(playerid);
-		new playername[MAX_PLAYER_NAME];
+		new playername[MAX_PLAYER_NAME+1];
 		GetPlayerName(playerid, playername, sizeof(playername));
 		switch (listitem)
 		{
@@ -467,7 +467,7 @@ stock DeleteRenter(playerid)
 
 stock house_Buy(playerid) 
 {
-	new playername[MAX_PLAYER_NAME], pl_houses=0;
+	new playername[MAX_PLAYER_NAME+1], pl_houses=0;
 	GetPlayerName(playerid, playername, sizeof(playername));
 	for (new i = 0; i < sizeof(Houses); i++)
 	{
@@ -482,14 +482,14 @@ stock house_Buy(playerid)
 	}
 	new temp[MAX_STRING];
 	new id = GetPlayerToHouseID(playerid);
-	if(id <= -1)
+	if (id <= -1)
 		return SendClientMessage(playerid, COLOUR_RED, lang_texts[8][21]);
 	
-	if(GetPlayerGangID(playerid) == 0)
+	if (GetPlayerGangID(playerid) == 0)
 		return SendClientMessage(playerid, COLOUR_RED, lang_texts[8][19]);
 
 	new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
-	if(oGetPlayerMoney(playerid) < price)
+	if (oGetPlayerMoney(playerid) < price)
 		return SendClientMessage(playerid, COLOUR_RED, lang_texts[8][18]);
 
 	if (!strcmp(Houses[id][Houses_Owner], playername, true))
@@ -664,7 +664,7 @@ stock housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 					format(string, sizeof(string), lang_texts[8][6], price, UpKeep, Houses[id][Houses_UpKeepLeft], UpKeep*2800);
 					
 					new buf[MAX_STRING];
-					if(!strcmp(Houses[id][Houses_RentName], "Unknown", true))
+					if (!strcmp(Houses[id][Houses_RentName], "Unknown", true))
 						format(buf, sizeof(buf), lang_texts[8][53], Houses[id][Houses_RentCost]);
 					else
 						format(buf, sizeof(buf), lang_texts[8][52], Houses[id][Houses_RentName]);
@@ -704,11 +704,11 @@ stock housing_Update3DTextLabelText()
 	return 1;
 }
 
-stock housing_RenameOwner(old_name[MAX_PLAYER_NAME], new_name[MAX_PLAYER_NAME])
+stock housing_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+1])
 {
 	for (new i = 0; i < sizeof(Houses); i++)
 	{
-		if(!strcmp(Houses[i][Houses_Owner], old_name, true))
+		if (!strcmp(Houses[i][Houses_Owner], old_name, true))
 		{
 			set(Houses[i][Houses_Owner], new_name);
 			return 1;
@@ -719,7 +719,7 @@ stock housing_RenameOwner(old_name[MAX_PLAYER_NAME], new_name[MAX_PLAYER_NAME])
 
 stock CheckHousesOwners()
 {
-	new filename_account[MAX_PLAYER_NAME], file_account, account_lastlogin[32], idx,
+	new filename_account[MAX_PLAYER_NAME+1], file_account, account_lastlogin[32], idx,
 		year, month, day, account_year, account_month, account_day;
 	
 	getdate(year, month, day);

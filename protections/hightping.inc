@@ -7,7 +7,7 @@ new AntiHightPingEnabled = ANTI_HIGHT_PING_ENABLED,
 
 stock AntiHightPingLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_ahp = ini_Open(ConfigDB);
 	ini_GetInt(file_ahp,"Anti_Hight_Ping_Enabled", AntiHightPingEnabled);
 	ini_GetInt(file_ahp,"Anti_Hight_Ping_MAX_PING", MAX_PING);

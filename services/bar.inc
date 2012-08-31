@@ -79,7 +79,7 @@ public bar_Gulp(playerid)
 stock bar_ShowDialog(playerid)
 {
 	new string[256];
-	for(new i = 0; i < sizeof(Drinks); i++)
+	for (new i = 0; i < sizeof(Drinks); i++)
 	{
 		format(string, sizeof(string),
 			lang_texts[17][13],
@@ -107,7 +107,7 @@ stock bar_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		SetPlayerSpecialAction(playerid, Drinks[listitem][Action]);
 		SetPVarInt(playerid, "bar_Drinking", 1);
 		SetPlayerDrunkLevel(playerid, GetPlayerDrunkLevel(playerid) + floatround(Drinks[listitem][Alcohol]*100, floatround_round));
-		if(Drinks[listitem][Hp] + oGetPlayerHealth(playerid) > GetMaxHealth(playerid))
+		if (Drinks[listitem][Hp] + oGetPlayerHealth(playerid) > GetMaxHealth(playerid))
 		{
 			oSetPlayerHealth(playerid, GetMaxHealth(playerid));
 		}

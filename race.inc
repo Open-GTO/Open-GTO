@@ -238,7 +238,7 @@ stock RaceSaveScores()
 	
 	for (new raceid = 1; raceid <= RacesCount; raceid++)
 	{
-		if(RaceStats[raceid][race_state] == RACE_STATE_DISABLED)
+		if (RaceStats[raceid][race_state] == RACE_STATE_DISABLED)
 		{
 			continue;
 		}
@@ -394,7 +394,7 @@ stock race_OnPlayerCommandText(playerid, text[]) // process player commands
 	new cmd[20], idx;
 
 	cmd = strcharsplit(text, idx, ' ');
-	if(strlen(cmd) == 0) return 0;
+	if (strlen(cmd) == 0) return 0;
 
 	if (!strcmp(cmd, "/races", true))
 	{
@@ -1169,7 +1169,7 @@ stock MakeRaceSleepTime(raceid)
 	return ((Race[raceid][race_frequency] * RacesCount) * 75);
 }
 
-stock races_RenameBestPlayer(old_name[MAX_PLAYER_NAME], new_name[MAX_PLAYER_NAME])
+stock races_RenameBestPlayer(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+1])
 {
 	for (new raceid = 0; raceid < sizeof(BestScore); raceid++)
 	{

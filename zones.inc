@@ -455,7 +455,7 @@ stock IsPlayerInZoneName(playerid, zonename[])
 	GetPlayerPos(playerid, x, y, z);
 	for (new zoneid = 0; zoneid < sizeof(zones); zoneid++)
 	{
-		if(!strcmp(zonename, zones[zoneid][zone_name], false))
+		if (!strcmp(zonename, zones[zoneid][zone_name], false))
 		{
 			return IsPlayerInZone(playerid, zoneid);
 		}

@@ -110,7 +110,7 @@ stock GetWeaponSkillID(weaponid)
 stock SetWeaponsSkillsFromDBString(playerid,dbstring[])
 {
 	new idx;
-	for(new i = 0; i < PLAYER_WEAPON_SKILLS; i++)
+	for (new i = 0; i < PLAYER_WEAPON_SKILLS; i++)
 	{
 		PlayerWeaponsSkills[playerid][i] = strval( strcharsplit(dbstring, idx, '/') );
 	}
@@ -119,7 +119,7 @@ stock SetWeaponsSkillsFromDBString(playerid,dbstring[])
 stock CreateWeaponSkillsDBString(playerid)
 {
 	new wepstr[MAX_STRING], temp[MAX_STRING];
-	for(new i = 0; i < PLAYER_WEAPON_SKILLS; i++)
+	for (new i = 0; i < PLAYER_WEAPON_SKILLS; i++)
 	{
 		valstr(temp, PlayerWeaponsSkills[playerid][i]);
 		strins(wepstr, temp, strlen(wepstr));
@@ -138,7 +138,7 @@ stock wskill_HideTextDraw(playerid)
 forward UpdatePlayerWeaponTextDraws(playerid);
 public UpdatePlayerWeaponTextDraws(playerid)
 {
-	if(GetPVarInt(playerid,"Spawned") == 0) return 0;
+	if (GetPVarInt(playerid,"Spawned") == 0) return 0;
 	new string[MAX_STRING];
 	new skillid = GetWeaponSkillID( GetPlayerWeapon(playerid) );
 	if (skillid != -1)

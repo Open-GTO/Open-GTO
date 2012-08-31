@@ -14,7 +14,7 @@ new AntiJetPackEnabled = ANTI_JETPACK_ENABLED;
 
 stock AntiJetPackLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_ajp = ini_Open(ConfigDB);
 	ini_GetInt(file_ajp, "Anti_JetPack_Enabled", AntiJetPackEnabled);
 	ini_Close(file_ajp);

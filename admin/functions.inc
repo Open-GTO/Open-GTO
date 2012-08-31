@@ -77,7 +77,7 @@ stock UnJailPlayer(playerid)
 
 stock SendMessageToAdmins(playerid, color, text[])
 {
-	new message[MAX_STRING], playername[MAX_PLAYER_NAME];
+	new message[MAX_STRING], playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	printf(lang_texts[1][24], playername, playerid, text);
 	format(message, sizeof(message), lang_texts[1][23], playername, playerid, GetPlayerStatus(playerid), text);
@@ -95,7 +95,7 @@ stock SendMessageToAdmins(playerid, color, text[])
 stock PushHide(playerid)
 {
 	new hidecont = (GetPVarInt(playerid, "Hide") == 1) ? 0 : PlayerGangColour(playerid);
-	foreach(Player, id)
+	foreach (Player, id)
 	{
 		if (id != playerid)
 		{

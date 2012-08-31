@@ -14,7 +14,7 @@ new AntiSpeedHackEnabled = ANTI_SPEED_HACK_ENABLED;
 
 stock AntiSpeedHackLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_ash = ini_Open(ConfigDB);
 	ini_GetInt(file_ash, "Anti_Speed_Hack_Enabled", AntiSpeedHackEnabled);
 	ini_Close(file_ash);

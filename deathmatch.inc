@@ -204,7 +204,7 @@ stock DeathmatchLoadBaseDB(dmid)
 	{
 		format(cellname, sizeof(cellname), "SP%d", spid);
 		ini_Get(file_dm, cellname, temp);
-		if(ini_Get(file_dm, cellname, temp) != INI_OK)
+		if (ini_Get(file_dm, cellname, temp) != INI_OK)
 		{
 			break;
 		}
@@ -213,7 +213,7 @@ stock DeathmatchLoadBaseDB(dmid)
 		Y = floatstr(strcharsplit(temp, idx,','));
 		Z = floatstr(strcharsplit(temp, idx,','));
 		set(temp, nullstr);
-		if(X == 0.0 && Y == 0.0)
+		if (X == 0.0 && Y == 0.0)
 		{
 			break;
 		}
@@ -255,9 +255,9 @@ stock DeathmatchSaveAll()
 	
 	new file_dm = (!ini_Exist(DeathmatchDB)) ? ini_Create(DeathmatchDB) : ini_Open(DeathmatchDB);
 	// load all our dms from db
-	for(new dmid=1, cellname[MAX_STRING];dmid<=DMCount;dmid++)
+	for (new dmid=1, cellname[MAX_STRING];dmid<=DMCount;dmid++)
 	{
-		if(DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED)
+		if (DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED)
 		{
 			continue;
 		}
@@ -432,7 +432,7 @@ stock CheckDM() // must be ran by timer every second
 
 stock CheckDMPlayersInZone(dmid)
 {
-	foreach(Player, playerid)
+	foreach (Player, playerid)
 	{
 		if (!IsPlayerInDM(playerid, dmid) || DMPlayerStats[playerid][dm_player_active] == 0) continue;
 		if (
@@ -713,7 +713,7 @@ stock GetPlayerDMPosition(playerid, dmid)
 
 stock EndDM(dmid)
 {
-	foreach(Player, playerid)
+	foreach (Player, playerid)
 	{
 		if (GetPlayerQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
 		{
@@ -726,7 +726,7 @@ stock EndDM(dmid)
 
 stock CleanupDM(dmid)
 {
-	foreach(Player, playerid)
+	foreach (Player, playerid)
 	{
 		if (GetPlayerQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
 		{
@@ -782,7 +782,7 @@ stock PlayerFinishDM(playerid, dmid, position)
 		}
 		case 3:
 		{
-			if(DeathmatchStats[dmid][dm_playercount] > 3)
+			if (DeathmatchStats[dmid][dm_playercount] > 3)
 			{
 				format(string, sizeof(string),  lang_texts[4][24] , Deathmatch[dmid][dm_name], FormatPosition(position), GetPlayerDMScore(playerid, dmid));
 				SendClientMessage(playerid, COLOUR_GREEN, string);
@@ -962,15 +962,15 @@ stock SendPlayerCurrentDeathmatches(playerid)
 	new string[MAX_STRING], dmfound;
 	for (new dmid = 1; dmid <= DMCount; dmid++)
 	{
-		if((DeathmatchStats[dmid][dm_state] == DM_STATE_LINEUP) || (DeathmatchStats[dmid][dm_state] == DM_STATE_ACTIVE))
+		if ((DeathmatchStats[dmid][dm_state] == DM_STATE_LINEUP) || (DeathmatchStats[dmid][dm_state] == DM_STATE_ACTIVE))
 		{
-			if(dmfound == 0)
+			if (dmfound == 0)
 			{
 				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[4][34]);
 				dmfound++;
 			}
 
-			if(DeathmatchStats[dmid][dm_playercount] >= Deathmatch[dmid][dm_minplayers])
+			if (DeathmatchStats[dmid][dm_playercount] >= Deathmatch[dmid][dm_minplayers])
 			{
 				format(string, sizeof(string), lang_texts[4][35], Deathmatch[dmid][dm_name], dmid, Deathmatch[dmid][dm_lineupdelay] - DeathmatchStats[dmid][dm_timer], DeathmatchStats[dmid][dm_playercount], GetDMStartZoneName(dmid), Deathmatch[dmid][dm_minlevel], Deathmatch[dmid][dm_cashentry]);
 			}
@@ -989,7 +989,7 @@ stock SendPlayerCurrentDeathmatches(playerid)
 			}
 		}
 	}
-	if(dmfound == 0)
+	if (dmfound == 0)
 	{
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[4][38]);
 	}
@@ -1326,7 +1326,7 @@ stock DMDecodeWeaponsDB(wepstr[])
 	return weps;
 }
 
-stock dm_RenameBestPlayer(old_name[MAX_PLAYER_NAME], new_name[MAX_PLAYER_NAME])
+stock dm_RenameBestPlayer(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+1])
 {
 	for (new dmid = 0;dmid < sizeof(DMBestScore); dmid++)
 	{

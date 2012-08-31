@@ -247,7 +247,7 @@ stock playerHasForbiddenName ( playerid )
 {
     if ( forbiddenName{playerid} == 0 )
     {
-        new name[MAX_PLAYER_NAME];
+        new name[MAX_PLAYER_NAME+1];
         GetPlayerName( playerid, name, MAX_PLAYER_NAME );
 
         if ( containsAnyIP(name) || containsDomainName(name) )
@@ -515,7 +515,7 @@ stock tooManyUpperChars ( string[] )
 
 stock ChatGuardLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return;
+	if (!ini_Exist(ConfigDB)) return;
 	new file_chg = ini_Open(ConfigDB);
 	ini_GetInt(file_chg,"Chat_Guard_Enabled",ChatGuardEnabled);
 	ini_Close(file_chg);
@@ -533,7 +533,7 @@ stock ChatGuardSaveConfig()
 stock chatguard_OnGameModeInit()
 {
 	ChatGuardLoadConfig();
-	if(ChatGuardEnabled != 1) return;
+	if (ChatGuardEnabled != 1) return;
     for ( new i; i < CHAT_HISTORY_SIZE; i++ ) ms[i][chPosterID] = -1;
 	GameMSG("SERVER: (protections)ChatGuard(by MX_Master) module init");
 }
@@ -542,7 +542,7 @@ stock chatguard_OnGameModeInit()
 
 stock chatguard_OnPlayerConnect ( playerid )
 {
-	if(ChatGuardEnabled != 1) return 0;
+	if (ChatGuardEnabled != 1) return 0;
     forbiddenName{playerid} = 0;
     return 1;
 }
@@ -550,7 +550,7 @@ stock chatguard_OnPlayerConnect ( playerid )
 stock chatguard_OnPlayerDisconnect ( playerid, reason )
 {
 	#pragma unused reason
-	if(ChatGuardEnabled != 1) return 0;
+	if (ChatGuardEnabled != 1) return 0;
     forbiddenName{playerid} = 0;
     return 1;
 }

@@ -14,7 +14,7 @@ new AntiRconHackEnabled = ANTI_RCON_HACK_ENABLED;
 
 stock AntiRconHackLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_arh = ini_Open(ConfigDB);
 	ini_GetInt(file_arh, "Anti_Rcon_Hack_Enabled", AntiRconHackEnabled);
 	ini_Close(file_arh);
@@ -41,7 +41,7 @@ stock antirconhack_OnRconLoginAttempt(ip[], password[], success)
 {
 	if (AntiRconHackEnabled != 1 || success) return 0;
 	GameMSG(lang_texts[11][5], ip, password);
-	new pip[16];
+	new pip[MAX_IP];
 	foreach (Player, playerid)
 	{
 		GetPVarString(playerid, "IP", pip, sizeof(pip));

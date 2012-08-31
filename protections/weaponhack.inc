@@ -14,7 +14,7 @@ new AntiWeaponHackEnabled = ANTI_WEAPON_HACK_ENABLED;
 
 stock AntiWeaponHackLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_ash = ini_Open(ConfigDB);
 	ini_GetInt(file_ash, "Anti_Weapon_Hack_Enabled", AntiWeaponHackEnabled);
 	ini_Close(file_ash);
@@ -114,7 +114,7 @@ stock oGivePlayerWeapon(playerid, weaponid, ammo)
 stock oResetPlayerWeapons(playerid)
 {
 	new string[MAX_STRING];
-	for(new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
 	{
 		format(string, sizeof(string), "ac_WeaponID_Slot%d", i);
 		DeletePVar(playerid, string);

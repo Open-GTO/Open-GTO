@@ -1,8 +1,8 @@
 /*
 Project Name:	San Andreas - Multiplayer: Open - Grand Theft Online (Open-GTO).
 
-Current version:	1.0.0 alpha
-SA-MP Versions:		0.3d
+Current version:	1.0.1 
+SA-MP Versions:		0.3d and older
 
 Web site:	http://open-gto.ru/
 
@@ -265,7 +265,7 @@ public OnGameModeExit()
 
 public OnPlayerConnect(playerid)
 {
-    if(IsPlayerNPC(playerid)) return 1;
+    if (IsPlayerNPC(playerid)) return 1;
 	player_OnPlayerConnect(playerid);
    	account_OnPlayerConnect(playerid);
 	chatguard_OnPlayerConnect(playerid);
@@ -281,7 +281,7 @@ public OnPlayerConnect(playerid)
 
 public OnPlayerDisconnect(playerid, reason)
 {
-	if(playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) return 1;
+	if (playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) return 1;
 	player_OnPlayerDisconnect(playerid, reason);
 	trucker_OnPlayerDisconnect(playerid, reason);
 	chatguard_OnPlayerDisconnect(playerid, reason);
@@ -377,18 +377,18 @@ public OnPlayerEnterRaceCheckpoint(playerid)
 
 public OnPlayerDeath(playerid, killerid, reason)
 {
-	if(!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
+	if (!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
 	SetPVarInt(playerid, "Spawned", 0);
-	if(killerid == INVALID_PLAYER_ID)
+	if (killerid == INVALID_PLAYER_ID)
 		GameMSG("player: %s(%d): has died > Reason: (%d)", oGetPlayerName(playerid), playerid, reason);
 	else
 		GameMSG("player: %s(%d): has killed player %s(%d)> Reason: (%d)", oGetPlayerName(killerid), killerid, oGetPlayerName(playerid), playerid, reason);
 
 	SendDeathMessage(killerid, playerid, reason);
 	
-	if(killerid == INVALID_PLAYER_ID) return 1;
+	if (killerid == INVALID_PLAYER_ID) return 1;
 	
-	if(IsPlayerInAnyDM(playerid))
+	if (IsPlayerInAnyDM(playerid))
 	{
 		deathmatch_OnPlayerDeath(playerid, killerid);
 		deathmatch_OnPlayerKill(killerid, playerid, reason);
@@ -590,20 +590,20 @@ public OnPlayerText(playerid, text[])
 	}
 	if (chatguard_OnPlayerText(playerid, text) == 0) return 0;
 
-	new playername[MAX_PLAYER_NAME];
+	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	
 	new string[MAX_STRING];
-	switch(text[0])
+	switch (text[0])
 	{
 	    case '!':
 	    {
-			if(GetPVarInt(playerid, "GangID") == 0 || GetPlayerMuteTime(playerid) > 0)
+			if (GetPVarInt(playerid, "GangID") == 0 || GetPlayerMuteTime(playerid) > 0)
 			{
 				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 				return 0;
 			}
-			if(strlen(text[1]) < 2) return 1;
+			if (strlen(text[1]) < 2) return 1;
 			format(string, sizeof(string), "%s"CHAT_SHOW_ID" банде: {FFFFFF}%s", playername, playerid, text[1]);
 			SendGangMessage(GetPVarInt(playerid, "GangID"), string, COLOUR_GANG_CHAT);
 			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <GANG CHAT>: %s", playername, playerid, text[1]);
@@ -612,7 +612,7 @@ public OnPlayerText(playerid, text[])
 		}
 		case '@','"':
 		{
-			if(strlen(text[1]) < 2) return 1;
+			if (strlen(text[1]) < 2) return 1;
 			SendClientMessageToAdmins(playerid, text[1]);
 			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <ADMIN TALK>: %s", playername, playerid, text[1]);
 			WriteLog(ChatLog, string);
@@ -620,7 +620,7 @@ public OnPlayerText(playerid, text[])
 		}
 		case '#','№':
 		{
-			if(strlen(text[1]) < 2) return 1;
+			if (strlen(text[1]) < 2) return 1;
 			SendClientMessageToModers(playerid, text[1]);
 			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <MODERATOR TALK>: %s", playername, playerid, text[1]);
 			WriteLog(ChatLog, string);
@@ -628,14 +628,14 @@ public OnPlayerText(playerid, text[])
 		}
 		case '$',';':
 		{
-			if(strlen(text[1]) < 2) return 1;
+			if (strlen(text[1]) < 2) return 1;
 			SendClientMessageToBeside(playerid, 10, text[1]);
 			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <SAY>: %s", playername, playerid, text[1]);
 			WriteLog(ChatLog, string);
 			return 0;
 		}
 	}
-	if(GetPlayerMuteTime(playerid) != 0)  //Заткнут
+	if (GetPlayerMuteTime(playerid) != 0)  //Заткнут
 	{
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 		return 0;
@@ -654,31 +654,31 @@ public OnPlayerUpdate(playerid)
 
 public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	if( PRESSED( KEY_FIRE ) )
+	if ( PRESSED( KEY_FIRE ) )
 	{
-		if( GetPVarInt(playerid, "bar_Drinking") == 1 ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( GetPVarInt(playerid, "bar_Drinking") == 1 ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 	}
-	if( PRESSED ( KEY_USING ) || PRESSED ( KEY_FIRE ) || PRESSED ( KEY_HANDBRAKE ) )
+	if ( PRESSED ( KEY_USING ) || PRESSED ( KEY_FIRE ) || PRESSED ( KEY_HANDBRAKE ) )
 	{
-		if( IsPlayerAtSkinShop(playerid) ) return ss_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtSkinShop(playerid) ) return ss_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 	}
-	if( PRESSED ( KEY_USING ) )
+	if ( PRESSED ( KEY_USING ) )
 	{
-		if( IsPlayerAtEnterExit(playerid) ) return interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if( IsPlayerAtHouse(playerid) ) return housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if( IsPlayerAtBusiness(playerid) ) return business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if( IsPlayerAtBank(playerid) != -1 ) return bank_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if( IsPlayerAtAmmunation(playerid) != -1 ) return weapons_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if( GetPlayerFightTrenerID(playerid) != -1 ) return fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if( IsPlayerAtBar(playerid) ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtEnterExit(playerid) ) return interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtHouse(playerid) ) return housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtBusiness(playerid) ) return business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtBank(playerid) != -1 ) return bank_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtAmmunation(playerid) != -1 ) return weapons_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( GetPlayerFightTrenerID(playerid) != -1 ) return fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtBar(playerid) ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		show_User_Menu(playerid);
 		return 1;
 	}
-	if( PRESSED( KEY_SUBMISSION ) )
+	if ( PRESSED( KEY_SUBMISSION ) )
 	{
 		new vehicleid = GetPlayerVehicleID(playerid);
-		if( vehicleid != 0 && IsVehicleIsRunner(vehicleid) )
+		if ( vehicleid != 0 && IsVehicleIsRunner(vehicleid) )
 		{
 			trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		}
@@ -701,10 +701,10 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	ash_OnPlayerStateChange(playerid, newstate, oldstate);
 	qudemsys_OnPlayerStateChange(playerid, newstate, oldstate);
-	if(newstate == PLAYER_STATE_DRIVER)
+	if (newstate == PLAYER_STATE_DRIVER)
 	{
 	#if defined OLD_ENGINE_DO
-		if(GetPlayerVehicleSeat(playerid) == 0)
+		if (GetPlayerVehicleSeat(playerid) == 0)
 			vehicle_Engine(GetPlayerVehicleID(playerid), VEHICLE_PARAMS_ON);
 	#endif
 		trucker_OnPlayerStateChange(playerid, newstate, oldstate);
@@ -716,7 +716,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 public OnPlayerExitVehicle(playerid, vehicleid)
 {
 #if defined OLD_ENGINE_DO
-	if(GetPlayerVehicleSeat(playerid) == 0)
+	if (GetPlayerVehicleSeat(playerid) == 0)
 		vehicle_Engine(vehicleid, VEHICLE_PARAMS_OFF);
 #endif
 	modfunc_OnPlayerExitVehicle(playerid, vehicleid);
@@ -785,11 +785,11 @@ public OnRconLoginAttempt(ip[], password[], success)
 		case 1:
 		{
 			// если игрок заходит ркон админом, то дадим ему полные права
-			new pip[16];
-			foreach(Player, playerid)
+			new pip[MAX_IP];
+			foreach (Player, playerid)
 			{
 				GetPVarString(playerid, "IP", pip, sizeof(pip));
-				if(!strcmp(ip, pip, false))
+				if (!strcmp(ip, pip, false))
 				{
 					SetPlayerStatus(playerid, 3);
 					break;

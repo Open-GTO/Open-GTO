@@ -143,7 +143,7 @@ stock create_playerTD(playerid)
 	speedom[playerid] = TextDrawCreate(495.000000, 377.700000, "-");
 	TextDrawAlignment(speedom[playerid], 0);
 	TextDrawBackgroundColor(speedom[playerid], 0x000000FF);
-	TextDrawFont(speedom[playerid], QS_TD_FONT);
+	TextDrawFont(speedom[playerid], QUIDEMSYS_TD_FONT);
 	TextDrawLetterSize(speedom[playerid], 0.299999, 1.000000);
 	TextDrawColor(speedom[playerid], 0xFFFFFFFF);
 	TextDrawSetOutline(speedom[playerid], 1);
@@ -247,10 +247,10 @@ public fill_Timer(playerid)
 {
    	new vehicleid = GetPlayerVehicleID(playerid);
 	
-	Fuel[vehicleid] += QS_FUEL_SPEED;
+	Fuel[vehicleid] += QUIDEMSYS_FUEL_SPEED;
 	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || Fuel[vehicleid] >= FuelList[ GetVehicleModel(vehicleid)-400 ])
 	{
-		new RefueledAmount = floatround( Fuel[vehicleid] - GetPVarFloat(playerid, "OldFuel") ) * QS_FUEL_TARIF;
+		new RefueledAmount = floatround( Fuel[vehicleid] - GetPVarFloat(playerid, "OldFuel") ) * QUIDEMSYS_FUEL_TARIF;
 		GivePlayerMoney(playerid, -RefueledAmount);
 		
 		new string[MAX_STRING];

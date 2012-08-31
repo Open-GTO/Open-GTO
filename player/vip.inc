@@ -62,13 +62,13 @@ stock VIPCheck(date[])
 	year = strval(bufer);
 	
 	getdate(current_year, current_month, current_day);
-	if(year > current_year)
+	if (year > current_year)
 	{
 		return 1;
 	}
-	else if(year == current_year)
+	else if (year == current_year)
 	{
-		if(month > current_month)
+		if (month > current_month)
 		{
 			return 1;
 		}

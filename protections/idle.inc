@@ -18,7 +18,7 @@ new AntiIdleEnabled = ANTI_IDLE_ENABLED,
 
 stock AntiIdleLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_ai = ini_Open(ConfigDB);
 	ini_GetInt(file_ai, "Anti_Idle_Enabled", AntiIdleEnabled);
 	ini_GetInt(file_ai, "Anti_Idle_Max_Idle_Minutes", MaxIdle);

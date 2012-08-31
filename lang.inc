@@ -18,7 +18,7 @@ new lang_texts[20][100][MAX_STRING+10];
 
 stock lang_LoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_lang = ini_Open(ConfigDB);
     ini_Get(file_lang, "Language", lang);
 	ini_Close(file_lang);

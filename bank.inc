@@ -28,7 +28,7 @@ new Banks[][CoordInfo] = {
 
 stock BankLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_bank = ini_Open(ConfigDB);
     ini_GetInt(file_bank, "BANK_ProfitCount", ProfitCount);
     ini_GetInt(file_bank, "BANK_MAX_MONEY", MAX_BANK);

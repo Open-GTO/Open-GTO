@@ -20,13 +20,13 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 	{
 		new tmp[MAX_STRING];
 		tmp = strcharsplit(text, idx,' ');
-		if(!strlen(tmp))
+		if (!strlen(tmp))
 		{
-			return SendClientMessage(playerid, COLOUR_PM, "USAGE: /PM <id> <сообщение>");
+			return SendClientMessage(playerid, COLOUR_PM, "Применение: /pm <id> <сообщение>");
 		}
 		
 		new id = strval(tmp);
-		if(!IsPlayerConnected(id) || id == playerid)
+		if (!IsPlayerConnected(id) || id == playerid)
 		{
 			return SendClientMessage(playerid, COLOUR_PM, "/pm: Неверный ID");
 		}
@@ -39,7 +39,7 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 		new string[MAX_STRING];
 		set(string, text[idx+1]);
 		new soundid = strval(strcharsplit(text, idx,' '));
-		if(soundid <= 0)
+		if (soundid <= 0)
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[1][15]);
 		}
@@ -116,13 +116,13 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 		);
 		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 
-		if(GetPlayerVIP(playerid) == 1)
+		if (GetPlayerVIP(playerid) == 1)
 		{
 			format(string, sizeof(string), "У вас есть VIP статус, доступен до: %s", GetPlayerVIPDate(playerid));
 		}
 		else
 		{
-			format(string, sizeof(string), "У вас нету VIP статуса");
+			format(string, sizeof(string), "У вас нет VIP статуса");
 		}
 		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 		return 1;
@@ -198,7 +198,7 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 		}
 		if (!strcmp(cmd, "/piss", true))
 		{
-			return SetPlayerSpecialAction(playerid, 68);
+			return SetPlayerSpecialAction(playerid, SPECIAL_ACTION_PISS);
 		}
 		if (!strcmp(cmd, "/smoke", true))
 		{

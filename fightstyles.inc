@@ -68,9 +68,9 @@ stock fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[
     new string[MAX_STRING];
 	if (dialogid == fightstyles_DialogID)
 	{
-	    if(!response) return 1;
+	    if (!response) return 1;
 		new TrenerID = GetPlayerFightTrenerID(playerid);
-		if(oGetPlayerMoney(playerid) < FightTreners[TrenerID][Cost])
+		if (oGetPlayerMoney(playerid) < FightTreners[TrenerID][Cost])
 		{
 			format(string, sizeof(string), lang_texts[19][9], FightTreners[TrenerID][Cost]);
 			return show_Msg_Dialog(playerid, lang_texts[19][2], string, lang_texts[19][3]);

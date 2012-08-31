@@ -31,7 +31,7 @@ new mission_questid[ sizeof(mission_array) ];
 
 stock mission_LoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
     new file_mission = ini_Open(ConfigDB);
 	
 	new string[MAX_STRING];
@@ -86,7 +86,7 @@ stock mission_OnGameModeInit()
 
 stock IsPlayerInMission(playerid, missionid)
 {
-	if(GetPlayerQuestID(playerid) == mission_questid[missionid]) return 1;
+	if (GetPlayerQuestID(playerid) == mission_questid[missionid]) return 1;
 	return 0;
 }
 

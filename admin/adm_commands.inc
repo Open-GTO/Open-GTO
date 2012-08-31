@@ -79,7 +79,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		format(string, sizeof(string), lang_texts[12][71], GetPlayerJailed(receiverid), GetPlayerMuted(receiverid));	//Jailed, Muted
 		SendClientMessage(playerid, COLOUR_WHITE, string);
-		new playerIP[16];
+		new playerIP[MAX_IP];
 		GetPVarString(receiverid, "IP", playerIP, sizeof(playerIP));
 		format(string, sizeof(string), lang_texts[12][72], GetPlayerPing(receiverid), playerIP);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
@@ -183,7 +183,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 	if (!strcmp(cmd, "/tele-here", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx, ' '));
-		if(IsPlayerRconAdmin(receiverid) && receiverid != playerid)
+		if (IsPlayerRconAdmin(receiverid) && receiverid != playerid)
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
@@ -222,7 +222,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		new Float:X, Float:Y, Float:Z, Float:Angle;
 		GetPlayerPos(playerid, X, Y, Z);
 		GetPlayerFacingAngle(playerid, Angle);
-		new string[MAX_STRING], playername[MAX_PLAYER_NAME];
+		new string[MAX_STRING], playername[MAX_PLAYER_NAME+1];
 		GetPlayerName(playerid, playername, sizeof(playername));
 		foreach (Player, id)
 		{
@@ -288,7 +288,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 		
-		if(!IsPlayerConnected(receiverid))
+		if (!IsPlayerConnected(receiverid))
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
 		}
@@ -380,16 +380,17 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 	if (!strcmp(cmd, "/givegun", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx, ' '));
-		if(!IsPlayerConnected(receiverid))
+		if (!IsPlayerConnected(receiverid))
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][10]);
 		}
 		
 		new ammamount = strval(strcharsplit(text, idx, ' '));
-		if (0 > ammamount > 46)
+		if (ammamount < 0 && ammamount > 46)
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][45]);
 		}
+		
 		oGivePlayerWeapon(receiverid, ammamount, 1000);
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[12][46] , oGetPlayerName(playerid), oGetWeaponName(ammamount), ammamount, 1000);
@@ -430,7 +431,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][9]);
 		}
 		
-		if(!IsPlayerConnected(receiverid))
+		if (!IsPlayerConnected(receiverid))
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][10]);
 		}
@@ -460,16 +461,16 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 	}
 	if (!strcmp(cmd, "/getip", true))
 	{
-		new string[MAX_STRING], LastIP[16], filename_account[MAX_STRING];
+		new string[MAX_STRING], LastIP[MAX_IP], filename_account[MAX_STRING];
 		set(string, text[idx+1]);
 		
-		if(strlen(string) <= 0)
+		if (strlen(string) <= 0)
 		{
 			return SendClientMessage(playerid, COLOUR_RED, "Неправильный ник");
 		}
 		
 		format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, string);
-		if(!ini_Exist(filename_account))
+		if (!ini_Exist(filename_account))
 		{
 			return SendClientMessage(playerid, COLOUR_RED, "Такого аккаунта не существует");
 		}

@@ -271,7 +271,7 @@ stock player_OnPlayerDisconnect(playerid, reason)
 
 stock player_OnPlayerConnect(playerid)
 {
-    new plrIP[16], string[MAX_STRING];
+    new plrIP[MAX_IP], string[MAX_STRING];
     GetPlayerIp(playerid, plrIP, sizeof(plrIP));
 	SetPVarString(playerid, "IP", plrIP);
 	if (!NameCharCheck( oGetPlayerName(playerid) ))
@@ -420,7 +420,7 @@ stock KickPlayer(playerid, reason[])
 		SendClientMessage(playerid, COLOUR_YELLOW, string);
 		return 0;
 	}
-	new playername[MAX_PLAYER_NAME];
+	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	if (!strlen(reason))
 	{
@@ -473,7 +473,7 @@ stock ResetQuest(playerid)
 
 stock oGetPlayerName(playerid)
 {
-	new name[MAX_PLAYER_NAME];
+	new name[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, name, sizeof(name));
 	return name;
 }
@@ -521,7 +521,7 @@ stock player_create_db_ini(playerid)
 
 stock player_save_db_ini(playerid)
 {
-	new filename_player[MAX_STRING], playername[MAX_PLAYER_NAME];
+	new filename_player[MAX_STRING], playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	format(filename_player, sizeof(filename_player), "%s%s"GTO_FILES_FORMAT, PlayerDB, playername);
 	new file_player = (!ini_Exist(filename_player)) ? ini_Create(filename_player) : ini_Open(filename_player);
@@ -703,7 +703,7 @@ stock SendPM(senderid, receiveid, message[])
 		return SendClientMessage(senderid, COLOUR_PM, string);
 	}
 
-	new sendername[MAX_PLAYER_NAME], receivename[MAX_PLAYER_NAME];
+	new sendername[MAX_PLAYER_NAME+1], receivename[MAX_PLAYER_NAME+1];
 	GetPlayerName(receiveid, receivename, sizeof(receivename));
 	GetPlayerName(senderid, sendername, sizeof(sendername));
 	

@@ -17,7 +17,7 @@ new AntiArmourHackEnabled = ANTI_ARMOUR_HACK_ENABLED;
 
 stock AntiArmourHackLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_aah = ini_Open(ConfigDB);
 	ini_GetInt(file_aah, "Anti_Armour_Hack_Enabled", AntiArmourHackEnabled);
 	ini_Close(file_aah);

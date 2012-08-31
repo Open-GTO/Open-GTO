@@ -14,7 +14,7 @@
 
 #pragma tabsize 0
 
-#define VERSION					"v1.0.0 alpha(17)" // версия мода
+#define VERSION					"v1.0.1" // версия мода
 #define GTO_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
 #define GTO_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
@@ -23,8 +23,9 @@
 
 #define MAX_STRING				128 // не менять, кол-во символов для большинства строковых переменных
 #define MAX_NAME				40 // кол-во символов для имён, паролей и пр.
+#define MAX_IP					16 // максимальное количество символов для IP адреса
 
-//#define USE_PASSWORD_ENCRYPT // если задефайнено, то пароль в файле игрока будет шифроваться
+#define USE_PASSWORD_ENCRYPT // если задефайнено, то пароль в файле игрока будет шифроваться
 #if defined USE_PASSWORD_ENCRYPT
 new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]$4%5a`Jdny¦IUW@G7s6&l:k;i~ YsoMЈ.cBq#|}NrTtA, ";
 #endif
@@ -42,10 +43,10 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define DebugMSG_USE_PRINT // если задефайнен, то функция DMSG выводит сообщение в консоль сервера
 
 // логи(параметры по умолчанию) 1 вкл, 0 выкл
-#define LOGGING_GAME_LOG_ENABLED	1
-#define LOGGING_DEBUG_LOG_ENABLED	1
-#define LOGGING_CHAT_LOG_ENABLED	1
-#define LOGGING_CMD_LOG_ENABLED		1
+#define LOGGING_GAME_LOG_ENABLED	1 // логирование серверных сообщений
+#define LOGGING_DEBUG_LOG_ENABLED	1 // логирование отладочных сообщений
+#define LOGGING_CHAT_LOG_ENABLED	1 // логирование сообщений в чат
+#define LOGGING_CMD_LOG_ENABLED		1 // логирование введённых команд
 // античит(параметры по умолчанию)
 #define ANTI_HEALTH_HACK_ENABLED	1 // защита от чита на здоровье
 #define ANTI_MONEY_HACK_ENABLED		1 // защита от чита на деньги
@@ -68,10 +69,10 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 
 // QuidemSys
-#define QUIDEMSYS_ENABLED	1
-#define QS_TD_FONT			2 // используемый id шрифта в текстдраве
-#define QS_FUEL_SPEED		2 // количество бензина, заправляемого за 1 секунду
-#define QS_FUEL_TARIF		1 // цена одного литра бензина, в долларах
+#define QUIDEMSYS_ENABLED		1
+#define QUIDEMSYS_TD_FONT		2 // используемый id шрифта в текстдраве
+#define QUIDEMSYS_FUEL_SPEED	2 // количество бензина, заправляемого за 1 секунду
+#define QUIDEMSYS_FUEL_TARIF	1 // цена одного литра бензина, в долларах
 
 // прочее
 #define MAX_GULPS			5 // максимальное количество глотков из бутылки
@@ -211,6 +212,8 @@ enum {
 }
 
 // прочее
+
+#define SPECIAL_ACTION_PISS	68
 
 // типы спавнов
 #define SPAWN_HOUSE_NONE	-1

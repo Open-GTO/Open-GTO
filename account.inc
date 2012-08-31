@@ -17,7 +17,7 @@
 
 stock AccountLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_account_db = ini_Open(ConfigDB);
 	ini_Get(file_account_db, "Account_DB", AccountDB);
 	ini_Close(file_account_db);
@@ -34,14 +34,14 @@ stock AccountSaveConfig()
 
 stock AccountSave(playerid)
 {
-	if(!IsPlayerLogin(playerid)) return 0;
+	if (!IsPlayerLogin(playerid)) return 0;
 	account_save_db_ini(playerid);
 	return 1;
 }
 
 stock account_save_db_ini(playerid)
 {
-	new filename_account[MAX_STRING], temp[MAX_STRING], playername[MAX_PLAYER_NAME];
+	new filename_account[MAX_STRING], temp[MAX_STRING], playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, playername);
 	new file_account = (!ini_Exist(filename_account)) ? ini_Create(filename_account) : ini_Open(filename_account);
@@ -57,7 +57,7 @@ stock account_save_db_ini(playerid)
 	getdate(year, month, day);
 	format(temp, sizeof(temp), "%02d.%02d.%d, %02d:%02d", day, month, year, hours, minutes);
 	ini_Set(file_account, "Last_Login", temp);
-	new playerIP[16];
+	new playerIP[MAX_IP];
 	GetPVarString(playerid, "IP", playerIP, sizeof(playerIP));
 	ini_Set(file_account, "LastIP", playerIP);
 	ini_Close(file_account);
@@ -94,7 +94,7 @@ stock AccountLogin(playerid, password[])
 	if (account_login_db_ini(playerid, password) == 0) return 0;
 	PlayerLoadStats(playerid);
 	GivePlayerOwnedWeapons(playerid);
-	new playername[MAX_PLAYER_NAME], string[MAX_STRING];
+	new playername[MAX_PLAYER_NAME+1], string[MAX_STRING];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	if (IsPlayerRconAdmin(playerid))
 	{
@@ -134,7 +134,7 @@ stock AccountLogin(playerid, password[])
 
 stock account_login_db_ini(playerid, password[])
 {
-	new filename_account[MAX_STRING], temp[MAX_STRING], playername[MAX_PLAYER_NAME];
+	new filename_account[MAX_STRING], temp[MAX_STRING], playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, playername);
 	if (!ini_Exist(filename_account)) return 1;
@@ -171,7 +171,7 @@ stock account_login_db_ini(playerid, password[])
 
 stock account_OnPlayerConnect(playerid)
 {
-	new filename_account[MAX_STRING], message[MAX_STRING], playername[MAX_PLAYER_NAME];
+	new filename_account[MAX_STRING], message[MAX_STRING], playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, playername);
 	if (ini_Exist(filename_account))
@@ -193,7 +193,8 @@ stock account_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 	#pragma unused listitem, response
 	if (dialogid == account_Log_DialogID)
 	{
-		if (MAX_PASS_LEN >= strlen(inputtext) >= MIN_PASS_LEN)
+		new pass_len = strlen(inputtext);
+		if (pass_len >= MIN_PASS_LEN && pass_len <= MAX_PASS_LEN)
 		{
 			AccountLogin(playerid, inputtext);
 		}
@@ -205,7 +206,8 @@ stock account_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 	}
 	else if (dialogid == account_Reg_DialogID)
 	{
-		if (MAX_PASS_LEN >= strlen(inputtext) >= MIN_PASS_LEN)
+		new pass_len = strlen(inputtext);
+		if (pass_len >= MIN_PASS_LEN && pass_len <= MAX_PASS_LEN)
 		{
 			AccountRegister(playerid, inputtext);
 		}

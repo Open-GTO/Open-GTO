@@ -89,7 +89,7 @@ stock business_OnGameModeInit()
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{
 		CreatePickup(1274, 49, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.5);	//синий домик
-		if(Businesses[id][Business_ShowIcon] == 1)
+		if (Businesses[id][Business_ShowIcon] == 1)
 		{
 			business_icon[id] = CreateStreamMapIcon(52, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]);
 		}
@@ -103,7 +103,7 @@ stock show_Business_Menu(playerid)
 {
 	new id = GetPlayerToBusinessID(playerid),
 		string[MAX_STRING],
-		playername[MAX_PLAYER_NAME];
+		playername[MAX_PLAYER_NAME+1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
 	
@@ -276,7 +276,7 @@ stock business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 stock bis_Buy(playerid)
 {
-	new playername[MAX_PLAYER_NAME];
+	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	for (new i = 0, pl_business = 0; i < sizeof(Businesses); i++)
 	{
@@ -323,7 +323,7 @@ stock bis_Buy(playerid)
 	#if defined BUY_ALL_BUSINESS
 		foreach (Player, ownerid)
 		{
-			if(!strcmp(Businesses[id][Business_Owner], oGetPlayerName(ownerid), true))
+			if (!strcmp(Businesses[id][Business_Owner], oGetPlayerName(ownerid), true))
 			{
 				new temp[MAX_STRING];
 				format(temp, sizeof(temp), lang_texts[3][15], playername, Businesses[id][Business_Name]);
@@ -455,7 +455,7 @@ stock business_Update3DTextLabelText()
 	return 1;
 }
 
-stock business_RenameOwner(old_name[MAX_PLAYER_NAME], new_name[MAX_PLAYER_NAME])
+stock business_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+1])
 {
 	for (new i = 0; i < sizeof(Businesses); i++)
 	{
@@ -470,7 +470,7 @@ stock business_RenameOwner(old_name[MAX_PLAYER_NAME], new_name[MAX_PLAYER_NAME])
 
 stock CheckBusinessOwners()
 {
-	new filename_account[MAX_PLAYER_NAME], file_account, account_lastlogin[32], idx,
+	new filename_account[MAX_PLAYER_NAME+1], file_account, account_lastlogin[32], idx,
 		year, month, day, account_year, account_month, account_day;
 	
 	getdate(year, month, day);

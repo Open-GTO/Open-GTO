@@ -19,7 +19,7 @@ new Gang_Create_Cost = GANG_CREATE_COST,
 
 enum MemberInfo {
 	bool:member_online,
-	member_name[MAX_PLAYER_NAME],
+	member_name[MAX_PLAYER_NAME+1],
 	member_playerid
 }
 
@@ -39,7 +39,7 @@ new Gangs[MAX_GANGS][GangInfo];
 
 stock GangLoadConfig()
 {
-	if(!ini_Exist(ConfigDB)) return 0;
+	if (!ini_Exist(ConfigDB)) return 0;
 	new file_gang = ini_Open(ConfigDB);
 	ini_Get(file_gang, "Gang_DB", GangDB);
 	ini_GetInt(file_gang, "Gang_Create_Cost", Gang_Create_Cost);
@@ -88,7 +88,7 @@ stock GangLoad(gangname[])
 	}
 
 	new gangid = FindGangFreeSlot();
-	if(gangid == 0)
+	if (gangid == 0)
 	{
 		return GameMSG("ERROR: Свободный слот для банды не найден");
 	}
@@ -114,7 +114,7 @@ stock gang_load_db_ini(gangid, gangname[])
 	{
 		GangMemberInfo[gangid][gangmember][member_online] = false;
 		format(string, sizeof(string), "Member%d", gangmember);
-		ini_Get(file_gang, string, GangMemberInfo[gangid][gangmember][member_name], MAX_PLAYER_NAME);
+		ini_Get(file_gang, string, GangMemberInfo[gangid][gangmember][member_name], MAX_PLAYER_NAME+1);
 		GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
 	}
 	ini_Close(file_gang);
@@ -125,7 +125,7 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 {
 	new cmd[20], idx;
 	cmd = strcharsplit(text, idx,' ');
-	if(strlen(cmd) == 0) return 0;
+	if (strlen(cmd) == 0) return 0;
 
 	if (GetPlayerMuteTime(playerid) != 0)
 	{
@@ -134,13 +134,13 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 
 	if (!strcmp(cmd, "/g", true))
  	{
-		if(GetPlayerGangID(playerid) == 0)
+		if (GetPlayerGangID(playerid) == 0)
 		{
 			return 1;
 		}
 	 	new gangmessage[MAX_STRING];
 	 	set(gangmessage, text[idx+1]);
-		if(strlen(gangmessage) == 0)
+		if (strlen(gangmessage) == 0)
 		{
 			return 1;
 		}
@@ -629,7 +629,7 @@ stock GangSaveAll()
 		if (Gangs[i][gang_active])
 		{
 			GangSave(i);
-			if(GangOnlineCount(i) == 0)
+			if (GangOnlineCount(i) == 0)
 			{
 				GangUnload(i);
 			}
@@ -727,7 +727,7 @@ stock GangKill(gangid, killerid, victimid, reason)
 stock GangMemberLogin(playerid, gangid)
 {
 	if (gangid == 0) return 0;
-	new pl_name[MAX_PLAYER_NAME];
+	new pl_name[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, pl_name, sizeof(pl_name));
 	for (new gangmember = 0, string[MAX_STRING]; gangmember < MAX_GANG_SIZE; gangmember++)
 	{
@@ -821,11 +821,11 @@ stock GangGivePlayerXP(playerid, xpamount)
 	return;
 }
 
-stock gang_RenameMember(gangid, old_name[MAX_PLAYER_NAME], new_name[MAX_PLAYER_NAME])
+stock gang_RenameMember(gangid, old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+1])
 {
 	for (new gangmember = 0; gangmember < MAX_GANG_SIZE; gangmember++)
 	{
-		if(!strcmp(GangMemberInfo[gangid][gangmember][member_name], old_name, true))
+		if (!strcmp(GangMemberInfo[gangid][gangmember][member_name], old_name, true))
 		{
 			set(GangMemberInfo[gangid][gangmember][member_name], new_name);
 			return 1;
@@ -910,9 +910,9 @@ stock GetGangXPToLevel(gangid, level)
 
 stock CalculateGangLevel(gangid)
 {
-	for(new i;i<=MAX_GANG_LEVEL;i++)
+	for (new i;i<=MAX_GANG_LEVEL;i++)
 	{
-		if(GetGangXP(gangid) < GangLevelList[i]) continue;
+		if (GetGangXP(gangid) < GangLevelList[i]) continue;
 		return i;
 	}
 	return -1;

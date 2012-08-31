@@ -195,7 +195,7 @@ stock GetIconSlot(playerid, icon_id)
 
 stock update_House_IconType(playerid, icon_id)
 {
-	new playername[MAX_PLAYER_NAME];
+	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	for (new house_id = 0; house_id < sizeof(Houses); house_id++)
 	{
@@ -217,7 +217,7 @@ stock update_House_IconType(playerid, icon_id)
 
 stock update_Business_IconType(playerid, icon_id)
 {
-	new playername[MAX_PLAYER_NAME];
+	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	for (new bis_id = 0; bis_id < sizeof(Businesses); bis_id++)
 	{

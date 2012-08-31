@@ -14,8 +14,8 @@
 #pragma library gtoutils
 
 
-#define command_register(%0,%1,%2,%3) if(!strcmp(%0,%1, true,%2) && ((%0[%2] == ' ') || (%0[%2] == 0))) return %3_OnPlayerCommandText(playerid,%0)
-#define command_registerNR(%0,%1,%2,%3) if(!strcmp(%0,%1, true,%2) && ((%0[%2] == ' ') || (%0[%2] == 0))) %3_OnPlayerCommandText(playerid,%0)
+#define command_register(%0,%1,%2,%3) if (!strcmp(%0,%1, true,%2) && ((%0[%2] == ' ') || (%0[%2] == 0))) return %3_OnPlayerCommandText(playerid,%0)
+#define command_registerNR(%0,%1,%2,%3) if (!strcmp(%0,%1, true,%2) && ((%0[%2] == ' ') || (%0[%2] == 0))) %3_OnPlayerCommandText(playerid,%0)
 #define GivePVarInt(%1,%2,%3) SetPVarInt(%1,%2, GetPVarInt(%1,%2)+%3)
 #define set(%0,%1) strmid(%0,%1, 0, 160, MAX_STRING + 32)
 
@@ -144,7 +144,7 @@ stock mathrandom(min, max)
 	return (random(max - min + 1) + min);
 }
 
-stock NameCharCheck(string[MAX_PLAYER_NAME])
+stock NameCharCheck(string[MAX_PLAYER_NAME+1])
 {
 	if (!strcmp(string, "Unknown", true) || IsNumeric(string)) return 0;
 	for (new i = strlen(string)-1; i >= 0; i--)
@@ -187,7 +187,7 @@ stock settime()
 
 stock StringCharCheck(string[])
 {
-	for(new i = strlen(string)-1; i >= 0; i--)
+	for (new i = strlen(string)-1; i >= 0; i--)
 	{
 		switch (string[i])
 		{

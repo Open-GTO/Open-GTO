@@ -15,7 +15,7 @@ stock SendClientMessageToAdmins(senderid, text[])
 {
 	new message[MAX_STRING], count = 0;
 	format(message, sizeof(message), lang_texts[12][28], oGetPlayerName(senderid), senderid, text);
-	foreach(Player, adminid)
+	foreach (Player, adminid)
 	{
 		if (IsPlayerAdm(adminid))
 		{
