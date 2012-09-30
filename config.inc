@@ -14,7 +14,7 @@
 
 #pragma tabsize 0
 
-#define VERSION					"v1.0.1" // версия мода
+#define VERSION					"v1.0.2" // версия мода
 #define GTO_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
 #define GTO_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
@@ -30,6 +30,7 @@
 new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]$4%5a`Jdny¦IUW@G7s6&l:k;i~ YsoMЈ.cBq#|}NrTtA, ";
 #endif
 
+#define FIRST_LEVEL				1 // уровень, который даётся игроку после регистрации
 #define MAX_MONEY				50000000 // максимальное кол-во денег, которое может иметь игрок
 #define UpdatePlayerScore(%1)	SetPlayerScore(%1, GetPVarInt(%1, "Level"))
 #define MIN_SEND_SYMBOLS		3 // минимальное кол-во отправляемых символов в ПМ

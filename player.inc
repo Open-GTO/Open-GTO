@@ -489,8 +489,8 @@ stock PlayerSave(playerid)
 stock CreatePlayer(playerid)
 {
 	oSetPlayerMoney(playerid, PlayerStartMoney);
-	SetPlayerLevel(playerid, 1);
-	SetPlayerXP(playerid, LevelList[1][level_xp]);
+	SetPlayerLevel(playerid, FIRST_LEVEL);
+	SetPlayerXP(playerid, LevelList[FIRST_LEVEL][level_xp]);
 	oResetPlayerWeapons(playerid);
 	SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 	SetPlayerSkinModel(playerid, 1);

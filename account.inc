@@ -46,9 +46,6 @@ stock account_save_db_ini(playerid)
 	format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, playername);
 	new file_account = (!ini_Exist(filename_account)) ? ini_Create(filename_account) : ini_Open(filename_account);
 	GetPVarString(playerid, "Password", temp, sizeof(temp));
-#if defined USE_PASSWORD_ENCRYPT
-	encrypt(temp);
-#endif
 	ini_Set(file_account, "Password", temp);
 	GetPVarString(playerid, "Creation_Date", temp, sizeof(temp));
 	ini_Set(file_account, "Creation_Date", temp);
@@ -73,8 +70,7 @@ stock account_OnGameModeInit()
 
 stock AccountRegister(playerid, password[])
 {
-	SetPVarString(playerid, "Password", password);
-	
+	SetPVarString(playerid, "Password", encrypt(password));
 	new temp[MAX_STRING], day, month, year, seconds, minutes, hours;
 	gettime(hours, minutes, seconds);
 	getdate(year, month, day);
@@ -142,7 +138,7 @@ stock account_login_db_ini(playerid, password[])
 	new dbpassword[MAX_PASS_LEN];
 	ini_Get(file_account, "Password", dbpassword);
 #if defined USE_PASSWORD_ENCRYPT
-	encrypt(password);
+	set(password, encrypt(password));
 #endif
 	if (strcmp(password, dbpassword, false))
 	{

@@ -224,15 +224,18 @@ stock GetVehicleSpeed(vehicleid)
 stock encrypt(string[])
 {
 	new size = strlen(ENCRYPTION_KEY),
+		retval[MAX_PASS_LEN],
 		j = strlen(string),
 		k = ((j >> 4) + 1) << 4,
 		sum = j,
 		tmp[] = {0, 0};
+	
 	for (new i = 0; i < k; i++)
 	{
 		tmp[0] = (i < j) ? string[i] : ' ';
 		sum = ((sum + strfind(ENCRYPTION_KEY, tmp) + 1) % size);
-		string[i] = ENCRYPTION_KEY[sum];
+		retval[i] = ENCRYPTION_KEY[sum];
 	}
+	return retval;
 }
 #endif

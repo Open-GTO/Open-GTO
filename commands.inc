@@ -134,9 +134,7 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 		format(string, sizeof(string), lang_texts[15][75], VERSION);
 		SendClientMessage(playerid, COLOUR_GREEN, string);
 		SendClientMessage(playerid, COLOUR_MISC, lang_texts[15][76]);
-		SendClientMessage(playerid, COLOUR_MISC, "Open-GTO Team: ");
-		SendClientMessage(playerid, COLOUR_MISC, "      Current: ZiGGi");
-		SendClientMessage(playerid, COLOUR_MISC, "      Previous: GhostTT, heufix, Elbi");
+		SendClientMessage(playerid, COLOUR_MISC, lang_texts[15][77]);
 		return 1;
 	}
 	if (!strcmp(cmd, "/time", true))
