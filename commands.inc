@@ -36,16 +36,13 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 	}
 	if (!strcmp(cmd, "/sound", true))
 	{
-		new string[MAX_STRING];
-		set(string, text[idx+1]);
 		new soundid = strval(strcharsplit(text, idx,' '));
 		if (soundid <= 0)
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[1][15]);
 		}
-		new Float:playerx, Float:playery, Float:playerz;
-		GetPlayerPos(playerid, playerx, playery, playerz);
-		PlayerPlaySound(playerid, soundid, playerx, playery, playerz);
+		PlayerPlaySound(playerid, soundid, 0, 0, 0);
+		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[1][16] , soundid);
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 		return 1;

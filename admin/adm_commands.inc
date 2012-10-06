@@ -158,7 +158,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
 		}
 		new Float:X, Float:Y, Float:Z, Float:Angle;
-		if (IsPlayerInAnyVehicle(playerid)) 
+		if (IsPlayerInAnyVehicle(playerid))
 		{
 			new VehicleID = GetPlayerVehicleID(playerid);
 			GetPlayerPos(receiverid, X, Y, Z);
@@ -166,13 +166,13 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 			oSetVehiclePos(VehicleID, X+3.01, Y+3.01, Z+1);
 			SetPlayerFacingAngle(playerid, Angle);
 		} 
-		else 
+		else
 		{
 			GetPlayerPos(receiverid, X, Y, Z);
 			GetPlayerFacingAngle(receiverid, Angle);
 			SetPlayerFacingAngle(playerid, Angle);
-			X += (random(2)-random(4));
-			Y += (random(2)-random(4));	
+			X = X + (random(2)-random(4));
+			Y = Y + (random(2)-random(4));	
 			oSetPlayerPos(playerid, X, Y, Z + 1);
 		}
 		new string[MAX_STRING];
