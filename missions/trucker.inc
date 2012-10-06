@@ -247,7 +247,12 @@ public trucker_EndMission(playerid)
 stock trucker_Stop(playerid)
 {
 	ResetQuest(playerid);
-	SetPVarInt(playerid,"trucker_RunnerMissionTime",mission_GetPauseTime(mission_trucker));
+	GivePVarInt(playerid, "trucker_MissionTryCount", 1);
+	if (GetPVarInt(playerid, "trucker_MissionTryCount") >= mission_GetTryCount(playerid))
+	{
+		SetPVarInt(playerid, "trucker_MissionTryCount", 0);
+		SetPVarInt(playerid,"trucker_RunnerMissionTime",mission_GetPauseTime(mission_trucker));
+	}
 }
 
 stock trucker_RunnerTimer(playerid)

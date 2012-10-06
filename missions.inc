@@ -19,12 +19,13 @@ enum {
 enum mission_Info {
 	mission_enabled,
 	mission_name[MAX_NAME],
+	mission_trycount,
 	mission_pausetime,
 	mission_money,
 	mission_xp,
 }
 new mission_array[][mission_Info] = {
-	{TRUCKER_ENABLED, "trucker", TRUCKER_RUNNER_MISSION_TIME, TRUCKER_MONEY_RATE, TRUCKER_XP_RATE}
+	{TRUCKER_ENABLED, "trucker", TRUCKER_MISSION_TRY_COUNT, TRUCKER_RUNNER_MISSION_TIME, TRUCKER_MONEY_RATE, TRUCKER_XP_RATE}
 };
 
 new mission_questid[ sizeof(mission_array) ];
@@ -39,6 +40,9 @@ stock mission_LoadConfig()
 	{
 		format(string, sizeof(string), "%s_Enabled", mission_array[id][mission_name]);
 		ini_GetInt(file_mission, string, mission_array[id][mission_enabled]);
+		
+		format(string, sizeof(string), "%s_Try_Count", mission_array[id][mission_name]);
+		ini_GetInt(file_mission, string, mission_array[id][mission_trycount]);
 		
 		format(string, sizeof(string), "%s_Money_Rate", mission_array[id][mission_name]);
 		ini_GetInt(file_mission, string, mission_array[id][mission_money]);
@@ -63,6 +67,9 @@ stock mission_SaveConfig()
 	{
 		format(string, sizeof(string), "%s_Enabled", mission_array[id][mission_name]);
 		ini_SetInt(file_mission, string, mission_array[id][mission_enabled]);
+
+		format(string, sizeof(string), "%s_Try_Count", mission_array[id][mission_name]);
+		ini_SetInt(file_mission, string, mission_array[id][mission_trycount]);
 		
 		format(string, sizeof(string), "%s_Money_Rate", mission_array[id][mission_name]);
 		ini_SetInt(file_mission, string, mission_array[id][mission_money]);
@@ -108,6 +115,11 @@ stock mission_GetQuestID(missionid)
 stock mission_GetPauseTime(missionid)
 {
 	return mission_array[missionid][mission_pausetime];
+}
+
+stock mission_GetTryCount(missionid)
+{
+	return mission_array[missionid][mission_trycount];
 }
 
 stock mission_CalculateXP(playerid, missionid)
