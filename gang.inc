@@ -28,6 +28,7 @@ new GangMemberInfo[MAX_GANGS][MAX_GANG_SIZE][MemberInfo];
 enum GangInfo {
 	bool:gang_active, //bool
 	gang_name[MAX_NAME],
+	gang_motd[MAX_STRING],
 	gang_colour,
 	gang_kills,
 	gang_score,
@@ -104,6 +105,7 @@ stock gang_load_db_ini(gangid, gangname[])
 	if (!ini_Exist(filename_gang)) return;
 	new file_gang = ini_Open(filename_gang);
 	ini_Get(file_gang, "Name", Gangs[gangid][gang_name], MAX_NAME);
+	ini_Get(file_gang, "Motd", Gangs[gangid][gang_motd], MAX_STRING);
 	ini_GetInt(file_gang, "Colour", Gangs[gangid][gang_colour]);
 	ini_GetInt(file_gang, "Kills", Gangs[gangid][gang_kills]);
 	ini_GetInt(file_gang, "Score", Gangs[gangid][gang_score]);
@@ -179,6 +181,7 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 			SendClientMessage(playerid, COLOUR_MISC, lang_texts[6][19]);
 			format(string, sizeof(string), lang_texts[6][20], Gang_Colour_Cost);
    			SendClientMessage(playerid, COLOUR_MISC, string);
+   			SendClientMessage(playerid, COLOUR_MISC, lang_texts[6][21]);
    			return 1;
   		}
   		if (!strcmp(cmd, "colours", true))
@@ -200,13 +203,15 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 	  		new gangid = GetPlayerGangID(playerid), string[MAX_STRING];
 	  		format(string, sizeof(string), lang_texts[6][25], Gangs[gangid][gang_name]);
 			SendClientMessage(playerid, Gangs[gangid][gang_colour], string);
+			format(string, sizeof(string), lang_texts[6][80], Gangs[gangid][gang_motd]);
+			SendClientMessage(playerid, Gangs[gangid][gang_colour], string);
 	  		format(string, sizeof(string), lang_texts[6][26], Gangs[gangid][gang_kills]);
 			SendClientMessage(playerid, COLOUR_MISC, string);
    			format(string, sizeof(string), lang_texts[6][27], Gangs[gangid][gang_score]);
 			SendClientMessage(playerid, COLOUR_MISC, string);
-   			format(string, sizeof(string), "XP банды: %d", Gangs[gangid][gang_xp]);
+   			format(string, sizeof(string), lang_texts[6][82], Gangs[gangid][gang_xp]);
 			SendClientMessage(playerid, COLOUR_MISC, string);
-   			format(string, sizeof(string), "Уровень банды: %d", Gangs[gangid][gang_level]);
+   			format(string, sizeof(string), lang_texts[6][83], Gangs[gangid][gang_level]);
 			SendClientMessage(playerid, COLOUR_MISC, string);
    			format(string, sizeof(string), lang_texts[6][28], GangOnlineCount(gangid));
 			SendClientMessage(playerid, COLOUR_MISC, string);
@@ -451,6 +456,22 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
    			oGivePlayerMoney(playerid,-Gang_Colour_Cost, 1);
    			return 1;
   		}
+  		if (!strcmp(cmd, "motd", true))
+  		{
+	  		if (GetPlayerGangID(playerid) == 0)
+	  		{
+				return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][24]);
+			}
+	  		if (!gang_IsLeader(playerid))
+	  		{
+				return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][52]);
+			}
+			set(Gangs[gangid][gang_motd], text[idx+1]);
+			new string[MAX_STRING];
+			format(string, sizeof(string), lang_texts[6][81], oGetPlayerName(playerid), playerid, Gangs[gangid][gang_motd]);
+			SendGangMessage(gangid, string, COLOUR_GANG);
+   			return 1;
+  		}
 	}
  	return 0;
 }
@@ -682,6 +703,7 @@ stock gang_save_db_ini(gangid)
 	format(filename_gang, sizeof(filename_gang), "%s%s"GTO_FILES_FORMAT, GangDB, Gangs[gangid][gang_name]);
 	new file_gang = (!ini_Exist(filename_gang)) ? ini_Create(filename_gang) : ini_Open(filename_gang);
 	ini_Set(file_gang, "Name", Gangs[gangid][gang_name]);
+	ini_Set(file_gang, "Motd", Gangs[gangid][gang_motd]);
 	ini_SetInt(file_gang, "Colour", Gangs[gangid][gang_colour]);
 	ini_SetInt(file_gang, "Kills", Gangs[gangid][gang_kills]);
 	ini_SetInt(file_gang, "Score", Gangs[gangid][gang_score]);
@@ -743,6 +765,8 @@ stock GangMemberLogin(playerid, gangid)
 		SetPlayerGangID(playerid, gangid);
 		SetPlayerGangName(playerid, Gangs[gangid][gang_name]);
 		format(string, sizeof(string), lang_texts[6][78], Gangs[gangid][gang_name], GangOnlineCount(gangid)-1);
+		SendClientMessage(playerid, COLOUR_GANG, string);
+		format(string, sizeof(string), lang_texts[6][80], Gangs[gangid][gang_motd]);
 		SendClientMessage(playerid, COLOUR_GANG, string);
 		SetPVarInt(playerid, "GangInvite", 0);
 		SetPlayerColor(playerid, Gangs[gangid][gang_colour]);
