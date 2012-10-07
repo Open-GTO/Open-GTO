@@ -111,12 +111,14 @@ public lottery_Timer()
 	}
 	KillTimer(lottery_timer);
 	LotteryCount = -1;
-	new win_value = mathrandom(1, 100);
+	new win_value = mathrandom(1, 100),
+		winner = 0;
 	
 	foreach (Player, playerid)
 	{
 		if (GetPVarInt(playerid, "lottery_Value") == win_value)
 		{
+			winner = 1;
 			oGivePlayerMoney(playerid, LotteryWinMoney, 1);
 			
 			new string[MAX_STRING];
@@ -131,6 +133,12 @@ public lottery_Timer()
 		{
 			DeletePVar(playerid, "lottery_Value");
 		}
+	}
+	if (winner == 0)
+	{
+		new string[MAX_STRING];
+		format(string, sizeof(string), "В лотерее никто не победил, выигрышный билет - %d.", win_value);
+		SendClientMessageToAll(COLOUR_GREEN, string);
 	}
 	return 1;
 }
