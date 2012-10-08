@@ -29,8 +29,8 @@ enum FightInfo {
 new FightTreners[][FightInfo] = {
 	{FIGHT_STYLE_NORMAL, "нормальный", 0, 0.0, 0.0, 0.0},
 	{FIGHT_STYLE_BOXING, "бокс", 1000, 767.6851, 12.8269, 1000.7025}, // LS
-	{FIGHT_STYLE_KNEEHEAD, "колено-голова", 2000, 768.5967,-22.9764, 1000.5859}, // SF
-	{FIGHT_STYLE_KUNGFU, "кунг-фу", 3000, 766.5240,-76.6523, 1000.6563} // LV
+	{FIGHT_STYLE_KUNGFU, "кунг-фу", 2000, 768.5967,-22.9764, 1000.5859}, // SF
+	{FIGHT_STYLE_KNEEHEAD, "колено-голова", 3000, 766.5240,-76.6523, 1000.6563} // LV
 };
 
 stock fights_OnGameModeInit()
@@ -115,8 +115,8 @@ stock showFightStyleMenu(playerid)
 	new string[MAX_STRING];
 	if (GetPlayerFightStyle(playerid) >= FIGHT_STYLE_NORMAL) strcat(string, lang_texts[19][15]);
 	if (GetPlayerFightStyle(playerid) >= FIGHT_STYLE_BOXING) strcat(string, lang_texts[19][16]);
-	if (GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KNEEHEAD) strcat(string, lang_texts[19][17]);
 	if (GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KUNGFU) strcat(string, lang_texts[19][18]);
+	if (GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KNEEHEAD) strcat(string, lang_texts[19][17]);
 	return ShowPlayerDialog(
 		playerid, fightstyles_user_DialogID, DIALOG_STYLE_LIST,
 		lang_texts[19][12],
@@ -133,8 +133,8 @@ stock ConvertFightIdToName(fstyleid)
 	{
 		case FIGHT_STYLE_NORMAL: set(fname, FightTreners[0][StyleName]);
 		case FIGHT_STYLE_BOXING: set(fname, FightTreners[1][StyleName]);
-		case FIGHT_STYLE_KNEEHEAD: set(fname, FightTreners[2][StyleName]);
 		case FIGHT_STYLE_KUNGFU: set(fname, FightTreners[3][StyleName]);
+		case FIGHT_STYLE_KNEEHEAD: set(fname, FightTreners[2][StyleName]);
 	}
 	return fname;
 }
