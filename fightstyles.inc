@@ -115,8 +115,8 @@ stock showFightStyleMenu(playerid)
 	new string[MAX_STRING];
 	if (GetPlayerFightStyle(playerid) >= FIGHT_STYLE_NORMAL) strcat(string, lang_texts[19][15]);
 	if (GetPlayerFightStyle(playerid) >= FIGHT_STYLE_BOXING) strcat(string, lang_texts[19][16]);
-	if (GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KUNGFU) strcat(string, lang_texts[19][18]);
-	if (GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KNEEHEAD) strcat(string, lang_texts[19][17]);
+	if (GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KUNGFU) strcat(string, lang_texts[19][17]);
+	if (GetPlayerFightStyle(playerid) >= FIGHT_STYLE_KNEEHEAD) strcat(string, lang_texts[19][18]);
 	return ShowPlayerDialog(
 		playerid, fightstyles_user_DialogID, DIALOG_STYLE_LIST,
 		lang_texts[19][12],
@@ -133,8 +133,8 @@ stock ConvertFightIdToName(fstyleid)
 	{
 		case FIGHT_STYLE_NORMAL: set(fname, FightTreners[0][StyleName]);
 		case FIGHT_STYLE_BOXING: set(fname, FightTreners[1][StyleName]);
-		case FIGHT_STYLE_KUNGFU: set(fname, FightTreners[3][StyleName]);
-		case FIGHT_STYLE_KNEEHEAD: set(fname, FightTreners[2][StyleName]);
+		case FIGHT_STYLE_KUNGFU: set(fname, FightTreners[2][StyleName]);
+		case FIGHT_STYLE_KNEEHEAD: set(fname, FightTreners[3][StyleName]);
 	}
 	return fname;
 }
