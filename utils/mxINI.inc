@@ -298,7 +298,11 @@ stock ini_createFile ( szFilePath[], szDefaultContent[] = "" )
     //  если свободный слот в памяти не найден
     //
     
-	DebugMSG("Error: mxINI: Лимит одновременно открытых файлов исчерпан(INI_MAX_OPENED_FILES = %d).", INI_MAX_OPENED_FILES);
+	DebugMSG("Error: mxINI: Лимит одновременно открытых файлов исчерпан(INI_MAX_OPENED_FILES)");
+	for (new i = 0; i < INI_MAX_OPENED_FILES; i++)
+	{
+		DebugMSG("       mxINI: _ini_szFilePath[%d] = %s", i, _ini_szFilePath[i]);
+	}
     return INI_NO_FREE_SLOT; // вернем код ошибки
     // ------------
 }
@@ -437,7 +441,7 @@ stock ini_openFile ( szFilePath[] )
     // ------------
     fclose(pFile); // закроем файл
 
-	DebugMSG("Error: mxINI: Лимит одновременоо открытых файлов исчерпан(INI_MAX_OPENED_FILES)");
+	DebugMSG("Error: mxINI: Лимит одновременно открытых файлов исчерпан(INI_MAX_OPENED_FILES)");
 	for (new i = 0; i < INI_MAX_OPENED_FILES; i++)
 	{
 		DebugMSG("       mxINI: _ini_szFilePath[%d] = %s", i, _ini_szFilePath[i]);
