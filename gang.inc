@@ -464,10 +464,29 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 	  		{
 				return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][52]);
 			}
-			set(Gangs[gangid][gang_motd], text[idx+1]);
-			new string[MAX_STRING];
-			format(string, sizeof(string), lang_texts[6][81], oGetPlayerName(playerid), playerid, Gangs[gangid][gang_motd]);
-			SendGangMessage(gangid, string, COLOUR_GANG);
+			
+			new len = strlen(text[idx+1]);
+			if (len == 0)
+			{
+				return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][91]);
+			}
+   			if (len > MAX_GANG_MOTD_LEN)
+   			{
+				return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][85]);
+			}
+			
+			if (!strcmp(text[idx+1], "delete", false))
+			{
+				Gangs[gangid][gang_motd][0] = '\0';
+				SendGangMessage(gangid, lang_texts[6][87], COLOUR_GANG);
+			}
+			else
+			{
+				set(Gangs[gangid][gang_motd], text[idx+1]);
+				new string[MAX_STRING];
+				format(string, sizeof(string), lang_texts[6][81], oGetPlayerName(playerid), playerid, Gangs[gangid][gang_motd]);
+				SendGangMessage(gangid, string, COLOUR_GANG);
+			}
    			return 1;
   		}
 	}
@@ -776,7 +795,7 @@ stock GangMemberLogin(playerid, gangid)
 	return 0;
 }
 
-stock SendGangMessage(gangid, message[MAX_STRING], colour)
+stock SendGangMessage(gangid, message[], colour)
 {
 	for (new gangmember = 0; gangmember < MAX_GANG_SIZE; gangmember++)
 	{

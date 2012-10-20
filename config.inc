@@ -154,6 +154,8 @@ new ENCRYPTION_KEY[] = "_C)2^KђRPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define MIN_GANG_NAME_LEN	3 // минимальна€ длина имени банды
 #define MAX_GANG_NAME_LEN	40 // максимальна€ длина имени банды
 
+#define MAX_GANG_MOTD_LEN	64 // максимальна€ длина объ€влени€ банды
+
 #define GANG_CREATE_COST	500000 // кол-во денег, требуемое на создание банды
 #define GANG_COLOUR_COST	20000 // кол-во денег, требуемое на смены цвета банды
 //
@@ -206,7 +208,7 @@ enum {
 	user_menu_DialogID, user_menu_Return_DialogID,
 		vehicle_menu_DialogID, spawnselect_menu_DialogID, settings_menu_DialogID, vehicle_color_menu_DialogID,
 		changenick_menu_DialogID, changepass_menu_DialogID,
-		gang_menu_DialogID, gang_create_menu_DialogID, gang_invite_menu_DialogID, gang_color_menu_DialogID,
+		gang_menu_DialogID, gang_create_menu_DialogID, gang_invite_menu_DialogID, gang_color_menu_DialogID, gang_motd_menu_DialogID,
 	weapons_Select_DialogID, weapons_Buy_DialogID,
 	bar_DialogID,
 	fastfood_DialogID,

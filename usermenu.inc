@@ -247,7 +247,8 @@ stock show_Gang_Menu(playerid)
 		{
 			strcat(string,
 				"Пригласить игрока\n\
-				Изменить цвет\n",
+				Изменить цвет\n\
+				Изменить объявление\n",
 				sizeof(string)
 			);
 		}
@@ -312,6 +313,26 @@ stock show_GangColor_Menu(playerid)
 	}
 	return ShowPlayerDialog(playerid, gang_color_menu_DialogID, DIALOG_STYLE_INPUT,
 		"Изменение цвета банды",
+		string,
+		"ОК", "Назад"
+	);
+}
+
+stock show_MOTD_Menu(playerid)
+{
+	new string[256];
+	set(string, Gangs[ GetPlayerGangID(playerid) ][gang_motd]);
+	if (strlen(string) == 0)
+	{
+		set(string, lang_texts[6][90]);
+	}
+	else
+	{
+		format(string, sizeof(string), lang_texts[6][89], string);
+	}
+	
+	return ShowPlayerDialog(playerid, gang_motd_menu_DialogID, DIALOG_STYLE_INPUT,
+		lang_texts[6][86],
 		string,
 		"ОК", "Назад"
 	);
@@ -867,6 +888,16 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						show_GangColor_Menu(playerid);
 						return 1;
 					}
+					case 4: // изменить объявление
+					{
+						// если не лидер
+						if (strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
+						{
+							return 0;
+						}
+						show_MOTD_Menu(playerid);
+						return 1;
+					}
 				}
 			}
 			return 1;
@@ -1023,6 +1054,35 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
    			new string[MAX_STRING];
 			format(string, sizeof(string), lang_texts[6][69], Gang_Colour_Cost);
 			show_User_Menu_Dialog(playerid, "Изменение цвета", string);
+			return 1;
+		}
+		case gang_motd_menu_DialogID:
+		{
+			if (!response)
+			{
+				return show_Gang_Menu(playerid);
+			}
+			new len = strlen(inputtext);
+   			if (len > MAX_GANG_MOTD_LEN)
+   			{
+				return show_User_Menu_Dialog(playerid, lang_texts[6][86], lang_texts[6][85]);
+			}
+			
+   			new string[MAX_STRING + MAX_GANG_MOTD_LEN],
+				gangid = GetPlayerGangID(playerid);
+			
+   			if (len == 0)
+   			{
+				Gangs[gangid][gang_motd][0] = '\0';
+				SendGangMessage(gangid, lang_texts[6][87], COLOUR_GANG);
+				return show_User_Menu_Dialog(playerid, lang_texts[6][86], lang_texts[6][87]);
+			}
+			set(Gangs[gangid][gang_motd], inputtext);
+			format(string, sizeof(string), lang_texts[6][88], Gangs[gangid][gang_motd]);
+			show_User_Menu_Dialog(playerid, lang_texts[6][86], string);
+			
+			format(string, sizeof(string), lang_texts[6][81], oGetPlayerName(playerid), playerid, Gangs[gangid][gang_motd]);
+			SendGangMessage(gangid, string, COLOUR_GANG);
 			return 1;
 		}
 	}
