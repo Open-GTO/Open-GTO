@@ -265,7 +265,7 @@ stock trucker_RunnerTimer(playerid)
 
 stock IsVehicleIsRunner(vehicleid)
 {
-	if (linerunner_lastid - sizeof(linerunner_array) < vehicleid <= linerunner_lastid)
+	if (linerunner_lastid - sizeof(linerunner_array) < vehicleid && vehicleid <= linerunner_lastid)
 	{
 		return 1;
 	}
@@ -274,7 +274,7 @@ stock IsVehicleIsRunner(vehicleid)
 
 stock IsTrailerIsTrue(trailerid)
 {
-	if (trailer_lastid - sizeof(linerunner_array) < trailerid <= trailer_lastid)
+	if (trailer_lastid - sizeof(linerunner_array) < trailerid && trailerid <= trailer_lastid)
 	{
 		return 1;
 	}
