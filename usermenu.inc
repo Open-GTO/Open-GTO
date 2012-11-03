@@ -523,7 +523,38 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 				}
 				case 1:// заправить
 				{
-					show_Vehicle_Menu(playerid);
+					if (vehicleid == 0)
+					{
+						return show_User_Menu_Dialog(playerid, lang_texts[19][31], lang_texts[19][21]);
+					}
+					
+					if (!IsPlayerAtFuelStation(playerid))
+					{
+						return show_User_Menu_Dialog(playerid, lang_texts[19][31], lang_texts[19][22]);
+					}
+					
+					if (GetPVarInt(playerid, "Refueling"))
+					{
+						return show_User_Menu_Dialog(playerid, lang_texts[19][31], lang_texts[19][23]);
+					}
+					
+					new vehiclemodel = GetVehicleModel(vehicleid);
+					switch (vehiclemodel)
+					{
+						case 481, 509, 510:
+						{
+							return show_User_Menu_Dialog(playerid, lang_texts[19][31], lang_texts[19][24]);
+						}
+					}
+					
+					if (Fuel[vehicleid] >= FuelList[vehiclemodel-400])
+					{
+						return show_User_Menu_Dialog(playerid, lang_texts[19][31], lang_texts[19][25]);
+					}
+					
+					SetPVarFloat(playerid, "OldFuel", Fuel[vehicleid]);
+					fill_TimerID[playerid] = SetTimerEx("fill_Timer", 1000, 1, "i", playerid);
+					SetPVarInt(playerid, "Refueling", 1);
 					return 1;
 				}
 				case 2:// цвет

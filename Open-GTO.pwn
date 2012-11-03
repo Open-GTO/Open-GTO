@@ -75,11 +75,11 @@ Date start Open-GTO: 	5 November 2009
 #include "services\skinshop"
 #include "services\lottery"
 #include "interior"
-#include "usermenu"
 #include "weather"
 #include "pickup"
 #include "swagup"
 #include "quidemsys"
+#include "usermenu"
 #include "protections\money"
 #include "protections\idle"
 #include "protections\rconhack"
@@ -315,7 +315,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		case user_menu_DialogID, user_menu_Return_DialogID,
 			vehicle_menu_DialogID, spawnselect_menu_DialogID, vehicle_color_menu_DialogID,
 			settings_menu_DialogID, changenick_menu_DialogID, changepass_menu_DialogID,
-			gang_menu_DialogID, gang_create_menu_DialogID, gang_invite_menu_DialogID, gang_color_menu_DialogID, gang_motd_menu_DialogID:
+			gang_menu_DialogID, gang_create_menu_DialogID, gang_invite_menu_DialogID, gang_color_menu_DialogID,
+			gang_motd_menu_DialogID:
 		{
 			usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
