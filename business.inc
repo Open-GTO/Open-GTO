@@ -470,22 +470,26 @@ stock business_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME
 
 stock CheckBusinessOwners()
 {
-	new filename_account[MAX_PLAYER_NAME+1], file_account, account_lastlogin[32], idx,
+	new filename_account[MAX_STRING], file_account, account_lastlogin[32], idx,
 		year, month, day, account_year, account_month, account_day;
 	
 	getdate(year, month, day);
 	for (new i = 0; i < sizeof(Businesses); i++)
 	{
 		idx = 0;
+		if (!strcmp(Houses[i][Houses_Owner], "Unknown", false))
+		{
+			continue;
+		}
 		format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, Businesses[i][Business_Owner]);
 		file_account = ini_Open(filename_account);
 		
 		ini_Get(file_account, "Last_Login", account_lastlogin);
 		account_day = strval( strcharsplit(account_lastlogin, idx,'.') );
 		account_month = strval( strcharsplit(account_lastlogin, idx,'.') );
-		account_year = strval( strcharsplit(account_lastlogin, idx,' ') );
+		account_year = strval( strcharsplit(account_lastlogin, idx,',') );
 		
-		if (DateToNum(year, month, day) > DateToNum(account_year, account_month, account_day) + BUSINESS_UNLOGIN_SELL_DAYS)
+		if (DateToNum(year, month, day) > DateToNum(account_year, account_month, account_day) + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60)
 		{
 			set(Businesses[i][Business_Owner], "Unknown");
 			Businesses[i][Business_Buyout] = 0;
