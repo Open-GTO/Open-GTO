@@ -483,5 +483,26 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_RED, string);
 		return 1;
 	}
+	if (!strcmp(cmd, "/ban", true))
+	{
+		new user[MAX_PLAYER_NAME+1], reason[MAX_SEND_SYMBOLS], time;
+		
+		set(user, strcharsplit(text, idx, ' '));
+		time = strval(strcharsplit(text, idx, ' '));
+		set(reason, text[idx+1]);
+		
+		if (strlen(user) < MIN_PLAYER_NAME || strlen(user) > MAX_PLAYER_NAME)
+		{
+			return SendClientMessage(playerid, COLOUR_RED, "Применение: /ban <ник/ip> <время(в секундах, если 0, то навсегда)> <причина>");
+		}
+		if (strlen(reason) > MAX_SEND_SYMBOLS)
+		{
+			new string[MAX_STRING];
+			format(string, sizeof(string), "Причина должна быть меньше %d символов!", MAX_SEND_SYMBOLS);
+			return SendClientMessage(playerid, COLOUR_RED, string);
+		}
+		oBan(user, reason, playerid, time);
+		return 1;
+	}
 	return 0;
 }

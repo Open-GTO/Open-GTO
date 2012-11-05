@@ -712,9 +712,9 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			
 			set(Account_LastName, oGetPlayerName(playerid));
 			set(Account_NewName, inputtext);
-			if (strlen(Account_NewName) <= MIN_NICK_LEN)
+			if (strlen(Account_NewName) < MIN_PLAYER_NAME)
 			{
-				format(string, sizeof(string), lang_texts[1][37], MIN_NICK_LEN);
+				format(string, sizeof(string), lang_texts[1][37], MIN_PLAYER_NAME);
 				return show_User_Menu_Dialog(playerid, "Изменение ника", string);
 			}
 			

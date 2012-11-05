@@ -31,6 +31,124 @@ new Float:Jail_PH[][CoordInfoJ] = {
 {1225.165, 245.328, 19.554, 306.501}
 };
 
+stock oBan_Check(playerid)
+{
+	new string[MAX_STRING];
+	format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, BanDB, oGetPlayerName(playerid));
+	
+	if (!ini_Exist(string))
+	{
+		new plrIP[MAX_IP];
+		GetPVarString(playerid, "IP", plrIP, sizeof(plrIP));
+		format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, BanDB, plrIP);
+		
+		if (!ini_Exist(string))
+		{
+			return 0;
+		}
+	}
+	
+	new date[MAX_NAME], time, admin[MAX_PLAYER_NAME+1], reason[MAX_SEND_SYMBOLS];
+	new file_ban_db = ini_Open(string);
+	
+	ini_Get(file_ban_db, "Date", date);
+	ini_GetInt(file_ban_db, "Time", time);
+	ini_Get(file_ban_db, "Admin", admin);
+	ini_Get(file_ban_db, "Reason", reason);
+	
+	ini_Close(file_ban_db);
+	
+	new idx = 0,
+		ban_day = strval( strcharsplit(date, idx, '.') ),
+		ban_month = strval( strcharsplit(date, idx, '.') ),
+		ban_year = strval( strcharsplit(date, idx, ',') ),
+		ban_hour = strval( strcharsplit(date, idx, ':') ),
+		ban_minute = strval( strcharsplit(date, idx, ':') ),
+		ban_second = strval( strcharsplit(date, idx, ':') );
+	
+	new year, month, day;
+	getdate(year, month, day);
+	new hours, minutes, seconds;
+	gettime(hours, minutes, seconds);
+	
+	new unban_time =
+		DateToNum(ban_year, ban_month, ban_day, ban_hour, ban_minute, ban_second) + time
+		-
+		DateToNum(year, month, day, hours, minutes, seconds);
+	
+	if (time == 0)
+	{
+		format(string, sizeof(string), "навсегда", time);
+	}
+	else
+	{
+		format(string, sizeof(string), "на %d секунд", time);
+		if (unban_time > 0)
+		{
+			format(string, sizeof(string), "%s, до разбана осталось %d секунд", string, unban_time);
+		}
+	}
+	format(string, sizeof(string), "јдминистратор %s забанил вас %s %s, по причине \"%s\".", admin, date, string, reason);
+	SendClientMessage(playerid, COLOUR_RED, string);
+	
+	if (unban_time > 0)
+	{
+		Kick(playerid);
+	}
+	else
+	{
+		format(string, sizeof(string), "Ќаступил срок истечени€ бана, теперь вы разбанены!", admin, string, date);
+		SendClientMessage(playerid, COLOUR_RED, string);
+	}
+	return 1;
+}
+
+stock oBan(user[], reason[], adminid, time=0)
+{
+	new date[MAX_NAME], year, month, day, hour, minute, second;
+	getdate(year, month, day);
+	gettime(hour, minute, second);
+	format(date, sizeof(date), "%02d.%02d.%d, %02d:%02d:%02d", day, month, year, hour, minute, second);
+	
+	new filename_ban[MAX_STRING];
+	format(filename_ban, sizeof(filename_ban), "%s%s"GTO_FILES_FORMAT, BanDB, user);
+	
+	new file_ban_db = (!ini_Exist(filename_ban)) ? ini_Create(filename_ban) : ini_Open(filename_ban);
+	ini_Set(file_ban_db, "Date", date);
+	ini_SetInt(file_ban_db, "Time", time);
+	ini_Set(file_ban_db, "Admin", oGetPlayerName(adminid));
+	ini_Set(file_ban_db, "Reason", reason);
+	ini_Close(file_ban_db);
+	
+	new string[MAX_STRING];
+	format(string, sizeof(string), lang_texts[12][97], user, date, oGetPlayerName(adminid), adminid, time, reason);
+	SendClientMessageToAll(COLOUR_RED, string);
+	// если юзер на сервере
+	if (IsIP(user))
+	{
+		new plrIP[MAX_IP];
+		foreach (Player, playerid)
+		{
+			GetPVarString(playerid, "IP", plrIP, sizeof(plrIP));
+			if (!strcmp(user, plrIP, false))
+			{
+				Kick(playerid);
+			}
+		}
+	}
+	else
+	{
+		foreach (Player, playerid)
+		{
+			if (!strcmp(user, oGetPlayerName(playerid), false))
+			{
+				Kick(playerid);
+			}
+		}
+	}
+	return 1;
+}
+
 stock JailPlayer(playerid, jail_time)
 {
 	SetPlayerJailTime(playerid, jail_time);

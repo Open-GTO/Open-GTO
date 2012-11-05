@@ -1,4 +1,5 @@
 del/q Open-GTO\Account\*.*
+del/q Open-GTO\Banned\*.*
 del/q Open-GTO\Business\*.*
 del/q Open-GTO\Config\*.*
 del/q Open-GTO\Deathmatch\*.*

@@ -738,7 +738,7 @@ stock CheckHousesOwners()
 		account_month = strval( strcharsplit(account_lastlogin, idx, '.') );
 		account_year = strval( strcharsplit(account_lastlogin, idx, ',') );
 		
-		if (DateToNum(year, month, day) > DateToNum(account_year, account_month, account_day) + HOUSE_UNLOGIN_SELL_DAYS)
+		if (DateToNum(year, month, day) > DateToNum(account_year, account_month, account_day) + HOUSE_UNLOGIN_SELL_DAYS * 24 * 60 * 60)
 		{
 			house_Free(i);
 		}

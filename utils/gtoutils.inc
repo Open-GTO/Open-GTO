@@ -51,7 +51,7 @@ stock strcmpEx(const string1[], const string2[], bool:ignorecase=false, length=c
 #define strcmp strcmpEx
 
 // from hardforum.ru/t47097/
-stock DateToNum(year, month, day/*, hour, minute, second*/)
+stock DateToNum(year, month, day, hour=-1, minute=-1, second=-1)
 {
 	// count day in month
 	static cdm[] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
@@ -68,6 +68,8 @@ stock DateToNum(year, month, day/*, hour, minute, second*/)
 	
 	// convert [y, mo, d] -> num
 	new num = 365 * year + (year / 4) - (year / 100) + (year / 400) + cdm[month - 1] + day;
+	// convert day to second
+	num *= 24 * 60 * 60;
 	
 	if (month > 2 && is_leap_year(year))
 	{
@@ -75,7 +77,10 @@ stock DateToNum(year, month, day/*, hour, minute, second*/)
 	}
 	
 	// add to num: [h, mi, s] -> num
-	//num += (hour * 3600 + minute * 60 + second) / 86400;
+	if (hour != -1 && minute != -1 && second != -1)
+	{
+		num += (hour * 60 * 60 + minute * 60 + second);
+	}
 	
 	return num;
 }
@@ -208,6 +213,29 @@ stock IsNumeric(const string[])
 			default: return 0;
 		}
 	}
+	return 1;
+}
+
+stock IsIP(string[])
+{
+	new bufer[MAX_STRING], start_pos = 0, end_pos = 0, len = strlen(string);
+	do
+	{
+		end_pos = strfind(string, ".", false, end_pos+1);
+		if (end_pos == -1)
+		{
+			end_pos = len;
+		}
+		strmid(bufer, string, start_pos, end_pos);
+		if (IsNumeric(bufer) && strlen(bufer) <= 3 && strval(bufer) >= 0 && strval(bufer) <= 255)
+		{
+			start_pos = end_pos+1;
+		}
+		else
+		{
+			return 0;
+		}
+	} while (end_pos != len);
 	return 1;
 }
 

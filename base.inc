@@ -20,6 +20,7 @@ new HousesDB[MAX_STRING] = GTO_FILES_FOLDER "Housing/";
 new BusinessDB[MAX_STRING] = GTO_FILES_FOLDER "Business/";
 new WeaponDB[MAX_STRING] = GTO_FILES_FOLDER "Weapon/";
 new GroundholdDB[MAX_STRING] = GTO_FILES_FOLDER "Groundhold/";
+new BanDB[MAX_STRING] = GTO_FILES_FOLDER "Banned/";
 
 new DeathmatchDB[MAX_STRING] = GTO_FILES_FOLDER "Deathmatch/!Deathmatches"GTO_FILES_FORMAT;
 new DMBaseDB[MAX_STRING] = GTO_FILES_FOLDER "Deathmatch/";

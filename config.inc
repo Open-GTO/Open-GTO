@@ -167,7 +167,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define HEALTH_REGEN_TARIF		0.4 // степень кол-ва востанавливаемого здоровья, формула: (GetPlayerLevel(id) * HEALTH_REGEN_TARIF)
 
 #define CHANGE_NICK_COST			100000 // кол-во денег, требуемых для смены ника
-#define MIN_NICK_LEN				3
+#define MIN_PLAYER_NAME				3
 #define CHANGE_PASS_COST			5000 // кол-во денег, требуемых для смены пароля
 #define MIN_PASS_LEN				3
 #define MAX_PASS_LEN				40
