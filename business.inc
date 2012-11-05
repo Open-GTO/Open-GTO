@@ -477,7 +477,7 @@ stock CheckBusinessOwners()
 	for (new i = 0; i < sizeof(Businesses); i++)
 	{
 		idx = 0;
-		if (!strcmp(Houses[i][Houses_Owner], "Unknown", false))
+		if (!strcmp(Businesses[i][Business_Owner], "Unknown", false))
 		{
 			continue;
 		}
