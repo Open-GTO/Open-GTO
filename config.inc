@@ -145,6 +145,10 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 // транспорт
 #define CARS_RESPAWN_TIME	600 // время респавна транспорта в секундах (86400 - один день) 
 #define OLD_ENGINE_DO // сел в транспорт - завелось, вышел - заглох(если задефайнено)
+
+// поставьте в VEHICLE_LIGHTS_ON_TIME и VEHICLE_LIGHTS_OFF_TIME значения 0, если хотите, чтобы фары включались в любое время
+#define VEHICLE_LIGHTS_ON_TIME		16 // время(часов), когда фары транспорта будут автоматически включаться
+#define VEHICLE_LIGHTS_OFF_TIME		7 // время(часов), когда фары транспорта будут автоматически выключаться
 //
 
 // банды

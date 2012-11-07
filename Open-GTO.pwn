@@ -707,7 +707,18 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	{
 	#if defined OLD_ENGINE_DO
 		if (GetPlayerVehicleSeat(playerid) == 0)
-			vehicle_Engine(GetPlayerVehicleID(playerid), VEHICLE_PARAMS_ON);
+		{
+			new vehicleid = GetPlayerVehicleID(playerid);
+			
+			vehicle_Engine(vehicleid, VEHICLE_PARAMS_ON);
+			
+			new hour;
+			gettime(hour);
+			if (hour > VEHICLE_LIGHTS_ON_TIME || hour < VEHICLE_LIGHTS_OFF_TIME)
+			{
+				vehicle_Light(vehicleid, VEHICLE_PARAMS_ON);
+			}
+		}
 	#endif
 		trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 		vip_OnPlayerStateChange(playerid, newstate, oldstate);

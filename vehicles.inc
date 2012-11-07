@@ -2368,3 +2368,10 @@ stock vehicle_Engine(vehicleid, newstate)
 	SetVehicleParamsEx(vehicleid, newstate, lights, alarm, doors, bonnet, boot, objective);
 	return 1;
 }
+
+stock vehicle_Light(vehicleid, newstate)
+{
+	new engine, lights, alarm, doors, bonnet, boot, objective;
+	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+	SetVehicleParamsEx(vehicleid, engine, newstate, alarm, doors, bonnet, boot, objective);
+}
