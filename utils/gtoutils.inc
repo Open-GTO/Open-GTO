@@ -56,6 +56,9 @@ stock DateToNum(year, month, day, hour=-1, minute=-1, second=-1)
 	// count day in month
 	static cdm[] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
 	
+	// first sa-mp release
+	year -= 2006;
+	
 	if (month < 1)
 	{
 		month = 1;
@@ -68,13 +71,14 @@ stock DateToNum(year, month, day, hour=-1, minute=-1, second=-1)
 	
 	// convert [y, mo, d] -> num
 	new num = 365 * year + (year / 4) - (year / 100) + (year / 400) + cdm[month - 1] + day;
-	// convert day to second
-	num *= 24 * 60 * 60;
 	
 	if (month > 2 && is_leap_year(year))
 	{
 		num++;
 	}
+	
+	// convert day to second
+	num *= 24 * 60 * 60;
 	
 	// add to num: [h, mi, s] -> num
 	if (hour != -1 && minute != -1 && second != -1)

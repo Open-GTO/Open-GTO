@@ -740,6 +740,11 @@ stock CheckHousesOwners()
 		
 		if (DateToNum(year, month, day) > DateToNum(account_year, account_month, account_day) + HOUSE_UNLOGIN_SELL_DAYS * 24 * 60 * 60)
 		{
+			GameMSG("House has been free. Owner %s, current date[%02d.%02d.%d]: %d, last login[%02d.%02d.%d]: %d. HOUSE_UNLOGIN_SELL_DAYS = %d",
+				Houses[i][Houses_Owner], day, month, year, DateToNum(year, month, day),
+				account_day, account_month, account_year, DateToNum(account_year, account_month, account_day),
+				HOUSE_UNLOGIN_SELL_DAYS
+			);
 			house_Free(i);
 		}
 		

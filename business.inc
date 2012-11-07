@@ -491,6 +491,11 @@ stock CheckBusinessOwners()
 		
 		if (DateToNum(year, month, day) > DateToNum(account_year, account_month, account_day) + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60)
 		{
+			GameMSG("Business has been free. Owner %s, current date[%02d.%02d.%d]: %d, last login[%02d.%02d.%d]: %d. BUSINESS_UNLOGIN_SELL_DAYS = %d",
+				Businesses[i][Business_Owner], day, month, year, DateToNum(year, month, day),
+				account_day, account_month, account_year, DateToNum(account_year, account_month, account_day),
+				BUSINESS_UNLOGIN_SELL_DAYS
+			);
 			set(Businesses[i][Business_Owner], "Unknown");
 			Businesses[i][Business_Buyout] = 0;
 			Businesses[i][Business_Upgrade] = 1;
