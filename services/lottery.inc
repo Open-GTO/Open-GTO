@@ -91,7 +91,7 @@ stock lottery_OnPlayerCommandText(playerid, text[])
 		
 		new string[MAX_STRING];
 		format(string, sizeof(string), "”дачи, у вас билет с номером %d", value);
-		SendClientMessageToAll(COLOUR_GREEN, string);
+		SendClientMessage(playerid, COLOUR_GREEN, string);
 		return 1;
 	}
 	return 0;
