@@ -121,7 +121,11 @@ stock oBan(user[], reason[], adminid, time=0)
 	ini_Close(file_ban_db);
 	
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][97], user, date, oGetPlayerName(adminid), adminid, time, reason);
+	format(string, sizeof(string), lang_texts[12][97], user, date, oGetPlayerName(adminid), adminid, time);
+	if (strlen(reason) > 0)
+	{
+		format(string, sizeof(string), lang_texts[12][98], string, reason);
+	}
 	SendClientMessageToAll(COLOUR_RED, string);
 	// если юзер на сервере
 	if (IsIP(user))

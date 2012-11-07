@@ -489,7 +489,10 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		
 		set(user, strcharsplit(text, idx, ' '));
 		time = strval(strcharsplit(text, idx, ' '));
-		set(reason, text[idx+1]);
+		if (strlen(text[idx+1]) > 0)
+		{
+			set(reason, text[idx+1]);
+		}
 		
 		if (strlen(user) < MIN_PLAYER_NAME || strlen(user) > MAX_PLAYER_NAME)
 		{
