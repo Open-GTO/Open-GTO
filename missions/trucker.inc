@@ -13,56 +13,95 @@
 
 
 enum {
-	TRAILER_TYPE_NORMAL,
+	TRAILER_TYPE_PRODUCT,
 	TRAILER_TYPE_PETROL,
+	TRAILER_TYPE_CAREER,
 };
 
 // прицепы
 new trailer_array[][VehicleSpawnInfo] = {
-	{435,1087.880,1298.273,10.481,0.0,-1,-1},
-	{450,1077.959,1298.586,10.481,0.0,-1,-1},
-	{584,1067.358,1297.892,11.481,0.0,-1,-1}
+	// цистерны для заправок 2
+	{584,253.0453,1372.3413,11.1734,269.9365,-1,-1},
+	{584,252.4802,1397.2062,11.1703,271.6770,-1,-1},
+	// продуктовые фуры 5
+	{435,-117.0570,-325.0306,2.0109,178.9237,-1,-1},
+	{591,-181.4496,-274.6508,2.0159,88.4948,7,-1},
+	{435,-192.3278,-282.1784,2.0142,90.3535,-1,-1},
+	{591,-144.1598,-216.2062,2.0079,88.3445,3,-1},
+	{435,-152.1157,-343.3120,2.4457,179.0829,-1,-1},
+	// в карьере фуры 3
+	{450,512.6126,792.6769,-20.8209,245.4778,1,-1},
+	{450,592.9045,963.4652,-17.6857,271.3427,0,-1},
+	{450,709.8566,824.9518,-29.2079,341.4127,7,-1}
 };
 // грузовики
 new linerunner_array[][VehicleSpawnInfo] = {
-	{403,1057.9988,1345.1780,11.3991,181.9649,25,1},
-	{403,1050.0984,1344.5737,11.4063,185.2680,25,1},
-	{514,1041.2217,1343.9211,11.4017,179.2766,25,1}
+	// тягачи для заправки 2
+	{514,285.8618,1374.7434,11.1717,1.7211,3,1},
+	{515,285.3164,1395.3885,11.1710,3.4315,1,1},
+	// тягачи продуктовые 4
+	{403,-60.0619,-303.6261,6.0162,271.3613,1,1},
+	{514,-36.4936,-375.8590,6.0170,0.0727,6,1},
+	{403,-1.8979,-364.3783,6.0158,89.3496,7,1},
+	{515,-29.0899,-276.7479,6.0114,270.1041,0,1},
+	// тягачи в карьере 3
+	{515,836.6692,870.6066,14.2118,201.7150,0,-1},
+	{514,844.5200,875.1898,14.3768,205.1848,1,-1},
+	{515,855.1014,878.3007,14.3702,206.1360,7,-1}
 };
 
 new trailer_lastid,linerunner_lastid;
 
 new Float:PetrolCoord[][CoordInfo] = {
-	{656.9401,1691.4619,6.9922},
-	{2130.4763,890.6108,10.8203},
-	{2790.5862,941.0047,10.7500},
-	{-2034.6013,170.2311,28.8359},
-	{-1677.0952,438.5649,7.1797},
-	{-2441.3303,992.6554,45.3016},
-	{-1338.6124,2694.6528,50.0625},
-	{668.1467,-584.3827,16.3359},
-	{1923.6382,-1790.9012,13.3828},
-	{199.4895,-253.1793,1.5781},
-	{-2236.8472,-2571.8064,31.9219}
+	{1725.4000,-2414.7,13.5}, 
+	{2109.2126,917.5845,10.8203}, 
+	{2640.1831,1103.9224,10.8203}, 
+	{611.8934,1694.7921,6.7193}, 
+	{-1327.5398,2682.9771,49.7896}, 
+	{-2413.7427,975.9317,45.0031}, 
+	{-1672.3597,414.2950,6.8866,}, 
+	{-2244.1365,-2560.6294,31.6276}, 
+	{-1603.0166,-2709.3589,48.2419},
+	{1939.3275,-1767.6813,13.2787}, 
+	{-94.7651,-1174.8079,1.9979}, 
+	{1381.6699,462.6467,19.8540}, 
+	{657.8167,-559.6507,16.0630}, 
+	{-1478.2916,1862.8318,32.3617}, 
+	{2147.3054,2744.9377,10.5263}, 
+	{2204.9602,2480.3494,10.5278}, 
+	{1590.9493,2202.2637,10.5247}
 };
 
-new Float:LineCoord[][CoordInfo] = {
-	{2469.0505,1891.8446,8.6294},
-	{2491.8374,2770.5991,10.8009},
-	{-298.9167,1558.1520,75.3594},
-	{-641.6482,1442.5302,13.6172},
-	{-2356.5088,2384.7415,6.2192},
-	{-1854.9830,-138.9339,11.8984},
-	{-1388.1490,477.9494,7.1875},
-	{-2512.5266,1207.3678,37.4219},
-	{-2674.2649,624.4097,14.4531},
-	{-1704.3306,982.7809,17.5936},
-	{88.6925,-164.8707,2.5938},
-	{2790.9236,-2456.2546,13.6329},
-	{-563.1393,2570.3799,53.5156},
-	{-1496.8168,1975.3813,48.4219},
-	{-1283.0773,2494.4138,87.0284},
-	{-1022.0163,-665.8869,32.0078}
+new Float:ProductCoord[][CoordInfo] = {
+	{2398.4761,-1485.6116,23.5552},
+	{-1211.9420,1824.8726,41.7188},
+	{-2326.6709,-134.8826,35.3203},
+	{2373.3374,-1905.1631,13.1099},
+	{174.1435,1191.3485,14.7578},
+	{-2684.3948,267.8032,4.3359},
+	{1179.6357,-888.6750,42.8907},
+	{1158.3813,2105.5540,10.8203},
+	{-2323.4321,1014.8897,50.6953},
+	{785.3561,-1619.9807,13.0664},
+	{2630.8838,1860.4771,10.8203},
+	{-2150.7163,-2445.8569,30.6250},
+	{2336.1531,75.0252,26.4816},
+	{2479.4326,2001.2902,10.8203},
+	{1387.6401,261.4780,19.5669},
+	{2155.1926,2816.3020,10.8203}
+};
+
+new Float:CareerCoord[][CoordInfo] = {
+	{-1035.5779,-636.6919,32.0078},
+	{243.5755,1421.0634,10.5859},
+	{-148.8541,-221.2976,1.4219},
+	{2171.8013,-1981.8429,13.5516},
+	{-1733.1241,195.9595,3.5547},
+	{2796.9668,967.0319,10.7500},
+	{1748.2073,923.6948,10.7236},
+	{1726.6693,2337.2102,10.8203},
+	{-590.1365,-556.8542,25.5296},
+	{1115.8527,-340.0908,73.9922}
 };
 
 stock trucker_OnGameModeInit()
@@ -87,17 +126,9 @@ stock trucker_OnGameModeInit()
 		);
 	}
 	//
-	CreateObject(4602,2320.724,545.875,0.322,0.0,0.0,0.0);
-	CreateObject(1597,2319.736,582.936,9.438,0.0,0.0,-90.000);
-	CreateObject(6296,2320.679,567.383,8.894,0.0,0.0,-90.000);
-	CreateObject(9958,2279.573,517.997,6.411,0.0,0.0,-270.000);
-	CreateObject(9241,2254.720,561.678,8.490,0.0,0.0,-180.000);
-	CreateObject(3627,1077.803,1295.242,13.610,0.0,0.0,-90.000);
-	CreateObject(971,1061.393,1353.401,11.713,0.0,0.0,-270.000);
-	CreateObject(971,1061.383,1344.549,11.715,0.0,0.0,90.000);
-	CreateObject(1233,1057.455,1368.078,11.305,0.0,0.0,-90.000);
-	
-	CreateStreamMapIcon(51,1077.959,1298.586,10.481);
+	CreateStreamMapIcon(51,253.0453,1372.3413,11.1734);
+	CreateStreamMapIcon(51,-117.0570,-325.0306,2.0109);
+	CreateStreamMapIcon(51,512.6126,792.6769,-20.8209);
 	
 	GameMSG("SERVER: (missions)Trucker module init");
 	return 1;
@@ -107,30 +138,44 @@ stock trucker_OnPlayerStateChange(playerid,newstate,oldstate)
 {
 	#pragma unused newstate,oldstate
 	if (!IsMissionEnabled(mission_trucker)) return 1;
-	if (IsVehicleIsRunner( GetPlayerVehicleID(playerid) ))
+	if (IsVehicleIsRunner( GetPlayerVehicleID(playerid) ) && !IsPlayerInMission(playerid, mission_trucker))
 	{
-		SendClientMessage(playerid,COLOUR_PINK,"Диспетчер: Вы можете начать миссию дальнобойщика. Для этого возьмите груз рядом и нажмите кнопку миссии(2 или +).");
+		show_Trucker_Menu(playerid);
 	}
 	return 1;
 }
 
 stock trucker_Start(playerid)
 {
+	new zone[MAX_NAME];
 	switch ( GetTrailerType( GetPlayerVehicleID(playerid) ) )
 	{
-		case TRAILER_TYPE_NORMAL:
+		case TRAILER_TYPE_PRODUCT:
 		{
-			new rand = random(sizeof(LineCoord));
-			oSetPlayerCheckpoint(playerid,LineCoord[rand][Coord_X],LineCoord[rand][Coord_Y],LineCoord[rand][Coord_Z],10);
+			new rand = random(sizeof(ProductCoord));
+			oSetPlayerCheckpoint(playerid,ProductCoord[rand][Coord_X],ProductCoord[rand][Coord_Y],ProductCoord[rand][Coord_Z],10);
+			set(zone, GetXYZZoneName(ProductCoord[rand][Coord_X],ProductCoord[rand][Coord_Y],ProductCoord[rand][Coord_Z]));
 		}
 		case TRAILER_TYPE_PETROL:
 		{
 			new rand = random(sizeof(PetrolCoord));
 			oSetPlayerCheckpoint(playerid,PetrolCoord[rand][Coord_X],PetrolCoord[rand][Coord_Y],PetrolCoord[rand][Coord_Z],10);
+			set(zone, GetXYZZoneName(PetrolCoord[rand][Coord_X],PetrolCoord[rand][Coord_Y],PetrolCoord[rand][Coord_Z]));
+		}
+		case TRAILER_TYPE_CAREER:
+		{
+			new rand = random(sizeof(CareerCoord));
+			oSetPlayerCheckpoint(playerid,CareerCoord[rand][Coord_X],CareerCoord[rand][Coord_Y],CareerCoord[rand][Coord_Z],10);
+			set(zone, GetXYZZoneName(CareerCoord[rand][Coord_X],CareerCoord[rand][Coord_Y],CareerCoord[rand][Coord_Z]));
 		}
 		default:
 		{
-			SendClientMessage(playerid,COLOUR_YELLOW,"Диспетчер: Возьми прицеп рядом.");
+			new string[MAX_STRING];
+			format(string,sizeof(string),"Диспетчер: Возьми прицеп рядом, у тебя есть %d секунд", TRUCKER_TIME_GET_TRAILER);
+			SendClientMessage(playerid, COLOUR_YELLOW, string);
+			SetPVarInt(playerid, "trucker_Timer_Check_Trailer",
+				SetTimerEx("trucker_Trailer_Check", 500, 1, "d", playerid)
+			);
 			return 0;
 		}
 	}
@@ -138,40 +183,16 @@ stock trucker_Start(playerid)
 	SetPVarInt(playerid,"trucker_Timer",
 		SetTimerEx("trucker_EndMission",TRUCKER_MISSION_TIME * 1000,0,"d",playerid)
 	);
-	SendClientMessage(playerid,COLOUR_YELLOW,"Диспетчер: Езжай на чекпоинт, доставь туда груз вовремя и получишь бабки + опыт");
 	new string[MAX_STRING];
-	format(string,sizeof(string),"Диспетчер: %s(%d) взял миссию по доставке груза",oGetPlayerName(playerid),playerid);
-	foreach (Player,i)
-	{
-		if (i != playerid)
-		{
-			SendClientMessage(i,COLOUR_LIGHTRED,string);
-		}
-	}
+	format(string,sizeof(string),"Диспетчер: Договор заключен. Доставь груз в %s, координаты отправлены в твой GPS. У тебя есть %d мин.", zone, TRUCKER_MISSION_TIME / 60);
+	SendClientMessage(playerid,COLOUR_YELLOW,string);
 	return 1;
 }
 
 stock trucker_OnPlayerKeyStateChange(playerid,newkeys,oldkeys)
 {
 	#pragma unused oldkeys,newkeys
-	if (IsPlayerInMission(playerid,mission_trucker))
-	{
-		trucker_EndMission(playerid);
-		KillTimer( GetPVarInt(playerid,"trucker_Timer") );
-	}
-	else
-	{
-		if (GetPVarInt(playerid,"trucker_RunnerMissionTime") > 0)
-		{
-			new string[MAX_STRING];
-			format(string,sizeof(string),"Диспетчер: Пока никому ничего не нужно, приходите через %d секунд",GetPVarInt(playerid,"trucker_RunnerMissionTime"));
-			SendClientMessage(playerid,COLOUR_RED,string);
-		}
-		else
-		{
-			trucker_Start(playerid);
-		}
-	}
+	show_Trucker_Cancel_Menu(playerid);
 	return 1;
 }
 
@@ -188,10 +209,10 @@ stock trucker_OnPlayerEnterCheckpoint(playerid)
 		}
 		if (!IsTrailerIsTrue(trailerid))
 		{
-			SendClientMessage(playerid,COLOUR_WHITE,"Диспетчер: Ты привёз пустой прицеп! Получай неустойку и пинок под зад!");
-			oGivePlayerMoney(playerid,-200,1);
-			oSetPlayerHealth(playerid,oGetPlayerHealth(playerid) - 10);
 			trucker_Stop(playerid);
+			oGivePlayerMoney(playerid,-TRUCKER_MONEY_PENALTY,1);
+			oSetPlayerHealth(playerid,oGetPlayerHealth(playerid) - 10);
+			SendClientMessage(playerid,COLOUR_WHITE,"Диспетчер: Ты привёз пустой прицеп! Получай неустойку и пинок под зад!");
 			return 1;
 		}
 		DetachTrailerFromVehicle(vehicleid);
@@ -199,9 +220,42 @@ stock trucker_OnPlayerEnterCheckpoint(playerid)
 		
 		trucker_Stop(playerid);
 		KillTimer( GetPVarInt(playerid,"trucker_Timer") );
-		SendClientMessage(playerid,COLOUR_WHITE,"Диспетчер: Поздравляю! Ты справился с миссией. Держи свою зарплату!");
+		SendClientMessage(playerid,COLOUR_WHITE,"Диспетчер: Благодарим за доставку! Вот твои деньги и опыт, теперь заправься и едь на базу.");
 		oGivePlayerMoney(playerid,mission_CalculateMoney(playerid,mission_trucker),1);
 		GivePlayerXP(playerid,mission_CalculateXP(playerid,mission_trucker),1);
+	}
+	return 1;
+}
+
+stock trucker_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
+{
+	#pragma unused inputtext, listitem
+	if (dialogid == trucker_DialogID)
+	{
+		if (!response)
+		{
+			RemovePlayerFromVehicle(playerid);
+			return 0;
+		}
+		if (GetPVarInt(playerid,"trucker_RunnerMissionTime") > 0)
+		{
+			new string[MAX_STRING];
+			format(string,sizeof(string),"Диспетчер: Пока никому ничего не нужно, приходите через %d секунд",GetPVarInt(playerid,"trucker_RunnerMissionTime"));
+			SendClientMessage(playerid,COLOUR_RED,string);
+		}
+		else
+		{
+			trucker_Start(playerid);
+		}
+	}
+	else if (dialogid == trucker_cancel_DialogID)
+	{
+		if (!response) return 1;
+		if (IsPlayerInMission(playerid,mission_trucker))
+		{
+			trucker_EndMission(playerid);
+			KillTimer( GetPVarInt(playerid,"trucker_Timer") );
+		}
 	}
 	return 1;
 }
@@ -219,7 +273,8 @@ stock trucker_OnPlayerDeath(playerid, killerid, reason)
 	#pragma unused killerid,reason
 	if (!IsMissionEnabled(mission_trucker) || !IsPlayerInMission(playerid,mission_trucker)) return 1;
 	trucker_Stop(playerid);
-	SendClientMessage(playerid,COLOUR_RED,"Диспетчер: Ты не справился с миссией доставки груза");
+	oGivePlayerMoney(playerid,-TRUCKER_MONEY_PENALTY,1);
+	SendClientMessage(playerid,COLOUR_RED,"Диспетчер: Ты провалил задание доставки груза, и по договору потерял опыт и бабки.");
 	return 1;
 }
 
@@ -229,8 +284,59 @@ stock trucker_OnVehicleDeath(vehicleid, killerid)
 	if (IsVehicleIsRunner(vehicleid))
 	{
 		trucker_Stop(killerid);
-		SendClientMessage(killerid,COLOUR_RED,"Диспетчер: Ты не справился с миссией, уничтожив свой транспорт");
+		oGivePlayerMoney(killerid,-TRUCKER_MONEY_PENALTY,1);
+		SendClientMessage(killerid,COLOUR_RED,"Диспетчер: Твоя машина уничтожена. Ты заплатишь за это!");
 	}
+	return 1;
+}
+stock show_Trucker_Cancel_Menu(playerid)
+{
+	return ShowPlayerDialog(playerid, trucker_cancel_DialogID, DIALOG_STYLE_MSGBOX,
+		"Компания доставки грузов",
+		"Вы действительно хотите уйти с работы? В таком случае вам придётся заплатить неустойку!",
+		"Да", "Нет"
+	);
+}
+
+stock show_Trucker_Menu(playerid)
+{
+	return ShowPlayerDialog(playerid, trucker_DialogID, DIALOG_STYLE_MSGBOX,
+		"Компания доставки грузов",
+		"Вы сели в тягач компании по доставке грузов. К счастью, этой компании требуются наёмные работники для перевозки товаров\n\
+		Солидная зарплата, премии, полный соц. пакет. Согласны-ли вы поработать на компанию? \n\
+		Условия договора: при утере груза вы оплачиваете всю его стоимость.",
+		"Принять", "Отклонить"
+	);
+}
+
+forward trucker_Trailer_Check(playerid);
+public trucker_Trailer_Check(playerid)
+{
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if (vehicleid == 0)
+	{
+		KillTimer( GetPVarInt(playerid, "trucker_Timer_Check_Trailer") );
+		return 0;
+	}
+	
+	GivePVarInt(playerid, "trucker_Trailer_Check_Count", 2);
+	if (GetPVarInt(playerid, "trucker_Trailer_Check_Count") > TRUCKER_TIME_GET_TRAILER)
+	{
+		RemovePlayerFromVehicle(playerid);
+		SetVehicleToRespawn(vehicleid);
+		SetPVarInt(playerid, "trucker_Trailer_Check_Count", 0);
+		KillTimer( GetPVarInt(playerid, "trucker_Timer_Check_Trailer") );
+		SendClientMessage(playerid,COLOUR_RED,"Диспетчер: Ты не успел взять прицеп.");
+		return 0;
+	}
+	
+	new trailerid = GetVehicleTrailer(vehicleid);
+	if (trailerid == 0 || !IsTrailerIsTrue(trailerid))
+	{
+		return 0;
+	}
+	KillTimer( GetPVarInt(playerid, "trucker_Timer_Check_Trailer") );
+	trucker_Start(playerid);
 	return 1;
 }
 
@@ -240,7 +346,13 @@ public trucker_EndMission(playerid)
 	if (IsPlayerInMission(playerid,mission_trucker))
 	{
 		trucker_Stop(playerid);
-		SendClientMessage(playerid,COLOUR_RED,"Диспетчер: Ты не справился с миссией.");
+		oGivePlayerMoney(playerid,-TRUCKER_MONEY_PENALTY,1);
+		SendClientMessage(playerid,COLOUR_RED,"Диспетчер: Ты провалил задание доставки груза. Заказчик остался не доволен.");
+		new vehicleid = GetPlayerVehicleID(playerid);
+		if (vehicleid != 0 && IsVehicleIsRunner(vehicleid))
+		{
+			RemovePlayerFromVehicle(playerid);
+		}
 	}
 }
 
@@ -285,8 +397,9 @@ stock GetTrailerType(vehicleid)
 {
 	switch ( GetVehicleModel( GetVehicleTrailer(vehicleid) ) )
 	{
-		case 435,450,591: return TRAILER_TYPE_NORMAL;
+		case 435,591: return TRAILER_TYPE_PRODUCT;
 		case 584: return TRAILER_TYPE_PETROL;
+		case 450: return TRAILER_TYPE_CAREER;
 	}
 	return -1;
 }

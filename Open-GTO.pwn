@@ -344,6 +344,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			ss_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
+		case trucker_DialogID, trucker_cancel_DialogID:
+		{
+			trucker_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
+		}
 	}
 	return 1;
 }

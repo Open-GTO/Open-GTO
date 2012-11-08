@@ -180,8 +180,10 @@ new ENCRYPTION_KEY[] = "_C)2^KђRPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 	#define TRUCKER_ENABLED					1
 	#define TRUCKER_XP_RATE					20 // кол-во опыта за завоз, формула: ( (GetPlayerLevel(playerid)+1) * 2 )^2 * trucker_GIVE_XP_RATE
 	#define TRUCKER_MONEY_RATE				10
+	#define TRUCKER_MONEY_PENALTY			2000 // кол-во денег забираемых при невыполнении договора
+	#define TRUCKER_TIME_GET_TRAILER		120 // кол-во секунд, дающихс€ на прицепление фуры к т€гачу
 	#define TRUCKER_MISSION_TRY_COUNT		2 // кол-во проходений и использований миссий до перерыва
-	#define TRUCKER_MISSION_TIME			300 // врем€ дающеес€ на прохождение миссии
+	#define TRUCKER_MISSION_TIME			480 // врем€ дающеес€ на прохождение миссии
 	#define TRUCKER_RUNNER_MISSION_TIME		300 // врем€ перерыва между мисси€ми, в секундах
 	#define TRUCKER_CAR_SPAWN_TIME			300
 	//
@@ -217,6 +219,7 @@ enum {
 	bar_DialogID,
 	fastfood_DialogID,
 	SkinShop_Buy_DialogID,
+	trucker_DialogID, trucker_cancel_DialogID,
 }
 
 // прочее
