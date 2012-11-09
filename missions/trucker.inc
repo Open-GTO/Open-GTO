@@ -147,7 +147,7 @@ stock trucker_OnPlayerStateChange(playerid,newstate,oldstate)
 
 stock trucker_Start(playerid)
 {
-	new zone[MAX_NAME];
+	new zone[MAX_NAME], type_name[MAX_STRING];
 	switch ( GetTrailerType( GetPlayerVehicleID(playerid) ) )
 	{
 		case TRAILER_TYPE_PRODUCT:
@@ -155,18 +155,21 @@ stock trucker_Start(playerid)
 			new rand = random(sizeof(ProductCoord));
 			oSetPlayerCheckpoint(playerid,ProductCoord[rand][Coord_X],ProductCoord[rand][Coord_Y],ProductCoord[rand][Coord_Z],10);
 			set(zone, GetXYZZoneName(ProductCoord[rand][Coord_X],ProductCoord[rand][Coord_Y],ProductCoord[rand][Coord_Z]));
+			set(type_name, "продукты");
 		}
 		case TRAILER_TYPE_PETROL:
 		{
 			new rand = random(sizeof(PetrolCoord));
 			oSetPlayerCheckpoint(playerid,PetrolCoord[rand][Coord_X],PetrolCoord[rand][Coord_Y],PetrolCoord[rand][Coord_Z],10);
 			set(zone, GetXYZZoneName(PetrolCoord[rand][Coord_X],PetrolCoord[rand][Coord_Y],PetrolCoord[rand][Coord_Z]));
+			set(type_name, "топливо");
 		}
 		case TRAILER_TYPE_CAREER:
 		{
 			new rand = random(sizeof(CareerCoord));
 			oSetPlayerCheckpoint(playerid,CareerCoord[rand][Coord_X],CareerCoord[rand][Coord_Y],CareerCoord[rand][Coord_Z],10);
 			set(zone, GetXYZZoneName(CareerCoord[rand][Coord_X],CareerCoord[rand][Coord_Y],CareerCoord[rand][Coord_Z]));
+			set(type_name, "уголь");
 		}
 		default:
 		{
@@ -184,7 +187,7 @@ stock trucker_Start(playerid)
 		SetTimerEx("trucker_EndMission",TRUCKER_MISSION_TIME * 1000,0,"d",playerid)
 	);
 	new string[MAX_STRING];
-	format(string,sizeof(string),"Диспетчер: Договор заключен. Доставь груз в %s, координаты отправлены в твой GPS. У тебя есть %d мин.", zone, TRUCKER_MISSION_TIME / 60);
+	format(string,sizeof(string),"Диспетчер: Договор заключен. Доставь %s в %s, координаты отправлены в твой GPS. У тебя есть %d мин.", type_name, zone, TRUCKER_MISSION_TIME / 60);
 	SendClientMessage(playerid,COLOUR_YELLOW,string);
 	return 1;
 }
