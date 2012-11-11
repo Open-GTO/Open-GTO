@@ -792,9 +792,10 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			format(string, sizeof(string), lang_texts[1][34], pass);
 			show_User_Menu_Dialog(playerid, "Изменение пароля", string);
 		#if defined USE_PASSWORD_ENCRYPT
-			encrypt(pass);
-		#endif
+			SetPVarString(playerid, "Password", encrypt(pass));
+		#else
 			SetPVarString(playerid, "Password", pass);
+		#endif
 			AccountSave(playerid);
 			oGivePlayerMoney(playerid,-CHANGE_PASS_COST, 1);
 			return 1;
