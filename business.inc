@@ -168,7 +168,7 @@ stock TurnAround()
 					GivePlayerBankMoney(playerid, Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade]);
 					new string[MAX_STRING];
 					format(string, sizeof(string), lang_texts[3][28], Businesses[id][Business_Name], Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade]);
-					SendClientMessage(playerid, COLOR_RED, string);
+					SendClientMessage(playerid, COLOUR_RED, string);
 					Businesses[id][Business_Vault] = 0;
 				}
 			}

@@ -472,7 +472,7 @@ stock ResetQuest(playerid)
 	SetPlayerQuestID(playerid, INVALID_QUEST_ID);
 }
 
-stock GetPlayerID(playername[MAX_PLAYER_NAME+1])
+stock GetPlayerID(playername[])
 {
 	new name[MAX_PLAYER_NAME+1];
 	foreach (Player, playerid)
