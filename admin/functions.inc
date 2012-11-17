@@ -33,23 +33,23 @@ new Float:Jail_PH[][CoordInfoJ] = {
 
 stock oBan_Check(playerid)
 {
-	new string[MAX_STRING];
-	format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, BanDB, oGetPlayerName(playerid));
+	new filename[MAX_STRING];
+	format(filename, sizeof(filename), "%s%s"GTO_FILES_FORMAT, BanDB, oGetPlayerName(playerid));
 	
-	if (!ini_Exist(string))
+	if (!ini_Exist(filename))
 	{
 		new plrIP[MAX_IP];
 		GetPVarString(playerid, "IP", plrIP, sizeof(plrIP));
-		format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, BanDB, plrIP);
+		format(filename, sizeof(filename), "%s%s"GTO_FILES_FORMAT, BanDB, plrIP);
 		
-		if (!ini_Exist(string))
+		if (!ini_Exist(filename))
 		{
 			return 0;
 		}
 	}
 	
 	new date[MAX_NAME], time, admin[MAX_PLAYER_NAME+1], reason[MAX_SEND_SYMBOLS];
-	new file_ban_db = ini_Open(string);
+	new file_ban_db = ini_Open(filename);
 	
 	ini_Get(file_ban_db, "Date", date);
 	ini_GetInt(file_ban_db, "Time", time);
@@ -76,9 +76,12 @@ stock oBan_Check(playerid)
 		-
 		DateToNum(year, month, day, hours, minutes, seconds);
 	
+	new string[MAX_STRING];
+	
 	if (time == 0)
 	{
 		format(string, sizeof(string), "навсегда", time);
+		unban_time = 1;
 	}
 	else
 	{
@@ -97,8 +100,8 @@ stock oBan_Check(playerid)
 	}
 	else
 	{
-		format(string, sizeof(string), "Наступил срок истечения бана, теперь вы разбанены!", admin, string, date);
-		SendClientMessage(playerid, COLOUR_RED, string);
+		ini_Remov(filename);
+		SendClientMessage(playerid, COLOUR_RED, "Наступил срок истечения бана, теперь вы разбанены!");
 	}
 	return 1;
 }
@@ -121,7 +124,15 @@ stock oBan(user[], reason[], adminid, time=0)
 	ini_Close(file_ban_db);
 	
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][97], user, date, oGetPlayerName(adminid), adminid, time);
+	if (time == 0)
+	{
+		format(string, sizeof(string), "навсегда", time);
+	}
+	else
+	{
+		format(string, sizeof(string), "на %d секунд", time);
+	}
+	format(string, sizeof(string), lang_texts[12][97], user, date, oGetPlayerName(adminid), adminid, string);
 	if (strlen(reason) > 0)
 	{
 		format(string, sizeof(string), lang_texts[12][98], string, reason);

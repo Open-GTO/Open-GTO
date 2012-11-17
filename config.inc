@@ -202,6 +202,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define KEY_NAME			"Õîäüáà"
 #define PICKUP_TEXT			"\n{33AA33}Íàæìèòå êíîïêó '{FFFFFF}"KEY_NAME"{33AA33}'"
 #define CreatePickupText(%0,%1,%2,%3)	Create3DTextLabel(%0PICKUP_TEXT, 0x00FFFFEE,%1,%2,%3, 20.0, 0, 1)
+
 // äèàëîãè
 enum {
 	message_DialogID,
@@ -241,8 +242,8 @@ enum {
 #define ini_GetInt		ini_getInteger
 #define ini_GetFloat	ini_getFloat
 #define ini_Remove		ini_removeKey
-#define ini_Remov(%0)	fremove(%0)
-#define ini_Exist(%0)	fexist(%0)
+#define ini_Remov		fremove
+#define ini_Exist		fexist
 
 // öâåòà
 #define COLOUR_GREY 0xAFAFAFAA // grey

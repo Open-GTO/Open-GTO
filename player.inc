@@ -276,8 +276,9 @@ stock player_OnPlayerConnect(playerid)
 	SetPVarString(playerid, "IP", plrIP);
 	if (!NameCharCheck( oGetPlayerName(playerid) ))
 	{
-		format(string, sizeof(string), lang_texts[9][13], ALLOWED_NICK_SYMBOLS_STR);
+		format(string, sizeof(string), lang_texts[9][12], ALLOWED_NICK_SYMBOLS_STR);
 		SendClientMessage(playerid, COLOUR_RED, string);
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[9][13]);
 		KickPlayer(playerid, "Такой ник запрещён.");
 	}
 	SetPlayerColor(playerid, COLOUR_PLAYER);

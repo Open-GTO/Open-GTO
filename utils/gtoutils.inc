@@ -164,6 +164,10 @@ stock NameCharCheck(string[MAX_PLAYER_NAME+1])
 			default: return 0;
 		}
 	}
+	if (IsIP(string))
+	{
+		return 0;
+	}
 	return 1;
 }
 
