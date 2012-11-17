@@ -113,6 +113,11 @@ stock oBan(user[], reason[], adminid, time=0)
 	gettime(hour, minute, second);
 	format(date, sizeof(date), "%02d.%02d.%d, %02d:%02d:%02d", day, month, year, hour, minute, second);
 	
+	if (IsNumeric(user))
+	{
+		set(user, oGetPlayerName(strval(user)));
+	}
+	
 	new filename_ban[MAX_STRING];
 	format(filename_ban, sizeof(filename_ban), "%s%s"GTO_FILES_FORMAT, BanDB, user);
 	

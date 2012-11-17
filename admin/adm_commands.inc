@@ -496,7 +496,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		
 		if (strlen(user) < MIN_PLAYER_NAME || strlen(user) > MAX_PLAYER_NAME)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, "Применение: /ban <ник/ip> <время(в секундах, если 0, то навсегда)> <причина>");
+			return SendClientMessage(playerid, COLOUR_RED, "Применение: /ban <ник/id/ip> <время(в секундах, если 0, то навсегда)> <причина>");
 		}
 		if (strlen(reason) > MAX_SEND_SYMBOLS)
 		{
