@@ -22,7 +22,7 @@ public weather_WeatherUpdate()
 	}
 	static timer_ticks;
 	timer_ticks++;
-	if (sys_weather == timer_ticks)
+	if (sys_weather >= timer_ticks)
 	{
 		timer_ticks = 0;
 		new weatherid;
