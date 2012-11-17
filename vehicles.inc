@@ -2271,11 +2271,54 @@ new VehicleModelSpawns[][VehicleSpawnInfo] = {
 	{538, 1700.7551,-1953.6531, 14.8756, 200.0,-1,-1}
 };
 
+enum VehicleSpawnInfo_Interior {
+	vspawn_model, 			 // Model
+	vspawn_interior,		// interior
+	Float:vspawn_x,         // X
+	Float:vspawn_y,         // Y
+	Float:vspawn_z,         // Z
+	Float:vspawn_heading,   // Heading
+    vspawn_colour1,         // Colour1
+    vspawn_colour2          // Colour2
+}
+
+new VehicleModelSpawns_Interior[][VehicleSpawnInfo_Interior] = {
+	// в стадионе 1
+	{503, 7, -1407.9211, -257.8641, 1043.5564, 348.0061, 126, 3},
+	{494, 7, -1406.0990,-249.1452,1043.4298,347.7101,61,6},
+	{502, 7, -1404.2412,-240.7171,1043.2792,347.3656,79,2},
+	{502, 7, -1402.0483,-259.1992,1043.5502,347.5606,86,44},
+	{503, 7,-1400.5659,-251.2332,1043.4270,350.9120,0,24},
+	// в стадионе 2
+	{495, 15, -1461.9158,939.6747,1036.9652,341.2047,6,61},
+	{495, 15, -1438.5977,949.5508,1029.6586,83.0449,3,6},
+	{495, 15, -1424.0901,933.5353,1036.7844,356.4552,2,86},
+	{495, 15, -1478.3835,995.9543,1027.1426,271.4807,108,6},
+	{495, 15, -1317.2069,995.2290,1027.1031,89.5787,77,1},
+	// в стадионе 21
+	{468, 14, -1451.6071,1572.0834,1058.2649,109.0544,86,0},
+	{468, 14, -1465.7468,1583.1681,1054.2493,283.6203,6,0},
+	{468, 14, -1471.5283,1570.4318,1052.4188,78.4386,3,0},
+	{468, 14, -1462.6320,1570.2461,1052.4186,57.0120,1,0},
+	{468, 14, -1456.1096,1562.9014,1052.4185,3.4600,6,0},
+	// в стадионе 3
+	{468, 4, -1437.3434,-621.1061,1049.3401,246.3741,6,1},
+	{468, 4, -1430.0999,-629.3474,1049.8201,192.3189,7,1},
+	{468, 4, -1434.4080,-650.4904,1050.5455,141.7860,86,1},
+	{468, 4, -1447.9515,-655.4843,1051.3296,96.5256,3,1},
+	{468, 4, -1427.4252,-638.8242,1050.1759,163.1665,0,1}
+};
+
 stock LoadVehicles()
 {
 	for (new i = 0; i < sizeof(vip_Vehicle); i++)
 	{
 		vip_LastVehicleID = AddStaticVehicleEx(vip_Vehicle[i][Model], vip_Vehicle[i][Coord_X], vip_Vehicle[i][Coord_Y], vip_Vehicle[i][Coord_Z], vip_Vehicle[i][Coord_A], vip_Vehicle[i][Color_1], vip_Vehicle[i][Color_2], CarsReSpawnTime);
+	}
+	for (new i = 0, buf; i < sizeof(VehicleModelSpawns_Interior); i++)
+	{
+		buf = AddStaticVehicleEx(VehicleModelSpawns_Interior[i][vspawn_model], VehicleModelSpawns_Interior[i][vspawn_x], VehicleModelSpawns_Interior[i][vspawn_y], VehicleModelSpawns_Interior[i][vspawn_z], VehicleModelSpawns_Interior[i][vspawn_heading], VehicleModelSpawns_Interior[i][vspawn_colour1], VehicleModelSpawns_Interior[i][vspawn_colour2], CarsReSpawnTime);
+		LinkVehicleToInterior(buf, VehicleModelSpawns_Interior[i][vspawn_interior]);
 	}
 	for (new i = 0; i < sizeof(VehicleModelSpawns); i++)
 	{
