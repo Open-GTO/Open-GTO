@@ -281,6 +281,7 @@ stock player_OnPlayerConnect(playerid)
 		KickPlayer(playerid, "Такой ник запрещён.");
 	}
 	SetPlayerColor(playerid, COLOUR_PLAYER);
+	oBan_Check(playerid);
 	
 	format(string, sizeof(string), lang_texts[15][85], VERSION);
 	GameTextForPlayer(playerid, string, 5500, 1);
@@ -469,6 +470,20 @@ stock ResetQuest(playerid)
 {
 	oDisablePlayerCheckpoint(playerid);
 	SetPlayerQuestID(playerid, INVALID_QUEST_ID);
+}
+
+stock GetPlayerID(playername[MAX_PLAYER_NAME+1])
+{
+	new name[MAX_PLAYER_NAME+1];
+	foreach (Player, playerid)
+	{
+		GetPlayerName(playerid, name, sizeof(name));
+		if (!strcmp(playername, name, true))
+		{
+			return playerid;
+		}
+	}
+	return INVALID_PLAYER_ID;
 }
 
 stock oGetPlayerName(playerid)
