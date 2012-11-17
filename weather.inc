@@ -13,8 +13,7 @@
 #pragma library weather
 
 
-forward weather_WeatherUpdate();
-public weather_WeatherUpdate()
+stock weather_WeatherUpdate()
 {
 	if (sys_weather == 0)
 	{
@@ -22,7 +21,7 @@ public weather_WeatherUpdate()
 	}
 	static timer_ticks;
 	timer_ticks++;
-	if (sys_weather >= timer_ticks)
+	if (timer_ticks >= sys_weather)
 	{
 		timer_ticks = 0;
 		new weatherid;
