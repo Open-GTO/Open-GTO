@@ -36,7 +36,7 @@ new interior_EnterExits[][iee_Info] = {
 {1, 45, 2112.758789,-1212.521850, 23.964426, 4.145859,		203.777999,-48.492401, 1001.804687, 0.000000},
 {1, 44, 2194.699218, 1676.525878, 12.367187, 269.661773,	2233.909912, 1710.729980, 1011.298706, 180.000015},
 {1, 29, 2778.586181, 2452.152587, 11.062500, 327.040191,	203.777999,-48.492401, 1001.804687, 0.000000},
-{2,-1, 2506.777099, 2121.654541, 10.840141, 177.671890,		1204.812866,-12.584808, 1000.921875, 0.000000},
+{2,-1, 2421.375500, -1219.524200, 25.544100, 189.858500,	1204.812866,-12.584808, 1000.921875, 0.000000},
 {3, 48,-2625.213867, 1412.120361, 7.093750, 11.995606,		-2637.449951, 1404.630004, 906.460937, 0.000000},
 {3,-1, 1289.493286, 270.552703, 19.554687, 63.728549,		833.818969, 7.418000, 1004.179687, 89.999992},
 {3,-1, 1631.819824,-1170.936279, 24.078125, 179.289199,		833.818969, 7.418000, 1004.179687, 89.999992},
@@ -116,7 +116,8 @@ new interior_EnterExits[][iee_Info] = {
 {14, 33,-2170.891800, 252.045300, 35.335500, 0.000000,		-1464.866900, 1557.340200, 1052.531300, 0.000000}, // второй стадион во втором городе
 {4, 33, 1099.600800, 1601.515700, 12.546900, 0.000000,		-1437.187000,-637.602200, 1048.876500, 0.000000}, // стадион в третьем городе
 {1, 50, 1046.104500,-1130.966200, 23.828100, 0.000000,		-794.981400, 489.284700, 1376.195300, 0.000000}, // ресторан либерти сити
-{1, 50, 1073.013100,-1113.377300, 24.333200, 0.000000,		-791.401500, 495.531700, 1367.367200, 0.000000} // ресторан либерти сити доп.
+{1, 50, 1073.013100,-1113.377300, 24.333200, 0.000000,		-791.401500, 495.531700, 1367.367200, 0.000000}, // ресторан либерти сити доп.
+{17, 48, 1835.911000, -1682.063400, 13.370000, 79.033200,	493.238200, -23.391100, 1000.679700, 6.580000} // alhambra club
 };
 
 stock interior_OnGameModeInit()
@@ -124,10 +125,10 @@ stock interior_OnGameModeInit()
 	DisableInteriorEnterExits();
 	for (new i = 0; i < sizeof(interior_EnterExits); i++)
 	{
-		CreatePickup(1318, 1, interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z],-1);
+		CreatePickup(1559, 1, interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z] + 0.5,-1);
 		CreatePickupText("Вход", interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z]);
 		
-		CreatePickup(1559, 1, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z],-1);
+		CreatePickup(1559, 1, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z] + 0.2,-1);
 		CreatePickupText("Выход", interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z]);
 		
 		if (interior_EnterExits[i][iee_icon_ID] != -1)
