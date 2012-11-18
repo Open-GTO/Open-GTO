@@ -127,7 +127,7 @@ stock swagup_OnPlayerPickUpPickup(playerid, pickupid)
 		win_money = ( ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * swagup_MoneyRate ),
 		win_xp = ( ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * swagup_XpRate );
 	
-	format(string, sizeof(string), "Игрок %s(%d) нашёл спрятаный пакет! Он получил $%d и %d xp", oGetPlayerName(playerid), playerid, win_money, win_xp);
+	format(string, sizeof(string), lang_texts[19][63], oGetPlayerName(playerid), playerid, win_money, win_xp);
 	SendClientMessageToAll(COLOUR_RED, string);
 	
 	SetTimer("swagup_SpawnPickup", mathrandom(120000, 480000), 0);
@@ -139,6 +139,6 @@ public swagup_SpawnPickup()
 {
 	new swid = random( sizeof(swagup_Coords) );
 	swagup_PickupID = CreatePickup(410, 3, swagup_Coords[swid][Coord_X], swagup_Coords[swid][Coord_Y], swagup_Coords[swid][Coord_Z], -1);
-	SendClientMessageToAll(COLOUR_RED, "Внимание! В штате пропал секретный пакет, нашедшего ждёт щедрое вознаграждение!");
+	SendClientMessageToAll(COLOUR_RED, lang_texts[19][64]);
 	return 1;
 }

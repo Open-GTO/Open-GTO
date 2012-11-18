@@ -68,7 +68,6 @@ Date start Open-GTO: 	5 November 2009
 #include "admin\mod_commands"
 #include "missions"
 #include "missions\trucker"
-//#include "testserver"
 #include "click"
 #include "services\fastfood"
 #include "services\bar"
@@ -272,10 +271,6 @@ public OnPlayerConnect(playerid)
 	level_OnPlayerConnect(playerid);
 	weapon_OnPlayerConnect(playerid);
 	qudemsys_OnPlayerConnect(playerid);
-	
-#if defined _testserver_included
-	testserver_OnPlayerConnect(playerid);
-#endif
 	return 1;
 }
 
