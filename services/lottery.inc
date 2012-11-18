@@ -59,7 +59,7 @@ stock lottery_OnPlayerCommandText(playerid, text[])
 	if (LotteryEnabled != 1) return 0;
 	if (LotteryCount < 0)
 	{
-		return SendClientMessage(playerid, COLOUR_PM, "Лотерея ещё не началась!");
+		return SendClientMessage(playerid, COLOUR_PM, lang_texts[17][31]);
 	}
 	new cmd[20], idx;
 	cmd = strcharsplit(text, idx,' ');
@@ -72,17 +72,17 @@ stock lottery_OnPlayerCommandText(playerid, text[])
 		
 		if (strlen(tmp) == 0 || value < 1 || value > 100)
 		{
-			return SendClientMessage(playerid, COLOUR_PM, "Применение: /lottery <число 1..100>");
+			return SendClientMessage(playerid, COLOUR_PM, lang_texts[17][32]);
 		}
 		if (GetPVarInt(playerid, "lottery_Value") != 0)
 		{
-			return SendClientMessage(playerid, COLOUR_PM, "Лотерея: Вы уже купили билет!");
+			return SendClientMessage(playerid, COLOUR_PM, lang_texts[17][33]);
 		}
 		foreach (Player, id)
 		{
 			if (GetPVarInt(id, "lottery_Value") == value)
 			{
-				return SendClientMessage(playerid, COLOUR_PM, "Лотерея: Этот билет уже куплен!");
+				return SendClientMessage(playerid, COLOUR_PM, lang_texts[17][34]);
 			}
 		}
 		
@@ -90,7 +90,7 @@ stock lottery_OnPlayerCommandText(playerid, text[])
 		SetPVarInt(playerid, "lottery_Value", value);
 		
 		new string[MAX_STRING];
-		format(string, sizeof(string), "Удачи, у вас билет с номером %d", value);
+		format(string, sizeof(string), lang_texts[17][35], value);
 		SendClientMessage(playerid, COLOUR_GREEN, string);
 		return 1;
 	}
@@ -105,7 +105,7 @@ public lottery_Timer()
 	if (LotteryCount < LotteryTime)
 	{
 		new string[MAX_STRING];
-		format(string, sizeof(string), "Лотерея: До окончания розыгрыша осталось %d минут!", LotteryTime-LotteryCount);
+		format(string, sizeof(string), lang_texts[17][36], LotteryTime-LotteryCount);
 		SendClientMessageToAll(COLOUR_GREEN, string);
 		return 0;
 	}
@@ -123,10 +123,10 @@ public lottery_Timer()
 			
 			new string[MAX_STRING];
 			
-			format(string, sizeof(string), "Вы победили в лотерее! Ваш приз $%d", LotteryWinMoney);
+			format(string, sizeof(string), lang_texts[17][37], LotteryWinMoney);
 			SendClientMessage(playerid, COLOUR_GREEN, string);
 			
-			format(string, sizeof(string), "Победителем в лотерее стал %s(%d), он выйграл $%d", oGetPlayerName(playerid), playerid, LotteryWinMoney);
+			format(string, sizeof(string), lang_texts[17][38], oGetPlayerName(playerid), playerid, LotteryWinMoney);
 			SendClientMessageToAll(COLOUR_GREEN, string);
 		}
 		else
@@ -137,7 +137,7 @@ public lottery_Timer()
 	if (winner == 0)
 	{
 		new string[MAX_STRING];
-		format(string, sizeof(string), "В лотерее никто не победил, выигрышный билет - %d.", win_value);
+		format(string, sizeof(string), lang_texts[17][39], win_value);
 		SendClientMessageToAll(COLOUR_GREEN, string);
 	}
 	return 1;
@@ -150,11 +150,11 @@ stock lottery_RunTimer()
 	lottery_timer = SetTimer("lottery_Timer", 60000, 1);
 	
 	new string[MAX_STRING];
-	format(string, sizeof(string), "Лотерея: Начало розыргрыша призов, победитель получает $%d!", LotteryWinMoney);
+	format(string, sizeof(string), lang_texts[17][40], LotteryWinMoney);
 	SendClientMessageToAll(COLOUR_GREEN, string);
-	format(string, sizeof(string), "Лотерея: Введите /lottery <число 1..100>, для покупки билета. Цена билета $%d", LotteryTicketCost);
+	format(string, sizeof(string), lang_texts[17][41], LotteryTicketCost);
 	SendClientMessageToAll(COLOUR_GREEN, string);
-	format(string, sizeof(string), "Лотерея: До окончания розыгрыша осталось %d минут!", LotteryTime);
+	format(string, sizeof(string), lang_texts[17][42], LotteryTime);
 	SendClientMessageToAll(COLOUR_GREEN, string);
 	return 1;
 }

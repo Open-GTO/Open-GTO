@@ -30,7 +30,7 @@ stock CreateStreamMapIcon(markertype, Float:X, Float:Y, Float:Z)
 	new icon_id = GetLastMapIconSlot();
 	if (icon_id == 0)
 	{
-		GameMSG(" оличество иконок достигло максимума!("#MAX_ICONS")");
+		GameMSG(lang_texts[19][60], MAX_ICONS);
 		return 0;
 	}
 	MapIcons[icon_id][icon_type] = markertype;
