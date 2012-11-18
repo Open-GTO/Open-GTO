@@ -130,7 +130,7 @@ stock trucker_OnGameModeInit()
 	CreateStreamMapIcon(51,-117.0570,-325.0306,2.0109);
 	CreateStreamMapIcon(51,512.6126,792.6769,-20.8209);
 	
-	GameMSG("SERVER: (missions)Trucker module init");
+	GameMSG(lang_texts[19][33]);
 	return 1;
 }
 
@@ -155,26 +155,26 @@ stock trucker_Start(playerid)
 			new rand = random(sizeof(ProductCoord));
 			oSetPlayerCheckpoint(playerid,ProductCoord[rand][Coord_X],ProductCoord[rand][Coord_Y],ProductCoord[rand][Coord_Z],10);
 			set(zone, GetXYZZoneName(ProductCoord[rand][Coord_X],ProductCoord[rand][Coord_Y],ProductCoord[rand][Coord_Z]));
-			set(type_name, "продукты");
+			set(type_name, lang_texts[19][34]);
 		}
 		case TRAILER_TYPE_PETROL:
 		{
 			new rand = random(sizeof(PetrolCoord));
 			oSetPlayerCheckpoint(playerid,PetrolCoord[rand][Coord_X],PetrolCoord[rand][Coord_Y],PetrolCoord[rand][Coord_Z],10);
 			set(zone, GetXYZZoneName(PetrolCoord[rand][Coord_X],PetrolCoord[rand][Coord_Y],PetrolCoord[rand][Coord_Z]));
-			set(type_name, "топливо");
+			set(type_name, lang_texts[19][35]);
 		}
 		case TRAILER_TYPE_CAREER:
 		{
 			new rand = random(sizeof(CareerCoord));
 			oSetPlayerCheckpoint(playerid,CareerCoord[rand][Coord_X],CareerCoord[rand][Coord_Y],CareerCoord[rand][Coord_Z],10);
 			set(zone, GetXYZZoneName(CareerCoord[rand][Coord_X],CareerCoord[rand][Coord_Y],CareerCoord[rand][Coord_Z]));
-			set(type_name, "уголь");
+			set(type_name, lang_texts[19][36]);
 		}
 		default:
 		{
 			new string[MAX_STRING];
-			format(string,sizeof(string),"Диспетчер: Возьми прицеп рядом, у тебя есть %d секунд", TRUCKER_TIME_GET_TRAILER);
+			format(string,sizeof(string), lang_texts[19][37], TRUCKER_TIME_GET_TRAILER);
 			SendClientMessage(playerid, COLOUR_YELLOW, string);
 			SetPVarInt(playerid, "trucker_Timer_Check_Trailer",
 				SetTimerEx("trucker_Trailer_Check", 500, 1, "d", playerid)
@@ -187,7 +187,7 @@ stock trucker_Start(playerid)
 		SetTimerEx("trucker_EndMission",TRUCKER_MISSION_TIME * 1000,0,"d",playerid)
 	);
 	new string[MAX_STRING];
-	format(string,sizeof(string),"Диспетчер: Договор заключен. Доставь %s в %s, координаты отправлены в твой GPS. У тебя есть %d мин.", type_name, zone, TRUCKER_MISSION_TIME / 60);
+	format(string,sizeof(string), lang_texts[19][38], type_name, zone, TRUCKER_MISSION_TIME / 60);
 	SendClientMessage(playerid,COLOUR_YELLOW,string);
 	return 1;
 }
@@ -208,14 +208,14 @@ stock trucker_OnPlayerEnterCheckpoint(playerid)
 		new trailerid = GetVehicleTrailer(vehicleid);
 		if (trailerid == 0)
 		{
-			return SendClientMessage(playerid,COLOUR_WHITE,"Диспетчер: Груз то где?");
+			return SendClientMessage(playerid,COLOUR_WHITE, lang_texts[19][39]);
 		}
 		if (!IsTrailerIsTrue(trailerid))
 		{
 			trucker_Stop(playerid);
 			oGivePlayerMoney(playerid,-TRUCKER_MONEY_PENALTY,1);
 			oSetPlayerHealth(playerid,oGetPlayerHealth(playerid) - 10);
-			SendClientMessage(playerid,COLOUR_WHITE,"Диспетчер: Ты привёз пустой прицеп! Получай неустойку и пинок под зад!");
+			SendClientMessage(playerid,COLOUR_WHITE, lang_texts[19][40]);
 			return 1;
 		}
 		DetachTrailerFromVehicle(vehicleid);
@@ -223,7 +223,7 @@ stock trucker_OnPlayerEnterCheckpoint(playerid)
 		
 		trucker_Stop(playerid);
 		KillTimer( GetPVarInt(playerid,"trucker_Timer") );
-		SendClientMessage(playerid,COLOUR_WHITE,"Диспетчер: Благодарим за доставку! Вот твои деньги и опыт, теперь заправься и едь на базу.");
+		SendClientMessage(playerid,COLOUR_WHITE, lang_texts[19][41]);
 		oGivePlayerMoney(playerid,mission_CalculateMoney(playerid,mission_trucker),1);
 		GivePlayerXP(playerid,mission_CalculateXP(playerid,mission_trucker),1);
 	}
@@ -243,7 +243,7 @@ stock trucker_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 		if (GetPVarInt(playerid,"trucker_RunnerMissionTime") > 0)
 		{
 			new string[MAX_STRING];
-			format(string,sizeof(string),"Диспетчер: Пока никому ничего не нужно, приходите через %d секунд",GetPVarInt(playerid,"trucker_RunnerMissionTime"));
+			format(string,sizeof(string), lang_texts[19][42],GetPVarInt(playerid,"trucker_RunnerMissionTime"));
 			SendClientMessage(playerid,COLOUR_RED,string);
 		}
 		else
@@ -277,7 +277,7 @@ stock trucker_OnPlayerDeath(playerid, killerid, reason)
 	if (!IsMissionEnabled(mission_trucker) || !IsPlayerInMission(playerid,mission_trucker)) return 1;
 	trucker_Stop(playerid);
 	oGivePlayerMoney(playerid,-TRUCKER_MONEY_PENALTY,1);
-	SendClientMessage(playerid,COLOUR_RED,"Диспетчер: Ты провалил задание доставки груза, и по договору потерял опыт и бабки.");
+	SendClientMessage(playerid,COLOUR_RED, lang_texts[19][43]);
 	return 1;
 }
 
@@ -288,27 +288,29 @@ stock trucker_OnVehicleDeath(vehicleid, killerid)
 	{
 		trucker_Stop(killerid);
 		oGivePlayerMoney(killerid,-TRUCKER_MONEY_PENALTY,1);
-		SendClientMessage(killerid,COLOUR_RED,"Диспетчер: Твоя машина уничтожена. Ты заплатишь за это!");
+		SendClientMessage(killerid,COLOUR_RED, lang_texts[19][44]);
 	}
 	return 1;
 }
 stock show_Trucker_Cancel_Menu(playerid)
 {
 	return ShowPlayerDialog(playerid, trucker_cancel_DialogID, DIALOG_STYLE_MSGBOX,
-		"Компания доставки грузов",
-		"Вы действительно хотите уйти с работы? В таком случае вам придётся заплатить неустойку!",
-		"Да", "Нет"
+		lang_texts[19][45],
+		lang_texts[19][46],
+		lang_texts[19][47], lang_texts[19][48]
 	);
 }
 
 stock show_Trucker_Menu(playerid)
 {
+	new string[512];
+	strcat(string, lang_texts[19][51], sizeof(string));
+	strcat(string, lang_texts[19][52], sizeof(string));
+	strcat(string, lang_texts[19][53], sizeof(string));
 	return ShowPlayerDialog(playerid, trucker_DialogID, DIALOG_STYLE_MSGBOX,
-		"Компания доставки грузов",
-		"Вы сели в тягач компании по доставке грузов. К счастью, этой компании требуются наёмные работники для перевозки товаров\n\
-		Солидная зарплата, премии, полный соц. пакет. Согласны-ли вы поработать на компанию? \n\
-		Условия договора: при утере груза вы оплачиваете всю его стоимость.",
-		"Принять", "Отклонить"
+		lang_texts[19][45],
+		string,
+		lang_texts[19][49], lang_texts[19][50]
 	);
 }
 
@@ -329,7 +331,7 @@ public trucker_Trailer_Check(playerid)
 		SetVehicleToRespawn(vehicleid);
 		SetPVarInt(playerid, "trucker_Trailer_Check_Count", 0);
 		KillTimer( GetPVarInt(playerid, "trucker_Timer_Check_Trailer") );
-		SendClientMessage(playerid,COLOUR_RED,"Диспетчер: Ты не успел взять прицеп.");
+		SendClientMessage(playerid,COLOUR_RED, lang_texts[19][55]);
 		return 0;
 	}
 	
@@ -350,7 +352,7 @@ public trucker_EndMission(playerid)
 	{
 		trucker_Stop(playerid);
 		oGivePlayerMoney(playerid,-TRUCKER_MONEY_PENALTY,1);
-		SendClientMessage(playerid,COLOUR_RED,"Диспетчер: Ты провалил задание доставки груза. Заказчик остался не доволен.");
+		SendClientMessage(playerid,COLOUR_RED, lang_texts[19][54]);
 		new vehicleid = GetPlayerVehicleID(playerid);
 		if (vehicleid != 0 && IsVehicleIsRunner(vehicleid))
 		{
