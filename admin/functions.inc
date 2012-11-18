@@ -80,18 +80,18 @@ stock oBan_Check(playerid)
 	
 	if (time == 0)
 	{
-		format(string, sizeof(string), "навсегда", time);
+		format(string, sizeof(string), lang_texts[13][48], time);
 		unban_time = 1;
 	}
 	else
 	{
-		format(string, sizeof(string), "на %d секунд", time);
+		format(string, sizeof(string), lang_texts[13][49], time);
 		if (unban_time > 0)
 		{
-			format(string, sizeof(string), "%s, до разбана осталось %d секунд", string, unban_time);
+			format(string, sizeof(string), lang_texts[13][50], string, unban_time);
 		}
 	}
-	format(string, sizeof(string), "јдминистратор %s забанил вас %s %s, по причине \"%s\".", admin, date, string, reason);
+	format(string, sizeof(string), lang_texts[13][51], admin, date, string, reason);
 	SendClientMessage(playerid, COLOUR_RED, string);
 	
 	if (unban_time > 0)
@@ -101,7 +101,7 @@ stock oBan_Check(playerid)
 	else
 	{
 		ini_Remov(filename);
-		SendClientMessage(playerid, COLOUR_RED, "Ќаступил срок истечени€ бана, теперь вы разбанены!");
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][52]);
 	}
 	return 1;
 }
@@ -131,11 +131,11 @@ stock oBan(user[], reason[], adminid, time=0)
 	new string[MAX_STRING];
 	if (time == 0)
 	{
-		format(string, sizeof(string), "навсегда", time);
+		format(string, sizeof(string), lang_texts[13][48], time);
 	}
 	else
 	{
-		format(string, sizeof(string), "на %d секунд", time);
+		format(string, sizeof(string), lang_texts[13][49], time);
 	}
 	format(string, sizeof(string), lang_texts[12][97], user, date, oGetPlayerName(adminid), adminid, string);
 	if (strlen(reason) > 0)
@@ -207,7 +207,7 @@ stock UnJailPlayer(playerid)
 	SetPlayerFacingAngle(playerid, Jail_PH[j_id][CJ_A]);
 	SetCameraBehindPlayer(playerid);
 	new string[MAX_STRING];
-	format(string, sizeof(string), "SERVER: %s был выпущен из тюрьмы (истекло врем€ или амнисти€)", oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[13][53], oGetPlayerName(playerid));
 	SendClientMessageToAll(COLOUR_WHITE, string);
 	return 1;
 }
@@ -255,7 +255,7 @@ stock MuteCheck()
 			SetPlayerMuteTime(i, mute_time);
 		    if (mute_time <= 0)
 		    {
-				format(string, sizeof(string), "»грок %s(%d) снова может говорить", oGetPlayerName(i), i);
+				format(string, sizeof(string), lang_texts[13][54], oGetPlayerName(i), i);
 				SendClientMessageToAll(COLOUR_YELLOW, string);
 			}
 		}
@@ -282,11 +282,11 @@ stock JailTimer()
 			if (jail_time <= 0)
 			{
 				UnJailPlayer(i);
-				printf("SERVER : %s Has Been auto-UNJailed", oGetPlayerName(i));
+				GameMSG(lang_texts[13][55], oGetPlayerName(i));
 			}
 			else
 			{
-				format(string, sizeof(string), "SERVER: ƒо окончани€ ареста осталось около %d мин", jail_time);
+				format(string, sizeof(string), lang_texts[13][56], jail_time);
 				SendClientMessage(i, COLOUR_LIGHTRED, string);
 			}
 		}

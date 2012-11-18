@@ -64,12 +64,12 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 	
 	if (!strcmp(cmd, "/cmdlist", true))
 	{
-		SendClientMessage(playerid, COLOUR_GREEN, "Administrator RCON:______________________________________________________________");
-		SendClientMessage(playerid, COLOUR_WHITE, "R: '/ssay <text>', '/an <type> <LATtext>', '/setlvl <ID> <lvl>', '/setstatus <ID> <status> (0, 1, 2, 3)'");
-		SendClientMessage(playerid, COLOUR_WHITE, "R: '/disarm <ID>', '/disarmall', '/skydiveall', '/paralyzeall', '/deparalyzeall', '/remcash <ID>', '/remcashall'");
-		SendClientMessage(playerid, COLOUR_WHITE, "R: '/payday', /go <point> (0, 1, 2-4(tune) - 27)', '/allowport <ID> <allow>', '/setskin <ID> <IDskin>'");
-		SendClientMessage(playerid, COLOUR_WHITE, "R: '/carrep', '/carinfo', '/int', '/boom <IDboom>'");
-		SendClientMessage(playerid, COLOUR_YELLOW, "S: '/sys cmdlist', '/sys about', '/sys info'");
+		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[13][1]);
+		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][2]);
+		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][3]);
+		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][4]);
+		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][5]);
+		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][6]);
 		return 1;
 	}
 	if (!strcmp(cmd, "/about", true))
@@ -93,10 +93,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		GetVehicleZAngle(veh_id, zangle3);
 		GetVehicleHealth(veh_id, health3);
 		new string[MAX_STRING];
-		format(string, sizeof(string),
-			"*** Car %s(ID %d, HL %d): %f, %f, %f, %f ***",
-			GetVehicleName( GetVehicleModel(veh_id) ), veh_id, health3, x3, y3, z3, zangle3
-		);
+		format(string, sizeof(string), lang_texts[12][9], GetVehicleName( GetVehicleModel(veh_id) ), veh_id, health3, x3, y3, z3, zangle3);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		return 1;
 	}
@@ -109,7 +106,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		}
 		RepairVehicle(veh_id);
 		new string[MAX_STRING];
-		format(string, sizeof(string), "*** Траспорт (ИД %d) полностью починен", veh_id);
+		format(string, sizeof(string), lang_texts[12][10], veh_id);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		return 1;
 	}
@@ -128,7 +125,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		}
 		
 		new string[MAX_STRING];
-		format(string, sizeof(string), "*** Вы были перемещены в точку с ИД %d", pointt);
+		format(string, sizeof(string), lang_texts[12][16], pointt);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		return 1;
 	}
@@ -224,7 +221,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		new receiverid = strval(strcharsplit(text, idx, ' '));
 		if (!IsPlayerConnected(receiverid) && !IsPlayerInAnyDM(receiverid))
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][10]);
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 
 		oResetPlayerWeapons(receiverid);
@@ -293,7 +290,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		new receiverid = strval(strcharsplit(text, idx, ' '));
 		if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid)))
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][9]);
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 
 		ResetPlayerMoney(receiverid);
@@ -406,7 +403,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		}
 		AllowPlayerTeleport(receiverid, setport);
 		new string[MAX_STRING];
-		format(string, sizeof(string), "*** Вы разрешили %s(%d) телепорт по карте", oGetPlayerName(receiverid), receiverid );
+		format(string, sizeof(string), lang_texts[12][17], oGetPlayerName(receiverid), receiverid );
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		return 1;
 	}
@@ -415,7 +412,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		new giveid = strval(strcharsplit(text, idx, ' '));
 		if (!IsPlayerConnected(giveid))
 		{
-			return SendClientMessage(playerid, COLOUR_WHITE, "Некорректный ввод, '/setvip id dd.mm.yyyy'");
+			return SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][19]);
 		}
 		
 		new string[MAX_STRING];
@@ -423,7 +420,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		
 		if (strlen(string) < 10)
 		{
-			return SendClientMessage(playerid, COLOUR_WHITE, "Некорректный ввод, '/setvip id dd.mm.yyyy'");
+			return SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][19]);
 		}
 		
 		SetPlayerVIPDate(giveid, string);
@@ -436,9 +433,9 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 			SetPlayerVIP(giveid, 0);
 		}
 		
-		format(string, sizeof(string), "Вы установили VIP статус %s(%d), до %s", oGetPlayerName(giveid), giveid, GetPlayerVIPDate(giveid));
+		format(string, sizeof(string), lang_texts[12][20], oGetPlayerName(giveid), giveid, GetPlayerVIPDate(giveid));
 		SendClientMessage(playerid, COLOUR_WHITE, string);
-		format(string, sizeof(string), "Вам установили VIP статус до %s", GetPlayerVIPDate(giveid));
+		format(string, sizeof(string), lang_texts[12][22], GetPlayerVIPDate(giveid));
 		SendClientMessage(giveid, COLOUR_WHITE, string);
 		return 1;	
 	}
@@ -457,21 +454,21 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 			SetPlayerFacingAngle(playerid, 244.428359);
 		}
 		SetPlayerInterior(playerid, 0); 
-		SendClientMessage(playerid, 0x0000FFAA, "Вы под водой."); 
+		SendClientMessage(playerid, 0x0000FFAA, lang_texts[12][23]); 
 		return 1;
 	}
 	if (!strcmp(cmd, "/ahideme", true))
 	{
 		SetPVarInt(playerid, "Hide", 1);
 		PushHide(playerid);
-		SendClientMessage(playerid, COLOUR_WHITE, "*** Вы скрыты на радаре");
+		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][25]);
 		return 1;
 	}
 	if (!strcmp(cmd, "/ashowme", true))
 	{
 		SetPVarInt(playerid, "Hide", 0);
 		PushHide(playerid);
-		SendClientMessage(playerid, COLOUR_WHITE, "*** Вы видны на радаре");
+		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][26]);
 		return 1;	
 	}
 	return 0;

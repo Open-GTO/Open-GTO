@@ -30,10 +30,11 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 	
 	if (!strcmp(cmd, "/cmdlist", true))
 	{
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, "A: '/say <text>', '/pinfo <ID>', '/showpm <ID>'");
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, "A: '/akill <ID>', '/paralyze <ID>', '/deparalyze <ID>'");
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, "A: '/tele-set', '/tele-loc', '/tele-to <ID>', '/tele-here <ID>', '/tele-hereall', '/tele-xyzi <X> <Y> <Z> <Int>'");
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, "A: '/sethealth <ID>', '/setarm <ID>', '/givexp <ID> <xp>', '/agivecash <ID> <cash>', '/givegun <ID> <IDgun>'");
+		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[13][23]);
+		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[13][24]);
+		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[13][25]);
+		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[13][26]);
+		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[13][27]);
 		return 1;
 	}
 	if (!strcmp(cmd, "/about", true))
@@ -348,7 +349,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		new receiverid = strval(strcharsplit(text, idx, ' '));
 		if (!IsPlayerConnected(receiverid))
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][10]);
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 		
 		new cashamount = strval(strcharsplit(text, idx, ' '));
@@ -382,7 +383,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		new receiverid = strval(strcharsplit(text, idx, ' '));
 		if (!IsPlayerConnected(receiverid))
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][10]);
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 		
 		new ammamount = strval(strcharsplit(text, idx, ' '));
@@ -405,12 +406,12 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		new receiverid = strval(strcharsplit(text, idx, ' '));
 		if (IsPlayerRconAdmin(receiverid) && receiverid != playerid)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][9]);
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 
 		if (!IsPlayerConnected(receiverid))
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][10]);
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 		
 		TogglePlayerControllable(receiverid, 0);
@@ -428,12 +429,12 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		new receiverid = strval(strcharsplit(text, idx, ' '));
 		if (IsPlayerRconAdmin(receiverid) && receiverid != playerid)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][9]);
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 		
 		if (!IsPlayerConnected(receiverid))
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][10]);
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 		
 		TogglePlayerControllable(receiverid, 1);
@@ -450,12 +451,12 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		if (GetPVarInt(playerid, "Admin_PMshowing") != 1)
 		{
 			SetPVarInt(playerid, "Admin_PMshowing", 1);
-			SendClientMessage(playerid, COLOUR_RED, "Показ личных сообщений включен");
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[13][28]);
 		}
 		else
 		{
 			SetPVarInt(playerid, "Admin_PMshowing", 0);
-			SendClientMessage(playerid, COLOUR_RED, "Показ личных сообщений выключен");
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[13][29]);
 		}
 		return 1;
 	}
@@ -466,20 +467,20 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		
 		if (strlen(string) <= 0)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, "Неправильный ник");
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][30]);
 		}
 		
 		format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, string);
 		if (!ini_Exist(filename_account))
 		{
-			return SendClientMessage(playerid, COLOUR_RED, "Такого аккаунта не существует");
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][31]);
 		}
 		
 		new file_account_db_ad = ini_Open(filename_account);
 		ini_Get(file_account_db_ad, "LastIP", LastIP);
 		ini_Close(file_account_db_ad);
 		
-		format(string, sizeof(string), "Ник: %s, IP: %s", string, LastIP);
+		format(string, sizeof(string), lang_texts[13][32], string, LastIP);
 		SendClientMessage(playerid, COLOUR_RED, string);
 		return 1;
 	}
@@ -496,12 +497,12 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		
 		if (strlen(user) < MIN_PLAYER_NAME || strlen(user) > MAX_PLAYER_NAME)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, "Применение: /ban <ник/id/ip> <время(в секундах, если 0, то навсегда)> <причина>");
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][33]);
 		}
 		if (strlen(reason) > MAX_SEND_SYMBOLS)
 		{
 			new string[MAX_STRING];
-			format(string, sizeof(string), "Причина должна быть меньше %d символов!", MAX_SEND_SYMBOLS);
+			format(string, sizeof(string), lang_texts[13][34], MAX_SEND_SYMBOLS);
 			return SendClientMessage(playerid, COLOUR_RED, string);
 		}
 		oBan(user, reason, playerid, time);

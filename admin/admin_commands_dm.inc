@@ -32,18 +32,18 @@ stock AdminDM_OnPlayerCommandText(playerid, text[]) // process player commands
 			
 			if (dmid == 0 || dmid >= MAX_DM)
 			{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][1]);
+				return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][22]);
 			}
 			
 			switch (DeathmatchStats[dmid][dm_state])
 			{
 				case DM_STATE_DISABLED:
 				{
-					return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][2]);
+					return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][23]);
 				}
 				case DM_STATE_ACTIVE:
 				{
-					return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][3]);
+					return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][24]);
 				}
 				case DM_STATE_LINEUP:
 				{

@@ -23,8 +23,8 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 	if (!strcmp(cmd, "/cmdlist", true))
 	{
 		SendMessageToAdmins(playerid, COLOUR_LIGHTGREEN, text);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, "M: '/carresp', '/remcar <ID>', '/kick <ID>', /clearchat, /weather <ID>");
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, "M: '/cmdlist', '/about', '/mute <ID> <Time>', '/unmute <ID>', '/jail <ID>', '/unjail <ID>', '/plist', '/spec <ID>'");
+		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[13][8]);
+		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[13][9]);
 		return 1;
 	}
 	if (!strcmp(cmd, "/about", true))
@@ -129,7 +129,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendMessageToAdmins(playerid, COLOUR_LIGHTGREEN, text);
 		SetVehicleToRespawn(GetPlayerVehicleID(playerid));
 		new string[MAX_STRING];
-		format(string, sizeof(string), "*** Траспорт (ИД %d) возвращен на свой респавн.", GetPlayerVehicleID(playerid) );
+		format(string, sizeof(string), lang_texts[13][10], GetPlayerVehicleID(playerid) );
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		return 1;
 	}
@@ -140,7 +140,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		{
 			SetVehicleToRespawn(vehid);
 		}
-		SendClientMessage(playerid, COLOUR_WHITE, "*** Весь транспорт возвращен на свой респавн.");
+		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][11]);
 		return 1;
 	}
 	if (!strcmp(cmd, "/mute", true))
@@ -151,12 +151,12 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		if (IsPlayerConnected(muteid) == 1)
 		{
 			new string[MAX_STRING];
-			format(string, sizeof(string), " %s заткнул %s на %d минут", oGetPlayerName(playerid), oGetPlayerName(muteid), mutetime);
+			format(string, sizeof(string), lang_texts[13][12], oGetPlayerName(playerid), oGetPlayerName(muteid), mutetime);
 			SendClientMessageToAll(COLOUR_YELLOW, string);
 		}
 		if (mutetime < 1)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, " Не правильное время затычки!введите '/mute <id> <minutes>'");
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][13]);
 		}
 		SetPlayerMuteTime(muteid, mutetime);
 		SetPlayerMuted(muteid, GetPlayerMuted(muteid) + 1); // сколько раз всего затыкали игрока
@@ -173,7 +173,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		new unmuteid = strval(strcharsplit(text, idx, ' '));
 		if (IsPlayerConnected(unmuteid) == 0)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][26]);
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 		SetPlayerMuteTime(unmuteid, 0);
 		new string[MAX_STRING];
@@ -183,7 +183,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		SetPlayerWantedLevel(unmuteid, 0);
 		format(string, sizeof(string), lang_texts[12][51], oGetPlayerName(unmuteid));
 		SendClientMessageToAll(COLOUR_WHITE, string);
-		printf("SERVER : %s Has Been UNMuted by %s", oGetPlayerName(unmuteid), oGetPlayerName(playerid));
+		GameMSG(lang_texts[13][14], oGetPlayerName(unmuteid), oGetPlayerName(playerid));
 		return 1;
 	}
 	if (!strcmp(cmd, "/jail", true))
@@ -205,15 +205,15 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		new string2[40];
 		if (jailt >= 1 && jailt <= 4320)
 		{
-			format(string2, sizeof(string2), "на %d минут", jailt);
+			format(string2, sizeof(string2), lang_texts[13][15], jailt);
 		}
 		else
 		{
-			set(string2, "навсегда");
+			set(string2, lang_texts[13][16]);
 		}
-		format(string, sizeof(string), "SERVER: %s был арестован %s", oGetPlayerName(jailid), string2);
+		format(string, sizeof(string), lang_texts[13][17], oGetPlayerName(jailid), string2);
 		SendClientMessageToAll(COLOUR_WHITE, string);
-		GameTextForPlayer(playerid, "~w~ You has been ~r~Jailed~w~!", 5000, 4);
+		GameTextForPlayer(playerid, lang_texts[13][18], 5000, 4);
 		JailPlayer(jailid, jailt);
 		return 1;
 	}
@@ -223,7 +223,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		new unjailid = strval(strcharsplit(text, idx, ' '));
 		if (!IsPlayerConnected(unjailid))
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][19]);
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 		
 		new string[MAX_STRING];
@@ -254,14 +254,14 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 			}
 			else
 			{
-				SendClientMessage(playerid, COLOUR_RED, "Для наблюдения за игроком используйте команду /spec <ID>. Для выхода - /spec");
+				SendClientMessage(playerid, COLOUR_RED, lang_texts[13][19]);
 			}
 			return 1;
 		}
 		new specid = strval(tmp);
 		if (!IsPlayerConnected(specid) || specid == playerid)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, "Вы не можете следить за несуществующими игроками или за собой.");
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][20]);
 		}
 		
 		SetPlayerSpecID(playerid, specid);
@@ -269,7 +269,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		TogglePlayerSpectating(playerid, 1);
 		SetPlayerInterior(playerid, GetPlayerInterior(specid));
 		
-		SendClientMessage(playerid, COLOUR_BLUE, "Чтобы выключить слежку, введите /spec");
+		SendClientMessage(playerid, COLOUR_BLUE, lang_texts[13][21]);
 		
 		new vehid = GetPlayerVehicleID(specid);
 		if (vehid != 0)
