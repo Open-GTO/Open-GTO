@@ -1168,6 +1168,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			SetPVarInt(playerid, "teleports_Pause", 1);
 			SetTimerEx("teleports_Pause_Time", TELEPORTS_PAUSE_TIME * 1000, 0, "d", playerid);
 			oGivePlayerMoney(playerid, -Teleports[listitem][Teleports_Cost], 1);
+			SetPlayerInterior(playerid, Teleports[listitem][Teleports_Interior]);
 			oSetPlayerPos(playerid, Teleports[listitem][Teleports_Pos_X], Teleports[listitem][Teleports_Pos_Y], Teleports[listitem][Teleports_Pos_Z]);
 			if (Teleports[listitem][Teleports_Pos_A] != 0.0)
 			{

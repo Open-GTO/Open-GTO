@@ -16,6 +16,7 @@ enum TeleportsInfo {
 	Teleports_Name[MAX_STRING],
 	Teleports_Level,
 	Teleports_Cost,
+	Teleports_Interior,
 	Float:Teleports_Pos_X,
 	Float:Teleports_Pos_Y,
 	Float:Teleports_Pos_Z,
@@ -23,9 +24,9 @@ enum TeleportsInfo {
 }
 
 new Teleports[][TeleportsInfo] = {
-	{"Los Santos: Аэропорт", 10, 3000, 1642.8868, -2332.6350, 13.5469, 349.9264},
-	{"San Fierro: Вокзал", 20, 6000, -1964.6056, 137.9866, 27.6875, 87.3507},
-	{"Las Venturas: Аэропорт", 30, 9000, 1688.4536, 1446.4291, 10.7677, 270.3391}
+	{"Los Santos: Аэропорт", 10, 3000, 0, 1642.8868, -2332.6350, 13.5469, 349.9264},
+	{"San Fierro: Вокзал", 20, 6000, 0, -1964.6056, 137.9866, 27.6875, 87.3507},
+	{"Las Venturas: Аэропорт", 30, 9000, 0, 1688.4536, 1446.4291, 10.7677, 270.3391}
 };
 
 // ************************* ДОМА *********************************
