@@ -203,8 +203,8 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		else 
 		{
 			GetPlayerPos(playerid, X, Y, Z);
-			X += random(2)-random(4);
-			Y += random(2)-random(4);	
+			X = X + random(2)-random(4);
+			Y = Y + random(2)-random(4);	
 			oSetPlayerPos(receiverid, X, Y, Z+1);
 			new Float:Angle;
 			GetPlayerFacingAngle(playerid, Angle);
@@ -230,8 +230,8 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 			if (id == playerid) continue;
 			if (GetPlayerJailed(id) == 0 && !IsPlayerRconAdmin(id)  && !IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id))
 			{
-				X += random(2) - random(4);
-				Y += random(2) - random(4);	
+				X = X + random(2) - random(4);
+				Y = Y + random(2) - random(4);	
 				oSetPlayerPos(id, X, Y, Z);
 				SetPlayerFacingAngle(id, Angle);
 				format(string, sizeof(string), lang_texts[12][66], playername, playerid);
