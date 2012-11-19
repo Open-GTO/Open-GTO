@@ -338,6 +338,26 @@ stock show_MOTD_Menu(playerid)
 	);
 }
 
+stock show_Teleport_Menu(playerid)
+{
+	new string[MAX_NAME * sizeof(Teleports)];
+	
+	for (new i = 0; i < sizeof(Teleports); i++)
+	{
+		strcat(string, Teleports[i][Teleports_Name], sizeof(string));
+		if (i != sizeof(Teleports) - 1)
+		{
+			strcat(string, "\n", sizeof(string));
+		}
+	}
+	
+	return ShowPlayerDialog(playerid, teleport_menu_DialogID, DIALOG_STYLE_LIST,
+		"Меню телепортов",
+		string,
+		"ОК", "Назад"
+	);
+}
+
 stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	#pragma unused inputtext
@@ -411,7 +431,12 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 				}
 				case 4: // Телепорты
 				{
-					show_User_Menu(playerid);
+					if (GetPVarInt(playerid, "teleports_Pause") == 1)
+					{
+						show_User_Menu_Dialog(playerid, "Меню телепортов", "Вы недавно телепортировались, ждите...");
+						return 0;
+					}
+					show_Teleport_Menu(playerid);
 					return 1;
 				}
 				case 5: // Выбросить оружие
@@ -1117,6 +1142,46 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			SendGangMessage(gangid, string, COLOUR_GANG);
 			return 1;
 		}
+		case teleport_menu_DialogID:
+		{
+			if (!response)
+			{
+				return show_User_Menu(playerid);
+			}
+			
+			if (GetPlayerLevel(playerid) < Teleports[listitem][Teleports_Level])
+			{
+				new string[MAX_STRING];
+				format(string, sizeof(string), "Ваш уровень слишком мал, нужен %d.", Teleports[listitem][Teleports_Level]);
+				show_User_Menu_Dialog(playerid, "Меню телепортов", string);
+				return 0;
+			}
+			
+			if (oGetPlayerMoney(playerid) < Teleports[listitem][Teleports_Cost])
+			{
+				new string[MAX_STRING];
+				format(string, sizeof(string), "Недостаточно денег, нужно $%d.", Teleports[listitem][Teleports_Cost]);
+				show_User_Menu_Dialog(playerid, "Меню телепортов", string);
+				return 0;
+			}
+			
+			SetPVarInt(playerid, "teleports_Pause", 1);
+			SetTimerEx("teleports_Pause_Time", TELEPORTS_PAUSE_TIME * 1000, 0, "d", playerid);
+			oGivePlayerMoney(playerid, -Teleports[listitem][Teleports_Cost], 1);
+			oSetPlayerPos(playerid, Teleports[listitem][Teleports_Pos_X], Teleports[listitem][Teleports_Pos_Y], Teleports[listitem][Teleports_Pos_Z]);
+			if (Teleports[listitem][Teleports_Pos_A] != 0.0)
+			{
+				SetPlayerFacingAngle(playerid, Teleports[listitem][Teleports_Pos_A]);
+			}
+			return 1;
+		}
 	}
+	return 1;
+}
+
+forward teleports_Pause_Time(playerid);
+public teleports_Pause_Time(playerid)
+{
+	DeletePVar(playerid, "teleports_Pause");
 	return 1;
 }

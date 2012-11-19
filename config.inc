@@ -30,7 +30,6 @@
 new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]$4%5a`Jdny¦IUW@G7s6&l:k;i~ YsoMЈ.cBq#|}NrTtA, ";
 #endif
 
-#define FIRST_LEVEL				1 // уровень, который даётся игроку после регистрации
 #define MAX_MONEY				50000000 // максимальное кол-во денег, которое может иметь игрок
 #define UpdatePlayerScore(%1)	SetPlayerScore(%1, GetPVarInt(%1, "Level"))
 #define MIN_SEND_SYMBOLS		3 // минимальное кол-во отправляемых символов в ПМ
@@ -48,7 +47,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define LOGGING_DEBUG_LOG_ENABLED	1 // логирование отладочных сообщений
 #define LOGGING_CHAT_LOG_ENABLED	1 // логирование сообщений в чат
 #define LOGGING_CMD_LOG_ENABLED		1 // логирование введённых команд
-// античит(параметры по умолчанию)
+// античит(параметры по умолчанию), в режиме тестирования...
 #define ANTI_HEALTH_HACK_ENABLED	1 // защита от чита на здоровье
 #define ANTI_MONEY_HACK_ENABLED		1 // защита от чита на деньги
 
@@ -115,6 +114,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define SKYDIVE_TIME		5 // время, через которое игром может вновь использовать /skydive, в минутах
 
 #define SYS_WEATHER_UPDATE	20 // время, через которое обновится состояние погоды, в минутах, если 0, то выключено
+
+#define TELEPORTS_PAUSE_TIME	300 // время после телепортирования, через которое будет разрешено телепортироваться, в секундах
 
 // разрешённые символы в названиях
 #define ALLOWED_STRING_SYMBOLS		'a'..'z','A'..'Z','0'..'9','_','[',']','=','(',')',' '
@@ -195,6 +196,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define PLAYER_XP_KILL_TARIF			5 // отвечает за количество получаемого опыта при убийстве, подробнее в функции player_OnPlayerKill
 
 // стартовые параметры игрока
+#define FIRST_LEVEL				1 // уровень, который даётся игроку после регистрации
 #define PLAYER_START_MONEY		1500 // кол-во стартовых денег
 
 #define MAX_COUNTDOWN		5 // кол-во секунд для отсчёта гонок и дм
@@ -221,6 +223,7 @@ enum {
 	fastfood_DialogID,
 	SkinShop_Buy_DialogID,
 	trucker_DialogID, trucker_cancel_DialogID,
+	teleport_menu_DialogID,
 }
 
 // прочее

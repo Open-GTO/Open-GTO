@@ -10,6 +10,24 @@
 #define _arrays_included
 #pragma library arrays
 
+
+// ********************** ТЕЛЕПОРТЫ *******************************
+enum TeleportsInfo {
+	Teleports_Name[MAX_STRING],
+	Teleports_Level,
+	Teleports_Cost,
+	Float:Teleports_Pos_X,
+	Float:Teleports_Pos_Y,
+	Float:Teleports_Pos_Z,
+	Float:Teleports_Pos_A,
+}
+
+new Teleports[][TeleportsInfo] = {
+	{"Los Santos: Аэропорт", 10, 3000, 1642.8868, -2332.6350, 13.5469, 349.9264},
+	{"San Fierro: Вокзал", 20, 6000, -1964.6056, 137.9866, 27.6875, 87.3507},
+	{"Las Venturas: Аэропорт", 30, 9000, 1688.4536, 1446.4291, 10.7677, 270.3391}
+};
+
 // ************************* ДОМА *********************************
 enum HouseInfo {
 	Houses_Name[MAX_NAME],// house name
