@@ -177,7 +177,7 @@ stock trucker_Start(playerid)
 			format(string,sizeof(string), lang_texts[19][37], TRUCKER_TIME_GET_TRAILER);
 			SendClientMessage(playerid, COLOUR_YELLOW, string);
 			SetPVarInt(playerid, "trucker_Timer_Check_Trailer",
-				SetTimerEx("trucker_Trailer_Check", 500, 1, "d", playerid)
+				SetTimerEx("trucker_Trailer_Check", 500, 1, "dd", playerid, GetPlayerVehicleID(playerid))
 			);
 			return 0;
 		}
@@ -266,6 +266,10 @@ stock trucker_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 stock trucker_OnPlayerDisconnect(playerid,reason)
 {
 	#pragma unused reason
+	if (GetPVarInt(playerid, "trucker_Timer_Check_Trailer") != 0)
+	{
+		KillTimer( GetPVarInt(playerid, "trucker_Timer_Check_Trailer") );
+	}
 	if (!IsMissionEnabled(mission_trucker) || !IsPlayerInMission(playerid,mission_trucker)) return 1;
 	trucker_Stop(playerid);
 	return 1;
@@ -314,18 +318,19 @@ stock show_Trucker_Menu(playerid)
 	);
 }
 
-forward trucker_Trailer_Check(playerid);
-public trucker_Trailer_Check(playerid)
+forward trucker_Trailer_Check(playerid, vehicleid);
+public trucker_Trailer_Check(playerid, vehicleid)
 {
-	new vehicleid = GetPlayerVehicleID(playerid);
-	if (vehicleid == 0)
+	if (GetPlayerVehicleID(playerid) == 0)
 	{
+		SendClientMessage(playerid,COLOUR_RED, lang_texts[19][56]);
 		KillTimer( GetPVarInt(playerid, "trucker_Timer_Check_Trailer") );
+		SetVehicleToRespawn(vehicleid);
 		return 0;
 	}
 	
-	GivePVarInt(playerid, "trucker_Trailer_Check_Count", 2);
-	if (GetPVarInt(playerid, "trucker_Trailer_Check_Count") > TRUCKER_TIME_GET_TRAILER)
+	GivePVarInt(playerid, "trucker_Trailer_Check_Count", 1);
+	if (GetPVarInt(playerid, "trucker_Trailer_Check_Count") > TRUCKER_TIME_GET_TRAILER*2)
 	{
 		RemovePlayerFromVehicle(playerid);
 		SetVehicleToRespawn(vehicleid);
@@ -340,6 +345,7 @@ public trucker_Trailer_Check(playerid)
 	{
 		return 0;
 	}
+	
 	KillTimer( GetPVarInt(playerid, "trucker_Timer_Check_Trailer") );
 	trucker_Start(playerid);
 	return 1;
