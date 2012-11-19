@@ -21,9 +21,7 @@ new ProfitCount = BANK_PROFIT,
 
 new Banks[][CoordInfo] = {
 	{-22.9578, -54.8951, 1003.5469}, // LV 24/7 bank
-	{371.2316, -125.5778, 1001.4995}, // LS pizza bank
-	{368.7201, -72.7097, 1001.5078}, // LS burger bank7
-	{364.9761, -8.5396, 1001.8516} // LS chicken bank5
+	{-27.0310, -89.5228, 1003.5469} // 24/7 bank
 };
 
 stock BankLoadConfig()
