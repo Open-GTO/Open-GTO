@@ -17,7 +17,9 @@ new Bars[][CoordInfo] = {
 	{-2654.0112, 1413.2083, 906.2771}, // Jizzy's
 	{1955.3743, 1017.9493, 992.4688}, // 4 Dragons Casino
 	{1139.7212, -4.2430, 1000.6719}, // Redsands Casino
-	{-224.7835, 1407.4834, 27.7734} // Lil' Probe Inn
+	{-224.7835, 1407.4834, 27.7734}, // Lil' Probe Inn
+	{499.4490, -16.8206, 1000.6719}, // Alhambra Club
+	{-785.9133, 500.1498, 1371.7422} // Liberty City Restoran
 };
 
 enum DrinkInfo {
