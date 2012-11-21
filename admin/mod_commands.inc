@@ -213,7 +213,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		}
 		format(string, sizeof(string), lang_texts[13][17], oGetPlayerName(jailid), string2);
 		SendClientMessageToAll(COLOUR_WHITE, string);
-		GameTextForPlayer(playerid, lang_texts[13][18], 5000, 4);
+		GameTextForPlayer(jailt, lang_texts[13][18], 5000, 4);
 		JailPlayer(jailid, jailt);
 		return 1;
 	}
