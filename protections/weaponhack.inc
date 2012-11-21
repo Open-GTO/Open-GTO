@@ -42,11 +42,11 @@ stock awh_OnPlayerPickUpPickup(playerid,pickupid)
 	if (AntiWeaponHackEnabled != 1) return 0;
 	switch (GetPickupModel(pickupid))
 	{
-		case 371: // РїР°СЂР°С€СЋС‚
+		case 371: // парашют
 		{
 			oGivePlayerWeapon(playerid, 46, 1);
 		}
-		case 1240: // Р·РґРѕСЂРѕРІСЊРµ
+		case 1240: // здоровье
 		{
 			oSetPlayerHealth(playerid, GetMaxHealth(playerid));
 		}
@@ -62,8 +62,8 @@ stock awh_OnPlayerExitVehicle(playerid,vehicleid)
 {
 	switch ( GetVehicleModel(vehicleid) )
 	{
-		case 592,577,511,512,593,520,553,476,519,460,513,// СЃР°РјРѕР»С‘С‚С‹
-			 548,425,417,487,488,497,563,447,469: // РІРµСЂС‚РѕР»С‘С‚С‹
+		case 592,577,511,512,593,520,553,476,519,460,513,// самолёты
+			 548,425,417,487,488,497,563,447,469: // вертолёты
 		{
 			oGivePlayerWeapon(playerid, 46, 1);
 		}

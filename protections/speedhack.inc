@@ -40,7 +40,7 @@ stock ash_OnGameModeInit()
 stock ash_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	if (AntiSpeedHackEnabled != 1) return 0;
-	// РµСЃР»Рё РІС‹РїСЂС‹РіРЅСѓР» РёР· С‚СЂР°РЅСЃРїРѕСЂС‚Р°
+	// если выпрыгнул из транспорта
 	if (newstate == PLAYER_STATE_ONFOOT && oldstate == PLAYER_STATE_DRIVER)
 	{
 		ash_Disable(playerid, 3000);
@@ -153,7 +153,7 @@ stock SyncSpeed(playerid)
 			{
 				switch (floatround(player_speed,floatround_round))
 				{
-					// 26 - РјР°РєСЃРёРјСѓРј РЅР° Р·РµРјР»Рµ, 50 РїСЂРё РїРѕР»С‘С‚Рµ СЃ РїР°СЂР°С€СЋС‚РѕРј
+					// 26 - максимум на земле, 50 при полёте с парашютом
 					case 50..349: KickPlayer(playerid, lang_texts[11][17]);
 					case 350..499: KickPlayer(playerid, lang_texts[11][18]);
 					default: KickPlayer(playerid, lang_texts[11][19]);
