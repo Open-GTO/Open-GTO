@@ -314,7 +314,13 @@ stock weapons_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 			{
 				return weapons_ShowDialog_Select(playerid);
 			}
-			BuyWeapon(playerid, GetPVarInt(playerid, "Buy_Weapon_ID"), strval(inputtext));
+			new bullets = strval(inputtext);
+			if (GetPVarInt(playerid, "weapons_Buy_One_Bullet") == 1)
+			{
+				bullets = 1;
+				DeletePVar(playerid, "weapons_Buy_One_Bullet");
+			}
+			BuyWeapon(playerid, GetPVarInt(playerid, "Buy_Weapon_ID"), bullets);
 			weapons_ShowDialog_Select(playerid);
 			return 1;
 		}
@@ -342,12 +348,21 @@ stock weapons_ShowDialog_Select(playerid)
 
 stock weapons_ShowDialog_Buy(playerid, weaponid)
 {
-	new string[MAX_STRING];
-	format(string, sizeof(string),
-		"Оружие: %s\nЦена за 1 патрон: $%d\nВаших денег хватит на %d патрон\n\nВведите количество патрон:",
-		oGetWeaponName(weaponid), GetWeaponCost(weaponid), oGetPlayerMoney(playerid) / GetWeaponCost(weaponid)
-	);
-	return ShowPlayerDialog(playerid, weapons_Buy_DialogID, DIALOG_STYLE_INPUT,
+	new string[MAX_STRING], dialog_style = DIALOG_STYLE_INPUT;
+	if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_MaxBullets] == 1)
+	{
+		format(string, sizeof(string), "Оружие: %s\nЦена: $%d", oGetWeaponName(weaponid), GetWeaponCost(weaponid));
+		dialog_style = DIALOG_STYLE_MSGBOX;
+		SetPVarInt(playerid, "weapons_Buy_One_Bullet", 1);
+	}
+	else if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_MaxBullets] > 1)
+	{
+		format(string, sizeof(string),
+			"Оружие: %s\nЦена за 1 патрон: $%d\nВаших денег хватит на %d патрон\n\nВведите количество патрон:",
+			oGetWeaponName(weaponid), GetWeaponCost(weaponid), oGetPlayerMoney(playerid) / GetWeaponCost(weaponid)
+		);
+	}
+	return ShowPlayerDialog(playerid, weapons_Buy_DialogID, dialog_style,
 		"Покупка оружия",
 		string,
 		"Купить", "Назад"
