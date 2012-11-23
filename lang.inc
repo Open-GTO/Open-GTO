@@ -62,7 +62,7 @@ stock lang_read(filename[])
 		{
 			check_bb(tmpres);
 			strmid(tmp1, tmpres, 0, pos_s);
-			strmid(lang_texts[i][strval(tmp1)], tmpres, pos_s+2, strlen(tmpres) - pos_s - 1);
+			strmid(lang_texts[i][strval(tmp1)], tmpres, pos_s+2, strlen(tmpres) - pos_s);
 		}
 		else
 		{
