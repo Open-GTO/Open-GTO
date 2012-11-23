@@ -655,24 +655,23 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			
 			new playername[MAX_PLAYER_NAME+1];
 			GetPlayerName(playerid, playername, sizeof(playername));
-
-			if (listitem == 0)
+			
+			new gangid = GetPlayerGangID(playerid);
+			if (listitem == 0 && gangid != 0 && gang_GetHouse(gangid) != -1)
 			{
-				new gangid = GetPlayerGangID(playerid);
-				if (gangid != 0)
-				{
-					if (gang_GetHouse(gangid) != -1)
-					{
-						SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_GANG);
-						SendClientMessage(playerid, COLOUR_WHITE, "Место спавна изменено.");
-						return 1;
-					}
-				}
+				SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_GANG);
+				SendClientMessage(playerid, COLOUR_WHITE, "Место спавна изменено.");
+				return 1;
 			}
-
-			for (new i = 0, count; i < sizeof(Houses); i++)
+			
+			new count = 0;
+			if (gang_GetHouse(gangid) != -1)
 			{
-				if (strcmp(Houses[i][Houses_Owner], playername, true))
+				count++;
+			}
+			for (new i = 0; i < sizeof(Houses); i++)
+			{
+				if (gang_GetHouse(gangid) == i || strcmp(Houses[i][Houses_Owner], playername, true))
 				{
 					continue;
 				}
