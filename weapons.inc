@@ -139,6 +139,7 @@ stock weapons_OnGameModeInit()
 	for (new id = 0; id < sizeof(Ammunations); id++)
 	{
 		CreatePickup(1247, 1, Ammunations[id][Coord_X], Ammunations[id][Coord_Y], Ammunations[id][Coord_Z]);
+		CreatePickupText("Вечное оружие", Ammunations[id][Coord_X], Ammunations[id][Coord_Y], Ammunations[id][Coord_Z]);
 	}
 	GameMSG("SERVER: Weapons module init");
 }
@@ -343,8 +344,8 @@ stock weapons_ShowDialog_Buy(playerid, weaponid)
 {
 	new string[MAX_STRING];
 	format(string, sizeof(string),
-		"Оружие: %s\nЦена за 1 патрон: $%d\n\nВведите количество патрон:",
-		oGetWeaponName(weaponid), GetWeaponCost(weaponid)
+		"Оружие: %s\nЦена за 1 патрон: $%d\nВаших денег хватит на %d патрон\n\nВведите количество патрон:",
+		oGetWeaponName(weaponid), GetWeaponCost(weaponid), oGetPlayerMoney(playerid) / GetWeaponCost(weaponid)
 	);
 	return ShowPlayerDialog(playerid, weapons_Buy_DialogID, DIALOG_STYLE_INPUT,
 		"Покупка оружия",
