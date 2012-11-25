@@ -225,7 +225,10 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
-		
+		if (GetPlayerJailed(playerid))
+		{
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][22]);
+		}
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[12][21], oGetPlayerName(playerid));
 		SendClientMessage(playerid, COLOUR_GREEN, string);
