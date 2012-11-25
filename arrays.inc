@@ -11,6 +11,24 @@
 #pragma library arrays
 
 
+// ************************** РАДИО *******************************
+enum VehicleRadioInfo {
+	vehradio_Name[MAX_NAME],
+	vehradio_URL[MAX_STRING],
+}
+
+new vehicle_radio[][VehicleRadioInfo] = {
+	{"Зайцев FM", "http://www.zaycev.fm:9001/rnb/ZaycevFM(128)"},
+	{"Европа плюс", "http://webcast.emg.fm:55655/europaplus128.mp3"},
+	{"Макс FM", "http://radio.maks-fm.ru:8000/maksfm128.m3u"},
+	{"Всякое", "http://vsyaka-vsyachina.ru/m3u/rr192-28kbps.m3u"},
+	{"Кисс FM", "http://kissfm.ua/v3/kiss_128.m3u"},
+	{"Акадо", "http://radiostream.akado.ru/playlist/radio.m3u?station=dinamitfm&stream=128"},
+	{"Retro-FM", "http://radiostream.akado.ru/playlist/radio.m3u?station=radioretro&stream=128"},
+	{"Rock 2", "http://skycast.su:2007/2420"},
+	{"Бинарное Радио", "http://binradio.ru:24000/bin.m3u"}
+};
+
 // ********************** ТЕЛЕПОРТЫ *******************************
 enum TeleportsInfo {
 	Teleports_Name[MAX_STRING],

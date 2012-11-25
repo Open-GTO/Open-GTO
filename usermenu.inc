@@ -64,6 +64,7 @@ stock show_Vehicle_Menu(playerid)
 	
 	strcat(string, "Перевернуть\n", sizeof(string));
 	strcat(string, "Заправить\n", sizeof(string));
+	strcat(string, "Радио\n", sizeof(string));
 	strcat(string, "Изменить цвет\n", sizeof(string));
 	
 	if (lights == VEHICLE_PARAMS_ON) // фары
@@ -120,6 +121,23 @@ stock show_ChangeColor_Menu(playerid)
 		"Изменить цвет",
 		string,
 		"ОК", "Назад"
+	);
+}
+
+stock show_Radio_Menu(playerid)
+{
+	new string[MAX_NAME * (sizeof(vehicle_radio) + 1)] = "{FF0000}Выключить радио\n{FFFFFF}";
+	
+	for (new i = 0; i < sizeof(vehicle_radio); i++)
+	{
+		strcat(string, vehicle_radio[i][vehradio_Name], sizeof(string));
+		strcat(string, "\n", sizeof(string));
+	}
+	
+	return ShowPlayerDialog(playerid, vehicle_radio_menu_DialogID, DIALOG_STYLE_LIST,
+		"Радио",
+		string,
+		"Выбрать", "Назад"
 	);
 }
 
@@ -582,11 +600,15 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					SetPVarInt(playerid, "Refueling", 1);
 					return 1;
 				}
-				case 2:// цвет
+				case 2: // радио
+				{
+					return show_Radio_Menu(playerid);
+				}
+				case 3: // цвет
 				{
 					return show_ChangeColor_Menu(playerid);
 				}
-				case 3:// фары
+				case 4: // фары
 				{
 					if (lights == VEHICLE_PARAMS_ON)
 					{
@@ -598,7 +620,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					return 1;
 				}
-				case 4:// двигатель
+				case 5: // двигатель
 				{
 					if (engine == VEHICLE_PARAMS_ON)
 					{
@@ -610,7 +632,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					return 1;
 				}
-				case 5:// капот
+				case 6: // капот
 				{
 					if (bonnet == VEHICLE_PARAMS_ON)
 					{
@@ -622,7 +644,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					return 1;
 				}
-				case 6:// багажник
+				case 7: // багажник
 				{
 					if (boot == VEHICLE_PARAMS_ON)
 					{
@@ -646,6 +668,25 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			
 			new vehicleid = GetPlayerVehicleID(playerid);
 			ChangeVehicleColor(vehicleid, colors_Array[listitem][color_vehicle], colors_Array[listitem][color_vehicle]);
+			return 1;
+		}
+		case vehicle_radio_menu_DialogID:
+		{
+			if (!response)
+			{
+				return show_Vehicle_Menu(playerid);
+			}
+			if (listitem == 0)
+			{
+				return StopAudioStreamForPlayer(playerid);
+			}
+			new radioid = listitem - 1;
+			
+			PlayAudioStreamForPlayer(playerid, vehicle_radio[radioid][vehradio_URL]);
+			
+			new string[MAX_STRING];
+			format(string, sizeof(string), "Вы слушаете %s", vehicle_radio[radioid][vehradio_Name]);
+			SendClientMessage(playerid, COLOUR_WHITE, string);
 			return 1;
 		}
 		case spawnselect_menu_DialogID:
