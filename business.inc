@@ -488,32 +488,40 @@ stock CheckBusinessOwners()
 	getdate(year, month, day);
 	for (new i = 0; i < sizeof(Businesses); i++)
 	{
-		idx = 0;
 		if (!strcmp(Businesses[i][Business_Owner], "Unknown", false))
 		{
 			continue;
 		}
-		format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, Businesses[i][Business_Owner]);
-		file_account = ini_Open(filename_account);
 		
+		format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, Businesses[i][Business_Owner]);
+		if (!ini_Exist(filename_account))
+		{
+			continue;
+		}
+		
+		file_account = ini_Open(filename_account);
 		ini_Get(file_account, "Last_Login", account_lastlogin);
-		account_day = strval( strcharsplit(account_lastlogin, idx,'.') );
-		account_month = strval( strcharsplit(account_lastlogin, idx,'.') );
-		account_year = strval( strcharsplit(account_lastlogin, idx,',') );
+		ini_Close(file_account);
+		
+		idx = 0;
+		account_day = strval( strcharsplit(account_lastlogin, idx, '.') );
+		account_month = strval( strcharsplit(account_lastlogin, idx, '.') );
+		account_year = strval( strcharsplit(account_lastlogin, idx, ',') );
 		
 		if (DateToNum(year, month, day) > DateToNum(account_year, account_month, account_day) + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60)
 		{
-			GameMSG("Business has been free. Owner %s, current date[%02d.%02d.%d]: %d, last login[%02d.%02d.%d]: %d. BUSINESS_UNLOGIN_SELL_DAYS = %d",
-				Businesses[i][Business_Owner], day, month, year, DateToNum(year, month, day),
-				account_day, account_month, account_year, DateToNum(account_year, account_month, account_day),
-				BUSINESS_UNLOGIN_SELL_DAYS
+			GameMSG("Business has been free. Owner '%s'. BUSINESS_UNLOGIN_SELL_DAYS = %d",
+				Businesses[i][Business_Owner], BUSINESS_UNLOGIN_SELL_DAYS
 			);
+			GameMSG("\tcurrent date[%02d.%02d.%d]: %d, last login[%02d.%02d.%d]: %d",
+				day, month, year, DateToNum(year, month, day),
+				account_day, account_month, account_year, DateToNum(account_year, account_month, account_day)
+			);
+			
 			set(Businesses[i][Business_Owner], "Unknown");
 			Businesses[i][Business_Buyout] = 0;
 			Businesses[i][Business_Upgrade] = 1;
 			UpdateStreamMapIcon(business_icon[i]);
 		}
-		
-		ini_Close(file_account);
 	}
 }
