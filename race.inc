@@ -969,7 +969,7 @@ stock FinishRace(raceid, playerid)
 	GameTextForPlayer(playerid, string, 5000, 6);
 	PlayerPlaySound(playerid, 1057, GetRaceCPX(raceid, RacePlayerStats[playerid][race_player_cp]), GetRaceCPY(raceid, RacePlayerStats[playerid][race_player_cp]), GetRaceCPZ(raceid, RacePlayerStats[playerid][race_player_cp]));
 
-	if (RaceStats[raceid][race_timer] < BestScore[raceid][race_score_time])
+	if (RaceStats[raceid][race_timer] < BestScore[raceid][race_score_time] || BestScore[raceid][race_score_time] == 0)
 	{
 		format(string, sizeof(string), lang_texts[10][55], oGetPlayerName(playerid), Race[raceid][race_name], RacePlayerStats[playerid][race_player_time], BestScore[raceid][race_score_time]);
 		SendClientMessageToAll(COLOUR_RACE, string);
