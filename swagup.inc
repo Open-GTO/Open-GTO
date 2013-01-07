@@ -127,6 +127,9 @@ stock swagup_OnPlayerPickUpPickup(playerid, pickupid)
 		win_money = ( ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * swagup_MoneyRate ),
 		win_xp = ( ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * swagup_XpRate );
 	
+	oGivePlayerMoney(playerid, win_money);
+	GivePlayerXP(playerid, win_xp, 1);
+	
 	format(string, sizeof(string), lang_texts[19][63], oGetPlayerName(playerid), playerid, win_money, win_xp);
 	SendClientMessageToAll(COLOUR_RED, string);
 	
