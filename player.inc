@@ -25,6 +25,8 @@
 #define GetPlayerJailTime(%0) GetPVarInt(%0, "JailTime")
 #define SetPlayerJailTime(%0,%1) SetPVarInt(%0, "JailTime",%1)
 
+#define IsPlayerJailed(%0) (GetPVarInt(%0, "JailTime") == -1 ? 0 : 1)
+
 #define GetPlayerMuted(%0) GetPVarInt(%0, "Muted")
 #define SetPlayerMuted(%0,%1) SetPVarInt(%0, "Muted",%1)
 
@@ -514,6 +516,7 @@ stock CreatePlayer(playerid)
 	SetPlayerFightStyle(playerid, 4);
 	SetPlayerFightStyleUsed(playerid, 4);
 	weapon_ResetSkills(playerid);
+	SetPlayerJailTime(playerid, -1);
 	for (new i = 0; i < sizeof(PlayerStartWeapon); i++)
 	{
 		GivePlayerOwnedWeapon(playerid, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);

@@ -424,7 +424,7 @@ public OnPlayerSpawn(playerid)
 	else
 		deathmatch_OnPlayerSpawn(playerid, dmid);
 	SetPlayerColor(playerid, PlayerGangColour(playerid));
-	if (GetPlayerJailed(playerid) != 0)
+	if (IsPlayerJailed(id))
 	{
 		JailPlayer(playerid, GetPlayerJailTime(playerid));
 	}

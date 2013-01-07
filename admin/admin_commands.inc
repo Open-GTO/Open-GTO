@@ -199,14 +199,14 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		new Float:playerx, Float:playery, Float:playerz;
 		foreach (Player, id)
 		{
-			if (!GetPlayerJailed(id) && !IsPlayerInAnyDM(id))
+			if (!IsPlayerJailed(id) && !IsPlayerInAnyDM(id))
 			{
 				oGivePlayerWeapon(id, 46, 1);
 				GetPlayerPos(id, playerx, playery, playerz);
 				PlayerPlaySound(id, 1058, 0, 0, 0);
 				oSetPlayerPos(id, playerx, playery, playerz+1200);
 			}
-			if (GetPlayerJailed(id) == 1)
+			if (IsPlayerJailed(id))
 			{
 				SendClientMessage(id, COLOUR_LIGHTRED, lang_texts[1][22]);
 			}
@@ -238,7 +238,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		new string[MAX_STRING];
 		foreach (Player, id)
 		{
-			if (id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
+			if (id == playerid || IsPlayerJailed(id) || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
 			{
 				continue;
 			}
@@ -256,7 +256,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		new string[MAX_STRING];
 		foreach (Player, id)
 		{
-			if (id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
+			if (id == playerid || IsPlayerJailed(id) || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
 			{
 				continue;
 			}
@@ -273,7 +273,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		new string[MAX_STRING];
 		foreach (Player, id)
 		{
-			if (id == playerid || GetPlayerJailed(id) != 0 || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
+			if (id == playerid || IsPlayerJailed(id) || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
 			{
 				continue;
 			}
@@ -306,7 +306,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		new string[MAX_STRING];
 		foreach (Player, id)
 		{
-			if (id == playerid || GetPlayerJailed(id) != 0 || IsPlayerRconAdmin(id))
+			if (id == playerid || IsPlayerJailed(id) || IsPlayerRconAdmin(id))
 			{
 				continue;
 			}

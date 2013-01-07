@@ -172,7 +172,6 @@ stock oBan(user[], reason[], adminid, time=0)
 stock JailPlayer(playerid, jail_time)
 {
 	SetPlayerJailTime(playerid, jail_time);
-	SetPlayerJailed(playerid, 1);
 	SetPlayerWantedLevel(playerid, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
 	SetPlayerInterior(playerid, 6);
 	oSetPlayerPos(playerid, 265.1273, 77.6823, 1001.0391);
@@ -186,7 +185,7 @@ stock JailPlayer(playerid, jail_time)
 
 stock JailPlayerCheck(playerid)
 {
-	if (GetPlayerJailed(playerid) == 1 && !IsPlayerInRangeOfPoint(playerid, 5, 265.1273, 77.6823, 1001.0391))
+	if (IsPlayerJailed(playerid) && !IsPlayerInRangeOfPoint(playerid, 5, 265.1273, 77.6823, 1001.0391))
 	{
 		KickPlayer(playerid, lang_texts[11][16]);
 	}
@@ -195,9 +194,7 @@ stock JailPlayerCheck(playerid)
 
 stock UnJailPlayer(playerid)
 {
-	SetPlayerJailed(playerid, 0);
-	SetPlayerJailTime(playerid, 0);
-	SetPlayerJailTime(playerid, 0);
+	SetPlayerJailTime(playerid, -1);
 	SetPlayerWantedLevel(playerid, 0);
 	TogglePlayerControllable(playerid, 1);
 	// ставим игрока в рандомное место из всех мест освобождений
@@ -267,12 +264,13 @@ stock JailTimer()
 	new string[MAX_STRING];
 	foreach (Player, i)
 	{
-		if (GetPlayerJailed(i) != 1)
+		new jail_time = GetPlayerJailTime(i);
+		
+		if (jail_time == -1)
 		{
 			continue;
 		}
 		
-		new jail_time = GetPlayerJailTime(i);
 		SetPlayerWantedLevel(i, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
 		
 		if (jail_time >= 1 && jail_time <= 4320)
@@ -296,7 +294,7 @@ stock JailTimer()
 
 stock IsSkinValid(skinid)
 {
-	switch(skinid)
+	switch (skinid)
 	{
 		case SKINS_IGNORE: return 0;
 	}

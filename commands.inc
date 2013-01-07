@@ -146,7 +146,7 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 	}
 	if (!strcmp(cmd, "/skydive", true))
 	{
-		if (GetPlayerJailed(playerid) == 1 || GetPlayerInterior(playerid) != 0 || IsPlayerInAnyDM(playerid))
+		if (IsPlayerJailed(playerid) || GetPlayerInterior(playerid) != 0 || IsPlayerInAnyDM(playerid))
 		{
 			return 0;
 		}

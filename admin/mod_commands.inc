@@ -43,7 +43,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		new ccount;
 		foreach (Player, id)
 		{
-			if (GetPlayerJailed(id) == 1)
+			if (IsPlayerJailed(id))
 			{
 				new string[MAX_STRING];
 				if (GetPlayerJailTime(id) > 0)
@@ -225,7 +225,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
-		if (GetPlayerJailed(unjailid) != 1)
+		if (!IsPlayerJailed(unjailid))
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][22]);
 		}

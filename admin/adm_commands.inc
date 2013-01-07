@@ -228,7 +228,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		foreach (Player, id)
 		{
 			if (id == playerid) continue;
-			if (GetPlayerJailed(id) == 0 && !IsPlayerRconAdmin(id)  && !IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id))
+			if (!IsPlayerJailed(id) && !IsPlayerRconAdmin(id)  && !IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id))
 			{
 				X = X + random(2) - random(4);
 				Y = Y + random(2) - random(4);	
