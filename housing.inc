@@ -421,8 +421,28 @@ stock RentRoom(playerid)
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[8][57]);
 		}
 		set(Houses[id][Houses_RentName], oGetPlayerName(playerid));
-		oGivePlayerMoney(playerid,-Houses[id][Houses_RentCost], 0);
-		Houses[id][Houses_UpKeep] -= Houses[id][Houses_RentCost];
+		oGivePlayerMoney(playerid, -Houses[id][Houses_RentCost], 0);
+		s
+		// перечислим деньги в банк владельцу
+		new owner_id = -1;
+		foreach (Player, pid) {
+			if ( !strcmp(Houses[id][Houses_Owner], oGetPlayerName(pid)) ) {
+				owner_id = pid;
+				break;
+			}
+		}
+		if (owner_id != -1) {
+			GivePlayerBankMoney(owner_id, Houses[id][Houses_RentCost]);
+		} else {
+			new filename_player[MAX_STRING];
+			format(filename_player, sizeof(filename_player), "%s%s"GTO_FILES_FORMAT, PlayerDB, Houses[id][Houses_Owner]);
+			new file_player = ini_Open(filename_player);
+			new bank_money;
+			ini_GetInt(file_player, "BankMoney", bank_money);
+			ini_SetInt(file_player, "BankMoney", bank_money + Houses[id][Houses_RentCost]);
+			ini_Close(file_player);
+		}
+		
 		format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, HousesDB, Houses[id][Houses_Name]);
 		new file_housing = ini_Open(string);
 		ini_SetInt(file_housing, "Rentabil", 1);
@@ -589,7 +609,7 @@ stock house_Keep(playerid)
 		return SendClientMessage(playerid, COLOUR_RED, lang_texts[8][45]);
 	}
 
-	oGivePlayerMoney(playerid,-Houses[id][Houses_UpKeepLeft], 0);
+	oGivePlayerMoney(playerid, -Houses[id][Houses_UpKeepLeft], 0);
 	SendClientMessage(playerid, COLOUR_GREEN, lang_texts[8][44]);
 	Houses[id][Houses_UpKeepLeft] = 0;
 	return 1;
@@ -675,9 +695,7 @@ stock housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			}
 			else
 			{
-				format(string, sizeof(string), lang_texts[8][15],
-					Houses[id][Houses_Cost], Houses[id][Houses_UpKeep], Houses[id][Houses_UpKeepLeft], Houses[id][Houses_RentCost]
-				);
+				format(string, sizeof(string), lang_texts[8][15], Houses[id][Houses_Cost], Houses[id][Houses_UpKeep]);
 				
 				return ShowPlayerDialog(playerid, house_DialogID, DIALOG_STYLE_MSGBOX, head, string, lang_texts[8][80], lang_texts[8][82]);
 			}
