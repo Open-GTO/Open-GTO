@@ -18,14 +18,18 @@ enum VehicleRadioInfo {
 }
 
 new vehicle_radio[][VehicleRadioInfo] = {
-	{"Зайцев FM", "http://www.zaycev.fm:9001/rnb/ZaycevFM(128)"},
-	{"Европа плюс", "http://webcast.emg.fm:55655/europaplus128.mp3"},
+	{"Зайцев FM", "http://radio.zaycev.fm:9002/ZaycevFM(128).m3u"},
+	{"Европа плюс", "http://91.222.216.3:8000/r5.m3u"},
 	{"Макс FM", "http://radio.maks-fm.ru:8000/maksfm128.m3u"},
 	{"Всякое", "http://vsyaka-vsyachina.ru/m3u/rr192-28kbps.m3u"},
-	{"Кисс FM", "http://kissfm.ua/v3/kiss_128.m3u"},
-	{"Акадо", "http://radiostream.akado.ru/playlist/radio.m3u?station=dinamitfm&stream=128"},
-	{"Retro-FM", "http://radiostream.akado.ru/playlist/radio.m3u?station=radioretro&stream=128"},
+	{"Кисс FM", "http://radiogrom.com/online/ua_fm/kiss_fm_radio_online.m3u"},
+	{"Retro-FM", "http://91.222.216.3:8000/r1.m3u"},
 	{"Rock 2", "http://skycast.su:2007/2420"},
+	{"Наше Радио", "http://91.222.216.3:8000/r22.m3u"},
+	{"Динамит ФМ", "http://91.222.216.3:8000/r4.m3u"},
+	{"Трансмиссия", "http://91.222.216.3:8000/r46.m3u"},
+	{"Русское Радио", "http://91.222.216.3:8000/r3.m3u"},
+	{"Шансон", "http://91.222.216.3:8000/r9.m3u"},
 	{"Бинарное Радио", "http://binradio.ru:24000/bin.m3u"}
 };
 
