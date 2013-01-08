@@ -422,7 +422,7 @@ stock RentRoom(playerid)
 		}
 		set(Houses[id][Houses_RentName], oGetPlayerName(playerid));
 		oGivePlayerMoney(playerid, -Houses[id][Houses_RentCost], 0);
-		s
+		
 		// перечислим деньги в банк владельцу
 		new owner_id = -1;
 		foreach (Player, pid) {
