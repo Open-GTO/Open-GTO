@@ -99,26 +99,30 @@ stock RaceLoadAll()
 		ini_Get(file_race_cfg, "Race_Record_DB", RaceRecordDB);
 		ini_Close(file_race_cfg);
 	}
-	new cellname[MAX_STRING],
-		file_race = ini_Open(RaceDB);
 	
-	for (new racedbid = 0; racedbid < MAX_RACES; racedbid++)
+	if (ini_Exist(RaceDB))
 	{
-		format(cellname, sizeof(cellname), "Race%d", racedbid);
-		ini_Get(file_race, cellname, temp);
-		if (strlen(temp) == 0 || !RaceBaseDBExists(temp))
+		new cellname[MAX_STRING],
+			file_race = ini_Open(RaceDB);
+		
+		for (new racedbid = 0; racedbid < MAX_RACES; racedbid++)
 		{
-			continue;
+			format(cellname, sizeof(cellname), "Race%d", racedbid);
+			ini_Get(file_race, cellname, temp);
+			if (strlen(temp) == 0 || !RaceBaseDBExists(temp))
+			{
+				continue;
+			}
+			new raceid = RegisterRace(temp);
+			if (raceid == INVALID_RACE_ID)
+			{
+				continue;
+			}
+			RaceLoadBaseDB(raceid);
+			RaceLoadRecordDB(raceid);
 		}
-		new raceid = RegisterRace(temp);
-		if (raceid == INVALID_RACE_ID)
-		{
-			continue;
-		}
-		RaceLoadBaseDB(raceid);
-		RaceLoadRecordDB(raceid);
+		ini_Close(file_race);
 	}
-	ini_Close(file_race);
 	return 1;
 }
 
