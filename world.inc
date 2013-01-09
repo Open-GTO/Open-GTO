@@ -176,6 +176,10 @@ public TenMinuteTimer()
 forward FiveSecondTimer();
 public FiveSecondTimer()
 {
+	foreach (Player, playerid)
+	{
+		SyncPlayerWeapons(playerid);
+	}
 	CheckAllGround();
 	PlayerHealthRegen();
 	SyncActiveCP();

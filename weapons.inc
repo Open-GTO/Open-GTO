@@ -29,64 +29,63 @@ enum WeaponInfo {
 	Weapon_ID, // id number of weapon
 	Weapon_Name[MAX_NAME], // weapon name
 	Weapon_Allowed, // is weapon allowed
-	Weapon_MaxBullets, // max bullets
+	Weapon_IsFirearm, // is weapon is firearm
 	Weapon_Cost, // cost per bullet
 	Weapon_Level // player level required to buy this weapon
 }
 
 new Weapons[MAX_WEAPONS][WeaponInfo] = {
-//id,	"Name" ,			Allowed, bullets, cost, level
-{0, 	"Невооружен" 			, 0 , 1 , 0 , 0},
-{1, 	"Кастет" 				, 1 , 1 , 6000 , 3},
-{2, 	"Клюшка для гольфа" 	, 1 , 1 , 6000 , 2},
-{3, 	"Night Stick" 			, 0 , 1 , 10000 , 18},
-{4, 	"Нож" 					, 1 , 1 , 10000 , 4},
-{5, 	"Бейсбольная Бита" 		, 1 , 1 , 15000 , 7},
-{6, 	"Shovel" 				, 0 , 1 , 1000 , 0},
-{7, 	"Кий" 					, 1 , 1 , 1000 , 11},
-{8, 	"Меч Катана" 			, 1 , 1 , 20000 , 8},
-{9, 	"Бензопила" 			, 1 , 1 , 7500 , 6},
-{10, 	"Пурпурный Dildo" 		, 0 , 1 , 5000 , 9},
-{11, 	"Вибратор" 				, 1 , 1 , 5000 , 5},
-{12, 	"Длинный Белый Dildo" 	, 0 , 1 , 7000 , 15},
-{13, 	"Вибратор 2" 			, 1 , 1 , 5000 , 11},
-{14, 	"Букет Цветов" 			, 1 , 1 , 1000 , 12},
-{15, 	"Трость" 				, 1 , 1 , 1000 , 8},
-{16, 	"Граната" 				, 1 , 999 , 67500 , 43},
-{17, 	"Газовый Баллон" 		, 1 , 999 , 20000 , 5},
-{18, 	"Коктейль Молотова" 	, 1 , 999 , 30000 , 35},
-
-{19, 	"Неизвестное" 			, 0 , 1 , 1000 , 25},
-{20, 	"Неизвестное" 			, 0 , 1 , 1000 , 25},
-{21, 	"Неизвестное" 			, 0 , 1 , 1000 , 25},
-
-{22, 	"Пистолет" 				, 1 , 999 , 125 , 0},
-{23, 	"Пистолет с глушителем" , 1 , 999 , 125 , 10},
-{24, 	"Пустынный Орел" 		, 1 , 999 , 1200 , 12},
-{25, 	"Дробовик" 				, 1 , 999 , 1100 , 5},
-{26, 	"Разрывной Дробовик" 	, 1 , 999 , 2300 , 25},
-{27, 	"Боевой Дробовик" 		, 1 , 999 , 3750 , 26},
-{28, 	"Микро УЗИ" 			, 1 , 999 , 2100 , 30},
-{29, 	"МП5(НК5)" 				, 1 , 999 , 2200 , 32},
-{30, 	"АК47" 					, 1 , 999 , 1500 , 35},
-{31, 	"M4" 					, 1 , 999 , 4300 , 36},
-{32, 	"Tec9" 					, 1 , 999 , 4150 , 29},
-{33, 	"Винтовка" 				, 1 , 999 , 11500 , 20},
-{34, 	"Снайперская Винтовка" 	, 1 , 999 , 41000 , 38},
-{35, 	"Гранатомет РПГ" 		, 1 , 999 , 99000 , 60},
-{36, 	"Реактивная Пусковая установка" , 1 , 999 , 99000 , 52},
-{37, 	"Огнемет" 				, 1 , 999 , 1000 , 28},
-{38, 	"Ручной Пулемет(Миниган)" , 0 , 999 , 5000 , 60},
-
-{39, 	"Заряженный Рюкзак" 	, 0 , 999 , 50000 , 62},
-{40, 	"Детонатор к Рюкзаку" 	, 0 , 1 , 100 , 62},
-
-{41, 	"Баллончик с краской" 	, 1 , 999 , 4000 , 5},
-{42, 	"Огнетушитель" 			, 1 , 999 , 1000 , 5},
-{43, 	"Фотокамера" 			, 1 , 999 , 6000 , 24},
-{44, 	"Очки ночного видения"	, 0 , 1 , 1000 , 0},
-{45, 	"Тепловые Очки" 		, 0 , 1 , 1000 , 0},
-{46, 	"Парашют" 				, 1 , 1 , 7000 , 1}
+	{0,  "Невооружен" 			, 0, 0, 0,    0},
+	{1,  "Кастет" 				, 1, 0, 60,   3},
+	{2,  "Клюшка для гольфа" 	, 1, 0, 60,   2},
+	{3,  "Night Stick" 			, 0, 0, 100,  18},
+	{4,  "Нож" 					, 1, 0, 100,  4},
+	{5,  "Бейсбольная Бита" 	, 1, 0, 150,  7},
+	{6,  "Shovel" 				, 0, 0, 10,   0},
+	{7,  "Кий" 					, 1, 0, 10,   11},
+	{8,  "Меч Катана" 			, 1, 0, 200,  8},
+	{9,  "Бензопила" 			, 1, 0, 75,   6},
+	{10, "Пурпурный Dildo" 		, 0, 0, 50,   9},
+	{11, "Вибратор" 			, 1, 0, 50,   5},
+	{12, "Длинный Белый Dildo" 	, 0, 0, 70,   15},
+	{13, "Вибратор 2" 			, 1, 0, 50,   11},
+	{14, "Букет Цветов" 		, 1, 0, 10,   12},
+	{15, "Трость" 				, 1, 0, 10,   8},
+	{16, "Граната" 				, 1, 1, 675,  43},
+	{17, "Газовый Баллон" 		, 1, 1, 200,  5},
+	{18, "Коктейль Молотова" 	, 1, 1, 300,  35},
+		 
+	{19, "Неизвестное" 			, 0, 0, 10,   25},
+	{20, "Неизвестное" 			, 0, 0, 10,   25},
+	{21, "Неизвестное" 			, 0, 0, 10,   25},
+		 
+	{22, "Пистолет" 			, 1, 1, 2,    0},
+	{23, "Пистолет с глушителем", 1, 1, 2,    10},
+	{24, "Пустынный Орел" 		, 1, 1, 12,   12},
+	{25, "Дробовик" 			, 1, 1, 11,   5},
+	{26, "Разрывной Дробовик" 	, 1, 1, 23,   25},
+	{27, "Боевой Дробовик" 		, 1, 1, 40,   26},
+	{28, "Микро УЗИ" 			, 1, 1, 21,   30},
+	{29, "МП5(НК5)" 			, 1, 1, 22,   32},
+	{30, "АК47" 				, 1, 1, 15,   35},
+	{31, "M4" 					, 1, 1, 43,   36},
+	{32, "Tec9" 				, 1, 1, 41,   29},
+	{33, "Винтовка" 			, 1, 1, 115,  20},
+	{34, "Снайперская Винтовка" , 1, 1, 410,  38},
+	{35, "Гранатомет РПГ" 		, 1, 1, 990,  60},
+	{36, "Реактивная Пусковая установка", 0, 1, 990, 52},
+	{37, "Огнемет" 				, 1, 1, 10,   28},
+	{38, "Ручной Пулемет(Миниган)", 0, 1, 50, 60},
+		 
+	{39, "Заряженный Рюкзак" 	, 0, 1, 500,  62},
+	{40, "Детонатор к Рюкзаку" 	, 0, 0, 1,    62},
+		 
+	{41, "Баллончик с краской" 	, 1, 1, 40,   5},
+	{42, "Огнетушитель" 		, 1, 1, 10,   5},
+	{43, "Фотокамера" 			, 1, 1, 60,   24},
+	{44, "Очки ночного видения"	, 0, 0, 10,   0},
+	{45, "Тепловые Очки" 		, 0, 0, 10,   0},
+	{46, "Парашют" 				, 1, 0, 70,   1}
 };
 
 stock WeaponLoadAll()
@@ -97,6 +96,7 @@ stock WeaponLoadAll()
 		ini_Get(file_weapons_cfg, "Weapon_DB", WeaponDB);
 		ini_Close(file_weapons_cfg);
 	}
+	
 	new file_weapons, weapondbname[MAX_STRING];
 	for (new i = 0; i < MAX_WEAPONS; i++)
 	{
@@ -120,6 +120,7 @@ stock WeaponSaveAll()
 	new file_weapons_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_Set(file_weapons_cfg, "Weapon_DB", WeaponDB);
 	ini_Close(file_weapons_cfg);
+	
 	new file_weapons, weapondbname[MAX_STRING];
 	for (new i = 0; i < MAX_WEAPONS; i++)
 	{
@@ -139,7 +140,7 @@ stock weapons_OnGameModeInit()
 	for (new id = 0; id < sizeof(Ammunations); id++)
 	{
 		CreatePickup(1247, 1, Ammunations[id][Coord_X], Ammunations[id][Coord_Y], Ammunations[id][Coord_Z]);
-		CreatePickupText("Вечное оружие", Ammunations[id][Coord_X], Ammunations[id][Coord_Y], Ammunations[id][Coord_Z]);
+		CreatePickupText("Оружие", Ammunations[id][Coord_X], Ammunations[id][Coord_Y], Ammunations[id][Coord_Z]);
 	}
 	GameMSG("SERVER: Weapons module init");
 }
@@ -183,7 +184,11 @@ stock GetWeaponMaxAmmo(weaponid)
 	{
 		return 0;
 	}
-	return Weapons[lookupid][Weapon_MaxBullets];
+	if (Weapons[lookupid][Weapon_IsFirearm] == 1)
+	{
+		return MAX_BULLETS;
+	}
+	return 1;
 }
 
 stock IsPlayerAllowedWeapon(playerid, weaponid)
@@ -198,12 +203,12 @@ stock IsPlayerAllowedWeapon(playerid, weaponid)
 
 stock IsWeaponHandToHand(weaponid)
 {
-	new weaponlookupid = GetWeaponLookupID(weaponid);
-	if (weaponlookupid == -1)
+	new lookupid = GetWeaponLookupID(weaponid);
+	if (lookupid == -1)
 	{
 		return 0;
 	}
-	if (Weapons[weaponlookupid][Weapon_MaxBullets] == 1)
+	if (Weapons[lookupid][Weapon_IsFirearm] == 0)
 	{
 		return 1;
 	}
@@ -212,12 +217,12 @@ stock IsWeaponHandToHand(weaponid)
 
 stock GetWeaponCost(weaponid)
 {
-	new weaponlookupid = GetWeaponLookupID(weaponid);
-	if (weaponlookupid == -1)
+	new lookupid = GetWeaponLookupID(weaponid);
+	if (lookupid == -1)
 	{
 		return 0;
 	}
-	return Weapons[weaponlookupid][Weapon_Cost];
+	return Weapons[lookupid][Weapon_Cost];
 }
 
 stock GetWeaponLookupID(weaponid)
@@ -234,7 +239,7 @@ stock GetWeaponLookupID(weaponid)
 
 stock IsWeapon(weaponid)
 {
-	switch(weaponid)
+	switch (weaponid)
 	{
 		case 0..46: return 1;
 	}
@@ -349,13 +354,13 @@ stock weapons_ShowDialog_Select(playerid)
 stock weapons_ShowDialog_Buy(playerid, weaponid)
 {
 	new string[MAX_STRING], dialog_style = DIALOG_STYLE_INPUT;
-	if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_MaxBullets] == 1)
+	if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_IsFirearm] == 0)
 	{
 		format(string, sizeof(string), "Оружие: %s\nЦена: $%d", oGetWeaponName(weaponid), GetWeaponCost(weaponid));
 		dialog_style = DIALOG_STYLE_MSGBOX;
 		SetPVarInt(playerid, "weapons_Buy_One_Bullet", 1);
 	}
-	else if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_MaxBullets] > 1)
+	else if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_IsFirearm] == 1)
 	{
 		format(string, sizeof(string),
 			"Оружие: %s\nЦена за 1 патрон: $%d\nВаших денег хватит на %d патрон\n\nВведите количество патрон:",

@@ -20,14 +20,13 @@ enum PWeap {
 	pbullets
 }
 new PlayerWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap];
-new PlayerTempWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap];
 
 enum psw_Info {
 	psw_id,
 	psw_bull,
 }
 new PlayerStartWeapon[][psw_Info] = {
-	{WEAPON_COLT45,200}
+	{WEAPON_COLT45, 200}
 };
 
 
@@ -68,10 +67,11 @@ stock weapon_OnPlayerDeath(playerid, killerid, reason)
 	{
 		return 1;
 	}
+	
 	new slot = GetWeaponSlot(reason);
-	if (PlayerTempWeapons[playerid][slot][pwid] > 0 && PlayerWeapons[playerid][slot][pbullets] > 0)
+	if (PlayerWeapons[playerid][slot][pbullets] > 0)
 	{
-		PlayerWeapons[playerid][slot][pbullets] -= Vary(2,1);	
+		PlayerWeapons[playerid][slot][pbullets] -= Vary(20, 5);	
 		if (PlayerWeapons[playerid][slot][pbullets] < 0)
 		{
 			PlayerWeapons[playerid][slot][pbullets] = 0;
@@ -247,4 +247,23 @@ stock CreatePSWDBString()
 		wepstr[strlen(wepstr)] = '|';
 	}
 	return wepstr;
+}
+
+stock SyncPlayerWeapons(playerid)
+{
+	new weapon[2];
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
+	{
+		GetPlayerWeaponData(playerid, i, weapon[0], weapon[1]);
+		if ( weapon[0] == 0 && PlayerWeapons[playerid][i][pwid] != 0 )
+		{
+			PlayerWeapons[playerid][i][pwid] = 0;
+			PlayerWeapons[playerid][i][pbullets] = 0;
+		}
+		if ( weapon[1] < PlayerWeapons[playerid][i][pbullets] && weapon[0] == PlayerWeapons[playerid][i][pwid] )
+		{
+			PlayerWeapons[playerid][i][pbullets] = weapon[1];
+		}
+	}
+	return 1;
 }
