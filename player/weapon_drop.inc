@@ -51,11 +51,12 @@ stock wdrop_OnPlayerPickUpPickup(playerid, pickupid)
 stock wdrop_OnPlayerDeath(playerid)
 {
 	// drop pickups
-	new weapons[PLAYER_WEAPON_SLOTS][PWeap], Float:pos[3], pickupmodel, wd_slot;
+	new weapon[PWeap], Float:pos[3], pickupmodel, wd_slot;
 	for (new slot = 0; slot < PLAYER_WEAPON_SLOTS; slot++)
 	{
-		GetPlayerWeaponData(playerid, slot, weapons[slot][pwid], weapons[slot][pbullets]);
-		pickupmodel = GetWeaponPickupModel(weapons[slot][pwid]);
+		weapon[pwid] = PlayerWeapons[playerid][slot][pwid];
+		weapon[pbullets] = PlayerWeapons[playerid][slot][pbullets];
+		pickupmodel = GetWeaponPickupModel(weapon[pwid]);
 		if (pickupmodel == -1) continue;
 		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 		wd_slot = wdrop_FindFreeSlot();
@@ -70,8 +71,9 @@ stock wdrop_OnPlayerDeath(playerid)
 			GameMSG(lang_texts[19][58]);
 			return 1;
 		}
-		weapons_dropped[wd_slot][wd_weaponid] = weapons[slot][pwid];
-		weapons_dropped[wd_slot][wd_bullets] = weapons[slot][pbullets] * (WEAPON_DROP_BULL / 100);
+		weapons_dropped[wd_slot][wd_weaponid] = weapon[pwid];
+		weapons_dropped[wd_slot][wd_bullets] = weapon[pbullets] * (WEAPON_DROP_BULL / 100);
+		PlayerWeapons[playerid][slot][pbullets] -= weapons_dropped[wd_slot][wd_bullets];
 		// запустим таймер асинхронно, чтобы пикапы удалялись постепенно
 		weapons_dropped[wd_slot][wd_timer] = SetTimerEx("wdrop_DropPickup", (WEAPON_DROP_TIME * 1000) + slot*300, 0, "d", wd_slot);
 	}

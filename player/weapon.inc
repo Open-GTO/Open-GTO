@@ -51,6 +51,7 @@ stock weapon_OnPlayerConnect(playerid)
 stock weapon_OnPlayerDisconnect(playerid, reason)
 {
 	wskill_OnPlayerDisconnect(playerid, reason);
+	SyncPlayerWeapons(playerid);
 	return 1;
 }
 
@@ -62,21 +63,6 @@ stock weapon_OnPlayerDeath(playerid, killerid, reason)
 	wskill_HideTextDraw(playerid);
 	
 	wdrop_OnPlayerDeath(playerid);
-	// drop bullets
-	if (IsWeaponHandToHand(reason))
-	{
-		return 1;
-	}
-	
-	new slot = GetWeaponSlot(reason);
-	if (PlayerWeapons[playerid][slot][pbullets] > 0)
-	{
-		PlayerWeapons[playerid][slot][pbullets] -= Vary(20, 5);	
-		if (PlayerWeapons[playerid][slot][pbullets] < 0)
-		{
-			PlayerWeapons[playerid][slot][pbullets] = 0;
-		}
-	}
 	return 1;
 }
 

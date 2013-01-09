@@ -335,7 +335,7 @@ stock weapons_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 
 stock weapons_ShowDialog_Select(playerid)
 {
-	new string[1024]; // 1024 будет достаточно
+	new string[ MAX_WEAPONS * (MAX_NAME + 12 + 4) ];
 	for (new weaponid = 1; weaponid < MAX_WEAPONS; weaponid++)
 	{
 		if (!IsPlayerAllowedWeapon(playerid, weaponid))
