@@ -524,6 +524,7 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	command_register(cmdtext, "/underwater", 11, Admin);
 	command_register(cmdtext, "/ahideme", 8, Admin);
 	command_register(cmdtext, "/ashowme", 8, Admin);
+	command_register(cmdtext, "/godmod", 7, Admin);
 
 	// dm
 	command_register(cmdtext, "/deathmatches", 13, dm);
