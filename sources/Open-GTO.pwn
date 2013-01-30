@@ -1,7 +1,7 @@
 /*
 Project Name:	San Andreas - Multiplayer: Open - Grand Theft Online (Open-GTO).
 
-Current version:	1.0.8
+Current version:	1.0.9
 SA-MP Versions:		0.3d and older
 
 Web site:	http://open-gto.ru/
