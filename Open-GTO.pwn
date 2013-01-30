@@ -823,3 +823,9 @@ public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 	player_OnPlayerClickMap(playerid, fX, fY, fZ);
 	return 1;
 }
+
+public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
+{
+	admin_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid);
+	return 1;
+}

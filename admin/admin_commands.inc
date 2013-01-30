@@ -471,5 +471,20 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][26]);
 		return 1;	
 	}
+	if (!strcmp(cmd, "/godmod", true))
+	{
+		if (IsPlayerGodmod(playerid))
+		{
+			SetPlayerGodmod(playerid, 0);
+			SendClientMessage(playerid, COLOUR_WHITE, "Вы выключили режим бога, теперь вас можно убить.");
+		}
+		else
+		{
+			SetPlayerGodmod(playerid, 1);
+			oSetPlayerHealth(playerid, 100.0);
+			SendClientMessage(playerid, COLOUR_WHITE, "Вы включили режим бога, вас невозможно убить.");
+		}
+		return 1;
+	}
 	return 0;
 }

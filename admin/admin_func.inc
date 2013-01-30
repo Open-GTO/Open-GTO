@@ -60,3 +60,13 @@ stock admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 	}
 	return 1;
 }
+
+stock admin_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
+{
+	#pragma unused issuerid, amount, weaponid
+	if (IsPlayerGodmod(playerid))
+	{
+		oSetPlayerHealth(playerid, 100.0);
+	}
+	return 1;
+}

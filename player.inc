@@ -79,6 +79,9 @@ new QuestCount;
 stock IsPlayerLogin(playerid) return GetPVarInt(playerid, "IsLogin");
 #define SetPlayerLogin(%0,%1) SetPVarInt(%0, "IsLogin",%1)
 
+#define IsPlayerGodmod(%0) GetPVarInt(%0, "godmod")
+#define SetPlayerGodmod(%0,%1) SetPVarInt(%0, "godmod", %1)
+
 new PlayerStartMoney = PLAYER_START_MONEY;
 
 enum PlayerSpawnInfo {
