@@ -560,6 +560,7 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	command_register(cmdtext, "/showpm", 7, Adm);
 	command_register(cmdtext, "/getip", 6, Adm);
 	command_register(cmdtext, "/ban", 4, Adm);
+	command_register(cmdtext, "/unban", 6, Adm);
 	
 	// moderators
 	command_registerNR(cmdtext, "/cmdlist", 8, Mod);

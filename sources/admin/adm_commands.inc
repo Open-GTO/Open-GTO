@@ -508,5 +508,34 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		oBan(user, reason, playerid, time);
 		return 1;
 	}
+	if (!strcmp(cmd, "/unban", true))
+	{
+		new user[MAX_PLAYER_NAME+1];
+		set(user, strcharsplit(text, idx, ' '));
+		
+		if (strlen(user) < MIN_PLAYER_NAME || strlen(user) > MAX_PLAYER_NAME)
+		{
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][35]);
+		}
+		
+		new filename[MAX_STRING];
+		format(filename, sizeof(filename), "%s%s"GTO_FILES_FORMAT, BanDB, user);
+		
+		if (ini_Exist(filename))
+		{
+			ini_Remov(filename);
+			
+			new string[MAX_STRING];
+			format(string, sizeof(string), lang_texts[13][57], user);
+			SendClientMessage(playerid, COLOUR_RED, string);
+		}
+		else
+		{
+			new string[MAX_STRING];
+			format(string, sizeof(string), lang_texts[13][58], user);
+			SendClientMessage(playerid, COLOUR_RED, string);
+		}
+		return 1;
+	}
 	return 0;
 }
