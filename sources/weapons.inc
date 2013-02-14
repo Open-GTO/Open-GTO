@@ -16,7 +16,6 @@
 #include "base"
 
 #define MAX_BULLETS				2999
-#define MAX_WEAPONS				47
 
 new Ammunations[][CoordInfo] = {
 	{291.0004,-84.5168, 1001.5156}, // LVammunation1
@@ -34,7 +33,7 @@ enum WeaponInfo {
 	Weapon_Level // player level required to buy this weapon
 }
 
-new Weapons[MAX_WEAPONS][WeaponInfo] = {
+new Weapons[][WeaponInfo] = {
 	{0,  "Невооружен" 			, 0, 0, 0,     0},
 	{1,  "Кастет" 				, 1, 0, 600,   3},
 	{2,  "Клюшка для гольфа" 	, 1, 0, 600,   2},
@@ -85,7 +84,8 @@ new Weapons[MAX_WEAPONS][WeaponInfo] = {
 	{43, "Фотокамера" 			, 1, 1, 60,    24},
 	{44, "Очки ночного видения"	, 0, 0, 10,    0},
 	{45, "Тепловые Очки" 		, 0, 0, 10,    0},
-	{46, "Парашют" 				, 1, 0, 500,   1}
+	{46, "Парашют" 				, 1, 0, 500,   1},
+	{-1,  "Броня" 				, 1, 0, 200,   10}
 };
 
 stock WeaponLoadAll()
@@ -98,7 +98,7 @@ stock WeaponLoadAll()
 	}
 	
 	new file_weapons, weapondbname[MAX_STRING];
-	for (new i = 0; i < MAX_WEAPONS; i++)
+	for (new i = 0; i < sizeof(Weapons); i++)
 	{
 		format(weapondbname, sizeof(weapondbname), "%sid_%d"GTO_FILES_FORMAT, WeaponDB, Weapons[i][Weapon_ID]);
 		if (!ini_Exist(weapondbname))
@@ -122,7 +122,7 @@ stock WeaponSaveAll()
 	ini_Close(file_weapons_cfg);
 	
 	new file_weapons, weapondbname[MAX_STRING];
-	for (new i = 0; i < MAX_WEAPONS; i++)
+	for (new i = 0; i < sizeof(Weapons); i++)
 	{
 		format(weapondbname, sizeof(weapondbname), "%sid_%d"GTO_FILES_FORMAT, WeaponDB, Weapons[i][Weapon_ID]);
 		file_weapons = (!ini_Exist(weapondbname)) ? ini_Create(weapondbname) : ini_Open(weapondbname);
@@ -227,7 +227,7 @@ stock GetWeaponCost(weaponid)
 
 stock GetWeaponLookupID(weaponid)
 {
-	for (new i = 0; i < MAX_WEAPONS;i++)
+	for (new i = 0; i < sizeof(Weapons); i++)
 	{
 		if (weaponid == Weapons[i][Weapon_ID])
 		{
@@ -249,7 +249,7 @@ stock IsWeapon(weaponid)
 stock BuyWeapon(playerid, weaponid, bullets)
 {
 	new string[MAX_STRING];
-	if (weaponid < 1 || weaponid > 46)
+	if (weaponid < -1 || weaponid > 46)
 	{
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[16][7]);
 		return 0;
@@ -284,7 +284,14 @@ stock BuyWeapon(playerid, weaponid, bullets)
 		return 0;
 	}
 	oGivePlayerMoney(playerid,-purchasecost, 1);
-	GivePlayerOwnedWeapon(playerid, weaponid, (weaponid == 37) ? bullets*10 : bullets); // фикс для количества патрон огнемёта(37)
+	if (weaponid == -1)
+	{
+		oSetPlayerArmour(playerid, 100.0);
+	}
+	else
+	{
+		GivePlayerOwnedWeapon(playerid, weaponid, (weaponid == 37) ? bullets*10 : bullets); // фикс для количества патрон огнемёта(37)
+	}
 	if (bullets > 1)
 	{
 		format(string, sizeof(string), lang_texts[16][13], bullets, oGetWeaponName(weaponid), purchasecost);
@@ -302,7 +309,7 @@ stock weapons_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 {
 	switch (dialogid)
 	{
-		case weapons_Select_DialogID: // Выбераем оружие из списка
+		case weapons_Select_DialogID: // Выбираем оружие из списка
 		{
 			if (!response)
 			{
@@ -335,8 +342,8 @@ stock weapons_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 
 stock weapons_ShowDialog_Select(playerid)
 {
-	new string[ MAX_WEAPONS * (MAX_NAME + 12 + 4) ];
-	for (new weaponid = 1; weaponid < MAX_WEAPONS; weaponid++)
+	new string[ sizeof(Weapons) * (MAX_NAME + 12 + 4) ];
+	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++)
 	{
 		if (!IsPlayerAllowedWeapon(playerid, weaponid))
 		{
@@ -378,7 +385,7 @@ stock weapons_ShowDialog_Buy(playerid, weaponid)
 stock GetSelectedWeaponID(playerid, listitem)
 {
 	new k = 0;
-	for (new weaponid = 1; weaponid < MAX_WEAPONS; weaponid++)
+	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++)
 	{
 		if (IsPlayerAllowedWeapon(playerid, weaponid))
 		{
@@ -399,7 +406,7 @@ stock ShowWeaponsOnLevel(playerid, level)
 	new string[MAX_STRING],
 		wepfound;
 	
-	for (new weaponid = 1; weaponid < MAX_WEAPONS; weaponid++)
+	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++)
 	{
 		new lookupid = GetWeaponLookupID(weaponid);
 		if (lookupid == -1 || Weapons[lookupid][Weapon_Allowed] == 0)
