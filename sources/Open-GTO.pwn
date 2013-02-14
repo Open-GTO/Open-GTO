@@ -409,6 +409,15 @@ public OnPlayerDeath(playerid, killerid, reason)
 public OnPlayerSpawn(playerid)
 {
 	if (IsPlayerNPC(playerid)) return 1;
+	
+	// после использования TogglePlayerSpectating
+	if (GetPVarInt(playerid, "spec_after_off") == 1)
+	{
+		DeletePVar(playerid, "spec_after_off");
+		return 1;
+	}
+	
+	// spawn player
 	SetPlayerSkin(playerid, GetPlayerSkinModel(playerid));
 	UpdatePlayerLevelTextDraws(playerid);
 	UpdatePlayerWeaponTextDraws(playerid);

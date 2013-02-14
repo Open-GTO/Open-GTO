@@ -251,9 +251,12 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		{
 			if (GetPlayerSpectating(playerid))
 			{
+				SetPVarInt(playerid, "spec_after_off", 1);
 				TogglePlayerSpectating(playerid, 0);
 				SetPlayerSpecID(playerid, INVALID_PLAYER_ID);
 				SetPlayerSpectating(playerid, 0);
+				SetPlayerInterior(playerid, GetPVarInt(playerid, "spec_interior"));
+				DeletePVar(playerid, "spec_interior");
 			}
 			else
 			{
@@ -270,6 +273,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		SetPlayerSpecID(playerid, specid);
 		SetPlayerSpectating(playerid, 1);
 		TogglePlayerSpectating(playerid, 1);
+		SetPVarInt(playerid, "spec_interior", GetPlayerInterior(playerid));
 		SetPlayerInterior(playerid, GetPlayerInterior(specid));
 		
 		SendClientMessage(playerid, COLOUR_BLUE, lang_texts[13][21]);

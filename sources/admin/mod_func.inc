@@ -59,6 +59,8 @@ stock modfunc_OnPlayerDeath(playerid, killerid, reason)
 			TogglePlayerSpectating(id, 0);
 			SetPlayerSpectating(id, 0);
 			SetPlayerSpecID(id, INVALID_PLAYER_ID);
+			SetPlayerInterior(playerid, GetPVarInt(id, "spec_interior"));
+			DeletePVar(id, "spec_interior");
 		}
 	}
 	return 1;
