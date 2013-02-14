@@ -333,7 +333,7 @@ stock DeathmatchSaveRecordDB(dmid)
 	new file_dm = (!ini_Exist(rdbname)) ? ini_Create(rdbname) : ini_Open(rdbname);
 	ini_Set(file_dm, "Name", Deathmatch[dmid][dm_name]);
 	ini_SetInt(file_dm, "Best_Score_Record", DMBestScore[dmid][dm_score_record]);
-	ini_SetInt(file_dm, "Best_Score_Player", DMBestScore[dmid][dm_score_player]);
+	ini_Set(file_dm, "Best_Score_Player", DMBestScore[dmid][dm_score_player]);
 	ini_SetInt(file_dm, "Best_Score_Kills", DMBestScore[dmid][dm_score_kills]);
 	ini_SetInt(file_dm, "Best_Score_Deaths", DMBestScore[dmid][dm_score_deaths]);
 	ini_Close(file_dm);
