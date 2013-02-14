@@ -160,7 +160,7 @@ stock DeathmatchLoadBaseDB(dmid)
 	ini_GetInt(file_dm, "Join_Active", Deathmatch[dmid][dm_activedmjoin]);
 	ini_GetInt(file_dm, "Max_Distance", Deathmatch[dmid][dm_distance]);
 	ini_Get(file_dm, "Weapons", temp);
-	set(Deathmatch[dmid][dm_weapons], DMDecodeWeaponsDB(temp));
+	DMDecodeWeaponsDB(Deathmatch[dmid][dm_weapons], temp);
 
 	new Float:X, Float:Y, Float:Z;
 	ini_Get(file_dm, "Start_CP", temp);
@@ -873,16 +873,14 @@ stock PlayerLeaveDM(playerid, dmid)
 
 stock GivePlayerDMWeapons(playerid, dmid)
 {
-	new weapons[MAX_DMWEAPONS+1];
-	set(weapons, Deathmatch[dmid][dm_weapons]);
 	oResetPlayerWeapons(playerid);
-	for (new i = 0, len = strlen(weapons); i < len;i++)
+	for (new i = 0; i < MAX_DMWEAPONS; i++)
 	{
-		if (weapons[i] == 0)
+		if (Deathmatch[dmid][dm_weapons][i] == 0)
 		{
 			break;
 		}
-		oGivePlayerWeapon(playerid, weapons[i], GetWeaponMaxAmmo(weapons[i]));
+		oGivePlayerWeapon(playerid, Deathmatch[dmid][dm_weapons][i], GetWeaponMaxAmmo(Deathmatch[dmid][dm_weapons][i]));
 	}
 }
 
@@ -1065,16 +1063,18 @@ stock IsWeaponAllowedInDM(weaponid, dmid)
 	{
 		return 1;
 	}
-	new weapons[MAX_DMWEAPONS+1];
-	set(weapons, Deathmatch[dmid][dm_weapons]);
-	for (new i = 0, len = strlen(weapons); i < len; i++)
+	for (new i = 0; i < MAX_DMWEAPONS; i++)
 	{
-		if (weapons[i] == weaponid)
+		if (Deathmatch[dmid][dm_weapons][i] == 0)
 		{
-			return 1;
+			continue;
+		}
+		if (weaponid != Deathmatch[dmid][dm_weapons][i])
+		{
+			return 0;
 		}
 	}
-	return 0;
+	return 1;
 }
 
 stock deathmatch_OnPlayerKill(playerid, victimid, weaponid)
@@ -1290,40 +1290,23 @@ stock dm_OnPlayerCommandText(playerid, text[]) // process player commands
 
 stock DMEncodeWeaponsDB(dmid)
 {
-	new weps[MAX_DMWEAPONS+1], retstr[MAX_STRING];
-	set(weps, Deathmatch[dmid][dm_weapons]);
-	for (new i = 0, len = strlen(weps); i < len; i++)
+	new retstr[MAX_STRING], temp[10];
+	for (new i = 0; i < MAX_DMWEAPONS; i++)
 	{
-		if (weps[i] == 0)
-		{
-			break;
-		}
-		new tempstr[10];
-		valstr(tempstr, weps[i]);
-		strins(retstr, tempstr, strlen(retstr));
+		valstr(temp, Deathmatch[dmid][dm_weapons][i]);
+		strins(retstr, temp, strlen(retstr));
 		retstr[strlen(retstr)] = '/';
 	}
 	return retstr;
 }
 
-stock DMDecodeWeaponsDB(wepstr[])
+stock DMDecodeWeaponsDB(array[], wepstr[])
 {
-	new weps[MAX_DMWEAPONS], tmpwepstr[20], idx;
-
-	for (new i = 0, len = strlen(wepstr); i < len && i < MAX_DMWEAPONS; i++)
+	new idx = 0;
+	for (new i = 0; i < MAX_DMWEAPONS; i++)
 	{
-		tmpwepstr = strcharsplit(wepstr, idx,'/');
-		if (strlen(tmpwepstr) == 0)
-		{
-			break;
-		}
-		weps[i] = strval(tmpwepstr);
-		if (weps[i] == 0)
-		{
-			break;
-		}
+		array[i] = strval( strcharsplit(wepstr, idx, '/') );
 	}
-	return weps;
 }
 
 stock dm_RenameBestPlayer(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+1])
