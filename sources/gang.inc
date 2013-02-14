@@ -259,7 +259,8 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 	   			SendClientMessage(playerid, COLOUR_RED, string);
 	   			return 1;
 	  		}
-   			new gangname[MAX_STRING], colourname[MAX_NAME], gangcolour=255;
+	  		
+   			new colourname[MAX_NAME], gangcolour = 255;
    			colourname = strcharsplit(text, idx, ' ');
    			if (!strlen(colourname))
    			{
@@ -281,7 +282,12 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 				SendClientMessage(playerid, COLOUR_RED, lang_texts[6][38]);
 				return 1;
    			}
-	  		set(gangname, text[idx+1]);
+   			
+   			new gangname[MAX_STRING];
+   			if (text[idx] != '\0')
+   			{
+				set(gangname, text[idx+1]);
+			}
 	  		
 		 	if (strlen(gangname) > MAX_GANG_NAME_LEN || strlen(gangname) < MIN_GANG_NAME_LEN)
 		 	{
