@@ -145,22 +145,22 @@ stock DeathmatchLoadBaseDB(dmid)
 		ini_Close(file_dm);
 		return INVALID_DM_ID;
 	}
-    ini_GetInt(file_dm, "Frequency", Deathmatch[dmid][dm_frequency]);
-    ini_GetInt(file_dm, "Lineup_Delay", Deathmatch[dmid][dm_lineupdelay]);
-    ini_GetInt(file_dm, "Min_Players", Deathmatch[dmid][dm_minplayers]);
-    ini_GetInt(file_dm, "Min_Level", Deathmatch[dmid][dm_minlevel]);
-    ini_GetInt(file_dm, "Cash_Prize", Deathmatch[dmid][dm_cashprize]);
-    ini_GetInt(file_dm, "Cash_Entry", Deathmatch[dmid][dm_cashentry]);
-    ini_GetInt(file_dm, "XP_Prize", Deathmatch[dmid][dm_xpprize]);
-    ini_GetInt(file_dm, "XP_Bonus", Deathmatch[dmid][dm_xpbonus]);
-    ini_GetInt(file_dm, "Max_Time", Deathmatch[dmid][dm_maxtime]);
+	ini_GetInt(file_dm, "Frequency", Deathmatch[dmid][dm_frequency]);
+	ini_GetInt(file_dm, "Lineup_Delay", Deathmatch[dmid][dm_lineupdelay]);
+	ini_GetInt(file_dm, "Min_Players", Deathmatch[dmid][dm_minplayers]);
+	ini_GetInt(file_dm, "Min_Level", Deathmatch[dmid][dm_minlevel]);
+	ini_GetInt(file_dm, "Cash_Prize", Deathmatch[dmid][dm_cashprize]);
+	ini_GetInt(file_dm, "Cash_Entry", Deathmatch[dmid][dm_cashentry]);
+	ini_GetInt(file_dm, "XP_Prize", Deathmatch[dmid][dm_xpprize]);
+	ini_GetInt(file_dm, "XP_Bonus", Deathmatch[dmid][dm_xpbonus]);
+	ini_GetInt(file_dm, "Max_Time", Deathmatch[dmid][dm_maxtime]);
 
-    ini_GetInt(file_dm, "XP_Kill", Deathmatch[dmid][dm_xpkill]);
-    ini_GetInt(file_dm, "XP_Death", Deathmatch[dmid][dm_xpdeath]);
-    ini_GetInt(file_dm, "Join_Active", Deathmatch[dmid][dm_activedmjoin]);
-    ini_GetInt(file_dm, "Max_Distance", Deathmatch[dmid][dm_distance]);
-    set(Deathmatch[dmid][dm_weapons], DMDecodeWeaponsDB(temp));
-    ini_GetInt(file_dm, "Weapons", Deathmatch[dmid][dm_weapons]);
+	ini_GetInt(file_dm, "XP_Kill", Deathmatch[dmid][dm_xpkill]);
+	ini_GetInt(file_dm, "XP_Death", Deathmatch[dmid][dm_xpdeath]);
+	ini_GetInt(file_dm, "Join_Active", Deathmatch[dmid][dm_activedmjoin]);
+	ini_GetInt(file_dm, "Max_Distance", Deathmatch[dmid][dm_distance]);
+	ini_Get(file_dm, "Weapons", temp);
+	set(Deathmatch[dmid][dm_weapons], DMDecodeWeaponsDB(temp));
 
 	new Float:X, Float:Y, Float:Z;
 	ini_Get(file_dm, "Start_CP", temp);
