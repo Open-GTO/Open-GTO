@@ -258,6 +258,7 @@ stock show_Gang_Menu(playerid)
 	{
 		strcat(string,
 			"Информация о банде\n\
+			Положить деньги в банк банды\n\
 			Выйти из банды\n",
 			sizeof(string)
 		);
@@ -266,7 +267,8 @@ stock show_Gang_Menu(playerid)
 			strcat(string,
 				"Пригласить игрока\n\
 				Изменить цвет\n\
-				Изменить объявление\n",
+				Изменить объявление\n\
+				Взять деньги из банка банды\n",
 				sizeof(string)
 			);
 		}
@@ -352,6 +354,24 @@ stock show_MOTD_Menu(playerid)
 	return ShowPlayerDialog(playerid, gang_motd_menu_DialogID, DIALOG_STYLE_INPUT,
 		lang_texts[6][86],
 		string,
+		"ОК", "Назад"
+	);
+}
+
+stock show_GangWMoney_Menu(playerid)
+{
+	return ShowPlayerDialog(playerid, gang_wmoney_menu_DialogID, DIALOG_STYLE_INPUT,
+		"Банк банды",
+		"Введите количество денег, которое вы хотите положить в банк банды",
+		"ОК", "Назад"
+	);
+}
+
+stock show_GangDMoney_Menu(playerid)
+{
+	return ShowPlayerDialog(playerid, gang_dmoney_menu_DialogID, DIALOG_STYLE_INPUT,
+		"Банк банды",
+		"Введите количество денег, которое вы хотите забрать из банка банды",
 		"ОК", "Назад"
 	);
 }
@@ -960,12 +980,17 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						show_User_Menu_Dialog(playerid, "Информация о банде", string);
 						return 1;
 					}
-					case 1: // выйти из банды
+					case 1: // положить деньги в банк банды
+					{
+						show_GangWMoney_Menu(playerid);
+						return 1;
+					}
+					case 2: // выйти из банды
 					{
 						GangRemoveMember(gangid, oGetPlayerName(playerid));
 						return 1;
 					}
-					case 2: // пригласить игрока
+					case 3: // пригласить игрока
 					{
 						// если не лидер
 						if (strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
@@ -975,7 +1000,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						show_GangInvite_Menu(playerid);
 						return 1;
 					}
-					case 3: // изменить цвет
+					case 4: // изменить цвет
 					{
 						// если не лидер
 						if (strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
@@ -985,7 +1010,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						show_GangColor_Menu(playerid);
 						return 1;
 					}
-					case 4: // изменить объявление
+					case 5: // изменить объявление
 					{
 						// если не лидер
 						if (strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
@@ -993,6 +1018,16 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 							return 0;
 						}
 						show_MOTD_Menu(playerid);
+						return 1;
+					}
+					case 6: // взять деньги из банка банды
+					{
+						// если не лидер
+						if (strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
+						{
+							return 0;
+						}
+						show_GangDMoney_Menu(playerid);
 						return 1;
 					}
 				}
@@ -1179,6 +1214,61 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			show_User_Menu_Dialog(playerid, lang_texts[6][86], string);
 			
 			format(string, sizeof(string), lang_texts[6][81], oGetPlayerName(playerid), playerid, Gangs[gangid][gang_motd]);
+			SendGangMessage(gangid, string, COLOUR_GANG);
+			return 1;
+		}
+		case gang_wmoney_menu_DialogID:
+		{
+			if (!response)
+			{
+				return show_Gang_Menu(playerid);
+			}
+			
+			new amount = strval(inputtext);
+   			if (amount <= 0)
+   			{
+				return show_User_Menu_Dialog(playerid, lang_texts[6][92], lang_texts[6][93]);
+			}
+			
+			if (oGetPlayerMoney(playerid) < amount)
+			{
+				return show_User_Menu_Dialog(playerid, lang_texts[6][92], lang_texts[6][94]);
+			}
+			
+			new gangid = GetPlayerGangID(playerid);
+			
+			oGivePlayerMoney(playerid, -amount);
+			Gangs[gangid][gang_money] += amount;
+			
+			new string[MAX_STRING];
+			format(string, sizeof(string), lang_texts[6][95], oGetPlayerName(playerid), playerid, amount);
+			SendGangMessage(gangid, string, COLOUR_GANG);
+			return 1;
+		}
+		case gang_dmoney_menu_DialogID:
+		{
+			if (!response)
+			{
+				return show_Gang_Menu(playerid);
+			}
+			
+			new amount = strval(inputtext);
+   			if (amount <= 0)
+   			{
+				return show_User_Menu_Dialog(playerid, lang_texts[6][92], lang_texts[6][93]);
+			}
+			
+			new gangid = GetPlayerGangID(playerid);
+			if (Gangs[gangid][gang_money] < amount)
+			{
+				return show_User_Menu_Dialog(playerid, lang_texts[6][92], lang_texts[6][94]);
+			}
+			
+			oGivePlayerMoney(playerid, amount);
+			Gangs[gangid][gang_money] -= amount;
+			
+			new string[MAX_STRING];
+			format(string, sizeof(string), lang_texts[6][96], oGetPlayerName(playerid), playerid, amount);
 			SendGangMessage(gangid, string, COLOUR_GANG);
 			return 1;
 		}

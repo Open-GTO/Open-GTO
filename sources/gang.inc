@@ -34,6 +34,7 @@ enum GangInfo {
 	gang_score,
 	gang_xp,
 	gang_level,
+	gang_money,
 	gang_house,
 }
 new Gangs[MAX_GANGS][GangInfo];
@@ -111,6 +112,7 @@ stock gang_load_db_ini(gangid, gangname[])
 	ini_GetInt(file_gang, "Score", Gangs[gangid][gang_score]);
 	ini_GetInt(file_gang, "XP", Gangs[gangid][gang_xp]);
 	ini_GetInt(file_gang, "Level", Gangs[gangid][gang_level]);
+	ini_GetInt(file_gang, "Money", Gangs[gangid][gang_money]);
 	ini_GetInt(file_gang, "House", Gangs[gangid][gang_house]);
 	for (new gangmember = 0, string[MAX_STRING]; gangmember < MAX_GANG_SIZE; gangmember++)
 	{
@@ -346,18 +348,14 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 			}
   		}
   		
-		if (GetPlayerGangID(playerid) == 0)
+  		new gangid = GetPlayerGangID(playerid);
+		if (gangid == 0)
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][50]);
 		}
-  		new gangid = GetPlayerGangID(playerid);
 
   		if (!strcmp(cmd, "quit", true) || !strcmp(cmd, "leave", true))
   		{
-	  		if (GetPlayerGangID(playerid) == 0)
-	  		{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][51]);
-			}
 	  		GangRemoveMember(gangid, oGetPlayerName(playerid));
 	  		return 1;
   		}
@@ -462,10 +460,6 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
   		}
   		if (!strcmp(cmd, "motd", true))
   		{
-	  		if (GetPlayerGangID(playerid) == 0)
-	  		{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][24]);
-			}
 	  		if (!gang_IsLeader(playerid))
 	  		{
 				return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][52]);
@@ -491,6 +485,56 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 				set(Gangs[gangid][gang_motd], text[idx+1]);
 				new string[MAX_STRING];
 				format(string, sizeof(string), lang_texts[6][81], oGetPlayerName(playerid), playerid, Gangs[gangid][gang_motd]);
+				SendGangMessage(gangid, string, COLOUR_GANG);
+			}
+			return 1;
+  		}
+  		if (!strcmp(cmd, "bank", true))
+  		{
+			new string[MAX_STRING];
+			string = strcharsplit(text, idx, ' ');
+			
+			if (!strcmp(string, "deposit", true))
+			{
+				new amount = strval( strcharsplit(text, idx, ' ') );
+				if (amount <= 0)
+				{
+					return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][93]);
+				}
+				
+				if (oGetPlayerMoney(playerid) < amount)
+				{
+					return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][94]);
+				}
+				
+				oGivePlayerMoney(playerid, -amount);
+				Gangs[gangid][gang_money] += amount;
+				
+				format(string, sizeof(string), lang_texts[6][95], oGetPlayerName(playerid), playerid, amount);
+				SendGangMessage(gangid, string, COLOUR_GANG);
+			}
+			else if (!strcmp(string, "withdraw", true))
+			{
+				if (!gang_IsLeader(playerid))
+				{
+					return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][93]);
+				}
+				
+				new amount = strval( strcharsplit(text, idx, ' ') );
+				if (amount <= 0)
+				{
+					return show_User_Menu_Dialog(playerid, lang_texts[6][92], lang_texts[6][93]);
+				}
+				
+				if (Gangs[gangid][gang_money] < amount)
+				{
+					return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][94]);
+				}
+				
+				oGivePlayerMoney(playerid, amount);
+				Gangs[gangid][gang_money] -= amount;
+				
+				format(string, sizeof(string), lang_texts[6][96], oGetPlayerName(playerid), playerid, amount);
 				SendGangMessage(gangid, string, COLOUR_GANG);
 			}
 			return 1;
@@ -732,6 +776,7 @@ stock gang_save_db_ini(gangid)
 	ini_SetInt(file_gang, "Score", Gangs[gangid][gang_score]);
 	ini_SetInt(file_gang, "XP", Gangs[gangid][gang_xp]);
 	ini_SetInt(file_gang, "Level", Gangs[gangid][gang_level]);
+	ini_SetInt(file_gang, "Money", Gangs[gangid][gang_money]);
 	ini_SetInt(file_gang, "House", Gangs[gangid][gang_house]);
 	for (new gangmember = 0, string[MAX_STRING]; gangmember < MAX_GANG_SIZE; gangmember++)
 	{
