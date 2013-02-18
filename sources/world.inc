@@ -78,8 +78,6 @@ nee:
 	BusinessSaveAll();
 	HousesSaveAll();
 	GangSaveAll();
-	RaceSaveScores();
-	DeathmatchSaveScores();
 	//
 	GameMSG("World save complete! Time taken: %d seconds.", (gettime() - starttime));
 	return 1;

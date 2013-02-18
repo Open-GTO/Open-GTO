@@ -96,8 +96,13 @@ stock DeathmatchLoadAll()
 		ini_Close(file_dm_cfg);
 	}
 	if (!ini_Exist(DeathmatchDB)) return 0;
-	new file_dm = ini_Open(DeathmatchDB);
-	for (new dmdbid = 0, cellname[MAX_STRING]; dmdbid < MAX_DM; dmdbid++)
+	new cellname[MAX_STRING],
+		dms_count = MAX_DM,
+		file_dm = ini_Open(DeathmatchDB);
+	
+	ini_GetInt(file_dm, "Count", dms_count);
+	
+	for (new dmdbid = 1; dmdbid <= dms_count; dmdbid++)
 	{
 		format(cellname, sizeof(cellname), "Deathmatch%d", dmdbid);
 		ini_Get(file_dm, cellname, temp);
@@ -199,8 +204,11 @@ stock DeathmatchLoadBaseDB(dmid)
 		}
 	}
 
-	new spsize;
-	for (new spid = 0, cellname[MAX_STRING]; spid < MAX_DM_SP; spid++)
+	new sp_count = MAX_DM_SP;
+	ini_GetInt(file_dm, "SP_Count", sp_count);
+	
+	new cellname[MAX_STRING];
+	for (new spid = 1; spid <= sp_count; spid++)
 	{
 		format(cellname, sizeof(cellname), "SP%d", spid);
 		ini_Get(file_dm, cellname, temp);
@@ -217,13 +225,12 @@ stock DeathmatchLoadBaseDB(dmid)
 		{
 			break;
 		}
-		DMSpawnPoints[dmid][spid][Coord_X] = X;
-		DMSpawnPoints[dmid][spid][Coord_Y] = Y;
-		DMSpawnPoints[dmid][spid][Coord_Z] = Z;
-		spsize++;
+		DMSpawnPoints[dmid][spid-1][Coord_X] = X;
+		DMSpawnPoints[dmid][spid-1][Coord_Y] = Y;
+		DMSpawnPoints[dmid][spid-1][Coord_Z] = Z;
 	}
 	ini_Close(file_dm);
-	DMSpawnsSize[dmid] = spsize;
+	DMSpawnsSize[dmid] = sp_count;
 	DeathmatchStats[dmid][dm_state] = DM_STATE_SLEEPING;
 	DeathmatchStats[dmid][dm_timer] = MakeDMSleepTime(dmid);
 	GameMSG("Deathmatch (DB): '%s' Loaded.", Deathmatch[dmid][dm_name]);
@@ -234,28 +241,30 @@ stock DeathmatchLoadRecordDB(dmid)
 {
 	new rdbname[MAX_STRING];
 	format(rdbname, sizeof(rdbname), "%s%s"GTO_FILES_FORMAT, DMRecordDB, Deathmatch[dmid][dm_name]);
-	if (!ini_Exist(rdbname))
-	{
-		return;
-	}
+	if (!ini_Exist(rdbname)) return 0;
 	new file_dm = ini_Open(rdbname);
 	ini_GetInt(file_dm, "Best_Score_Record", DMBestScore[dmid][dm_score_record]);
 	ini_Get(file_dm, "Best_Score_Player", DMBestScore[dmid][dm_score_player], MAX_NAME);
 	ini_GetInt(file_dm, "Best_Score_Kills", DMBestScore[dmid][dm_score_kills]);
 	ini_GetInt(file_dm, "Best_Score_Deaths", DMBestScore[dmid][dm_score_deaths]);
 	ini_Close(file_dm);
+	return 1;
 }
 
 stock DeathmatchSaveAll()
 {
 	new file_dm_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_Set(file_dm_cfg, "Deathmatch_DB", DeathmatchDB);
 	ini_Set(file_dm_cfg, "Deathmatch_Base_DB", DMBaseDB);
 	ini_Set(file_dm_cfg, "Deathmatch_Record_DB", DMRecordDB);
 	ini_Close(file_dm_cfg);
 	
-	new file_dm = (!ini_Exist(DeathmatchDB)) ? ini_Create(DeathmatchDB) : ini_Open(DeathmatchDB);
-	// load all our dms from db
-	for (new dmid=1, cellname[MAX_STRING];dmid<=DMCount;dmid++)
+	new cellname[MAX_STRING],
+		file_dm = (!ini_Exist(DeathmatchDB)) ? ini_Create(DeathmatchDB) : ini_Open(DeathmatchDB);
+	
+	ini_SetInt(file_dm, "Count", DMCount);
+	
+	for (new dmid = 1; dmid <= DMCount; dmid++)
 	{
 		if (DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED)
 		{
@@ -264,28 +273,6 @@ stock DeathmatchSaveAll()
 		format(cellname, sizeof(cellname), "Deathmatch%d", dmid);
 		ini_Set(file_dm, cellname, Deathmatch[dmid][dm_name]);
 		DeathmatchSaveBaseDB(dmid);
-		DeathmatchSaveRecordDB(dmid);
-	}
-	ini_Close(file_dm);
-}
-
-stock DeathmatchSaveScores()
-{
-	new file_dm_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_dm_cfg, "Deathmatch_Base_DB", DMBaseDB);
-	ini_Set(file_dm_cfg, "Deathmatch_Record_DB", DMRecordDB);
-	ini_Close(file_dm_cfg);
-
-	new file_dm = (!ini_Exist(DeathmatchDB)) ? ini_Create(DeathmatchDB) : ini_Open(DeathmatchDB);
-	// load all our dms from db
-	for (new dmid = 1, cellname[MAX_STRING]; dmid <= DMCount; dmid++)
-	{
-		if (DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED)
-		{
-			continue;
-		}
-		format(cellname, sizeof(cellname), "Deathmatch%d", dmid);
-		ini_Set(file_dm, cellname, Deathmatch[dmid][dm_name]);
 		DeathmatchSaveRecordDB(dmid);
 	}
 	ini_Close(file_dm);
@@ -316,11 +303,13 @@ stock DeathmatchSaveBaseDB(dmid)
 	ini_Set(file_dm, "Start_CP", temp);
 	format(temp, sizeof(temp), "%f,%f,%f", DMCentreCP[dmid][Coord_X], DMCentreCP[dmid][Coord_Y], DMCentreCP[dmid][Coord_Z]);
 	ini_Set(file_dm, "Centre_CP", temp);
-
-	for (new spid = 0, cellname[MAX_STRING]; spid < DMSpawnsSize[dmid]; spid++)
+	ini_SetInt(file_dm, "SP_Count", DMSpawnsSize[dmid]);
+	
+	new cellname[MAX_STRING];
+	for (new spid = 1; spid <= DMSpawnsSize[dmid]; spid++)
 	{
 		format(cellname, sizeof(cellname), "SP%d", spid);
-		format(temp, sizeof(temp), "%f,%f,%f", DMSpawnPoints[dmid][spid][Coord_X], DMSpawnPoints[dmid][spid][Coord_Y], DMSpawnPoints[dmid][spid][Coord_Z]);
+		format(temp, sizeof(temp), "%f,%f,%f", DMSpawnPoints[dmid][spid-1][Coord_X], DMSpawnPoints[dmid][spid-1][Coord_Y], DMSpawnPoints[dmid][spid-1][Coord_Z]);
 		ini_Set(file_dm, cellname, temp);
 	}
 	ini_Close(file_dm);
