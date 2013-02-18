@@ -108,7 +108,7 @@ stock RaceLoadAll()
 		
 		ini_GetInt(file_race, "Count", races_count);
 		
-		for (new racedbid = 1; racedbid < races_count; racedbid++)
+		for (new racedbid = 1; racedbid <= races_count; racedbid++)
 		{
 			format(cellname, sizeof(cellname), "Race%d", racedbid);
 			ini_Get(file_race, cellname, temp);
@@ -168,11 +168,11 @@ stock RaceLoadBaseDB(raceid)
 	ini_GetFloat(file_race, "Startline_Heading", Race[raceid][race_startheading]);
 	
 	new cp_count = MAX_CP;
-	ini_GetInt(file_race, "CP_count", cp_count);
+	ini_GetInt(file_race, "CP_Count", cp_count);
 	
 	if (cp_count > MAX_CP)
 	{
-		GameMSG("Error: '%s' CP_count(%d) > MAX_CP(%d)", Race[raceid][race_name], cp_count, MAX_CP);
+		GameMSG("Error: '%s' CP_Count(%d) > MAX_CP(%d)", Race[raceid][race_name], cp_count, MAX_CP);
 	}
 
 	new cellname[MAX_STRING];
@@ -243,30 +243,6 @@ stock RaceSaveAll()
 	ini_Close(file_race);
 }
 
-stock RaceSaveScores()
-{
-	new file_race_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_race_cfg, "Race_DB", RaceDB);
-	ini_Set(file_race_cfg, "Race_Base_DB", RaceBaseDB);
-	ini_Set(file_race_cfg, "Race_Record_DB", RaceRecordDB);
-	ini_Close(file_race_cfg);
-
-	new cellname[MAX_STRING],
-		file_race = (!ini_Exist(RaceDB)) ? ini_Create(RaceDB) : ini_Open(RaceDB);
-	
-	for (new raceid = 1; raceid <= RacesCount; raceid++)
-	{
-		if (RaceStats[raceid][race_state] == RACE_STATE_DISABLED)
-		{
-			continue;
-		}
-		format(cellname, sizeof(cellname), "Race%d", raceid);
-		ini_Set(file_race, cellname, Race[raceid][race_name]);
-		RaceSaveRecordDB(raceid);
-	}
-	ini_Close(file_race);
-}
-
 stock RaceSaveBaseDB(raceid)
 {
 	if (RaceStats[raceid][race_state] == RACE_STATE_DISABLED)
@@ -288,7 +264,7 @@ stock RaceSaveBaseDB(raceid)
     ini_SetInt(file_race, "Race_Time", Race[raceid][race_maxracetime]);
     ini_SetInt(file_race, "Cash_Entry", Race[raceid][race_cashentry]);
     ini_SetFloat(file_race, "Startline_Heading", Race[raceid][race_startheading]);
-	ini_SetInt(file_race, "CP_count", RaceSize[raceid]);
+	ini_SetInt(file_race, "CP_Count", RaceSize[raceid]);
 	
 	new cellname[MAX_STRING], temp[MAX_STRING];
 	for (new cpid = 1; cpid <= RaceSize[raceid]; cpid++)
@@ -298,7 +274,6 @@ stock RaceSaveBaseDB(raceid)
 		ini_Set(file_race, cellname, temp);
 	}
 	ini_Close(file_race);
-	GameMSG("Race base saved: %s", Race[raceid][race_name]);
 }
 
 stock RaceSaveRecordDB(raceid)
