@@ -103,9 +103,12 @@ stock RaceLoadAll()
 	if (ini_Exist(RaceDB))
 	{
 		new cellname[MAX_STRING],
+			races_count = MAX_RACES,
 			file_race = ini_Open(RaceDB);
 		
-		for (new racedbid = 0; racedbid < MAX_RACES; racedbid++)
+		ini_GetInt(file_race, "Count", races_count);
+		
+		for (new racedbid = 1; racedbid < races_count; racedbid++)
 		{
 			format(cellname, sizeof(cellname), "Race%d", racedbid);
 			ini_Get(file_race, cellname, temp);
@@ -163,9 +166,17 @@ stock RaceLoadBaseDB(raceid)
 	ini_GetInt(file_race, "XP_Bonus", Race[raceid][race_xpbonus]);
 	ini_GetInt(file_race, "Race_Time", Race[raceid][race_maxracetime]);
 	ini_GetFloat(file_race, "Startline_Heading", Race[raceid][race_startheading]);
+	
+	new cp_count = MAX_CP;
+	ini_GetInt(file_race, "CP_count", cp_count);
+	
+	if (cp_count > MAX_CP)
+	{
+		GameMSG("Error: '%s' CP_count(%d) > MAX_CP(%d)", Race[raceid][race_name], cp_count, MAX_CP);
+	}
 
-	new cpcount=0, cellname[MAX_STRING];
-	for (new cpid = 0; cpid < MAX_CP; cpid++)
+	new cellname[MAX_STRING];
+	for (new cpid = 1; cpid <= cp_count; cpid++)
 	{
 		format(cellname, sizeof(cellname), "CP%d", cpid);
 		if (ini_Get(file_race, cellname, temp) != INI_OK)
@@ -180,13 +191,12 @@ stock RaceLoadBaseDB(raceid)
 		{
 			break;
 		}
-		RaceCheckpoints[raceid][cpid][Coord_X] = X;
-		RaceCheckpoints[raceid][cpid][Coord_Y] = Y;
-		RaceCheckpoints[raceid][cpid][Coord_Z] = Z;
-		cpcount++;
+		RaceCheckpoints[raceid][cpid-1][Coord_X] = X;
+		RaceCheckpoints[raceid][cpid-1][Coord_Y] = Y;
+		RaceCheckpoints[raceid][cpid-1][Coord_Z] = Z;
 	}
 	ini_Close(file_race);
-	RaceSize[raceid] = cpcount;
+	RaceSize[raceid] = cp_count;
 	RaceStats[raceid][race_state] = RACE_STATE_SLEEPING;
 	RaceStats[raceid][race_timer] = MakeRaceSleepTime(raceid);
 	GameMSG("Race (DB): %s Loaded", Race[raceid][race_name]);
@@ -209,12 +219,15 @@ stock RaceLoadRecordDB(raceid)
 stock RaceSaveAll()
 {
 	new file_race_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_Set(file_race_cfg, "Race_DB", RaceDB);
 	ini_Set(file_race_cfg, "Race_Base_DB", RaceBaseDB);
 	ini_Set(file_race_cfg, "Race_Record_DB", RaceRecordDB);
 	ini_Close(file_race_cfg);
 	
 	new cellname[MAX_STRING],
 		file_race = (!ini_Exist(RaceDB)) ? ini_Create(RaceDB) : ini_Open(RaceDB);
+	
+	ini_SetInt(file_race, "Count", RacesCount);
 	
 	for (new raceid = 1; raceid <= RacesCount; raceid++)
 	{
@@ -233,6 +246,7 @@ stock RaceSaveAll()
 stock RaceSaveScores()
 {
 	new file_race_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_Set(file_race_cfg, "Race_DB", RaceDB);
 	ini_Set(file_race_cfg, "Race_Base_DB", RaceBaseDB);
 	ini_Set(file_race_cfg, "Race_Record_DB", RaceRecordDB);
 	ini_Close(file_race_cfg);
@@ -274,12 +288,13 @@ stock RaceSaveBaseDB(raceid)
     ini_SetInt(file_race, "Race_Time", Race[raceid][race_maxracetime]);
     ini_SetInt(file_race, "Cash_Entry", Race[raceid][race_cashentry]);
     ini_SetFloat(file_race, "Startline_Heading", Race[raceid][race_startheading]);
-
+	ini_SetInt(file_race, "CP_count", RaceSize[raceid]);
+	
 	new cellname[MAX_STRING], temp[MAX_STRING];
-	for (new cpid = 0; cpid < RaceSize[raceid]; cpid++)
+	for (new cpid = 1; cpid <= RaceSize[raceid]; cpid++)
 	{
 		format(cellname, sizeof(cellname), "CP%d", cpid);
-		format(temp, sizeof(temp), "%f,%f,%f", RaceCheckpoints[raceid][cpid][Coord_X], RaceCheckpoints[raceid][cpid][Coord_Y], RaceCheckpoints[raceid][cpid][Coord_Z]);
+		format(temp, sizeof(temp), "%f,%f,%f", RaceCheckpoints[raceid][cpid-1][Coord_X], RaceCheckpoints[raceid][cpid-1][Coord_Y], RaceCheckpoints[raceid][cpid-1][Coord_Z]);
 		ini_Set(file_race, cellname, temp);
 	}
 	ini_Close(file_race);
