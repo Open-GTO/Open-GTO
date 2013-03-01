@@ -85,7 +85,7 @@ new Weapons[][WeaponInfo] = {
 	{44, "Очки ночного видения"	, 0, 0, 10,    0},
 	{45, "Тепловые Очки" 		, 0, 0, 10,    0},
 	{46, "Парашют" 				, 1, 0, 500,   1},
-	{-1,  "Броня" 				, 1, 0, 200,   10}
+	{47, "Броня" 				, 1, 0, 200,   10}
 };
 
 stock WeaponLoadAll()
@@ -249,7 +249,7 @@ stock IsWeapon(weaponid)
 stock BuyWeapon(playerid, weaponid, bullets)
 {
 	new string[MAX_STRING];
-	if (weaponid < -1 || weaponid > 46)
+	if (weaponid < 0 || weaponid > 47)
 	{
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[16][7]);
 		return 0;
@@ -284,13 +284,11 @@ stock BuyWeapon(playerid, weaponid, bullets)
 		return 0;
 	}
 	oGivePlayerMoney(playerid,-purchasecost, 1);
-	if (weaponid == -1)
+	switch (weaponid)
 	{
-		oSetPlayerArmour(playerid, 100.0);
-	}
-	else
-	{
-		GivePlayerOwnedWeapon(playerid, weaponid, (weaponid == 37) ? bullets*10 : bullets); // фикс для количества патрон огнемёта(37)
+		case 47: oSetPlayerArmour(playerid, 100.0);
+		case 37: GivePlayerOwnedWeapon(playerid, weaponid, bullets * 10); // фикс для количества патрон огнемёта
+		default: GivePlayerOwnedWeapon(playerid, weaponid, bullets);
 	}
 	if (bullets > 1)
 	{

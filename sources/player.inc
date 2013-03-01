@@ -555,6 +555,7 @@ stock player_save_db_ini(playerid)
 	new file_player = (!ini_Exist(filename_player)) ? ini_Create(filename_player) : ini_Open(filename_player);
 	ini_Set(file_player, "Name", playername);
 	ini_Set(file_player, "Gang", GetPlayerGangName(playerid));
+	ini_SetFloat(file_player, "Armour", oGetPlayerArmour(playerid));
 	ini_SetInt(file_player, "Level", GetPlayerLevel(playerid));
 	ini_SetInt(file_player, "XP", GetPlayerXP(playerid));
 	ini_SetInt(file_player, "Money", oGetPlayerMoney(playerid));
@@ -612,7 +613,10 @@ stock player_load_db_ini(playerid)
 		return 1;
 	}
 	new file_player = ini_Open(filename_player);
-	new buf, s_buf[MAX_STRING];
+	new buf, s_buf[MAX_STRING], Float:f_buf;
+	
+	ini_GetFloat(file_player, "Armour", f_buf);
+	oSetPlayerArmour(playerid, f_buf);
 	
     ini_GetInt(file_player, "Level", buf);
 	SetPlayerLevel(playerid, buf);
