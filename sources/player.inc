@@ -197,6 +197,11 @@ stock player_OnPlayerSpawn(playerid)
 	new house_id = GetPlayerSpawnHouseID(playerid);
 	SetPlayerInterior(playerid, 0);
 	
+	if (house_id >= 0 && strcmp(oGetPlayerName(playerid), Houses[house_id][Houses_Owner], true))
+	{
+		house_id = SPAWN_HOUSE_NONE;
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[8][60]);
+	}
 	if (house_id == SPAWN_HOUSE_NONE)
 	{
 		if (GetPVarFloat(playerid, "Coord_X") != 0.0 && GetPVarFloat(playerid, "Coord_Y") != 0.0 && GetPVarFloat(playerid, "Coord_Z") != 0.0)
@@ -226,8 +231,8 @@ stock player_OnPlayerSpawn(playerid)
 		new gang_houseid = gang_GetHouse(gangid);
 		if (gangid == 0 || gang_houseid == -1)
 		{
-			house_id = -1;
-			SetPlayerSpawnHouseID(playerid,-1);
+			house_id = SPAWN_HOUSE_NONE;
+			SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 		}
 		else
 		{
