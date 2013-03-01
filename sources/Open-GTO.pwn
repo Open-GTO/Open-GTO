@@ -182,6 +182,7 @@ public OnGameModeInit()
 	quidemsys_OnGameModeInit();
 	lottery_OnGameModeInit();
 	swagup_OnGameModeInit();
+	vip_OnGameModeInit();
 	//
 	level_OnGameModeInit();
 	antiidle_OnGameModeInit();
@@ -360,6 +361,7 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 	aah_OnPlayerPickUpPickup(playerid, pickupid);
 	awh_OnPlayerPickUpPickup(playerid, pickupid);
 	swagup_OnPlayerPickUpPickup(playerid, pickupid);
+	vip_OnPlayerPickUpPickup(playerid, pickupid);
 	return 1;
 }
 
