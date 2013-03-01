@@ -170,7 +170,7 @@ stock SendPlayerOwnedWeapons(playerid)
 stock SetWeaponsFromDBString(playerid,dbstring[])
 {
 	new idx = 0;
-	for (new i = 0;i < PLAYER_WEAPON_SLOTS; i++)
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
 	{
 		PlayerWeapons[playerid][i][pwid] = strval( strcharsplit(dbstring, idx, '/') );
 		PlayerWeapons[playerid][i][pbullets] = strval( strcharsplit(dbstring, idx, '|') );
@@ -179,16 +179,10 @@ stock SetWeaponsFromDBString(playerid,dbstring[])
 // возвращает строку для сохранения оружия
 stock CreateWeaponDBString(playerid)
 {
-	new wepstr[MAX_STRING], temp[MAX_STRING];
+	new wepstr[MAX_STRING];
 	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
 	{
-		valstr(temp, PlayerWeapons[playerid][i][pwid]);
-		strins(wepstr, temp, strlen(wepstr));
-		wepstr[strlen(wepstr)] = '/';
-		
-		valstr(temp, PlayerWeapons[playerid][i][pbullets]);
-		strins(wepstr, temp, strlen(wepstr));
-		wepstr[strlen(wepstr)] = '|';
+		format(wepstr, sizeof(wepstr), "%s%d/%d|", wepstr, PlayerWeapons[playerid][i][pwid], PlayerWeapons[playerid][i][pbullets]);
 	}
 	return wepstr;
 }
@@ -221,16 +215,10 @@ stock SetPSWFromDBString(dbstring[])
 // возвращает строку для сохранения стартового оружия
 stock CreatePSWDBString()
 {
-	new wepstr[MAX_STRING],temp[MAX_STRING];
+	new wepstr[MAX_STRING];
 	for (new i = 0; i < sizeof(PlayerStartWeapon); i++)
 	{
-		valstr(temp, PlayerStartWeapon[i][psw_id]);
-		strins(wepstr, temp, strlen(wepstr));
-		wepstr[strlen(wepstr)] = '/';
-		
-		valstr(temp, PlayerStartWeapon[i][psw_bull]);
-		strins(wepstr, temp, strlen(wepstr));
-		wepstr[strlen(wepstr)] = '|';
+		format(wepstr, sizeof(wepstr), "%s%d/%d|", wepstr, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);
 	}
 	return wepstr;
 }

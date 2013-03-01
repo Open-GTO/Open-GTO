@@ -692,6 +692,7 @@ stock player_load_db_ini(playerid)
 
 	ini_Get(file_player, "Weapons", s_buf);
 	SetWeaponsFromDBString(playerid, s_buf);
+	
 	ini_Get(file_player, "WeaponsSkills", s_buf);
 	SetWeaponsSkillsFromDBString(playerid, s_buf);
 	

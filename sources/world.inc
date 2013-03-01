@@ -176,6 +176,7 @@ public FiveSecondTimer()
 {
 	foreach (Player, playerid)
 	{
+		if (GetPVarInt(playerid, "Spawned") != 1) continue;
 		SyncPlayerWeapons(playerid);
 	}
 	CheckAllGround();
