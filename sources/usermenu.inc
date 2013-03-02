@@ -267,7 +267,8 @@ stock show_Gang_Menu(playerid)
 				"Пригласить игрока\n\
 				Выгнать игрока\n\
 				Изменить цвет\n\
-				Изменить объявление\n",
+				Изменить объявление\n\
+				Повысить звание",
 				sizeof(string)
 			);
 		}
@@ -328,7 +329,7 @@ stock show_GangKick_Menu(gangid, playerid)
 		{
 			continue;
 		}
-		if (GangMemberInfo[gangid][gangmember][member_online] == true)
+		if (gang_IsPlayerConnect(gangid, gangmember))
 		{
 			format(members, sizeof(members),
 				"%s{AFAFAF}%02d\t{33AA33}%s\t{AFAFAF}ID: {FFFFFF}%d\t{AFAFAF}Уровень: {FFFFFF}%d\n",
@@ -962,7 +963,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 							{
 								continue;
 							}
-							if (GangMemberInfo[gangid][gangmember][member_online] == true)
+							if (gang_IsPlayerConnect(gangid, gangmember))
 							{
 								format(members, sizeof(members),
 									"%s   {AFAFAF}%02d\t{33AA33}%s\t{AFAFAF}ID: {FFFFFF}%d\t{AFAFAF}Уровень: {FFFFFF}%d\n",
