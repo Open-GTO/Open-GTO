@@ -261,10 +261,11 @@ stock show_Gang_Menu(playerid)
 			Выйти из банды\n",
 			sizeof(string)
 		);
-		if (!strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
+		if (gang_IsLeader(playerid))
 		{
 			strcat(string,
 				"Пригласить игрока\n\
+				Выгнать игрока\n\
 				Изменить цвет\n\
 				Изменить объявление\n",
 				sizeof(string)
@@ -315,6 +316,40 @@ stock show_GangInvite_Menu(playerid)
 		"Приглашение игрока",
 		"Введите ID игрока, которого вы хотите пригласить",
 		"ОК", "Назад"
+	);
+}
+
+stock show_GangKick_Menu(gangid, playerid)
+{					
+	new members[64 * MAX_GANG_SIZE];
+	for (new gangmember = 0; gangmember < MAX_GANG_SIZE; gangmember++)
+	{
+		if (strlen(GangMemberInfo[gangid][gangmember][member_name]) <= 0)
+		{
+			continue;
+		}
+		if (GangMemberInfo[gangid][gangmember][member_online] == true)
+		{
+			format(members, sizeof(members),
+				"%s{AFAFAF}%02d\t{33AA33}%s\t{AFAFAF}ID: {FFFFFF}%d\t{AFAFAF}Уровень: {FFFFFF}%d\n",
+				members,
+				gangmember,
+				GangMemberInfo[gangid][gangmember][member_name],
+				GangMemberInfo[gangid][gangmember][member_playerid],
+				GetPlayerLevel(GangMemberInfo[gangid][gangmember][member_playerid])
+			);
+		}
+		else
+		{
+			format(members, sizeof(members), "%s{AFAFAF}%02d\t{AA3333}%s\n",
+				members, gangmember, GangMemberInfo[gangid][gangmember][member_name]
+			);
+		}
+	}
+	return ShowPlayerDialog(playerid, gang_kick_menu_DialogID, DIALOG_STYLE_INPUT,
+		"Выгнать игрока",
+		members,
+		"Выгнать", "Назад"
 	);
 }
 
@@ -961,30 +996,32 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						show_User_Menu_Dialog(playerid, "Информация о банде", string);
 						return 1;
 					}
-					case 1: // положить деньги в банк банды
-					{
-						show_GangWMoney_Menu(playerid);
-						return 1;
-					}
-					case 2: // выйти из банды
+					case 1: // выйти из банды
 					{
 						GangRemoveMember(gangid, oGetPlayerName(playerid));
 						return 1;
 					}
-					case 3: // пригласить игрока
+					case 2: // пригласить игрока
 					{
-						// если не лидер
-						if (strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
+						if (!gang_IsLeader(playerid))
 						{
 							return 0;
 						}
 						show_GangInvite_Menu(playerid);
 						return 1;
 					}
+					case 3: // выгнать игрока
+					{
+						if (!gang_IsLeader(playerid))
+						{
+							return 0;
+						}
+						show_GangKick_Menu(gangid, playerid);
+						return 1;
+					}
 					case 4: // изменить цвет
 					{
-						// если не лидер
-						if (strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
+						if (!gang_IsLeader(playerid))
 						{
 							return 0;
 						}
@@ -993,22 +1030,11 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					case 5: // изменить объявление
 					{
-						// если не лидер
-						if (strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
+						if (!gang_IsLeader(playerid))
 						{
 							return 0;
 						}
 						show_MOTD_Menu(playerid);
-						return 1;
-					}
-					case 6: // взять деньги из банка банды
-					{
-						// если не лидер
-						if (strcmp(GangMemberInfo[gangid][0][member_name], oGetPlayerName(playerid), false))
-						{
-							return 0;
-						}
-						show_GangDMoney_Menu(playerid);
 						return 1;
 					}
 				}
@@ -1034,12 +1060,13 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						show_User_Menu_Dialog(playerid, "Создание банды", string);
 						return 1;
 					}
-					if (strlen(inputtext) == 0)
+					new len = strlen(inputtext);
+					if (len == 0)
 					{
 						show_User_Menu_Dialog(playerid, "Создание банды", "Вы не ввели имя");
 						return 1;
 					}
-					if (strlen(inputtext) > MAX_GANG_NAME_LEN || strlen(inputtext) < MIN_GANG_NAME_LEN)
+					if (len > MAX_GANG_NAME_LEN || len < MIN_GANG_NAME_LEN)
 					{
 						show_User_Menu_Dialog(playerid, "Создание банды", lang_texts[6][39]);
 						return 1;
@@ -1129,6 +1156,20 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
    			show_User_Menu_Dialog(playerid, "Приглашение в банду", string);
    			
 			GameMSG("player: %d:  %s: has invited %s to join gang '%s'.", playerid, oGetPlayerName(playerid), oGetPlayerName(inviteid), Gangs[gangid][gang_name]);
+			return 1;
+		}
+		case gang_kick_menu_DialogID:
+		{
+			if (!response)
+			{
+				return show_Gang_Menu(playerid);
+			}
+			new gangid = GetPlayerGangID(playerid);
+			GangRemoveMember(gangid, GangMemberInfo[gangid][listitem][member_name]);
+			
+			new string[MAX_STRING];
+			format(string, sizeof(string), lang_texts[6][62], GangMemberInfo[gangid][listitem][member_name]);
+			show_User_Menu_Dialog(playerid, "Выгнать игрока", string);
 			return 1;
 		}
 		case gang_color_menu_DialogID:
