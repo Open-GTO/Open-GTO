@@ -258,7 +258,6 @@ stock show_Gang_Menu(playerid)
 	{
 		strcat(string,
 			"Информация о банде\n\
-			Положить деньги в банк банды\n\
 			Выйти из банды\n",
 			sizeof(string)
 		);
@@ -267,8 +266,7 @@ stock show_Gang_Menu(playerid)
 			strcat(string,
 				"Пригласить игрока\n\
 				Изменить цвет\n\
-				Изменить объявление\n\
-				Взять деньги из банка банды\n",
+				Изменить объявление\n",
 				sizeof(string)
 			);
 		}
@@ -354,24 +352,6 @@ stock show_MOTD_Menu(playerid)
 	return ShowPlayerDialog(playerid, gang_motd_menu_DialogID, DIALOG_STYLE_INPUT,
 		lang_texts[6][86],
 		string,
-		"ОК", "Назад"
-	);
-}
-
-stock show_GangWMoney_Menu(playerid)
-{
-	return ShowPlayerDialog(playerid, gang_wmoney_menu_DialogID, DIALOG_STYLE_INPUT,
-		"Банк банды",
-		"Введите количество денег, которое вы хотите положить в банк банды",
-		"ОК", "Назад"
-	);
-}
-
-stock show_GangDMoney_Menu(playerid)
-{
-	return ShowPlayerDialog(playerid, gang_dmoney_menu_DialogID, DIALOG_STYLE_INPUT,
-		"Банк банды",
-		"Введите количество денег, которое вы хотите забрать из банка банды",
 		"ОК", "Назад"
 	);
 }
@@ -968,12 +948,13 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						new string[MAX_STRING + sizeof(members)];
 						format(string, sizeof(string), "\
 							Убийства банды: %d\n\
+							Деньги банды: $%d\n\
 							Очки банды: %d\n\
 							XP банды: %d\n\
 							Уровень банды: %d\n\
 							Ваших онлайн: %d\n\n\
 							%s",
-							Gangs[gangid][gang_kills], Gangs[gangid][gang_score],
+							Gangs[gangid][gang_kills], Gangs[gangid][gang_money], Gangs[gangid][gang_score],
 							Gangs[gangid][gang_xp], Gangs[gangid][gang_level],
 							GangOnlineCount(gangid), members
 						);
@@ -1214,61 +1195,6 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			show_User_Menu_Dialog(playerid, lang_texts[6][86], string);
 			
 			format(string, sizeof(string), lang_texts[6][81], oGetPlayerName(playerid), playerid, Gangs[gangid][gang_motd]);
-			SendGangMessage(gangid, string, COLOUR_GANG);
-			return 1;
-		}
-		case gang_wmoney_menu_DialogID:
-		{
-			if (!response)
-			{
-				return show_Gang_Menu(playerid);
-			}
-			
-			new amount = strval(inputtext);
-   			if (amount <= 0)
-   			{
-				return show_User_Menu_Dialog(playerid, lang_texts[6][92], lang_texts[6][93]);
-			}
-			
-			if (oGetPlayerMoney(playerid) < amount)
-			{
-				return show_User_Menu_Dialog(playerid, lang_texts[6][92], lang_texts[6][94]);
-			}
-			
-			new gangid = GetPlayerGangID(playerid);
-			
-			oGivePlayerMoney(playerid, -amount);
-			Gangs[gangid][gang_money] += amount;
-			
-			new string[MAX_STRING];
-			format(string, sizeof(string), lang_texts[6][95], oGetPlayerName(playerid), playerid, amount);
-			SendGangMessage(gangid, string, COLOUR_GANG);
-			return 1;
-		}
-		case gang_dmoney_menu_DialogID:
-		{
-			if (!response)
-			{
-				return show_Gang_Menu(playerid);
-			}
-			
-			new amount = strval(inputtext);
-   			if (amount <= 0)
-   			{
-				return show_User_Menu_Dialog(playerid, lang_texts[6][92], lang_texts[6][93]);
-			}
-			
-			new gangid = GetPlayerGangID(playerid);
-			if (Gangs[gangid][gang_money] < amount)
-			{
-				return show_User_Menu_Dialog(playerid, lang_texts[6][92], lang_texts[6][94]);
-			}
-			
-			oGivePlayerMoney(playerid, amount);
-			Gangs[gangid][gang_money] -= amount;
-			
-			new string[MAX_STRING];
-			format(string, sizeof(string), lang_texts[6][96], oGetPlayerName(playerid), playerid, amount);
 			SendGangMessage(gangid, string, COLOUR_GANG);
 			return 1;
 		}

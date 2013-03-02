@@ -28,8 +28,8 @@ stock BankLoadConfig()
 {
 	if (!ini_Exist(ConfigDB)) return 0;
 	new file_bank = ini_Open(ConfigDB);
-    ini_GetInt(file_bank, "BANK_ProfitCount", ProfitCount);
-    ini_GetInt(file_bank, "BANK_MAX_MONEY", MAX_BANK);
+    ini_GetInt(file_bank, "Bank_ProfitCount", ProfitCount);
+    ini_GetInt(file_bank, "Bank_MAX_MONEY", MAX_BANK);
 	ini_Close(file_bank);
 	return 1;
 }
@@ -37,8 +37,8 @@ stock BankLoadConfig()
 stock BankSaveConfig()
 {
 	new file_bank = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_bank, "BANK_ProfitCount", ProfitCount);
-	ini_SetInt(file_bank, "BANK_MAX_MONEY", MAX_BANK);
+	ini_SetInt(file_bank, "Bank_ProfitCount", ProfitCount);
+	ini_SetInt(file_bank, "Bank_MAX_MONEY", MAX_BANK);
 	ini_Close(file_bank);
 	return 1;
 }
@@ -79,18 +79,21 @@ stock bank_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			{
 				case 0: bank_ShowDialog_Withdraw(playerid);
 				case 1: bank_ShowDialog_Deposit(playerid);
+				case 2: show_GangWMoney_Menu(playerid);
+				case 3: show_GangDMoney_Menu(playerid);
 			}
 			return 1;
 		}
 		case bank_Withdraw_DialogID: // снять деньги
 		{
 			if (!response) return bank_ShowDialog_List(playerid);
-			if (!IsNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
+			
+			new amount = strval(inputtext);
+			if (amount <= 0 || strlen(inputtext) == 0 || !IsNumeric(inputtext))
 			{
 				show_Msg_Dialog(playerid, lang_texts[2][3], lang_texts[2][13], lang_texts[2][5]);
 				return 0;
 			}
-			new amount = strval(inputtext);
 			if (amount > GetPlayerBankMoney(playerid))
 			{
 				amount = GetPlayerBankMoney(playerid);
@@ -106,12 +109,13 @@ stock bank_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		case bank_Deposit_DialogID: // положить деньги
 		{
 			if (!response) return bank_ShowDialog_List(playerid);
-			if (!IsNumeric(inputtext) || strlen(inputtext) <= 0 || strval(inputtext) < 0)
+			
+			new amount = strval(inputtext);
+			if (amount <= 0 || strlen(inputtext) == 0 || !IsNumeric(inputtext))
 			{
 				show_Msg_Dialog(playerid, lang_texts[2][3], lang_texts[2][13], lang_texts[2][5]);
 				return 0;
 			}
-			new amount = strval(inputtext);
 			if (oGetPlayerMoney(playerid) < amount)
 			{
 				amount = oGetPlayerMoney(playerid);
@@ -127,6 +131,61 @@ stock bank_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			format(string, sizeof(string), lang_texts[2][14], amount, GetPlayerBankMoney(playerid));
 			show_Msg_Dialog(playerid, lang_texts[2][3], string, lang_texts[2][5]);
 			PlayerPlaySoundOnPlayer(playerid, 1084);
+			return 1;
+		}
+		case gang_wmoney_menu_DialogID:
+		{
+			if (!response)
+			{
+				return bank_ShowDialog_List(playerid);
+			}
+			
+			new amount = strval(inputtext);
+   			if (amount <= 0 || strlen(inputtext) == 0 || !IsNumeric(inputtext))
+   			{
+				return show_Msg_Dialog(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][93]);
+			}
+			
+			if (oGetPlayerMoney(playerid) < amount)
+			{
+				return show_Msg_Dialog(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][94]);
+			}
+			
+			new gangid = GetPlayerGangID(playerid);
+			
+			oGivePlayerMoney(playerid, -amount);
+			GiveGangMoney(gangid, amount);
+			
+			new string[MAX_STRING];
+			format(string, sizeof(string), lang_texts[6][95], oGetPlayerName(playerid), playerid, amount);
+			SendGangMessage(gangid, string, COLOUR_GANG);
+			return 1;
+		}
+		case gang_dmoney_menu_DialogID:
+		{
+			if (!response)
+			{
+				return bank_ShowDialog_List(playerid);
+			}
+			
+			new amount = strval(inputtext);
+   			if (amount <= 0 || strlen(inputtext) == 0 || !IsNumeric(inputtext))
+   			{
+				return show_Msg_Dialog(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][93]);
+			}
+			
+			new gangid = GetPlayerGangID(playerid);
+			if (GetGangMoney(gangid) < amount)
+			{
+				return show_Msg_Dialog(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][94]);
+			}
+			
+			oGivePlayerMoney(playerid, amount);
+			GiveGangMoney(gangid, -amount);
+			
+			new string[MAX_STRING];
+			format(string, sizeof(string), lang_texts[6][96], oGetPlayerName(playerid), playerid, amount);
+			SendGangMessage(gangid, string, COLOUR_GANG);
 			return 1;
 		}
 	}
@@ -146,11 +205,22 @@ stock bank_ShowDialog_Start(playerid)
 
 stock bank_ShowDialog_List(playerid)
 {
-	new string[64];
-	format(string, sizeof(string), lang_texts[2][3], GetPlayerBankMoney(playerid));
+	new string[MAX_STRING];
+	set(string, lang_texts[2][4]);
+  	
+	if (GetPlayerGangID(playerid) != 0)
+	{
+		strcat(string, lang_texts[2][20], sizeof(string));
+		
+		if (gang_IsLeader(playerid))
+		{
+			strcat(string, lang_texts[2][21], sizeof(string));
+		}
+	}
+	
 	return ShowPlayerDialog(playerid, bank_FirstList_DialogID, DIALOG_STYLE_LIST,
+		lang_texts[2][3],
 		string,
-		lang_texts[2][4],
 		lang_texts[2][5], lang_texts[2][6]
 	);
 }
@@ -174,6 +244,24 @@ stock bank_ShowDialog_Deposit(playerid)
 		lang_texts[2][3],
 		string,
 		lang_texts[2][11], lang_texts[2][12]
+	);
+}
+
+stock show_GangWMoney_Menu(playerid)
+{
+	return ShowPlayerDialog(playerid, gang_wmoney_menu_DialogID, DIALOG_STYLE_INPUT,
+		lang_texts[2][23],
+		lang_texts[2][28],
+		lang_texts[2][5], lang_texts[2][6]
+	);
+}
+
+stock show_GangDMoney_Menu(playerid)
+{
+	return ShowPlayerDialog(playerid, gang_dmoney_menu_DialogID, DIALOG_STYLE_INPUT,
+		lang_texts[2][23],
+		lang_texts[2][29],
+		lang_texts[2][5], lang_texts[2][6]
 	);
 }
 

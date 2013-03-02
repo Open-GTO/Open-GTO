@@ -62,7 +62,7 @@ stock GetPlayerGangName(playerid)
 }
 #define SetPlayerGangName(%0,%1) SetPVarString(%0, "GangName",%1)
 
-#define GetPlayerGangID(%0) GetPVarInt(%0, "GangID")
+stock GetPlayerGangID(playerid) return GetPVarInt(playerid, "GangID");
 #define SetPlayerGangID(%0,%1) SetPVarInt(%0, "GangID",%1)
 
 #define GetPlayerQuestID(%0) GetPVarInt(%0, "PlayerQuest")

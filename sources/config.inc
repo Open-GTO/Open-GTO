@@ -191,8 +191,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 	
 //
 // при смерти
-#define PLAYER_XP_DEATH_MINUS_PROC		3 // сколько процентов XP уберается от уже имеющегося опыта
-#define PLAYER_MONEY_DEATH_MINUS_PROC	20 // сколько процентов денег уберается
+#define PLAYER_XP_DEATH_MINUS_PROC		3 // сколько процентов XP убирается от уже имеющегося опыта
+#define PLAYER_MONEY_DEATH_MINUS_PROC	20 // сколько процентов денег убирается
 #define PLAYER_XP_KILL_TARIF			5 // отвечает за количество получаемого опыта при убийстве, подробнее в функции player_OnPlayerKill
 
 // стартовые параметры игрока

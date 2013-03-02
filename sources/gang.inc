@@ -207,6 +207,8 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 			}
 	  		format(string, sizeof(string), lang_texts[6][26], Gangs[gangid][gang_kills]);
 			SendClientMessage(playerid, COLOUR_MISC, string);
+	  		format(string, sizeof(string), lang_texts[6][40], Gangs[gangid][gang_money]);
+			SendClientMessage(playerid, COLOUR_MISC, string);
 			format(string, sizeof(string), lang_texts[6][27], Gangs[gangid][gang_score]);
 			SendClientMessage(playerid, COLOUR_MISC, string);
 			format(string, sizeof(string), lang_texts[6][82], Gangs[gangid][gang_xp]);
@@ -485,56 +487,6 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 				set(Gangs[gangid][gang_motd], text[idx+1]);
 				new string[MAX_STRING];
 				format(string, sizeof(string), lang_texts[6][81], oGetPlayerName(playerid), playerid, Gangs[gangid][gang_motd]);
-				SendGangMessage(gangid, string, COLOUR_GANG);
-			}
-			return 1;
-  		}
-  		if (!strcmp(cmd, "bank", true))
-  		{
-			new string[MAX_STRING];
-			string = strcharsplit(text, idx, ' ');
-			
-			if (!strcmp(string, "deposit", true))
-			{
-				new amount = strval( strcharsplit(text, idx, ' ') );
-				if (amount <= 0)
-				{
-					return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][93]);
-				}
-				
-				if (oGetPlayerMoney(playerid) < amount)
-				{
-					return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][94]);
-				}
-				
-				oGivePlayerMoney(playerid, -amount);
-				Gangs[gangid][gang_money] += amount;
-				
-				format(string, sizeof(string), lang_texts[6][95], oGetPlayerName(playerid), playerid, amount);
-				SendGangMessage(gangid, string, COLOUR_GANG);
-			}
-			else if (!strcmp(string, "withdraw", true))
-			{
-				if (!gang_IsLeader(playerid))
-				{
-					return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][93]);
-				}
-				
-				new amount = strval( strcharsplit(text, idx, ' ') );
-				if (amount <= 0)
-				{
-					return show_User_Menu_Dialog(playerid, lang_texts[6][92], lang_texts[6][93]);
-				}
-				
-				if (Gangs[gangid][gang_money] < amount)
-				{
-					return SendClientMessage(playerid, COLOUR_RED, lang_texts[6][94]);
-				}
-				
-				oGivePlayerMoney(playerid, amount);
-				Gangs[gangid][gang_money] -= amount;
-				
-				format(string, sizeof(string), lang_texts[6][96], oGetPlayerName(playerid), playerid, amount);
 				SendGangMessage(gangid, string, COLOUR_GANG);
 			}
 			return 1;
@@ -950,6 +902,16 @@ stock gang_GetHouse(gangid)
 	return Gangs[gangid][gang_house];
 }
 
+stock GiveGangMoney(gangid, amount)
+{
+	Gangs[gangid][gang_money] += amount;
+}
+
+stock GetGangMoney(gangid)
+{
+	return Gangs[gangid][gang_money];
+}
+
 // Gang Level
 new GangLevelList[] = {
 	0, // 0
@@ -1017,4 +979,5 @@ stock CheckGangLevel(gangid)
 {
 	return Gangs[gangid][gang_level] = CalculateGangLevel(gangid);
 }
+
 
