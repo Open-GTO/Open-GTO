@@ -48,7 +48,6 @@ stock SyncHealth(playerid)
 	if (clienthealth == serverhealth) return 1;
 	if (clienthealth < serverhealth) return SetPVarFloat(playerid,"Health",clienthealth);
 	if (clienthealth > serverhealth) return oSetPlayerHealth(playerid,serverhealth);
-	if (clienthealth < 0) return oSetPlayerHealth(playerid,0);
 	return 1;
 }
 
