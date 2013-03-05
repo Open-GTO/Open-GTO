@@ -157,7 +157,7 @@ stock bank_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			GiveGangMoney(gangid, amount);
 			
 			new string[MAX_STRING];
-			format(string, sizeof(string), lang_texts[6][95], oGetPlayerName(playerid), playerid, amount);
+			format(string, sizeof(string), lang_texts[2][26], oGetPlayerName(playerid), playerid, amount);
 			SendGangMessage(gangid, string, COLOUR_GANG);
 			return 1;
 		}
@@ -184,7 +184,7 @@ stock bank_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			GiveGangMoney(gangid, -amount);
 			
 			new string[MAX_STRING];
-			format(string, sizeof(string), lang_texts[6][96], oGetPlayerName(playerid), playerid, amount);
+			format(string, sizeof(string), lang_texts[2][27], oGetPlayerName(playerid), playerid, amount);
 			SendGangMessage(gangid, string, COLOUR_GANG);
 			return 1;
 		}
