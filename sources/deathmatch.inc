@@ -1058,12 +1058,12 @@ stock IsWeaponAllowedInDM(weaponid, dmid)
 		{
 			continue;
 		}
-		if (weaponid != Deathmatch[dmid][dm_weapons][i])
+		if (weaponid == Deathmatch[dmid][dm_weapons][i])
 		{
-			return 0;
+			return 1;
 		}
 	}
-	return 1;
+	return 0;
 }
 
 stock deathmatch_OnPlayerKill(playerid, victimid, weaponid)
