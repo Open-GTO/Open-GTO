@@ -254,7 +254,6 @@ stock player_OnPlayerSpawn(playerid)
 	GivePlayerOwnedWeapons(playerid);
 	oSetPlayerHealth(playerid, GetMaxHealth(playerid)); // set health based on level
 	weapon_SetSkills(playerid);
-	SetPlayerFightStyleUsed(playerid, GetPlayerFightStyle(playerid));
 	SetPlayerFightingStyle(playerid, GetPlayerFightStyleUsed(playerid));
 	PushHide(playerid);
 	return 1;
@@ -567,6 +566,7 @@ stock player_save_db_ini(playerid)
 	ini_SetInt(file_player, "Muted", GetPlayerMuted(playerid));
 	ini_SetInt(file_player, "MuteTime", GetPlayerMuteTime(playerid));
 	ini_SetInt(file_player, "FightStyle", GetPlayerFightStyle(playerid));
+    ini_SetInt(file_player, "FightStyleUsed", GetPlayerFightStyleUsed(playerid));
 	new Float:pos[4];
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 	GetPlayerFacingAngle(playerid, pos[3]);
@@ -650,6 +650,9 @@ stock player_load_db_ini(playerid)
 	
     ini_GetInt(file_player, "FightStyle", buf);
 	SetPlayerFightStyle(playerid, buf);
+	
+    ini_GetInt(file_player, "FightStyleUsed", buf);
+	SetPlayerFightStyleUsed(playerid, buf);
 	
 	buf=0;
 	ini_Get(file_player, "Coords", s_buf);
