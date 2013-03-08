@@ -963,6 +963,17 @@ stock SendPlayerCurrentDeathmatches(playerid)
 			}
 			SendClientMessage(playerid, GetDMColourForPlayer(playerid, dmid), string);
 		}
+		else if (DeathmatchStats[dmid][dm_state] == DM_STATE_COUNTDOWN)
+		{
+			if (dmfound == 0)
+			{
+				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[4][34]);
+				dmfound++;
+			}
+			
+			format(string, sizeof(string), lang_texts[4][42], Deathmatch[dmid][dm_name], dmid, Deathmatch[dmid][dm_maxtime] - DeathmatchStats[dmid][dm_timer] + MAX_COUNTDOWN, DeathmatchStats[dmid][dm_playercount], GetDMStartZoneName(dmid), Deathmatch[dmid][dm_minlevel], Deathmatch[dmid][dm_cashentry]);
+			SendClientMessage(playerid, GetDMColourForPlayer(playerid, dmid), string);
+		}
 		else if (DeathmatchStats[dmid][dm_state] == DM_STATE_ACTIVE)
 		{
 			if (dmfound == 0)
@@ -974,19 +985,13 @@ stock SendPlayerCurrentDeathmatches(playerid)
 			format(string, sizeof(string), lang_texts[4][42], Deathmatch[dmid][dm_name], dmid, Deathmatch[dmid][dm_maxtime] - DeathmatchStats[dmid][dm_timer], DeathmatchStats[dmid][dm_playercount], GetDMStartZoneName(dmid), Deathmatch[dmid][dm_minlevel], Deathmatch[dmid][dm_cashentry]);
 			SendClientMessage(playerid, GetDMColourForPlayer(playerid, dmid), string);
 		}
-		else if (DeathmatchStats[dmid][dm_state] == DM_STATE_COUNTDOWN)
+		else if (IsPlayerAdm(playerid))
 		{
 			if (dmfound == 0)
 			{
 				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[4][34]);
 				dmfound++;
 			}
-			
-			format(string, sizeof(string), lang_texts[4][35], Deathmatch[dmid][dm_name], dmid, MAX_COUNTDOWN - DeathmatchStats[dmid][dm_timer], DeathmatchStats[dmid][dm_playercount], GetDMStartZoneName(dmid), Deathmatch[dmid][dm_minlevel], Deathmatch[dmid][dm_cashentry]);
-			SendClientMessage(playerid, GetDMColourForPlayer(playerid, dmid), string);
-		}
-		else if (IsPlayerAdm(playerid))
-		{
 			if (strlen(Deathmatch[dmid][dm_name]) > 0)
 			{
 				format(string, sizeof(string), lang_texts[4][37], Deathmatch[dmid][dm_name], dmid);

@@ -717,7 +717,6 @@ stock GetRaceColourForPlayer(playerid, raceid)
 
 stock SendPlayerCurrentRaces(playerid)
 {
-	if (!IsPlayerConnected(playerid)) return 1;
 	new string[MAX_STRING], racefound;
 	for (new raceid = 1; raceid <= RacesCount; raceid++)
 	{
@@ -738,8 +737,33 @@ stock SendPlayerCurrentRaces(playerid)
 			}
 			SendClientMessage(playerid, GetRaceColourForPlayer(playerid, raceid), string);
 		}
-		else if (IsPlayerRconAdmin(playerid))
+		else if (RaceStats[raceid][race_state] == RACE_STATE_COUNTDOWN)
 		{
+			if (racefound == 0)
+			{
+				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[10][39]);
+				racefound++;
+			}
+			format(string, sizeof(string), lang_texts[10][6], Race[raceid][race_name], raceid, Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer] + MAX_COUNTDOWN, RaceStats[raceid][race_racercount], GetRaceCPZoneName(raceid, 0), Race[raceid][race_minlevel], Race[raceid][race_cashentry]);
+			SendClientMessage(playerid, GetRaceColourForPlayer(playerid, raceid), string);
+		}
+		else if (RaceStats[raceid][race_state] == RACE_STATE_RACING)
+		{
+			if (racefound == 0)
+			{
+				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[10][39]);
+				racefound++;
+			}
+			format(string, sizeof(string), lang_texts[10][6], Race[raceid][race_name], raceid, Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer], RaceStats[raceid][race_racercount], GetRaceCPZoneName(raceid, 0), Race[raceid][race_minlevel], Race[raceid][race_cashentry]);
+			SendClientMessage(playerid, GetRaceColourForPlayer(playerid, raceid), string);
+		}
+		else if (IsPlayerAdm(playerid))
+		{
+			if (racefound == 0)
+			{
+				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[10][39]);
+				racefound++;
+			}
 			if (strlen(Race[raceid][race_name]) > 0)
 			{
 				format(string, sizeof(string), lang_texts[10][42], Race[raceid][race_name], raceid);
