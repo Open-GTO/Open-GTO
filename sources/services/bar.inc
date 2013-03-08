@@ -33,7 +33,8 @@ new Drinks[][DrinkInfo] = {
 	{"Водка Зелёная марка", 100, 30.0, 40.0, SPECIAL_ACTION_DRINK_SPRUNK},
 	{"Пиво Жигулёвское", 30, 10.0, 4.5, SPECIAL_ACTION_DRINK_BEER},
 	{"Глинтвейн", 30, 10.0, 10.0, SPECIAL_ACTION_DRINK_WINE},
-	{"Чай с лимоном и сахаром", 15, 10.0, -20.0, SPECIAL_ACTION_DRINK_SPRUNK}
+	{"Чай с лимоном и сахаром", 15, 10.0, -20.0, SPECIAL_ACTION_DRINK_SPRUNK},
+	{"Крепкая папироса", 15, 5.0, 2.0, SPECIAL_ACTION_SMOKE_CIGGY}
 };
 
 stock bar_OnGameModeInit()
@@ -49,17 +50,23 @@ stock bar_OnGameModeInit()
 
 stock bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	#pragma unused oldkeys, newkeys
 	if ( PRESSED ( KEY_USING ) )
 	{
 		return bar_ShowDialog(playerid);
 	}
-	if (GetPVarInt(playerid, "bar_Drinking") == 1 && GetPVarInt(playerid, "bar_Gulping") == 0)
+	else if ( PRESSED ( KEY_FIRE ) )
 	{
-		GivePVarInt(playerid, "bar_Gulps", 1);
-		SetPVarInt(playerid, "bar_Gulping", 1);
-		SetTimerEx("bar_Gulp", 2000, 0, "d", playerid);
-		return 1;
+		if (GetPVarInt(playerid, "bar_Drinking") == 1 && GetPVarInt(playerid, "bar_Gulping") == 0)
+		{
+			GivePVarInt(playerid, "bar_Gulps", 1);
+			SetPVarInt(playerid, "bar_Gulping", 1);
+			SetTimerEx("bar_Gulp", 2000, 0, "d", playerid);
+			return 1;
+		}
+	}
+	else if ( PRESSED ( KEY_SECONDARY_ATTACK ) )
+	{
+		bar_GulpStop(playerid);
 	}
 	return 1;
 }
@@ -69,10 +76,7 @@ public bar_Gulp(playerid)
 {
 	if (GetPVarInt(playerid, "bar_Gulps") >= MAX_GULPS)
 	{
-		SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
-		SetPVarInt(playerid, "bar_Drinking", 0);
-		SetPVarInt(playerid, "bar_Gulps", 0);
-		SetPVarInt(playerid, "bar_Gulping", 0);
+		bar_GulpStop(playerid);
 	}
 	SetPVarInt(playerid, "bar_Gulping", 0);
 	return 1;
@@ -125,6 +129,25 @@ stock bar_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		show_Msg_Dialog(playerid, lang_texts[17][14], string, lang_texts[17][18]);
 		return 1;
 	}
+	return 1;
+}
+
+stock bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
+{
+	#pragma unused vehicleid
+	if (ispassenger)
+	{
+		bar_GulpStop(playerid);
+	}
+	return 1;
+}
+
+stock bar_GulpStop(playerid)
+{
+	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
+	SetPVarInt(playerid, "bar_Drinking", 0);
+	SetPVarInt(playerid, "bar_Gulps", 0);
+	SetPVarInt(playerid, "bar_Gulping", 0);
 	return 1;
 }
 

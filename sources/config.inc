@@ -75,7 +75,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define QUIDEMSYS_FUEL_TARIF	1 // цена одного литра бензина, в долларах
 
 // прочее
-#define MAX_GULPS			5 // максимальное количество глотков из бутылки
+#define MAX_GULPS			3 // максимальное количество глотков из бутылки
 
 // поклажи
 #define SWAGUP_ENABLED		1 // включена-ли система поклаж
@@ -199,7 +199,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define FIRST_LEVEL				1 // уровень, который даётся игроку после регистрации
 #define PLAYER_START_MONEY		1500 // кол-во стартовых денег
 
-#define MAX_COUNTDOWN		5 // кол-во секунд для отсчёта гонок и дм
+#define MAX_COUNTDOWN		3 // кол-во секунд для отсчёта гонок и дм
 #define KEY_USING			KEY_WALK // Кнопка 'Ходьба' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
 #define KEY_NAME			"Ходьба"
 #define PICKUP_TEXT			"\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'"

@@ -670,7 +670,7 @@ public OnPlayerUpdate(playerid)
 
 public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	if ( PRESSED( KEY_FIRE ) )
+	if ( PRESSED( KEY_FIRE ) || PRESSED ( KEY_SECONDARY_ATTACK ) )
 	{
 		if ( GetPVarInt(playerid, "bar_Drinking") == 1 ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 	}
@@ -765,6 +765,7 @@ public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
 	modfunc_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
+	bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
 	return 1;
 }
 
