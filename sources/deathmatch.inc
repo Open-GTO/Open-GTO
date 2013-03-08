@@ -371,11 +371,10 @@ stock CheckDM() // must be ran by timer every second
 				if (DeathmatchStats[dmid][dm_playercount] > 0)
 				{
 					new dmcountdown = Deathmatch[dmid][dm_lineupdelay] - DeathmatchStats[dmid][dm_timer];
-					if ((dmcountdown == 5) || (dmcountdown == 10) || (dmcountdown == 20) || (dmcountdown == 30) || (dmcountdown == 45) || (dmcountdown == 60) || (dmcountdown == 90))
+					if (dmcountdown % 10 == 0 || dmcountdown <= 5)
 					{
-						format(string, sizeof(string),  lang_texts[4][1] , (Deathmatch[dmid][dm_lineupdelay] - DeathmatchStats[dmid][dm_timer]));
+						format(string, sizeof(string),  lang_texts[4][1], dmcountdown);
 						SendMessageToDMPlayers(dmid, string, COLOUR_DM);
-						
 					}
 				}
 			}
@@ -512,7 +511,7 @@ stock StartDMLineup(dmid)
 
 stock StartDMCountdown(dmid)
 {
-	DeathmatchStats[dmid][dm_timer]=0;
+	DeathmatchStats[dmid][dm_timer] = 0;
 	new string[MAX_STRING];
 	foreach (Player, playerid)
 	{
@@ -1203,11 +1202,8 @@ stock dm_OnPlayerEnterCheckpoint(playerid)
 
 stock dm_OnPlayerCommandText(playerid, text[]) // process player commands
 {
-	new cmd[20];
-	new idx;
-	//new string[MAX_STRING];
-
-	cmd = strcharsplit(text, idx,' ');
+	new cmd[20], idx;
+	cmd = strcharsplit(text, idx, ' ');
 	if (strlen(cmd) == 0) return 0;
 
 	if (!strcmp(cmd, "/deathmatches", true) || !strcmp(cmd, "/dms", true))
@@ -1279,12 +1275,10 @@ stock dm_OnPlayerCommandText(playerid, text[]) // process player commands
 
 stock DMEncodeWeaponsDB(dmid)
 {
-	new retstr[MAX_STRING], temp[10];
+	new retstr[MAX_STRING];
 	for (new i = 0; i < MAX_DMWEAPONS; i++)
 	{
-		valstr(temp, Deathmatch[dmid][dm_weapons][i]);
-		strins(retstr, temp, strlen(retstr));
-		retstr[strlen(retstr)] = '/';
+		format(retstr, sizeof(retstr), "%s%d/", retstr, Deathmatch[dmid][dm_weapons][i]);
 	}
 	return retstr;
 }
