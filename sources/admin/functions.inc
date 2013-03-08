@@ -242,53 +242,47 @@ stock PushHide(playerid)
 	return 1;
 }
 
-stock MuteCheck()
+stock MutePlayerCheck(playerid)
 {
-	new string[MAX_STRING];
-	foreach (Player, i)
+	new string[MAX_STRING],
+		mute_time = GetPlayerMuteTime(playerid);
+	
+	if (mute_time > 0)
 	{
-		new mute_time = GetPlayerMuteTime(i);
-		if (mute_time > 0)
-		{
-			mute_time--;
-			SetPlayerMuteTime(i, mute_time);
-		    if (mute_time <= 0)
-		    {
-				format(string, sizeof(string), lang_texts[13][54], oGetPlayerName(i), i);
-				SendClientMessageToAll(COLOUR_YELLOW, string);
-			}
+		mute_time--;
+		SetPlayerMuteTime(playerid, mute_time);
+	    if (mute_time <= 0)
+	    {
+			format(string, sizeof(string), lang_texts[13][54], oGetPlayerName(playerid), playerid);
+			SendClientMessageToAll(COLOUR_YELLOW, string);
 		}
 	}
 }
 
-stock JailTimer()
+stock JailPlayerCheck(playerid)
 {
 	new string[MAX_STRING];
-	foreach (Player, i)
+	new jail_time = GetPlayerJailTime(playerid);
+	
+	if (jail_time == -1)
 	{
-		new jail_time = GetPlayerJailTime(i);
-		
-		if (jail_time == -1)
+		continue;
+	}
+	SetPlayerWantedLevel(playerid, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
+	
+	if (jail_time >= 1 && jail_time <= 4320)
+	{
+		jail_time--;
+		SetPlayerJailTime(playerid, jail_time);
+		if (jail_time <= 0)
 		{
-			continue;
+			UnJailPlayer(playerid);
+			GameMSG(lang_texts[13][55], oGetPlayerName(playerid));
 		}
-		
-		SetPlayerWantedLevel(i, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
-		
-		if (jail_time >= 1 && jail_time <= 4320)
+		else
 		{
-			jail_time--;
-			SetPlayerJailTime(i, jail_time);
-			if (jail_time <= 0)
-			{
-				UnJailPlayer(i);
-				GameMSG(lang_texts[13][55], oGetPlayerName(i));
-			}
-			else
-			{
-				format(string, sizeof(string), lang_texts[13][56], jail_time);
-				SendClientMessage(i, COLOUR_LIGHTRED, string);
-			}
+			format(string, sizeof(string), lang_texts[13][56], jail_time);
+			SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 		}
 	}
 	return 1;

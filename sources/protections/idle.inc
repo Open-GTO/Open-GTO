@@ -1,6 +1,6 @@
 /*
 
-	Aurthor:    Iain Gilbert
+	Aurthor:	Iain Gilbert
 	Modified by ZiGGi
 
 */
@@ -43,40 +43,37 @@ stock antiidle_OnGameModeInit()
 	return 1;
 }
 
-stock AntiIdle()
+stock AntiIdlePlayerCheck(playerid)
 {
 	if (AntiIdleEnabled != 1) return 0;
-    new Float:pos[3], string[MAX_STRING];
-	foreach (Player, playerid)
+	new Float:pos[3], string[MAX_STRING];
+	if (!IsPlayerRconAdmin(playerid) && Groundhold_Enabled == 1 && IsPlayerInAnyGround(playerid))
 	{
-        if (!IsPlayerRconAdmin(playerid) && Groundhold_Enabled == 1 && IsPlayerInAnyGround(playerid))
+		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+		if (   pos[0] == GetPVarFloat(playerid, "playerIdlePos_X")
+			&& pos[1] == GetPVarFloat(playerid, "playerIdlePos_Y")
+			&& pos[2] == GetPVarFloat(playerid, "playerIdlePos_Z"))
 		{
-            GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-            if (   pos[0] == GetPVarFloat(playerid, "playerIdlePos_X")
-				&& pos[1] == GetPVarFloat(playerid, "playerIdlePos_Y")
-				&& pos[2] == GetPVarFloat(playerid, "playerIdlePos_Z"))
+			GivePVarInt(playerid, "playerIdle", 1);
+			if (GetPVarInt(playerid, "playerIdle") > MaxIdle-1)
 			{
-				GivePVarInt(playerid, "playerIdle", 1);
-                if (GetPVarInt(playerid, "playerIdle") > MaxIdle-1)
-				{
-					format(string, sizeof(string), lang_texts[11][1], MaxIdle-1);
-                    SendClientMessage(playerid, COLOUR_RED, string);
-					SendClientMessage(playerid, COLOUR_RED, lang_texts[11][2]);
-                }
-                if (GetPVarInt(playerid, "playerIdle") > MaxIdle)
-				{
-					SetPVarInt(playerid, "playerIdle", 0);
-					KickPlayer(playerid, lang_texts[11][3]);
-				}
+				format(string, sizeof(string), lang_texts[11][1], MaxIdle-1);
+				SendClientMessage(playerid, COLOUR_RED, string);
+				SendClientMessage(playerid, COLOUR_RED, lang_texts[11][2]);
 			}
-            else
+			if (GetPVarInt(playerid, "playerIdle") > MaxIdle)
 			{
 				SetPVarInt(playerid, "playerIdle", 0);
-            }
-			SetPVarFloat(playerid, "playerIdlePos_X", pos[0]);
-			SetPVarFloat(playerid, "playerIdlePos_Y", pos[1]);
-			SetPVarFloat(playerid, "playerIdlePos_Z", pos[2]);
-   		}
+				KickPlayer(playerid, lang_texts[11][3]);
+			}
+		}
+		else
+		{
+			SetPVarInt(playerid, "playerIdle", 0);
+		}
+		SetPVarFloat(playerid, "playerIdlePos_X", pos[0]);
+		SetPVarFloat(playerid, "playerIdlePos_Y", pos[1]);
+		SetPVarFloat(playerid, "playerIdlePos_Z", pos[2]);
    	}
    	return 1;
 }

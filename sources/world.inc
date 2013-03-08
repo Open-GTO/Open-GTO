@@ -146,13 +146,16 @@ public OneMinuteTimer()
 		{
 			SetPlayerSkydiveTime(playerid, GetPlayerSkydiveTime(playerid) - 1);
 		}
+		if (IsPlayerLogin(playerid))
+		{
+			JailPlayerCheck(playerid);
+			MutePlayerCheck(playerid);
+			AntiIdlePlayerCheck(playerid);
+		}
 	}
 	weather_WeatherUpdate();
 	SyncTime();
 	settime();
-	MuteCheck();
-	JailTimer();
-	AntiIdle();
 	TurnAround();
 }
 
