@@ -335,13 +335,11 @@ stock CheckRace() // must be ran by timer every second
 			{
 				if (RaceStats[raceid][race_racercount] > 0)
 				{
-					switch ( Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer] )
+					new racecountdown = Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer];
+					if (racecountdown % 10 == 0 || racecountdown <= 5)
 					{
-						case 5,10,2,30,45,60,90:
-						{
-							format(string, sizeof(string), lang_texts[10][7], (Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer]));
-							SendMessageToRacers(raceid, string, COLOUR_RACE);
-						}
+						format(string, sizeof(string), lang_texts[10][7], racecountdown);
+						SendMessageToRacers(raceid, string, COLOUR_RACE);
 					}
 				}
 			}
