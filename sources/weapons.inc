@@ -1,7 +1,7 @@
 /*
 	Created: 05.09.06
 	Aurthor: Iain Gilbert
-	Modified by ZiGGi
+	Modified by ziggi
 */
 
 
@@ -18,10 +18,10 @@
 #define MAX_BULLETS				2999
 
 new Ammunations[][CoordInfo] = {
-	{291.0004,-84.5168, 1001.5156}, // LVammunation1
-	{293.2710,-108.9645, 1001.5156}, // LSAmmunation1
-	{290.3177,-38.7184, 1001.5156}, // LSAmmunation2
-	{316.4356,-165.1367, 999.6010} // север карты
+	{295.3583, -80.1250, 1001.5156}, // LVammunation1
+	{290.0941, -109.2533, 1001.5156}, // LSAmmunation2
+	{296.1441, -37.7606, 1001.5156}, // LSAmmunation3
+	{312.5029, -165.4625, 999.6010} // север карты
 };
 
 enum WeaponInfo {
@@ -399,10 +399,10 @@ stock GetSelectedWeaponID(playerid, listitem)
 //
 
 // показывает доступное оружие на уровне
-stock ShowWeaponsOnLevel(playerid, level)
+stock ShowWeaponsOnLevel(playerid, newlevel, oldlevel)
 {
 	new string[MAX_STRING],
-		wepfound;
+		wepfound = 0;
 	
 	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++)
 	{
@@ -411,7 +411,7 @@ stock ShowWeaponsOnLevel(playerid, level)
 		{
 			continue;
 		}
-		if (Weapons[lookupid][Weapon_Level] == level)
+		if (Weapons[lookupid][Weapon_Level] > oldlevel && Weapons[lookupid][Weapon_Level] <= newlevel)
 		{
 			if (wepfound == 0)
 			{

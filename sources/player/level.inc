@@ -251,45 +251,47 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0)
 
 stock CheckPlayerLevel(playerid)
 {
-	new level = CalculatePlayerLevel(playerid);
-	if (GetPlayerLevel(playerid) < level)
+	new newlevel = CalculatePlayerLevel(playerid);
+	new oldlevel = GetPlayerLevel(playerid);
+	if (oldlevel < newlevel)
 	{
-		PlayerLevelUp(playerid, level);
+		PlayerLevelUp(playerid, newlevel, oldlevel);
 	}
-	else if (GetPlayerLevel(playerid) > level)
+	else if (oldlevel > newlevel)
 	{
-		PlayerLevelDown(playerid, level);
+		PlayerLevelDown(playerid, newlevel, oldlevel);
 	}
 	return 1;
 }
 
-stock PlayerLevelDown(playerid,level)
+stock PlayerLevelDown(playerid, newlevel, oldlevel)
 {
-	SetPVarInt(playerid, "Level", level);
+	SetPlayerLevel(playerid, newlevel);
 	PlayerPlaySoundOnPlayer(playerid, 1057);
 	UpdatePlayerScore(playerid);
 	UpdatePlayerLevelTextDraws(playerid);
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[9][22], GetPlayerLevel(playerid));
+	format(string, sizeof(string), lang_texts[9][22], newlevel);
 	SendClientMessage(playerid, COLOUR_XP_BAD, string);
-	GameMSG("player: %s(%d): decreased his level to %d", oGetPlayerName(playerid), playerid, GetPlayerLevel(playerid));
+	GameMSG("player: %s(%d): decreased his level from %d to %d", oGetPlayerName(playerid), playerid, oldlevel, newlevel);
 	return 1;
 }
 
-stock PlayerLevelUp(playerid,level)
+stock PlayerLevelUp(playerid, newlevel, oldlevel)
 {
-	SetPVarInt(playerid,"Level",level);
+	SetPlayerLevel(playerid, newlevel);
 	SetMaxPlayerHealth(playerid);
-	PlayerPlaySoundOnPlayer(playerid,1057);
+	PlayerPlaySoundOnPlayer(playerid, 1057);
 	UpdatePlayerScore(playerid);
 	UpdatePlayerLevelTextDraws(playerid);
+	
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[9][23], GetPlayerLevel(playerid));
+	format(string, sizeof(string), lang_texts[9][23], newlevel);
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	
-	ShowWeaponsOnLevel(playerid,GetPlayerLevel(playerid));
+	ShowWeaponsOnLevel(playerid, newlevel, oldlevel);
 	
-	GameMSG("player: %d:  %s: increased his level to %d",playerid,oGetPlayerName(playerid),GetPlayerLevel(playerid));
+	GameMSG("player: %s(%d): increased his level from %d to %d", oGetPlayerName(playerid), playerid, oldlevel, newlevel);
 	return 1;
 }
 
