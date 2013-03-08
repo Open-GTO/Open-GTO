@@ -1,7 +1,7 @@
 /*
 
 	Описание: скилл оружия у игрока
-	Автор: ZiGGi
+	Автор: ziggi
 
 */
 
@@ -15,7 +15,7 @@
 
 
 
-#define PLAYER_WEAPON_SKILLS 10
+#define PLAYER_WEAPON_SKILLS 11
 new PlayerWeaponsSkills[MAX_PLAYERS][PLAYER_WEAPON_SKILLS];
 new Text:weapon_TextDraw_Level[MAX_PLAYERS];
 
@@ -88,7 +88,7 @@ stock weapon_ResetSkills(playerid)
 // ид скилла для ида оружия
 stock GetWeaponSkillID(weaponid)
 {
-	switch(weaponid)
+	switch (weaponid)
 	{
 		case 22: return WEAPONSKILL_PISTOL;
 		case 23: return WEAPONSKILL_PISTOL_SILENCED;
@@ -96,7 +96,7 @@ stock GetWeaponSkillID(weaponid)
 		case 25: return WEAPONSKILL_SHOTGUN;
 		case 26: return WEAPONSKILL_SAWNOFF_SHOTGUN;
 		case 27: return WEAPONSKILL_SPAS12_SHOTGUN;
-		case 28,32: return WEAPONSKILL_MICRO_UZI;
+		case 28, 32: return WEAPONSKILL_MICRO_UZI;
 		case 29: return WEAPONSKILL_MP5;
 		case 30: return WEAPONSKILL_AK47;
 		case 31: return WEAPONSKILL_M4;
@@ -107,7 +107,7 @@ stock GetWeaponSkillID(weaponid)
 //
 
 // парсит строку, устанавливая нужные значения
-stock SetWeaponsSkillsFromDBString(playerid,dbstring[])
+stock SetWeaponsSkillsFromDBString(playerid, dbstring[])
 {
 	new idx;
 	for (new i = 0; i < PLAYER_WEAPON_SKILLS; i++)
@@ -118,12 +118,10 @@ stock SetWeaponsSkillsFromDBString(playerid,dbstring[])
 // возвращает строку для сохранения скиллов оружий
 stock CreateWeaponSkillsDBString(playerid)
 {
-	new wepstr[MAX_STRING], temp[MAX_STRING];
+	new wepstr[MAX_STRING];
 	for (new i = 0; i < PLAYER_WEAPON_SKILLS; i++)
 	{
-		valstr(temp, PlayerWeaponsSkills[playerid][i]);
-		strins(wepstr, temp, strlen(wepstr));
-		wepstr[strlen(wepstr)] = '/';
+		format(wepstr, sizeof(wepstr), "%s%d/", wepstr, PlayerWeaponsSkills[playerid][i]);
 	}
 	return wepstr;
 }
@@ -131,25 +129,24 @@ stock CreateWeaponSkillsDBString(playerid)
 
 stock wskill_HideTextDraw(playerid)
 {
-	TextDrawHideForPlayer(playerid,weapon_TextDraw_Level[playerid]);
+	TextDrawHideForPlayer(playerid, weapon_TextDraw_Level[playerid]);
 	return 1;
 }
 
-forward UpdatePlayerWeaponTextDraws(playerid);
-public UpdatePlayerWeaponTextDraws(playerid)
+stock UpdatePlayerWeaponTextDraws(playerid)
 {
 	if (GetPVarInt(playerid,"Spawned") == 0) return 0;
-	new string[MAX_STRING];
 	new skillid = GetWeaponSkillID( GetPlayerWeapon(playerid) );
 	if (skillid != -1)
 	{
-		format(string,sizeof(string),"%03d/1000",PlayerWeaponsSkills[playerid][skillid]);
+		new string[MAX_STRING];
+		format(string, sizeof(string), "%03d/1000", PlayerWeaponsSkills[playerid][skillid]);
+		TextDrawSetString(weapon_TextDraw_Level[playerid], string);
+		TextDrawShowForPlayer(playerid, weapon_TextDraw_Level[playerid]);
 	}
 	else
 	{
-		TextDrawHideForPlayer(playerid,weapon_TextDraw_Level[playerid]);
+		wskill_HideTextDraw(playerid);
 	}
-	TextDrawSetString(weapon_TextDraw_Level[playerid],string);
-	TextDrawShowForPlayer(playerid,weapon_TextDraw_Level[playerid]);
 	return 1;
 }
