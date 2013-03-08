@@ -242,7 +242,7 @@ stock PushHide(playerid)
 	return 1;
 }
 
-stock MutePlayerCheck(playerid)
+stock MutePlayerTimer(playerid)
 {
 	new string[MAX_STRING],
 		mute_time = GetPlayerMuteTime(playerid);
@@ -259,14 +259,14 @@ stock MutePlayerCheck(playerid)
 	}
 }
 
-stock JailPlayerCheck(playerid)
+stock JailPlayerTimer(playerid)
 {
 	new string[MAX_STRING];
 	new jail_time = GetPlayerJailTime(playerid);
 	
 	if (jail_time == -1)
 	{
-		continue;
+		return 0;
 	}
 	SetPlayerWantedLevel(playerid, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
 	

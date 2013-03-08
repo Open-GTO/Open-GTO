@@ -43,7 +43,7 @@ stock antiidle_OnGameModeInit()
 	return 1;
 }
 
-stock AntiIdlePlayerCheck(playerid)
+stock AntiIdlePlayerTimer(playerid)
 {
 	if (AntiIdleEnabled != 1) return 0;
 	new Float:pos[3], string[MAX_STRING];

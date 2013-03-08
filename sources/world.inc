@@ -148,9 +148,9 @@ public OneMinuteTimer()
 		}
 		if (IsPlayerLogin(playerid))
 		{
-			JailPlayerCheck(playerid);
-			MutePlayerCheck(playerid);
-			AntiIdlePlayerCheck(playerid);
+			JailPlayerTimer(playerid);
+			MutePlayerTimer(playerid);
+			AntiIdlePlayerTimer(playerid);
 		}
 	}
 	weather_WeatherUpdate();
