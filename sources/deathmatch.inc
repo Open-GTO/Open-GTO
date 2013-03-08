@@ -942,11 +942,10 @@ stock GetDMColourForPlayer(playerid, dmid)
 
 stock SendPlayerCurrentDeathmatches(playerid)
 {
-	if (!IsPlayerConnected(playerid)) return 1;
 	new string[MAX_STRING], dmfound;
 	for (new dmid = 1; dmid <= DMCount; dmid++)
 	{
-		if ((DeathmatchStats[dmid][dm_state] == DM_STATE_LINEUP) || (DeathmatchStats[dmid][dm_state] == DM_STATE_ACTIVE))
+		if (DeathmatchStats[dmid][dm_state] == DM_STATE_LINEUP)
 		{
 			if (dmfound == 0)
 			{
@@ -962,6 +961,28 @@ stock SendPlayerCurrentDeathmatches(playerid)
 			{
 				format(string, sizeof(string), lang_texts[4][36], Deathmatch[dmid][dm_name], dmid, Deathmatch[dmid][dm_lineupdelay] - DeathmatchStats[dmid][dm_timer], DeathmatchStats[dmid][dm_playercount], Deathmatch[dmid][dm_minplayers], GetDMStartZoneName(dmid), Deathmatch[dmid][dm_minlevel], Deathmatch[dmid][dm_cashentry]);
 			}
+			SendClientMessage(playerid, GetDMColourForPlayer(playerid, dmid), string);
+		}
+		else if (DeathmatchStats[dmid][dm_state] == DM_STATE_ACTIVE)
+		{
+			if (dmfound == 0)
+			{
+				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[4][34]);
+				dmfound++;
+			}
+			
+			format(string, sizeof(string), lang_texts[4][42], Deathmatch[dmid][dm_name], dmid, Deathmatch[dmid][dm_maxtime] - DeathmatchStats[dmid][dm_timer], DeathmatchStats[dmid][dm_playercount], GetDMStartZoneName(dmid), Deathmatch[dmid][dm_minlevel], Deathmatch[dmid][dm_cashentry]);
+			SendClientMessage(playerid, GetDMColourForPlayer(playerid, dmid), string);
+		}
+		else if (DeathmatchStats[dmid][dm_state] == DM_STATE_COUNTDOWN)
+		{
+			if (dmfound == 0)
+			{
+				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[4][34]);
+				dmfound++;
+			}
+			
+			format(string, sizeof(string), lang_texts[4][35], Deathmatch[dmid][dm_name], dmid, MAX_COUNTDOWN - DeathmatchStats[dmid][dm_timer], DeathmatchStats[dmid][dm_playercount], GetDMStartZoneName(dmid), Deathmatch[dmid][dm_minlevel], Deathmatch[dmid][dm_cashentry]);
 			SendClientMessage(playerid, GetDMColourForPlayer(playerid, dmid), string);
 		}
 		else if (IsPlayerAdm(playerid))
@@ -1124,7 +1145,7 @@ stock deathmatch_OnPlayerDeath(playerid, killerid)
 	GivePlayerXP(playerid,-Deathmatch[dmid][dm_xpdeath], 1);
 	deathmatch_OnPlayerSpawn(playerid, dmid);
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[4][42], FormatPosition(GetPlayerDMPosition(playerid, dmid)), DMPlayerStats[playerid][dm_player_deaths], DMPlayerStats[playerid][dm_player_kills]);
+	format(string, sizeof(string), lang_texts[4][41], FormatPosition(GetPlayerDMPosition(playerid, dmid)), DMPlayerStats[playerid][dm_player_deaths], DMPlayerStats[playerid][dm_player_kills]);
 	PlayerPlaySoundOnPlayer(playerid, 1057);
 	GameTextForPlayer(playerid, string, 3000, 6);
 }
