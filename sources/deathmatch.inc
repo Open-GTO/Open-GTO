@@ -371,9 +371,9 @@ stock CheckDM() // must be ran by timer every second
 				if (DeathmatchStats[dmid][dm_playercount] > 0)
 				{
 					new dmcountdown = Deathmatch[dmid][dm_lineupdelay] - DeathmatchStats[dmid][dm_timer];
-					if (dmcountdown % 10 == 0 || dmcountdown <= 5)
+					if (dmcountdown % 30 == 0 || dmcountdown <= 15 && dmcountdown % 5 == 0)
 					{
-						format(string, sizeof(string),  lang_texts[4][1], dmcountdown);
+						format(string, sizeof(string), lang_texts[4][1], dmcountdown);
 						SendMessageToDMPlayers(dmid, string, COLOUR_DM);
 					}
 				}
@@ -387,17 +387,16 @@ stock CheckDM() // must be ran by timer every second
 				{
 					if (DMPlayerStats[playerid][dm_player_active] == 1)
 					{
-						new Countdown = MAX_COUNTDOWN - DeathmatchStats[dmid][dm_timer];
-						if (Countdown >= 1)
+						new countdown = MAX_COUNTDOWN - DeathmatchStats[dmid][dm_timer];
+						if (countdown >= 1)
 						{
-							format(string, sizeof(string), "%d", Countdown);
-							PlayerPlaySoundOnPlayer(playerid, 1056);
+							valstr(string, countdown);
 						}
 						else
 						{
-							format(string, sizeof(string), "GO!");
-							PlayerPlaySoundOnPlayer(playerid, 1056);
+							set(string, "GO!");
 						}
+						PlayerPlaySoundOnPlayer(playerid, 1056);
 						GameTextForPlayer(playerid, string, 1000, 6);
 					}
 				}
@@ -639,9 +638,8 @@ stock JoinDM(playerid, dmid)
 		if (oIsPlayerInCheckpoint(playerid, GetDMCPX(dmid), GetDMCPY(dmid), GetDMCPZ(dmid), 50))
 		{
 			deathmatch_OnPlayerSpawn(playerid, dmid);
-			format(string, sizeof(string), "GO!");
 			PlayerPlaySoundOnPlayer(playerid, 1057);
-			GameTextForPlayer(playerid, string, 1000, 6);
+			GameTextForPlayer(playerid, "GO!", 1000, 6);
 
 		}
 		else
@@ -1179,9 +1177,8 @@ stock dm_OnPlayerEnterCheckpoint(playerid)
 					if (oIsPlayerInCheckpoint(playerid, GetDMCPX(dmid), GetDMCPY(dmid), GetDMCPZ(dmid), DMCPSize*3))
 					{
 						deathmatch_OnPlayerSpawn(playerid, dmid);
-						format(string, sizeof(string), "GO!");
 						PlayerPlaySoundOnPlayer(playerid, 1057);
-						GameTextForPlayer(playerid, string, 1000, 6);
+						GameTextForPlayer(playerid, "GO!", 1000, 6);
 					}
 					else if (DMPlayerStats[playerid][dm_player_gotcentre] == 0)
 					{

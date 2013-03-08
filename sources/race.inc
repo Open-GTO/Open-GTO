@@ -336,7 +336,7 @@ stock CheckRace() // must be ran by timer every second
 				if (RaceStats[raceid][race_racercount] > 0)
 				{
 					new racecountdown = Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer];
-					if (racecountdown % 10 == 0 || racecountdown <= 5)
+					if (racecountdown % 30 == 0 || racecountdown <= 15 && racecountdown % 5 == 0)
 					{
 						format(string, sizeof(string), lang_texts[10][7], racecountdown);
 						SendMessageToRacers(raceid, string, COLOUR_RACE);
@@ -350,10 +350,10 @@ stock CheckRace() // must be ran by timer every second
 			{
 				if (GetPlayerQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
 				{
-					new Countdown = MAX_COUNTDOWN - RaceStats[raceid][race_timer];
-					if (Countdown >= 1)
+					new countdown = MAX_COUNTDOWN - RaceStats[raceid][race_timer];
+					if (countdown >= 1)
 					{
-						valstr(string, Countdown);
+						valstr(string, countdown);
 						PlayerPlaySound(playerid, 1056, GetRaceCPX(raceid, RacePlayerStats[playerid][race_player_cp]), GetRaceCPY(raceid, RacePlayerStats[playerid][race_player_cp]), GetRaceCPZ(raceid, RacePlayerStats[playerid][race_player_cp]));
 					}
 					else
