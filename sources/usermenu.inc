@@ -47,6 +47,7 @@ stock show_User_Menu(playerid)
 		Выбросить оружие\n\
 		Место спавна\n\
 		Мои бизнесы\n\
+		Мой транспорт\n\
 		Администрация онлайн\n\
 		Связь с администрацией\n\
 		Настройки\n\
@@ -209,6 +210,46 @@ stock show_Businesses_Menu(playerid)
 		"Мои бизнесы",
 		string,
 		"Назад", "Выход"
+	);
+}
+
+stock show_PlayerVehicle_Menu(playerid)
+{
+	if (GetPlayerVehicleCount(playerid) == 0) {
+		return show_User_Menu_Dialog(playerid, "Мой транспорт", "У вас нет транспорта");
+	}
+	new string[MAX_NAME * MAX_PLAYER_VEHICLES];
+	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
+		if (IsValidPlayerVehicleSlot(playerid, i)) {
+			format(string, sizeof(string), "%s%s\n", string, GetVehicleName(PlayerVehicle[playerid][i][pv_Model]));
+		}
+	}
+	return ShowPlayerDialog(playerid, pveh_select_DialogID, DIALOG_STYLE_LIST,
+		"Мой транспорт",
+		string,
+		"Далее", "Назад"
+	);
+}
+
+stock show_PlayerVehicle_Do_Menu(playerid, item)
+{
+	new veh_slot = item;
+	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
+		if (!IsValidPlayerVehicleSlot(playerid, i)) {
+			veh_slot++;
+			continue;
+		}
+		if (i == veh_slot) {
+			break;
+		}
+	}
+	SetPVarInt(playerid, "pveh_Slot", veh_slot);
+	
+	return ShowPlayerDialog(playerid, pveh_do_DialogID, DIALOG_STYLE_LIST,
+		"Мой транспорт",
+		"Переместить к себе\n\
+		Продать\n",
+		"Выбрать", "Назад"
 	);
 }
 
@@ -507,7 +548,11 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 				{
 					return show_Businesses_Menu(playerid);
 				}
-				case 8: // Администрация онлайн
+				case 8: // Мой транспорт
+				{
+					return show_PlayerVehicle_Menu(playerid);
+				}
+				case 9: // Администрация онлайн
 				{
 					new idsa = 0,
 						idsm = 0,
@@ -544,16 +589,16 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					return show_User_Menu_Dialog(playerid, "Администрация онлайн", string);
 				}
-				case 9: // Связь с администрацией
+				case 10: // Связь с администрацией
 				{
 					show_User_Menu(playerid);
 					return 1;
 				}
-				case 10: // Настройки
+				case 11: // Настройки
 				{
 					return show_Setting_Menu(playerid);
 				}
-				case 11: // Версия
+				case 12: // Версия
 				{
 					show_User_Menu_Dialog(playerid,
 						"Информация о версии",
@@ -1270,6 +1315,43 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 				Teleports[listitem][Teleports_Pos_X], Teleports[listitem][Teleports_Pos_Y], Teleports[listitem][Teleports_Pos_Z], Teleports[listitem][Teleports_Pos_A],
 				Teleports[listitem][Teleports_Interior], 0
 			);
+			return 1;
+		}
+		case pveh_select_DialogID:
+		{
+			if (!response) {
+				return show_User_Menu(playerid);
+			}
+			show_PlayerVehicle_Do_Menu(playerid, listitem);
+			return 1;
+		}
+		case pveh_do_DialogID:
+		{
+			if (!response) {
+				return show_PlayerVehicle_Menu(playerid);
+			}
+			switch (listitem)
+			{
+				case 0: // Переместить к себе
+				{
+					new Float:pos[4];
+					GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+					GetPlayerFacingAngle(playerid, pos[3]);
+					CreatePlayerVehicle(playerid, GetPVarInt(playerid, "pveh_Slot"), pos[0]+1, pos[1]+1, pos[2], pos[3]);
+					DeletePVar(playerid, "pveh_Slot");
+					return 1;
+				}
+				case 1: // Продать
+				{
+					new slot = GetPVarInt(playerid, "pveh_Slot");
+					RemovePlayerVehicle(playerid, slot);
+					oGivePlayerMoney(playerid, vshop_GetVehicleCost(slot) / 2, 1);
+					DeletePVar(playerid, "pveh_Slot");
+					
+					show_User_Menu_Dialog(playerid, "Мой транспорт", "Продажа завершена");
+					return 1;
+				}
+			}
 			return 1;
 		}
 	}

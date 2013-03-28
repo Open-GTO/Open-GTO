@@ -227,6 +227,7 @@ enum {
 	trucker_DialogID, trucker_cancel_DialogID,
 	teleport_menu_DialogID,
 	vshop_DialogID,
+	pveh_select_DialogID, pveh_do_DialogID,
 }
 
 // прочее

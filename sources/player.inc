@@ -588,8 +588,7 @@ stock player_save_db_ini(playerid)
 	ini_SetInt(file_player, "Hide", GetPlayerHideStatus(playerid));
 	ini_SetInt(file_player, "SpawnHouseID", GetPlayerSpawnHouseID(playerid));
 	
-	new vcount = GetPlayerVehicleCount(playerid);
-	for (new i = 0; i < vcount; i++) {
+	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
 		format(string, sizeof(string), "Vehicle_%d", i);
 		ini_Set(file_player, string, CreateVehicleDbString(playerid, i));
 	}

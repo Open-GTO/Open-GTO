@@ -22,7 +22,7 @@ enum vshop_Info {
 	Float:vshop_A,
     vshop_Color1,
     vshop_Color2,
-    vshop_Cost
+    vshop_Cost,
 }
 
 new vshop_Vehicles[][vshop_Info] = {
@@ -46,7 +46,10 @@ stock vshop_OnGameModeInit()
 stock vshop_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	#pragma unused newstate, oldstate
-	vshop_ShowBuyDialog(playerid);
+	new slot = vshop_GetVehicleSlot( GetPlayerVehicleID(playerid) );
+	if (slot != -1) {
+		vshop_ShowBuyDialog(playerid);
+	}
 	return 1;
 }
 
@@ -54,20 +57,29 @@ stock vshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]
 {
 	#pragma unused listitem, inputtext
 	if (dialogid == vshop_DialogID) {
+		RemovePlayerFromVehicle(playerid);
 		if (!response) {
 			return 0;
 		}
+		if (GetPlayerVehicleCount(playerid) == MAX_PLAYER_VEHICLES) {
+			show_Msg_Dialog(playerid, "Магазин автомобилей", "У вас максимальное количество транспорта", "ОК");
+			return 0;
+		}
+		
 		new vehicleid = GetPlayerVehicleID(playerid);
 		new slot = vshop_GetVehicleSlot(vehicleid);
 		
 		if (oGetPlayerMoney(playerid) < vshop_Vehicles[slot][vshop_Cost]) {
-			RemovePlayerFromVehicle(playerid);
 			show_Msg_Dialog(playerid, "Магазин автомобилей", "У вас недостаточно денег", "ОК");
 			return 0;
 		}
 		
-		show_Msg_Dialog(playerid, "Магазин автомобилей", "Вы успешно купили этот автомобиль!", "ОК");
+		oGivePlayerMoney(playerid, -vshop_Vehicles[slot][vshop_Cost], 1);
 		buyVehicle(playerid, vehicleid, slot);
+		
+		show_Msg_Dialog(playerid, "Магазин автомобилей", "\
+			Вы успешно купили этот автомобиль.\n\
+			Чтобы вызвать купленный автомобиль, зайдите в меню пользователя и выберите его.", "ОК");
 		return 1;
 	}
 	return 1;
@@ -75,7 +87,7 @@ stock vshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]
 
 stock buyVehicle(playerid, vehicleid, slot)
 {
-	AddPlayerVehicle(playerid, vehicleid, vshop_Vehicles[slot][vshop_Model], vshop_Vehicles[slot][vshop_Color1], vshop_Vehicles[slot][vshop_Color2]);
+	AddPlayerVehicle(playerid, 0, vshop_Vehicles[slot][vshop_Model], vshop_Vehicles[slot][vshop_Color1], vshop_Vehicles[slot][vshop_Color2], FuelVehicle(vehicleid, -1));
 	return 1;
 }
 
@@ -102,4 +114,9 @@ stock vshop_GetVehicleSlot(vehicleid)
 		}
 	}
 	return -1;
+}
+
+stock vshop_GetVehicleCost(slot)
+{
+	return vshop_Vehicles[slot][vshop_Cost];
 }

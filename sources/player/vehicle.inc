@@ -20,6 +20,7 @@ enum pvInfo {
 	pv_ID,
 	pv_Model,
 	pv_Color[2],
+	Float:pv_Fuel,
 	pv_Lock,
 	pv_Paintjob,
 	pv_Component[VEHICLES_COMPONENTS]
@@ -74,13 +75,14 @@ stock pveh_OnVehicleMod(playerid, vehicleid, componentid)
 	return 1;
 }
 
-stock AddPlayerVehicle(playerid, id, model, color1, color2, lock = 0, paintjob = -1, component[VEHICLES_COMPONENTS] = {0, ...})
+stock AddPlayerVehicle(playerid, id, model, color1, color2, Float:fuel, lock = 0, paintjob = -1, component[VEHICLES_COMPONENTS] = {0, ...})
 {
 	new slot = GetPlayerVehicleFreeSlot(playerid);
 	PlayerVehicle[playerid][slot][pv_ID] = id;
 	PlayerVehicle[playerid][slot][pv_Model] = model;
 	PlayerVehicle[playerid][slot][pv_Color][0] = color1;
 	PlayerVehicle[playerid][slot][pv_Color][1] = color2;
+	PlayerVehicle[playerid][slot][pv_Fuel] = fuel;
 	PlayerVehicle[playerid][slot][pv_Lock] = lock;
 	PlayerVehicle[playerid][slot][pv_Paintjob] = paintjob;
 	for (new i = 0; i < VEHICLES_COMPONENTS; i++) {
@@ -98,6 +100,7 @@ stock RemovePlayerVehicle(playerid, slot)
 	PlayerVehicle[playerid][slot][pv_Model] = 0;
 	PlayerVehicle[playerid][slot][pv_Color][0] = 0;
 	PlayerVehicle[playerid][slot][pv_Color][1] = 0;
+	PlayerVehicle[playerid][slot][pv_Fuel] = 0;
 	PlayerVehicle[playerid][slot][pv_Lock] = 0;
 	PlayerVehicle[playerid][slot][pv_Paintjob] = -1;
 	for (new i = 0; i < VEHICLES_COMPONENTS; i++) {
@@ -108,6 +111,11 @@ stock RemovePlayerVehicle(playerid, slot)
 
 stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh_Z, Float:pveh_A)
 {
+	if (PlayerVehicle[playerid][slot][pv_ID] != 0) {
+		SetVehiclePos(PlayerVehicle[playerid][slot][pv_ID], pveh_X, pveh_Y, pveh_Z);
+		SetVehicleZAngle(PlayerVehicle[playerid][slot][pv_ID], pveh_A);
+		return PlayerVehicle[playerid][slot][pv_ID];
+	}
 	new vehicleid = CreateVehicle(
 		PlayerVehicle[playerid][slot][pv_Model],
 		pveh_X, pveh_Y, pveh_Z, pveh_A,
@@ -115,7 +123,9 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 		CarsReSpawnTime
 	);
 	
-	PlayerVehicle[playerid][slot][pv_Model] = vehicleid;
+	PlayerVehicle[playerid][slot][pv_ID] = vehicleid;
+	
+	FuelVehicle(vehicleid, PlayerVehicle[playerid][slot][pv_Fuel]);
 	
 	if (PlayerVehicle[playerid][slot][pv_Paintjob] != -1) {
 		ChangeVehiclePaintjob(vehicleid, PlayerVehicle[playerid][slot][pv_Paintjob]);
@@ -125,15 +135,18 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 		AddVehicleComponent(vehicleid, PlayerVehicle[playerid][slot][pv_Component][i]);
 	}
 	
-	return 1;
+	return vehicleid;
 }
 
 stock CreateVehicleDbString(playerid, slot)
 {
+	if (PlayerVehicle[playerid][slot][pv_ID] != 0) {
+		PlayerVehicle[playerid][slot][pv_Fuel] = Fuel[PlayerVehicle[playerid][slot][pv_ID]];
+	}
 	new vehstr[MAX_STRING];
-	format(vehstr, sizeof(vehstr), "%d/%d/%d/%d/%d",
+	format(vehstr, sizeof(vehstr), "%d/%d/%d/%f/%d/%d",
 		PlayerVehicle[playerid][slot][pv_Model], PlayerVehicle[playerid][slot][pv_Color][0], PlayerVehicle[playerid][slot][pv_Color][1],
-		PlayerVehicle[playerid][slot][pv_Lock], PlayerVehicle[playerid][slot][pv_Paintjob]
+		PlayerVehicle[playerid][slot][pv_Fuel], PlayerVehicle[playerid][slot][pv_Lock], PlayerVehicle[playerid][slot][pv_Paintjob]
 	);
 	for (new i = 0; i < VEHICLES_COMPONENTS; i++) {
 		format(vehstr, sizeof(vehstr), "%s/%d", vehstr, PlayerVehicle[playerid][slot][pv_Component][i]);
@@ -147,6 +160,7 @@ stock SetVehicleFromDbString(playerid, slot, dbstring[])
 	PlayerVehicle[playerid][slot][pv_Model] = strval( strcharsplit(dbstring, idx, '/') );
 	PlayerVehicle[playerid][slot][pv_Color][0] = strval( strcharsplit(dbstring, idx, '/') );
 	PlayerVehicle[playerid][slot][pv_Color][1] = strval( strcharsplit(dbstring, idx, '/') );
+	PlayerVehicle[playerid][slot][pv_Fuel] = floatstr( strcharsplit(dbstring, idx, '/') );
 	PlayerVehicle[playerid][slot][pv_Lock] = strval( strcharsplit(dbstring, idx, '/') );
 	PlayerVehicle[playerid][slot][pv_Paintjob] = strval( strcharsplit(dbstring, idx, '/') );
 	
@@ -178,9 +192,19 @@ stock GetPlayerVehicleFreeSlot(playerid)
 
 stock GetPlayerVehicleCount(playerid)
 {
-	new count = GetPlayerVehicleFreeSlot(playerid);
-	if (count == -1) {
-		return MAX_PLAYER_VEHICLES;
+	new count = 0;
+	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
+		if (PlayerVehicle[playerid][i][pv_Model] != 0) {
+			count++;
+		}
 	}
-	return count + 1;
+	return count;
+}
+
+stock IsValidPlayerVehicleSlot(playerid, slot)
+{
+	if (PlayerVehicle[playerid][slot][pv_Model] == 0) {
+		return 0;
+	}
+	return 1;
 }

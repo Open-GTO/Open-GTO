@@ -408,3 +408,14 @@ stock IsPlayerAtFuelStation(playerid)
 	}
 	return 0;
 }
+
+forward Float:FuelVehicle(vehicleid, Float:amount);
+public Float:FuelVehicle(vehicleid, Float:amount)
+{
+	if (amount == -1) {
+		new Float:max_fuel = FuelList[ GetVehicleModel(vehicleid)-400 ] / 2;
+		amount = random(floatround( max_fuel )) + max_fuel;
+	}
+	Fuel[vehicleid] = amount;
+	return amount;
+}
