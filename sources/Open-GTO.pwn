@@ -41,6 +41,7 @@ Date start Open-GTO: 	5 November 2009
 #include "player\weapon_skill"
 #include "player\health"
 #include "player\armour"
+#include "player\vehicle"
 #include "bank"
 #include "fightstyles"
 #include "account"
@@ -285,6 +286,7 @@ public OnPlayerDisconnect(playerid, reason)
 	level_OnPlayerDisconnect(playerid, reason);
 	weapon_OnPlayerDisconnect(playerid, reason);
 	qudemsys_OnPlayerDisconnect(playerid, reason);
+	pveh_OnPlayerDisconnect(playerid, reason);
 	return 1;
 }
 
@@ -842,5 +844,23 @@ public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
 {
 	admin_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid);
+	return 1;
+}
+
+public OnVehiclePaintjob(playerid, vehicleid, paintjobid)
+{
+	pveh_OnVehiclePaintjob(playerid, vehicleid, paintjobid);
+    return 1;
+}
+
+public OnVehicleRespray(playerid, vehicleid, color1, color2)
+{
+	pveh_OnVehicleRespray(playerid, vehicleid, color1, color2);
+	return 1;
+}
+
+public OnVehicleMod(playerid, vehicleid, componentid)
+{
+	pveh_OnVehicleMod(playerid, vehicleid, componentid);
 	return 1;
 }

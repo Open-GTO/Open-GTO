@@ -587,6 +587,13 @@ stock player_save_db_ini(playerid)
 	ini_Set(file_player, "VIP", GetPlayerVIPDate(playerid));
 	ini_SetInt(file_player, "Hide", GetPlayerHideStatus(playerid));
 	ini_SetInt(file_player, "SpawnHouseID", GetPlayerSpawnHouseID(playerid));
+	
+	new vcount = GetPlayerVehicleCount(playerid);
+	for (new i = 0; i < vcount; i++) {
+		format(string, sizeof(string), "Vehicle_%d", i);
+		ini_Set(file_player, string, CreateVehicleDbString(playerid));
+	}
+	
 	ini_Close(file_player);
 	return 1;
 }
@@ -719,6 +726,17 @@ stock player_load_db_ini(playerid)
 	
 	ini_GetInt(file_player, "SpawnHouseID", buf);
 	SetPlayerSpawnHouseID(playerid, buf);
+	
+	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
+		format(s_buf, sizeof(s_buf), "Vehicle_%d", i);
+		new error = ini_Get(file_player, s_buf);
+		
+		if (error == INI_KEY_NOT_FOUND) {
+			break;
+		}
+		
+		SetVehicleFromDbString(playerid, i, s_buf);
+	}
 	
 	ini_Close(file_player);
 	UpdatePlayerScore(playerid);
