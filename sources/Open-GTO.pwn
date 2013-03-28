@@ -76,6 +76,7 @@ Date start Open-GTO: 	5 November 2009
 #include "services\bar"
 #include "services\skinshop"
 #include "services\lottery"
+#include "services\vehshop"
 #include "interior"
 #include "weather"
 #include "swagup"
@@ -293,7 +294,7 @@ public OnPlayerDisconnect(playerid, reason)
 
 public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
-	switch(dialogid)
+	switch (dialogid)
 	{
 		case account_Log_DialogID, account_Reg_DialogID:
 		{

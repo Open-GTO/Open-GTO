@@ -14,6 +14,7 @@
 #pragma library vehshop
 
 enum vshop_Info {
+	vshop_ID,
 	vshop_Model,
 	Float:vshop_X,
 	Float:vshop_Y,
@@ -25,9 +26,9 @@ enum vshop_Info {
 }
 
 new vshop_Vehicles[][vshop_Info] = {
-	{487, 0.0, 0.0, 10.0, 64.4211, 26, 3, 500},
-	{488, 10.0, 0.0, 10.0, 64.4211, 26, 3, 123},
-	{489, 20.0, 0.0, 10.0, 64.4211, 22, 3, 999}
+	{0, 487, 0.0, 0.0, 10.0, 64.4211, 26, 3, 500},
+	{0, 488, 10.0, 0.0, 10.0, 64.4211, 26, 3, 123},
+	{0, 489, 20.0, 0.0, 10.0, 64.4211, 22, 3, 999}
 };
 
 stock vshop_OnGameModeInit()
@@ -49,8 +50,9 @@ stock vshop_OnPlayerStateChange(playerid, newstate, oldstate)
 	return 1;
 }
 
-stock vshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext)
+stock vshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
+	#pragma unused listitem, inputtext
 	if (dialogid == vshop_DialogID) {
 		if (!response) {
 			return 0;

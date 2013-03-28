@@ -591,7 +591,7 @@ stock player_save_db_ini(playerid)
 	new vcount = GetPlayerVehicleCount(playerid);
 	for (new i = 0; i < vcount; i++) {
 		format(string, sizeof(string), "Vehicle_%d", i);
-		ini_Set(file_player, string, CreateVehicleDbString(playerid));
+		ini_Set(file_player, string, CreateVehicleDbString(playerid, i));
 	}
 	
 	ini_Close(file_player);
@@ -729,7 +729,7 @@ stock player_load_db_ini(playerid)
 	
 	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
 		format(s_buf, sizeof(s_buf), "Vehicle_%d", i);
-		new error = ini_Get(file_player, s_buf);
+		new error = ini_Get(file_player, s_buf, s_buf);
 		
 		if (error == INI_KEY_NOT_FOUND) {
 			break;

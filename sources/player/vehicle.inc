@@ -106,11 +106,11 @@ stock RemovePlayerVehicle(playerid, slot)
 	return 1;
 }
 
-stock CreatePlayerVehicle(playerid, slot, Float:Coord_X, Float:Coord_Y, Float:Coord_Z, Float:Coord_A)
+stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh_Z, Float:pveh_A)
 {
 	new vehicleid = CreateVehicle(
 		PlayerVehicle[playerid][slot][pv_Model],
-		Coord_X, Coord_Y, Coord_Z, Coord_A,
+		pveh_X, pveh_Y, pveh_Z, pveh_A,
 		PlayerVehicle[playerid][slot][pv_Color][0], PlayerVehicle[playerid][slot][pv_Color][1],
 		CarsReSpawnTime
 	);
@@ -141,7 +141,7 @@ stock CreateVehicleDbString(playerid, slot)
 	return vehstr;
 }
 
-stock SetVehicleFromDbString(playerid, slot, dbstring)
+stock SetVehicleFromDbString(playerid, slot, dbstring[])
 {
 	new idx = 0;
 	PlayerVehicle[playerid][slot][pv_Model] = strval( strcharsplit(dbstring, idx, '/') );
