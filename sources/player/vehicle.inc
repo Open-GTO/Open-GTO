@@ -239,3 +239,8 @@ stock ChangePlayerVehicleColor(playerid, vehicleid, color1, color2)
 	OnVehicleRespray(playerid, vehicleid, color1, color2);
 	return ChangeVehicleColor(vehicleid, color1, color2);
 }
+
+stock GetPlayerVehicleCostBySlot(playerid, slot)
+{
+	return GetVehicleCost( PlayerVehicle[playerid][slot][pv_Model] );
+}

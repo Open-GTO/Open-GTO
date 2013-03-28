@@ -128,10 +128,10 @@ stock interior_OnGameModeInit()
 	DisableInteriorEnterExits();
 	for (new i = 0; i < sizeof(interior_EnterExits); i++)
 	{
-		CreatePickup(1559, 1, interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z] + 0.5,-1);
+		CreatePickup(1559, 1, interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z] + 0.5);
 		CreatePickupText("Вход", interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z]);
 		
-		CreatePickup(1559, 1, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z] + 0.2,-1);
+		CreatePickup(1559, 1, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z] + 0.2);
 		CreatePickupText("Выход", interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z]);
 		
 		if (interior_EnterExits[i][iee_icon_ID] != -1)
@@ -148,6 +148,9 @@ stock interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	#pragma unused oldkeys, newkeys
 	for (new i = 0; i < sizeof(interior_EnterExits); i++)
 	{
+		if (GetPlayerVirtualWorld(playerid) != 0) {
+			continue;
+		}
 		if (IsPlayerInRangeOfPoint(playerid, 2, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z]))
 		{
 			new id = GetPVarInt(playerid, "interior_Index");

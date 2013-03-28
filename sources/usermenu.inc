@@ -1344,9 +1344,10 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 				case 1: // Продать
 				{
 					new slot = GetPVarInt(playerid, "pveh_Slot");
-					RemovePlayerVehicle(playerid, slot);
-					oGivePlayerMoney(playerid, vshop_GetVehicleCost(slot) / 2, 1);
 					DeletePVar(playerid, "pveh_Slot");
+					
+					oGivePlayerMoney(playerid, GetPlayerVehicleCostBySlot(playerid, slot) / 2, 1);
+					RemovePlayerVehicle(playerid, slot);
 					
 					show_User_Menu_Dialog(playerid, "Мой транспорт", "Продажа завершена");
 					return 1;

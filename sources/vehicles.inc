@@ -234,9 +234,7 @@ enum VehicleInfo {
     vehicle_level,
     vehicle_cost
 }
-#define VEHICLES_SIZE 212
-#define VEHICLES_START 400
-new Vehicles[VEHICLES_SIZE][VehicleInfo] = {
+new Vehicles[][VehicleInfo] = {
 {509,	"Bike",			"bike",			120,	1,	0},
 {510,	"MountainBike",	"mtbike",		140,	1,	0},
 {492,	"Greenwood",	"greenwoo",		160,	1,	10000},
@@ -396,16 +394,16 @@ new Vehicles[VEHICLES_SIZE][VehicleInfo] = {
 {555,	"Windsor",		"windsor",		180,	0,	0},
 {556,	"Monster",		"monstera",		110,	0,	0},
 {557,	"Monster",		"monsterb",		110,	0,	0},
-{558,	"Uranus",		"uranus",		200,	0,	0},
+{558,	"Uranus",		"uranus",		200,	0,	60000},
 {559,	"Jester",		"jester",		200,	0,	0},
-{560,	"Sultan",		"sultan",		200,	0,	0},
-{561,	"Stratum",		"stratum",		200,	0,	0},
-{562,	"Elegy",		"elegy",		200,	0,	0},
+{560,	"Sultan",		"sultan",		200,	0,	80000},
+{561,	"Stratum",		"stratum",		200,	0,	60000},
+{562,	"Elegy",		"elegy",		200,	0,	80000},
 {563,	"Raindance",	"raindanc",		200,	0,	0},
 {564,	"RCTiger",		"rctiger",		75,		0,	0},
-{565,	"Flash",		"flash",		200,	0,	0},
-{566,	"Tahoma",		"tahoma",		160,	0,	0},
-{567,	"Savanna",		"savanna",		160,	0,	0},
+{565,	"Flash",		"flash",		200,	0,	80000},
+{566,	"Tahoma",		"tahoma",		160,	0,	80000},
+{567,	"Savanna",		"savanna",		160,	0,	80000},
 {568,	"Bandito",		"bandito",		170,	0,	0},
 {569,	"Freight",		"freiflat",		110,	0,	0},
 {570,	"Trailer",		"streakc",		110,	0,	0},
@@ -441,7 +439,7 @@ new Vehicles[VEHICLES_SIZE][VehicleInfo] = {
 {600,	"Picador",		"picador",		165,	0,	0},
 {601,	"S.W.A.T.Van",	"swatvan",		110,	0,	0},
 {602,	"Alpha",		"alpha",		200,	0,	0},
-{603,	"Phoenix",		"phoenix",		200,	0,	0},
+{603,	"Phoenix",		"phoenix",		200,	0,	80000},
 {604,	"Glendale",		"glenshit",		160,	0,	0},
 {605,	"Sadler",		"sadlshit",		165,	0,	0},
 {606,	"LuggageTrailer",	"bagboxa",		160,	0,	0},
@@ -1801,11 +1799,6 @@ new VehicleModelSpawns[][VehicleSpawnInfo] = {
 	{493,-2981.0247, 496.3422,-0.6554, 1.5943, 36, 13},
 	{549,-2578.6179, 626.5599, 27.4438, 359.1449, 117, 1},
 	{575,-2610.8423, 1405.6122, 6.7507, 270.0862, 19, 96},
-	{411,-1663.4688, 1211.4713, 6.9794, 276.9535, 12, 1},
-	{558,-1656.2698, 1208.2489, 20.7792, 268.6007, 42, 42},
-	{558,-1660.5311, 1215.1492, 20.7869, 315.8402, 24, 1},
-	{451,-1650.9478, 1208.6367, 13.3797, 247.0129, 18, 18},
-	{451,-1656.4871, 1215.6764, 13.4254, 259.0972, 101, 1},
 	{560,-2047.9236, 901.2451, 53.3068, 356.4079, 21, 1},
 	{560,-2105.8264, 901.4780, 76.3014, 4.8684, 36, 1},
 	{500,-2927.3159, 500.5060, 5.0168, 268.8409, 28, 119},
@@ -2045,11 +2038,6 @@ new VehicleModelSpawns[][VehicleSpawnInfo] = {
 	{560,-2486.6094, 262.4621, 34.8724, 271.1458, 17, 1},
 	{549,-2585.9888, 712.8341, 27.5820, 89.5528, 84, 36},
 	{466,-1837.0461, 339.5637, 16.9045, 331.3646, 78, 76},
-	{558,-1956.2533, 297.6264, 35.0939, 64.6876, 116, 1},
-	{560,-1957.6255, 276.9994, 35.1773, 132.1875, 9, 39},
-	{561,-1950.4956, 259.6261, 35.2702, 53.4263, 8, 17},
-	{562,-1952.4977, 265.6259, 40.7239, 292.5037, 35, 1},
-	{567,-1952.7600, 258.7500, 40.9200, 258.7441, 88, 64},
 	{490,-1588.4078, 673.0458, 7.3151, 176.8283, 0, 0},
 	{490,-1574.3214, 718.2319,-5.1140, 89.8176, 0, 0},
 	{472,-1076.0149,-207.4982, 0.0197, 201.3848, 56, 53},
@@ -2355,10 +2343,10 @@ stock vehicles_OnGameModeInit()
 
 stock GetRndVModelByLevel(level)
 {
-	new leveledvehicles[VEHICLES_SIZE+1],
+	new leveledvehicles[sizeof(Vehicles)+1],
 		idx = 0;
 	
-	for (new vlookupid = 0; vlookupid < VEHICLES_SIZE; vlookupid++)
+	for (new vlookupid = 0; vlookupid < sizeof(Vehicles); vlookupid++)
 	{
 		if (Vehicles[vlookupid][vehicle_level] == 0)
 		{
@@ -2376,7 +2364,7 @@ stock GetRndVModelByLevel(level)
 stock GetVehicleName(vehiclemodel)
 {
 	new VehicleName[MAX_STRING];
-	for (new vlookupid = 0; vlookupid < VEHICLES_SIZE; vlookupid++)
+	for (new vlookupid = 0; vlookupid < sizeof(Vehicles); vlookupid++)
 	{
 	    if (Vehicles[vlookupid][vehicle_model] == vehiclemodel)
 	    {
@@ -2414,4 +2402,14 @@ stock vehicle_Light(vehicleid, newstate)
 	new engine, lights, alarm, doors, bonnet, boot, objective;
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 	SetVehicleParamsEx(vehicleid, engine, newstate, alarm, doors, bonnet, boot, objective);
+}
+
+stock GetVehicleCost(vehiclemodel)
+{
+	for (new i = 0; i < sizeof(Vehicles); i++){
+		if (Vehicles[i][vehicle_model] == vehiclemodel) {
+			return Vehicles[i][vehicle_cost];
+		}
+	}
+	return 0;
 }
