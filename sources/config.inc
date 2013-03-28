@@ -226,6 +226,7 @@ enum {
 	SkinShop_Buy_DialogID,
 	trucker_DialogID, trucker_cancel_DialogID,
 	teleport_menu_DialogID,
+	vshop_DialogID,
 }
 
 // прочее

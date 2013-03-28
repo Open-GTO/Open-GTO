@@ -179,6 +179,7 @@ public OnGameModeInit()
 	fastfood_OnGameModeInit();
 	bar_OnGameModeInit();
 	ss_OnGameModeInit();
+	vshop_OnGameModeInit();
 	//
 	quidemsys_OnGameModeInit();
 	lottery_OnGameModeInit();
@@ -347,6 +348,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		case trucker_DialogID, trucker_cancel_DialogID:
 		{
 			trucker_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
+		}
+		case vshop_DialogID:
+		{
+			vshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
 	}
 	return 1;
@@ -742,6 +747,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	#endif
 		trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 		vip_OnPlayerStateChange(playerid, newstate, oldstate);
+		vshop_OnPlayerStateChange(playerid, newstate, oldstate);
 	}
 	return 1;
 }
