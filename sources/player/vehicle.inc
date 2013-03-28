@@ -40,6 +40,9 @@ stock pveh_OnPlayerDisconnect(playerid, reason)
 stock pveh_OnVehiclePaintjob(playerid, vehicleid, paintjobid)
 {
 	new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
+	if (slot == -1) {
+		return 0;
+	}
     PlayerVehicle[playerid][slot][pv_Paintjob] = paintjobid;
     return 1;
 }
@@ -47,6 +50,9 @@ stock pveh_OnVehiclePaintjob(playerid, vehicleid, paintjobid)
 stock pveh_OnVehicleRespray(playerid, vehicleid, color1, color2)
 {
 	new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
+	if (slot == -1) {
+		return 0;
+	}
     PlayerVehicle[playerid][slot][pv_Color][0] = color1;
     PlayerVehicle[playerid][slot][pv_Color][1] = color2;
     return 1;
@@ -56,6 +62,9 @@ stock pveh_OnVehicleMod(playerid, vehicleid, componentid)
 {
 	#pragma unused vehicleid
 	new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
+	if (slot == -1) {
+		return 0;
+	}
 	for (new i = 0; i < VEHICLES_COMPONENTS; i++) {
 		if (PlayerVehicle[playerid][slot][pv_Component][i] == 0) {
 			PlayerVehicle[playerid][slot][pv_Component][i] = componentid;
@@ -65,9 +74,10 @@ stock pveh_OnVehicleMod(playerid, vehicleid, componentid)
 	return 1;
 }
 
-stock AddPlayerVehicle(playerid, model, color1, color2, lock = 0, paintjob = -1, component[VEHICLES_COMPONENTS] = {0, ...})
+stock AddPlayerVehicle(playerid, id, model, color1, color2, lock = 0, paintjob = -1, component[VEHICLES_COMPONENTS] = {0, ...})
 {
 	new slot = GetPlayerVehicleFreeSlot(playerid);
+	PlayerVehicle[playerid][slot][pv_ID] = id;
 	PlayerVehicle[playerid][slot][pv_Model] = model;
 	PlayerVehicle[playerid][slot][pv_Color][0] = color1;
 	PlayerVehicle[playerid][slot][pv_Color][1] = color2;
