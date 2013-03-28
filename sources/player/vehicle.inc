@@ -169,7 +169,7 @@ stock GetPlayerVehicleSlotByID(playerid, vehicleid)
 stock GetPlayerVehicleFreeSlot(playerid)
 {
 	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
-		if (PlayerVehicle[playerid][i][pv_Model] != 0) {
+		if (PlayerVehicle[playerid][i][pv_Model] == 0) {
 			return i;
 		}
 	}
