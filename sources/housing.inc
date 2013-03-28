@@ -785,5 +785,6 @@ stock house_Free(houseid)
 	set(Houses[houseid][Houses_Gang], "Unknown");
 	Houses[houseid][Houses_Buyout] = 0;
 	Houses[houseid][Houses_Lock] = 0;
+	Houses[houseid][Houses_UpKeepLeft] = 0;
 	UpdateStreamMapIcon(house_icon[houseid]);
 }
