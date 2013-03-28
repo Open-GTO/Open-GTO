@@ -44,6 +44,7 @@ stock pveh_OnVehicleDeath(vehicleid, killerid)
 	foreach (Player, playerid) {
 		new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
 		if (slot != -1) {
+			DestroyVehicle(vehicleid);
 			PlayerVehicle[playerid][slot][pv_ID] = 0;
 			break;
 		}
