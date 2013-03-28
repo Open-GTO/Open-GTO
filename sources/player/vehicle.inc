@@ -38,6 +38,19 @@ stock pveh_OnPlayerDisconnect(playerid, reason)
 	return 1;
 }
 
+stock pveh_OnVehicleDeath(vehicleid, killerid)
+{
+	#pragma unused killerid
+	foreach (Player, playerid) {
+		new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
+		if (slot != -1) {
+			PlayerVehicle[playerid][slot][pv_ID] = 0;
+			break;
+		}
+	}
+	return 1;
+}
+
 stock pveh_OnVehiclePaintjob(playerid, vehicleid, paintjobid)
 {
 	new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
@@ -125,7 +138,7 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 	
 	PlayerVehicle[playerid][slot][pv_ID] = vehicleid;
 	
-	FuelVehicle(vehicleid, PlayerVehicle[playerid][slot][pv_Fuel]);
+	SetVehicleFuel(vehicleid, PlayerVehicle[playerid][slot][pv_Fuel]);
 	
 	if (PlayerVehicle[playerid][slot][pv_Paintjob] != -1) {
 		ChangeVehiclePaintjob(vehicleid, PlayerVehicle[playerid][slot][pv_Paintjob]);
@@ -141,7 +154,7 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 stock CreateVehicleDbString(playerid, slot)
 {
 	if (PlayerVehicle[playerid][slot][pv_ID] != 0) {
-		PlayerVehicle[playerid][slot][pv_Fuel] = Fuel[PlayerVehicle[playerid][slot][pv_ID]];
+		PlayerVehicle[playerid][slot][pv_Fuel] = GetVehicleFuel(PlayerVehicle[playerid][slot][pv_ID]);
 	}
 	new vehstr[MAX_STRING];
 	format(vehstr, sizeof(vehstr), "%d/%d/%d/%f/%d/%d",
@@ -201,10 +214,28 @@ stock GetPlayerVehicleCount(playerid)
 	return count;
 }
 
+stock GetPlayerVehicleMaximumCount(playerid)
+{
+	switch (GetPlayerLevel(playerid))
+	{
+		case 0..29: return 1;
+		case 30..54: return 2;
+		case 55..59: return 3;
+		case 60: return 4;
+	}
+	return MAX_PLAYER_VEHICLES;
+}
+
 stock IsValidPlayerVehicleSlot(playerid, slot)
 {
 	if (PlayerVehicle[playerid][slot][pv_Model] == 0) {
 		return 0;
 	}
 	return 1;
+}
+
+stock ChangePlayerVehicleColor(playerid, vehicleid, color1, color2)
+{
+	OnVehicleRespray(playerid, vehicleid, color1, color2);
+	return ChangeVehicleColor(vehicleid, color1, color2);
 }

@@ -11,9 +11,6 @@
 #pragma library vehicle
 
 
-#include "base"
-#include "player"
-
 #define V_ADMIRAL 445
 #define V_ALPHA 602
 #define V_AMBULAN 416

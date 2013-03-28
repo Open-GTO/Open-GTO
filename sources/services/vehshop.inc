@@ -61,7 +61,7 @@ stock vshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]
 		if (!response) {
 			return 0;
 		}
-		if (GetPlayerVehicleCount(playerid) == MAX_PLAYER_VEHICLES) {
+		if (GetPlayerVehicleCount(playerid) == GetPlayerVehicleMaximumCount(playerid)) {
 			show_Msg_Dialog(playerid, "Магазин автомобилей", "У вас максимальное количество транспорта", "ОК");
 			return 0;
 		}
@@ -87,7 +87,7 @@ stock vshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]
 
 stock buyVehicle(playerid, vehicleid, slot)
 {
-	AddPlayerVehicle(playerid, 0, vshop_Vehicles[slot][vshop_Model], vshop_Vehicles[slot][vshop_Color1], vshop_Vehicles[slot][vshop_Color2], FuelVehicle(vehicleid, -1));
+	AddPlayerVehicle(playerid, 0, vshop_Vehicles[slot][vshop_Model], vshop_Vehicles[slot][vshop_Color1], vshop_Vehicles[slot][vshop_Color2], SetVehicleFuel(vehicleid, -1));
 	return 1;
 }
 

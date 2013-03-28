@@ -748,7 +748,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			}
 			
 			new vehicleid = GetPlayerVehicleID(playerid);
-			ChangeVehicleColor(vehicleid, colors_Array[listitem][color_vehicle], colors_Array[listitem][color_vehicle]);
+			ChangePlayerVehicleColor(playerid, vehicleid, colors_Array[listitem][color_vehicle], colors_Array[listitem][color_vehicle]);
 			return 1;
 		}
 		case vehicle_radio_menu_DialogID:

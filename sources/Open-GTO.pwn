@@ -813,6 +813,7 @@ public OnVehicleSpawn(vehicleid)
 public OnVehicleDeath(vehicleid, killerid)
 {
 	trucker_OnVehicleDeath(vehicleid, killerid);
+	pveh_OnVehicleDeath(vehicleid, killerid);
 	return 1;
 }
 
