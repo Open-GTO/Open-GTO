@@ -873,3 +873,13 @@ public OnVehicleMod(playerid, vehicleid, componentid)
 	pveh_OnVehicleMod(playerid, vehicleid, componentid);
 	return 1;
 }
+
+public OnEnterExitModShop(playerid, enterexit, interiorid)
+{
+	if (enterexit == 1) {
+		SetPlayerVirtualWorld(playerid, playerid);
+	} else {
+		SetPlayerVirtualWorld(playerid, 0);
+	}
+	return 1;
+}
