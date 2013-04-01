@@ -31,9 +31,7 @@ stock pveh_OnPlayerDisconnect(playerid, reason)
 {
 	#pragma unused reason
 	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
-		if (PlayerVehicle[playerid][i][pv_Model] != 0) {
-			DestroyVehicle(PlayerVehicle[playerid][i][pv_ID]);
-		}
+		RemovePlayerVehicle(playerid, i);
 	}
 	return 1;
 }
