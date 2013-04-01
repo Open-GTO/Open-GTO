@@ -248,7 +248,8 @@ stock show_PlayerVehicle_Do_Menu(playerid, item)
 	return ShowPlayerDialog(playerid, pveh_do_DialogID, DIALOG_STYLE_LIST,
 		"Мой транспорт",
 		"Переместить к себе\n\
-		Продать\n",
+		Продать\n\
+		Снять тюнинг",
 		"Выбрать", "Назад"
 	);
 }
@@ -1350,6 +1351,14 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					RemovePlayerVehicle(playerid, slot);
 					
 					show_User_Menu_Dialog(playerid, "Мой транспорт", "Продажа завершена");
+					return 1;
+				}
+				case 2: // Снять тюнинг
+				{
+					RemovePlayerVehicleComponents(playerid, GetPVarInt(playerid, "pveh_Slot"));
+					DeletePVar(playerid, "pveh_Slot");
+					
+					show_User_Menu_Dialog(playerid, "Мой транспорт", "Тюнинг был успешно снят");
 					return 1;
 				}
 			}

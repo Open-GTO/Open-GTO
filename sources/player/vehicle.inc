@@ -243,3 +243,13 @@ stock GetPlayerVehicleCostBySlot(playerid, slot)
 {
 	return GetVehicleCost( PlayerVehicle[playerid][slot][pv_Model] );
 }
+
+stock RemovePlayerVehicleComponents(playerid, slot)
+{
+	for (new i = 0; i < VEHICLES_COMPONENTS; i++) {
+		if (PlayerVehicle[playerid][slot][pv_ID] != 0) {
+			RemoveVehicleComponent(PlayerVehicle[playerid][slot][pv_ID], PlayerVehicle[playerid][slot][pv_Component][i]);
+		}
+		PlayerVehicle[playerid][slot][pv_Component][i] = 0;
+	}
+}
