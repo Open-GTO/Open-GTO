@@ -78,12 +78,7 @@ stock pveh_OnVehicleMod(playerid, vehicleid, componentid)
 	if (slot == -1) {
 		return 0;
 	}
-	for (new i = 0; i < VEHICLES_COMPONENTS; i++) {
-		if (PlayerVehicle[playerid][slot][pv_Component][i] == 0) {
-			PlayerVehicle[playerid][slot][pv_Component][i] = componentid;
-			break;
-		}
-	}
+	PlayerVehicle[playerid][slot][pv_Component][ GetVehicleComponentType(componentid) ] = componentid;
 	return 1;
 }
 
