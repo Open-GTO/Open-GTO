@@ -389,7 +389,7 @@ stock show_GangKick_Menu(gangid, playerid)
 			);
 		}
 	}
-	return ShowPlayerDialog(playerid, gang_kick_menu_DialogID, DIALOG_STYLE_INPUT,
+	return ShowPlayerDialog(playerid, gang_kick_menu_DialogID, DIALOG_STYLE_LIST,
 		"Выгнать игрока",
 		members,
 		"Выгнать", "Назад"
