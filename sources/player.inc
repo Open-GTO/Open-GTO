@@ -200,6 +200,7 @@ stock player_OnPlayerSpawn(playerid)
 	if (house_id >= 0 && strcmp(oGetPlayerName(playerid), Houses[house_id][Houses_Owner], true))
 	{
 		house_id = SPAWN_HOUSE_NONE;
+		SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[8][60]);
 	}
 	if (house_id == SPAWN_HOUSE_NONE)
