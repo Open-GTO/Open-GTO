@@ -898,20 +898,17 @@ stock StartRaceCountdown(raceid)
 
 stock EndRace(raceid)
 {
-	foreach (Player, playerid)
-	{
-		if (GetPlayerQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
-		{
+	foreach (Player, playerid) {
+		// if player is in this race
+		if (GetPlayerQuestID(playerid) == GetRaceQuestID(raceid)) {
 			GameTextForPlayer(playerid, "~r~Race Failed!", 5000, 6);
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][47]);
-			new logstring[MAX_STRING];
-			format(logstring, sizeof (logstring), "player: %d:  %s: his race ended. He failed to quilify.", playerid, oGetPlayerName(playerid));
-			WriteLog(GameLog, logstring);
-			GivePlayerXP(playerid, 0-(Race[raceid][race_xpprize]/3), 1);
+			GameMSG("player: %s(%d): his race ended. Out of time.", oGetPlayerName(playerid), playerid);
+			GivePlayerXP(playerid, -(Race[raceid][race_xpprize] / 3), 1);
 		}
 	}
 	CleanupRace(raceid);
-	RaceRunning=0;
+	RaceRunning = 0;
 }
 
 
