@@ -173,6 +173,10 @@ public OnGameModeInit()
 	bank_OnGameModeInit();
 	fights_OnGameModeInit();
 	weapon_OnGameModeInit();
+	quidemsys_OnGameModeInit();
+	lottery_OnGameModeInit();
+	swagup_OnGameModeInit();
+	vip_OnGameModeInit();
 	// missions
 	mission_OnGameModeInit();
     trucker_OnGameModeInit();
@@ -181,11 +185,6 @@ public OnGameModeInit()
 	bar_OnGameModeInit();
 	ss_OnGameModeInit();
 	vshop_OnGameModeInit();
-	//
-	quidemsys_OnGameModeInit();
-	lottery_OnGameModeInit();
-	swagup_OnGameModeInit();
-	vip_OnGameModeInit();
 	//
 	level_OnGameModeInit();
 	antiidle_OnGameModeInit();
