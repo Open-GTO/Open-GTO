@@ -1077,7 +1077,8 @@ stock IsWeaponAllowedInDM(weaponid, dmid)
 	}
 	for (new i = 0; i < MAX_DMWEAPONS; i++)
 	{
-		if (Deathmatch[dmid][dm_weapons][i] == 0)
+		// ignoring fire reason
+		if (Deathmatch[dmid][dm_weapons][i] == 0 || Deathmatch[dmid][dm_weapons][i] == 37)
 		{
 			continue;
 		}
