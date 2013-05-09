@@ -17,26 +17,22 @@
 #include "player"
 #include "payday"
 
-new LastWorldSave = 1;
 
 forward WorldSave(necessarily);
 public WorldSave(necessarily) // save all
 {
-	if (necessarily == 1) goto nee;
-	if (PlayerCount() > 0)
-	{
-		LastWorldSave = 1;
+	static emptyServerSaved = 0;
+	
+	if (PlayerCount() == 0 && necessarily != 1) {
+		if (emptyServerSaved == 0) {
+			emptyServerSaved = 1;
+		} else {
+			return 0;
+		}
+	} else {
+		emptyServerSaved = 0;
 	}
-	else if (LastWorldSave == 1)
-	{
-		LastWorldSave = 0;
-		goto nee;
-	}
-	if (LastWorldSave != 1)
-	{
-		return 0;
-	}
-nee:
+	
 	new starttime = gettime();
 	foreach (Player, id)
 	{
