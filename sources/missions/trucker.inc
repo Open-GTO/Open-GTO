@@ -124,6 +124,7 @@ stock trucker_OnGameModeInit()
 			linerunner_array[veh_id][vspawn_x],linerunner_array[veh_id][vspawn_y],linerunner_array[veh_id][vspawn_z],linerunner_array[veh_id][vspawn_heading],
 			linerunner_array[veh_id][vspawn_colour1],linerunner_array[veh_id][vspawn_colour2],TRUCKER_CAR_SPAWN_TIME
 		);
+		SetVehicleFuel(linerunner_lastid, -1);
 	}
 	//
 	CreateStreamMapIcon(51,253.0453,1372.3413,11.1734);
