@@ -46,7 +46,7 @@ stock vshop_OnGameModeInit()
 	{
 		vshop_VehiclesPos[i][vshop_ID] = AddStaticVehicleEx(vshop_VehiclesModels[ random( sizeof(vshop_VehiclesModels) ) ],
 			vshop_VehiclesPos[i][vshop_X], vshop_VehiclesPos[i][vshop_Y], vshop_VehiclesPos[i][vshop_Z], vshop_VehiclesPos[i][vshop_A],
-			colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], CarsReSpawnTime
+			colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], VEHSHOP_CAR_SPAWN_TIME
 		);
 		SetVehicleFuel(vshop_VehiclesPos[i][vshop_ID], 0);
 	}
