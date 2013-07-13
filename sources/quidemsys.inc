@@ -342,7 +342,7 @@ public speed_Timer()
 		TextDrawSetString(speedom[playerid], string);
 		TextDrawShowForPlayer(playerid, speedom[playerid]);
 		TextDrawShowForPlayer(playerid, black);
-		TextDrawShowForPlayer(playerid, white);
+		//TextDrawShowForPlayer(playerid, white);
 	}
 	return 1;
 }
@@ -424,4 +424,9 @@ public Float:SetVehicleFuel(vehicleid, Float:amount)
 	}
 	Fuel[vehicleid] = amount;
 	return amount;
+}
+
+stock GetMaxVehicleFuel(vehiclemodel)
+{
+	return FuelList[vehiclemodel - 400];
 }

@@ -98,7 +98,8 @@ stock vshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]
 
 stock buyVehicle(playerid, vehicleid)
 {
-	AddPlayerVehicle(playerid, 0, GetVehicleModel(vehicleid), colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], SetVehicleFuel(vehicleid, -1));
+	new model = GetVehicleModel(vehicleid);
+	AddPlayerVehicle(playerid, 0, model, colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], float(GetMaxVehicleFuel(model)));
 	return 1;
 }
 
