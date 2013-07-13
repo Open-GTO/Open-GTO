@@ -884,7 +884,7 @@
 27: Ваш транспорт был заправлен за $%d.
 28: ~G~Opened
 29: ~R~Closed
-30: ~B~Speed: %s km/h~N~~B~Fuel: ~W~%0.1f lit.~N~~B~Health: ~W~%0.0f%%
+30: ~b~~h~Speed: %s km/h~n~~b~~h~Fuel: ~w~~h~%0.1f lit.~n~~b~~h~Health: ~w~~h~%0.0f%%
 31: Заправка
 32: 
 // [19] trucker

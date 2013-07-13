@@ -61,7 +61,7 @@ new FuelList[] = {
 40, 50, 40, 60, 40, 40, 40, 45, 0, 0, 0, 50, 0, 0,
 };
 
-new Text:white, Text:black, Text:speedom[MAX_PLAYERS];
+new Text:black, Text:speedom[MAX_PLAYERS];
 new Float:Fuel[MAX_VEHICLES];
 new fill_TimerID[MAX_PLAYERS] = {0,...};
 
@@ -114,24 +114,6 @@ stock quidemsys_OnGameModeInit()
 	TextDrawSetOutline(black, 1);
 	TextDrawSetProportional(black, 1);
 	TextDrawSetShadow(black, 1);
-
-	white = TextDrawCreate(495.000000, 380.000000, "_");
-	TextDrawUseBox(white, 1);
-	TextDrawBoxColor(white, 0xAAAAAA77);
-	TextDrawTextSize(white, 605.500000, 0.000000);
-	TextDrawAlignment(white, 0);
-	TextDrawBackgroundColor(white, 0x000000FF);
-	TextDrawFont(white, 2);
-	TextDrawLetterSize(white, 1.350000, 2.800000);
-	TextDrawColor(white, 0xAAAAAA88);
-	TextDrawSetOutline(white, 1);
-	TextDrawSetProportional(white, 1);
-	TextDrawSetShadow(white, 1);
-	
-	foreach (Player, playerid)
-	{
-		create_playerTD(playerid);
-	}
 	
 	SetTimer("speed_Timer", 500, 1);
 	GameMSG(lang_texts[19][20]);
@@ -141,33 +123,16 @@ stock quidemsys_OnGameModeInit()
 stock create_playerTD(playerid)
 {
 	speedom[playerid] = TextDrawCreate(495.000000, 377.700000, "-");
-	TextDrawAlignment(speedom[playerid], 0);
+	TextDrawAlignment(speedom[playerid], 1);
 	TextDrawBackgroundColor(speedom[playerid], 0x000000FF);
 	TextDrawFont(speedom[playerid], QUIDEMSYS_TD_FONT);
 	TextDrawLetterSize(speedom[playerid], 0.299999, 1.000000);
 	TextDrawColor(speedom[playerid], 0xFFFFFFFF);
 	TextDrawSetOutline(speedom[playerid], 1);
+	TextDrawSetShadow(speedom[playerid], 0);
 	TextDrawSetProportional(speedom[playerid], 1);
 	return 1;
 }
-/*
-stock quidemsys_OnGameModeExit()
-{
-	if (QuidemSysEnabled != 1) return 0;
-	TextDrawHideForAll(black);
-	TextDrawHideForAll(white);
-	
-	TextDrawDestroy(black);
-	TextDrawDestroy(white);
-	
-	foreach (Player, playerid)
-	{
-		TextDrawHideForPlayer(playerid, speedom[playerid]);
-		TextDrawDestroy(speedom[playerid]);
-	}
-	if (SpeedTimer != 0) KillTimer(SpeedTimer);
-	return 1;
-}*/
 
 stock quidemsys_OnVehicleSpawn(vehicleid)
 {
@@ -275,7 +240,6 @@ public speed_Timer()
 		if (vehicleid == 0)
 		{
 			TextDrawHideForPlayer(playerid, black);
-			TextDrawHideForPlayer(playerid, white);
 			TextDrawHideForPlayer(playerid, speedom[playerid]);
 			continue;
 		}
@@ -306,7 +270,7 @@ public speed_Timer()
 		speed[0] = '\0';
 		if (Fuel[vehicleid] == 0.0)
 		{
-			strcat(speed, "~W~");
+			strcat(speed, "~w~~h~");
 		}
 		else
 		{
@@ -314,22 +278,22 @@ public speed_Timer()
 			{
 				case 0:
 				{
-					strcat(speed, "~G~");
+					strcat(speed, "~g~~h~");
 					Fuel[vehicleid] -= 0.0002;
 				}
 				case 1..60:
 				{
-					strcat(speed, "~G~");
+					strcat(speed, "~g~~h~");
 					Fuel[vehicleid] -= 0.003;
 				}
 				case 61..90:
 				{
-					strcat(speed, "~Y~");
+					strcat(speed, "~y~~h~");
 					Fuel[vehicleid] -= 0.006;
 				}
 				default:
 				{
-					strcat(speed, "~R~");
+					strcat(speed, "~r~~h~");
 					Fuel[vehicleid] -= 0.010;
 				}
 			}
@@ -342,7 +306,6 @@ public speed_Timer()
 		TextDrawSetString(speedom[playerid], string);
 		TextDrawShowForPlayer(playerid, speedom[playerid]);
 		TextDrawShowForPlayer(playerid, black);
-		//TextDrawShowForPlayer(playerid, white);
 	}
 	return 1;
 }
@@ -390,7 +353,6 @@ stock qudemsys_OnPlayerStateChange(playerid, newstate, oldstate)
 	if (oldstate == PLAYER_STATE_DRIVER)
 	{
 		TextDrawHideForPlayer(playerid, black);
-		TextDrawHideForPlayer(playerid, white);
 		TextDrawHideForPlayer(playerid, speedom[playerid]);
 		return 1;
 	}
