@@ -84,7 +84,7 @@ public bar_Gulp(playerid)
 
 stock bar_ShowDialog(playerid)
 {
-	new string[256];
+	new string[512];
 	for (new i = 0; i < sizeof(Drinks); i++)
 	{
 		format(string, sizeof(string),
