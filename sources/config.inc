@@ -205,7 +205,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define KEY_USING			KEY_WALK // Кнопка 'Ходьба' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
 #define KEY_NAME			"Ходьба"
 #define PICKUP_TEXT			"\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'"
-#define CreatePickupText(%0,%1,%2,%3)	Create3DTextLabel(%0PICKUP_TEXT, 0x00FFFFEE,%1,%2,%3, 20.0, 0, 1)
+#define CreatePickupText(%0,%1,%2,%3)	Create3DTextLabel(%0PICKUP_TEXT, 0xFFFFFFFF,%1,%2,%3, 20.0, 0, 1)
 
 // диалоги
 enum {
