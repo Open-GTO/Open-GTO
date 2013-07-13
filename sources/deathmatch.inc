@@ -63,7 +63,7 @@ enum DMPlayerInfo{
 new DMPlayerStats[MAX_PLAYERS][DMPlayerInfo];
 
 enum DMScoreInfo {
-	dm_score_player[MAX_NAME],
+	dm_score_player[MAX_PLAYER_NAME + 1],
 	dm_score_record,
 	dm_score_kills,
 	dm_score_deaths
@@ -244,7 +244,7 @@ stock DeathmatchLoadRecordDB(dmid)
 	if (!ini_Exist(rdbname)) return 0;
 	new file_dm = ini_Open(rdbname);
 	ini_GetInt(file_dm, "Best_Score_Record", DMBestScore[dmid][dm_score_record]);
-	ini_Get(file_dm, "Best_Score_Player", DMBestScore[dmid][dm_score_player], MAX_NAME);
+	ini_Get(file_dm, "Best_Score_Player", DMBestScore[dmid][dm_score_player], MAX_PLAYER_NAME + 1);
 	ini_GetInt(file_dm, "Best_Score_Kills", DMBestScore[dmid][dm_score_kills]);
 	ini_GetInt(file_dm, "Best_Score_Deaths", DMBestScore[dmid][dm_score_deaths]);
 	ini_Close(file_dm);
@@ -802,7 +802,7 @@ stock PlayerFinishDM(playerid, dmid, position)
 		DMBestScore[dmid][dm_score_record] = GetPlayerDMScore(playerid, dmid);
 		DMBestScore[dmid][dm_score_kills] = DMPlayerStats[playerid][dm_player_kills];
 		DMBestScore[dmid][dm_score_deaths] = DMPlayerStats[playerid][dm_player_deaths];
-		set(DMBestScore[dmid][dm_score_player], oGetPlayerName(playerid));
+		GetPlayerName(playerid, DMBestScore[dmid][dm_score_player], MAX_PLAYER_NAME + 1);
 	}
 
 	PlayerLeaveDM(playerid, dmid);
