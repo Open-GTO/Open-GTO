@@ -1334,6 +1334,10 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			{
 				case 0: // Переместить к себе
 				{
+					if (GetPlayerInterior(playerid) != 0) {
+						show_User_Menu_Dialog(playerid, "Мой транспорт", "Переместить транспорт к себе можно только на улице");
+						return 0;
+					}
 					new Float:pos[4];
 					GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 					GetPlayerFacingAngle(playerid, pos[3]);
