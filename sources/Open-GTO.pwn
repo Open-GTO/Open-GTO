@@ -875,12 +875,15 @@ public OnVehicleMod(playerid, vehicleid, componentid)
 
 public OnEnterExitModShop(playerid, enterexit, interiorid)
 {
-	if (enterexit == 1) {
-		SetVehicleVirtualWorld(GetPlayerVehicleID(playerid), playerid + 1);
-		SetPlayerVirtualWorld(playerid, playerid + 1);
-	} else {
-		SetVehicleVirtualWorld(GetPlayerVehicleID(playerid), 0);
-		SetPlayerVirtualWorld(playerid, 0);
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if (vehicleid != 0) {
+		if (enterexit == 1) {
+			SetVehicleVirtualWorld(vehicleid, playerid + 1);
+			SetPlayerVirtualWorld(playerid, playerid + 1);
+		} else {
+			SetVehicleVirtualWorld(vehicleid, 0);
+			SetPlayerVirtualWorld(playerid, 0);
+		}
 	}
 	return 1;
 }
