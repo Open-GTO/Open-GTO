@@ -267,12 +267,14 @@ stock CheckPlayerLevel(playerid)
 stock PlayerLevelDown(playerid, newlevel, oldlevel)
 {
 	SetPlayerLevel(playerid, newlevel);
-	PlayerPlaySoundOnPlayer(playerid, 1057);
-	UpdatePlayerScore(playerid);
+	SetPlayerScore(playerid, newlevel);
 	UpdatePlayerLevelTextDraws(playerid);
+	PlayerPlaySoundOnPlayer(playerid, 1057);
+	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[9][22], newlevel);
 	SendClientMessage(playerid, COLOUR_XP_BAD, string);
+	
 	GameMSG("player: %s(%d): decreased his level from %d to %d", oGetPlayerName(playerid), playerid, oldlevel, newlevel);
 	return 1;
 }
@@ -281,9 +283,9 @@ stock PlayerLevelUp(playerid, newlevel, oldlevel)
 {
 	SetPlayerLevel(playerid, newlevel);
 	SetMaxPlayerHealth(playerid);
-	PlayerPlaySoundOnPlayer(playerid, 1057);
-	UpdatePlayerScore(playerid);
+	SetPlayerScore(playerid, newlevel);
 	UpdatePlayerLevelTextDraws(playerid);
+	PlayerPlaySoundOnPlayer(playerid, 1057);
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[9][23], newlevel);

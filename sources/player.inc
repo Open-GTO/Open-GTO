@@ -739,7 +739,6 @@ stock player_load_db_ini(playerid)
 	}
 	
 	ini_Close(file_player);
-	UpdatePlayerScore(playerid);
 	return 1;
 }
 

@@ -1,7 +1,7 @@
 /*
 Project Name:	San Andreas - Multiplayer: Open - Grand Theft Online (Open-GTO).
 
-Current version:	1.0.9
+Current version:	1.1.1
 SA-MP Versions:		0.3d and older
 
 Web site:	http://open-gto.ru/
@@ -138,7 +138,7 @@ main()
 			\tLajos Pacsek (asturel)\n\
 			\tDmitry Frolov (FP)\n\
 			\tOpen-GTO Team:\n\
-				\t\tCurrent: ZiGGi\n\
+				\t\tCurrent: ziggi\n\
 				\t\tPrevious: GhostTT, heufix, Elbi\n\
 	");
 	print("\

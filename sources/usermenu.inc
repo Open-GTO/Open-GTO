@@ -1,6 +1,8 @@
 /*
- Created: 07.04.2011
- Author: ZiGGi
+
+	Created: 07.04.2011
+	Author: ziggi
+	
 */
 
 #if defined _user_menu_included
@@ -615,7 +617,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 									\t\tAsturel\n\
 									\t\tDmitry Frolov (FP)\n\
 									\t\tOpen-GTO Team:\n\
-									\t\t\tCurrent: ZiGGi\n\
+									\t\t\tCurrent: ziggi\n\
 									\t\t\tPrevious: GhostTT, heufix, Elbi\n\
 						\n\
 						{00C0DD}Косвенные разработчики: {AFE7FF}\n\
