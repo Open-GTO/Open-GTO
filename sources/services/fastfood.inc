@@ -27,7 +27,7 @@ new Food[][FoodInfo] = {
 	{"√нилой корень", 10, 10.0},
 	{"ѕеченьки с молоком", 15, 25.0},
 	{"ѕетрушка с хреном", 25, 50.0},
-	{"яйца всм€тку", 35, 80.0},
+	{"ƒва €йца всм€тку", 35, 80.0},
 	{"јмлет с колбасой", 45, 100.0}
 };
 
@@ -51,7 +51,7 @@ stock fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 stock fastfood_ShowDialog(playerid)
 {
-	new string[256];
+	new string[MAX_STRING * sizeof(Food)];
 	for (new i = 0; i < sizeof(Food); i++)
 	{
 		format(string, sizeof(string), lang_texts[17][2], string, Food[i][food_name], Food[i][food_cost], Food[i][food_hp]);
@@ -74,7 +74,7 @@ stock fastfood_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			return show_Msg_Dialog(playerid, lang_texts[17][6], lang_texts[17][7], lang_texts[17][8]);
 		}
 		oGivePlayerMoney(playerid,-Food[listitem][food_cost], 1);
-		ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.0, 1, 1, 1, 1, 1);
+		ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.1, 0, 1, 1, 1, 1);
 		if (Food[listitem][food_hp] + oGetPlayerHealth(playerid) > GetMaxHealth(playerid))
 		{
 			oSetPlayerHealth(playerid, GetMaxHealth(playerid));
