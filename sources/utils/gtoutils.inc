@@ -275,3 +275,8 @@ stock encrypt(string[])
 	return retval;
 }
 #endif
+
+stock HideDialog(playerid)
+{
+	ShowPlayerDialog(playerid, -1, 0, " ", " ", " ", "");
+}
