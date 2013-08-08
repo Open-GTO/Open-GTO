@@ -307,7 +307,7 @@ stock level_HideTextDraws(playerid)
 	return 1;
 }
 
-stock UpdatePlayerLevelTextDraws(playerid, level)
+stock UpdatePlayerLevelTextDraws(playerid)
 {
 	new string[64],
 		level = GetPlayerLevel(playerid);
