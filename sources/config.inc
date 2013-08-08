@@ -19,7 +19,6 @@
 #define GTO_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
 #define LANGUAGE_USE			"Russian" // используемый язык
-#define LANG_BB_N				"[n]" // переход на новую строку
 
 #define MAX_STRING				128 // не менять, кол-во символов для большинства строковых переменных
 #define MAX_NAME				40 // кол-во символов для имён, паролей и пр.
