@@ -11,6 +11,8 @@
 #pragma library vehicle
 
 
+native IsValidVehicle(vehicleid);
+
 #define V_ADMIRAL 445
 #define V_ALPHA 602
 #define V_AMBULAN 416

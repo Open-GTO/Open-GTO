@@ -809,6 +809,7 @@ public OnVehicleStreamOut(vehicleid, forplayerid)
 public OnVehicleSpawn(vehicleid)
 {
 	quidemsys_OnVehicleSpawn(vehicleid);
+	vshop_OnVehicleSpawn(vehicleid);
 	return 1;
 }
 
@@ -889,4 +890,5 @@ public OnEnterExitModShop(playerid, enterexit, interiorid)
 		}
 	}
 	return 1;
+
 }

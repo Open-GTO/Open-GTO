@@ -150,7 +150,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define VEHICLE_LIGHTS_OFF_TIME		7 // время(часов), когда фары транспорта будут автоматически выключаться
 //
 #define MAX_PLAYER_VEHICLES			4 // максимальное количество личного транспорта
-#define VEHSHOP_CAR_SPAWN_TIME		CARS_RESPAWN_TIME
+#define VEHSHOP_CAR_CHANGE_TIME		3 // количество часов, через которое транспорт в магазине меняется
 
 // банды
 #define MAX_GANGS			MAX_PLAYERS // максимум банд онлайн

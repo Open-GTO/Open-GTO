@@ -153,6 +153,7 @@ public OneMinuteTimer()
 	SyncTime();
 	settime();
 	TurnAround();
+	vshop_OneMinuteTimer();
 }
 
 forward OneHourTimer();
@@ -162,6 +163,7 @@ public OneHourTimer()
 	CheckHousesOwners();
 	CheckBusinessOwners();
 	lottery_RunTimer();
+	vshop_OneHourTimer();
 }
 
 forward TenMinuteTimer();
