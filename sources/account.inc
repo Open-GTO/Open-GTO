@@ -178,7 +178,7 @@ stock account_OnPlayerConnect(playerid)
 	else
 	{
 		format(message, sizeof(message), lang_texts[1][44], playername, MIN_PASS_LEN, MAX_PASS_LEN);
-		ShowPlayerDialog(playerid, account_Reg_DialogID, DIALOG_STYLE_PASSWORD, "Регистрация", message, "Зарегать", "");
+		ShowPlayerDialog(playerid, account_Reg_DialogID, DIALOG_STYLE_INPUT, "Регистрация", message, "Зарегать", "");
 	}
 	SetPVarInt(playerid, "RequestPlace", random( sizeof(RequestPlace) ));
 	return 1;
