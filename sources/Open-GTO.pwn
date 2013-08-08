@@ -748,6 +748,9 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	#endif
 		trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 		vip_OnPlayerStateChange(playerid, newstate, oldstate);
+	}
+	if (newstate == PLAYER_STATE_DRIVER || newstate == PLAYER_STATE_PASSENGER)
+	{
 		vshop_OnPlayerStateChange(playerid, newstate, oldstate);
 	}
 	return 1;

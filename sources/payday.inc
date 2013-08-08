@@ -69,6 +69,9 @@ stock GivePay()
 	new pay_Money, pay_XP, string[MAX_STRING];
 	foreach (Player, id)
 	{
+		if (!IsPlayerLogin(id)) {
+			continue;
+		}
 		pay_Money = 0;
 		if (GetPlayerTotalMoney(id) < PayCutoff)	// money
 		{
