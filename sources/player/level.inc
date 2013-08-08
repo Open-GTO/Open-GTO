@@ -12,7 +12,6 @@
 
 
 #define GetPlayerLevel(%1) GetPVarInt(%1,"Level")
-#define SetPlayerLevel(%1,%2) SetPVarInt(%1,"Level",%2)
 #define GetPlayerXP(%1) GetPVarInt(%1,"XP")
 #define SetPlayerXP(%1,%2) SetPVarInt(%1,"XP",%2)
 
@@ -267,8 +266,6 @@ stock CheckPlayerLevel(playerid)
 stock PlayerLevelDown(playerid, newlevel, oldlevel)
 {
 	SetPlayerLevel(playerid, newlevel);
-	SetPlayerScore(playerid, newlevel);
-	UpdatePlayerLevelTextDraws(playerid);
 	PlayerPlaySoundOnPlayer(playerid, 1057);
 	
 	new string[MAX_STRING];
@@ -283,8 +280,6 @@ stock PlayerLevelUp(playerid, newlevel, oldlevel)
 {
 	SetPlayerLevel(playerid, newlevel);
 	SetMaxPlayerHealth(playerid);
-	SetPlayerScore(playerid, newlevel);
-	UpdatePlayerLevelTextDraws(playerid);
 	PlayerPlaySoundOnPlayer(playerid, 1057);
 	
 	new string[MAX_STRING];
@@ -295,6 +290,14 @@ stock PlayerLevelUp(playerid, newlevel, oldlevel)
 	
 	GameMSG("player: %s(%d): increased his level from %d to %d", oGetPlayerName(playerid), playerid, oldlevel, newlevel);
 	return 1;
+
+}
+
+stock SetPlayerLevel(playerid, level)
+{
+	SetPVarInt(playerid, "Level", level);
+	SetPlayerScore(playerid, level);
+	UpdatePlayerLevelTextDraws(playerid);
 }
 
 stock level_HideTextDraws(playerid)
@@ -304,7 +307,7 @@ stock level_HideTextDraws(playerid)
 	return 1;
 }
 
-stock UpdatePlayerLevelTextDraws(playerid)
+stock UpdatePlayerLevelTextDraws(playerid, level)
 {
 	new string[64],
 		level = GetPlayerLevel(playerid);
