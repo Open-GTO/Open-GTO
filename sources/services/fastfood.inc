@@ -35,7 +35,7 @@ stock fastfood_OnGameModeInit()
 {
 	for (new ff_id = 0; ff_id < sizeof(FastFoods); ff_id++)
 	{
-	    CreatePickup(1445 , 23, FastFoods[ff_id][Coord_X], FastFoods[ff_id][Coord_Y], FastFoods[ff_id][Coord_Z]);
+	    CreatePickup(2703 , 23, FastFoods[ff_id][Coord_X], FastFoods[ff_id][Coord_Y], FastFoods[ff_id][Coord_Z]);
 		CreatePickupText("Ôàñòôóä", FastFoods[ff_id][Coord_X], FastFoods[ff_id][Coord_Y], FastFoods[ff_id][Coord_Z]);
 	}
 	GameMSG(lang_texts[17][1]);
