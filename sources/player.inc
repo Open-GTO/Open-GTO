@@ -372,19 +372,9 @@ stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid != 0)
 	{
-		SetPlayerInterior(playerid, 0);
-		SetPlayerVirtualWorld(playerid, 0);
-		
 		oSetVehiclePos(vehicleid, fX, fY, fZ);
 		LinkVehicleToInterior(vehicleid, 0);
 		SetVehicleVirtualWorld(vehicleid, 0);
-		
-		new trailerid = GetVehicleTrailer(vehicleid);
-		if (trailerid != 0)
-		{
-			SetVehiclePos(trailerid, fX, fY, fZ);
-			AttachTrailerToVehicle(trailerid, vehicleid);
-		}
 	}
 	else
 	{
@@ -455,9 +445,15 @@ stock KickPlayer(playerid, reason[])
 	SendClientMessageToAll(COLOUR_MISC, string);
 	GameTextForPlayer(playerid, "~r~Connection Lost.", 1000, 5); //  send msg first
 	TogglePlayerControllable(playerid, 0);
-	Kick(playerid);
+	SetTimerEx("PlayerKickFix", 100, 0, "d", playerid);
 	GameMSG("player: %s(%d): has been kicked. Reason: %s", playername, playerid, reason);
 	return 1;
+}
+
+forward PlayerKickFix(playerid);
+public PlayerKickFix(playerid)
+{
+	Kick(playerid);
 }
 
 stock GetRndPlayerSpawnByLevel(level)

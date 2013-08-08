@@ -147,7 +147,10 @@ stock account_login_db_ini(playerid, password[])
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][6]);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][7]);
 		KickPlayer(playerid, lang_texts[1][4]);
-		account_OnPlayerConnect(playerid); // если игрок админ, то опять выводим меню
+		// если игрок админ, то опять выводим меню
+		if (IsPlayerRconAdmin(playerid)) {
+			account_OnPlayerConnect(playerid);
+		}
 		return 0;
 	}
 	SetPVarString(playerid, "Password", password);
