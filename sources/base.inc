@@ -64,6 +64,7 @@ stock base_OnGameModeInit()
 	ShowPlayerMarkers(1);
 	ShowNameTags(1);
 	ManualVehicleEngineAndLights();
+	EnableStuntBonusForAll(0);
 	GameMSG("SERVER: Base module init");
 	return 1;
 }
