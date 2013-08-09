@@ -83,24 +83,24 @@ public WorldSave(necessarily) // save all
 
 stock SyncTime()
 {
-	if (RealTime != 1)
-	{
-		if (WorldTime >= 23)
-		{
+	if (RealTime == 0) {
+		WorldTime++;
+		
+		if (WorldTime > 23) {
 			WorldTime = 0;
 		}
-		else
-		{
-			WorldTime++;
-		}
-		SetWorldTime(WorldTime);
-	} 
-	else 
-	{
+	} else {
 		new hour;
 		gettime(hour);
-		SetWorldTime(hour);
+		
+		hour += 12;
+		if (hour > 23) {
+			hour -= 23;
+		}
+		
+		WorldTime = hour;
 	}
+	SetWorldTime(WorldTime);
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -151,7 +151,6 @@ public OneMinuteTimer()
 	}
 	weather_WeatherUpdate();
 	SyncTime();
-	settime();
 	TurnAround();
 	vshop_OneMinuteTimer();
 }

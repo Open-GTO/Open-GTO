@@ -190,14 +190,6 @@ stock SetPlayerPosEx(playerid, Float:X, Float:Y, Float:Z, Float:Angle, Interior,
     SetCameraBehindPlayer(playerid);
 }
 
-stock settime()
-{
-    new hour;
-    gettime(hour);
-    SetWorldTime(hour);
-	return 1;
-}
-
 stock StringCharCheck(string[])
 {
 	for (new i = strlen(string)-1; i >= 0; i--)

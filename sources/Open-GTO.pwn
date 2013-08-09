@@ -232,11 +232,7 @@ public OnGameModeInit()
 	#tryinclude "custom\objects"
 	GameMSG("SERVER: Custom mapicons, objects and pickups init");
 
-	new hour, minute;
-	gettime(hour, minute);
-	WorldTime = hour;
-	SetWorldTime(hour);
-	GameMSG("SERVER: Worldtime set as %d", hour);
+	SyncTime();
 	SetWeather( mathrandom(9, 18) );
 	SetTimer("OneSecTimer", 1000, 1); // 1 second
 	SetTimer("FiveSecondTimer", 5000, 1); // 5 second
@@ -252,6 +248,8 @@ public OnGameModeInit()
 	SpawnWorld();
 	
 	WorldSave(0);
+	new hour, minute;
+	gettime(hour, minute);
 	GameMSG("SERVER: Open-GTO "#VERSION" initialization complete. [%02d:%02d]", hour, minute);
 	return 1;
 }

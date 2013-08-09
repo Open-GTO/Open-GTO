@@ -30,8 +30,10 @@ new RaceDB[MAX_STRING] = GTO_FILES_FOLDER "Race/!Races"GTO_FILES_FORMAT;
 new RaceBaseDB[MAX_STRING] = GTO_FILES_FOLDER "Race/";
 new RaceRecordDB[MAX_STRING] = GTO_FILES_FOLDER "Race/Record/";
 
-new RealTime=0;
-new WorldTime;
+new RealTime = SERVER_REAL_TIME,
+	RealTimeOffset = SERVER_REAL_TIME_OFFSET,
+	WorldTime;
+
 new nullstr[MAX_STRING];
 
 enum CoordInfo {
@@ -45,6 +47,7 @@ stock BaseLoadConfig()
 	if (!ini_Exist(ConfigDB)) return 0;
 	new file_base = ini_Open(ConfigDB);
 	ini_GetInt(file_base, "Real_Time", RealTime);
+	ini_GetInt(file_base, "Real_Time_Offset", RealTimeOffset);
 	ini_Close(file_base);
 	return 1;
 }
@@ -53,6 +56,7 @@ stock BaseSaveConfig()
 {
 	new file_base = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_SetInt(file_base, "Real_Time", RealTime);
+	ini_GetInt(file_base, "Real_Time_Offset", RealTimeOffset);
 	ini_Close(file_base);
 	return 1;
 }
