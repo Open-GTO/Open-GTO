@@ -136,11 +136,10 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 	}
 	if (!strcmp(cmd, "/time", true))
 	{
-		new string[MAX_STRING];
-		new hour, minute, second;
-		gettime(hour, minute, second);
-		format(string, sizeof(string), "%02d:%02d", hour, minute);
-		GameTextForPlayer(playerid, string, 999, 1);
+		new string[16], minute;
+		gettime(_, minute);
+		format(string, sizeof(string), "%02d:%02d", WorldTime, minute);
+		GameTextForPlayer(playerid, string, 1000, 1);
 		PlayerPlaySound(playerid, 1085, 0, 0, 0);
 		return 1;
 	}
