@@ -93,7 +93,7 @@ stock SyncTime()
 		new hour;
 		gettime(hour);
 		
-		hour += 12;
+		hour += RealTimeOffset;
 		if (hour > 23) {
 			hour -= 23;
 		}
