@@ -56,7 +56,7 @@ stock BaseSaveConfig()
 {
 	new file_base = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_SetInt(file_base, "Real_Time", RealTime);
-	ini_GetInt(file_base, "Real_Time_Offset", RealTimeOffset);
+	ini_SetInt(file_base, "Real_Time_Offset", RealTimeOffset);
 	ini_Close(file_base);
 	return 1;
 }
