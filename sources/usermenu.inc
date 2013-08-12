@@ -1110,7 +1110,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			if (!response) {
 				return show_Gang_Menu(playerid);
 			}
-			GangRemoveMember(gangid, oGetPlayerName(playerid));
+			GangRemoveMember(GetPlayerGangID(playerid), oGetPlayerName(playerid));
 			return 1;
 		}
 		case gang_create_menu_DialogID:
