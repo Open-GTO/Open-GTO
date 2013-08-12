@@ -145,10 +145,12 @@ stock account_login_db_ini(playerid, password[])
 		ini_Close(file_account);
 		GameMSG("player_login: failed: incorrect password by %s(%d)", playername, playerid);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][6]);
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][7]);
-		KickPlayer(playerid, lang_texts[1][4]);
-		// если игрок админ, то опять выводим меню
-		if (IsPlayerRconAdmin(playerid)) {
+		
+		GivePVarInt(playerid, "Player_Login_Attempt", 1);
+		if (GetPVarInt(playerid, "Player_Login_Attempt") >= MAX_PLAYER_LOGIN_ATTEMPT) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[1][7]);
+			KickPlayer(playerid, lang_texts[1][4]);
+		} else {
 			account_OnPlayerConnect(playerid);
 		}
 		return 0;
@@ -175,7 +177,11 @@ stock account_OnPlayerConnect(playerid)
 	format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, playername);
 	if (ini_Exist(filename_account))
 	{
- 		format(message, sizeof(message), lang_texts[1][43], playername);
+		if (GetPVarInt(playerid, "Player_Login_Attempt") > 0) {
+			format(message, sizeof(message), lang_texts[1][47], GetPVarInt(playerid, "Player_Login_Attempt"));
+		} else {
+			format(message, sizeof(message), lang_texts[1][43], playername);
+		}
 		ShowPlayerDialog(playerid, account_Log_DialogID, DIALOG_STYLE_PASSWORD, "Вход в аккаунт", message, "Войти", "");
 	}
 	else
