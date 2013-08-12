@@ -136,7 +136,7 @@ public OneSecTimer()
 forward OneMinuteTimer();
 public OneMinuteTimer()
 {
-	foreach (new playerid : Players)
+	foreach (new playerid : Player)
 	{
 		if (GetPlayerSkydiveTime(playerid) > 0)
 		{

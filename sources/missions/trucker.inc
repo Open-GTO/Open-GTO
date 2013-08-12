@@ -133,7 +133,7 @@ stock trucker_OnGameModeInit()
 			linerunner_array[veh_id][trucker_X], linerunner_array[veh_id][trucker_Y], linerunner_array[veh_id][trucker_Z], linerunner_array[veh_id][trucker_A],
 			linerunner_array[veh_id][trucker_Color1], linerunner_array[veh_id][trucker_Color2], TRUCKER_CAR_SPAWN_TIME
 		);
-		SetVehicleFuel(linerunner_lastid, -1);
+		SetVehicleFuel(linerunner_array[veh_id][trucker_Id], -1);
 	}
 	//
 	CreateStreamMapIcon(51, 253.0453, 1372.3413, 11.1734);
@@ -402,7 +402,7 @@ stock IsVehicleIsRunner(vehicleid)
 stock IsTrailerIsTrue(trailerid)
 {
 	for (new i = 0; i < sizeof(trailer_array); i++) {
-		if (trailer_array[i][trucker_Id] == vehicleid) {
+		if (trailer_array[i][trucker_Id] == trailerid) {
 			return 1;
 		}
 	}
