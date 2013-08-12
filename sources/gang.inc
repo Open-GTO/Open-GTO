@@ -817,27 +817,35 @@ stock GangGiveXP(gangid, xpamount, giverid)
 {
 	Gangs[gangid][gang_score] += xpamount;
 	new giveamount = xpamount / GangOnlineCount(gangid),
-		string[MAX_STRING];
+		playerid;
 	
-	for (new gangmember = 0; gangmember < MAX_GANG_SIZE; gangmember++)
-	{
-		if (!gang_IsPlayerConnect(gangid, gangmember) || giverid == GangMemberInfo[gangid][gangmember][member_playerid])
-		{
+	for (new gangmember = 0; gangmember < MAX_GANG_SIZE; gangmember++) {
+		playerid = GangMemberInfo[gangid][gangmember][member_playerid];
+		
+		if (!gang_IsPlayerConnect(gangid, gangmember) || giverid == playerid) {
 			continue;
 		}
-		if (GetPlayerXP(GangMemberInfo[gangid][gangmember][member_playerid]) < MAX_XP) 
-		{
-			GivePlayerXP(GangMemberInfo[gangid][gangmember][member_playerid], giveamount, 0);
-			format(string, sizeof(string), lang_texts[6][79], giveamount, oGetPlayerName(giverid));
-			SendClientMessage(GangMemberInfo[gangid][gangmember][member_playerid], COLOUR_XP_GOOD, string);
-			CheckPlayerLevel(GangMemberInfo[gangid][gangmember][member_playerid]);
-		} 
-		else 
-		{
-			format(string, sizeof(string), lang_texts[9][17]);
-			SendClientMessage(GangMemberInfo[gangid][gangmember][member_playerid], COLOUR_RED, string);
+		
+		if (GetPlayerXP(playerid) < MAX_XP) {
+			GivePVarInt(playerid, "gang_xp_from_players", giveamount);
 		}
 	}
+}
+
+stock Gang_GiveXp(playerid)
+{
+	new xp_amount = GetPVarInt(playerid, "gang_xp_from_players");
+	if (xp_amount == 0) {
+		return;
+	}
+	
+	DeletePVar(playerid, "gang_xp_from_players");
+	
+	GivePlayerXP(playerid, xp_amount, 0);
+	
+	new string[MAX_STRING];
+	format(string, sizeof(string), lang_texts[6][79], xp_amount);
+	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 }
 
 stock SetGangColour(gangid, colour)

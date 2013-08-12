@@ -136,7 +136,7 @@ public OneSecTimer()
 forward OneMinuteTimer();
 public OneMinuteTimer()
 {
-	foreach (Player, playerid)
+	foreach (new playerid : Players)
 	{
 		if (GetPlayerSkydiveTime(playerid) > 0)
 		{
@@ -147,6 +147,7 @@ public OneMinuteTimer()
 			JailPlayerTimer(playerid);
 			MutePlayerTimer(playerid);
 			AntiIdlePlayerTimer(playerid);
+			Gang_GiveXp(playerid);
 		}
 	}
 	weather_WeatherUpdate();
