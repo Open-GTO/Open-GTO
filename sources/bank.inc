@@ -279,12 +279,18 @@ stock IsPlayerAtBank(playerid)
 
 stock Profit()
 {
-	foreach (Player, playerid)
-	{
-		if (IsPlayerLogin(playerid))
-		{
-			GivePlayerBankMoney(playerid, (GetPlayerBankMoney(playerid) / 100) * ProfitCount);
+	new string[MAX_STRING], amount;
+	
+	foreach (Player, playerid) {
+		if (!IsPlayerLogin(playerid)) {
+			continue;
 		}
+		ammount = (GetPlayerBankMoney(playerid) / 100) * ProfitCount;
+		
+		GivePlayerBankMoney(playerid, amount);
+		
+		format(string, sizeof(string), lang_texts[2][30], amount);
+		SendClientMessage(playerid, COLOUR_MONEY_GOOD, string);
 	}
 	return 1;
 }
