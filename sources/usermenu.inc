@@ -435,6 +435,18 @@ stock show_MOTD_Menu(playerid)
 	);
 }
 
+stock show_GangExitAccept_Dialog(playerid)
+{
+	return ShowPlayerDialog(playerid, gang_exit_accept_menu_DialogID, DIALOG_STYLE_MSGBOX,
+		"Удалить банду?",
+		"Если вы выйдете из банды, то банда будет безвозвратно удалена!\n\
+		Вы проверили банк банды на наличие денег?\n\
+		\n\
+		Вы действительно хотите удалить банду?",
+		"Удалить", "Назад"
+	);
+}
+
 stock show_Teleport_Menu(playerid)
 {
 	new string[MAX_NAME * sizeof(Teleports)];
@@ -1046,7 +1058,11 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					case 1: // выйти из банды
 					{
-						GangRemoveMember(gangid, oGetPlayerName(playerid));
+						if (gang_IsLeader(playerid)) {
+							show_GangExitAccept_Dialog(playerid);
+						} else {
+							GangRemoveMember(gangid, oGetPlayerName(playerid));
+						}
 						return 1;
 					}
 					case 2: // пригласить игрока
@@ -1087,6 +1103,14 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 				}
 			}
+			return 1;
+		}
+		case gang_exit_accept_menu_DialogID:
+		{
+			if (!response) {
+				return show_Gang_Menu(playerid);
+			}
+			GangRemoveMember(gangid, oGetPlayerName(playerid));
 			return 1;
 		}
 		case gang_create_menu_DialogID:

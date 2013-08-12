@@ -314,7 +314,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			settings_menu_DialogID, changenick_menu_DialogID, changepass_menu_DialogID,
 			teleport_menu_DialogID, 
 			gang_menu_DialogID, gang_create_menu_DialogID, gang_invite_menu_DialogID, gang_color_menu_DialogID,
-			gang_motd_menu_DialogID, gang_kick_menu_DialogID,
+			gang_motd_menu_DialogID, gang_kick_menu_DialogID, gang_exit_accept_menu_DialogID,
 			pveh_select_DialogID, pveh_do_DialogID:
 		{
 			usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
