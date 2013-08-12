@@ -285,7 +285,7 @@ stock Profit()
 		if (!IsPlayerLogin(playerid)) {
 			continue;
 		}
-		ammount = (GetPlayerBankMoney(playerid) / 100) * ProfitCount;
+		amount = (GetPlayerBankMoney(playerid) / 100) * ProfitCount;
 		
 		GivePlayerBankMoney(playerid, amount);
 		
