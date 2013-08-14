@@ -327,10 +327,16 @@ stock qudemsys_OnPlayerDisconnect(playerid, reason)
 
 stock qudemsys_OnPlayerStateChange(playerid, newstate, oldstate)
 {
-	if (QuidemSysEnabled != 1) return 0;
-	new vehicleid = GetPlayerVehicleID(playerid);
+	if (QuidemSysEnabled != 1) {
+		return 0;
+	}
 	
-	if (FuelList[ GetVehicleModel(vehicleid)-400 ] == 0)
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if (vehicleid == 0) {
+		return 0;
+	}
+	
+	if (FuelList[ GetVehicleModel(vehicleid) - 400 ] == 0)
 	{
 		return 0;
 	}
