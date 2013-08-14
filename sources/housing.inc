@@ -212,6 +212,15 @@ stock show_House_Menu(playerid)
 	);
 }
 
+stock show_HouseSellAccept_Dialog(playerid)
+{
+	return ShowPlayerDialog(playerid, house_sell_accept_DialogID, DIALOG_STYLE_MSGBOX,
+		"Продать дом?",
+		"Вы действительно хотите продать этот дом?",
+		"Продать", "Назад"
+	);
+}
+
 stock housing_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	if (dialogid == house_DialogID)
@@ -219,6 +228,12 @@ stock housing_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 		if (!response) return 1;
 		show_House_Menu(playerid);
 		return 1;
+	}
+	if (dialogid == house_sell_accept_DialogID) {
+		if (!response) {
+			return show_House_Menu(playerid);
+		}
+		return house_Sell(playerid);
 	}
 	if (dialogid == houses_DialogID)
 	{
@@ -232,7 +247,7 @@ stock housing_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 			{
 				if (!strcmp(Houses[id][Houses_Owner], playername, true))
 				{
-					house_Sell(playerid);
+					show_HouseSellAccept_Dialog(playerid);
 				}
 				else
 				{
