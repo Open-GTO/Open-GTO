@@ -176,21 +176,32 @@ stock TurnAround()
 	}
 }
 
+stock show_BisSellAccept_Dialog(playerid)
+{
+	return ShowPlayerDialog(playerid, bis_sell_accept_menu_DialogID, DIALOG_STYLE_MSGBOX,
+		"Продать бизнес?",
+		"Вы действительно хотите продать этот бизнес?",
+		"Продать", "Назад"
+	);
+}
+
 stock business_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	#pragma unused inputtext
-	switch(dialogid)
+	switch (dialogid)
 	{
 		case bis_DialogID:
 		{
-			if (!response) return 1;
-			switch(listitem)
+			if (!response) {
+				return 1;
+			}
+			switch (listitem)
 			{
 				case 0: // продать/купить
 				{
 					if (!strcmp(Businesses[ GetPlayerToBusinessID(playerid) ][Business_Owner], oGetPlayerName(playerid), true))
 					{
-						bis_Sell(playerid);
+						show_BisSellAccept_Dialog(playerid);
 					}
 					else
 					{
@@ -209,10 +220,17 @@ stock business_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 				}
 			}
 		}
-		case bis_Msg_DialogID:
-		{
-			if (!response) return 1;
+		case bis_Msg_DialogID: {
+			if (!response) {
+				return 1;
+			}
 			return show_Business_Menu(playerid);
+		}
+		case bis_sell_accept_menu_DialogID: {
+			if (!response) {
+				return show_Business_Menu(playerid);
+			}
+			return bis_Sell(playerid);
 		}
 	}
     return 1;

@@ -301,7 +301,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			housing_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
-		case bis_DialogID, bis_Msg_DialogID:
+		case bis_DialogID, bis_Msg_DialogID, bis_sell_accept_DialogID:
 		{
 			business_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
