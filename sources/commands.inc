@@ -103,7 +103,7 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_LIGHTBLUE, string);
 		format(string, sizeof(string), lang_texts[15][38], GetPlayerLevel(playerid), GetPlayerXP(playerid), oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
 		SendClientMessage(playerid, COLOUR_LIGHTBLUE, string);
-		format(string, sizeof(string), lang_texts[15][39], GetPlayerDeaths(playerid), GetPlayerKills(playerid), GetPlayerJailed(playerid), GetPlayerMuted(playerid));
+		format(string, sizeof(string), lang_texts[15][39], GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKills(playerid) / GetPlayerDeaths(playerid), GetPlayerJailed(playerid), GetPlayerMuted(playerid));
 		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 
 		format(string, sizeof(string), "Ваш уровень стилей борьбы: %d, используемый стиль: %s(%d)",

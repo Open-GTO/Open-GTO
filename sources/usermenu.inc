@@ -498,13 +498,13 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						set(vip_status, "нет");
 					}
 					format(string, sizeof(string),
-						"Уровень: %d, Опыт до уровня: %d\n\
+						"Уровень: %d, опыт до уровня: %d\n\
 						\n\
-						Банда: %s, Звание: %s\n\
+						Банда: %s, звание: %s\n\
 						\n\
-						Деньги: $%d, Деньги в банке: $%d, Всего денег: $%d\n\
+						Деньги: $%d, деньги в банке: $%d. Всего денег: $%d\n\
 						\n\
-						Убийств: %d, Смертей: %d\n\
+						Убийств: %d, смертей: %d (%02f%%)\n\
 						Сидок: %d\n\
 						Мутов: %d\n\
 						\n\
@@ -517,7 +517,9 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						
 						oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid),
 						
-						GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerJailed(playerid), GetPlayerMuted(playerid),
+						GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKills(playerid) / GetPlayerDeaths(playerid),
+						GetPlayerJailed(playerid),
+						GetPlayerMuted(playerid),
 						
 						ConvertFightIdToName( GetPlayerFightStyleUsed(playerid) ),
 						vip_status
