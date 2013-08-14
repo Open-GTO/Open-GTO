@@ -256,7 +256,22 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 				SetPlayerSpecID(playerid, INVALID_PLAYER_ID);
 				SetPlayerSpectating(playerid, 0);
 				SetPlayerInterior(playerid, GetPVarInt(playerid, "spec_interior"));
+				SetPlayerVirtualWorld(playerid, GetPVarInt(playerid, "spec_virtualworld"));
+				
+				new Float:pos[4];
+				GetPVarFloat(playerid, "spec_pos_x", pos[0]);
+				GetPVarFloat(playerid, "spec_pos_y", pos[1]);
+				GetPVarFloat(playerid, "spec_pos_z", pos[2]);
+				GetPVarFloat(playerid, "spec_pos_a", pos[3]);
+				SetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+				SetPlayerFacingAngle(playerid, pos[3]);
+				
 				DeletePVar(playerid, "spec_interior");
+				DeletePVar(playerid, "spec_virtualworld");
+				DeletePVar(playerid, "spec_pos_x");
+				DeletePVar(playerid, "spec_pos_y");
+				DeletePVar(playerid, "spec_pos_z");
+				DeletePVar(playerid, "spec_pos_a");
 			}
 			else
 			{
@@ -273,8 +288,19 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		SetPlayerSpecID(playerid, specid);
 		SetPlayerSpectating(playerid, 1);
 		TogglePlayerSpectating(playerid, 1);
-		SetPVarInt(playerid, "spec_interior", GetPlayerInterior(playerid));
 		SetPlayerInterior(playerid, GetPlayerInterior(specid));
+		SetPlayerVirtualWorld(playerid, GetPlayerVirtualWorld(specid));
+		
+		// сохраним параметры
+		SetPVarInt(playerid, "spec_interior", GetPlayerInterior(playerid));
+		SetPVarInt(playerid, "spec_virtualworld", GetPlayerVirtualWorld(playerid));
+		new Float:pos[4];
+		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+		GetPlayerFacingAngle(playerid, pos[3]);
+		SetPVarFloat(playerid, "spec_pos_x", pos[0]);
+		SetPVarFloat(playerid, "spec_pos_y", pos[1]);
+		SetPVarFloat(playerid, "spec_pos_z", pos[2]);
+		SetPVarFloat(playerid, "spec_pos_a", pos[3]);
 		
 		SendClientMessage(playerid, COLOUR_BLUE, lang_texts[13][21]);
 		
