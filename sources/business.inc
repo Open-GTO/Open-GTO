@@ -178,7 +178,7 @@ stock TurnAround()
 
 stock show_BisSellAccept_Dialog(playerid)
 {
-	return ShowPlayerDialog(playerid, bis_sell_accept_menu_DialogID, DIALOG_STYLE_MSGBOX,
+	return ShowPlayerDialog(playerid, bis_sell_accept_DialogID, DIALOG_STYLE_MSGBOX,
 		"Продать бизнес?",
 		"Вы действительно хотите продать этот бизнес?",
 		"Продать", "Назад"
@@ -226,7 +226,7 @@ stock business_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			}
 			return show_Business_Menu(playerid);
 		}
-		case bis_sell_accept_menu_DialogID: {
+		case bis_sell_accept_DialogID: {
 			if (!response) {
 				return show_Business_Menu(playerid);
 			}
