@@ -178,7 +178,7 @@ stock account_OnPlayerConnect(playerid)
 	if (ini_Exist(filename_account))
 	{
 		if (GetPVarInt(playerid, "Player_Login_Attempt") > 0) {
-			format(message, sizeof(message), lang_texts[1][47], GetPVarInt(playerid, "Player_Login_Attempt"));
+			format(message, sizeof(message), lang_texts[1][47], MAX_PLAYER_LOGIN_ATTEMPT - GetPVarInt(playerid, "Player_Login_Attempt"));
 		} else {
 			format(message, sizeof(message), lang_texts[1][43], playername);
 		}
