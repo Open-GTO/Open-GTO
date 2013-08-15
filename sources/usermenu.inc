@@ -497,6 +497,10 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					{
 						set(vip_status, "нет");
 					}
+					new Float:kill_on_death = 0.0;
+					if (GetPlayerDeaths(playerid) != 0) {
+						kill_on_death = GetPlayerKills(playerid) / GetPlayerDeaths(playerid);
+					}
 					format(string, sizeof(string),
 						"Уровень: %d, опыт до уровня: %d\n\
 						\n\
@@ -504,7 +508,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						\n\
 						Деньги: $%d, деньги в банке: $%d. Всего денег: $%d\n\
 						\n\
-						Убийств: %d, смертей: %d (%02f%%)\n\
+						Убийств: %d, смертей: %d (%.2f%%)\n\
 						Сидок: %d\n\
 						Мутов: %d\n\
 						\n\
@@ -517,7 +521,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						
 						oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid),
 						
-						GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKills(playerid) / GetPlayerDeaths(playerid),
+						GetPlayerKills(playerid), GetPlayerDeaths(playerid), kill_on_death,
 						GetPlayerJailed(playerid),
 						GetPlayerMuted(playerid),
 						

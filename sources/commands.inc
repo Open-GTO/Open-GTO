@@ -97,13 +97,18 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 			case 3: set(string, lang_texts[12][94]);
 			default: set(string, lang_texts[12][88]);
 		}
-
+		
+		new Float:kill_on_death = 0.0;
+		if (GetPlayerDeaths(playerid) != 0) {
+			kill_on_death = GetPlayerKills(playerid) / GetPlayerDeaths(playerid);
+		}
+		
 		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 		format(string, sizeof(string), lang_texts[15][37], GetLevelName(GetPlayerLevel(playerid)), GetPlayerGangName(playerid));
 		SendClientMessage(playerid, COLOUR_LIGHTBLUE, string);
 		format(string, sizeof(string), lang_texts[15][38], GetPlayerLevel(playerid), GetPlayerXP(playerid), oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
 		SendClientMessage(playerid, COLOUR_LIGHTBLUE, string);
-		format(string, sizeof(string), lang_texts[15][39], GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKills(playerid) / GetPlayerDeaths(playerid), GetPlayerJailed(playerid), GetPlayerMuted(playerid));
+		format(string, sizeof(string), lang_texts[15][39], GetPlayerKills(playerid), GetPlayerDeaths(playerid), kill_on_death, GetPlayerJailed(playerid), GetPlayerMuted(playerid));
 		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 
 		format(string, sizeof(string), "Ваш уровень стилей борьбы: %d, используемый стиль: %s(%d)",
