@@ -165,9 +165,10 @@ stock TurnAround()
 				new playerid = GetPlayerID(Businesses[id][Business_Owner]);
 				if (playerid != INVALID_PLAYER_ID)
 				{
-					GivePlayerBankMoney(playerid, Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade]);
+					new amount = Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade];
+					GivePlayerBankMoney(playerid, amount);
 					new string[MAX_STRING];
-					format(string, sizeof(string), lang_texts[3][28], Businesses[id][Business_Name], Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade]);
+					format(string, sizeof(string), lang_texts[3][28], Businesses[id][Business_Name], amount);
 					SendClientMessage(playerid, COLOUR_RED, string);
 					Businesses[id][Business_Vault] = 0;
 				}

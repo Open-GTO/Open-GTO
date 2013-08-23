@@ -13,9 +13,6 @@
 #pragma library bank
 
 
-#define GetPlayerBankMoney(%0) GetPVarInt(%0, "BankMoney")
-#define GivePlayerBankMoney(%0,%1) SetPVarInt(%0, "BankMoney", GetPVarInt(%0, "BankMoney") + %1)
-
 new ProfitCount = BANK_PROFIT, 
 	MAX_BANK = MAX_BANK_MONEY;
 
@@ -28,8 +25,8 @@ stock BankLoadConfig()
 {
 	if (!ini_Exist(ConfigDB)) return 0;
 	new file_bank = ini_Open(ConfigDB);
-    ini_GetInt(file_bank, "Bank_ProfitCount", ProfitCount);
-    ini_GetInt(file_bank, "Bank_MAX_MONEY", MAX_BANK);
+	ini_GetInt(file_bank, "Bank_ProfitCount", ProfitCount);
+	ini_GetInt(file_bank, "Bank_MAX_MONEY", MAX_BANK);
 	ini_Close(file_bank);
 	return 1;
 }
@@ -94,12 +91,10 @@ stock bank_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				show_Msg_Dialog(playerid, lang_texts[2][3], lang_texts[2][13], lang_texts[2][5]);
 				return 0;
 			}
-			if (amount > GetPlayerBankMoney(playerid))
-			{
-				amount = GetPlayerBankMoney(playerid);
-			}
+			
+			TakePlayerBankMoney(playerid, amount);
 			oGivePlayerMoney(playerid, amount, 0);
-			GivePlayerBankMoney(playerid, -amount);
+			
 			new string[MAX_STRING];
 			format(string, sizeof(string), lang_texts[2][7], amount, GetPlayerBankMoney(playerid));
 			show_Msg_Dialog(playerid, lang_texts[2][3], string, lang_texts[2][5]);
@@ -120,13 +115,14 @@ stock bank_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			{
 				amount = oGetPlayerMoney(playerid);
 			}
-			if (GetPlayerBankMoney(playerid) + amount > MAX_BANK)
+			
+			GivePlayerBankMoney(playerid, amount);
+			if (GetPlayerBankMoney(playerid) >= MAX_BANK)
 			{
-				amount = MAX_BANK - GetPlayerBankMoney(playerid);
 				SendClientMessage(playerid, COLOUR_RED, lang_texts[2][15]);
 			}
 			oGivePlayerMoney(playerid, -amount, 0);
-			GivePlayerBankMoney(playerid, amount);
+			
 			new string[MAX_STRING];
 			format(string, sizeof(string), lang_texts[2][14], amount, GetPlayerBankMoney(playerid));
 			show_Msg_Dialog(playerid, lang_texts[2][3], string, lang_texts[2][5]);
@@ -293,4 +289,26 @@ stock Profit()
 		SendClientMessage(playerid, COLOUR_MONEY_GOOD, string);
 	}
 	return 1;
+}
+
+
+stock GetPlayerBankMoney(playerid)
+{
+	return GetPVarInt(playerid, "BankMoney");
+}
+
+stock GivePlayerBankMoney(playerid, &amount)
+{
+	if (GetPlayerBankMoney(playerid) + amount > MAX_BANK) {
+		amount = MAX_BANK - GetPlayerBankMoney(playerid);
+	}
+	GivePVarInt(playerid, "BankMoney", amount);
+}
+
+stock TakePlayerBankMoney(playerid, &amount)
+{
+	if (GetPlayerBankMoney(playerid) - amount < 0) {
+		amount = GetPlayerBankMoney(playerid);
+	}
+	SetPVarInt(playerid, "BankMoney", GetPlayerBankMoney(playerid) - amount);
 }
