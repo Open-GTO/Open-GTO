@@ -34,7 +34,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 #define MAX_PLAYER_LOGIN_ATTEMPT	3 // максимальное количество попыток входа
 
-#define MAX_MONEY				50000000 // максимальное кол-во денег, которое может иметь игрок
+#define MAX_MONEY				99999999 // максимальное кол-во денег, которое может иметь игрок
 #define MIN_SEND_SYMBOLS		3 // минимальное кол-во отправляемых символов в ПМ
 #define MAX_SEND_SYMBOLS		100 // максимальное кол-во отправляемых символов в ПМ
 
@@ -101,7 +101,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define GROUNDHOLD_HOLD_TIME	2 // скорость потери точки при выходе из зоны
 
 #define BANK_PROFIT			2 // процент начисления прибыли за хранение в банке
-#define MAX_BANK_MONEY		15000000 // максимальное количество денег, которых можно хранить в банке
+#define MAX_BANK_MONEY		1000000000 // максимальное количество денег, которых можно хранить в банке
 
 #define PAYDAY_BASE_PAY		25 // PayDay тариф на деньги
 #define PAYDAY_CUTOFF		MAX_MONEY / 2 // кол-во денег, при котором перестаётся даваться деньги за PayDay
@@ -168,6 +168,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 #define GANG_CREATE_COST	500000 // кол-во денег, требуемое на создание банды
 #define GANG_COLOUR_COST	20000 // кол-во денег, требуемое на смены цвета банды
+
+#define MAX_GANG_BANK		2000000000 // максимальное количество денег, которых можно хранить в банке банды
 //
 
 // игрок
