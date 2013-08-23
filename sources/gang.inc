@@ -906,9 +906,20 @@ stock gang_IsPlayerConnect(gangid, gangmember)
 	return GangMemberInfo[gangid][gangmember][member_playerid] == INVALID_PLAYER_ID ? 0 : 1;
 }
 
-stock GiveGangMoney(gangid, amount)
+stock GiveGangMoney(gangid, &amount)
 {
+	if (Gangs[gangid][gang_money] + amount > MAX_GANG_BANK) {
+		amount = MAX_GANG_BANK - Gangs[gangid][gang_money];
+	}
 	Gangs[gangid][gang_money] += amount;
+}
+
+stock TakeGangMoney(gangid, &amount)
+{
+	if (Gangs[gangid][gang_money] - amount < 0) {
+		amount = Gangs[gangid][gang_money];
+	}
+	Gangs[gangid][gang_money] -= amount;
 }
 
 stock GetGangMoney(gangid)
