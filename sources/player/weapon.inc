@@ -242,7 +242,7 @@ stock SyncPlayerWeapons(playerid)
 	return 1;
 }
 
-stock GetPlayerWeaponBullet(playerid, weapon_slot)
+stock GetPlayerWeaponSlotBullet(playerid, weapon_slot)
 {
 	return PlayerWeapons[playerid][weapon_slot][pbullets];
 }
