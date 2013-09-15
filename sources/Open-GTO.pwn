@@ -278,7 +278,6 @@ public OnPlayerConnect(playerid)
 public OnPlayerDisconnect(playerid, reason)
 {
 	if (playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) return 1;
-	player_OnPlayerDisconnect(playerid, reason);
 	trucker_OnPlayerDisconnect(playerid, reason);
 	chatguard_OnPlayerDisconnect(playerid, reason);
 	gh_OnPlayerDisconnect(playerid, reason);
@@ -286,6 +285,7 @@ public OnPlayerDisconnect(playerid, reason)
 	weapon_OnPlayerDisconnect(playerid, reason);
 	qudemsys_OnPlayerDisconnect(playerid, reason);
 	pveh_OnPlayerDisconnect(playerid, reason);
+	player_OnPlayerDisconnect(playerid, reason);
 	return 1;
 }
 
