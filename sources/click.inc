@@ -400,6 +400,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			SendClientMessageToAll(COLOUR_WHITE,string);
 			GameTextForPlayer(playerid,"~w~ You has been ~r~Jailed~w~!",5000,4);
 			JailPlayer(jailid,jailt);
+			SetPlayerJailed(jailid, GetPlayerJailed(jailid) + 1);
 		}
 		if (ListResponseType[playerid] == 12)
 		{
