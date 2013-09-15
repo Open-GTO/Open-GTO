@@ -229,7 +229,7 @@ stock SyncPlayerWeapons(playerid)
 	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
 	{
 		GetPlayerWeaponData(playerid, i, weapon[0], weapon[1]);
-		if ( weapon[0] == 0 && PlayerWeapons[playerid][i][pwid] != 0 )
+		if ( (weapon[0] == 0 || weapon[1] == 0) && PlayerWeapons[playerid][i][pwid] != 0 )
 		{
 			PlayerWeapons[playerid][i][pwid] = 0;
 			PlayerWeapons[playerid][i][pbullets] = 0;
