@@ -124,6 +124,16 @@ stock GivePlayerOwnedWeapon(playerid,weaponid,ammo)
 		oGivePlayerWeapon(playerid,weaponid,ammo);
 	}
 }
+
+stock GivePlayerOwnedWeaponEx(playerid, weaponid, ammo)
+{
+	new slot = GetWeaponSlot(weaponid);
+	
+	PlayerWeapons[playerid][slot][pwid] = weaponid;
+	PlayerWeapons[playerid][slot][pbullets] += ammo;
+	
+	oGivePlayerWeapon(playerid, weaponid, ammo);
+}
 //
 
 // даёт всё 'всегдашнее' оружие

@@ -44,7 +44,7 @@ stock awh_OnPlayerPickUpPickup(playerid,pickupid)
 	{
 		case 371: // парашют
 		{
-			oGivePlayerWeapon(playerid, 46, 1);
+			GivePlayerOwnedWeaponEx(playerid, 46, 1);
 		}
 		case 1240: // здоровье
 		{
@@ -65,7 +65,7 @@ stock awh_OnPlayerExitVehicle(playerid,vehicleid)
 		case 592,577,511,512,593,520,553,476,519,460,513,// самолёты
 			 548,425,417,487,488,497,563,447,469: // вертолёты
 		{
-			oGivePlayerWeapon(playerid, 46, 1);
+			GivePlayerOwnedWeaponEx(playerid, 46, 1);
 		}
 	}
 	return 1;

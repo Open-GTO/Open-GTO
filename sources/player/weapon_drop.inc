@@ -41,7 +41,7 @@ stock wdrop_OnPlayerPickUpPickup(playerid, pickupid)
     {
 		if (pickupid == weapons_dropped[wd_slot][wd_pickupid])
 		{
-			oGivePlayerWeapon(playerid,weapons_dropped[wd_slot][wd_weaponid],weapons_dropped[wd_slot][wd_bullets]);
+			GivePlayerOwnedWeaponEx(playerid, weapons_dropped[wd_slot][wd_weaponid], weapons_dropped[wd_slot][wd_bullets]);
 			wdrop_DropPickup(wd_slot);
 		}
 	}
