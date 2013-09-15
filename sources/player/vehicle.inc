@@ -118,11 +118,14 @@ stock RemovePlayerVehicle(playerid, slot)
 
 stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh_Z, Float:pveh_A)
 {
+	// если транспорт создан
 	if (PlayerVehicle[playerid][slot][pv_ID] != 0) {
 		SetVehiclePos(PlayerVehicle[playerid][slot][pv_ID], pveh_X, pveh_Y, pveh_Z);
 		SetVehicleZAngle(PlayerVehicle[playerid][slot][pv_ID], pveh_A);
 		return PlayerVehicle[playerid][slot][pv_ID];
 	}
+	
+	// если не создан, то создаём
 	new vehicleid = CreateVehicle(
 		PlayerVehicle[playerid][slot][pv_Model],
 		pveh_X, pveh_Y, pveh_Z, pveh_A,
