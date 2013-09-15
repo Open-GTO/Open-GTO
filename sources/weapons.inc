@@ -15,7 +15,7 @@
 
 #include "base"
 
-#define MAX_BULLETS				2999
+#define MAX_BULLETS				9000
 
 new Ammunations[][CoordInfo] = {
 	{295.3583, -80.1250, 1001.5156}, // LVammunation1
@@ -254,10 +254,25 @@ stock BuyWeapon(playerid, weaponid, bullets)
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[16][7]);
 		return 0;
 	}
-	if (bullets < 1 || bullets > MAX_BULLETS)
+	if (bullets < 1)
 	{
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[16][8]);
 		return 0;
+	}
+	new current_bullets = GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid));
+	if (current_bullets >= MAX_BULLETS)
+	{
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[16][1]);
+		return 0;
+	}
+	if (current_bullets + bullets > MAX_BULLETS)
+	{
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[16][1]);
+		bullets = MAX_BULLETS - GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid));
+		if (bullets < 1)
+		{
+			return 0;
+		}
 	}
 	if (IsPlayerAtAmmunation(playerid) == -1)
 	{
