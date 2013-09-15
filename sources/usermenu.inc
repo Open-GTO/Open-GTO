@@ -499,7 +499,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					new Float:kill_on_death = 0.0;
 					if (GetPlayerDeaths(playerid) != 0) {
-						kill_on_death = GetPlayerKills(playerid) / GetPlayerDeaths(playerid);
+						kill_on_death = float(GetPlayerKills(playerid)) / float(GetPlayerDeaths(playerid));
 					}
 					format(string, sizeof(string),
 						"Уровень: %d, опыт до уровня: %d\n\
