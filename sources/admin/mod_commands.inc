@@ -260,6 +260,8 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 				SetPlayerVirtualWorld(playerid, GetPVarInt(playerid, "spec_virtualworld"));
 				SetPlayerSkin(playerid, GetPVarInt(playerid, "spec_skin"));
 				
+				GivePlayerOwnedWeapons(playerid);
+				
 				new Float:pos[4];
 				pos[0] = GetPVarFloat(playerid, "spec_pos_x");
 				pos[1] = GetPVarFloat(playerid, "spec_pos_y");
