@@ -173,7 +173,6 @@ stock JailPlayer(playerid, jail_time)
 {
 	SetPlayerJailTime(playerid, jail_time);
 	SetPlayerWantedLevel(playerid, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
-	SetPlayerJailed(playerid, GetPlayerJailed(playerid) + 1);
 	
 	SetPlayerInterior(playerid, 6);
 	oSetPlayerPos(playerid, 265.1273, 77.6823, 1001.0391);

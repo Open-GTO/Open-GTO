@@ -215,6 +215,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessageToAll(COLOUR_WHITE, string);
 		GameTextForPlayer(jailt, lang_texts[13][18], 5000, 4);
 		JailPlayer(jailid, jailt);
+		SetPlayerJailed(playerid, GetPlayerJailed(playerid) + 1);
 		return 1;
 	}
 	if (!strcmp(cmd, "/unjail", true))
