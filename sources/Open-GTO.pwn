@@ -1,27 +1,25 @@
 /*
-Project Name:	San Andreas - Multiplayer: Open - Grand Theft Online (Open-GTO).
+Project Name:	Open - Grand Theft Online (Open-GTO)
+Web site:		http://open-gto.ru/
+Date started:	5 November 2009
 
-Current version:	1.1.1
-SA-MP Versions:		0.3d and older
+SA-MP version:		0.3d and older
+Date started GTO:	12 August 2006
 
-Web site:	http://open-gto.ru/
+Developers:
 
-Date Created GTO:		12 August 2006
-Date start Open-GTO: 	5 November 2009
+	Open-GTO:
+		0.6.4 – current		ziggi
+		0.6.0 – 0.6.4		GhostTT, heufix, Elbi, ziggi
 
--------------------------------------------------------------------
-							  GTO
--------------------------------------------------------------------
-0.0.0 – 0.5.7		Iain Gilbert
-0.5.7 – 0.5.8		Peter Steenbergen (j1nx)
-0.5.8 – 0.5.9		Robin Kikkert (dejavu), Lajos Pacsek (Asturel)
-0.5.9 – 0.6.0		SCALOLaz
--------------------------------------------------------------------
-							Open-GTO
--------------------------------------------------------------------
-0.0.0 – 1.0.0		Current: ziggi
-					Previous: GhostTT, heufix, Elbi
--------------------------------------------------------------------
+	GTO:
+		0.5.9 – 0.6.0		SCALOLaz
+		0.5.8 – 0.5.9		Robin Kikkert (dejavu), Lajos Pacsek (Asturel)
+		0.5.7 – 0.5.8		Peter Steenbergen (j1nx)
+		0.0.0 – 0.5.7		Iain Gilbert
+	
+	Translated to russian by Dmitry Borisoff (Beginner)
+
 */
 
 #include <..\compiler\includes\a_samp>
@@ -122,35 +120,7 @@ Date start Open-GTO: 	5 November 2009
 #tryinclude "deathmatches\dm_poolday"
 #tryinclude "deathmatches\dm_usnavy"
 
-main()
-{
-	print("\n\n\n\
-		-------------------------------------------------------------\n\
-		\n\
-		\t\tRunning Open-GTO "#VERSION"\n\
-		\n\
-		_____________________________________________________________\n\
-	");
-	print("\
-		Created by: Iain Gilbert (Bogart)\n\
-		Continued by:\n\
-			\tPeter Steenbergen (j1nx)\n\
-			\tRobin Kikkert (Dejavu)\n\
-			\tLajos Pacsek (asturel)\n\
-			\tDmitry Frolov (FP)\n\
-			\tOpen-GTO Team:\n\
-				\t\tCurrent: ziggi\n\
-				\t\tPrevious: GhostTT, heufix, Elbi\n\
-	");
-	print("\
-		_____________________________________________________________\n\
-		\n\
-		Translated to Russian by Dmitry Borisoff (Beginner)\n\
-		Visit us at http://open-gto.ru/\n\
-		\n\
-		------------------------------------------------------------\n\
-	");
-}
+main() {}
 
 public OnGameModeInit()
 {
@@ -894,5 +864,4 @@ public OnEnterExitModShop(playerid, enterexit, interiorid)
 		}
 	}
 	return 1;
-
 }
