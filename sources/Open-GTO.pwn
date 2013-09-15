@@ -82,6 +82,7 @@ Date start Open-GTO: 	5 November 2009
 #include "swagup"
 #include "quidemsys"
 #include "usermenu"
+#include "anims"
 #include "protections\money"
 #include "protections\idle"
 #include "protections\rconhack"
@@ -352,6 +353,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			vshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
+		case anims_lib_menu_DialogID, anims_anim_menu_DialogID:
+		{
+			anims_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
+		}
 	}
 	return 1;
 }
@@ -419,6 +424,7 @@ public OnPlayerSpawn(playerid)
 {
 	if (IsPlayerNPC(playerid)) return 1;
 	
+	anims_OnPlayerSpawn(playerid);
 	// после использования TogglePlayerSpectating
 	if (GetPVarInt(playerid, "spec_after_off") == 1)
 	{

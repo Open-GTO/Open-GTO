@@ -541,7 +541,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 				}
 				case 3: // Анимации
 				{
-					show_User_Menu(playerid);
+					anims_ShowLibMenu(playerid);
 					return 1;
 				}
 				case 4: // Телепорты
