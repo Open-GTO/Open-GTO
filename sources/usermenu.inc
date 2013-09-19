@@ -766,21 +766,32 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 		}
 		case vehicle_radio_menu_DialogID:
 		{
-			if (!response)
-			{
+			if (!response) {
 				return show_Vehicle_Menu(playerid);
 			}
-			if (listitem == 0)
-			{
-				return StopAudioStreamForPlayer(playerid);
+			
+			new vehicleid = GetPlayerVehicleID(playerid);
+			
+			if (listitem == 0) {
+				foreach (new i : Players) {
+					if (vehicleid == GetPlayerVehicleID(i)) {
+						StopAudioStreamForPlayer(i);
+						SendClientMessage(i, COLOUR_SkyBlue, "* Радио выключено");
+					}
+				}
+				return 1;
 			}
+			
 			new radioid = listitem - 1;
-			
-			PlayAudioStreamForPlayer(playerid, vehicle_radio[radioid][vehradio_URL]);
-			
 			new string[MAX_STRING];
-			format(string, sizeof(string), "Вы слушаете %s", vehicle_radio[radioid][vehradio_Name]);
-			SendClientMessage(playerid, COLOUR_WHITE, string);
+			format(string, sizeof(string), "* Текущая радиостанция: %s", vehicle_radio[radioid][vehradio_Name]);
+			
+			foreach (new i : Players) {
+				if (vehicleid == GetPlayerVehicleID(i)) {
+					PlayAudioStreamForPlayer(i, vehicle_radio[radioid][vehradio_URL]);
+					SendClientMessage(i, COLOUR_SkyBlue, string);
+				}
+			}
 			return 1;
 		}
 		case spawnselect_menu_DialogID:
