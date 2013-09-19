@@ -51,7 +51,6 @@ stock show_User_Menu(playerid)
 		Мои бизнесы\n\
 		Мой транспорт\n\
 		Администрация онлайн\n\
-		Связь с администрацией\n\
 		Настройки\n\
 		Версия\n\
 		",
@@ -609,16 +608,11 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					return show_User_Menu_Dialog(playerid, "Администрация онлайн", string);
 				}
-				case 10: // Связь с администрацией
-				{
-					show_User_Menu(playerid);
-					return 1;
-				}
-				case 11: // Настройки
+				case 10: // Настройки
 				{
 					return show_Setting_Menu(playerid);
 				}
-				case 12: // Версия
+				case 11: // Версия
 				{
 					show_User_Menu_Dialog(playerid,
 						"Информация о версии",
