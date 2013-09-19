@@ -226,6 +226,7 @@ native IsValidVehicle(vehicleid);
 #define V_YOSEMITE 554
 #define V_ZR350 477
 
+static vehicle_RadioStatus[MAX_VEHICLES] = {-1};
 new CarsReSpawnTime = CARS_RESPAWN_TIME;
 
 enum VehicleInfo {
@@ -2343,6 +2344,20 @@ stock vehicles_OnGameModeInit()
 	return 1;
 }
 
+stock vehicle_OnPlayerStateChange(playerid, newstate, oldstate)
+{
+	if (oldstate == PLAYER_STATE_DRIVER || oldstate == PLAYER_STATE_PASSENGER) {
+		StopAudioStreamForPlayer(playerid);
+	}
+	if (newstate == PLAYER_STATE_DRIVER || newstate == PLAYER_STATE_PASSENGER) {
+		new radioid = GetVehicleRadio( GetPlayerVehicleID(playerid) );
+		if (radioid >= 0) {
+			PlayAudioStreamForPlayer(playerid, vehicle_radio[radioid][vehradio_URL]);
+		}
+	}
+	return 1;
+}
+
 stock GetRndVModelByLevel(level)
 {
 	new leveledvehicles[sizeof(Vehicles)+1],
@@ -2414,4 +2429,39 @@ stock GetVehicleCost(vehiclemodel)
 		}
 	}
 	return 0;
+}
+
+
+stock DisableVehicleRadio(vehicleid)
+{
+	vehicle_RadioStatus[vehicleid] = -1;
+	
+	foreach (new playerid : Player) {
+		if (vehicleid == GetPlayerVehicleID(playerid)) {
+			StopAudioStreamForPlayer(playerid);
+			SendClientMessage(playerid, COLOUR_SkyBlue, "* Радио выключено");
+		}
+	}
+	return 1;
+}
+
+stock SetVehicleRadio(vehicleid, radioid)
+{
+	vehicle_RadioStatus[vehicleid] = radioid;
+
+	new string[MAX_STRING];
+	format(string, sizeof(string), "* Текущая радиостанция: %s", vehicle_radio[radioid][vehradio_Name]);
+	
+	foreach (new playerid : Player) {
+		if (vehicleid == GetPlayerVehicleID(playerid)) {
+			PlayAudioStreamForPlayer(playerid, vehicle_radio[radioid][vehradio_URL]);
+			SendClientMessage(playerid, COLOUR_SkyBlue, string);
+		}
+	}
+	return 1;
+}
+
+stock GetVehicleRadio(vehicleid)
+{
+	return vehicle_RadioStatus[vehicleid];
 }

@@ -773,24 +773,9 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			new vehicleid = GetPlayerVehicleID(playerid);
 			
 			if (listitem == 0) {
-				foreach (new i : Players) {
-					if (vehicleid == GetPlayerVehicleID(i)) {
-						StopAudioStreamForPlayer(i);
-						SendClientMessage(i, COLOUR_SkyBlue, "* Радио выключено");
-					}
-				}
-				return 1;
-			}
-			
-			new radioid = listitem - 1;
-			new string[MAX_STRING];
-			format(string, sizeof(string), "* Текущая радиостанция: %s", vehicle_radio[radioid][vehradio_Name]);
-			
-			foreach (new i : Players) {
-				if (vehicleid == GetPlayerVehicleID(i)) {
-					PlayAudioStreamForPlayer(i, vehicle_radio[radioid][vehradio_URL]);
-					SendClientMessage(i, COLOUR_SkyBlue, string);
-				}
+				DisableVehicleRadio(vehicleid);
+			} else {
+				SetVehicleRadio(vehicleid, listitem - 1);
 			}
 			return 1;
 		}

@@ -697,10 +697,7 @@ public OnPlayerExitedMenu(playerid)
 
 public OnPlayerStateChange(playerid, newstate, oldstate)
 {
-	if (oldstate == PLAYER_STATE_DRIVER || oldstate == PLAYER_STATE_PASSENGER)
-	{
-		StopAudioStreamForPlayer(playerid);
-	}
+	vehicle_OnPlayerStateChange(playerid, newstate, oldstate);
 	ash_OnPlayerStateChange(playerid, newstate, oldstate);
 	qudemsys_OnPlayerStateChange(playerid, newstate, oldstate);
 	if (newstate == PLAYER_STATE_DRIVER)
