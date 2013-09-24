@@ -226,7 +226,7 @@ native IsValidVehicle(vehicleid);
 #define V_YOSEMITE 554
 #define V_ZR350 477
 
-static vehicle_RadioStatus[MAX_VEHICLES] = {-1};
+static vehicle_RadioStatus[MAX_VEHICLES] = {-1, ...};
 new CarsReSpawnTime = CARS_RESPAWN_TIME;
 
 enum VehicleInfo {
