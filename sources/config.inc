@@ -13,6 +13,7 @@
 #pragma library config
 
 #pragma tabsize 0
+#pragma dynamic 13000
 
 #define VERSION					"v1.1.3" // версия мода
 #define GTO_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
