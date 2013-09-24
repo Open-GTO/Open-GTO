@@ -1932,7 +1932,7 @@ stock anims_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]
 				}
 			}
 			
-			ApplyAnimation(playerid, lib, anim_array[anim_id][anim_Name], 4.1, 0, 1, 1, 0, 1, 1);
+			ApplyAnimation(playerid, lib, anim_array[anim_id][anim_Name], 4.1, 0, 1, 1, 0, 0, 1);
 			return 1;
 		}
 	}
@@ -1953,10 +1953,11 @@ stock anims_PreloadAll(playerid)
 
 stock anims_ShowLibMenu(playerid)
 {
-	new string[ MAX_ANIM_LIB_NAME * sizeof(anim_lib_array) ];
+	new string[ MAX_ANIM_LIB_NAME * (sizeof(anim_lib_array) + 1) ];
 	
 	for (new i = 0; i < sizeof(anim_lib_array); i++) {
 		strcat(string, anim_lib_array[i], sizeof(string));
+		strcat(string, "\n", sizeof(string));
 	}
 	
 	return ShowPlayerDialog(playerid, anims_lib_menu_DialogID, DIALOG_STYLE_LIST,
@@ -1968,11 +1969,12 @@ stock anims_ShowLibMenu(playerid)
 
 stock anims_ShowAnimMenu(playerid, lib[MAX_ANIM_LIB_NAME])
 {
-	new string[ MAX_ANIM_NAME * 36 ];
+	new string[ MAX_ANIM_NAME * 512 ];
 	
 	for (new i = 0, founded = 0; i < sizeof(anim_array); i++) {
 		if (!strcmp(lib, anim_array[i][anim_Lib], true)) {
 			strcat(string, anim_array[i][anim_Name], sizeof(string));
+			strcat(string, "\n", sizeof(string));
 			founded = 1;
 		} else if (founded == 1) {
 			break;
