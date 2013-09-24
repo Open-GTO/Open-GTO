@@ -670,7 +670,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		if ( GetPlayerFightTrenerID(playerid) != -1 ) return fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtBar(playerid) ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		show_User_Menu(playerid);
+		show_menu(playerid);
 		return 1;
 	}
 	if ( PRESSED( KEY_SUBMISSION ) )
