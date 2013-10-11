@@ -127,6 +127,11 @@ public OneSecTimer()
 		trucker_RunnerTimer(playerid);
 		SyncPlayers(playerid);
 		UpdatePlayerWeaponTextDraws(playerid);
+		
+		if (GetPVarInt(playerid, "Spawned") == 1)
+		{
+			SyncPlayerWeapons(playerid);
+		}
 	}
 	
 	CheckDM();
@@ -175,11 +180,6 @@ public TenMinuteTimer()
 forward FiveSecondTimer();
 public FiveSecondTimer()
 {
-	foreach (Player, playerid)
-	{
-		if (GetPVarInt(playerid, "Spawned") != 1) continue;
-		SyncPlayerWeapons(playerid);
-	}
 	CheckAllGround();
 	PlayerHealthRegen();
 	SyncActiveCP();
