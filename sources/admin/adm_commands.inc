@@ -392,7 +392,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][45]);
 		}
 		
-		GivePlayerOwnedWeapon(receiverid, ammamount, 1000);
+		GivePlayerOwnedWeaponEx(receiverid, ammamount, 1000);
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[12][46] , oGetPlayerName(playerid), oGetWeaponName(ammamount), ammamount, 1000);
 		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
