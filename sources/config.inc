@@ -15,7 +15,7 @@
 #pragma tabsize 0
 #pragma dynamic 13000
 
-#define VERSION					"v1.1.4" // версия мода
+#define VERSION					"v1.1.5" // версия мода
 #define GTO_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
 #define GTO_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
