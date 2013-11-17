@@ -82,10 +82,10 @@ stock pveh_OnVehicleMod(playerid, vehicleid, componentid)
 	return 1;
 }
 
-stock AddPlayerVehicle(playerid, id, model, color1, color2, Float:fuel, lock = 0, paintjob = -1, component[VEHICLES_COMPONENTS] = {0, ...})
+stock AddPlayerVehicle(playerid, model, color1, color2, Float:fuel, lock = 0, paintjob = -1, component[VEHICLES_COMPONENTS] = {0, ...})
 {
 	new slot = GetPlayerVehicleFreeSlot(playerid);
-	PlayerVehicle[playerid][slot][pv_ID] = id;
+	PlayerVehicle[playerid][slot][pv_ID] = 0;
 	PlayerVehicle[playerid][slot][pv_Model] = model;
 	PlayerVehicle[playerid][slot][pv_Color][0] = color1;
 	PlayerVehicle[playerid][slot][pv_Color][1] = color2;
@@ -118,15 +118,18 @@ stock RemovePlayerVehicle(playerid, slot)
 
 stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh_Z, Float:pveh_A)
 {
+	new vehicleid;
+
 	// если транспорт создан
-	if (PlayerVehicle[playerid][slot][pv_ID] != 0) {
-		SetVehiclePos(PlayerVehicle[playerid][slot][pv_ID], pveh_X, pveh_Y, pveh_Z);
-		SetVehicleZAngle(PlayerVehicle[playerid][slot][pv_ID], pveh_A);
-		return PlayerVehicle[playerid][slot][pv_ID];
+	vehicleid = PlayerVehicle[playerid][slot][pv_ID];
+	if (vehicleid != 0) {
+		SetVehiclePos(vehicleid, pveh_X, pveh_Y, pveh_Z);
+		SetVehicleZAngle(vehicleid, pveh_A);
+		return vehicleid;
 	}
 	
 	// если не создан, то создаём
-	new vehicleid = CreateVehicle(
+	vehicleid = CreateVehicle(
 		PlayerVehicle[playerid][slot][pv_Model],
 		pveh_X, pveh_Y, pveh_Z, pveh_A,
 		PlayerVehicle[playerid][slot][pv_Color][0], PlayerVehicle[playerid][slot][pv_Color][1],

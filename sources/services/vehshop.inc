@@ -155,7 +155,7 @@ stock vshop_OneHourTimer()
 stock buyVehicle(playerid, vehicleid)
 {
 	new model = GetVehicleModel(vehicleid);
-	AddPlayerVehicle(playerid, 0, model, colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], float(GetMaxVehicleFuel(model)));
+	AddPlayerVehicle(playerid, model, colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], float(GetMaxVehicleFuel(model)));
 	return 1;
 }
 
