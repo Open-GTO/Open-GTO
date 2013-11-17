@@ -249,68 +249,57 @@ stock IsWeapon(weaponid)
 stock BuyWeapon(playerid, weaponid, bullets)
 {
 	new string[MAX_STRING];
-	if (weaponid < 0 || weaponid > 47)
-	{
+	if (weaponid < 0 || weaponid > 47) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[16][7]);
 		return 0;
 	}
-	if (bullets < 1)
-	{
+	if (bullets < 1) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[16][8]);
 		return 0;
 	}
-	new current_bullets = GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid));
-	if (current_bullets >= MAX_BULLETS)
-	{
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[16][1]);
-		return 0;
-	}
-	if (current_bullets + bullets > MAX_BULLETS)
-	{
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[16][1]);
-		bullets = MAX_BULLETS - GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid));
-		if (bullets < 1)
-		{
+	if (weaponid > 0 && weaponid < 47) {
+		new current_bullets = GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid));
+		if (current_bullets >= MAX_BULLETS) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[16][1]);
 			return 0;
 		}
+		if (current_bullets + bullets > MAX_BULLETS) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[16][1]);
+			bullets = MAX_BULLETS - GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid));
+			if (bullets < 1) {
+				return 0;
+			}
+		}
 	}
-	if (IsPlayerAtAmmunation(playerid) == -1)
-	{
+	if (IsPlayerAtAmmunation(playerid) == -1) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[16][9]);
 		return 0;
 	}
-	if (!IsPlayerAllowedWeapon(playerid, weaponid))
-	{
+	if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
 		format(string, sizeof(string), lang_texts[16][10], oGetWeaponName(weaponid));
 		SendClientMessage(playerid, COLOUR_RED, string);
 		return 0;
 	}
 	new purchasecost = GetWeaponCost(weaponid) * bullets;
-	if (purchasecost < 1)
-	{
+	if (purchasecost < 1) {
 		format(string, sizeof(string), lang_texts[16][11], oGetWeaponName(weaponid));
 		SendClientMessage(playerid, COLOUR_RED, string);
 		return 0;
 	}
-	if (oGetPlayerMoney(playerid) < purchasecost)
-	{
+	if (oGetPlayerMoney(playerid) < purchasecost) {
 		format(string, sizeof(string), lang_texts[16][12], purchasecost);
 		SendClientMessage(playerid, COLOUR_RED, string);
 		return 0;
 	}
 	oGivePlayerMoney(playerid,-purchasecost, 1);
-	switch (weaponid)
-	{
+	switch (weaponid) {
 		case 47: oSetPlayerArmour(playerid, 100.0);
 		case 37: GivePlayerOwnedWeapon(playerid, weaponid, bullets * 10); // фикс для количества патрон огнемёта
 		default: GivePlayerOwnedWeapon(playerid, weaponid, bullets);
 	}
-	if (bullets > 1)
-	{
+	if (bullets > 1) {
 		format(string, sizeof(string), lang_texts[16][13], bullets, oGetWeaponName(weaponid), purchasecost);
-	}
-	else
-	{
+	} else {
 		format(string, sizeof(string), lang_texts[16][14], oGetWeaponName(weaponid), purchasecost);
 	}
 	SendClientMessage(playerid, COLOUR_RED, string);
