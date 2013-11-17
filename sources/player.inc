@@ -391,6 +391,7 @@ stock SyncPlayers(playerid)
 {
 	if (GetPVarInt(playerid, "Spawned") != 1) return 0; // если игрок мертв, то защиты не срабатывают
 	SyncWeapon(playerid);
+	SyncPlayerWeapons(playerid);
 	SyncMoney(playerid);
 	SyncHealth(playerid);
 	SyncArmour(playerid);
