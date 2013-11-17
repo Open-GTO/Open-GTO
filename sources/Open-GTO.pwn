@@ -249,6 +249,7 @@ public OnPlayerConnect(playerid)
 public OnPlayerDisconnect(playerid, reason)
 {
 	if (playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) return 1;
+	SetPVarInt(playerid, "Spawned", 0);
 	player_OnPlayerDisconnect(playerid, reason);
 	trucker_OnPlayerDisconnect(playerid, reason);
 	chatguard_OnPlayerDisconnect(playerid, reason);
@@ -413,16 +414,17 @@ public OnPlayerSpawn(playerid)
 		SetPlayerWantedLevel(playerid, 3);
 	}
 	new dmid = GetPlayerDM(playerid);
-	if (dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0)
+	if (dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0) {
 		player_OnPlayerSpawn(playerid);
-	else
+	} else {
 		deathmatch_OnPlayerSpawn(playerid, dmid);
+	}
 	SetPlayerColor(playerid, PlayerGangColour(playerid));
 	if (IsPlayerJailed(playerid))
 	{
 		JailPlayer(playerid, GetPlayerJailTime(playerid));
 	}
-	SetTimerEx("OnPlayerSpawned", 1500, 0, "d", playerid);
+	SetTimerEx("OnPlayerSpawned", 2500, 0, "d", playerid);
 	return 1;
 }
 

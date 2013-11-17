@@ -181,4 +181,10 @@ public FiveSecondTimer()
 	business_Update3DTextLabelText();
 	housing_Update3DTextLabelText();
 	PayDay();
+
+	foreach (new playerid : Player) {
+		if (GetPVarInt(playerid, "Spawned") == 1) {
+			SyncPlayerWeapons(playerid);
+		}
+	}
 }

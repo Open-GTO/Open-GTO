@@ -262,8 +262,13 @@ stock player_OnPlayerSpawn(playerid)
 
 stock player_OnPlayerDisconnect(playerid, reason)
 {
+	// sync
+	SyncPlayerWeapons(playerid);
+
+	// save
 	PlayerSave(playerid);
 	AccountSave(playerid);
+	
 	DMPlayerDisconnect(playerid);
 	StopAudioStreamForPlayer(playerid);
 	new string[MAX_STRING];
@@ -391,7 +396,6 @@ stock SyncPlayers(playerid)
 {
 	if (GetPVarInt(playerid, "Spawned") != 1) return 0; // если игрок мертв, то защиты не срабатывают
 	SyncWeapon(playerid);
-	SyncPlayerWeapons(playerid);
 	SyncMoney(playerid);
 	SyncHealth(playerid);
 	SyncArmour(playerid);

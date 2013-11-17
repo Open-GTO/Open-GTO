@@ -51,7 +51,6 @@ stock weapon_OnPlayerConnect(playerid)
 stock weapon_OnPlayerDisconnect(playerid, reason)
 {
 	wskill_OnPlayerDisconnect(playerid, reason);
-	SyncPlayerWeapons(playerid);
 	return 1;
 }
 
