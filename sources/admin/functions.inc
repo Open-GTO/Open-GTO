@@ -96,7 +96,7 @@ stock oBan_Check(playerid)
 	
 	if (unban_time > 0)
 	{
-		Kick(playerid);
+		KickPlayer(playerid, "ban check", 0);
 	}
 	else
 	{
@@ -152,7 +152,7 @@ stock oBan(user[], reason[], adminid, time=0)
 			GetPVarString(playerid, "IP", plrIP, sizeof(plrIP));
 			if (!strcmp(user, plrIP, false))
 			{
-				Kick(playerid);
+				KickPlayer(playerid, "ban", 0);
 			}
 		}
 	}
@@ -162,7 +162,7 @@ stock oBan(user[], reason[], adminid, time=0)
 		{
 			if (!strcmp(user, oGetPlayerName(playerid), false))
 			{
-				Kick(playerid);
+				KickPlayer(playerid, "ban", 0);
 			}
 		}
 	}
