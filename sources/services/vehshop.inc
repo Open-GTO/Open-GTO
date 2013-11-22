@@ -101,7 +101,7 @@ stock vshop_OnVehicleSpawn(vehicleid)
 	return 1;
 }
 
-stock vshop_OneMinuteTimer()
+stock vshop_SetVehiclesToRespawn()
 {
 	for (new i = 0; i < sizeof(vshop_Vehicles); i++) {
 		new Float:dist = GetVehicleDistanceFromPoint(vshop_Vehicles[i][vshop_ID], vshop_Vehicles[i][vshop_X], vshop_Vehicles[i][vshop_Y], vshop_Vehicles[i][vshop_Z]);

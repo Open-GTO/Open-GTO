@@ -153,7 +153,6 @@ public OneMinuteTimer()
 	weather_WeatherUpdate();
 	SyncTime();
 	TurnAround();
-	vshop_OneMinuteTimer();
 }
 
 forward OneHourTimer();
@@ -181,6 +180,7 @@ public FiveSecondTimer()
 	business_Update3DTextLabelText();
 	housing_Update3DTextLabelText();
 	PayDay();
+	vshop_SetVehiclesToRespawn();
 
 	foreach (new playerid : Player) {
 		if (GetPVarInt(playerid, "Spawned") == 1) {
