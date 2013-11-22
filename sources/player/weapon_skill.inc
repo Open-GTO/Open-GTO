@@ -14,13 +14,40 @@
 #pragma library weapon_skill
 
 
+static wskill_Enabled = WEAPON_SKILL_ENABLED;
 
 #define PLAYER_WEAPON_SKILLS 11
 new PlayerWeaponsSkills[MAX_PLAYERS][PLAYER_WEAPON_SKILLS];
 new Text:weapon_TextDraw_Level[MAX_PLAYERS];
 
+stock wskill_LoadConfig()
+{
+	if (!ini_Exist(ConfigDB)) return 0;
+	new file_wdrop = ini_Open(ConfigDB);
+	ini_GetInt(file_wdrop, "Weapon_Skill_Enabled", wskill_Enabled);
+	ini_Close(file_wdrop);
+	return 1;
+}
+
+stock wskill_SaveConfig()
+{
+	new file_wdrop = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_wdrop, "Weapon_Skill_Enabled", wskill_Enabled);
+	ini_Close(file_wdrop);
+	return 1;
+}
+
+stock wskill_OnGameModeInit()
+{
+	wskill_LoadConfig();
+	return 1;
+}
+
 stock wskill_OnPlayerConnect(playerid)
 {
+	if (!wskill_Enabled) {
+		return 0;
+	}
 	weapon_TextDraw_Level[playerid] = TextDrawCreate(499.000000, 13.000000, "999/1000");
 	TextDrawBackgroundColor(weapon_TextDraw_Level[playerid], 255);
 	TextDrawFont(weapon_TextDraw_Level[playerid], 1);
@@ -35,6 +62,9 @@ stock wskill_OnPlayerConnect(playerid)
 stock wskill_OnPlayerDisconnect(playerid,reason)
 {
 	#pragma unused reason
+	if (!wskill_Enabled) {
+		return 0;
+	}
 	wskill_HideTextDraw(playerid);
 	TextDrawDestroy(weapon_TextDraw_Level[playerid]);
 	return 1;
@@ -43,6 +73,9 @@ stock wskill_OnPlayerDisconnect(playerid,reason)
 stock wskill_OnPlayerDeath(playerid,killerid,reason)
 {
 	#pragma unused playerid
+	if (!wskill_Enabled) {
+		return 0;
+	}
 	if (!IsWeapon(reason)) return 1;
 	// set skill
 	new WeaponSkillID = GetWeaponSkillID(reason);
@@ -61,6 +94,9 @@ stock wskill_OnPlayerDeath(playerid,killerid,reason)
 stock wskill_OnPlayerRequestClass(playerid, classid)
 {
 	#pragma unused classid
+	if (!wskill_Enabled) {
+		return 0;
+	}
 	wskill_HideTextDraw(playerid);
 	return 1;
 }
@@ -135,6 +171,9 @@ stock wskill_HideTextDraw(playerid)
 
 stock UpdatePlayerWeaponTextDraws(playerid)
 {
+	if (!wskill_Enabled) {
+		return 0;
+	}
 	if (GetPVarInt(playerid,"Spawned") == 0) return 0;
 	new skillid = GetWeaponSkillID( GetPlayerWeapon(playerid) );
 	if (skillid != -1)

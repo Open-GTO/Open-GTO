@@ -59,6 +59,7 @@ public WorldSave(necessarily) // save all
 	money_SaveConfig();
 	lang_SaveConfig();
 	wdrop_SaveConfig();
+	wskill_SaveConfig();
 	// protections
 	AntiIdleSaveConfig();
 	AntiHightPingSaveConfig();
