@@ -629,6 +629,11 @@ public OnPlayerText(playerid, text[])
 		case '$',';':
 		{
 			if (strlen(text[1]) < 2) return 1;
+			if (GetPlayerMuteTime(playerid) > 0)
+			{
+				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
+				return 0;
+			}
 			SendClientMessageToBeside(playerid, 10, text[1]);
 			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <SAY>: %s", playername, playerid, text[1]);
 			WriteLog(ChatLog, string);
