@@ -319,6 +319,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			SendClientMessage(playerid,COLOUR_MONEY_GOOD, string);
 			format(string,sizeof(string),lang_texts[15][80],moneys, sendername, playerid);
 			SendClientMessage(GetPlayerClickedPlayerid(playerid),COLOUR_MONEY_GOOD,string);
+			return 1;
 		}
 		if (ListResponseType[playerid] == 1) // pm
 		{
@@ -337,6 +338,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				if (IsPlayerMod(id))
 					SendClientMessage(id,COLOUR_RED,string);
 			}
+			return 1;
 		}
 		if (ListResponseType[playerid] == 3)
 		{
@@ -356,6 +358,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			SendClientMessageToAll(COLOUR_WHITE,string);
 			KickPlayer(receiverid,"");
 			print(string);
+			return 1;
 		}
 		if (ListResponseType[playerid] == 4)
 		{
@@ -378,6 +381,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			SendClientMessage(muteid,COLOUR_RED,string);
 			format(string,sizeof(string),lang_texts[12][50],oGetPlayerName(muteid));
 			SendClientMessageToAll(COLOUR_WHITE,string);
+			return 1;
 		}
 		if (ListResponseType[playerid] == 6)
 		{
@@ -401,6 +405,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			GameTextForPlayer(playerid,"~w~ You has been ~r~Jailed~w~!",5000,4);
 			JailPlayer(jailid,jailt);
 			SetPlayerJailed(jailid, GetPlayerJailed(jailid) + 1);
+			return 1;
 		}
 		if (ListResponseType[playerid] == 12)
 		{
@@ -419,6 +424,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][44]);
 			}
 			oSetPlayerHealth(receiverid, hltamount);
+			return 1;
 		}
 		if (ListResponseType[playerid] == 13)
 		{
@@ -437,6 +443,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][44]);
 			}
 			oSetPlayerArmour(receiverid, armamount);
+			return 1;
 		}
 		if (ListResponseType[playerid] == 14)
 		{
@@ -477,6 +484,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				format(string,sizeof(string), lang_texts[12][8] ,oGetPlayerName(receiverid),xpamount,GetPlayerXP(receiverid));
 				SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			}
+			return 1;
 		}
 		if (ListResponseType[playerid] == 15)
 		{
@@ -510,6 +518,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				format(string,sizeof(string), lang_texts[12][15] ,oGetPlayerName(receiverid),cashamount,oGetPlayerMoney(receiverid));
 				SendClientMessage(playerid,COLOUR_XP_GOOD,string);
 			}
+			return 1;
 		}
 
 	}
