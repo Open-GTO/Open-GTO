@@ -14,17 +14,39 @@
 #pragma library weapon_drop
 
 
+static wdrop_Enabled = WEAPON_DROP_ENABLED;
+
 enum wd_Info {
 	wd_weaponid,
 	wd_bullets,
 	wd_pickupid,
 	wd_timer,
 }
-new weapons_dropped[MAX_DROPPED_WEAPONS][wd_Info];
+static weapons_dropped[MAX_DROPPED_WEAPONS][wd_Info];
 
+stock wdrop_LoadConfig()
+{
+	if (!ini_Exist(ConfigDB)) return 0;
+	new file_wdrop = ini_Open(ConfigDB);
+	ini_GetInt(file_wdrop, "Weapon_Drop_Enabled", wdrop_Enabled);
+	ini_Close(file_wdrop);
+	return 1;
+}
+
+stock wdrop_SaveConfig()
+{
+	new file_wdrop = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
+	ini_SetInt(file_wdrop, "Weapon_Drop_Enabled", wdrop_Enabled);
+	ini_Close(file_wdrop);
+	return 1;
+}
 
 stock wdrop_OnGameModeInit()
 {
+	wdrop_LoadConfig();
+	if (!wdrop_Enabled) {
+		return 0;
+	}
 	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
 	{
 		weapons_dropped[wd_slot][wd_weaponid] = -1;
@@ -37,6 +59,9 @@ stock wdrop_OnGameModeInit()
 
 stock wdrop_OnPlayerPickUpPickup(playerid, pickupid)
 {
+	if (!wdrop_Enabled) {
+		return 0;
+	}
     for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
     {
 		if (pickupid == weapons_dropped[wd_slot][wd_pickupid])
@@ -50,6 +75,9 @@ stock wdrop_OnPlayerPickUpPickup(playerid, pickupid)
 
 stock wdrop_OnPlayerDeath(playerid)
 {
+	if (!wdrop_Enabled) {
+		return 0;
+	}
 	// drop pickups
 	new weapon[PWeap], Float:pos[3], pickupmodel, wd_slot;
 	for (new slot = 0; slot < PLAYER_WEAPON_SLOTS; slot++)
