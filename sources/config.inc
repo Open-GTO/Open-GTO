@@ -110,7 +110,9 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 #define CHAT_SHOW_ID		"(%d)" // вид отображения ида в чате
 
+#define WEAPON_SKILL_ENABLED	1 // включить прокачку оружия (если выключено, то оружие на максимуме)
 #define WEAPON_SKILL_SPEED	10 // количество даваемого скилла за одно убийство
+#define WEAPON_DROP_ENABLED	1 // включить выпадание оружия
 #define WEAPON_DROP_TIME	10 // время, после которого удалятся пикапы, выпавшие из игрока, в секундах
 #define WEAPON_DROP_BULL	20 // столько процентов количества патрон выпадет из игрока
 #define MAX_DROPPED_WEAPONS 64 // максимальное количество выпавшего оружия единовременно(у всех игроков)
