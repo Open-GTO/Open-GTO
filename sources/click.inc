@@ -365,7 +365,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 			{
 				return SendClientMessage(playerid,COLOUR_RED,"Ќе правильное врем€ затычки!");
 			}
-			if (IsPlayerConnected(muteid) == 1)
+			if (IsPlayerConnected(muteid))
 			{
 				new string[MAX_STRING];
 				format(string, sizeof(string)," %s заткнул %s на %d минут",oGetPlayerName(playerid),oGetPlayerName(muteid),mutetime);

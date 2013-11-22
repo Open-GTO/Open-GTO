@@ -148,15 +148,15 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendMessageToAdmins(playerid, COLOUR_LIGHTGREEN, text);
 		new muteid = strval(strcharsplit(text, idx, ' '));
 		new mutetime = strval(strcharsplit(text, idx, ' '));
-		if (IsPlayerConnected(muteid) == 1)
+		if (mutetime < 1)
+		{
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][13]);
+		}
+		if (IsPlayerConnected(muteid))
 		{
 			new string[MAX_STRING];
 			format(string, sizeof(string), lang_texts[13][12], oGetPlayerName(playerid), oGetPlayerName(muteid), mutetime);
 			SendClientMessageToAll(COLOUR_YELLOW, string);
-		}
-		if (mutetime < 1)
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][13]);
 		}
 		SetPlayerMuteTime(muteid, mutetime);
 		SetPlayerMuted(muteid, GetPlayerMuted(muteid) + 1); // сколько раз всего затыкали игрока
