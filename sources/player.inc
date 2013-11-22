@@ -444,15 +444,17 @@ stock KickPlayer(playerid, reason[], showreason = 1)
 		return 0;
 	}
 
+	if (!strlen(reason)) {
+		set(reason, "None");
+	}
+
 	if (showreason == 1) {
-		if (!strlen(reason)) {
-			set(reason, "None");
-		}
 		format(string, sizeof(string), lang_texts[9][5], reason);
 		SendClientMessage(playerid, COLOUR_RED, string);
 		format(string, sizeof(string), lang_texts[9][6], playername, reason);
 		SendClientMessageToAll(COLOUR_MISC, string);
 	}
+	
 	GameTextForPlayer(playerid, "~r~Connection Lost.", 1000, 5); //  send msg first
 	TogglePlayerControllable(playerid, 0);
 
