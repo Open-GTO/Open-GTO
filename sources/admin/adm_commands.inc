@@ -495,7 +495,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 			set(reason, text[idx+1]);
 		}
 		
-		if (strlen(user) < MIN_PLAYER_NAME || strlen(user) > MAX_PLAYER_NAME)
+		if (!IsNumeric(user) && (strlen(user) < MIN_PLAYER_NAME || strlen(user) > MAX_PLAYER_NAME))
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][33]);
 		}
