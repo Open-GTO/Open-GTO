@@ -763,6 +763,12 @@ stock player_load_db_ini(playerid)
 
 stock SendPM(senderid, receiveid, message[])
 {
+	if (GetPlayerMuteTime(senderid) != 0)
+	{
+		SendClientMessage(senderid, COLOUR_RED, lang_texts[1][14]);
+		return 0;
+	}
+
 	new string[MAX_STRING];
 	if (strlen(message) < MIN_SEND_SYMBOLS)
 	{
