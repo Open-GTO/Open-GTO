@@ -87,13 +87,13 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 		if (listitem == 7)
 		{
 			new unjailid = GetPlayerClickedPlayerid(playerid);
-			if ((IsPlayerRconAdmin(unjailid) && !IsPlayerRconAdmin(playerid)) || (IsPlayerAdm(unjailid) && IsPlayerMod(playerid)))
-			{
-				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][19]);
-			}
 			if (!IsPlayerConnected(unjailid))
 			{
-				return SendClientMessage(playerid,COLOUR_RED,lang_texts[12][20]);
+				return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+			}
+			if (!IsPlayerJailed(unjailid))
+			{
+				return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][22]);
 			}
 			new string[MAX_STRING];
 			format(string,sizeof(string),lang_texts[12][21],oGetPlayerName(playerid));
