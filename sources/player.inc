@@ -570,10 +570,16 @@ stock PlayerSave(playerid)
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 	GetPlayerFacingAngle(playerid, pos[3]);
 
-	SetPVarFloat(playerid, "Coord_X", pos[0]);
-	SetPVarFloat(playerid, "Coord_Y", pos[1]);
-	SetPVarFloat(playerid, "Coord_Z", pos[2]);
-	SetPVarFloat(playerid, "Coord_A", pos[3]);
+	if (pos[2] > 900.0) {
+		SetPVarFloat(playerid, "Coord_X", 0.0);
+		SetPVarFloat(playerid, "Coord_Y", 0.0);
+		SetPVarFloat(playerid, "Coord_Z", 0.0);
+	} else {
+		SetPVarFloat(playerid, "Coord_X", pos[0]);
+		SetPVarFloat(playerid, "Coord_Y", pos[1]);
+		SetPVarFloat(playerid, "Coord_Z", pos[2]);
+		SetPVarFloat(playerid, "Coord_A", pos[3]);
+	}
 
 	// save
 	player_save_db_ini(playerid);

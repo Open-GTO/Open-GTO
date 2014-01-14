@@ -3,7 +3,7 @@ Project Name:	Open - Grand Theft Online (Open-GTO)
 Web site:		http://open-gto.ru/
 Date started:	5 November 2009
 
-SA-MP version:		0.3d and older
+SA-MP version:		0.3e and older
 Date started GTO:	12 August 2006
 
 Developers:
@@ -75,6 +75,7 @@ Developers:
 #include "services\skinshop"
 #include "services\lottery"
 #include "services\vehshop"
+#include "services\weaponshop"
 #include "interior"
 #include "weather"
 #include "swagup"
@@ -133,9 +134,8 @@ public OnGameModeInit()
 	player_OnGameModeInit();
 	gang_OnGameModeInit();
 	payday_OnGameModeInit();
-    weapons_OnGameModeInit();
 	vehicles_OnGameModeInit();
-    race_OnGameModeInit();
+	race_OnGameModeInit();
 	deathmatch_OnGameModeInit();
 	groundhold_OnGameModeInit();
 	business_OnGameModeInit();
@@ -150,12 +150,13 @@ public OnGameModeInit()
 	vip_OnGameModeInit();
 	// missions
 	mission_OnGameModeInit();
-    trucker_OnGameModeInit();
+	trucker_OnGameModeInit();
 	// services
 	fastfood_OnGameModeInit();
 	bar_OnGameModeInit();
-	ss_OnGameModeInit();
+	sshop_OnGameModeInit();
 	vshop_OnGameModeInit();
+	wshop_OnGameModeInit();
 	//
 	level_OnGameModeInit();
 	antiidle_OnGameModeInit();
@@ -236,7 +237,7 @@ public OnGameModeExit()
 
 public OnPlayerConnect(playerid)
 {
-    if (IsPlayerNPC(playerid)) return 1;
+	if (IsPlayerNPC(playerid)) return 1;
 	player_OnPlayerConnect(playerid);
 	chatguard_OnPlayerConnect(playerid);
 	level_OnPlayerConnect(playerid);
@@ -290,9 +291,9 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
-		case weapons_Select_DialogID, weapons_Buy_DialogID:
+		case wshop_Select_DialogID, wshop_Buy_DialogID:
 		{
-			weapons_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
+			wshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
 		case bank_Start_DialogID, bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID,
 			gang_wmoney_menu_DialogID, gang_dmoney_menu_DialogID:
@@ -313,7 +314,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		}
 		case SkinShop_Buy_DialogID:
 		{
-			ss_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
+			sshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
 		case trucker_DialogID, trucker_cancel_DialogID:
 		{
@@ -356,8 +357,8 @@ public OnPlayerEnterCheckpoint(playerid)
 
 public OnPlayerEnterRaceCheckpoint(playerid)
 {
-    race_OnPlayerEnterCheckpoint(playerid);
-    return 1;
+	race_OnPlayerEnterCheckpoint(playerid);
+	return 1;
 }
 
 public OnPlayerDeath(playerid, killerid, reason)
@@ -585,8 +586,8 @@ public OnPlayerText(playerid, text[])
 	new string[MAX_STRING];
 	switch (text[0])
 	{
-	    case '!':
-	    {
+		case '!':
+		{
 			if (GetPVarInt(playerid, "GangID") == 0 || GetPlayerMuteTime(playerid) > 0)
 			{
 				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
@@ -652,20 +653,17 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	{
 		if ( GetPVarInt(playerid, "bar_Drinking") == 1 ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 	}
-	if ( PRESSED ( KEY_USING ) || PRESSED ( KEY_FIRE ) || PRESSED ( KEY_HANDBRAKE ) )
-	{
-		if ( IsPlayerAtSkinShop(playerid) ) return ss_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-	}
 	if ( PRESSED ( KEY_USING ) )
 	{
 		if ( IsPlayerAtEnterExit(playerid) ) return interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtHouse(playerid) ) return housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtBusiness(playerid) ) return business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtBank(playerid) != -1 ) return bank_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( IsPlayerAtAmmunation(playerid) != -1 ) return weapons_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtWeaponShop(playerid) != -1 ) return wshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( GetPlayerFightTrenerID(playerid) != -1 ) return fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtBar(playerid) ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtSkinShop(playerid) ) return sshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		show_menu(playerid);
 		return 1;
 	}
@@ -737,8 +735,8 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 {
 	ash_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
-    modfunc_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
-    return 1;
+	modfunc_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
+	return 1;
 }
 
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
@@ -750,12 +748,12 @@ public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 
 public OnPlayerStreamIn(playerid, forplayerid)
 {
-    return 1;
+	return 1;
 }
 
 public OnPlayerStreamOut(playerid, forplayerid)
 {
-    return 1;
+	return 1;
 }
 
 public OnVehicleDamageStatusUpdate(vehicleid, playerid)
@@ -765,12 +763,12 @@ public OnVehicleDamageStatusUpdate(vehicleid, playerid)
 
 public OnVehicleStreamIn(vehicleid, forplayerid)
 {
-    return 1;
+	return 1;
 }
 
 public OnVehicleStreamOut(vehicleid, forplayerid)
 {
-    return 1;
+	return 1;
 }
 
 public OnVehicleSpawn(vehicleid)
@@ -829,7 +827,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
 public OnVehiclePaintjob(playerid, vehicleid, paintjobid)
 {
 	pveh_OnVehiclePaintjob(playerid, vehicleid, paintjobid);
-    return 1;
+	return 1;
 }
 
 public OnVehicleRespray(playerid, vehicleid, color1, color2)
@@ -857,4 +855,20 @@ public OnEnterExitModShop(playerid, enterexit, interiorid)
 		}
 	}
 	return 1;
+}
+
+public OnPlayerClickTextDraw(playerid, Text:clickedid)
+{
+	if (clickedid == Text:INVALID_TEXT_DRAW) {
+		if (IsPlayerAtSkinShop(playerid)) {
+			return sshop_OnPlayerClickTextDraw(playerid, clickedid);
+		}
+	}
+
+	if (clickedid == clickText[sshop_left] || clickedid == clickText[sshop_right] || clickedid == clickText[sshop_buy] || 
+		clickedid == clickText[sshop_list] || clickedid == clickText[sshop_exit]
+		) {
+		return sshop_OnPlayerClickTextDraw(playerid, clickedid);
+	}
+	return 0;
 }
