@@ -238,7 +238,6 @@ public OnPlayerConnect(playerid)
 {
     if (IsPlayerNPC(playerid)) return 1;
 	player_OnPlayerConnect(playerid);
-   	account_OnPlayerConnect(playerid);
 	chatguard_OnPlayerConnect(playerid);
 	level_OnPlayerConnect(playerid);
 	weapon_OnPlayerConnect(playerid);
@@ -395,35 +394,25 @@ public OnPlayerSpawn(playerid)
 {
 	if (IsPlayerNPC(playerid)) return 1;
 	
+	// spawn player
+	player_OnPlayerSpawn(playerid);
 	anims_OnPlayerSpawn(playerid);
+
 	// после использования TogglePlayerSpectating
 	if (GetPVarInt(playerid, "spec_after_off") == 1)
 	{
 		DeletePVar(playerid, "spec_after_off");
 		return 1;
 	}
-	
-	// spawn player
-	SetPlayerSkin(playerid, GetPlayerSkinModel(playerid));
-	UpdatePlayerLevelTextDraws(playerid);
-	UpdatePlayerWeaponTextDraws(playerid);
-	
-	if (GetPlayerMuteTime(playerid) != 0)
-	{
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
-		SetPlayerWantedLevel(playerid, 3);
-	}
+
+	// ставим позицию
 	new dmid = GetPlayerDM(playerid);
 	if (dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0) {
-		player_OnPlayerSpawn(playerid);
+		player_SetSpawnPos(playerid);
 	} else {
 		deathmatch_OnPlayerSpawn(playerid, dmid);
 	}
-	SetPlayerColor(playerid, PlayerGangColour(playerid));
-	if (IsPlayerJailed(playerid))
-	{
-		JailPlayer(playerid, GetPlayerJailTime(playerid));
-	}
+
 	SetTimerEx("OnPlayerSpawned", 2500, 0, "d", playerid);
 	return 1;
 }

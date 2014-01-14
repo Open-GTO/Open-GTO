@@ -97,6 +97,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define SKINS_IGNORE		0, 74  // список игнорируемых скинов
 #define SKINS_MAXID			299
 #define SKINS_MINID			1
+#define PLAYER_DEFAULT_SKIN	95
 
 #define GROUNDHOLD_ENABLED		1 // точки прокачки
 #define GROUNDHOLD_HOLD_TIME	2 // скорость потери точки при выходе из зоны

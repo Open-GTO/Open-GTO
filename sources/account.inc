@@ -151,7 +151,7 @@ stock account_login_db_ini(playerid, password[])
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[1][7]);
 			KickPlayer(playerid, lang_texts[1][4]);
 		} else {
-			account_OnPlayerConnect(playerid);
+			account_ShowDialog(playerid);
 		}
 		return 0;
 	}
@@ -170,7 +170,7 @@ stock account_login_db_ini(playerid, password[])
 	return 1;
 }
 
-stock account_OnPlayerConnect(playerid)
+stock account_ShowDialog(playerid)
 {
 	new filename_account[MAX_STRING], message[MAX_STRING], playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
@@ -189,7 +189,6 @@ stock account_OnPlayerConnect(playerid)
 		format(message, sizeof(message), lang_texts[1][44], playername, MIN_PASS_LEN, MAX_PASS_LEN);
 		ShowPlayerDialog(playerid, account_Reg_DialogID, DIALOG_STYLE_INPUT, "Регистрация", message, "Зарегать", "");
 	}
-	SetPVarInt(playerid, "RequestPlace", random( sizeof(RequestPlace) ));
 	return 1;
 }
 
@@ -205,7 +204,7 @@ stock account_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 		}
 		else
 		{
-			account_OnPlayerConnect(playerid);
+			account_ShowDialog(playerid);
 		}
 		return 1;
 	}
@@ -218,7 +217,7 @@ stock account_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 		}
 		else
 		{
-			account_OnPlayerConnect(playerid);
+			account_ShowDialog(playerid);
 		}
 		return 1;
 	}

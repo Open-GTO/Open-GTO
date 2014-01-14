@@ -201,9 +201,35 @@ stock player_OnGameModeInit()
 
 stock player_OnPlayerSpawn(playerid)
 {
+	if (GetPlayerMuteTime(playerid) != 0)
+	{
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
+		SetPlayerWantedLevel(playerid, 3);
+	}
+	
+	if (IsPlayerJailed(playerid))
+	{
+		JailPlayer(playerid, GetPlayerJailTime(playerid));
+	}
+
+	UpdatePlayerLevelTextDraws(playerid);
+	UpdatePlayerWeaponTextDraws(playerid);
+
+	SetPlayerColor(playerid, PlayerGangColour(playerid));
+	SetPlayerSkin(playerid, GetPlayerSkinModel(playerid));
+	oSetPlayerHealth(playerid, GetMaxHealth(playerid));
+	SetPlayerFightingStyle(playerid, GetPlayerFightStyleUsed(playerid));
+	GivePlayerOwnedWeapons(playerid);
+	weapon_SetSkills(playerid);
+	PushHide(playerid);
+	return 1;
+}
+
+stock player_SetSpawnPos(playerid)
+{
 	new house_id = GetPlayerSpawnHouseID(playerid);
 	SetPlayerInterior(playerid, 0);
-	
+
 	if (house_id >= 0 && strcmp(oGetPlayerName(playerid), Houses[house_id][Houses_Owner], true))
 	{
 		house_id = SPAWN_HOUSE_NONE;
@@ -214,17 +240,14 @@ stock player_OnPlayerSpawn(playerid)
 	{
 		if (GetPVarFloat(playerid, "Coord_X") != 0.0 && GetPVarFloat(playerid, "Coord_Y") != 0.0 && GetPVarFloat(playerid, "Coord_Z") != 0.0)
 		{
-			oSetPlayerPos(playerid, GetPVarFloat(playerid, "Coord_X"), GetPVarFloat(playerid, "Coord_Y"), GetPVarFloat(playerid, "Coord_Z")); // Warp the player
-			SetPVarFloat(playerid, "Coord_X", 0.0);
-			SetPVarFloat(playerid, "Coord_Y", 0.0);
-			SetPVarFloat(playerid, "Coord_Z", 0.0);
+			oSetPlayerPos(playerid, GetPVarFloat(playerid, "Coord_X"), GetPVarFloat(playerid, "Coord_Y"), GetPVarFloat(playerid, "Coord_Z"));
 		}
 		else
 		{
 			if (GetPlayerLevel(playerid) > 12)
 			{
 				new rand = random( sizeof(LVDMPlayerSpawns) );
-				oSetPlayerPos(playerid, LVDMPlayerSpawns[rand][Coord_X], LVDMPlayerSpawns[rand][Coord_Y], LVDMPlayerSpawns[rand][Coord_Z]); // Warp the player
+				oSetPlayerPos(playerid, LVDMPlayerSpawns[rand][Coord_X], LVDMPlayerSpawns[rand][Coord_Y], LVDMPlayerSpawns[rand][Coord_Z]);
 			}
 			else
 			{
@@ -258,13 +281,6 @@ stock player_OnPlayerSpawn(playerid)
 		SendClientMessage(playerid, COLOUR_RED, tmp);
 	}
 	SetPlayerFacingAngle(playerid, GetPVarFloat(playerid, "Coord_A"));
-	
-	GivePlayerOwnedWeapons(playerid);
-	oSetPlayerHealth(playerid, GetMaxHealth(playerid)); // set health based on level
-	weapon_SetSkills(playerid);
-	SetPlayerFightingStyle(playerid, GetPlayerFightStyleUsed(playerid));
-	PushHide(playerid);
-	return 1;
 }
 
 stock player_OnPlayerDisconnect(playerid, reason)
@@ -294,6 +310,8 @@ stock player_OnPlayerDisconnect(playerid, reason)
 
 stock player_OnPlayerConnect(playerid)
 {
+	player_UpdateCamera(playerid);
+
     new plrIP[MAX_IP], string[MAX_STRING];
     GetPlayerIp(playerid, plrIP, sizeof(plrIP));
 	SetPVarString(playerid, "IP", plrIP);
@@ -314,10 +332,6 @@ stock player_OnPlayerConnect(playerid)
 	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][88]);
 	SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][90]);
 	SendClientMessage(playerid, COLOUR_GREEN, "_________________________________________________________________________________");
-
-#if defined _testserver_included
-	testserver_OnPlayerConnect(playerid);
-#endif
 }
 
 stock player_OnPlayerDeath(playerid, killerid, reason)
@@ -397,6 +411,12 @@ stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 	return 1;
 }
 
+stock player_OnLogin(playerid)
+{
+	// spawn player
+	TogglePlayerSpectating(playerid, 0);
+}
+
 // needs to be ran by a timer
 // sync player hp/money and check for mismatch
 stock SyncPlayers(playerid)
@@ -414,25 +434,33 @@ stock SyncPlayers(playerid)
 
 stock player_OnPlayerRequestClass(playerid, classid)
 {
-	// Фикс для выбора классов(поломалось в 0.3a)
-	if (classid != 0)
-	{
-		SetPlayerSkinModel(playerid, GetPlayerSkin(playerid));
-		SetPVarInt(playerid, "player_class_zero", 1);
+	#pragma unused classid
+	if (IsPlayerLogin(playerid)) {
+		TogglePlayerSpectating(playerid, 1);
+		SetSpawnInfo(playerid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		TogglePlayerSpectating(playerid, 0);
+		return 0;
 	}
-	else if (GetPVarInt(playerid, "player_class_zero") == 1) // classid == 0 тоже можно выбирать
-	{
-		SetPlayerSkinModel(playerid, GetPlayerSkin(playerid));
-		SetPVarInt(playerid, "player_class_zero", 0);
-	}
-	//
-	new req_id = GetPVarInt(playerid, "RequestPlace");
-	SetPlayerInterior(playerid, RequestPlace[req_id][Interior]);
-	oSetPlayerPos(playerid, RequestPlace[req_id][player_X], RequestPlace[req_id][player_Y], RequestPlace[req_id][player_Z]);
-	SetPlayerFacingAngle(playerid, RequestPlace[req_id][player_A]);
-	SetPlayerCameraPos(playerid, RequestPlace[req_id][camera_pos_X], RequestPlace[req_id][camera_pos_Y], RequestPlace[req_id][camera_pos_Z]);
-	SetPlayerCameraLookAt(playerid, RequestPlace[req_id][camera_look_X], RequestPlace[req_id][camera_look_Y], RequestPlace[req_id][camera_look_Z]);
+
+	// hide class selection buttons
+	TogglePlayerSpectating(playerid, 1);
+	SetSpawnInfo(playerid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+	// set camera pos
+	SetTimerEx("player_UpdateCamera", 200, 0, "d", playerid);
+
+	// show login dialog
+	account_ShowDialog(playerid);
 	return 1;
+}
+
+forward player_UpdateCamera(playerid);
+public player_UpdateCamera(playerid)
+{
+	new camera_id = random( sizeof(camera_PlaceArray) );
+	SetPlayerInterior(playerid, camera_PlaceArray[camera_id][camera_Interior]);
+	SetPlayerCameraPos(playerid, camera_PlaceArray[camera_id][camera_pos_X], camera_PlaceArray[camera_id][camera_pos_Y], camera_PlaceArray[camera_id][camera_pos_Z]);
+	SetPlayerCameraLookAt(playerid, camera_PlaceArray[camera_id][camera_look_X], camera_PlaceArray[camera_id][camera_look_Y], camera_PlaceArray[camera_id][camera_look_Z]);
 }
 
 stock KickPlayer(playerid, reason[], showreason = 1)
@@ -533,7 +561,21 @@ stock oGetPlayerName(playerid)
 
 stock PlayerSave(playerid)
 {
-	if (!IsPlayerLogin(playerid)) return 0;
+	if (!IsPlayerLogin(playerid)) {
+		return 0;
+	}
+
+	// update position
+	new Float:pos[4];
+	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+	GetPlayerFacingAngle(playerid, pos[3]);
+
+	SetPVarFloat(playerid, "Coord_X", pos[0]);
+	SetPVarFloat(playerid, "Coord_Y", pos[1]);
+	SetPVarFloat(playerid, "Coord_Z", pos[2]);
+	SetPVarFloat(playerid, "Coord_A", pos[3]);
+
+	// save
 	player_save_db_ini(playerid);
 	GameMSG("player: %s(%d): player_saved successfully", oGetPlayerName(playerid), playerid);
 	return 1;
@@ -546,7 +588,7 @@ stock CreatePlayer(playerid)
 	SetPlayerXP(playerid, LevelList[FIRST_LEVEL][level_xp]);
 	oResetPlayerWeapons(playerid);
 	SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
-	SetPlayerSkinModel(playerid, 1);
+	SetPlayerSkinModel(playerid, PLAYER_DEFAULT_SKIN);
 	SetPlayerFightStyle(playerid, 4);
 	SetPlayerFightStyleUsed(playerid, 4);
 	weapon_ResetSkills(playerid);
@@ -594,19 +636,16 @@ stock player_save_db_ini(playerid)
 	ini_SetInt(file_player, "MuteTime", GetPlayerMuteTime(playerid));
 	ini_SetInt(file_player, "FightStyle", GetPlayerFightStyle(playerid));
     ini_SetInt(file_player, "FightStyleUsed", GetPlayerFightStyleUsed(playerid));
-	new Float:pos[4];
-	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	GetPlayerFacingAngle(playerid, pos[3]);
-	if (pos[2] > 900)
-	{
-		pos[0] = 0;
-		pos[1] = 0;
-		pos[2] = 0;
-		pos[3] = 0;
-	}
+
 	new string[MAX_STRING];
-	format(string, sizeof(string), "%f,%f,%f,%f", pos[0], pos[1], pos[2], pos[3]);
+	format(string, sizeof(string), "%f,%f,%f,%f",
+		GetPVarFloat(playerid, "Coord_X"),
+		GetPVarFloat(playerid, "Coord_Y"),
+		GetPVarFloat(playerid, "Coord_Z"),
+		GetPVarFloat(playerid, "Coord_A")
+	);
 	ini_Set(file_player, "Coords", string);
+
 	ini_SetInt(file_player, "Status", GetPlayerStatus(playerid));
 	ini_Set(file_player, "Weapons", CreateWeaponDBString(playerid));
 	ini_Set(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
@@ -634,6 +673,7 @@ stock PlayerLoadStats(playerid)
 	}
 	player_load_db_ini(playerid);
 	SetPlayerLogin(playerid, 1);
+	player_OnLogin(playerid);
 	return 1;
 }
 
