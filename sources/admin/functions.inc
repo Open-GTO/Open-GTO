@@ -12,7 +12,6 @@
 #define _admod_functions_included
 #pragma library admod_functions
 
-
 enum CoordInfoJ {
     Float:CJ_X,
     Float:CJ_Y,
@@ -298,15 +297,15 @@ stock IsSkinValid(skinid)
 
 stock IsPlayerRconAdmin(playerid)
 {
-	return (GetPlayerStatus(playerid) >= 3) ? 1 : 0;
+	return (GetPlayerStatus(playerid) >= STATUS_LEVEL_RCON) ? 1 : 0;
 }
 
 stock IsPlayerAdm(playerid)
 {
-	return (GetPlayerStatus(playerid) >= 2) ? 1 : 0;
+	return (GetPlayerStatus(playerid) >= STATUS_LEVEL_ADMIN) ? 1 : 0;
 }
 
 stock IsPlayerMod(playerid)
 {
-	return (GetPlayerStatus(playerid) >= 1) ? 1 : 0;
+	return (GetPlayerStatus(playerid) >= STATUS_LEVEL_MODER) ? 1 : 0;
 }

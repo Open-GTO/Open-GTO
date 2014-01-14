@@ -300,7 +300,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			bank_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
-		case click_DialogID, click_Resp_DialogID:
+		case click_DialogID, click_Resp_DialogID, click_Info_DialogID:
 		{
 			click_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
@@ -815,7 +815,7 @@ public OnRconLoginAttempt(ip[], password[], success)
 				GetPVarString(playerid, "IP", pip, sizeof(pip));
 				if (!strcmp(ip, pip, false))
 				{
-					SetPlayerStatus(playerid, 3);
+					SetPlayerStatus(playerid, STATUS_LEVEL_RCON);
 					break;
 				}
 			}

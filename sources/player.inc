@@ -16,6 +16,13 @@
 #include "account"
 #include "weapons"
 
+
+#define STATUS_LEVEL_PLAYER	0
+#define STATUS_LEVEL_MODER	1
+#define STATUS_LEVEL_ADMIN	2
+#define STATUS_LEVEL_RCON	3
+
+
 #define GetPlayerKills(%0) GetPVarInt(%0, "Kills")
 #define GetPlayerDeaths(%0) GetPVarInt(%0, "Deaths")
 
@@ -691,7 +698,7 @@ stock player_load_db_ini(playerid)
 	SetPlayerStatus(playerid, buf);
 	if (IsPlayerAdmin(playerid))
 	{
-		SetPlayerStatus(playerid, 3);
+		SetPlayerStatus(playerid, STATUS_LEVEL_RCON);
 	}
 	
 	SetPlayerFightingStyle(playerid, GetPlayerFightStyle(playerid));

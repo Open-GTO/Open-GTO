@@ -220,7 +220,7 @@ enum {
 	message_DialogID,
 	account_Reg_DialogID, account_Log_DialogID,
 	bank_Start_DialogID, bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID,
-	click_DialogID, click_Resp_DialogID,
+	click_DialogID, click_Resp_DialogID, click_Info_DialogID,
 	house_DialogID, houses_DialogID, houses_upgrades_DialogID, houses_setrent_DialogID, house_sell_accept_DialogID,
 	bis_DialogID, bis_Msg_DialogID, bis_sell_accept_DialogID,
 	fightstyles_DialogID, fightstyles_user_DialogID,
