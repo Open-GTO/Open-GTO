@@ -39,7 +39,7 @@ stock sshop_OnGameModeInit()
 	TextDrawSetProportional(clickText[sshop_left], 0);
 	TextDrawSetShadow(clickText[sshop_left], 1);
 	TextDrawUseBox(clickText[sshop_left], 1);
-	TextDrawBoxColor(clickText[sshop_left], 255);
+	TextDrawBoxColor(clickText[sshop_left], 0x00000099);
 	TextDrawTextSize(clickText[sshop_left], 12.000000, 50.000000);
 	TextDrawSetSelectable(clickText[sshop_left], 1);
 
@@ -53,7 +53,7 @@ stock sshop_OnGameModeInit()
 	TextDrawSetProportional(clickText[sshop_right], 0);
 	TextDrawSetShadow(clickText[sshop_right], 1);
 	TextDrawUseBox(clickText[sshop_right], 1);
-	TextDrawBoxColor(clickText[sshop_right], 255);
+	TextDrawBoxColor(clickText[sshop_right], 0x00000099);
 	TextDrawTextSize(clickText[sshop_right], 12.000000, 50.000000);
 	TextDrawSetSelectable(clickText[sshop_right], 1);
 
@@ -67,7 +67,7 @@ stock sshop_OnGameModeInit()
 	TextDrawSetProportional(clickText[sshop_buy], 1);
 	TextDrawSetShadow(clickText[sshop_buy], 1);
 	TextDrawUseBox(clickText[sshop_buy], 1);
-	TextDrawBoxColor(clickText[sshop_buy], 255);
+	TextDrawBoxColor(clickText[sshop_buy], 0x00000099);
 	TextDrawTextSize(clickText[sshop_buy], 14.000000, 105.000000);
 	TextDrawSetSelectable(clickText[sshop_buy], 1);
 
@@ -81,7 +81,7 @@ stock sshop_OnGameModeInit()
 	TextDrawSetProportional(clickText[sshop_list], 1);
 	TextDrawSetShadow(clickText[sshop_list], 1);
 	TextDrawUseBox(clickText[sshop_list], 1);
-	TextDrawBoxColor(clickText[sshop_list], 255);
+	TextDrawBoxColor(clickText[sshop_list], 0x00000099);
 	TextDrawTextSize(clickText[sshop_list], 15.000000, 50.000000);
 	TextDrawSetSelectable(clickText[sshop_list], 1);*/
 
@@ -95,7 +95,7 @@ stock sshop_OnGameModeInit()
 	TextDrawSetProportional(clickText[sshop_exit], 1);
 	TextDrawSetShadow(clickText[sshop_exit], 1);
 	TextDrawUseBox(clickText[sshop_exit], 1);
-	TextDrawBoxColor(clickText[sshop_exit], 255);
+	TextDrawBoxColor(clickText[sshop_exit], 0x00000099);
 	TextDrawTextSize(clickText[sshop_exit], 10.000000, 50.000000);
 	TextDrawSetSelectable(clickText[sshop_exit], 1);
 
