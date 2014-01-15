@@ -131,18 +131,23 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 	}
 	if (!strcmp(cmd, "/an", true))
 	{
-		new mtype = strval(strcharsplit(text, idx, ' '));
-		if (mtype < 0 || mtype == 2 || mtype > 9)
-		{
-			return 1;
-		}
 		new string[MAX_STRING];
-		set(string, text[idx+1]);
-		if (string[0] == '~')
-		{
+		string = strcharsplit(text, idx, ' ');
+
+		if (!IsNumeric(string)) {
+			SendClientMessage(playerid, COLOUR_WHITE, "Применение: /an <тип[1-6]> <сообщение>");
 			return 1;
 		}
-		GameTextForAll(string, 4999, mtype);
+
+		new mtype = strval(string);
+		if (mtype < 0 || mtype > 6) {
+			SendClientMessage(playerid, COLOUR_WHITE, "Применение: /an <1-6> <сообщение>");
+			return 1;
+		}
+
+		set(string, text[idx+1]);
+
+		GameTextForAll(string, 5000, mtype);
 		return 1;
 	}
 	if (!strcmp(cmd, "/payday", true))
