@@ -185,7 +185,7 @@ public FiveSecondTimer()
 	vshop_SetVehiclesToRespawn();
 
 	foreach (new playerid : Player) {
-		if (GetPVarInt(playerid, "Spawned") == 1) {
+		if (IsPlayerSpawned(playerid)) {
 			SyncPlayerWeapons(playerid);
 		}
 	}

@@ -73,6 +73,9 @@ stock wskill_OnPlayerDisconnect(playerid,reason)
 stock wskill_OnPlayerDeath(playerid,killerid,reason)
 {
 	#pragma unused playerid
+	if (killerid == INVALID_PLAYER_ID) {
+		return 0;
+	}
 	if (!wskill_Enabled) {
 		return 0;
 	}

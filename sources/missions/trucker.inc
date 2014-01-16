@@ -296,7 +296,10 @@ stock trucker_OnPlayerDeath(playerid, killerid, reason)
 stock trucker_OnVehicleDeath(vehicleid, killerid)
 {
 	if (!IsMissionEnabled(mission_trucker)) {
-		return 1;
+		return 0;
+	}
+	if (killerid == INVALID_PLAYER_ID) {
+		return 0;
 	}
 	if (IsVehicleIsRunner(vehicleid)) {
 		trucker_Stop(killerid);

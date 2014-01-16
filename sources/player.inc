@@ -89,6 +89,8 @@ stock IsPlayerLogin(playerid) return GetPVarInt(playerid, "IsLogin");
 #define IsPlayerGodmod(%0) GetPVarInt(%0, "godmod")
 #define SetPlayerGodmod(%0,%1) SetPVarInt(%0, "godmod", %1)
 
+#define IsPlayerSpawned(%0) (GetPVarInt(playerid, "Spawned") == 1)
+
 new PlayerStartMoney = PLAYER_START_MONEY;
 
 enum PlayerSpawnInfo {
@@ -201,14 +203,12 @@ stock player_OnGameModeInit()
 
 stock player_OnPlayerSpawn(playerid)
 {
-	if (GetPlayerMuteTime(playerid) != 0)
-	{
+	if (GetPlayerMuteTime(playerid) != 0) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 		SetPlayerWantedLevel(playerid, 3);
 	}
 	
-	if (IsPlayerJailed(playerid))
-	{
+	if (IsPlayerJailed(playerid)) {
 		JailPlayer(playerid, GetPlayerJailTime(playerid));
 	}
 
@@ -227,51 +227,46 @@ stock player_OnPlayerSpawn(playerid)
 
 stock player_SetSpawnPos(playerid)
 {
-	new house_id = GetPlayerSpawnHouseID(playerid);
 	SetPlayerInterior(playerid, 0);
+	SetPlayerFacingAngle(playerid, GetPVarFloat(playerid, "Coord_A"));
 
+	if (GetPVarFloat(playerid, "Coord_Z") > 900.0) {
+		SetPVarFloat(playerid, "Coord_X", 0.0);
+		SetPVarFloat(playerid, "Coord_Y", 0.0);
+		SetPVarFloat(playerid, "Coord_Z", 0.0);
+	}
+
+	if (GetPVarFloat(playerid, "Coord_X") != 0.0 && GetPVarFloat(playerid, "Coord_Y") != 0.0 && GetPVarFloat(playerid, "Coord_Z") != 0.0) {
+		oSetPlayerPos(playerid, GetPVarFloat(playerid, "Coord_X"), GetPVarFloat(playerid, "Coord_Y"), GetPVarFloat(playerid, "Coord_Z"));
+		return 1;
+	}
+
+	new house_id = GetPlayerSpawnHouseID(playerid);
 	if (house_id >= 0 && strcmp(oGetPlayerName(playerid), Houses[house_id][Houses_Owner], true))
 	{
 		house_id = SPAWN_HOUSE_NONE;
 		SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[8][60]);
 	}
-	if (house_id == SPAWN_HOUSE_NONE)
-	{
-		if (GetPVarFloat(playerid, "Coord_X") != 0.0 && GetPVarFloat(playerid, "Coord_Y") != 0.0 && GetPVarFloat(playerid, "Coord_Z") != 0.0)
-		{
-			oSetPlayerPos(playerid, GetPVarFloat(playerid, "Coord_X"), GetPVarFloat(playerid, "Coord_Y"), GetPVarFloat(playerid, "Coord_Z"));
+
+	if (house_id == SPAWN_HOUSE_NONE) {
+		if (GetPlayerLevel(playerid) > 12) {
+			new rand = random( sizeof(LVDMPlayerSpawns) );
+			oSetPlayerPos(playerid, LVDMPlayerSpawns[rand][Coord_X], LVDMPlayerSpawns[rand][Coord_Y], LVDMPlayerSpawns[rand][Coord_Z]);
+		} else {
+			new spawnid = GetRndPlayerSpawnByLevel(GetPlayerLevel(playerid));
+			oSetPlayerPos(playerid, LeveledPlayerSpawns[spawnid][playerspawn_x], LeveledPlayerSpawns[spawnid][playerspawn_y], LeveledPlayerSpawns[spawnid][playerspawn_z]); // Warp the player
 		}
-		else
-		{
-			if (GetPlayerLevel(playerid) > 12)
-			{
-				new rand = random( sizeof(LVDMPlayerSpawns) );
-				oSetPlayerPos(playerid, LVDMPlayerSpawns[rand][Coord_X], LVDMPlayerSpawns[rand][Coord_Y], LVDMPlayerSpawns[rand][Coord_Z]);
-			}
-			else
-			{
-				new spawnid = GetRndPlayerSpawnByLevel(GetPlayerLevel(playerid));
-				oSetPlayerPos(playerid, LeveledPlayerSpawns[spawnid][playerspawn_x], LeveledPlayerSpawns[spawnid][playerspawn_y], LeveledPlayerSpawns[spawnid][playerspawn_z]); // Warp the player
-			}
-		}
-	}
-	else if (house_id == SPAWN_HOUSE_GANG)
-	{
+	} else if (house_id == SPAWN_HOUSE_GANG) {
 		new gangid = GetPlayerGangID(playerid);
 		new gang_houseid = gang_GetHouse(gangid);
-		if (gangid == 0 || gang_houseid == -1)
-		{
-			house_id = SPAWN_HOUSE_NONE;
+
+		if (gangid == 0 || gang_houseid == -1) {
 			SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
-		}
-		else
-		{
+		} else {
 			SetPlayerPosToHouse(playerid, gang_houseid);
 		}
-	}
-	else
-	{
+	} else {
 		SetPlayerPosToHouse(playerid, house_id);
 		new tmp[MAX_STRING];
 		format(tmp, sizeof(tmp),
@@ -280,7 +275,7 @@ stock player_SetSpawnPos(playerid)
 		);
 		SendClientMessage(playerid, COLOUR_RED, tmp);
 	}
-	SetPlayerFacingAngle(playerid, GetPVarFloat(playerid, "Coord_A"));
+	return 1;
 }
 
 stock player_OnPlayerDisconnect(playerid, reason)
@@ -337,13 +332,22 @@ stock player_OnPlayerConnect(playerid)
 stock player_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused reason
+	SetPVarFloat(playerid, "Coord_X", 0.0);
+	SetPVarFloat(playerid, "Coord_Y", 0.0);
+	SetPVarFloat(playerid, "Coord_Z", 0.0);
+	SetPVarFloat(playerid, "Coord_A", 0.0);
+
 	GivePVarInt(playerid, "Deaths", 1);
-	oGivePlayerMoney(playerid,-100, 0);
+	oGivePlayerMoney(playerid, -100, 0);
 	modfunc_OnPlayerDeath(playerid, killerid, reason);
 }
 
 stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
 {
+	if (killerid == INVALID_PLAYER_ID) {
+		return;
+	}
+	
 	if (GetPVarInt(killerid, "GangID") != 0)
 	{
 		if (GangKill(GetPVarInt(killerid, "GangID"), killerid, victimid, reason) == 1)
@@ -417,11 +421,13 @@ stock player_OnLogin(playerid)
 	TogglePlayerSpectating(playerid, 0);
 }
 
-// needs to be ran by a timer
-// sync player hp/money and check for mismatch
 stock SyncPlayers(playerid)
 {
-	if (GetPVarInt(playerid, "Spawned") != 1) return 0; // если игрок мертв, то защиты не срабатывают
+	// если игрок мертв, то защиты не срабатывают
+	if (!IsPlayerSpawned(playerid)) {
+		return 0;
+	}
+
 	SyncWeapon(playerid);
 	SyncMoney(playerid);
 	SyncHealth(playerid);
@@ -565,16 +571,12 @@ stock PlayerSave(playerid)
 		return 0;
 	}
 
-	// update position
-	new Float:pos[4];
-	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	GetPlayerFacingAngle(playerid, pos[3]);
+	if (IsPlayerSpawned(playerid)) {
+		new Float:pos[4];
 
-	if (pos[2] > 900.0) {
-		SetPVarFloat(playerid, "Coord_X", 0.0);
-		SetPVarFloat(playerid, "Coord_Y", 0.0);
-		SetPVarFloat(playerid, "Coord_Z", 0.0);
-	} else {
+		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+		GetPlayerFacingAngle(playerid, pos[3]);
+
 		SetPVarFloat(playerid, "Coord_X", pos[0]);
 		SetPVarFloat(playerid, "Coord_Y", pos[1]);
 		SetPVarFloat(playerid, "Coord_Z", pos[2]);

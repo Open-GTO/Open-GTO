@@ -1092,6 +1092,10 @@ stock IsWeaponAllowedInDM(weaponid, dmid)
 
 stock deathmatch_OnPlayerKill(playerid, victimid, weaponid)
 {
+	if (playerid == INVALID_PLAYER_ID) {
+		return;
+	}
+	
 	GivePVarInt(playerid, "Kills", 1);
 
 	new dmid = GetPlayerDM(playerid);

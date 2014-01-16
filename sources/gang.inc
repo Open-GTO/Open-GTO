@@ -497,6 +497,9 @@ stock gang_OnPlayerCommandText(playerid, text[]) // process player commands
 stock gang_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused reason, playerid
+	if (killerid == INVALID_PLAYER_ID) {
+		return 0;
+	}
 	new gangid = GetPlayerGangID(killerid);
 	GiveGangXP(gangid, (1+Gangs[gangid][gang_level]) * 20);
 	return 1;

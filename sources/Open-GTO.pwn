@@ -249,7 +249,6 @@ public OnPlayerConnect(playerid)
 public OnPlayerDisconnect(playerid, reason)
 {
 	if (playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) return 1;
-	SetPVarInt(playerid, "Spawned", 0);
 	player_OnPlayerDisconnect(playerid, reason);
 	trucker_OnPlayerDisconnect(playerid, reason);
 	chatguard_OnPlayerDisconnect(playerid, reason);
@@ -258,6 +257,7 @@ public OnPlayerDisconnect(playerid, reason)
 	weapon_OnPlayerDisconnect(playerid, reason);
 	qudemsys_OnPlayerDisconnect(playerid, reason);
 	pveh_OnPlayerDisconnect(playerid, reason);
+	SetPVarInt(playerid, "Spawned", 0);
 	return 1;
 }
 
@@ -372,14 +372,13 @@ public OnPlayerDeath(playerid, killerid, reason)
 
 	SendDeathMessage(killerid, playerid, reason);
 	
-	if (killerid == INVALID_PLAYER_ID) return 1;
-	
 	if (IsPlayerInAnyDM(playerid))
 	{
 		deathmatch_OnPlayerDeath(playerid, killerid);
 		deathmatch_OnPlayerKill(killerid, playerid, reason);
 		return 1;
 	}
+	
 	player_OnPlayerDeath(playerid, killerid, reason);
 	player_OnPlayerKill(killerid, playerid, reason);
 	trucker_OnPlayerDeath(playerid, killerid, reason);
@@ -393,15 +392,16 @@ public OnPlayerDeath(playerid, killerid, reason)
 
 public OnPlayerSpawn(playerid)
 {
-	if (IsPlayerNPC(playerid)) return 1;
-	
+	if (IsPlayerNPC(playerid)) {
+		return 1;
+	}
+
 	// spawn player
 	player_OnPlayerSpawn(playerid);
 	anims_OnPlayerSpawn(playerid);
 
 	// после использования TogglePlayerSpectating
-	if (GetPVarInt(playerid, "spec_after_off") == 1)
-	{
+	if (GetPVarInt(playerid, "spec_after_off") == 1) {
 		DeletePVar(playerid, "spec_after_off");
 		return 1;
 	}
