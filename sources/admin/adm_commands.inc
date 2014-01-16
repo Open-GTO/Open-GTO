@@ -93,19 +93,30 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 	}
 	if (!strcmp(cmd, "/akill", true))
 	{
-		new receiverid = strval(strcharsplit(text, idx, ' '));
-		if (!IsPlayerConnected(receiverid))
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
-		}
-		if (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
-		}
-		SetPlayerHealth(receiverid, 0);
 		new string[MAX_STRING];
+		string = strcharsplit(text, idx, ' ');
+
+		if (!IsNumeric(string)) {
+			SendClientMessage(playerid, COLOUR_WHITE, "Применение: /akill <id>");
+			return 1;
+		}
+
+		new receiverid = strval(string);
+		if (!IsPlayerConnected(receiverid)) {
+			SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][3]);
+			return 1;
+		}
+
+		if (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid)) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+			return 1;
+		}
+
+		SetPlayerHealth(receiverid, 0.0);
+
 		format(string, sizeof(string), lang_texts[12][62], oGetPlayerName(receiverid), receiverid);
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+
 		format(string, sizeof(string), lang_texts[12][63], oGetPlayerName(playerid));
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 		return 1;
