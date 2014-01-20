@@ -267,10 +267,10 @@ stock IsPlayerAtBank(playerid)
 	{
 		if (IsPlayerInRangeOfPoint(playerid, 2, Banks[bankid][Coord_X], Banks[bankid][Coord_Y], Banks[bankid][Coord_Z]))
 		{
-			return bankid;
+			return 1;
 		}
 	}
-	return -1;
+	return 0;
 }
 
 stock Profit()

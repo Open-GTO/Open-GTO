@@ -659,9 +659,9 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		if ( IsPlayerAtEnterExit(playerid) ) return interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtHouse(playerid) ) return housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtBusiness(playerid) ) return business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( IsPlayerAtBank(playerid) != -1 ) return bank_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( IsPlayerAtWeaponShop(playerid) != -1 ) return wshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( GetPlayerFightTrenerID(playerid) != -1 ) return fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtBank(playerid) ) return bank_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtWeaponShop(playerid) ) return wshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( IsPlayerAtFightTrener(playerid) ) return fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtBar(playerid) ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtSkinShop(playerid) ) return sshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
