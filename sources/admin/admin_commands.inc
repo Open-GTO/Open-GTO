@@ -104,7 +104,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		return 1;
 	}
 
-	if (!strcmp(cmd, "/carrep", true) || !strcmp(cmd, "/repair", true)))
+	if (!strcmp(cmd, "/carrep", true) || !strcmp(cmd, "/repair", true))
 	{
 		new veh_id = GetPlayerVehicleID(playerid);
 		if (veh_id == 0) {
@@ -200,10 +200,10 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		oSetPlayerSkin(receiverid, skinid);
 
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[12][42] , oGetPlayerName(playerid), skinid);
+		format(string, sizeof(string), lang_texts[12][42], oGetPlayerName(playerid), skinid);
 		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 
-		format(string, sizeof(string), lang_texts[12][43] , oGetPlayerName(receiverid), skinid, oldskin);
+		format(string, sizeof(string), lang_texts[12][43], oGetPlayerName(receiverid), skinid, oldskin);
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 		return 1;
 	}
@@ -218,8 +218,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 
 	if (!strcmp(cmd, "/skydiveall", true))
 	{
-		new string[MAX_STRING],
-			Float:playerx,
+		new Float:playerx,
 			Float:playery,
 			Float:playerz;
 
