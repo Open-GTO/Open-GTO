@@ -88,44 +88,50 @@ new BestScore[MAX_RACES][RaceScoreInfo];
 new RaceSize[MAX_RACES]; // number of checkpoints, including start and finish
 new Float:RaceCheckpoints[MAX_RACES][MAX_CP][CoordInfo];
 
-stock RaceLoadAll()
+stock race_LoadConfig(file_config)
+{
+	ini_Get(file_config, "Race_DB", RaceDB);
+	ini_Get(file_config, "Race_Base_DB", RaceBaseDB);
+	ini_Get(file_config, "Race_Record_DB", RaceRecordDB);
+}
+
+stock race_SaveConfig(file_config)
+{
+	ini_Set(file_config, "Race_DB", RaceDB);
+	ini_Set(file_config, "Race_Base_DB", RaceBaseDB);
+	ini_Set(file_config, "Race_Record_DB", RaceRecordDB);
+}
+
+stock race_LoadAll()
 {
 	new temp[MAX_STRING];
-	if (ini_Exist(ConfigDB))
+	if (!ini_Exist(RaceDB))
 	{
-		new file_race_cfg = ini_Open(ConfigDB);
-		ini_Get(file_race_cfg, "Race_DB", RaceDB);
-		ini_Get(file_race_cfg, "Race_Base_DB", RaceBaseDB);
-		ini_Get(file_race_cfg, "Race_Record_DB", RaceRecordDB);
-		ini_Close(file_race_cfg);
+		return 0;
 	}
-	
-	if (ini_Exist(RaceDB))
+	new cellname[MAX_STRING],
+		races_count = MAX_RACES,
+		file_race = ini_Open(RaceDB);
+		
+	ini_GetInt(file_race, "Count", races_count);
+		
+	for (new racedbid = 1; racedbid <= races_count; racedbid++)
 	{
-		new cellname[MAX_STRING],
-			races_count = MAX_RACES,
-			file_race = ini_Open(RaceDB);
-		
-		ini_GetInt(file_race, "Count", races_count);
-		
-		for (new racedbid = 1; racedbid <= races_count; racedbid++)
+		format(cellname, sizeof(cellname), "Race%d", racedbid);
+		ini_Get(file_race, cellname, temp);
+		if (strlen(temp) == 0 || !RaceBaseDBExists(temp))
 		{
-			format(cellname, sizeof(cellname), "Race%d", racedbid);
-			ini_Get(file_race, cellname, temp);
-			if (strlen(temp) == 0 || !RaceBaseDBExists(temp))
-			{
-				continue;
-			}
-			new raceid = RegisterRace(temp);
-			if (raceid == INVALID_RACE_ID)
-			{
-				continue;
-			}
-			RaceLoadBaseDB(raceid);
-			RaceLoadRecordDB(raceid);
+			continue;
 		}
-		ini_Close(file_race);
+		new raceid = RegisterRace(temp);
+		if (raceid == INVALID_RACE_ID)
+		{
+			continue;
+		}
+		RaceLoadBaseDB(raceid);
+		RaceLoadRecordDB(raceid);
 	}
+	ini_Close(file_race);
 	return 1;
 }
 
@@ -216,14 +222,8 @@ stock RaceLoadRecordDB(raceid)
 	return 1;
 }
 
-stock RaceSaveAll()
+stock race_SaveAll()
 {
-	new file_race_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_race_cfg, "Race_DB", RaceDB);
-	ini_Set(file_race_cfg, "Race_Base_DB", RaceBaseDB);
-	ini_Set(file_race_cfg, "Race_Record_DB", RaceRecordDB);
-	ini_Close(file_race_cfg);
-	
 	new cellname[MAX_STRING],
 		file_race = (!ini_Exist(RaceDB)) ? ini_Create(RaceDB) : ini_Open(RaceDB);
 	
@@ -291,7 +291,7 @@ stock RaceSaveRecordDB(raceid)
 
 stock race_OnGameModeInit()
 {
-	RaceLoadAll();
+	race_LoadAll();
 	GameMSG("SERVER: Race module init");
 	return 1;
 }

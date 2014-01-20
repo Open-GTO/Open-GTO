@@ -42,28 +42,20 @@ enum CoordInfo {
     Float:Coord_Z
 }
 
-stock BaseLoadConfig()
+stock base_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_base = ini_Open(ConfigDB);
-	ini_GetInt(file_base, "Real_Time", RealTime);
-	ini_GetInt(file_base, "Real_Time_Offset", RealTimeOffset);
-	ini_Close(file_base);
-	return 1;
+	ini_GetInt(file_config, "Real_Time", RealTime);
+	ini_GetInt(file_config, "Real_Time_Offset", RealTimeOffset);
 }
 
-stock BaseSaveConfig()
+stock base_SaveConfig(file_config)
 {
-	new file_base = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_base, "Real_Time", RealTime);
-	ini_SetInt(file_base, "Real_Time_Offset", RealTimeOffset);
-	ini_Close(file_base);
-	return 1;
+	ini_SetInt(file_config, "Real_Time", RealTime);
+	ini_SetInt(file_config, "Real_Time_Offset", RealTimeOffset);
 }
 
 stock base_OnGameModeInit()
 {
-	BaseLoadConfig();
 	UsePlayerPedAnims();
 	ShowPlayerMarkers(1);
 	ShowNameTags(1);

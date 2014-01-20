@@ -17,41 +17,20 @@ static
 	IsEnabled = ANTI_IDLE_ENABLED,
 	MaxTime = MAX_IDLE_TIME;
 
-stock pt_idle_LoadConfig()
+stock pt_idle_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) {
-		return 0;
-	}
-
-	new file_ai = ini_Open(ConfigDB);
-
-	ini_GetInt(file_ai, "Protection_Idle_IsEnabled", IsEnabled);
-	ini_GetInt(file_ai, "Protection_Idle_MaxTime", MaxTime);
-
-	ini_Close(file_ai);
-	return 1;
+	ini_GetInt(file_config, "Protection_Idle_IsEnabled", IsEnabled);
+	ini_GetInt(file_config, "Protection_Idle_MaxTime", MaxTime);
 }
 
-stock pt_idle_SaveConfig()
+stock pt_idle_SaveConfig(file_config)
 {
-	new file_ai;
-	if (ini_Exist(ConfigDB)) {
-		file_ai = ini_Open(ConfigDB);
-	} else {
-		file_ai = ini_Create(ConfigDB);
-	}
-
-	ini_SetInt(file_ai, "Protection_Idle_IsEnabled", IsEnabled);
-	ini_SetInt(file_ai, "Protection_Idle_MaxTime", MaxTime);
-
-	ini_Close(file_ai);
-	return 1;
+	ini_SetInt(file_config, "Protection_Idle_IsEnabled", IsEnabled);
+	ini_SetInt(file_config, "Protection_Idle_MaxTime", MaxTime);
 }
 
 stock pt_idle_OnGameModeInit()
 {
-	pt_idle_LoadConfig();
-
 	if (!IsEnabled) {
 		return 0;
 	}
@@ -66,7 +45,7 @@ stock pt_idle_PlayerTimer(playerid)
 		return 0;
 	}
 
-	if (Groundhold_Enabled == 1 && IsPlayerInAnyGround(playerid) && !IsPlayerRconAdmin(playerid)) {
+	if (Groundhold_IsEnabled == 1 && IsPlayerInAnyGround(playerid) && !IsPlayerRconAdmin(playerid)) {
 		new
 			Float:pos[3],
 			Float:idle_pos[3],

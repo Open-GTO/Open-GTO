@@ -81,51 +81,62 @@ new Weapons[][WeaponInfo] = {
 	{47, "Броня" 				, 1, 0, 200,   10}
 };
 
-stock WeaponLoadAll()
+stock weapon_LoadConfig(file_config)
 {
-	if (ini_Exist(ConfigDB))
-	{
-		new file_weapons_cfg = ini_Open(ConfigDB);
-		ini_Get(file_weapons_cfg, "Weapon_DB", WeaponDB);
-		ini_Close(file_weapons_cfg);
-	}
+	ini_Get(file_config, "Weapon_DB", WeaponDB);
+}
+
+stock weapon_SaveConfig(file_config)
+{
+	ini_Set(file_config, "Weapon_DB", WeaponDB);
+}
+
+stock weapon_LoadAll()
+{
+	new file_weapons,
+		weapondbname[MAX_STRING];
 	
-	new file_weapons, weapondbname[MAX_STRING];
-	for (new i = 0; i < sizeof(Weapons); i++)
-	{
+	for (new i = 0; i < sizeof(Weapons); i++) {
 		format(weapondbname, sizeof(weapondbname), "%sid_%d"GTO_FILES_FORMAT, WeaponDB, Weapons[i][Weapon_ID]);
-		if (!ini_Exist(weapondbname))
-		{
+		if (!ini_Exist(weapondbname)) {
 			continue;
 		}
+
 		file_weapons = ini_Open(weapondbname);
+
 		ini_Get(file_weapons, "Name", Weapons[i][Weapon_Name], MAX_NAME);
 		ini_GetInt(file_weapons, "IsAllowed", Weapons[i][Weapon_Allowed]);
 		ini_GetInt(file_weapons, "Level", Weapons[i][Weapon_Level]);
 		ini_GetInt(file_weapons, "Price", Weapons[i][Weapon_Cost]);
+
 		ini_Close(file_weapons);
 	}
 	return 1;
 }
 
-stock WeaponSaveAll()
+stock weapon_SaveAll()
 {
-	new file_weapons_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_weapons_cfg, "Weapon_DB", WeaponDB);
-	ini_Close(file_weapons_cfg);
-	
-	new file_weapons, weapondbname[MAX_STRING];
-	for (new i = 0; i < sizeof(Weapons); i++)
-	{
+	new file_weapons,
+		weapondbname[MAX_STRING];
+
+	for (new i = 0; i < sizeof(Weapons); i++) {
 		format(weapondbname, sizeof(weapondbname), "%sid_%d"GTO_FILES_FORMAT, WeaponDB, Weapons[i][Weapon_ID]);
 		file_weapons = (!ini_Exist(weapondbname)) ? ini_Create(weapondbname) : ini_Open(weapondbname);
+
 		ini_Set(file_weapons, "Name", Weapons[i][Weapon_Name]);
 		ini_SetInt(file_weapons, "IsAllowed", Weapons[i][Weapon_Allowed]);
 		ini_SetInt(file_weapons, "Level", Weapons[i][Weapon_Level]);
 		ini_SetInt(file_weapons, "Price", Weapons[i][Weapon_Cost]);
+
 		ini_Close(file_weapons);
 	}
 	return 1;
+}
+
+stock weapon_OnGameModeInit()
+{
+	weapon_LoadAll();
+	GameMSG("SERVER: Weapon module init");
 }
 
 stock oGetWeaponName(weaponid)

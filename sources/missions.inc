@@ -30,65 +30,48 @@ new mission_array[][mission_Info] = {
 
 new mission_questid[ sizeof(mission_array) ];
 
-stock mission_LoadConfig()
+stock mission_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-    new file_mission = ini_Open(ConfigDB);
-	
 	new string[MAX_STRING];
 	for (new id = 0; id < sizeof(mission_array); id++)
 	{
 		format(string, sizeof(string), "%s_Enabled", mission_array[id][mission_name]);
-		ini_GetInt(file_mission, string, mission_array[id][mission_enabled]);
+		ini_GetInt(file_config, string, mission_array[id][mission_enabled]);
 		
 		format(string, sizeof(string), "%s_Try_Count", mission_array[id][mission_name]);
-		ini_GetInt(file_mission, string, mission_array[id][mission_trycount]);
+		ini_GetInt(file_config, string, mission_array[id][mission_trycount]);
 		
 		format(string, sizeof(string), "%s_Money_Rate", mission_array[id][mission_name]);
-		ini_GetInt(file_mission, string, mission_array[id][mission_money]);
+		ini_GetInt(file_config, string, mission_array[id][mission_money]);
 		
 		format(string, sizeof(string), "%s_XP_Rate", mission_array[id][mission_name]);
-		ini_GetInt(file_mission, string, mission_array[id][mission_xp]);
+		ini_GetInt(file_config, string, mission_array[id][mission_xp]);
 		
 		format(string, sizeof(string), "%s_PauseTime", mission_array[id][mission_name]);
-		ini_GetInt(file_mission, string, mission_array[id][mission_pausetime]);
+		ini_GetInt(file_config, string, mission_array[id][mission_pausetime]);
 	}
-	
-	ini_Close(file_mission);
-	return 1;
 }
 
-stock mission_SaveConfig()
+stock mission_SaveConfig(file_config)
 {
-	new file_mission = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	
 	new string[MAX_STRING];
 	for (new id = 0; id < sizeof(mission_array); id++)
 	{
 		format(string, sizeof(string), "%s_Enabled", mission_array[id][mission_name]);
-		ini_SetInt(file_mission, string, mission_array[id][mission_enabled]);
+		ini_SetInt(file_config, string, mission_array[id][mission_enabled]);
 
 		format(string, sizeof(string), "%s_Try_Count", mission_array[id][mission_name]);
-		ini_SetInt(file_mission, string, mission_array[id][mission_trycount]);
+		ini_SetInt(file_config, string, mission_array[id][mission_trycount]);
 		
 		format(string, sizeof(string), "%s_Money_Rate", mission_array[id][mission_name]);
-		ini_SetInt(file_mission, string, mission_array[id][mission_money]);
+		ini_SetInt(file_config, string, mission_array[id][mission_money]);
 		
 		format(string, sizeof(string), "%s_XP_Rate", mission_array[id][mission_name]);
-		ini_SetInt(file_mission, string, mission_array[id][mission_xp]);
+		ini_SetInt(file_config, string, mission_array[id][mission_xp]);
 		
 		format(string, sizeof(string), "%s_PauseTime", mission_array[id][mission_name]);
-		ini_SetInt(file_mission, string, mission_array[id][mission_pausetime]);
+		ini_SetInt(file_config, string, mission_array[id][mission_pausetime]);
 	}
-	
-	ini_Close(file_mission);
-	return 1;
-}
-
-stock mission_OnGameModeInit()
-{
-	mission_LoadConfig();
-	return 1;
 }
 
 stock IsPlayerInMission(playerid, missionid)

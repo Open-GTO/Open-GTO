@@ -38,32 +38,18 @@ enum GangInfo {
 }
 new Gangs[MAX_GANGS][GangInfo];
 
-stock GangLoadConfig()
+stock gang_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_gang = ini_Open(ConfigDB);
-	ini_Get(file_gang, "Gang_DB", GangDB);
-	ini_GetInt(file_gang, "Gang_Create_Cost", Gang_Create_Cost);
-	ini_GetInt(file_gang, "Gang_Colour_Cost", Gang_Colour_Cost);
-	ini_Close(file_gang);
-	return 1;
+	ini_Get(file_config, "Gang_DB", GangDB);
+	ini_GetInt(file_config, "Gang_Create_Cost", Gang_Create_Cost);
+	ini_GetInt(file_config, "Gang_Colour_Cost", Gang_Colour_Cost);
 }
 
-stock GangSaveConfig()
+stock gang_SaveConfig(file_config)
 {
-	new file_gang = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_gang, "Gang_DB", GangDB);
-	ini_SetInt(file_gang, "Gang_Create_Cost", Gang_Create_Cost);
-	ini_SetInt(file_gang, "Gang_Colour_Cost", Gang_Colour_Cost);
-	ini_Close(file_gang);
-	return 1;
-}
-
-stock gang_OnGameModeInit()
-{
-	GangLoadConfig();
-	GameMSG("SERVER: Gang module init");
-	return 1;
+	ini_Set(file_config, "Gang_DB", GangDB);
+	ini_SetInt(file_config, "Gang_Create_Cost", Gang_Create_Cost);
+	ini_SetInt(file_config, "Gang_Colour_Cost", Gang_Colour_Cost);
 }
 
 stock FindGangFreeSlot()
@@ -659,7 +645,7 @@ stock GangCreate(leaderid, gangname[], gangcolour)
 	return gangid;
 }
 
-stock GangSaveAll()
+stock gang_SaveAll()
 {
 	for (new i = 1; i < MAX_GANGS; i++)
 	{

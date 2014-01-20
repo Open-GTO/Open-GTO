@@ -55,7 +55,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define ANTI_HEALTH_HACK_ENABLED	1 // защита от чита на здоровье
 #define ANTI_MONEY_HACK_ENABLED		1 // защита от чита на деньги
 
-#define ANTI_HIGHT_PING_ENABLED		1 // защита от высокого пинга
+#define ANTI_HEIGHT_PING_ENABLED	1 // защита от высокого пинга
 #define MAXIMAL_PING				500 // пинг, при котором кикает
 
 #define ANTI_IDLE_ENABLED			1 // защита от АФК на точках прокачки

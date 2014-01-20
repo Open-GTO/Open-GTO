@@ -65,29 +65,23 @@ new Text:black, Text:speedom[MAX_PLAYERS];
 new Float:Fuel[MAX_VEHICLES];
 new fill_TimerID[MAX_PLAYERS] = {0,...};
 
-new QuidemSysEnabled = QUIDEMSYS_ENABLED;
+static IsEnabled = QUIDEMSYS_ENABLED;
 
-stock QuidemSys_LoadConfig()
+stock quidemsys_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_qs = ini_Open(ConfigDB);
-	ini_GetInt(file_qs, "QuidemSys_Enabled", QuidemSysEnabled);
-	ini_Close(file_qs);
-	return 1;
+	ini_GetInt(file_config, "QuidemSys_Enabled", IsEnabled);
 }
 
-stock QuidemSys_SaveConfig()
+stock quidemsys_SaveConfig(file_config)
 {
-	new file_qs = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_qs, "QuidemSys_Enabled", QuidemSysEnabled);
-	ini_Close(file_qs);
-	return 1;
+	ini_SetInt(file_config, "QuidemSys_Enabled", IsEnabled);
 }
 
 stock quidemsys_OnGameModeInit()
 {
-	QuidemSys_LoadConfig();
-	if (QuidemSysEnabled != 1) return 0;
+	if (!IsEnabled) {
+		return 0;
+	}
 	for (new i = 0; i < sizeof(FuelStations); i++)
 	{
 		CreateStreamMapIcon(55, FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z]);
@@ -136,7 +130,9 @@ stock create_playerTD(playerid)
 
 stock quidemsys_OnVehicleSpawn(vehicleid)
 {
-	if (QuidemSysEnabled != 1) return 0;
+	if (!IsEnabled) {
+		return 0;
+	}
 	new Float:max_fuel = FuelList[ GetVehicleModel(vehicleid)-400 ] / 2;
 	Fuel[vehicleid] = random(floatround( max_fuel )) + max_fuel;
 	return 1;
@@ -144,7 +140,9 @@ stock quidemsys_OnVehicleSpawn(vehicleid)
 
 stock quidemsys_OnPlayerCommandText(playerid, cmdtext[])
 {
-	if (QuidemSysEnabled != 1) return 0;
+	if (!IsEnabled) {
+		return 0;
+	}
 	new vehicleid = GetPlayerVehicleID(playerid);
 
 	if (!strcmp(cmdtext, "/fill", true))
@@ -233,7 +231,7 @@ public speed_Timer()
 {
 	new string[MAX_STRING], Float:health, vehicleid, vehiclemodel, speed[16], speed_temp[5], speed_count=0;
 	
-	foreach (Player, playerid)
+	foreach (new playerid : Player)
 	{
 		vehicleid = GetPlayerVehicleID(playerid);
 		
@@ -312,22 +310,26 @@ public speed_Timer()
 
 stock qudemsys_OnPlayerConnect(playerid)
 {
-	if (QuidemSysEnabled != 1) return 0;
+	if (!IsEnabled) {
+		return 0;
+	}
 	create_playerTD(playerid);
 	return 1;
 }
 
 stock qudemsys_OnPlayerDisconnect(playerid, reason)
 {
-	if (QuidemSysEnabled != 1) return 0;
 	#pragma unused reason
+	if (!IsEnabled) {
+		return 0;
+	}
 	TextDrawDestroy(speedom[playerid]);
 	return 1;
 }
 
 stock qudemsys_OnPlayerStateChange(playerid, newstate, oldstate)
 {
-	if (QuidemSysEnabled != 1) {
+	if (!IsEnabled) {
 		return 0;
 	}
 	

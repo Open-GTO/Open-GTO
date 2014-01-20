@@ -1,5 +1,8 @@
 /*
-	Author:	ZiGGi
+	
+	About: anti jetpack
+	Author:	ziggi
+
 */
 
 #if defined _jetpack_included
@@ -10,38 +13,25 @@
 #pragma library jetpack
 
 
-new AntiJetPackEnabled = ANTI_JETPACK_ENABLED;
+static IsEnabled = ANTI_JETPACK_ENABLED;
 
-stock AntiJetPackLoadConfig()
+stock pt_jetpack_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_ajp = ini_Open(ConfigDB);
-	ini_GetInt(file_ajp, "Anti_JetPack_Enabled", AntiJetPackEnabled);
-	ini_Close(file_ajp);
-	return 1;
+	ini_GetInt(file_config, "Protection_JetPack_IsEnabled", IsEnabled);
 }
 
-stock AntiJetPackSaveConfig()
+stock pt_jetpack_SaveConfig(file_config)
 {
-	new file_ajp = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_ajp, "Anti_JetPack_Enabled", AntiJetPackEnabled);
-	ini_Close(file_ajp);
-	return 1;
+	ini_SetInt(file_config, "Protection_JetPack_IsEnabled", IsEnabled);
 }
 
-stock antijetpack_OnGameModeInit()
+stock pt_jetpack_Check(playerid)
 {
-	AntiJetPackLoadConfig();
-	if (AntiJetPackEnabled != 1) return 0;
-	GameMSG("SERVER: (protections)AntiJetPack module init");
-	return 1;
-}
+	if (!IsEnabled) {
+		return 0;
+	}
 
-stock CheckJetpack(playerid)
-{
-	if (AntiJetPackEnabled != 1) return 0;
-	if (GetPlayerSpecialAction(playerid) == SPECIAL_ACTION_USEJETPACK)
-	{
+	if (GetPlayerSpecialAction(playerid) == SPECIAL_ACTION_USEJETPACK) {
 		KickPlayer(playerid, lang_texts[11][15]);
 	}
 	return 1;

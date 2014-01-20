@@ -24,26 +24,18 @@ enum wd_Info {
 }
 static weapons_dropped[MAX_DROPPED_WEAPONS][wd_Info];
 
-stock wdrop_LoadConfig()
+stock wdrop_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_wdrop = ini_Open(ConfigDB);
-	ini_GetInt(file_wdrop, "Weapon_Drop_Enabled", wdrop_Enabled);
-	ini_Close(file_wdrop);
-	return 1;
+	ini_GetInt(file_config, "Weapon_Drop_IsEnabled", wdrop_Enabled);
 }
 
-stock wdrop_SaveConfig()
+stock wdrop_SaveConfig(file_config)
 {
-	new file_wdrop = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_wdrop, "Weapon_Drop_Enabled", wdrop_Enabled);
-	ini_Close(file_wdrop);
-	return 1;
+	ini_SetInt(file_config, "Weapon_Drop_IsEnabled", wdrop_Enabled);
 }
 
 stock wdrop_OnGameModeInit()
 {
-	wdrop_LoadConfig();
 	if (!wdrop_Enabled) {
 		return 0;
 	}

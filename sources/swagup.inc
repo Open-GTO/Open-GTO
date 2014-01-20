@@ -1,7 +1,7 @@
 /*
 
 	Описание: Скрипт поклаж
-	Автор: ZiGGi
+	Автор: ziggi
 	Дата: 08.05.2011
 
 */
@@ -15,10 +15,10 @@
 
 
 static
-	swagup_Enabled = SWAGUP_ENABLED,
-	swagup_MoneyRate = SWAGUP_MONEY_RATE,
-	swagup_XpRate = SWAGUP_XP_RATE,
-	swagup_PickupID;
+	IsEnabled = SWAGUP_ENABLED,
+	MoneyRate = SWAGUP_MONEY_RATE,
+	XpRate = SWAGUP_XP_RATE,
+	PickupID;
 
 static Float:swagup_Coords[][CoordInfo] = { // from CashBox script by Sandra
 	{2227.74, 1516.43, 10.82},
@@ -88,31 +88,26 @@ static Float:swagup_Coords[][CoordInfo] = { // from CashBox script by Sandra
 	{286.36, -1145.15, 80.91}
 };
 
-stock swagup_LoadConfig()
+stock swagup_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_su = ini_Open(ConfigDB);
-	ini_GetInt(file_su, "swagup_Enabled", swagup_Enabled);
-	ini_GetInt(file_su, "swagup_MoneyRate", swagup_MoneyRate);
-	ini_GetInt(file_su, "swagup_XpRate", swagup_XpRate);
-	ini_Close(file_su);
-	return 1;
+	ini_GetInt(file_config, "Swagup_IsEnabled", IsEnabled);
+	ini_GetInt(file_config, "Swagup_MoneyRate", MoneyRate);
+	ini_GetInt(file_config, "Swagup_XpRate", XpRate);
 }
 
-stock swagup_SaveConfig()
+stock swagup_SaveConfig(file_config)
 {
-	new file_su = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_su, "swagup_Enabled", swagup_Enabled);
-	ini_SetInt(file_su, "swagup_MoneyRate", swagup_MoneyRate);
-	ini_SetInt(file_su, "swagup_XpRate", swagup_XpRate);
-	ini_Close(file_su);
-	return 1;
+	ini_SetInt(file_config, "Swagup_IsEnabled", IsEnabled);
+	ini_SetInt(file_config, "Swagup_MoneyRate", MoneyRate);
+	ini_SetInt(file_config, "Swagup_XpRate", XpRate);
 }
 
 stock swagup_OnGameModeInit()
 {
-	swagup_LoadConfig();
-	if (swagup_Enabled != 1) return 0;
+	if (!IsEnabled) {
+		return 0;
+	}
+
 	swagup_SpawnPickup();
 	GameMSG("SERVER: Swagup module init");
 	return 1;
@@ -120,12 +115,15 @@ stock swagup_OnGameModeInit()
 
 stock swagup_OnPlayerPickUpPickup(playerid, pickupid)
 {
-	if (swagup_Enabled != 1 || pickupid != swagup_PickupID) return 0;
-	DestroyPickup(swagup_PickupID);
+	if (!IsEnabled || pickupid != PickupID) {
+		return 0;
+	}
+
+	DestroyPickup(PickupID);
 	
 	new string[MAX_STRING],
-		win_money = ( ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * swagup_MoneyRate ),
-		win_xp = ( ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * swagup_XpRate );
+		win_money = ( ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * MoneyRate ),
+		win_xp = ( ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * XpRate );
 	
 	oGivePlayerMoney(playerid, win_money);
 	GivePlayerXP(playerid, win_xp, 1);
@@ -141,7 +139,7 @@ forward swagup_SpawnPickup();
 public swagup_SpawnPickup()
 {
 	new swid = random( sizeof(swagup_Coords) );
-	swagup_PickupID = CreatePickup(410, 3, swagup_Coords[swid][Coord_X], swagup_Coords[swid][Coord_Y], swagup_Coords[swid][Coord_Z], -1);
+	PickupID = CreatePickup(410, 3, swagup_Coords[swid][Coord_X], swagup_Coords[swid][Coord_Y], swagup_Coords[swid][Coord_Z], -1);
 	SendClientMessageToAll(COLOUR_RED, lang_texts[19][64]);
 	return 1;
 }

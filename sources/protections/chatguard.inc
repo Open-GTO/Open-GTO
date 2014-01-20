@@ -26,7 +26,7 @@
 	Адаптация для Open-GTO: ZiGGi, 05.05.2011
 */
 
-new ChatGuardEnabled = CHAT_GUARD_ENABLED;
+static IsEnabled = CHAT_GUARD_ENABLED;
 
 /*
 chatguard_OnGameModeInit();
@@ -513,44 +513,47 @@ stock tooManyUpperChars ( string[] )
 
 
 
-stock ChatGuardLoadConfig()
+stock pt_chat_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return;
-	new file_chg = ini_Open(ConfigDB);
-	ini_GetInt(file_chg,"Chat_Guard_Enabled",ChatGuardEnabled);
-	ini_Close(file_chg);
+	ini_GetInt(file_config, "Protection_Chat_IsEnabled", IsEnabled);
 }
 
-stock ChatGuardSaveConfig()
+stock pt_chat_SaveConfig(file_config)
 {
-	new file_chg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_chg,"Chat_Guard_Enabled",ChatGuardEnabled);
-	ini_Close(file_chg);
-	return 1;
+	ini_SetInt(file_config, "Protection_Chat_IsEnabled", IsEnabled);
 }
 
 
-stock chatguard_OnGameModeInit()
+stock pt_chat_OnGameModeInit()
 {
-	ChatGuardLoadConfig();
-	if (ChatGuardEnabled != 1) return;
-    for ( new i; i < CHAT_HISTORY_SIZE; i++ ) ms[i][chPosterID] = -1;
+	if (!IsEnabled) {
+        return;
+    }
+
+    for ( new i; i < CHAT_HISTORY_SIZE; i++ ) {
+        ms[i][chPosterID] = -1;
+    }
+
 	GameMSG("SERVER: (protections)ChatGuard(by MX_Master) module init");
 }
 
 #undef CHAT_HISTORY_SIZE
 
-stock chatguard_OnPlayerConnect ( playerid )
+stock pt_chat_OnPlayerConnect ( playerid )
 {
-	if (ChatGuardEnabled != 1) return 0;
+	if (!IsEnabled) {
+        return 0;
+    }
     forbiddenName{playerid} = 0;
     return 1;
 }
 
-stock chatguard_OnPlayerDisconnect ( playerid, reason )
+stock pt_chat_OnPlayerDisconnect ( playerid, reason )
 {
 	#pragma unused reason
-	if (ChatGuardEnabled != 1) return 0;
+	if (!IsEnabled) {
+        return 0;
+    }
     forbiddenName{playerid} = 0;
     return 1;
 }
@@ -560,9 +563,11 @@ stock chatguard_OnPlayerDisconnect ( playerid, reason )
 
 
 
-stock chatguard_OnPlayerText ( playerid, text[] )
+stock pt_chat_OnPlayerText ( playerid, text[] )
 {
-	if (ChatGuardEnabled != 1 || IsPlayerAdm(playerid)) return 1;
+	if (!IsEnabled || IsPlayerAdm(playerid)) {
+        return 1;
+    }
     new msgTick = GetTickCount();
 
 

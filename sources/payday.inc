@@ -21,32 +21,18 @@ new BasePayMoney = PAYDAY_BASE_PAY,
 	BasePayXP = PAYDAY_PAYXP,
 	pay_gived = 0;
 
-stock PaydayLoadConfig()
+stock payday_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_pd = ini_Open(ConfigDB);
-	ini_GetInt(file_pd, "Payday_Base", BasePayMoney);
-	ini_GetInt(file_pd, "Payday_Cutoff", PayCutoff);
-	ini_GetInt(file_pd, "BasePayXP", BasePayXP);
-	ini_Close(file_pd);
-	return 1;
+	ini_GetInt(file_config, "Payday_Base", BasePayMoney);
+	ini_GetInt(file_config, "Payday_Cutoff", PayCutoff);
+	ini_GetInt(file_config, "Payday_BaseXP", BasePayXP);
 }
 
-stock PaydaySaveConfig()
+stock payday_SaveConfig(file_config)
 {
-	new file_pd = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_pd, "Payday_Base", BasePayMoney);
-	ini_SetInt(file_pd, "Payday_Cutoff", PayCutoff);
-	ini_SetInt(file_pd, "BasePayXP", BasePayXP);
-	ini_Close(file_pd);
-	return 1;
-}
-
-stock payday_OnGameModeInit()
-{
-	PaydayLoadConfig();
-	GameMSG(lang_texts[2][17]);
-	return 1;
+	ini_SetInt(file_config, "Payday_Base", BasePayMoney);
+	ini_SetInt(file_config, "Payday_Cutoff", PayCutoff);
+	ini_SetInt(file_config, "Payday_BaseXP", BasePayXP);
 }
 
 stock PayDay()

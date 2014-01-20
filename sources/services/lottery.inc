@@ -1,7 +1,7 @@
 /*
 
 	Описание: Скрипт лотереи
-	Автор: ZiGGi
+	Автор: ziggi
 	Дата: 08.05.2011
 
 */
@@ -23,35 +23,20 @@ static
 	LotteryCount = -1,
 	lottery_timer;
 
-stock lottery_LoadConfig()
+stock lottery_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_lwm = ini_Open(ConfigDB);
-	ini_GetInt(file_lwm, "Lottery_Enabled", LotteryEnabled);
-	ini_GetInt(file_lwm, "Lottery_Time", LotteryTime);
-	ini_GetInt(file_lwm, "Lottery_Win_Money", LotteryWinMoney);
-	ini_GetInt(file_lwm, "Lottery_Ticket_Cost", LotteryTicketCost);
-	ini_Close(file_lwm);
-	return 1;
+	ini_GetInt(file_config, "Lottery_IsEnabled", LotteryEnabled);
+	ini_GetInt(file_config, "Lottery_Time", LotteryTime);
+	ini_GetInt(file_config, "Lottery_Win_Money", LotteryWinMoney);
+	ini_GetInt(file_config, "Lottery_Ticket_Cost", LotteryTicketCost);
 }
 
-stock lottery_SaveConfig()
+stock lottery_SaveConfig(file_config)
 {
-	new file_lwm = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_lwm, "Lottery_Enabled", LotteryEnabled);
-	ini_SetInt(file_lwm, "Lottery_Time", LotteryTime);
-	ini_SetInt(file_lwm, "Lottery_Win_Money", LotteryWinMoney);
-	ini_SetInt(file_lwm, "Lottery_Ticket_Cost", LotteryTicketCost);
-	ini_Close(file_lwm);
-	return 1;
-}
-
-stock lottery_OnGameModeInit()
-{
-	lottery_LoadConfig();
-	if (LotteryEnabled != 1) return 0;
-	GameMSG("SERVER: Lottery system init");
-	return 1;
+	ini_SetInt(file_config, "Lottery_IsEnabled", LotteryEnabled);
+	ini_SetInt(file_config, "Lottery_Time", LotteryTime);
+	ini_SetInt(file_config, "Lottery_Win_Money", LotteryWinMoney);
+	ini_SetInt(file_config, "Lottery_Ticket_Cost", LotteryTicketCost);
 }
 
 stock lottery_OnPlayerCommandText(playerid, text[])

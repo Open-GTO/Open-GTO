@@ -15,6 +15,7 @@
 #include "utils\gtoutils"
 #include "account"
 #include "weapons"
+#include "protections\armour"
 
 
 #define STATUS_LEVEL_PLAYER	0
@@ -177,34 +178,20 @@ new Float:LVDMPlayerSpawns[23][CoordInfo] = {
 	{1705.2347, 1025.6808, 10.8203}
 };
 
-stock PlayerLoadConfig()
+stock player_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_player = ini_Open(ConfigDB);
-	ini_Get(file_player, "Player_DB", PlayerDB);
-	ini_GetInt(file_player, "Player_Start_Money", PlayerStartMoney);
+	ini_Get(file_config, "Player_DB", PlayerDB);
+	ini_GetInt(file_config, "Player_Start_Money", PlayerStartMoney);
 	new s_buf[MAX_STRING];
-	ini_Get(file_player, "Player_Start_Weapon", s_buf);
+	ini_Get(file_config, "Player_Start_Weapon", s_buf);
 	SetPSWFromDBString(s_buf);
-	ini_Close(file_player);
-	return 1;
 }
 
-stock PlayerSaveConfig()
+stock player_SaveConfig(file_config)
 {
-	new file_player = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_player, "Player_DB", PlayerDB);
-	ini_SetInt(file_player, "Player_Start_Money", PlayerStartMoney);
-	ini_Set(file_player, "Player_Start_Weapon", CreatePSWDBString());
-	ini_Close(file_player);
-	return 1;
-}
-
-stock player_OnGameModeInit()
-{
-	PlayerLoadConfig();
-	GameMSG("SERVER: Player module init");
-	return 1;
+	ini_Set(file_config, "Player_DB", PlayerDB);
+	ini_SetInt(file_config, "Player_Start_Money", PlayerStartMoney);
+	ini_Set(file_config, "Player_Start_Weapon", CreatePSWDBString());
 }
 
 stock player_OnPlayerSpawn(playerid)
@@ -427,20 +414,21 @@ stock player_OnLogin(playerid)
 	TogglePlayerSpectating(playerid, 0);
 }
 
-stock SyncPlayers(playerid)
+stock player_Sync(playerid)
 {
 	// если игрок мертв, то защиты не срабатывают
 	if (!IsPlayerSpawned(playerid)) {
 		return 0;
 	}
 
-	SyncWeapon(playerid);
-	SyncMoney(playerid);
-	SyncHealth(playerid);
-	SyncArmour(playerid);
+	pt_weapon_Sync(playerid);
+	pt_money_Sync(playerid);
+	pt_ping_Check(playerid);
+	pt_jetpack_Check(playerid);
+	pt_health_Sync(playerid);
+	pt_armour_Sync(playerid);
+
 	JailPlayerCheck(playerid);
-	CheckPing(playerid);
-	CheckJetpack(playerid);
 	return 1;
 }
 

@@ -79,7 +79,7 @@ stock AdminSys_OnPlayerCommandText(playerid, text[]) // process player commands
 		format(string, sizeof(string), lang_texts[13][41], sys_weather);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 
-		format(string, sizeof(string), lang_texts[13][42], Groundhold_Enabled);
+		format(string, sizeof(string), lang_texts[13][42], Groundhold_IsEnabled);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		return 1;
 	}
@@ -114,7 +114,7 @@ stock AdminSys_OnPlayerCommandText(playerid, text[]) // process player commands
 		new paramid = strval(strcharsplit(text, idx, ' '));
 		switch(paramid) {
 			case 0: {
-				Groundhold_Enabled = 0;
+				Groundhold_IsEnabled = 0;
 
 				for (new ghid = 0; ghid < sizeof(Groundholds); ghid++) {
 					RemoveActiveCheckpoint(FindActiveCheckpoint(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]));
@@ -125,7 +125,7 @@ stock AdminSys_OnPlayerCommandText(playerid, text[]) // process player commands
 				SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][45]);
 			}
 			case 1: {
-				Groundhold_Enabled = 1;
+				Groundhold_IsEnabled = 1;
 
 				for (new ghid = 0; ghid < sizeof(Groundholds);  ghid++) {
 					AddActiveCheckpoint(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 200, 2);
@@ -136,8 +136,6 @@ stock AdminSys_OnPlayerCommandText(playerid, text[]) // process player commands
 				SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][46]);
 			}
 		}
-
-		groundhold_SaveConfig();
 		return 1;
 	}
 	

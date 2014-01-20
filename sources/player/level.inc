@@ -90,14 +90,18 @@ new LevelList[][LevelInfo] = {
 #define MAX_LEVEL	(sizeof(LevelList)-1)
 #define MAX_XP		LevelList[MAX_LEVEL][level_xp]
 
-stock level_LoadConfig()
+stock player_level_LoadConfig(file_config)
 {
-	if (ini_Exist(ConfigDB))
-	{
-		new file_level = ini_Open(ConfigDB);
-		ini_Get(file_level, "Level_DB", LevelDB);
-		ini_Close(file_level);
-	}
+	ini_Get(file_config, "Player_Level_DB", LevelDB);
+}
+
+stock player_level_SaveConfig(file_config)
+{
+	ini_Set(file_config, "Player_Level_DB", LevelDB);
+}
+
+stock player_level_LoadLevelConfig()
+{
 	if (ini_Exist(LevelDB))
 	{
 		new file_base_level = ini_Open(LevelDB);
@@ -115,12 +119,8 @@ stock level_LoadConfig()
 	return 1;
 }
 
-stock level_SaveConfig()
+stock player_level_SaveLevelConfig()
 {
-	new file_level = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_level, "Level_DB", LevelDB);
-	ini_Close(file_level);
-	
 	new file_base_level = (ini_Exist(LevelDB)) ? ini_Open(LevelDB) : ini_Create(LevelDB);
 	new temp[MAX_STRING];
 	for (new i = 0; i <= MAX_LEVEL; i++)
@@ -132,13 +132,6 @@ stock level_SaveConfig()
 		ini_SetInt(file_base_level, temp, LevelList[i][level_xp]);
 	}
 	ini_Close(file_base_level);
-	return 1;
-}
-
-stock level_OnGameModeInit()
-{
-	level_LoadConfig();
-	GameMSG("SERVER: (player)Level module init");
 	return 1;
 }
 

@@ -34,49 +34,25 @@ public WorldSave(necessarily) // save all
 	}
 	
 	new starttime = gettime();
-	foreach (Player, id)
-	{
+
+	foreach (new id : Player) {
 		PlayerSave(id);
 		AccountSave(id);
 	}
-	BaseSaveConfig();
-	AccountSaveConfig();
-	PlayerSaveConfig();
-	GangSaveConfig();
-	PaydaySaveConfig();
-	LoggingSaveConfig();
-	BankSaveConfig();
-	vehicles_SaveConfig();
-	groundhold_SaveConfig();
-	groundhold_SaveAll();
-	mission_SaveConfig();
-	QuidemSys_SaveConfig();
-	lottery_SaveConfig();
-	swagup_SaveConfig();
-	// systems
-	level_SaveConfig();
-	health_SaveConfig();
-	money_SaveConfig();
-	lang_SaveConfig();
-	wdrop_SaveConfig();
-	wskill_SaveConfig();
-	// protections
-	pt_idle_SaveConfig();
-	AntiHightPingSaveConfig();
-	AntiSpeedHackSaveConfig();
-	AntiWeaponHackSaveConfig();
-	AntiRconHackSaveConfig();
-	AntiArmourHackSaveConfig();
-	AntiJetPackSaveConfig();
-	ChatGuardSaveConfig();
+
+	cfg_SaveConfigs();
+
 	// other
-	WeaponSaveAll();
-	RaceSaveAll();
-	DeathmatchSaveAll();
-	BusinessSaveAll();
-	HousesSaveAll();
-	GangSaveAll();
-	//
+	player_level_SaveLevelConfig();
+
+	weapon_SaveAll();
+	race_SaveAll();
+	deathmatch_SaveAll();
+	business_SaveAll();
+	houses_SaveAll();
+	gang_SaveAll();
+	groundhold_SaveAll();
+	
 	GameMSG("World save complete! Time taken: %d seconds.", (gettime() - starttime));
 	return 1;
 }
@@ -109,11 +85,11 @@ stock SyncTime()
 
 stock SpawnWorld() // run at startup to spawn world
 {
-	for(new i = SKINS_MINID; i <= SKINS_MAXID; i++)
- 	{
-		switch (i)
-		{
-			case SKINS_IGNORE: {}
+	for(new i = SKINS_MINID; i <= SKINS_MAXID; i++) {
+		switch (i) {
+			case SKINS_IGNORE: {
+
+			}
 			default: AddPlayerClass(i, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0);
 		}
 	}
@@ -123,11 +99,10 @@ stock SpawnWorld() // run at startup to spawn world
 forward OneSecTimer();
 public OneSecTimer()
 {
-	foreach (Player, playerid)
-	{
+	foreach (new playerid : Player) {
 		MapIcons_Streaming(playerid);
 		trucker_RunnerTimer(playerid);
-		SyncPlayers(playerid);
+		player_Sync(playerid);
 		UpdatePlayerWeaponTextDraws(playerid);
 	}
 	
@@ -138,14 +113,11 @@ public OneSecTimer()
 forward OneMinuteTimer();
 public OneMinuteTimer()
 {
-	foreach (new playerid : Player)
-	{
-		if (GetPlayerSkydiveTime(playerid) > 0)
-		{
+	foreach (new playerid : Player) {
+		if (GetPlayerSkydiveTime(playerid) > 0) {
 			SetPlayerSkydiveTime(playerid, GetPlayerSkydiveTime(playerid) - 1);
 		}
-		if (IsPlayerLogin(playerid))
-		{
+		if (IsPlayerLogin(playerid)) {
 			JailPlayerTimer(playerid);
 			MutePlayerTimer(playerid);
 			pt_idle_PlayerTimer(playerid);

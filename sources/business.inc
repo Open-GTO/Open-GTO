@@ -16,15 +16,20 @@
 new business_icon[ sizeof(Businesses) ], Text3D:Business3DTextLabel[ sizeof(Businesses) ], Float:BusinessDistanceOfShowLabel=20.0;
 #define show_Business_MsgDialog(%0,%1,%2) ShowPlayerDialog(%0, bis_Msg_DialogID, DIALOG_STYLE_MSGBOX,%1,%2, lang_texts[3][10], lang_texts[3][8])
 
-stock BusinessLoadAll()
+stock business_LoadConfig(file_config)
 {
-	if (ini_Exist(ConfigDB))
-	{
-		new file_business_cfg = ini_Open(ConfigDB);
-		ini_Get(file_business_cfg, "Business_DB", BusinessDB);
-		ini_GetFloat(file_business_cfg, "Business_DistanceOfShowLabel", BusinessDistanceOfShowLabel);
-		ini_Close(file_business_cfg);
-	}
+	ini_Get(file_config, "Business_DB", BusinessDB);
+	ini_GetFloat(file_config, "Business_DistanceOfShowLabel", BusinessDistanceOfShowLabel);
+}
+
+stock business_SaveConfig(file_config)
+{
+	ini_Set(file_config, "Business_DB", BusinessDB);
+	ini_SetFloat(file_config, "Business_DistanceOfShowLabel", BusinessDistanceOfShowLabel);
+}
+
+stock business_LoadAll()
+{
 	new file_business, businessdbname[MAX_STRING];
 	for (new i = 0;i < sizeof(Businesses); i++)
 	{
@@ -51,15 +56,8 @@ stock BusinessLoadAll()
 	return;
 }
 
-stock BusinessSaveAll()
+stock business_SaveAll()
 {
-	if (ini_Exist(ConfigDB))
-	{
-		new file_business_cfg = ini_Open(ConfigDB);
-		ini_Set(file_business_cfg, "Business_DB", BusinessDB);
-		ini_SetFloat(file_business_cfg, "Business_DistanceOfShowLabel", BusinessDistanceOfShowLabel);
-		ini_Close(file_business_cfg);
-	}
 	new file_business, businessdbname[MAX_STRING];
 	for (new i = 0; i < sizeof(Businesses); i++)
 	{
@@ -84,7 +82,7 @@ stock BusinessSaveAll()
 
 stock business_OnGameModeInit()
 {
-	BusinessLoadAll();
+	business_LoadAll();
 	new string[MAX_STRING];
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{

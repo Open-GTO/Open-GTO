@@ -1,5 +1,8 @@
 /*
-	Author:	ZiGGi
+
+	About: anti weapon hack
+	Author:	ziggi
+
 */
 
 #if defined _weaponhack_included
@@ -10,58 +13,44 @@
 #pragma library weaponhack
 
 
-new AntiWeaponHackEnabled = ANTI_WEAPON_HACK_ENABLED;
+static IsEnabled = ANTI_WEAPON_HACK_ENABLED;
 
-stock AntiWeaponHackLoadConfig()
+stock pt_weapon_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_ash = ini_Open(ConfigDB);
-	ini_GetInt(file_ash, "Anti_Weapon_Hack_Enabled", AntiWeaponHackEnabled);
-	ini_Close(file_ash);
-	return 1;
+	ini_GetInt(file_config, "Protection_Weapon_IsEnabled", IsEnabled);
 }
 
-stock AntiWeaponHackSaveConfig()
+stock pt_weapon_SaveConfig(file_config)
 {
-	new file_ash = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_ash, "Anti_Weapon_Hack_Enabled", AntiWeaponHackEnabled);
-	ini_Close(file_ash);
-	return 1;
+	ini_SetInt(file_config, "Protection_Weapon_IsEnabled", IsEnabled);
 }
 
-stock awh_OnGameModeInit()
+stock pt_weapon_OnPlayerPickUpPickup(playerid,pickupid)
 {
-	AntiWeaponHackLoadConfig();
-	if (AntiWeaponHackEnabled != 1) return 0;
-	GameMSG("SERVER: (protections)AntiWeaponHack module init");
-	return 1;
-}
+	if (!IsEnabled) {
+		return 0;
+	}
 
-stock awh_OnPlayerPickUpPickup(playerid,pickupid)
-{
-	if (AntiWeaponHackEnabled != 1) return 0;
-	switch (GetPickupModel(pickupid))
-	{
-		case 371: // парашют
-		{
+	switch (GetPickupModel(pickupid)) {
+		// парашют
+		case 371: {
 			GivePlayerOwnedWeaponEx(playerid, 46, 1);
 		}
-		case 1240: // здоровье
-		{
+		// здоровье
+		case 1240: {
 			oSetPlayerHealth(playerid, GetMaxHealth(playerid));
 		}
-		case 1242: // armour
-		{
+		// armour
+		case 1242: {
 			oSetPlayerArmour(playerid, 100);
 		}
 	}
 	return 1;
 }
 
-stock awh_OnPlayerExitVehicle(playerid,vehicleid)
+stock pt_weapon_OnPlayerExitVehicle(playerid,vehicleid)
 {
-	switch ( GetVehicleModel(vehicleid) )
-	{
+	switch ( GetVehicleModel(vehicleid) ) {
 		case 592,577,511,512,593,520,553,476,519,460,513,// самолёты
 			 548,425,417,487,488,497,563,447,469: // вертолёты
 		{
@@ -71,28 +60,30 @@ stock awh_OnPlayerExitVehicle(playerid,vehicleid)
 	return 1;
 }
 
-stock SyncWeapon(playerid)
+stock pt_weapon_Sync(playerid)
 {
-	if (AntiWeaponHackEnabled != 1) return 0;
-	new weapon[2],string[MAX_STRING];
-	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
-	{
-		GetPlayerWeaponData(playerid,i,weapon[0],weapon[1]);
+	if (!IsEnabled) {
+		return 0;
+	}
+
+	new weapon[2],
+		string[MAX_STRING];
+	
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
+		GetPlayerWeaponData(playerid, i, weapon[0], weapon[1]);
+		
 		// weapon
 		format(string, sizeof(string), "ac_WeaponID_Slot%d", i);
-		if ( GetPVarInt(playerid, string) != weapon[0] && weapon[0] != 0 )
-		{
+		if ( GetPVarInt(playerid, string) != weapon[0] && weapon[0] != 0 ) {
 			KickPlayer(playerid, lang_texts[11][20]);
 		}
+		
 		// ammo
 		format(string, sizeof(string), "ac_WeaponAmmo_Slot%d", i);
-		if (GetPVarInt(playerid, string) < weapon[1])
-		{
+		if (GetPVarInt(playerid, string) < weapon[1]) {
 			KickPlayer(playerid, lang_texts[11][21]);
-		}
-		else
-		{
-			SetPVarInt(playerid, string, weapon[1]+1);
+		} else {
+			SetPVarInt(playerid, string, weapon[1] + 1);
 		}
 	}
 	return 1;

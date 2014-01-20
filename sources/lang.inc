@@ -16,26 +16,18 @@ new lang_db[10] = GTO_FILES_FOLDER;
 new lang[10] = LANGUAGE_USE;
 new lang_texts[20][100][MAX_STRING+10];
 
-stock lang_LoadConfig()
+stock lang_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_lang = ini_Open(ConfigDB);
-    ini_Get(file_lang, "Language", lang);
-	ini_Close(file_lang);
-	return 1;
+    ini_Get(file_config, "Language", lang);
 }
 
-stock lang_SaveConfig()
+stock lang_SaveConfig(file_config)
 {
-	new file_lang = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_lang, "Language", lang);
-	ini_Close(file_lang);
-	return 1;
+	ini_Set(file_config, "Language", lang);
 }
 
 stock lang_OnGameModeInit()
 {
-	lang_LoadConfig();
 	new lang_file[50];
 	format(lang_file, sizeof(lang_file), "%sLanguage-%s"GTO_FILES_FORMAT, lang_db, lang);
 	lang_read(lang_file);

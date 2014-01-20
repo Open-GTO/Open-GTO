@@ -15,21 +15,14 @@
 
 #include "base"
 
-stock AccountLoadConfig()
+stock account_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_account_db = ini_Open(ConfigDB);
-	ini_Get(file_account_db, "Account_DB", AccountDB);
-	ini_Close(file_account_db);
-	return 1;
+	ini_Get(file_config, "Account_DB", AccountDB);
 }
 
-stock AccountSaveConfig()
+stock account_SaveConfig(file_config)
 {
-	new file_account_db = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_account_db, "Account_DB", AccountDB);
-	ini_Close(file_account_db);
-	return 1;
+	ini_Set(file_config, "Account_DB", AccountDB);
 }
 
 stock AccountSave(playerid)
@@ -58,13 +51,6 @@ stock account_save_db_ini(playerid)
 	GetPVarString(playerid, "IP", playerIP, sizeof(playerIP));
 	ini_Set(file_account, "LastIP", playerIP);
 	ini_Close(file_account);
-	return 1;
-}
-
-stock account_OnGameModeInit()
-{
-	AccountLoadConfig();
-	GameMSG(lang_texts[1][0]);
 	return 1;
 }
 

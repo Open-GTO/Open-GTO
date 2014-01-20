@@ -20,27 +20,14 @@ static wskill_Enabled = WEAPON_SKILL_ENABLED;
 new PlayerWeaponsSkills[MAX_PLAYERS][PLAYER_WEAPON_SKILLS];
 new Text:weapon_TextDraw_Level[MAX_PLAYERS];
 
-stock wskill_LoadConfig()
+stock wskill_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_wdrop = ini_Open(ConfigDB);
-	ini_GetInt(file_wdrop, "Weapon_Skill_Enabled", wskill_Enabled);
-	ini_Close(file_wdrop);
-	return 1;
+	ini_GetInt(file_config, "Weapon_Skill_IsEnabled", wskill_Enabled);
 }
 
-stock wskill_SaveConfig()
+stock wskill_SaveConfig(file_config)
 {
-	new file_wdrop = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_wdrop, "Weapon_Skill_Enabled", wskill_Enabled);
-	ini_Close(file_wdrop);
-	return 1;
-}
-
-stock wskill_OnGameModeInit()
-{
-	wskill_LoadConfig();
-	return 1;
+	ini_SetInt(file_config, "Weapon_Skill_IsEnabled", wskill_Enabled);
 }
 
 stock wskill_OnPlayerConnect(playerid)

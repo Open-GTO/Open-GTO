@@ -21,28 +21,20 @@ new Banks[][CoordInfo] = {
 	{-27.0310, -89.5228, 1003.5469} // 24/7 bank
 };
 
-stock BankLoadConfig()
+stock bank_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_bank = ini_Open(ConfigDB);
-	ini_GetInt(file_bank, "Bank_ProfitCount", ProfitCount);
-	ini_GetInt(file_bank, "Bank_MAX_MONEY", MAX_BANK);
-	ini_Close(file_bank);
-	return 1;
+	ini_GetInt(file_config, "Bank_ProfitCount", ProfitCount);
+	ini_GetInt(file_config, "Bank_MaxMoney", MAX_BANK);
 }
 
-stock BankSaveConfig()
+stock bank_SaveConfig(file_config)
 {
-	new file_bank = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_bank, "Bank_ProfitCount", ProfitCount);
-	ini_SetInt(file_bank, "Bank_MAX_MONEY", MAX_BANK);
-	ini_Close(file_bank);
-	return 1;
+	ini_SetInt(file_config, "Bank_ProfitCount", ProfitCount);
+	ini_SetInt(file_config, "Bank_MaxMoney", MAX_BANK);
 }
 
 stock bank_OnGameModeInit()
 {
-	BankLoadConfig();
 	for (new bankid = 0; bankid < sizeof(Banks); bankid++)
 	{
 	    CreatePickup(1274, 23, Banks[bankid][Coord_X], Banks[bankid][Coord_Y], Banks[bankid][Coord_Z]);

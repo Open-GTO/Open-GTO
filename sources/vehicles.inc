@@ -2319,32 +2319,24 @@ stock LoadVehicles()
 	return 1;
 }
 
-stock vehicles_LoadConfig()
+stock vehicles_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_vehicle = ini_Open(ConfigDB);
-	ini_GetInt(file_vehicle, "CarsReSpawnTime", CarsReSpawnTime);
-	ini_Close(file_vehicle);
-	return 1;
+	ini_GetInt(file_config, "Vehicle_RespawnTime", CarsReSpawnTime);
 }
 
-stock vehicles_SaveConfig()
+stock vehicles_SaveConfig(file_config)
 {
-	new file_vehicle = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_vehicle, "CarsReSpawnTime", CarsReSpawnTime);
-	ini_Close(file_vehicle);
-	return 1;
+	ini_SetInt(file_config, "Vehicle_RespawnTime", CarsReSpawnTime);
 }
 
 stock vehicles_OnGameModeInit()
 {
-	vehicles_LoadConfig();
 	LoadVehicles();
 	GameMSG(lang_texts[5][0]);
 	return 1;
 }
 
-stock vehicle_OnPlayerStateChange(playerid, newstate, oldstate)
+stock vehicles_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	if (oldstate == PLAYER_STATE_DRIVER || oldstate == PLAYER_STATE_PASSENGER) {
 		StopAudioStreamForPlayer(playerid);

@@ -26,33 +26,20 @@ new LoggingGameToggle = LOGGING_GAME_LOG_ENABLED,
 	LoggingChatToggle = LOGGING_CHAT_LOG_ENABLED,
 	LoggingCMDToggle = LOGGING_CMD_LOG_ENABLED;
 
-LoggingLoadConfig()
+stock logging_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_logging = ini_Open(ConfigDB);
-	ini_GetInt(file_logging, "Logging_on", LoggingGameToggle);
-	ini_GetInt(file_logging, "Debug_on", LoggingDebug);
-	ini_GetInt(file_logging, "ChatLog_on", LoggingChatToggle);
-	ini_GetInt(file_logging, "CMDLog_on", LoggingCMDToggle);
-	ini_Close(file_logging);
-	return 1;
+	ini_GetInt(file_config, "Log_Game_IsEnabled", LoggingGameToggle);
+	ini_GetInt(file_config, "Log_Debug_IsEnabled", LoggingDebug);
+	ini_GetInt(file_config, "Log_ChatLog_IsEnabled", LoggingChatToggle);
+	ini_GetInt(file_config, "Log_CMDLog_IsEnabled", LoggingCMDToggle);
 }
 
-LoggingSaveConfig()
+stock logging_SaveConfig(file_config)
 {
-	new file_logging = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_logging, "Logging_on", LoggingGameToggle);
-	ini_SetInt(file_logging, "Debug_on", LoggingDebug);
-	ini_SetInt(file_logging, "ChatLog_on", LoggingChatToggle);
-	ini_SetInt(file_logging, "CMDLog_on", LoggingCMDToggle);
-	ini_Close(file_logging);
-	return 1;
-}
-
-stock logging_OnGameModeInit()
-{
-	LoggingLoadConfig();
-	GameMSG("SERVER: Logging module init");
+	ini_SetInt(file_config, "Log_Game_IsEnabled", LoggingGameToggle);
+	ini_SetInt(file_config, "Log_Debug_IsEnabled", LoggingDebug);
+	ini_SetInt(file_config, "Log_ChatLog_IsEnabled", LoggingChatToggle);
+	ini_SetInt(file_config, "Log_CMDLog_IsEnabled", LoggingCMDToggle);
 }
 
 stock MakeFilename()

@@ -30,31 +30,31 @@ new PlayerStartWeapon[][psw_Info] = {
 };
 
 
-stock weapon_OnGameModeInit()
+stock pl_weapon_OnGameModeInit()
 {
 	wdrop_OnGameModeInit();
 	return 1;
 }
 
-stock weapon_OnPlayerPickUpPickup(playerid, pickupid)
+stock pl_weapon_OnPlayerPickUpPickup(playerid, pickupid)
 {
 	wdrop_OnPlayerPickUpPickup(playerid, pickupid);
 	return 1;
 }
 
-stock weapon_OnPlayerConnect(playerid)
+stock pl_weapon_OnPlayerConnect(playerid)
 {
 	wskill_OnPlayerConnect(playerid);
 	return 1;
 }
 
-stock weapon_OnPlayerDisconnect(playerid, reason)
+stock pl_weapon_OnPlayerDisconnect(playerid, reason)
 {
 	wskill_OnPlayerDisconnect(playerid, reason);
 	return 1;
 }
 
-stock weapon_OnPlayerDeath(playerid, killerid, reason)
+stock pl_weapon_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused killerid
 	if (!IsWeapon(reason)) return 1;
@@ -65,7 +65,7 @@ stock weapon_OnPlayerDeath(playerid, killerid, reason)
 	return 1;
 }
 
-stock weapon_OnPlayerRequestClass(playerid, classid)
+stock pl_weapon_OnPlayerRequestClass(playerid, classid)
 {
 	wskill_OnPlayerRequestClass(playerid, classid);
 	return 1;

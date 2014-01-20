@@ -1,5 +1,8 @@
 /*
-	Author:	ZiGGi
+
+	About: anti rcon hack
+	Author:	ziggi
+
 */
 
 #if defined _rconhack_included
@@ -10,43 +13,31 @@
 #pragma library rconhack
 
 
-new AntiRconHackEnabled = ANTI_RCON_HACK_ENABLED;
+static IsEnabled = ANTI_RCON_HACK_ENABLED;
 
-stock AntiRconHackLoadConfig()
+stock pt_rcon_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_arh = ini_Open(ConfigDB);
-	ini_GetInt(file_arh, "Anti_Rcon_Hack_Enabled", AntiRconHackEnabled);
-	ini_Close(file_arh);
-	return 1;
+	ini_GetInt(file_config, "Protection_Rcon_IsEnabled", IsEnabled);
 }
 
-stock AntiRconHackSaveConfig()
+stock pt_rcon_SaveConfig(file_config)
 {
-	new file_arh = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_arh, "Anti_Rcon_Hack_Enabled", AntiRconHackEnabled);
-	ini_Close(file_arh);
-	return 1;
+	ini_SetInt(file_config, "Protection_Rcon_IsEnabled", IsEnabled);
 }
 
-stock antirconhack_OnGameModeInit()
+stock pt_rcon_OnRconLoginAttempt(ip[], password[], success)
 {
-	AntiRconHackLoadConfig();
-	if (AntiRconHackEnabled != 1) return 0;
-	GameMSG("SERVER: (protections)AntiRconHack module init");
-	return 1;
-}
+	if (!IsEnabled || success) {
+		return 0;
+	}
 
-stock antirconhack_OnRconLoginAttempt(ip[], password[], success)
-{
-	if (AntiRconHackEnabled != 1 || success) return 0;
 	GameMSG(lang_texts[11][5], ip, password);
+
 	new pip[MAX_IP];
-	foreach (Player, playerid)
-	{
+	foreach (new playerid : Player) {
 		GetPVarString(playerid, "IP", pip, sizeof(pip));
-		if (!strcmp(ip, pip, false))
-		{
+
+		if (!strcmp(ip, pip, false)) {
 			KickPlayer(playerid, lang_texts[11][6]);
 			return 1;
 		}

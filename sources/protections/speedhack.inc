@@ -1,5 +1,8 @@
 /*
-	Author:	ZiGGi
+
+	About: anti speed hack
+	Author:	ziggi
+
 */
 
 #if defined _speedhack_included
@@ -10,89 +13,87 @@
 #pragma library speedhack
 
 
-new AntiSpeedHackEnabled = ANTI_SPEED_HACK_ENABLED;
+static
+	IsEnabled = ANTI_SPEED_HACK_ENABLED,
+	CheckTime = ANTI_SPEED_HACK_CHECK_TIME;
 
-stock AntiSpeedHackLoadConfig()
+stock pt_speed_LoadConfig(file_config)
 {
-	if (!ini_Exist(ConfigDB)) return 0;
-	new file_ash = ini_Open(ConfigDB);
-	ini_GetInt(file_ash, "Anti_Speed_Hack_Enabled", AntiSpeedHackEnabled);
-	ini_Close(file_ash);
+	ini_GetInt(file_config, "Protection_Speed_IsEnabled", IsEnabled);
+	ini_GetInt(file_config, "Protection_Speed_CheckTime", CheckTime);
+}
+
+stock pt_speed_SaveConfig(file_config)
+{
+	ini_SetInt(file_config, "Protection_Speed_IsEnabled", IsEnabled);
+	ini_SetInt(file_config, "Protection_Speed_CheckTime", CheckTime);
+}
+
+stock pt_speed_OnGameModeInit()
+{
+	if (IsEnabled) {
+		SetTimer("pt_speed_Timer", CheckTime, 1);
+	}
 	return 1;
 }
 
-stock AntiSpeedHackSaveConfig()
+stock pt_speed_OnPlayerStateChange(playerid, newstate, oldstate)
 {
-	new file_ash = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_SetInt(file_ash, "Anti_Speed_Hack_Enabled", AntiSpeedHackEnabled);
-	ini_Close(file_ash);
-	return 1;
-}
+	if (!IsEnabled) {
+		return 0;
+	}
 
-stock ash_OnGameModeInit()
-{
-	AntiSpeedHackLoadConfig();
-	if (AntiSpeedHackEnabled != 1) return 0;
-	GameMSG("SERVER: (protections)AntiSpeedHack module init");
-	return 1;
-}
-
-stock ash_OnPlayerStateChange(playerid, newstate, oldstate)
-{
-	if (AntiSpeedHackEnabled != 1) return 0;
 	// если выпрыгнул из транспорта
-	if (newstate == PLAYER_STATE_ONFOOT && oldstate == PLAYER_STATE_DRIVER)
-	{
-		ash_Disable(playerid, 3000);
+	if (newstate == PLAYER_STATE_ONFOOT && oldstate == PLAYER_STATE_DRIVER) {
+		pt_speed_Disable(playerid, 3000);
 	}
 	return 1;
 }
 
-stock ash_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
+stock pt_speed_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 {
-	switch (oldinteriorid)
-	{
-		case 1,2,3:
-		{
-			ash_Disable(playerid, 1000);
+	switch (oldinteriorid) {
+		case 1, 2, 3: {
+			pt_speed_Disable(playerid, 1000);
 		}
 	}
-	switch (newinteriorid)
-	{
-		case 1,2,3:
-		{
-			ash_Disable(playerid, 1000);
+
+	switch (newinteriorid) {
+		case 1, 2, 3: {
+			pt_speed_Disable(playerid, 1000);
 		}
 	}
 	return 1;
 }
 
-forward AntiSpeedHackTimer();
-public AntiSpeedHackTimer()
+forward pt_speed_Timer();
+public pt_speed_Timer()
 {
-	if (AntiSpeedHackEnabled != 1) return 0;
-	foreach (Player, playerid)
-	{
-		SyncSpeed(playerid);
+	if (!IsEnabled) {
+		return 0;
+	}
+
+	foreach (new playerid : Player) {
+		pt_speed_Sync(playerid);
 	}
 	return 1;
 }
 
-stock ash_Disable(playerid,time)
+stock pt_speed_Disable(playerid, time)
 {
 	SetPVarInt(playerid, "ac_NotSpeedHack", 1);
-	SetTimerEx("NotSpeedHack", time, 0, "d", playerid);
+	SetTimerEx("pt_speed_NotHack", time, 0, "d", playerid);
 }
 
-forward NotSpeedHack(playerid);
-public NotSpeedHack(playerid)
+forward pt_speed_NotHack(playerid);
+public pt_speed_NotHack(playerid)
 {
 	SetPVarInt(playerid, "ac_NotSpeedHack", 0);
 }
 
 stock oSetPlayerPos(playerid, Float:x, Float:y, Float:z)
 {
-	ash_Disable(playerid, 1000);
+	pt_speed_Disable(playerid, 1000);
 	SetPVarFloat(playerid, "ac_old_Coord_X", x);
 	SetPVarFloat(playerid, "ac_old_Coord_Y", y);
 	SetPlayerPos(playerid, x, y, z);
@@ -101,14 +102,13 @@ stock oSetPlayerPos(playerid, Float:x, Float:y, Float:z)
 
 stock oSetVehiclePos(vehicleid, Float:x, Float:y, Float:z)
 {
-	foreach (Player, playerid)
-	{
-		if (GetPlayerVehicleID(playerid) == vehicleid)
-		{
+	foreach (new playerid : Player) {
+		if (GetPlayerVehicleID(playerid) == vehicleid) {
 			SetPVarFloat(playerid, "ac_old_Coord_X", x);
 			SetPVarFloat(playerid, "ac_old_Coord_Y", y);
 		}
 	}
+
 	SetVehiclePos(vehicleid, x, y, z);
 	return 1;
 }
@@ -117,42 +117,41 @@ stock Float:GetPlayerSpeed(playerid)
 {
 	new Float:pos[3];
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+
 	new Float:Dis = floatsqroot(
 		floatpower( floatabs( floatsub(GetPVarFloat(playerid,"ac_old_Coord_X"), pos[0]) ), 2 )
 		+
 		floatpower( floatabs( floatsub(GetPVarFloat(playerid,"ac_old_Coord_Y"), pos[1]) ), 2 )
 	);
+
 	SetPVarFloat(playerid, "ac_old_Coord_X", pos[0]);
 	SetPVarFloat(playerid, "ac_old_Coord_Y", pos[1]);
 	return (Dis * 2.0);
 }
 
-stock sh_FixSpeed(playerid)
+stock pt_speed_FixSpeed(playerid)
 {
 	new Float:pos[3];
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+
 	SetPVarFloat(playerid, "ac_old_Coord_X", pos[0]);
 	SetPVarFloat(playerid, "ac_old_Coord_Y", pos[1]);
 	return 1;
 }
 
-stock SyncSpeed(playerid)
+stock pt_speed_Sync(playerid)
 {
-	if (GetPVarInt(playerid, "Spawned") != 1 || GetPVarInt(playerid, "ac_NotSpeedHack") == 1)
-	{
-		return sh_FixSpeed(playerid);
+	if (GetPVarInt(playerid, "Spawned") != 1 || GetPVarInt(playerid, "ac_NotSpeedHack") == 1) {
+		pt_speed_FixSpeed(playerid);
+		return 0;
 	}
 	new Float:player_speed = GetPlayerSpeed(playerid),
 		max_speed;
 	
-	switch ( GetPlayerState(playerid) )
-	{
-		case PLAYER_STATE_ONFOOT:
-		{
-			if (player_speed > 50)
-			{
-				switch (floatround(player_speed,floatround_round))
-				{
+	switch ( GetPlayerState(playerid) ) {
+		case PLAYER_STATE_ONFOOT: {
+			if (player_speed > 50) {
+				switch (floatround(player_speed,floatround_round)) {
 					// 26 - максимум на земле, 50 при полёте с парашютом
 					case 50..349: KickPlayer(playerid, lang_texts[11][17]);
 					case 350..499: KickPlayer(playerid, lang_texts[11][18]);
@@ -160,20 +159,17 @@ stock SyncSpeed(playerid)
 				}
 			}
 		}
-		case PLAYER_STATE_DRIVER:
-		{
-			switch ( GetVehicleModel( GetPlayerVehicleID(playerid) ) )
-			{
+		case PLAYER_STATE_DRIVER: {
+			switch ( GetVehicleModel( GetPlayerVehicleID(playerid) ) ) {
 				case 481,509,510,462,448,471: max_speed = 40;
 				case 411: max_speed = 130;
 				case 519: max_speed = 165;
 				case 520: max_speed = 180;
 				default: max_speed = 150;
 			}
-			if (player_speed > max_speed)
-			{
-				switch ( floatround(player_speed,floatround_round) )
-				{
+			
+			if (player_speed > max_speed) {
+				switch ( floatround(player_speed,floatround_round) ) {
 					case 151..250: KickPlayer(playerid, lang_texts[11][17]);
 					case 251..499: KickPlayer(playerid, lang_texts[11][18]);
 					default: KickPlayer(playerid, lang_texts[11][19]);

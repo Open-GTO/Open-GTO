@@ -15,15 +15,20 @@
 #define GetPlayerToHouseID(%0) GetPVarInt(%0, "HausID")
 new house_icon[ sizeof(Houses) ], Text3D:House3DTextLabel[ sizeof(Houses) ], Float:HouseDistanceOfShowLabel=20.0;
 
-stock HousesLoadAll()
+stock houses_LoadConfig(file_config)
 {
-	if (ini_Exist(ConfigDB))
-	{
-		new file_housing_cfg = ini_Open(ConfigDB);
-		ini_Get(file_housing_cfg, "Houses_DB", HousesDB);
-		ini_GetFloat(file_housing_cfg, "House_DistanceOfShowLabel", HouseDistanceOfShowLabel);
-		ini_Close(file_housing_cfg);
-	}
+	ini_Get(file_config, "Houses_DB", HousesDB);
+	ini_GetFloat(file_config, "House_DistanceOfShowLabel", HouseDistanceOfShowLabel);
+}
+
+stock houses_SaveConfig(file_config)
+{
+	ini_Set(file_config, "Houses_DB", HousesDB);
+	ini_SetFloat(file_config, "House_DistanceOfShowLabel", HouseDistanceOfShowLabel);
+}
+
+stock houses_LoadAll()
+{
 	new file_housing, housesdbname[MAX_STRING];
 	for (new i = 0; i < sizeof(Houses); i++)
 	{
@@ -53,12 +58,8 @@ stock HousesLoadAll()
 	return;
 }
 
-stock HousesSaveAll()
+stock houses_SaveAll()
 {
-	new file_housing = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_housing, "Houses_DB", HousesDB);
-	ini_SetFloat(file_housing, "House_DistanceOfShowLabel", HouseDistanceOfShowLabel);
-	ini_Close(file_housing);
 	for (new housid = 0; housid < sizeof(Houses); housid++)
 	{
 		SaveHous(housid);
@@ -94,7 +95,7 @@ stock SaveHous(housid)
 }
 stock housing_OnGameModeInit()
 {
-	HousesLoadAll();
+	houses_LoadAll();
 	new string[MAX_STRING];
 	for (new id = 0; id < sizeof(Houses); id++)
 	{

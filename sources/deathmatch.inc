@@ -84,18 +84,26 @@ new DMCentreCP[MAX_DM][CoordInfo];
 #define GetDMStartZoneName(%0) GetXYZZoneName(GetDMCPX(%0), GetDMCPY(%0), GetDMCPZ(%0))
 //--------------------------------------------------------------
 
-stock DeathmatchLoadAll()
+stock deathmatch_LoadConfig(file_config)
+{
+	ini_Get(file_config, "Deathmatch_DB", DeathmatchDB);
+	ini_Get(file_config, "Deathmatch_Base_DB", DMBaseDB);
+	ini_Get(file_config, "Deathmatch_Record_DB", DMRecordDB);
+}
+
+stock deathmatch_SaveConfig(file_config)
+{
+	ini_Set(file_config, "Deathmatch_DB", DeathmatchDB);
+	ini_Set(file_config, "Deathmatch_Base_DB", DMBaseDB);
+	ini_Set(file_config, "Deathmatch_Record_DB", DMRecordDB);
+}
+
+stock deathmatch_LoadAll()
 {
 	new temp[MAX_STRING];
-	if (ini_Exist(ConfigDB))
-	{
-		new file_dm_cfg = ini_Open(ConfigDB);
-		ini_Get(file_dm_cfg, "Deathmatch_DB", DeathmatchDB);
-		ini_Get(file_dm_cfg, "Deathmatch_Base_DB", DMBaseDB);
-		ini_Get(file_dm_cfg, "Deathmatch_Record_DB", DMRecordDB);
-		ini_Close(file_dm_cfg);
+	if (!ini_Exist(DeathmatchDB)) {
+		return 0;
 	}
-	if (!ini_Exist(DeathmatchDB)) return 0;
 	new cellname[MAX_STRING],
 		dms_count = MAX_DM,
 		file_dm = ini_Open(DeathmatchDB);
@@ -251,14 +259,8 @@ stock DeathmatchLoadRecordDB(dmid)
 	return 1;
 }
 
-stock DeathmatchSaveAll()
+stock deathmatch_SaveAll()
 {
-	new file_dm_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
-	ini_Set(file_dm_cfg, "Deathmatch_DB", DeathmatchDB);
-	ini_Set(file_dm_cfg, "Deathmatch_Base_DB", DMBaseDB);
-	ini_Set(file_dm_cfg, "Deathmatch_Record_DB", DMRecordDB);
-	ini_Close(file_dm_cfg);
-	
 	new cellname[MAX_STRING],
 		file_dm = (!ini_Exist(DeathmatchDB)) ? ini_Create(DeathmatchDB) : ini_Open(DeathmatchDB);
 	
@@ -331,7 +333,7 @@ stock DeathmatchSaveRecordDB(dmid)
 
 stock deathmatch_OnGameModeInit()
 {
-	DeathmatchLoadAll();
+	deathmatch_LoadAll();
 	GameMSG("SERVER: Deathmatch module init");
 	return 1;
 }
