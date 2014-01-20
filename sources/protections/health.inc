@@ -17,12 +17,12 @@ static IsEnabled = ANTI_HEALTH_HACK_ENABLED;
 
 stock pt_health_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Protection_Health_IsEnabled", IsEnabled);
+	ini_getInteger(file_config, "Protection_Health_IsEnabled", IsEnabled);
 }
 
 stock pt_health_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Protection_Health_IsEnabled", IsEnabled);
+	ini_setInteger(file_config, "Protection_Health_IsEnabled", IsEnabled);
 }
 
 stock oSetPlayerHealth(playerid, Float:health)

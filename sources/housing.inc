@@ -17,14 +17,14 @@ new house_icon[ sizeof(Houses) ], Text3D:House3DTextLabel[ sizeof(Houses) ], Flo
 
 stock houses_LoadConfig(file_config)
 {
-	ini_Get(file_config, "Houses_DB", HousesDB);
-	ini_GetFloat(file_config, "House_DistanceOfShowLabel", HouseDistanceOfShowLabel);
+	ini_getString(file_config, "Houses_DB", HousesDB);
+	ini_getFloat(file_config, "House_DistanceOfShowLabel", HouseDistanceOfShowLabel);
 }
 
 stock houses_SaveConfig(file_config)
 {
-	ini_Set(file_config, "Houses_DB", HousesDB);
-	ini_SetFloat(file_config, "House_DistanceOfShowLabel", HouseDistanceOfShowLabel);
+	ini_setString(file_config, "Houses_DB", HousesDB);
+	ini_setFloat(file_config, "House_DistanceOfShowLabel", HouseDistanceOfShowLabel);
 }
 
 stock houses_LoadAll()
@@ -33,27 +33,27 @@ stock houses_LoadAll()
 	for (new i = 0; i < sizeof(Houses); i++)
 	{
 		format(housesdbname, sizeof(housesdbname), "%s%s"GTO_FILES_FORMAT, HousesDB, Houses[i][Houses_Name]);
-		if (!ini_Exist(housesdbname)) continue;
-		file_housing = ini_Open(housesdbname);
-		ini_Get(file_housing, "Name", Houses[i][Houses_Name], MAX_NAME);
-		ini_GetInt(file_housing, "Cost", Houses[i][Houses_Cost]);
-		ini_Get(file_housing, "Owner", Houses[i][Houses_Owner], MAX_NAME);
-		ini_Get(file_housing, "Gang", Houses[i][Houses_Gang], MAX_NAME);
-		ini_GetInt(file_housing, "UpKeep", Houses[i][Houses_UpKeep]);
-		ini_GetInt(file_housing, "UpKeepLeft", Houses[i][Houses_UpKeepLeft]);
-		ini_GetInt(file_housing, "Buyout", Houses[i][Houses_Buyout]);
-		ini_GetInt(file_housing, "Interior", Houses[i][Houses_Interior]);
-		ini_GetInt(file_housing, "Car", Houses[i][Houses_Car]);
-		ini_GetInt(file_housing, "Lock", Houses[i][Houses_Lock]);
-		ini_GetInt(file_housing, "Rentabil", Houses[i][Houses_Rentabil]);
-		ini_Get(file_housing, "RentName", Houses[i][Houses_RentName], MAX_NAME);
-		ini_GetInt(file_housing, "RentCost", Houses[i][Houses_RentCost]);
-		ini_GetInt(file_housing, "HealUpgrade", Houses[i][Houses_HealUpgrade]);
-		ini_GetInt(file_housing, "ArmourUpgrade", Houses[i][Houses_ArmourUpgrade]);
-		ini_GetFloat(file_housing, "Coord_X", Houses[i][Houses_EnterX]);
-		ini_GetFloat(file_housing, "Coord_Y", Houses[i][Houses_EnterY]);
-		ini_GetFloat(file_housing, "Coord_Z", Houses[i][Houses_EnterZ]);
-		ini_Close(file_housing);
+		if (!ini_fileExist(housesdbname)) continue;
+		file_housing = ini_openFile(housesdbname);
+		ini_getString(file_housing, "Name", Houses[i][Houses_Name], MAX_NAME);
+		ini_getInteger(file_housing, "Cost", Houses[i][Houses_Cost]);
+		ini_getString(file_housing, "Owner", Houses[i][Houses_Owner], MAX_NAME);
+		ini_getString(file_housing, "Gang", Houses[i][Houses_Gang], MAX_NAME);
+		ini_getInteger(file_housing, "UpKeep", Houses[i][Houses_UpKeep]);
+		ini_getInteger(file_housing, "UpKeepLeft", Houses[i][Houses_UpKeepLeft]);
+		ini_getInteger(file_housing, "Buyout", Houses[i][Houses_Buyout]);
+		ini_getInteger(file_housing, "Interior", Houses[i][Houses_Interior]);
+		ini_getInteger(file_housing, "Car", Houses[i][Houses_Car]);
+		ini_getInteger(file_housing, "Lock", Houses[i][Houses_Lock]);
+		ini_getInteger(file_housing, "Rentabil", Houses[i][Houses_Rentabil]);
+		ini_getString(file_housing, "RentName", Houses[i][Houses_RentName], MAX_NAME);
+		ini_getInteger(file_housing, "RentCost", Houses[i][Houses_RentCost]);
+		ini_getInteger(file_housing, "HealUpgrade", Houses[i][Houses_HealUpgrade]);
+		ini_getInteger(file_housing, "ArmourUpgrade", Houses[i][Houses_ArmourUpgrade]);
+		ini_getFloat(file_housing, "Coord_X", Houses[i][Houses_EnterX]);
+		ini_getFloat(file_housing, "Coord_Y", Houses[i][Houses_EnterY]);
+		ini_getFloat(file_housing, "Coord_Z", Houses[i][Houses_EnterZ]);
+		ini_closeFile(file_housing);
 	}
 	return;
 }
@@ -71,26 +71,26 @@ stock SaveHous(housid)
 {
 	new housesdbname[MAX_STRING];
 	format(housesdbname, sizeof(housesdbname), "%s%s"GTO_FILES_FORMAT, HousesDB, Houses[housid][Houses_Name]);
-	new file_housing = (!ini_Exist(housesdbname)) ? ini_Create(housesdbname) : ini_Open(housesdbname);
-	ini_Set(file_housing, "Name", Houses[housid][Houses_Name]);
-	ini_SetInt(file_housing, "Cost", Houses[housid][Houses_Cost]);
-	ini_Set(file_housing, "Owner", Houses[housid][Houses_Owner]);
-	ini_Set(file_housing, "Gang", Houses[housid][Houses_Gang]);
-	ini_SetInt(file_housing, "UpKeep", Houses[housid][Houses_UpKeep]);
-	ini_SetInt(file_housing, "UpKeepLeft", Houses[housid][Houses_UpKeepLeft]);
-	ini_SetInt(file_housing, "Buyout", Houses[housid][Houses_Buyout]);
-	ini_SetInt(file_housing, "Interior", Houses[housid][Houses_Interior]);
-	ini_SetInt(file_housing, "Car", Houses[housid][Houses_Car]);
-	ini_SetInt(file_housing, "Lock", Houses[housid][Houses_Lock]);
-	ini_SetInt(file_housing, "Rentabil", Houses[housid][Houses_Rentabil]);
-	ini_Set(file_housing, "RentName", Houses[housid][Houses_RentName]);
-	ini_SetInt(file_housing, "RentCost", Houses[housid][Houses_RentCost]);
-	ini_SetInt(file_housing, "HealUpgrade", Houses[housid][Houses_HealUpgrade]);
-	ini_SetInt(file_housing, "ArmourUpgrade", Houses[housid][Houses_ArmourUpgrade]);
-	ini_SetFloat(file_housing, "Coord_X", Houses[housid][Houses_EnterX]);
-	ini_SetFloat(file_housing, "Coord_Y", Houses[housid][Houses_EnterY]);
-	ini_SetFloat(file_housing, "Coord_Z", Houses[housid][Houses_EnterZ]);
-	ini_Close(file_housing);
+	new file_housing = (!ini_fileExist(housesdbname)) ? ini_createFile(housesdbname) : ini_openFile(housesdbname);
+	ini_setString(file_housing, "Name", Houses[housid][Houses_Name]);
+	ini_setInteger(file_housing, "Cost", Houses[housid][Houses_Cost]);
+	ini_setString(file_housing, "Owner", Houses[housid][Houses_Owner]);
+	ini_setString(file_housing, "Gang", Houses[housid][Houses_Gang]);
+	ini_setInteger(file_housing, "UpKeep", Houses[housid][Houses_UpKeep]);
+	ini_setInteger(file_housing, "UpKeepLeft", Houses[housid][Houses_UpKeepLeft]);
+	ini_setInteger(file_housing, "Buyout", Houses[housid][Houses_Buyout]);
+	ini_setInteger(file_housing, "Interior", Houses[housid][Houses_Interior]);
+	ini_setInteger(file_housing, "Car", Houses[housid][Houses_Car]);
+	ini_setInteger(file_housing, "Lock", Houses[housid][Houses_Lock]);
+	ini_setInteger(file_housing, "Rentabil", Houses[housid][Houses_Rentabil]);
+	ini_setString(file_housing, "RentName", Houses[housid][Houses_RentName]);
+	ini_setInteger(file_housing, "RentCost", Houses[housid][Houses_RentCost]);
+	ini_setInteger(file_housing, "HealUpgrade", Houses[housid][Houses_HealUpgrade]);
+	ini_setInteger(file_housing, "ArmourUpgrade", Houses[housid][Houses_ArmourUpgrade]);
+	ini_setFloat(file_housing, "Coord_X", Houses[housid][Houses_EnterX]);
+	ini_setFloat(file_housing, "Coord_Y", Houses[housid][Houses_EnterY]);
+	ini_setFloat(file_housing, "Coord_Z", Houses[housid][Houses_EnterZ]);
+	ini_closeFile(file_housing);
 	return 1;
 }
 stock housing_OnGameModeInit()
@@ -452,18 +452,18 @@ stock RentRoom(playerid)
 		} else {
 			new filename_player[MAX_STRING];
 			format(filename_player, sizeof(filename_player), "%s%s"GTO_FILES_FORMAT, PlayerDB, Houses[id][Houses_Owner]);
-			new file_player = ini_Open(filename_player);
+			new file_player = ini_openFile(filename_player);
 			new bank_money;
-			ini_GetInt(file_player, "BankMoney", bank_money);
-			ini_SetInt(file_player, "BankMoney", bank_money + Houses[id][Houses_RentCost]);
-			ini_Close(file_player);
+			ini_getInteger(file_player, "BankMoney", bank_money);
+			ini_setInteger(file_player, "BankMoney", bank_money + Houses[id][Houses_RentCost]);
+			ini_closeFile(file_player);
 		}
 		
 		format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, HousesDB, Houses[id][Houses_Name]);
-		new file_housing = ini_Open(string);
-		ini_SetInt(file_housing, "Rentabil", 1);
-		ini_Set(file_housing, "RentName", oGetPlayerName(playerid));
-		ini_Close(file_housing);
+		new file_housing = ini_openFile(string);
+		ini_setInteger(file_housing, "Rentabil", 1);
+		ini_setString(file_housing, "RentName", oGetPlayerName(playerid));
+		ini_closeFile(file_housing);
 		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[8][55]);
 		UpdatePlayerStreamMapIcon(playerid, house_icon[id]);
 	}
@@ -765,14 +765,14 @@ stock CheckHousesOwners()
 		}
 		
 		format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, Houses[i][Houses_Owner]);
-		if (!ini_Exist(filename_account))
+		if (!ini_fileExist(filename_account))
 		{
 			continue;
 		}
 		
-		file_account = ini_Open(filename_account);
-		ini_Get(file_account, "Last_Login", account_lastlogin);
-		ini_Close(file_account);
+		file_account = ini_openFile(filename_account);
+		ini_getString(file_account, "Last_Login", account_lastlogin);
+		ini_closeFile(file_account);
 		
 		idx = 0;
 		account_day = strval( strcharsplit(account_lastlogin, idx, '.') );

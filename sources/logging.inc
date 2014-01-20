@@ -28,18 +28,18 @@ new LoggingGameToggle = LOGGING_GAME_LOG_ENABLED,
 
 stock logging_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Log_Game_IsEnabled", LoggingGameToggle);
-	ini_GetInt(file_config, "Log_Debug_IsEnabled", LoggingDebug);
-	ini_GetInt(file_config, "Log_ChatLog_IsEnabled", LoggingChatToggle);
-	ini_GetInt(file_config, "Log_CMDLog_IsEnabled", LoggingCMDToggle);
+	ini_getInteger(file_config, "Log_Game_IsEnabled", LoggingGameToggle);
+	ini_getInteger(file_config, "Log_Debug_IsEnabled", LoggingDebug);
+	ini_getInteger(file_config, "Log_ChatLog_IsEnabled", LoggingChatToggle);
+	ini_getInteger(file_config, "Log_CMDLog_IsEnabled", LoggingCMDToggle);
 }
 
 stock logging_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Log_Game_IsEnabled", LoggingGameToggle);
-	ini_SetInt(file_config, "Log_Debug_IsEnabled", LoggingDebug);
-	ini_SetInt(file_config, "Log_ChatLog_IsEnabled", LoggingChatToggle);
-	ini_SetInt(file_config, "Log_CMDLog_IsEnabled", LoggingCMDToggle);
+	ini_setInteger(file_config, "Log_Game_IsEnabled", LoggingGameToggle);
+	ini_setInteger(file_config, "Log_Debug_IsEnabled", LoggingDebug);
+	ini_setInteger(file_config, "Log_ChatLog_IsEnabled", LoggingChatToggle);
+	ini_setInteger(file_config, "Log_CMDLog_IsEnabled", LoggingCMDToggle);
 }
 
 stock MakeFilename()

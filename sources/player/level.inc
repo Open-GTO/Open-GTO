@@ -92,46 +92,46 @@ new LevelList[][LevelInfo] = {
 
 stock player_level_LoadConfig(file_config)
 {
-	ini_Get(file_config, "Player_Level_DB", LevelDB);
+	ini_getString(file_config, "Player_Level_DB", LevelDB);
 }
 
 stock player_level_SaveConfig(file_config)
 {
-	ini_Set(file_config, "Player_Level_DB", LevelDB);
+	ini_setString(file_config, "Player_Level_DB", LevelDB);
 }
 
 stock player_level_LoadLevelConfig()
 {
-	if (ini_Exist(LevelDB))
+	if (ini_fileExist(LevelDB))
 	{
-		new file_base_level = ini_Open(LevelDB);
+		new file_base_level = ini_openFile(LevelDB);
 		new temp[MAX_STRING];
 		for (new i = 0; i <= MAX_LEVEL; i++)
 		{
 			format(temp, sizeof(temp), "Level%d_Experience", i);
-			ini_GetInt(file_base_level, temp, LevelList[i][level_xp]);
+			ini_getInteger(file_base_level, temp, LevelList[i][level_xp]);
 			
 			format(temp, sizeof(temp), "Level%d_Rankname", i);
-			ini_Get(file_base_level, temp, LevelList[i][level_name], MAX_NAME);
+			ini_getString(file_base_level, temp, LevelList[i][level_name], MAX_NAME);
 		}
-		ini_Close(file_base_level);
+		ini_closeFile(file_base_level);
 	}
 	return 1;
 }
 
 stock player_level_SaveLevelConfig()
 {
-	new file_base_level = (ini_Exist(LevelDB)) ? ini_Open(LevelDB) : ini_Create(LevelDB);
+	new file_base_level = (ini_fileExist(LevelDB)) ? ini_openFile(LevelDB) : ini_createFile(LevelDB);
 	new temp[MAX_STRING];
 	for (new i = 0; i <= MAX_LEVEL; i++)
 	{
 	    format(temp, sizeof(temp), "Level%d_Rankname", i);
-		ini_Set(file_base_level, temp, LevelList[i][level_name]);
+		ini_setString(file_base_level, temp, LevelList[i][level_name]);
 		
 		format(temp, sizeof(temp), "Level%d_Experience", i);
-		ini_SetInt(file_base_level, temp, LevelList[i][level_xp]);
+		ini_setInteger(file_base_level, temp, LevelList[i][level_xp]);
 	}
-	ini_Close(file_base_level);
+	ini_closeFile(file_base_level);
 	return 1;
 }
 

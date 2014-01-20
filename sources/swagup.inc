@@ -90,16 +90,16 @@ static Float:swagup_Coords[][CoordInfo] = { // from CashBox script by Sandra
 
 stock swagup_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Swagup_IsEnabled", IsEnabled);
-	ini_GetInt(file_config, "Swagup_MoneyRate", MoneyRate);
-	ini_GetInt(file_config, "Swagup_XpRate", XpRate);
+	ini_getInteger(file_config, "Swagup_IsEnabled", IsEnabled);
+	ini_getInteger(file_config, "Swagup_MoneyRate", MoneyRate);
+	ini_getInteger(file_config, "Swagup_XpRate", XpRate);
 }
 
 stock swagup_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Swagup_IsEnabled", IsEnabled);
-	ini_SetInt(file_config, "Swagup_MoneyRate", MoneyRate);
-	ini_SetInt(file_config, "Swagup_XpRate", XpRate);
+	ini_setInteger(file_config, "Swagup_IsEnabled", IsEnabled);
+	ini_setInteger(file_config, "Swagup_MoneyRate", MoneyRate);
+	ini_setInteger(file_config, "Swagup_XpRate", XpRate);
 }
 
 stock swagup_OnGameModeInit()

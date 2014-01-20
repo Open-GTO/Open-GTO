@@ -507,15 +507,15 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		}
 		
 		format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, string);
-		if (!ini_Exist(filename_account))
+		if (!ini_fileExist(filename_account))
 		{
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[13][31]);
 			return 1;
 		}
 		
-		new file_account_db_ad = ini_Open(filename_account);
-		ini_Get(file_account_db_ad, "LastIP", LastIP);
-		ini_Close(file_account_db_ad);
+		new file_account_db_ad = ini_openFile(filename_account);
+		ini_getString(file_account_db_ad, "LastIP", LastIP);
+		ini_closeFile(file_account_db_ad);
 		
 		format(string, sizeof(string), lang_texts[13][32], string, LastIP);
 		SendClientMessage(playerid, COLOUR_RED, string);
@@ -566,8 +566,8 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		
 		new string[MAX_STRING];
 
-		if (ini_Exist(filename)) {
-			ini_Remov(filename);
+		if (ini_fileExist(filename)) {
+			ini_fileRemove(filename);
 			
 			format(string, sizeof(string), lang_texts[13][57], user);
 		} else {

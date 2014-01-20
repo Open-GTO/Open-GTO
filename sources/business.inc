@@ -18,14 +18,14 @@ new business_icon[ sizeof(Businesses) ], Text3D:Business3DTextLabel[ sizeof(Busi
 
 stock business_LoadConfig(file_config)
 {
-	ini_Get(file_config, "Business_DB", BusinessDB);
-	ini_GetFloat(file_config, "Business_DistanceOfShowLabel", BusinessDistanceOfShowLabel);
+	ini_getString(file_config, "Business_DB", BusinessDB);
+	ini_getFloat(file_config, "Business_DistanceOfShowLabel", BusinessDistanceOfShowLabel);
 }
 
 stock business_SaveConfig(file_config)
 {
-	ini_Set(file_config, "Business_DB", BusinessDB);
-	ini_SetFloat(file_config, "Business_DistanceOfShowLabel", BusinessDistanceOfShowLabel);
+	ini_setString(file_config, "Business_DB", BusinessDB);
+	ini_setFloat(file_config, "Business_DistanceOfShowLabel", BusinessDistanceOfShowLabel);
 }
 
 stock business_LoadAll()
@@ -34,24 +34,24 @@ stock business_LoadAll()
 	for (new i = 0;i < sizeof(Businesses); i++)
 	{
 		format(businessdbname, sizeof(businessdbname), "%s%s"GTO_FILES_FORMAT, BusinessDB, Businesses[i][Business_Name]);
-		if (!ini_Exist(businessdbname))
+		if (!ini_fileExist(businessdbname))
 		{
 			continue;
 		}
-		file_business = ini_Open(businessdbname);
-		ini_Get(file_business, "Name", Businesses[i][Business_Name], MAX_NAME);
-        ini_GetInt(file_business, "Cost", Businesses[i][Business_Cost]);
-        ini_GetInt(file_business, "Value", Businesses[i][Business_Value]);
-		ini_GetInt(file_business, "Level", Businesses[i][Business_Level]);
-        ini_Get(file_business, "Owner", Businesses[i][Business_Owner], MAX_NAME);
-        ini_GetInt(file_business, "Buyout", Businesses[i][Business_Buyout]);
-        ini_GetInt(file_business, "Vault", Businesses[i][Business_Vault]);
-        ini_GetInt(file_business, "Upgrade", Businesses[i][Business_Upgrade]);
-		ini_GetInt(file_business, "ShowIcon", Businesses[i][Business_ShowIcon]);
-		ini_GetFloat(file_business, "Coord_X", Businesses[i][Coord_X]);
-		ini_GetFloat(file_business, "Coord_Y", Businesses[i][Coord_Y]);
-		ini_GetFloat(file_business, "Coord_Z", Businesses[i][Coord_Z]);
-		ini_Close(file_business);
+		file_business = ini_openFile(businessdbname);
+		ini_getString(file_business, "Name", Businesses[i][Business_Name], MAX_NAME);
+        ini_getInteger(file_business, "Cost", Businesses[i][Business_Cost]);
+        ini_getInteger(file_business, "Value", Businesses[i][Business_Value]);
+		ini_getInteger(file_business, "Level", Businesses[i][Business_Level]);
+        ini_getString(file_business, "Owner", Businesses[i][Business_Owner], MAX_NAME);
+        ini_getInteger(file_business, "Buyout", Businesses[i][Business_Buyout]);
+        ini_getInteger(file_business, "Vault", Businesses[i][Business_Vault]);
+        ini_getInteger(file_business, "Upgrade", Businesses[i][Business_Upgrade]);
+		ini_getInteger(file_business, "ShowIcon", Businesses[i][Business_ShowIcon]);
+		ini_getFloat(file_business, "Coord_X", Businesses[i][Coord_X]);
+		ini_getFloat(file_business, "Coord_Y", Businesses[i][Coord_Y]);
+		ini_getFloat(file_business, "Coord_Z", Businesses[i][Coord_Z]);
+		ini_closeFile(file_business);
 	}
 	return;
 }
@@ -62,20 +62,20 @@ stock business_SaveAll()
 	for (new i = 0; i < sizeof(Businesses); i++)
 	{
 		format(businessdbname, sizeof(businessdbname), "%s%s"GTO_FILES_FORMAT, BusinessDB, Businesses[i][Business_Name]);
-		file_business = (!ini_Exist(businessdbname)) ? ini_Create(businessdbname) : ini_Open(businessdbname);
-		ini_Set(file_business, "Name", Businesses[i][Business_Name]);
-		ini_SetInt(file_business, "Cost", Businesses[i][Business_Cost]);
-        ini_SetInt(file_business, "Value", Businesses[i][Business_Value]);
-		ini_SetInt(file_business, "Level", Businesses[i][Business_Level]);
-		ini_Set(file_business, "Owner", Businesses[i][Business_Owner]);
-        ini_SetInt(file_business, "Buyout", Businesses[i][Business_Buyout]);
-        ini_SetInt(file_business, "Vault", Businesses[i][Business_Vault]);
-        ini_SetInt(file_business, "Upgrade", Businesses[i][Business_Upgrade]);
-		ini_SetInt(file_business, "ShowIcon", Businesses[i][Business_ShowIcon]);
-		ini_SetFloat(file_business, "Coord_X", Businesses[i][Coord_X]);
-		ini_SetFloat(file_business, "Coord_Y", Businesses[i][Coord_Y]);
-		ini_SetFloat(file_business, "Coord_Z", Businesses[i][Coord_Z]);
-		ini_Close(file_business);
+		file_business = (!ini_fileExist(businessdbname)) ? ini_createFile(businessdbname) : ini_openFile(businessdbname);
+		ini_setString(file_business, "Name", Businesses[i][Business_Name]);
+		ini_setInteger(file_business, "Cost", Businesses[i][Business_Cost]);
+        ini_setInteger(file_business, "Value", Businesses[i][Business_Value]);
+		ini_setInteger(file_business, "Level", Businesses[i][Business_Level]);
+		ini_setString(file_business, "Owner", Businesses[i][Business_Owner]);
+        ini_setInteger(file_business, "Buyout", Businesses[i][Business_Buyout]);
+        ini_setInteger(file_business, "Vault", Businesses[i][Business_Vault]);
+        ini_setInteger(file_business, "Upgrade", Businesses[i][Business_Upgrade]);
+		ini_setInteger(file_business, "ShowIcon", Businesses[i][Business_ShowIcon]);
+		ini_setFloat(file_business, "Coord_X", Businesses[i][Coord_X]);
+		ini_setFloat(file_business, "Coord_Y", Businesses[i][Coord_Y]);
+		ini_setFloat(file_business, "Coord_Z", Businesses[i][Coord_Z]);
+		ini_closeFile(file_business);
 	}
 	return;
 }
@@ -511,14 +511,14 @@ stock CheckBusinessOwners()
 		}
 		
 		format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, Businesses[i][Business_Owner]);
-		if (!ini_Exist(filename_account))
+		if (!ini_fileExist(filename_account))
 		{
 			continue;
 		}
 		
-		file_account = ini_Open(filename_account);
-		ini_Get(file_account, "Last_Login", account_lastlogin);
-		ini_Close(file_account);
+		file_account = ini_openFile(filename_account);
+		ini_getString(file_account, "Last_Login", account_lastlogin);
+		ini_closeFile(file_account);
 		
 		idx = 0;
 		account_day = strval( strcharsplit(account_lastlogin, idx, '.') );

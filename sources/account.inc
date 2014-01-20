@@ -17,12 +17,12 @@
 
 stock account_LoadConfig(file_config)
 {
-	ini_Get(file_config, "Account_DB", AccountDB);
+	ini_getString(file_config, "Account_DB", AccountDB);
 }
 
 stock account_SaveConfig(file_config)
 {
-	ini_Set(file_config, "Account_DB", AccountDB);
+	ini_setString(file_config, "Account_DB", AccountDB);
 }
 
 stock AccountSave(playerid)
@@ -37,20 +37,20 @@ stock account_save_db_ini(playerid)
 	new filename_account[MAX_STRING], temp[MAX_STRING], playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, playername);
-	new file_account = (!ini_Exist(filename_account)) ? ini_Create(filename_account) : ini_Open(filename_account);
+	new file_account = (!ini_fileExist(filename_account)) ? ini_createFile(filename_account) : ini_openFile(filename_account);
 	GetPVarString(playerid, "Password", temp, sizeof(temp));
-	ini_Set(file_account, "Password", temp);
+	ini_setString(file_account, "Password", temp);
 	GetPVarString(playerid, "Creation_Date", temp, sizeof(temp));
-	ini_Set(file_account, "Creation_Date", temp);
+	ini_setString(file_account, "Creation_Date", temp);
 	new day, month, year, seconds, minutes, hours;
 	gettime(hours, minutes, seconds);
 	getdate(year, month, day);
 	format(temp, sizeof(temp), "%02d.%02d.%d, %02d:%02d", day, month, year, hours, minutes);
-	ini_Set(file_account, "Last_Login", temp);
+	ini_setString(file_account, "Last_Login", temp);
 	new playerIP[MAX_IP];
 	GetPVarString(playerid, "IP", playerIP, sizeof(playerIP));
-	ini_Set(file_account, "LastIP", playerIP);
-	ini_Close(file_account);
+	ini_setString(file_account, "LastIP", playerIP);
+	ini_closeFile(file_account);
 	return 1;
 }
 
@@ -119,16 +119,16 @@ stock account_login_db_ini(playerid, password[])
 	new filename_account[MAX_STRING], temp[MAX_STRING], playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, playername);
-	if (!ini_Exist(filename_account)) return 1;
-	new file_account = ini_Open(filename_account);
+	if (!ini_fileExist(filename_account)) return 1;
+	new file_account = ini_openFile(filename_account);
 	new dbpassword[MAX_PASS_LEN];
-	ini_Get(file_account, "Password", dbpassword);
+	ini_getString(file_account, "Password", dbpassword);
 #if defined USE_PASSWORD_ENCRYPT
 	set(password, encrypt(password));
 #endif
 	if (strcmp(password, dbpassword, false))
 	{
-		ini_Close(file_account);
+		ini_closeFile(file_account);
 		GameMSG("player_login: failed: incorrect password by %s(%d)", playername, playerid);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][6]);
 		
@@ -143,16 +143,16 @@ stock account_login_db_ini(playerid, password[])
 	}
 	SetPVarString(playerid, "Password", password);
 	
-	ini_Get(file_account, "Creation_Date", temp);
+	ini_getString(file_account, "Creation_Date", temp);
 	SetPVarString(playerid, "Creation_Date", temp);
 	
 	new day, month, year, seconds, minutes, hours;
 	gettime(hours, minutes, seconds);
 	getdate(year, month, day);
 	format(temp, sizeof(temp), "%02d.%02d.%d, %02d:%02d", day, month, year, hours, minutes);
-	ini_Set(file_account, "Last_Login", temp);
+	ini_setString(file_account, "Last_Login", temp);
 	
-	ini_Close(file_account);
+	ini_closeFile(file_account);
 	return 1;
 }
 
@@ -161,7 +161,7 @@ stock account_ShowDialog(playerid)
 	new filename_account[MAX_STRING], message[MAX_STRING], playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, playername);
-	if (ini_Exist(filename_account))
+	if (ini_fileExist(filename_account))
 	{
 		if (GetPVarInt(playerid, "Player_Login_Attempt") > 0) {
 			format(message, sizeof(message), lang_texts[1][47], MAX_PLAYER_LOGIN_ATTEMPT - GetPVarInt(playerid, "Player_Login_Attempt"));

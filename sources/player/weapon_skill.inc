@@ -22,12 +22,12 @@ new Text:weapon_TextDraw_Level[MAX_PLAYERS];
 
 stock wskill_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Weapon_Skill_IsEnabled", wskill_Enabled);
+	ini_getInteger(file_config, "Weapon_Skill_IsEnabled", wskill_Enabled);
 }
 
 stock wskill_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Weapon_Skill_IsEnabled", wskill_Enabled);
+	ini_setInteger(file_config, "Weapon_Skill_IsEnabled", wskill_Enabled);
 }
 
 stock wskill_OnPlayerConnect(playerid)

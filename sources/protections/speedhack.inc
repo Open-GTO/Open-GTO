@@ -19,14 +19,14 @@ static
 
 stock pt_speed_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Protection_Speed_IsEnabled", IsEnabled);
-	ini_GetInt(file_config, "Protection_Speed_CheckTime", CheckTime);
+	ini_getInteger(file_config, "Protection_Speed_IsEnabled", IsEnabled);
+	ini_getInteger(file_config, "Protection_Speed_CheckTime", CheckTime);
 }
 
 stock pt_speed_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Protection_Speed_IsEnabled", IsEnabled);
-	ini_SetInt(file_config, "Protection_Speed_CheckTime", CheckTime);
+	ini_setInteger(file_config, "Protection_Speed_IsEnabled", IsEnabled);
+	ini_setInteger(file_config, "Protection_Speed_CheckTime", CheckTime);
 }
 
 stock pt_speed_OnGameModeInit()

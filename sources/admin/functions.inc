@@ -35,27 +35,27 @@ stock oBan_Check(playerid)
 	new filename[MAX_STRING];
 	format(filename, sizeof(filename), "%s%s"GTO_FILES_FORMAT, BanDB, oGetPlayerName(playerid));
 	
-	if (!ini_Exist(filename))
+	if (!ini_fileExist(filename))
 	{
 		new plrIP[MAX_IP];
 		GetPVarString(playerid, "IP", plrIP, sizeof(plrIP));
 		format(filename, sizeof(filename), "%s%s"GTO_FILES_FORMAT, BanDB, plrIP);
 		
-		if (!ini_Exist(filename))
+		if (!ini_fileExist(filename))
 		{
 			return 0;
 		}
 	}
 	
 	new date[MAX_NAME], time, admin[MAX_PLAYER_NAME+1], reason[MAX_SEND_SYMBOLS];
-	new file_ban_db = ini_Open(filename);
+	new file_ban_db = ini_openFile(filename);
 	
-	ini_Get(file_ban_db, "Date", date);
-	ini_GetInt(file_ban_db, "Time", time);
-	ini_Get(file_ban_db, "Admin", admin);
-	ini_Get(file_ban_db, "Reason", reason);
+	ini_getString(file_ban_db, "Date", date);
+	ini_getInteger(file_ban_db, "Time", time);
+	ini_getString(file_ban_db, "Admin", admin);
+	ini_getString(file_ban_db, "Reason", reason);
 	
-	ini_Close(file_ban_db);
+	ini_closeFile(file_ban_db);
 	
 	new idx = 0,
 		ban_day = strval( strcharsplit(date, idx, '.') ),
@@ -99,7 +99,7 @@ stock oBan_Check(playerid)
 	}
 	else
 	{
-		ini_Remov(filename);
+		ini_fileRemove(filename);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][52]);
 	}
 	return 1;
@@ -120,12 +120,12 @@ stock oBan(user[], reason[], adminid, time=0)
 	new filename_ban[MAX_STRING];
 	format(filename_ban, sizeof(filename_ban), "%s%s"GTO_FILES_FORMAT, BanDB, user);
 	
-	new file_ban_db = (!ini_Exist(filename_ban)) ? ini_Create(filename_ban) : ini_Open(filename_ban);
-	ini_Set(file_ban_db, "Date", date);
-	ini_SetInt(file_ban_db, "Time", time);
-	ini_Set(file_ban_db, "Admin", oGetPlayerName(adminid));
-	ini_Set(file_ban_db, "Reason", reason);
-	ini_Close(file_ban_db);
+	new file_ban_db = (!ini_fileExist(filename_ban)) ? ini_createFile(filename_ban) : ini_openFile(filename_ban);
+	ini_setString(file_ban_db, "Date", date);
+	ini_setInteger(file_ban_db, "Time", time);
+	ini_setString(file_ban_db, "Admin", oGetPlayerName(adminid));
+	ini_setString(file_ban_db, "Reason", reason);
+	ini_closeFile(file_ban_db);
 	
 	new string[MAX_STRING];
 	if (time == 0)

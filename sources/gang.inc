@@ -40,16 +40,16 @@ new Gangs[MAX_GANGS][GangInfo];
 
 stock gang_LoadConfig(file_config)
 {
-	ini_Get(file_config, "Gang_DB", GangDB);
-	ini_GetInt(file_config, "Gang_Create_Cost", Gang_Create_Cost);
-	ini_GetInt(file_config, "Gang_Colour_Cost", Gang_Colour_Cost);
+	ini_getString(file_config, "Gang_DB", GangDB);
+	ini_getInteger(file_config, "Gang_Create_Cost", Gang_Create_Cost);
+	ini_getInteger(file_config, "Gang_Colour_Cost", Gang_Colour_Cost);
 }
 
 stock gang_SaveConfig(file_config)
 {
-	ini_Set(file_config, "Gang_DB", GangDB);
-	ini_SetInt(file_config, "Gang_Create_Cost", Gang_Create_Cost);
-	ini_SetInt(file_config, "Gang_Colour_Cost", Gang_Colour_Cost);
+	ini_setString(file_config, "Gang_DB", GangDB);
+	ini_setInteger(file_config, "Gang_Create_Cost", Gang_Create_Cost);
+	ini_setInteger(file_config, "Gang_Colour_Cost", Gang_Colour_Cost);
 }
 
 stock FindGangFreeSlot()
@@ -88,25 +88,25 @@ stock gang_load_db_ini(gangid, gangname[])
 {
 	new filename_gang[MAX_STRING];
 	format(filename_gang, sizeof(filename_gang), "%s%s"GTO_FILES_FORMAT, GangDB, gangname);
-	if (!ini_Exist(filename_gang)) return;
-	new file_gang = ini_Open(filename_gang);
-	ini_Get(file_gang, "Name", Gangs[gangid][gang_name], MAX_NAME);
-	ini_Get(file_gang, "Motd", Gangs[gangid][gang_motd], MAX_STRING);
-	ini_GetInt(file_gang, "Colour", Gangs[gangid][gang_colour]);
-	ini_GetInt(file_gang, "Kills", Gangs[gangid][gang_kills]);
-	ini_GetInt(file_gang, "Score", Gangs[gangid][gang_score]);
-	ini_GetInt(file_gang, "XP", Gangs[gangid][gang_xp]);
-	ini_GetInt(file_gang, "Level", Gangs[gangid][gang_level]);
-	ini_GetInt(file_gang, "Money", Gangs[gangid][gang_money]);
-	ini_GetInt(file_gang, "House", Gangs[gangid][gang_house]);
+	if (!ini_fileExist(filename_gang)) return;
+	new file_gang = ini_openFile(filename_gang);
+	ini_getString(file_gang, "Name", Gangs[gangid][gang_name], MAX_NAME);
+	ini_getString(file_gang, "Motd", Gangs[gangid][gang_motd], MAX_STRING);
+	ini_getInteger(file_gang, "Colour", Gangs[gangid][gang_colour]);
+	ini_getInteger(file_gang, "Kills", Gangs[gangid][gang_kills]);
+	ini_getInteger(file_gang, "Score", Gangs[gangid][gang_score]);
+	ini_getInteger(file_gang, "XP", Gangs[gangid][gang_xp]);
+	ini_getInteger(file_gang, "Level", Gangs[gangid][gang_level]);
+	ini_getInteger(file_gang, "Money", Gangs[gangid][gang_money]);
+	ini_getInteger(file_gang, "House", Gangs[gangid][gang_house]);
 	for (new gangmember = 0, string[MAX_STRING]; gangmember < MAX_GANG_SIZE; gangmember++)
 	{
 		GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
 		
 		format(string, sizeof(string), "Member%d", gangmember);
-		ini_Get(file_gang, string, GangMemberInfo[gangid][gangmember][member_name], MAX_PLAYER_NAME+1);
+		ini_getString(file_gang, string, GangMemberInfo[gangid][gangmember][member_name], MAX_PLAYER_NAME+1);
 	}
-	ini_Close(file_gang);
+	ini_closeFile(file_gang);
 	return;
 }
 
@@ -569,7 +569,7 @@ stock GangRemoveMember(gangid, kickplayername[])
 			GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
 		}
 		format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, GangDB, Gangs[gangid][gang_name]);
-		ini_Remov(string);
+		ini_fileRemove(string);
 		Gangs[gangid][gang_active] = false;
 		return 1;
 	}
@@ -613,7 +613,7 @@ stock GangCreate(leaderid, gangname[], gangcolour)
 	if (!IsPlayerLogin(leaderid)) return 0;
 	new filename_gang[MAX_STRING];
 	format(filename_gang, sizeof(filename_gang), "%s%s"GTO_FILES_FORMAT, GangDB, gangname);
-	if (ini_Exist(filename_gang))
+	if (ini_fileExist(filename_gang))
 	{
 		SendClientMessage(leaderid, COLOUR_RED, lang_texts[6][73]);
 		return 0;
@@ -702,22 +702,22 @@ stock gang_save_db_ini(gangid)
 {
 	new filename_gang[MAX_STRING];
 	format(filename_gang, sizeof(filename_gang), "%s%s"GTO_FILES_FORMAT, GangDB, Gangs[gangid][gang_name]);
-	new file_gang = (!ini_Exist(filename_gang)) ? ini_Create(filename_gang) : ini_Open(filename_gang);
-	ini_Set(file_gang, "Name", Gangs[gangid][gang_name]);
-	ini_Set(file_gang, "Motd", Gangs[gangid][gang_motd]);
-	ini_SetInt(file_gang, "Colour", Gangs[gangid][gang_colour]);
-	ini_SetInt(file_gang, "Kills", Gangs[gangid][gang_kills]);
-	ini_SetInt(file_gang, "Score", Gangs[gangid][gang_score]);
-	ini_SetInt(file_gang, "XP", Gangs[gangid][gang_xp]);
-	ini_SetInt(file_gang, "Level", Gangs[gangid][gang_level]);
-	ini_SetInt(file_gang, "Money", Gangs[gangid][gang_money]);
-	ini_SetInt(file_gang, "House", Gangs[gangid][gang_house]);
+	new file_gang = (!ini_fileExist(filename_gang)) ? ini_createFile(filename_gang) : ini_openFile(filename_gang);
+	ini_setString(file_gang, "Name", Gangs[gangid][gang_name]);
+	ini_setString(file_gang, "Motd", Gangs[gangid][gang_motd]);
+	ini_setInteger(file_gang, "Colour", Gangs[gangid][gang_colour]);
+	ini_setInteger(file_gang, "Kills", Gangs[gangid][gang_kills]);
+	ini_setInteger(file_gang, "Score", Gangs[gangid][gang_score]);
+	ini_setInteger(file_gang, "XP", Gangs[gangid][gang_xp]);
+	ini_setInteger(file_gang, "Level", Gangs[gangid][gang_level]);
+	ini_setInteger(file_gang, "Money", Gangs[gangid][gang_money]);
+	ini_setInteger(file_gang, "House", Gangs[gangid][gang_house]);
 	for (new gangmember = 0, string[MAX_STRING]; gangmember < MAX_GANG_SIZE; gangmember++)
 	{
 		format(string, sizeof(string), "Member%d", gangmember);
-		ini_Set(file_gang, string, GangMemberInfo[gangid][gangmember][member_name]);
+		ini_setString(file_gang, string, GangMemberInfo[gangid][gangmember][member_name]);
 	}
-	ini_Close(file_gang);
+	ini_closeFile(file_gang);
 }
 
 stock GangUnload(gangid)

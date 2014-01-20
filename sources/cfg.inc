@@ -6,11 +6,11 @@
 
 stock cfg_LoadConfigs()
 {
-	if (!ini_Exist(ConfigDB)) {
+	if (!ini_fileExist(ConfigDB)) {
 		return 0;
 	}
 	
-	new file_config = ini_Open(ConfigDB);
+	new file_config = ini_openFile(ConfigDB);
 
 	lang_LoadConfig(file_config);
 	logging_LoadConfig(file_config);
@@ -50,17 +50,17 @@ stock cfg_LoadConfigs()
 	pt_health_LoadConfig(file_config);
 	pt_armour_LoadConfig(file_config);
 
-	ini_Close(file_config);
+	ini_closeFile(file_config);
 	return 1;
 }
 
 stock cfg_SaveConfigs()
 {
 	new file_config;
-	if (ini_Exist(ConfigDB)) {
-		file_config = ini_Open(ConfigDB);
+	if (ini_fileExist(ConfigDB)) {
+		file_config = ini_openFile(ConfigDB);
 	} else {
-		file_config = ini_Create(ConfigDB);
+		file_config = ini_createFile(ConfigDB);
 	}
 	
 	lang_SaveConfig(file_config);
@@ -101,5 +101,5 @@ stock cfg_SaveConfigs()
 	pt_health_SaveConfig(file_config);
 	pt_armour_SaveConfig(file_config);
 
-	ini_Close(file_config);
+	ini_closeFile(file_config);
 }

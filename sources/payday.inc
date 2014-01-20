@@ -23,16 +23,16 @@ new BasePayMoney = PAYDAY_BASE_PAY,
 
 stock payday_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Payday_Base", BasePayMoney);
-	ini_GetInt(file_config, "Payday_Cutoff", PayCutoff);
-	ini_GetInt(file_config, "Payday_BaseXP", BasePayXP);
+	ini_getInteger(file_config, "Payday_Base", BasePayMoney);
+	ini_getInteger(file_config, "Payday_Cutoff", PayCutoff);
+	ini_getInteger(file_config, "Payday_BaseXP", BasePayXP);
 }
 
 stock payday_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Payday_Base", BasePayMoney);
-	ini_SetInt(file_config, "Payday_Cutoff", PayCutoff);
-	ini_SetInt(file_config, "Payday_BaseXP", BasePayXP);
+	ini_setInteger(file_config, "Payday_Base", BasePayMoney);
+	ini_setInteger(file_config, "Payday_Cutoff", PayCutoff);
+	ini_setInteger(file_config, "Payday_BaseXP", BasePayXP);
 }
 
 stock PayDay()

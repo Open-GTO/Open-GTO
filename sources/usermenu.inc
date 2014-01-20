@@ -875,7 +875,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			
 			format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, AccountDB, Account_NewName);
 			// если файл есть, то выходим сразу-же
-			if (ini_Exist(string))
+			if (ini_fileExist(string))
 			{
 				return show_User_Menu_Dialog(playerid, "Изменение ника", lang_texts[1][9]);
 			}
@@ -908,14 +908,14 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			AccountSave(playerid);
 			
 			format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, AccountDB, Account_LastName);
-			if (ini_Exist(string))
+			if (ini_fileExist(string))
 			{
-				ini_Remov(string);
+				ini_fileRemove(string);
 			}
 			format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, PlayerDB, Account_LastName);
-			if (ini_Exist(string))
+			if (ini_fileExist(string))
 			{
-				ini_Remov(string);
+				ini_fileRemove(string);
 			}
 			
 			oGivePlayerMoney(playerid,-CHANGE_NICK_COST, 1);

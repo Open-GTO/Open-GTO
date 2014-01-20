@@ -259,19 +259,9 @@ new Text:clickText[clickText_Info];
 #define SPAWN_HOUSE_NONE	-1
 #define SPAWN_HOUSE_GANG	-2
 
-// 'переименование' функций mxINI
-#define ini_Create		ini_createFile
-#define ini_Open		ini_openFile
-#define ini_Close		ini_closeFile
-#define ini_Set			ini_setString
-#define ini_SetInt		ini_setInteger
-#define ini_SetFloat	ini_setFloat
-#define ini_Get			ini_getString
-#define ini_GetInt		ini_getInteger
-#define ini_GetFloat	ini_getFloat
-#define ini_Remove		ini_removeKey
-#define ini_Remov		fremove
-#define ini_Exist		fexist
+// дополнительные функции 'для' mxINI
+#define ini_fileRemove	fremove
+#define ini_fileExist	fexist
 
 // цвета
 #define COLOUR_GREY 0xAFAFAFAA // grey

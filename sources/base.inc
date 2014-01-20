@@ -44,14 +44,14 @@ enum CoordInfo {
 
 stock base_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Real_Time", RealTime);
-	ini_GetInt(file_config, "Real_Time_Offset", RealTimeOffset);
+	ini_getInteger(file_config, "Real_Time", RealTime);
+	ini_getInteger(file_config, "Real_Time_Offset", RealTimeOffset);
 }
 
 stock base_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Real_Time", RealTime);
-	ini_SetInt(file_config, "Real_Time_Offset", RealTimeOffset);
+	ini_setInteger(file_config, "Real_Time", RealTime);
+	ini_setInteger(file_config, "Real_Time_Offset", RealTimeOffset);
 }
 
 stock base_OnGameModeInit()

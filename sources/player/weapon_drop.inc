@@ -26,12 +26,12 @@ static weapons_dropped[MAX_DROPPED_WEAPONS][wd_Info];
 
 stock wdrop_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Weapon_Drop_IsEnabled", wdrop_Enabled);
+	ini_getInteger(file_config, "Weapon_Drop_IsEnabled", wdrop_Enabled);
 }
 
 stock wdrop_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Weapon_Drop_IsEnabled", wdrop_Enabled);
+	ini_setInteger(file_config, "Weapon_Drop_IsEnabled", wdrop_Enabled);
 }
 
 stock wdrop_OnGameModeInit()

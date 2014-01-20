@@ -2321,12 +2321,12 @@ stock LoadVehicles()
 
 stock vehicles_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Vehicle_RespawnTime", CarsReSpawnTime);
+	ini_getInteger(file_config, "Vehicle_RespawnTime", CarsReSpawnTime);
 }
 
 stock vehicles_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Vehicle_RespawnTime", CarsReSpawnTime);
+	ini_setInteger(file_config, "Vehicle_RespawnTime", CarsReSpawnTime);
 }
 
 stock vehicles_OnGameModeInit()

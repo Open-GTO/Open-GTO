@@ -19,14 +19,14 @@ static
 
 stock pt_ping_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Protection_Idle_IsEnabled", IsEnabled);
-	ini_GetInt(file_config, "Protection_Idle_MaxPing", MaxPing);
+	ini_getInteger(file_config, "Protection_Idle_IsEnabled", IsEnabled);
+	ini_getInteger(file_config, "Protection_Idle_MaxPing", MaxPing);
 }
 
 stock pt_ping_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Protection_Idle_IsEnabled", IsEnabled);
-	ini_SetInt(file_config, "Protection_Idle_MaxPing", MaxPing);
+	ini_setInteger(file_config, "Protection_Idle_IsEnabled", IsEnabled);
+	ini_setInteger(file_config, "Protection_Idle_MaxPing", MaxPing);
 }
 
 stock pt_ping_Check(playerid)

@@ -17,12 +17,12 @@ static IsEnabled = ANTI_MONEY_HACK_ENABLED;
 
 stock pt_money_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Protection_Money_IsEnabled", IsEnabled);
+	ini_getInteger(file_config, "Protection_Money_IsEnabled", IsEnabled);
 }
 
 stock pt_money_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Protection_Money_IsEnabled", IsEnabled);
+	ini_setInteger(file_config, "Protection_Money_IsEnabled", IsEnabled);
 }
 
 stock pt_money_Sync(playerid)

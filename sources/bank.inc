@@ -23,14 +23,14 @@ new Banks[][CoordInfo] = {
 
 stock bank_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Bank_ProfitCount", ProfitCount);
-	ini_GetInt(file_config, "Bank_MaxMoney", MAX_BANK);
+	ini_getInteger(file_config, "Bank_ProfitCount", ProfitCount);
+	ini_getInteger(file_config, "Bank_MaxMoney", MAX_BANK);
 }
 
 stock bank_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Bank_ProfitCount", ProfitCount);
-	ini_SetInt(file_config, "Bank_MaxMoney", MAX_BANK);
+	ini_setInteger(file_config, "Bank_ProfitCount", ProfitCount);
+	ini_setInteger(file_config, "Bank_MaxMoney", MAX_BANK);
 }
 
 stock bank_OnGameModeInit()

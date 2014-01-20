@@ -25,18 +25,18 @@ static
 
 stock lottery_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Lottery_IsEnabled", LotteryEnabled);
-	ini_GetInt(file_config, "Lottery_Time", LotteryTime);
-	ini_GetInt(file_config, "Lottery_Win_Money", LotteryWinMoney);
-	ini_GetInt(file_config, "Lottery_Ticket_Cost", LotteryTicketCost);
+	ini_getInteger(file_config, "Lottery_IsEnabled", LotteryEnabled);
+	ini_getInteger(file_config, "Lottery_Time", LotteryTime);
+	ini_getInteger(file_config, "Lottery_Win_Money", LotteryWinMoney);
+	ini_getInteger(file_config, "Lottery_Ticket_Cost", LotteryTicketCost);
 }
 
 stock lottery_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Lottery_IsEnabled", LotteryEnabled);
-	ini_SetInt(file_config, "Lottery_Time", LotteryTime);
-	ini_SetInt(file_config, "Lottery_Win_Money", LotteryWinMoney);
-	ini_SetInt(file_config, "Lottery_Ticket_Cost", LotteryTicketCost);
+	ini_setInteger(file_config, "Lottery_IsEnabled", LotteryEnabled);
+	ini_setInteger(file_config, "Lottery_Time", LotteryTime);
+	ini_setInteger(file_config, "Lottery_Win_Money", LotteryWinMoney);
+	ini_setInteger(file_config, "Lottery_Ticket_Cost", LotteryTicketCost);
 }
 
 stock lottery_OnPlayerCommandText(playerid, text[])

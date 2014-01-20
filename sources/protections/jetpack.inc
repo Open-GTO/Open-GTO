@@ -17,12 +17,12 @@ static IsEnabled = ANTI_JETPACK_ENABLED;
 
 stock pt_jetpack_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "Protection_JetPack_IsEnabled", IsEnabled);
+	ini_getInteger(file_config, "Protection_JetPack_IsEnabled", IsEnabled);
 }
 
 stock pt_jetpack_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "Protection_JetPack_IsEnabled", IsEnabled);
+	ini_setInteger(file_config, "Protection_JetPack_IsEnabled", IsEnabled);
 }
 
 stock pt_jetpack_Check(playerid)

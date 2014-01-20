@@ -18,12 +18,12 @@ new lang_texts[20][100][MAX_STRING+10];
 
 stock lang_LoadConfig(file_config)
 {
-    ini_Get(file_config, "Language", lang);
+    ini_getString(file_config, "Language", lang);
 }
 
 stock lang_SaveConfig(file_config)
 {
-	ini_Set(file_config, "Language", lang);
+	ini_setString(file_config, "Language", lang);
 }
 
 stock lang_OnGameModeInit()

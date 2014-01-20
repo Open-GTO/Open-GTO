@@ -69,12 +69,12 @@ static IsEnabled = QUIDEMSYS_ENABLED;
 
 stock quidemsys_LoadConfig(file_config)
 {
-	ini_GetInt(file_config, "QuidemSys_Enabled", IsEnabled);
+	ini_getInteger(file_config, "QuidemSys_Enabled", IsEnabled);
 }
 
 stock quidemsys_SaveConfig(file_config)
 {
-	ini_SetInt(file_config, "QuidemSys_Enabled", IsEnabled);
+	ini_setInteger(file_config, "QuidemSys_Enabled", IsEnabled);
 }
 
 stock quidemsys_OnGameModeInit()
