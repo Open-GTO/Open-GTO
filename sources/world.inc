@@ -33,7 +33,7 @@ public WorldSave(necessarily) // save all
 		emptyServerSaved = 0;
 	}
 	
-	new starttime = gettime();
+	new starttime = GetTickCount();
 
 	foreach (new id : Player) {
 		PlayerSave(id);
@@ -53,7 +53,7 @@ public WorldSave(necessarily) // save all
 	gang_SaveAll();
 	groundhold_SaveAll();
 	
-	GameMSG("World save complete! Time taken: %d seconds.", (gettime() - starttime));
+	GameMSG("World save complete! Time taken: %d milliseconds.", (GetTickCount() - starttime));
 	return 1;
 }
 
