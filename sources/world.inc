@@ -61,7 +61,7 @@ public WorldSave(necessarily) // save all
 	wdrop_SaveConfig();
 	wskill_SaveConfig();
 	// protections
-	AntiIdleSaveConfig();
+	pt_idle_SaveConfig();
 	AntiHightPingSaveConfig();
 	AntiSpeedHackSaveConfig();
 	AntiWeaponHackSaveConfig();
@@ -148,7 +148,7 @@ public OneMinuteTimer()
 		{
 			JailPlayerTimer(playerid);
 			MutePlayerTimer(playerid);
-			AntiIdlePlayerTimer(playerid);
+			pt_idle_PlayerTimer(playerid);
 			Gang_GiveXp(playerid);
 		}
 	}

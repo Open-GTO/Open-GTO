@@ -159,7 +159,7 @@ public OnGameModeInit()
 	wshop_OnGameModeInit();
 	//
 	level_OnGameModeInit();
-	antiidle_OnGameModeInit();
+	pt_idle_OnGameModeInit();
 	antihightping_OnGameModeInit();
 	health_OnGameModeInit();
 	aah_OnGameModeInit();
