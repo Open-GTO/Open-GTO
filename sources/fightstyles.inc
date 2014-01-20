@@ -112,9 +112,9 @@ stock GetPlayerFightTrenerID(playerid)
 stock IsPlayerAtFightTrener(playerid)
 {
 	if (GetPlayerFightTrenerID(playerid) == -1) {
-		return 1;
+		return 0;
 	}
-	return 0;
+	return 1;
 }
 
 // выбор стиля в меню игрока
