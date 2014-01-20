@@ -42,6 +42,7 @@ static click_dialogArray[][click_dialogArray_Info] = {
 	{DIALOG_STYLE_NONE, "Телепортировать к себе", "", "", "", STATUS_LEVEL_ADMIN, "click_TeleportToMe"},
 	{DIALOG_STYLE_INPUT, "Изменить здоровье", "Введите значение", "Изменить", "Назад", STATUS_LEVEL_ADMIN, "click_SetHealth"},
 	{DIALOG_STYLE_INPUT, "Изменить броню", "Введите значение", "Изменить", "Назад", STATUS_LEVEL_ADMIN, "click_SetArmour"},
+	{DIALOG_STYLE_INPUT, "Изменить уровень", "Введите новый уровень", "Изменить", "Назад", STATUS_LEVEL_ADMIN, "click_SetLevel"},
 	{DIALOG_STYLE_INPUT, "Дать опыт", "Введите количество опыта", "Дать", "Назад", STATUS_LEVEL_ADMIN, "click_GiveXP"},
 	{DIALOG_STYLE_INPUT, "Дать денег", "Введите количество денег", "Дать", "Назад", STATUS_LEVEL_ADMIN, "click_GiveMoney"},
 	{DIALOG_STYLE_NONE, "Заморозить", "", "", "", STATUS_LEVEL_ADMIN, "click_FreezePlayer"},
@@ -476,6 +477,32 @@ public click_SetArmour(playerid, clickedid, listitem, inputtext[])
 	}
 
 	oSetPlayerArmour(clickedid, armour);
+	return 1;
+}
+
+forward click_SetLevel(playerid, clickedid, listitem, inputtext[]);
+public click_SetLevel(playerid, clickedid, listitem, inputtext[])
+{
+	if (!IsPlayerConnected(clickedid) || (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid))) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		return 0;
+	}
+
+	new newlvl = strval(inputtext);
+	if (newlvl > MAX_LEVEL || newlvl < 0) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][33]);
+		return 0;
+	}
+
+	new oldlvl = GetPlayerLevel(clickedid);
+	GivePlayerXP(clickedid, LevelList[newlvl][level_xp] - GetPlayerXP(clickedid));
+
+	new string[MAX_STRING];
+	format(string, sizeof(string), lang_texts[12][31], oGetPlayerName(playerid), newlvl);
+	SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
+
+	format(string, sizeof(string), lang_texts[12][32], oGetPlayerName(clickedid), newlvl, oldlvl);
+	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
 
