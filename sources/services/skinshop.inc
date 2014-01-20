@@ -130,8 +130,7 @@ stock sshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]
 			return 0;
 		}
 		
-		SetPlayerSkin(playerid, GetPVarInt(playerid, "SkinShop_CurrentSkin"));
-		SetPlayerSkinModel(playerid, GetPVarInt(playerid, "SkinShop_CurrentSkin"));
+		oSetPlayerSkin(playerid, GetPVarInt(playerid, "SkinShop_CurrentSkin"));
 		SkinShop_DeletePVars(playerid);
 		oGivePlayerMoney(playerid, -SKINS_COST);
 		SendClientMessage(playerid, 0, lang_texts[17][25]);

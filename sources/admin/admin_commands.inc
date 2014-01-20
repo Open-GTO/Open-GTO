@@ -17,7 +17,7 @@
 #include "race"
 #include "payday"
 
-new Float:PointsH[][CoordInfo] = {
+new Float:tele_points[][CoordInfo] = {
 {2647.597656,-2003.409667, 13.382812},		//1 LL tune
 {1044.264282,-1048.066284, 31.700469},
 {-2689.126220, 212.037155, 4.328125},		//0 WAA tune
@@ -58,7 +58,10 @@ new Float:PointsH[][CoordInfo] = {
 
 stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 {
-	if (!IsPlayerRconAdmin(playerid)) return 0;
+	if (!IsPlayerRconAdmin(playerid)) {
+		return 0;
+	}
+
 	new cmd[20], idx;
 	cmd = strcharsplit(text, idx, ' ');
 	
@@ -72,6 +75,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][6]);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/about", true))
 	{
 		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][55]);
@@ -81,220 +85,246 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][54]);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/carinfo", true))
 	{
 		new veh_id = GetPlayerVehicleID(playerid);
-		if (veh_id == 0)
-		{
+		if (veh_id == 0) {
 			return 1;
 		}
-		new Float:x3, Float:y3, Float:z3, Float:zangle3, Float:health3;
-		GetVehiclePos(veh_id, x3, y3, z3);
-		GetVehicleZAngle(veh_id, zangle3);
-		GetVehicleHealth(veh_id, health3);
+
+		new Float:x, Float:y, Float:z, Float:a, Float:health;
+		GetVehiclePos(veh_id, x, y, z);
+		GetVehicleZAngle(veh_id, a);
+		GetVehicleHealth(veh_id, health);
+
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[12][9], GetVehicleName( GetVehicleModel(veh_id) ), veh_id, health3, x3, y3, z3, zangle3);
+		format(string, sizeof(string), lang_texts[12][9], GetVehicleName( GetVehicleModel(veh_id) ), veh_id, health, x, y, z, a);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		return 1;
 	}
-	if (!strcmp(cmd, "/carrep", true))
+
+	if (!strcmp(cmd, "/carrep", true) || !strcmp(cmd, "/repair", true)))
 	{
 		new veh_id = GetPlayerVehicleID(playerid);
-		if (veh_id == 0)
-		{
+		if (veh_id == 0) {
 			return 1;
 		}
+
 		RepairVehicle(veh_id);
+
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[12][10], veh_id);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/go", true))
 	{
-		new pointt = strval(strcharsplit(text, idx, ' '));
-		if (pointt < 0 || pointt >= sizeof(PointsH)) return 1;
-		
-		if (IsPlayerInAnyVehicle(playerid))
-		{
-			oSetVehiclePos( GetPlayerVehicleID(playerid), PointsH[pointt][Coord_X], PointsH[pointt][Coord_Y], PointsH[pointt][Coord_Z]);
+		new point = strval(strcharsplit(text, idx, ' '));
+		if (point < 0 || point > sizeof(tele_points) - 1) {
+			return 1;
 		}
-		else
-		{
-			oSetPlayerPos(playerid, PointsH[pointt][Coord_X], PointsH[pointt][Coord_Y], PointsH[pointt][Coord_Z]);
+		
+		new vehicleid = GetPlayerVehicleID(playerid);
+		if (vehicleid != 0) {
+			oSetVehiclePos(vehicleid, tele_points[point][Coord_X], tele_points[point][Coord_Y], tele_points[point][Coord_Z]);
+		} else {
+			oSetPlayerPos(playerid, tele_points[point][Coord_X], tele_points[point][Coord_Y], tele_points[point][Coord_Z]);
 		}
 		
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[12][16], pointt);
+		format(string, sizeof(string), lang_texts[12][16], point);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/an", true))
 	{
 		new string[MAX_STRING];
 		string = strcharsplit(text, idx, ' ');
 
-		if (!IsNumeric(string)) {
-			SendClientMessage(playerid, COLOUR_WHITE, "Применение: /an <тип[1-6]> <сообщение>");
+		if (!IsNumeric(string) || strlen(string) <= 0) {
+			SendClientMessage(playerid, COLOUR_WHITE, "Применение: /an <тип[0-6]> <сообщение>");
 			return 1;
 		}
 
 		new mtype = strval(string);
 		if (mtype < 0 || mtype > 6) {
-			SendClientMessage(playerid, COLOUR_WHITE, "Применение: /an <1-6> <сообщение>");
+			SendClientMessage(playerid, COLOUR_WHITE, "Применение: /an <0-6> <сообщение>");
 			return 1;
 		}
 
-		set(string, text[idx+1]);
+		set(string, text[idx + 1]);
 
 		GameTextForAll(string, 5000, mtype);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/payday", true))
 	{
 		GivePay();
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][90]);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/boom", true))
 	{
-		new bomamount = strval(strcharsplit(text, idx, ' '));
-		new Float:X, Float:Y, Float:Z;
-		GetPlayerPos(playerid, X, Y, Z);
-		CreateExplosion(X+20, Y, Z+2, bomamount, 30);
+		new type = strval(strcharsplit(text, idx, ' '));
+		if (type < 0 || type > 13) {
+			SendClientMessage(playerid, COLOUR_RED, "Применение: /boom <тип(0-13)>");
+			return 1;
+		}
+
+		new Float:x, Float:y, Float:z;
+		GetPlayerPos(playerid, x, y, z);
+		CreateExplosion(x + 20, y, z + 2, type, 30);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/setskin", true))
 	{
-		SendMessageToAdmins(playerid, COLOUR_LIGHTGREEN, text);
 		new receiverid = strval(strcharsplit(text, idx, ' '));
-		if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid)))
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+			return 1;
 		}
 
-		new sknamount = strval(strcharsplit(text, idx, ' '));
-		if (!IsSkinValid(sknamount))
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][41]);
+		new skinid = strval(strcharsplit(text, idx, ' '));
+		if (!IsSkinValid(skinid)) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[12][41]);
+			return 1;
 		}
 
-		new sknkeep = GetPlayerSkin(receiverid);
-		SetPlayerSkin(receiverid, sknamount);
+		new oldskin = GetPlayerSkin(receiverid);
+		oSetPlayerSkin(receiverid, skinid);
+
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[12][42] , oGetPlayerName(playerid), sknamount);
+		format(string, sizeof(string), lang_texts[12][42] , oGetPlayerName(playerid), skinid);
 		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
-		format(string, sizeof(string), lang_texts[12][43] , oGetPlayerName(receiverid), sknamount, sknkeep);
+
+		format(string, sizeof(string), lang_texts[12][43] , oGetPlayerName(receiverid), skinid, oldskin);
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
-	
-		SetPlayerSkinModel(playerid, sknamount);
-		player_save_db_ini(receiverid);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/ssay", true))
 	{
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[12][1], text[idx+1]);
+		format(string, sizeof(string), lang_texts[12][1], text[idx + 1]);
 		SendClientMessageToAll(COLOUR_YELLOW, string);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/skydiveall", true))
 	{
-		new string[MAX_STRING];
-		new Float:playerx, Float:playery, Float:playerz;
-		foreach (Player, id)
-		{
-			if (!IsPlayerJailed(id) && !IsPlayerInAnyDM(id))
-			{
-				oGivePlayerWeapon(id, 46, 1);
-				GetPlayerPos(id, playerx, playery, playerz);
-				PlayerPlaySound(id, 1058, 0, 0, 0);
-				oSetPlayerPos(id, playerx, playery, playerz+1200);
-			}
-			if (IsPlayerJailed(id))
-			{
+		new string[MAX_STRING],
+			Float:playerx,
+			Float:playery,
+			Float:playerz;
+
+		foreach (new id : Player) {
+			if (IsPlayerJailed(id)) {
 				SendClientMessage(id, COLOUR_LIGHTRED, lang_texts[1][22]);
+				continue;
+			}
+
+			if (!IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id)) {
+				oGivePlayerWeapon(id, 46, 1);
+				PlayerPlaySound(id, 1058, 0, 0, 0);
+
+				GetPlayerPos(id, playerx, playery, playerz);
+				oSetPlayerPos(id, playerx, playery, playerz + 1200);
 			}
 		}
+
 		SendClientMessageToAll(COLOUR_WHITE, lang_texts[1][19]);
-		format(string, sizeof(string), lang_texts[1][20]);
-		GameTextForAll(string, 5000, 6);
+		GameTextForAll(lang_texts[1][20], 5000, 6);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/disarm", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx, ' '));
-		if (!IsPlayerConnected(receiverid) && !IsPlayerInAnyDM(receiverid))
-		{
+		if (!IsPlayerConnected(receiverid) && !IsPlayerInAnyDM(receiverid)) {
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 
 		oResetPlayerWeapons(receiverid);
 		DropAmmo(receiverid);
+
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[12][48] , oGetPlayerName(playerid));
 		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+
 		format(string, sizeof(string), lang_texts[12][49] , oGetPlayerName(receiverid));
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/disarmall", true))
 	{
 		new string[MAX_STRING];
-		foreach (Player, id)
-		{
-			if (id == playerid || IsPlayerJailed(id) || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
-			{
+
+		foreach (new id : Player) {
+			if (id == playerid || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id)) {
 				continue;
 			}
+
 			oResetPlayerWeapons(id);
 			DropAmmo(id);
+
 			format(string, sizeof(string), lang_texts[12][48], oGetPlayerName(playerid));	//игроку
 			SendClientMessage(id, COLOUR_XP_GOOD, string);
 		}
-		format(string, sizeof(string), lang_texts[12][75]);
-		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+
+		SendClientMessage(playerid, COLOUR_XP_GOOD, lang_texts[12][75]);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/paralyzeall", true))
 	{
 		new string[MAX_STRING];
-		foreach (Player, id)
-		{
-			if (id == playerid || IsPlayerJailed(id) || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
-			{
+		format(string, sizeof(string), lang_texts[12][54], oGetPlayerName(playerid));
+
+		foreach (new id : Player) {
+			if (id == playerid || IsPlayerJailed(id) || IsPlayerInAnyDM(id) || IsPlayerInAnyRace(id) || IsPlayerRconAdmin(id)) {
 				continue;
 			}
+
 			TogglePlayerControllable(id, 0);
-			format(string, sizeof(string), lang_texts[12][54] , oGetPlayerName(playerid));//игроку
 			SendClientMessage(id, COLOUR_XP_GOOD, string);
 		}
-		format(string, sizeof(string), lang_texts[12][76]);
-		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+
+		SendClientMessage(playerid, COLOUR_XP_GOOD, lang_texts[12][76]);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/deparalyzeall", true))
 	{
 		new string[MAX_STRING];
-		foreach (Player, id)
+		format(string, sizeof(string), lang_texts[12][56], oGetPlayerName(playerid));
+
+		foreach (new id : Player)
 		{
-			if (id == playerid || IsPlayerJailed(id) || IsPlayerInAnyDM(id) || IsPlayerRconAdmin(id))
-			{
+			if (id == playerid || IsPlayerJailed(id) || IsPlayerInAnyDM(id) || IsPlayerInAnyRace(id) || IsPlayerRconAdmin(id)) {
 				continue;
 			}
+
 			TogglePlayerControllable(id, 1);
-			format(string, sizeof(string), lang_texts[12][56], oGetPlayerName(playerid));
 			SendClientMessage(id, COLOUR_XP_GOOD, string);
 		}
-		format(string, sizeof(string), lang_texts[12][77]);
-		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+
+		SendClientMessage(playerid, COLOUR_XP_GOOD, lang_texts[12][77]);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/remcash", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx, ' '));
 		if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))) {
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+			return 1;
 		}
 
 		oSetPlayerMoney(playerid, 0);
@@ -307,6 +337,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/remcashall", true))
 	{
 		new string[MAX_STRING];
@@ -326,66 +357,66 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/setlvl", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx, ' '));
-		if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid)))
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+			return 1;
 		}
 
-		new lvlamount = strval(strcharsplit(text, idx, ' '));
-		if (lvlamount > MAX_LEVEL || lvlamount < 0)
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][33]);
+		new newlvl = strval(strcharsplit(text, idx, ' '));
+		if (newlvl > MAX_LEVEL || newlvl < 0) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[12][33]);
+			return 1;
 		}
 
-		new lvlthisday = CalculatePlayerLevel(receiverid);
-		SetPlayerXP(receiverid, LevelList[lvlamount][level_xp]);
-		CheckPlayerLevel(receiverid);
+		new oldlvl = GetPlayerLevel(receiverid);
+		GivePlayerXP(receiverid, LevelList[newlvl][level_xp] - GetPlayerXP(receiverid));
+
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[12][31], oGetPlayerName(playerid), lvlamount);
+		format(string, sizeof(string), lang_texts[12][31], oGetPlayerName(playerid), newlvl);
 		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
-		format(string, sizeof(string), lang_texts[12][32], oGetPlayerName(receiverid), lvlamount, lvlthisday);
+
+		format(string, sizeof(string), lang_texts[12][32], oGetPlayerName(receiverid), newlvl, oldlvl);
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/setstatus", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx, ' '));
-		if (!IsPlayerConnected(receiverid))
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		if (!IsPlayerConnected(receiverid)) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+			return 1;
 		}
 		
 		new sid = strval(strcharsplit(text, idx, ' '));
-		if (sid < 0 || sid > 3)
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][44]);
+		if (sid < 0 || sid > 3) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[12][44]);
+			return 1;
 		}
 		
-		if (IsPlayerRconAdmin(receiverid) && !IsPlayerAdmin(playerid))
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][89]);
+		if (IsPlayerRconAdmin(receiverid) && !IsPlayerAdmin(playerid)) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[12][89]);
+			return 1;
 		}
 		
 		new string[MAX_STRING];
 		
-		if (sid == 0)
-		{
+		if (sid == STATUS_LEVEL_PLAYER) {
 			format(string, sizeof(string), lang_texts[12][84], oGetPlayerName(playerid), playerid);
 			SendClientMessage(receiverid, COLOUR_WHITE, string);
+
 			format(string, sizeof(string), lang_texts[12][85], oGetPlayerName(receiverid), receiverid);
 			SendClientMessage(playerid, COLOUR_WHITE, string);
-		}
-		else
-		{
+		} else {
 			new sidstring[64];
-			switch (sid)
-			{
-				case 1: set(sidstring, lang_texts[12][87]);
-				case 2: set(sidstring, lang_texts[12][86]);
-				case 3: set(sidstring, lang_texts[12][94]);
+			switch (sid) {
+				case STATUS_LEVEL_MODER: set(sidstring, lang_texts[12][87]);
+				case STATUS_LEVEL_ADMIN: set(sidstring, lang_texts[12][86]);
+				case STATUS_LEVEL_RCON: set(sidstring, lang_texts[12][94]);
 			}
 			
 			format(string, sizeof(string), lang_texts[12][82], oGetPlayerName(playerid), playerid, sidstring);
@@ -394,77 +425,81 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 			format(string, sizeof(string), lang_texts[12][83], oGetPlayerName(receiverid), receiverid, sidstring);
 			SendClientMessage(playerid, COLOUR_WHITE, string);
 		}
+
 		SetPlayerStatus(receiverid, sid);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/allowport", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx, ' '));
-		if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid)))
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+			return 1;
 		}
+
 		new setport = strval(strcharsplit(text, idx, ' '));
-		if (setport < 0 || setport > 1)
-		{
+		if (setport < 0 || setport > 1) {
 			return 0;
 		}
+
 		AllowPlayerTeleport(receiverid, setport);
+
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[12][17], oGetPlayerName(receiverid), receiverid );
+		format(string, sizeof(string), lang_texts[12][17], oGetPlayerName(receiverid), receiverid);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/setvip", true))
 	{
 		new giveid = strval(strcharsplit(text, idx, ' '));
-		if (!IsPlayerConnected(giveid))
-		{
-			return SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][19]);
+		if (!IsPlayerConnected(giveid)) {
+			SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][19]);
+			return 1;
 		}
 		
 		new string[MAX_STRING];
 		string = strcharsplit(text, idx, ' ');
 		
-		if (strlen(string) < 10)
-		{
-			return SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][19]);
+		if (strlen(string) < 10) {
+			SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][19]);
+			return 1;
 		}
 		
 		SetPlayerVIPDate(giveid, string);
-		if (VIPCheck(string))
-		{
+
+		if (VIPCheck(string)) {
 			SetPlayerVIP(giveid, 1);
-		}
-		else
-		{
+		} else {
 			SetPlayerVIP(giveid, 0);
 		}
 		
 		format(string, sizeof(string), lang_texts[12][20], oGetPlayerName(giveid), giveid, GetPlayerVIPDate(giveid));
 		SendClientMessage(playerid, COLOUR_WHITE, string);
+
 		format(string, sizeof(string), lang_texts[12][22], GetPlayerVIPDate(giveid));
 		SendClientMessage(giveid, COLOUR_WHITE, string);
 		return 1;	
 	}
+
 	if (!strcmp(cmd, "/underwater", true)) 
 	{ 
 		new veh_id = GetPlayerVehicleID(playerid);
-		if (veh_id != 0)
-		{
-			oSetVehiclePos(veh_id,-2888.677978, 1423.499023,-36.533981);
+		if (veh_id != 0) {
+			oSetVehiclePos(veh_id, -2888.677978, 1423.499023, -36.533981);
 			SetVehicleZAngle(veh_id, 244.428359);
 			LinkVehicleToInterior(veh_id, 0);
-		}
-		else
-		{
-			oSetPlayerPos(playerid,-2888.677978, 1423.499023,-36.533981);
+		} else {
+			oSetPlayerPos(playerid, -2888.677978, 1423.499023, -36.533981);
 			SetPlayerFacingAngle(playerid, 244.428359);
 		}
+
 		SetPlayerInterior(playerid, 0); 
 		SendClientMessage(playerid, 0x0000FFAA, lang_texts[12][23]); 
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/ahideme", true))
 	{
 		SetPVarInt(playerid, "Hide", 1);
@@ -472,6 +507,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][25]);
 		return 1;
 	}
+
 	if (!strcmp(cmd, "/ashowme", true))
 	{
 		SetPVarInt(playerid, "Hide", 0);
@@ -479,16 +515,14 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][26]);
 		return 1;	
 	}
+
 	if (!strcmp(cmd, "/godmod", true))
 	{
-		if (IsPlayerGodmod(playerid))
-		{
+		if (IsPlayerGodmod(playerid)) {
 			SetPlayerGodmod(playerid, 0);
 			oSetPlayerHealth(playerid, GetMaxHealth(playerid));
 			SendClientMessage(playerid, COLOUR_WHITE, "Вы выключили режим бога, теперь вас можно убить.");
-		}
-		else
-		{
+		} else {
 			SetPlayerGodmod(playerid, 1);
 			oSetPlayerHealth(playerid, 100.0);
 			SendClientMessage(playerid, COLOUR_WHITE, "Вы включили режим бога, вас невозможно убить.");

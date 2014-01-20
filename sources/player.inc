@@ -40,8 +40,14 @@
 #define GetPlayerMuteTime(%0) GetPVarInt(%0, "MuteTime")
 #define SetPlayerMuteTime(%0,%1) SetPVarInt(%0, "MuteTime",%1)
 
-#define GetPlayerSkinModel(%0) GetPVarInt(%0, "SkinModel")
-#define SetPlayerSkinModel(%0,%1) SetPVarInt(%0, "SkinModel",%1)
+stock oSetPlayerSkin(playerid, skinid) {
+	SetPlayerSkin(playerid, skinid);
+	SetPVarInt(playerid, "SkinModel", skinid);
+}
+
+stock oGetPlayerSkin(playerid) {
+	return GetPVarInt(playerid, "SkinModel");
+}
 
 #define GetPlayerSpecID(%0) GetPVarInt(%0, "SpecID")
 #define SetPlayerSpecID(%0,%1) SetPVarInt(%0, "SpecID",%1)
@@ -216,7 +222,7 @@ stock player_OnPlayerSpawn(playerid)
 	UpdatePlayerWeaponTextDraws(playerid);
 
 	SetPlayerColor(playerid, PlayerGangColour(playerid));
-	SetPlayerSkin(playerid, GetPlayerSkinModel(playerid));
+	oSetPlayerSkin(playerid, oGetPlayerSkin(playerid));
 	oSetPlayerHealth(playerid, GetMaxHealth(playerid));
 	SetPlayerFightingStyle(playerid, GetPlayerFightStyleUsed(playerid));
 	GivePlayerOwnedWeapons(playerid);
@@ -596,7 +602,7 @@ stock CreatePlayer(playerid)
 	SetPlayerXP(playerid, LevelList[FIRST_LEVEL][level_xp]);
 	oResetPlayerWeapons(playerid);
 	SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
-	SetPlayerSkinModel(playerid, PLAYER_DEFAULT_SKIN);
+	oSetPlayerSkin(playerid, PLAYER_DEFAULT_SKIN);
 	SetPlayerFightStyle(playerid, 4);
 	SetPlayerFightStyleUsed(playerid, 4);
 	weapon_ResetSkills(playerid);
@@ -657,7 +663,7 @@ stock player_save_db_ini(playerid)
 	ini_SetInt(file_player, "Status", GetPlayerStatus(playerid));
 	ini_Set(file_player, "Weapons", CreateWeaponDBString(playerid));
 	ini_Set(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
-	ini_SetInt(file_player, "SkinModel", GetPlayerSkinModel(playerid));
+	ini_SetInt(file_player, "SkinModel", oGetPlayerSkin(playerid));
 	ini_Set(file_player, "VIP", GetPlayerVIPDate(playerid));
 	ini_SetInt(file_player, "Hide", GetPlayerHideStatus(playerid));
 	ini_SetInt(file_player, "SpawnHouseID", GetPlayerSpawnHouseID(playerid));
@@ -781,7 +787,7 @@ stock player_load_db_ini(playerid)
 	SetWeaponsSkillsFromDBString(playerid, s_buf);
 	
 	ini_GetInt(file_player, "SkinModel", buf);
-	SetPlayerSkinModel(playerid, buf);
+	oSetPlayerSkin(playerid, buf);
 	
 	ini_Get(file_player, "VIP", s_buf);
 	SetPlayerVIPDate(playerid, s_buf);

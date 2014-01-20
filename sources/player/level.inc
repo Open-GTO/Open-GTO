@@ -243,8 +243,8 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0)
 		}
 	}
 	SetPlayerXP(playerid,GetPlayerXP(playerid) + xpamount);
-	UpdatePlayerLevelTextDraws(playerid);
 	CheckPlayerLevel(playerid);
+	UpdatePlayerLevelTextDraws(playerid);
 	return 1;
 }
 

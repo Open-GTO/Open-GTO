@@ -490,6 +490,7 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	command_registerNR(cmdtext, "/about", 6, Admin);
 	command_register(cmdtext, "/carinfo", 8, Admin);
 	command_register(cmdtext, "/carrep", 7, Admin);
+	command_register(cmdtext, "/repair", 7, Admin);
 	command_register(cmdtext, "/go", 3, Admin);
 	command_register(cmdtext, "/an", 3, Admin);
 	command_register(cmdtext, "/payday", 7, Admin);
