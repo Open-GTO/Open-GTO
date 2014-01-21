@@ -499,6 +499,10 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					if (GetPlayerDeaths(playerid) != 0) {
 						kill_on_death = float(GetPlayerKills(playerid)) / float(GetPlayerDeaths(playerid));
 					}
+
+					new fstylename[MAX_STRING];
+					fights_GetNameByID( pl_fights_GetPlayerStyleUsed(playerid) , fstylename);
+					
 					format(string, sizeof(string),
 						"Уровень: %d, опыт до уровня: %d\n\
 						\n\
@@ -523,7 +527,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						GetPlayerJailed(playerid),
 						GetPlayerMuted(playerid),
 						
-						ConvertFightIdToName( GetPlayerFightStyleUsed(playerid) ),
+						fstylename,
 						vip_status
 					);
 					return show_User_Menu_Dialog(playerid, "Информация о персонаже", string);
@@ -534,7 +538,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 				}
 				case 2: // Стиль борьбы
 				{
-					showFightStyleMenu(playerid);
+					pl_fights_ShowStyleMenu(playerid);
 					return 1;
 				}
 				case 3: // Анимации

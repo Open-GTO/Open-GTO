@@ -211,7 +211,7 @@ stock player_OnPlayerSpawn(playerid)
 	SetPlayerColor(playerid, PlayerGangColour(playerid));
 	oSetPlayerSkin(playerid, oGetPlayerSkin(playerid));
 	oSetPlayerHealth(playerid, GetMaxHealth(playerid));
-	SetPlayerFightingStyle(playerid, GetPlayerFightStyleUsed(playerid));
+	SetPlayerFightingStyle(playerid, pl_fights_GetPlayerStyleUsed(playerid));
 	GivePlayerOwnedWeapons(playerid);
 	weapon_SetSkills(playerid);
 	PushHide(playerid);
@@ -591,8 +591,8 @@ stock CreatePlayer(playerid)
 	oResetPlayerWeapons(playerid);
 	SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 	oSetPlayerSkin(playerid, PLAYER_DEFAULT_SKIN);
-	SetPlayerFightStyle(playerid, 4);
-	SetPlayerFightStyleUsed(playerid, 4);
+	pl_fights_SetPlayerStyle(playerid, 4);
+	pl_fights_SetPlayerStyleUsed(playerid, 4);
 	weapon_ResetSkills(playerid);
 	SetPlayerJailTime(playerid, -1);
 	for (new i = 0; i < sizeof(PlayerStartWeapon); i++)
@@ -636,8 +636,8 @@ stock player_save_db_ini(playerid)
 	ini_setInteger(file_player, "JailTime", GetPlayerJailTime(playerid));
 	ini_setInteger(file_player, "Muted", GetPlayerMuted(playerid));
 	ini_setInteger(file_player, "MuteTime", GetPlayerMuteTime(playerid));
-	ini_setInteger(file_player, "FightStyle", GetPlayerFightStyle(playerid));
-    ini_setInteger(file_player, "FightStyleUsed", GetPlayerFightStyleUsed(playerid));
+	ini_setInteger(file_player, "FightStyle", pl_fights_GetPlayerStyle(playerid));
+    ini_setInteger(file_player, "FightStyleUsed", pl_fights_GetPlayerStyleUsed(playerid));
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), "%f,%f,%f,%f",
@@ -724,10 +724,10 @@ stock player_load_db_ini(playerid)
 	SetPlayerMuteTime(playerid, buf);
 	
     ini_getInteger(file_player, "FightStyle", buf);
-	SetPlayerFightStyle(playerid, buf);
+	pl_fights_SetPlayerStyle(playerid, buf);
 	
     ini_getInteger(file_player, "FightStyleUsed", buf);
-	SetPlayerFightStyleUsed(playerid, buf);
+	pl_fights_SetPlayerStyleUsed(playerid, buf);
 	
 	buf=0;
 	ini_getString(file_player, "Coords", s_buf);
@@ -743,7 +743,7 @@ stock player_load_db_ini(playerid)
 		SetPlayerStatus(playerid, STATUS_LEVEL_RCON);
 	}
 	
-	SetPlayerFightingStyle(playerid, GetPlayerFightStyle(playerid));
+	SetPlayerFightingStyle(playerid, pl_fights_GetPlayerStyle(playerid));
 
 	ini_getString(file_player, "Gang", s_buf);
 	if (strlen(s_buf) > 0)

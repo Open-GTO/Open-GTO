@@ -111,10 +111,13 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 		format(string, sizeof(string), lang_texts[15][39], GetPlayerKills(playerid), GetPlayerDeaths(playerid), kill_on_death, GetPlayerJailed(playerid), GetPlayerMuted(playerid));
 		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 
+		new fstylename[MAX_STRING];
+		fights_GetNameByID(pl_fights_GetPlayerStyleUsed(playerid), fstylename);
+
 		format(string, sizeof(string), "Ваш уровень стилей борьбы: %d, используемый стиль: %s(%d)",
-				GetPlayerFightStyle(playerid),
-				ConvertFightIdToName(GetPlayerFightStyleUsed(playerid)),
-				GetPlayerFightStyleUsed(playerid)
+				pl_fights_GetPlayerStyle(playerid),
+				fstylename,
+				pl_fights_GetPlayerStyleUsed(playerid)
 		);
 		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 

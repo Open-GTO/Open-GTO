@@ -214,7 +214,13 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define KEY_USING			KEY_YES // Кнопка 'Y' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
 #define KEY_NAME			"Согласие - Y"
 #define PICKUP_TEXT			"\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'"
-#define CreatePickupText(%0,%1,%2,%3)	Create3DTextLabel(%0PICKUP_TEXT, 0xFFFFFFFF,%1,%2,%3, 20.0, 0, 1)
+
+stock Text3D:CreatePickupText(text[], Float:pos_x, Float:pos_y, Float:pos_z)
+{
+	new string[MAX_STRING];
+	format(string, sizeof(string), "%s%s", text, PICKUP_TEXT);
+	return Create3DTextLabel(string, 0xFFFFFFFF, pos_x, pos_y, pos_z, 20.0, 0, 1);
+}
 
 // диалоги
 enum {
@@ -224,7 +230,7 @@ enum {
 	click_DialogID, click_Resp_DialogID, click_Info_DialogID,
 	house_DialogID, houses_DialogID, houses_upgrades_DialogID, houses_setrent_DialogID, house_sell_accept_DialogID,
 	bis_DialogID, bis_Msg_DialogID, bis_sell_accept_DialogID,
-	fightstyles_DialogID, fightstyles_user_DialogID,
+	fightteacher_DialogID, pl_fights_DialogID,
 	user_menu_DialogID, user_menu_Return_DialogID,
 		vehicle_menu_DialogID, spawnselect_menu_DialogID, settings_menu_DialogID, vehicle_color_menu_DialogID, vehicle_radio_menu_DialogID,
 		changenick_menu_DialogID, changepass_menu_DialogID,

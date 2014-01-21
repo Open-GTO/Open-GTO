@@ -39,9 +39,9 @@ Developers:
 #include "player\weapon_drop"
 #include "player\weapon_skill"
 #include "player\player_health"
+#include "player\player_fights"
 #include "player\vehicle"
 #include "bank"
-#include "fightstyles"
 #include "account"
 #include "player"
 #include "weapons"
@@ -75,6 +75,7 @@ Developers:
 #include "services\lottery"
 #include "services\vehshop"
 #include "services\weaponshop"
+#include "services\fightteacher"
 #include "interior"
 #include "weather"
 #include "swagup"
@@ -264,7 +265,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			business_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
-		case fightstyles_DialogID, fightstyles_user_DialogID:
+		case pl_fights_DialogID: {
+			pl_fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
+		}
+		case fightteacher_DialogID:
 		{
 			fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
@@ -650,7 +654,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		if ( IsPlayerAtBusiness(playerid) ) return business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtBank(playerid) ) return bank_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtWeaponShop(playerid) ) return wshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( IsPlayerAtFightTrener(playerid) ) return fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if ( fights_IsPlayerAtTeacher(playerid) ) return fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtBar(playerid) ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtSkinShop(playerid) ) return sshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
