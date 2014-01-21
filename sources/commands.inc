@@ -90,7 +90,7 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 		new string[MAX_STRING];
 		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][35]);
 
-		switch ( GetPlayerStatus(playerid) )
+		switch ( player_GetStatus(playerid) )
 		{
 			case 1: set(string, lang_texts[12][87]);
 			case 2: set(string, lang_texts[12][86]);
@@ -99,16 +99,16 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 		}
 		
 		new Float:kill_on_death = 0.0;
-		if (GetPlayerDeaths(playerid) != 0) {
-			kill_on_death = float(GetPlayerKills(playerid)) / float(GetPlayerDeaths(playerid));
+		if (player_GetDeaths(playerid) != 0) {
+			kill_on_death = float(player_GetKills(playerid)) / float(player_GetDeaths(playerid));
 		}
 		
 		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
-		format(string, sizeof(string), lang_texts[15][37], GetLevelName(GetPlayerLevel(playerid)), GetPlayerGangName(playerid));
+		format(string, sizeof(string), lang_texts[15][37], GetLevelName(GetPlayerLevel(playerid)), player_GetGangName(playerid));
 		SendClientMessage(playerid, COLOUR_LIGHTBLUE, string);
 		format(string, sizeof(string), lang_texts[15][38], GetPlayerLevel(playerid), GetPlayerXP(playerid), oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
 		SendClientMessage(playerid, COLOUR_LIGHTBLUE, string);
-		format(string, sizeof(string), lang_texts[15][39], GetPlayerKills(playerid), GetPlayerDeaths(playerid), kill_on_death, GetPlayerJailed(playerid), GetPlayerMuted(playerid));
+		format(string, sizeof(string), lang_texts[15][39], player_GetKills(playerid), player_GetDeaths(playerid), kill_on_death, player_GetJailCount(playerid), player_GetMuteCount(playerid));
 		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 
 		new fstylename[MAX_STRING];
@@ -153,14 +153,14 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 	}
 	if (!strcmp(cmd, "/skydive", true))
 	{
-		if (IsPlayerJailed(playerid) || GetPlayerInterior(playerid) != 0 || IsPlayerInAnyDM(playerid))
+		if (player_IsJailed(playerid) || GetPlayerInterior(playerid) != 0 || IsPlayerInAnyDM(playerid))
 		{
 			return 0;
 		}
 		new string[MAX_STRING];
-		if (GetPlayerSkydiveTime(playerid) != 0)
+		if (player_GetSkydiveTime(playerid) != 0)
 		{
-			format(string, sizeof(string), lang_texts[1][32], GetPlayerSkydiveTime(playerid));
+			format(string, sizeof(string), lang_texts[1][32], player_GetSkydiveTime(playerid));
 			return SendClientMessage(playerid, COLOUR_WHITE, string);
 		}
 		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[1][19]);
@@ -177,7 +177,7 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessageToAll(COLOUR_GREY, string);
 		
 		PlayerPlaySound(playerid, 1039, 0, 0, 0);
-		SetPlayerSkydiveTime(playerid, SKYDIVE_TIME);
+		player_SetSkydiveTime(playerid, SKYDIVE_TIME);
 		return 1;
 	}
  	if (!strcmp(cmd, "/dance", true))

@@ -272,3 +272,11 @@ stock HideDialog(playerid)
 {
 	ShowPlayerDialog(playerid, -1, 0, " ", " ", " ", "");
 }
+
+stock GetCurrentDate(outstr[20])
+{
+	new day, month, year, seconds, minutes, hours;
+	gettime(hours, minutes, seconds);
+	getdate(year, month, day);
+	format(outstr, sizeof(outstr), "%04d-%02d-%02d %02d:%02d:%02d", year, month, day, hours, minutes, seconds);
+}

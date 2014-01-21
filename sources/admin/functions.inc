@@ -170,7 +170,7 @@ stock oBan(user[], reason[], adminid, time=0)
 
 stock JailPlayer(playerid, jail_time)
 {
-	SetPlayerJailTime(playerid, jail_time);
+	player_SetJailTime(playerid, jail_time);
 	SetPlayerWantedLevel(playerid, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
 	
 	SetPlayerInterior(playerid, 6);
@@ -185,7 +185,7 @@ stock JailPlayer(playerid, jail_time)
 
 stock JailPlayerCheck(playerid)
 {
-	if (IsPlayerJailed(playerid) && !IsPlayerInRangeOfPoint(playerid, 5, 265.1273, 77.6823, 1001.0391))
+	if (player_IsJailed(playerid) && !IsPlayerInRangeOfPoint(playerid, 5, 265.1273, 77.6823, 1001.0391))
 	{
 		KickPlayer(playerid, lang_texts[11][16]);
 	}
@@ -194,7 +194,7 @@ stock JailPlayerCheck(playerid)
 
 stock UnJailPlayer(playerid)
 {
-	SetPlayerJailTime(playerid, -1);
+	player_SetJailTime(playerid, -1);
 	SetPlayerWantedLevel(playerid, 0);
 	TogglePlayerControllable(playerid, 1);
 	// ставим игрока в рандомное место из всех мест освобождений
@@ -215,7 +215,7 @@ stock SendMessageToAdmins(playerid, color, text[])
 	new message[MAX_STRING], playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	printf(lang_texts[1][24], playername, playerid, text);
-	format(message, sizeof(message), lang_texts[1][23], playername, playerid, GetPlayerStatus(playerid), text);
+	format(message, sizeof(message), lang_texts[1][23], playername, playerid, player_GetStatus(playerid), text);
 	foreach (Player, aid)
 	{
 		if (aid == playerid || !IsPlayerAdm(aid))
@@ -243,12 +243,12 @@ stock PushHide(playerid)
 stock MutePlayerTimer(playerid)
 {
 	new string[MAX_STRING],
-		mute_time = GetPlayerMuteTime(playerid);
+		mute_time = player_GetMuteTime(playerid);
 	
 	if (mute_time > 0)
 	{
 		mute_time--;
-		SetPlayerMuteTime(playerid, mute_time);
+		player_SetMuteTime(playerid, mute_time);
 	    if (mute_time <= 0)
 	    {
 			format(string, sizeof(string), lang_texts[13][54], oGetPlayerName(playerid), playerid);
@@ -260,7 +260,7 @@ stock MutePlayerTimer(playerid)
 stock JailPlayerTimer(playerid)
 {
 	new string[MAX_STRING];
-	new jail_time = GetPlayerJailTime(playerid);
+	new jail_time = player_GetJailTime(playerid);
 	
 	if (jail_time == -1)
 	{
@@ -271,7 +271,7 @@ stock JailPlayerTimer(playerid)
 	if (jail_time >= 1 && jail_time <= 4320)
 	{
 		jail_time--;
-		SetPlayerJailTime(playerid, jail_time);
+		player_SetJailTime(playerid, jail_time);
 		if (jail_time <= 0)
 		{
 			UnJailPlayer(playerid);
@@ -293,19 +293,4 @@ stock IsSkinValid(skinid)
 		case SKINS_IGNORE: return 0;
 	}
 	return 1;
-}
-
-stock IsPlayerRconAdmin(playerid)
-{
-	return (GetPlayerStatus(playerid) >= STATUS_LEVEL_RCON) ? 1 : 0;
-}
-
-stock IsPlayerAdm(playerid)
-{
-	return (GetPlayerStatus(playerid) >= STATUS_LEVEL_ADMIN) ? 1 : 0;
-}
-
-stock IsPlayerMod(playerid)
-{
-	return (GetPlayerStatus(playerid) >= STATUS_LEVEL_MODER) ? 1 : 0;
 }

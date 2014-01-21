@@ -125,7 +125,7 @@ stock gh_OnPlayerDisconnect(playerid, reason)
 stock CheckGround(ghid)
 {
 	foreach (new playerid : Player) {
-		if (GetPlayerSpectating(playerid)) {
+		if (player_IsSpectating(playerid)) {
 			continue;
 		}
 
@@ -134,8 +134,8 @@ stock CheckGround(ghid)
 			new groundenemycount = 0;
 
 			foreach (new i : Player) {
-				if (i != playerid && !GetPlayerSpectating(i) && PlayerGroundHoldTime[ghid][i] > 0) {
-					if (GetPlayerGangID(i) == 0 || GetPlayerGangID(i) != GetPlayerGangID(playerid)) {
+				if (i != playerid && !player_IsSpectating(i) && PlayerGroundHoldTime[ghid][i] > 0) {
+					if (player_GetGangID(i) == 0 || player_GetGangID(i) != player_GetGangID(playerid)) {
 						groundenemycount++;
 					}
 				}

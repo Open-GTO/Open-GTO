@@ -150,7 +150,7 @@ stock show_SpawnSelect_Menu(playerid)
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
 	
-	new gangid = GetPlayerGangID(playerid);
+	new gangid = player_GetGangID(playerid);
 	new gang_houseid = -1;
 	if (gangid != 0)
 	{
@@ -287,7 +287,7 @@ stock show_Gang_Menu(playerid)
 {
 	new string[512];
 	// если игрок не в банде
-	new gangid = GetPlayerGangID(playerid);
+	new gangid = player_GetGangID(playerid);
 	if (gangid == 0)
 	{
 		strcat(string, "Создать банду\n", sizeof(string));
@@ -416,7 +416,7 @@ stock show_GangColor_Menu(playerid)
 stock show_MOTD_Menu(playerid)
 {
 	new string[256];
-	set(string, Gangs[ GetPlayerGangID(playerid) ][gang_motd]);
+	set(string, Gangs[ player_GetGangID(playerid) ][gang_motd]);
 	if (strlen(string) == 0)
 	{
 		set(string, lang_texts[6][90]);
@@ -496,8 +496,8 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						set(vip_status, "нет");
 					}
 					new Float:kill_on_death = 0.0;
-					if (GetPlayerDeaths(playerid) != 0) {
-						kill_on_death = float(GetPlayerKills(playerid)) / float(GetPlayerDeaths(playerid));
+					if (player_GetDeaths(playerid) != 0) {
+						kill_on_death = float(player_GetKills(playerid)) / float(player_GetDeaths(playerid));
 					}
 
 					new fstylename[MAX_STRING];
@@ -519,13 +519,13 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 						GetPlayerLevel(playerid),
 						GetXPToLevel(playerid, GetPlayerLevel(playerid) + 1),
 						
-						GetPlayerGangName(playerid), GetLevelName(GetPlayerLevel(playerid)),
+						player_GetGangName(playerid), GetLevelName(GetPlayerLevel(playerid)),
 						
 						oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid),
 						
-						GetPlayerKills(playerid), GetPlayerDeaths(playerid), kill_on_death,
-						GetPlayerJailed(playerid),
-						GetPlayerMuted(playerid),
+						player_GetKills(playerid), player_GetDeaths(playerid), kill_on_death,
+						player_GetJailCount(playerid),
+						player_GetMuteCount(playerid),
 						
 						fstylename,
 						vip_status
@@ -791,10 +791,10 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			new playername[MAX_PLAYER_NAME+1];
 			GetPlayerName(playerid, playername, sizeof(playername));
 			
-			new gangid = GetPlayerGangID(playerid);
+			new gangid = player_GetGangID(playerid);
 			if (listitem == 0 && gangid != 0 && gang_GetHouse(gangid) != -1)
 			{
-				SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_GANG);
+				player_SetSpawnHouseID(playerid, SPAWN_HOUSE_GANG);
 				SendClientMessage(playerid, COLOUR_WHITE, "Место спавна изменено.");
 				return 1;
 			}
@@ -812,12 +812,12 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 				}
 				if (listitem == count)
 				{
-					SetPlayerSpawnHouseID(playerid, i);
+					player_SetSpawnHouseID(playerid, i);
 					SendClientMessage(playerid, COLOUR_WHITE, "Место спавна изменено.");
 					// если игрок, сменивший спавн - лидер банды, то устанавливаем домом банды этот дом
 					if (gang_IsLeader(playerid))
 					{
-						gang_SetHouse(GetPlayerGangID(playerid), i);
+						gang_SetHouse(player_GetGangID(playerid), i);
 						SendClientMessage(playerid, COLOUR_WHITE, "Место спавна для банды изменено.");
 					}
 					return 1;
@@ -837,8 +837,8 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			{
 				case 0: // Сохранить аккаунт
 				{
-					PlayerSave(playerid);
-					AccountSave(playerid);
+					player_Save(playerid);
+					account_Save(playerid);
 					show_User_Menu_Dialog(playerid, "Сохранение аккаунта", lang_texts[1][45]);
 					return 1;
 				}
@@ -908,8 +908,8 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			races_RenameBestPlayer(Account_LastName, Account_NewName);
 			dm_RenameBestPlayer(Account_LastName, Account_NewName);
 			
-			PlayerSave(playerid);
-			AccountSave(playerid);
+			player_Save(playerid);
+			account_Save(playerid);
 			
 			format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, AccountDB, Account_LastName);
 			if (ini_fileExist(string))
@@ -955,7 +955,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 		#else
 			SetPVarString(playerid, "Password", pass);
 		#endif
-			AccountSave(playerid);
+			account_Save(playerid);
 			oGivePlayerMoney(playerid,-CHANGE_PASS_COST, 1);
 			return 1;
 		}
@@ -965,7 +965,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			{
 				return show_User_Menu(playerid);
 			}
-			new gangid = GetPlayerGangID(playerid);
+			new gangid = player_GetGangID(playerid);
 			if (gangid == 0)
 			{
 				switch (listitem)
@@ -1109,7 +1109,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			if (!response) {
 				return show_Gang_Menu(playerid);
 			}
-			GangRemoveMember(GetPlayerGangID(playerid), oGetPlayerName(playerid));
+			GangRemoveMember(player_GetGangID(playerid), oGetPlayerName(playerid));
 			return 1;
 		}
 		case gang_create_menu_DialogID:
@@ -1206,17 +1206,17 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			}
 			
 			new inviteid = strval(inputtext);
-			if (strlen(inputtext) == 0 || !IsPlayerConnected(inviteid) || !IsPlayerLogin(inviteid))
+			if (strlen(inputtext) == 0 || !IsPlayerConnected(inviteid) || !player_IsLogin(inviteid))
 			{
 				return show_User_Menu_Dialog(playerid, "Приглашение в банду", lang_texts[6][55]);
 			}
 			
-   			if (GetPlayerGangID(inviteid) != 0)
+   			if (player_GetGangID(inviteid) != 0)
    			{
 				return show_User_Menu_Dialog(playerid, "Приглашение в банду", lang_texts[6][57]);
 			}
 			
-			new gangid = GetPlayerGangID(playerid);
+			new gangid = player_GetGangID(playerid);
 			SetPVarInt(inviteid, "GangInvite", gangid);
 			
 			new string[MAX_STRING];
@@ -1235,7 +1235,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			{
 				return show_Gang_Menu(playerid);
 			}
-			new gangid = GetPlayerGangID(playerid);
+			new gangid = player_GetGangID(playerid);
 			GangRemoveMember(gangid, GangMemberInfo[gangid][listitem][member_name]);
 			
 			new string[MAX_STRING];
@@ -1273,7 +1273,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 		 	{
 				return show_User_Menu_Dialog(playerid, "Изменение цвета", "Неверный цвет.");
    			}
-   			SetGangColour(GetPlayerGangID(playerid), gangcolour);
+   			SetGangColour(player_GetGangID(playerid), gangcolour);
    			oGivePlayerMoney(playerid, -Gang_Colour_Cost, 1);
    			
    			new string[MAX_STRING];
@@ -1294,7 +1294,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			}
 			
    			new string[MAX_STRING + MAX_GANG_MOTD_LEN],
-				gangid = GetPlayerGangID(playerid);
+				gangid = player_GetGangID(playerid);
 			
    			if (len == 0)
    			{

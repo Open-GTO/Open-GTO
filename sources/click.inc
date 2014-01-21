@@ -75,7 +75,7 @@ stock click_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]
 			return 1;
 		}
 
-		new id = click_GetIdByListitem(GetPlayerStatus(playerid), listitem);
+		new id = click_GetIdByListitem(player_GetStatus(playerid), listitem);
 		if (click_dialogArray[id][cda_style] == -1) {
 			click_CallFunction(playerid, id, listitem, inputtext);
 		} else {
@@ -89,7 +89,7 @@ stock click_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]
 
 		new id = click_GetResponseType(playerid);
 
-		if (GetPlayerStatus(playerid) >= click_dialogArray[id][cda_statusLevel]) {
+		if (player_GetStatus(playerid) >= click_dialogArray[id][cda_statusLevel]) {
 			click_CallFunction(playerid, id, listitem, inputtext);
 		}
 	} else if (dialogid == click_Info_DialogID) {
@@ -206,8 +206,8 @@ public click_MutePlayer(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
-	SetPlayerMuteTime(clickedid, mutetime);
-	SetPlayerMuted(clickedid, GetPlayerMuted(clickedid) + 1);
+	player_SetMuteTime(clickedid, mutetime);
+	player_SetMuteCount(clickedid, player_GetMuteCount(clickedid) + 1);
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][24], oGetPlayerName(playerid), mutetime);
@@ -226,7 +226,7 @@ public click_UnMutePlayer(playerid, clickedid, listitem, inputtext[])
 		return 1;
 	}
 
-	SetPlayerMuteTime(clickedid, 0);
+	player_SetMuteTime(clickedid, 0);
 	SetPlayerWantedLevel(clickedid, 0);
 
 	new string[MAX_STRING];
@@ -252,7 +252,7 @@ public click_JailPlayer(playerid, clickedid, listitem, inputtext[])
 	new jailt = strval(inputtext);
 
 	JailPlayer(clickedid, jailt);
-	SetPlayerJailed(clickedid, GetPlayerJailed(clickedid) + 1);
+	player_SetJailCount(clickedid, player_GetJailCount(clickedid) + 1);
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][18], oGetPlayerName(playerid));
@@ -279,7 +279,7 @@ public click_UnJailPlayer(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
-	if (!IsPlayerJailed(clickedid)) {
+	if (!player_IsJailed(clickedid)) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][22]);
 		return 0;
 	}
@@ -304,7 +304,7 @@ public click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][34], oGetPlayerName(clickedid), clickedid);
 	SendClientMessage(playerid, COLOUR_YELLOW, string);
 
-	switch( GetPlayerStatus(clickedid) ) {
+	switch( player_GetStatus(clickedid) ) {
 		case STATUS_LEVEL_MODER: set(string, lang_texts[12][87]);
 		case STATUS_LEVEL_ADMIN: set(string, lang_texts[12][86]);
 		case STATUS_LEVEL_RCON: set(string, lang_texts[12][94]);
@@ -318,10 +318,10 @@ public click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][36], oGetPlayerMoney(clickedid), GetPlayerBankMoney(clickedid));	//Money, Bank
 	SendClientMessage(playerid, COLOUR_WHITE, string);
 
-	format(string, sizeof(string), lang_texts[12][38], GetPlayerDeaths(clickedid), GetPlayerKills(clickedid));	//Kills, Deaths
+	format(string, sizeof(string), lang_texts[12][38], player_GetDeaths(clickedid), player_GetKills(clickedid));	//Kills, Deaths
 	SendClientMessage(playerid, COLOUR_WHITE, string);
 
-	format(string, sizeof(string), lang_texts[12][71], GetPlayerJailed(clickedid), GetPlayerMuted(clickedid));	//Jailed, Muted
+	format(string, sizeof(string), lang_texts[12][71], player_GetJailCount(clickedid), player_GetMuteCount(clickedid));	//Jailed, Muted
 	SendClientMessage(playerid, COLOUR_WHITE, string);
 	
 	new playerIP[MAX_IP];
@@ -680,7 +680,7 @@ stock click_GetIdByListitem(player_status, listitem)
 stock click_ShowStartDialog(playerid)
 {
 	new listitems[sizeof(click_dialogArray) * MAX_DIALOG_CAPTION_SIZE];
-	new player_status = GetPlayerStatus(playerid);
+	new player_status = player_GetStatus(playerid);
 
 	for (new i = 0; i < sizeof(click_dialogArray); i++) {
 		if (player_status >= click_dialogArray[i][cda_statusLevel]) {

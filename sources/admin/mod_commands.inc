@@ -43,12 +43,12 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		new ccount;
 		foreach (Player, id)
 		{
-			if (IsPlayerJailed(id))
+			if (player_IsJailed(id))
 			{
 				new string[MAX_STRING];
-				if (GetPlayerJailTime(id) > 0)
+				if (player_GetJailTime(id) > 0)
 				{
-					format(string, sizeof(string), lang_texts[18][3], oGetPlayerName(id), id, GetPlayerJailTime(id));
+					format(string, sizeof(string), lang_texts[18][3], oGetPlayerName(id), id, player_GetJailTime(id));
 				}
 				else
 				{
@@ -57,12 +57,12 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 				SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 				ccount++;
 			}
-			if (GetPlayerMuteTime(id) != 0)
+			if (player_GetMuteTime(id) != 0)
 			{
 				new string[MAX_STRING];
-				if (GetPlayerMuteTime(id) != 0)
+				if (player_GetMuteTime(id) != 0)
 				{
-					format(string, sizeof(string), lang_texts[18][5], oGetPlayerName(id), id, GetPlayerMuteTime(id));
+					format(string, sizeof(string), lang_texts[18][5], oGetPlayerName(id), id, player_GetMuteTime(id));
 				}
 				else
 				{
@@ -158,8 +158,8 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 			format(string, sizeof(string), lang_texts[13][12], oGetPlayerName(playerid), oGetPlayerName(muteid), mutetime);
 			SendClientMessageToAll(COLOUR_YELLOW, string);
 		}
-		SetPlayerMuteTime(muteid, mutetime);
-		SetPlayerMuted(muteid, GetPlayerMuted(muteid) + 1); // сколько раз всего затыкали игрока
+		player_SetMuteTime(muteid, mutetime);
+		player_SetMuteCount(muteid, player_GetMuteCount(muteid) + 1); // сколько раз всего затыкали игрока
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[12][24], oGetPlayerName(playerid));
 		SendClientMessage(muteid, COLOUR_RED, string);
@@ -175,7 +175,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
-		SetPlayerMuteTime(unmuteid, 0);
+		player_SetMuteTime(unmuteid, 0);
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[12][27], oGetPlayerName(playerid));
 		SendClientMessage(unmuteid, COLOUR_GREEN, string);
@@ -215,7 +215,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendClientMessageToAll(COLOUR_WHITE, string);
 		GameTextForPlayer(jailid, lang_texts[13][18], 5000, 4);
 		JailPlayer(jailid, jailt);
-		SetPlayerJailed(jailid, GetPlayerJailed(jailid) + 1);
+		player_SetJailCount(jailid, player_GetJailCount(jailid) + 1);
 		return 1;
 	}
 	if (!strcmp(cmd, "/unjail", true))
@@ -226,7 +226,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
-		if (!IsPlayerJailed(unjailid))
+		if (!player_IsJailed(unjailid))
 		{
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][22]);
 		}
@@ -250,12 +250,12 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		tmp = strcharsplit(text, idx, ' ');
 		if (strlen(tmp) == 0)
 		{
-			if (GetPlayerSpectating(playerid))
+			if (player_IsSpectating(playerid))
 			{
 				SetPVarInt(playerid, "spec_after_off", 1);
 				TogglePlayerSpectating(playerid, 0);
-				SetPlayerSpecID(playerid, INVALID_PLAYER_ID);
-				SetPlayerSpectating(playerid, 0);
+				player_SetSpecID(playerid, INVALID_PLAYER_ID);
+				player_SetSpectating(playerid, 0);
 				SetPlayerInterior(playerid, GetPVarInt(playerid, "spec_interior"));
 				SetPlayerVirtualWorld(playerid, GetPVarInt(playerid, "spec_virtualworld"));
 				SetPlayerSkin(playerid, GetPVarInt(playerid, "spec_skin"));
@@ -290,8 +290,8 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[13][20]);
 		}
 		
-		SetPlayerSpecID(playerid, specid);
-		SetPlayerSpectating(playerid, 1);
+		player_SetSpecID(playerid, specid);
+		player_SetSpectating(playerid, 1);
 		TogglePlayerSpectating(playerid, 1);
 		SetPlayerInterior(playerid, GetPlayerInterior(specid));
 		SetPlayerVirtualWorld(playerid, GetPlayerVirtualWorld(specid));

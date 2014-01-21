@@ -32,7 +32,7 @@ stock SyncActiveCP()
 {
 	foreach (Player, playerid)
 	{
-		if (GetPlayerQuestID(playerid) == INVALID_QUEST_ID)
+		if (player_GetQuestID(playerid) == INVALID_QUEST_ID)
 		{
 			new cpid = GetPlayerClosestActiveCP(playerid);
 			if (cpid != 0)

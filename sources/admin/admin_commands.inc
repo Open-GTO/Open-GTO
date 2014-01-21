@@ -223,7 +223,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 			Float:playerz;
 
 		foreach (new id : Player) {
-			if (IsPlayerJailed(id)) {
+			if (player_IsJailed(id)) {
 				SendClientMessage(id, COLOUR_LIGHTRED, lang_texts[1][22]);
 				continue;
 			}
@@ -287,7 +287,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		format(string, sizeof(string), lang_texts[12][54], oGetPlayerName(playerid));
 
 		foreach (new id : Player) {
-			if (id == playerid || IsPlayerJailed(id) || IsPlayerInAnyDM(id) || IsPlayerInAnyRace(id) || IsPlayerRconAdmin(id)) {
+			if (id == playerid || player_IsJailed(id) || IsPlayerInAnyDM(id) || IsPlayerInAnyRace(id) || IsPlayerRconAdmin(id)) {
 				continue;
 			}
 
@@ -306,7 +306,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 
 		foreach (new id : Player)
 		{
-			if (id == playerid || IsPlayerJailed(id) || IsPlayerInAnyDM(id) || IsPlayerInAnyRace(id) || IsPlayerRconAdmin(id)) {
+			if (id == playerid || player_IsJailed(id) || IsPlayerInAnyDM(id) || IsPlayerInAnyRace(id) || IsPlayerRconAdmin(id)) {
 				continue;
 			}
 
@@ -425,7 +425,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 			SendClientMessage(playerid, COLOUR_WHITE, string);
 		}
 
-		SetPlayerStatus(receiverid, sid);
+		player_SetStatus(receiverid, sid);
 		return 1;
 	}
 
@@ -517,12 +517,12 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 
 	if (!strcmp(cmd, "/godmod", true))
 	{
-		if (IsPlayerGodmod(playerid)) {
-			SetPlayerGodmod(playerid, 0);
+		if (player_IsGodmod(playerid)) {
+			player_SetGodmod(playerid, 0);
 			oSetPlayerHealth(playerid, GetMaxHealth(playerid));
 			SendClientMessage(playerid, COLOUR_WHITE, "Вы выключили режим бога, теперь вас можно убить.");
 		} else {
-			SetPlayerGodmod(playerid, 1);
+			player_SetGodmod(playerid, 1);
 			oSetPlayerHealth(playerid, 100.0);
 			SendClientMessage(playerid, COLOUR_WHITE, "Вы включили режим бога, вас невозможно убить.");
 		}

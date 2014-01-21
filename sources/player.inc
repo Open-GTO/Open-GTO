@@ -18,85 +18,157 @@
 #include "protections\armour"
 
 
-#define STATUS_LEVEL_PLAYER	0
-#define STATUS_LEVEL_MODER	1
-#define STATUS_LEVEL_ADMIN	2
-#define STATUS_LEVEL_RCON	3
+stock player_GetKills(playerid) {
+	return GetPVarInt(playerid, "Kills");
+}
 
+stock player_GetDeaths(playerid) {
+	return GetPVarInt(playerid, "Deaths");
+}
 
-#define GetPlayerKills(%0) GetPVarInt(%0, "Kills")
-#define GetPlayerDeaths(%0) GetPVarInt(%0, "Deaths")
+stock player_GetJailCount(playerid) {
+	return GetPVarInt(playerid, "Jailed");
+}
 
-#define GetPlayerJailed(%0) GetPVarInt(%0, "Jailed")
-#define SetPlayerJailed(%0,%1) SetPVarInt(%0, "Jailed",%1)
+stock player_SetJailCount(playerid, jailed) {
+	SetPVarInt(playerid, "Jailed", jailed);
+}
 
-#define GetPlayerJailTime(%0) GetPVarInt(%0, "JailTime")
-#define SetPlayerJailTime(%0,%1) SetPVarInt(%0, "JailTime",%1)
+stock player_GetJailTime(playerid) {
+	return GetPVarInt(playerid, "JailTime");
+}
 
-#define IsPlayerJailed(%0) (GetPVarInt(%0, "JailTime") == -1 ? 0 : 1)
+stock player_SetJailTime(playerid, time) {
+	SetPVarInt(playerid, "JailTime", time);
+}
 
-#define GetPlayerMuted(%0) GetPVarInt(%0, "Muted")
-#define SetPlayerMuted(%0,%1) SetPVarInt(%0, "Muted",%1)
+stock player_IsJailed(playerid) {
+	return (GetPVarInt(playerid, "JailTime") == -1 ? 0 : 1);
+}
 
-#define GetPlayerMuteTime(%0) GetPVarInt(%0, "MuteTime")
-#define SetPlayerMuteTime(%0,%1) SetPVarInt(%0, "MuteTime",%1)
+stock player_GetMuteCount(playerid) {
+	return GetPVarInt(playerid, "Muted");
+}
 
-stock oSetPlayerSkin(playerid, skinid) {
-	SetPlayerSkin(playerid, skinid);
-	SetPVarInt(playerid, "SkinModel", skinid);
+stock player_SetMuteCount(playerid, jailed) {
+	SetPVarInt(playerid, "Muted", jailed);
+}
+
+stock player_GetMuteTime(playerid) {
+	return GetPVarInt(playerid, "MuteTime");
+}
+
+stock player_SetMuteTime(playerid, time) {
+	SetPVarInt(playerid, "MuteTime", time);
 }
 
 stock oGetPlayerSkin(playerid) {
 	return GetPVarInt(playerid, "SkinModel");
 }
 
-#define GetPlayerSpecID(%0) GetPVarInt(%0, "SpecID")
-#define SetPlayerSpecID(%0,%1) SetPVarInt(%0, "SpecID",%1)
+stock oSetPlayerSkin(playerid, skinid) {
+	SetPlayerSkin(playerid, skinid);
+	SetPVarInt(playerid, "SkinModel", skinid);
+}
 
-#define GetPlayerSpectating(%0) GetPVarInt(%0, "Spectating")
-#define SetPlayerSpectating(%0,%1) SetPVarInt(%0, "Spectating",%1)
+stock player_GetSpecID(playerid) {
+	return GetPVarInt(playerid, "SpecID");
+}
 
-#define GetPlayerStatus(%0) GetPVarInt(%0, "Status")
-#define SetPlayerStatus(%0,%1) SetPVarInt(%0, "Status",%1)
+stock player_SetSpecID(playerid, specid) {
+	SetPVarInt(playerid, "SpecID", specid);
+}
 
-#define GetPlayerHideStatus(%0) GetPVarInt(%0, "Hide")
-#define SetPlayerHideStatus(%0,%1) SetPVarInt(%0, "Hide",%1)
+stock player_IsSpectating(playerid) {
+	return GetPVarInt(playerid, "Spectating");
+}
 
-#define GetPlayerSpawnHouseID(%0) GetPVarInt(%0, "SpawnHouseID")
-#define SetPlayerSpawnHouseID(%0,%1) SetPVarInt(%0, "SpawnHouseID",%1)
+stock player_SetSpectating(playerid, isspec) {
+	SetPVarInt(playerid, "Spectating", isspec);
+}
 
-#define SetPlayerSkydiveTime(%0,%1) SetPVarInt(%0, "SkydiveTime",%1)
-#define GetPlayerSkydiveTime(%0) GetPVarInt(%0, "SkydiveTime")
+stock player_GetHideStatus(playerid) {
+	return GetPVarInt(playerid, "Hide");
+}
 
-stock GetPlayerGangName(playerid)
-{
+stock player_SetHideStatus(playerid, hidestatus) {
+	SetPVarInt(playerid, "Hide", hidestatus);
+}
+
+stock player_GetSpawnHouseID(playerid) {
+	return GetPVarInt(playerid, "SpawnHouseID");
+}
+
+stock player_SetSpawnHouseID(playerid, houseid) {
+	SetPVarInt(playerid, "SpawnHouseID", houseid);
+}
+
+stock player_GetSkydiveTime(playerid) {
+	return GetPVarInt(playerid, "SkydiveTime");
+}
+
+stock player_SetSkydiveTime(playerid, skydivetime) {
+	SetPVarInt(playerid, "SkydiveTime", skydivetime);
+}
+
+stock player_GetGangName(playerid) {
 	new string[MAX_NAME];
 	GetPVarString(playerid, "GangName", string, sizeof(string));
 	return string;
 }
-#define SetPlayerGangName(%0,%1) SetPVarString(%0, "GangName",%1)
 
-stock GetPlayerGangID(playerid) return GetPVarInt(playerid, "GangID");
-#define SetPlayerGangID(%0,%1) SetPVarInt(%0, "GangID",%1)
+stock player_SetGangName(playerid, gangname[]) {
+	SetPVarString(playerid, "GangName", gangname);
+}
 
-#define GetPlayerQuestID(%0) GetPVarInt(%0, "PlayerQuest")
-#define SetPlayerQuestID(%0,%1) SetPVarInt(%0, "PlayerQuest",%1)
+stock player_GetGangID(playerid) {
+	return GetPVarInt(playerid, "GangID");
+}
+
+stock player_SetGangID(playerid, gangid) {
+	SetPVarInt(playerid, "GangID", gangid);
+}
+
+stock player_GetQuestID(playerid) {
+	return GetPVarInt(playerid, "PlayerQuest");
+}
+
+stock player_SetQuestID(playerid, questid) {
+	SetPVarInt(playerid, "PlayerQuest", questid);
+}
+
 new QuestCount;
 
-#define GetPlayerKickStatus(%0) GetPVarInt(%0, "KickStatus")
-#define SetPlayerKickStatus(%0,%1) SetPVarInt(%0, "KickStatus",%1)
+stock GetAllowPlayerTeleport(playerid) {
+	return GetPVarInt(playerid, "AllowTeleport");
+}
 
-#define AllowPlayerTeleport(%0,%1) SetPVarInt(%0, "AllowTeleport",%1)
-#define GetAllowPlayerTeleport(%0) GetPVarInt(%0, "AllowTeleport")
+stock oAllowPlayerTeleport(playerid, isallow) {
+	SetPVarInt(playerid, "AllowTeleport", isallow);
+}
+#if defined AllowPlayerTeleport
+	#define AllowPlayerTeleport oAllowPlayerTeleport
+#endif
 
-//#define IsPlayerLogin(%0) GetPVarInt(%0, "IsLogin")
-stock IsPlayerLogin(playerid) return GetPVarInt(playerid, "IsLogin");
-#define SetPlayerLogin(%0,%1) SetPVarInt(%0, "IsLogin",%1)
+stock player_IsLogin(playerid) {
+	return GetPVarInt(playerid, "IsLogin");
+}
 
-#define IsPlayerGodmod(%0) GetPVarInt(%0, "godmod")
-#define SetPlayerGodmod(%0,%1) SetPVarInt(%0, "godmod", %1)
+stock player_SetLogin(playerid, islogin) {
+	SetPVarInt(playerid, "IsLogin", islogin);
+}
 
-#define IsPlayerSpawned(%0) (GetPVarInt(playerid, "Spawned") == 1)
+stock player_IsGodmod(playerid) {
+	return GetPVarInt(playerid, "godmod");
+}
+
+stock player_SetGodmod(playerid, isgodmod) {
+	SetPVarInt(playerid, "godmod", isgodmod);
+}
+
+stock player_IsSpawned(playerid) {
+	return (GetPVarInt(playerid, "Spawned") == 1);
+}
 
 new PlayerStartMoney = PLAYER_START_MONEY;
 
@@ -196,13 +268,13 @@ stock player_SaveConfig(file_config)
 
 stock player_OnPlayerSpawn(playerid)
 {
-	if (GetPlayerMuteTime(playerid) != 0) {
+	if (player_GetMuteTime(playerid) != 0) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 		SetPlayerWantedLevel(playerid, 3);
 	}
 	
-	if (IsPlayerJailed(playerid)) {
-		JailPlayer(playerid, GetPlayerJailTime(playerid));
+	if (player_IsJailed(playerid)) {
+		JailPlayer(playerid, player_GetJailTime(playerid));
 	}
 
 	UpdatePlayerLevelTextDraws(playerid);
@@ -234,11 +306,11 @@ stock player_SetSpawnPos(playerid)
 		return 1;
 	}
 
-	new house_id = GetPlayerSpawnHouseID(playerid);
+	new house_id = player_GetSpawnHouseID(playerid);
 	if (house_id >= 0 && strcmp(oGetPlayerName(playerid), Houses[house_id][Houses_Owner], true))
 	{
 		house_id = SPAWN_HOUSE_NONE;
-		SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+		player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[8][60]);
 	}
 
@@ -251,11 +323,11 @@ stock player_SetSpawnPos(playerid)
 			oSetPlayerPos(playerid, LeveledPlayerSpawns[spawnid][playerspawn_x], LeveledPlayerSpawns[spawnid][playerspawn_y], LeveledPlayerSpawns[spawnid][playerspawn_z]); // Warp the player
 		}
 	} else if (house_id == SPAWN_HOUSE_GANG) {
-		new gangid = GetPlayerGangID(playerid);
+		new gangid = player_GetGangID(playerid);
 		new gang_houseid = gang_GetHouse(gangid);
 
 		if (gangid == 0 || gang_houseid == -1) {
-			SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+			player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 		} else {
 			SetPlayerPosToHouse(playerid, gang_houseid);
 		}
@@ -277,8 +349,8 @@ stock player_OnPlayerDisconnect(playerid, reason)
 	SyncPlayerWeapons(playerid);
 
 	// save
-	PlayerSave(playerid);
-	AccountSave(playerid);
+	player_Save(playerid);
+	account_Save(playerid);
 	
 	DMPlayerDisconnect(playerid);
 	StopAudioStreamForPlayer(playerid);
@@ -412,12 +484,46 @@ stock player_OnLogin(playerid)
 {
 	// spawn player
 	TogglePlayerSpectating(playerid, 0);
+
+	// send message
+	new string[MAX_STRING],
+		playername[MAX_PLAYER_NAME + 1];
+
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	if (IsPlayerRconAdmin(playerid)) {
+		format(string, sizeof(string), lang_texts[1][39], playername);
+		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][25]);
+	} else if (IsPlayerAdm(playerid)) {
+		format(string, sizeof(string), lang_texts[1][40], playername);
+		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][26]);
+	} else if (IsPlayerMod(playerid)) {
+		format(string, sizeof(string), lang_texts[1][41], playername);
+		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][27]);
+		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
+	} else {
+		format(string, sizeof(string), lang_texts[1][42], playername);
+		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][2]);
+		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
+	}
+
+	GameTextForPlayer(playerid, string, 2000, 1);
+
+	foreach (new id : Player) {
+		if (IsPlayerRconAdmin(playerid)) {
+			continue;
+		}
+
+		format(string, sizeof(string), lang_texts[1][17], playername, playerid);
+		SendClientMessage(id, COLOUR_WHITE, string);
+	}
+	GameMSG("player: %s(%d): logged in successfully.", playername, playerid);
 }
 
 stock player_Sync(playerid)
 {
 	// если игрок мертв, то защиты не срабатывают
-	if (!IsPlayerSpawned(playerid)) {
+	if (!player_IsSpawned(playerid)) {
 		return 0;
 	}
 
@@ -435,7 +541,7 @@ stock player_Sync(playerid)
 stock player_OnPlayerRequestClass(playerid, classid)
 {
 	#pragma unused classid
-	if (IsPlayerLogin(playerid)) {
+	if (player_IsLogin(playerid)) {
 		TogglePlayerSpectating(playerid, 1);
 		SetSpawnInfo(playerid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		TogglePlayerSpectating(playerid, 0);
@@ -461,6 +567,27 @@ public player_UpdateCamera(playerid)
 	SetPlayerInterior(playerid, camera_PlaceArray[camera_id][camera_Interior]);
 	SetPlayerCameraPos(playerid, camera_PlaceArray[camera_id][camera_pos_X], camera_PlaceArray[camera_id][camera_pos_Y], camera_PlaceArray[camera_id][camera_pos_Z]);
 	SetPlayerCameraLookAt(playerid, camera_PlaceArray[camera_id][camera_look_X], camera_PlaceArray[camera_id][camera_look_Y], camera_PlaceArray[camera_id][camera_look_Z]);
+}
+
+stock player_SetDefaultData(playerid)
+{
+	oSetPlayerMoney(playerid, PlayerStartMoney);
+	player_SetJailTime(playerid, -1);
+	player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+	oSetPlayerSkin(playerid, PLAYER_DEFAULT_SKIN);
+
+	SetPlayerLevel(playerid, FIRST_LEVEL);
+	SetPlayerXP(playerid, LevelList[FIRST_LEVEL][level_xp]);
+
+	pl_fights_SetPlayerStyle(playerid, 4);
+	pl_fights_SetPlayerStyleUsed(playerid, 4);
+
+	oResetPlayerWeapons(playerid);
+	weapon_ResetSkills(playerid);
+
+	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
+		GivePlayerOwnedWeapon(playerid, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);
+	}
 }
 
 stock KickPlayer(playerid, reason[], showreason = 1)
@@ -535,7 +662,7 @@ stock RegisterQuest()
 stock ResetQuest(playerid)
 {
 	oDisablePlayerCheckpoint(playerid);
-	SetPlayerQuestID(playerid, INVALID_QUEST_ID);
+	player_SetQuestID(playerid, INVALID_QUEST_ID);
 }
 
 stock GetPlayerID(playername[])
@@ -559,260 +686,9 @@ stock oGetPlayerName(playerid)
 	return name;
 }
 
-stock PlayerSave(playerid)
-{
-	if (!IsPlayerLogin(playerid)) {
-		return 0;
-	}
-
-	if (IsPlayerSpawned(playerid)) {
-		new Float:pos[4];
-
-		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-		GetPlayerFacingAngle(playerid, pos[3]);
-
-		SetPVarFloat(playerid, "Coord_X", pos[0]);
-		SetPVarFloat(playerid, "Coord_Y", pos[1]);
-		SetPVarFloat(playerid, "Coord_Z", pos[2]);
-		SetPVarFloat(playerid, "Coord_A", pos[3]);
-	}
-
-	// save
-	player_save_db_ini(playerid);
-	GameMSG("player: %s(%d): player_saved successfully", oGetPlayerName(playerid), playerid);
-	return 1;
-}
-
-stock CreatePlayer(playerid)
-{
-	oSetPlayerMoney(playerid, PlayerStartMoney);
-	SetPlayerLevel(playerid, FIRST_LEVEL);
-	SetPlayerXP(playerid, LevelList[FIRST_LEVEL][level_xp]);
-	oResetPlayerWeapons(playerid);
-	SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
-	oSetPlayerSkin(playerid, PLAYER_DEFAULT_SKIN);
-	pl_fights_SetPlayerStyle(playerid, 4);
-	pl_fights_SetPlayerStyleUsed(playerid, 4);
-	weapon_ResetSkills(playerid);
-	SetPlayerJailTime(playerid, -1);
-	for (new i = 0; i < sizeof(PlayerStartWeapon); i++)
-	{
-		GivePlayerOwnedWeapon(playerid, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);
-	}
-	player_create_db_ini(playerid);
-	GameMSG("player: %s(%d): player_created successfully", oGetPlayerName(playerid), playerid);
-	return 1;
-}
-
-stock player_create_db_ini(playerid)
-{
-	new filename_player[MAX_STRING];
-	format(filename_player, sizeof(filename_player), "%s%s"GTO_FILES_FORMAT, PlayerDB, oGetPlayerName(playerid));
-
-	if (ini_fileExist(filename_player))
-	{
-		return SendClientMessage(playerid, COLOUR_RED, lang_texts[9][30]);
-	}
-	player_save_db_ini(playerid);
-	return 1;
-}
-
-stock player_save_db_ini(playerid)
-{
-	new filename_player[MAX_STRING], playername[MAX_PLAYER_NAME+1];
-	GetPlayerName(playerid, playername, sizeof(playername));
-	format(filename_player, sizeof(filename_player), "%s%s"GTO_FILES_FORMAT, PlayerDB, playername);
-	new file_player = (!ini_fileExist(filename_player)) ? ini_createFile(filename_player) : ini_openFile(filename_player);
-	ini_setString(file_player, "Name", playername);
-	ini_setString(file_player, "Gang", GetPlayerGangName(playerid));
-	ini_setFloat(file_player, "Armour", oGetPlayerArmour(playerid));
-	ini_setInteger(file_player, "Level", GetPlayerLevel(playerid));
-	ini_setInteger(file_player, "XP", GetPlayerXP(playerid));
-	ini_setInteger(file_player, "Money", oGetPlayerMoney(playerid));
-	ini_setInteger(file_player, "BankMoney", GetPlayerBankMoney(playerid));
-	ini_setInteger(file_player, "Deaths", GetPlayerDeaths(playerid));
-	ini_setInteger(file_player, "Kills", GetPlayerKills(playerid));
-	ini_setInteger(file_player, "Jailed", GetPlayerJailed(playerid));
-	ini_setInteger(file_player, "JailTime", GetPlayerJailTime(playerid));
-	ini_setInteger(file_player, "Muted", GetPlayerMuted(playerid));
-	ini_setInteger(file_player, "MuteTime", GetPlayerMuteTime(playerid));
-	ini_setInteger(file_player, "FightStyle", pl_fights_GetPlayerStyle(playerid));
-    ini_setInteger(file_player, "FightStyleUsed", pl_fights_GetPlayerStyleUsed(playerid));
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), "%f,%f,%f,%f",
-		GetPVarFloat(playerid, "Coord_X"),
-		GetPVarFloat(playerid, "Coord_Y"),
-		GetPVarFloat(playerid, "Coord_Z"),
-		GetPVarFloat(playerid, "Coord_A")
-	);
-	ini_setString(file_player, "Coords", string);
-
-	ini_setInteger(file_player, "Status", GetPlayerStatus(playerid));
-	ini_setString(file_player, "Weapons", CreateWeaponDBString(playerid));
-	ini_setString(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
-	ini_setInteger(file_player, "SkinModel", oGetPlayerSkin(playerid));
-	ini_setString(file_player, "VIP", GetPlayerVIPDate(playerid));
-	ini_setInteger(file_player, "Hide", GetPlayerHideStatus(playerid));
-	ini_setInteger(file_player, "SpawnHouseID", GetPlayerSpawnHouseID(playerid));
-	
-	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
-		format(string, sizeof(string), "Vehicle_%d", i);
-		ini_setString(file_player, string, CreateVehicleDbString(playerid, i));
-	}
-	
-	ini_closeFile(file_player);
-	return 1;
-}
-
-stock PlayerLoadStats(playerid)
-{
-	new string[MAX_STRING];
-	format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, PlayerDB, oGetPlayerName(playerid));
-	if (!ini_fileExist(string))
-	{
-		CreatePlayer(playerid);
-	}
-	player_load_db_ini(playerid);
-	SetPlayerLogin(playerid, 1);
-	player_OnLogin(playerid);
-	return 1;
-}
-
-stock player_load_db_ini(playerid)
-{
-	new filename_player[MAX_STRING];
-	format(filename_player, sizeof(filename_player), "%s%s"GTO_FILES_FORMAT, PlayerDB, oGetPlayerName(playerid));
-	if (!ini_fileExist(filename_player))
-	{
-		return 1;
-	}
-	new file_player = ini_openFile(filename_player);
-	new buf, s_buf[MAX_STRING], Float:f_buf;
-	
-	ini_getFloat(file_player, "Armour", f_buf);
-	oSetPlayerArmour(playerid, f_buf);
-	
-    ini_getInteger(file_player, "Level", buf);
-	SetPlayerLevel(playerid, buf);
-	
-    ini_getInteger(file_player, "XP", buf);
-	SetPlayerXP(playerid, buf);
-	
-    ini_getInteger(file_player, "Money", buf);
-    oSetPlayerMoney(playerid, buf);
-	
-    ini_getInteger(file_player, "BankMoney", buf);
-	SetPVarInt(playerid, "BankMoney", buf);
-	
-    ini_getInteger(file_player, "Deaths", buf);
-    SetPVarInt(playerid, "Deaths", buf);
-	
-	ini_getInteger(file_player, "Kills", buf);
-	SetPVarInt(playerid, "Kills", buf);
-	
-    ini_getInteger(file_player, "Jailed", buf);
-	SetPlayerJailed(playerid, buf);
-	
-    ini_getInteger(file_player, "JailTime", buf);
-	SetPlayerJailTime(playerid, buf);
-	
-    ini_getInteger(file_player, "Muted", buf);
-	SetPlayerMuted(playerid, buf);
-	
-    ini_getInteger(file_player, "MuteTime", buf);
-	SetPlayerMuteTime(playerid, buf);
-	
-    ini_getInteger(file_player, "FightStyle", buf);
-	pl_fights_SetPlayerStyle(playerid, buf);
-	
-    ini_getInteger(file_player, "FightStyleUsed", buf);
-	pl_fights_SetPlayerStyleUsed(playerid, buf);
-	
-	buf=0;
-	ini_getString(file_player, "Coords", s_buf);
-	SetPVarFloat(playerid, "Coord_X", floatstr(strcharsplit(s_buf, buf, ',')));
-	SetPVarFloat(playerid, "Coord_Y", floatstr(strcharsplit(s_buf, buf, ',')));
-	SetPVarFloat(playerid, "Coord_Z", floatstr(strcharsplit(s_buf, buf, ',')));
-	SetPVarFloat(playerid, "Coord_A", floatstr(strcharsplit(s_buf, buf, ',')));
-	
-	ini_getInteger(file_player, "Status", buf);
-	SetPlayerStatus(playerid, buf);
-	if (IsPlayerAdmin(playerid))
-	{
-		SetPlayerStatus(playerid, STATUS_LEVEL_RCON);
-	}
-	
-	SetPlayerFightingStyle(playerid, pl_fights_GetPlayerStyle(playerid));
-
-	ini_getString(file_player, "Gang", s_buf);
-	if (strlen(s_buf) > 0)
-	{
-		new tmpname[MAX_NAME];
-		format(tmpname, sizeof(tmpname), "%s%s"GTO_FILES_FORMAT, GangDB, s_buf);
-		if (!ini_fileExist(tmpname))
-		{
-			format(tmpname, sizeof(tmpname), "Банда `%s` была расформирована.", s_buf);
-			SendClientMessage(playerid, COLOUR_ORANGE, tmpname);
-			ini_setString(file_player, "Gang", nullstr);
-			SetPVarInt(playerid, "GangID", 0);
-		}
-		else
-		{
-			GangMemberLogin(playerid, GangLoad(s_buf));
-		}
-	}
-	else
-	{
-		// no gang
-		SetPVarInt(playerid, "GangID", 0);
-	}
-
-	ini_getString(file_player, "Weapons", s_buf);
-	SetWeaponsFromDBString(playerid, s_buf);
-	
-	ini_getString(file_player, "WeaponsSkills", s_buf);
-	SetWeaponsSkillsFromDBString(playerid, s_buf);
-	
-	ini_getInteger(file_player, "SkinModel", buf);
-	oSetPlayerSkin(playerid, buf);
-	
-	ini_getString(file_player, "VIP", s_buf);
-	SetPlayerVIPDate(playerid, s_buf);
-	
-	if (VIPCheck( GetPlayerVIPDate(playerid) ))
-	{
-		SetPlayerVIP(playerid, 1);
-	}
-	else
-	{
-		SetPlayerVIP(playerid, 0);
-	}
-	
-	ini_getInteger(file_player, "Hide", buf);
-	SetPlayerHideStatus(playerid, buf);
-	
-	ini_getInteger(file_player, "SpawnHouseID", buf);
-	SetPlayerSpawnHouseID(playerid, buf);
-	
-	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
-		format(s_buf, sizeof(s_buf), "Vehicle_%d", i);
-		new error = ini_getString(file_player, s_buf, s_buf);
-		
-		if (error == INI_KEY_NOT_FOUND) {
-			break;
-		}
-		
-		SetVehicleFromDbString(playerid, i, s_buf);
-	}
-	
-	ini_closeFile(file_player);
-	return 1;
-}
-
 stock SendPM(senderid, receiveid, message[])
 {
-	if (GetPlayerMuteTime(senderid) != 0)
+	if (player_GetMuteTime(senderid) != 0)
 	{
 		SendClientMessage(senderid, COLOUR_RED, lang_texts[1][14]);
 		return 0;

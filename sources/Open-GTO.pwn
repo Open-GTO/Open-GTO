@@ -41,8 +41,10 @@ Developers:
 #include "player\player_health"
 #include "player\player_fights"
 #include "player\vehicle"
+#include "player\status"
+#include "player\account"
+#include "player\login"
 #include "bank"
-#include "account"
 #include "player"
 #include "weapons"
 #include "zones"
@@ -427,13 +429,13 @@ public OnPlayerRequestClass(playerid, classid)
 
 public OnPlayerRequestSpawn(playerid)
 {
-	if (!IsPlayerLogin(playerid)) return 0;
+	if (!player_IsLogin(playerid)) return 0;
 	return 1;
 }
 
 public OnPlayerCommandText(playerid, cmdtext[])
 {
-	if (!IsPlayerLogin(playerid))
+	if (!player_IsLogin(playerid))
 	{
 		return SendClientMessage(playerid, -1, lang_texts[1][46]);
 	}
@@ -565,7 +567,7 @@ public OnPlayerCommandText(playerid, cmdtext[])
 
 public OnPlayerText(playerid, text[])
 {
-	if (!IsPlayerLogin(playerid))
+	if (!player_IsLogin(playerid))
 	{
 		SendClientMessage(playerid, -1, lang_texts[1][46]);
 		return 0;
@@ -582,7 +584,7 @@ public OnPlayerText(playerid, text[])
 	{
 		case '!':
 		{
-			if (GetPVarInt(playerid, "GangID") == 0 || GetPlayerMuteTime(playerid) > 0)
+			if (GetPVarInt(playerid, "GangID") == 0 || player_GetMuteTime(playerid) > 0)
 			{
 				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 				return 0;
@@ -613,7 +615,7 @@ public OnPlayerText(playerid, text[])
 		case '$',';':
 		{
 			if (strlen(text[1]) < 2) return 1;
-			if (GetPlayerMuteTime(playerid) > 0)
+			if (player_GetMuteTime(playerid) > 0)
 			{
 				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 				return 0;
@@ -624,7 +626,7 @@ public OnPlayerText(playerid, text[])
 			return 0;
 		}
 	}
-	if (GetPlayerMuteTime(playerid) != 0)  //Заткнут
+	if (player_GetMuteTime(playerid) != 0)  //Заткнут
 	{
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 		return 0;
@@ -794,7 +796,7 @@ public OnRconLoginAttempt(ip[], password[], success)
 				GetPVarString(playerid, "IP", pip, sizeof(pip));
 
 				if (!strcmp(ip, pip, false)) {
-					SetPlayerStatus(playerid, STATUS_LEVEL_RCON);
+					player_SetStatus(playerid, STATUS_LEVEL_RCON);
 					break;
 				}
 			}

@@ -67,7 +67,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		format(string, sizeof(string), lang_texts[12][34], oGetPlayerName(receiverid), receiverid);
 		SendClientMessage(playerid, COLOUR_YELLOW, string);
 
-		switch (GetPlayerStatus(receiverid)) {
+		switch (player_GetStatus(receiverid)) {
 			case STATUS_LEVEL_MODER: set(string, lang_texts[12][87]);
 			case STATUS_LEVEL_ADMIN: set(string, lang_texts[12][86]);
 			case STATUS_LEVEL_RCON: set(string, lang_texts[12][94]);
@@ -82,10 +82,10 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 		format(string, sizeof(string), lang_texts[12][36], oGetPlayerMoney(receiverid), GetPlayerBankMoney(receiverid));
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 
-		format(string, sizeof(string), lang_texts[12][38], GetPlayerDeaths(receiverid), GetPlayerKills(receiverid));
+		format(string, sizeof(string), lang_texts[12][38], player_GetDeaths(receiverid), player_GetKills(receiverid));
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 
-		format(string, sizeof(string), lang_texts[12][71], GetPlayerJailed(receiverid), GetPlayerMuted(receiverid));
+		format(string, sizeof(string), lang_texts[12][71], player_GetJailCount(receiverid), player_GetMuteCount(receiverid));
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 
 		new playerIP[MAX_IP];
@@ -252,7 +252,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 				continue;
 			}
 
-			if (!IsPlayerJailed(id) && !IsPlayerRconAdmin(id)  && !IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id)) {
+			if (!player_IsJailed(id) && !IsPlayerRconAdmin(id)  && !IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id)) {
 				receiver_x = receiver_x + random(2) - random(4);
 				receiver_y = receiver_y + random(2) - random(4);	
 				oSetPlayerPos(id, receiver_x, receiver_y, receiver_z);

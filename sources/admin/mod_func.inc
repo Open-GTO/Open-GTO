@@ -15,7 +15,7 @@ stock modfunc_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 	#pragma unused ispassenger
 	foreach (Player, id)
 	{
-		if (GetPlayerSpectating(id) && GetPlayerSpecID(id) == playerid)
+		if (player_IsSpectating(id) && player_GetSpecID(id) == playerid)
 		{
 			PlayerSpectateVehicle(id, vehicleid);
 		}
@@ -28,7 +28,7 @@ stock modfunc_OnPlayerExitVehicle(playerid, vehicleid)
 	#pragma unused vehicleid
 	foreach (Player, id)
 	{
-		if (GetPlayerSpectating(id) && GetPlayerSpecID(id) == playerid)
+		if (player_IsSpectating(id) && player_GetSpecID(id) == playerid)
 		{
 			PlayerSpectatePlayer(id, playerid);
 		}
@@ -41,7 +41,7 @@ stock modfunc_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 	#pragma unused oldinteriorid
 	foreach (Player, id)
 	{
-		if (GetPlayerSpectating(id) && GetPlayerSpecID(id) == playerid)
+		if (player_IsSpectating(id) && player_GetSpecID(id) == playerid)
 		{
 			SetPlayerInterior(id, newinteriorid);
 		}
@@ -54,11 +54,11 @@ stock modfunc_OnPlayerDeath(playerid, killerid, reason)
 	#pragma unused reason, killerid
 	foreach (Player, id)
 	{
-		if (GetPlayerSpectating(id) && GetPlayerSpecID(id) == playerid)
+		if (player_IsSpectating(id) && player_GetSpecID(id) == playerid)
 		{
 			TogglePlayerSpectating(id, 0);
-			SetPlayerSpectating(id, 0);
-			SetPlayerSpecID(id, INVALID_PLAYER_ID);
+			player_SetSpectating(id, 0);
+			player_SetSpecID(id, INVALID_PLAYER_ID);
 			SetPlayerInterior(playerid, GetPVarInt(id, "spec_interior"));
 			DeletePVar(id, "spec_interior");
 		}

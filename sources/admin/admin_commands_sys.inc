@@ -144,8 +144,8 @@ stock AdminSys_OnPlayerCommandText(playerid, text[]) // process player commands
 		SendMessageToAdmins(playerid, COLOUR_LIGHTGREEN, text);
 
 		foreach (new id : Player) {
-			PlayerSave(id);
-			AccountSave(id);
+			player_Save(id);
+			account_Save(id);
 		}
 		SendRconCommand("gmx");
 		return 1;

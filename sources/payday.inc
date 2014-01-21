@@ -55,7 +55,7 @@ stock GivePay()
 	new pay_Money, pay_XP, string[MAX_STRING];
 	foreach (Player, id)
 	{
-		if (!IsPlayerLogin(id)) {
+		if (!player_IsLogin(id)) {
 			continue;
 		}
 		pay_Money = 0;

@@ -31,11 +31,10 @@ stock oSetPlayerArmour(playerid, Float:armour)
 	return SetPlayerArmour(playerid, armour);
 }
 
-#define oGetPlayerArmour(%0) GetPVarFloat(%0, "Armour")
-/*stock Float:oGetPlayerArmour(playerid)
+stock oGetPlayerArmour(playerid, &Float:armour)
 {
-	return GetPVarFloat(playerid, "Armour");
-}*/
+	armour = GetPVarFloat(playerid, "Armour");
+}
 
 stock pt_armour_OnPlayerPickUpPickup(playerid, pickupid)
 {
@@ -58,7 +57,8 @@ stock pt_armour_Sync(playerid)
 	new Float:clientarmour;
 	GetPlayerArmour(playerid, clientarmour);
 	
-	new Float:serverarmour = oGetPlayerArmour(playerid);
+	new Float:serverarmour;
+	oGetPlayerArmour(playerid, serverarmour);
 
 	if (clientarmour < serverarmour) {
 		SetPVarFloat(playerid, "Armour", clientarmour);

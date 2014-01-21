@@ -76,7 +76,7 @@ stock mission_SaveConfig(file_config)
 
 stock IsPlayerInMission(playerid, missionid)
 {
-	if (GetPlayerQuestID(playerid) == mission_questid[missionid]) return 1;
+	if (player_GetQuestID(playerid) == mission_questid[missionid]) return 1;
 	return 0;
 }
 
@@ -116,7 +116,7 @@ stock mission_CalculateMoney(playerid, missionid)
 }
 
 /*
-#define IsPlayerInMission(%0,%1) (GetPlayerQuestID(%0) == mission_questid[%1]) ? 1 : 0
+#define IsPlayerInMission(%0,%1) (player_GetQuestID(%0) == mission_questid[%1]) ? 1 : 0
 #define IsMissionEnabled(%0) (mission_array[%0][mission_enabled] == 1) ? 1 : 0
 #define mission_Register(%0) mission_questid[%0] = RegisterQuest()
 #define mission_GetQuestID(%0) mission_questid[%0]

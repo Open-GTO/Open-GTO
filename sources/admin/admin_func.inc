@@ -68,7 +68,7 @@ stock admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 stock admin_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
 {
 	#pragma unused issuerid, amount, weaponid
-	if (IsPlayerGodmod(playerid))
+	if (player_IsGodmod(playerid))
 	{
 		oSetPlayerHealth(playerid, 100.0);
 	}

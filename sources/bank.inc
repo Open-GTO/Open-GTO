@@ -139,7 +139,7 @@ stock bank_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				return show_Msg_Dialog(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][94]);
 			}
 			
-			new gangid = GetPlayerGangID(playerid);
+			new gangid = player_GetGangID(playerid);
 			
 			GiveGangMoney(gangid, amount);
 			oGivePlayerMoney(playerid, -amount);
@@ -162,7 +162,7 @@ stock bank_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				return show_Msg_Dialog(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][93]);
 			}
 			
-			new gangid = GetPlayerGangID(playerid);
+			new gangid = player_GetGangID(playerid);
 			if (GetGangMoney(gangid) < amount)
 			{
 				return show_Msg_Dialog(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][94]);
@@ -196,7 +196,7 @@ stock bank_ShowDialog_List(playerid)
 	new string[MAX_STRING];
 	set(string, lang_texts[2][4]);
   	
-	if (GetPlayerGangID(playerid) != 0)
+	if (player_GetGangID(playerid) != 0)
 	{
 		strcat(string, lang_texts[2][20], sizeof(string));
 		
@@ -270,7 +270,7 @@ stock Profit()
 	new string[MAX_STRING], amount;
 	
 	foreach (Player, playerid) {
-		if (!IsPlayerLogin(playerid)) {
+		if (!player_IsLogin(playerid)) {
 			continue;
 		}
 		amount = (GetPlayerBankMoney(playerid) / 100) * ProfitCount;

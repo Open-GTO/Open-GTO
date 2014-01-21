@@ -36,8 +36,8 @@ public WorldSave(necessarily) // save all
 	new starttime = GetTickCount();
 
 	foreach (new id : Player) {
-		PlayerSave(id);
-		AccountSave(id);
+		player_Save(id);
+		account_Save(id);
 	}
 
 	cfg_SaveConfigs();
@@ -114,10 +114,10 @@ forward OneMinuteTimer();
 public OneMinuteTimer()
 {
 	foreach (new playerid : Player) {
-		if (GetPlayerSkydiveTime(playerid) > 0) {
-			SetPlayerSkydiveTime(playerid, GetPlayerSkydiveTime(playerid) - 1);
+		if (player_GetSkydiveTime(playerid) > 0) {
+			player_SetSkydiveTime(playerid, player_GetSkydiveTime(playerid) - 1);
 		}
-		if (IsPlayerLogin(playerid)) {
+		if (player_IsLogin(playerid)) {
 			JailPlayerTimer(playerid);
 			MutePlayerTimer(playerid);
 			pt_idle_PlayerTimer(playerid);
@@ -157,7 +157,7 @@ public FiveSecondTimer()
 	vshop_SetVehiclesToRespawn();
 
 	foreach (new playerid : Player) {
-		if (IsPlayerSpawned(playerid)) {
+		if (player_IsSpawned(playerid)) {
 			SyncPlayerWeapons(playerid);
 		}
 	}

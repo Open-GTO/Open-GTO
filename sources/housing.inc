@@ -425,7 +425,7 @@ stock RentRoom(playerid)
 		return SendClientMessage(playerid, COLOUR_RED, lang_texts[8][66]);
 	}
 	
-	if (strlen(GetPlayerGangName(playerid)) > 0)
+	if (strlen(player_GetGangName(playerid)) > 0)
 	{
 		return SendClientMessage(playerid, COLOUR_RED, lang_texts[8][79]);
 	}
@@ -521,7 +521,7 @@ stock house_Buy(playerid)
 	if (id <= -1)
 		return SendClientMessage(playerid, COLOUR_RED, lang_texts[8][21]);
 	
-	if (GetPlayerGangID(playerid) == 0)
+	if (player_GetGangID(playerid) == 0)
 		return SendClientMessage(playerid, COLOUR_RED, lang_texts[8][19]);
 
 	new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
@@ -554,12 +554,12 @@ stock house_Buy(playerid)
 	#endif
 		oGivePlayerMoney(playerid,-price, 1);
 		set(Houses[id][Houses_Owner], playername);
-		set(Houses[id][Houses_Gang], GetPlayerGangName(playerid));
+		set(Houses[id][Houses_Gang], player_GetGangName(playerid));
 		Houses[id][Houses_Buyout] = 0;
 		// если игрок купил свой первый дом, то ставим спавн к нему
 		if (pl_houses == 0)
 		{
-			SetPlayerSpawnHouseID(playerid, id);
+			player_SetSpawnHouseID(playerid, id);
 		}
 		UpdateStreamMapIcon(house_icon[id]);
 		format(temp, sizeof(temp), lang_texts[8][17], Houses[id][Houses_Name]);
@@ -587,12 +587,12 @@ stock house_Sell(playerid)
 		new price = ((Houses[id][Houses_Cost] + Houses[id][Houses_Buyout]) * 85) / 100;
 		oGivePlayerMoney(playerid, price, 1);
 		house_Free(id);
-		new gangid = GetPlayerGangID(playerid);
+		new gangid = player_GetGangID(playerid);
 		if (gang_GetHouse(gangid) == id)
 		{
 			gang_SetHouse(gangid, -1);
 		}
-		SetPlayerSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+		player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 		new temp[MAX_STRING];
 		format(temp, sizeof(temp), lang_texts[8][24], Houses[id][Houses_Name]);
 		SendClientMessage(playerid, COLOUR_GREEN, temp);
@@ -610,7 +610,7 @@ stock house_Keep(playerid)
 		return SendClientMessage(playerid, COLOUR_RED, lang_texts[8][50]);
 	}
 	
-	if (strcmp(Houses[id][Houses_Gang], GetPlayerGangName(playerid), true))
+	if (strcmp(Houses[id][Houses_Gang], player_GetGangName(playerid), true))
 	{
 		return SendClientMessage(playerid, COLOUR_RED, lang_texts[8][47]);
 	}

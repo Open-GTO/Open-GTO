@@ -385,7 +385,7 @@ stock CheckDM() // must be ran by timer every second
 		{
 			foreach (Player, playerid)
 			{
-				if (GetPlayerQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
+				if (player_GetQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
 				{
 					if (DMPlayerStats[playerid][dm_player_active] == 1)
 					{
@@ -503,7 +503,7 @@ stock StartDMLineup(dmid)
 		SendClientMessage(playerid, color, string1);
 		SendClientMessage(playerid, color, string2);
 		SendClientMessage(playerid, color, string3);
-		if (GetPlayerQuestID(playerid) == INVALID_QUEST_ID) // if player not on a quest
+		if (player_GetQuestID(playerid) == INVALID_QUEST_ID) // if player not on a quest
 		{
 			DMResetPlayerStats(playerid);
 		}
@@ -516,7 +516,7 @@ stock StartDMCountdown(dmid)
 	new string[MAX_STRING];
 	foreach (Player, playerid)
 	{
-		if (GetPlayerQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
+		if (player_GetQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			if (!oIsPlayerInCheckpoint(playerid, GetDMCPX(dmid), GetDMCPY(dmid), GetDMCPZ(dmid), 50))
 			{
@@ -543,7 +543,7 @@ stock StartDMCountdown(dmid)
 		//CleanupDM без удаления чекпоинтов
 		foreach (Player, playerid)
 		{
-			if (GetPlayerQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
+			if (player_GetQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
 			{
 				PlayerLeaveDM(playerid, dmid);
 			}
@@ -566,7 +566,7 @@ stock StartDMCountdown(dmid)
 	DeathmatchStats[dmid][dm_state] = DM_STATE_COUNTDOWN;
 	foreach (Player, playerid)
 	{
-		if (GetPlayerQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
+		if (player_GetQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			if (oIsPlayerInCheckpoint(playerid, GetDMCPX(dmid), GetDMCPY(dmid), GetDMCPZ(dmid), 50))
 			{
@@ -584,7 +584,7 @@ stock StartDM(dmid)
 	DeathmatchStats[dmid][dm_state] = DM_STATE_ACTIVE;
 	foreach (Player, playerid)
 	{
-		if (GetPlayerQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
+		if (player_GetQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			TogglePlayerControllable(playerid, 1);
 		}
@@ -626,7 +626,7 @@ stock JoinDM(playerid, dmid)
 
 	oGivePlayerMoney(playerid, 0-Deathmatch[dmid][dm_cashentry], 1);
 	GameTextForPlayer(playerid, "~g~Deathmatch Entered.", 3000, 6);
-	SetPlayerQuestID(playerid, GetDMQuestID(dmid));
+	player_SetQuestID(playerid, GetDMQuestID(dmid));
 
 	if (DeathmatchStats[dmid][dm_state] == DM_STATE_LINEUP)
 	{
@@ -703,7 +703,7 @@ stock EndDM(dmid)
 {
 	foreach (Player, playerid)
 	{
-		if (GetPlayerQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
+		if (player_GetQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			new playerpos = GetPlayerDMPosition(playerid, dmid);
 			PlayerFinishDM(playerid, dmid, playerpos);
@@ -716,7 +716,7 @@ stock CleanupDM(dmid)
 {
 	foreach (Player, playerid)
 	{
-		if (GetPlayerQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
+		if (player_GetQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			PlayerLeaveDM(playerid, dmid);
 		}
@@ -881,7 +881,7 @@ stock SendMessageToDMPlayers(dmid, string[], colour)
 {
 	foreach (Player, dmplayerid)
 	{
-		if (GetPlayerQuestID(dmplayerid) == GetDMQuestID(dmid)) // if player is in this dm
+		if (player_GetQuestID(dmplayerid) == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			SendClientMessage(dmplayerid, colour, string);
 		}
@@ -890,7 +890,7 @@ stock SendMessageToDMPlayers(dmid, string[], colour)
 
 stock IsPlayerInDM(playerid, dmid)
 {
-	if (dmid == INVALID_DM_ID || !IsPlayerConnected(playerid) || GetPlayerQuestID(playerid) != GetDMQuestID(dmid))
+	if (dmid == INVALID_DM_ID || !IsPlayerConnected(playerid) || player_GetQuestID(playerid) != GetDMQuestID(dmid))
 	{
 		return 0;
 	}
@@ -1017,7 +1017,7 @@ stock GetPlayerDM(playerid)
 		{
 			continue;
 		}
-		if (GetPlayerQuestID(playerid) == GetDMQuestID(dmid))
+		if (player_GetQuestID(playerid) == GetDMQuestID(dmid))
 		{
 			return dmid;
 		}
@@ -1039,7 +1039,7 @@ stock GetDMWinner(dmid)
 	new winnerscore;
 	foreach (Player, playerid)
 	{
-		if (GetPlayerQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
+		if (player_GetQuestID(playerid) == GetDMQuestID(dmid)) // if player is in this dm
 		{
 			if (DMPlayerStats[playerid][dm_player_kills] - DMPlayerStats[playerid][dm_player_deaths] > winnerscore)
 			{
@@ -1176,7 +1176,7 @@ stock dm_OnPlayerEnterCheckpoint(playerid)
 			}
 			case DM_STATE_LINEUP:
 			{
-				if (GetPlayerQuestID(playerid) == INVALID_QUEST_ID) // if player not on a quest
+				if (player_GetQuestID(playerid) == INVALID_QUEST_ID) // if player not on a quest
 				{
 					// if player at startline
 					if (oIsPlayerInCheckpoint(playerid, GetDMCPX(dmid), GetDMCPY(dmid), GetDMCPZ(dmid), DMCPSize*3))
@@ -1195,7 +1195,7 @@ stock dm_OnPlayerEnterCheckpoint(playerid)
 			}
 			case DM_STATE_ACTIVE:
 			{
-				if (GetPlayerQuestID(playerid) == INVALID_QUEST_ID) // if player not on a quest
+				if (player_GetQuestID(playerid) == INVALID_QUEST_ID) // if player not on a quest
 				{
 					// if player at startline
 					if (oIsPlayerInCheckpoint(playerid, GetDMCPX(dmid), GetDMCPY(dmid), GetDMCPZ(dmid), DMCPSize*3))
@@ -1261,7 +1261,7 @@ stock dm_OnPlayerCommandText(playerid, text[]) // process player commands
 		if (!strcmp(cmd, "join", true))
 		{
 			new dmid = strval(strcharsplit(text, idx,' '));
-			if (GetPlayerQuestID(playerid) != INVALID_QUEST_ID)
+			if (player_GetQuestID(playerid) != INVALID_QUEST_ID)
 			{
 				return SendClientMessage(playerid, COLOUR_RED, lang_texts[4][55]);
 			}
@@ -1286,7 +1286,7 @@ stock dm_OnPlayerCommandText(playerid, text[]) // process player commands
 		}
 		if (!strcmp(cmd, "leave", true) || !strcmp(cmd, "quit", true))
 		{
-			if (GetPlayerQuestID(playerid) == INVALID_QUEST_ID)
+			if (player_GetQuestID(playerid) == INVALID_QUEST_ID)
 			{
 				return SendClientMessage(playerid, COLOUR_RED, lang_texts[4][60]);
 			}
