@@ -118,7 +118,7 @@ stock fights_IsPlayerAtTeacher(playerid)
 
 stock fights_GetNameByID(fstyleid, fstylename[MAX_STRING])
 {
-	if (fstyleid < 0 || fstyleid > sizeof(fights_Teachers)) {
+	if (fstyleid < 0 || fstyleid > sizeof(fights_Teachers) - 1) {
 		return 0;
 	}
 
