@@ -189,7 +189,7 @@ stock trucker_Start(playerid)
 			return 0;
 		}
 	}
-	player_SetQuestID(playerid, mission_GetQuestID(mission_trucker));
+	pl_quest_SetQuestID(playerid, mission_GetQuestID(mission_trucker));
 	SetPVarInt(playerid, "trucker_Timer",
 		SetTimerEx("trucker_EndMission", TRUCKER_MISSION_TIME * 1000, 0, "d", playerid)
 	);
@@ -377,7 +377,7 @@ public trucker_EndMission(playerid)
 
 stock trucker_Stop(playerid)
 {
-	ResetQuest(playerid);
+	pl_quest_Reset(playerid);
 	GivePVarInt(playerid, "trucker_MissionTryCount", 1);
 	if (GetPVarInt(playerid, "trucker_MissionTryCount") >= mission_GetTryCount(mission_trucker)) {
 		SetPVarInt(playerid, "trucker_MissionTryCount", 0);

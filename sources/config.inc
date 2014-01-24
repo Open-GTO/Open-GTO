@@ -39,7 +39,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define MIN_SEND_SYMBOLS		3 // минимальное кол-во отправляемых символов в ПМ
 #define MAX_SEND_SYMBOLS		100 // максимальное кол-во отправляемых символов в ПМ
 
-#define INVALID_QUEST_ID		0
+#define INVALID_QUEST_ID		-1
 #define MAX_QUESTS				255
 
 #define WORLD_SAVE_TIME			300000		// 1 раз, за это кол-во милисекунд выполняется сохранение всего мира(300000 - 5 минут)

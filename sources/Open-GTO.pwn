@@ -44,6 +44,8 @@ Developers:
 #include "player\status"
 #include "player\account"
 #include "player\login"
+#include "player\player_quest"
+#include "quest"
 #include "bank"
 #include "player"
 #include "weapons"

@@ -150,7 +150,7 @@ public FiveSecondTimer()
 {
 	CheckAllGround();
 	PlayerHealthRegen();
-	SyncActiveCP();
+	checkpoint_Sync();
 	business_Update3DTextLabelText();
 	housing_Update3DTextLabelText();
 	PayDay();

@@ -117,7 +117,7 @@ stock AdminSys_OnPlayerCommandText(playerid, text[]) // process player commands
 				Groundhold_IsEnabled = 0;
 
 				for (new ghid = 0; ghid < sizeof(Groundholds); ghid++) {
-					RemoveActiveCheckpoint(FindActiveCheckpoint(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]));
+					checkpoint_Remove(checkpoint_FindByCoord(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]));
 					DeleteStreamMapIcon(FindStreamMapIcon(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]));
 					CheckGround(ghid);
 				}
@@ -128,7 +128,7 @@ stock AdminSys_OnPlayerCommandText(playerid, text[]) // process player commands
 				Groundhold_IsEnabled = 1;
 
 				for (new ghid = 0; ghid < sizeof(Groundholds);  ghid++) {
-					AddActiveCheckpoint(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 200, 2);
+					checkpoint_Add(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 200, 2);
 					CreateStreamMapIcon(56, Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]);
 					CheckGround(ghid);
 				}

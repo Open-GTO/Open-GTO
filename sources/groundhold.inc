@@ -105,7 +105,7 @@ stock groundhold_OnGameModeInit()
 	groundhold_LoadAll();
 
 	for (new i = 0; i < sizeof(Groundholds); i++) {
-		AddActiveCheckpoint(Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z], 200, 2);
+		checkpoint_Add(Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z], 200, 2);
 		CreateStreamMapIcon(56, Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z]);
 	}
 
