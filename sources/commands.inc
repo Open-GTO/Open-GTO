@@ -31,7 +31,7 @@ stock commands_OnPlayerCommandText(playerid, text[]) // process player commands
 			return SendClientMessage(playerid, COLOUR_PM, "/pm: Неверный ID");
 		}
 		
-		SendPM(playerid, id, text[idx]);
+		pl_pm_Send(playerid, id, text[idx]);
 		return 1;
 	}
 	if (!strcmp(cmd, "/sound", true))

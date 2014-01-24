@@ -62,11 +62,11 @@ stock player_SetMuteTime(playerid, time) {
 	SetPVarInt(playerid, "MuteTime", time);
 }
 
-stock oGetPlayerSkin(playerid) {
+stock player_GetSkin(playerid) {
 	return GetPVarInt(playerid, "SkinModel");
 }
 
-stock oSetPlayerSkin(playerid, skinid) {
+stock player_SetSkin(playerid, skinid) {
 	SetPlayerSkin(playerid, skinid);
 	SetPVarInt(playerid, "SkinModel", skinid);
 }
@@ -95,14 +95,6 @@ stock player_SetHideStatus(playerid, hidestatus) {
 	SetPVarInt(playerid, "Hide", hidestatus);
 }
 
-stock player_GetSpawnHouseID(playerid) {
-	return GetPVarInt(playerid, "SpawnHouseID");
-}
-
-stock player_SetSpawnHouseID(playerid, houseid) {
-	SetPVarInt(playerid, "SpawnHouseID", houseid);
-}
-
 stock player_GetSkydiveTime(playerid) {
 	return GetPVarInt(playerid, "SkydiveTime");
 }
@@ -129,8 +121,8 @@ stock player_SetGangID(playerid, gangid) {
 	SetPVarInt(playerid, "GangID", gangid);
 }
 
-stock GetAllowPlayerTeleport(playerid) {
-	return GetPVarInt(playerid, "AllowTeleport");
+stock IsAllowPlayerTeleport(playerid) {
+	return GetPVarInt(playerid, "AllowTeleport") == 1 ? 1 : 0;
 }
 
 stock oAllowPlayerTeleport(playerid, isallow) {
@@ -140,14 +132,6 @@ stock oAllowPlayerTeleport(playerid, isallow) {
 	#define AllowPlayerTeleport oAllowPlayerTeleport
 #endif
 
-stock player_IsLogin(playerid) {
-	return GetPVarInt(playerid, "IsLogin");
-}
-
-stock player_SetLogin(playerid, islogin) {
-	SetPVarInt(playerid, "IsLogin", islogin);
-}
-
 stock player_IsGodmod(playerid) {
 	return GetPVarInt(playerid, "godmod");
 }
@@ -156,89 +140,7 @@ stock player_SetGodmod(playerid, isgodmod) {
 	SetPVarInt(playerid, "godmod", isgodmod);
 }
 
-stock player_IsSpawned(playerid) {
-	return (GetPVarInt(playerid, "Spawned") == 1);
-}
-
 new PlayerStartMoney = PLAYER_START_MONEY;
-
-enum PlayerSpawnInfo {
-	playerspawn_level,
-	Float:playerspawn_x,
-	Float:playerspawn_y,
-	Float:playerspawn_z,
-	Float:playerspawn_heading
-}
-
-#define PLAYERSPAWNS_SIZE 38
-new Float:LeveledPlayerSpawns[PLAYERSPAWNS_SIZE][PlayerSpawnInfo] = {
-	{0, 2517.5344,-1694.0607, 18.4772, 47.2527}, // lvl0spawn1
-	{0, 2494.6113,-1694.2920, 23.5697, 7.8082}, // lvl0ps
-	{0, 2524.2092,-1675.8125, 19.9302, 65.8183}, // lvl0ps
-	{3, 2066.9448,-1700.1219, 14.1484, 276.0525}, // lvl3spawn
-	{3, 2065.0754,-1732.0588, 18.7969, 308.6771}, // lvl3spawn
-	{3, 2042.3877,-1722.0016, 13.5469, 339.7588}, // lvl3spawn
-	{3, 2040.6575,-1646.1099, 13.5469, 1.2393}, // lvl3spawn
-	{5, 1641.0234,-1545.1201, 13.5803, 293.5606}, // lvl5spawn
-	{5, 1585.7887,-1539.0266, 13.5864, 265.2574}, // lv5spaawn
-	{5, 1606.7871,-1476.6110, 13.5804, 0.8114}, // lv5 spawn
-	{6, 1885.8452,-1087.4312, 23.9185, 279.8816}, // lv6spawn
-	{6, 2008.4741,-1098.7870, 24.9058, 256.2135}, // lv6spawn
-	{6, 2045.3113,-1158.0294, 23.4437, 145.6347}, // lv6spawn
-	{6, 2022.5231,-1210.7472, 21.7610, 35.7139}, // lv6spawn
-	{6, 1933.6676,-1226.6060, 20.1364, 97.0786}, // lv6spawn
-	{7, 1332.1099,-911.0746, 39.5781, 168.9972}, // lv7spawn
-	{7, 1309.1066,-847.0045, 64.8932, 315.8327}, // lv7spawn
-	{7, 1285.2598,-830.9579, 83.1406, 171.4035}, // lv7spawn
-	{7, 1243.5209,-743.7954, 94.9519, 191.1576}, // lv7spawn
-	{8, 655.1062,-543.5223, 16.3281, 349.4992}, // lvl8player
-	{8, 702.5857,-463.9641, 16.3359, 189.5556}, // lvl8play
-	{8, 852.9753,-587.0893, 18.0406, 8.3576}, // play8
-	{8, 744.7605,-582.7914, 16.9987, 84.0696}, // play8
-	{9, 248.1220,-278.0332, 1.5781, 52.9390}, // play9
-	{9, 326.3771,-53.1227, 1.5285, 111.6351}, // play9
-	{9, 214.2944,-89.7956, 1.5710, 312.5051}, // play9
-	{10, 614.6899, 43.1528, 0.0748, 344.7167}, // play10
-	{10, 867.4291,-30.7355, 63.1953, 176.7125}, // play10
-	{10, 1011.3226, 11.4864, 93.0156, 302.5121}, // play10
-	{11, 751.2596, 383.9003, 23.1719, 335.8973}, // play10
-	{11, 1222.3271, 300.4901, 19.5547, 155.6648}, // play11
-	{11, 1284.9962, 175.7558, 20.3423, 73.2174}, // play11
-	{12, 1426.9465, 371.7816, 18.8869, 257.0709}, // play11
-	{12, 1572.3761, 36.5942, 24.5907, 242.6472}, // play11
-	{14, 2215.1565, 123.8511, 26.4844, 350.1021}, // play12
-	{15, 2281.3704,-49.9920, 27.0176, 207.7730}, // play12
-	{17, 2162.9019,-102.3568, 2.7500, 27.7265}, // play12
-	{18, 2459.7744,-40.9547, 26.4844, 25.8460} // play12
-};
-
-
-// LVDMSpawns
-new Float:LVDMPlayerSpawns[23][CoordInfo] = {
-	{1958.3783, 1343.1572, 15.3746},
-	{2199.6531, 1393.3678, 10.8203},
-	{2483.5977, 1222.0825, 10.8203},
-	{2637.2712, 1129.2743, 11.1797},
-	{2000.0106, 1521.1111, 17.0625},
-	{2024.8190, 1917.9425, 12.3386},
-	{2261.9048, 2035.9547, 10.8203},
-	{2262.0986, 2398.6572, 10.8203},
-	{2244.2566, 2523.7280, 10.8203},
-	{2335.3228, 2786.4478, 10.8203},
-	{2150.0186, 2734.2297, 11.1763},
-	{2158.0811, 2797.5488, 10.8203},
-	{1969.8301, 2722.8564, 10.8203},
-	{1652.0555, 2709.4072, 10.8265},
-	{1564.0052, 2756.9463, 10.8203},
-	{1271.5452, 2554.0227, 10.8203},
-	{1441.5894, 2567.9099, 10.8203},
-	{1480.6473, 2213.5718, 11.0234},
-	{1400.5906, 2225.6960, 11.0234},
-	{1598.8419, 2221.5676, 11.0625},
-	{1318.7759, 1251.3580, 10.8203},
-	{1558.0731, 1007.8292, 10.8125},
-	{1705.2347, 1025.6808, 10.8203}
-};
 
 stock player_LoadConfig(file_config)
 {
@@ -271,65 +173,12 @@ stock player_OnPlayerSpawn(playerid)
 	UpdatePlayerWeaponTextDraws(playerid);
 
 	SetPlayerColor(playerid, PlayerGangColour(playerid));
-	oSetPlayerSkin(playerid, oGetPlayerSkin(playerid));
+	player_SetSkin(playerid, player_GetSkin(playerid));
 	oSetPlayerHealth(playerid, GetMaxHealth(playerid));
 	SetPlayerFightingStyle(playerid, pl_fights_GetPlayerStyleUsed(playerid));
 	GivePlayerOwnedWeapons(playerid);
 	weapon_SetSkills(playerid);
 	PushHide(playerid);
-	return 1;
-}
-
-stock player_SetSpawnPos(playerid)
-{
-	SetPlayerInterior(playerid, 0);
-	SetPlayerFacingAngle(playerid, GetPVarFloat(playerid, "Coord_A"));
-
-	if (GetPVarFloat(playerid, "Coord_Z") > 900.0) {
-		SetPVarFloat(playerid, "Coord_X", 0.0);
-		SetPVarFloat(playerid, "Coord_Y", 0.0);
-		SetPVarFloat(playerid, "Coord_Z", 0.0);
-	}
-
-	if (GetPVarFloat(playerid, "Coord_X") != 0.0 && GetPVarFloat(playerid, "Coord_Y") != 0.0 && GetPVarFloat(playerid, "Coord_Z") != 0.0) {
-		oSetPlayerPos(playerid, GetPVarFloat(playerid, "Coord_X"), GetPVarFloat(playerid, "Coord_Y"), GetPVarFloat(playerid, "Coord_Z"));
-		return 1;
-	}
-
-	new house_id = player_GetSpawnHouseID(playerid);
-	if (house_id >= 0 && strcmp(oGetPlayerName(playerid), Houses[house_id][Houses_Owner], true))
-	{
-		house_id = SPAWN_HOUSE_NONE;
-		player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[8][60]);
-	}
-
-	if (house_id == SPAWN_HOUSE_NONE) {
-		if (GetPlayerLevel(playerid) > 12) {
-			new rand = random( sizeof(LVDMPlayerSpawns) );
-			oSetPlayerPos(playerid, LVDMPlayerSpawns[rand][Coord_X], LVDMPlayerSpawns[rand][Coord_Y], LVDMPlayerSpawns[rand][Coord_Z]);
-		} else {
-			new spawnid = GetRndPlayerSpawnByLevel(GetPlayerLevel(playerid));
-			oSetPlayerPos(playerid, LeveledPlayerSpawns[spawnid][playerspawn_x], LeveledPlayerSpawns[spawnid][playerspawn_y], LeveledPlayerSpawns[spawnid][playerspawn_z]); // Warp the player
-		}
-	} else if (house_id == SPAWN_HOUSE_GANG) {
-		new gangid = player_GetGangID(playerid);
-		new gang_houseid = gang_GetHouse(gangid);
-
-		if (gangid == 0 || gang_houseid == -1) {
-			player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
-		} else {
-			SetPlayerPosToHouse(playerid, gang_houseid);
-		}
-	} else {
-		SetPlayerPosToHouse(playerid, house_id);
-		new tmp[MAX_STRING];
-		format(tmp, sizeof(tmp),
-			lang_texts[8][51],
-			Houses[house_id][Houses_Name], Houses[house_id][Houses_UpKeepLeft], Houses[house_id][Houses_UpKeep]*2800
-		);
-		SendClientMessage(playerid, COLOUR_RED, tmp);
-	}
 	return 1;
 }
 
@@ -344,23 +193,26 @@ stock player_OnPlayerDisconnect(playerid, reason)
 	
 	DMPlayerDisconnect(playerid);
 	StopAudioStreamForPlayer(playerid);
+
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[1][18], oGetPlayerName(playerid), playerid);
-	switch (reason)
-	{
-	    case 0: strcat(string, " (Вылетел)", sizeof(string));
-	    case 1: strcat(string, " (Вышел)", sizeof(string));
-	    case 2: strcat(string, " (Кикнут)", sizeof(string));
+	
+	switch (reason) {
+	    case 0: strcat(string, " (вылетел)", sizeof(string));
+	    case 1: strcat(string, " (вышел)", sizeof(string));
+	    case 2: strcat(string, " (кикнут)", sizeof(string));
 	}
+
 	SendClientMessageToAll(COLOUR_GREY, string);
-	GangMemberLogout(playerid, GetPVarInt(playerid, "GangID"));
+
+	GangMemberLogout(playerid, player_GetGangID(playerid));
 	DisablePlayerRaceCheckpoint(playerid);
 	SendDeathMessage(INVALID_PLAYER_ID, playerid, 201);
 }
 
 stock player_OnPlayerConnect(playerid)
 {
-	player_UpdateCamera(playerid);
+	pl_spawn_UpdateCamera(playerid);
 
     new plrIP[MAX_IP], string[MAX_STRING];
     GetPlayerIp(playerid, plrIP, sizeof(plrIP));
@@ -387,86 +239,80 @@ stock player_OnPlayerConnect(playerid)
 stock player_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused reason
-	SetPVarFloat(playerid, "Coord_X", 0.0);
-	SetPVarFloat(playerid, "Coord_Y", 0.0);
-	SetPVarFloat(playerid, "Coord_Z", 0.0);
-	SetPVarFloat(playerid, "Coord_A", 0.0);
+	pl_spawn_OnPlayerDeath(playerid, killerid, reason);
 
 	GivePVarInt(playerid, "Deaths", 1);
-	oGivePlayerMoney(playerid, -100, 0);
-	modfunc_OnPlayerDeath(playerid, killerid, reason);
-}
+	GivePVarInt(killerid, "Kills", 1);
 
-stock player_OnPlayerKill(killerid, victimid, reason) // earn xp, kills++
-{
 	if (killerid == INVALID_PLAYER_ID) {
 		return;
 	}
+
+	new stolencash = (oGetPlayerMoney(playerid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
+	if (stolencash != 0) {
+		oGivePlayerMoney(playerid, -stolencash, 1);
+		oGivePlayerMoney(killerid, stolencash, 1);
+	}
 	
-	if (GetPVarInt(killerid, "GangID") != 0)
-	{
-		if (GangKill(GetPVarInt(killerid, "GangID"), killerid, victimid, reason) == 1)
-		{
+	if (player_GetGangID(killerid) != 0) {
+		if (GangKill(player_GetGangID(killerid), killerid, playerid, reason) == 1) {
 			return;
 		}
 	}
 
-	GivePVarInt(killerid, "Kills", 1);
-
 	// Give XP
-	new XP_give_victim = -((GetPlayerXP(victimid) / 100) * PLAYER_XP_DEATH_MINUS_PROC);
-	new XP_give_killer = 0;
-	new level_difference = GetPlayerLevel(victimid) - GetPlayerLevel(killerid);
-	switch (level_difference)
-	{
-		case -MAX_LEVEL..-10: XP_give_killer = GetPlayerLevel(victimid) * PLAYER_XP_KILL_TARIF;
-		case -9..-1: XP_give_killer = ( ((GetPlayerLevel(victimid)+1) * (GetPlayerLevel(victimid)+1)) / (-level_difference) ) * PLAYER_XP_KILL_TARIF;
-		default: XP_give_killer = ( (GetPlayerLevel(victimid)+1) * 2 ) * ( (GetPlayerLevel(victimid)+1) * 2 ) * PLAYER_XP_KILL_TARIF;
+	new xp_give_player = -((GetPlayerXP(playerid) / 100) * PLAYER_XP_DEATH_MINUS_PROC);
+	new xp_give_killer = 0;
+	new level_difference = GetPlayerLevel(playerid) - GetPlayerLevel(killerid);
+
+	switch (level_difference) {
+		case -MAX_LEVEL..-10: {
+			xp_give_killer = GetPlayerLevel(playerid) * PLAYER_XP_KILL_TARIF;
+		}
+		case -9..-1: {
+			xp_give_killer = ( ((GetPlayerLevel(playerid)+1) * (GetPlayerLevel(playerid)+1)) / (-level_difference) ) * PLAYER_XP_KILL_TARIF;
+		}
+		default: {
+			xp_give_killer = ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * PLAYER_XP_KILL_TARIF;
+		}
 	}
 
-	if ((GetPlayerXP(killerid) + XP_give_killer) > MAX_XP)
-	{
-		SetPlayerXP(killerid, MAX_XP);
+	if (GetPlayerXP(killerid) + xp_give_killer > MAX_XP) {
+		GivePlayerXP(killerid, MAX_XP - GetPlayerXP(killerid), 1);
+	} else {
+		GivePlayerXP(killerid, xp_give_killer, 1);
 	}
-	else if (XP_give_killer != 0)
-	{
-		GivePlayerXP(killerid, XP_give_killer, 1);
-		CheckPlayerLevel(killerid);
-	}
-	if (XP_give_victim != 0)
-	{
-		GivePlayerXP(victimid, XP_give_victim, 1);
-		CheckPlayerLevel(victimid);
-	}
-	//
-	// Give Money
-	new stolencash = (oGetPlayerMoney(victimid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
-	if (stolencash != 0)
-	{
-		oGivePlayerMoney(victimid,-stolencash, 1);
-		oGivePlayerMoney(killerid, stolencash, 1);
-	}
-	//
 
-	return;
+	GivePlayerXP(playerid, xp_give_player, 1);
 }
 
 stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
-	if (GetAllowPlayerTeleport(playerid) != 1) return 0;
+	if (!IsAllowPlayerTeleport(playerid)) {
+		return 0;
+	}
+
 	new vehicleid = GetPlayerVehicleID(playerid);
-	if (vehicleid != 0)
-	{
+	if (vehicleid != 0) {
 		oSetVehiclePos(vehicleid, fX, fY, fZ);
 		LinkVehicleToInterior(vehicleid, 0);
 		SetVehicleVirtualWorld(vehicleid, 0);
-	}
-	else
-	{
+	} else {
 		oSetPlayerPos(playerid, fX, fY, fZ);
 		SetPlayerInterior(playerid, 0);
 		SetPlayerVirtualWorld(playerid, 0);
 	}
+	return 1;
+}
+
+stock player_OnPlayerRequestClass(playerid, classid)
+{
+	#pragma unused classid
+	// spawn system
+	pl_spawn_OnPlayerRequestClass(playerid, classid);
+
+	// show login dialog
+	account_ShowDialog(playerid);
 	return 1;
 }
 
@@ -510,6 +356,27 @@ stock player_OnLogin(playerid)
 	GameMSG("player: %s(%d): logged in successfully.", playername, playerid);
 }
 
+stock player_SetDefaultData(playerid)
+{
+	oSetPlayerMoney(playerid, PlayerStartMoney);
+	player_SetJailTime(playerid, -1);
+	player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+	player_SetSkin(playerid, PLAYER_DEFAULT_SKIN);
+
+	SetPlayerLevel(playerid, FIRST_LEVEL);
+	SetPlayerXP(playerid, LevelList[FIRST_LEVEL][level_xp]);
+
+	pl_fights_SetPlayerStyle(playerid, 4);
+	pl_fights_SetPlayerStyleUsed(playerid, 4);
+
+	oResetPlayerWeapons(playerid);
+	weapon_ResetSkills(playerid);
+
+	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
+		GivePlayerOwnedWeapon(playerid, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);
+	}
+}
+
 stock player_Sync(playerid)
 {
 	// если игрок мертв, то защиты не срабатывают
@@ -526,58 +393,6 @@ stock player_Sync(playerid)
 
 	JailPlayerCheck(playerid);
 	return 1;
-}
-
-stock player_OnPlayerRequestClass(playerid, classid)
-{
-	#pragma unused classid
-	if (player_IsLogin(playerid)) {
-		TogglePlayerSpectating(playerid, 1);
-		SetSpawnInfo(playerid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-		TogglePlayerSpectating(playerid, 0);
-		return 0;
-	}
-
-	// hide class selection buttons
-	TogglePlayerSpectating(playerid, 1);
-	SetSpawnInfo(playerid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-
-	// set camera pos
-	SetTimerEx("player_UpdateCamera", 200, 0, "d", playerid);
-
-	// show login dialog
-	account_ShowDialog(playerid);
-	return 1;
-}
-
-forward player_UpdateCamera(playerid);
-public player_UpdateCamera(playerid)
-{
-	new camera_id = random( sizeof(camera_PlaceArray) );
-	SetPlayerInterior(playerid, camera_PlaceArray[camera_id][camera_Interior]);
-	SetPlayerCameraPos(playerid, camera_PlaceArray[camera_id][camera_pos_X], camera_PlaceArray[camera_id][camera_pos_Y], camera_PlaceArray[camera_id][camera_pos_Z]);
-	SetPlayerCameraLookAt(playerid, camera_PlaceArray[camera_id][camera_look_X], camera_PlaceArray[camera_id][camera_look_Y], camera_PlaceArray[camera_id][camera_look_Z]);
-}
-
-stock player_SetDefaultData(playerid)
-{
-	oSetPlayerMoney(playerid, PlayerStartMoney);
-	player_SetJailTime(playerid, -1);
-	player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
-	oSetPlayerSkin(playerid, PLAYER_DEFAULT_SKIN);
-
-	SetPlayerLevel(playerid, FIRST_LEVEL);
-	SetPlayerXP(playerid, LevelList[FIRST_LEVEL][level_xp]);
-
-	pl_fights_SetPlayerStyle(playerid, 4);
-	pl_fights_SetPlayerStyleUsed(playerid, 4);
-
-	oResetPlayerWeapons(playerid);
-	weapon_ResetSkills(playerid);
-
-	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
-		GivePlayerOwnedWeapon(playerid, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);
-	}
 }
 
 stock KickPlayer(playerid, reason[], showreason = 1)
@@ -621,27 +436,6 @@ public PlayerKickFix(playerid)
 	Kick(playerid);
 }
 
-stock GetRndPlayerSpawnByLevel(level)
-{
-	new spawnlevel = 0, leveledspawns[PLAYERSPAWNS_SIZE+1], idx=0;
-	for (new lookupid = 0;lookupid<PLAYERSPAWNS_SIZE; lookupid++)
-	{
-		if (LeveledPlayerSpawns[lookupid][playerspawn_level] <= level && LeveledPlayerSpawns[lookupid][playerspawn_level] > spawnlevel)
-		{
-			spawnlevel = LeveledPlayerSpawns[lookupid][playerspawn_level];
-		}
-	}
-	for (new lookupid = 0; lookupid < PLAYERSPAWNS_SIZE; lookupid++)
-	{
-		if (LeveledPlayerSpawns[lookupid][playerspawn_level] == spawnlevel)
-		{
-			leveledspawns[idx] = lookupid;
-			idx++;
-		}
-	}
-	return ((idx != 0) ? leveledspawns[random(idx)] : leveledspawns[0]);
-}
-
 stock GetPlayerID(playername[])
 {
 	new name[MAX_PLAYER_NAME+1];
@@ -661,49 +455,4 @@ stock oGetPlayerName(playerid)
 	new name[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, name, sizeof(name));
 	return name;
-}
-
-stock SendPM(senderid, receiveid, message[])
-{
-	if (player_GetMuteTime(senderid) != 0)
-	{
-		SendClientMessage(senderid, COLOUR_RED, lang_texts[1][14]);
-		return 0;
-	}
-
-	new string[MAX_STRING];
-	if (strlen(message) < MIN_SEND_SYMBOLS)
-	{
-		format(string, sizeof(string), lang_texts[12][95], MIN_SEND_SYMBOLS);
-		return SendClientMessage(senderid, COLOUR_PM, string);
-	}
-	if (strlen(message) > MAX_SEND_SYMBOLS)
-	{
-		format(string, sizeof(string), lang_texts[12][92], MAX_SEND_SYMBOLS);
-		return SendClientMessage(senderid, COLOUR_PM, string);
-	}
-
-	new sendername[MAX_PLAYER_NAME+1], receivename[MAX_PLAYER_NAME+1];
-	GetPlayerName(receiveid, receivename, sizeof(receivename));
-	GetPlayerName(senderid, sendername, sizeof(sendername));
-	
-	foreach (Player, i)
-	{
-		if (i == senderid || GetPVarInt(i, "Admin_PMshowing") != 1)
-		{
-			continue;
-		}
-		format(string, sizeof(string), "* Админ: ЛС от %s(%d) к %s(%d): %s", sendername, senderid, receivename, receiveid, message);
-		SendClientMessage(i, COLOUR_PM, string);
-	}
-	
-	format(string, sizeof(string), lang_texts[9][31], receivename, receiveid, message);
-	SendClientMessage(senderid, COLOUR_PM, string);
-	
-	format(string, sizeof(string), lang_texts[9][32], sendername, senderid, message);
-	SendClientMessage(receiveid, COLOUR_PM, string);
-	
-	format(string, sizeof(string), "PM from %s(%d) to %s(%d): %s", sendername, senderid, receivename, receiveid, message);
-	WriteLog(ChatLog, string);
-	return 1;
 }

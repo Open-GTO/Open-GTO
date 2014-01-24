@@ -531,7 +531,7 @@ stock GangJoinMember(gangid, playerid)
 		player_SetGangName(playerid, Gangs[gangid][gang_name]);
 		GangMemberLogin(playerid, gangid);
 		SetPlayerColor(playerid, PlayerGangColour(playerid));
-		new houseid = gang_GetHouse(gangid);
+		new houseid = gang_GetHouseID(gangid);
 		if (houseid != -1)
 		{
 			player_SetSpawnHouseID(playerid, houseid);
@@ -885,7 +885,7 @@ stock gang_SetHouse(gangid, houseid)
 	Gangs[gangid][gang_house] = houseid;
 }
 
-stock gang_GetHouse(gangid)
+stock gang_GetHouseID(gangid)
 {
 	return Gangs[gangid][gang_house];
 }

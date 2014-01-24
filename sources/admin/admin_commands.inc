@@ -197,7 +197,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		}
 
 		new oldskin = GetPlayerSkin(receiverid);
-		oSetPlayerSkin(receiverid, skinid);
+		player_SetSkin(receiverid, skinid);
 
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[12][42], oGetPlayerName(playerid), skinid);

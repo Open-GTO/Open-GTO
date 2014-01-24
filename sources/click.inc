@@ -138,7 +138,7 @@ public click_SendCash(playerid, clickedid, listitem, inputtext[])
 forward click_SendMessage(playerid, clickedid, listitem, inputtext[]);
 public click_SendMessage(playerid, clickedid, listitem, inputtext[])
 {
-	return SendPM(playerid, clickedid, inputtext);
+	return pl_pm_Send(playerid, clickedid, inputtext);
 }
 
 forward click_SendReport(playerid, clickedid, listitem, inputtext[]);

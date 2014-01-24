@@ -94,7 +94,7 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "Status", player_GetStatus(playerid));
 	ini_setString(file_player, "Weapons", CreateWeaponDBString(playerid));
 	ini_setString(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
-	ini_setInteger(file_player, "SkinModel", oGetPlayerSkin(playerid));
+	ini_setInteger(file_player, "SkinModel", player_GetSkin(playerid));
 	ini_setString(file_player, "VIP", GetPlayerVIPDate(playerid));
 	ini_setInteger(file_player, "Hide", player_GetHideStatus(playerid));
 	ini_setInteger(file_player, "SpawnHouseID", player_GetSpawnHouseID(playerid));
@@ -197,7 +197,7 @@ stock player_Login(playerid)
 	SetWeaponsSkillsFromDBString(playerid, s_buf);
 	
 	ini_getInteger(file_player, "SkinModel", buf);
-	oSetPlayerSkin(playerid, buf);
+	player_SetSkin(playerid, buf);
 	
 	ini_getString(file_player, "VIP", s_buf);
 	SetPlayerVIPDate(playerid, s_buf);
@@ -225,4 +225,12 @@ stock player_Login(playerid)
 	player_SetLogin(playerid, 1);
 	player_OnLogin(playerid);
 	return 1;
+}
+
+stock player_IsLogin(playerid) {
+	return GetPVarInt(playerid, "IsLogin");
+}
+
+stock player_SetLogin(playerid, islogin) {
+	SetPVarInt(playerid, "IsLogin", islogin);
 }

@@ -588,7 +588,7 @@ stock house_Sell(playerid)
 		oGivePlayerMoney(playerid, price, 1);
 		house_Free(id);
 		new gangid = player_GetGangID(playerid);
-		if (gang_GetHouse(gangid) == id)
+		if (gang_GetHouseID(gangid) == id)
 		{
 			gang_SetHouse(gangid, -1);
 		}
@@ -803,4 +803,19 @@ stock house_Free(houseid)
 	Houses[houseid][Houses_Lock] = 0;
 	Houses[houseid][Houses_UpKeepLeft] = 0;
 	UpdateStreamMapIcon(house_icon[houseid]);
+}
+
+stock IsPlayerHouse(playerid, houseid) {
+	if (houseid < 0) {
+		return 0;
+	}
+
+	new playername[MAX_PLAYER_NAME + 1];
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	if (strcmp(playername, Houses[houseid][Houses_Owner], true)) {
+		return 0;
+	}
+
+	return 1;
 }

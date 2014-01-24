@@ -611,11 +611,11 @@
 21: Чтобы выключить слежку, введите /spec
 22: Этот игрок не в тюрьме
 // adm_commands
-23: A: '/say <текст>', '/pinfo <ID>', '/showpm <ID>'
+23: A: '/say <текст>', '/pinfo <ID>', '/showpm <ID>', '/getip <ник>'
 24: A: '/akill <ID>', '/paralyze <ID>', '/deparalyze <ID>'
 25: A: '/tele-set', '/tele-loc', '/tele-to <ID>', '/tele-here <ID>', '/tele-hereall', '/tele-xyzi <X> <Y> <Z> <интерьер>'
 26: A: '/sethealth <ID>', '/setarm <ID>', '/givexp <ID> <xp>', '/agivecash <ID> <количество>', '/givegun <ID> <IDgun>'
-27: A: '/ban <ник/id/ip> <время(в секундах, если 0, то навсегда)> <причина>'
+27: A: '/ban <ник/id/ip> <время(в секундах, если 0, то навсегда)> <причина>', '/unban <ник>'
 28: Показ личных сообщений включен
 29: Показ личных сообщений выключен
 30: Неправильный ник

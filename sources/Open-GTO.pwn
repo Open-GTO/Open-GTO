@@ -44,6 +44,8 @@ Developers:
 #include "player\status"
 #include "player\account"
 #include "player\login"
+#include "player\player_spawn"
+#include "player\player_pm"
 #include "player\player_quest"
 #include "quest"
 #include "bank"
@@ -249,7 +251,7 @@ public OnPlayerDisconnect(playerid, reason)
 	pl_weapon_OnPlayerDisconnect(playerid, reason);
 	qudemsys_OnPlayerDisconnect(playerid, reason);
 	pveh_OnPlayerDisconnect(playerid, reason);
-	SetPVarInt(playerid, "Spawned", 0);
+	player_SetSpawned(playerid, 0);
 	return 1;
 }
 
@@ -359,7 +361,7 @@ public OnPlayerEnterRaceCheckpoint(playerid)
 public OnPlayerDeath(playerid, killerid, reason)
 {
 	if (!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
-	SetPVarInt(playerid, "Spawned", 0);
+	player_SetSpawned(playerid, 0);
 	if (killerid == INVALID_PLAYER_ID)
 		GameMSG("player: %s(%d): has died > Reason: (%d)", oGetPlayerName(playerid), playerid, reason);
 	else
@@ -375,7 +377,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	}
 	
 	player_OnPlayerDeath(playerid, killerid, reason);
-	player_OnPlayerKill(killerid, playerid, reason);
+	modfunc_OnPlayerDeath(playerid, killerid, reason);
 	trucker_OnPlayerDeath(playerid, killerid, reason);
 	gang_OnPlayerDeath(playerid, killerid, reason);
 	pl_weapon_OnPlayerDeath(playerid, killerid, reason);
@@ -404,7 +406,7 @@ public OnPlayerSpawn(playerid)
 	// ставим позицию
 	new dmid = GetPlayerDM(playerid);
 	if (dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0) {
-		player_SetSpawnPos(playerid);
+		pl_spawn_SetSpawnPos(playerid);
 	} else {
 		deathmatch_OnPlayerSpawn(playerid, dmid);
 	}
@@ -416,13 +418,13 @@ public OnPlayerSpawn(playerid)
 forward OnPlayerSpawned(playerid);
 public OnPlayerSpawned(playerid)
 {
-	SetPVarInt(playerid, "Spawned", 1);
+	player_SetSpawned(playerid, 1);
 	return 1;
 }
 
 public OnPlayerRequestClass(playerid, classid)
 {
-	SetPVarInt(playerid, "Spawned", 0);
+	player_SetSpawned(playerid, 0);
 	player_OnPlayerRequestClass(playerid, classid);
 	pl_weapon_OnPlayerRequestClass(playerid, classid);
 	level_HideTextDraws(playerid);

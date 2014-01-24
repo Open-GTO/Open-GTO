@@ -154,7 +154,7 @@ stock show_SpawnSelect_Menu(playerid)
 	new gang_houseid = -1;
 	if (gangid != 0)
 	{
-		gang_houseid = gang_GetHouse(gangid);
+		gang_houseid = gang_GetHouseID(gangid);
 		if (gang_houseid != -1)
 		{
 			count++;
@@ -792,7 +792,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			GetPlayerName(playerid, playername, sizeof(playername));
 			
 			new gangid = player_GetGangID(playerid);
-			if (listitem == 0 && gangid != 0 && gang_GetHouse(gangid) != -1)
+			if (listitem == 0 && gangid != 0 && gang_GetHouseID(gangid) != -1)
 			{
 				player_SetSpawnHouseID(playerid, SPAWN_HOUSE_GANG);
 				SendClientMessage(playerid, COLOUR_WHITE, "Место спавна изменено.");
@@ -800,13 +800,13 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			}
 			
 			new count = 0;
-			if (gang_GetHouse(gangid) != -1)
+			if (gang_GetHouseID(gangid) != -1)
 			{
 				count++;
 			}
 			for (new i = 0; i < sizeof(Houses); i++)
 			{
-				if (gang_GetHouse(gangid) == i || strcmp(Houses[i][Houses_Owner], playername, true))
+				if (gang_GetHouseID(gangid) == i || strcmp(Houses[i][Houses_Owner], playername, true))
 				{
 					continue;
 				}
