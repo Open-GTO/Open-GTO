@@ -129,16 +129,6 @@ stock player_SetGangID(playerid, gangid) {
 	SetPVarInt(playerid, "GangID", gangid);
 }
 
-stock player_GetQuestID(playerid) {
-	return GetPVarInt(playerid, "PlayerQuest");
-}
-
-stock player_SetQuestID(playerid, questid) {
-	SetPVarInt(playerid, "PlayerQuest", questid);
-}
-
-new QuestCount;
-
 stock GetAllowPlayerTeleport(playerid) {
 	return GetPVarInt(playerid, "AllowTeleport");
 }
@@ -650,19 +640,6 @@ stock GetRndPlayerSpawnByLevel(level)
 		}
 	}
 	return ((idx != 0) ? leveledspawns[random(idx)] : leveledspawns[0]);
-}
-
-stock RegisterQuest()
-{
-	if (QuestCount >= MAX_QUESTS) return INVALID_QUEST_ID;
-	QuestCount++;
-	return QuestCount;
-}
-
-stock ResetQuest(playerid)
-{
-	oDisablePlayerCheckpoint(playerid);
-	player_SetQuestID(playerid, INVALID_QUEST_ID);
 }
 
 stock GetPlayerID(playername[])
