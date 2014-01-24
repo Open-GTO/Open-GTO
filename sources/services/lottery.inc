@@ -1,8 +1,8 @@
 /*
 
-	Описание: Скрипт лотереи
-	Автор: ziggi
-	Дата: 08.05.2011
+	About: lottery script
+	Author: ziggi
+	Date: 08.05.2011
 
 */
 
@@ -16,111 +16,108 @@
 
 
 static
-	LotteryEnabled = LOTTERY_ENABLED,
-	LotteryTime = LOTTERY_TIME,
-	LotteryWinMoney = LOTTERY_WIN_MONEY,
-	LotteryTicketCost = LOTTERY_TICKET_COST,
-	LotteryCount = -1,
+	IsEnabled = LOTTERY_ENABLED,
+	Time = LOTTERY_TIME,
+	WinMoney = LOTTERY_WIN_MONEY,
+	TicketCost = LOTTERY_TICKET_COST,
+	TickCount = -1,
 	lottery_timer;
 
 stock lottery_LoadConfig(file_config)
 {
-	ini_getInteger(file_config, "Lottery_IsEnabled", LotteryEnabled);
-	ini_getInteger(file_config, "Lottery_Time", LotteryTime);
-	ini_getInteger(file_config, "Lottery_Win_Money", LotteryWinMoney);
-	ini_getInteger(file_config, "Lottery_Ticket_Cost", LotteryTicketCost);
+	ini_getInteger(file_config, "Lottery_IsEnabled", IsEnabled);
+	ini_getInteger(file_config, "Lottery_Time", Time);
+	ini_getInteger(file_config, "Lottery_Win_Money", WinMoney);
+	ini_getInteger(file_config, "Lottery_Ticket_Cost", TicketCost);
 }
 
 stock lottery_SaveConfig(file_config)
 {
-	ini_setInteger(file_config, "Lottery_IsEnabled", LotteryEnabled);
-	ini_setInteger(file_config, "Lottery_Time", LotteryTime);
-	ini_setInteger(file_config, "Lottery_Win_Money", LotteryWinMoney);
-	ini_setInteger(file_config, "Lottery_Ticket_Cost", LotteryTicketCost);
+	ini_setInteger(file_config, "Lottery_IsEnabled", IsEnabled);
+	ini_setInteger(file_config, "Lottery_Time", Time);
+	ini_setInteger(file_config, "Lottery_Win_Money", WinMoney);
+	ini_setInteger(file_config, "Lottery_Ticket_Cost", TicketCost);
 }
 
-stock lottery_OnPlayerCommandText(playerid, text[])
+COMMAND:lottery(playerid, params[])
 {
-	if (LotteryEnabled != 1) return 0;
-	if (LotteryCount < 0)
-	{
-		return SendClientMessage(playerid, COLOUR_PM, lang_texts[17][31]);
+	if (IsEnabled) {
+		return 0;
 	}
-	new cmd[20], idx;
-	cmd = strcharsplit(text, idx,' ');
-	
-	if (!strcmp(cmd, "/lottery", true))
-	{
-		new tmp[MAX_STRING];
-		tmp = strcharsplit(text, idx, ' ');
-		new value = strval(tmp);
-		
-		if (strlen(tmp) == 0 || value < 1 || value > 100)
-		{
-			return SendClientMessage(playerid, COLOUR_PM, lang_texts[17][32]);
-		}
-		if (GetPVarInt(playerid, "lottery_Value") != 0)
-		{
-			return SendClientMessage(playerid, COLOUR_PM, lang_texts[17][33]);
-		}
-		foreach (Player, id)
-		{
-			if (GetPVarInt(id, "lottery_Value") == value)
-			{
-				return SendClientMessage(playerid, COLOUR_PM, lang_texts[17][34]);
-			}
-		}
-		
-		oGivePlayerMoney(playerid, -LotteryTicketCost);
-		SetPVarInt(playerid, "lottery_Value", value);
-		
-		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[17][35], value);
-		SendClientMessage(playerid, COLOUR_GREEN, string);
+
+	if (TickCount < 0) {
+		SendClientMessage(playerid, COLOUR_PM, lang_texts[17][31]);
 		return 1;
 	}
-	return 0;
+
+	new value = strval(params);
+		
+	if (isnull(params) || value < 1 || value > 100) {
+		SendClientMessage(playerid, COLOUR_PM, lang_texts[17][32]);
+		return 1;
+	}
+
+	if (GetPVarInt(playerid, "lottery_Value") != 0) {
+		SendClientMessage(playerid, COLOUR_PM, lang_texts[17][33]);
+		return 1;
+	}
+
+	foreach (new id : Player) {
+		if (GetPVarInt(id, "lottery_Value") == value) {
+			SendClientMessage(playerid, COLOUR_PM, lang_texts[17][34]);
+			return 1;
+		}
+	}
+		
+	oGivePlayerMoney(playerid, -TicketCost);
+	SetPVarInt(playerid, "lottery_Value", value);
+		
+	new string[MAX_STRING];
+	format(string, sizeof(string), lang_texts[17][35], value);
+	SendClientMessage(playerid, COLOUR_GREEN, string);
+	return 1;
 }
 
 forward lottery_Timer();
 public lottery_Timer()
 {
-	if (LotteryEnabled != 1) return 0;
-	LotteryCount++;
-	if (LotteryCount < LotteryTime)
-	{
+	if (IsEnabled) {
+		return 0;
+	}
+
+	TickCount++;
+
+	if (TickCount < Time) {
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[17][36], LotteryTime-LotteryCount);
+		format(string, sizeof(string), lang_texts[17][36], Time-TickCount);
 		SendClientMessageToAll(COLOUR_GREEN, string);
 		return 0;
 	}
+
 	KillTimer(lottery_timer);
-	LotteryCount = -1;
+	TickCount = -1;
+
 	new win_value = mathrandom(1, 100),
 		winner = 0;
 	
-	foreach (Player, playerid)
-	{
-		if (GetPVarInt(playerid, "lottery_Value") == win_value)
-		{
+	foreach (new playerid : Player) {
+		if (GetPVarInt(playerid, "lottery_Value") == win_value) {
 			winner = 1;
-			oGivePlayerMoney(playerid, LotteryWinMoney, 1);
+			oGivePlayerMoney(playerid, WinMoney, 1);
 			
 			new string[MAX_STRING];
 			
-			format(string, sizeof(string), lang_texts[17][37], LotteryWinMoney);
+			format(string, sizeof(string), lang_texts[17][37], WinMoney);
 			SendClientMessage(playerid, COLOUR_GREEN, string);
 			
-			format(string, sizeof(string), lang_texts[17][38], oGetPlayerName(playerid), playerid, LotteryWinMoney);
+			format(string, sizeof(string), lang_texts[17][38], oGetPlayerName(playerid), playerid, WinMoney);
 			SendClientMessageToAll(COLOUR_GREEN, string);
-		}
-		else
-		{
+		} else {
 			DeletePVar(playerid, "lottery_Value");
 		}
 	}
-	if (winner == 0)
-	{
+
+	if (winner == 0) {
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[17][39], win_value);
 		SendClientMessageToAll(COLOUR_GREEN, string);
@@ -130,16 +127,21 @@ public lottery_Timer()
 
 stock lottery_RunTimer()
 {
-	if (LotteryEnabled != 1) return 0;
-	LotteryCount = 0;
+	if (IsEnabled) {
+		return 0;
+	}
+
+	TickCount = 0;
 	lottery_timer = SetTimer("lottery_Timer", 60000, 1);
 	
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[17][40], LotteryWinMoney);
+	format(string, sizeof(string), lang_texts[17][40], WinMoney);
 	SendClientMessageToAll(COLOUR_GREEN, string);
-	format(string, sizeof(string), lang_texts[17][41], LotteryTicketCost);
+
+	format(string, sizeof(string), lang_texts[17][41], TicketCost);
 	SendClientMessageToAll(COLOUR_GREEN, string);
-	format(string, sizeof(string), lang_texts[17][42], LotteryTime);
+
+	format(string, sizeof(string), lang_texts[17][42], Time);
 	SendClientMessageToAll(COLOUR_GREEN, string);
 	return 1;
 }

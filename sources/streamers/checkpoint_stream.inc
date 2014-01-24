@@ -31,7 +31,7 @@ static
 stock checkpoint_Sync()
 {
 	foreach (new playerid : Player) {
-		if (!pl_quest_IsAtQuest(playerid)) {
+		if (!player_IsAtQuest(playerid)) {
 			continue;
 		}
 

@@ -24,6 +24,7 @@ Developers:
 
 #include <..\compiler\includes\a_samp>
 #include "utils\foreach"
+#include "utils\zcmd"
 #include "config"
 #include "base"
 #include "lang"
@@ -46,6 +47,7 @@ Developers:
 #include "player\login"
 #include "player\player_spawn"
 #include "player\player_pm"
+#include "player\player_mute"
 #include "player\player_quest"
 #include "quest"
 #include "bank"
@@ -63,15 +65,18 @@ Developers:
 #include "deathmatch"
 #include "payday"
 #include "groundhold"
-#include "admin\functions"
-#include "admin\admin_func"
-#include "admin\mod_func"
-#include "admin\admin_commands"
 #include "admin\admin_commands_race"
 #include "admin\admin_commands_dm"
-#include "admin\admin_commands_sys"
-#include "admin\adm_commands"
-#include "admin\mod_commands"
+#include "admin\admin_commands"
+#include "admin\admin_ban"
+#include "admin\admin_mute"
+#include "admin\admin_jail"
+#include "admin\admin_spec"
+#include "admin\admin_godmod"
+#include "admin\admin_pm"
+#include "admin\admin_hide"
+#include "admin\admin_maptp"
+#include "admin"
 #include "missions"
 #include "missions\trucker"
 #include "click"
@@ -377,7 +382,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	}
 	
 	player_OnPlayerDeath(playerid, killerid, reason);
-	modfunc_OnPlayerDeath(playerid, killerid, reason);
+	admin_OnPlayerDeath(playerid, killerid, reason);
 	trucker_OnPlayerDeath(playerid, killerid, reason);
 	gang_OnPlayerDeath(playerid, killerid, reason);
 	pl_weapon_OnPlayerDeath(playerid, killerid, reason);
@@ -437,145 +442,33 @@ public OnPlayerRequestSpawn(playerid)
 	return 1;
 }
 
-public OnPlayerCommandText(playerid, cmdtext[])
+public OnPlayerCommandReceived(playerid, cmdtext[])
 {
-	if (!player_IsLogin(playerid))
-	{
-		return SendClientMessage(playerid, -1, lang_texts[1][46]);
+	if (!player_IsLogin(playerid)) {
+		SendClientMessage(playerid, -1, lang_texts[1][46]);
+		return 0;
 	}
-	// commands.inc
-	command_register(cmdtext, "/help", 5, commands);
-	command_register(cmdtext, "/commands", 9, commands);
-	command_register(cmdtext, "/info", 5, commands);
-	command_register(cmdtext, "/objective", 10, commands);
-	command_register(cmdtext, "/sound", 6, commands);
-	command_register(cmdtext, "/stats", 6, commands);
-	command_register(cmdtext, "/status", 7, commands);
-	command_register(cmdtext, "/stat", 5, commands);
-	command_register(cmdtext, "/version", 8, commands);
-	command_register(cmdtext, "/time", 5, commands);
-	command_register(cmdtext, "/skydive", 8, commands);
-	command_register(cmdtext, "/dance", 6, commands);
-	command_register(cmdtext, "/handsup", 8, commands);
-	command_register(cmdtext, "/piss", 5, commands);
-	command_register(cmdtext, "/smoke", 6, commands);
-	command_register(cmdtext, "/pm", 3, commands);
-	
-	// Lottery
-	command_register(cmdtext, "/lottery", 8, lottery);
-	
-	// QuidemSys
-	command_register(cmdtext, "/fill", 5, quidemsys);
-	command_register(cmdtext, "/engine", 7, quidemsys);
-	
-	// vehicles
-	command_register(cmdtext, "/vmenu", 6, vehicles);
-	
-	// gangs
-	command_register(cmdtext, "/g", 2, gang);
-	command_register(cmdtext, "/gang", 5, gang);
-	
-	// race
-	command_register(cmdtext, "/races", 6, race);
-	command_registerNR(cmdtext, "/race", 5, race);
-	
-	// admin race
-	command_registerNR(cmdtext, "/race", 5, AdminRace);
-	
-	// rcon admins
-	command_registerNR(cmdtext, "/cmdlist", 8, Admin);
-	command_registerNR(cmdtext, "/about", 6, Admin);
-	command_register(cmdtext, "/carinfo", 8, Admin);
-	command_register(cmdtext, "/carrep", 7, Admin);
-	command_register(cmdtext, "/repair", 7, Admin);
-	command_register(cmdtext, "/go", 3, Admin);
-	command_register(cmdtext, "/an", 3, Admin);
-	command_register(cmdtext, "/payday", 7, Admin);
-	command_register(cmdtext, "/boom", 5, Admin);
-	command_register(cmdtext, "/setskin", 8, Admin);
-	command_register(cmdtext, "/ssay", 5, Admin);
-	command_register(cmdtext, "/skydiveall", 11, Admin);
-	command_register(cmdtext, "/disarm", 7, Admin);
-	command_register(cmdtext, "/disarmall", 10, Admin);
-	command_register(cmdtext, "/paralyzeall", 12, Admin);
-	command_register(cmdtext, "/deparalyzeall", 14, Admin);
-	command_register(cmdtext, "/remcash", 8, Admin);
-	command_register(cmdtext, "/remcashall", 11, Admin);
-	command_register(cmdtext, "/setlvl", 7, Admin);
-	command_register(cmdtext, "/setstatus", 10, Admin);
-	command_register(cmdtext, "/allowport", 10, Admin);
-	command_register(cmdtext, "/setvip", 7, Admin);
-	command_register(cmdtext, "/underwater", 11, Admin);
-	command_register(cmdtext, "/ahideme", 8, Admin);
-	command_register(cmdtext, "/ashowme", 8, Admin);
-	command_register(cmdtext, "/godmod", 7, Admin);
-
-	// dm
-	command_register(cmdtext, "/deathmatches", 13, dm);
-	command_register(cmdtext, "/dms", 4, dm);
-	command_registerNR(cmdtext, "/dm", 3, dm);
-	
-	// admin dm
-	command_registerNR(cmdtext, "/dm", 3, AdminDM);
-	
-	// admin sys
-	command_register(cmdtext, "/sys", 4, AdminSys);
-	
-	// admins
-	command_registerNR(cmdtext, "/cmdlist", 8, Adm);
-	command_registerNR(cmdtext, "/about", 6, Adm);
-	command_register(cmdtext, "/say", 4, Adm);
-	command_register(cmdtext, "/pinfo", 6, Adm);
-	command_register(cmdtext, "/admincnn", 9, Adm);
-	command_register(cmdtext, "/akill", 6, Adm);
-	command_register(cmdtext, "/tele-set", 9, Adm);
-	command_register(cmdtext, "/tele-loc", 9, Adm);
-	command_register(cmdtext, "/tele-to", 8, Adm);
-	command_register(cmdtext, "/tele-here", 10, Adm);
-	command_register(cmdtext, "/tele-hereall", 13, Adm);
-	command_register(cmdtext, "/tele-xyzi", 10, Adm);
-	command_register(cmdtext, "/sethealth", 10, Adm);
-	command_register(cmdtext, "/setarm", 7, Adm);
-	command_register(cmdtext, "/givexp", 7, Adm);
-	command_register(cmdtext, "/agivecash", 10, Adm);
-	command_register(cmdtext, "/givegun", 8, Adm);
-	command_register(cmdtext, "/paralyze", 9, Adm);
-	command_register(cmdtext, "/deparalyze", 11, Adm);
-	command_register(cmdtext, "/showpm", 7, Adm);
-	command_register(cmdtext, "/getip", 6, Adm);
-	command_register(cmdtext, "/ban", 4, Adm);
-	command_register(cmdtext, "/unban", 6, Adm);
-	
-	// moderators
-	command_registerNR(cmdtext, "/cmdlist", 8, Mod);
-	command_registerNR(cmdtext, "/about", 6, Mod);
-	command_register(cmdtext, "/plist", 6, Mod);
-	command_register(cmdtext, "/remcar", 7, Mod);
-	command_register(cmdtext, "/kick", 5, Mod);
-	command_register(cmdtext, "/carresp", 8, Mod);
-	command_register(cmdtext, "/carrespall", 11, Mod);
-	command_register(cmdtext, "/mute", 5, Mod);
-	command_register(cmdtext, "/unmute", 7, Mod);
-	command_register(cmdtext, "/jail", 5, Mod);
-	command_register(cmdtext, "/unjail", 7, Mod);
-	command_register(cmdtext, "/mole", 5, Mod);
-	command_register(cmdtext, "/spec", 5, Mod);
-	command_register(cmdtext, "/clearchat", 10, Mod);
-	command_register(cmdtext, "/weather", 8, Mod);
-
-	new logstring[MAX_STRING];
-	format(logstring, sizeof(logstring), "Player: %s"CHAT_SHOW_ID": %s", oGetPlayerName(playerid), playerid, cmdtext);
-	WriteLog(CMDLog, logstring);
 	return 1;
+}
+
+public OnPlayerCommandPerformed(playerid, cmdtext[], success)
+{
+	if (success) {
+		new logstring[MAX_STRING];
+		format(logstring, sizeof(logstring), "Player: %s"CHAT_SHOW_ID": %s", oGetPlayerName(playerid), playerid, cmdtext);
+		WriteLog(CMDLog, logstring);
+		return 1;
+	}
+	return 0;
 }
 
 public OnPlayerText(playerid, text[])
 {
-	if (!player_IsLogin(playerid))
-	{
+	if (!player_IsLogin(playerid)) {
 		SendClientMessage(playerid, -1, lang_texts[1][46]);
 		return 0;
 	}
+
 	if (pt_chat_OnPlayerText(playerid, text) == 0) {
 		return 0;
 	}
@@ -588,7 +481,7 @@ public OnPlayerText(playerid, text[])
 	{
 		case '!':
 		{
-			if (GetPVarInt(playerid, "GangID") == 0 || player_GetMuteTime(playerid) > 0)
+			if (GetPVarInt(playerid, "GangID") == 0 || player_IsMuted(playerid))
 			{
 				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 				return 0;
@@ -619,7 +512,7 @@ public OnPlayerText(playerid, text[])
 		case '$',';':
 		{
 			if (strlen(text[1]) < 2) return 1;
-			if (player_GetMuteTime(playerid) > 0)
+			if (player_IsMuted(playerid))
 			{
 				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 				return 0;
@@ -630,11 +523,13 @@ public OnPlayerText(playerid, text[])
 			return 0;
 		}
 	}
-	if (player_GetMuteTime(playerid) != 0)  //Заткнут
-	{
+
+	new adm_result = admin_OnPlayerText(playerid, text);
+	if (adm_result == 0) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 		return 0;
 	}
+
 	format(string, sizeof(string), "%s"CHAT_SHOW_ID": {FFFFFF}%s", playername, playerid, text);
 	SendClientMessageToAll(GetPlayerColor(playerid), string);
 	format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": %s", playername, playerid, text);
@@ -728,7 +623,7 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 	if (GetPlayerVehicleSeat(playerid) == 0)
 		vehicle_Engine(vehicleid, VEHICLE_PARAMS_OFF);
 #endif
-	modfunc_OnPlayerExitVehicle(playerid, vehicleid);
+	admin_OnPlayerExitVehicle(playerid, vehicleid);
 	pt_weapon_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
 }
@@ -736,13 +631,13 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 {
 	pt_speed_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
-	modfunc_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
+	admin_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
 	return 1;
 }
 
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
-	modfunc_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
+	admin_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
 	bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
 	return 1;
 }

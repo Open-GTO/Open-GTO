@@ -13,21 +13,21 @@
 #pragma library pl_quest
 
 
-stock pl_quest_GetQuestID(playerid) {
-	return GetPVarInt(playerid, "pl_quest_QuestID");
+stock player_GetQuestID(playerid) {
+	return GetPVarInt(playerid, "player_QuestID");
 }
 
-stock pl_quest_SetQuestID(playerid, questid) {
-	SetPVarInt(playerid, "pl_quest_QuestID", questid);
+stock player_SetQuestID(playerid, questid) {
+	SetPVarInt(playerid, "player_QuestID", questid);
 }
 
-stock pl_quest_Reset(playerid)
+stock player_ResetQuest(playerid)
 {
 	oDisablePlayerCheckpoint(playerid);
-	pl_quest_SetQuestID(playerid, INVALID_QUEST_ID);
+	player_SetQuestID(playerid, INVALID_QUEST_ID);
 }
 
-stock pl_quest_IsAtQuest(playerid)
+stock player_IsAtQuest(playerid)
 {
-	return pl_quest_GetQuestID(playerid) == INVALID_QUEST_ID ? 0 : 1;
+	return player_GetQuestID(playerid) == INVALID_QUEST_ID ? 0 : 1;
 }

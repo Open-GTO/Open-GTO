@@ -274,3 +274,11 @@ stock sshop_HideTextDraws(playerid)
 	TextDrawHideForPlayer(playerid, clickText[sshop_exit]);
 	return 1;
 }
+
+stock IsSkinValid(skinid)
+{
+	switch (skinid) {
+		case SKINS_IGNORE: return 0;
+	}
+	return 1;
+}

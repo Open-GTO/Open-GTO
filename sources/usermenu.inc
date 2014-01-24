@@ -290,6 +290,7 @@ stock show_Gang_Menu(playerid)
 	new gangid = player_GetGangID(playerid);
 	if (gangid == 0)
 	{
+		strcat(string, "Информация о бандах\n", sizeof(string));
 		strcat(string, "Создать банду\n", sizeof(string));
 		if (GetPVarInt(playerid, "GangInvite") != 0)
 		{
@@ -346,7 +347,7 @@ stock show_GangCreate_Menu(playerid, step)
 		}
 	}
 	return ShowPlayerDialog(playerid, gang_create_menu_DialogID, DIALOG_STYLE_INPUT,
-		"Создание банды",
+		lang_texts[6][9],
 		string,
 		"ОК", "Назад"
 	);
@@ -970,27 +971,38 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 			{
 				switch (listitem)
 				{
-					case 0: // создать банду
+					case 0: // информация
 					{
-						return show_GangCreate_Menu(playerid, 0);
+						new string[MAX_STRING * 4];
+						strcat(string, lang_texts[5][5], sizeof(string));
+						strcat(string, lang_texts[5][6], sizeof(string));
+						strcat(string, lang_texts[5][7], sizeof(string));
+						strcat(string, lang_texts[5][8], sizeof(string));
+						show_User_Menu_Dialog(playerid, lang_texts[5][4], string);
+						return 1;
 					}
-					case 1: // принять приглашение
+					case 1: // создать банду
 					{
-						if (GetPVarInt(playerid, "GangInvite") == 0)
-						{
+						show_GangCreate_Menu(playerid, 0);
+						return 1;
+					}
+					case 2: // принять приглашение
+					{
+						if (GetPVarInt(playerid, "GangInvite") == 0) {
 							return 0;
 						}
 						
 						gangid = GetPVarInt(playerid, "GangInvite");
+
 						new string[MAX_STRING];
-						if (GangOnlineCount(gangid) >= MAX_GANG_SIZE)
-						{
-							show_User_Menu_Dialog(playerid, "Приглашение в банду",  lang_texts[6][46]);
+
+						if (GangOnlineCount(gangid) >= MAX_GANG_SIZE) {
+							show_User_Menu_Dialog(playerid, "Приглашение в банду", lang_texts[6][46]);
 							SetPVarInt(playerid, "GangInvite", 0);
 							return 1;
 						}
-						if (GangJoinMember(gangid, playerid) == 1)
-						{
+
+						if (GangJoinMember(gangid, playerid) == 1) {
 							format(string, sizeof(string), lang_texts[6][47], Gangs[gangid][gang_name]);
 							show_User_Menu_Dialog(playerid, "Приглашение в банду",  string);
 							
@@ -998,9 +1010,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 							SendGangMessage(gangid, string, COLOUR_GANG);
 							
 							GameMSG("player: %d:  %s: have joined '%s' gang.", playerid, oGetPlayerName(playerid), Gangs[gangid][gang_name]);
-						}
-						else
-						{
+						} else {
 							format(string, sizeof(string), lang_texts[6][49], Gangs[gangid][gang_name]);
 							show_User_Menu_Dialog(playerid, "Приглашение в банду",  string);
 						}
@@ -1015,14 +1025,12 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					case 0: // информация о банде
 					{
 						new members[64 * MAX_GANG_SIZE];
-						for (new gangmember = 0; gangmember < MAX_GANG_SIZE; gangmember++)
-						{
-							if (strlen(GangMemberInfo[gangid][gangmember][member_name]) <= 0)
-							{
+						for (new gangmember = 0; gangmember < MAX_GANG_SIZE; gangmember++) {
+							if (strlen(GangMemberInfo[gangid][gangmember][member_name]) <= 0) {
 								continue;
 							}
-							if (gang_IsPlayerConnect(gangid, gangmember))
-							{
+
+							if (gang_IsPlayerConnect(gangid, gangmember)) {
 								format(members, sizeof(members),
 									"%s   {AFAFAF}%02d\t{33AA33}%s\t{AFAFAF}ID: {FFFFFF}%d\t{AFAFAF}Уровень: {FFFFFF}%d\n",
 									members,
@@ -1031,14 +1039,13 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 									GangMemberInfo[gangid][gangmember][member_playerid],
 									GetPlayerLevel(GangMemberInfo[gangid][gangmember][member_playerid])
 								);
-							}
-							else
-							{
+							} else {
 								format(members, sizeof(members), "%s   {AFAFAF}%02d\t{AA3333}%s      \n",
 									members, gangmember, GangMemberInfo[gangid][gangmember][member_name]
 								);
 							}
 						}
+
 						new string[MAX_STRING + sizeof(members)];
 						format(string, sizeof(string), "\
 							Убийства банды: %d\n\
@@ -1066,8 +1073,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					case 2: // пригласить игрока
 					{
-						if (!gang_IsLeader(playerid))
-						{
+						if (!gang_IsLeader(playerid)) {
 							return 0;
 						}
 						show_GangInvite_Menu(playerid);
@@ -1075,8 +1081,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					case 3: // выгнать игрока
 					{
-						if (!gang_IsLeader(playerid))
-						{
+						if (!gang_IsLeader(playerid)) {
 							return 0;
 						}
 						show_GangKick_Menu(gangid, playerid);
@@ -1084,8 +1089,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					case 4: // изменить цвет
 					{
-						if (!gang_IsLeader(playerid))
-						{
+						if (!gang_IsLeader(playerid)) {
 							return 0;
 						}
 						show_GangColor_Menu(playerid);
@@ -1093,8 +1097,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					case 5: // изменить объявление
 					{
-						if (!gang_IsLeader(playerid))
-						{
+						if (!gang_IsLeader(playerid)) {
 							return 0;
 						}
 						show_MOTD_Menu(playerid);
@@ -1128,25 +1131,25 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					{
 						new string[MAX_STRING];
 						format(string, sizeof(string), lang_texts[6][34], Gang_Create_Cost);
-						show_User_Menu_Dialog(playerid, "Создание банды", string);
+						show_User_Menu_Dialog(playerid, lang_texts[6][9], string);
 						return 1;
 					}
 					new len = strlen(inputtext);
 					if (len == 0)
 					{
-						show_User_Menu_Dialog(playerid, "Создание банды", "Вы не ввели имя");
+						show_User_Menu_Dialog(playerid, lang_texts[6][9], lang_texts[6][12]);
 						return 1;
 					}
 					if (len > MAX_GANG_NAME_LEN || len < MIN_GANG_NAME_LEN)
 					{
-						show_User_Menu_Dialog(playerid, "Создание банды", lang_texts[6][39]);
+						show_User_Menu_Dialog(playerid, lang_texts[6][9], lang_texts[6][39]);
 						return 1;
 					}
 					if (!StringCharCheck(inputtext) || !strcmp(inputtext, "Unknown", true))
 					{
 						new string[MAX_STRING];
 						format(string, sizeof(string), lang_texts[6][41], ALLOWED_STRING_SYMBOLS_STR);
-						show_User_Menu_Dialog(playerid, "Создание банды",  string);
+						show_User_Menu_Dialog(playerid, lang_texts[6][9],  string);
 						return 1;
 					}
 					
@@ -1173,7 +1176,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					}
 					if (gangcolour == 255)
 					{
-						show_User_Menu_Dialog(playerid, "Создание банды", "Неверный цвет");
+						show_User_Menu_Dialog(playerid, lang_texts[6][9], lang_texts[6][10]);
 						return 1;
 					}
 					
@@ -1183,12 +1186,12 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 					{
 						oGivePlayerMoney(playerid,-Gang_Create_Cost, 1);
 						SendClientMessage(playerid, COLOUR_GREEN, lang_texts[6][42]);
-						show_User_Menu_Dialog(playerid, "Создание банды", lang_texts[6][42]);
+						show_User_Menu_Dialog(playerid, lang_texts[6][9], lang_texts[6][42]);
 						GameMSG("player: %s(%d): created gang '%s' ", oGetPlayerName(playerid), playerid, gangname);
 					}
 					else
 					{
-						show_User_Menu_Dialog(playerid, "Создание банды", "Ошибка: Банда не создана!");
+						show_User_Menu_Dialog(playerid, lang_texts[6][9], lang_texts[6][11]);
 					}
 					
 					DeletePVar(playerid, "usermenu_Gang_Step");

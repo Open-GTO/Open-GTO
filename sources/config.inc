@@ -86,6 +86,10 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define SWAGUP_MONEY_RATE	30 // параметр количества денег, за поднятие поклажи
 #define SWAGUP_XP_RATE		30 // параметр количества опыта, за поднятие поклажи
 
+// admin
+#define ADMIN_TELEPORT_ENABLED		1 // включена-ли система телепортации администрации по клику на карте
+#define ADMIN_TELEPORT_MIN_STATUS	STATUS_LEVEL_ADMIN // минимальный уровень доступа для телепортации
+
 // лотерея
 #define LOTTERY_ENABLED		1 // включен-ли скрипт лотереи
 #define LOTTERY_TIME		10 // время розыгрыша, в минутах

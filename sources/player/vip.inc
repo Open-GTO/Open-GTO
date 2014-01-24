@@ -84,6 +84,11 @@ stock GetPlayerVIPDate(playerid)
 	return string;
 }
 
+stock IsPlayerVIP(playerid)
+{
+	return GetPlayerVIP(playerid) == 1;
+}
+
 stock VIPCheck(date[])
 {
 	new bufer[5],day,month,year,current_day,current_month,current_year;

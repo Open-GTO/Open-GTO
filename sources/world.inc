@@ -124,7 +124,7 @@ public OneMinuteTimer()
 			Gang_GiveXp(playerid);
 		}
 	}
-	weather_WeatherUpdate();
+	weather_Update();
 	SyncTime();
 	TurnAround();
 }

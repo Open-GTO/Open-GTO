@@ -15,7 +15,7 @@
 
 stock pl_pm_Send(senderid, receiveid, message[])
 {
-	if (player_GetMuteTime(senderid) != 0) {
+	if (player_IsMuted(senderid)) {
 		SendClientMessage(senderid, COLOUR_RED, lang_texts[1][14]);
 		return 0;
 	}
@@ -45,7 +45,7 @@ stock pl_pm_Send(senderid, receiveid, message[])
 			continue;
 		}
 
-		format(string, sizeof(string), "* РђРґРјРёРЅ: Р›РЎ РѕС‚ %s(%d) Рє %s(%d): %s", sendername, senderid, receivename, receiveid, message);
+		format(string, sizeof(string), lang_texts[9][33], sendername, senderid, receivename, receiveid, message);
 		SendClientMessage(i, COLOUR_PM, string);
 	}
 	
@@ -55,7 +55,24 @@ stock pl_pm_Send(senderid, receiveid, message[])
 	format(string, sizeof(string), lang_texts[9][32], sendername, senderid, message);
 	SendClientMessage(receiveid, COLOUR_PM, string);
 	
-	format(string, sizeof(string), "PM from %s(%d) to %s(%d): %s", sendername, senderid, receivename, receiveid, message);
+	format(string, sizeof(string), lang_texts[9][34], sendername, senderid, receivename, receiveid, message);
 	WriteLog(ChatLog, string);
+	return 1;
+}
+
+COMMAND:pm(playerid, params[])
+{
+	if (isnull(params)) {
+		SendClientMessage(playerid, COLOUR_PM, "Применение: /pm <ID> <сообщение>");
+		return 0;
+	}
+
+	new id = strval(params);
+	if (!IsPlayerConnected(id) || id == playerid) {
+		SendClientMessage(playerid, COLOUR_PM, "Ошибка: /pm: неверный ID");
+		return 0;
+	}
+	
+	pl_pm_Send(playerid, id, params);
 	return 1;
 }

@@ -2384,18 +2384,15 @@ stock GetVehicleName(vehiclemodel)
 	return VehicleName;
 }
 
-stock vehicles_OnPlayerCommandText(playerid, cmdtext[])
+COMMAND:vmenu(playerid, params[])
 {
-	if (!strcmp(cmdtext, "/vmenu", true)) 
-	{
-		if (!IsPlayerInAnyVehicle(playerid))
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[5][1]);
-		}
-		show_Vehicle_Menu(playerid);
-		return 1;
+	if (!IsPlayerInAnyVehicle(playerid)) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[5][1]);
+		return 0;
 	}
-	return 0;
+	
+	show_Vehicle_Menu(playerid);
+	return 1;
 }
 
 stock vehicle_Engine(vehicleid, newstate)

@@ -1990,3 +1990,48 @@ stock anims_ShowAnimMenu(playerid, lib[MAX_ANIM_LIB_NAME])
 		"ОК", "Назад"
 	);
 }
+
+COMMAND:dance(playerid, params[])
+{
+	if (isnull(params)) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[15][83]);
+		return 1;
+	}
+
+	switch (strval(params)) {
+		case 1: {
+			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DANCE1);
+		}
+		case 2: {
+			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DANCE2);
+		}
+		case 3: {
+			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DANCE3);
+		}
+		case 4: {
+			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DANCE4);
+		}
+		default: {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[15][83]);
+		}
+	}
+	return 1;
+}
+
+COMMAND:handsup(playerid, params[])
+{
+	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_HANDSUP);
+	return 1;
+}
+
+COMMAND:piss(playerid, params[])
+{
+	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_PISS);
+	return 1;
+}
+
+COMMAND:smoke(playerid, params[])
+{
+	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_SMOKE_CIGGY);
+	return 1;
+}

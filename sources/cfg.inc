@@ -30,6 +30,7 @@ stock cfg_LoadConfigs()
 	bank_LoadConfig(file_config);
 	business_LoadConfig(file_config);
 	houses_LoadConfig(file_config);
+	admin_LoadConfig(file_config);
 
 	// player/
 	player_level_LoadConfig(file_config);
@@ -81,6 +82,7 @@ stock cfg_SaveConfigs()
 	bank_SaveConfig(file_config);
 	business_SaveConfig(file_config);
 	houses_SaveConfig(file_config);
+	admin_SaveConfig(file_config);
 
 	// player/
 	player_level_SaveConfig(file_config);

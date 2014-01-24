@@ -1,34 +1,17 @@
 /*
 
-	11.05.2011
-	ZiGGi
+	About: admin ban system
+	Author:	ziggi
 
 */
 
-#if defined _admod_functions_included
+#if defined _adm_ban_included
 	#endinput
 #endif
 
-#define _admod_functions_included
-#pragma library admod_functions
+#define _adm_ban_included
+#pragma library adm_ban
 
-enum CoordInfoJ {
-    Float:CJ_X,
-    Float:CJ_Y,
-    Float:CJ_Z,
-    Float:CJ_A
-}
-
-new Float:Jail_PH[][CoordInfoJ] = {
-{633.365, -571.78, 16.340, 265.773},
-{1544.982, -1675.470, 13.600, 93.446},
-{-2164.396, -2388.342, 30.650, 140.551},
-{-1605.378, 717.512, 12.000, 310.972},
-{-1391.040, 2634.686, 55.984, 116.935},
-{-215.718, 985.399, 19.400, 240.854},
-{2335.229, 2455.809, 14.968, 136.734},
-{1225.165, 245.328, 19.554, 306.501}
-};
 
 stock oBan_Check(playerid)
 {
@@ -142,7 +125,7 @@ stock oBan(user[], reason[], adminid, time=0)
 		format(string, sizeof(string), lang_texts[12][98], string, reason);
 	}
 	SendClientMessageToAll(COLOUR_RED, string);
-	// если юзер на сервере
+	// РµСЃР»Рё СЋР·РµСЂ РЅР° СЃРµСЂРІРµСЂРµ
 	if (IsIP(user))
 	{
 		new plrIP[MAX_IP];
@@ -168,129 +151,79 @@ stock oBan(user[], reason[], adminid, time=0)
 	return 1;
 }
 
-stock JailPlayer(playerid, jail_time)
+COMMAND:ban(playerid, params[])
 {
-	player_SetJailTime(playerid, jail_time);
-	SetPlayerWantedLevel(playerid, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
-	
-	SetPlayerInterior(playerid, 6);
-	oSetPlayerPos(playerid, 265.1273, 77.6823, 1001.0391);
-	SetPlayerFacingAngle(playerid,-90);	
-	TogglePlayerControllable(playerid, 0);
-	SetCameraBehindPlayer(playerid);
-	oSetPlayerArmour(playerid, 0);
-	PlayerPlaySound(playerid, 1082, 265.1273, 77.6823, 1001.0391);
-	return 1;
-}
-
-stock JailPlayerCheck(playerid)
-{
-	if (player_IsJailed(playerid) && !IsPlayerInRangeOfPoint(playerid, 5, 265.1273, 77.6823, 1001.0391))
-	{
-		KickPlayer(playerid, lang_texts[11][16]);
-	}
-	return 1;
-}
-
-stock UnJailPlayer(playerid)
-{
-	player_SetJailTime(playerid, -1);
-	SetPlayerWantedLevel(playerid, 0);
-	TogglePlayerControllable(playerid, 1);
-	// ставим игрока в рандомное место из всех мест освобождений
-	new j_id = random( sizeof(Jail_PH) );
-	SetPlayerInterior(playerid, 0);
-	oSetPlayerPos(playerid, Jail_PH[j_id][CJ_X], Jail_PH[j_id][CJ_Y], Jail_PH[j_id][CJ_Z] );
-	SetPlayerFacingAngle(playerid, Jail_PH[j_id][CJ_A]);
-	SetCameraBehindPlayer(playerid);
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[13][53], oGetPlayerName(playerid));
-	SendClientMessageToAll(COLOUR_WHITE, string);
-	return 1;
-}
-
-
-stock SendMessageToAdmins(playerid, color, text[])
-{
-	new message[MAX_STRING], playername[MAX_PLAYER_NAME+1];
-	GetPlayerName(playerid, playername, sizeof(playername));
-	printf(lang_texts[1][24], playername, playerid, text);
-	format(message, sizeof(message), lang_texts[1][23], playername, playerid, player_GetStatus(playerid), text);
-	foreach (Player, aid)
-	{
-		if (aid == playerid || !IsPlayerAdm(aid))
-		{
-			continue;
-		}
-		SendClientMessage(aid, color, message);
-	}
-	return 0;
-}
-
-stock PushHide(playerid)
-{
-	new hidecont = (GetPVarInt(playerid, "Hide") == 1) ? 0 : PlayerGangColour(playerid);
-	foreach (Player, id)
-	{
-		if (id != playerid)
-		{
-			SetPlayerMarkerForPlayer(id, playerid, hidecont);
-		}
-	}
-	return 1;
-}
-
-stock MutePlayerTimer(playerid)
-{
-	new string[MAX_STRING],
-		mute_time = player_GetMuteTime(playerid);
-	
-	if (mute_time > 0)
-	{
-		mute_time--;
-		player_SetMuteTime(playerid, mute_time);
-	    if (mute_time <= 0)
-	    {
-			format(string, sizeof(string), lang_texts[13][54], oGetPlayerName(playerid), playerid);
-			SendClientMessageToAll(COLOUR_YELLOW, string);
-		}
-	}
-}
-
-stock JailPlayerTimer(playerid)
-{
-	new string[MAX_STRING];
-	new jail_time = player_GetJailTime(playerid);
-	
-	if (jail_time == -1)
-	{
+	if (!IsPlayerAdm(playerid)) {
 		return 0;
 	}
-	SetPlayerWantedLevel(playerid, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
-	
-	if (jail_time >= 1 && jail_time <= 4320)
-	{
-		jail_time--;
-		player_SetJailTime(playerid, jail_time);
-		if (jail_time <= 0)
-		{
-			UnJailPlayer(playerid);
-			GameMSG(lang_texts[13][55], oGetPlayerName(playerid));
-		}
-		else
-		{
-			format(string, sizeof(string), lang_texts[13][56], jail_time);
-			SendClientMessage(playerid, COLOUR_LIGHTRED, string);
-		}
+
+	if (isnull(params)) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		return 1;
 	}
+
+	new idx = 0,
+		user[MAX_PLAYER_NAME + 1],
+		reason[MAX_SEND_SYMBOLS],
+		time;
+	
+	set(user, strcharsplit(params, idx, ' '));
+	time = strval(strcharsplit(params, idx, ' '));
+
+	if (strlen(params[idx + 1]) > 0) {
+		set(reason, params[idx + 1]);
+	}
+	
+	if (!IsNumeric(user) && (strlen(user) < MIN_PLAYER_NAME || strlen(user) > MAX_PLAYER_NAME)) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][33]);
+		return 1;
+	}
+
+	if (strlen(reason) > MAX_SEND_SYMBOLS) {
+		new string[MAX_STRING];
+		format(string, sizeof(string), lang_texts[13][34], MAX_SEND_SYMBOLS);
+		SendClientMessage(playerid, COLOUR_RED, string);
+		return 1;
+	}
+
+	oBan(user, reason, playerid, time);
 	return 1;
 }
 
-stock IsSkinValid(skinid)
+COMMAND:unban(playerid, params[])
 {
-	switch (skinid)
-	{
-		case SKINS_IGNORE: return 0;
+	if (!IsPlayerAdm(playerid)) {
+		return 0;
 	}
+
+	if (isnull(params)) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		return 1;
+	}
+
+	new idx = 0,
+		user[MAX_PLAYER_NAME + 1];
+	
+	set(user, strcharsplit(params, idx, ' '));
+	
+	if (strlen(user) < MIN_PLAYER_NAME || strlen(user) > MAX_PLAYER_NAME) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][35]);
+		return 1;
+	}
+	
+	new filename[MAX_STRING];
+	format(filename, sizeof(filename), "%s%s"GTO_FILES_FORMAT, BanDB, user);
+	
+	new string[MAX_STRING];
+
+	if (ini_fileExist(filename)) {
+		ini_fileRemove(filename);
+		
+		format(string, sizeof(string), lang_texts[13][57], user);
+	} else {
+		format(string, sizeof(string), lang_texts[13][58], user);
+	}
+
+	SendClientMessage(playerid, COLOUR_RED, string);
 	return 1;
 }

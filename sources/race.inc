@@ -348,7 +348,7 @@ stock CheckRace() // must be ran by timer every second
 		{
 			foreach (Player, playerid)
 			{
-				if (pl_quest_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
+				if (player_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
 				{
 					new countdown = MAX_COUNTDOWN - RaceStats[raceid][race_timer];
 					if (countdown >= 1)
@@ -381,80 +381,82 @@ stock CheckRace() // must be ran by timer every second
 	}
 }
 
-stock race_OnPlayerCommandText(playerid, text[]) // process player commands
+COMMAND:races(playerid, params[])
+{
+	SendPlayerCurrentRaces(playerid);
+	return 1;
+}
+
+COMMAND:race(playerid, params[])
 {
 	new cmd[20], idx;
+	cmd = strcharsplit(params, idx, ' ');
 
-	cmd = strcharsplit(text, idx, ' ');
-	if (strlen(cmd) == 0) return 0;
-
-	if (!strcmp(cmd, "/races", true))
+	if (!strcmp(cmd, "help", true))
 	{
-		SendPlayerCurrentRaces(playerid);
+		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][8]);
+		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][9]);
+		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][10]);
+		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][11]);
+		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][12]);
+		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][13]);
+		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][14]);
+		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][15]);
+		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][16]);
+		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][17]);
 		return 1;
 	}
 
-	if (!strcmp(cmd, "/race", true))
+	if (!strcmp(cmd, "join", true))
 	{
-		cmd = strcharsplit(text, idx, ' ');
-		if (!strcmp(cmd, "help", true))
-		{
-			SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][8]);
-			SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][9]);
-			SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][10]);
-			SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][11]);
-			SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][12]);
-			SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][13]);
-			SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][14]);
-			SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][15]);
-			SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][16]);
-			SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][17]);
+		new raceid = strval(strcharsplit(params, idx, ' '));
+
+		if (player_GetQuestID(playerid) != INVALID_QUEST_ID) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][18]);
 			return 1;
 		}
 
-		if (!strcmp(cmd, "join", true))
-		{
-			new raceid = strval(strcharsplit(text, idx, ' '));
-			if (pl_quest_GetQuestID(playerid) != INVALID_QUEST_ID)
-			{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[10][18]);
-			}
-			if (raceid == 0 || raceid >= MAX_RACES)
-			{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[10][19]);
-			}
-			if (RaceStats[raceid][race_state] == RACE_STATE_DISABLED)
-			{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[10][20]);
-			}
-			if (RaceStats[raceid][race_state] == RACE_STATE_RACING)
-			{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[10][21]);
-			}
-			if (RaceStats[raceid][race_state] != RACE_STATE_LINEUP)
-			{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[10][22]);
-			}
-			JoinRace(raceid, playerid);
+		if (raceid == 0 || raceid >= MAX_RACES) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][19]);
 			return 1;
 		}
-		if (!strcmp(cmd, "leave", true) || !strcmp(cmd, "quit", true))
-		{
-			if (pl_quest_GetQuestID(playerid) == INVALID_QUEST_ID)
-			{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[10][23]);
-			}
-			new raceid = GetPlayerRace(playerid);
-			if (raceid == 0)
-			{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[10][24]);
-			}
-			LeaveRace(raceid, playerid);
+
+		if (RaceStats[raceid][race_state] == RACE_STATE_DISABLED) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][20]);
 			return 1;
 		}
-		return 0;
+
+		if (RaceStats[raceid][race_state] == RACE_STATE_RACING) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][21]);
+			return 1;
+		}
+
+		if (RaceStats[raceid][race_state] != RACE_STATE_LINEUP) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][22]);
+			return 1;
+		}
+
+		JoinRace(raceid, playerid);
+		return 1;
 	}
-	return 0;
+
+	if (!strcmp(cmd, "leave", true) || !strcmp(cmd, "quit", true))
+	{
+		if (player_GetQuestID(playerid) == INVALID_QUEST_ID) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][23]);
+			return 1;
+		}
+
+		new raceid = GetPlayerRace(playerid);
+		if (raceid == 0) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][24]);
+			return 1;
+		}
+
+		LeaveRace(raceid, playerid);
+		return 1;
+	}
+	return 1;
 }
 
 stock AddRaceCP(raceid, Float:x, Float:y, Float:z)
@@ -522,7 +524,7 @@ stock StartRace(raceid)
 	RaceRunning++;
 	foreach (Player, playerid)
 	{
-		if (pl_quest_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
+		if (player_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
 		{
 			TogglePlayerControllable(playerid, 1);
 			NextRaceCP(raceid, playerid);
@@ -562,7 +564,7 @@ stock JoinRace(raceid, playerid)
 	
 	oGivePlayerMoney(playerid, 0-Race[raceid][race_cashentry], 1);
 	GameTextForPlayer(playerid, "~g~Race Entered.", 3000, 6);
-	pl_quest_SetQuestID(playerid, GetRaceQuestID(raceid));
+	player_SetQuestID(playerid, GetRaceQuestID(raceid));
 	RacePlayerStats[playerid][race_player_cp] = 0;
 
 	oSetPlayerRaceCheckpoint(playerid, 2, GetRaceCPX(raceid, RacePlayerStats[playerid][race_player_cp]), GetRaceCPY(raceid, RacePlayerStats[playerid][race_player_cp]), GetRaceCPZ(raceid, RacePlayerStats[playerid][race_player_cp]), 0.0, 0.0, 0.0, RCPSIZE);
@@ -630,7 +632,7 @@ stock SendPlayerAllowedRaceVehicles(playerid, raceid)
 stock LeaveRace(raceid, playerid)
 {
 	new string[MAX_STRING];
-	pl_quest_Reset(playerid);  // reset checkpoints
+	player_ResetQuest(playerid);  // reset checkpoints
 	RaceStats[raceid][race_racercount]--;
 	RacePlayerStats[playerid][race_player_cp] = 0;
 	RacePlayerStats[playerid][race_player_time] = 0;
@@ -668,7 +670,7 @@ stock SendMessageToRacers(raceid, string[], colour)
 {
 	foreach (Player, racerid)
 	{
-		if (pl_quest_GetQuestID(racerid) == GetRaceQuestID(raceid)) // if player is in this race
+		if (player_GetQuestID(racerid) == GetRaceQuestID(raceid)) // if player is in this race
 		{
 			SendClientMessage(racerid, colour, string);
 		}
@@ -677,7 +679,7 @@ stock SendMessageToRacers(raceid, string[], colour)
 
 stock IsPlayerInRace(playerid, raceid)
 {
-	if (pl_quest_GetQuestID(playerid) == GetRaceQuestID(raceid))
+	if (player_GetQuestID(playerid) == GetRaceQuestID(raceid))
 	{
 		return 1;
 	}
@@ -788,7 +790,7 @@ stock GetPlayerRace(playerid)
 		{
 			continue;
 		}
-		if (pl_quest_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
+		if (player_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
 		{
 			return raceid;
 		}
@@ -805,7 +807,7 @@ stock CleanupRace(raceid)
 {
 	foreach (Player, playerid)
 	{
-		if (pl_quest_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
+		if (player_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
 		{
 			LeaveRace(raceid, playerid);
 		}
@@ -854,7 +856,7 @@ stock StartRaceCountdown(raceid)
 	new string[MAX_STRING];
 	foreach (Player, playerid)
 	{
-		if (pl_quest_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
+		if (player_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
 		{
 			if (!oIsPlayerInRaceCheckpoint(playerid, GetRaceCPX(raceid, 0), GetRaceCPY(raceid, 0), GetRaceCPZ(raceid, 0), 60))
 			{
@@ -884,7 +886,7 @@ stock StartRaceCountdown(raceid)
 
 	foreach (Player, playerid)
 	{
-		if (pl_quest_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
+		if (player_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
 		{
 			TogglePlayerControllable(playerid, 0);
 			SetCameraBehindPlayer(playerid);
@@ -900,7 +902,7 @@ stock EndRace(raceid)
 {
 	foreach (Player, playerid) {
 		// if player is in this race
-		if (pl_quest_GetQuestID(playerid) == GetRaceQuestID(raceid)) {
+		if (player_GetQuestID(playerid) == GetRaceQuestID(raceid)) {
 			GameTextForPlayer(playerid, "~r~Race Failed!", 5000, 6);
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][47]);
 			GameMSG("player: %s(%d): his race ended. Out of time.", oGetPlayerName(playerid), playerid);
@@ -1035,7 +1037,7 @@ stock race_OnPlayerEnterCheckpoint(playerid)
 
 		if (RaceStats[raceid][race_state] == RACE_STATE_LINEUP)
 		{
-			if (pl_quest_GetQuestID(playerid) == INVALID_QUEST_ID) // if player not on a quest
+			if (player_GetQuestID(playerid) == INVALID_QUEST_ID) // if player not on a quest
 			{
 				// if player at startline
 				if (oIsPlayerInRaceCheckpoint(playerid, GetRaceCPX(raceid, 0), GetRaceCPY(raceid, 0), GetRaceCPZ(raceid, 0), (RCPSIZE*SIZEAROUND)))
@@ -1064,7 +1066,7 @@ stock race_OnPlayerEnterCheckpoint(playerid)
 		}
 		else if (RaceStats[raceid][race_state] == RACE_STATE_RACING)
 		{
-			if (pl_quest_GetQuestID(playerid) == GetRaceQuestID(raceid)
+			if (player_GetQuestID(playerid) == GetRaceQuestID(raceid)
 				&& oIsPlayerInRaceCheckpoint(playerid, GetRaceCPX(raceid, RacePlayerStats[playerid][race_player_cp]), GetRaceCPY(raceid, RacePlayerStats[playerid][race_player_cp]), GetRaceCPZ(raceid, RacePlayerStats[playerid][race_player_cp]), RCPSIZE*SIZEAROUND)
 			)
 			{

@@ -138,77 +138,73 @@ stock quidemsys_OnVehicleSpawn(vehicleid)
 	return 1;
 }
 
-stock quidemsys_OnPlayerCommandText(playerid, cmdtext[])
+COMMAND:fill(playerid, params[])
 {
 	if (!IsEnabled) {
 		return 0;
 	}
-	new vehicleid = GetPlayerVehicleID(playerid);
 
-	if (!strcmp(cmdtext, "/fill", true))
-	{
-		if (vehicleid == 0)
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[19][21]);
-		}
-		
-		if (!IsPlayerAtFuelStation(playerid))
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[19][22]);
-		}
-		
-		if (GetPVarInt(playerid, "Refueling"))
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[19][23]);
-		}
-		
-		new vehiclemodel = GetVehicleModel(vehicleid);
-		switch (vehiclemodel)
-		{
-			case 481, 509, 510:
-			{
-				return SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][24]);
-			}
-		}
-		
-		if (Fuel[vehicleid] >= FuelList[vehiclemodel-400])
-		{
-			return SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][25]);
-		}
-		
-		SetPVarFloat(playerid, "OldFuel", Fuel[vehicleid]);
-		fill_TimerID[playerid] = SetTimerEx("fill_Timer", 1000, 1, "i", playerid);
-		SetPVarInt(playerid, "Refueling", 1);
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if (vehicleid == 0) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[19][21]);
 		return 1;
 	}
 	
-	if (!strcmp(cmdtext, "/engine", true))
-	{
-		if (vehicleid == 0)
-		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[19][21]);
-		}
-		
-		if (Fuel[vehicleid] <= 0.1)
-		{
-			SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][26]);
-		}
-		else
-		{
-			new engine, lights, alarm, doors, bonnet, boot, objective;
-			GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
-			SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_ON, lights, alarm, doors, bonnet, boot, objective);
-		}
+	if (!IsPlayerAtFuelStation(playerid)) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[19][22]);
 		return 1;
 	}
+	
+	if (GetPVarInt(playerid, "Refueling")) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[19][23]);
+		return 1;
+	}
+	
+	new vehiclemodel = GetVehicleModel(vehicleid);
+	switch (vehiclemodel) {
+		case 481, 509, 510: {
+			SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][24]);
+			return 1;
+		}
+	}
+	
+	if (Fuel[vehicleid] >= FuelList[vehiclemodel-400]) {
+		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][25]);
+		return 1;
+	}
+	
+	SetPVarFloat(playerid, "OldFuel", Fuel[vehicleid]);
+	fill_TimerID[playerid] = SetTimerEx("fill_Timer", 1000, 1, "i", playerid);
+	SetPVarInt(playerid, "Refueling", 1);
+	return 1;
+}
 
-	return 0;
+COMMAND:engine(playerid, params[])
+{
+	if (!IsEnabled) {
+		return 0;
+	}
+	
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if (vehicleid == 0) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[19][21]);
+		return 1;
+	}
+	
+	if (Fuel[vehicleid] <= 0.1) {
+		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][26]);
+	} else {
+		new engine, lights, alarm, doors, bonnet, boot, objective;
+		GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+		SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_ON, lights, alarm, doors, bonnet, boot, objective);
+	}
+	return 1;
 }
 
 forward fill_Timer(playerid);
 public fill_Timer(playerid)
 {
-   	new vehicleid = GetPlayerVehicleID(playerid);
+	new vehicleid = GetPlayerVehicleID(playerid);
 	
 	Fuel[vehicleid] += QUIDEMSYS_FUEL_SPEED;
 	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || Fuel[vehicleid] >= FuelList[ GetVehicleModel(vehicleid)-400 ])

@@ -46,22 +46,6 @@ stock player_IsJailed(playerid) {
 	return (GetPVarInt(playerid, "JailTime") == -1 ? 0 : 1);
 }
 
-stock player_GetMuteCount(playerid) {
-	return GetPVarInt(playerid, "Muted");
-}
-
-stock player_SetMuteCount(playerid, jailed) {
-	SetPVarInt(playerid, "Muted", jailed);
-}
-
-stock player_GetMuteTime(playerid) {
-	return GetPVarInt(playerid, "MuteTime");
-}
-
-stock player_SetMuteTime(playerid, time) {
-	SetPVarInt(playerid, "MuteTime", time);
-}
-
 stock player_GetSkin(playerid) {
 	return GetPVarInt(playerid, "SkinModel");
 }
@@ -85,14 +69,6 @@ stock player_IsSpectating(playerid) {
 
 stock player_SetSpectating(playerid, isspec) {
 	SetPVarInt(playerid, "Spectating", isspec);
-}
-
-stock player_GetHideStatus(playerid) {
-	return GetPVarInt(playerid, "Hide");
-}
-
-stock player_SetHideStatus(playerid, hidestatus) {
-	SetPVarInt(playerid, "Hide", hidestatus);
 }
 
 stock player_GetSkydiveTime(playerid) {
@@ -160,7 +136,7 @@ stock player_SaveConfig(file_config)
 
 stock player_OnPlayerSpawn(playerid)
 {
-	if (player_GetMuteTime(playerid) != 0) {
+	if (player_IsMuted(playerid)) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 		SetPlayerWantedLevel(playerid, 3);
 	}

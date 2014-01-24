@@ -96,7 +96,7 @@ stock player_SaveEx(playerid)
 	ini_setString(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
 	ini_setInteger(file_player, "SkinModel", player_GetSkin(playerid));
 	ini_setString(file_player, "VIP", GetPlayerVIPDate(playerid));
-	ini_setInteger(file_player, "Hide", player_GetHideStatus(playerid));
+	ini_setInteger(file_player, "Hide", admin_GetHideStatus(playerid));
 	ini_setInteger(file_player, "SpawnHouseID", player_GetSpawnHouseID(playerid));
 	
 	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
@@ -204,7 +204,7 @@ stock player_Login(playerid)
 	SetPlayerVIP(playerid, VIPCheck(s_buf));
 	
 	ini_getInteger(file_player, "Hide", buf);
-	player_SetHideStatus(playerid, buf);
+	admin_SetHideStatus(playerid, buf);
 	
 	ini_getInteger(file_player, "SpawnHouseID", buf);
 	player_SetSpawnHouseID(playerid, buf);
