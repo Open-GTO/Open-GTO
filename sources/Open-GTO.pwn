@@ -318,10 +318,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			vshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
-		case anims_lib_menu_DialogID, anims_anim_menu_DialogID:
-		{
-			anims_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
 	}
 	return 1;
 }

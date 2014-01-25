@@ -1898,60 +1898,7 @@ static anim_array[][Anims_Info] = {
 	{"WUZI", "Wuzi_Walk"}
 };
 
-stock anims_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
-{
-	#pragma unused inputtext
-	
-	switch (dialogid) {
-		case anims_lib_menu_DialogID: {
-			if (!response) {
-				show_User_Menu(playerid);
-				return 0;
-			}
-			
-			SetPVarString(playerid, "anims_SelectedLib", anim_lib_array[listitem]);
-			
-			anims_ShowAnimMenu(playerid, anim_lib_array[listitem]);
-			return 1;
-		}
-		case anims_anim_menu_DialogID: {
-			if (!response) {
-				anims_ShowLibMenu(playerid);
-				return 0;
-			}
-			
-			new lib[MAX_ANIM_LIB_NAME];
-			GetPVarString(playerid, "anims_SelectedLib", lib, sizeof(lib));
-			DeletePVar(playerid, "anims_SelectedLib");
-			
-			new anim_id;
-			for (new i = 0; i < sizeof(anim_array); i++) {
-				if (!strcmp(lib, anim_array[i][anim_Lib], true)) {
-					anim_id = i + listitem;
-					break;
-				}
-			}
-			
-			ApplyAnimation(playerid, lib, anim_array[anim_id][anim_Name], 4.1, 0, 1, 1, 0, 0, 1);
-			return 1;
-		}
-	}
-	return 1;
-}
-
-stock anims_OnPlayerSpawn(playerid)
-{
-	anims_PreloadAll(playerid);
-}
-
-stock anims_PreloadAll(playerid)
-{
-	for (new i = 0; i < sizeof(anim_lib_array); i++) {
-		ApplyAnimation(playerid, anim_lib_array[i], "null", 0.0, 0, 0, 0, 0, 0, 1);
-	}
-}
-
-stock anims_ShowLibMenu(playerid)
+DialogCreate:AnimLib(playerid)
 {
 	new string[ MAX_ANIM_LIB_NAME * (sizeof(anim_lib_array) + 1) ];
 	
@@ -1960,16 +1907,28 @@ stock anims_ShowLibMenu(playerid)
 		strcat(string, "\n", sizeof(string));
 	}
 	
-	return ShowPlayerDialog(playerid, anims_lib_menu_DialogID, DIALOG_STYLE_LIST,
-		"Меню анимаций",
-		string,
-		"ОК", "Отмена"
-	);
+	Dialog_Open(playerid, Dialog:AnimLib, DIALOG_STYLE_LIST, "Меню анимаций", string, "ОК", "Отмена");
 }
 
-stock anims_ShowAnimMenu(playerid, lib[MAX_ANIM_LIB_NAME])
+DialogResponse:AnimLib(playerid, response, listitem, inputtext[])
 {
-	new string[ MAX_ANIM_NAME * 512 ];
+	if (!response) {
+		show_User_Menu(playerid);
+		return 0;
+	}
+	
+	SetPVarString(playerid, "anims_SelectedLib", anim_lib_array[listitem]);
+	
+	Dialog_Show(playerid, Dialog:AnimMenu);
+	return 1;
+}
+
+DialogCreate:AnimMenu(playerid)
+{
+	new string[ MAX_ANIM_NAME * 512 ],
+		lib[MAX_ANIM_LIB_NAME];
+	
+	GetPVarString(playerid, "anims_SelectedLib", lib, sizeof(lib));
 	
 	for (new i = 0, founded = 0; i < sizeof(anim_array); i++) {
 		if (!strcmp(lib, anim_array[i][anim_Lib], true)) {
@@ -1984,11 +1943,43 @@ stock anims_ShowAnimMenu(playerid, lib[MAX_ANIM_LIB_NAME])
 	new head_msg[MAX_ANIM_LIB_NAME + 32];
 	format(head_msg, sizeof(head_msg), "Меню анимаций - %s", lib);
 	
-	return ShowPlayerDialog(playerid, anims_anim_menu_DialogID, DIALOG_STYLE_LIST,
-		head_msg,
-		string,
-		"ОК", "Назад"
-	);
+	Dialog_Open(playerid, Dialog:AnimMenu, DIALOG_STYLE_LIST, head_msg, string, "ОК", "Назад");
+	return 1;
+}
+
+DialogResponse:AnimMenu(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		Dialog_Show(playerid, Dialog:AnimLib);
+		return 0;
+	}
+	
+	new lib[MAX_ANIM_LIB_NAME];
+	GetPVarString(playerid, "anims_SelectedLib", lib, sizeof(lib));
+	DeletePVar(playerid, "anims_SelectedLib");
+	
+	new anim_id;
+	for (new i = 0; i < sizeof(anim_array); i++) {
+		if (!strcmp(lib, anim_array[i][anim_Lib], true)) {
+			anim_id = i + listitem;
+			break;
+		}
+	}
+	
+	ApplyAnimation(playerid, lib, anim_array[anim_id][anim_Name], 4.1, 0, 1, 1, 0, 0, 1);
+	return 1;
+}
+
+stock anims_OnPlayerSpawn(playerid)
+{
+	anims_PreloadAll(playerid);
+}
+
+stock anims_PreloadAll(playerid)
+{
+	for (new i = 0; i < sizeof(anim_lib_array); i++) {
+		ApplyAnimation(playerid, anim_lib_array[i], "null", 0.0, 0, 0, 0, 0, 0, 1);
+	}
 }
 
 COMMAND:dance(playerid, params[])

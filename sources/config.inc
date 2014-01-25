@@ -246,7 +246,6 @@ enum {
 	teleport_menu_DialogID,
 	vshop_DialogID,
 	pveh_select_DialogID, pveh_do_DialogID,
-	anims_lib_menu_DialogID, anims_anim_menu_DialogID,
 }
 
 enum clickText_Info {
