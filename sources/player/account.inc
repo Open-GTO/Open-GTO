@@ -126,7 +126,7 @@ stock account_Login(playerid, password[])
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[1][7]);
 			KickPlayer(playerid, lang_texts[1][4]);
 		} else {
-			account_ShowDialog(playerid);
+			Dialog_Show(playerid, Dialog:AccountLogin);
 		}
 		return 0;
 	}
@@ -147,49 +147,66 @@ stock account_Login(playerid, password[])
 	return 1;
 }
 
+DialogCreate:AccountRegister(playerid)
+{
+	new string[MAX_STRING],
+		playername[MAX_PLAYER_NAME + 1];
+
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	format(string, sizeof(string), lang_texts[1][44], playername, MIN_PASS_LEN, MAX_PASS_LEN);
+	Dialog_Open(playerid, Dialog:AccountRegister, DIALOG_STYLE_INPUT, "Регистрация", string, "Зарегать", "");
+}
+
+DialogResponse:AccountRegister(playerid, response, listitem, inputtext[])
+{
+	new pass_len = strlen(inputtext);
+	if (pass_len >= MIN_PASS_LEN && pass_len <= MAX_PASS_LEN) {
+		account_Register(playerid, inputtext);
+	} else {
+		Dialog_Show(playerid, Dialog:AccountRegister);
+	}
+	return 1;
+}
+
+DialogCreate:AccountLogin(playerid)
+{
+	new string[MAX_STRING],
+		playername[MAX_PLAYER_NAME + 1];
+
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	if (GetPVarInt(playerid, "Player_Login_Attempt") > 0) {
+		format(string, sizeof(string), lang_texts[1][47], MAX_PLAYER_LOGIN_ATTEMPT - GetPVarInt(playerid, "Player_Login_Attempt"));
+	} else {
+		format(string, sizeof(string), lang_texts[1][43], playername);
+	}
+	Dialog_Open(playerid, Dialog:AccountLogin, DIALOG_STYLE_PASSWORD, "Вход в аккаунт", string, "Войти", "");
+
+}
+
+DialogResponse:AccountLogin(playerid, response, listitem, inputtext[])
+{
+	new pass_len = strlen(inputtext);
+	if (pass_len >= MIN_PASS_LEN && pass_len <= MAX_PASS_LEN) {
+		account_Login(playerid, inputtext);
+	} else {
+		Dialog_Show(playerid, Dialog:AccountLogin);
+	}
+}
+
 stock account_ShowDialog(playerid)
 {
 	new filename_account[MAX_STRING],
-		message[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
 	format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, playername);
 
 	if (ini_fileExist(filename_account)) {
-		if (GetPVarInt(playerid, "Player_Login_Attempt") > 0) {
-			format(message, sizeof(message), lang_texts[1][47], MAX_PLAYER_LOGIN_ATTEMPT - GetPVarInt(playerid, "Player_Login_Attempt"));
-		} else {
-			format(message, sizeof(message), lang_texts[1][43], playername);
-		}
-		ShowPlayerDialog(playerid, account_Log_DialogID, DIALOG_STYLE_PASSWORD, "Вход в аккаунт", message, "Войти", "");
+		Dialog_Show(playerid, Dialog:AccountLogin);
 	} else {
-		format(message, sizeof(message), lang_texts[1][44], playername, MIN_PASS_LEN, MAX_PASS_LEN);
-		ShowPlayerDialog(playerid, account_Reg_DialogID, DIALOG_STYLE_INPUT, "Регистрация", message, "Зарегать", "");
-	}
-	return 1;
-}
-
-stock account_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
-{
-	#pragma unused listitem, response
-	if (dialogid == account_Log_DialogID) {
-		new pass_len = strlen(inputtext);
-
-		if (pass_len >= MIN_PASS_LEN && pass_len <= MAX_PASS_LEN) {
-			account_Login(playerid, inputtext);
-		} else {
-			account_ShowDialog(playerid);
-		}
-		return 1;
-	} else if (dialogid == account_Reg_DialogID) {
-		new pass_len = strlen(inputtext);
-		if (pass_len >= MIN_PASS_LEN && pass_len <= MAX_PASS_LEN) {
-			account_Register(playerid, inputtext);
-		} else {
-			account_ShowDialog(playerid);
-		}
-		return 1;
+		Dialog_Show(playerid, Dialog:AccountRegister);
 	}
 	return 1;
 }

@@ -25,6 +25,7 @@ Developers:
 #include <..\compiler\includes\a_samp>
 #include "utils\foreach"
 #include "utils\zcmd"
+#include "utils\gtodialog"
 #include "config"
 #include "base"
 #include "lang"
@@ -264,10 +265,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	switch (dialogid)
 	{
-		case account_Log_DialogID, account_Reg_DialogID:
-		{
-			account_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
 		case house_DialogID, houses_DialogID, houses_upgrades_DialogID, houses_setrent_DialogID, house_sell_accept_DialogID:
 		{
 			housing_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
@@ -296,11 +293,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		case wshop_Select_DialogID, wshop_Buy_DialogID:
 		{
 			wshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
-		case bank_Start_DialogID, bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID,
-			gang_wmoney_menu_DialogID, gang_dmoney_menu_DialogID:
-		{
-			bank_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
 		case click_DialogID, click_Resp_DialogID, click_Info_DialogID:
 		{

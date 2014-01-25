@@ -229,8 +229,6 @@ stock Text3D:CreatePickupText(text[], Float:pos_x, Float:pos_y, Float:pos_z)
 // диалоги
 enum {
 	message_DialogID,
-	account_Reg_DialogID, account_Log_DialogID,
-	bank_Start_DialogID, bank_FirstList_DialogID, bank_Withdraw_DialogID, bank_Deposit_DialogID,
 	click_DialogID, click_Resp_DialogID, click_Info_DialogID,
 	house_DialogID, houses_DialogID, houses_upgrades_DialogID, houses_setrent_DialogID, house_sell_accept_DialogID,
 	bis_DialogID, bis_Msg_DialogID, bis_sell_accept_DialogID,
@@ -238,7 +236,7 @@ enum {
 	user_menu_DialogID, user_menu_Return_DialogID,
 		vehicle_menu_DialogID, spawnselect_menu_DialogID, settings_menu_DialogID, vehicle_color_menu_DialogID, vehicle_radio_menu_DialogID,
 		changenick_menu_DialogID, changepass_menu_DialogID,
-		gang_menu_DialogID, gang_create_menu_DialogID, gang_invite_menu_DialogID, gang_color_menu_DialogID, gang_motd_menu_DialogID, gang_wmoney_menu_DialogID, gang_dmoney_menu_DialogID,
+		gang_menu_DialogID, gang_create_menu_DialogID, gang_invite_menu_DialogID, gang_color_menu_DialogID, gang_motd_menu_DialogID,
 		gang_kick_menu_DialogID, gang_exit_accept_menu_DialogID,
 	wshop_Select_DialogID, wshop_Buy_DialogID,
 	bar_DialogID,
