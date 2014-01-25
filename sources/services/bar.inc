@@ -107,7 +107,7 @@ stock bar_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		if (!response) return 1;
 		if (oGetPlayerMoney(playerid) < Drinks[listitem][Cost])
 		{
-			return show_Msg_Dialog(playerid, lang_texts[17][14], lang_texts[17][17], lang_texts[17][18]);
+			return Dialog_Message(playerid, lang_texts[17][14], lang_texts[17][17], lang_texts[17][18]);
 		}
 		oGivePlayerMoney(playerid,-Drinks[listitem][Cost], 1);
 		SetPlayerSpecialAction(playerid, Drinks[listitem][Action]);
@@ -126,7 +126,7 @@ stock bar_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			lang_texts[17][19],
 			Drinks[listitem][Name], Drinks[listitem][Cost], Drinks[listitem][Alcohol], Drinks[listitem][Hp]
 		);
-		show_Msg_Dialog(playerid, lang_texts[17][14], string, lang_texts[17][18]);
+		Dialog_Message(playerid, lang_texts[17][14], string, lang_texts[17][18]);
 		return 1;
 	}
 	return 1;

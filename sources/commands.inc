@@ -32,7 +32,7 @@ COMMAND:info(playerid, params[])
 	strcat(string, lang_texts[15][12], sizeof(string));
 	strcat(string, lang_texts[15][13], sizeof(string));
 	strcat(string, lang_texts[15][14], sizeof(string));
-	show_Msg_Dialog(playerid, "Информация", string, "ОК");
+	Dialog_Message(playerid, "Информация", string, "ОК");
 	return 1;
 }
 

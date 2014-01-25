@@ -124,7 +124,7 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 	
 	new amount = strval(inputtext);
 	if (amount <= 0 || strlen(inputtext) == 0 || !IsNumeric(inputtext)) {
-		show_Msg_Dialog(playerid, lang_texts[2][3], lang_texts[2][13], lang_texts[2][5]);
+		Dialog_Message(playerid, lang_texts[2][3], lang_texts[2][13], lang_texts[2][5]);
 		return 1;
 	}
 	
@@ -133,7 +133,7 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[2][7], amount, GetPlayerBankMoney(playerid));
-	show_Msg_Dialog(playerid, lang_texts[2][3], string, lang_texts[2][5]);
+	Dialog_Message(playerid, lang_texts[2][3], string, lang_texts[2][5]);
 	PlayerPlaySoundOnPlayer(playerid, 1084);
 	return 1;
 }
@@ -154,7 +154,7 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 	
 	new amount = strval(inputtext);
 	if (amount <= 0 || strlen(inputtext) == 0 || !IsNumeric(inputtext)) {
-		show_Msg_Dialog(playerid, lang_texts[2][3], lang_texts[2][13], lang_texts[2][5]);
+		Dialog_Message(playerid, lang_texts[2][3], lang_texts[2][13], lang_texts[2][5]);
 		return 1;
 	}
 
@@ -170,7 +170,7 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[2][14], amount, GetPlayerBankMoney(playerid));
-	show_Msg_Dialog(playerid, lang_texts[2][3], string, lang_texts[2][5]);
+	Dialog_Message(playerid, lang_texts[2][3], string, lang_texts[2][5]);
 	PlayerPlaySoundOnPlayer(playerid, 1084);
 	return 1;
 }
@@ -189,12 +189,12 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 			
 	new amount = strval(inputtext);
 	if (amount <= 0 || strlen(inputtext) == 0 || !IsNumeric(inputtext)) {
-		show_Msg_Dialog(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][93]);
+		Dialog_Message(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][93]);
 		return 1;
 	}
 			
 	if (oGetPlayerMoney(playerid) < amount) {
-		show_Msg_Dialog(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][94]);
+		Dialog_Message(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][94]);
 		return 1;
 	}
 			
@@ -223,12 +223,12 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 			
 	new amount = strval(inputtext);
 	if (amount <= 0 || strlen(inputtext) == 0 || !IsNumeric(inputtext)) {
-		return show_Msg_Dialog(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][93]);
+		return Dialog_Message(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][93]);
 	}
 		
 	new gangid = player_GetGangID(playerid);
 	if (GetGangMoney(gangid) < amount) {
-		show_Msg_Dialog(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][94]);
+		Dialog_Message(playerid, lang_texts[2][23], lang_texts[6][92], lang_texts[6][94]);
 		return 1;
 	}
 	

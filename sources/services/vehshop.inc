@@ -54,42 +54,53 @@ stock vshop_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	#pragma unused newstate, oldstate
 	if (vshop_IsShopVehicle( GetPlayerVehicleID(playerid) )) {
-		vshop_ShowBuyDialog(playerid);
+		Dialog_Show(playerid, Dialog:VehicleBuy);
 	}
 	return 1;
 }
 
-stock vshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
+DialogCreate:VehicleBuy(playerid)
 {
-	#pragma unused listitem, inputtext
-	if (dialogid == vshop_DialogID) {
-		RemovePlayerFromVehicle(playerid);
-		if (!response) {
-			return 0;
-		}
-		if (GetPlayerVehicleCount(playerid) >= GetPlayerVehicleMaximumCount(playerid)) {
-			show_Msg_Dialog(playerid, "Магазин автомобилей", "У вас максимальное количество транспорта", "ОК");
-			return 0;
-		}
-		
-		new vehicleid = GetPlayerVehicleID(playerid);
-		new cost = GetVehicleCost( GetVehicleModel(vehicleid) );
-		
-		if (oGetPlayerMoney(playerid) < cost) {
-			show_Msg_Dialog(playerid, "Магазин автомобилей", "У вас недостаточно денег", "ОК");
-			return 0;
-		}
-		
-		oGivePlayerMoney(playerid, -cost, 1);
-		buyVehicle(playerid, vehicleid);
-		
-		show_Msg_Dialog(playerid, "Магазин автомобилей", "\
-			Вы успешно купили этот автомобиль.\n\
-			Чтобы вызвать купленный автомобиль, зайдите в меню пользователя и выберите его.",
-			"ОК"
-		);
-		return 1;
+	new model = GetVehicleModel(GetPlayerVehicleID(playerid));
+	new string[MAX_STRING];
+
+	format(string, sizeof(string),
+		"Вы хотите купить автомобиль '%s' за $%d?",
+		GetVehicleName(model), GetVehicleCost(model)
+	);
+
+	Dialog_Open(playerid, Dialog:VehicleBuy, DIALOG_STYLE_MSGBOX, "Магазин автомобилей", string, "Купить", "Выйти");
+}
+
+DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
+{
+	RemovePlayerFromVehicle(playerid);
+
+	if (!response) {
+		return 0;
 	}
+
+	if (GetPlayerVehicleCount(playerid) >= GetPlayerVehicleMaximumCount(playerid)) {
+		Dialog_Message(playerid, "Магазин автомобилей", "У вас максимальное количество транспорта", "ОК");
+		return 0;
+	}
+	
+	new vehicleid = GetPlayerVehicleID(playerid);
+	new cost = GetVehicleCost( GetVehicleModel(vehicleid) );
+	
+	if (oGetPlayerMoney(playerid) < cost) {
+		Dialog_Message(playerid, "Магазин автомобилей", "У вас недостаточно денег", "ОК");
+		return 0;
+	}
+	
+	oGivePlayerMoney(playerid, -cost, 1);
+	buyVehicle(playerid, vehicleid);
+	
+	Dialog_Message(playerid, "Магазин автомобилей", "\
+		Вы успешно купили этот автомобиль.\n\
+		Чтобы вызвать купленный автомобиль, зайдите в меню пользователя и выберите его.",
+		"ОК"
+	);
 	return 1;
 }
 
@@ -157,21 +168,6 @@ stock buyVehicle(playerid, vehicleid)
 	new model = GetVehicleModel(vehicleid);
 	AddPlayerVehicle(playerid, model, colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], float(GetMaxVehicleFuel(model)));
 	return 1;
-}
-
-stock vshop_ShowBuyDialog(playerid)
-{
-	new model = GetVehicleModel(GetPlayerVehicleID(playerid));
-	new string[MAX_STRING];
-	format(string, sizeof(string),
-		"Вы хотите купить автомобиль '%s' за $%d?",
-		GetVehicleName(model), GetVehicleCost(model)
-	);
-	return ShowPlayerDialog(playerid, vshop_DialogID, DIALOG_STYLE_MSGBOX,
-		"Магазин автомобилей",
-		string,
-		"Купить", "Выйти"
-	);
 }
 
 stock vshop_IsShopVehicle(vehicleid)

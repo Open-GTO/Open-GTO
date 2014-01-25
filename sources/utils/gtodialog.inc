@@ -1,7 +1,7 @@
 /*
 
-    About: dialog system
-    Author: ziggi
+	About: dialog system
+	Author: ziggi
 
 */
 
@@ -48,6 +48,12 @@ stock Dialog_Show(playerid, function[])
 	strcat(call_func, function);
 
 	CallLocalFunction(call_func, "d", playerid);
+}
+
+stock Dialog_Message(playerid, caption[], info[], button1[])
+{
+	Dialog_Open(playerid, Dialog:Message, DIALOG_STYLE_MSGBOX, caption, info, button1, "");
+	return 1;
 }
 
 public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])

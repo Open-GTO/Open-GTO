@@ -350,13 +350,13 @@ stock housing_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 		new rentcost = strval(inputtext);
 		if (rentcost < 1)
 		{
-			return show_Msg_Dialog(playerid, lang_texts[8][39], lang_texts[8][71], lang_texts[8][87]);
+			return Dialog_Message(playerid, lang_texts[8][39], lang_texts[8][71], lang_texts[8][87]);
 		}
 		
 		Houses[ GetPlayerToHouseID(playerid) ][Houses_RentCost] = rentcost;
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[8][72], rentcost);
-		show_Msg_Dialog(playerid, lang_texts[8][39], string, lang_texts[8][87]);
+		Dialog_Message(playerid, lang_texts[8][39], string, lang_texts[8][87]);
 		return 1;
 	}
 	if (dialogid == houses_upgrades_DialogID)
@@ -379,12 +379,12 @@ stock housing_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 				{
 					new string[MAX_STRING];
 					format(string, sizeof(string), lang_texts[8][63], HOUSE_UPGRADE_HEALTH_COST);
-					return show_Msg_Dialog(playerid, lang_texts[8][88], string, lang_texts[8][87]);
+					return Dialog_Message(playerid, lang_texts[8][88], string, lang_texts[8][87]);
 				}
 				
 				Houses[id][Houses_HealUpgrade] = 1;
 				oGivePlayerMoney(playerid,-HOUSE_UPGRADE_HEALTH_COST, 0);
-				show_Msg_Dialog(playerid, lang_texts[8][83], lang_texts[8][64], lang_texts[8][87]);
+				Dialog_Message(playerid, lang_texts[8][83], lang_texts[8][64], lang_texts[8][87]);
 				return 1;
 			}
 			case 1:
@@ -398,12 +398,12 @@ stock housing_OnDialogResponse(playerid, dialogid, response, listitem, inputtext
 				{
 					new string[MAX_STRING];
 					format(string, sizeof(string), lang_texts[8][63], HOUSE_UPGRADE_ARMOUR_COST);
-					return show_Msg_Dialog(playerid, lang_texts[8][89], string, lang_texts[8][87]);
+					return Dialog_Message(playerid, lang_texts[8][89], string, lang_texts[8][87]);
 				}
 
 				Houses[id][Houses_ArmourUpgrade] = 1;
 				oGivePlayerMoney(playerid,-HOUSE_UPGRADE_ARMOUR_COST, 0);
-				show_Msg_Dialog(playerid, lang_texts[8][83], lang_texts[8][64], lang_texts[8][87]);
+				Dialog_Message(playerid, lang_texts[8][83], lang_texts[8][64], lang_texts[8][87]);
 				return 1;
 			}
 		}

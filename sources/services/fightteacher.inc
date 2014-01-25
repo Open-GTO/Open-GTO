@@ -56,12 +56,12 @@ stock fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	
 	if (fights_Teachers[teacherid][StyleID] <= pl_fights_GetPlayerStyle(playerid)) {
 		format(string, sizeof(string), lang_texts[19][1], fights_Teachers[teacherid][StyleName]);
-		show_Msg_Dialog(playerid, lang_texts[19][2], string, lang_texts[19][3]);
+		Dialog_Message(playerid, lang_texts[19][2], string, lang_texts[19][3]);
 		return 0;
 	}
 
 	if (fights_Teachers[teacherid][StyleID] - 1 > pl_fights_GetPlayerStyle(playerid)) {
-		show_Msg_Dialog(playerid, lang_texts[19][2], lang_texts[19][4], lang_texts[19][3]);
+		Dialog_Message(playerid, lang_texts[19][2], lang_texts[19][4], lang_texts[19][3]);
 		return 0;
 	}
 
@@ -82,7 +82,7 @@ stock fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[
 
 	if (oGetPlayerMoney(playerid) < fights_Teachers[teacherid][Cost]) {
 		format(string, sizeof(string), lang_texts[19][9], fights_Teachers[teacherid][Cost]);
-		show_Msg_Dialog(playerid, lang_texts[19][2], string, lang_texts[19][3]);
+		Dialog_Message(playerid, lang_texts[19][2], string, lang_texts[19][3]);
 		return 0;
 	}
 
@@ -90,7 +90,7 @@ stock fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[
 	oGivePlayerMoney(playerid, -fights_Teachers[teacherid][Cost], 0);
 
 	format(string, sizeof(string), lang_texts[19][10], fights_Teachers[teacherid][StyleName], fights_Teachers[teacherid][Cost]);
-	show_Msg_Dialog(playerid, lang_texts[19][2], string, lang_texts[19][3]);
+	Dialog_Message(playerid, lang_texts[19][2], string, lang_texts[19][3]);
 	return 1;
 }
 

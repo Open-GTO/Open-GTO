@@ -64,12 +64,3 @@ stock base_OnGameModeInit()
 	GameMSG("SERVER: Base module init");
 	return 1;
 }
-
-stock show_Msg_Dialog(playerid, string_head[], string_content[], button[])
-{
-	return ShowPlayerDialog(playerid, message_DialogID, DIALOG_STYLE_MSGBOX,
-		string_head,
-		string_content,
-		button, ""
-	);
-}

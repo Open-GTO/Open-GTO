@@ -314,10 +314,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		{
 			trucker_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
-		case vshop_DialogID:
-		{
-			vshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
 	}
 	return 1;
 }

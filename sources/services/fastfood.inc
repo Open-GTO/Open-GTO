@@ -71,7 +71,7 @@ stock fastfood_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 		if (!response) return 1;
 		if (oGetPlayerMoney(playerid) < Food[listitem][food_cost])
 		{
-			return show_Msg_Dialog(playerid, lang_texts[17][6], lang_texts[17][7], lang_texts[17][8]);
+			return Dialog_Message(playerid, lang_texts[17][6], lang_texts[17][7], lang_texts[17][8]);
 		}
 		oGivePlayerMoney(playerid,-Food[listitem][food_cost], 1);
 		ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.1, 0, 1, 1, 1, 1);
@@ -85,7 +85,7 @@ stock fastfood_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 		}
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[17][9], Food[listitem][food_name], Food[listitem][food_cost], Food[listitem][food_hp]);
-		show_Msg_Dialog(playerid, lang_texts[17][6], string, lang_texts[17][8]);
+		Dialog_Message(playerid, lang_texts[17][6], string, lang_texts[17][8]);
 		return 1;
 	}
 	return 1;
