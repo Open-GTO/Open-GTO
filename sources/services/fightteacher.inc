@@ -65,14 +65,22 @@ stock fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		return 0;
 	}
 
-	format(string, sizeof(string), lang_texts[19][5], fights_Teachers[teacherid][StyleName], fights_Teachers[teacherid][Cost]);
-	ShowPlayerDialog(playerid, fightteacher_DialogID, DIALOG_STYLE_MSGBOX, lang_texts[19][6], string, lang_texts[19][7], lang_texts[19][8]);
+	Dialog_Show(playerid, Dialog:ServiceFights);
 	return 1;
 }
 
-stock fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
+DialogCreate:ServiceFights(playerid)
 {
-	#pragma unused dialogid, listitem, inputtext
+	new string[MAX_STRING],
+		teacherid = fights_GetPlayerTeacherID(playerid);
+	
+	format(string, sizeof(string), lang_texts[19][5], fights_Teachers[teacherid][StyleName], fights_Teachers[teacherid][Cost]);
+	
+	Dialog_Open(playerid, Dialog:ServiceFights, DIALOG_STYLE_MSGBOX, lang_texts[19][6], string, lang_texts[19][7], lang_texts[19][8]);
+}
+
+DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
+{
 	if (!response) {
 		return 0;
 	}

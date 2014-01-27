@@ -33,45 +33,76 @@ stock wshop_OnGameModeInit()
 	return 1;
 }
 
-stock wshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
+// select weapon from list
+DialogCreate:ServiceWeapon(playerid)
 {
-	switch (dialogid) {
-		// select weapon from list
-		case wshop_Select_DialogID: {
-			if (!response) {
-				return 0;
-			}
+	new string[ sizeof(Weapons) * (MAX_NAME + 12 + 4) ];
 
-			new weaponid = wshop_GetSelectedWeaponID(playerid, listitem);
-			SetPVarInt(playerid, "Buy_Weapon_ID", weaponid);
-			wshop_ShowBuyDialog(playerid, weaponid);
-			return 1;
+	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++) {
+		if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
+			continue;
 		}
-		// buy and input bullets count
-		case wshop_Buy_DialogID: {
-			if (!response) {
-				wshop_ShowSelectDialog(playerid);
-				return 0;
-			}
-
-			new bullets = strval(inputtext);
-			if (GetPVarInt(playerid, "weapons_Buy_One_Bullet") == 1) {
-				bullets = 1;
-				DeletePVar(playerid, "weapons_Buy_One_Bullet");
-			}
-
-			wshop_Buy(playerid, GetPVarInt(playerid, "Buy_Weapon_ID"), bullets);
-			wshop_ShowSelectDialog(playerid);
-			return 1;
-		}
+		format(string, sizeof(string), lang_texts[17][56], string, oGetWeaponName(weaponid), GetWeaponCost(weaponid));
 	}
+
+	Dialog_Open(playerid, Dialog:ServiceWeapon, DIALOG_STYLE_LIST, lang_texts[17][57], string, lang_texts[17][58], lang_texts[17][59]);
+}
+
+DialogResponse:ServiceWeapon(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		return 0;
+	}
+
+	new weaponid = wshop_GetSelectedWeaponID(playerid, listitem);
+	SetPVarInt(playerid, "Buy_Weapon_ID", weaponid);
+	Dialog_Show(playerid, Dialog:ServiceWeaponBuy);
+	return 1;
+}
+
+// buy and input bullets count
+DialogCreate:ServiceWeaponBuy(playerid)
+{
+	new string[MAX_STRING],
+		dialog_style = DIALOG_STYLE_INPUT,
+		weaponid = GetPVarInt(playerid, "Buy_Weapon_ID");
+
+	if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_IsFirearm] == 0) {
+		format(string, sizeof(string), lang_texts[17][60], oGetWeaponName(weaponid), GetWeaponCost(weaponid));
+		dialog_style = DIALOG_STYLE_MSGBOX;
+		SetPVarInt(playerid, "weapons_Buy_One_Bullet", 1);
+	} else if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_IsFirearm] == 1) {
+		format(string, sizeof(string),
+			lang_texts[17][61],
+			oGetWeaponName(weaponid), GetWeaponCost(weaponid), oGetPlayerMoney(playerid) / GetWeaponCost(weaponid)
+		);
+	}
+
+	Dialog_Open(playerid, Dialog:ServiceWeaponBuy, dialog_style, lang_texts[17][62], string, lang_texts[17][63], lang_texts[17][64]);
+}
+
+DialogResponse:ServiceWeaponBuy(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		Dialog_Show(playerid, Dialog:ServiceWeapon);
+		return 0;
+	}
+
+	new bullets = strval(inputtext);
+	if (GetPVarInt(playerid, "weapons_Buy_One_Bullet") == 1) {
+		bullets = 1;
+		DeletePVar(playerid, "weapons_Buy_One_Bullet");
+	}
+
+	wshop_Buy(playerid, GetPVarInt(playerid, "Buy_Weapon_ID"), bullets);
+	Dialog_Show(playerid, Dialog:ServiceWeapon);
 	return 1;
 }
 
 stock wshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	#pragma unused oldkeys, newkeys
-	wshop_ShowSelectDialog(playerid);
+	Dialog_Show(playerid, Dialog:ServiceWeapon);
 	return 1;
 }
 
@@ -164,47 +195,6 @@ stock wshop_GetSelectedWeaponID(playerid, listitem)
 		}
 	}
 	return 0;
-}
-
-stock wshop_ShowSelectDialog(playerid)
-{
-	new string[ sizeof(Weapons) * (MAX_NAME + 12 + 4) ];
-
-	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++) {
-		if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
-			continue;
-		}
-		format(string, sizeof(string), lang_texts[17][56], string, oGetWeaponName(weaponid), GetWeaponCost(weaponid));
-	}
-
-	return ShowPlayerDialog(playerid, wshop_Select_DialogID, DIALOG_STYLE_LIST,
-		lang_texts[17][57],
-		string,
-		lang_texts[17][58], lang_texts[17][59]
-	);
-}
-
-stock wshop_ShowBuyDialog(playerid, weaponid)
-{
-	new string[MAX_STRING],
-		dialog_style = DIALOG_STYLE_INPUT;
-
-	if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_IsFirearm] == 0) {
-		format(string, sizeof(string), lang_texts[17][60], oGetWeaponName(weaponid), GetWeaponCost(weaponid));
-		dialog_style = DIALOG_STYLE_MSGBOX;
-		SetPVarInt(playerid, "weapons_Buy_One_Bullet", 1);
-	} else if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_IsFirearm] == 1) {
-		format(string, sizeof(string),
-			lang_texts[17][61],
-			oGetWeaponName(weaponid), GetWeaponCost(weaponid), oGetPlayerMoney(playerid) / GetWeaponCost(weaponid)
-		);
-	}
-
-	return ShowPlayerDialog(playerid, wshop_Buy_DialogID, dialog_style,
-		lang_texts[17][62],
-		string,
-		lang_texts[17][63], lang_texts[17][64]
-	);
 }
 
 stock IsPlayerAtWeaponShop(playerid)

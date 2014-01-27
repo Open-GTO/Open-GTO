@@ -56,6 +56,12 @@ stock Dialog_Message(playerid, caption[], info[], button1[])
 	return 1;
 }
 
+stock Dialog_MessageEx(playerid, response[], caption[], info[], button1[], button2[])
+{
+	Dialog_Open(playerid, response, DIALOG_STYLE_MSGBOX, caption, info, button1, button2);
+	return 1;
+}
+
 public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	new input[128];

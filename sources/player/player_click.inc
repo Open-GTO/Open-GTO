@@ -1,0 +1,63 @@
+/*
+
+	Title: player click system
+	Created: 14.01.2014
+	Author: ziggi
+
+*/
+
+forward pl_click_SendCash(playerid, clickedid, listitem, inputtext[]);
+public pl_click_SendCash(playerid, clickedid, listitem, inputtext[])
+{
+	new giveplayer[MAX_PLAYER_NAME + 1],
+		sendername[MAX_PLAYER_NAME + 1],
+		string[MAX_STRING],
+		money = strval(inputtext);
+
+	GetPlayerName(clickedid, giveplayer, sizeof(giveplayer));
+	GetPlayerName(playerid, sendername, sizeof(sendername));
+
+	if (oGetPlayerMoney(playerid) < money || !IsNumeric(inputtext) || money < 0) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[15][93]);
+		return 0;
+	}
+
+	oGivePlayerMoney(playerid, -money, 1);
+	oGivePlayerMoney(clickedid, money, 1);
+
+	format(string, sizeof(string), lang_texts[15][79], giveplayer, clickedid, money);
+	SendClientMessage(playerid, COLOUR_MONEY_GOOD, string);
+
+	format(string, sizeof(string), lang_texts[15][80], money, sendername, playerid);
+	SendClientMessage(clickedid, COLOUR_MONEY_GOOD, string);
+	return 1;
+}
+
+forward pl_click_SendMessage(playerid, clickedid, listitem, inputtext[]);
+public pl_click_SendMessage(playerid, clickedid, listitem, inputtext[])
+{
+	return pl_pm_Send(playerid, clickedid, inputtext);
+}
+
+forward pl_click_SendReport(playerid, clickedid, listitem, inputtext[]);
+public pl_click_SendReport(playerid, clickedid, listitem, inputtext[])
+{
+	new sendername[MAX_PLAYER_NAME + 1],
+		abusename[MAX_PLAYER_NAME + 1],
+		string[MAX_STRING];
+
+	GetPlayerName(clickedid, abusename, sizeof(abusename));
+
+	format(string, sizeof(string), lang_texts[15][91], abusename, clickedid, inputtext);
+	SendClientMessage(playerid, COLOUR_RED, string);
+
+	GetPlayerName(playerid, sendername, sizeof(sendername));
+	format(string, sizeof(string), lang_texts[15][92], sendername, playerid, abusename, clickedid, inputtext);
+	
+	foreach (new id : Player) {
+		if (IsPlayerMod(id)) {
+			SendClientMessage(id, COLOUR_RED, string);
+		}
+	}
+	return 1;
+}

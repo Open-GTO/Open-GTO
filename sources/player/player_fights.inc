@@ -13,27 +13,7 @@
 #pragma library player_fights
 
 
-stock pl_fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
-{
-	#pragma unused dialogid, inputtext
-	if (!response) {
-		show_User_Menu(playerid);
-		return 0;
-	}
-
-	new styleid = listitem + 4;
-	pl_fights_SetPlayerStyleUsed(playerid, styleid);
-	SetPlayerFightingStyle(playerid, styleid);
-
-	new string[MAX_STRING];
-	fights_GetNameByID(styleid, string);
-	
-	format(string, sizeof(string), lang_texts[19][11], string);
-	show_User_Menu_Dialog(playerid, lang_texts[19][2], string);
-	return 1;
-}
-
-stock pl_fights_ShowStyleMenu(playerid)
+DialogCreate:PlayerFights(playerid)
 {
 	new string[MAX_STRING];
 	if (pl_fights_GetPlayerStyle(playerid) >= FIGHT_STYLE_NORMAL) {
@@ -52,12 +32,26 @@ stock pl_fights_ShowStyleMenu(playerid)
 		strcat(string, lang_texts[19][18]);
 	}
 
-	return ShowPlayerDialog(
-		playerid, pl_fights_DialogID, DIALOG_STYLE_LIST,
-		lang_texts[19][12],
-		string,
-		lang_texts[19][13], lang_texts[19][14]
-	);
+	Dialog_Open(playerid, Dialog:PlayerFights, DIALOG_STYLE_LIST, lang_texts[19][12], string, lang_texts[19][13], lang_texts[19][14]);
+}
+
+DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		show_User_Menu(playerid);
+		return 0;
+	}
+
+	new styleid = listitem + 4;
+	pl_fights_SetPlayerStyleUsed(playerid, styleid);
+	SetPlayerFightingStyle(playerid, styleid);
+
+	new string[MAX_STRING];
+	fights_GetNameByID(styleid, string);
+	
+	format(string, sizeof(string), lang_texts[19][11], string);
+	show_User_Menu_Dialog(playerid, lang_texts[19][2], string);
+	return 1;
 }
 
 stock pl_fights_GetPlayerStyle(playerid)

@@ -33,8 +33,7 @@ new Food[][FoodInfo] = {
 
 stock fastfood_OnGameModeInit()
 {
-	for (new ff_id = 0; ff_id < sizeof(FastFoods); ff_id++)
-	{
+	for (new ff_id = 0; ff_id < sizeof(FastFoods); ff_id++) {
 	    CreatePickup(2703 , 23, FastFoods[ff_id][Coord_X], FastFoods[ff_id][Coord_Y], FastFoods[ff_id][Coord_Z]);
 		CreatePickupText("Ôàñòôóä", FastFoods[ff_id][Coord_X], FastFoods[ff_id][Coord_Y], FastFoods[ff_id][Coord_Z]);
 	}
@@ -45,58 +44,51 @@ stock fastfood_OnGameModeInit()
 stock fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	#pragma unused oldkeys, newkeys
-	fastfood_ShowDialog(playerid);
+	Dialog_Show(playerid, Dialog:ServiceFastfood);
 	return 1;
 }
 
-stock fastfood_ShowDialog(playerid)
+DialogCreate:ServiceFastfood(playerid)
 {
 	new string[MAX_STRING * sizeof(Food)];
-	for (new i = 0; i < sizeof(Food); i++)
-	{
+
+	for (new i = 0; i < sizeof(Food); i++) {
 		format(string, sizeof(string), lang_texts[17][2], string, Food[i][food_name], Food[i][food_cost], Food[i][food_hp]);
 	}
-	return ShowPlayerDialog(playerid, fastfood_DialogID, DIALOG_STYLE_LIST,
-		lang_texts[17][3],
-		string,
-		lang_texts[17][4], lang_texts[17][5]
-	);
+
+	Dialog_Open(playerid, Dialog:ServiceFastfood, DIALOG_STYLE_LIST, lang_texts[17][3], string, lang_texts[17][4], lang_texts[17][5]);
 }
 
-stock fastfood_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
+DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 {
-	#pragma unused inputtext
-	if (dialogid == fastfood_DialogID)
-	{
-		if (!response) return 1;
-		if (oGetPlayerMoney(playerid) < Food[listitem][food_cost])
-		{
-			return Dialog_Message(playerid, lang_texts[17][6], lang_texts[17][7], lang_texts[17][8]);
-		}
-		oGivePlayerMoney(playerid,-Food[listitem][food_cost], 1);
-		ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.1, 0, 1, 1, 1, 1);
-		if (Food[listitem][food_hp] + oGetPlayerHealth(playerid) > GetMaxHealth(playerid))
-		{
-			oSetPlayerHealth(playerid, GetMaxHealth(playerid));
-		}
-		else
-		{
-			oSetPlayerHealth(playerid, oGetPlayerHealth(playerid) + Food[listitem][food_hp]);
-		}
-		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[17][9], Food[listitem][food_name], Food[listitem][food_cost], Food[listitem][food_hp]);
-		Dialog_Message(playerid, lang_texts[17][6], string, lang_texts[17][8]);
+	if (!response) {
 		return 1;
 	}
+
+	if (oGetPlayerMoney(playerid) < Food[listitem][food_cost]) {
+		Dialog_Message(playerid, lang_texts[17][6], lang_texts[17][7], lang_texts[17][8]);
+		return 1;
+	}
+
+	oGivePlayerMoney(playerid,-Food[listitem][food_cost], 1);
+	ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.1, 0, 1, 1, 1, 1);
+
+	if (Food[listitem][food_hp] + oGetPlayerHealth(playerid) > GetMaxHealth(playerid)) {
+		oSetPlayerHealth(playerid, GetMaxHealth(playerid));
+	} else {
+		oSetPlayerHealth(playerid, oGetPlayerHealth(playerid) + Food[listitem][food_hp]);
+	}
+
+	new string[MAX_STRING];
+	format(string, sizeof(string), lang_texts[17][9], Food[listitem][food_name], Food[listitem][food_cost], Food[listitem][food_hp]);
+	Dialog_Message(playerid, lang_texts[17][6], string, lang_texts[17][8]);
 	return 1;
 }
 
 stock IsPlayerAtFastFood(playerid)
 {
-	for (new ff_id = 0; ff_id < sizeof(FastFoods); ff_id++)
-	{
-		if (IsPlayerInRangeOfPoint(playerid, 2, FastFoods[ff_id][Coord_X], FastFoods[ff_id][Coord_Y], FastFoods[ff_id][Coord_Z]))
-		{
+	for (new ff_id = 0; ff_id < sizeof(FastFoods); ff_id++) {
+		if (IsPlayerInRangeOfPoint(playerid, 2, FastFoods[ff_id][Coord_X], FastFoods[ff_id][Coord_Y], FastFoods[ff_id][Coord_Z])) {
 			return 1;
 		}
 	}

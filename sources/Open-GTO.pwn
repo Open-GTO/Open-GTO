@@ -49,6 +49,7 @@ Developers:
 #include "player\player_spawn"
 #include "player\player_pm"
 #include "player\player_mute"
+#include "player\player_click"
 #include "player\player_quest"
 #include "quest"
 #include "bank"
@@ -77,6 +78,7 @@ Developers:
 #include "admin\admin_pm"
 #include "admin\admin_hide"
 #include "admin\admin_maptp"
+#include "admin\admin_click"
 #include "admin"
 #include "missions"
 #include "missions\trucker"
@@ -265,21 +267,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
 	switch (dialogid)
 	{
-		case house_DialogID, houses_DialogID, houses_upgrades_DialogID, houses_setrent_DialogID, house_sell_accept_DialogID:
-		{
-			housing_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
-		case bis_DialogID, bis_Msg_DialogID, bis_sell_accept_DialogID:
-		{
-			business_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
-		case pl_fights_DialogID: {
-			pl_fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
-		case fightteacher_DialogID:
-		{
-			fights_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
 		case user_menu_DialogID, user_menu_Return_DialogID,
 			vehicle_menu_DialogID, spawnselect_menu_DialogID, vehicle_color_menu_DialogID, vehicle_radio_menu_DialogID,
 			settings_menu_DialogID, changenick_menu_DialogID, changepass_menu_DialogID,
@@ -289,30 +276,6 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			pveh_select_DialogID, pveh_do_DialogID:
 		{
 			usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
-		case wshop_Select_DialogID, wshop_Buy_DialogID:
-		{
-			wshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
-		case click_DialogID, click_Resp_DialogID, click_Info_DialogID:
-		{
-			click_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
-		case bar_DialogID:
-		{
-			bar_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
-		case fastfood_DialogID:
-		{
-			fastfood_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
-		case SkinShop_Buy_DialogID:
-		{
-			sshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
-		case trucker_DialogID, trucker_cancel_DialogID:
-		{
-			trucker_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 		}
 	}
 	return 1;

@@ -151,7 +151,7 @@ stock trucker_OnPlayerStateChange(playerid, newstate, oldstate)
 		return 1;
 	}
 	if (IsVehicleIsRunner( GetPlayerVehicleID(playerid) ) && !IsPlayerInMission(playerid, mission_trucker)) {
-		show_Trucker_Menu(playerid);
+		Dialog_Show(playerid, Dialog:TruckerMenu);
 	}
 	return 1;
 }
@@ -202,7 +202,7 @@ stock trucker_Start(playerid)
 stock trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	#pragma unused oldkeys, newkeys
-	show_Trucker_Cancel_Menu(playerid);
+	Dialog_Show(playerid, Dialog:TruckerCancel);
 	return 1;
 }
 
@@ -239,31 +239,50 @@ stock trucker_OnPlayerEnterCheckpoint(playerid)
 	return 1;
 }
 
-stock trucker_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
+DialogCreate:TruckerMenu(playerid)
 {
-	#pragma unused inputtext, listitem
-	if (dialogid == trucker_DialogID) {
-		if (!response) {
-			RemovePlayerFromVehicle(playerid);
-			return 0;
-		}
-		if (GetPVarInt(playerid, "trucker_RunnerMissionTime") > 0) {
-			RemovePlayerFromVehicle(playerid);
-			
-			new string[MAX_STRING];
-			format(string, sizeof(string), lang_texts[19][42], GetPVarInt(playerid, "trucker_RunnerMissionTime"));
-			SendClientMessage(playerid, COLOUR_RED, string);
-		} else {
-			trucker_Start(playerid);
-		}
-	} else if (dialogid == trucker_cancel_DialogID) {
-		if (!response) {
-			return 1;
-		}
-		if (IsPlayerInMission(playerid, mission_trucker)) {
-			trucker_EndMission(playerid);
-			KillTimer( GetPVarInt(playerid, "trucker_Timer") );
-		}
+	new string[MAX_STRING * 3];
+	
+	strcat(string, lang_texts[19][51], sizeof(string));
+	strcat(string, lang_texts[19][52], sizeof(string));
+	strcat(string, lang_texts[19][53], sizeof(string));
+
+	Dialog_Open(playerid, Dialog:TruckerMenu, DIALOG_STYLE_MSGBOX, lang_texts[19][45], string, lang_texts[19][49], lang_texts[19][50]);
+}
+
+DialogResponse:TruckerMenu(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		RemovePlayerFromVehicle(playerid);
+		return 0;
+	}
+
+	if (GetPVarInt(playerid, "trucker_RunnerMissionTime") > 0) {
+		RemovePlayerFromVehicle(playerid);
+		
+		new string[MAX_STRING];
+		format(string, sizeof(string), lang_texts[19][42], GetPVarInt(playerid, "trucker_RunnerMissionTime"));
+		SendClientMessage(playerid, COLOUR_RED, string);
+	} else {
+		trucker_Start(playerid);
+	}
+	return 1;
+}
+
+DialogCreate:TruckerCancel(playerid)
+{
+	Dialog_Open(playerid, Dialog:TruckerCancel, DIALOG_STYLE_MSGBOX, lang_texts[19][45], lang_texts[19][46], lang_texts[19][47], lang_texts[19][48]);
+}
+
+DialogResponse:TruckerCancel(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		return 1;
+	}
+
+	if (IsPlayerInMission(playerid, mission_trucker)) {
+		trucker_EndMission(playerid);
+		KillTimer( GetPVarInt(playerid, "trucker_Timer") );
 	}
 	return 1;
 }
@@ -307,27 +326,6 @@ stock trucker_OnVehicleDeath(vehicleid, killerid)
 		SendClientMessage(killerid, COLOUR_RED, lang_texts[19][44]);
 	}
 	return 1;
-}
-stock show_Trucker_Cancel_Menu(playerid)
-{
-	return ShowPlayerDialog(playerid, trucker_cancel_DialogID, DIALOG_STYLE_MSGBOX,
-		lang_texts[19][45],
-		lang_texts[19][46],
-		lang_texts[19][47], lang_texts[19][48]
-	);
-}
-
-stock show_Trucker_Menu(playerid)
-{
-	new string[512];
-	strcat(string, lang_texts[19][51], sizeof(string));
-	strcat(string, lang_texts[19][52], sizeof(string));
-	strcat(string, lang_texts[19][53], sizeof(string));
-	return ShowPlayerDialog(playerid, trucker_DialogID, DIALOG_STYLE_MSGBOX,
-		lang_texts[19][45],
-		string,
-		lang_texts[19][49], lang_texts[19][50]
-	);
 }
 
 forward trucker_Trailer_Check(playerid, vehicleid);

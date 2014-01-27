@@ -119,22 +119,25 @@ stock sshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	return 1;
 }
 
-stock sshop_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
+DialogCreate:ServiceSkin(playerid)
 {
-	#pragma unused inputtext, listitem
-	if (dialogid == SkinShop_Buy_DialogID) {
-		SkinShop_Exit(playerid);
+	Dialog_Open(playerid, Dialog:ServiceSkin, DIALOG_STYLE_MSGBOX, lang_texts[17][26], lang_texts[17][27], lang_texts[17][28], lang_texts[17][29]);
+}
 
-		if (!response) {
-			SkinShop_DeletePVars(playerid);
-			return 0;
-		}
-		
-		player_SetSkin(playerid, GetPVarInt(playerid, "SkinShop_CurrentSkin"));
+DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])
+{
+	SkinShop_Exit(playerid);
+
+	if (!response) {
 		SkinShop_DeletePVars(playerid);
-		oGivePlayerMoney(playerid, -SKINS_COST);
-		SendClientMessage(playerid, 0, lang_texts[17][25]);
+		return 0;
 	}
+	
+	player_SetSkin(playerid, GetPVarInt(playerid, "SkinShop_CurrentSkin"));
+	oGivePlayerMoney(playerid, -SKINS_COST);
+	SkinShop_DeletePVars(playerid);
+
+	SendClientMessage(playerid, 0, lang_texts[17][25]);
 	return 1;
 }
 
@@ -154,7 +157,7 @@ stock sshop_OnPlayerClickTextDraw(playerid, Text:clickedid)
 			SendClientMessage(playerid, 0, string);
 			return 1;
 		}
-		SkinShop_ShowBuyDialog(playerid);
+		Dialog_Show(playerid, Dialog:ServiceSkin);
 		return 1;
 	} else if (clickedid == clickText[sshop_list]) {
 		return 1;
@@ -242,15 +245,6 @@ stock IsPlayerAtSkinShop(playerid)
 		}
 	}
 	return 0;
-}
-
-stock SkinShop_ShowBuyDialog(playerid)
-{
-	return ShowPlayerDialog(playerid, SkinShop_Buy_DialogID, DIALOG_STYLE_MSGBOX,
-		lang_texts[17][26],
-		lang_texts[17][27],
-		lang_texts[17][28], lang_texts[17][29]
-	);
 }
 
 stock sshop_ShowTextDraws(playerid)

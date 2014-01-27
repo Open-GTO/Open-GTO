@@ -539,7 +539,7 @@ stock usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtex
 				}
 				case 2: // Стиль борьбы
 				{
-					pl_fights_ShowStyleMenu(playerid);
+					Dialog_Show(playerid, Dialog:PlayerFights);
 					return 1;
 				}
 				case 3: // Анимации
