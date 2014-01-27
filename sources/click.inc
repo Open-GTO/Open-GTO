@@ -56,7 +56,16 @@ static click_dialogArray[][click_dialogArray_Info] = {
 stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
 {
 	if (playerid == clickedplayerid) {
-		return show_menu(playerid);
+		new player_state = GetPlayerState(playerid);
+		switch (player_state) {
+			case PLAYER_STATE_ONFOOT: {
+				Dialog_Show(playerid, Dialog:PlayerMenu);
+			}
+			case PLAYER_STATE_DRIVER: {
+				Dialog_Show(playerid, Dialog:VehicleMenu);
+			}
+		}
+		return 1;
 	}
 	
 	click_SetPlayerClickedID(playerid, clickedplayerid);

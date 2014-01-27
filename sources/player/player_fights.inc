@@ -32,13 +32,13 @@ DialogCreate:PlayerFights(playerid)
 		strcat(string, lang_texts[19][18]);
 	}
 
-	Dialog_Open(playerid, Dialog:PlayerFights, DIALOG_STYLE_LIST, lang_texts[19][12], string, lang_texts[19][13], lang_texts[19][14]);
+	Dialog_Open(playerid, Dialog:PlayerFights, DIALOG_STYLE_LIST, lang_texts[19][12], string, lang_texts[19][3], lang_texts[19][14]);
 }
 
 DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
 {
 	if (!response) {
-		show_User_Menu(playerid);
+		Dialog_Show(playerid, Dialog:PlayerMenu);
 		return 0;
 	}
 
@@ -50,7 +50,7 @@ DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
 	fights_GetNameByID(styleid, string);
 	
 	format(string, sizeof(string), lang_texts[19][11], string);
-	show_User_Menu_Dialog(playerid, lang_texts[19][2], string);
+	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, lang_texts[19][2], string, lang_texts[19][14], lang_texts[19][13]);
 	return 1;
 }
 

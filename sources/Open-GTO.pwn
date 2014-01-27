@@ -35,6 +35,8 @@ Developers:
 #include "arrays"
 #include "pickup"
 #include "vehicles"
+#include "vehicle\quidemsys"
+#include "vehicle\vehicle_menu"
 #include "player\level"
 #include "player\vip"
 #include "player\weapon"
@@ -50,6 +52,10 @@ Developers:
 #include "player\player_pm"
 #include "player\player_mute"
 #include "player\player_click"
+#include "player\player_menu"
+#include "player\player_menu_vehicle"
+#include "player\player_menu_teleport"
+#include "player\player_menu_settings"
 #include "player\player_quest"
 #include "quest"
 #include "bank"
@@ -59,6 +65,8 @@ Developers:
 #include "world"
 #include "commands"
 #include "gang"
+#include "gang\gang_menu"
+#include "gang\gang_level"
 #include "housing"
 #include "business"
 #include "streamers\mapicon_stream"
@@ -93,8 +101,6 @@ Developers:
 #include "interior"
 #include "weather"
 #include "swagup"
-#include "quidemsys"
-#include "usermenu"
 #include "anims"
 #include "protections\money"
 #include "protections\idle"
@@ -260,24 +266,6 @@ public OnPlayerDisconnect(playerid, reason)
 	qudemsys_OnPlayerDisconnect(playerid, reason);
 	pveh_OnPlayerDisconnect(playerid, reason);
 	player_SetSpawned(playerid, 0);
-	return 1;
-}
-
-public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
-{
-	switch (dialogid)
-	{
-		case user_menu_DialogID, user_menu_Return_DialogID,
-			vehicle_menu_DialogID, spawnselect_menu_DialogID, vehicle_color_menu_DialogID, vehicle_radio_menu_DialogID,
-			settings_menu_DialogID, changenick_menu_DialogID, changepass_menu_DialogID,
-			teleport_menu_DialogID, 
-			gang_menu_DialogID, gang_create_menu_DialogID, gang_invite_menu_DialogID, gang_color_menu_DialogID,
-			gang_motd_menu_DialogID, gang_kick_menu_DialogID, gang_exit_accept_menu_DialogID,
-			pveh_select_DialogID, pveh_do_DialogID:
-		{
-			usermenu_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
-		}
-	}
 	return 1;
 }
 
@@ -506,7 +494,16 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		if ( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtBar(playerid) ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		if ( IsPlayerAtSkinShop(playerid) ) return sshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		show_menu(playerid);
+		
+		new player_state = GetPlayerState(playerid);
+		switch (player_state) {
+			case PLAYER_STATE_ONFOOT: {
+				Dialog_Show(playerid, Dialog:PlayerMenu);
+			}
+			case PLAYER_STATE_DRIVER: {
+				Dialog_Show(playerid, Dialog:VehicleMenu);
+			}
+		}
 		return 1;
 	}
 	if ( PRESSED( KEY_SUBMISSION ) )

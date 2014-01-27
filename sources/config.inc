@@ -226,17 +226,6 @@ stock Text3D:CreatePickupText(text[], Float:pos_x, Float:pos_y, Float:pos_z)
 	return Create3DTextLabel(string, 0xFFFFFFFF, pos_x, pos_y, pos_z, 20.0, 0, 1);
 }
 
-// диалоги
-enum {
-	user_menu_DialogID, user_menu_Return_DialogID,
-		vehicle_menu_DialogID, spawnselect_menu_DialogID, settings_menu_DialogID, vehicle_color_menu_DialogID, vehicle_radio_menu_DialogID,
-		changenick_menu_DialogID, changepass_menu_DialogID,
-		gang_menu_DialogID, gang_create_menu_DialogID, gang_invite_menu_DialogID, gang_color_menu_DialogID, gang_motd_menu_DialogID,
-		gang_kick_menu_DialogID, gang_exit_accept_menu_DialogID,
-	teleport_menu_DialogID,
-	pveh_select_DialogID, pveh_do_DialogID,
-}
-
 enum clickText_Info {
 	Text:sshop_left,
 	Text:sshop_right,
@@ -248,7 +237,6 @@ enum clickText_Info {
 new Text:clickText[clickText_Info];
 
 // прочее
-
 #define SPECIAL_ACTION_PISS	68
 
 // типы спавнов

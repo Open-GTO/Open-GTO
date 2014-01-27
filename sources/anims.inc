@@ -1907,13 +1907,13 @@ DialogCreate:AnimLib(playerid)
 		strcat(string, "\n", sizeof(string));
 	}
 	
-	Dialog_Open(playerid, Dialog:AnimLib, DIALOG_STYLE_LIST, "Меню анимаций", string, "ОК", "Отмена");
+	Dialog_Open(playerid, Dialog:AnimLib, DIALOG_STYLE_LIST, "Меню анимаций", string, "ОК", "Назад");
 }
 
 DialogResponse:AnimLib(playerid, response, listitem, inputtext[])
 {
 	if (!response) {
-		show_User_Menu(playerid);
+		Dialog_Show(playerid, Dialog:PlayerMenu);
 		return 0;
 	}
 	

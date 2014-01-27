@@ -2391,7 +2391,7 @@ COMMAND:vmenu(playerid, params[])
 		return 0;
 	}
 	
-	show_Vehicle_Menu(playerid);
+	Dialog_Show(playerid, Dialog:VehicleMenu);
 	return 1;
 }
 

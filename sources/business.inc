@@ -234,6 +234,30 @@ DialogResponse:BusinessMessage(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
+DialogCreate:BusinessPlayerOwned(playerid)
+{
+	new string[MAX_STRING * MAX_PLAYER_BUSINESS],
+		count = 0,
+		playername[MAX_PLAYER_NAME+1];
+	
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	for (new id = 0; id < sizeof(Businesses); id++) {
+		if (!strcmp(Businesses[id][Business_Owner], playername, true)) {
+			count++;
+			format(string, sizeof(string), lang_texts[3][23], string, Businesses[id][Business_Name], Businesses[id][Business_Vault]);
+		}
+	}
+
+	if (count < 1) {
+		Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Мои бизнесы", "У вас нет бизнесов", "Назад", "Выход");
+		return 1;
+	}
+
+	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_LIST, "Мои бизнесы", string, "Назад", "Выход");
+	return 1;
+}
+
 stock business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	#pragma unused oldkeys, newkeys
