@@ -3,11 +3,11 @@
 
 */
 
-#if defined _player_level_included
+#if defined _pl_level_included
 	#endinput
 #endif
 
-#define _player_level_included
+#define _pl_level_included
 #pragma library player_level
 
 
@@ -41,17 +41,17 @@ stock pl_level_OnPlayerDeath(playerid, killerid, reason)
 	level_HideTextDraws(playerid);
 }
 
-stock player_level_LoadConfig(file_config)
+stock pl_level_LoadConfig(file_config)
 {
 	ini_getString(file_config, "Player_Level_DB", LevelDB);
 }
 
-stock player_level_SaveConfig(file_config)
+stock pl_level_SaveConfig(file_config)
 {
 	ini_setString(file_config, "Player_Level_DB", LevelDB);
 }
 
-stock player_level_LoadLevelConfig()
+stock pl_level_LoadLevelConfig()
 {
 	if (!ini_fileExist(LevelDB)) {
 		return 0;
@@ -69,7 +69,7 @@ stock player_level_LoadLevelConfig()
 	return 1;
 }
 
-stock player_level_SaveLevelConfig()
+stock pl_level_SaveLevelConfig()
 {
 	new file_base_level;
 

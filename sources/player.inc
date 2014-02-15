@@ -188,7 +188,6 @@ stock player_OnPlayerDisconnect(playerid, reason)
 
 stock player_OnPlayerConnect(playerid)
 {
-	player_SetDefaultData(playerid);
 	pl_spawn_UpdateCamera(playerid);
 
     new plrIP[MAX_IP], string[MAX_STRING];
@@ -298,6 +297,9 @@ stock player_OnLogin(playerid)
 	// spawn player
 	TogglePlayerSpectating(playerid, 0);
 
+	// reset data
+	player_SetQuestID(playerid, INVALID_QUEST_ID);
+
 	// send message
 	new string[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
@@ -339,7 +341,6 @@ stock player_SetDefaultData(playerid)
 	player_SetJailTime(playerid, -1);
 	player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 	player_SetSkin(playerid, PLAYER_DEFAULT_SKIN);
-	player_SetQuestID(playerid, INVALID_QUEST_ID);
 
 	SetPlayerLevel(playerid, FIRST_LEVEL);
 	SetPlayerXP(playerid, level_xp_list[FIRST_LEVEL]);

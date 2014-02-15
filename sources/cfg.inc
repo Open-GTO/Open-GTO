@@ -33,7 +33,7 @@ stock cfg_LoadConfigs()
 	admin_LoadConfig(file_config);
 
 	// player/
-	player_level_LoadConfig(file_config);
+	pl_level_LoadConfig(file_config);
 	wdrop_LoadConfig(file_config);
 	wskill_LoadConfig(file_config);
 
@@ -85,7 +85,7 @@ stock cfg_SaveConfigs()
 	admin_SaveConfig(file_config);
 
 	// player/
-	player_level_SaveConfig(file_config);
+	pl_level_SaveConfig(file_config);
 	wdrop_SaveConfig(file_config);
 	wskill_SaveConfig(file_config);
 
