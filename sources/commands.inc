@@ -72,7 +72,7 @@ COMMAND:status(playerid, params[])
 	}
 	SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 
-	format(string, sizeof(string), lang_texts[15][37], GetLevelName(GetPlayerLevel(playerid)), player_GetGangName(playerid));
+	format(string, sizeof(string), lang_texts[15][37], player_GetGangName(playerid));
 	SendClientMessage(playerid, COLOUR_LIGHTBLUE, string);
 
 	format(string, sizeof(string), lang_texts[15][38], GetPlayerLevel(playerid), GetPlayerXP(playerid), oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));

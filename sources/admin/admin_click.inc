@@ -338,7 +338,7 @@ public adm_click_SetLevel(playerid, clickedid, listitem, inputtext[])
 	}
 
 	new oldlvl = GetPlayerLevel(clickedid);
-	GivePlayerXP(clickedid, LevelList[newlvl][level_xp] - GetPlayerXP(clickedid));
+	GivePlayerXP(clickedid, level_xp_list[newlvl] - GetPlayerXP(clickedid));
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][31], oGetPlayerName(playerid), newlvl);

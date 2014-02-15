@@ -61,7 +61,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			format(string, sizeof(string),
 				"Уровень: %d, опыт до уровня: %d\n\
 				\n\
-				Банда: %s, звание: %s\n\
+				Банда: %s\n\
 				\n\
 				Деньги: $%d, деньги в банке: $%d. Всего денег: $%d\n\
 				\n\
@@ -74,7 +74,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				GetPlayerLevel(playerid),
 				GetXPToLevel(playerid, GetPlayerLevel(playerid) + 1),
 				
-				player_GetGangName(playerid), GetLevelName(GetPlayerLevel(playerid)),
+				player_GetGangName(playerid),
 				
 				oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid),
 				

@@ -261,7 +261,7 @@ public OnPlayerDisconnect(playerid, reason)
 	trucker_OnPlayerDisconnect(playerid, reason);
 	pt_chat_OnPlayerDisconnect(playerid, reason);
 	gh_OnPlayerDisconnect(playerid, reason);
-	level_OnPlayerDisconnect(playerid, reason);
+	pl_level_OnPlayerDisconnect(playerid, reason);
 	pl_weapon_OnPlayerDisconnect(playerid, reason);
 	qudemsys_OnPlayerDisconnect(playerid, reason);
 	pveh_OnPlayerDisconnect(playerid, reason);
@@ -300,17 +300,21 @@ public OnPlayerEnterRaceCheckpoint(playerid)
 
 public OnPlayerDeath(playerid, killerid, reason)
 {
-	if (!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) return 1;
+	if (!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) {
+		return 1;
+	}
+
 	player_SetSpawned(playerid, 0);
-	if (killerid == INVALID_PLAYER_ID)
+
+	if (killerid == INVALID_PLAYER_ID) {
 		GameMSG("player: %s(%d): has died > Reason: (%d)", oGetPlayerName(playerid), playerid, reason);
-	else
+	} else {
 		GameMSG("player: %s(%d): has killed player %s(%d)> Reason: (%d)", oGetPlayerName(killerid), killerid, oGetPlayerName(playerid), playerid, reason);
+	}
 
 	SendDeathMessage(killerid, playerid, reason);
 	
-	if (IsPlayerInAnyDM(playerid))
-	{
+	if (IsPlayerInAnyDM(playerid)) {
 		deathmatch_OnPlayerDeath(playerid, killerid);
 		deathmatch_OnPlayerKill(killerid, playerid, reason);
 		return 1;
@@ -321,7 +325,8 @@ public OnPlayerDeath(playerid, killerid, reason)
 	trucker_OnPlayerDeath(playerid, killerid, reason);
 	gang_OnPlayerDeath(playerid, killerid, reason);
 	pl_weapon_OnPlayerDeath(playerid, killerid, reason);
-	level_HideTextDraws(playerid);
+	pl_level_OnPlayerDeath(playerid, killerid, reason);
+
 	PlayCrimeReportForPlayer(killerid, killerid, random(18)+3);
 	PlayCrimeReportForPlayer(playerid, killerid, random(18)+3);
 	return 1;
@@ -367,7 +372,7 @@ public OnPlayerRequestClass(playerid, classid)
 	player_SetSpawned(playerid, 0);
 	player_OnPlayerRequestClass(playerid, classid);
 	pl_weapon_OnPlayerRequestClass(playerid, classid);
-	level_HideTextDraws(playerid);
+	pl_level_OnPlayerRequestClass(playerid, classid);
 	return 1;
 }
 

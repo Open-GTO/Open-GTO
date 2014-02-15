@@ -1223,7 +1223,7 @@ COMMAND:setlvl(playerid, params[])
 	}
 
 	new oldlvl = GetPlayerLevel(receiverid);
-	GivePlayerXP(receiverid, LevelList[newlvl][level_xp] - GetPlayerXP(receiverid));
+	GivePlayerXP(receiverid, level_xp_list[newlvl] - GetPlayerXP(receiverid));
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][31], oGetPlayerName(playerid), newlvl);

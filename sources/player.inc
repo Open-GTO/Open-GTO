@@ -340,7 +340,7 @@ stock player_SetDefaultData(playerid)
 	player_SetSkin(playerid, PLAYER_DEFAULT_SKIN);
 
 	SetPlayerLevel(playerid, FIRST_LEVEL);
-	SetPlayerXP(playerid, LevelList[FIRST_LEVEL][level_xp]);
+	SetPlayerXP(playerid, level_xp_list[FIRST_LEVEL]);
 
 	pl_fights_SetPlayerStyle(playerid, 4);
 	pl_fights_SetPlayerStyleUsed(playerid, 4);
