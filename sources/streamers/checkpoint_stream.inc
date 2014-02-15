@@ -31,7 +31,7 @@ static
 stock checkpoint_Sync()
 {
 	foreach (new playerid : Player) {
-		if (!player_IsAtQuest(playerid)) {
+		if (player_IsAtQuest(playerid)) {
 			continue;
 		}
 
@@ -46,7 +46,7 @@ stock checkpoint_Sync()
 
 stock checkpoint_Add(Float:cpx, Float:cpy, Float:cpz, Float:cpdist, Float:cpsize)
 {
-	if (checkpoint_count == MAX_CHECKPOINTS) {
+	if (checkpoint_count >= MAX_CHECKPOINTS) {
 		return 0;
 	}
 
@@ -70,7 +70,7 @@ stock checkpoint_Add(Float:cpx, Float:cpy, Float:cpz, Float:cpdist, Float:cpsize
 
 stock checkpoint_Remove(cpid)
 {
-	if (checkpoint_array[cpid][IsActive] == false) {
+	if (!checkpoint_array[cpid][IsActive]) {
 		return 0;
 	}
 
@@ -86,8 +86,8 @@ stock checkpoint_Remove(cpid)
 
 stock checkpoint_FindByCoord(Float:cpx, Float:cpy, Float:cpz)
 {
-	for (new cpid = 1; cpid <= checkpoint_count; cpid++) {
-		if (checkpoint_array[cpid][IsActive] && cpx == checkpoint_array[cpid][CP_X] && cpy == checkpoint_array[cpid][CP_X] && cpz == checkpoint_array[cpid][CP_Z]) {
+	for (new cpid = 1; cpid <= MAX_CHECKPOINTS; cpid++) {
+		if (checkpoint_array[cpid][IsActive] && cpx == checkpoint_array[cpid][CP_X] && cpy == checkpoint_array[cpid][CP_Y] && cpz == checkpoint_array[cpid][CP_Z]) {
 			return cpid;
 		}
 	}
@@ -122,7 +122,7 @@ stock checkpoint_GetPlayerClosest(playerid)
 		result_id = 0;
 
 	for (new cpid = 1; cpid < MAX_CHECKPOINTS; cpid++) {
-		if (checkpoint_array[cpid][IsActive]) {
+		if (!checkpoint_array[cpid][IsActive]) {
 			continue;
 		}
 		
@@ -164,7 +164,7 @@ stock oDisablePlayerCheckpoint(playerid)
 
 stock oIsPlayerInCheckpoint(playerid, Float:cpx, Float:cpy, Float:cpz, Float:dist)
 {
-	if (cpx != player_checkpoint[playerid][Coord_X] && cpy != player_checkpoint[playerid][Coord_X] && cpz != player_checkpoint[playerid][Coord_Z]) {
+	if (cpx != player_checkpoint[playerid][Coord_X] && cpy != player_checkpoint[playerid][Coord_Y] && cpz != player_checkpoint[playerid][Coord_Z]) {
 		return 0;
 	}
 
