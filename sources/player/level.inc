@@ -90,7 +90,7 @@ stock player_level_SaveLevelConfig()
 	return 1;
 }
 
-stock level_OnPlayerConnect(playerid)
+stock pl_level_OnPlayerConnect(playerid)
 {
 	// Level
 	level_TextDraw_Level[playerid] = TextDrawCreate(5.000000, 412.000000, "Level: 1");

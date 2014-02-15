@@ -392,7 +392,7 @@ COMMAND:race(playerid, params[])
 	new cmd[20], idx;
 	cmd = strcharsplit(params, idx, ' ');
 
-	if (!strcmp(cmd, "help", true))
+	if (!strcmp(cmd, "help", true) || strlen(cmd) == 0)
 	{
 		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][8]);
 		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][9]);
@@ -409,13 +409,12 @@ COMMAND:race(playerid, params[])
 
 	if (!strcmp(cmd, "join", true))
 	{
-		new raceid = strval(strcharsplit(params, idx, ' '));
-
-		if (player_GetQuestID(playerid) != INVALID_QUEST_ID) {
+		if (player_IsAtQuest(playerid)) {
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][18]);
 			return 1;
 		}
 
+		new raceid = strval(strcharsplit(params, idx, ' '));
 		if (raceid == 0 || raceid >= MAX_RACES) {
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][19]);
 			return 1;
@@ -442,7 +441,7 @@ COMMAND:race(playerid, params[])
 
 	if (!strcmp(cmd, "leave", true) || !strcmp(cmd, "quit", true))
 	{
-		if (player_GetQuestID(playerid) == INVALID_QUEST_ID) {
+		if (!player_IsAtQuest(playerid)) {
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][23]);
 			return 1;
 		}
@@ -783,15 +782,16 @@ stock SendPlayerCurrentRaces(playerid)
 
 stock GetPlayerRace(playerid)
 {
-	if (!IsPlayerConnected(playerid)) return 0;
-	for (new raceid = 1; raceid <= RacesCount; raceid++)
-	{
-		if (RaceStats[raceid][race_state] == RACE_STATE_DISABLED)
-		{
+	if (!IsPlayerConnected(playerid)) {
+		return 0;
+	}
+
+	for (new raceid = 1; raceid <= RacesCount; raceid++) {
+		if (RaceStats[raceid][race_state] == RACE_STATE_DISABLED) {
 			continue;
 		}
-		if (player_GetQuestID(playerid) == GetRaceQuestID(raceid)) // if player is in this race
-		{
+
+		if (player_GetQuestID(playerid) == GetRaceQuestID(raceid)) {
 			return raceid;
 		}
 	}

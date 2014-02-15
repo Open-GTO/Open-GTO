@@ -248,7 +248,7 @@ public OnPlayerConnect(playerid)
 	if (IsPlayerNPC(playerid)) return 1;
 	player_OnPlayerConnect(playerid);
 	pt_chat_OnPlayerConnect(playerid);
-	level_OnPlayerConnect(playerid);
+	pl_level_OnPlayerConnect(playerid);
 	pl_weapon_OnPlayerConnect(playerid);
 	qudemsys_OnPlayerConnect(playerid);
 	return 1;

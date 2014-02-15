@@ -1241,7 +1241,7 @@ COMMAND:dm(playerid, params[])
 	new cmd[20], idx;
 	cmd = strcharsplit(params, idx, ' ');
 
-	if (!strcmp(cmd, "help", true))
+	if (!strcmp(cmd, "help", true) || strlen(cmd) == 0)
 	{
 		SendClientMessage(playerid, COLOUR_MISC, lang_texts[4][46]);
 		SendClientMessage(playerid, COLOUR_MISC, lang_texts[4][47]);
@@ -1257,12 +1257,12 @@ COMMAND:dm(playerid, params[])
 
 	if (!strcmp(cmd, "join", true))
 	{
-		new dmid = strval(strcharsplit(params, idx, ' '));
 		if (player_IsAtQuest(playerid)) {
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[4][55]);
 			return 1;
 		}
 
+		new dmid = strval(strcharsplit(params, idx, ' '));
 		if (dmid == 0 || dmid >= MAX_DM) {
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[4][56]);
 			return 1;
@@ -1286,6 +1286,7 @@ COMMAND:dm(playerid, params[])
 		JoinDM(playerid, dmid);
 		return 1;
 	}
+	
 	if (!strcmp(cmd, "leave", true) || !strcmp(cmd, "quit", true))
 	{
 		if (!player_IsAtQuest(playerid)) {

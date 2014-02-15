@@ -13,6 +13,9 @@
 #pragma library pl_quest
 
 
+#define INVALID_QUEST_ID	-1
+
+
 stock player_GetQuestID(playerid) {
 	return GetPVarInt(playerid, "player_QuestID");
 }
