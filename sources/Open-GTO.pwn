@@ -37,6 +37,7 @@ Developers:
 #include "vehicles"
 #include "vehicle\quidemsys"
 #include "vehicle\vehicle_menu"
+#include "vehicle\vehicle_damage"
 #include "player\level"
 #include "player\vip"
 #include "player\weapon"
@@ -713,4 +714,12 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid)
 		return sshop_OnPlayerClickTextDraw(playerid, clickedid);
 	}
 	return 0;
+}
+
+public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
+{
+	if (hittype == BULLET_HIT_TYPE_VEHICLE) {
+		vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+	}
+	return 1;
 }

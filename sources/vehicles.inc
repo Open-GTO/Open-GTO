@@ -2454,3 +2454,13 @@ stock GetVehicleRadio(vehicleid)
 {
 	return vehicle_RadioStatus[vehicleid];
 }
+
+stock IsVehicleOccupied(vehicleid)
+{
+	foreach (new playerid : Player) {
+		if (GetPlayerVehicleID(playerid) == vehicleid && GetPlayerVehicleSeat(playerid) == 0) {
+			return 1;
+		}
+	}
+	return 0;
+}

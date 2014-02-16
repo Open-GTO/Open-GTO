@@ -1,6 +1,6 @@
 //
-// Created:     05.09.06
-// Aurthor:    Iain Gilbert
+// Created:	 05.09.06
+// Aurthor:	Iain Gilbert
 //
 /*
 	Модифицировал ZiGGi
@@ -22,31 +22,31 @@
 
 stock strcmpEx(const string1[], const string2[], bool:ignorecase=false, length=cellmax)
 {
-    if (string1[0])
-    {
-        if (string2[0])
-        {
-            return strcmp(string1, string2, ignorecase, length);
-        }
-        else
-        {
-            // Positive as st1 is greater (strcmp spec).
-            return 1;
-        }
-    }
-    else
-    {
-        if (string2[0])
-        {
-            // Negative as str2 is greater.
-            return -1;
-        }
-        else
-        {
-            // The strings are the same (empty).
-            return 0;
-        }
-    }
+	if (string1[0])
+	{
+		if (string2[0])
+		{
+			return strcmp(string1, string2, ignorecase, length);
+		}
+		else
+		{
+			// Positive as st1 is greater (strcmp spec).
+			return 1;
+		}
+	}
+	else
+	{
+		if (string2[0])
+		{
+			// Negative as str2 is greater.
+			return -1;
+		}
+		else
+		{
+			// The strings are the same (empty).
+			return 0;
+		}
+	}
 }
 #define strcmp strcmpEx
 
@@ -183,11 +183,11 @@ stock PlayerCount()
 
 stock SetPlayerPosEx(playerid, Float:X, Float:Y, Float:Z, Float:Angle, Interior, World=0)
 {
-    SetPlayerInterior(playerid, Interior);
-    SetPlayerFacingAngle(playerid, Angle);
+	SetPlayerInterior(playerid, Interior);
+	SetPlayerFacingAngle(playerid, Angle);
 	SetPlayerVirtualWorld(playerid, World);
-    oSetPlayerPos(playerid, X, Y, Z);
-    SetCameraBehindPlayer(playerid);
+	oSetPlayerPos(playerid, X, Y, Z);
+	SetCameraBehindPlayer(playerid);
 }
 
 stock StringCharCheck(string[])
@@ -279,4 +279,77 @@ stock GetCurrentDate(outstr[20])
 	gettime(hours, minutes, seconds);
 	getdate(year, month, day);
 	format(outstr, sizeof(outstr), "%04d-%02d-%02d %02d:%02d:%02d", year, month, day, hours, minutes, seconds);
+}
+
+stock Float:GetDistanceBetweenPoints(Float:x1, Float:y1, Float:z1, Float:x2, Float:y2, Float:z2)
+{
+	return VectorSize(x1-x2, y1-y2, z1-z2);
+}
+
+/*
+
+	For UpdateVehicleDamageStatus
+
+*/
+
+stock decode_panels(panels,&flp,&frp,&rlp,&rrp,&windshield,&front_bumper,&rear_bumper)
+{
+	flp = panels >> 0 & 0xF;
+	frp = panels >> 4 & 0xF;
+	rlp = panels >> 8 & 0xF;
+	rrp = panels >> 12 & 0xF;
+	windshield = panels >> 16 & 0xF;
+	front_bumper = panels >> 20 & 0xF;
+	rear_bumper = panels >> 24 & 0xF;
+}
+
+stock decode_doors(doors,&driver_door,&passenger_door,&bonnet,&boot)
+{
+	bonnet = doors & 0x7;
+	boot = doors >> 8 & 0x7;
+	driver_door = doors >> 16 & 0x7;
+	passenger_door = doors >> 24 & 0x7;
+}
+
+stock decode_lights(lights,&light1,&light2,&light3,&light4)
+{
+	light1 = lights >> 0 & 0x1;
+	light2 = lights >> 1 & 0x1;
+	light3 = lights >> 2 & 0x1;
+	light4 = lights >> 3 & 0x1;
+}
+
+stock decode_tires(tires,&tyre1,&tyre2,&tyre3,&tyre4)
+{
+	tyre1 = tires >> 0 & 0x1;
+	tyre2 = tires >> 1 & 0x1;
+	tyre3 = tires >> 2 & 0x1;
+	tyre4 = tires >> 3 & 0x1;
+}
+
+stock encode_panels(flp, frp, rlp, rrp, windshield, front_bumper, rear_bumper)
+{
+	return flp | (frp << 4) | (rlp << 8) | (rrp << 12) | (windshield << 16) | (front_bumper << 20) | (rear_bumper << 24);
+}
+
+stock encode_doors(bonnet, boot, driver_door, passenger_door, behind_driver_door, behind_passenger_door)
+{
+	#pragma unused behind_driver_door
+	#pragma unused behind_passenger_door
+	return bonnet | (boot << 8) | (driver_door << 16) | (passenger_door << 24);
+}
+
+stock encode_lights(light1, light2, light3, light4)
+{
+	return light1 | (light2 << 1) | (light3 << 2) | (light4 << 3);
+}
+
+stock encode_tires(tire1, tire2, tire3, tire4)
+{
+	return tire1 | (tire2 << 1) | (tire3 << 2) | (tire4 << 3);
+}
+
+stock encode_tires_bike(rear, front)
+{
+	return rear | (front << 1);
 }
