@@ -40,19 +40,19 @@ stock vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, F
 	GetVehicleDamageStatus(hitid, panels, doors, lights, tires);
 	decode_tires(tires, wheel_status[0], wheel_status[1], wheel_status[2], wheel_status[3]);
 
-	if (GetDistanceBetweenPoints(fX, fY, fZ, v_rear_wheel[0] + v_wide / 2, v_rear_wheel[1], v_rear_wheel[2]) < 1.1) {
+	if (GetDistanceBetweenPoints(fX, fY, fZ, v_rear_wheel[0] + v_wide / 2, v_rear_wheel[1], v_rear_wheel[2]) < 1.2) {
 		wheel_status[0] = 1;
-	} else if (GetDistanceBetweenPoints(fX, fY, fZ, v_front_wheel[0] + v_wide / 2, v_front_wheel[1], v_front_wheel[2]) < 1.1) {
+	} else if (GetDistanceBetweenPoints(fX, fY, fZ, v_front_wheel[0] + v_wide / 2, v_front_wheel[1], v_front_wheel[2]) < 1.2) {
 		wheel_status[1] = 1;
-	} else if (GetDistanceBetweenPoints(fX, fY, fZ, v_rear_wheel[0] - v_wide / 2, v_rear_wheel[1], v_rear_wheel[2]) < 1.1) {
+	} else if (GetDistanceBetweenPoints(fX, fY, fZ, v_rear_wheel[0] - v_wide / 2, v_rear_wheel[1], v_rear_wheel[2]) < 1.2) {
 		wheel_status[2] = 1;
-	} else if (GetDistanceBetweenPoints(fX, fY, fZ, v_front_wheel[0] - v_wide / 2, v_front_wheel[1], v_front_wheel[2]) < 1.1) {
+	} else if (GetDistanceBetweenPoints(fX, fY, fZ, v_front_wheel[0] - v_wide / 2, v_front_wheel[1], v_front_wheel[2]) < 1.2) {
 		wheel_status[3] = 1;
 	}
 
 	tires = encode_tires(wheel_status[0], wheel_status[1], wheel_status[2], wheel_status[3]);
 	UpdateVehicleDamageStatus(hitid, panels, doors, lights, tires);
-	
+
 	// vehicle damage
 	new Float:v_health;
 	GetVehicleHealth(hitid, v_health);
