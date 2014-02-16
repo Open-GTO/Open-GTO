@@ -28,6 +28,7 @@
 #define SPECIAL_ACTION_DRINK_WINE		22
 #define SPECIAL_ACTION_DRINK_SPRUNK		23
 #define SPECIAL_ACTION_CUFFED			24
+#define SPECIAL_ACTION_CARRY			25
 
 #define FIGHT_STYLE_NORMAL				4
 #define FIGHT_STYLE_BOXING				5
@@ -120,6 +121,7 @@ native SetPlayerSkillLevel(playerid, skill, level);
 native GetPlayerSurfingVehicleID(playerid);
 native GetPlayerSurfingObjectID(playerid);
 native RemoveBuildingForPlayer(playerid, modelid, Float:fX, Float:fY, Float:fZ, Float:fRadius);
+native GetPlayerLastShotVectors(playerid, &Float:fOriginX, &Float:fOriginY, &Float:fOriginZ, &Float:fHitPosX, &Float:fHitPosY, &Float:fHitPosZ);
 
 // Attached to bone objects
 
@@ -148,6 +150,9 @@ native PlayerTextDrawSetSelectable(playerid, PlayerText:text, set);
 native PlayerTextDrawShow(playerid, PlayerText:text);
 native PlayerTextDrawHide(playerid, PlayerText:text);
 native PlayerTextDrawSetString(playerid, PlayerText:text, string[]);
+native PlayerTextDrawSetPreviewModel(playerid, PlayerText:text, modelindex);
+native PlayerTextDrawSetPreviewRot(playerid, PlayerText:text, Float:fRotX, Float:fRotY, Float:fRotZ, Float:fZoom = 1.0);
+native PlayerTextDrawSetPreviewVehCol(playerid, PlayerText:text, color1, color2);
 
 // Per-player variable system (PVars)
 native SetPVarInt(playerid, varname[], int_value);
@@ -178,8 +183,8 @@ native GetPlayerVehicleSeat(playerid);
 native RemovePlayerFromVehicle(playerid);
 native TogglePlayerControllable(playerid, toggle);
 native PlayerPlaySound(playerid, soundid, Float:x, Float:y, Float:z);
-native ApplyAnimation(playerid, animlib[], animname[], Float:fDelta, loop, lockx, locky, freeze, time, forcesync = 1);
-native ClearAnimations(playerid, forcesync = 1);
+native ApplyAnimation(playerid, animlib[], animname[], Float:fDelta, loop, lockx, locky, freeze, time, forcesync = 0);
+native ClearAnimations(playerid, forcesync = 0);
 native GetPlayerAnimationIndex(playerid); // return the index of any running applied animations (0 if none are running)
 native GetAnimationName(index, animlib[], len1, animname[], len2); // get the animation lib/name for the index
 native GetPlayerSpecialAction(playerid);
@@ -215,6 +220,8 @@ native SetCameraBehindPlayer(playerid);
 native GetPlayerCameraPos(playerid, &Float:x, &Float:y, &Float:z);
 native GetPlayerCameraFrontVector(playerid, &Float:x, &Float:y, &Float:z);
 native GetPlayerCameraMode(playerid);
+native Float:GetPlayerCameraAspectRatio(playerid);
+native Float:GetPlayerCameraZoom(playerid);
 native AttachCameraToObject(playerid, objectid);
 native AttachCameraToPlayerObject(playerid, playerobjectid);
 native InterpolateCameraPos(playerid, Float:FromX, Float:FromY, Float:FromZ, Float:ToX, Float:ToY, Float:ToZ, time, cut = CAMERA_CUT);

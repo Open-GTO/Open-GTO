@@ -660,9 +660,9 @@ public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 	return 1;
 }
 
-public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
+public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 {
-	admin_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid);
+	admin_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart);
 	return 1;
 }
 

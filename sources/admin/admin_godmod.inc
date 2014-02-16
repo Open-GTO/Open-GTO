@@ -13,9 +13,9 @@
 #pragma library adm_godmod
 
 
-stock adm_godmod_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
+stock adm_godmod_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 {
-	#pragma unused issuerid, amount, weaponid
+	#pragma unused issuerid, amount, weaponid, bodypart
 	if (player_IsGodmod(playerid))
 	{
 		oSetPlayerHealth(playerid, 100.0);

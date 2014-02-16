@@ -28,9 +28,9 @@ stock admin_OnPlayerText(playerid, text[])
 	return mute_result;
 }
 
-stock admin_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
+stock admin_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 {
-	adm_godmod_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid);
+	adm_godmod_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart);
 	return 1;
 }
 

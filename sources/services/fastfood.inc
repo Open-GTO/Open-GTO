@@ -71,7 +71,7 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 	}
 
 	oGivePlayerMoney(playerid,-Food[listitem][food_cost], 1);
-	ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.1, 0, 1, 1, 1, 1);
+	ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.1, 0, 1, 1, 1, 1, 1);
 
 	if (Food[listitem][food_hp] + oGetPlayerHealth(playerid) > GetMaxHealth(playerid)) {
 		oSetPlayerHealth(playerid, GetMaxHealth(playerid));
