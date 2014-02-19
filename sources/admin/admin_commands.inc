@@ -787,7 +787,7 @@ COMMAND:sys(playerid, params[])
 		format(string, sizeof(string), lang_texts[15][63], string);
 		SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
 
-		format(string, sizeof(string), lang_texts[15][64], MAX_BANK, MAX_MONEY);
+		format(string, sizeof(string), lang_texts[15][64], bank_GetMaxMoney(), MAX_MONEY);
 		SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
 
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[15][66]);

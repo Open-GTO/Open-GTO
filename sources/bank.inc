@@ -13,8 +13,9 @@
 #pragma library bank
 
 
-new ProfitCount = BANK_PROFIT, 
-	MAX_BANK = MAX_BANK_MONEY;
+static
+	ProfitCount = BANK_PROFIT, 
+	MaxBankMoney = MAX_BANK_MONEY;
 
 new Banks[][CoordInfo] = {
 	{-22.9578, -54.8951, 1003.5469}, // LV 24/7 bank
@@ -24,13 +25,13 @@ new Banks[][CoordInfo] = {
 stock bank_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Bank_ProfitCount", ProfitCount);
-	ini_getInteger(file_config, "Bank_MaxMoney", MAX_BANK);
+	ini_getInteger(file_config, "Bank_MaxBankMoney", MaxBankMoney);
 }
 
 stock bank_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Bank_ProfitCount", ProfitCount);
-	ini_setInteger(file_config, "Bank_MaxMoney", MAX_BANK);
+	ini_setInteger(file_config, "Bank_MaxBankMoney", MaxBankMoney);
 }
 
 stock bank_OnGameModeInit()
@@ -162,10 +163,12 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 		amount = oGetPlayerMoney(playerid);
 	}
 	
-	GivePlayerBankMoney(playerid, amount);
-	if (GetPlayerBankMoney(playerid) >= MAX_BANK) {
+	if (amount > MaxBankMoney - GetPlayerBankMoney(playerid)) {
+		amount = MaxBankMoney - GetPlayerBankMoney(playerid);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[2][15]);
 	}
+
+	GivePlayerBankMoney(playerid, amount);
 	oGivePlayerMoney(playerid, -amount, 0);
 	
 	new string[MAX_STRING];
@@ -279,8 +282,8 @@ stock GetPlayerBankMoney(playerid)
 
 stock GivePlayerBankMoney(playerid, &amount)
 {
-	if (GetPlayerBankMoney(playerid) + amount > MAX_BANK) {
-		amount = MAX_BANK - GetPlayerBankMoney(playerid);
+	if (GetPlayerBankMoney(playerid) + amount > MaxBankMoney) {
+		amount = MaxBankMoney - GetPlayerBankMoney(playerid);
 	}
 	GivePVarInt(playerid, "BankMoney", amount);
 }
@@ -291,4 +294,9 @@ stock TakePlayerBankMoney(playerid, &amount)
 		amount = GetPlayerBankMoney(playerid);
 	}
 	SetPVarInt(playerid, "BankMoney", GetPlayerBankMoney(playerid) - amount);
+}
+
+stock bank_GetMaxMoney()
+{
+	return MaxBankMoney;
 }
