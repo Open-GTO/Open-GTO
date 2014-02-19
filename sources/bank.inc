@@ -163,13 +163,12 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 		amount = oGetPlayerMoney(playerid);
 	}
 	
-	if (amount > MaxBankMoney - GetPlayerBankMoney(playerid)) {
-		amount = MaxBankMoney - GetPlayerBankMoney(playerid);
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[2][15]);
-	}
-
 	GivePlayerBankMoney(playerid, amount);
 	oGivePlayerMoney(playerid, -amount, 0);
+
+	if (GetPlayerBankMoney(playerid) == MaxBankMoney) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[2][15]);
+	}
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[2][14], amount, GetPlayerBankMoney(playerid));
@@ -282,7 +281,7 @@ stock GetPlayerBankMoney(playerid)
 
 stock GivePlayerBankMoney(playerid, &amount)
 {
-	if (GetPlayerBankMoney(playerid) + amount > MaxBankMoney) {
+	if (amount > MaxBankMoney - GetPlayerBankMoney(playerid)) {
 		amount = MaxBankMoney - GetPlayerBankMoney(playerid);
 	}
 	GivePVarInt(playerid, "BankMoney", amount);
@@ -293,7 +292,7 @@ stock TakePlayerBankMoney(playerid, &amount)
 	if (GetPlayerBankMoney(playerid) - amount < 0) {
 		amount = GetPlayerBankMoney(playerid);
 	}
-	SetPVarInt(playerid, "BankMoney", GetPlayerBankMoney(playerid) - amount);
+	GivePVarInt(playerid, "BankMoney", -amount);
 }
 
 stock bank_GetMaxMoney()
