@@ -166,12 +166,15 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 	GivePlayerBankMoney(playerid, amount);
 	oGivePlayerMoney(playerid, -amount, 0);
 
+	new string[MAX_STRING];
+
 	if (GetPlayerBankMoney(playerid) == MaxBankMoney) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[2][15]);
+		set(string, lang_texts[2][15]);
+	} else {
+		format(string, sizeof(string), lang_texts[2][14], amount, GetPlayerBankMoney(playerid));
 	}
 	
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[2][14], amount, GetPlayerBankMoney(playerid));
 	Dialog_Message(playerid, lang_texts[2][3], string, lang_texts[2][5]);
 	PlayerPlaySoundOnPlayer(playerid, 1084);
 	return 1;
