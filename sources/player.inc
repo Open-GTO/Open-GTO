@@ -288,7 +288,9 @@ stock player_OnPlayerRequestClass(playerid, classid)
 	pl_spawn_OnPlayerRequestClass(playerid, classid);
 
 	// show login dialog
-	account_ShowDialog(playerid);
+	if (!player_IsLogin(playerid)) {
+		account_ShowDialog(playerid);
+	}
 	return 1;
 }
 
