@@ -12,7 +12,6 @@
 #define _logging_included
 #pragma library logging
 
-#include "base"
 
 enum {
 	GameLog,

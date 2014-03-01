@@ -11,7 +11,6 @@
 #pragma library zones
 
 
-
 // Zones
 enum zoneinfo {
 	zone_name[MAX_NAME],

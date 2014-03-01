@@ -11,12 +11,6 @@
 #pragma library admin_commands_dm
 
 
-#include "base"
-#include "utils\gtoutils"
-#include "player"
-#include "account"
-#include "deathmatch"
-
 stock AdminDM_OnPlayerCommandText(playerid, text[]) // process player commands
 {
 	if (!IsPlayerAdm(playerid)) return 0;

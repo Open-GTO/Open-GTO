@@ -26,56 +26,60 @@ Developers:
 #include "utils\foreach"
 #include "utils\zcmd"
 #include "utils\gtodialog"
-#include "config"
-#include "base"
-#include "lang"
 #include "utils\mxINI"
-#include "logging"
+#include "config"
+#include "sys\base"
+#include "sys\lang"
+#include "sys\logging"
 #include "utils\gtoutils"
-#include "arrays"
-#include "pickup"
-#include "vehicles"
+#include "sys\color"
+#include "sys\pickup"
+#include "vehicle\vehicles"
 #include "vehicle\quidemsys"
 #include "vehicle\vehicle_menu"
 #include "vehicle\vehicle_damage"
-#include "player\level"
-#include "player\vip"
-#include "player\weapon"
-#include "player\weapon_drop"
-#include "player\weapon_skill"
+#include "vehicle\vehicle_radio"
+#include "vehicle\vehicle_vip"
+#include "player\player_level"
+#include "player\player_vip"
+#include "player\player_weapon"
+#include "player\player_weapon_drop"
+#include "player\player_weapon_skill"
 #include "player\player_health"
 #include "player\player_fights"
-#include "player\vehicle"
-#include "player\status"
-#include "player\account"
-#include "player\login"
+#include "player\player_vehicle"
+#include "player\player_status"
+#include "player\player_account"
+#include "player\player_login"
 #include "player\player_spawn"
 #include "player\player_pm"
 #include "player\player_mute"
+#include "player\player_jail"
 #include "player\player_click"
 #include "player\player_menu"
 #include "player\player_menu_vehicle"
 #include "player\player_menu_teleport"
 #include "player\player_menu_settings"
+#include "player\player_menu_anims"
 #include "player\player_quest"
-#include "quest"
-#include "bank"
-#include "player"
-#include "weapons"
-#include "zones"
-#include "world"
-#include "commands"
-#include "gang"
+#include "player\player_commands"
+#include "player\player_kick"
+#include "player\player_maptp"
+#include "player\player"
+#include "etc\weapons"
+#include "sys\zones"
+#include "etc\world"
+#include "gang\gang"
 #include "gang\gang_menu"
 #include "gang\gang_level"
-#include "housing"
-#include "business"
+#include "etc\housing"
+#include "etc\business"
 #include "streamers\mapicon_stream"
 #include "streamers\checkpoint_stream"
-#include "race"
-#include "deathmatch"
-#include "payday"
-#include "groundhold"
+#include "etc\race"
+#include "etc\deathmatch"
+#include "etc\payday"
+#include "etc\groundhold"
 #include "admin\admin_commands_race"
 #include "admin\admin_commands_dm"
 #include "admin\admin_commands"
@@ -88,10 +92,13 @@ Developers:
 #include "admin\admin_hide"
 #include "admin\admin_maptp"
 #include "admin\admin_click"
-#include "admin"
-#include "missions"
+#include "admin\admin_login"
+#include "admin\admin"
+#include "missions\missions"
 #include "missions\trucker"
-#include "click"
+#include "missions\swagup"
+#include "etc\click"
+#include "services\bank"
 #include "services\fastfood"
 #include "services\bar"
 #include "services\skinshop"
@@ -99,10 +106,8 @@ Developers:
 #include "services\vehshop"
 #include "services\weaponshop"
 #include "services\fightteacher"
-#include "interior"
-#include "weather"
-#include "swagup"
-#include "anims"
+#include "etc\interior"
+#include "etc\weather"
 #include "protections\money"
 #include "protections\idle"
 #include "protections\rconhack"
@@ -114,7 +119,7 @@ Developers:
 #include "protections\health"
 #include "protections\armour"
 
-#include "cfg"
+#include "sys\cfg"
 // Races
 #tryinclude "races\race_monstertruck"
 #tryinclude "races\race_thestrip"
@@ -150,7 +155,6 @@ main() {}
 
 public OnGameModeInit()
 {
-	SetGameModeText("Open-GTO "#VERSION);
 	// Initialize everything that needs it
 	cfg_LoadConfigs();
 
@@ -170,14 +174,17 @@ public OnGameModeInit()
 	swagup_OnGameModeInit();
 	vip_OnGameModeInit();
 	pl_weapon_OnGameModeInit();
+
 	// missions
 	trucker_OnGameModeInit();
+
 	// services
 	fastfood_OnGameModeInit();
 	bar_OnGameModeInit();
 	sshop_OnGameModeInit();
 	vshop_OnGameModeInit();
 	wshop_OnGameModeInit();
+
 	// protection
 	pt_idle_OnGameModeInit();
 	pt_chat_OnGameModeInit();
@@ -229,24 +236,22 @@ public OnGameModeInit()
 	SpawnWorld();
 	
 	WorldSave(0);
-	new hour, minute;
-	gettime(hour, minute);
-	GameMSG("SERVER: Open-GTO "#VERSION" initialization complete. [%02d:%02d]", hour, minute);
+	GameMSG("SERVER: Open-GTO "#VERSION" initialization complete.");
 	return 1;
 }
 
 public OnGameModeExit()
 {
 	WorldSave(1);
-	new hour, minute;
-	gettime(hour, minute);
-	GameMSG("SERVER: Open-GTO "#VERSION" turned off. [%02d:%02d]", hour, minute);
+	GameMSG("SERVER: Open-GTO "#VERSION" turned off.");
 	return 1;
 }
 
 public OnPlayerConnect(playerid)
 {
-	if (IsPlayerNPC(playerid)) return 1;
+	if (IsPlayerNPC(playerid)) {
+		return 1;
+	}
 	player_OnPlayerConnect(playerid);
 	pt_chat_OnPlayerConnect(playerid);
 	pl_level_OnPlayerConnect(playerid);
@@ -257,7 +262,9 @@ public OnPlayerConnect(playerid)
 
 public OnPlayerDisconnect(playerid, reason)
 {
-	if (playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) return 1;
+	if (playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) {
+		return 1;
+	}
 	player_OnPlayerDisconnect(playerid, reason);
 	trucker_OnPlayerDisconnect(playerid, reason);
 	pt_chat_OnPlayerDisconnect(playerid, reason);
@@ -341,7 +348,6 @@ public OnPlayerSpawn(playerid)
 
 	// spawn player
 	player_OnPlayerSpawn(playerid);
-	anims_OnPlayerSpawn(playerid);
 
 	// после использования TogglePlayerSpectating
 	if (GetPVarInt(playerid, "spec_after_off") == 1) {
@@ -379,7 +385,9 @@ public OnPlayerRequestClass(playerid, classid)
 
 public OnPlayerRequestSpawn(playerid)
 {
-	if (!player_IsLogin(playerid)) return 0;
+	if (!player_IsLogin(playerid)) {
+		return 0;
+	}
 	return 1;
 }
 
@@ -473,6 +481,7 @@ public OnPlayerText(playerid, text[])
 
 	format(string, sizeof(string), "%s"CHAT_SHOW_ID": {FFFFFF}%s", playername, playerid, text);
 	SendClientMessageToAll(GetPlayerColor(playerid), string);
+
 	format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": %s", playername, playerid, text);
 	WriteLog(ChatLog, string);
 	return 0;
@@ -538,30 +547,13 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	vehicles_OnPlayerStateChange(playerid, newstate, oldstate);
 	pt_speed_OnPlayerStateChange(playerid, newstate, oldstate);
-	qudemsys_OnPlayerStateChange(playerid, newstate, oldstate);
 
-	if (newstate == PLAYER_STATE_DRIVER)
-	{
-	#if defined OLD_ENGINE_DO
-		if (GetPlayerVehicleSeat(playerid) == 0)
-		{
-			new vehicleid = GetPlayerVehicleID(playerid);
-			
-			vehicle_Engine(vehicleid, VEHICLE_PARAMS_ON);
-			
-			new hour;
-			gettime(hour);
-			if (hour > VEHICLE_LIGHTS_ON_TIME || hour < VEHICLE_LIGHTS_OFF_TIME)
-			{
-				vehicle_Light(vehicleid, VEHICLE_PARAMS_ON);
-			}
-		}
-	#endif
+	if (newstate == PLAYER_STATE_DRIVER) {
 		trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 		vip_OnPlayerStateChange(playerid, newstate, oldstate);
 	}
-	if (newstate == PLAYER_STATE_DRIVER || newstate == PLAYER_STATE_PASSENGER)
-	{
+
+	if (newstate == PLAYER_STATE_DRIVER || newstate == PLAYER_STATE_PASSENGER) {
 		vshop_OnPlayerStateChange(playerid, newstate, oldstate);
 	}
 	return 1;
@@ -569,10 +561,6 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 
 public OnPlayerExitVehicle(playerid, vehicleid)
 {
-#if defined OLD_ENGINE_DO
-	if (GetPlayerVehicleSeat(playerid) == 0)
-		vehicle_Engine(vehicleid, VEHICLE_PARAMS_OFF);
-#endif
 	admin_OnPlayerExitVehicle(playerid, vehicleid);
 	pt_weapon_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
@@ -633,24 +621,7 @@ public OnVehicleDeath(vehicleid, killerid)
 
 public OnRconLoginAttempt(ip[], password[], success)
 {
-	switch (success) {
-		case 0: {
-			pt_rcon_OnRconLoginAttempt(ip, password, success);
-		}
-		case 1: {
-			// если игрок заходит ркон админом, то дадим ему полные права
-			new pip[MAX_IP];
-
-			foreach (new playerid: Player) {
-				GetPVarString(playerid, "IP", pip, sizeof(pip));
-
-				if (!strcmp(ip, pip, false)) {
-					player_SetStatus(playerid, STATUS_LEVEL_RCON);
-					break;
-				}
-			}
-		}
-	}
+	admin_OnRconLoginAttempt(ip, password, success);
 	return 1;
 }
 
@@ -687,16 +658,7 @@ public OnVehicleMod(playerid, vehicleid, componentid)
 
 public OnEnterExitModShop(playerid, enterexit, interiorid)
 {
-	new vehicleid = GetPlayerVehicleID(playerid);
-	if (vehicleid != 0) {
-		if (enterexit == 1) {
-			SetVehicleVirtualWorld(vehicleid, playerid + 1);
-			SetPlayerVirtualWorld(playerid, playerid + 1);
-		} else {
-			SetVehicleVirtualWorld(vehicleid, 0);
-			SetPlayerVirtualWorld(playerid, 0);
-		}
-	}
+	vehicles_OnEnterExitModShop(playerid, enterexit, interiorid);
 	return 1;
 }
 

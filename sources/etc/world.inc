@@ -12,12 +12,6 @@
 #pragma library world
 
 
-#include "base"
-#include "account"
-#include "player"
-#include "payday"
-
-
 forward WorldSave(necessarily);
 public WorldSave(necessarily) // save all
 {

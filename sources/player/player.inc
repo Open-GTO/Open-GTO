@@ -10,112 +10,6 @@
 #define _player_included
 #pragma library player
 
-
-#include "base"
-#include "utils\gtoutils"
-#include "account"
-#include "weapons"
-#include "protections\armour"
-
-
-stock player_GetKills(playerid) {
-	return GetPVarInt(playerid, "Kills");
-}
-
-stock player_GetDeaths(playerid) {
-	return GetPVarInt(playerid, "Deaths");
-}
-
-stock player_GetJailCount(playerid) {
-	return GetPVarInt(playerid, "Jailed");
-}
-
-stock player_SetJailCount(playerid, jailed) {
-	SetPVarInt(playerid, "Jailed", jailed);
-}
-
-stock player_GetJailTime(playerid) {
-	return GetPVarInt(playerid, "JailTime");
-}
-
-stock player_SetJailTime(playerid, time) {
-	SetPVarInt(playerid, "JailTime", time);
-}
-
-stock player_IsJailed(playerid) {
-	return (GetPVarInt(playerid, "JailTime") == -1 ? 0 : 1);
-}
-
-stock player_GetSkin(playerid) {
-	return GetPVarInt(playerid, "SkinModel");
-}
-
-stock player_SetSkin(playerid, skinid) {
-	SetPlayerSkin(playerid, skinid);
-	SetPVarInt(playerid, "SkinModel", skinid);
-}
-
-stock player_GetSpecID(playerid) {
-	return GetPVarInt(playerid, "SpecID");
-}
-
-stock player_SetSpecID(playerid, specid) {
-	SetPVarInt(playerid, "SpecID", specid);
-}
-
-stock player_IsSpectating(playerid) {
-	return GetPVarInt(playerid, "Spectating");
-}
-
-stock player_SetSpectating(playerid, isspec) {
-	SetPVarInt(playerid, "Spectating", isspec);
-}
-
-stock player_GetSkydiveTime(playerid) {
-	return GetPVarInt(playerid, "SkydiveTime");
-}
-
-stock player_SetSkydiveTime(playerid, skydivetime) {
-	SetPVarInt(playerid, "SkydiveTime", skydivetime);
-}
-
-stock player_GetGangName(playerid) {
-	new string[MAX_NAME];
-	GetPVarString(playerid, "GangName", string, sizeof(string));
-	return string;
-}
-
-stock player_SetGangName(playerid, gangname[]) {
-	SetPVarString(playerid, "GangName", gangname);
-}
-
-stock player_GetGangID(playerid) {
-	return GetPVarInt(playerid, "GangID");
-}
-
-stock player_SetGangID(playerid, gangid) {
-	SetPVarInt(playerid, "GangID", gangid);
-}
-
-stock IsAllowPlayerTeleport(playerid) {
-	return GetPVarInt(playerid, "AllowTeleport") == 1 ? 1 : 0;
-}
-
-stock oAllowPlayerTeleport(playerid, isallow) {
-	SetPVarInt(playerid, "AllowTeleport", isallow);
-}
-#if defined AllowPlayerTeleport
-	#define AllowPlayerTeleport oAllowPlayerTeleport
-#endif
-
-stock player_IsGodmod(playerid) {
-	return GetPVarInt(playerid, "godmod");
-}
-
-stock player_SetGodmod(playerid, isgodmod) {
-	SetPVarInt(playerid, "godmod", isgodmod);
-}
-
 new PlayerStartMoney = PLAYER_START_MONEY;
 
 stock player_LoadConfig(file_config)
@@ -155,6 +49,7 @@ stock player_OnPlayerSpawn(playerid)
 	GivePlayerOwnedWeapons(playerid);
 	weapon_SetSkills(playerid);
 	PushHide(playerid);
+	pl_anims_OnPlayerSpawn(playerid);
 	return 1;
 }
 
@@ -262,25 +157,6 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 	GivePlayerXP(playerid, xp_give_player, 1);
 }
 
-stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
-{
-	if (!IsAllowPlayerTeleport(playerid)) {
-		return 0;
-	}
-
-	new vehicleid = GetPlayerVehicleID(playerid);
-	if (vehicleid != 0) {
-		oSetVehiclePos(vehicleid, fX, fY, fZ);
-		LinkVehicleToInterior(vehicleid, 0);
-		SetVehicleVirtualWorld(vehicleid, 0);
-	} else {
-		oSetPlayerPos(playerid, fX, fY, fZ);
-		SetPlayerInterior(playerid, 0);
-		SetPlayerVirtualWorld(playerid, 0);
-	}
-	return 1;
-}
-
 stock player_OnPlayerRequestClass(playerid, classid)
 {
 	#pragma unused classid
@@ -291,6 +167,12 @@ stock player_OnPlayerRequestClass(playerid, classid)
 	if (!player_IsLogin(playerid)) {
 		account_ShowDialog(playerid);
 	}
+	return 1;
+}
+
+stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+{
+	pl_maptp_OnPlayerClickMap(playerid, fX, fY, fZ);
 	return 1;
 }
 
@@ -376,47 +258,6 @@ stock player_Sync(playerid)
 	return 1;
 }
 
-stock KickPlayer(playerid, reason[], showreason = 1)
-{
-	if (!IsPlayerConnected(playerid)) {
-		return 0;
-	}
-
-	new string[MAX_STRING];
-	new playername[MAX_PLAYER_NAME+1];
-	GetPlayerName(playerid, playername, sizeof(playername));
-
-	if (IsPlayerRconAdmin(playerid)) {
-		format(string, sizeof(string), lang_texts[9][4], playername);
-		SendClientMessage(playerid, COLOUR_YELLOW, string);
-		return 0;
-	}
-
-	if (!strlen(reason)) {
-		set(reason, "None");
-	}
-
-	if (showreason == 1) {
-		format(string, sizeof(string), lang_texts[9][5], reason);
-		SendClientMessage(playerid, COLOUR_RED, string);
-		format(string, sizeof(string), lang_texts[9][6], playername, reason);
-		SendClientMessageToAll(COLOUR_MISC, string);
-	}
-	
-	GameTextForPlayer(playerid, "~r~Connection Lost.", 1000, 5); //  send msg first
-	TogglePlayerControllable(playerid, 0);
-
-	SetTimerEx("PlayerKickFix", 100, 0, "d", playerid);
-	GameMSG("player: %s(%d): has been kicked. Reason: %s", playername, playerid, reason);
-	return 1;
-}
-
-forward PlayerKickFix(playerid);
-public PlayerKickFix(playerid)
-{
-	Kick(playerid);
-}
-
 stock GetPlayerID(playername[])
 {
 	new name[MAX_PLAYER_NAME+1];
@@ -436,4 +277,71 @@ stock oGetPlayerName(playerid)
 	new name[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, name, sizeof(name));
 	return name;
+}
+
+stock player_GetKills(playerid) {
+	return GetPVarInt(playerid, "Kills");
+}
+
+stock player_GetDeaths(playerid) {
+	return GetPVarInt(playerid, "Deaths");
+}
+
+stock player_GetSkin(playerid) {
+	return GetPVarInt(playerid, "SkinModel");
+}
+
+stock player_SetSkin(playerid, skinid) {
+	SetPlayerSkin(playerid, skinid);
+	SetPVarInt(playerid, "SkinModel", skinid);
+}
+
+stock player_GetSpecID(playerid) {
+	return GetPVarInt(playerid, "SpecID");
+}
+
+stock player_SetSpecID(playerid, specid) {
+	SetPVarInt(playerid, "SpecID", specid);
+}
+
+stock player_IsSpectating(playerid) {
+	return GetPVarInt(playerid, "Spectating");
+}
+
+stock player_SetSpectating(playerid, isspec) {
+	SetPVarInt(playerid, "Spectating", isspec);
+}
+
+stock player_GetSkydiveTime(playerid) {
+	return GetPVarInt(playerid, "SkydiveTime");
+}
+
+stock player_SetSkydiveTime(playerid, skydivetime) {
+	SetPVarInt(playerid, "SkydiveTime", skydivetime);
+}
+
+stock player_GetGangName(playerid) {
+	new string[MAX_NAME];
+	GetPVarString(playerid, "GangName", string, sizeof(string));
+	return string;
+}
+
+stock player_SetGangName(playerid, gangname[]) {
+	SetPVarString(playerid, "GangName", gangname);
+}
+
+stock player_GetGangID(playerid) {
+	return GetPVarInt(playerid, "GangID");
+}
+
+stock player_SetGangID(playerid, gangid) {
+	SetPVarInt(playerid, "GangID", gangid);
+}
+
+stock player_IsGodmod(playerid) {
+	return GetPVarInt(playerid, "godmod");
+}
+
+stock player_SetGodmod(playerid, isgodmod) {
+	SetPVarInt(playerid, "godmod", isgodmod);
 }

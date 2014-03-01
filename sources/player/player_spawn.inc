@@ -12,6 +12,24 @@
 #define _pl_spawn_included
 #pragma library pl_spawn
 
+// типы спавнов
+#define SPAWN_HOUSE_NONE	-1
+#define SPAWN_HOUSE_GANG	-2
+
+enum camera_PlaceArray_Info {
+	camera_Interior,
+	Float:camera_pos_X,
+	Float:camera_pos_Y,
+	Float:camera_pos_Z,
+	Float:camera_look_X,
+	Float:camera_look_Y,
+	Float:camera_look_Z,
+}
+
+new camera_PlaceArray[][camera_PlaceArray_Info] = {
+	{0,		-2785.616943, 26.270446, 17.054141,		-2775.761230, 15.552896, 12.677975}
+};
+
 enum spawns_Info {
 	Float:spawn_x,
 	Float:spawn_y,
@@ -127,15 +145,15 @@ DialogCreate:PlayerSpawnMenu(playerid)
 		if (gang_houseid != -1) {
 			count++;
 			strcat(string, "[банда] ", sizeof(string));
-			strcat(string, Houses[gang_houseid][Houses_Name], sizeof(string));
+			strcat(string, house_GetName(gang_houseid), sizeof(string));
 			strcat(string, "\n", sizeof(string));
 		}
 	}
 
-	for (new i = 0; i < sizeof(Houses); i++) {
-		if (gang_houseid != i && !strcmp(Houses[i][Houses_Owner], playername, true)) {
+	for (new i = 0; i < house_GetCount(); i++) {
+		if (gang_houseid != i && !strcmp(house_GetOwner(i), playername, true)) {
 			count++;
-			strcat(string, Houses[i][Houses_Name], sizeof(string));
+			strcat(string, house_GetName(i), sizeof(string));
 			strcat(string, "\n", sizeof(string));
 		}
 	}
@@ -175,8 +193,8 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 		count++;
 	}
 
-	for (new i = 0; i < sizeof(Houses); i++) {
-		if (gang_GetHouseID(gangid) == i || strcmp(Houses[i][Houses_Owner], playername, true)) {
+	for (new i = 0; i < house_GetCount(); i++) {
+		if (gang_GetHouseID(gangid) == i || strcmp(house_GetOwner(i), playername, true)) {
 			continue;
 		}
 
@@ -236,7 +254,7 @@ stock pl_spawn_SetSpawnPos(playerid)
 		new tmp[MAX_STRING];
 		format(tmp, sizeof(tmp),
 			lang_texts[8][51],
-			Houses[house_id][Houses_Name], Houses[house_id][Houses_UpKeepLeft], Houses[house_id][Houses_UpKeep]*2800
+			house_GetName(house_id), house_GetUpKeepLeft(house_id), house_GetUpKeep(house_id) * 2800
 		);
 		SendClientMessage(playerid, COLOUR_RED, tmp);
 	}

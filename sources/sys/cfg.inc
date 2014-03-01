@@ -4,6 +4,14 @@
 
 */
 
+#if defined _cfg_included
+  #endinput
+#endif
+
+#define _cfg_included
+#pragma library cfg
+
+
 stock cfg_LoadConfigs()
 {
 	if (!ini_fileExist(ConfigDB)) {
@@ -24,7 +32,6 @@ stock cfg_LoadConfigs()
 	quidemsys_LoadConfig(file_config);
 	race_LoadConfig(file_config);
 	deathmatch_LoadConfig(file_config);
-	swagup_LoadConfig(file_config);
 	vehicles_LoadConfig(file_config);
 	weapon_LoadConfig(file_config);
 	bank_LoadConfig(file_config);
@@ -76,7 +83,6 @@ stock cfg_SaveConfigs()
 	quidemsys_SaveConfig(file_config);
 	race_SaveConfig(file_config);
 	deathmatch_SaveConfig(file_config);
-	swagup_SaveConfig(file_config);
 	vehicles_SaveConfig(file_config);
 	weapon_SaveConfig(file_config);
 	bank_SaveConfig(file_config);

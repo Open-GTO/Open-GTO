@@ -229,8 +229,8 @@ DialogCreate:GangCreate(playerid)
 		case 1: {
 			set(string, "Введите цвет банды:\n\t");
 
-			for (new i = 0; i < sizeof(colors_Array); i++) {
-				format(string, sizeof(string), "%s  {%06x}%s", string, colors_Array[i][color_code] >>> 8, colors_Array[i][color_name]);
+			for (new i = 0; i < COLOR_COUNT; i++) {
+				format(string, sizeof(string), "%s  {%s}%s", string, color_GetEmbeddingCode(i), color_GetName(i));
 				
 				if ((i+1) % 5 == 0) {
 					strcat(string, "\n\t", sizeof(string));
@@ -318,24 +318,19 @@ DialogResponse:GangCreate(playerid, response, listitem, inputtext[])
 				Dialog_Show(playerid, Dialog:GangCreate);
 				return 1;
 			}
-			
-			new gangcolour = 255;
-			for (new colourid = 0; colourid < sizeof(colors_Array); colourid++) {
-				if (strcmp(inputtext, colors_Array[colourid][color_name], true)) {
-					continue;
-				}
-				gangcolour = colors_Array[colourid][color_code];
-			}
 
-			if (gangcolour == 255) {
+			new colorid = color_GetIdByName(inputtext);
+			if (colorid == -1) {
 				Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], lang_texts[6][10], "Назад", "Отмена");
 				return 1;
 			}
-			
+
+			new gangcolor = color_GetCode(colorid);
+
 			new gangname[MAX_NAME];
 			gangmenu_GetCreateName(playerid, gangname);
 
-			if (GangCreate(playerid, gangname, gangcolour) != 0) {
+			if (GangCreate(playerid, gangname, gangcolor) != 0) {
 				oGivePlayerMoney(playerid,-Gang_Create_Cost, 1);
 				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[6][42]);
 				Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], lang_texts[6][42], "Назад", "Отмена");
@@ -467,10 +462,10 @@ stock gangmenu_GetMemberID(gangid, listitem)
 
 DialogCreate:GangColor(playerid)
 {
-	new string[512] = "Введите название цвета, который вы хотите установить для банды. Доступные:\n\t";
+	new string[MAX_STRING + MAX_NAME * COLOR_COUNT] = "Введите название цвета, который вы хотите установить для банды. Доступные:\n\t";
 
-	for (new i = 0; i < sizeof(colors_Array); i++) {
-		format(string, sizeof(string), "%s  {%06x}%s", string, colors_Array[i][color_code] >>> 8, colors_Array[i][color_name]);
+	for (new i = 0; i < COLOR_COUNT; i++) {
+		format(string, sizeof(string), "%s  {%s}%s", string, color_GetEmbeddingCode(i), color_GetName(i));
 		
 		if ((i+1) % 5 == 0) {
 			strcat(string, "\n\t", sizeof(string));
@@ -499,20 +494,15 @@ DialogResponse:GangColor(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new gangcolour = 255;
-	for (new colourid = 0; colourid < sizeof(colors_Array); colourid++) {
-		if (strcmp(inputtext, colors_Array[colourid][color_name], true)) {
-			continue;
-		}
-		gangcolour = colors_Array[colourid][color_code];
-	}
-
-	if (gangcolour == 255) {
+	new colorid = color_GetIdByName(inputtext);
+	if (colorid == -1) {
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "Изменение цвета", "Неверный цвет.", "Назад", "Отмена");
 		return 1;
-   	}
+	}
 
-   	SetGangColour(player_GetGangID(playerid), gangcolour);
+	new gangcolor = color_GetCode(colorid);
+
+   	SetGangColour(player_GetGangID(playerid), gangcolor);
    	oGivePlayerMoney(playerid, -Gang_Colour_Cost, 1);
    	
    	new string[MAX_STRING];

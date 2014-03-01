@@ -64,6 +64,12 @@ stock admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 	return 1;
 }
 
+stock admin_OnRconLoginAttempt(ip[], password[], success)
+{
+	adm_login_OnRconLoginAttempt(ip, password, success);
+	return 1;
+}
+
 stock SendClientMessageToAdmins(senderid, text[])
 {
 	new message[MAX_STRING],

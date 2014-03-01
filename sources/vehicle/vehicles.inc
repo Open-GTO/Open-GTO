@@ -13,220 +13,6 @@
 
 native IsValidVehicle(vehicleid);
 
-#define V_ADMIRAL 445
-#define V_ALPHA 602
-#define V_AMBULAN 416
-#define V_ANDROM 592			// air
-#define V_ARTICT1 435
-#define V_ARTICT2 450
-#define V_ARTICT3 591
-#define V_AT400 577				// air
-#define V_BAGBOXA 606
-#define V_BAGBOXB 607
-#define V_BAGGAGE 485
-#define V_BANDITO 568
-#define V_BANSHEE 429
-#define V_BARRACKS 433
-#define V_BEAGLE 511			// air
-#define V_BENSON 499
-#define V_BF400 581				// bike
-#define V_BFINJECT 424
-#define V_BIKE 509				// bike
-#define V_BLADE 536
-#define V_BLISTAC 496
-#define V_BLOODRA 504
-#define V_BMX 481				// bike
-#define V_BOBCAT 422
-#define V_BOXBURG 609
-#define V_BOXVILLE 498
-#define V_BRAVURA 401
-#define V_BROADWAY 575
-#define V_BUCCANEE 518
-#define V_BUFFALO 402
-#define V_BULLET 541
-#define V_BURRITO 482
-#define V_BUS 431
-#define V_CABBIE 438
-#define V_CADDY 457
-#define V_CADRONA 527
-#define V_CAMPER 483
-#define V_CARGOBOB 548			// air
-#define V_CEMENT 524
-#define V_CHEETAH 415
-#define V_CLOVER 542
-#define V_CLUB 589
-#define V_COACH 437
-#define V_COASTG 472			// water
-#define V_COMBINE 532
-#define V_COMET 480
-#define V_COPBIKE 523			// bike
-#define V_COPCARLA 596
-#define V_COPCARRU 599
-#define V_COPCARSF 597
-#define V_COPCARVG 598
-#define V_CROPDUST 512			// air
-#define V_DFT30 578
-#define V_DINGHY 473			// water
-#define V_DODO 593				// air
-#define V_DOZER 486
-#define V_DUMPER 406
-#define V_DUNERIDE 573
-#define V_ELEGANT 507
-#define V_ELEGY 562
-#define V_EMPEROR 585
-#define V_ENFORCER 427
-#define V_ESPERANT 419
-#define V_EUROS 587
-#define V_FAGGIO 462
-#define V_FARMTR1 610
-#define V_FBIRANCH 490
-#define V_FBITRUCK 528
-#define V_FCR900 521			// bike
-#define V_FELTZER 533
-#define V_FIRELA 544
-#define V_FIRETRUK 407
-#define V_FLASH 565
-#define V_FLATBED 455
-#define V_FORKLIFT 530
-#define V_FORTUNE 526
-#define V_FREEWAY 463			// bike
-#define V_FREIBOX 590			//vagon
-#define V_FREIFLAT 569			//vagon
-#define V_FREIGHT 537			//POEZD
-#define V_GLENDALE 466
-#define V_GLENSHIT 604
-#define V_GREENWOO 492
-#define V_HERMES 474
-#define V_HOTDOG 588
-#define V_HOTKNIFE 434
-#define V_HOTRINA 502
-#define V_HOTRINB 503
-#define V_HOTRING 494
-#define V_HUNTER 425			// air
-#define V_HUNTLEY 579
-#define V_HUSTLER 545
-#define V_HYDRA 520				// air
-#define V_INFERNUS 411
-#define V_INTRUDER 546
-#define V_JESTER 559
-#define V_JETMAX 493			// water
-#define V_JOURNEY 508
-#define V_KART 571
-#define V_LANDSTAL 400
-#define V_LAUNCH 595			// water
-#define V_LEVIATHN 417			// air
-#define V_LINERUN 403
-#define V_MAJESTIC 517
-#define V_MANANA 410
-#define V_MARQUIS 484			// water
-#define V_MAVERICK 487			// air
-#define V_MERIT 551
-#define V_MESA 500
-#define V_MONSTER 444
-#define V_MONSTERA 556
-#define V_MONSTERB 557
-#define V_MOONBEAM 418
-#define V_MOWER 572
-#define V_MRWHOOP 423
-#define V_MTBIKE 510			// bike
-#define V_MULE 414
-#define V_NEBULA 516
-#define V_NEVADA 553			// air
-#define V_NEWSVAN 582
-#define V_NRG500 522			// bike
-#define V_OCEANIC 467
-#define V_PACKER 443
-#define V_PATRIOT 470
-#define V_PCJ600 461			// bike
-#define V_PEREN 404
-#define V_PETRO 514			//GRUZOVIK
-#define V_PETROTR 584			//PRICEP BENZO
-#define V_PHOENIX 603
-#define V_PICADOR 600
-#define V_PIZZABOY 448
-#define V_POLMAV 497			// air
-#define V_PONY 413
-#define V_PREDATOR 430			// water
-#define V_PREMIER 426
-#define V_PREVION 436
-#define V_PRIMO 547
-#define V_QUAD 471				// bike
-#define V_RAINDANC 563			// air
-#define V_RANCHER 489
-#define V_RCBANDIT 441
-#define V_RCBARON 464			// air
-#define V_RCCAM 594
-#define V_RCGOBLIN 501			// air
-#define V_RCRAIDER 465			// air
-#define V_RCTIGER 564
-#define V_RDTRAIN 515			//GRUZOVIK
-#define V_REEFER 453			// water
-#define V_REGINA 479
-#define V_REMINGTN 534
-#define V_RHINO 432
-#define V_RNCHLURE 505
-#define V_ROMERO 442
-#define V_RUMPO 440
-#define V_RUSTLER 476			// air
-#define V_SABRE 475
-#define V_SADLER 543
-#define V_SADLSHIT 605
-#define V_SANCHEZ 468			// bike
-#define V_SANDKING 495
-#define V_SAVANNA 567
-#define V_SEASPAR 447			// air
-#define V_SECURICA 428
-#define V_SENTINEL 405
-#define V_SHAMAL 519			// air
-#define V_SKIMMER 460			// air
-#define V_SLAMVAN 535
-#define V_SOLAIR 458
-#define V_SPARROW 469			// air
-#define V_SPEEDER 452			// water
-#define V_SQUALO 446			// water
-#define V_STAFFORD 580
-#define V_STALLION 439
-#define V_STRATUM 561
-#define V_STREAK 538
-#define V_STREAKC 570
-#define V_STRETCH 409
-#define V_STUNT 513				// air
-#define V_SULTAN 560
-#define V_SUNRISE 550
-#define V_SUPERGT 506
-#define V_SWATVAN 601
-#define V_SWEEPER 574
-#define V_TAHOMA 566
-#define V_TAMPA 549
-#define V_TAXI 420
-#define V_TOPFUN 459
-#define V_TORNADO 576
-#define V_TOWTRUCK 525
-#define V_TRACTOR 531
-#define V_TRAM 449
-#define V_TRASH 408			//MUSOROVOZ
-#define V_TROPIC 454			//water
-#define V_TUG 583
-#define V_TUGSTAIR 608			//AIRPORT LESTNICA
-#define V_TURISMO 451
-#define V_URANUS 558
-#define V_UTILITY 552			//UBORSHIK
-#define V_UTILTR1 611			//UBOESHIK PRICEP
-#define V_VCNMAV 488			// air
-#define V_VINCENT 540
-#define V_VIRGO 491
-#define V_VOODOO 412
-#define V_VORTEX 539			// hovercraft PODUSHKA
-#define V_WALTON 478
-#define V_WASHING 421
-#define V_WAYFARER 586			// bike
-#define V_WILLARD 529
-#define V_WINDSOR 555
-#define V_YANKEE 456
-#define V_YOSEMITE 554
-#define V_ZR350 477
-
-static vehicle_RadioStatus[MAX_VEHICLES] = {-1, ...};
 new CarsReSpawnTime = CARS_RESPAWN_TIME;
 
 enum VehicleInfo {
@@ -2299,19 +2085,15 @@ new VehicleModelSpawns_Interior[][VehicleSpawnInfo_Interior] = {
 
 stock LoadVehicles()
 {
-	for (new i = 0; i < sizeof(vip_Vehicle); i++)
-	{
-		vip_LastVehicleID = AddStaticVehicleEx(vip_Vehicle[i][Model], vip_Vehicle[i][Coord_X], vip_Vehicle[i][Coord_Y], vip_Vehicle[i][Coord_Z], vip_Vehicle[i][Coord_A], vip_Vehicle[i][Color_1], vip_Vehicle[i][Color_2], CarsReSpawnTime);
-	}
-	for (new i = 0, buf; i < sizeof(VehicleModelSpawns_Interior); i++)
-	{
+	vehicle_vip_Load();
+
+	for (new i = 0, buf; i < sizeof(VehicleModelSpawns_Interior); i++) {
 		buf = AddStaticVehicleEx(VehicleModelSpawns_Interior[i][vspawn_model], VehicleModelSpawns_Interior[i][vspawn_x], VehicleModelSpawns_Interior[i][vspawn_y], VehicleModelSpawns_Interior[i][vspawn_z], VehicleModelSpawns_Interior[i][vspawn_heading], VehicleModelSpawns_Interior[i][vspawn_colour1], VehicleModelSpawns_Interior[i][vspawn_colour2], CarsReSpawnTime);
 		LinkVehicleToInterior(buf, VehicleModelSpawns_Interior[i][vspawn_interior]);
 	}
-	for (new i = 0; i < sizeof(VehicleModelSpawns); i++)
-	{
-		if (VehicleModelSpawns[i][vspawn_model] == 0)
-		{
+
+	for (new i = 0; i < sizeof(VehicleModelSpawns); i++) {
+		if (VehicleModelSpawns[i][vspawn_model] == 0) {
 			continue;
 		}
 		AddStaticVehicleEx(VehicleModelSpawns[i][vspawn_model], VehicleModelSpawns[i][vspawn_x], VehicleModelSpawns[i][vspawn_y], VehicleModelSpawns[i][vspawn_z], VehicleModelSpawns[i][vspawn_heading], VehicleModelSpawns[i][vspawn_colour1], VehicleModelSpawns[i][vspawn_colour2], CarsReSpawnTime);
@@ -2338,13 +2120,43 @@ stock vehicles_OnGameModeInit()
 
 stock vehicles_OnPlayerStateChange(playerid, newstate, oldstate)
 {
-	if (oldstate == PLAYER_STATE_DRIVER || oldstate == PLAYER_STATE_PASSENGER) {
-		StopAudioStreamForPlayer(playerid);
+	vh_radio_OnPlayerStateChange(playerid, newstate, oldstate);
+	qudemsys_OnPlayerStateChange(playerid, newstate, oldstate);
+
+#if defined OLD_ENGINE_DO
+	if (GetPlayerVehicleSeat(playerid) == 0) {
+		new vehicleid = GetPlayerVehicleID(playerid);
+
+		if (newstate == PLAYER_STATE_DRIVER) {
+			vehicle_Engine(vehicleid, VEHICLE_PARAMS_ON);
+			
+			new hour;
+			gettime(hour);
+
+			if (hour > VEHICLE_LIGHTS_ON_TIME || hour < VEHICLE_LIGHTS_OFF_TIME) {
+				vehicle_Light(vehicleid, VEHICLE_PARAMS_ON);
+			}
+		}
+		if (newstate == PLAYER_STATE_EXIT_VEHICLE) {
+			vehicle_Engine(vehicleid, VEHICLE_PARAMS_OFF);
+		}
 	}
-	if (newstate == PLAYER_STATE_DRIVER || newstate == PLAYER_STATE_PASSENGER) {
-		new radioid = GetVehicleRadio( GetPlayerVehicleID(playerid) );
-		if (radioid >= 0) {
-			PlayAudioStreamForPlayer(playerid, vehicle_radio[radioid][vehradio_URL]);
+#endif
+	return 1;
+}
+
+stock vehicles_OnEnterExitModShop(playerid, enterexit, interiorid)
+{
+	#pragma unused interiorid
+	
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if (vehicleid != 0) {
+		if (enterexit == 1) {
+			SetVehicleVirtualWorld(vehicleid, playerid + 1);
+			SetPlayerVirtualWorld(playerid, playerid + 1);
+		} else {
+			SetVehicleVirtualWorld(vehicleid, 0);
+			SetPlayerVirtualWorld(playerid, 0);
 		}
 	}
 	return 1;
@@ -2384,17 +2196,6 @@ stock GetVehicleName(vehiclemodel)
 	return VehicleName;
 }
 
-COMMAND:vmenu(playerid, params[])
-{
-	if (!IsPlayerInAnyVehicle(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[5][1]);
-		return 0;
-	}
-	
-	Dialog_Show(playerid, Dialog:VehicleMenu);
-	return 1;
-}
-
 stock vehicle_Engine(vehicleid, newstate)
 {
 	new engine, lights, alarm, doors, bonnet, boot, objective;
@@ -2418,41 +2219,6 @@ stock GetVehicleCost(vehiclemodel)
 		}
 	}
 	return 0;
-}
-
-
-stock DisableVehicleRadio(vehicleid)
-{
-	vehicle_RadioStatus[vehicleid] = -1;
-	
-	foreach (new playerid : Player) {
-		if (vehicleid == GetPlayerVehicleID(playerid)) {
-			StopAudioStreamForPlayer(playerid);
-			SendClientMessage(playerid, COLOUR_SkyBlue, "* Радио выключено");
-		}
-	}
-	return 1;
-}
-
-stock SetVehicleRadio(vehicleid, radioid)
-{
-	vehicle_RadioStatus[vehicleid] = radioid;
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), "* Текущая радиостанция: %s", vehicle_radio[radioid][vehradio_Name]);
-	
-	foreach (new playerid : Player) {
-		if (vehicleid == GetPlayerVehicleID(playerid)) {
-			PlayAudioStreamForPlayer(playerid, vehicle_radio[radioid][vehradio_URL]);
-			SendClientMessage(playerid, COLOUR_SkyBlue, string);
-		}
-	}
-	return 1;
-}
-
-stock GetVehicleRadio(vehicleid)
-{
-	return vehicle_RadioStatus[vehicleid];
 }
 
 stock IsVehicleOccupied(vehicleid)

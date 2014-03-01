@@ -56,6 +56,7 @@ stock base_SaveConfig(file_config)
 
 stock base_OnGameModeInit()
 {
+	SetGameModeText("Open-GTO "#VERSION);
 	UsePlayerPedAnims();
 	ShowPlayerMarkers(1);
 	ShowNameTags(1);

@@ -9,10 +9,6 @@
 
 #define _deathmatch_included
 #pragma library deathmatch
-#include "base"
-#include "player"
-#include "world"
-#include "weapons"
 
 #define MAX_DMWEAPONS 10
 #define MAX_DM 50

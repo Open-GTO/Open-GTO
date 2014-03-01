@@ -13,6 +13,17 @@
 #pragma library vehicle_menu
 
 
+COMMAND:vmenu(playerid, params[])
+{
+	if (!IsPlayerInAnyVehicle(playerid)) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[5][1]);
+		return 0;
+	}
+	
+	Dialog_Show(playerid, Dialog:VehicleMenu);
+	return 1;
+}
+
 DialogCreate:VehicleMenu(playerid)
 {
 	new string[512], engine, lights, alarm, doors, bonnet, boot, objective;
@@ -161,10 +172,10 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:VehicleColor(playerid)
 {
-	new string[32 * sizeof(colors_Array)];
+	new string[MAX_NAME * COLOR_COUNT];
 
-	for (new i = 0; i < sizeof(colors_Array); i++) {
-		format(string, sizeof(string), "%s{%06x}%s\n", string, colors_Array[i][color_code] >>> 8, colors_Array[i][color_name]);
+	for (new i = 0; i < COLOR_COUNT; i++) {
+		format(string, sizeof(string), "%s{%s}%s\n", string, color_GetEmbeddingCode(i), color_GetName(i));
 	}
 
 	Dialog_Open(playerid, Dialog:VehicleColor, DIALOG_STYLE_LIST, "Изменить цвет", string, "ОК", "Назад");
@@ -178,36 +189,7 @@ DialogResponse:VehicleColor(playerid, response, listitem, inputtext[])
 	}
 	
 	new vehicleid = GetPlayerVehicleID(playerid);
-	ChangePlayerVehicleColor(playerid, vehicleid, colors_Array[listitem][color_vehicle], colors_Array[listitem][color_vehicle]);
-	return 1;
-}
-
-DialogCreate:VehicleRadio(playerid)
-{
-	new string[MAX_NAME * (sizeof(vehicle_radio) + 1)] = "{FF0000}Выключить радио\n{FFFFFF}";
-	
-	for (new i = 0; i < sizeof(vehicle_radio); i++) {
-		strcat(string, vehicle_radio[i][vehradio_Name], sizeof(string));
-		strcat(string, "\n", sizeof(string));
-	}
-	
-	Dialog_Open(playerid, Dialog:VehicleRadio, DIALOG_STYLE_LIST, "Радио", string, "Выбрать", "Назад");
-}
-
-DialogResponse:VehicleRadio(playerid, response, listitem, inputtext[])
-{
-	if (!response) {
-		Dialog_Show(playerid, Dialog:VehicleMenu);
-		return 1;
-	}
-	
-	new vehicleid = GetPlayerVehicleID(playerid);
-	
-	if (listitem == 0) {
-		DisableVehicleRadio(vehicleid);
-	} else {
-		SetVehicleRadio(vehicleid, listitem - 1);
-	}
+	ChangePlayerVehicleColor(playerid, vehicleid, color_GetVehicleCode(listitem), color_GetVehicleCode(listitem));
 	return 1;
 }
 

@@ -10,8 +10,6 @@
 #define _race_included
 #pragma library race
 
-#include "base"
-#include "vehicles"
 
 #define MAX_CP 100
 #define MAX_RACES 50

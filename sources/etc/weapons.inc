@@ -13,8 +13,6 @@
 #pragma library weapons
 
 
-#include "base"
-
 #define MAX_BULLETS				9000
 
 enum WeaponInfo {

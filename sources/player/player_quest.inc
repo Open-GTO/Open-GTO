@@ -15,6 +15,18 @@
 
 #define INVALID_QUEST_ID	-1
 
+static
+	QuestsCount = INVALID_QUEST_ID;
+
+
+stock quest_Register()
+{
+	if (QuestsCount >= MAX_QUESTS) {
+		return INVALID_QUEST_ID;
+	}
+
+	return ++QuestsCount;
+}
 
 stock player_GetQuestID(playerid) {
 	return GetPVarInt(playerid, "player_QuestID");

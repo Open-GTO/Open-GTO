@@ -65,18 +65,6 @@ stock vip_OnPlayerStateChange(playerid,newstate,oldstate)
 	return 1;
 }
 
-stock IsVIPVehicle(vehicleid)
-{
-	for  (new i = 1; i <= sizeof(vip_Vehicle); i++)
-	{
-		if (vehicleid == vip_LastVehicleID - sizeof(vip_Vehicle) + i)
-		{
-			return 1;
-		}
-	}
-	return 0;
-}
-
 stock GetPlayerVIPDate(playerid)
 {
 	new string[11];

@@ -15,10 +15,7 @@
 
 
 static
-	IsEnabled = SWAGUP_ENABLED,
-	MoneyRate = SWAGUP_MONEY_RATE,
-	XpRate = SWAGUP_XP_RATE,
-	PickupID;
+	g_pickup_id;
 
 static Float:swagup_Coords[][CoordInfo] = { // from CashBox script by Sandra
 	{2227.74, 1516.43, 10.82},
@@ -88,50 +85,38 @@ static Float:swagup_Coords[][CoordInfo] = { // from CashBox script by Sandra
 	{286.36, -1145.15, 80.91}
 };
 
-stock swagup_LoadConfig(file_config)
-{
-	ini_getInteger(file_config, "Swagup_IsEnabled", IsEnabled);
-	ini_getInteger(file_config, "Swagup_MoneyRate", MoneyRate);
-	ini_getInteger(file_config, "Swagup_XpRate", XpRate);
-}
-
-stock swagup_SaveConfig(file_config)
-{
-	ini_setInteger(file_config, "Swagup_IsEnabled", IsEnabled);
-	ini_setInteger(file_config, "Swagup_MoneyRate", MoneyRate);
-	ini_setInteger(file_config, "Swagup_XpRate", XpRate);
-}
-
 stock swagup_OnGameModeInit()
 {
-	if (!IsEnabled) {
+	if (!IsMissionEnabled(mission_swagup)) {
 		return 0;
 	}
 
 	swagup_SpawnPickup();
+
 	GameMSG("SERVER: Swagup module init");
 	return 1;
 }
 
 stock swagup_OnPlayerPickUpPickup(playerid, pickupid)
 {
-	if (!IsEnabled || pickupid != PickupID) {
+	if (!IsMissionEnabled(mission_swagup) || pickupid != g_pickup_id) {
 		return 0;
 	}
 
-	DestroyPickup(PickupID);
+	DestroyPickup(g_pickup_id);
 	
-	new string[MAX_STRING],
-		win_money = ( ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * MoneyRate ),
-		win_xp = ( ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * XpRate );
+	new
+		win_money = mission_CalculateMoney(playerid, mission_swagup),
+		win_xp = mission_CalculateXP(playerid, mission_swagup);
 	
 	oGivePlayerMoney(playerid, win_money);
 	GivePlayerXP(playerid, win_xp, 1);
 	
+	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[19][63], oGetPlayerName(playerid), playerid, win_money, win_xp);
 	SendClientMessageToAll(COLOUR_RED, string);
 	
-	SetTimer("swagup_SpawnPickup", mathrandom(120000, 480000), 0);
+	SetTimer("swagup_SpawnPickup", mission_GetPauseTime(mission_swagup), 0);
 	return 1;
 }
 
@@ -139,7 +124,7 @@ forward swagup_SpawnPickup();
 public swagup_SpawnPickup()
 {
 	new swid = random( sizeof(swagup_Coords) );
-	PickupID = CreatePickup(410, 3, swagup_Coords[swid][Coord_X], swagup_Coords[swid][Coord_Y], swagup_Coords[swid][Coord_Z], -1);
+	g_pickup_id = CreatePickup(410, 3, swagup_Coords[swid][Coord_X], swagup_Coords[swid][Coord_Y], swagup_Coords[swid][Coord_Z], -1);
 	SendClientMessageToAll(COLOUR_RED, lang_texts[19][64]);
 	return 1;
 }

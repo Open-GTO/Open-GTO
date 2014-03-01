@@ -12,10 +12,6 @@
 #pragma library groundhold
 
 
-#include "base"
-#include "player"
-#include "world"
-
 enum gh_info {
 	gh_id,
 	gh_name[MAX_NAME], // name of ground

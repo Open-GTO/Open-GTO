@@ -23,7 +23,7 @@ static cashentry = 300; // Cash required to enter (earned by winner)
 static xpprize = 2500; // xp earned for 1st position
 static xpbonus = 500; // xp earned per player still in race
 static maxracetime = 130; // time race runs for (seconds)
-static allowedcars[10] = {V_BUFFALO,V_BANSHEE,V_PCJ600,V_SABRE}; // cars allowed in this race.
+static allowedcars[10] = {402, 429, 461, 475}; // cars allowed in this race.
 static Float:startlineheading = 187.7329; // which way players face at startline
 static Float:racecheckpoints[][CoordInfo] = {
 	{1557.1172,26.8557,23.8845},

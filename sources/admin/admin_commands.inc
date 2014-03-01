@@ -906,37 +906,6 @@ COMMAND:repair(playerid, params[])
 	return 1;
 }
 
-COMMAND:go(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
-		return 1;
-	}
-
-	new idx = 0;
-	new point = strval(strcharsplit(params, idx, ' '));
-
-	if (point < 0 || point > sizeof(tele_points) - 1) {
-		return 1;
-	}
-	
-	new vehicleid = GetPlayerVehicleID(playerid);
-	if (vehicleid != 0) {
-		oSetVehiclePos(vehicleid, tele_points[point][Coord_X], tele_points[point][Coord_Y], tele_points[point][Coord_Z]);
-	} else {
-		oSetPlayerPos(playerid, tele_points[point][Coord_X], tele_points[point][Coord_Y], tele_points[point][Coord_Z]);
-	}
-	
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][16], point);
-	SendClientMessage(playerid, COLOUR_WHITE, string);
-	return 1;
-}
-
 COMMAND:an(playerid, params[])
 {
 	if (!IsPlayerRconAdmin(playerid)) {

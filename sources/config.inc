@@ -15,7 +15,7 @@
 #pragma tabsize 0
 #pragma dynamic 13000
 
-#define VERSION					"v1.1.6" // версия мода
+#define VERSION					"v2.0.0 alpha" // версия мода
 #define GTO_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
 #define GTO_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
@@ -79,11 +79,6 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 // прочее
 #define MAX_GULPS			3 // максимальное количество глотков из бутылки
-
-// поклажи
-#define SWAGUP_ENABLED		1 // включена-ли система поклаж
-#define SWAGUP_MONEY_RATE	30 // параметр количества денег, за поднятие поклажи
-#define SWAGUP_XP_RATE		30 // параметр количества опыта, за поднятие поклажи
 
 // admin
 #define ADMIN_TELEPORT_ENABLED		1 // включена-ли система телепортации администрации по клику на карте
@@ -204,6 +199,13 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 	#define TRUCKER_RUNNER_MISSION_TIME		300 // время перерыва между миссиями, в секундах
 	#define TRUCKER_CAR_SPAWN_TIME			300
 	//
+
+	// поклажи
+	#define SWAGUP_ENABLED		1 // включена ли система поклаж
+	#define SWAGUP_MONEY_RATE	30 // параметр количества денег, за поднятие поклажи
+	#define SWAGUP_XP_RATE		30 // параметр количества опыта, за поднятие поклажи
+	#define SWAGUP_PAUSE_TIME	480000
+	//
 	
 //
 // при смерти
@@ -240,76 +242,9 @@ new Text:clickText[clickText_Info];
 // прочее
 #define SPECIAL_ACTION_PISS	68
 
-// типы спавнов
-#define SPAWN_HOUSE_NONE	-1
-#define SPAWN_HOUSE_GANG	-2
-
 // дополнительные функции 'для' mxINI
 #define ini_fileRemove	fremove
 #define ini_fileExist	fexist
-
-// цвета
-#define COLOUR_GREY 0xAFAFAFAA // grey
-#define COLOUR_GREEN 0x33AA33AA // green
-#define COLOUR_LIGHTGREEN 0x9ACD32AA //lightgreen
-#define COLOUR_RED 0xAA3333AA // red
-#define COLOUR_LIGHTRED 0xFF6347AA // lightred
-#define COLOUR_YELLOW 0xFFFF00AA // yellow
-#define COLOUR_WHITE 0xFFFFFFAA // white
-#define COLOUR_BLUE 0x0000FFAA // blue
-#define COLOUR_LIGHTBLUE 0x33CCFFAA // LightBlue
-#define COLOUR_ORANGE 0xFF9900AA //orange
-#define COLOUR_PURPLE 0xC2A2DAAA //purple
-#define COLOUR_CRIMSON 0xDC143CAA
-//#define COLOUR_LIMEGREEN 0x32CD32AA
-#define COLOUR_AQUA 0x00FFFFAA
-#define COLOUR_FLBLUE 0x6495EDAA
-#define COLOUR_MAGENTA 0xFF00FFAA
-//#define COLOUR_GOLD 0xFFD700AA
-#define COLOUR_PINK 0xFFC0CBAA
-#define COLOUR_MISC 0xAFAFAFAA // Grey - Misc
-#define COLOUR_CHAT 0xFFFFFFAA // White - Chat
-#define COLOUR_PLAYER 0xAAAAAAAA // White - Player
-#define COLOUR_XP_GOOD 0x00C7FFAA // Blue - XP
-#define COLOUR_XP_BAD 0x00008BAA // Blue - XP
-#define COLOUR_COMBAT_GOOD 0xAA3333AA // Red - Combat
-#define COLOUR_COMBAT_BAD 0xBB3333AA // Red - Combat
-#define COLOUR_MONEY_GOOD 0xFFFF00AA // Yellow - Money
-#define COLOUR_MONEY_BAD 0xDAA520AA // Yellow - Money
-#define COLOUR_RACE 0x005407AA // green - dark
-#define COLOUR_RACE_BAD 0x545407AA // yellow-green-dark
-#define COLOUR_GANG 0xFF8C00AA // orange
-#define COLOUR_GANG_CHAT 0xFFA500AA // orange
-#define COLOUR_DM 0xFF0066AA // red - purple
-#define COLOUR_DM_BAD 0xFF0066AA // red - purple
-#define COLOUR_PM 0xFFCC22FF
-#define WARN_MS_COLOR 0xFF5050AA
-
-//#define COLOUR_LIGHTCORAL 0xF08080AA
-#define COLOUR_DARKRED 0x8B0000AA
-#define COLOUR_DEEPPINK 0xFF1493AA
-#define COLOUR_TOMATO 0xFF6347AA
-#define COLOUR_OrangeRed 0xFF4500AA
-#define COLOUR_DarkOrange 0xFF8C00AA
-#define COLOUR_Moccasin 0xFFE4B5AA
-#define COLOUR_Khaki 0xF0E68CAA
-#define COLOUR_DarkViolet 0x9400D3AA
-#define COLOUR_Indigo 0x4B0082AA
-#define COLOUR_GreenYellow 0xADFF2FAA
-#define COLOUR_Lime 0x00FF00AA
-//#define COLOUR_LIMEGREEN 0x32CD32AA
-#define COLOUR_SpringGreen 0x00FF7FAA
-#define COLOUR_Olive 0x808000AA
-#define COLOUR_Teal 0x008080AA
-//#define COLOUR_Aquamarine 0x7FFFD4AA
-#define COLOUR_SteelBlue 0x4682B4AA
-#define COLOUR_SkyBlue 0x87CEEBAA
-#define COLOUR_Tan 0xD2B48CAA
-#define COLOUR_Peru 0xCD853FAA
-#define COLOUR_Sienna 0xA0522DAA
-//#define COLOUR_MistyRose 0xFFE4E1AA
-#define COLOUR_DimGray 0x696969AA
-#define COLOUR_Black 0x000000AA
 
 // по кнопкам
 #define PRESSED(%0) \
