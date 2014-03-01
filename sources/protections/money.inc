@@ -52,13 +52,13 @@ stock oSetPlayerMoney(playerid,money)
 	return 1;
 }
 
-stock oGivePlayerMoney(playerid,money,showtext=0)
+stock oGivePlayerMoney(playerid, money, showtext=0)
 {
 	if (money == 0) {
 		return 0;
 	}
 
-	if (oGetPlayerMoney(playerid) + money > MAX_MONEY) {
+	if (oGetPlayerMoney(playerid) > MAX_MONEY - money) {
 		money = MAX_MONEY - oGetPlayerMoney(playerid);
 		GameMSG("player: %s(%d): is on max money", oGetPlayerName(playerid), playerid);
 	}
