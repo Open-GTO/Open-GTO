@@ -29,6 +29,7 @@ Developers:
 #include "utils\mxINI"
 #include "config"
 #include "sys\base"
+#include "sys\sys_time"
 #include "sys\lang"
 #include "sys\logging"
 #include "utils\gtoutils"
@@ -224,7 +225,7 @@ public OnGameModeInit()
 	#tryinclude "custom\objects"
 	GameMSG("SERVER: Custom mapicons, objects and pickups init");
 
-	SyncTime();
+	time_Sync();
 	SetWeather( mathrandom(9, 18) );
 	SetTimer("OneSecTimer", 1000, 1); // 1 second
 	SetTimer("FiveSecondTimer", 5000, 1); // 5 second

@@ -53,30 +53,6 @@ public WorldSave(necessarily) // save all
 
 //----------------------------------------------------------------------------------------------------
 
-stock SyncTime()
-{
-	if (RealTime == 0) {
-		WorldTime++;
-		
-		if (WorldTime > 23) {
-			WorldTime = 0;
-		}
-	} else {
-		new hour;
-		gettime(hour);
-		
-		hour += RealTimeOffset;
-		if (hour > 23) {
-			hour -= 23;
-		}
-		
-		WorldTime = hour;
-	}
-	SetWorldTime(WorldTime);
-}
-
-//----------------------------------------------------------------------------------------------------
-
 stock SpawnWorld() // run at startup to spawn world
 {
 	for(new i = SKINS_MINID; i <= SKINS_MAXID; i++) {
@@ -119,14 +95,14 @@ public OneMinuteTimer()
 		}
 	}
 	weather_Update();
-	SyncTime();
+	time_Sync();
 	TurnAround();
 }
 
 forward OneHourTimer();
 public OneHourTimer()
 {
-	Profit();
+	bank_Profit();
 	CheckHousesOwners();
 	CheckBusinessOwners();
 	lottery_RunTimer();

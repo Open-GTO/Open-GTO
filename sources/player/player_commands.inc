@@ -117,7 +117,7 @@ COMMAND:time(playerid, params[])
 		minute;
 	
 	gettime(_, minute);
-	format(string, sizeof(string), "%02d:%02d", WorldTime, minute);
+	format(string, sizeof(string), "%02d:%02d", time_GetCurrentHour(), minute);
 	GameTextForPlayer(playerid, string, 1000, 1);
 	
 	PlayerPlaySound(playerid, 1085, 0, 0, 0);

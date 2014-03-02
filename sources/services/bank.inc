@@ -258,11 +258,11 @@ stock IsPlayerAtBank(playerid)
 	return 0;
 }
 
-stock Profit()
+stock bank_Profit()
 {
 	new string[MAX_STRING], amount;
 	
-	foreach (Player, playerid) {
+	foreach (new playerid : Player) {
 		if (!player_IsLogin(playerid)) {
 			continue;
 		}

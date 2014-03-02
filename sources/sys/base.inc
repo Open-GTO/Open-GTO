@@ -30,28 +30,12 @@ new RaceDB[MAX_STRING] = GTO_FILES_FOLDER "Race/!Races"GTO_FILES_FORMAT;
 new RaceBaseDB[MAX_STRING] = GTO_FILES_FOLDER "Race/";
 new RaceRecordDB[MAX_STRING] = GTO_FILES_FOLDER "Race/Record/";
 
-new RealTime = SERVER_REAL_TIME,
-	RealTimeOffset = SERVER_REAL_TIME_OFFSET,
-	WorldTime;
-
 new nullstr[MAX_STRING];
 
 enum CoordInfo {
     Float:Coord_X,
     Float:Coord_Y,
     Float:Coord_Z
-}
-
-stock base_LoadConfig(file_config)
-{
-	ini_getInteger(file_config, "Real_Time", RealTime);
-	ini_getInteger(file_config, "Real_Time_Offset", RealTimeOffset);
-}
-
-stock base_SaveConfig(file_config)
-{
-	ini_setInteger(file_config, "Real_Time", RealTime);
-	ini_setInteger(file_config, "Real_Time_Offset", RealTimeOffset);
 }
 
 stock base_OnGameModeInit()
