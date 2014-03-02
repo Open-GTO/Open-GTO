@@ -156,7 +156,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define VEHICLE_LIGHTS_ON_TIME		16 // время(часов), когда фары транспорта будут автоматически включаться
 #define VEHICLE_LIGHTS_OFF_TIME		7 // время(часов), когда фары транспорта будут автоматически выключаться
 
-#define ENABLE_EMPTY_VEHICLE_DAMAGE // включает урон и прокалывание шин у пустого транспорта
+#define VEHICLE_DAMAGE_ENABLE_TIRES // включает прокалывание шин у пустого транспорта
+//#define VEHICLE_DAMAGE_ENABLE_DAMAGE // включает урон у пустого транспорта
 //
 #define MAX_PLAYER_VEHICLES			4 // максимальное количество личного транспорта
 #define VEHSHOP_CAR_CHANGE_TIME		3 // количество часов, через которое транспорт в магазине меняется

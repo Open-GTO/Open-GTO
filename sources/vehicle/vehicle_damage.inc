@@ -12,8 +12,8 @@
 #define _vehicle_damage_included
 #pragma library vehicle_damage
 
-
-stock vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
+forward vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ);
+public vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
 	#pragma unused playerid, hittype
 
@@ -21,7 +21,7 @@ stock vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, F
 		return 1;
 	}
 
-#if defined ENABLE_EMPTY_VEHICLE_DAMAGE
+#if defined VEHICLE_DAMAGE_ENABLE_TIRES
 	// tire damage
 	new veh_model = GetVehicleModel(hitid);
 
@@ -52,13 +52,13 @@ stock vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, F
 
 	tires = encode_tires(wheel_status[0], wheel_status[1], wheel_status[2], wheel_status[3]);
 	UpdateVehicleDamageStatus(hitid, panels, doors, lights, tires);
+#endif
 
+#if defined VEHICLE_DAMAGE_ENABLE_DAMAGE
 	// vehicle damage
 	new Float:v_health;
 	GetVehicleHealth(hitid, v_health);
 	SetVehicleHealth(hitid, v_health - GetWeaponDamage(weaponid));
-#else
-	#pragma unused weaponid, fX, fY, fZ
 #endif
 	return 1;
 }
