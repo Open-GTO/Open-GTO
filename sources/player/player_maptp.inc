@@ -39,6 +39,3 @@ stock IsAllowPlayerTeleport(playerid) {
 stock oAllowPlayerTeleport(playerid, isallow) {
 	SetPVarInt(playerid, "AllowTeleport", isallow);
 }
-#if defined AllowPlayerTeleport
-	#define AllowPlayerTeleport oAllowPlayerTeleport
-#endif

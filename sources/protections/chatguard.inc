@@ -327,7 +327,7 @@ enum chatMsInfo // инфо о каждом сообщении чата
 }
 
 // массив, где хранятся посл CHAT_HISTORY_SIZE сообщений чата
-stock ms [ CHAT_HISTORY_SIZE ] [ chatMsInfo ];
+static stock ms [ CHAT_HISTORY_SIZE ] [ chatMsInfo ];
 
 /*
     Строка source[] будет разделена на несколько подстрок

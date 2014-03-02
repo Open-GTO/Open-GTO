@@ -11,8 +11,6 @@
 #pragma library vehicle
 
 
-native IsValidVehicle(vehicleid);
-
 new CarsReSpawnTime = CARS_RESPAWN_TIME;
 
 enum VehicleInfo {

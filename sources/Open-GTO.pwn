@@ -3,7 +3,7 @@ Project Name:	Open - Grand Theft Online (Open-GTO)
 Web site:		http://open-gto.ru/
 Date started:	5 November 2009
 
-SA-MP version:		0.3e and older
+SA-MP version:		0.3z and older
 Date started GTO:	12 August 2006
 
 Developers:
@@ -23,6 +23,8 @@ Developers:
 */
 
 #include <..\compiler\includes\a_samp>
+#include "utils\unfixes"
+#include "utils\fixes"
 #include "utils\foreach"
 #include "utils\zcmd"
 #include "utils\gtodialog"

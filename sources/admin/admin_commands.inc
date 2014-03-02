@@ -1290,7 +1290,7 @@ COMMAND:allowport(playerid, params[])
 		return 0;
 	}
 
-	AllowPlayerTeleport(receiverid, setport);
+	oAllowPlayerTeleport(receiverid, setport);
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][17], oGetPlayerName(receiverid), receiverid);
