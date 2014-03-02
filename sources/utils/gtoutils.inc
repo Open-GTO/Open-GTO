@@ -153,12 +153,7 @@ stock NameCharCheck(string[MAX_PLAYER_NAME+1])
 
 stock PlayerCount()
 {
-	new count = 0;
-	foreach (Player, playerid)
-	{
-		count++;
-	}
-	return count;
+	return Iter_Count(Player);
 }
 
 stock SetPlayerPosEx(playerid, Float:X, Float:Y, Float:Z, Float:Angle, Interior, World=0)
