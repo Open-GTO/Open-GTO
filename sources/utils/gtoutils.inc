@@ -14,8 +14,6 @@
 #pragma library gtoutils
 
 
-#define command_register(%0,%1,%2,%3) if (!strcmp(%0,%1, true,%2) && ((%0[%2] == ' ') || (%0[%2] == 0))) return %3_OnPlayerCommandText(playerid,%0)
-#define command_registerNR(%0,%1,%2,%3) if (!strcmp(%0,%1, true,%2) && ((%0[%2] == ' ') || (%0[%2] == 0))) %3_OnPlayerCommandText(playerid,%0)
 #define GivePVarInt(%1,%2,%3) SetPVarInt(%1,%2, GetPVarInt(%1,%2)+%3)
 #define set(%0,%1) strmid(%0,%1, 0, 160, MAX_STRING + 32)
 
@@ -92,24 +90,6 @@ stock DateToNum(year, month, day, hour=-1, minute=-1, second=-1)
 stock is_leap_year(year)
 {
 	return (year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0);
-}
-
-stock SendClientMessageToBeside(playerid, dist, text[])
-{
-	new string[MAX_STRING],
-		Float:pos[3],
-		color = GetPlayerColor(playerid);
-	
-	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	format(string, sizeof(string), "$ %s"CHAT_SHOW_ID" говорит: {FFFFFF}%s", oGetPlayerName(playerid), playerid, text);
-	foreach (Player, i)
-	{
-		if (IsPlayerInRangeOfPoint(i, dist, pos[0], pos[1], pos[2]))
-		{
-			SendClientMessage(i, color, string);
-		}
-	}
-	return;
 }
 
 stock PlayerPlaySoundOnPlayer(playerid, soundid)

@@ -66,6 +66,7 @@ Developers:
 #include "player\player_commands"
 #include "player\player_kick"
 #include "player\player_maptp"
+#include "player\player_message"
 #include "player\player"
 #include "etc\weapons"
 #include "sys\zones"
@@ -419,67 +420,25 @@ public OnPlayerText(playerid, text[])
 		return 0;
 	}
 
-	if (pt_chat_OnPlayerText(playerid, text) == 0) {
+	new pt_result = pt_chat_OnPlayerText(playerid, text);
+	if (pt_result == 0) {
 		return 0;
 	}
-
-	new playername[MAX_PLAYER_NAME+1];
-	GetPlayerName(playerid, playername, sizeof(playername));
 	
-	new string[MAX_STRING];
-	switch (text[0])
-	{
-		case '!':
-		{
-			if (GetPVarInt(playerid, "GangID") == 0 || player_IsMuted(playerid))
-			{
-				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
-				return 0;
-			}
-			if (strlen(text[1]) < 2) return 1;
-			format(string, sizeof(string), "%s"CHAT_SHOW_ID" банде: {FFFFFF}%s", playername, playerid, text[1]);
-			SendGangMessage(GetPVarInt(playerid, "GangID"), string, COLOUR_GANG_CHAT);
-			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <GANG CHAT>: %s", playername, playerid, text[1]);
-			WriteLog(ChatLog, string);
-			return 0;
-		}
-		case '@','"':
-		{
-			if (strlen(text[1]) < 2) return 1;
-			SendClientMessageToAdmins(playerid, text[1]);
-			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <ADMIN TALK>: %s", playername, playerid, text[1]);
-			WriteLog(ChatLog, string);
-			return 0;
-		}
-		case '#','№':
-		{
-			if (strlen(text[1]) < 2) return 1;
-			SendClientMessageToModers(playerid, text[1]);
-			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <MODERATOR TALK>: %s", playername, playerid, text[1]);
-			WriteLog(ChatLog, string);
-			return 0;
-		}
-		case '$',';':
-		{
-			if (strlen(text[1]) < 2) return 1;
-			if (player_IsMuted(playerid))
-			{
-				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
-				return 0;
-			}
-			SendClientMessageToBeside(playerid, 10, text[1]);
-			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <SAY>: %s", playername, playerid, text[1]);
-			WriteLog(ChatLog, string);
-			return 0;
-		}
+	new pl_result = pl_message_OnPlayerText(playerid, text);
+	if (pl_result == 0) {
+		return 0;
 	}
 
 	new adm_result = admin_OnPlayerText(playerid, text);
 	if (adm_result == 0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 		return 0;
 	}
 
+	new playername[MAX_PLAYER_NAME + 1];
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	new string[MAX_STRING];
 	format(string, sizeof(string), "%s"CHAT_SHOW_ID": {FFFFFF}%s", playername, playerid, text);
 	SendClientMessageToAll(GetPlayerColor(playerid), string);
 

@@ -25,6 +25,9 @@ stock admin_LoadConfig(file_config)
 stock admin_OnPlayerText(playerid, text[])
 {
 	new mute_result = adm_mute_OnPlayerText(playerid, text);
+	if (mute_result == 0) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
+	}
 	return mute_result;
 }
 

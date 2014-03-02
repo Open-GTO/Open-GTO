@@ -179,7 +179,7 @@ stock player_Login(playerid)
 
 		if (!ini_fileExist(tmpname)) {
 			ini_setString(file_player, "Gang", nullstr);
-			SetPVarInt(playerid, "GangID", 0);
+			player_SetGangID(playerid, 0);
 
 			format(tmpname, sizeof(tmpname), "Банда '%s' была расформирована.", s_buf);
 			SendClientMessage(playerid, COLOUR_ORANGE, tmpname);
@@ -187,7 +187,7 @@ stock player_Login(playerid)
 			GangMemberLogin(playerid, GangLoad(s_buf));
 		}
 	} else {
-		SetPVarInt(playerid, "GangID", 0);
+		player_SetGangID(playerid, 0);
 	}
 
 	ini_getString(file_player, "Weapons", s_buf);

@@ -102,7 +102,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 	
-	new gangid = GetPVarInt(playerid, "GangID");
+	new gangid = player_GetGangID(playerid);
 	if (gangid != 0) {
 		gang_RenameMember(gangid, Account_LastName, Account_NewName);
 	}
