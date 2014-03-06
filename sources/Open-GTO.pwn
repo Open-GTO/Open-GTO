@@ -291,7 +291,6 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 {
 	pl_weapon_OnPlayerPickUpPickup(playerid, pickupid);
 	pt_armour_OnPlayerPickUpPickup(playerid, pickupid);
-	pt_weapon_OnPlayerPickUpPickup(playerid, pickupid);
 	swagup_OnPlayerPickUpPickup(playerid, pickupid);
 	vip_OnPlayerPickUpPickup(playerid, pickupid);
 	return 1;
