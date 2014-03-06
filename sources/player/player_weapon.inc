@@ -96,58 +96,59 @@ stock GetWeaponSlot(weaponid)
 //
 
 // даёт оружие 'навсегда'
-stock GivePlayerOwnedWeapon(playerid,weaponid,ammo)
+stock GivePlayerWeaponCheck(playerid, weaponid, ammo)
 {
-	if (!IsPlayerAllowedWeapon(playerid,weaponid)) return;
+	if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
+		return;
+	}
+
 	new slot = GetWeaponSlot(weaponid);
-	if (ammo > 0)
-	{
-		if (!IsWeaponHandToHand(weaponid))
-		{
+	if (ammo > 0) {
+		if (!IsWeaponHandToHand(weaponid)) {
 			// если оружия разные, то обнуляем патроны
-			if (PlayerWeapons[playerid][slot][pwid] == weaponid)
-			{
+			if (PlayerWeapons[playerid][slot][pwid] == weaponid) {
 				PlayerWeapons[playerid][slot][pbullets] += ammo;
-			}
-			else
-			{
+			} else {
 				PlayerWeapons[playerid][slot][pbullets] = ammo;
 			}
 			PlayerWeapons[playerid][slot][pwid] = weaponid;
-		}
-		else
-		{
+		} else {
 			PlayerWeapons[playerid][slot][pwid] = weaponid;
 			PlayerWeapons[playerid][slot][pbullets] = 1;
 		}
-		oGivePlayerWeapon(playerid,weaponid,ammo);
+		GivePlayerWeapon(playerid, PlayerWeapons[playerid][slot][pwid], PlayerWeapons[playerid][slot][pbullets]);
 	}
 }
 
-stock GivePlayerOwnedWeaponEx(playerid, weaponid, ammo)
+stock oGivePlayerWeapon(playerid, weaponid, ammo)
 {
 	new slot = GetWeaponSlot(weaponid);
 	
 	PlayerWeapons[playerid][slot][pwid] = weaponid;
 	PlayerWeapons[playerid][slot][pbullets] += ammo;
 	
-	oGivePlayerWeapon(playerid, weaponid, ammo);
+	GivePlayerWeapon(playerid, weaponid, ammo);
 }
-//
+
+stock oResetPlayerWeapons(playerid)
+{
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
+		PlayerWeapons[playerid][i][pwid] = 0;
+		PlayerWeapons[playerid][i][pbullets] = 0;
+	}
+	ResetPlayerWeapons(playerid);
+	return 1;
+}
 
 // даёт всё 'всегдашнее' оружие
-stock GivePlayerOwnedWeapons(playerid)
+stock GivePlayerAllWeapon(playerid)
 {
-	oResetPlayerWeapons(playerid);
-	for (new weaponslot = 0; weaponslot < PLAYER_WEAPON_SLOTS; weaponslot++)
-	{
-		if (PlayerWeapons[playerid][weaponslot][pwid] <= 0 || !IsPlayerAllowedWeapon(playerid,PlayerWeapons[playerid][weaponslot][pwid]))
-		{
+	for (new slot = 0; slot < PLAYER_WEAPON_SLOTS; slot++) {
+		if (PlayerWeapons[playerid][slot][pwid] <= 0 || !IsPlayerAllowedWeapon(playerid, PlayerWeapons[playerid][slot][pwid])) {
 			continue;
 		}
-		if (PlayerWeapons[playerid][weaponslot][pwid] > 0)
-		{
-			oGivePlayerWeapon(playerid,PlayerWeapons[playerid][weaponslot][pwid],PlayerWeapons[playerid][weaponslot][pbullets]);
+		if (PlayerWeapons[playerid][slot][pwid] > 0) {
+			GivePlayerWeapon(playerid, PlayerWeapons[playerid][slot][pwid], PlayerWeapons[playerid][slot][pbullets]);
 		}
 	}
 }
@@ -196,21 +197,6 @@ stock CreateWeaponDBString(playerid)
 	return wepstr;
 }
 
-// уничтожает всё 'всегдашнее' оружие
-stock DropAmmo(playerid)
-{
-	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
-	{
-		PlayerWeapons[playerid][i][pwid] = 0;
-		PlayerWeapons[playerid][i][pbullets] = 0;
-	}
-	PlayerWeapons[playerid][0][pwid] = 0;
-	PlayerWeapons[playerid][0][pbullets] = 1;
-	return 1;
-}
-//
-
-
 // парсит строку, устанавливая нужные значения для стартового оружия
 stock SetPSWFromDBString(dbstring[])
 {
@@ -230,25 +216,6 @@ stock CreatePSWDBString()
 		format(wepstr, sizeof(wepstr), "%s%d/%d|", wepstr, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);
 	}
 	return wepstr;
-}
-
-stock SyncPlayerWeapons(playerid)
-{
-	new weapon[2];
-	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
-	{
-		GetPlayerWeaponData(playerid, i, weapon[0], weapon[1]);
-		if ( (weapon[0] == 0 || weapon[1] == 0) && PlayerWeapons[playerid][i][pwid] != 0 )
-		{
-			PlayerWeapons[playerid][i][pwid] = 0;
-			PlayerWeapons[playerid][i][pbullets] = 0;
-		}
-		if ( weapon[1] < PlayerWeapons[playerid][i][pbullets] && weapon[0] == PlayerWeapons[playerid][i][pwid] )
-		{
-			PlayerWeapons[playerid][i][pbullets] = weapon[1];
-		}
-	}
-	return 1;
 }
 
 stock GetPlayerWeaponSlotBullet(playerid, weapon_slot)

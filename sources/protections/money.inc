@@ -33,7 +33,7 @@ stock pt_money_Sync(playerid)
 
 	new clientmoney = GetPlayerMoney(playerid);
 	new servermoney = oGetPlayerMoney(playerid);
-
+	
 	if (clientmoney < 0) {
 		oSetPlayerMoney(playerid, 0);
 	} else if (clientmoney < servermoney) {

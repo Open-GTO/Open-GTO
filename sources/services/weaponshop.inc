@@ -166,8 +166,8 @@ stock wshop_Buy(playerid, weaponid, bullets)
 
 	switch (weaponid) {
 		case 47: oSetPlayerArmour(playerid, 100.0);
-		case 37: GivePlayerOwnedWeapon(playerid, weaponid, bullets * 10); // fix for flamethrower
-		default: GivePlayerOwnedWeapon(playerid, weaponid, bullets);
+		case 37: GivePlayerWeaponCheck(playerid, weaponid, bullets * 10); // fix for flamethrower
+		default: GivePlayerWeaponCheck(playerid, weaponid, bullets);
 	}
 
 	if (bullets > 1) {

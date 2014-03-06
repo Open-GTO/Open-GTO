@@ -102,9 +102,7 @@ stock weapon_SetSkills(playerid)
 
 stock weapon_ResetSkills(playerid)
 {
-	DropAmmo(playerid);
-	for (new i = 0; i < PLAYER_WEAPON_SKILLS; i++)
-	{
+	for (new i = 0; i < PLAYER_WEAPON_SKILLS; i++) {
 		PlayerWeaponsSkills[playerid][i] = 0;
 		SetPlayerSkillLevel(playerid, i, 0);
 	}

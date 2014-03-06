@@ -115,7 +115,6 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 		}
 		// выбросить оружие
 		case 5: {
-			//DropAmmo(playerid);
 			oResetPlayerWeapons(playerid);
 			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Выбросить оружие", "Вы добровольно избавились от всего оружия.", "Назад", "Выход");
 			return 1;

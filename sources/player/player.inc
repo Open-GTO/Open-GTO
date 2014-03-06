@@ -46,7 +46,7 @@ stock player_OnPlayerSpawn(playerid)
 	player_SetSkin(playerid, player_GetSkin(playerid));
 	oSetPlayerHealth(playerid, GetMaxHealth(playerid));
 	SetPlayerFightingStyle(playerid, pl_fights_GetPlayerStyleUsed(playerid));
-	GivePlayerOwnedWeapons(playerid);
+	GivePlayerAllWeapon(playerid);
 	weapon_SetSkills(playerid);
 	PushHide(playerid);
 	pl_anims_OnPlayerSpawn(playerid);
@@ -55,9 +55,6 @@ stock player_OnPlayerSpawn(playerid)
 
 stock player_OnPlayerDisconnect(playerid, reason)
 {
-	// sync
-	SyncPlayerWeapons(playerid);
-
 	// save
 	player_Save(playerid);
 	account_Save(playerid);
@@ -236,7 +233,7 @@ stock player_SetDefaultData(playerid)
 	weapon_ResetSkills(playerid);
 
 	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
-		GivePlayerOwnedWeapon(playerid, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);
+		GivePlayerWeaponCheck(playerid, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);
 	}
 }
 

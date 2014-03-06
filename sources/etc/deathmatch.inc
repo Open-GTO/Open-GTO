@@ -850,7 +850,7 @@ stock PlayerLeaveDM(playerid, dmid)
 		SetPlayerInterior(playerid, 0);
 		oSetPlayerHealth(playerid, GetMaxHealth(playerid)); // set health based on level
 		oDisablePlayerCheckpoint(playerid);
-		GivePlayerOwnedWeapons(playerid);
+		GivePlayerAllWeapon(playerid);
 	}
 	DMResetPlayerStats(playerid);
 }

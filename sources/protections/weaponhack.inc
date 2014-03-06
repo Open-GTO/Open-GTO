@@ -25,7 +25,7 @@ stock pt_weapon_SaveConfig(file_config)
 	ini_setInteger(file_config, "Protection_Weapon_IsEnabled", IsEnabled);
 }
 
-stock pt_weapon_OnPlayerPickUpPickup(playerid,pickupid)
+stock pt_weapon_OnPlayerPickUpPickup(playerid, pickupid)
 {
 	if (!IsEnabled) {
 		return 0;
@@ -34,7 +34,7 @@ stock pt_weapon_OnPlayerPickUpPickup(playerid,pickupid)
 	switch (GetPickupModel(pickupid)) {
 		// парашют
 		case 371: {
-			GivePlayerOwnedWeaponEx(playerid, 46, 1);
+			oGivePlayerWeapon(playerid, 46, 1);
 		}
 		// здоровье
 		case 1240: {
@@ -48,13 +48,13 @@ stock pt_weapon_OnPlayerPickUpPickup(playerid,pickupid)
 	return 1;
 }
 
-stock pt_weapon_OnPlayerExitVehicle(playerid,vehicleid)
+stock pt_weapon_OnPlayerExitVehicle(playerid, vehicleid)
 {
 	switch ( GetVehicleModel(vehicleid) ) {
 		case 592,577,511,512,593,520,553,476,519,460,513,// самолёты
 			 548,425,417,487,488,497,563,447,469: // вертолёты
 		{
-			GivePlayerOwnedWeaponEx(playerid, 46, 1);
+			oGivePlayerWeapon(playerid, 46, 1);
 		}
 	}
 	return 1;
@@ -66,50 +66,65 @@ stock pt_weapon_Sync(playerid)
 		return 0;
 	}
 
-	new weapon[2],
-		string[MAX_STRING];
+	new weapon[2];
 	
 	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
 		GetPlayerWeaponData(playerid, i, weapon[0], weapon[1]);
 		
+		// is weapon ammo empty
+		if ( (weapon[0] == 0 || weapon[1] == 0) && PlayerWeapons[playerid][i][pwid] != 0 ) {
+			PlayerWeapons[playerid][i][pbullets] = 0;
+			continue;
+		}
+
 		// weapon
-		format(string, sizeof(string), "ac_WeaponID_Slot%d", i);
-		if ( GetPVarInt(playerid, string) != weapon[0] && weapon[0] != 0 ) {
+		if (PlayerWeapons[playerid][i][pwid] != weapon[0] && weapon[0] != 0) {
 			KickPlayer(playerid, lang_texts[11][20]);
 		}
 		
 		// ammo
-		format(string, sizeof(string), "ac_WeaponAmmo_Slot%d", i);
-		if (GetPVarInt(playerid, string) < weapon[1]) {
+		if (PlayerWeapons[playerid][i][pbullets] < weapon[1]) {
 			KickPlayer(playerid, lang_texts[11][21]);
 		} else {
-			SetPVarInt(playerid, string, weapon[1] + 1);
+			PlayerWeapons[playerid][i][pbullets] = weapon[1];
 		}
 	}
 	return 1;
 }
 
-stock oGivePlayerWeapon(playerid, weaponid, ammo)
+COMMAND:whack(playerid, params[])
 {
-	new string[MAX_STRING];
-	format(string, sizeof(string), "ac_WeaponID_Slot%d", GetWeaponSlot(weaponid));
-	SetPVarInt(playerid, string, weaponid);
-	
-	format(string, sizeof(string), "ac_WeaponAmmo_Slot%d", GetWeaponSlot(weaponid));
-	SetPVarInt(playerid, string, GetPVarInt(playerid, string) + ammo);
-	
-	GivePlayerWeapon(playerid, weaponid, ammo);
-	return 1;
-}
-
-stock oResetPlayerWeapons(playerid)
-{
-	new string[MAX_STRING];
-	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
-	{
-		format(string, sizeof(string), "ac_WeaponID_Slot%d", i);
-		DeletePVar(playerid, string);
+	if (isnull(params)) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		return 1;
 	}
-	ResetPlayerWeapons(playerid);
+
+	new idx = 0;
+	new receiverid = strval(strcharsplit(params, idx, ' '));
+
+	if (!IsPlayerConnected(receiverid)) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		return 1;
+	}
+	
+	new weaponid = strval(strcharsplit(params, idx, ' '));
+	if (weaponid < 0 && weaponid > 46) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][45]);
+		return 1;
+	}
+	
+	new ammamount = strval(strcharsplit(params, idx, ' '));
+	if (ammamount == 0) {
+		ammamount = 10;
+	}
+
+	GivePlayerWeapon(receiverid, weaponid, ammamount);
+
+	new string[MAX_STRING];
+	format(string, sizeof(string), lang_texts[12][46], oGetPlayerName(playerid), oGetWeaponName(weaponid), weaponid, ammamount);
+	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+	
+	format(string, sizeof(string), lang_texts[12][47], oGetPlayerName(receiverid), receiverid, oGetWeaponName(weaponid), weaponid, ammamount);
+	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }

@@ -573,7 +573,7 @@ COMMAND:givegun(playerid, params[])
 		ammamount = 1000;
 	}
 
-	GivePlayerOwnedWeaponEx(receiverid, weaponid, ammamount);
+	oGivePlayerWeapon(receiverid, weaponid, ammamount);
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][46], oGetPlayerName(playerid), oGetWeaponName(weaponid), weaponid, ammamount);
@@ -1077,7 +1077,6 @@ COMMAND:disarm(playerid, params[])
 	}
 
 	oResetPlayerWeapons(receiverid);
-	DropAmmo(receiverid);
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][48], oGetPlayerName(playerid));
@@ -1102,7 +1101,6 @@ COMMAND:disarmall(playerid, params[])
 		}
 
 		oResetPlayerWeapons(id);
-		DropAmmo(id);
 
 		format(string, sizeof(string), lang_texts[12][48], oGetPlayerName(playerid));
 		SendClientMessage(id, COLOUR_XP_GOOD, string);

@@ -77,7 +77,7 @@ COMMAND:spec(playerid, params[])
 			SetPlayerVirtualWorld(playerid, GetPVarInt(playerid, "spec_virtualworld"));
 			SetPlayerSkin(playerid, GetPVarInt(playerid, "spec_skin"));
 			
-			GivePlayerOwnedWeapons(playerid);
+			GivePlayerAllWeapon(playerid);
 			
 			new Float:pos[4];
 			pos[0] = GetPVarFloat(playerid, "spec_pos_x");
