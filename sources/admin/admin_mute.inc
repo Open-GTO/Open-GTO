@@ -72,7 +72,7 @@ COMMAND:mute(playerid, params[])
 	format(string, sizeof(string), lang_texts[12][24], oGetPlayerName(playerid));
 	SendClientMessage(muteid, COLOUR_RED, string);
 
-	format(string, sizeof(string), lang_texts[12][50], oGetPlayerName(muteid));
+	format(string, sizeof(string), lang_texts[12][50], oGetPlayerName(muteid), mutetime);
 	SendClientMessageToAll(COLOUR_WHITE, string);
 	return 1;
 }
