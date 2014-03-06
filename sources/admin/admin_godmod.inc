@@ -29,7 +29,7 @@ COMMAND:godmod(playerid, params[])
 		return 0;
 	}
 	
-	SetMaxPlayerHealth(playerid);
+	SetPlayerMaxHealth(playerid);
 
 	if (player_IsGodmod(playerid)) {
 		player_SetGodmod(playerid, 0);

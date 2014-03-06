@@ -43,7 +43,7 @@ stock pt_health_OnPlayerPickUpPickup(playerid, pickupid)
 	}
 
 	if (GetPickupModel(pickupid) == 1240) {
-		SetMaxPlayerHealth(playerid);
+		SetPlayerMaxHealth(playerid);
 	}
 	return 1;
 }

@@ -44,7 +44,7 @@ stock player_OnPlayerSpawn(playerid)
 
 	SetPlayerColor(playerid, PlayerGangColour(playerid));
 	player_SetSkin(playerid, player_GetSkin(playerid));
-	SetMaxPlayerHealth(playerid);
+	SetPlayerMaxHealth(playerid);
 	SetPlayerFightingStyle(playerid, pl_fights_GetPlayerStyleUsed(playerid));
 	GivePlayerAllWeapon(playerid);
 	weapon_SetSkills(playerid);

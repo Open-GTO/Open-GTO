@@ -582,7 +582,7 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 	switch (listitem) {
 		case 0: {
 			if (Houses[id][Houses_HealUpgrade] == 1) {
-				SetMaxPlayerHealth(playerid);
+				SetPlayerMaxHealth(playerid);
 				return 1;
 			}
 

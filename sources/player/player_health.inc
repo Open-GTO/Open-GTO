@@ -24,7 +24,7 @@ stock GetMaxHealth(playerid, &Float:health)
 	}
 }
 
-stock SetMaxPlayerHealth(playerid)
+stock SetPlayerMaxHealth(playerid)
 {
 	new Float:max_hp;
 	GetMaxHealth(playerid, max_hp);

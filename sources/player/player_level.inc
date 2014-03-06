@@ -216,7 +216,7 @@ stock PlayerLevelDown(playerid, newlevel, oldlevel)
 stock PlayerLevelUp(playerid, newlevel, oldlevel)
 {
 	SetPlayerLevel(playerid, newlevel);
-	SetMaxPlayerHealth(playerid);
+	SetPlayerMaxHealth(playerid);
 	PlayerPlaySoundOnPlayer(playerid, 1057);
 	
 	new string[MAX_STRING];
