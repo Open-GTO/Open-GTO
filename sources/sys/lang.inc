@@ -46,11 +46,10 @@ stock lang_ReadFile(filename[])
 	new
 		tmp[4], string[MAX_STRING + 32],
 		section_id = 0,
-		sep_pos, length;
+		sep_pos;
 
 	while (fread(fhandle, string, sizeof(string))) {
-		length = strlen(string);
-		if (length == 0 || strfind(string, "//", true) == 0) {
+		if (strlen(string) == 0 || strfind(string, "//", true) == 0) {
 			continue;
 		}
 
@@ -59,7 +58,7 @@ stock lang_ReadFile(filename[])
 			lang_FixSpecialChar(string);
 
 			strmid(tmp, string, 0, sep_pos);
-			strmid(lang_texts[section_id][ strval(tmp) ], string, sep_pos + 2, length - sep_pos);
+			strmid(lang_texts[section_id][ strval(tmp) ], string, sep_pos + 2, strlen(string) - sep_pos);
 		} else {
 			section_id++;
 		}
