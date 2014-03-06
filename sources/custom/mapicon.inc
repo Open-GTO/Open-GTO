@@ -28,3 +28,6 @@ CreateStreamMapIcon(27,-2716.514404,218.293624,4.077047);
 CreateStreamMapIcon(27,-1936.977172,236.758300,33.975135);
 CreateStreamMapIcon(27,2386.543457,1042.123413,10.483552);
 #endif
+
+// health
+CreateStreamMapIcon(22,2034.0259,-1407.9951,17.1690);
