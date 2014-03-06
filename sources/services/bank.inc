@@ -129,6 +129,14 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 	
+	if (GetPlayerBankMoney(playerid) - amount < 0) {
+		amount = GetPlayerBankMoney(playerid);
+	}
+
+	if (oGetPlayerMoney(playerid) > MAX_MONEY - amount) {
+		amount = MAX_MONEY - oGetPlayerMoney(playerid);
+	}
+
 	TakePlayerBankMoney(playerid, amount);
 	oGivePlayerMoney(playerid, amount, 0);
 	
@@ -162,7 +170,15 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 	if (oGetPlayerMoney(playerid) < amount) {
 		amount = oGetPlayerMoney(playerid);
 	}
-	
+
+	if (oGetPlayerMoney(playerid) > MAX_MONEY - amount) {
+		amount = MAX_MONEY - oGetPlayerMoney(playerid);
+	}
+
+	if (amount > MaxBankMoney - GetPlayerBankMoney(playerid)) {
+		amount = MaxBankMoney - GetPlayerBankMoney(playerid);
+	}
+
 	GivePlayerBankMoney(playerid, amount);
 	oGivePlayerMoney(playerid, -amount, 0);
 
@@ -237,6 +253,10 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 	
+	if (oGetPlayerMoney(playerid) > MAX_MONEY - amount) {
+		amount = MAX_MONEY - oGetPlayerMoney(playerid);
+	}
+
 	TakeGangMoney(gangid, amount);
 	oGivePlayerMoney(playerid, amount);
 	
