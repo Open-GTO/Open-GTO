@@ -105,10 +105,16 @@ DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
 	SetPVarInt(playerid, "bar_Drinking", 1);
 	SetPlayerDrunkLevel(playerid, GetPlayerDrunkLevel(playerid) + floatround(Drinks[listitem][Alcohol]*100, floatround_round));
 	
-	if (Drinks[listitem][Hp] + oGetPlayerHealth(playerid) > GetMaxHealth(playerid)) {
-		oSetPlayerHealth(playerid, GetMaxHealth(playerid));
+	new Float:max_health;
+	GetMaxHealth(playerid, max_health);
+
+	new Float:health;
+	oGetPlayerHealth(playerid, health);
+
+	if (Drinks[listitem][Hp] + health > max_health) {
+		oSetPlayerHealth(playerid, max_health);
 	} else {
-		oSetPlayerHealth(playerid, oGetPlayerHealth(playerid) + Drinks[listitem][Hp]);
+		oSetPlayerHealth(playerid, health + Drinks[listitem][Hp]);
 	}
 
 	new string[MAX_STRING];

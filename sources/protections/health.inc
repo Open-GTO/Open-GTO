@@ -31,11 +31,22 @@ stock oSetPlayerHealth(playerid, Float:health)
 	return SetPlayerHealth(playerid, health);
 }
 
-#define oGetPlayerHealth(%0) GetPVarFloat(%0, "Health")
-/*stock Float:oGetPlayerHealth(playerid)
+stock oGetPlayerHealth(playerid, &Float:health)
 {
-	return GetPVarFloat(playerid, "Health");
-}*/
+	health = GetPVarFloat(playerid, "Health");
+}
+
+stock pt_health_OnPlayerPickUpPickup(playerid, pickupid)
+{
+	if (!IsEnabled) {
+		return 0;
+	}
+
+	if (GetPickupModel(pickupid) == 1240) {
+		SetMaxPlayerHealth(playerid);
+	}
+	return 1;
+}
 
 stock pt_health_Sync(playerid)
 {
@@ -46,7 +57,8 @@ stock pt_health_Sync(playerid)
 	new Float:clienthealth;
 	GetPlayerHealth(playerid, clienthealth);
 
-	new Float:serverhealth = oGetPlayerHealth(playerid);
+	new Float:serverhealth;
+	oGetPlayerHealth(playerid, serverhealth);
 
 	if (clienthealth < serverhealth) {
 		SetPVarFloat(playerid, "Health", clienthealth);

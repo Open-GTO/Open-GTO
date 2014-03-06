@@ -406,7 +406,9 @@ COMMAND:sethealth(playerid, params[])
 		return 1;
 	}
 	
-	new Float:max_health = GetMaxHealth(receiverid);
+	new Float:max_health;
+	GetMaxHealth(playerid, max_health);
+	
 	if (health_amount > max_health) {
 		health_amount = max_health;
 	}

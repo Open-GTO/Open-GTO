@@ -665,7 +665,11 @@ stock deathmatch_OnPlayerSpawn(playerid, dmid)
 	SetPlayerInterior(playerid, 0);
 	new spid = random(DMSpawnsSize[dmid]);
 	oSetPlayerPos(playerid, DMSpawnPoints[dmid][spid][Coord_X], DMSpawnPoints[dmid][spid][Coord_Y], DMSpawnPoints[dmid][spid][Coord_Z]); // Warp the player
-	oSetPlayerHealth(playerid, GetMaxHealth(playerid)); // set health based on level
+	
+	new Float:max_health;
+	GetMaxHealth(playerid, max_health);
+	oSetPlayerHealth(playerid, max_health); // set health based on level
+
 	GivePlayerDMWeapons(playerid, dmid);
 	DMPlayerStats[playerid][dm_player_active] = 1;
 	oSetPlayerCheckpoint(playerid, DMCentreCP[dmid][Coord_X], DMCentreCP[dmid][Coord_Y], DMCentreCP[dmid][Coord_Z], DMCPSize);
@@ -846,9 +850,8 @@ stock PlayerLeaveDM(playerid, dmid)
 	{
 		ResetPlayerDMWeapons(playerid);
 		oSetPlayerPos(playerid, DMStartCP[dmid][Coord_X], DMStartCP[dmid][Coord_Y], DMStartCP[dmid][Coord_Z]);
-
 		SetPlayerInterior(playerid, 0);
-		oSetPlayerHealth(playerid, GetMaxHealth(playerid)); // set health based on level
+		SetMaxPlayerHealth(playerid);
 		oDisablePlayerCheckpoint(playerid);
 		GivePlayerAllWeapon(playerid);
 	}

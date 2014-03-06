@@ -73,10 +73,16 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 	oGivePlayerMoney(playerid,-Food[listitem][food_cost], 1);
 	ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.1, 0, 1, 1, 1, 1, 1);
 
-	if (Food[listitem][food_hp] + oGetPlayerHealth(playerid) > GetMaxHealth(playerid)) {
-		oSetPlayerHealth(playerid, GetMaxHealth(playerid));
+	new Float:max_health;
+	GetMaxHealth(playerid, max_health);
+
+	new Float:health;
+	oGetPlayerHealth(playerid, health);
+
+	if (Food[listitem][food_hp] + health > max_health) {
+		oSetPlayerHealth(playerid, max_health);
 	} else {
-		oSetPlayerHealth(playerid, oGetPlayerHealth(playerid) + Food[listitem][food_hp]);
+		oSetPlayerHealth(playerid, health + Food[listitem][food_hp]);
 	}
 
 	new string[MAX_STRING];

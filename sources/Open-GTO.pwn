@@ -289,8 +289,15 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 
 public OnPlayerPickUpPickup(playerid, pickupid)
 {
+	// protection
 	pt_weapon_OnPlayerPickUpPickup(playerid, pickupid);
 	pt_armour_OnPlayerPickUpPickup(playerid, pickupid);
+	pt_health_OnPlayerPickUpPickup(playerid, pickupid);
+
+	// player
+	pl_weapon_OnPlayerPickUpPickup(playerid, pickupid);
+	
+	// etc
 	swagup_OnPlayerPickUpPickup(playerid, pickupid);
 	vip_OnPlayerPickUpPickup(playerid, pickupid);
 	return 1;

@@ -222,7 +222,11 @@ stock trucker_OnPlayerEnterCheckpoint(playerid)
 		if (!IsTrailerIsTrue(trailerid)) {
 			trucker_Stop(playerid);
 			oGivePlayerMoney(playerid, -TRUCKER_MONEY_PENALTY, 1);
-			oSetPlayerHealth(playerid, oGetPlayerHealth(playerid) - 10);
+			
+			new Float:health;
+			oGetPlayerHealth(playerid, health);
+			oSetPlayerHealth(playerid, health - 10);
+
 			SendClientMessage(playerid, COLOUR_WHITE, lang_texts[19][40]);
 			return 1;
 		}

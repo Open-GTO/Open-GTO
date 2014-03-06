@@ -14,26 +14,38 @@
 
 #include "sources\protections\health"
 
-stock Float:GetMaxHealth(playerid)
+stock GetMaxHealth(playerid, &Float:health)
 {
 	new Float:new_hp = MIN_HEALTH + (GetPlayerLevel(playerid) * HEALTH_TARIF);
-	return (new_hp > MAX_HEALTH) ? MAX_HEALTH : new_hp;
+	if (new_hp > MAX_HEALTH) {
+		health = MAX_HEALTH;
+	} else {
+		health = new_hp;
+	}
 }
 
 stock SetMaxPlayerHealth(playerid)
 {
-	return oSetPlayerHealth(playerid,GetMaxHealth(playerid));
+	new Float:max_hp;
+	GetMaxHealth(playerid, max_hp);
+	return oSetPlayerHealth(playerid, max_hp);
 }
 
 stock HealthRegen(id)
 {
+	new Float:health;
+	oGetPlayerHealth(id, health);
+
 	new playerState = GetPlayerState(id);
-	if (playerState == PLAYER_STATE_WASTED || oGetPlayerHealth(id) >= MAX_HEALTH) {
+	if (playerState == PLAYER_STATE_WASTED || health >= MAX_HEALTH) {
 		return 0;
 	}
 
-	if (oGetPlayerHealth(id) < GetMaxHealth(id)) {
-		new Float:newhealth = oGetPlayerHealth(id) + (GetPlayerLevel(id) * HEALTH_REGEN_TARIF);
+	new Float:max_hp;
+	GetMaxHealth(id, max_hp);
+	
+	if (health < max_hp) {
+		new Float:newhealth = health + (GetPlayerLevel(id) * HEALTH_REGEN_TARIF);
 		oSetPlayerHealth(id, (newhealth > MAX_HEALTH) ? MAX_HEALTH : newhealth);
 	}
 	return 1;

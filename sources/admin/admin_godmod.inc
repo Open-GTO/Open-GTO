@@ -29,13 +29,13 @@ COMMAND:godmod(playerid, params[])
 		return 0;
 	}
 	
+	SetMaxPlayerHealth(playerid);
+
 	if (player_IsGodmod(playerid)) {
 		player_SetGodmod(playerid, 0);
-		oSetPlayerHealth(playerid, GetMaxHealth(playerid));
 		SendClientMessage(playerid, COLOUR_WHITE, "Вы выключили режим бога, теперь вас можно убить.");
 	} else {
 		player_SetGodmod(playerid, 1);
-		oSetPlayerHealth(playerid, 100.0);
 		SendClientMessage(playerid, COLOUR_WHITE, "Вы включили режим бога, вас невозможно убить.");
 	}
 	return 1;
