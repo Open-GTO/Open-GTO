@@ -119,7 +119,6 @@ stock account_Login(playerid, password[])
 		ini_closeFile(file_account);
 
 		GameMSG("player_login: failed: incorrect password by %s(%d)", playername, playerid);
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][6]);
 		
 		GivePVarInt(playerid, "Player_Login_Attempt", 1);
 		if (GetPVarInt(playerid, "Player_Login_Attempt") >= MAX_PLAYER_LOGIN_ATTEMPT) {
@@ -149,12 +148,12 @@ stock account_Login(playerid, password[])
 
 DialogCreate:AccountRegister(playerid)
 {
-	new string[MAX_STRING],
+	new string[MAX_STRING + MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), lang_texts[1][44], playername, MIN_PASS_LEN, MAX_PASS_LEN);
+	format(string, sizeof(string), lang_texts[1][44], VERSION, playername, MIN_PASS_LEN, MAX_PASS_LEN);
 	Dialog_Open(playerid, Dialog:AccountRegister, DIALOG_STYLE_INPUT, "Регистрация", string, "Зарегать", "");
 }
 
@@ -171,15 +170,15 @@ DialogResponse:AccountRegister(playerid, response, listitem, inputtext[])
 
 DialogCreate:AccountLogin(playerid)
 {
-	new string[MAX_STRING],
+	new string[MAX_STRING + MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (GetPVarInt(playerid, "Player_Login_Attempt") > 0) {
-		format(string, sizeof(string), lang_texts[1][47], MAX_PLAYER_LOGIN_ATTEMPT - GetPVarInt(playerid, "Player_Login_Attempt"));
+		format(string, sizeof(string), lang_texts[1][47], VERSION, playername, MAX_PLAYER_LOGIN_ATTEMPT - GetPVarInt(playerid, "Player_Login_Attempt"));
 	} else {
-		format(string, sizeof(string), lang_texts[1][43], playername);
+		format(string, sizeof(string), lang_texts[1][43], VERSION, playername);
 	}
 	Dialog_Open(playerid, Dialog:AccountLogin, DIALOG_STYLE_PASSWORD, "Вход в аккаунт", string, "Войти", "");
 

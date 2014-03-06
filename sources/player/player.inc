@@ -82,11 +82,13 @@ stock player_OnPlayerConnect(playerid)
 {
 	pl_spawn_UpdateCamera(playerid);
 
+	chat_Clean(playerid);
+	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[9][35]);
+
     new plrIP[MAX_IP], string[MAX_STRING];
     GetPlayerIp(playerid, plrIP, sizeof(plrIP));
 	SetPVarString(playerid, "IP", plrIP);
-	if (!NameCharCheck( oGetPlayerName(playerid) ))
-	{
+	if (!NameCharCheck( oGetPlayerName(playerid) )) {
 		format(string, sizeof(string), lang_texts[9][12], ALLOWED_NICK_SYMBOLS_STR);
 		SendClientMessage(playerid, COLOUR_RED, string);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[9][13]);
@@ -94,14 +96,6 @@ stock player_OnPlayerConnect(playerid)
 	}
 	SetPlayerColor(playerid, COLOUR_PLAYER);
 	oBan_Check(playerid);
-	
-	format(string, sizeof(string), lang_texts[15][85], VERSION);
-	GameTextForPlayer(playerid, string, 5500, 1);
-	SendClientMessage(playerid, COLOUR_LIGHTRED, lang_texts[15][86]);
-	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][87]);
-	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][88]);
-	SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][90]);
-	SendClientMessage(playerid, COLOUR_GREEN, "_________________________________________________________________________________");
 }
 
 stock player_OnPlayerDeath(playerid, killerid, reason)
@@ -157,6 +151,8 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 stock player_OnPlayerRequestClass(playerid, classid)
 {
 	#pragma unused classid
+	chat_Clean(playerid);
+
 	// spawn system
 	pl_spawn_OnPlayerRequestClass(playerid, classid);
 
@@ -186,6 +182,12 @@ stock player_OnLogin(playerid)
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
+
+	format(string, sizeof(string), lang_texts[15][86], VERSION);
+	SendClientMessage(playerid, COLOUR_LIGHTRED, string);
+	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][87]);
+	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][88]);
+	SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][89]);
 
 	if (IsPlayerRconAdmin(playerid)) {
 		format(string, sizeof(string), lang_texts[1][39], playername);
