@@ -54,7 +54,7 @@ stock HealthRegen(id)
 stock PlayerHealthRegen()
 {
 	foreach (new playerid : Player) {
-		if (GetPVarInt(playerid,"Spawned") == 0) {
+		if (!player_IsSpawned(playerid)) {
 			continue;
 		}
 

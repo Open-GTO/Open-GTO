@@ -170,17 +170,18 @@ stock UpdatePlayerWeaponTextDraws(playerid)
 	if (!wskill_Enabled) {
 		return 0;
 	}
-	if (GetPVarInt(playerid,"Spawned") == 0) return 0;
+	
+	if (!player_IsSpawned(playerid)) {
+		return 0;
+	}
+
 	new skillid = GetWeaponSkillID( GetPlayerWeapon(playerid) );
-	if (skillid != -1)
-	{
+	if (skillid != -1) {
 		new string[MAX_STRING];
 		format(string, sizeof(string), "%03d/1000", PlayerWeaponsSkills[playerid][skillid]);
 		TextDrawSetString(weapon_TextDraw_Level[playerid], string);
 		TextDrawShowForPlayer(playerid, weapon_TextDraw_Level[playerid]);
-	}
-	else
-	{
+	} else {
 		wskill_HideTextDraw(playerid);
 	}
 	return 1;

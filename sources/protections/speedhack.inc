@@ -141,7 +141,7 @@ stock pt_speed_FixSpeed(playerid)
 
 stock pt_speed_Sync(playerid)
 {
-	if (GetPVarInt(playerid, "Spawned") != 1 || GetPVarInt(playerid, "ac_NotSpeedHack") == 1) {
+	if (!player_IsSpawned(playerid) || GetPVarInt(playerid, "ac_NotSpeedHack") == 1) {
 		pt_speed_FixSpeed(playerid);
 		return 0;
 	}
