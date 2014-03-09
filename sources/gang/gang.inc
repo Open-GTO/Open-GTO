@@ -363,16 +363,15 @@ stock GangUnload(gangid)
 stock GangKill(gangid, killerid, victimid, reason)
 {
 	#pragma unused reason
-	if (victimid != INVALID_PLAYER_ID)
-	{
-		Gangs[gangid][gang_kills]++;
-	}
-	if (player_GetGangID(killerid) == player_GetGangID(victimid))
-	{
+	if (player_GetGangID(killerid) == player_GetGangID(victimid)) {
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[6][76], oGetPlayerName(killerid));
 		SendGangMessage(player_GetGangID(killerid), string, COLOUR_GANG);
 		return 1;
+	}
+	
+	if (victimid != INVALID_PLAYER_ID) {
+		Gangs[gangid][gang_kills]++;
 	}
 	return 0;
 }
