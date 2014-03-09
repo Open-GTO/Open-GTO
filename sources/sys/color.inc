@@ -135,13 +135,15 @@ stock color_GetCode(id)
 
 stock color_GetName(id)
 {
-	return colors_Array[id][color_name];
+	new name[MAX_NAME];
+	set(name, colors_Array[id][color_name]);
+	return name;
 }
 
 stock color_GetIdByName(name[])
 {
 	for (new i = 0; i < COLOR_COUNT; i++) {
-		if (strcmp(name, colors_Array[i][color_name], true)) {
+		if (!strcmp(name, colors_Array[i][color_name], true)) {
 			return i;
 		}
 	}
@@ -151,7 +153,7 @@ stock color_GetIdByName(name[])
 stock color_GetCodeByName(name[])
 {
 	for (new i = 0; i < COLOR_COUNT; i++) {
-		if (strcmp(name, colors_Array[i][color_name], true)) {
+		if (!strcmp(name, colors_Array[i][color_name], true)) {
 			return colors_Array[id][color_code];
 		}
 	}
