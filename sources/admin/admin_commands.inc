@@ -945,7 +945,7 @@ COMMAND:payday(playerid, params[])
 		return 0;
 	}
 
-	GivePay();
+	payday_Check();
 	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][90]);
 	return 1;
 }
