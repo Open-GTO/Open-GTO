@@ -36,10 +36,6 @@ stock pt_weapon_OnPlayerPickUpPickup(playerid, pickupid)
 		case 371: {
 			oGivePlayerWeapon(playerid, 46, 1);
 		}
-		// armour
-		case 1242: {
-			oSetPlayerArmour(playerid, 100);
-		}
 	}
 	return 1;
 }
