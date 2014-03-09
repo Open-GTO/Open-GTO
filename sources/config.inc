@@ -180,8 +180,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 // игрок
 #define MIN_HEALTH				35.0 // минимальное(стартовое) кол-во здоровья
 #define MAX_HEALTH				100.0 // максимальное кол-во здоровья
-#define HEALTH_TARIF			4.0	// степень увеличения максимального здоровья от лвл, формула: MIN_HEALTH + (GetPlayerLevel(playerid) * HEALTH_TARIF)
-#define HEALTH_REGEN_TARIF		0.4 // степень кол-ва востанавливаемого здоровья, формула: (GetPlayerLevel(id) * HEALTH_REGEN_TARIF)
+#define HEALTH_TARIF			3.0	// степень увеличения максимального здоровья от лвл, формула: MIN_HEALTH + (GetPlayerLevel(playerid) * HEALTH_TARIF)
+#define HEALTH_REGEN_TARIF		0.1 // степень кол-ва востанавливаемого здоровья, формула: (GetPlayerLevel(id) * HEALTH_REGEN_TARIF)
 
 #define CHANGE_NICK_COST			100000 // кол-во денег, требуемых для смены ника
 #define MIN_PLAYER_NAME				3

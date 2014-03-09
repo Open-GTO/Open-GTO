@@ -119,7 +119,7 @@ forward FiveSecondTimer();
 public FiveSecondTimer()
 {
 	CheckAllGround();
-	PlayerHealthRegen();
+	pl_health_Regeneration();
 	checkpoint_Sync();
 	business_Update3DTextLabelText();
 	housing_Update3DTextLabelText();

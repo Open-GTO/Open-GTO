@@ -12,7 +12,6 @@
 #define _player_health_included
 #pragma library player_health
 
-#include "sources\protections\health"
 
 stock GetMaxHealth(playerid, &Float:health)
 {
@@ -31,34 +30,36 @@ stock SetPlayerMaxHealth(playerid)
 	return oSetPlayerHealth(playerid, max_hp);
 }
 
-stock HealthRegen(id)
+stock pl_health_Regeneration()
 {
-	new Float:health;
-	oGetPlayerHealth(id, health);
+	new
+		Float:health_current,
+		Float:health_max,
+		Float:health_new;
 
-	new playerState = GetPlayerState(id);
-	if (playerState == PLAYER_STATE_WASTED || health >= MAX_HEALTH) {
-		return 0;
-	}
-
-	new Float:max_hp;
-	GetMaxHealth(id, max_hp);
-	
-	if (health < max_hp) {
-		new Float:newhealth = health + (GetPlayerLevel(id) * HEALTH_REGEN_TARIF);
-		oSetPlayerHealth(id, (newhealth > MAX_HEALTH) ? MAX_HEALTH : newhealth);
-	}
-	return 1;
-}
-
-stock PlayerHealthRegen()
-{
 	foreach (new playerid : Player) {
 		if (!player_IsSpawned(playerid)) {
 			continue;
 		}
 
-		HealthRegen(playerid);
+		oGetPlayerHealth(playerid, health_current);
+
+		GetMaxHealth(playerid, health_max);
+
+		new player_state = GetPlayerState(playerid);
+		if (player_state == PLAYER_STATE_WASTED || health_current >= health_max) {
+			continue;
+		}
+		
+		if (health_current < health_max) {
+			health_new = health_current + 1.0 + (GetPlayerLevel(playerid) * HEALTH_REGEN_TARIF);
+
+			if (health_new > health_max) {
+				oSetPlayerHealth(playerid, health_max);
+			} else {
+				oSetPlayerHealth(playerid, health_new);
+			}
+		}
 	}
 	return 1;
 }
