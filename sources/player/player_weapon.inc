@@ -180,10 +180,13 @@ stock SendPlayerOwnedWeapons(playerid)
 stock SetWeaponsFromDBString(playerid,dbstring[])
 {
 	new idx = 0;
-	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
-	{
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
 		PlayerWeapons[playerid][i][pwid] = strval( strcharsplit(dbstring, idx, '/') );
 		PlayerWeapons[playerid][i][pbullets] = strval( strcharsplit(dbstring, idx, '|') );
+
+		if (PlayerWeapons[playerid][i][pwid] != 0 && PlayerWeapons[playerid][i][pbullets] == 0) {
+			PlayerWeapons[playerid][i][pwid] = 0;
+		}
 	}
 }
 // возвращает строку для сохранения оружия

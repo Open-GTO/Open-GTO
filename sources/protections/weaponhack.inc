@@ -66,7 +66,7 @@ stock pt_weapon_Sync(playerid)
 	
 	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
 		GetPlayerWeaponData(playerid, i, weapon[0], weapon[1]);
-		
+
 		// is weapon ammo empty
 		if ( (weapon[0] == 0 || weapon[1] == 0) && PlayerWeapons[playerid][i][pwid] != 0 ) {
 			PlayerWeapons[playerid][i][pbullets] = 0;
