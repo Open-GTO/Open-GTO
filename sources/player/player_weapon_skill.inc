@@ -63,22 +63,30 @@ stock wskill_OnPlayerDeath(playerid,killerid,reason)
 	if (killerid == INVALID_PLAYER_ID) {
 		return 0;
 	}
+
 	if (!wskill_Enabled) {
 		return 0;
 	}
-	if (!IsWeapon(reason)) return 1;
-	// set skill
-	new WeaponSkillID = GetWeaponSkillID(reason);
-	if (PlayerWeaponsSkills[killerid][WeaponSkillID] < 1000)
-	{
-		PlayerWeaponsSkills[killerid][WeaponSkillID] += WEAPON_SKILL_SPEED;
-		if (PlayerWeaponsSkills[killerid][WeaponSkillID] > 1000)
-		{
-			PlayerWeaponsSkills[killerid][WeaponSkillID] = 1000;
-		}
-		SetPlayerSkillLevel(killerid, WeaponSkillID, PlayerWeaponsSkills[killerid][WeaponSkillID]);
+
+	if (!IsWeapon(reason)) {
+		return 0;
 	}
-	return 0;
+
+	new skill_id = GetWeaponSkillID(reason);
+	if (skill_id == -1) {
+		return 0;
+	}
+
+	if (PlayerWeaponsSkills[killerid][skill_id] < 1000) {
+		PlayerWeaponsSkills[killerid][skill_id] += WEAPON_SKILL_SPEED;
+
+		if (PlayerWeaponsSkills[killerid][skill_id] > 1000) {
+			PlayerWeaponsSkills[killerid][skill_id] = 1000;
+		}
+
+		SetPlayerSkillLevel(killerid, skill_id, PlayerWeaponsSkills[killerid][skill_id]);
+	}
+	return 1;
 }
 
 stock wskill_OnPlayerRequestClass(playerid, classid)
