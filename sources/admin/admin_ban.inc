@@ -60,43 +60,35 @@ stock oBan_Check(playerid)
 	
 	new string[MAX_STRING];
 	
-	if (time == 0)
-	{
+	if (time == 0) {
 		format(string, sizeof(string), lang_texts[13][48], time);
 		unban_time = 1;
-	}
-	else
-	{
+	} else {
 		format(string, sizeof(string), lang_texts[13][49], time);
-		if (unban_time > 0)
-		{
+		if (unban_time > 0) {
 			format(string, sizeof(string), lang_texts[13][50], string, unban_time);
 		}
 	}
 	format(string, sizeof(string), lang_texts[13][51], admin, date, string, reason);
 	SendClientMessage(playerid, COLOUR_RED, string);
 	
-	if (unban_time > 0)
-	{
+	if (unban_time > 0) {
 		KickPlayer(playerid, "ban check", 0);
-	}
-	else
-	{
+	} else {
 		ini_fileRemove(filename);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][52]);
 	}
 	return 1;
 }
 
-stock oBan(user[], reason[], adminid, time=0)
+stock oBan(user[], reason[], adminid, time_second=0)
 {
 	new date[MAX_NAME], year, month, day, hour, minute, second;
 	getdate(year, month, day);
 	gettime(hour, minute, second);
 	format(date, sizeof(date), "%02d.%02d.%d, %02d:%02d:%02d", day, month, year, hour, minute, second);
 	
-	if (IsNumeric(user))
-	{
+	if (IsNumeric(user)) {
 		set(user, oGetPlayerName(strval(user)));
 	}
 	
@@ -105,45 +97,37 @@ stock oBan(user[], reason[], adminid, time=0)
 	
 	new file_ban_db = (!ini_fileExist(filename_ban)) ? ini_createFile(filename_ban) : ini_openFile(filename_ban);
 	ini_setString(file_ban_db, "Date", date);
-	ini_setInteger(file_ban_db, "Time", time);
+	ini_setInteger(file_ban_db, "Time", time_second);
 	ini_setString(file_ban_db, "Admin", oGetPlayerName(adminid));
 	ini_setString(file_ban_db, "Reason", reason);
 	ini_closeFile(file_ban_db);
 	
 	new string[MAX_STRING];
-	if (time == 0)
-	{
-		format(string, sizeof(string), lang_texts[13][48], time);
+	if (time_second == 0) {
+		format(string, sizeof(string), lang_texts[13][48], time_second);
+	} else {
+		format(string, sizeof(string), lang_texts[13][49], time_second);
 	}
-	else
-	{
-		format(string, sizeof(string), lang_texts[13][49], time);
-	}
+
 	format(string, sizeof(string), lang_texts[12][97], user, date, oGetPlayerName(adminid), adminid, string);
-	if (strlen(reason) > 0)
-	{
+	
+	if (strlen(reason) > 0) {
 		format(string, sizeof(string), lang_texts[12][98], string, reason);
 	}
 	SendClientMessageToAll(COLOUR_RED, string);
+
 	// если юзер на сервере
-	if (IsIP(user))
-	{
+	if (IsIP(user)) {
 		new plrIP[MAX_IP];
-		foreach (Player, playerid)
-		{
+		foreach (new playerid : Player) {
 			GetPVarString(playerid, "IP", plrIP, sizeof(plrIP));
-			if (!strcmp(user, plrIP, false))
-			{
+			if (!strcmp(user, plrIP, false)) {
 				KickPlayer(playerid, "ban", 0);
 			}
 		}
-	}
-	else
-	{
-		foreach (Player, playerid)
-		{
-			if (!strcmp(user, oGetPlayerName(playerid), false))
-			{
+	} else {
+		foreach (new playerid : Player) {
+			if (!strcmp(user, oGetPlayerName(playerid), false)) {
 				KickPlayer(playerid, "ban", 0);
 			}
 		}
@@ -165,10 +149,31 @@ COMMAND:ban(playerid, params[])
 	new idx = 0,
 		user[MAX_PLAYER_NAME + 1],
 		reason[MAX_SEND_SYMBOLS],
-		time;
+		time_string[10];
 	
 	set(user, strcharsplit(params, idx, ' '));
-	time = strval(strcharsplit(params, idx, ' '));
+	set(time_string, strcharsplit(params, idx, ' '));
+
+	new time_second = strval(time_string);
+	new time_type = time_string[strlen(time_string) - 1];
+
+	switch (time_type) {
+		case 's', 'с': {
+
+		}
+		case 'm', 'м': {
+			time_second *= 60;
+		}
+		case 'h', 'ч': {
+			time_second *= 60 * 60;
+		}
+		case 'd', 'д': {
+			time_second *= 60 * 60 * 24;
+		}
+		case 'y', 'г': {
+			time_second *= 60 * 60 * 24 * 365;
+		}
+	}
 
 	if (strlen(params[idx + 1]) > 0) {
 		set(reason, params[idx + 1]);
@@ -186,7 +191,7 @@ COMMAND:ban(playerid, params[])
 		return 1;
 	}
 
-	oBan(user, reason, playerid, time);
+	oBan(user, reason, playerid, time_second);
 	return 1;
 }
 
