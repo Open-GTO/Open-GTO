@@ -230,13 +230,6 @@ stock PlayerLevelUp(playerid, newlevel, oldlevel)
 
 }
 
-stock SetPlayerLevel(playerid, level)
-{
-	SetPVarInt(playerid, "Level", level);
-	SetPlayerScore(playerid, level);
-	UpdatePlayerLevelTextDraws(playerid);
-}
-
 stock level_HideTextDraws(playerid)
 {
 	TextDrawHideForPlayer(playerid, level_TextDraw_Level[playerid]);
@@ -269,17 +262,23 @@ stock UpdatePlayerLevelTextDraws(playerid)
 }
 
 
+stock SetPlayerLevel(playerid, level)
+{
+	SetPVarInt(playerid, "Level", level);
+	SetPlayerScore(playerid, level);
+}
+
 stock GetPlayerLevel(playerid)
 {
 	return GetPVarInt(playerid, "Level");
 }
 
-stock GetPlayerXP(playerid)
-{
-	return GetPVarInt(playerid, "XP");
-}
-
 stock SetPlayerXP(playerid, amount)
 {
 	SetPVarInt(playerid, "XP", amount);
+}
+
+stock GetPlayerXP(playerid)
+{
+	return GetPVarInt(playerid, "XP");
 }
