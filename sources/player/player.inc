@@ -151,8 +151,6 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 stock player_OnPlayerRequestClass(playerid, classid)
 {
 	#pragma unused classid
-	chat_Clean(playerid);
-
 	// spawn system
 	pl_spawn_OnPlayerRequestClass(playerid, classid);
 
@@ -172,6 +170,7 @@ stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 stock player_OnLogin(playerid)
 {
 	// spawn player
+	SetSpawnInfo(playerid, 0, player_GetSkin(playerid), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	TogglePlayerSpectating(playerid, 0);
 
 	// reset data

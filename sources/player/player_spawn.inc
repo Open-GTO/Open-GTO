@@ -106,10 +106,13 @@ stock pl_spawn_OnPlayerRequestClass(playerid, classid)
 	#pragma unused classid
 	if (player_IsLogin(playerid)) {
 		TogglePlayerSpectating(playerid, 1);
-		SetSpawnInfo(playerid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		SetSpawnInfo(playerid, 0, player_GetSkin(playerid), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		TogglePlayerSpectating(playerid, 0);
 		return 0;
 	}
+
+	// clean chat
+	chat_Clean(playerid);
 
 	// hide class selection buttons
 	TogglePlayerSpectating(playerid, 1);
