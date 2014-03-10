@@ -23,7 +23,7 @@ enum info_MapIcon {
 };
 static MapIcons[MAX_ICONS][info_MapIcon];
 static bool:MapIconsShowed[MAX_PLAYERS][MAX_ICONS];
-static SlotIcons[MAX_PLAYERS][MAX_SHOWED_ICONS];
+static SlotIcons[MAX_PLAYERS][MAX_SHOWED_ICONS + 1];
 
 stock CreateStreamMapIcon(markertype, Float:X, Float:Y, Float:Z)
 {
