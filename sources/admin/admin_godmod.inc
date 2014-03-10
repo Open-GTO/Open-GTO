@@ -33,10 +33,10 @@ COMMAND:godmod(playerid, params[])
 
 	if (player_IsGodmod(playerid)) {
 		player_SetGodmod(playerid, 0);
-		SendClientMessage(playerid, COLOUR_WHITE, "Р’С‹ РІС‹РєР»СЋС‡РёР»Рё СЂРµР¶РёРј Р±РѕРіР°, С‚РµРїРµСЂСЊ РІР°СЃ РјРѕР¶РЅРѕ СѓР±РёС‚СЊ.");
+		SendClientMessage(playerid, COLOUR_WHITE, "Вы выключили режим бога, теперь вас можно убить.");
 	} else {
 		player_SetGodmod(playerid, 1);
-		SendClientMessage(playerid, COLOUR_WHITE, "Р’С‹ РІРєР»СЋС‡РёР»Рё СЂРµР¶РёРј Р±РѕРіР°, РІР°СЃ РЅРµРІРѕР·РјРѕР¶РЅРѕ СѓР±РёС‚СЊ.");
+		SendClientMessage(playerid, COLOUR_WHITE, "Вы включили режим бога, вас невозможно убить.");
 	}
 	return 1;
 }
