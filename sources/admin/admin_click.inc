@@ -332,7 +332,7 @@ public adm_click_SetLevel(playerid, clickedid, listitem, inputtext[])
 	}
 
 	new newlvl = strval(inputtext);
-	if (newlvl > MAX_LEVEL || newlvl < 0) {
+	if (newlvl > MAX_LEVEL || newlvl < FIRST_LEVEL) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][33]);
 		return 0;
 	}
