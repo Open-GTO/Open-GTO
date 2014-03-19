@@ -136,6 +136,8 @@ stock vshop_ChangeVehicles()
 			}
 			// удаляем транспорт
 			DestroyVehicle(vshop_Vehicles[i][vshop_ID]);
+			vshop_Vehicles[i][vshop_ID] = 0;
+			
 			Delete3DTextLabel(vshop_Vehicles[i][vshop_Text3D]);
 		}
 		
