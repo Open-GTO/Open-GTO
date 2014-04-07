@@ -14,7 +14,7 @@
 #pragma library weapon_drop
 
 
-static wdrop_Enabled = WEAPON_DROP_ENABLED;
+static IsEnabled = WEAPON_DROP_ENABLED;
 
 enum wd_Info {
 	wd_weaponid,
@@ -26,21 +26,21 @@ static weapons_dropped[MAX_DROPPED_WEAPONS][wd_Info];
 
 stock wdrop_LoadConfig(file_config)
 {
-	ini_getInteger(file_config, "Weapon_Drop_IsEnabled", wdrop_Enabled);
+	ini_getInteger(file_config, "Weapon_Drop_IsEnabled", IsEnabled);
 }
 
 stock wdrop_SaveConfig(file_config)
 {
-	ini_setInteger(file_config, "Weapon_Drop_IsEnabled", wdrop_Enabled);
+	ini_setInteger(file_config, "Weapon_Drop_IsEnabled", IsEnabled);
 }
 
 stock wdrop_OnGameModeInit()
 {
-	if (!wdrop_Enabled) {
+	if (!IsEnabled) {
 		return 0;
 	}
-	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
-	{
+
+	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++) {
 		weapons_dropped[wd_slot][wd_weaponid] = -1;
 		weapons_dropped[wd_slot][wd_bullets] = -1;
 		weapons_dropped[wd_slot][wd_pickupid] = -1;
@@ -51,13 +51,12 @@ stock wdrop_OnGameModeInit()
 
 stock wdrop_OnPlayerPickUpPickup(playerid, pickupid)
 {
-	if (!wdrop_Enabled) {
+	if (!IsEnabled) {
 		return 0;
 	}
-    for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
-    {
-		if (pickupid == weapons_dropped[wd_slot][wd_pickupid])
-		{
+
+	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)  {
+		if (pickupid == weapons_dropped[wd_slot][wd_pickupid]) {
 			oGivePlayerWeapon(playerid, weapons_dropped[wd_slot][wd_weaponid], weapons_dropped[wd_slot][wd_bullets]);
 			wdrop_DropPickup(wd_slot);
 		}
@@ -67,48 +66,59 @@ stock wdrop_OnPlayerPickUpPickup(playerid, pickupid)
 
 stock wdrop_OnPlayerDeath(playerid)
 {
-	if (!wdrop_Enabled) {
+	if (!IsEnabled) {
 		return 0;
 	}
+
 	// drop pickups
-	new weapon[PWeap], Float:pos[3], pickupmodel, wd_slot;
-	for (new slot = 0; slot < PLAYER_WEAPON_SLOTS; slot++)
-	{
+	new weapon[PWeap],
+		Float:pos[3],
+		pickupmodel,
+		wd_slot;
+
+	for (new slot = 0; slot < PLAYER_WEAPON_SLOTS; slot++) {
 		weapon[pwid] = PlayerWeapons[playerid][slot][pwid];
 		weapon[pbullets] = PlayerWeapons[playerid][slot][pbullets];
+
 		pickupmodel = GetWeaponPickupModel(weapon[pwid]);
-		if (pickupmodel == -1) continue;
-		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+		if (pickupmodel == -1) {
+			continue;
+		}
+		
 		wd_slot = wdrop_FindFreeSlot();
-		if (wd_slot == -1)
-		{
+		if (wd_slot == -1) {
 			GameMSG(lang_texts[19][57]);
 			return 1;
 		}
+
+		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+
 		weapons_dropped[wd_slot][wd_pickupid] = CreatePickup(pickupmodel, 3, pos[0] + (random(5) - random(5)) / 2, pos[1] + (random(5) - random(5)) / 2, pos[2], -1);
-		if (weapons_dropped[wd_slot][wd_pickupid] == -1)
-		{
+		if (weapons_dropped[wd_slot][wd_pickupid] == -1) {
 			GameMSG(lang_texts[19][58]);
 			return 1;
 		}
+
 		weapons_dropped[wd_slot][wd_weaponid] = weapon[pwid];
 		weapons_dropped[wd_slot][wd_bullets] = weapon[pbullets] * (WEAPON_DROP_BULL / 100);
+
 		PlayerWeapons[playerid][slot][pbullets] -= weapons_dropped[wd_slot][wd_bullets];
+
 		// запустим таймер асинхронно, чтобы пикапы удалялись постепенно
-		weapons_dropped[wd_slot][wd_timer] = SetTimerEx("wdrop_DropPickup", (WEAPON_DROP_TIME * 1000) + slot*300, 0, "d", wd_slot);
+		weapons_dropped[wd_slot][wd_timer] = SetTimerEx("wdrop_DropPickup", (WEAPON_DROP_TIME * 1000) + slot * 300, 0, "d", wd_slot);
 	}
 	return 1;
 }
 
 stock wdrop_FindFreeSlot()
 {
-	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)
-	{
+	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++) {
 		if (weapons_dropped[wd_slot][wd_weaponid] == -1
 			&& weapons_dropped[wd_slot][wd_bullets] == -1
 			&& weapons_dropped[wd_slot][wd_pickupid] == -1
-			&& weapons_dropped[wd_slot][wd_timer] == -1
-		) return wd_slot;
+			&& weapons_dropped[wd_slot][wd_timer] == -1) {
+			return wd_slot;
+		}
 	}
 	return -1;
 }
@@ -129,47 +139,18 @@ public wdrop_DropPickup(wd_slot)
 
 stock GetWeaponPickupModel(weaponid)
 {
-	 switch (weaponid)
-	 {
-		case 1: return 331;
-		case 2: return 333;
-		case 3: return 334;
-		case 4: return 335;
-		case 5: return 336;
-		case 6: return 337;
-		case 7: return 338;
-		case 8: return 339;
-		case 9: return 341;
-		case 10: return 321;
-		case 11: return 322;
-		case 12: return 323;
-		case 13: return 324;
-		case 14: return 325;
-		case 15: return 326;
-		case 16: return 342;
-		case 17: return 343;
-		case 18: return 344;
-		case 22: return 346;
-		case 23: return 347;
-		case 24: return 348;
-		case 25: return 349;
-		case 26: return 350;
-		case 27: return 351;
-		case 28: return 352;
-		case 29: return 353;
-		case 30: return 355;
-		case 31: return 356;
-		case 32: return 372;
-		case 33: return 357;
-		case 34: return 358;
-		case 35: return 359;
-		case 36: return 360;
-		case 37: return 361;
-		case 38: return 362;
-		case 39: return 363;
-		case 41: return 365; 
-		case 42: return 366;
-		case 46: return 371;
-	 }
-	 return -1;
+	if (!IsWeapon(weaponid)) {
+		return -1;
+	}
+
+	static const weapon_objects[] = {
+		-1,
+		331, 333, 334, 335, 336, 337, 338, 339, 341, 321, // 10
+		322, 323, 324, 325, 326, 342, 343, 344, -1,  -1,
+		-1,  346, 347, 348, 349, 350, 351, 352, 353, 355,
+		356, 372, 357, 358, 359, 360, 361, 362, 363, -1,
+		365, 366, -1, -1, -1, 371
+	};
+
+	return weapon_objects[weaponid];
 }
