@@ -82,20 +82,19 @@ stock quidemsys_OnGameModeInit()
 	if (!IsEnabled) {
 		return 0;
 	}
-	for (new i = 0; i < sizeof(FuelStations); i++)
-	{
+
+	for (new i = 0; i < sizeof(FuelStations); i++) {
 		CreateStreamMapIcon(55, FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z]);
 	}
 	
 	new Float:max_fuel, model;
-	for (new i = 1; i < MAX_VEHICLES; i++)
-	{
-		if ((model = GetVehicleModel(i)) != 0)
-		{
-			max_fuel = FuelList[ model-400 ] / 2;
+	for (new i = 1; i < MAX_VEHICLES; i++) {
+		if ((model = GetVehicleModel(i)) != 0) {
+			max_fuel = FuelList[ model - 400 ] / 2;
 			Fuel[i] = random(floatround( max_fuel )) + max_fuel;
 		}
 	}
+
 	black = TextDrawCreate(494.000000, 379.000000, "_");
 	TextDrawUseBox(black, 1);
 	TextDrawBoxColor(black, 0x00000085);
@@ -133,6 +132,7 @@ stock quidemsys_OnVehicleSpawn(vehicleid)
 	if (!IsEnabled) {
 		return 0;
 	}
+
 	new Float:max_fuel = FuelList[ GetVehicleModel(vehicleid)-400 ] / 2;
 	Fuel[vehicleid] = random(floatround( max_fuel )) + max_fuel;
 	return 1;
@@ -174,6 +174,7 @@ COMMAND:fill(playerid, params[])
 	}
 	
 	SetPVarFloat(playerid, "OldFuel", Fuel[vehicleid]);
+
 	fill_TimerID[playerid] = SetTimerEx("fill_Timer", 1000, 1, "i", playerid);
 	SetPVarInt(playerid, "Refueling", 1);
 	return 1;
@@ -207,8 +208,7 @@ public fill_Timer(playerid)
 	new vehicleid = GetPlayerVehicleID(playerid);
 	
 	Fuel[vehicleid] += QUIDEMSYS_FUEL_SPEED;
-	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || Fuel[vehicleid] >= FuelList[ GetVehicleModel(vehicleid)-400 ])
-	{
+	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || Fuel[vehicleid] >= FuelList[ GetVehicleModel(vehicleid) - 400 ]) {
 		new RefueledAmount = floatround( Fuel[vehicleid] - GetPVarFloat(playerid, "OldFuel") ) * QUIDEMSYS_FUEL_TARIF;
 		GivePlayerMoney(playerid, -RefueledAmount);
 		
@@ -216,7 +216,10 @@ public fill_Timer(playerid)
 		format(string, sizeof(string), lang_texts[19][27], RefueledAmount);
 		SendClientMessage(playerid, COLOUR_YELLOW, string);
 		
-		if (fill_TimerID[playerid] != 0) KillTimer(fill_TimerID[playerid]);
+		if (fill_TimerID[playerid] != 0) {
+			KillTimer(fill_TimerID[playerid]);
+		}
+
 		SetPVarInt(playerid, "Refueling", 0);
 	}
 	return 0;
@@ -227,79 +230,62 @@ public speed_Timer()
 {
 	new string[MAX_STRING], Float:health, vehicleid, vehiclemodel, speed[16], speed_temp[5], speed_count=0;
 	
-	foreach (new playerid : Player)
-	{
+	foreach (new playerid : Player) {
 		vehicleid = GetPlayerVehicleID(playerid);
-		
-		if (vehicleid == 0)
-		{
-			TextDrawHideForPlayer(playerid, black);
-			TextDrawHideForPlayer(playerid, speedom[playerid]);
+		if (vehicleid == 0) {
 			continue;
 		}
 		
 		vehiclemodel = GetVehicleModel(vehicleid);
-		
-		if (FuelList[vehiclemodel-400] == 0)
-		{
+		if (FuelList[vehiclemodel - 400] == 0) {
 			continue;
 		}
 		
-		if (Fuel[vehicleid] <= 0.1)
-		{
+		if (Fuel[vehicleid] <= 0.1) {
 			new engine, lights, alarm, doors, bonnet, boot, objective;
 			GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 			SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, lights, alarm, doors, bonnet, boot, objective);
+
 			Fuel[vehicleid] = 0.0;
 		}
 		
 		GetVehicleHealth(vehicleid, health);
 		
-		if (Fuel[vehicleid] > FuelList[vehiclemodel-400])
-		{
-			Fuel[vehicleid] = FuelList[vehiclemodel-400];
+		if (Fuel[vehicleid] > FuelList[vehiclemodel - 400]) {
+			Fuel[vehicleid] = FuelList[vehiclemodel - 400];
 		}
 		
 		speed_count = GetVehicleSpeed(vehicleid);
 		speed[0] = '\0';
-		if (Fuel[vehicleid] == 0.0)
-		{
+		if (Fuel[vehicleid] == 0.0) {
 			strcat(speed, "~w~~h~");
-		}
-		else
-		{
-			switch (speed_count)
-			{
-				case 0:
-				{
+		} else {
+			switch (speed_count) {
+				case 0: {
 					strcat(speed, "~g~~h~");
 					Fuel[vehicleid] -= 0.0002;
 				}
-				case 1..60:
-				{
+				case 1..60: {
 					strcat(speed, "~g~~h~");
 					Fuel[vehicleid] -= 0.003;
 				}
-				case 61..90:
-				{
+				case 61..90: {
 					strcat(speed, "~y~~h~");
 					Fuel[vehicleid] -= 0.006;
 				}
-				default:
-				{
+				default: {
 					strcat(speed, "~r~~h~");
 					Fuel[vehicleid] -= 0.010;
 				}
 			}
 		}
+
 		valstr(speed_temp, speed_count);
 		strcat(speed, speed_temp);
 		
 		format(string, sizeof(string), lang_texts[19][30], speed, Fuel[vehicleid], health/10);
 		
 		TextDrawSetString(speedom[playerid], string);
-		TextDrawShowForPlayer(playerid, speedom[playerid]);
-		TextDrawShowForPlayer(playerid, black);
 	}
 	return 1;
 }
@@ -309,6 +295,7 @@ stock qudemsys_OnPlayerConnect(playerid)
 	if (!IsEnabled) {
 		return 0;
 	}
+
 	create_playerTD(playerid);
 	return 1;
 }
@@ -319,6 +306,7 @@ stock qudemsys_OnPlayerDisconnect(playerid, reason)
 	if (!IsEnabled) {
 		return 0;
 	}
+	
 	TextDrawDestroy(speedom[playerid]);
 	return 1;
 }
@@ -330,34 +318,27 @@ stock qudemsys_OnPlayerStateChange(playerid, newstate, oldstate)
 	}
 	
 	new vehicleid = GetPlayerVehicleID(playerid);
-	if (vehicleid == 0) {
-		return 0;
-	}
 	
-	if (FuelList[ GetVehicleModel(vehicleid) - 400 ] == 0)
-	{
-		return 0;
-	}
-	
-	if (newstate == PLAYER_STATE_DRIVER)
-	{
+	if (newstate == PLAYER_STATE_DRIVER && vehicleid != 0) {
+		TextDrawShowForPlayer(playerid, speedom[playerid]);
+		TextDrawShowForPlayer(playerid, black);
+
 		new engine, lights, alarm, doors, bonnet, boot, objective;
 		GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
-		if (Fuel[vehicleid] <= 0.1)
-		{
+
+		if (Fuel[vehicleid] <= 0.1) {
 			SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, lights, alarm, doors, bonnet, boot, objective);
+
 			if (!vshop_IsShopVehicle(vehicleid)) {
 				SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][26]);
 			}
-		}
-		else
-		{
+		} else {
 			SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_ON, lights, alarm, doors, bonnet, boot, objective);
 		}
 		return 1;
 	}
-	if (oldstate == PLAYER_STATE_DRIVER)
-	{
+
+	if (oldstate == PLAYER_STATE_DRIVER) {
 		TextDrawHideForPlayer(playerid, black);
 		TextDrawHideForPlayer(playerid, speedom[playerid]);
 		return 1;
@@ -367,10 +348,8 @@ stock qudemsys_OnPlayerStateChange(playerid, newstate, oldstate)
 
 stock IsPlayerAtFuelStation(playerid)
 {
-	for (new fuelid = 0; fuelid < sizeof(FuelStations); fuelid++)
-	{
-		if (IsPlayerInRangeOfPoint(playerid, 10, FuelStations[fuelid][Coord_X], FuelStations[fuelid][Coord_Y], FuelStations[fuelid][Coord_Z]))
-		{
+	for (new fuelid = 0; fuelid < sizeof(FuelStations); fuelid++) {
+		if (IsPlayerInRangeOfPoint(playerid, 10, FuelStations[fuelid][Coord_X], FuelStations[fuelid][Coord_Y], FuelStations[fuelid][Coord_Z])) {
 			return 1;
 		}
 	}
