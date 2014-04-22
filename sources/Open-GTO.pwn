@@ -318,7 +318,7 @@ public OnPlayerEnterRaceCheckpoint(playerid)
 
 public OnPlayerDeath(playerid, killerid, reason)
 {
-	if (!IsPlayerConnected(playerid) || IsPlayerNPC(playerid)) {
+	if (!IsPlayerConnected(playerid) || IsPlayerNPC(playerid) || IsPlayerNPC(killerid)) {
 		return 1;
 	}
 
