@@ -477,13 +477,31 @@ public adm_click_UnFreezePlayer(playerid, clickedid, listitem, inputtext[])
 forward adm_click_GetNetStats(playerid, clickedid, listitem, inputtext[]);
 public adm_click_GetNetStats(playerid, clickedid, listitem, inputtext[])
 {
+	new player_ip_port[64 + 1];
+	NetStats_GetIpPort(playerid, player_ip_port, sizeof(player_ip_port) - 1);
+
 	new netstats_str[400 + 1];
-	GetPlayerNetworkStats(clickedid, netstats_str, sizeof(netstats_str));
+	format(netstats_str, sizeof(netstats_str), 
+		"IP и порт: %s\n\
+		Время на сервере (ms): %d\n\
+		Статус подключения: %d\n\
+		Потеря пакетов: %.2f%%\n\
+		Пакетов получено: %d\n\
+		Пакетов отправлено: %d\n\
+		Пакетов в секунду: %d",
+		player_ip_port,
+		NetStats_GetConnectedTime(playerid),
+		NetStats_ConnectionStatus(playerid),
+		NetStats_PacketLossPercent(playerid),
+		NetStats_MessagesReceived(playerid),
+		NetStats_MessagesSent(playerid),
+		NetStats_MessagesRecvPerSecond(playerid));
+
 	Dialog_Open(playerid, Dialog:PlayerClickNetStats, DIALOG_STYLE_MSGBOX, "Информация NetStats", netstats_str, "ОК", "Назад");
 
 	SetPVarInt(playerid,
 		"click_NetStats_TimerID",
-		SetTimerEx("click_GetNetStats", 2000, 0, "dd", playerid, clickedid)
+		SetTimerEx("adm_click_GetNetStats", 2000, 0, "dd", playerid, clickedid)
 	);
 }
 
