@@ -326,7 +326,7 @@ stock business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		// если мой
 		format(string, sizeof(string), lang_texts[3][11],
 			((Businesses[id][Business_Cost] + Businesses[id][Business_Buyout]) * 85) / 100,
-			Businesses[id][Business_Vault],
+			Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade],
 			Businesses[id][Business_Upgrade]
 		);
 		
