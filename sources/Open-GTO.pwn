@@ -43,6 +43,7 @@ Developers:
 #include "vehicle\vehicle_damage"
 #include "vehicle\vehicle_radio"
 #include "vehicle\vehicle_vip"
+#include "player\player_textdraw"
 #include "player\player_level"
 #include "player\player_vip"
 #include "player\player_weapon"
@@ -69,6 +70,7 @@ Developers:
 #include "player\player_kick"
 #include "player\player_maptp"
 #include "player\player_message"
+#include "player\player_money"
 #include "player\player"
 #include "etc\weapons"
 #include "sys\zones"
@@ -112,7 +114,6 @@ Developers:
 #include "services\fightteacher"
 #include "etc\interior"
 #include "etc\weather"
-#include "protections\money"
 #include "protections\idle"
 #include "protections\rconhack"
 #include "protections\heightping"
@@ -178,6 +179,7 @@ public OnGameModeInit()
 	swagup_OnGameModeInit();
 	vip_OnGameModeInit();
 	pl_weapon_OnGameModeInit();
+	pl_textdraw_OnGameModeInit();
 
 	// missions
 	trucker_OnGameModeInit();
@@ -258,8 +260,8 @@ public OnPlayerConnect(playerid)
 	}
 	player_OnPlayerConnect(playerid);
 	pt_chat_OnPlayerConnect(playerid);
-	pl_level_OnPlayerConnect(playerid);
 	pl_weapon_OnPlayerConnect(playerid);
+	pl_textdraw_OnPlayerConnect(playerid);
 	qudemsys_OnPlayerConnect(playerid);
 	return 1;
 }
@@ -273,8 +275,8 @@ public OnPlayerDisconnect(playerid, reason)
 	trucker_OnPlayerDisconnect(playerid, reason);
 	pt_chat_OnPlayerDisconnect(playerid, reason);
 	gh_OnPlayerDisconnect(playerid, reason);
-	pl_level_OnPlayerDisconnect(playerid, reason);
 	pl_weapon_OnPlayerDisconnect(playerid, reason);
+	pl_textdraw_OnPlayerDisconnect(playerid, reason);
 	qudemsys_OnPlayerDisconnect(playerid, reason);
 	pveh_OnPlayerDisconnect(playerid, reason);
 	player_SetSpawned(playerid, 0);
@@ -343,7 +345,6 @@ public OnPlayerDeath(playerid, killerid, reason)
 	trucker_OnPlayerDeath(playerid, killerid, reason);
 	gang_OnPlayerDeath(playerid, killerid, reason);
 	pl_weapon_OnPlayerDeath(playerid, killerid, reason);
-	pl_level_OnPlayerDeath(playerid, killerid, reason);
 
 	PlayCrimeReportForPlayer(killerid, killerid, random(18)+3);
 	PlayCrimeReportForPlayer(playerid, killerid, random(18)+3);
@@ -389,7 +390,6 @@ public OnPlayerRequestClass(playerid, classid)
 	player_SetSpawned(playerid, 0);
 	player_OnPlayerRequestClass(playerid, classid);
 	pl_weapon_OnPlayerRequestClass(playerid, classid);
-	pl_level_OnPlayerRequestClass(playerid, classid);
 	return 1;
 }
 

@@ -1,54 +1,22 @@
 /*
 
-	About: anti money hack
+	About: money system
 	Author:	ziggi
 
 */
 
-#if defined _money_included
+#if defined _pl_money_included
 	#endinput
 #endif
 
-#define _money_included
-#pragma library money
+#define _pl_money_included
+#pragma library pl_money
 
-
-static IsEnabled = ANTI_MONEY_HACK_ENABLED;
-
-stock pt_money_LoadConfig(file_config)
-{
-	ini_getInteger(file_config, "Protection_Money_IsEnabled", IsEnabled);
-}
-
-stock pt_money_SaveConfig(file_config)
-{
-	ini_setInteger(file_config, "Protection_Money_IsEnabled", IsEnabled);
-}
-
-stock pt_money_Sync(playerid)
-{
-	if (!IsEnabled) {
-		return 0;
-	}
-
-	new clientmoney = GetPlayerMoney(playerid);
-	new servermoney = oGetPlayerMoney(playerid);
-	
-	if (clientmoney < 0) {
-		oSetPlayerMoney(playerid, 0);
-	} else if (clientmoney < servermoney) {
-		SetPVarInt(playerid, "Money", clientmoney);
-	} else if (clientmoney > servermoney) {
-		oSetPlayerMoney(playerid, servermoney);
-	}
-	return 1;
-}
 
 stock oSetPlayerMoney(playerid,money)
 {
-	ResetPlayerMoney(playerid);
-	GivePlayerMoney(playerid, money);
 	SetPVarInt(playerid, "Money", money);
+	pl_textdraw_SetMoney(playerid, money);
 	return 1;
 }
 

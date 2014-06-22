@@ -50,9 +50,9 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define LOGGING_DEBUG_LOG_ENABLED	1 // логирование отладочных сообщений
 #define LOGGING_CHAT_LOG_ENABLED	1 // логирование сообщений в чат
 #define LOGGING_CMD_LOG_ENABLED		1 // логирование введённых команд
+
 // античит(параметры по умолчанию), в режиме тестирования...
 #define ANTI_HEALTH_HACK_ENABLED	1 // защита от чита на здоровье
-#define ANTI_MONEY_HACK_ENABLED		1 // защита от чита на деньги
 
 #define ANTI_HEIGHT_PING_ENABLED	1 // защита от высокого пинга
 #define MAXIMAL_PING				500 // пинг, при котором кикает

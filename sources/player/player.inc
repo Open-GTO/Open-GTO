@@ -50,6 +50,7 @@ stock player_OnPlayerSpawn(playerid)
 	weapon_SetSkills(playerid);
 	PushHide(playerid);
 	pl_anims_OnPlayerSpawn(playerid);
+	pl_textdraw_Show(playerid);
 	return 1;
 }
 
@@ -151,6 +152,8 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 stock player_OnPlayerRequestClass(playerid, classid)
 {
 	#pragma unused classid
+	pl_textdraw_Hide(playerid);
+
 	// spawn system
 	pl_spawn_OnPlayerRequestClass(playerid, classid);
 
@@ -246,7 +249,6 @@ stock player_Sync(playerid)
 	}
 
 	pt_weapon_Sync(playerid);
-	pt_money_Sync(playerid);
 	pt_ping_Check(playerid);
 	pt_jetpack_Check(playerid);
 	pt_health_Sync(playerid);
