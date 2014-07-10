@@ -47,7 +47,7 @@ DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
 	SetPlayerFightingStyle(playerid, styleid);
 
 	new string[MAX_STRING];
-	fights_GetNameByID(styleid, string);
+	fights_GetNameByID(listitem, string);
 	
 	format(string, sizeof(string), lang_texts[19][11], string);
 	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, lang_texts[19][2], string, lang_texts[19][14], lang_texts[19][13]);
