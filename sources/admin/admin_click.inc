@@ -49,8 +49,7 @@ public adm_click_MutePlayer(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
-	player_SetMuteTime(clickedid, gettime() + mutetime);
-	player_SetMuteCount(clickedid, player_GetMuteCount(clickedid) + 1);
+	MutePlayer(clickedid, mutetime);
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][24], oGetPlayerName(playerid), mutetime);
@@ -71,7 +70,7 @@ public adm_click_UnMutePlayer(playerid, clickedid, listitem, inputtext[])
 		return 1;
 	}
 
-	player_SetMuteTime(clickedid, 0);
+	UnMutePlayer(clickedid);
 
 	new string[MAX_STRING];
 
@@ -96,7 +95,6 @@ public adm_click_JailPlayer(playerid, clickedid, listitem, inputtext[])
 	new jailt = strval(inputtext);
 
 	JailPlayer(clickedid, jailt);
-	player_SetJailCount(clickedid, player_GetJailCount(clickedid) + 1);
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][18], oGetPlayerName(playerid));

@@ -27,12 +27,25 @@ stock MutePlayerTimer(playerid)
 	new mutetime = player_GetMuteTime(playerid);
 
 	if (mutetime != 0 && gettime() >= mutetime) {
-		player_SetMuteTime(playerid, 0);
+		UnMutePlayer(playerid);
 
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[13][54], oGetPlayerName(playerid), playerid);
 		SendClientMessageToAll(COLOUR_YELLOW, string);
 	}
+}
+
+stock MutePlayer(playerid, mutetime)
+{
+	player_SetMuteTime(playerid, gettime() + mutetime * 60);
+	player_SetMuteCount(playerid, player_GetMuteCount(playerid) + 1);
+	return 1;
+}
+
+stock UnMutePlayer(playerid)
+{
+	player_SetMuteTime(playerid, 0);
+	return 1;
 }
 
 COMMAND:mute(playerid, params[])
@@ -55,14 +68,12 @@ COMMAND:mute(playerid, params[])
 		return 1;
 	}
 
-	if (IsPlayerConnected(muteid)) {
-		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[13][12], oGetPlayerName(playerid), oGetPlayerName(muteid), mutetime);
-		SendClientMessageToAll(COLOUR_YELLOW, string);
+	if (!IsPlayerConnected(muteid)) {
+		SendClientMessage(playerid, COLOUR_RED, "Этот игрок отключился!");
+		return 1;
 	}
 
-	player_SetMuteTime(muteid, gettime() + mutetime);
-	player_SetMuteCount(muteid, player_GetMuteCount(muteid) + 1); // сколько раз всего затыкали игрока
+	MutePlayer(muteid, mutetime);
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][24], oGetPlayerName(playerid));
@@ -94,7 +105,7 @@ COMMAND:unmute(playerid, params[])
 		return 1;
 	}
 
-	player_SetMuteTime(unmuteid, 0);
+	UnMutePlayer(unmuteid);
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][27], oGetPlayerName(playerid));
