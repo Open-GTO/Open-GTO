@@ -112,12 +112,29 @@ COMMAND:version(playerid, params[])
 
 COMMAND:time(playerid, params[])
 {
-	new string[16],
+	new string[MAX_STRING],
 		minute;
 	
 	gettime(_, minute);
 	format(string, sizeof(string), "%02d:%02d", time_GetCurrentHour(), minute);
-	GameTextForPlayer(playerid, string, 1000, 1);
+	GameTextForPlayer(playerid, string, 2000, 1);
+
+	new jail_time = player_GetJailTime(playerid);
+	new mute_time = player_GetMuteTime(playerid);
+
+	if (jail_time != -1 || mute_time != 0) {
+		SendClientMessage(playerid, COLOUR_LIGHTRED, lang_texts[15][29]);
+	}
+
+	if (jail_time != -1) {
+		format(string, sizeof(string), lang_texts[13][56], (jail_time - gettime()) / 60 + 1);
+		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
+	}
+
+	if (mute_time != 0) {
+		format(string, sizeof(string), lang_texts[13][59], (mute_time - gettime()) / 60 + 1);
+		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
+	}
 	
 	PlayerPlaySound(playerid, 1085, 0, 0, 0);
 	return 1;
