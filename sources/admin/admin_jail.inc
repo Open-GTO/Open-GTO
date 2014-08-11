@@ -76,18 +76,18 @@ stock JailPlayerTimer(playerid)
 		return 0;
 	}
 
-	new string[MAX_STRING];
-
 	if (gettime() >= jail_time) {
 		UnJailPlayer(playerid);
 
-		format(string, sizeof(string), lang_texts[13][53], oGetPlayerName(playerid));
-		SendClientMessageToAll(COLOUR_WHITE, string);
+		new string[MAX_STRING],
+			playername[MAX_PLAYER_NAME + 1];
+
+		GetPlayerName(playerid, playername, sizeof(playername));
 		
-		GameMSG(lang_texts[13][55], oGetPlayerName(playerid));
-	} else {
-		format(string, sizeof(string), lang_texts[13][56], jail_time);
-		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
+		format(string, sizeof(string), lang_texts[13][53], playername);
+		SendClientMessageToAll(COLOUR_WHITE, string);
+
+		GameMSG(lang_texts[13][55], playername);
 	}
 	return 1;
 }

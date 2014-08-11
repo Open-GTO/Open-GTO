@@ -1375,7 +1375,7 @@ COMMAND:plist(playerid, params[])
 	foreach (new id : Player) {
 		if (player_IsJailed(id)) {
 			if (player_GetJailTime(id) > 0) {
-				format(string, sizeof(string), lang_texts[18][3], oGetPlayerName(id), id, player_GetJailTime(id));
+				format(string, sizeof(string), lang_texts[18][3], oGetPlayerName(id), id, (player_GetJailTime(id)- gettime()) / 60 + 1);
 			} else {
 				format(string, sizeof(string), lang_texts[18][4], oGetPlayerName(id), id);
 			}
@@ -1386,7 +1386,7 @@ COMMAND:plist(playerid, params[])
 		}
 
 		if (player_IsMuted(playerid)) {
-			format(string, sizeof(string), lang_texts[18][5], oGetPlayerName(id), id, player_GetMuteTime(id) - gettime());
+			format(string, sizeof(string), lang_texts[18][5], oGetPlayerName(id), id, (player_GetMuteTime(id) - gettime()) / 60 + 1);
 			SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
 
 			count++;
