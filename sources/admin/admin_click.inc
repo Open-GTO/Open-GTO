@@ -49,7 +49,7 @@ public adm_click_MutePlayer(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
-	player_SetMuteTime(clickedid, mutetime);
+	player_SetMuteTime(clickedid, gettime() + mutetime);
 	player_SetMuteCount(clickedid, player_GetMuteCount(clickedid) + 1);
 
 	new string[MAX_STRING];
@@ -58,6 +58,8 @@ public adm_click_MutePlayer(playerid, clickedid, listitem, inputtext[])
 
 	format(string, sizeof(string), lang_texts[12][50], oGetPlayerName(clickedid), mutetime);
 	SendClientMessageToAll(COLOUR_WHITE, string);
+
+	GameMSG(lang_texts[13][7], oGetPlayerName(muteid), oGetPlayerName(playerid), mutetime);
 	return 1;
 }
 
@@ -70,7 +72,6 @@ public adm_click_UnMutePlayer(playerid, clickedid, listitem, inputtext[])
 	}
 
 	player_SetMuteTime(clickedid, 0);
-	SetPlayerWantedLevel(clickedid, 0);
 
 	new string[MAX_STRING];
 
@@ -80,7 +81,7 @@ public adm_click_UnMutePlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][51], oGetPlayerName(clickedid));
 	SendClientMessageToAll(COLOUR_WHITE, string);
 
-	printf("SERVER : %s Has Been UnMuted by %s", oGetPlayerName(clickedid), oGetPlayerName(playerid));
+	GameMSG(lang_texts[13][14], oGetPlayerName(clickedid), oGetPlayerName(playerid));
 	return 1;
 }
 

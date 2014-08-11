@@ -32,7 +32,6 @@ stock player_OnPlayerSpawn(playerid)
 {
 	if (player_IsMuted(playerid)) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
-		SetPlayerWantedLevel(playerid, 3);
 	}
 	
 	if (player_IsJailed(playerid)) {
