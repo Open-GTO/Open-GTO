@@ -13,14 +13,14 @@
 #pragma library adm_jail
 
 
-enum CoordInfoJ {
-    Float:CJ_X,
-    Float:CJ_Y,
-    Float:CJ_Z,
-    Float:CJ_A
+enum JailCoordInfo {
+    Float:Coord_X,
+    Float:Coord_Y,
+    Float:Coord_Z,
+    Float:Coord_A
 }
 
-new Float:Jail_PH[][CoordInfoJ] = {
+new Float:jail_release_point[][JailCoordInfo] = {
 	{633.365, -571.78, 16.340, 265.773},
 	{1544.982, -1675.470, 13.600, 93.446},
 	{-2164.396, -2388.342, 30.650, 140.551},
@@ -33,8 +33,8 @@ new Float:Jail_PH[][CoordInfoJ] = {
 
 stock JailPlayer(playerid, jail_time)
 {
-	player_SetJailTime(playerid, jail_time);
-	SetPlayerWantedLevel(playerid, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
+	player_SetJailTime(playerid, gettime() + jail_time * 60);
+	player_SetJailCount(playerid, player_GetJailCount(playerid) + 1);
 	
 	SetPlayerInterior(playerid, 6);
 	oSetPlayerPos(playerid, 265.1273, 77.6823, 1001.0391);
@@ -57,45 +57,37 @@ stock JailPlayerCheck(playerid)
 stock UnJailPlayer(playerid)
 {
 	player_SetJailTime(playerid, -1);
-	SetPlayerWantedLevel(playerid, 0);
 	TogglePlayerControllable(playerid, 1);
+
 	// ставим игрока в рандомное место из всех мест освобождений
-	new j_id = random( sizeof(Jail_PH) );
+	new j_id = random( sizeof(jail_release_point) );
 	SetPlayerInterior(playerid, 0);
-	oSetPlayerPos(playerid, Jail_PH[j_id][CJ_X], Jail_PH[j_id][CJ_Y], Jail_PH[j_id][CJ_Z] );
-	SetPlayerFacingAngle(playerid, Jail_PH[j_id][CJ_A]);
+	oSetPlayerPos(playerid, jail_release_point[j_id][Coord_X], jail_release_point[j_id][Coord_Y], jail_release_point[j_id][Coord_Z] );
+	SetPlayerFacingAngle(playerid, jail_release_point[j_id][Coord_A]);
 	SetCameraBehindPlayer(playerid);
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[13][53], oGetPlayerName(playerid));
-	SendClientMessageToAll(COLOUR_WHITE, string);
 	return 1;
 }
 
 stock JailPlayerTimer(playerid)
 {
-	new string[MAX_STRING];
 	new jail_time = player_GetJailTime(playerid);
 	
-	if (jail_time == -1)
-	{
+	if (jail_time == -1) {
 		return 0;
 	}
-	SetPlayerWantedLevel(playerid, (jail_time == 0 || jail_time > 6) ? 6 : jail_time);
-	
-	if (jail_time >= 1 && jail_time <= 4320)
-	{
-		jail_time--;
-		player_SetJailTime(playerid, jail_time);
-		if (jail_time <= 0)
-		{
-			UnJailPlayer(playerid);
-			GameMSG(lang_texts[13][55], oGetPlayerName(playerid));
-		}
-		else
-		{
-			format(string, sizeof(string), lang_texts[13][56], jail_time);
-			SendClientMessage(playerid, COLOUR_LIGHTRED, string);
-		}
+
+	new string[MAX_STRING];
+
+	if (gettime() >= jail_time) {
+		UnJailPlayer(playerid);
+
+		format(string, sizeof(string), lang_texts[13][53], oGetPlayerName(playerid));
+		SendClientMessageToAll(COLOUR_WHITE, string);
+		
+		GameMSG(lang_texts[13][55], oGetPlayerName(playerid));
+	} else {
+		format(string, sizeof(string), lang_texts[13][56], jail_time);
+		SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 	}
 	return 1;
 }
@@ -133,7 +125,6 @@ COMMAND:jail(playerid, params[])
 	}
 
 	JailPlayer(jailid, jailt);
-	player_SetJailCount(jailid, player_GetJailCount(jailid) + 1);
 	
 	format(string, sizeof(string), lang_texts[13][17], oGetPlayerName(jailid), string2);
 	SendClientMessageToAll(COLOUR_WHITE, string);

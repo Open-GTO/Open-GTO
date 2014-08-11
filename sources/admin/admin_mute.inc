@@ -22,19 +22,6 @@ stock adm_mute_OnPlayerText(playerid, text[])
 	return 1;
 }
 
-stock MutePlayerTimer(playerid)
-{
-	new mutetime = player_GetMuteTime(playerid);
-
-	if (mutetime != 0 && gettime() >= mutetime) {
-		UnMutePlayer(playerid);
-
-		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[13][54], oGetPlayerName(playerid), playerid);
-		SendClientMessageToAll(COLOUR_YELLOW, string);
-	}
-}
-
 stock MutePlayer(playerid, mutetime)
 {
 	player_SetMuteTime(playerid, gettime() + mutetime * 60);
@@ -46,6 +33,19 @@ stock UnMutePlayer(playerid)
 {
 	player_SetMuteTime(playerid, 0);
 	return 1;
+}
+
+stock MutePlayerTimer(playerid)
+{
+	new mutetime = player_GetMuteTime(playerid);
+
+	if (mutetime != 0 && gettime() >= mutetime) {
+		UnMutePlayer(playerid);
+
+		new string[MAX_STRING];
+		format(string, sizeof(string), lang_texts[13][54], oGetPlayerName(playerid), playerid);
+		SendClientMessageToAll(COLOUR_YELLOW, string);
+	}
 }
 
 COMMAND:mute(playerid, params[])

@@ -88,7 +88,6 @@ public OneMinuteTimer()
 			player_SetSkydiveTime(playerid, player_GetSkydiveTime(playerid) - 1);
 		}
 		if (player_IsLogin(playerid)) {
-			JailPlayerTimer(playerid);
 			pt_idle_PlayerTimer(playerid);
 			Gang_GiveXp(playerid);
 		}
@@ -118,9 +117,12 @@ forward FiveSecondTimer();
 public FiveSecondTimer()
 {
 	foreach (new playerid : Player) {
-		MutePlayerTimer(playerid);
+		if (player_IsLogin(playerid)) {
+			MutePlayerTimer(playerid);
+			JailPlayerTimer(playerid);
+		}
 	}
-	
+
 	CheckAllGround();
 	pl_health_Regeneration();
 	checkpoint_Sync();

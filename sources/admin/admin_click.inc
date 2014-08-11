@@ -58,7 +58,7 @@ public adm_click_MutePlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][50], oGetPlayerName(clickedid), mutetime);
 	SendClientMessageToAll(COLOUR_WHITE, string);
 
-	GameMSG(lang_texts[13][7], oGetPlayerName(muteid), oGetPlayerName(playerid), mutetime);
+	GameMSG(lang_texts[13][7], oGetPlayerName(clickedid), oGetPlayerName(playerid), mutetime);
 	return 1;
 }
 
@@ -126,11 +126,14 @@ public adm_click_UnJailPlayer(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
+	UnJailPlayer(clickedid);
+	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][21], oGetPlayerName(playerid));
 	SendClientMessage(clickedid, COLOUR_GREEN, string);
 
-	UnJailPlayer(clickedid);
+	format(string, sizeof(string), lang_texts[13][53], oGetPlayerName(playerid));
+	SendClientMessageToAll(COLOUR_WHITE, string);
 	return 1;
 }
 
