@@ -24,18 +24,14 @@ stock adm_mute_OnPlayerText(playerid, text[])
 
 stock MutePlayerTimer(playerid)
 {
-	new string[MAX_STRING],
-		mute_time = player_GetMuteTime(playerid);
-	
-	if (mute_time > 0)
-	{
-		mute_time--;
-		player_SetMuteTime(playerid, mute_time);
-	    if (mute_time <= 0)
-	    {
-			format(string, sizeof(string), lang_texts[13][54], oGetPlayerName(playerid), playerid);
-			SendClientMessageToAll(COLOUR_YELLOW, string);
-		}
+	new mutetime = player_GetMuteTime(playerid);
+
+	if (mutetime != 0 && gettime() >= mutetime) {
+		player_SetMuteTime(playerid, 0);
+
+		new string[MAX_STRING];
+		format(string, sizeof(string), lang_texts[13][54], oGetPlayerName(playerid), playerid);
+		SendClientMessageToAll(COLOUR_YELLOW, string);
 	}
 }
 
@@ -65,7 +61,7 @@ COMMAND:mute(playerid, params[])
 		SendClientMessageToAll(COLOUR_YELLOW, string);
 	}
 
-	player_SetMuteTime(muteid, mutetime);
+	player_SetMuteTime(muteid, gettime() + mutetime);
 	player_SetMuteCount(muteid, player_GetMuteCount(muteid) + 1); // сколько раз всего затыкали игрока
 
 	new string[MAX_STRING];
@@ -74,6 +70,8 @@ COMMAND:mute(playerid, params[])
 
 	format(string, sizeof(string), lang_texts[12][50], oGetPlayerName(muteid), mutetime);
 	SendClientMessageToAll(COLOUR_WHITE, string);
+
+	GameMSG(lang_texts[13][7], oGetPlayerName(muteid), oGetPlayerName(playerid), mutetime);
 	return 1;
 }
 
@@ -97,7 +95,6 @@ COMMAND:unmute(playerid, params[])
 	}
 
 	player_SetMuteTime(unmuteid, 0);
-	SetPlayerWantedLevel(unmuteid, 0);
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][27], oGetPlayerName(playerid));

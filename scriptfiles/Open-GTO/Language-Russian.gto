@@ -598,15 +598,15 @@
 4: R: '/payday', /go <точка(0 - 27)>', '/allowport <ID> <allow>', '/setskin <ID> <IDskin>'
 5: R: '/repair', '/carinfo', '/int', '/boom <тип>'
 6: S: '/sys cmdlist', '/sys about', '/sys info', '/sys weath <param>', '/sys groundhold <param>', '/sys gmx'
-7: 
 // mod_commands
+7: SERVER: %s has been muted by %s on %s minutes
 8: M: '/carresp', '/remcar <ID>', '/kick <ID>', /clearchat, /weather <ID>
 9: M: '/cmdlist', '/about', '/mute <ID> <Time>', '/unmute <ID>', '/jail <ID>', '/unjail <ID>', '/plist', '/spec <ID>'
 10: *** Транспорт (ИД %d) возвращен на свой спавн.
 11: *** Весь транспорт возвращен на свой спавн.
 12: %s заткнул %s на %d минут
 13: Не правильное время затычки!введите '/mute <id> <minutes>'
-14: SERVER : %s Has Been UNMuted by %s
+14: SERVER: %s has been unmuted by %s
 15: на %d минут
 16: навсегда
 17: {FFCC66}[Сервер]: {FFFFFF}%s был арестован %s

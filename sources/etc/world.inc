@@ -89,7 +89,6 @@ public OneMinuteTimer()
 		}
 		if (player_IsLogin(playerid)) {
 			JailPlayerTimer(playerid);
-			MutePlayerTimer(playerid);
 			pt_idle_PlayerTimer(playerid);
 			Gang_GiveXp(playerid);
 		}
@@ -118,6 +117,10 @@ public TenMinuteTimer()
 forward FiveSecondTimer();
 public FiveSecondTimer()
 {
+	foreach (new playerid : Player) {
+		MutePlayerTimer(playerid);
+	}
+	
 	CheckAllGround();
 	pl_health_Regeneration();
 	checkpoint_Sync();

@@ -1386,7 +1386,7 @@ COMMAND:plist(playerid, params[])
 		}
 
 		if (player_IsMuted(playerid)) {
-			format(string, sizeof(string), lang_texts[18][5], oGetPlayerName(id), id, player_GetMuteTime(id));
+			format(string, sizeof(string), lang_texts[18][5], oGetPlayerName(id), id, player_GetMuteTime(id) - gettime());
 			SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
 
 			count++;
