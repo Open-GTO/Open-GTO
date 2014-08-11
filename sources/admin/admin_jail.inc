@@ -48,9 +48,8 @@ stock JailPlayer(playerid, jail_time)
 
 stock JailPlayerCheck(playerid)
 {
-	if (player_IsJailed(playerid) && !IsPlayerInRangeOfPoint(playerid, 5, 265.1273, 77.6823, 1001.0391))
-	{
-		KickPlayer(playerid, lang_texts[11][16]);
+	if (player_IsJailed(playerid) && !IsPlayerInRangeOfPoint(playerid, 5, 265.1273, 77.6823, 1001.0391)) {
+		oSetPlayerPos(playerid, 265.1273, 77.6823, 1001.0391);
 	}
 	return 1;
 }
