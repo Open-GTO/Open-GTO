@@ -13,6 +13,75 @@
 #pragma library vehicle_menu
 
 
+stock vh_menu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+{
+	new engine, lights, alarm, doors, bonnet, boot, objective;
+	new vehicleid = GetPlayerVehicleID(playerid);
+	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+
+	// двигатель
+	if (PRESSED(KEY_ANALOG_UP)) {
+		if (engine == VEHICLE_PARAMS_ON) {
+			SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, lights, alarm, doors, bonnet, boot, objective);
+		} else {
+			SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_ON, lights, alarm, doors, bonnet, boot, objective);
+		}
+		return 1;
+	}
+
+	// заправить
+	if (PRESSED(KEY_ANALOG_DOWN)) {
+		if (vehicleid == 0) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[19][21]);
+			return 1;
+		}
+		
+		if (!IsPlayerAtFuelStation(playerid)) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[19][22]);
+			return 1;
+		}
+		
+		if (GetPVarInt(playerid, "Refueling")) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[19][23]);
+			return 1;
+		}
+		
+		new vehiclemodel = GetVehicleModel(vehicleid);
+		switch (vehiclemodel) {
+			case 481, 509, 510: {
+				SendClientMessage(playerid, COLOUR_RED, lang_texts[19][24]);
+				return 1;
+			}
+		}
+		
+		if (Fuel[vehicleid] >= FuelList[vehiclemodel-400]) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[19][25]);
+			return 1;
+		}
+		
+		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][32]);
+		fill_Vehicle(vehicleid, playerid);
+		return 1;
+	}
+
+	// радио
+	if (PRESSED(KEY_ANALOG_LEFT)) {
+		Dialog_Show(playerid, Dialog:VehicleRadio);
+		return 1;
+	}
+
+	// фары
+	if (PRESSED(KEY_ANALOG_RIGHT)) {
+		if (lights == VEHICLE_PARAMS_ON) {
+			SetVehicleParamsEx(vehicleid, engine, VEHICLE_PARAMS_OFF, alarm, doors, bonnet, boot, objective);
+		} else {
+			SetVehicleParamsEx(vehicleid, engine, VEHICLE_PARAMS_ON, alarm, doors, bonnet, boot, objective);
+		}
+		return 1;
+	}
+	return 1;
+}
+
 COMMAND:vmenu(playerid, params[])
 {
 	if (!IsPlayerInAnyVehicle(playerid)) {
@@ -115,9 +184,8 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 				return 1;
 			}
 			
-			SetPVarFloat(playerid, "OldFuel", Fuel[vehicleid]);
-			fill_TimerID[playerid] = SetTimerEx("fill_Timer", 1000, 1, "i", playerid);
-			SetPVarInt(playerid, "Refueling", 1);
+			SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][32]);
+			fill_Vehicle(vehicleid, playerid);
 			return 1;
 		}
 		// радио

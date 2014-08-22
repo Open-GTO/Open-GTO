@@ -462,21 +462,48 @@ public OnPlayerUpdate(playerid)
 
 public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	if ( PRESSED( KEY_FIRE ) || PRESSED ( KEY_SECONDARY_ATTACK ) )
-	{
-		if ( GetPVarInt(playerid, "bar_Drinking") == 1 ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+	if (PRESSED(KEY_FIRE) || PRESSED(KEY_SECONDARY_ATTACK)) {
+		if ( GetPVarInt(playerid, "bar_Drinking") == 1 ) {
+			return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		}
 	}
-	if ( PRESSED ( KEY_USING ) )
-	{
-		if ( IsPlayerAtEnterExit(playerid) ) return interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( IsPlayerAtHouse(playerid) ) return housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( IsPlayerAtBusiness(playerid) ) return business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( IsPlayerAtBank(playerid) ) return bank_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( IsPlayerAtWeaponShop(playerid) ) return wshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( fights_IsPlayerAtTeacher(playerid) ) return fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( IsPlayerAtFastFood(playerid) ) return fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( IsPlayerAtBar(playerid) ) return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		if ( IsPlayerAtSkinShop(playerid) ) return sshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+
+	if (PRESSED(KEY_USING)) {
+		if (IsPlayerAtEnterExit(playerid)) {
+			return interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		}
+
+		if (IsPlayerAtHouse(playerid)) {
+			return housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		}
+
+		if (IsPlayerAtBusiness(playerid)) {
+			return business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		}
+
+		if (IsPlayerAtBank(playerid)) {
+			return bank_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		}
+
+		if (IsPlayerAtWeaponShop(playerid)) {
+			return wshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		}
+
+		if (fights_IsPlayerAtTeacher(playerid)) {
+			return fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		}
+
+		if (IsPlayerAtFastFood(playerid)) {
+			return fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		}
+
+		if (IsPlayerAtBar(playerid)) {
+			return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		}
+
+		if (IsPlayerAtSkinShop(playerid)) {
+			return sshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		}
 		
 		new player_state = GetPlayerState(playerid);
 		switch (player_state) {
@@ -489,12 +516,21 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		}
 		return 1;
 	}
-	if ( PRESSED( KEY_SUBMISSION ) )
-	{
+
+	if (PRESSED(KEY_SUBMISSION)) {
 		new vehicleid = GetPlayerVehicleID(playerid);
-		if ( vehicleid != 0 && IsVehicleIsRunner(vehicleid) )
-		{
+		if ( vehicleid != 0 && IsVehicleIsRunner(vehicleid) ) {
 			trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		}
+		return 1;
+	}
+
+	if (PRESSED(KEY_ANALOG_UP) || PRESSED(KEY_ANALOG_DOWN) || PRESSED(KEY_ANALOG_LEFT) || PRESSED(KEY_ANALOG_RIGHT)) {
+		new player_state = GetPlayerState(playerid);
+		switch (player_state) {
+			case PLAYER_STATE_DRIVER: {
+				vh_menu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+			}
 		}
 		return 1;
 	}
