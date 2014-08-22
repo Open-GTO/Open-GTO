@@ -173,10 +173,8 @@ COMMAND:fill(playerid, params[])
 		return 1;
 	}
 	
-	SetPVarFloat(playerid, "OldFuel", Fuel[vehicleid]);
-
-	fill_TimerID[playerid] = SetTimerEx("fill_Timer", 1000, 1, "i", playerid);
-	SetPVarInt(playerid, "Refueling", 1);
+	SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][32]);
+	fill_Vehicle(vehicleid, playerid);
 	return 1;
 }
 
@@ -210,7 +208,7 @@ public fill_Timer(playerid)
 	Fuel[vehicleid] += QUIDEMSYS_FUEL_SPEED;
 	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || Fuel[vehicleid] >= FuelList[ GetVehicleModel(vehicleid) - 400 ]) {
 		new RefueledAmount = floatround( Fuel[vehicleid] - GetPVarFloat(playerid, "OldFuel") ) * QUIDEMSYS_FUEL_TARIF;
-		GivePlayerMoney(playerid, -RefueledAmount);
+		oGivePlayerMoney(playerid, -RefueledAmount);
 		
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[19][27], RefueledAmount);
@@ -376,4 +374,12 @@ public Float:SetVehicleFuel(vehicleid, Float:amount)
 stock GetMaxVehicleFuel(vehiclemodel)
 {
 	return FuelList[vehiclemodel - 400];
+}
+
+stock fill_Vehicle(vehicleid, playerid)
+{
+	SetPVarFloat(playerid, "OldFuel", Fuel[vehicleid]);
+	fill_TimerID[playerid] = SetTimerEx("fill_Timer", 1000, 1, "i", playerid);
+	SetPVarInt(playerid, "Refueling", 1);
+	return 1;
 }
