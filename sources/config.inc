@@ -184,11 +184,13 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define HEALTH_TARIF			3.0	// степень увеличения максимального здоровья от лвл, формула: MIN_HEALTH + (GetPlayerLevel(playerid) * HEALTH_TARIF)
 #define HEALTH_REGEN_TARIF		0.1 // степень кол-ва востанавливаемого здоровья, формула: (GetPlayerLevel(id) * HEALTH_REGEN_TARIF)
 
-#define CHANGE_NICK_COST			100000 // кол-во денег, требуемых для смены ника
-#define MIN_PLAYER_NAME				3
-#define CHANGE_PASS_COST			5000 // кол-во денег, требуемых для смены пароля
-#define MIN_PASS_LEN				3
-#define MAX_PASS_LEN				40
+#define CHANGE_NICK_COST		100000 // кол-во денег, требуемых для смены ника
+#define MIN_PLAYER_NAME			3
+#define CHANGE_PASS_COST		5000 // кол-во денег, требуемых для смены пароля
+#define MIN_PASS_LEN			3
+#define MAX_PASS_LEN			40
+
+#define PLAYER_XP_VIP_PROFIT	10 // vip игроки получают на PLAYER_XP_VIP_PROFIT процентов больше опыта
 // МИССИИ
 	// trucker
 	#define TRUCKER_ENABLED					1

@@ -97,7 +97,11 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0)
 		return 0;
 	}
 
-	GangGivePlayerXP(playerid,xpamount);
+	if (xpamount > 0 && IsPlayerVIP(playerid)) {
+		xpamount += (xpamount / 100) * PLAYER_XP_VIP_PROFIT;
+	}
+
+	GangGivePlayerXP(playerid, xpamount);
 
 	new texttime = (xpamount > 5000) ? 2000 : 1000;
 	
