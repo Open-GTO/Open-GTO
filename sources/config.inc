@@ -101,6 +101,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define GROUNDHOLD_HOLD_TIME	2 // скорость потери точки при выходе из зоны
 
 #define BANK_PROFIT			2 // процент начисления прибыли за хранение в банке
+#define BANK_PROFIT_VIP		(BANK_PROFIT * 2) // процент начисления прибыли за хранение в банке для игроков с VIP
 #define MAX_BANK_MONEY		1000000000 // максимальное количество денег, которых можно хранить в банке
 
 #define PAYDAY_BASE_PAY		25 // PayDay тариф на деньги

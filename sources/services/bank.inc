@@ -14,7 +14,8 @@
 
 
 static
-	ProfitCount = BANK_PROFIT, 
+	ProfitCount = BANK_PROFIT,
+	ProfitCountVip = BANK_PROFIT_VIP,
 	MaxBankMoney = MAX_BANK_MONEY;
 
 new Banks[][CoordInfo] = {
@@ -25,12 +26,14 @@ new Banks[][CoordInfo] = {
 stock bank_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Bank_ProfitCount", ProfitCount);
+	ini_getInteger(file_config, "Bank_ProfitCount_VIP", ProfitCountVip);
 	ini_getInteger(file_config, "Bank_MaxBankMoney", MaxBankMoney);
 }
 
 stock bank_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Bank_ProfitCount", ProfitCount);
+	ini_setInteger(file_config, "Bank_ProfitCount_VIP", ProfitCountVip);
 	ini_setInteger(file_config, "Bank_MaxBankMoney", MaxBankMoney);
 }
 
@@ -55,7 +58,7 @@ stock bank_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 DialogCreate:BankStart(playerid)
 {
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[2][1], ProfitCount, GetPlayerBankMoney(playerid));
+	format(string, sizeof(string), lang_texts[2][1], ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
 	Dialog_Open(playerid, Dialog:BankStart, DIALOG_STYLE_MSGBOX, lang_texts[2][3], string, lang_texts[2][16], lang_texts[2][6]);
 }
 
@@ -112,7 +115,7 @@ DialogResponse:BankList(playerid, response, listitem, inputtext[])
 DialogCreate:BankWithdraw(playerid)
 {
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[2][1], ProfitCount, GetPlayerBankMoney(playerid));
+	format(string, sizeof(string), lang_texts[2][1], ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
 	Dialog_Open(playerid, Dialog:BankWithdraw, DIALOG_STYLE_INPUT, lang_texts[2][3], string, lang_texts[2][10], lang_texts[2][12]);
 }
 
@@ -150,7 +153,7 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 DialogCreate:BankDeposit(playerid)
 {
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[2][1], ProfitCount, GetPlayerBankMoney(playerid));
+	format(string, sizeof(string), lang_texts[2][1], ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
 	Dialog_Open(playerid, Dialog:BankDeposit, DIALOG_STYLE_INPUT, lang_texts[2][3], string, lang_texts[2][11], lang_texts[2][12]);
 }
 
@@ -286,7 +289,12 @@ stock bank_Profit()
 		if (!player_IsLogin(playerid)) {
 			continue;
 		}
-		amount = (GetPlayerBankMoney(playerid) / 100) * ProfitCount;
+
+		if (IsPlayerVIP(playerid)) {
+			amount = (GetPlayerBankMoney(playerid) / 100) * ProfitCountVip;
+		} else {
+			amount = (GetPlayerBankMoney(playerid) / 100) * ProfitCount;
+		}
 		
 		GivePlayerBankMoney(playerid, amount);
 		
