@@ -617,7 +617,7 @@
 22: Этот игрок не в тюрьме
 // adm_commands
 23: A: '/say <текст>', '/pinfo <ID>', '/showpm <ID>', '/getip <ник>'
-24: A: '/akill <ID>', '/paralyze <ID>', '/deparalyze <ID>'
+24: A: '/akill <ID>', '/paralyze <ID>', '/deparalyze <ID>', '/healall', '/setarmall'
 25: A: '/teleset', '/teleloc', '/teleto <ID>', '/telehere <ID>', '/telehereall', '/telexyzi <X> <Y> <Z> <интерьер>'
 26: A: '/sethealth <ID>', '/setarm <ID>', '/givexp <ID> <xp>', '/agivecash <ID> <количество>', '/givegun <ID> <IDgun>'
 27: A: '/ban <ник/id/ip> <время(в секундах, если 0, то навсегда)> <причина>', '/unban <ник>'

@@ -1547,3 +1547,29 @@ COMMAND:weather(playerid, params[])
 	SetWeather(weatherid);
 	return 1;
 }
+
+COMMAND:healall(playerid, params[])
+{
+	if (!IsPlayerAdm(playerid)) {
+		return 0;
+	}
+
+	new Float:max_health;
+	foreach (new id : Player) {
+		GetMaxHealth(id, max_health);
+		oSetPlayerHealth(id, max_health);
+	}
+	return 1;
+}
+
+COMMAND:setarmall(playerid, params[])
+{
+	if (!IsPlayerAdm(playerid)) {
+		return 0;
+	}
+
+	foreach (new id : Player) {
+		oSetPlayerArmour(id, 100.0);
+	}
+	return 1;
+}
