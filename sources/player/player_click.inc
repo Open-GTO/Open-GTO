@@ -54,9 +54,32 @@ public pl_click_SendReport(playerid, clickedid, listitem, inputtext[])
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 	format(string, sizeof(string), lang_texts[15][92], sendername, playerid, abusename, clickedid, inputtext);
 	
+	new admin_count = 0;
+
 	foreach (new id : Player) {
 		if (IsPlayerMod(id)) {
+			admin_count++;
 			SendClientMessage(id, COLOUR_RED, string);
+		}
+	}
+
+	if (admin_count == 0) {
+		new reports = player_GetReportCount(playerid) + 1;
+		player_SetReportCount(clickedid, reports);
+
+		new reports_max = pl_report_GetMaxCount();
+
+		format(string, sizeof(string), lang_texts[13][16], reports, reports_max, abusename, clickedid, inputtext);
+		SendClientMessageToAll(COLOUR_WHITE, string);
+
+		if (reports >= reports_max) {
+			new jail_time = 0;
+			JailPlayer(clickedid, jail_time);
+			player_SetReportCount(clickedid, 0);
+
+			format(string, sizeof(string), lang_texts[13][15], jail_time);
+			format(string, sizeof(string), lang_texts[13][17], oGetPlayerName(clickedid), string);
+			SendClientMessageToAll(COLOUR_WHITE, string);
 		}
 	}
 	return 1;

@@ -59,6 +59,7 @@ Developers:
 #include "player\player_pm"
 #include "player\player_mute"
 #include "player\player_jail"
+#include "player\player_report"
 #include "player\player_click"
 #include "player\player_menu"
 #include "player\player_menu_vehicle"

@@ -31,8 +31,12 @@ new Float:jail_release_point[][JailCoordInfo] = {
 	{1225.165, 245.328, 19.554, 306.501}
 };
 
-stock JailPlayer(playerid, jail_time)
+stock JailPlayer(playerid, &jail_time)
 {
+	if (jail_time == 0) {
+		jail_time = (player_GetJailCount(playerid) + 1) * 5;
+	}
+
 	player_SetJailTime(playerid, gettime() + jail_time * 60);
 	player_SetJailCount(playerid, player_GetJailCount(playerid) + 1);
 	
@@ -112,10 +116,6 @@ COMMAND:jail(playerid, params[])
 	}
 
 	new jailt = strval(strcharsplit(params, idx, ' '));
-
-	if (jailt == 0) {
-		jailt = (player_GetJailCount(playerid) + 1) * 5;
-	}
 
 	JailPlayer(jailid, jailt);
 	

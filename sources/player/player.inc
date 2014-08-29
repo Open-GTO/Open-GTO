@@ -35,7 +35,8 @@ stock player_OnPlayerSpawn(playerid)
 	}
 	
 	if (player_IsJailed(playerid)) {
-		JailPlayer(playerid, player_GetJailTime(playerid));
+		new jail_time = player_GetJailTime(playerid);
+		JailPlayer(playerid, jail_time);
 	}
 
 	UpdatePlayerLevelTextDraws(playerid);

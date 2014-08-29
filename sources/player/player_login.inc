@@ -79,6 +79,7 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "JailTime", player_GetJailTime(playerid));
 	ini_setInteger(file_player, "Muted", player_GetMuteCount(playerid));
 	ini_setInteger(file_player, "MuteTime", player_GetMuteTime(playerid));
+	ini_setInteger(file_player, "Reports", player_GetReportCount(playerid));
 	ini_setInteger(file_player, "FightStyle", pl_fights_GetPlayerStyle(playerid));
     ini_setInteger(file_player, "FightStyleUsed", pl_fights_GetPlayerStyleUsed(playerid));
 
@@ -152,6 +153,9 @@ stock player_Login(playerid)
 	
     ini_getInteger(file_player, "MuteTime", buf);
 	player_SetMuteTime(playerid, buf);
+
+    ini_getInteger(file_player, "Reports", buf);
+	player_SetReportCount(playerid, buf);
 	
     ini_getInteger(file_player, "FightStyle", buf);
 	pl_fights_SetPlayerStyle(playerid, buf);

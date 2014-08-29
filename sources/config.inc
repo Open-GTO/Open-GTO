@@ -190,6 +190,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define MIN_PASS_LEN			3
 #define MAX_PASS_LEN			40
 
+#define MIN_REPORTS_FOR_JAIL	3 // минимальное количество репортов для посадки в тюрьму
+
 #define PLAYER_XP_VIP_PROFIT	10 // vip игроки получают на PLAYER_XP_VIP_PROFIT процентов больше опыта
 // МИССИИ
 	// trucker
