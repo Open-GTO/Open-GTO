@@ -582,7 +582,15 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 	switch (listitem) {
 		case 0: {
 			if (Houses[id][Houses_HealUpgrade] == 1) {
+				if (GetPVarInt(playerid, "house_HealUpgrade_Used") == 1) {
+					Dialog_Message(playerid, lang_texts[8][83], lang_texts[8][90], lang_texts[8][87]);
+					return 1;
+				}
+
 				SetPlayerMaxHealth(playerid);
+				
+				SetPVarInt(playerid, "house_HealUpgrade_Used", 1);
+				SetTimerEx("house_HealUpgrade_Used", HOUSE_UPGRADE_USE_TIME * 1000, false, "d", playerid);
 				return 1;
 			}
 
@@ -600,7 +608,15 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 		}
 		case 1: {
 			if (Houses[id][Houses_ArmourUpgrade] == 1) {
+				if (GetPVarInt(playerid, "house_ArmourUpgrade_Used") == 1) {
+					Dialog_Message(playerid, lang_texts[8][83], lang_texts[8][90], lang_texts[8][87]);
+					return 1;
+				}
+
 				oSetPlayerArmour(playerid, 100);
+
+				SetPVarInt(playerid, "house_ArmourUpgrade_Used", 1);
+				SetTimerEx("house_ArmourUpgrade_Used", HOUSE_UPGRADE_USE_TIME * 1000, false, "d", playerid);
 				return 1;
 			}
 
@@ -1062,4 +1078,16 @@ stock house_GetUpKeep(id)
 stock house_GetCount()
 {
 	return sizeof(Houses);
+}
+
+forward house_ArmourUpgrade_Used(playerid);
+public house_ArmourUpgrade_Used(playerid)
+{
+	DeletePVar(playerid, "house_ArmourUpgrade_Used");
+}
+
+forward house_HealUpgrade_Used(playerid);
+public house_HealUpgrade_Used(playerid)
+{
+	DeletePVar(playerid, "house_HealUpgrade_Used");
 }
