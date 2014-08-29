@@ -112,21 +112,19 @@ COMMAND:jail(playerid, params[])
 	}
 
 	new jailt = strval(strcharsplit(params, idx, ' '));
-	
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][18], oGetPlayerName(playerid));
-	SendClientMessage(jailid, COLOUR_RED, string);
-	
-	new string2[40];
-	if (jailt >= 1 && jailt <= 4320) {
-		format(string2, sizeof(string2), lang_texts[13][15], jailt);
-	} else {
-		set(string2, lang_texts[13][16]);
+
+	if (jailt == 0) {
+		jailt = (player_GetJailCount(playerid) + 1) * 5;
 	}
 
 	JailPlayer(jailid, jailt);
 	
-	format(string, sizeof(string), lang_texts[13][17], oGetPlayerName(jailid), string2);
+	new string[MAX_STRING];
+	format(string, sizeof(string), lang_texts[12][18], oGetPlayerName(playerid));
+	SendClientMessage(jailid, COLOUR_RED, string);
+
+	format(string, sizeof(string), lang_texts[13][15], jailt);
+	format(string, sizeof(string), lang_texts[13][17], oGetPlayerName(jailid), string);
 	SendClientMessageToAll(COLOUR_WHITE, string);
 
 	GameTextForPlayer(jailid, lang_texts[13][18], 5000, 4);
