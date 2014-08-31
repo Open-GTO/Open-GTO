@@ -567,7 +567,6 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 public OnPlayerExitVehicle(playerid, vehicleid)
 {
 	admin_OnPlayerExitVehicle(playerid, vehicleid);
-	pt_weapon_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
 }
 

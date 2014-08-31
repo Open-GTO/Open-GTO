@@ -34,19 +34,7 @@ stock pt_weapon_OnPlayerPickUpPickup(playerid, pickupid)
 	switch (GetPickupModel(pickupid)) {
 		// парашют
 		case 371: {
-			oGivePlayerWeapon(playerid, 46, 1);
-		}
-	}
-	return 1;
-}
-
-stock pt_weapon_OnPlayerExitVehicle(playerid, vehicleid)
-{
-	switch ( GetVehicleModel(vehicleid) ) {
-		case 592,577,511,512,593,520,553,476,519,460,513,// самолёты
-			 548,425,417,487,488,497,563,447,469: // вертолёты
-		{
-			oGivePlayerWeapon(playerid, 46, 1);
+			pt_oGivePlayerWeapon(playerid, 46, 1);
 		}
 	}
 	return 1;
@@ -82,4 +70,12 @@ stock pt_weapon_Sync(playerid)
 		}
 	}
 	return 1;
+}
+
+stock pt_oGivePlayerWeapon(playerid, weaponid, ammo)
+{
+	new slot = GetWeaponSlot(weaponid);
+	
+	PlayerWeapons[playerid][slot][pwid] = weaponid;
+	PlayerWeapons[playerid][slot][pbullets] += ammo;
 }
