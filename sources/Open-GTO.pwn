@@ -358,9 +358,6 @@ public OnPlayerSpawn(playerid)
 		return 1;
 	}
 
-	// spawn player
-	player_OnPlayerSpawn(playerid);
-
 	// после использования TogglePlayerSpectating
 	if (GetPVarInt(playerid, "spec_after_off") == 1) {
 		DeletePVar(playerid, "spec_after_off");
@@ -374,6 +371,9 @@ public OnPlayerSpawn(playerid)
 	} else {
 		deathmatch_OnPlayerSpawn(playerid, dmid);
 	}
+
+	// spawn player
+	player_OnPlayerSpawn(playerid);
 
 	SetTimerEx("OnPlayerSpawned", 2500, 0, "d", playerid);
 	return 1;
