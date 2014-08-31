@@ -126,15 +126,15 @@ DialogCreate:ServiceSkin(playerid)
 
 DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])
 {
-	SkinShop_Exit(playerid);
-
 	if (!response) {
-		SkinShop_DeletePVars(playerid);
 		return 0;
 	}
+
+	SkinShop_Exit(playerid);
 	
 	player_SetSkin(playerid, GetPVarInt(playerid, "SkinShop_CurrentSkin"));
 	oGivePlayerMoney(playerid, -SKINS_COST);
+	
 	SkinShop_DeletePVars(playerid);
 
 	SendClientMessage(playerid, 0, lang_texts[17][25]);
