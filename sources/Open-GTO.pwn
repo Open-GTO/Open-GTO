@@ -118,7 +118,7 @@ Developers:
 #include "etc\weather"
 #include "protections\idle"
 #include "protections\rconhack"
-#include "protections\heightping"
+#include "protections\highping"
 #include "protections\chatguard"
 #include "protections\jetpack"
 #include "protections\speedhack"
