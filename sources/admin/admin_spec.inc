@@ -61,6 +61,30 @@ stock adm_spec_OnPlayerDeath(playerid, killerid, reason)
 	return 1;
 }
 
+stock adm_spec_OnPlayerSpawn(playerid)
+{
+	SetPlayerInterior(playerid, GetPVarInt(playerid, "spec_interior"));
+	SetPlayerVirtualWorld(playerid, GetPVarInt(playerid, "spec_virtualworld"));
+	SetPlayerSkin(playerid, GetPVarInt(playerid, "spec_skin"));
+	
+	new Float:pos[4];
+	pos[0] = GetPVarFloat(playerid, "spec_pos_x");
+	pos[1] = GetPVarFloat(playerid, "spec_pos_y");
+	pos[2] = GetPVarFloat(playerid, "spec_pos_z");
+	pos[3] = GetPVarFloat(playerid, "spec_pos_a");
+	SetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+	SetPlayerFacingAngle(playerid, pos[3]);
+	
+	DeletePVar(playerid, "spec_interior");
+	DeletePVar(playerid, "spec_virtualworld");
+	DeletePVar(playerid, "spec_skin");
+	DeletePVar(playerid, "spec_pos_x");
+	DeletePVar(playerid, "spec_pos_y");
+	DeletePVar(playerid, "spec_pos_z");
+	DeletePVar(playerid, "spec_pos_a");
+	return 1;
+}
+
 COMMAND:spec(playerid, params[])
 {
 	if (!IsPlayerMod(playerid)) {
@@ -73,27 +97,6 @@ COMMAND:spec(playerid, params[])
 			TogglePlayerSpectating(playerid, 0);
 			player_SetSpecID(playerid, INVALID_PLAYER_ID);
 			player_SetSpectating(playerid, 0);
-			SetPlayerInterior(playerid, GetPVarInt(playerid, "spec_interior"));
-			SetPlayerVirtualWorld(playerid, GetPVarInt(playerid, "spec_virtualworld"));
-			SetPlayerSkin(playerid, GetPVarInt(playerid, "spec_skin"));
-			
-			GivePlayerAllWeapon(playerid);
-			
-			new Float:pos[4];
-			pos[0] = GetPVarFloat(playerid, "spec_pos_x");
-			pos[1] = GetPVarFloat(playerid, "spec_pos_y");
-			pos[2] = GetPVarFloat(playerid, "spec_pos_z");
-			pos[3] = GetPVarFloat(playerid, "spec_pos_a");
-			SetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-			SetPlayerFacingAngle(playerid, pos[3]);
-			
-			DeletePVar(playerid, "spec_interior");
-			DeletePVar(playerid, "spec_virtualworld");
-			DeletePVar(playerid, "spec_skin");
-			DeletePVar(playerid, "spec_pos_x");
-			DeletePVar(playerid, "spec_pos_y");
-			DeletePVar(playerid, "spec_pos_z");
-			DeletePVar(playerid, "spec_pos_a");
 		} else {
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[13][19]);
 		}

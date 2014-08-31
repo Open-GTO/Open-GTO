@@ -361,15 +361,15 @@ public OnPlayerSpawn(playerid)
 	// после использования TogglePlayerSpectating
 	if (GetPVarInt(playerid, "spec_after_off") == 1) {
 		DeletePVar(playerid, "spec_after_off");
-		return 1;
-	}
-
-	// ставим позицию
-	new dmid = GetPlayerDM(playerid);
-	if (dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0) {
-		pl_spawn_SetSpawnPos(playerid);
+		adm_spec_OnPlayerSpawn(playerid);
 	} else {
-		deathmatch_OnPlayerSpawn(playerid, dmid);
+		// ставим позицию
+		new dmid = GetPlayerDM(playerid);
+		if (dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0) {
+			pl_spawn_SetSpawnPos(playerid);
+		} else {
+			deathmatch_OnPlayerSpawn(playerid, dmid);
+		}
 	}
 
 	// spawn player
