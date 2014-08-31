@@ -73,6 +73,7 @@ Developers:
 #include "player\player_message"
 #include "player\player_money"
 #include "player\player"
+#include "custom\pickups"
 #include "etc\weapons"
 #include "sys\zones"
 #include "etc\world"
@@ -181,6 +182,7 @@ public OnGameModeInit()
 	vip_OnGameModeInit();
 	pl_weapon_OnGameModeInit();
 	pl_textdraw_OnGameModeInit();
+	pickup_OnGameModeInit();
 
 	// missions
 	trucker_OnGameModeInit();
@@ -227,7 +229,6 @@ public OnGameModeInit()
 	dm_usnavy_init();
 
 	#tryinclude "custom\mapicon"
-	#tryinclude "custom\pickups"
 	#tryinclude "custom\objects"
 	GameMSG("SERVER: Custom mapicons, objects and pickups init");
 
@@ -292,17 +293,13 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 
 public OnPlayerPickUpPickup(playerid, pickupid)
 {
-	// protection
-	pt_weapon_OnPlayerPickUpPickup(playerid, pickupid);
-	pt_armour_OnPlayerPickUpPickup(playerid, pickupid);
-	pt_health_OnPlayerPickUpPickup(playerid, pickupid);
-
 	// player
 	pl_weapon_OnPlayerPickUpPickup(playerid, pickupid);
 	
 	// etc
 	swagup_OnPlayerPickUpPickup(playerid, pickupid);
 	vip_OnPlayerPickUpPickup(playerid, pickupid);
+	pickup_OnPlayerPickUpPickup(playerid, pickupid);
 	return 1;
 }
 

@@ -25,21 +25,6 @@ stock pt_weapon_SaveConfig(file_config)
 	ini_setInteger(file_config, "Protection_Weapon_IsEnabled", IsEnabled);
 }
 
-stock pt_weapon_OnPlayerPickUpPickup(playerid, pickupid)
-{
-	if (!IsEnabled) {
-		return 0;
-	}
-
-	switch (GetPickupModel(pickupid)) {
-		// ןאנאר‏ע
-		case 371: {
-			pt_oGivePlayerWeapon(playerid, 46, 1);
-		}
-	}
-	return 1;
-}
-
 stock pt_weapon_Sync(playerid)
 {
 	if (!IsEnabled) {
@@ -70,12 +55,4 @@ stock pt_weapon_Sync(playerid)
 		}
 	}
 	return 1;
-}
-
-stock pt_oGivePlayerWeapon(playerid, weaponid, ammo)
-{
-	new slot = GetWeaponSlot(weaponid);
-	
-	PlayerWeapons[playerid][slot][pwid] = weaponid;
-	PlayerWeapons[playerid][slot][pbullets] += ammo;
 }

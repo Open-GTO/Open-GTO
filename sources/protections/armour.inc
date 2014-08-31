@@ -36,18 +36,6 @@ stock oGetPlayerArmour(playerid, &Float:armour)
 	armour = GetPVarFloat(playerid, "Armour");
 }
 
-stock pt_armour_OnPlayerPickUpPickup(playerid, pickupid)
-{
-	if (!IsEnabled) {
-		return 0;
-	}
-
-	if (GetPickupModel(pickupid) == 1242) {
-		oSetPlayerArmour(playerid, 100);
-	}
-	return 1;
-}
-
 stock pt_armour_Sync(playerid)
 {
 	if (!IsEnabled) {
