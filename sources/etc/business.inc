@@ -57,7 +57,9 @@ new Businesses[][BusinessInfo] = {
 	{"Caligulas", 3750000, 19900, 20, "Unknown", 0, 0, 1, 1,	2235.5408, 1679.0402, 1008.3594},
 	{"Four Dragons", 2050000, 16000, 20, "Unknown", 0, 0, 1, 1,	1993.9758, 1017.8945, 994.8906},
 	{"Casino", 50000, 8000, 20, "Unknown", 0, 0, 1, 0,			1130.7843, -2.0449, 1000.6797},
-	{"Restroom", 100000, 3300, 40, "Unknown", 0, 0, 1, 0,		-789.4709,509.9566,1367.3745}
+	{"Restroom", 100000, 3300, 40, "Unknown", 0, 0, 1, 0,		-789.4709,509.9566,1367.3745},
+	{"Reeces", 100000, 3300, 40, "Unknown", 0, 0, 1, 0,			414.4313,-10.6664,1001.8120},
+	{"Tattos", 100000, 3300, 40, "Unknown", 0, 0, 1, 0,			-201.9593,-25.0057,1002.2734}
 };
 
 #define SetPlayerToBusinessID(%0,%1) SetPVarInt(%0, "BusID",%1)
@@ -134,7 +136,7 @@ stock business_OnGameModeInit()
 	new string[MAX_STRING];
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{
-		CreatePickup(1274, 49, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.5);	//ñèíèé äîìèê
+		CreatePickup(1274, 49, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.5);	//Ã±Ã¨Ã­Ã¨Ã© Ã¤Ã®Ã¬Ã¨Ãª
 		if (Businesses[id][Business_ShowIcon] == 1)
 		{
 			business_icon[id] = CreateStreamMapIcon(52, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]);
@@ -233,7 +235,7 @@ DialogResponse:BusinessMenu(playerid, response, listitem, inputtext[])
 	}
 
 	switch (listitem) {
-		// ïðîäàòü/êóïèòü
+		// Ã¯ÄŸÃ®Ã¤Ã Ã²Ã¼/ÃªÃ³Ã¯Ã¨Ã²Ã¼
 		case 0: {
 			if (!strcmp(Businesses[ GetPlayerToBusinessID(playerid) ][Business_Owner], oGetPlayerName(playerid), true)) {
 				Dialog_Show(playerid, Dialog:BusinessSellAccept);
@@ -242,12 +244,12 @@ DialogResponse:BusinessMenu(playerid, response, listitem, inputtext[])
 			}
 			return 1;
 		}
-		// çàáðàòü ïðèáûëü
+		// Ã§Ã Ã¡ÄŸÃ Ã²Ã¼ Ã¯ÄŸÃ¨Ã¡Ã»Ã«Ã¼
 		case 1: {
 			bis_Collect(playerid);
 			return 1;
 		}
-		// óâåëè÷èòü óðîâåíü
+		// Ã³Ã¢Ã¥Ã«Ã¨Ã·Ã¨Ã²Ã¼ Ã³ÄŸÃ®Ã¢Ã¥Ã­Ã¼
 		case 2: {
 			bis_buyUpgrade(playerid);
 			Dialog_Show(playerid, Dialog:BusinessMenu);
@@ -259,7 +261,7 @@ DialogResponse:BusinessMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:BusinessSellAccept(playerid)
 {
-	Dialog_Open(playerid, Dialog:BusinessSellAccept, DIALOG_STYLE_MSGBOX, "Ïðîäàòü áèçíåñ?", "Âû äåéñòâèòåëüíî õîòèòå ïðîäàòü ýòîò áèçíåñ?", "Ïðîäàòü", "Íàçàä");
+	Dialog_Open(playerid, Dialog:BusinessSellAccept, DIALOG_STYLE_MSGBOX, "ÃÄŸÃ®Ã¤Ã Ã²Ã¼ Ã¡Ã¨Ã§Ã­Ã¥Ã±?", "Ã‚Ã» Ã¤Ã¥Ã©Ã±Ã²Ã¢Ã¨Ã²Ã¥Ã«Ã¼Ã­Ã® ÃµÃ®Ã²Ã¨Ã²Ã¥ Ã¯ÄŸÃ®Ã¤Ã Ã²Ã¼ Ä±Ã²Ã®Ã² Ã¡Ã¨Ã§Ã­Ã¥Ã±?", "ÃÄŸÃ®Ã¤Ã Ã²Ã¼", "ÃÃ Ã§Ã Ã¤");
 }
 
 DialogResponse:BusinessSellAccept(playerid, response, listitem, inputtext[])
@@ -299,11 +301,11 @@ DialogCreate:BusinessPlayerOwned(playerid)
 	}
 
 	if (count < 1) {
-		Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Ìîè áèçíåñû", "Ó âàñ íåò áèçíåñîâ", "Íàçàä", "Âûõîä");
+		Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "ÃŒÃ®Ã¨ Ã¡Ã¨Ã§Ã­Ã¥Ã±Ã»", "Ã“ Ã¢Ã Ã± Ã­Ã¥Ã² Ã¡Ã¨Ã§Ã­Ã¥Ã±Ã®Ã¢", "ÃÃ Ã§Ã Ã¤", "Ã‚Ã»ÃµÃ®Ã¤");
 		return 1;
 	}
 
-	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_LIST, "Ìîè áèçíåñû", string, "Íàçàä", "Âûõîä");
+	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_LIST, "ÃŒÃ®Ã¨ Ã¡Ã¨Ã§Ã­Ã¥Ã±Ã»", string, "ÃÃ Ã§Ã Ã¤", "Ã‚Ã»ÃµÃ®Ã¤");
 	return 1;
 }
 
@@ -323,7 +325,7 @@ stock business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	
 	if (!strcmp(Businesses[id][Business_Owner], oGetPlayerName(playerid), true))
 	{
-		// åñëè ìîé
+		// Ã¥Ã±Ã«Ã¨ Ã¬Ã®Ã©
 		format(string, sizeof(string), lang_texts[3][11],
 			((Businesses[id][Business_Cost] + Businesses[id][Business_Buyout]) * 85) / 100,
 			Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade],
@@ -336,7 +338,7 @@ stock business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	{
 		if (!strcmp(Businesses[id][Business_Owner], "Unknown", true))
 		{
-			// åñëè íè÷åé
+			// Ã¥Ã±Ã«Ã¨ Ã­Ã¨Ã·Ã¥Ã©
 			format(string, sizeof(string), lang_texts[3][13],
 				Businesses[id][Business_Cost],
 				Businesses[id][Business_Level],
@@ -348,7 +350,7 @@ stock business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		}
 		else
 		{
-			// åñëè êîãî-òî
+			// Ã¥Ã±Ã«Ã¨ ÃªÃ®Ã£Ã®-Ã²Ã®
 			format(string, sizeof(string), lang_texts[3][4],
 				Businesses[id][Business_Owner],
 				Businesses[id][Business_Cost] + Businesses[id][Business_Buyout],
