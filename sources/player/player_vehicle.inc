@@ -39,7 +39,7 @@ stock pveh_OnPlayerDisconnect(playerid, reason)
 stock pveh_OnVehicleDeath(vehicleid, killerid)
 {
 	#pragma unused killerid
-	foreach (Player, playerid) {
+	foreach (new playerid : Player) {
 		new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
 		if (slot != -1) {
 			SetTimerEx("DestroyPlayerVehicle", 4000, 0, "d", vehicleid);
@@ -125,6 +125,11 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 	// если транспорт создан
 	vehicleid = PlayerVehicle[playerid][slot][pv_ID];
 	if (vehicleid != 0) {
+		foreach (new id : Player) {
+			if(GetPlayerVehicleID(id) == vehicleid) {
+				RemovePlayerFromVehicle(id);
+			}
+		}
 		SetVehiclePos(vehicleid, pveh_X, pveh_Y, pveh_Z);
 		SetVehicleZAngle(vehicleid, pveh_A);
 		return vehicleid;
