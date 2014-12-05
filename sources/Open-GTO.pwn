@@ -38,7 +38,7 @@ Developers:
 #include "sys\color"
 #include "sys\pickup"
 #include "vehicle\vehicles"
-#include "vehicle\quidemsys"
+#include "vehicle\vehicle_fuel"
 #include "vehicle\vehicle_menu"
 #include "vehicle\vehicle_damage"
 #include "vehicle\vehicle_radio"
@@ -114,6 +114,7 @@ Developers:
 #include "services\vehshop"
 #include "services\weaponshop"
 #include "services\fightteacher"
+#include "services\fuelstation"
 #include "etc\interior"
 #include "etc\weather"
 #include "protections\idle"
@@ -177,11 +178,11 @@ public OnGameModeInit()
 	bank_OnGameModeInit();
 	fights_OnGameModeInit();
 	weapon_OnGameModeInit();
-	quidemsys_OnGameModeInit();
 	swagup_OnGameModeInit();
 	vip_OnGameModeInit();
 	pl_weapon_OnGameModeInit();
 	pl_textdraw_OnGameModeInit();
+	veh_fuel_OnGameModeInit();
 	pickup_OnGameModeInit();
 
 	// missions
@@ -264,7 +265,7 @@ public OnPlayerConnect(playerid)
 	pt_chat_OnPlayerConnect(playerid);
 	pl_weapon_OnPlayerConnect(playerid);
 	pl_textdraw_OnPlayerConnect(playerid);
-	qudemsys_OnPlayerConnect(playerid);
+	veh_fuel_OnPlayerConnect(playerid);
 	return 1;
 }
 
@@ -279,7 +280,6 @@ public OnPlayerDisconnect(playerid, reason)
 	gh_OnPlayerDisconnect(playerid, reason);
 	pl_weapon_OnPlayerDisconnect(playerid, reason);
 	pl_textdraw_OnPlayerDisconnect(playerid, reason);
-	qudemsys_OnPlayerDisconnect(playerid, reason);
 	pveh_OnPlayerDisconnect(playerid, reason);
 	player_SetSpawned(playerid, 0);
 	return 1;
@@ -608,7 +608,7 @@ public OnVehicleStreamOut(vehicleid, forplayerid)
 
 public OnVehicleSpawn(vehicleid)
 {
-	quidemsys_OnVehicleSpawn(vehicleid);
+	veh_fuel_OnVehicleSpawn(vehicleid);
 	vshop_OnVehicleSpawn(vehicleid);
 	return 1;
 }

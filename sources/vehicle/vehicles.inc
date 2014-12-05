@@ -2119,7 +2119,7 @@ stock vehicles_OnGameModeInit()
 stock vehicles_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	vh_radio_OnPlayerStateChange(playerid, newstate, oldstate);
-	qudemsys_OnPlayerStateChange(playerid, newstate, oldstate);
+	veh_fuel_OnPlayerStateChange(playerid, newstate, oldstate);
 
 #if defined OLD_ENGINE_DO
 	if (GetPlayerVehicleSeat(playerid) == 0) {

@@ -71,11 +71,11 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 										// для более нагруженных серверов нужно устанавливать чуть меньшее значение
 
 
-// QuidemSys - спидометр и бензин
-#define QUIDEMSYS_ENABLED		1
-#define QUIDEMSYS_TD_FONT		2 // используемый id шрифта в текстдраве
-#define QUIDEMSYS_FUEL_SPEED	2 // количество бензина, заправляемого за 1 секунду
-#define QUIDEMSYS_FUEL_TARIF	10 // цена одного литра бензина, в долларах
+// Спидометр и бензин
+#define VEHICLE_FUEL_ENABLED	1
+#define VEHICLE_FUEL_TD_FONT	2 // используемый id шрифта в текстдраве
+#define VEHICLE_FUEL_SPEED		2 // количество бензина, заправляемого за 1 секунду
+#define VEHICLE_FUEL_TARIF		10 // цена одного литра бензина, в долларах
 
 // прочее
 #define MAX_GULPS			3 // максимальное количество глотков из бутылки
