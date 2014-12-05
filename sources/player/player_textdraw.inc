@@ -12,12 +12,14 @@
 #define _pl_textdraw_included
 #pragma library pl_textdraw
 
-new Text:td_border;
-new Text:td_background;
 
-new PlayerText:td_money[MAX_PLAYERS];
-new PlayerText:td_level[MAX_PLAYERS];
-new PlayerText:td_xp[MAX_PLAYERS];
+static
+	Text:td_border,
+	Text:td_background,
+
+	PlayerText:td_money[MAX_PLAYERS],
+	PlayerText:td_level[MAX_PLAYERS],
+	PlayerText:td_xp[MAX_PLAYERS];
 
 stock pl_textdraw_OnGameModeInit()
 {

@@ -10,7 +10,6 @@
 #define _commands_included
 #pragma library commands
 
-
 COMMAND:help(playerid, params[])
 {
 	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][2]);

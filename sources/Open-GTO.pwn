@@ -72,6 +72,7 @@ Developers:
 #include "player\player_maptp"
 #include "player\player_message"
 #include "player\player_money"
+#include "player\player_alert"
 #include "player\player"
 #include "custom\pickups"
 #include "etc\weapons"
@@ -182,6 +183,7 @@ public OnGameModeInit()
 	vip_OnGameModeInit();
 	pl_weapon_OnGameModeInit();
 	pl_textdraw_OnGameModeInit();
+	pl_alert_OnGameModeInit();
 	veh_fuel_OnGameModeInit();
 	pickup_OnGameModeInit();
 
@@ -265,6 +267,7 @@ public OnPlayerConnect(playerid)
 	pt_chat_OnPlayerConnect(playerid);
 	pl_weapon_OnPlayerConnect(playerid);
 	pl_textdraw_OnPlayerConnect(playerid);
+	pl_alert_OnPlayerConnect(playerid);
 	veh_fuel_OnPlayerConnect(playerid);
 	return 1;
 }
