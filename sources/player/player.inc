@@ -112,7 +112,7 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 	}
 
 	new stolencash = (oGetPlayerMoney(playerid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
-	if (stolencash != 0) {
+	if (stolencash > 0) {
 		oGivePlayerMoney(playerid, -stolencash, 1);
 		oGivePlayerMoney(killerid, stolencash, 1);
 	}
