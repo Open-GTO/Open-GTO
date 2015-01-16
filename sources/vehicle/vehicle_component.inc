@@ -609,20 +609,7 @@ static component_name[][64] = {
 
 stock IsVehicleUpgradeCompatible(model, componentid)
 {
-	new id = -1;
-
-	for (new i = 0; i < sizeof(component_array); i++) {
-		for (new j = 0; j < sizeof(component_array[][]); j++) {
-			if (component_array[i][cu_Model][j] == model) {
-				id = i;
-				break;
-			}
-		}
-		if (id != -1) {
-			break;
-		}
-	}
-
+	new id = GetComponentArrayID(model);
 	if (id == -1) {
 		return 0;
 	}
@@ -639,26 +626,25 @@ stock GetVehicleCompatibleUpgrades(model, count, &componentid = 0)
 {
 	componentid = 0;
 
-	new id = -1;
-
-	for (new i = 0; i < sizeof(component_array); i++) {
-		for (new j = 0; j < sizeof(component_array[][]); j++) {
-			if (component_array[i][cu_Model][j] == model) {
-				id = i;
-				break;
-			}
-		}
-		if (id != -1) {
-			break;
-		}
-	}
-
+	new id = GetComponentArrayID(model);
 	if (id == -1) {
 		return 0;
 	}
 
 	componentid = component_array[id][cu_ComponentID][count];
 	return componentid;
+}
+
+stock GetComponentArrayID(model)
+{
+	for (new i = 0; i < sizeof(component_array); i++) {
+		for (new j = 0; j < sizeof(component_array[][]); j++) {
+			if (component_array[i][cu_Model][j] == model) {
+				return i;
+			}
+		}
+	}
+	return -1;
 }
 
 stock GetComponentName(componentid)
