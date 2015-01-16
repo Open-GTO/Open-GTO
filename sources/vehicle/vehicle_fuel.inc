@@ -129,7 +129,7 @@ stock veh_fuel_OnPlayerConnect(playerid)
 	PlayerTextDrawSetShadow(playerid, speedom[playerid], 0);
 	PlayerTextDrawSetOutline(playerid, speedom[playerid], 0);
 	PlayerTextDrawBackgroundColor(playerid, speedom[playerid], 51);
-	PlayerTextDrawFont(playerid, speedom[playerid], 2);
+	PlayerTextDrawFont(playerid, speedom[playerid], VEHICLE_FUEL_TD_FONT);
 	PlayerTextDrawSetProportional(playerid, speedom[playerid], 1);
 	return 1;
 }

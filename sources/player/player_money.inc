@@ -26,7 +26,7 @@ stock oGivePlayerMoney(playerid, money, showtext=0)
 		return 0;
 	}
 
-	if (oGetPlayerMoney(playerid) > MAX_MONEY - money) {
+	if (money > MAX_MONEY - oGetPlayerMoney(playerid)) {
 		money = MAX_MONEY - oGetPlayerMoney(playerid);
 		GameMSG("player: %s(%d): is on max money", oGetPlayerName(playerid), playerid);
 	}

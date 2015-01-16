@@ -132,11 +132,11 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 	
-	if (GetPlayerBankMoney(playerid) - amount < 0) {
+	if (amount > GetPlayerBankMoney(playerid)) {
 		amount = GetPlayerBankMoney(playerid);
 	}
 
-	if (oGetPlayerMoney(playerid) > MAX_MONEY - amount) {
+	if (amount > MAX_MONEY - oGetPlayerMoney(playerid)) {
 		amount = MAX_MONEY - oGetPlayerMoney(playerid);
 	}
 
@@ -170,12 +170,8 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	if (oGetPlayerMoney(playerid) < amount) {
+	if (amount > oGetPlayerMoney(playerid)) {
 		amount = oGetPlayerMoney(playerid);
-	}
-
-	if (oGetPlayerMoney(playerid) > MAX_MONEY - amount) {
-		amount = MAX_MONEY - oGetPlayerMoney(playerid);
 	}
 
 	if (amount > MaxBankMoney - GetPlayerBankMoney(playerid)) {
