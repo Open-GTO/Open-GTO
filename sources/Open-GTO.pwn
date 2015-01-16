@@ -43,6 +43,7 @@ Developers:
 #include "vehicle\vehicle_damage"
 #include "vehicle\vehicle_radio"
 #include "vehicle\vehicle_vip"
+#include "vehicle\vehicle_component"
 #include "player\player_textdraw"
 #include "player\player_level"
 #include "player\player_vip"
