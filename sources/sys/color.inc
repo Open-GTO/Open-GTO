@@ -26,19 +26,16 @@
 #define COLOUR_ORANGE 0xFF9900AA //orange
 #define COLOUR_PURPLE 0xC2A2DAAA //purple
 #define COLOUR_CRIMSON 0xDC143CAA
-//#define COLOUR_LIMEGREEN 0x32CD32AA
+#define COLOUR_LIMEGREEN 0x32CD32AA
 #define COLOUR_AQUA 0x00FFFFAA
 #define COLOUR_FLBLUE 0x6495EDAA
 #define COLOUR_MAGENTA 0xFF00FFAA
-//#define COLOUR_GOLD 0xFFD700AA
 #define COLOUR_PINK 0xFFC0CBAA
 #define COLOUR_MISC 0xAFAFAFAA // Grey - Misc
 #define COLOUR_CHAT 0xFFFFFFAA // White - Chat
 #define COLOUR_PLAYER 0xAAAAAAAA // White - Player
 #define COLOUR_XP_GOOD 0x00C7FFAA // Blue - XP
 #define COLOUR_XP_BAD 0x00008BAA // Blue - XP
-#define COLOUR_COMBAT_GOOD 0xAA3333AA // Red - Combat
-#define COLOUR_COMBAT_BAD 0xBB3333AA // Red - Combat
 #define COLOUR_MONEY_GOOD 0xFFFF00AA // Yellow - Money
 #define COLOUR_MONEY_BAD 0xDAA520AA // Yellow - Money
 #define COLOUR_RACE 0x005407AA // green - dark
@@ -49,32 +46,29 @@
 #define COLOUR_DM_BAD 0xFF0066AA // red - purple
 #define COLOUR_PM 0xFFCC22FF
 #define WARN_MS_COLOR 0xFF5050AA
-
-//#define COLOUR_LIGHTCORAL 0xF08080AA
 #define COLOUR_DARKRED 0x8B0000AA
 #define COLOUR_DEEPPINK 0xFF1493AA
 #define COLOUR_TOMATO 0xFF6347AA
-#define COLOUR_OrangeRed 0xFF4500AA
-#define COLOUR_DarkOrange 0xFF8C00AA
-#define COLOUR_Moccasin 0xFFE4B5AA
-#define COLOUR_Khaki 0xF0E68CAA
-#define COLOUR_DarkViolet 0x9400D3AA
-#define COLOUR_Indigo 0x4B0082AA
-#define COLOUR_GreenYellow 0xADFF2FAA
-#define COLOUR_Lime 0x00FF00AA
-//#define COLOUR_LIMEGREEN 0x32CD32AA
-#define COLOUR_SpringGreen 0x00FF7FAA
-#define COLOUR_Olive 0x808000AA
-#define COLOUR_Teal 0x008080AA
-//#define COLOUR_Aquamarine 0x7FFFD4AA
-#define COLOUR_SteelBlue 0x4682B4AA
-#define COLOUR_SkyBlue 0x87CEEBAA
-#define COLOUR_Tan 0xD2B48CAA
-#define COLOUR_Peru 0xCD853FAA
-#define COLOUR_Sienna 0xA0522DAA
-//#define COLOUR_MistyRose 0xFFE4E1AA
-#define COLOUR_DimGray 0x696969AA
-#define COLOUR_Black 0x000000AA
+#define COLOUR_ORANGERED 0xFF4500AA
+#define COLOUR_DARKORANGE 0xFF8C00AA
+#define COLOUR_MOCCASIN 0xFFE4B5AA
+#define COLOUR_KHAKI 0xF0E68CAA
+#define COLOUR_DARKVIOLET 0x9400D3AA
+#define COLOUR_INDIGO 0x4B0082AA
+#define COLOUR_GREENYELLOW 0xADFF2FAA
+#define COLOUR_LIME 0x00FF00AA
+#define COLOUR_SPRINGGREEN 0x00FF7FAA
+#define COLOUR_OLIVE 0x808000AA
+#define COLOUR_TEAL 0x008080AA
+#define COLOUR_AQUAMARINE 0x7FFFD4AA
+#define COLOUR_STEELBLUE 0x4682B4AA
+#define COLOUR_SKYBLUE 0x87CEEBAA
+#define COLOUR_TAN 0xD2B48CAA
+#define COLOUR_PERU 0xCD853FAA
+#define COLOUR_SIENNA 0xA0522DAA
+#define COLOUR_MISTYROSE 0xFFE4E1AA
+#define COLOUR_DIMGRAY 0x696969AA
+#define COLOUR_BLACK 0x000000AA
 
 
 enum ColorInfo {
@@ -84,39 +78,37 @@ enum ColorInfo {
 }
 
 new colors_Array[][ColorInfo] = {
-	//{"LightCoral",	COLOUR_LIGHTCORAL,	70},
 	{"Crimson",	 	COLOUR_CRIMSON,		3},
 	{"DarkRed",	 	COLOUR_DARKRED,		43},
 	{"Pink",	 	COLOUR_PINK,		126},
-	{"DeepPink",	COLOUR_DEEPPINK,	5},
-	{"Tomato",	 	COLOUR_TOMATO,		70},
-	{"OrangeRed",	COLOUR_OrangeRed,	6},
-	{"DarkOrange",	COLOUR_DarkOrange,	61},
-	//{"Gold",		COLOUR_GOLD,		6},
+	{"DeepPink",	COLOUR_DEEPPINK,	220},
+	{"Tomato",	 	COLOUR_TOMATO,		183},
+	{"OrangeRed",	COLOUR_ORANGERED,	222},
+	{"DarkOrange",	COLOUR_DARKORANGE,	219},
 	{"Yellow",		COLOUR_YELLOW,		6},
-	{"Moccasin",	COLOUR_Moccasin,	46},
-	{"Khaki",		COLOUR_Khaki,		57},
-	{"Magenta",		COLOUR_MAGENTA,		115},
-	{"DarkViolet",	COLOUR_DarkViolet,	116},
-	{"Indigo",		COLOUR_Indigo,		20},
-	{"GreenYellow",	COLOUR_GreenYellow,	65},
-	{"Lime",		COLOUR_Lime,		16},
-	//{"LimeGreen",	COLOUR_LIMEGREEN,	86},
-	{"SpringGreen",	COLOUR_SpringGreen,	144},
-	{"Olive",		COLOUR_Olive,		104},
-	{"Teal",		COLOUR_Teal,		10},
-	{"Aqua",		COLOUR_AQUA,		93},
-	//{"Aquamarine",	COLOUR_Aquamarine,	97},
-	{"SteelBlue",	COLOUR_SteelBlue,	59},
-	{"SkyBlue",		COLOUR_SkyBlue,		87},
-	{"Blue",		COLOUR_BLUE,		79},
-	{"Tan",			COLOUR_Tan,			99},
-	{"Peru",		COLOUR_Peru,		61},
-	{"Sienna",		COLOUR_Sienna,		62},
+	{"Moccasin",	COLOUR_MOCCASIN,	200},
+	{"Khaki",		COLOUR_KHAKI,		57},
+	{"Magenta",		COLOUR_MAGENTA,		136},
+	{"DarkViolet",	COLOUR_DARKVIOLET,	134},
+	{"Indigo",		COLOUR_INDIGO,		211},
+	{"GreenYellow",	COLOUR_GREENYELLOW,	241},
+	{"Lime",		COLOUR_LIME,		128},
+	{"LimeGreen",	COLOUR_LIMEGREEN,	229},
+	{"SpringGreen",	COLOUR_SPRINGGREEN,	154},
+	{"Olive",		COLOUR_OLIVE,		225},
+	{"Teal",		COLOUR_TEAL,		130},
+	{"Aqua",		COLOUR_AQUA,		135},
+	{"Aquamarine",	COLOUR_AQUAMARINE,	155},
+	{"SteelBlue",	COLOUR_STEELBLUE,	162},
+	{"SkyBlue",		COLOUR_SKYBLUE,		166},
+	{"Blue",		COLOUR_BLUE,		162},
+	{"Tan",			COLOUR_TAN,			254},
+	{"Peru",		COLOUR_PERU,		174},
+	{"Sienna",		COLOUR_SIENNA,		239},
 	{"White",		COLOUR_WHITE,		1},
-	//{"MistyRose",	COLOUR_MistyRose,	126},
-	//{"Black",		COLOUR_Black,		0},
-	{"DimGray",		COLOUR_DimGray,		113}
+	{"MistyRose",	COLOUR_MISTYROSE,	185},
+	{"Black",		COLOUR_BLACK,		0},
+	{"DimGray",		COLOUR_DIMGRAY,		252}
 };
 
 #define COLOR_COUNT	sizeof(colors_Array)

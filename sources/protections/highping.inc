@@ -14,7 +14,7 @@
 
 
 static
-	IsEnabled = ANTI_HEIGHT_PING_ENABLED,
+	IsEnabled = ANTI_HIGH_PING_ENABLED,
 	MaxPing = MAXIMAL_PING;
 
 stock pt_ping_LoadConfig(file_config)
