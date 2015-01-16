@@ -114,8 +114,12 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0)
 		xpamount = MAX_XP - GetPlayerXP(playerid);
 	}
 
+	if (xpamount == 0) {
+		return 0;
+	}
+
 	new string[MAX_STRING];
-	if (xpamount >= 0) {
+	if (xpamount > 0) {
 		format(string, sizeof(string), lang_texts[9][18], xpamount);
 		GameTextForPlayer(playerid, string, texttime, 3);
 
