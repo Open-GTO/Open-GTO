@@ -130,7 +130,7 @@ stock vshop_ChangeVehicles()
 			// если кто-то есть в транспорте
 			foreach (new playerid : Player) {
 				if (vshop_Vehicles[i][vshop_ID] == GetPlayerVehicleID(playerid)) {
-					HideDialog(playerid);
+					Dialog_Close(playerid);
 					RemovePlayerFromVehicle(playerid);
 				}
 			}

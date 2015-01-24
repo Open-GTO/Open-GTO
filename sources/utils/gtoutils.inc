@@ -123,11 +123,6 @@ stock strcharsplit(const string[], &index, seperator=' ')
 	return result;
 }
 
-stock Vary(source, varyamount)
-{
-	return source + random((varyamount*2)+1) - varyamount;
-}
-
 stock mathrandom(min, max)
 {
 	return (random(max - min + 1) + min);
@@ -242,11 +237,6 @@ stock encrypt(string[])
 	return retval;
 }
 #endif
-
-stock HideDialog(playerid)
-{
-	ShowPlayerDialog(playerid, -1, 0, " ", " ", " ", "");
-}
 
 stock GetCurrentDate(outstr[20])
 {
