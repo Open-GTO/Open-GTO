@@ -5,12 +5,12 @@
 
 */
 
-#if defined _sys_time_included
+#if defined _core_time_included
   #endinput
 #endif
 
-#define _sys_time_included
-#pragma library sys_time
+#define _core_time_included
+#pragma library core_time
 
 
 static
