@@ -39,7 +39,7 @@ stock fights_OnGameModeInit()
 			continue;
 		}
 
-		CreatePickup(1314, 23, fights_Teachers[fightid][Coord_X], fights_Teachers[fightid][Coord_Y], fights_Teachers[fightid][Coord_Z]);
+		CreatePickup(19555, 23, fights_Teachers[fightid][Coord_X], fights_Teachers[fightid][Coord_Y], fights_Teachers[fightid][Coord_Z]);
 
 		format(string, sizeof(string), lang_texts[19][19], fights_Teachers[fightid][StyleName]);
 		CreatePickupText(string, fights_Teachers[fightid][Coord_X], fights_Teachers[fightid][Coord_Y], fights_Teachers[fightid][Coord_Z]);
