@@ -30,11 +30,11 @@ enum DrinkInfo {
 	Action,
 }
 new Drinks[][DrinkInfo] = {
-	{"Водка Зелёная марка", 100, 30.0, 40.0, SPECIAL_ACTION_DRINK_SPRUNK},
-	{"Пиво Жигулёвское", 30, 10.0, 4.5, SPECIAL_ACTION_DRINK_BEER},
-	{"Глинтвейн", 30, 10.0, 10.0, SPECIAL_ACTION_DRINK_WINE},
-	{"Чай с лимоном и сахаром", 15, 10.0, -20.0, SPECIAL_ACTION_DRINK_SPRUNK},
-	{"Крепкая папироса", 15, 5.0, 2.0, SPECIAL_ACTION_SMOKE_CIGGY}
+	{"Водка", 100, 30.0, 40.0, SPECIAL_ACTION_DRINK_SPRUNK},
+	{"Пиво", 30, 10.0, 4.5, SPECIAL_ACTION_DRINK_BEER},
+	{"Вино", 30, 10.0, 10.0, SPECIAL_ACTION_DRINK_WINE},
+	{"Чай", 15, 10.0, -20.0, SPECIAL_ACTION_DRINK_SPRUNK},
+	{"Сигара", 15, 5.0, 2.0, SPECIAL_ACTION_SMOKE_CIGGY}
 };
 
 stock bar_OnGameModeInit()
