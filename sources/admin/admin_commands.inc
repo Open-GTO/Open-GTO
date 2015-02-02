@@ -802,7 +802,7 @@ COMMAND:sys(playerid, params[])
 		return 1;
 	}
 
-	if (!strcmp(cmd, "weath", true))
+	if (!strcmp(cmd, "weather", true))
 	{
 		new paramid = strval( strcharsplit(params, idx, ' ') );
 		switch (paramid) {
