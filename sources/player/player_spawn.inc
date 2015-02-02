@@ -257,7 +257,7 @@ stock pl_spawn_SetSpawnPos(playerid)
 		new tmp[MAX_STRING];
 		format(tmp, sizeof(tmp),
 			lang_texts[8][51],
-			house_GetName(house_id), house_GetUpKeepLeft(house_id), house_GetUpKeep(house_id) * 2800
+			house_GetName(house_id), house_GetUpKeepLeft(house_id), house_GetUpKeepMax(house_id)
 		);
 		SendClientMessage(playerid, COLOUR_RED, tmp);
 	}
