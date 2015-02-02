@@ -154,7 +154,7 @@ DialogCreate:PlayerSpawnMenu(playerid)
 	}
 
 	for (new i = 0; i < house_GetCount(); i++) {
-		if (gang_houseid != i && !strcmp(house_GetOwner(i), playername, true)) {
+		if (gang_houseid != i && (!strcmp(house_GetOwner(i), playername, true) || !strcmp(house_GetRenter(i), playername, true))) {
 			count++;
 			strcat(string, house_GetName(i), sizeof(string));
 			strcat(string, "\n", sizeof(string));
@@ -192,12 +192,12 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 	}
 	
 	new count = 0;
-	if (gang_GetHouseID(gangid) != -1) {
+	if (gangid != 0 && gang_GetHouseID(gangid) != -1) {
 		count++;
 	}
 
 	for (new i = 0; i < house_GetCount(); i++) {
-		if (gang_GetHouseID(gangid) == i || strcmp(house_GetOwner(i), playername, true)) {
+		if (gang_GetHouseID(gangid) == i || strcmp(house_GetOwner(i), playername, true) && strcmp(house_GetRenter(i), playername, true)) {
 			continue;
 		}
 
