@@ -234,7 +234,7 @@ stock pl_spawn_SetSpawnPos(playerid)
 	}
 
 	new house_id = player_GetSpawnHouseID(playerid);
-	if (house_id >= 0 && !IsPlayerHouse(playerid, house_id)) {
+	if (house_id >= 0 && !IsPlayerHouse(playerid, house_id) && !IsPlayerRenter(playerid, house_id)) {
 		house_id = SPAWN_HOUSE_NONE;
 		player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[8][60]);

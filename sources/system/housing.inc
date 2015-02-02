@@ -326,14 +326,19 @@ stock IsPlayerAtHouse(playerid)
 	return 0;
 }
 
-stock IsPlayerRenter(playerid)
+stock IsPlayerRenter(playerid, houseid)
 {
 	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
-	for (new id = 0; id < sizeof(Houses); id++)
-	{
-		if (!strcmp(Houses[id][Houses_RentName], playername, true))
-		{
+
+	if (houseid == -1) {
+		for (new id = 0; id < sizeof(Houses); id++) {
+			if (!strcmp(Houses[id][Houses_RentName], playername, true)) {
+				return 1;
+			}
+		}
+	} else {
+		if (!strcmp(Houses[houseid][Houses_RentName], playername, true)) {
 			return 1;
 		}
 	}
@@ -646,7 +651,7 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 stock RentRoom(playerid)
 {
 	new id = GetPlayerToHouseID(playerid), string[MAX_STRING];
-	if (id <= -1 || IsPlayerRenter(playerid))
+	if (id <= -1 || IsPlayerRenter(playerid, -1))
 	{
 		return 1;
 	}
