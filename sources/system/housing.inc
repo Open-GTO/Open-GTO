@@ -294,13 +294,13 @@ stock SaveHous(housid)
 stock housing_OnGameModeInit()
 {
 	houses_LoadAll();
-	new string[MAX_STRING];
+	new string[MAX_STRING * 2];
 	for (new id = 0; id < sizeof(Houses); id++)
 	{
 		CreatePickup(1273, 1, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.5);	//зеленый домик
 		CreatePickup(1559, 1, Houses[id][Houses_EnterX], Houses[id][Houses_EnterY], Houses[id][Houses_EnterZ]+0.5, id+1);
 		house_icon[id] = CreateStreamMapIcon(31, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]);
-		format(string, sizeof(string), lang_texts[8][5], Houses[id][Houses_Name], Houses[id][Houses_Cost], Houses[id][Houses_Owner], Houses[id][Houses_Gang], Houses[id][Houses_RentName]);
+		housing_Create3DTextLabelString(id, string);
 		House3DTextLabel[id] = Create3DTextLabel(string, COLOUR_WHITE, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.75, HouseDistanceOfShowLabel, 0, 1);
 		Houses[id][Houses_VirtualWorld] = id+1;
 	}
@@ -909,13 +909,16 @@ stock housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 					);
 					
 					new buf[MAX_STRING];
-					if (!strcmp(Houses[id][Houses_RentName], "Unknown", true))
+					if (Houses[id][Houses_Rentabil] == 1)
 					{
-						format(buf, sizeof(buf), lang_texts[8][53], Houses[id][Houses_RentCost]);
-					}
-					else
-					{
-						format(buf, sizeof(buf), lang_texts[8][52], Houses[id][Houses_RentName]);
+						if (!strcmp(Houses[id][Houses_RentName], "Unknown", true))
+						{
+							format(buf, sizeof(buf), lang_texts[8][53], Houses[id][Houses_RentCost]);
+						}
+						else
+						{
+							format(buf, sizeof(buf), lang_texts[8][52], Houses[id][Houses_RentName]);
+						}
 					}
 					
 					strcat(string, buf, sizeof(string));
@@ -960,11 +963,26 @@ stock housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 stock housing_Update3DTextLabelText()
 {
-	new string[MAX_STRING];
+	new string[MAX_STRING * 2];
 	for (new id = 0; id < sizeof(Houses); id++)
 	{
-		format(string, sizeof(string), lang_texts[8][5], Houses[id][Houses_Name], Houses[id][Houses_Cost], Houses[id][Houses_Owner], Houses[id][Houses_Gang], Houses[id][Houses_RentName]);
+		housing_Create3DTextLabelString(id, string);
 		Update3DTextLabelText(House3DTextLabel[id], COLOUR_WHITE, string);
+	}
+	return 1;
+}
+
+stock housing_Create3DTextLabelString(houseid, string[MAX_STRING * 2])
+{
+	format(string, sizeof(string), lang_texts[8][5], Houses[houseid][Houses_Name], Houses[houseid][Houses_Cost]);
+	if (strcmp(Houses[houseid][Houses_Owner], "Unknown", false)) {
+		format(string, sizeof(string), lang_texts[8][91], string, Houses[houseid][Houses_Owner]);
+	}
+	if (strcmp(Houses[houseid][Houses_Gang], "Unknown", false)) {
+		format(string, sizeof(string), lang_texts[8][92], string, Houses[houseid][Houses_Gang]);
+	}
+	if (strcmp(Houses[houseid][Houses_RentName], "Unknown", false)) {
+		format(string, sizeof(string), lang_texts[8][93], string, Houses[houseid][Houses_RentName]);
 	}
 	return 1;
 }
