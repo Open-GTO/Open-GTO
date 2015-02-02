@@ -12,7 +12,9 @@
 #define _weather_included
 #pragma library weather
 
-static sys_weather = SYS_WEATHER_UPDATE;
+static
+	sys_weather = SYS_WEATHER_UPDATE,
+	weather_array[] = {0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 17, 18};
 
 stock weather_Update()
 {
@@ -26,22 +28,16 @@ stock weather_Update()
 	if (timer_ticks >= sys_weather) {
 		timer_ticks = 0;
 
-		new weatherid;
-
-		switch ( random(2) ) {
-			case 0: {
-				weatherid = mathrandom(0, 7);
-			}
-			case 1: {
-				weatherid = mathrandom(9, 18);
-			}
-		}
-
-		SetWeather(weatherid);
-
-		GameMSG("SERVER: Weather set to %d", weatherid);
+		weather_SetRandom();
 	}
 	return 1;
+}
+
+stock weather_SetRandom()
+{
+	new weatherid = weather_array[random( sizeof(weather_array) )];
+	SetWeather(weatherid);
+	GameMSG("SERVER: Weather set to %d", weatherid);
 }
 
 stock weather_GetTime()
