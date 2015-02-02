@@ -44,9 +44,15 @@ stock vh_radio_OnPlayerStateChange(playerid, newstate, oldstate)
 
 DialogCreate:VehicleRadio(playerid)
 {
-	new string[MAX_NAME * (sizeof(vehicle_radio) + 1)] = "{FF0000}Выключить радио\n{FFFFFF}";
-	
+	new string[MAX_NAME * (sizeof(vehicle_radio) + 1 + 8)] = "{FF0000}Выключить радио\n{FFFFFF}";
+	new current_radioid = GetVehicleRadio( GetPlayerVehicleID(playerid) );
+
 	for (new i = 0; i < sizeof(vehicle_radio); i++) {
+		if (i == current_radioid) {
+			strcat(string, "{FFFFFF}", sizeof(string));
+		} else {
+			strcat(string, "{CCCCCC}", sizeof(string));
+		}
 		strcat(string, vehicle_radio[i][vehradio_Name], sizeof(string));
 		strcat(string, "\n", sizeof(string));
 	}
