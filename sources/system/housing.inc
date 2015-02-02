@@ -1000,50 +1000,6 @@ stock housing_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+
 	return 0;
 }
 
-stock CheckHousesOwners()
-{
-	new filename_account[MAX_STRING], file_account, account_lastlogin[32], idx,
-		year, month, day, account_year, account_month, account_day;
-	
-	getdate(year, month, day);
-	for (new i = 0; i < sizeof(Houses); i++)
-	{
-		if (!strcmp(Houses[i][Houses_Owner], "Unknown", false))
-		{
-			continue;
-		}
-		
-		format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, Houses[i][Houses_Owner]);
-		if (!ini_fileExist(filename_account))
-		{
-			continue;
-		}
-		
-		file_account = ini_openFile(filename_account);
-		ini_getString(file_account, "Last_Login", account_lastlogin);
-		ini_closeFile(file_account);
-		
-		idx = 0;
-		account_day = strval( strcharsplit(account_lastlogin, idx, '.') );
-		account_month = strval( strcharsplit(account_lastlogin, idx, '.') );
-		account_year = strval( strcharsplit(account_lastlogin, idx, ',') );
-		
-		if (DateToNum(year, month, day) > DateToNum(account_year, account_month, account_day) + HOUSE_UNLOGIN_SELL_DAYS * 24 * 60 * 60)
-		{
-			GameMSG("House has been free. Owner '%s'. HOUSE_UNLOGIN_SELL_DAYS = %d",
-				Houses[i][Houses_Owner], HOUSE_UNLOGIN_SELL_DAYS
-			);
-			GameMSG("\tcurrent date[%02d.%02d.%d]: %d, last login[%02d.%02d.%d]: %d",
-				day, month, year, DateToNum(year, month, day),
-				account_day, account_month, account_year, DateToNum(account_year, account_month, account_day)
-			);
-			
-			house_Free(i);
-		}
-		
-	}
-}
-
 stock house_Free(houseid)
 {
 	set(Houses[houseid][Houses_Owner], "Unknown");

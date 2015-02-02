@@ -101,7 +101,6 @@ forward OneHourTimer();
 public OneHourTimer()
 {
 	bank_Profit();
-	CheckHousesOwners();
 	CheckBusinessOwners();
 	lottery_RunTimer();
 	vshop_OneHourTimer();
