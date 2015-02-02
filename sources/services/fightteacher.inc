@@ -133,3 +133,8 @@ stock fights_GetNameByID(fstyleid, fstylename[MAX_STRING])
 	set(fstylename, fights_Teachers[fstyleid][StyleName]);
 	return 1;
 }
+
+stock fights_GetNameByLevel(fstylelevel, fstylename[MAX_STRING])
+{
+	return fights_GetNameByID(fstylelevel - 4, fstylename);
+}
