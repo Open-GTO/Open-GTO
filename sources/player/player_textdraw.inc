@@ -50,9 +50,8 @@ stock pl_textdraw_OnGameModeInit()
 
 stock pl_textdraw_OnPlayerConnect(playerid)
 {
-	td_money[playerid] = CreatePlayerTextDraw(playerid, 502.117584, 82.250038, "$000000000");
+	td_money[playerid] = CreatePlayerTextDraw(playerid, 502.117584, 82.250038, "$000 000 000");
 	PlayerTextDrawLetterSize(playerid, td_money[playerid], 0.436821, 2.159992);
-	PlayerTextDrawTextSize(playerid, td_money[playerid], -220.235290, 80.499984);
 	PlayerTextDrawAlignment(playerid, td_money[playerid], 1);
 	PlayerTextDrawColor(playerid, td_money[playerid], -1);
 	PlayerTextDrawSetShadow(playerid, td_money[playerid], 0);
@@ -60,7 +59,7 @@ stock pl_textdraw_OnPlayerConnect(playerid)
 	PlayerTextDrawBackgroundColor(playerid, td_money[playerid], 51);
 	PlayerTextDrawFont(playerid, td_money[playerid], 1);
 	PlayerTextDrawSetProportional(playerid, td_money[playerid], 1);
-
+/*
 	td_level[playerid] = CreatePlayerTextDraw(playerid, 598.117431, 79.916641, "1");
 	PlayerTextDrawLetterSize(playerid, td_level[playerid], 0.404821, 1.308331);
 	PlayerTextDrawAlignment(playerid, td_level[playerid], 1);
@@ -79,7 +78,7 @@ stock pl_textdraw_OnPlayerConnect(playerid)
 	PlayerTextDrawSetOutline(playerid, td_xp[playerid], 0);
 	PlayerTextDrawBackgroundColor(playerid, td_xp[playerid], 51);
 	PlayerTextDrawFont(playerid, td_xp[playerid], 1);
-	PlayerTextDrawSetProportional(playerid, td_xp[playerid], 1);
+	PlayerTextDrawSetProportional(playerid, td_xp[playerid], 1);*/
 	return 1;
 }
 
@@ -89,8 +88,8 @@ stock pl_textdraw_OnPlayerDisconnect(playerid, reason)
 	pl_textdraw_Hide(playerid);
 
 	PlayerTextDrawDestroy(playerid, td_money[playerid]);
-	PlayerTextDrawDestroy(playerid, td_level[playerid]);
-	PlayerTextDrawDestroy(playerid, td_xp[playerid]);
+	/*PlayerTextDrawDestroy(playerid, td_level[playerid]);
+	PlayerTextDrawDestroy(playerid, td_xp[playerid]);*/
 	return 1;
 }
 
@@ -100,11 +99,11 @@ stock pl_textdraw_Show(playerid)
 	TextDrawShowForPlayer(playerid, td_background);
 
 	PlayerTextDrawShow(playerid, td_money[playerid]);
-	PlayerTextDrawShow(playerid, td_level[playerid]);
+	/*PlayerTextDrawShow(playerid, td_level[playerid]);
 	
 	if (GetPVarInt(playerid, "td_xp_hide") != 1) {
 		PlayerTextDrawShow(playerid, td_xp[playerid]);
-	}
+	}*/
 }
 
 stock pl_textdraw_Hide(playerid)
@@ -113,14 +112,16 @@ stock pl_textdraw_Hide(playerid)
 	TextDrawHideForPlayer(playerid, td_background);
 	
 	PlayerTextDrawHide(playerid, td_money[playerid]);
-	PlayerTextDrawHide(playerid, td_level[playerid]);
-	PlayerTextDrawHide(playerid, td_xp[playerid]);
+	/*PlayerTextDrawHide(playerid, td_level[playerid]);
+	PlayerTextDrawHide(playerid, td_xp[playerid]);*/
 }
 
 stock pl_textdraw_SetMoney(playerid, value)
 {
 	new string[16];
-	format(string, sizeof(string), "$%08d", value);
+	format(string, sizeof(string), "$%09d", value);
+	strins(string, " ", 7);
+	strins(string, " ", 4);
 	PlayerTextDrawSetString(playerid, td_money[playerid], string);
 }
 

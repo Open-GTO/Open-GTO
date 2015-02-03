@@ -35,7 +35,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 #define MAX_PLAYER_LOGIN_ATTEMPT	3 // максимальное количество попыток входа
 
-#define MAX_MONEY				99999999 // максимальное кол-во денег, которое может иметь игрок
+#define MAX_MONEY				999999999 // максимальное кол-во денег, которое может иметь игрок
 #define MIN_SEND_SYMBOLS		3 // минимальное кол-во отправляемых символов в ПМ
 #define MAX_SEND_SYMBOLS		100 // максимальное кол-во отправляемых символов в ПМ
 
