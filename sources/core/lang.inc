@@ -13,7 +13,7 @@
 
 
 new lang_use[10] = LANGUAGE_USE;
-new lang_texts[20][100][MAX_STRING + 10];
+new lang_texts[20][100][MAX_STRING * 2 + 10];
 
 stock lang_LoadConfig(file_config)
 {

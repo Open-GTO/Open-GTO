@@ -133,7 +133,7 @@ stock business_SaveAll()
 stock business_OnGameModeInit()
 {
 	business_LoadAll();
-	new string[MAX_STRING];
+	new string[MAX_STRING * 2];
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{
 		CreatePickup(1274, 49, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.5);	//синий домик
@@ -141,7 +141,7 @@ stock business_OnGameModeInit()
 		{
 			business_icon[id] = CreateStreamMapIcon(52, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]);
 		}
-		format(string, sizeof(string), lang_texts[3][1], Businesses[id][Business_Name], Businesses[id][Business_Cost], Businesses[id][Business_Value], Businesses[id][Business_Owner], Businesses[id][Business_Level], Businesses[id][Business_Upgrade]);
+		business_Create3DTextLabelStr(id, string);
 		Business3DTextLabel[id] = Create3DTextLabel(string, COLOUR_WHITE, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.75, BusinessDistanceOfShowLabel, 0, 1);
 	}
 	GameMSG(lang_texts[3][0]);
@@ -211,7 +211,7 @@ DialogResponse:BusinessInfo(playerid, response, listitem, inputtext[])
 DialogCreate:BusinessMenu(playerid)
 {
 	new id = GetPlayerToBusinessID(playerid),
-		string[MAX_STRING],
+		string[MAX_STRING * 2],
 		playername[MAX_PLAYER_NAME+1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
@@ -220,7 +220,11 @@ DialogCreate:BusinessMenu(playerid)
 	format(head, sizeof(head), lang_texts[3][3], Businesses[id][Business_Name]);
 	
 	if (!strcmp(Businesses[id][Business_Owner], playername, true)) {
-		format(string, sizeof(string), lang_texts[3][6], Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade], Businesses[id][Business_Upgrade]);
+		if (Businesses[id][Business_Upgrade] >= MAX_BUSINESS_LEVEL) {
+			format(string, sizeof(string), lang_texts[3][30], Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade], Businesses[id][Business_Upgrade]);
+		} else {
+			format(string, sizeof(string), lang_texts[3][6], Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade], Businesses[id][Business_Upgrade], business_GetUpgradeCost(id));
+		}
 	} else {
 		strcat(string, lang_texts[3][5], sizeof(string));
 	}
@@ -252,7 +256,6 @@ DialogResponse:BusinessMenu(playerid, response, listitem, inputtext[])
 		// увеличить уровень
 		case 2: {
 			bis_buyUpgrade(playerid);
-			Dialog_Show(playerid, Dialog:BusinessMenu);
 			return 1;
 		}
 	}
@@ -320,7 +323,7 @@ stock business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 	SetPlayerToBusinessID(playerid, id);
 
-	new head[MAX_STRING], string[MAX_STRING];
+	new head[MAX_STRING], string[MAX_STRING * 2];
 	format(head, sizeof(head), lang_texts[3][3], Businesses[id][Business_Name]);
 	
 	if (!strcmp(Businesses[id][Business_Owner], oGetPlayerName(playerid), true))
@@ -470,7 +473,7 @@ stock bis_Sell(playerid)
 
 		UpdateStreamMapIcon(business_icon[id]);
 		
-		new string[MAX_STRING];
+		new string[MAX_STRING * 2];
 		format(string, sizeof(string), lang_texts[3][20],
 			Businesses[id][Business_Name],
 			Businesses[id][Business_Vault]
@@ -514,43 +517,54 @@ stock bis_Collect(playerid)
 
 stock bis_buyUpgrade(playerid)
 {
-	new id = GetPlayerToBusinessID(playerid);
-	if (strcmp(Businesses[id][Business_Owner], oGetPlayerName(playerid), true))
-	{
-		return SendClientMessage(playerid, COLOUR_RED, lang_texts[3][47]);
+	new
+		id = GetPlayerToBusinessID(playerid),
+		string[MAX_STRING],
+		head[MAX_STRING];
+
+	format(head, sizeof(head), lang_texts[3][3], Businesses[id][Business_Name]);
+
+	if (Businesses[id][Business_Upgrade] >= MAX_BUSINESS_LEVEL) {
+		format(string, sizeof(string), lang_texts[3][25], Businesses[id][Business_Name]);
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, lang_texts[3][10], lang_texts[3][8]);
+		return 1;
 	}
-	else
-	{
-		new string[MAX_STRING];
-		if (Businesses[id][Business_Upgrade] >= MAX_BUSINESS_LEVEL)
-		{
-			format(string, sizeof(string), lang_texts[3][25], Businesses[id][Business_Name]);
-			SendClientMessage(playerid, COLOUR_RED, string);
-			return 1;
-		}
-		new price = (Businesses[id][Business_Upgrade]+1) * Businesses[id][Business_Value] * UPGRADE_TARIF;
-		
-		if (oGetPlayerMoney(playerid) < price)
-		{
-			format(string, sizeof(string), lang_texts[3][26], price);
-			return SendClientMessage(playerid, COLOUR_RED, string);
-		}
-		
-		oGivePlayerMoney(playerid,-price, 0);
-		Businesses[id][Business_Upgrade]++;
-		format(string, sizeof(string), lang_texts[3][24], Businesses[id][Business_Name], Businesses[id][Business_Upgrade]);
-		SendClientMessage(playerid, COLOUR_GREEN, string);
+	new price = business_GetUpgradeCost(id);
+	
+	if (oGetPlayerMoney(playerid) < price) {
+		format(string, sizeof(string), lang_texts[3][26], price);
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, lang_texts[3][10], lang_texts[3][8]);
+		return 1;
 	}
+	
+	oGivePlayerMoney(playerid, -price, 0);
+	Businesses[id][Business_Upgrade]++;
+	format(string, sizeof(string), lang_texts[3][24], Businesses[id][Business_Name], Businesses[id][Business_Upgrade]);
+	Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, lang_texts[3][10], lang_texts[3][8]);
 	return 1;
+}
+
+stock business_GetUpgradeCost(id)
+{
+	return (Businesses[id][Business_Upgrade] + 1) * Businesses[id][Business_Value] * UPGRADE_TARIF;
 }
 
 stock business_Update3DTextLabelText()
 {
-	new string[MAX_STRING];
+	new string[MAX_STRING * 2];
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{
-		format(string, sizeof(string), lang_texts[3][1], Businesses[id][Business_Name], Businesses[id][Business_Cost], Businesses[id][Business_Value], Businesses[id][Business_Owner], Businesses[id][Business_Level], Businesses[id][Business_Upgrade]);
+		business_Create3DTextLabelStr(id, string);
 		Update3DTextLabelText(Business3DTextLabel[id], COLOUR_WHITE, string);
+	}
+	return 1;
+}
+
+stock business_Create3DTextLabelStr(id, string[MAX_STRING * 2])
+{
+	format(string, sizeof(string), lang_texts[3][1], Businesses[id][Business_Name], Businesses[id][Business_Cost], Businesses[id][Business_Value], Businesses[id][Business_Level]);
+	if (strcmp(Businesses[id][Business_Owner], "Unknown", false)) {
+		format(string, sizeof(string), lang_texts[3][29], string, Businesses[id][Business_Upgrade], Businesses[id][Business_Owner]);
 	}
 	return 1;
 }
