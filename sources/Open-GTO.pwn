@@ -37,6 +37,7 @@ Developers:
 #include "lib\gtolib"
 #include "core\color"
 #include "core\pickup"
+#include "core\widestrip"
 #include "vehicle\vehicles"
 #include "vehicle\vehicle_fuel"
 #include "vehicle\vehicle_menu"
@@ -188,6 +189,7 @@ public OnGameModeInit()
 	pl_alert_OnGameModeInit();
 	veh_fuel_OnGameModeInit();
 	pickup_OnGameModeInit();
+	widestrip_OnGameModeInit();
 
 	// missions
 	trucker_OnGameModeInit();
