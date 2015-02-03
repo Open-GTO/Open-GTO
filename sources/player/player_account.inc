@@ -141,6 +141,7 @@ stock account_Login(playerid, password[])
 	
 	ini_closeFile(file_account);
 
+	widestrip_Hide(playerid);
 	// login player
 	player_Login(playerid);
 	return 1;
@@ -148,13 +149,15 @@ stock account_Login(playerid, password[])
 
 DialogCreate:AccountRegister(playerid)
 {
-	new string[MAX_STRING + MAX_PLAYER_NAME + 1],
+	new
+		caption[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), lang_texts[1][44], VERSION, playername, MIN_PASS_LEN, MAX_PASS_LEN);
-	Dialog_Open(playerid, Dialog:AccountRegister, DIALOG_STYLE_INPUT, "Регистрация", string, "Зарегать", "");
+	format(caption, sizeof(caption), lang_texts[1][47], playername);
+
+	Dialog_Open(playerid, Dialog:AccountRegister, DIALOG_STYLE_INPUT, caption, lang_texts[1][44], lang_texts[1][50], "");
 }
 
 DialogResponse:AccountRegister(playerid, response, listitem, inputtext[])
@@ -170,18 +173,17 @@ DialogResponse:AccountRegister(playerid, response, listitem, inputtext[])
 
 DialogCreate:AccountLogin(playerid)
 {
-	new string[MAX_STRING + MAX_PLAYER_NAME + 1],
+	new
+		string[MAX_STRING + MAX_PLAYER_NAME + 1],
+		caption[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	if (GetPVarInt(playerid, "Player_Login_Attempt") > 0) {
-		format(string, sizeof(string), lang_texts[1][47], VERSION, playername, MAX_PLAYER_LOGIN_ATTEMPT - GetPVarInt(playerid, "Player_Login_Attempt"));
-	} else {
-		format(string, sizeof(string), lang_texts[1][43], VERSION, playername);
-	}
-	Dialog_Open(playerid, Dialog:AccountLogin, DIALOG_STYLE_PASSWORD, "Вход в аккаунт", string, "Войти", "");
+	format(string, sizeof(string), lang_texts[1][43], MAX_PLAYER_LOGIN_ATTEMPT - GetPVarInt(playerid, "Player_Login_Attempt"));
+	format(caption, sizeof(caption), lang_texts[1][48], playername);
 
+	Dialog_Open(playerid, Dialog:AccountLogin, DIALOG_STYLE_PASSWORD, caption, string, lang_texts[1][49], "");
 }
 
 DialogResponse:AccountLogin(playerid, response, listitem, inputtext[])
@@ -207,5 +209,7 @@ stock account_ShowDialog(playerid)
 	} else {
 		Dialog_Show(playerid, Dialog:AccountRegister);
 	}
+
+	widestrip_Show(playerid);
 	return 1;
 }

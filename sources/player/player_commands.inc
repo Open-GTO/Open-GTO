@@ -142,7 +142,7 @@ COMMAND:time(playerid, params[])
 COMMAND:skydive(playerid, params[])
 {
 	if (player_IsJailed(playerid) || GetPlayerInterior(playerid) != 0 || player_IsAtQuest(playerid)) {
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[1][48]);
+		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[1][51]);
 		return 1;
 	}
 
