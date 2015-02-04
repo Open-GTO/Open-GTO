@@ -225,7 +225,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 #define MAX_COUNTDOWN		4 // кол-во секунд для отсчёта гонок и дм
 #define KEY_USING			KEY_YES // Кнопка 'Y' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
-#define KEY_NAME			"Согласие - Y"
+#define KEY_NAME			"Y"
 #define PICKUP_TEXT			"\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'"
 
 stock Text3D:CreatePickupText(text[], Float:pos_x, Float:pos_y, Float:pos_z)

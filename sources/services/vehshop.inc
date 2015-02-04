@@ -148,7 +148,7 @@ stock vshop_ChangeVehicles()
 		);
 		SetVehicleFuel(vshop_Vehicles[i][vshop_ID], 0);
 		
-		format(string, sizeof(string), "{CCCCCC}%s\n{00AA00}Цена: {CCCCCC}$%d\n{999999}Сядьте для покупки", GetVehicleName(model), GetVehicleCost(model));
+		format(string, sizeof(string), "{CCFF66}%s\n{CCCCCC}Цена: {FFFFFF}$%d\n{999999}Сядьте для покупки", GetVehicleName(model), GetVehicleCost(model));
 		vshop_Vehicles[i][vshop_Text3D] = Create3DTextLabel(string, COLOUR_WHITE, vshop_Vehicles[i][vshop_X], vshop_Vehicles[i][vshop_Y], vshop_Vehicles[i][vshop_Z], 20.0, 0, 1);
 		Attach3DTextLabelToVehicle(vshop_Vehicles[i][vshop_Text3D], vshop_Vehicles[i][vshop_ID], 0.0, 0.0, 0.2);
 	}
