@@ -15,6 +15,7 @@
 
 static
 	Text:td_background,
+	PlayerText:td_strip[MAX_PLAYERS],
 	PlayerText:td_header[MAX_PLAYERS],
 	PlayerText:td_content[MAX_PLAYERS],
 
@@ -22,9 +23,9 @@ static
 
 stock pl_alert_OnGameModeInit()
 {
-	td_background = TextDrawCreate(626.941223, 293.166687, "alert_background");
-	TextDrawLetterSize(td_background, 0.000000, 0.121779);
-	TextDrawTextSize(td_background, 475.647064, 0.000000);
+	td_background = TextDrawCreate(479.5, 286.5, "alert_background");
+	TextDrawLetterSize(td_background, 0.0, 0.85);
+	TextDrawTextSize(td_background, 623.5, 0.0);
 	TextDrawAlignment(td_background, 1);
 	TextDrawColor(td_background, -2139062017);
 	TextDrawUseBox(td_background, true);
@@ -38,9 +39,16 @@ stock pl_alert_OnGameModeInit()
 
 stock pl_alert_OnPlayerConnect(playerid)
 {
-	td_header[playerid] = CreatePlayerTextDraw(playerid, 548.705810, 282.333374, "Header");
-	PlayerTextDrawLetterSize(playerid, td_header[playerid], 0.464116, 1.874165);
-	PlayerTextDrawAlignment(playerid, td_header[playerid], 2);
+	td_strip[playerid] = CreatePlayerTextDraw(playerid, 479.5, 302.0, "_");
+	PlayerTextDrawLetterSize(playerid, td_strip[playerid], 0.0, -0.6);
+	PlayerTextDrawTextSize(playerid, td_strip[playerid], 623.5, 0.0);
+	PlayerTextDrawUseBox(playerid, td_strip[playerid], true);
+	PlayerTextDrawBoxColor(playerid, td_strip[playerid], 0xFF0000FF);
+
+	td_header[playerid] = CreatePlayerTextDraw(playerid, 479.5, 285.0, "Header");
+	PlayerTextDrawLetterSize(playerid, td_header[playerid], 0.4, 1.5);
+	PlayerTextDrawTextSize(playerid, td_header[playerid], 623.5, 0.0);
+	PlayerTextDrawAlignment(playerid, td_header[playerid], 1);
 	PlayerTextDrawColor(playerid, td_header[playerid], -5963521);
 	PlayerTextDrawSetShadow(playerid, td_header[playerid], 0);
 	PlayerTextDrawSetOutline(playerid, td_header[playerid], 1);
@@ -48,9 +56,9 @@ stock pl_alert_OnPlayerConnect(playerid)
 	PlayerTextDrawFont(playerid, td_header[playerid], 1);
 	PlayerTextDrawSetProportional(playerid, td_header[playerid], 1);
 
-	td_content[playerid] = CreatePlayerTextDraw(playerid, 479.529693, 299.249816, "Content");
-	PlayerTextDrawLetterSize(playerid, td_content[playerid], 0.332823, 1.290832);
-	PlayerTextDrawTextSize(playerid, td_content[playerid], 623.529235, 8.749995);
+	td_content[playerid] = CreatePlayerTextDraw(playerid, 479.5, 299.0, "Content");
+	PlayerTextDrawLetterSize(playerid, td_content[playerid], 0.3, 1.3);
+	PlayerTextDrawTextSize(playerid, td_content[playerid], 623.5, 0.0);
 	PlayerTextDrawAlignment(playerid, td_content[playerid], 1);
 	PlayerTextDrawColor(playerid, td_content[playerid], -1);
 	PlayerTextDrawUseBox(playerid, td_content[playerid], true);
@@ -65,14 +73,23 @@ stock pl_alert_OnPlayerConnect(playerid)
 
 stock pl_alert_Show(playerid, header[], content[], time = 4000, hcolor = -5963521)
 {
-	PlayerTextDrawColor(playerid, td_header[playerid], hcolor);
-	PlayerTextDrawSetString(playerid, td_header[playerid], header);
-	PlayerTextDrawSetString(playerid, td_content[playerid], content);
+	if (strlen(header) > 0) {
+		PlayerTextDrawColor(playerid, td_header[playerid], hcolor);
+		PlayerTextDrawSetString(playerid, td_header[playerid], header);
 
-	TextDrawShowForPlayer(playerid, td_background);
+		PlayerTextDrawShow(playerid, td_header[playerid]);
 
-	PlayerTextDrawShow(playerid, td_header[playerid]);
-	PlayerTextDrawShow(playerid, td_content[playerid]);
+		TextDrawShowForPlayer(playerid, td_background);
+
+		PlayerTextDrawBoxColor(playerid, td_strip[playerid], hcolor);
+		PlayerTextDrawShow(playerid, td_strip[playerid]);
+	}
+
+	if (strlen(content) > 0) {
+		PlayerTextDrawSetString(playerid, td_content[playerid], content);
+
+		PlayerTextDrawShow(playerid, td_content[playerid]);
+	}
 
 	PlayerPlaySound(playerid, 45400, 0.0, 0.0, 0.0);
 
@@ -88,6 +105,7 @@ public pl_alert_Hide(playerid)
 	alert_TimerID[playerid] = 0;
 	
 	TextDrawHideForPlayer(playerid, td_background);
+	PlayerTextDrawHide(playerid, td_strip[playerid]);
 
 	PlayerTextDrawHide(playerid, td_header[playerid]);
 	PlayerTextDrawHide(playerid, td_content[playerid]);
