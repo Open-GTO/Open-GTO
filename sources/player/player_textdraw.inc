@@ -119,9 +119,21 @@ stock pl_textdraw_Hide(playerid)
 stock pl_textdraw_SetMoney(playerid, value)
 {
 	new string[16];
-	format(string, sizeof(string), "$%09d", value);
-	strins(string, " ", 7);
-	strins(string, " ", 4);
+	if (value < 0) {
+		format(string, sizeof(string), "-$%09d", -value);
+		strins(string, " ", 8);
+		strins(string, " ", 5);
+		PlayerTextDrawHide(playerid, td_money[playerid]);
+		PlayerTextDrawColor(playerid, td_money[playerid], 0xDD0000FF);
+		PlayerTextDrawShow(playerid, td_money[playerid]);
+	} else {
+		format(string, sizeof(string), "$%09d", value);
+		strins(string, " ", 7);
+		strins(string, " ", 4);
+		PlayerTextDrawHide(playerid, td_money[playerid]);
+		PlayerTextDrawColor(playerid, td_money[playerid], 0xFFFFFFFF);
+		PlayerTextDrawShow(playerid, td_money[playerid]);
+	}
 	PlayerTextDrawSetString(playerid, td_money[playerid], string);
 }
 
@@ -143,6 +155,6 @@ stock pl_textdraw_SetXp(playerid, value)
 		new string[8];
 		format(string, sizeof(string), "%d%%", value);
 		PlayerTextDrawSetString(playerid, td_xp[playerid], string);
-		PlayerTextDrawShow(playerid, td_xp[playerid]);
+		//PlayerTextDrawShow(playerid, td_xp[playerid]);
 	}
 }
