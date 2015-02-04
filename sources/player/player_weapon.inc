@@ -116,7 +116,8 @@ stock GivePlayerWeaponCheck(playerid, weaponid, ammo)
 			PlayerWeapons[playerid][slot][pwid] = weaponid;
 			PlayerWeapons[playerid][slot][pbullets] = 1;
 		}
-		GivePlayerWeapon(playerid, PlayerWeapons[playerid][slot][pwid], PlayerWeapons[playerid][slot][pbullets]);
+		GivePlayerWeapon(playerid, PlayerWeapons[playerid][slot][pwid], 0);
+		SetPlayerAmmo(playerid, PlayerWeapons[playerid][slot][pwid], PlayerWeapons[playerid][slot][pbullets]);
 	}
 }
 
