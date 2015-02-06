@@ -217,7 +217,11 @@ DialogResponse:GangExitAccept(playerid, response, listitem, inputtext[])
 
 DialogCreate:GangCreate(playerid)
 {
-	new string[512],
+	const
+		COLORS_IN_STRING = 5;
+
+	new
+		string[(MAX_NAME + 8 + 2) * COLOR_COUNT + 2 * (COLOR_COUNT / COLORS_IN_STRING + 1) + 1],
 		step = gangmenu_GetCreateStep(playerid);
 
 	switch (step) {
@@ -232,7 +236,7 @@ DialogCreate:GangCreate(playerid)
 			for (new i = 0; i < COLOR_COUNT; i++) {
 				format(string, sizeof(string), "%s  {%s}%s", string, color_GetEmbeddingCode(i), color_GetName(i));
 				
-				if ((i+1) % 5 == 0) {
+				if ((i+1) % COLORS_IN_STRING == 0) {
 					strcat(string, "\n\t", sizeof(string));
 				}
 			}
