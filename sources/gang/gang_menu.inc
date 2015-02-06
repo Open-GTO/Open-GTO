@@ -66,6 +66,12 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 			}
 			// создать банду
 			case 1: {
+				if (oGetPlayerMoney(playerid) < Gang_Create_Cost) {
+					new string[MAX_STRING];
+					format(string, sizeof(string), lang_texts[6][34], Gang_Create_Cost);
+					Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], string, "Назад", "Отмена");
+					return 1;
+				}
 				Dialog_Show(playerid, Dialog:GangCreate);
 				return 1;
 			}
@@ -292,19 +298,19 @@ DialogResponse:GangCreate(playerid, response, listitem, inputtext[])
 
 			new len = strlen(inputtext);
 			if (len == 0) {
-				Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], lang_texts[6][12], "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:GangCreateReturn, lang_texts[6][9], lang_texts[6][12], "Назад", "Отмена");
 				return 1;
 			}
 			
 			if (len > MAX_GANG_NAME_LEN || len < MIN_GANG_NAME_LEN) {
-				Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], lang_texts[6][39], "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:GangCreateReturn, lang_texts[6][9], lang_texts[6][39], "Назад", "Отмена");
 				return 1;
 			}
 			
 			if (!StringCharCheck(inputtext) || !strcmp(inputtext, "Unknown", true)) {
 				new string[MAX_STRING];
 				format(string, sizeof(string), lang_texts[6][41], ALLOWED_STRING_SYMBOLS_STR);
-				Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], string, "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:GangCreateReturn, lang_texts[6][9], string, "Назад", "Отмена");
 				return 1;
 			}
 			
@@ -325,7 +331,14 @@ DialogResponse:GangCreate(playerid, response, listitem, inputtext[])
 
 			new colorid = color_GetIdByName(inputtext);
 			if (colorid == -1) {
-				Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], lang_texts[6][10], "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:GangCreateReturn, lang_texts[6][9], lang_texts[6][10], "Назад", "Отмена");
+				return 1;
+			}
+
+			if (oGetPlayerMoney(playerid) < Gang_Create_Cost) {
+				new string[MAX_STRING];
+				format(string, sizeof(string), lang_texts[6][34], Gang_Create_Cost);
+				Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], string, "Назад", "Отмена");
 				return 1;
 			}
 
@@ -346,6 +359,14 @@ DialogResponse:GangCreate(playerid, response, listitem, inputtext[])
 			gangmenu_CleanCreateGarbage(playerid);
 			return 1;
 		}
+	}
+	return 1;
+}
+
+DialogResponse:GangCreateReturn(playerid, response, listitem, inputtext[])
+{
+	if (response) {
+		Dialog_Show(playerid, Dialog:GangCreate);
 	}
 	return 1;
 }

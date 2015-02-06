@@ -178,7 +178,7 @@ stock GangRemoveMember(gangid, kickplayername[])
 	if (!strcmp(GangMemberInfo[gangid][0][member_name], kickplayername, true))
 	{
 		format(string, sizeof(string), "Вы удалили банду '%s'!", Gangs[gangid][gang_name]);
-		SendClientMessage(GangMemberInfo[gangid][0][member_playerid], COLOUR_RED, string);
+		Dialog_Message(GangMemberInfo[gangid][0][member_playerid], "Банда", string, "ОК");
 		format(string, sizeof(string), "Лидер банды %s(%d) удалил банду '%s'.", kickplayername, GangMemberInfo[gangid][0][member_playerid], Gangs[gangid][gang_name]);
 		for (new gangmember = 0; gangmember < MAX_GANG_SIZE; gangmember++)
 		{
