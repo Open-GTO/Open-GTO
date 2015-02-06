@@ -192,22 +192,16 @@ stock player_OnLogin(playerid)
 	SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][89]);
 
 	if (IsPlayerRconAdmin(playerid)) {
-		format(string, sizeof(string), lang_texts[1][39], playername);
 		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][25]);
 	} else if (IsPlayerAdm(playerid)) {
-		format(string, sizeof(string), lang_texts[1][40], playername);
 		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][26]);
 	} else if (IsPlayerMod(playerid)) {
-		format(string, sizeof(string), lang_texts[1][41], playername);
 		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][27]);
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	} else {
-		format(string, sizeof(string), lang_texts[1][42], playername);
 		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][2]);
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	}
-
-	GameTextForPlayer(playerid, string, 2000, 1);
 
 	foreach (new id : Player) {
 		if (IsPlayerRconAdmin(playerid)) {
