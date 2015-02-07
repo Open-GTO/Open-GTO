@@ -172,27 +172,9 @@ stock player_Login(playerid)
 	
 	ini_getInteger(file_player, "Status", buf);
 	player_SetStatus(playerid, buf);
-	if (IsPlayerAdmin(playerid)) {
-		player_SetStatus(playerid, STATUS_LEVEL_RCON);
-	}
 
 	ini_getString(file_player, "Gang", s_buf);
-	if (strlen(s_buf) > 0) {
-		new tmpname[MAX_NAME];
-		format(tmpname, sizeof(tmpname), "%s%s"GTO_FILES_FORMAT, GangDB, s_buf);
-
-		if (!ini_fileExist(tmpname)) {
-			ini_setString(file_player, "Gang", nullstr);
-			player_SetGangID(playerid, 0);
-
-			format(tmpname, sizeof(tmpname), "Банда '%s' была расформирована.", s_buf);
-			SendClientMessage(playerid, COLOUR_ORANGE, tmpname);
-		} else {
-			GangMemberLogin(playerid, GangLoad(s_buf));
-		}
-	} else {
-		player_SetGangID(playerid, 0);
-	}
+	player_SetGangName(playerid, s_buf);
 
 	ini_getString(file_player, "Weapons", s_buf);
 	SetWeaponsFromDBString(playerid, s_buf);

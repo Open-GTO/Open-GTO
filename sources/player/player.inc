@@ -211,6 +211,33 @@ stock player_OnLogin(playerid)
 		format(string, sizeof(string), lang_texts[1][17], playername, playerid);
 		SendClientMessage(id, COLOUR_WHITE, string);
 	}
+
+	// admin
+	if (IsPlayerAdmin(playerid)) {
+		player_SetStatus(playerid, STATUS_LEVEL_RCON);
+	}
+
+	// gang
+	new gangname[MAX_NAME];
+	set(gangname, player_GetGangName(playerid));
+
+	if (strlen(gangname) > 0) {
+		new tmpname[MAX_STRING];
+		format(tmpname, sizeof(tmpname), "%s%s"GTO_FILES_FORMAT, GangDB, gangname);
+
+		if (!ini_fileExist(tmpname)) {
+			player_SetGangName(playerid, nullstr);
+			player_SetGangID(playerid, 0);
+
+			format(tmpname, sizeof(tmpname), "Банда '%s' была расформирована.", gangname);
+			SendClientMessage(playerid, COLOUR_ORANGE, tmpname);
+		} else {
+			GangMemberLogin(playerid, GangLoad(gangname));
+		}
+	} else {
+		player_SetGangID(playerid, 0);
+	}
+
 	GameMSG("player: %s(%d): logged in successfully.", playername, playerid);
 }
 
