@@ -81,7 +81,7 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "MuteTime", player_GetMuteTime(playerid));
 	ini_setInteger(file_player, "Reports", player_GetReportCount(playerid));
 	ini_setInteger(file_player, "FightStyle", pl_fights_GetPlayerStyle(playerid));
-    ini_setInteger(file_player, "FightStyleUsed", pl_fights_GetPlayerStyleUsed(playerid));
+	ini_setInteger(file_player, "FightStyleUsed", pl_fights_GetPlayerStyleUsed(playerid));
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), "%f,%f,%f,%f",
@@ -115,98 +115,98 @@ stock player_Login(playerid)
 	format(filename_player, sizeof(filename_player), "%s%s"GTO_FILES_FORMAT, PlayerDB, oGetPlayerName(playerid));
 
 	if (!ini_fileExist(filename_player)) {
-		return 0;
-	}
-
-	new buf, s_buf[MAX_STRING], Float:f_buf;
-	new file_player = ini_openFile(filename_player);
-	
-	ini_getFloat(file_player, "Armour", f_buf);
-	oSetPlayerArmour(playerid, f_buf);
-	
-    ini_getInteger(file_player, "Level", buf);
-	SetPlayerLevel(playerid, buf);
-	
-    ini_getInteger(file_player, "XP", buf);
-	SetPlayerXP(playerid, buf);
-	
-    ini_getInteger(file_player, "Money", buf);
-    oSetPlayerMoney(playerid, buf);
-	
-    ini_getInteger(file_player, "BankMoney", buf);
-	SetPVarInt(playerid, "BankMoney", buf);
-	
-    ini_getInteger(file_player, "Deaths", buf);
-    SetPVarInt(playerid, "Deaths", buf);
-	
-	ini_getInteger(file_player, "Kills", buf);
-	SetPVarInt(playerid, "Kills", buf);
-	
-    ini_getInteger(file_player, "Jailed", buf);
-	player_SetJailCount(playerid, buf);
-	
-    ini_getInteger(file_player, "JailTime", buf);
-	player_SetJailTime(playerid, buf);
-	
-    ini_getInteger(file_player, "Muted", buf);
-	player_SetMuteCount(playerid, buf);
-	
-    ini_getInteger(file_player, "MuteTime", buf);
-	player_SetMuteTime(playerid, buf);
-
-    ini_getInteger(file_player, "Reports", buf);
-	player_SetReportCount(playerid, buf);
-	
-    ini_getInteger(file_player, "FightStyle", buf);
-	pl_fights_SetPlayerStyle(playerid, buf);
-	
-    ini_getInteger(file_player, "FightStyleUsed", buf);
-	pl_fights_SetPlayerStyleUsed(playerid, buf);
-	
-	buf = 0;
-	ini_getString(file_player, "Coords", s_buf);
-	SetPVarFloat(playerid, "Coord_X", floatstr(strcharsplit(s_buf, buf, ',')));
-	SetPVarFloat(playerid, "Coord_Y", floatstr(strcharsplit(s_buf, buf, ',')));
-	SetPVarFloat(playerid, "Coord_Z", floatstr(strcharsplit(s_buf, buf, ',')));
-	SetPVarFloat(playerid, "Coord_A", floatstr(strcharsplit(s_buf, buf, ',')));
-	
-	ini_getInteger(file_player, "Status", buf);
-	player_SetStatus(playerid, buf);
-
-	ini_getString(file_player, "Gang", s_buf);
-	player_SetGangName(playerid, s_buf);
-
-	ini_getString(file_player, "Weapons", s_buf);
-	SetWeaponsFromDBString(playerid, s_buf);
-	
-	ini_getString(file_player, "WeaponsSkills", s_buf);
-	SetWeaponsSkillsFromDBString(playerid, s_buf);
-	
-	ini_getInteger(file_player, "SkinModel", buf);
-	player_SetSkin(playerid, buf);
-	
-	ini_getString(file_player, "VIP", s_buf);
-	SetPlayerVIPDate(playerid, s_buf);
-	SetPlayerVIP(playerid, VIPCheck(s_buf));
-	
-	ini_getInteger(file_player, "Hide", buf);
-	admin_SetHideStatus(playerid, buf);
-	
-	ini_getInteger(file_player, "SpawnHouseID", buf);
-	player_SetSpawnHouseID(playerid, buf);
-	
-	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
-		format(s_buf, sizeof(s_buf), "Vehicle_%d", i);
-		new error = ini_getString(file_player, s_buf, s_buf);
+		player_Create(playerid);
+	} else {
+		new buf, s_buf[MAX_STRING], Float:f_buf;
+		new file_player = ini_openFile(filename_player);
 		
-		if (error == INI_KEY_NOT_FOUND) {
-			break;
+		ini_getFloat(file_player, "Armour", f_buf);
+		oSetPlayerArmour(playerid, f_buf);
+		
+		ini_getInteger(file_player, "Level", buf);
+		SetPlayerLevel(playerid, buf);
+		
+		ini_getInteger(file_player, "XP", buf);
+		SetPlayerXP(playerid, buf);
+		
+		ini_getInteger(file_player, "Money", buf);
+		oSetPlayerMoney(playerid, buf);
+		
+		ini_getInteger(file_player, "BankMoney", buf);
+		SetPVarInt(playerid, "BankMoney", buf);
+		
+		ini_getInteger(file_player, "Deaths", buf);
+		SetPVarInt(playerid, "Deaths", buf);
+		
+		ini_getInteger(file_player, "Kills", buf);
+		SetPVarInt(playerid, "Kills", buf);
+		
+		ini_getInteger(file_player, "Jailed", buf);
+		player_SetJailCount(playerid, buf);
+		
+		ini_getInteger(file_player, "JailTime", buf);
+		player_SetJailTime(playerid, buf);
+		
+		ini_getInteger(file_player, "Muted", buf);
+		player_SetMuteCount(playerid, buf);
+		
+		ini_getInteger(file_player, "MuteTime", buf);
+		player_SetMuteTime(playerid, buf);
+
+		ini_getInteger(file_player, "Reports", buf);
+		player_SetReportCount(playerid, buf);
+		
+		ini_getInteger(file_player, "FightStyle", buf);
+		pl_fights_SetPlayerStyle(playerid, buf);
+		
+		ini_getInteger(file_player, "FightStyleUsed", buf);
+		pl_fights_SetPlayerStyleUsed(playerid, buf);
+		
+		buf = 0;
+		ini_getString(file_player, "Coords", s_buf);
+		SetPVarFloat(playerid, "Coord_X", floatstr(strcharsplit(s_buf, buf, ',')));
+		SetPVarFloat(playerid, "Coord_Y", floatstr(strcharsplit(s_buf, buf, ',')));
+		SetPVarFloat(playerid, "Coord_Z", floatstr(strcharsplit(s_buf, buf, ',')));
+		SetPVarFloat(playerid, "Coord_A", floatstr(strcharsplit(s_buf, buf, ',')));
+		
+		ini_getInteger(file_player, "Status", buf);
+		player_SetStatus(playerid, buf);
+
+		ini_getString(file_player, "Gang", s_buf);
+		player_SetGangName(playerid, s_buf);
+
+		ini_getString(file_player, "Weapons", s_buf);
+		SetWeaponsFromDBString(playerid, s_buf);
+		
+		ini_getString(file_player, "WeaponsSkills", s_buf);
+		SetWeaponsSkillsFromDBString(playerid, s_buf);
+		
+		ini_getInteger(file_player, "SkinModel", buf);
+		player_SetSkin(playerid, buf);
+		
+		ini_getString(file_player, "VIP", s_buf);
+		SetPlayerVIPDate(playerid, s_buf);
+		SetPlayerVIP(playerid, VIPCheck(s_buf));
+		
+		ini_getInteger(file_player, "Hide", buf);
+		admin_SetHideStatus(playerid, buf);
+		
+		ini_getInteger(file_player, "SpawnHouseID", buf);
+		player_SetSpawnHouseID(playerid, buf);
+		
+		for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
+			format(s_buf, sizeof(s_buf), "Vehicle_%d", i);
+			new error = ini_getString(file_player, s_buf, s_buf);
+			
+			if (error == INI_KEY_NOT_FOUND) {
+				break;
+			}
+			
+			SetVehicleFromDbString(playerid, i, s_buf);
 		}
 		
-		SetVehicleFromDbString(playerid, i, s_buf);
+		ini_closeFile(file_player);
 	}
-	
-	ini_closeFile(file_player);
 
 	player_SetLogin(playerid, 1);
 	player_OnLogin(playerid);
