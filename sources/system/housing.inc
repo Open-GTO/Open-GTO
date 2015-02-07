@@ -887,6 +887,17 @@ stock SetPlayerPosToHouse(playerid, i)
 	SetPlayerPosEx(playerid, Houses[i][Houses_PickupX], Houses[i][Houses_PickupY], Houses[i][Houses_PickupZ]+0.5, 0, 0, 0);
 }
 
+stock house_GetPickupPos(houseid, &Float:house_x, &Float:house_y, &Float:house_z)
+{
+	if (houseid < 0 || houseid >= sizeof(Houses)) {
+		return 0;
+	}
+	house_x = Houses[houseid][Houses_PickupX];
+	house_y = Houses[houseid][Houses_PickupY];
+	house_z = Houses[houseid][Houses_PickupZ] + 0.5;
+	return 1;
+}
+
 stock HouseKeepUp()
 {
 	for (new id = 0; id <  sizeof(Houses); id++) {

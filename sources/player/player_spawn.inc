@@ -108,7 +108,11 @@ stock pl_spawn_OnPlayerRequestClass(playerid, classid)
 	#pragma unused classid
 	if (player_IsLogin(playerid)) {
 		TogglePlayerSpectating(playerid, 1);
-		SetSpawnInfo(playerid, 0, player_GetSkin(playerid), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+		new Float:spawn_pos[4];
+		pl_spawn_GetSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
+		SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
+		
 		TogglePlayerSpectating(playerid, 0);
 		return 0;
 	}
@@ -118,7 +122,6 @@ stock pl_spawn_OnPlayerRequestClass(playerid, classid)
 
 	// hide class selection buttons
 	TogglePlayerSpectating(playerid, 1);
-	SetSpawnInfo(playerid, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 	// set camera pos
 	SetTimerEx("pl_spawn_UpdateCamera", 200, 0, "d", playerid);
@@ -219,10 +222,9 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-stock pl_spawn_SetSpawnPos(playerid)
+stock pl_spawn_GetSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &Float:spos_a)
 {
-	SetPlayerInterior(playerid, 0);
-	SetPlayerFacingAngle(playerid, GetPVarFloat(playerid, "Coord_A"));
+	spos_a = GetPVarFloat(playerid, "Coord_A");
 
 	if (GetPVarFloat(playerid, "Coord_Z") > 900.0) {
 		SetPVarFloat(playerid, "Coord_X", 0.0);
@@ -231,7 +233,9 @@ stock pl_spawn_SetSpawnPos(playerid)
 	}
 
 	if (GetPVarFloat(playerid, "Coord_X") != 0.0 && GetPVarFloat(playerid, "Coord_Y") != 0.0 && GetPVarFloat(playerid, "Coord_Z") != 0.0) {
-		oSetPlayerPos(playerid, GetPVarFloat(playerid, "Coord_X"), GetPVarFloat(playerid, "Coord_Y"), GetPVarFloat(playerid, "Coord_Z"));
+		spos_x = GetPVarFloat(playerid, "Coord_X");
+		spos_y = GetPVarFloat(playerid, "Coord_Y");
+		spos_z = GetPVarFloat(playerid, "Coord_Z");
 		return 1;
 	}
 
@@ -243,7 +247,11 @@ stock pl_spawn_SetSpawnPos(playerid)
 	}
 
 	if (house_id == SPAWN_HOUSE_NONE) {
-		pl_spawn_SetPosByID(playerid, pl_spawn_GetRandomID());
+		new spawnid = pl_spawn_GetRandomID();
+		spos_x = spawns_array[spawnid][spawn_x];
+		spos_y = spawns_array[spawnid][spawn_y];
+		spos_z = spawns_array[spawnid][spawn_z];
+		spos_a = spawns_array[spawnid][spawn_a];
 	} else if (house_id == SPAWN_HOUSE_GANG) {
 		new gangid = player_GetGangID(playerid);
 		new gang_houseid = gang_GetHouseID(gangid);
@@ -251,18 +259,20 @@ stock pl_spawn_SetSpawnPos(playerid)
 		if (gangid == 0 || gang_houseid == -1) {
 			player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 		} else {
-			SetPlayerPosToHouse(playerid, gang_houseid);
+			house_GetPickupPos(gang_houseid, spos_x, spos_y, spos_z);
 		}
 	} else {
-		SetPlayerPosToHouse(playerid, house_id);
-
-		new tmp[MAX_STRING];
-		format(tmp, sizeof(tmp),
-			lang_texts[8][51],
-			house_GetName(house_id), house_GetUpKeepLeft(house_id), house_GetUpKeepMax(house_id)
-		);
-		SendClientMessage(playerid, COLOUR_RED, tmp);
+		house_GetPickupPos(house_id, spos_x, spos_y, spos_z);
 	}
+	return 1;
+}
+
+stock pl_spawn_SetSpawnPos(playerid)
+{
+	new Float:spawn_pos[4];
+	pl_spawn_GetSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
+
+	SetPlayerPosEx(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0);
 	return 1;
 }
 
