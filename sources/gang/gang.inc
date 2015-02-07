@@ -260,7 +260,9 @@ stock GangCreate(leaderid, gangname[], gangcolour)
 	Gangs[gangid][gang_score] = 0;
 	Gangs[gangid][gang_level] = 0;
 	Gangs[gangid][gang_xp] = 0;
+	Gangs[gangid][gang_money] = 0;
 	Gangs[gangid][gang_house] = player_GetSpawnHouseID(leaderid);
+	set(Gangs[gangid][gang_motd], nullstr);
 	for (new gangmember =0 ; gangmember < MAX_GANG_SIZE; gangmember++)
 	{
 		GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
