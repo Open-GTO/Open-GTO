@@ -761,6 +761,7 @@ COMMAND:sys(playerid, params[])
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][38]);
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][39]);
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][40]);
+		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][47]);
 		return 1;
 	}
 
@@ -861,6 +862,12 @@ COMMAND:sys(playerid, params[])
 			account_Save(id);
 		}
 		SendRconCommand("gmx");
+		return 1;
+	}
+	
+	if (!strcmp(cmd, "reloadlang", true))
+	{
+		lang_OnGameModeInit();
 		return 1;
 	}
 

@@ -613,7 +613,7 @@
 3: R: '/disarm <ID>', '/disarmall', '/skydiveall', '/paralyzeall', '/deparalyzeall', '/remcash <ID>', '/remcashall'
 4: R: '/payday', /go <точка(0 - 27)>', '/allowport <ID> <allow>', '/setskin <ID> <IDskin>'
 5: R: '/repair', '/carinfo', '/int', '/boom <тип>'
-6: S: '/sys cmdlist', '/sys about', '/sys info', '/sys weather <param>', '/sys groundhold <param>', '/sys gmx'
+6: S: '/sys cmdlist', '/sys about', '/sys info', '/sys weather <param>', '/sys groundhold <param>', '/sys gmx', '/sys reloadlang'
 // mod_commands
 7: SERVER: %s has been muted by %s on %s minutes
 8: M: '/carresp', '/remcar <ID>', '/kick <ID>', /clearchat, /weather <ID>
@@ -647,7 +647,7 @@
 35: Применение: /unban <ник>
 // admin_commands_sys
 36: Команды управления системой.
-37: S: '/sys cmdlist', '/sys about', '/sys info', '/sys gmx'
+37: S: '/sys cmdlist', '/sys about', '/sys info', '/sys gmx', '/sys reloadlang'
 38: S: '/sys weather <param>', - Автосмена погоды (0/1-20 минут)
 39: S: '/sys groundhold <param>' - Точки прокачки (0/1)
 40: S: '/sys gmx' - Перезагрузить сервер
@@ -657,7 +657,7 @@
 44: SYS: {FFFFFF}Автоматическое изменение погоды {00AA00}вкл{FFFFFF}, изменение раз в %d минут
 45: SYS: Groundhold_Enabled {AA0000}выкл
 46: SYS: Groundhold_Enabled {00AA00}вкл
-47: 
+47: S: '/sys reloadlang' - Перезагрузить файл с игровым текстом
 // functions
 48: навсегда
 49: на %d секунд
