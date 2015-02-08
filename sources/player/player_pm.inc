@@ -63,14 +63,14 @@ stock pl_pm_Send(senderid, receiveid, message[])
 COMMAND:pm(playerid, params[])
 {
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_PM, "Применение: /pm <ID> <сообщение>");
-		return 0;
+		SendClientMessage(playerid, COLOUR_PM, lang_texts[15][26]);
+		return 1;
 	}
 
 	new id = strval(params);
 	if (!IsPlayerConnected(id) || id == playerid) {
-		SendClientMessage(playerid, COLOUR_PM, "Ошибка: /pm: неверный ID");
-		return 0;
+		SendClientMessage(playerid, COLOUR_PM, lang_texts[15][27]);
+		return 1;
 	}
 	
 	pl_pm_Send(playerid, id, params);

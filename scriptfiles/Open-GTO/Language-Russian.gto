@@ -724,8 +724,8 @@
 23: {FFCC66}[Транспорт]: {FFFFFF}/repair, /fill (NUM4), /engine (NUM8)
 24: {FFCC66}[Разное]: {FFFFFF}/skydive, /lottery
 25: 
-26: 
-27: 
+26: {FFCC66}[Применение]: {FFFFFF}/pm <ID> <сообщение>
+27: {FF2211}[Ошибка]: {FFFFFF}/pm: неверный ID
 28: 
 29: {FF2211}Информация о времени:
 30: --
