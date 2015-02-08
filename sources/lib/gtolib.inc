@@ -325,3 +325,9 @@ stock chat_Clean(playerid)
 		SendClientMessage(playerid, -1, "");
 	}
 }
+
+stock StripNL(str[]) // by Y_Less
+{
+	new i = strlen(str);
+	while (i-- && str[i] <= ' ') str[i] = '\0';
+}

@@ -53,7 +53,10 @@ DialogCreate:ServiceFastfood(playerid)
 	new string[MAX_STRING * sizeof(Food)];
 
 	for (new i = 0; i < sizeof(Food); i++) {
-		format(string, sizeof(string), lang_texts[17][2], string, Food[i][food_name], Food[i][food_cost], Food[i][food_hp]);
+		format(string, sizeof(string),
+			lang_texts[17][2],
+			string, Food[i][food_name], Food[i][food_cost], Food[i][food_hp]
+		);
 	}
 
 	Dialog_Open(playerid, Dialog:ServiceFastfood, DIALOG_STYLE_LIST, lang_texts[17][3], string, lang_texts[17][4], lang_texts[17][5]);

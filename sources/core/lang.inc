@@ -11,9 +11,10 @@
 #define _lang_included
 #pragma library lang
 
+#define MAX_LANG_STRING		MAX_STRING * 2
 
 new lang_use[10] = LANGUAGE_USE;
-new lang_texts[20][100][MAX_STRING * 2 + 10];
+new lang_texts[20][100][MAX_LANG_STRING + 10];
 
 stock lang_LoadConfig(file_config)
 {
@@ -44,7 +45,7 @@ stock lang_ReadFile(filename[])
 	}
 
 	new
-		tmp[4], string[MAX_STRING + 32],
+		tmp[4], string[MAX_LANG_STRING + 32],
 		section_id = 0,
 		sep_pos;
 
@@ -55,10 +56,11 @@ stock lang_ReadFile(filename[])
 
 		sep_pos = strfind(string, ":", true);
 		if (sep_pos != -1) {
+			StripNL(string);
 			lang_FixSpecialChar(string);
 
 			strmid(tmp, string, 0, sep_pos);
-			strmid(lang_texts[section_id][ strval(tmp) ], string, sep_pos + 2, strlen(string) - sep_pos);
+			strmid(lang_texts[section_id][ strval(tmp) ], string, sep_pos + 2, strlen(string));
 		} else {
 			section_id++;
 		}
@@ -68,7 +70,7 @@ stock lang_ReadFile(filename[])
 	return 1;
 }
 
-stock lang_FixSpecialChar(string[MAX_STRING + 32])
+stock lang_FixSpecialChar(string[MAX_LANG_STRING + 32])
 {
 	for (new i = 0; string[i] != '\0'; i++) {
 		if (string[i] != '[' || string[i + 2] != ']') {
