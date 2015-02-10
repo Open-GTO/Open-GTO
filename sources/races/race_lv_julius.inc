@@ -18,10 +18,10 @@ static racefrequency = 1	; // frequency that race runs
 static lineupdelay = 184; // how long we wait for people before starting race, in seconds
 static minracers = 1; // minimum number of racers required to start this race
 static minlevel = 3; // minimum player level required to join this race
-static cashprize = 10000; // cash earned for 1st position
-static cashentry = 2500; // Cash required to enter (earned by winner)
-static xpprize = 3000; // xp earned for 1st position
-static xpbonus = 750; // xp earned per player still in race
+static cashprize = 1500; // cash earned for 1st position
+static cashentry = 100; // Cash required to enter (earned by winner)
+static xpprize = 300; // xp earned for 1st position
+static xpbonus = 50; // xp earned per player still in race
 static maxracetime = 380; // time race runs for (seconds)
 static allowedcars[2]; // cars allowed in this race.
 static Float:startlineheading = -90.32894; // which way players face at startline

@@ -17,11 +17,11 @@ static racename[MAX_NAME] = "Flee the City"; // unique name of race
 static racefrequency = 5; // frequency that race runs
 static lineupdelay = 260; // how long we wait for people before starting race, in seconds
 static minracers = 3; // minimum number of racers required to start this race
-static minlevel = 15; // minimum player level required to join this race
-static cashprize = 10000; // cash earned for 1st position
-static cashentry = 500; // Cash required to enter (earned by winner)
-static xpprize = 6500; // xp earned for 1st position
-static xpbonus = 500; // xp earned per player still in race
+static minlevel = 27; // minimum player level required to join this race
+static cashprize = 7500; // cash earned for 1st position
+static cashentry = 700; // Cash required to enter (earned by winner)
+static xpprize = 1400; // xp earned for 1st position
+static xpbonus = 50; // xp earned per player still in race
 static maxracetime = 180; // time race runs for (seconds)
 static allowedcars[2]; // cars allowed in this race.
 static Float:startlineheading = 178.4090; // which way players face at startline

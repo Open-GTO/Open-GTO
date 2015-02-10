@@ -17,11 +17,11 @@ static racename[MAX_NAME] = "LS-SF Trailers Racing"; // unique name of race
 static racefrequency = 4; // frequency that race runs
 static lineupdelay = 171; // how long we wait for people before starting race, in seconds
 static minracers = 2; // minimum number of racers required to start this race
-static minlevel = 3; // minimum player level required to join this race
-static cashprize = 5000; // cash earned for 1st position
-static cashentry = 1000; // Cash required to enter (earned by winner)
-static xpprize = 2000; // xp earned for 1st position
-static xpbonus = 250; // xp earned per player still in race
+static minlevel = 25; // minimum player level required to join this race
+static cashprize = 7000; // cash earned for 1st position
+static cashentry = 700; // Cash required to enter (earned by winner)
+static xpprize = 1300; // xp earned for 1st position
+static xpbonus = 50; // xp earned per player still in race
 static maxracetime = 420; // time race runs for (seconds)
 static allowedcars[2]; // cars allowed in this race.
 static Float:startlineheading = 343.9569; // which way players face at startline

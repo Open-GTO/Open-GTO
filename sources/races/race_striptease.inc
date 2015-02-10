@@ -17,12 +17,12 @@
 static racename[MAX_NAME] = "Strip Tease"; // unique name of race
 static racefrequency = 6; // frequency that race runs
 static lineupdelay = 240; // how long we wait for people before starting race, in seconds
-static minlevel = 2; // minimum player level required to join this race
 static minracers = 1; // minimum number of racers required to start this race
-static cashprize = 3000; // cash earned for 1st position
-static cashentry = 200; // Cash required to enter (earned by winner)
-static xpprize = 2000; // xp earned for 1st position
-static xpbonus = 600; // xp earned per player still in race
+static minlevel = 2; // minimum player level required to join this race
+static cashprize = 1500; // cash earned for 1st position
+static cashentry = 100; // Cash required to enter (earned by winner)
+static xpprize = 250; // xp earned for 1st position
+static xpbonus = 40; // xp earned per player still in race
 static maxracetime = 1500; // time race runs for (seconds)
 static allowedcars[2]; // cars allowed in this race.
 static Float:startlineheading = 133.1593; // which way players face at startline

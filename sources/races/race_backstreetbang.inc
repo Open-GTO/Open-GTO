@@ -17,11 +17,11 @@ static racename[MAX_NAME] = "Backstreet Bang"; // unique name of race
 static racefrequency = 4; // frequency that race runs
 static lineupdelay = 187; // how long we wait for people before starting race, in seconds
 static minracers = 1; // minimum number of racers required to start this race
-static minlevel = 8; // minimum player level required to join this race
-static cashprize = 3000; // cash earned for 1st position
-static cashentry = 500; // Cash required to enter (earned by winner)
-static xpprize = 1600; // xp earned for 1st position
-static xpbonus = 350; // xp earned per player still in race
+static minlevel = 11; // minimum player level required to join this race
+static cashprize = 3500; // cash earned for 1st position
+static cashentry = 300; // Cash required to enter (earned by winner)
+static xpprize = 700; // xp earned for 1st position
+static xpbonus = 50; // xp earned per player still in race
 static maxracetime = 180; // time race runs for (seconds)
 static allowedcars[2]; // cars allowed in this race.
 static Float:startlineheading = 88.9491; // which way players face at startline

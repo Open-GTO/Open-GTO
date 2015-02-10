@@ -17,11 +17,11 @@ static racename[MAX_NAME] = "LS-SF Majestic"; // unique name of race
 static racefrequency = 2	; // frequency that race runs
 static lineupdelay = 233; // how long we wait for people before starting race, in seconds
 static minracers = 2; // minimum number of racers required to start this race
-static minlevel = 3; // minimum player level required to join this race
-static cashprize = 5500; // cash earned for 1st position
-static cashentry = 3500; // Cash required to enter (earned by winner)
-static xpprize = 4600; // xp earned for 1st position
-static xpbonus = 950; // xp earned per player still in race
+static minlevel = 10; // minimum player level required to join this race
+static cashprize = 3500; // cash earned for 1st position
+static cashentry = 300; // Cash required to enter (earned by winner)
+static xpprize = 700; // xp earned for 1st position
+static xpbonus = 50; // xp earned per player still in race
 static maxracetime = 860; // time race runs for (seconds)
 static allowedcars[2]; // cars allowed in this race.
 static Float:startlineheading = 259.4063; // which way players face at startline

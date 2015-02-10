@@ -987,8 +987,8 @@ stock FinishRace(raceid, playerid)
 		format(string, sizeof(string), lang_texts[10][55], oGetPlayerName(playerid), Race[raceid][race_name], RacePlayerStats[playerid][race_player_time], BestScore[raceid][race_score_time]);
 		SendClientMessageToAll(COLOUR_RACE, string);
 		GameMSG("player: %s(%d): has set a new record for race '%s'! Time: %d. Old record: %d.", oGetPlayerName(playerid), playerid, Race[raceid][race_name], RacePlayerStats[playerid][race_player_time], BestScore[raceid][race_score_time]);
-		oGivePlayerMoney(playerid, (Race[raceid][race_cashprize]*3), 1);
-		GivePlayerXP(playerid, (Race[raceid][race_xpprize]*3), 1);
+		oGivePlayerMoney(playerid, (Race[raceid][race_cashprize]*2), 1);
+		GivePlayerXP(playerid, (Race[raceid][race_xpprize]*2), 1);
 		BestScore[raceid][race_score_time] = RaceStats[raceid][race_timer];
 		set(BestScore[raceid][race_score_player], oGetPlayerName(playerid));
 		set(BestScore[raceid][race_score_vehicle], GetVehicleName( GetVehicleModel( GetPlayerVehicleID(playerid) ) ));
