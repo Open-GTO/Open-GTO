@@ -150,6 +150,15 @@ Developers:
 #tryinclude "races\race_ls_trailer1"
 #tryinclude "races\race_sf_fuckinwood1"
 #tryinclude "races\race_ls_majestic1"
+#tryinclude "races\race_toarea51"
+#tryinclude "races\race_mountchilliad"
+#tryinclude "races\race_m25"
+#tryinclude "races\race_vinewood"
+#tryinclude "races\race_fromsftolv"
+#tryinclude "races\race_annoying"
+#tryinclude "races\race_roadtohell"
+#tryinclude "races\race_countryside_cruise"
+#tryinclude "races\race_bayside_tour"
 
 // Deathmatches
 #tryinclude "deathmatches\dm_air"
@@ -223,6 +232,15 @@ public OnGameModeInit()
 	race_ls_trailer1_init();
 	race_sf_fuckinwood1_init();
 	race_ls_majestic1_init();
+	race_toarea51_init();
+	race_mountchilliad_init();
+	race_m25_init();
+	race_vinewood_init();
+	race_fromsftolv_init();
+	race_annoying_init();
+	race_roadtohell_init();
+	race_countryside_cruise_init();
+	race_bayside_tour_init();
 	//
 	dm_air_init();
 	dm_area51_init();
