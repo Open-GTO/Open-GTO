@@ -116,12 +116,10 @@ stock mission_GetTryCount(missionid)
 
 stock mission_CalculateXP(playerid, missionid)
 {
-	new val = (GetPlayerLevel(playerid) + 1) * 2;
-	return (val * val * mission_array[missionid][mission_xp]);
+	return mission_array[missionid][mission_xp] * (GetPlayerLevel(playerid) / 10 + 1);
 }
 
 stock mission_CalculateMoney(playerid, missionid)
 {
-	new val = (GetPlayerLevel(playerid) + 1) * 2;
-	return (val * val * mission_array[missionid][mission_money]);
+	return mission_array[missionid][mission_money] * (GetPlayerLevel(playerid) / 10 + 1);
 }
