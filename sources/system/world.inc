@@ -53,19 +53,6 @@ public WorldSave(necessarily) // save all
 
 //----------------------------------------------------------------------------------------------------
 
-stock SpawnWorld() // run at startup to spawn world
-{
-	for(new i = SKINS_MINID; i <= SKINS_MAXID; i++) {
-		switch (i) {
-			case SKINS_IGNORE: {
-
-			}
-			default: AddPlayerClass(i, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0);
-		}
-	}
-	GameMSG("SERVER: All Classes init");
-}
-
 forward OneSecTimer();
 public OneSecTimer()
 {

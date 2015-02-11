@@ -248,7 +248,6 @@ public OnGameModeInit()
 	SetTimer("OneHourTimer", 3600000, 1); // 1 hour
 	SetTimerEx("WorldSave", WORLD_SAVE_TIME, 1, "d", 0);
 	GameMSG("SERVER: Timers started");
-	SpawnWorld();
 	
 	WorldSave(0);
 	GameMSG("SERVER: Open-GTO "#VERSION" initialization complete.");
