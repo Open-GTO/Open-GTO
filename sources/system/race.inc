@@ -1075,14 +1075,7 @@ stock FinishRace(raceid, playerid)
 		GameMSG("player: %s(%d): has won race '%s'! Time: %d", oGetPlayerName(playerid), playerid, Race[raceid][race_name], RacePlayerStats[playerid][race_player_time]);
 		oGivePlayerMoney(playerid, Race[raceid][race_cashprize], 1);
 
-		if ( (GetPlayerXP(playerid) + (Race[raceid][race_xpprize] + (Race[raceid][race_xpbonus] * RaceStats[raceid][race_racercount])) ) <= MAX_XP)
-		{
-			GivePlayerXP(playerid, Race[raceid][race_xpprize] + (Race[raceid][race_xpbonus] * RaceStats[raceid][race_racercount]), 1);
-		}
-		else
-		{
-			GivePlayerXP(playerid, MAX_XP - (Race[raceid][race_xpprize] + (Race[raceid][race_xpbonus] * RaceStats[raceid][race_racercount])), 1);
-		}
+		GivePlayerXP(playerid, Race[raceid][race_xpprize] + (Race[raceid][race_xpbonus] * RaceStats[raceid][race_racercount]), 1);
 	}
 	else if (RaceStats[raceid][race_position] == 2)
 	{

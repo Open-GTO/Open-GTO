@@ -1119,14 +1119,7 @@ stock deathmatch_OnPlayerKill(playerid, victimid, weaponid)
 	}
 	DMPlayerStats[playerid][dm_player_kills]++;
 
-	if ((GetPlayerXP(playerid) + Deathmatch[dmid][dm_xpkill]) <= MAX_XP)
-	{
-		GivePlayerXP(playerid, Deathmatch[dmid][dm_xpkill], 1);
-	}
-	else
-	{
-		GivePlayerXP(playerid, (MAX_XP - GetPlayerXP(playerid)), 1);
-	}
+	GivePlayerXP(playerid, Deathmatch[dmid][dm_xpkill], 1);
 
 	if (GetDMWinner(dmid) == playerid)
 	{

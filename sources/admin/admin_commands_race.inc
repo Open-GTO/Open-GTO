@@ -11,8 +11,7 @@
 #pragma library admin_commands_race
 
 
-#define SetPlayerRaceEditID(%0,%1) SetPVarInt(%0, "race_edit_id",%1)
-#define GetPlayerRaceEditID(%0) GetPVarInt(%0, "race_edit_id")
+
 
 stock AdminRace_OnPlayerCommandText(playerid, text[]) // process player commands
 {

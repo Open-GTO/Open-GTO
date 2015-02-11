@@ -471,15 +471,9 @@ COMMAND:givexp(playerid, params[])
 	}
 	
 	new xpamount = strval(strcharsplit(params, idx, ' '));
-	if (xpamount == 0 || xpamount > MAX_XP) {
+	if (xpamount == 0) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][4]);
 		return 1;
-	}
-	
-	new xpamountkeep = GetPlayerXP(receiverid) + xpamount;
-	if (xpamountkeep > MAX_XP) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][40]);
-		xpamount = xpamountkeep - MAX_XP;
 	}
 
 	GivePlayerXP(receiverid, xpamount, 1);
@@ -1199,8 +1193,12 @@ COMMAND:setlvl(playerid, params[])
 	}
 
 	new oldlvl = GetPlayerLevel(receiverid);
-	GivePlayerXP(receiverid, level_xp_list[newlvl] - GetPlayerXP(receiverid));
-
+	if (newlvl > oldlvl) {
+		PlayerLevelUp(receiverid, newlvl, oldlvl);
+	} else {
+		PlayerLevelDown(receiverid, newlvl, oldlvl);
+	}
+	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][31], oGetPlayerName(playerid), newlvl);
 	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);

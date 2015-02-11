@@ -365,15 +365,9 @@ public adm_click_GiveXP(playerid, clickedid, listitem, inputtext[])
 	}
 
 	new xpamount = strval(inputtext);
-	if (xpamount == 0 || xpamount > MAX_XP) {
+	if (xpamount == 0) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][4]);
 		return 0;
-	}
-
-	new xpamountkeep = GetPlayerXP(clickedid) + xpamount;
-	if (xpamountkeep > MAX_XP) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][40]);
-		xpamount = xpamountkeep - MAX_XP;
 	}
 
 	GivePlayerXP(clickedid, xpamount, 1);
