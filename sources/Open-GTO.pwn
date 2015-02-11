@@ -92,8 +92,6 @@ Developers:
 #include "system\deathmatch"
 #include "system\payday"
 #include "system\groundhold"
-#include "admin\admin_commands_race"
-#include "admin\admin_commands_dm"
 #include "admin\admin_commands"
 #include "admin\admin_ban"
 #include "admin\admin_mute"
