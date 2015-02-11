@@ -1119,14 +1119,7 @@ stock deathmatch_OnPlayerKill(playerid, victimid, weaponid)
 	}
 	DMPlayerStats[playerid][dm_player_kills]++;
 
-	if ((GetPlayerXP(playerid) + Deathmatch[dmid][dm_xpkill]) <= MAX_XP)
-	{
-		GivePlayerXP(playerid, Deathmatch[dmid][dm_xpkill], 1);
-	}
-	else
-	{
-		GivePlayerXP(playerid, (MAX_XP - GetPlayerXP(playerid)), 1);
-	}
+	GivePlayerXP(playerid, Deathmatch[dmid][dm_xpkill], 1);
 
 	if (GetDMWinner(dmid) == playerid)
 	{
@@ -1298,6 +1291,45 @@ COMMAND:dm(playerid, params[])
 		}
 
 		PlayerLeaveDM(playerid, dmid);
+		return 1;
+	}
+
+	if (!IsPlayerAdm(playerid)) {
+		return 1;
+	}
+
+	if (!strcmp(cmd, "start", true))
+	{
+		new dmid = strval(strcharsplit(params, idx, ' '));
+		
+		if (dmid == 0 || dmid >= MAX_DM)
+		{
+			return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][22]);
+		}
+		
+		switch (DeathmatchStats[dmid][dm_state])
+		{
+			case DM_STATE_DISABLED:
+			{
+				return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][23]);
+			}
+			case DM_STATE_ACTIVE:
+			{
+				return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][24]);
+			}
+			case DM_STATE_LINEUP:
+			{
+				DeathmatchStats[dmid][dm_timer] = 0;
+				StartDMCountdown(dmid);
+				return 1;
+			}
+			case DM_STATE_SLEEPING:
+			{
+				DeathmatchStats[dmid][dm_timer] = 0;
+				StartDMLineup(dmid);
+				return 1;
+			}
+		}
 		return 1;
 	}
 	return 1;

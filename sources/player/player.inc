@@ -124,28 +124,16 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 	}
 
 	// Give XP
-	new xp_give_player = -((GetPlayerXP(playerid) / 100) * PLAYER_XP_DEATH_MINUS_PROC);
-	new xp_give_killer = 0;
+	new xp_give_player = -GetPlayerXP(playerid) / 100 * PLAYER_XP_DEATH_MINUS_PROC;
+	new xp_give_killer = (pow(GetPlayerLevel(playerid) * 4, 2) / (GetPlayerLevel(killerid) + 10) + 20) * PLAYER_XP_KILL_TARIF;
+
 	new level_difference = GetPlayerLevel(playerid) - GetPlayerLevel(killerid);
 
-	switch (level_difference) {
-		case -MAX_LEVEL..-10: {
-			xp_give_killer = GetPlayerLevel(playerid) * PLAYER_XP_KILL_TARIF;
-		}
-		case -9..-1: {
-			xp_give_killer = ( ((GetPlayerLevel(playerid)+1) * (GetPlayerLevel(playerid)+1)) / (-level_difference) ) * PLAYER_XP_KILL_TARIF;
-		}
-		default: {
-			xp_give_killer = ( (GetPlayerLevel(playerid)+1) * 2 ) * ( (GetPlayerLevel(playerid)+1) * 2 ) * PLAYER_XP_KILL_TARIF;
-		}
+	if (level_difference <= -10) {
+		xp_give_player = 0;
 	}
 
-	if (GetPlayerXP(killerid) + xp_give_killer > MAX_XP) {
-		GivePlayerXP(killerid, MAX_XP - GetPlayerXP(killerid), 1);
-	} else {
-		GivePlayerXP(killerid, xp_give_killer, 1);
-	}
-
+	GivePlayerXP(killerid, xp_give_killer, 1);
 	GivePlayerXP(playerid, xp_give_player, 1);
 }
 
@@ -251,7 +239,7 @@ stock player_SetDefaultData(playerid)
 	player_SetSkin(playerid, PLAYER_DEFAULT_SKIN);
 
 	SetPlayerLevel(playerid, FIRST_LEVEL);
-	SetPlayerXP(playerid, level_xp_list[FIRST_LEVEL]);
+	SetPlayerXP(playerid, 0);
 
 	pl_fights_SetPlayerStyle(playerid, 4);
 	pl_fights_SetPlayerStyleUsed(playerid, 4);

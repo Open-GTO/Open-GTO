@@ -17,11 +17,11 @@ static racename[MAX_NAME] = "Flying Free"; // unique name of race
 static racefrequency = 3; // frequency that race runs
 static lineupdelay = 190; // how long we wait for people before starting race, in seconds
 static minracers = 1; // minimum number of racers required to start this race
-static minlevel = 5; // minimum player level required to join this race
-static cashprize = 2500; // cash earned for 1st position
-static cashentry = 200; // Cash required to enter (earned by winner)
-static xpprize = 1500; // xp earned for 1st position
-static xpbonus = 250; // xp earned per player still in race
+static minlevel = 22; // minimum player level required to join this race
+static cashprize = 6500; // cash earned for 1st position
+static cashentry = 600; // Cash required to enter (earned by winner)
+static xpprize = 1200; // xp earned for 1st position
+static xpbonus = 50; // xp earned per player still in race
 static maxracetime = 180; // time race runs for (seconds)
 static allowedcars[2]; // cars allowed in this race.
 static Float:startlineheading = 259.5377; // which way players face at startline

@@ -196,8 +196,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 // МИССИИ
 	// trucker
 	#define TRUCKER_ENABLED					1
-	#define TRUCKER_XP_RATE					20 // кол-во опыта за завоз, формула: ( (GetPlayerLevel(playerid)+1) * 2 )^2 * trucker_GIVE_XP_RATE
-	#define TRUCKER_MONEY_RATE				10
+	#define TRUCKER_XP_RATE					100 // коэффициент опыта за завоз
+	#define TRUCKER_MONEY_RATE				200
 	#define TRUCKER_MONEY_PENALTY			2000 // кол-во денег забираемых при невыполнении договора
 	#define TRUCKER_TIME_GET_TRAILER		120 // кол-во секунд, дающихся на прицепление фуры к тягачу
 	#define TRUCKER_MISSION_TRY_COUNT		2 // кол-во проходений и использований миссий до перерыва
@@ -208,8 +208,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 
 	// поклажи
 	#define SWAGUP_ENABLED		1 // включена ли система поклаж
-	#define SWAGUP_MONEY_RATE	30 // параметр количества денег, за поднятие поклажи
-	#define SWAGUP_XP_RATE		30 // параметр количества опыта, за поднятие поклажи
+	#define SWAGUP_MONEY_RATE	300 // коэффициент количества денег за поднятие поклажи
+	#define SWAGUP_XP_RATE		300 // коэффициент количества опыта за поднятие поклажи
 	#define SWAGUP_PAUSE_TIME	480000
 	//
 	
@@ -217,7 +217,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 // при смерти
 #define PLAYER_XP_DEATH_MINUS_PROC		3 // сколько процентов XP убирается от уже имеющегося опыта
 #define PLAYER_MONEY_DEATH_MINUS_PROC	20 // сколько процентов денег убирается
-#define PLAYER_XP_KILL_TARIF			5 // отвечает за количество получаемого опыта при убийстве, подробнее в функции player_OnPlayerKill
+#define PLAYER_XP_KILL_TARIF			4 // отвечает за количество получаемого опыта при убийстве, подробнее в функции player_OnPlayerKill
 
 // стартовые параметры игрока
 #define FIRST_LEVEL				1 // уровень, который даётся игроку после регистрации

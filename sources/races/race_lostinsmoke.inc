@@ -17,11 +17,11 @@ static racename[MAX_NAME] = "Lost in Smoke"; // unique name of race
 static racefrequency = 4; // frequency that race runs
 static lineupdelay = 195; // how long we wait for people before starting race, in seconds
 static minracers = 1; // minimum number of racers required to start this race
-static minlevel = 6; // minimum player level required to join this race
-static cashprize = 2500; // cash earned for 1st position
-static cashentry = 200; // Cash required to enter (earned by winner)
-static xpprize = 1300; // xp earned for 1st position
-static xpbonus = 200; // xp earned per player still in race
+static minlevel = 17; // minimum player level required to join this race
+static cashprize = 5000; // cash earned for 1st position
+static cashentry = 500; // Cash required to enter (earned by winner)
+static xpprize = 850; // xp earned for 1st position
+static xpbonus = 50; // xp earned per player still in race
 static maxracetime = 180; // time race runs for (seconds)
 static allowedcars[2]; // cars allowed in this race.
 static Float:startlineheading = 359.1037; // which way players face at startline

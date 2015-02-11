@@ -17,11 +17,11 @@ static racename[MAX_NAME] = "SF Fuck'in Wood Race"; // unique name of race
 static racefrequency = 3	; // frequency that race runs
 static lineupdelay = 283; // how long we wait for people before starting race, in seconds
 static minracers = 1; // minimum number of racers required to start this race
-static minlevel = 0; // minimum player level required to join this race
-static cashprize = 3500; // cash earned for 1st position
-static cashentry = 500; // Cash required to enter (earned by winner)
-static xpprize = 1600; // xp earned for 1st position
-static xpbonus = 250; // xp earned per player still in race
+static minlevel = 20; // minimum player level required to join this race
+static cashprize = 6000; // cash earned for 1st position
+static cashentry = 600; // Cash required to enter (earned by winner)
+static xpprize = 1100; // xp earned for 1st position
+static xpbonus = 50; // xp earned per player still in race
 static maxracetime = 360; // time race runs for (seconds)
 static allowedcars[2]; // cars allowed in this race.
 static Float:startlineheading = 259.4063; // which way players face at startline

@@ -17,11 +17,11 @@ static racename[MAX_NAME] = "Countryside Cruise"; // unique name of race
 static racefrequency = 4; // frequency that race runs
 static lineupdelay = 177; // how long we wait for people before starting race, in seconds
 static minracers = 1; // minimum number of racers required to start this race
-static minlevel = 6; // minimum player level required to join this race
-static cashprize = 3500; // cash earned for 1st position
-static cashentry = 400; // Cash required to enter (earned by winner)
-static xpprize = 2000; // xp earned for 1st position
-static xpbonus = 500; // xp earned per player still in race
+static minlevel = 7; // minimum player level required to join this race
+static cashprize = 2500; // cash earned for 1st position
+static cashentry = 200; // Cash required to enter (earned by winner)
+static xpprize = 500; // xp earned for 1st position
+static xpbonus = 50; // xp earned per player still in race
 static maxracetime = 300; // time race runs for (seconds)
 static allowedcars[2]; // cars allowed in this race.
 static Float:startlineheading = 91.7036; // which way players face at startline

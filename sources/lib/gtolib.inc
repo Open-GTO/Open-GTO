@@ -160,6 +160,15 @@ stock SetPlayerPosEx(playerid, Float:X, Float:Y, Float:Z, Float:Angle, Interior,
 	SetCameraBehindPlayer(playerid);
 }
 
+stock pow(value, degree)
+{
+	new result = 1;
+	while (degree--) {
+		result *= value;
+	}
+	return result;
+}
+
 stock StringCharCheck(string[])
 {
 	for (new i = strlen(string)-1; i >= 0; i--)

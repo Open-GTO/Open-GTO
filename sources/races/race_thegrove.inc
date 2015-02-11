@@ -17,11 +17,11 @@ static racename[MAX_NAME] = "Tearin Up The Grove"; // unique name of race
 static racefrequency = 1; // frequency that race runs
 static lineupdelay = 182; // how long we wait for people before starting race, in seconds
 static minracers = 1; // minimum number of racers required to start this race
-static minlevel = 0; // minimum player level required to join this race
+static minlevel = 1; // minimum player level required to join this race
 static cashprize = 1000; // cash earned for 1st position
 static cashentry = 100; // Cash required to enter (earned by winner)
-static xpprize = 700; // xp earned for 1st position
-static xpbonus = 50; // xp earned per player still in race
+static xpprize = 200; // xp earned for 1st position
+static xpbonus = 25; // xp earned per player still in race
 static maxracetime = 120; // time race runs for (seconds)
 static allowedcars[2]; // cars allowed in this race.
 static Float:startlineheading = 86.7804; // which way players face at startline

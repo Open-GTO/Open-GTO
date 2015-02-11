@@ -42,7 +42,7 @@ stock base_OnGameModeInit()
 {
 	SetGameModeText("Open-GTO "#VERSION);
 	UsePlayerPedAnims();
-	ShowPlayerMarkers(1);
+	ShowPlayerMarkers(PLAYER_MARKERS_MODE_GLOBAL);
 	ShowNameTags(1);
 	ManualVehicleEngineAndLights();
 	EnableStuntBonusForAll(0);
