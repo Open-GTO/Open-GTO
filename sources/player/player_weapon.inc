@@ -71,6 +71,28 @@ stock pl_weapon_OnPlayerRequestClass(playerid, classid)
 	return 1;
 }
 
+stock pl_weapon_Sync(playerid)
+{
+	new weapon[2];
+	
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
+		GetPlayerWeaponData(playerid, i, weapon[0], weapon[1]);
+
+		// is weapon ammo empty
+		if ( (weapon[0] == 0 || weapon[1] == 0) && PlayerWeapons[playerid][i][pwid] != 0 ) {
+			PlayerWeapons[playerid][i][pbullets] = 0;
+			continue;
+		}
+
+		pt_weapon_Check(playerid, i, weapon);
+
+		if (PlayerWeapons[playerid][i][pbullets] > weapon[1]) {
+			PlayerWeapons[playerid][i][pbullets] = weapon[1];
+		}
+	}
+	return 1;
+}
+
 // узнаёт слот у оружия
 stock GetWeaponSlot(weaponid)
 {
@@ -152,7 +174,7 @@ stock GivePlayerAllWeapon(playerid)
 		if (PlayerWeapons[playerid][slot][pwid] <= 0 || !IsPlayerAllowedWeapon(playerid, PlayerWeapons[playerid][slot][pwid])) {
 			continue;
 		}
-		if (PlayerWeapons[playerid][slot][pwid] > 0) {
+		if (PlayerWeapons[playerid][slot][pwid] > 0 && PlayerWeapons[playerid][slot][pbullets] > 0) {
 			GivePlayerWeapon(playerid, PlayerWeapons[playerid][slot][pwid], PlayerWeapons[playerid][slot][pbullets]);
 		}
 	}

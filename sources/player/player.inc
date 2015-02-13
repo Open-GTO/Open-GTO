@@ -259,7 +259,8 @@ stock player_Sync(playerid)
 		return 0;
 	}
 
-	pt_weapon_Sync(playerid);
+	pl_weapon_Sync(playerid);
+	
 	pt_ping_Check(playerid);
 	pt_jetpack_Check(playerid);
 	pt_health_Sync(playerid);
