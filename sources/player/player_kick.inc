@@ -24,7 +24,7 @@ stock KickPlayer(playerid, reason[], showreason = 1)
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (IsPlayerRconAdmin(playerid)) {
-		format(string, sizeof(string), lang_texts[9][4], playername);
+		format(string, sizeof(string), lang_texts[9][4], reason);
 		SendClientMessage(playerid, COLOUR_YELLOW, string);
 		return 0;
 	}
