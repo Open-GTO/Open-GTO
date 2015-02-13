@@ -124,11 +124,15 @@ stock GivePlayerWeaponCheck(playerid, weaponid, ammo)
 stock oGivePlayerWeapon(playerid, weaponid, ammo)
 {
 	new slot = GetWeaponSlot(weaponid);
+	if (slot == -1) {
+		return 0;
+	}
 	
 	PlayerWeapons[playerid][slot][pwid] = weaponid;
 	PlayerWeapons[playerid][slot][pbullets] += ammo;
 	
 	GivePlayerWeapon(playerid, weaponid, ammo);
+	return 1;
 }
 
 stock oResetPlayerWeapons(playerid)
