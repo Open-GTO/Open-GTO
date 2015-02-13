@@ -186,8 +186,6 @@ public OnGameModeInit()
 	business_OnGameModeInit();
 	housing_OnGameModeInit();
 	interior_OnGameModeInit();
-	bank_OnGameModeInit();
-	fights_OnGameModeInit();
 	weapon_OnGameModeInit();
 	swagup_OnGameModeInit();
 	vip_OnGameModeInit();
@@ -207,6 +205,9 @@ public OnGameModeInit()
 	sshop_OnGameModeInit();
 	vshop_OnGameModeInit();
 	wshop_OnGameModeInit();
+	fuelstation_OnGameModeInit();
+	bank_OnGameModeInit();
+	fights_OnGameModeInit();
 
 	// protection
 	pt_idle_OnGameModeInit();
