@@ -144,10 +144,10 @@ Developers:
 #tryinclude "races\race_countrycruise"
 #tryinclude "races\race_thegrove"
 #tryinclude "races\race_mullholland"
-#tryinclude "races\race_lv_julius"
-#tryinclude "races\race_ls_trailer1"
-#tryinclude "races\race_sf_fuckinwood1"
-#tryinclude "races\race_ls_majestic1"
+#tryinclude "races\race_julius"
+#tryinclude "races\race_trailer"
+#tryinclude "races\race_fuckinwood"
+#tryinclude "races\race_majestic"
 #tryinclude "races\race_toarea51"
 #tryinclude "races\race_mountchilliad"
 #tryinclude "races\race_m25"
@@ -155,7 +155,6 @@ Developers:
 #tryinclude "races\race_fromsftolv"
 #tryinclude "races\race_annoying"
 #tryinclude "races\race_roadtohell"
-#tryinclude "races\race_countryside_cruise"
 #tryinclude "races\race_bayside_tour"
 
 // Deathmatches
@@ -227,10 +226,10 @@ public OnGameModeInit()
 	race_countrycruise_init();
 	race_thegrove_init();
 	race_mullholland_init();
-	race_lv_julius_init();
-	race_ls_trailer1_init();
-	race_sf_fuckinwood1_init();
-	race_ls_majestic1_init();
+	race_julius_init();
+	race_trailer_init();
+	race_fuckinwood_init();
+	race_majestic_init();
 	race_toarea51_init();
 	race_mountchilliad_init();
 	race_m25_init();
@@ -238,7 +237,6 @@ public OnGameModeInit()
 	race_fromsftolv_init();
 	race_annoying_init();
 	race_roadtohell_init();
-	race_countryside_cruise_init();
 	race_bayside_tour_init();
 	//
 	dm_air_init();
