@@ -28,10 +28,8 @@ static FuelStations[][CoordInfo] = {
 	{-1606.0544, -2714.3083, 48.5335},
 	{1937.4293, -1773.1865, 13.3828},
 	{-91.3854, -1169.9175, 2.4213},
-	{1383.4221, 462.5385, 20.1506},
 	{660.4590, -565.0394, 16.3359},
-	{1381.7206, 459.1907, 20.3452},
-	{-1605.7156, -2714.4573, 48.5335}
+	{1383.1796, 461.9314, 20.1255}
 };
 
 stock fuelstation_OnGameModeInit()
@@ -42,6 +40,12 @@ stock fuelstation_OnGameModeInit()
 	
 	for (new i = 0; i < sizeof(FuelStations); i++) {
 		CreateStreamMapIcon(55, FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z]);
+		CreatePickup(1650 , 23, FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z]);
+		Create3DTextLabel(
+			"Заправка\n{33AA33}Нажмите кнопку '{FFFFFF}NUM2{33AA33}'", 0xFFFFFFFF,
+			FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z],
+			20.0, 0, 1
+		);
 	}
 	return 1;
 }
