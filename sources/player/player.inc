@@ -251,8 +251,6 @@ stock player_SetDefaultData(playerid)
 	oResetPlayerWeapons(playerid);
 	weapon_ResetSkills(playerid);
 
-	Mapicon_ResetPlayerData(playerid);
-
 	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
 		GivePlayerWeaponCheck(playerid, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);
 	}
