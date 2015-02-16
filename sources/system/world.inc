@@ -57,7 +57,7 @@ forward OneSecTimer();
 public OneSecTimer()
 {
 	foreach (new playerid : Player) {
-		MapIcons_Streaming(playerid);
+		Mapicon_Stream(playerid);
 		trucker_RunnerTimer(playerid);
 		player_Sync(playerid);
 		UpdatePlayerWeaponTextDraws(playerid);

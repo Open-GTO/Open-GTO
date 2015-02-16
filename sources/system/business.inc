@@ -36,7 +36,7 @@ new Businesses[][BusinessInfo] = {
 	{"Zip Clothing", 15000, 800, 5, "Unknown", 0, 0, 1, 0,		161.1875, -79.9915, 1001.8047},
 	{"DidierSachs Clothing", 20000, 950, 7, "Unknown", 0, 0, 1, 0, 204.2810, -157.2614, 1000.5234},
 	{"Gym", 20000, 1000, 7, "Unknown", 0, 0, 1, 1,				773.6138, -72.1616, 1000.6484},
-	{"Zero RC", 10000, 900, 3, "Unknown", 0, 0, 1, 1,			-2231.2478, 131.9623, 1035.4141},
+	{"Zero RC", 10000, 900, 3, "Unknown", 0, 0, 1, 0,			-2231.2478, 131.9623, 1035.4141},
 	{"Zombotech", 35000, 1600, 12, "Unknown", 0, 0, 1, 1,		-1951.5938, 704.3567, 46.5625},
 	{"Verdant Meadows Air Strip", 20000, 1200, 7, "Unknown", 0, 0, 1, 0, 418.1210, 2536.8762, 10.0000},
 	{"Blueberry Liquor Store", 15000, 850, 5, "Unknown", 0, 0, 1, 1, 252.4851, -57.3515, 1.5703},
@@ -133,18 +133,41 @@ stock business_SaveAll()
 stock business_OnGameModeInit()
 {
 	business_LoadAll();
-	new string[MAX_STRING * 2];
+	new
+		string[MAX_STRING * 2],
+		icon_type;
+	
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{
 		CreatePickup(1274, 49, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.5);	//синий домик
+		
 		if (Businesses[id][Business_ShowIcon] == 1)
 		{
-			business_icon[id] = CreateStreamMapIcon(52, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]);
+			if (strcmp(Businesses[id][Business_Owner], "Unknown")) {
+				icon_type = 36;
+			} else {
+				icon_type = 52;
+			}
+			business_icon[id] = Mapicon_Create(Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z], icon_type, 0);
 		}
+
 		business_Create3DTextLabelStr(id, string);
+
 		Business3DTextLabel[id] = Create3DTextLabel(string, COLOUR_WHITE, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.75, BusinessDistanceOfShowLabel, 0, 1);
 	}
 	GameMSG(lang_texts[3][0]);
+}
+
+stock business_MapiconPlayerSync(playerid)
+{
+	new playername[MAX_PLAYER_NAME + 1];
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	for (new id = 0; id < sizeof(Businesses); id++) {
+		if (!strcmp(Businesses[id][Business_Owner], playername)) {
+			Mapicon_UpdateTypeForPlayer(playerid, business_icon[id], 38);
+		}
+	}
 }
 
 stock IsPlayerAtBusiness(playerid)
@@ -434,7 +457,8 @@ stock bis_Buy(playerid)
 		set(Businesses[id][Business_Owner], playername);
 		Businesses[id][Business_Buyout] = 0;
 
-		UpdateStreamMapIcon(business_icon[id]);
+		Mapicon_Update(business_icon[id], 36);
+		Mapicon_UpdateTypeForPlayer(playerid, business_icon[id], 38);
 
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[3][16],
@@ -471,7 +495,8 @@ stock bis_Sell(playerid)
 		Businesses[id][Business_Buyout] = 0;
 		Businesses[id][Business_Upgrade] = 1;
 
-		UpdateStreamMapIcon(business_icon[id]);
+		Mapicon_Update(business_icon[id], 52);
+		Mapicon_ResetTypeForPlayer(playerid, business_icon[id]);
 		
 		new string[MAX_STRING * 2];
 		format(string, sizeof(string), lang_texts[3][20],
@@ -623,7 +648,7 @@ stock CheckBusinessOwners()
 			set(Businesses[i][Business_Owner], "Unknown");
 			Businesses[i][Business_Buyout] = 0;
 			Businesses[i][Business_Upgrade] = 1;
-			UpdateStreamMapIcon(business_icon[i]);
+			Mapicon_Update(business_icon[i], 52);
 		}
 	}
 }

@@ -228,6 +228,10 @@ stock player_OnLogin(playerid)
 		player_SetGangID(playerid, 0);
 	}
 
+	// icons
+	housing_MapiconPlayerSync(playerid);
+	business_MapiconPlayerSync(playerid);
+
 	GameMSG("player: %s(%d): logged in successfully.", playername, playerid);
 }
 
@@ -246,6 +250,8 @@ stock player_SetDefaultData(playerid)
 
 	oResetPlayerWeapons(playerid);
 	weapon_ResetSkills(playerid);
+
+	Mapicon_ResetPlayerData(playerid);
 
 	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
 		GivePlayerWeaponCheck(playerid, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);

@@ -828,7 +828,7 @@ COMMAND:sys(playerid, params[])
 
 				for (new ghid = 0; ghid < sizeof(Groundholds); ghid++) {
 					checkpoint_Remove(checkpoint_FindByCoord(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]));
-					DeleteStreamMapIcon(FindStreamMapIcon(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]));
+					Mapicon_Delete(Mapicon_FindByCoord(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]));
 					CheckGround(ghid);
 				}
 
@@ -839,7 +839,7 @@ COMMAND:sys(playerid, params[])
 
 				for (new ghid = 0; ghid < sizeof(Groundholds);  ghid++) {
 					checkpoint_Add(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 200, 2);
-					CreateStreamMapIcon(56, Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]);
+					Mapicon_Create(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 56, 0);
 					CheckGround(ghid);
 				}
 

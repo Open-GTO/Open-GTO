@@ -146,7 +146,7 @@ stock interior_OnGameModeInit()
 		
 		if (interior_EnterExits[i][iee_icon_ID] != -1)
 		{
-			CreateStreamMapIcon(interior_EnterExits[i][iee_icon_ID], interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z]);
+			Mapicon_Create(interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z], interior_EnterExits[i][iee_icon_ID], 0);
 		}
 	}
 	GameMSG("SERVER: Interior module init");

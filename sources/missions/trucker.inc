@@ -136,9 +136,9 @@ stock trucker_OnGameModeInit()
 		SetVehicleFuel(linerunner_array[veh_id][trucker_Id], -1);
 	}
 	//
-	CreateStreamMapIcon(51, 253.0453, 1372.3413, 11.1734);
-	CreateStreamMapIcon(51, -117.0570, -325.0306, 2.0109);
-	CreateStreamMapIcon(51, 512.6126, 792.6769, -20.8209);
+	Mapicon_Create(253.0453, 1372.3413, 11.1734, 51, 0);
+	Mapicon_Create(-117.0570, -325.0306, 2.0109, 51, 0);
+	Mapicon_Create(512.6126, 792.6769, -20.8209, 51, 0);
 	
 	GameMSG(lang_texts[19][33]);
 	return 1;

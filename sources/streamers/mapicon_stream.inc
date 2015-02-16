@@ -1,6 +1,6 @@
 /*
-	Author:	ZiGGi
-	Date:	15.07.2010
+	About:	mapicon stream system
+	Author: ziggi
 */
 
 #if defined _streamer_mapicon_included
@@ -10,229 +10,355 @@
 #define _streamer_mapicon_included
 #pragma library streamer_mapicon
 
+#define INVALID_ICON_ID	-1
+
 #define MAX_ICONS 1000
 #define MAX_SHOWED_ICONS 100
 
-#define MAP_ICON_STREAM_DISTANCE 400
+#define MAP_ICON_STREAM_DISTANCE 400.0
 
-enum info_MapIcon {
+enum info_Mapicon {
+	Float:icon_x,
+	Float:icon_y,
+	Float:icon_z,
 	icon_type,
-	Float:Coord_X,
-	Float:Coord_Y,
-	Float:Coord_Z
+	icon_color,
+	icon_world,
+	icon_interior,
+	icon_playerid,
+	Float:icon_dist,
+	icon_style,
+
+	bool:icon_isvalid,
 };
-static MapIcons[MAX_ICONS][info_MapIcon];
-static bool:MapIconsShowed[MAX_PLAYERS][MAX_ICONS];
-static SlotIcons[MAX_PLAYERS][MAX_SHOWED_ICONS + 1];
 
-stock CreateStreamMapIcon(markertype, Float:X, Float:Y, Float:Z)
-{
-	new icon_id = GetLastMapIconSlot();
-	if (icon_id == 0)
-	{
-		GameMSG(lang_texts[19][60], MAX_ICONS);
-		return 0;
-	}
-	MapIcons[icon_id][icon_type] = markertype;
-	MapIcons[icon_id][Coord_X] = X;
-	MapIcons[icon_id][Coord_Y] = Y;
-	MapIcons[icon_id][Coord_Z] = Z;
-	return icon_id;
-}
+enum info_Player_Mapicon {
+	bool:icon_showed[MAX_ICONS],
+	icon_slot[MAX_SHOWED_ICONS],
+	icon_type[MAX_ICONS],
+};
 
-stock DeleteStreamMapIcon(icon_id)
-{
-	MapIcons[icon_id][icon_type] = 0;
-	MapIcons[icon_id][Coord_X] = 0.0;
-	MapIcons[icon_id][Coord_Y] = 0.0;
-	MapIcons[icon_id][Coord_Z] = 0.0;
-	new slot;
-	foreach (Player, i)
-	{
-		slot = GetIconSlot(i, icon_id);
-		RemovePlayerMapIcon(i, slot);
-		SlotIcons[i][slot] = 0;
-		MapIconsShowed[i][icon_id] = false;
-	}
-}
+static
+	icons[MAX_ICONS][info_Mapicon],
+	player_icons[MAX_PLAYERS][info_Player_Mapicon];
 
-stock UpdatePlayerStreamMapIcon(playerid, icon_id)
+Mapicon_OnPlayerConnect(playerid)
 {
-	new slot = GetIconSlot(playerid, icon_id);
-	RemovePlayerMapIcon(playerid, slot);
-	update_House_IconType(playerid, icon_id);
-	update_Business_IconType(playerid, icon_id);
-	SetPlayerMapIcon(playerid, slot, MapIcons[icon_id][Coord_X], MapIcons[icon_id][Coord_Y], MapIcons[icon_id][Coord_Z], MapIcons[icon_id][icon_type], 0, MAPICON_LOCAL);
-}
-
-stock UpdateStreamMapIcon(icon_id)
-{
-	new slot;
-	foreach (Player, i)
-	{
-		slot = GetIconSlot(i, icon_id);
-		RemovePlayerMapIcon(i, slot);
-		update_House_IconType(i, icon_id);
-		update_Business_IconType(i, icon_id);
-		SetPlayerMapIcon(i, slot, MapIcons[icon_id][Coord_X], MapIcons[icon_id][Coord_Y], MapIcons[icon_id][Coord_Z], MapIcons[icon_id][icon_type], 0, MAPICON_LOCAL);
-	}
-}
-
-stock MapIcons_Streaming(playerid)
-{
-	new isrange;
-	for (new icon_id = 1; icon_id < MAX_ICONS; icon_id++)
-	{
-		isrange = IsPlayerInRangeOfPoint(playerid, MAP_ICON_STREAM_DISTANCE, MapIcons[icon_id][Coord_X], MapIcons[icon_id][Coord_Y], MapIcons[icon_id][Coord_Z]);
-		// если игрок не в зоне отображения иконки, но иконка ототбражается
-		if (!isrange && IsValidMapIcon(icon_id) && MapIconsShowed[playerid][icon_id] == true) 
-		{
-			new slot = GetIconSlot(playerid, icon_id);
-			SlotIcons[playerid][slot] = 0;
-			
-			RemovePlayerMapIcon(playerid, slot);
-			MapIconsShowed[playerid][icon_id] = false;
-			GivePVarInt(playerid, "IconsShowed", -1);
-			continue;
-		}
-		
-		// если иконка показана или иконки нет
-		if (MapIconsShowed[playerid][icon_id] == true || !IsValidMapIcon(icon_id) || GetPVarInt(playerid, "IconsShowed") > MAX_SHOWED_ICONS )
-		{
-			continue;
-		}
-		
-		// если игрок в зоне отображения иконки и нулевом интерьере
-		if (isrange && GetPlayerInterior(playerid) == 0) 
-		{
-			update_House_IconType(playerid, icon_id);
-			update_Business_IconType(playerid, icon_id);
-			new slot = GetLastRealMapIconSlot(playerid);
-			SlotIcons[playerid][slot] = icon_id;
-			SetPlayerMapIcon(playerid, slot, MapIcons[icon_id][Coord_X], MapIcons[icon_id][Coord_Y], MapIcons[icon_id][Coord_Z], MapIcons[icon_id][icon_type], 0, MAPICON_LOCAL);
-			MapIconsShowed[playerid][icon_id] = true;
-			GivePVarInt(playerid, "IconsShowed", 1);
-		}
-	}
-}
-
-stock GetMapIconPos(icon_id, &Float:icon_x, &Float:icon_y, &Float:icon_z)
-{
-	if (!IsValidMapIcon(icon_id))
-	{
-		return 0;
-	}
-	icon_x = MapIcons[icon_id][Coord_X];
-	icon_y = MapIcons[icon_id][Coord_Y];
-	icon_z = MapIcons[icon_id][Coord_Z];
+	Mapicon_ResetPlayerData(playerid);
 	return 1;
 }
 
-stock FindStreamMapIcon(Float:X, Float:Y, Float:Z)
+stock Mapicon_Create(Float:x, Float:y, Float:z, type, color, worldid = -1, interiorid = -1, playerid = -1, Float:streamdistance = MAP_ICON_STREAM_DISTANCE, style = MAPICON_LOCAL)
 {
-	for (new icon_id = 1; icon_id < MAX_ICONS; icon_id++)
-	{
-		if (!IsValidMapIcon(icon_id))
-		{
-			continue;
-		}
-		if (   X == MapIcons[icon_id][Coord_X]
-			&& Y == MapIcons[icon_id][Coord_Y]
-			&& Z == MapIcons[icon_id][Coord_Z])
-		{
-			return icon_id;
-		}
+	new iconid = Mapicon_GetFreeId();
+	if (iconid == INVALID_ICON_ID) {
+		printf("Mapicon: Error: icon limit is full (%d).", MAX_ICONS);
+		return INVALID_ICON_ID;
 	}
-	return 0;
+
+	icons[iconid][icon_x] = x;
+	icons[iconid][icon_y] = y;
+	icons[iconid][icon_z] = z;
+	icons[iconid][icon_type] = type;
+	icons[iconid][icon_color] = color;
+	icons[iconid][icon_world] = worldid;
+	icons[iconid][icon_interior] = interiorid;
+	icons[iconid][icon_playerid] = playerid;
+	icons[iconid][icon_dist] = streamdistance;
+	icons[iconid][icon_style] = style;
+	icons[iconid][icon_isvalid] = true;
+	return iconid;
 }
 
-stock IsValidMapIcon(icon_id)
+stock Mapicon_Delete(iconid)
 {
-	if (MapIcons[icon_id][icon_type] == 0
-		&& MapIcons[icon_id][Coord_X] == 0.0
-		&& MapIcons[icon_id][Coord_Y] == 0.0
-		&& MapIcons[icon_id][Coord_Z] == 0.0
-	) return 0;
+	if (!Mapicon_IsValid(iconid)) {
+		return 0;
+	}
+
+	icons[iconid][icon_x] = 0.0;
+	icons[iconid][icon_y] = 0.0;
+	icons[iconid][icon_z] = 0.0;
+	icons[iconid][icon_type] = 0;
+	icons[iconid][icon_color] = 0;
+	icons[iconid][icon_world] = -1;
+	icons[iconid][icon_interior] = -1;
+	icons[iconid][icon_playerid] = -1;
+	icons[iconid][icon_dist] = MAP_ICON_STREAM_DISTANCE;
+	icons[iconid][icon_style] = MAPICON_LOCAL;
+	icons[iconid][icon_isvalid] = false;
 	return 1;
 }
 
-stock GetLastMapIconSlot()
+Mapicon_Stream(playerid)
 {
-	for (new icon = 1; icon < MAX_ICONS; icon++)
-	{
-		if (MapIcons[icon][icon_type] == 0
-			&& MapIcons[icon][Coord_X] == 0.0
-			&& MapIcons[icon][Coord_Y] == 0.0
-			&& MapIcons[icon][Coord_Z] == 0.0
-		) return icon;
-	}
-	return -1;
-}
+	new is_in_range, is_in_world, is_in_interior, is_for_playerid;
 
-stock GetLastRealMapIconSlot(playerid)
-{
-	for (new slot = 1; slot <= MAX_SHOWED_ICONS; slot++)
-	{
-		if (SlotIcons[playerid][slot] == 0)
-		{
-			return slot;
+	for (new iconid = 0; iconid < MAX_ICONS; iconid++) {
+		if (!Mapicon_IsValid(iconid)) {
+			continue;
 		}
-	}
-	return 0;
-}
 
-stock GetIconSlot(playerid, icon_id)
-{
-	for (new slot = 1; slot <= MAX_SHOWED_ICONS; slot++)
-	{
-		if (SlotIcons[playerid][slot] == icon_id)
-		{
-			return slot;
-		}
-	}
-	return 0;
-}
+		is_in_range = Mapicon_IsPlayerInIconRange(playerid, iconid);
+		is_in_world = Mapicon_IsPlayerInIconWorld(playerid, iconid);
+		is_in_interior = Mapicon_IsPlayerInIconInterior(playerid, iconid);
+		is_for_playerid = Mapicon_IsIconForPlayer(playerid, iconid);
 
-stock update_House_IconType(playerid, icon_id)
-{
-	new playername[MAX_PLAYER_NAME+1];
-	GetPlayerName(playerid, playername, sizeof(playername));
-	for (new house_id = 0; house_id < sizeof(Houses); house_id++)
-	{
-		if (house_icon[house_id] != icon_id) continue;
-		if (!strcmp(Houses[house_id][Houses_Owner], playername)|| !strcmp(Houses[house_id][Houses_RentName], playername))
-		{
-			MapIcons[icon_id][icon_type] = 35;
-		}
-		else if (strcmp(Houses[house_id][Houses_Owner], "Unknown"))
-		{
-			MapIcons[icon_id][icon_type] = 32;
-		}
-		else
-		{
-			MapIcons[icon_id][icon_type] = 31;
+		if (Mapicon_IsPlayerShowed(playerid, iconid)) {
+			if (!is_in_range || !is_in_world || !is_in_interior || !is_for_playerid) {
+				Mapicon_HideForPlayer(playerid, iconid);
+			}
+		} else {
+			if (is_in_range && is_in_world && is_in_interior && is_for_playerid) {
+				Mapicon_ShowForPlayer(playerid, iconid);
+			}
 		}
 	}
 }
 
-stock update_Business_IconType(playerid, icon_id)
+stock Mapicon_GetPos(iconid, &Float:x, &Float:y, &Float:z)
 {
-	new playername[MAX_PLAYER_NAME+1];
-	GetPlayerName(playerid, playername, sizeof(playername));
-	for (new bis_id = 0; bis_id < sizeof(Businesses); bis_id++)
-	{
-		if (business_icon[bis_id] != icon_id) continue;
-		if (!strcmp(Businesses[bis_id][Business_Owner], playername))
-		{
-			MapIcons[icon_id][icon_type] = 38;
+	if (!Mapicon_IsValid(iconid)) {
+		return 0;
+	}
+
+	x = icons[iconid][icon_x];
+	y = icons[iconid][icon_y];
+	z = icons[iconid][icon_z];
+	return 1;
+}
+
+stock Mapicon_FindByCoord(&Float:x, &Float:y, &Float:z)
+{
+	for (new iconid = 0; iconid < MAX_ICONS; iconid++) {
+		if (!Mapicon_IsValid(iconid)) {
+			continue;
 		}
-		else if (strcmp(Businesses[bis_id][Business_Owner], "Unknown"))
-		{
-			MapIcons[icon_id][icon_type] = 36;
-		}
-		else
-		{
-			MapIcons[icon_id][icon_type] = 52;
+
+		if (x == icons[iconid][icon_x] && y == icons[iconid][icon_y] && x == icons[iconid][icon_z]) {
+			return iconid;
 		}
 	}
+	return INVALID_ICON_ID;
+}
+
+stock Mapicon_GetFreeId()
+{
+	for (new iconid = 0; iconid < MAX_ICONS; iconid++) {
+		if (icons[iconid][icon_isvalid] == false) {
+			return iconid;
+		}
+	}
+
+	return INVALID_ICON_ID;
+}
+
+stock Mapicon_IsValid(iconid)
+{
+	if (iconid < 0 || iconid > MAX_ICONS || icons[iconid][icon_isvalid] == false) {
+		return 0;
+	}
+
+	return 1;
+}
+
+stock Mapicon_ShowForPlayer(playerid, iconid)
+{
+	new iconslot = Mapicon_GetPlayerFreeSlot(playerid);
+	if (iconslot == INVALID_ICON_ID) {
+		return 0;
+	}
+
+	player_icons[playerid][icon_slot][iconslot] = iconid;
+	player_icons[playerid][icon_showed][iconid] = true;
+
+	new type = player_icons[playerid][icon_type][iconid] != -1 ? player_icons[playerid][icon_type][iconid] : icons[iconid][icon_type];
+
+	return SetPlayerMapIcon(playerid, iconslot, icons[iconid][icon_x], icons[iconid][icon_y], icons[iconid][icon_z], type, icons[iconid][icon_color], icons[iconid][icon_style]);
+}
+
+stock Mapicon_HideForPlayer(playerid, iconid)
+{
+	new iconslot = Mapicon_GetPlayerIconSlot(playerid, iconid);
+	if (iconslot == INVALID_ICON_ID) {
+		return 0;
+	}
+
+	player_icons[playerid][icon_slot][iconslot] = INVALID_ICON_ID;
+	player_icons[playerid][icon_showed][iconid] = false;
+
+	return RemovePlayerMapIcon(playerid, iconslot);
+}
+
+stock Mapicon_RefreshForPlayer(playerid, iconid)
+{
+	new iconslot = Mapicon_GetPlayerIconSlot(playerid, iconid);
+	if (iconslot == INVALID_ICON_ID) {
+		return 0;
+	}
+
+	new type = player_icons[playerid][icon_type][iconid] != -1 ? player_icons[playerid][icon_type][iconid] : icons[iconid][icon_type];
+
+	RemovePlayerMapIcon(playerid, iconslot);
+	return SetPlayerMapIcon(playerid, iconslot, icons[iconid][icon_x], icons[iconid][icon_y], icons[iconid][icon_z], type, icons[iconid][icon_color], icons[iconid][icon_style]);
+}
+
+stock Mapicon_Refresh(iconid)
+{
+	foreach (new playerid : Player) {
+		if (Mapicon_IsPlayerShowed(playerid, iconid)) {
+			Mapicon_RefreshForPlayer(playerid, iconid);
+		}
+	}
+}
+
+stock Mapicon_IsPlayerShowed(playerid, iconid)
+{
+	return player_icons[playerid][icon_showed][iconid] == true ? true : false;
+}
+
+stock Mapicon_IsPlayerInIconRange(playerid, iconid)
+{
+	if (icons[iconid][icon_style] == MAPICON_GLOBAL || icons[iconid][icon_style] == MAPICON_GLOBAL_CHECKPOINT) {
+		return 1;
+	}
+
+	return IsPlayerInRangeOfPoint(playerid, icons[iconid][icon_dist], icons[iconid][icon_x], icons[iconid][icon_y], icons[iconid][icon_z]);
+}
+
+stock Mapicon_IsPlayerInIconWorld(playerid, iconid)
+{
+	return icons[iconid][icon_world] == -1 || icons[iconid][icon_world] == GetPlayerVirtualWorld(playerid);
+}
+
+stock Mapicon_IsPlayerInIconInterior(playerid, iconid)
+{
+	return icons[iconid][icon_interior] == -1 || icons[iconid][icon_interior] == GetPlayerInterior(playerid);
+}
+
+stock Mapicon_IsIconForPlayer(playerid, iconid)
+{
+	return icons[iconid][icon_playerid] == -1 || icons[iconid][icon_playerid] == playerid;
+}
+
+stock Mapicon_GetPlayerFreeSlot(playerid)
+{
+	for (new iconslot = 0; iconslot < MAX_SHOWED_ICONS; iconslot++) {
+		if (player_icons[playerid][icon_slot][iconslot] == INVALID_ICON_ID) {
+			return iconslot;
+		}
+	}
+
+	return INVALID_ICON_ID;
+}
+
+stock Mapicon_GetPlayerIconSlot(playerid, iconid)
+{
+	for (new iconslot = 0; iconslot < MAX_SHOWED_ICONS; iconslot++) {
+		if (player_icons[playerid][icon_slot][iconslot] == iconid) {
+			return iconslot;
+		}
+	}
+
+	return INVALID_ICON_ID;
+}
+
+stock Mapicon_UpdateTypeForPlayer(playerid, iconid, type)
+{
+	if (!Mapicon_IsValid(iconid)) {
+		return 0;
+	}
+
+	player_icons[playerid][icon_type][iconid] = type;
+	Mapicon_RefreshForPlayer(playerid, iconid);
+	return 1;
+}
+
+stock Mapicon_ResetTypeForPlayer(playerid, iconid)
+{
+	if (!Mapicon_IsValid(iconid)) {
+		return 0;
+	}
+
+	player_icons[playerid][icon_type][iconid] = -1;
+	Mapicon_RefreshForPlayer(playerid, iconid);
+	return 1;
+}
+
+stock Mapicon_Update(iconid, type = -1, worldid = -1, interiorid = -1, playerid = -1, Float:streamdistance = -1.0, style = -1)
+{
+	if (!Mapicon_IsValid(iconid)) {
+		return 0;
+	}
+
+	if (type != -1) {
+		icons[iconid][icon_type] = type;
+	}
+	if (worldid != -1) {
+		icons[iconid][icon_world] = worldid;
+	}
+	if (interiorid != -1) {
+		icons[iconid][icon_interior] = interiorid;
+	}
+	if (streamdistance != -1.0) {
+		icons[iconid][icon_dist] = streamdistance;
+	}
+	if (style != -1) {
+		icons[iconid][icon_style] = style;
+	}
+	if (playerid != -1) {
+		icons[iconid][icon_playerid] = playerid;
+
+		Mapicon_RefreshForPlayer(playerid, iconid);
+	} else {
+		Mapicon_Refresh(iconid);
+	}
+	return 1;
+}
+
+stock Mapicon_UpdatePos(iconid, Float:x, Float:y, Float:z)
+{
+	if (!Mapicon_IsValid(iconid)) {
+		return 0;
+	}
+
+	icons[iconid][icon_x] = x;
+	icons[iconid][icon_y] = y;
+	icons[iconid][icon_z] = z;
+
+	if (icons[iconid][icon_playerid] != -1) {
+		Mapicon_RefreshForPlayer(playerid, iconid);
+	} else {
+		Mapicon_Refresh(iconid);
+	}
+	return 1;
+}
+
+stock Mapicon_UpdateColor(iconid, color)
+{
+	if (!Mapicon_IsValid(iconid)) {
+		return 0;
+	}
+
+	icons[iconid][icon_color] = color;
+
+	if (icons[iconid][icon_playerid] != -1) {
+		Mapicon_RefreshForPlayer(playerid, iconid);
+	} else {
+		Mapicon_Refresh(iconid);
+	}
+	return 1;
+}
+
+stock Mapicon_ResetPlayerData(playerid)
+{
+	for (new iconid = 0; iconid < MAX_ICONS; iconid++) {
+		player_icons[playerid][icon_showed][iconid] = false;
+		player_icons[playerid][icon_type][iconid] = -1;
+	}
+
+	for (new iconslot = 0; iconslot < MAX_SHOWED_ICONS; iconslot++) {
+		player_icons[playerid][icon_slot][iconslot] = INVALID_ICON_ID;
+	}
+	return 1;
 }

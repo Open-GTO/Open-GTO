@@ -102,7 +102,7 @@ stock groundhold_OnGameModeInit()
 
 	for (new i = 0; i < sizeof(Groundholds); i++) {
 		checkpoint_Add(Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z], 200, 2);
-		CreateStreamMapIcon(56, Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z]);
+		Mapicon_Create(Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z], 56, 0);
 	}
 
 	GameMSG("SERVER: Groundhold module init");
