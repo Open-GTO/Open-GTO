@@ -1,6 +1,24 @@
 /*
 	About:	mapicon stream system
 	Author: ziggi
+
+	Instalation:
+		Add Mapicon_OnPlayerConnect(playerid); in you OnPlayerConnect(playerid)
+
+	Useful functions:
+		Mapicon_Create(Float:x, Float:y, Float:z, type, color, worldid = -1, interiorid = -1, playerid = -1, Float:streamdistance = MAP_ICON_STREAM_DISTANCE, style = MAPICON_LOCAL);
+		Mapicon_Delete(iconid);
+
+		Mapicon_GetPos(iconid, &Float:x, &Float:y, &Float:z);
+		Mapicon_FindByCoord(Float:x, Float:y, Float:z);
+
+		Mapicon_UpdateTypeForPlayer(playerid, iconid, type);
+		Mapicon_ResetTypeForPlayer(playerid, iconid);
+
+		Mapicon_Update(iconid, type = -1, worldid = -1, interiorid = -1, playerid = -1, Float:streamdistance = -1.0, style = -1);
+		Mapicon_UpdatePos(iconid, Float:x, Float:y, Float:z);
+		Mapicon_UpdateColor(iconid, color);
+
 */
 
 #if defined _streamer_mapicon_included
@@ -128,7 +146,7 @@ stock Mapicon_GetPos(iconid, &Float:x, &Float:y, &Float:z)
 	return 1;
 }
 
-stock Mapicon_FindByCoord(&Float:x, &Float:y, &Float:z)
+stock Mapicon_FindByCoord(Float:x, Float:y, Float:z)
 {
 	for (new iconid = 0; iconid < MAX_ICONS; iconid++) {
 		if (!Mapicon_IsValid(iconid)) {
@@ -263,6 +281,19 @@ stock Mapicon_GetPlayerIconSlot(playerid, iconid)
 	return INVALID_ICON_ID;
 }
 
+stock Mapicon_ResetPlayerData(playerid)
+{
+	for (new iconid = 0; iconid < MAX_ICONS; iconid++) {
+		player_icons[playerid][icon_showed][iconid] = false;
+		player_icons[playerid][icon_type][iconid] = -1;
+	}
+
+	for (new iconslot = 0; iconslot < MAX_SHOWED_ICONS; iconslot++) {
+		player_icons[playerid][icon_slot][iconslot] = INVALID_ICON_ID;
+	}
+	return 1;
+}
+
 stock Mapicon_UpdateTypeForPlayer(playerid, iconid, type)
 {
 	if (!Mapicon_IsValid(iconid)) {
@@ -346,19 +377,6 @@ stock Mapicon_UpdateColor(iconid, color)
 		Mapicon_RefreshForPlayer(playerid, iconid);
 	} else {
 		Mapicon_Refresh(iconid);
-	}
-	return 1;
-}
-
-stock Mapicon_ResetPlayerData(playerid)
-{
-	for (new iconid = 0; iconid < MAX_ICONS; iconid++) {
-		player_icons[playerid][icon_showed][iconid] = false;
-		player_icons[playerid][icon_type][iconid] = -1;
-	}
-
-	for (new iconslot = 0; iconslot < MAX_SHOWED_ICONS; iconslot++) {
-		player_icons[playerid][icon_slot][iconslot] = INVALID_ICON_ID;
 	}
 	return 1;
 }
