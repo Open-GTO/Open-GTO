@@ -153,7 +153,7 @@ stock Mapicon_FindByCoord(Float:x, Float:y, Float:z)
 			continue;
 		}
 
-		if (x == icons[iconid][icon_x] && y == icons[iconid][icon_y] && x == icons[iconid][icon_z]) {
+		if (x == icons[iconid][icon_x] && y == icons[iconid][icon_y] && z == icons[iconid][icon_z]) {
 			return iconid;
 		}
 	}
