@@ -101,7 +101,7 @@ stock groundhold_OnGameModeInit()
 	groundhold_LoadAll();
 
 	for (new i = 0; i < sizeof(Groundholds); i++) {
-		checkpoint_Add(Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z], 200, 2);
+		Checkpoint_Create(Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z], 20.0);
 		Mapicon_Create(Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z], 56, 0);
 	}
 

@@ -38,7 +38,6 @@ stock player_SetQuestID(playerid, questid) {
 
 stock player_ResetQuest(playerid)
 {
-	oDisablePlayerCheckpoint(playerid);
 	player_SetQuestID(playerid, INVALID_QUEST_ID);
 }
 

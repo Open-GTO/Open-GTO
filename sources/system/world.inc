@@ -58,6 +58,7 @@ public OneSecTimer()
 {
 	foreach (new playerid : Player) {
 		Mapicon_Stream(playerid);
+		Checkpoint_Stream(playerid);
 		trucker_RunnerTimer(playerid);
 		player_Sync(playerid);
 		UpdatePlayerWeaponTextDraws(playerid);
@@ -111,7 +112,6 @@ public FiveSecondTimer()
 
 	CheckAllGround();
 	pl_health_Regeneration();
-	checkpoint_Sync();
 	business_Update3DTextLabelText();
 	housing_Update3DTextLabelText();
 	payday_Check();

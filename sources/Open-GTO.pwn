@@ -288,6 +288,7 @@ public OnPlayerConnect(playerid)
 	pl_alert_OnPlayerConnect(playerid);
 	veh_fuel_OnPlayerConnect(playerid);
 	Mapicon_OnPlayerConnect(playerid);
+	Checkpoint_OnPlayerConnect(playerid);
 	return 1;
 }
 

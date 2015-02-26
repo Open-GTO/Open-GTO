@@ -827,7 +827,7 @@ COMMAND:sys(playerid, params[])
 				Groundhold_IsEnabled = 0;
 
 				for (new ghid = 0; ghid < sizeof(Groundholds); ghid++) {
-					checkpoint_Remove(checkpoint_FindByCoord(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]));
+					Checkpoint_Delete(Checkpoint_FindByCoord(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]));
 					Mapicon_Delete(Mapicon_FindByCoord(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]));
 					CheckGround(ghid);
 				}
@@ -838,7 +838,7 @@ COMMAND:sys(playerid, params[])
 				Groundhold_IsEnabled = 1;
 
 				for (new ghid = 0; ghid < sizeof(Groundholds);  ghid++) {
-					checkpoint_Add(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 200, 2);
+					Checkpoint_Create(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 20.0);
 					Mapicon_Create(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 56, 0);
 					CheckGround(ghid);
 				}

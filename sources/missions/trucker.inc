@@ -11,7 +11,6 @@
 #define _trucker_included
 #pragma library trucker
 
-
 enum {
 	TRAILER_TYPE_PRODUCT,
 	TRAILER_TYPE_PETROL,
@@ -45,6 +44,7 @@ new trailer_array[][Info_Trucker] = {
 	{450, 592.9045, 963.4652, -17.6857, 271.3427, 0, -1},
 	{450, 709.8566, 824.9518, -29.2079, 341.4127, 7, -1}
 };
+
 // грузовики
 new linerunner_array[][Info_Trucker] = {
 	// тягачи для заправки 2
@@ -61,57 +61,62 @@ new linerunner_array[][Info_Trucker] = {
 	{515, 855.1014, 878.3007, 14.3702, 206.1360, 7, -1}
 };
 
-new Float:PetrolCoord[][CoordInfo] = {
-	{1725.4000, -2414.7, 13.5}, 
-	{2109.2126, 917.5845, 10.8203}, 
-	{2640.1831, 1103.9224, 10.8203}, 
-	{611.8934, 1694.7921, 6.7193}, 
-	{-1327.5398, 2682.9771, 49.7896}, 
-	{-2413.7427, 975.9317, 45.0031}, 
-	{-1672.3597, 414.2950, 6.8866}, 
-	{-2244.1365, -2560.6294, 31.6276}, 
-	{-1603.0166, -2709.3589, 48.2419},
-	{1939.3275, -1767.6813, 13.2787}, 
-	{-94.7651, -1174.8079, 1.9979}, 
-	{1381.6699, 462.6467, 19.8540}, 
-	{657.8167, -559.6507, 16.0630}, 
-	{-1478.2916, 1862.8318, 32.3617}, 
-	{2147.3054, 2744.9377, 10.5263}, 
-	{2204.9602, 2480.3494, 10.5278}, 
-	{1590.9493, 2202.2637, 10.5247}
+enum Info_Destination {
+	dest_type,
+	Float:dest_x,
+	Float:dest_y,
+	Float:dest_z,
+}
+
+new destination_array[][Info_Destination] = {
+	{TRAILER_TYPE_PETROL, 1725.4000, -2414.7, 13.5},
+	{TRAILER_TYPE_PETROL, 2109.2126, 917.5845, 10.8203},
+	{TRAILER_TYPE_PETROL, 2640.1831, 1103.9224, 10.8203},
+	{TRAILER_TYPE_PETROL, 611.8934, 1694.7921, 6.7193},
+	{TRAILER_TYPE_PETROL, -1327.5398, 2682.9771, 49.7896},
+	{TRAILER_TYPE_PETROL, -2413.7427, 975.9317, 45.0031},
+	{TRAILER_TYPE_PETROL, -1672.3597, 414.2950, 6.8866},
+	{TRAILER_TYPE_PETROL, -2244.1365, -2560.6294, 31.6276},
+	{TRAILER_TYPE_PETROL, -1603.0166, -2709.3589, 48.2419},
+	{TRAILER_TYPE_PETROL, 1939.3275, -1767.6813, 13.2787},
+	{TRAILER_TYPE_PETROL, -94.7651, -1174.8079, 1.9979},
+	{TRAILER_TYPE_PETROL, 1381.6699, 462.6467, 19.8540},
+	{TRAILER_TYPE_PETROL, -1478.2916, 1862.8318, 32.3617},
+	{TRAILER_TYPE_PETROL, 657.8167, -559.6507, 16.0630},
+	{TRAILER_TYPE_PETROL, 2147.3054, 2744.9377, 10.5263},
+	{TRAILER_TYPE_PETROL, 2204.9602, 2480.3494, 10.5278},
+	{TRAILER_TYPE_PETROL, 1590.9493, 2202.2637, 10.5247},
+
+	{TRAILER_TYPE_PRODUCT, 2398.4761, -1485.6116, 23.5552},
+	{TRAILER_TYPE_PRODUCT, -1211.9420, 1824.8726, 41.7188},
+	{TRAILER_TYPE_PRODUCT, -2326.6709, -134.8826, 35.3203},
+	{TRAILER_TYPE_PRODUCT, 2373.3374, -1905.1631, 13.1099},
+	{TRAILER_TYPE_PRODUCT, 174.1435, 1191.3485, 14.7578},
+	{TRAILER_TYPE_PRODUCT, -2684.3948, 267.8032, 4.3359},
+	{TRAILER_TYPE_PRODUCT, 1179.6357, -888.6750, 42.8907},
+	{TRAILER_TYPE_PRODUCT, 1158.3813, 2105.5540, 10.8203},
+	{TRAILER_TYPE_PRODUCT, -2323.4321, 1014.8897, 50.6953},
+	{TRAILER_TYPE_PRODUCT, 785.3561, -1619.9807, 13.0664},
+	{TRAILER_TYPE_PRODUCT, 2630.8838, 1860.4771, 10.8203},
+	{TRAILER_TYPE_PRODUCT, -2150.7163, -2445.8569, 30.6250},
+	{TRAILER_TYPE_PRODUCT, 2336.1531, 75.0252, 26.4816},
+	{TRAILER_TYPE_PRODUCT, 2479.4326, 2001.2902, 10.8203},
+	{TRAILER_TYPE_PRODUCT, 1387.6401, 261.4780, 19.5669},
+	{TRAILER_TYPE_PRODUCT, 2155.1926, 2816.3020, 10.8203},
+
+	{TRAILER_TYPE_CAREER, -1035.5779, -636.6919, 32.0078},
+	{TRAILER_TYPE_CAREER, 243.5755, 1421.0634, 10.5859},
+	{TRAILER_TYPE_CAREER, -148.8541, -221.2976, 1.4219},
+	{TRAILER_TYPE_CAREER, 2171.8013, -1981.8429, 13.5516},
+	{TRAILER_TYPE_CAREER, -1733.1241, 195.9595, 3.5547},
+	{TRAILER_TYPE_CAREER, 2796.9668, 967.0319, 10.7500},
+	{TRAILER_TYPE_CAREER, 1748.2073, 923.6948, 10.7236},
+	{TRAILER_TYPE_CAREER, 1726.6693, 2337.2102, 10.8203},
+	{TRAILER_TYPE_CAREER, -590.1365, -556.8542, 25.5296},
+	{TRAILER_TYPE_CAREER, 1115.8527, -340.0908, 73.9922}
 };
 
-new Float:ProductCoord[][CoordInfo] = {
-	{2398.4761, -1485.6116, 23.5552},
-	{-1211.9420, 1824.8726, 41.7188},
-	{-2326.6709, -134.8826, 35.3203},
-	{2373.3374, -1905.1631, 13.1099},
-	{174.1435, 1191.3485, 14.7578},
-	{-2684.3948, 267.8032, 4.3359},
-	{1179.6357, -888.6750, 42.8907},
-	{1158.3813, 2105.5540, 10.8203},
-	{-2323.4321, 1014.8897, 50.6953},
-	{785.3561, -1619.9807, 13.0664},
-	{2630.8838, 1860.4771, 10.8203},
-	{-2150.7163, -2445.8569, 30.6250},
-	{2336.1531, 75.0252, 26.4816},
-	{2479.4326, 2001.2902, 10.8203},
-	{1387.6401, 261.4780, 19.5669},
-	{2155.1926, 2816.3020, 10.8203}
-};
-
-new Float:CareerCoord[][CoordInfo] = {
-	{-1035.5779, -636.6919, 32.0078},
-	{243.5755, 1421.0634, 10.5859},
-	{-148.8541, -221.2976, 1.4219},
-	{2171.8013, -1981.8429, 13.5516},
-	{-1733.1241, 195.9595, 3.5547},
-	{2796.9668, 967.0319, 10.7500},
-	{1748.2073, 923.6948, 10.7236},
-	{1726.6693, 2337.2102, 10.8203},
-	{-590.1365, -556.8542, 25.5296},
-	{1115.8527, -340.0908, 73.9922}
-};
+static player_checkpoint[MAX_PLAYERS];
 
 stock trucker_OnGameModeInit()
 {
@@ -158,37 +163,49 @@ stock trucker_OnPlayerStateChange(playerid, newstate, oldstate)
 
 stock trucker_Start(playerid)
 {
-	new zone[MAX_NAME], type_name[MAX_STRING];
-	switch ( GetTrailerType( GetPlayerVehicleID(playerid) ) )
-	{
-		case TRAILER_TYPE_PRODUCT: {
-			new rand = random(sizeof(ProductCoord));
-			oSetPlayerCheckpoint(playerid, ProductCoord[rand][Coord_X], ProductCoord[rand][Coord_Y], ProductCoord[rand][Coord_Z], 10);
-			set(zone, GetXYZZoneName(ProductCoord[rand][Coord_X], ProductCoord[rand][Coord_Y], ProductCoord[rand][Coord_Z]));
-			set(type_name, lang_texts[19][34]);
-		}
-		case TRAILER_TYPE_PETROL: {
-			new rand = random(sizeof(PetrolCoord));
-			oSetPlayerCheckpoint(playerid, PetrolCoord[rand][Coord_X], PetrolCoord[rand][Coord_Y], PetrolCoord[rand][Coord_Z], 10);
-			set(zone, GetXYZZoneName(PetrolCoord[rand][Coord_X], PetrolCoord[rand][Coord_Y], PetrolCoord[rand][Coord_Z]));
-			set(type_name, lang_texts[19][35]);
-		}
-		case TRAILER_TYPE_CAREER: {
-			new rand = random(sizeof(CareerCoord));
-			oSetPlayerCheckpoint(playerid, CareerCoord[rand][Coord_X], CareerCoord[rand][Coord_Y], CareerCoord[rand][Coord_Z], 10);
-			set(zone, GetXYZZoneName(CareerCoord[rand][Coord_X], CareerCoord[rand][Coord_Y], CareerCoord[rand][Coord_Z]));
-			set(type_name, lang_texts[19][36]);
-		}
-		default: {
-			new string[MAX_STRING];
-			format(string, sizeof(string), lang_texts[19][37], TRUCKER_TIME_GET_TRAILER);
-			SendClientMessage(playerid, COLOUR_YELLOW, string);
-			SetPVarInt(playerid, "trucker_Timer_Check_Trailer",
-				SetTimerEx("trucker_Trailer_Check", 500, 1, "dd", playerid, GetPlayerVehicleID(playerid))
-			);
-			return 0;
-		}
+	new
+		zone[MAX_NAME],
+		type_name[MAX_STRING];
+
+	new
+		vehicleid = GetPlayerVehicleID(playerid),
+		trailer_type = GetTrailerType(vehicleid);
+	
+	if (trailer_type == -1) {
+		new string[MAX_STRING];
+		format(string, sizeof(string), lang_texts[19][37], TRUCKER_TIME_GET_TRAILER);
+		SendClientMessage(playerid, COLOUR_YELLOW, string);
+		SetPVarInt(playerid, "trucker_Timer_Check_Trailer",
+			SetTimerEx("trucker_Trailer_Check", 500, 1, "dd", playerid, vehicleid)
+		);
+		return 0;
 	}
+
+	new
+		dest_list[ sizeof(destination_array) ],
+		dest_list_pos = 0;
+
+	for (new i = 0; i < sizeof(destination_array); i++) {
+		if (destination_array[i][dest_type] != trailer_type) {
+			continue;
+		}
+
+		dest_list[dest_list_pos] = i;
+		dest_list_pos++;
+	}
+
+	new dest_id = dest_list[ random(dest_list_pos) ];
+
+	Checkpoint_ToggleAllForPlayer(playerid, 0);
+	player_checkpoint[playerid] = Checkpoint_Create(
+		destination_array[dest_id][dest_x], destination_array[dest_id][dest_y], destination_array[dest_id][dest_z],
+		10.0, _, _, playerid, CHECKPOINT_STREAM_MAX_DISTANCE
+	);
+	Checkpoint_ToggleForPlayer(playerid, player_checkpoint[playerid], 1);
+	
+	set(zone, GetXYZZoneName(destination_array[dest_id][dest_x], destination_array[dest_id][dest_y], destination_array[dest_id][dest_z]));
+	set(type_name, lang_texts[19][34]);
+
 	player_SetQuestID(playerid, mission_GetQuestID(mission_trucker));
 	SetPVarInt(playerid, "trucker_Timer",
 		SetTimerEx("trucker_EndMission", TRUCKER_MISSION_TIME * 1000, 0, "d", playerid)
@@ -202,13 +219,20 @@ stock trucker_Start(playerid)
 stock trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	#pragma unused oldkeys, newkeys
-	Dialog_Show(playerid, Dialog:TruckerCancel);
+	if (IsPlayerInMission(playerid, mission_trucker)) {
+		Dialog_Show(playerid, Dialog:TruckerCancel);
+	}
 	return 1;
 }
 
 stock trucker_OnPlayerEnterCheckpoint(playerid)
 {
 	if (!IsMissionEnabled(mission_trucker)) {
+		return 1;
+	}
+
+	new cp = Checkpoint_GetPlayerVisible(playerid);
+	if (cp != player_checkpoint[playerid]) {
 		return 1;
 	}
 	
@@ -379,6 +403,11 @@ public trucker_EndMission(playerid)
 
 stock trucker_Stop(playerid)
 {
+	Checkpoint_ToggleForPlayer(playerid, player_checkpoint[playerid], 0);
+	Checkpoint_Delete(player_checkpoint[playerid]);
+	player_checkpoint[playerid] = INVALID_CHECKPOINT_ID;
+	Checkpoint_ToggleAllForPlayer(playerid, 1);
+
 	player_ResetQuest(playerid);
 	GivePVarInt(playerid, "trucker_MissionTryCount", 1);
 	if (GetPVarInt(playerid, "trucker_MissionTryCount") >= mission_GetTryCount(mission_trucker)) {

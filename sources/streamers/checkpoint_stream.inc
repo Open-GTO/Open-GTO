@@ -1,6 +1,6 @@
 /*
-
-
+	About:	checkpoint stream system
+	Author: ziggi
 */
 
 #if defined _checkpoint_stream_included
@@ -10,166 +10,256 @@
 #define _checkpoint_stream_included
 #pragma library checkpoint_stream
 
+#define INVALID_CHECKPOINT_ID -1
 
 #define MAX_CHECKPOINTS 255
-#define CP_SHOW_DIST 65000.0
 
-enum checkpoint_Info {
-	bool:IsActive,
-	Float:CP_X,
-	Float:CP_Y,
-	Float:CP_Z,
-	Float:CP_Dist,
-	Float:CP_Size
+#define CHECKPOINT_STREAM_DISTANCE		200.0
+#define CHECKPOINT_STREAM_MAX_DISTANCE	65000.0
+
+enum info_Checkpoint {
+	Float:cp_x,
+	Float:cp_y,
+	Float:cp_z,
+	Float:cp_size,
+	cp_world,
+	cp_interior,
+	cp_playerid,
+	Float:cp_dist,
+
+	bool:cp_isvalid,
+}
+
+enum info_Player_Checkpoint {
+	cp_isactive[MAX_CHECKPOINTS],
+	cp_currentid,
 }
 
 static
-	checkpoint_array[MAX_CHECKPOINTS][checkpoint_Info],
-	checkpoint_count,
-	Float:player_checkpoint[MAX_PLAYERS][CoordInfo];
+	checkpoints[MAX_CHECKPOINTS][info_Checkpoint],
+	player_checkpoints[MAX_PLAYERS][info_Player_Checkpoint];
 
-stock checkpoint_Sync()
+Checkpoint_OnPlayerConnect(playerid)
 {
-	foreach (new playerid : Player) {
-		if (player_IsAtQuest(playerid)) {
-			continue;
-		}
-
-		new cpid = checkpoint_GetPlayerClosest(playerid);
-		if (cpid != 0) {
-			checkpoint_SetToPlayer(playerid, cpid);
-		} else {
-			oDisablePlayerCheckpoint(playerid);
-		}
-	}
-}
-
-stock checkpoint_Add(Float:cpx, Float:cpy, Float:cpz, Float:cpdist, Float:cpsize)
-{
-	if (checkpoint_count >= MAX_CHECKPOINTS) {
-		return 0;
-	}
-
-	for (new cpid = 1; cpid <= MAX_CHECKPOINTS; cpid++) {
-		if (checkpoint_array[cpid][IsActive]) {
-			continue;
-		}
-
-		checkpoint_count++;
-
-		checkpoint_array[cpid][CP_X] = cpx;
-		checkpoint_array[cpid][CP_Y] = cpy;
-		checkpoint_array[cpid][CP_Z] = cpz;
-		checkpoint_array[cpid][CP_Dist] = cpdist;
-		checkpoint_array[cpid][CP_Size] = cpsize;
-		checkpoint_array[cpid][IsActive] = true;
-		return cpid;
-	}
-	return 0;
-}
-
-stock checkpoint_Remove(cpid)
-{
-	if (!checkpoint_array[cpid][IsActive]) {
-		return 0;
-	}
-
-	checkpoint_array[cpid][CP_X] = 0;
-	checkpoint_array[cpid][CP_Y] = 0;
-	checkpoint_array[cpid][CP_Z] = 0;
-	checkpoint_array[cpid][CP_Size] = 0;
-	checkpoint_array[cpid][IsActive] = false;
-
-	checkpoint_count--;
+	Checkpoint_ResetPlayerData(playerid);
+	Checkpoint_ToggleAllForPlayer(playerid, 1);
 	return 1;
 }
 
-stock checkpoint_FindByCoord(Float:cpx, Float:cpy, Float:cpz)
+stock Checkpoint_Create(Float:x, Float:y, Float:z, Float:size, worldid = -1, interiorid = -1, playerid = -1, Float:streamdistance = CHECKPOINT_STREAM_DISTANCE)
 {
-	for (new cpid = 1; cpid <= MAX_CHECKPOINTS; cpid++) {
-		if (checkpoint_array[cpid][IsActive] && cpx == checkpoint_array[cpid][CP_X] && cpy == checkpoint_array[cpid][CP_Y] && cpz == checkpoint_array[cpid][CP_Z]) {
-			return cpid;
-		}
+	new cpid = Checkpoint_GetFreeId();
+	if (cpid == INVALID_CHECKPOINT_ID) {
+		printf("Checkpoint: Error: checkpoint limit is full (%d).", MAX_CHECKPOINTS);
+		return INVALID_CHECKPOINT_ID;
 	}
-	return 0;
+
+	checkpoints[cpid][cp_x] = x;
+	checkpoints[cpid][cp_y] = y;
+	checkpoints[cpid][cp_z] = z;
+	checkpoints[cpid][cp_size] = size;
+	checkpoints[cpid][cp_world] = worldid;
+	checkpoints[cpid][cp_interior] = interiorid;
+	checkpoints[cpid][cp_playerid] = playerid;
+	checkpoints[cpid][cp_dist] = streamdistance;
+	checkpoints[cpid][cp_isvalid] = true;
+	return cpid;
 }
 
-stock checkpoint_SetToPlayer(playerid, cpid)
+stock Checkpoint_Delete(cpid)
 {
-	if (!checkpoint_array[cpid][IsActive]) {
+	if (!Checkpoint_IsValid(cpid)) {
 		return 0;
 	}
 
-	if (cpid == 0) {
-		oDisablePlayerCheckpoint(playerid);
-		return 1;
-	}
-
-	if (   player_checkpoint[playerid][Coord_X] == checkpoint_array[cpid][CP_X]
-		&& player_checkpoint[playerid][Coord_Y] == checkpoint_array[cpid][CP_Y]
-		&& player_checkpoint[playerid][Coord_Z] == checkpoint_array[cpid][CP_Z]) {
-		return 0;
-	}
-
-	oSetPlayerCheckpoint(playerid, checkpoint_array[cpid][CP_X], checkpoint_array[cpid][CP_Y], checkpoint_array[cpid][CP_Z], 8.0);
+	checkpoints[cpid][cp_x] = 0.0;
+	checkpoints[cpid][cp_y] = 0.0;
+	checkpoints[cpid][cp_z] = 0.0;
+	checkpoints[cpid][cp_size] = 0.0;
+	checkpoints[cpid][cp_world] = -1;
+	checkpoints[cpid][cp_interior] = -1;
+	checkpoints[cpid][cp_playerid] = -1;
+	checkpoints[cpid][cp_dist] = CHECKPOINT_STREAM_DISTANCE;
+	checkpoints[cpid][cp_isvalid] = false;
 	return 1;
 }
 
-stock checkpoint_GetPlayerClosest(playerid)
+Checkpoint_Stream(playerid)
 {
- 	new Float:min_dist = CP_SHOW_DIST,
-		Float:current_dist,
-		result_id = 0;
+	new cpid = Checkpoint_GetPlayerClosest(playerid);
+	if (cpid != INVALID_CHECKPOINT_ID && cpid != player_checkpoints[playerid][cp_currentid]) {
+		player_checkpoints[playerid][cp_currentid] = cpid;
 
-	for (new cpid = 1; cpid < MAX_CHECKPOINTS; cpid++) {
-		if (!checkpoint_array[cpid][IsActive]) {
+		DisablePlayerCheckpoint(playerid);
+		SetTimerEx("SetPlayerCheckpointEx", 100, 0, "dffff", playerid, checkpoints[cpid][cp_x], checkpoints[cpid][cp_y], checkpoints[cpid][cp_z], checkpoints[cpid][cp_size]);
+	} else if (cpid == INVALID_CHECKPOINT_ID) {
+		player_checkpoints[playerid][cp_currentid] = INVALID_CHECKPOINT_ID;
+
+		DisablePlayerCheckpoint(playerid);
+	}
+}
+
+forward SetPlayerCheckpointEx(playerid, Float:x, Float:y, Float:z, Float:size);
+public SetPlayerCheckpointEx(playerid, Float:x, Float:y, Float:z, Float:size)
+{
+	SetPlayerCheckpoint(playerid, x, y, z, size);
+}
+
+stock Checkpoint_GetPlayerClosest(playerid)
+{
+ 	new Float:min_dist = CHECKPOINT_STREAM_MAX_DISTANCE,
+		Float:dist,
+		result_id = INVALID_CHECKPOINT_ID,
+		is_active, is_in_world, is_in_interior, is_for_playerid;
+
+	for (new cpid = 0; cpid < MAX_CHECKPOINTS; cpid++) {
+		if (!Checkpoint_IsValid(cpid)) {
 			continue;
 		}
-		
-		current_dist = GetPlayerDistanceFromPoint(playerid, checkpoint_array[cpid][CP_X], checkpoint_array[cpid][CP_Y], checkpoint_array[cpid][CP_Z]);
-		
-		if (current_dist < checkpoint_array[cpid][CP_Dist] && current_dist < min_dist) {
-			min_dist = current_dist;
+
+		is_active = Checkpoint_IsActiveForPlayer(playerid, cpid);
+		if (!is_active) {
+			continue;
+		}
+
+		is_in_world = Checkpoint_IsPlayerInWorld(playerid, cpid);
+		if (!is_in_world) {
+			continue;
+		}
+
+		is_in_interior = Checkpoint_IsPlayerInInterior(playerid, cpid);
+		if (!is_in_interior) {
+			continue;
+		}
+
+		is_for_playerid = Checkpoint_IsForPlayer(playerid, cpid);
+		if (!is_for_playerid) {
+			continue;
+		}
+
+		dist = GetPlayerDistanceFromPoint(playerid, checkpoints[cpid][cp_x], checkpoints[cpid][cp_y], checkpoints[cpid][cp_z]);
+		if (dist <= checkpoints[cpid][cp_dist] && dist < min_dist) {
+			min_dist = dist;
 			result_id = cpid;
 		}
 	}
 	return result_id;
 }
 
-
-
-stock oSetPlayerCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size)
+stock Checkpoint_GetPos(cpid, &Float:x, &Float:y, &Float:z)
 {
-	player_checkpoint[playerid][Coord_X] = x;
-	player_checkpoint[playerid][Coord_Y] = y;
-	player_checkpoint[playerid][Coord_Z] = z;
-
-	// fix bug
-	DisablePlayerCheckpoint(playerid);
-	SetPlayerCheckpoint(playerid, 0.0, 0.0, 0.0, size);
-	DisablePlayerCheckpoint(playerid);
-
-	// create checkpoint
-	SetPlayerCheckpoint(playerid, x, y, z, size);
-}
-
-stock oDisablePlayerCheckpoint(playerid)
-{
-	player_checkpoint[playerid][Coord_X] = 0.0;
-	player_checkpoint[playerid][Coord_Y] = 0.0;
-	player_checkpoint[playerid][Coord_Z] = 0.0;
-
-	DisablePlayerCheckpoint(playerid);
-}
-
-stock oIsPlayerInCheckpoint(playerid, Float:cpx, Float:cpy, Float:cpz, Float:dist)
-{
-	if (cpx != player_checkpoint[playerid][Coord_X] && cpy != player_checkpoint[playerid][Coord_Y] && cpz != player_checkpoint[playerid][Coord_Z]) {
+	if (!Checkpoint_IsValid(cpid)) {
 		return 0;
 	}
 
-	if (GetPlayerDistanceFromPoint(playerid, cpx, cpy, cpz) < dist) {
-		return 1;
+	x = checkpoints[cpid][cp_x];
+	y = checkpoints[cpid][cp_y];
+	z = checkpoints[cpid][cp_z];
+	return 1;
+}
+
+stock Checkpoint_FindByCoord(Float:x, Float:y, Float:z)
+{
+	for (new cpid = 0; cpid < MAX_CHECKPOINTS; cpid++) {
+		if (!Checkpoint_IsValid(cpid)) {
+			continue;
+		}
+
+		if (x == checkpoints[cpid][cp_x] && y == checkpoints[cpid][cp_y] && z == checkpoints[cpid][cp_z]) {
+			return cpid;
+		}
 	}
-	return 0;
+	return INVALID_CHECKPOINT_ID;
+}
+
+stock Checkpoint_GetFreeId()
+{
+	for (new cpid = 0; cpid < MAX_CHECKPOINTS; cpid++) {
+		if (checkpoints[cpid][cp_isvalid] == false) {
+			return cpid;
+		}
+	}
+
+	return INVALID_CHECKPOINT_ID;
+}
+
+stock Checkpoint_ResetPlayerData(playerid)
+{
+	player_checkpoints[playerid][cp_currentid] = INVALID_CHECKPOINT_ID;
+
+	for (new cpid = 0; cpid < MAX_CHECKPOINTS; cpid++) {
+		player_checkpoints[playerid][cp_isactive][cpid] = 0;
+	}
+	return 1;
+}
+
+stock Checkpoint_IsValid(cpid)
+{
+	if (cpid < 0 || cpid > MAX_CHECKPOINTS || checkpoints[cpid][cp_isvalid] == false) {
+		return 0;
+	}
+
+	return 1;
+}
+
+stock Checkpoint_ToggleForPlayer(playerid, cpid, toggle)
+{
+	if (!Checkpoint_IsValid(cpid)) {
+		return 0;
+	}
+
+	player_checkpoints[playerid][cp_isactive][cpid] = toggle;
+	Checkpoint_Stream(playerid);
+	return 1;
+}
+
+stock Checkpoint_ToggleAllForPlayer(playerid, toggle)
+{
+	for (new cpid = 0; cpid < MAX_CHECKPOINTS; cpid++) {
+		if (!Checkpoint_IsValid(cpid)) {
+			return 0;
+		}
+
+		player_checkpoints[playerid][cp_isactive][cpid] = toggle;
+	}
+	Checkpoint_Stream(playerid);
+	return 1;
+}
+
+stock Checkpoint_IsActiveForPlayer(playerid, cpid)
+{
+	if (!Checkpoint_IsValid(cpid)) {
+		return 0;
+	}
+
+	return player_checkpoints[playerid][cp_isactive][cpid] == 1 ? 1 : 0;
+}
+
+stock Checkpoint_IsPlayerIn(playerid, cpid)
+{
+	if (!Checkpoint_IsValid(cpid)) {
+		return 0;
+	}
+
+	return IsPlayerInRangeOfPoint(playerid, checkpoints[cpid][cp_dist], checkpoints[cpid][cp_x], checkpoints[cpid][cp_y], checkpoints[cpid][cp_z]);
+}
+
+stock Checkpoint_GetPlayerVisible(playerid)
+{
+	return player_checkpoints[playerid][cp_currentid];
+}
+
+stock Checkpoint_IsPlayerInWorld(playerid, cpid)
+{
+	return checkpoints[cpid][cp_world] == -1 || checkpoints[cpid][cp_world] == GetPlayerVirtualWorld(playerid);
+}
+
+stock Checkpoint_IsPlayerInInterior(playerid, cpid)
+{
+	return checkpoints[cpid][cp_interior] == -1 || checkpoints[cpid][cp_interior] == GetPlayerInterior(playerid);
+}
+
+stock Checkpoint_IsForPlayer(playerid, cpid)
+{
+	return checkpoints[cpid][cp_playerid] == -1 || checkpoints[cpid][cp_playerid] == playerid;
 }
