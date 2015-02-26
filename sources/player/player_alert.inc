@@ -12,6 +12,9 @@
 #define _pl_alert_included
 #pragma library pl_alert
 
+#define ALERT_POS_X		479.5
+#define ALERT_POS_Y		286.5
+#define ALERT_WIDTH		144
 
 static
 	Text:td_background,
@@ -23,9 +26,9 @@ static
 
 stock pl_alert_OnGameModeInit()
 {
-	td_background = TextDrawCreate(479.5, 286.5, "alert_background");
+	td_background = TextDrawCreate(ALERT_POS_X, ALERT_POS_Y, "alert_background");
 	TextDrawLetterSize(td_background, 0.0, 0.85);
-	TextDrawTextSize(td_background, 623.5, 0.0);
+	TextDrawTextSize(td_background, ALERT_POS_X + ALERT_WIDTH, 0.0);
 	TextDrawAlignment(td_background, 1);
 	TextDrawColor(td_background, -2139062017);
 	TextDrawUseBox(td_background, true);
@@ -39,15 +42,15 @@ stock pl_alert_OnGameModeInit()
 
 stock pl_alert_OnPlayerConnect(playerid)
 {
-	td_strip[playerid] = CreatePlayerTextDraw(playerid, 479.5, 302.0, "_");
+	td_strip[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y + 15.5, "_");
 	PlayerTextDrawLetterSize(playerid, td_strip[playerid], 0.0, -0.6);
-	PlayerTextDrawTextSize(playerid, td_strip[playerid], 623.5, 0.0);
+	PlayerTextDrawTextSize(playerid, td_strip[playerid], ALERT_POS_X + ALERT_WIDTH, 0.0);
 	PlayerTextDrawUseBox(playerid, td_strip[playerid], true);
 	PlayerTextDrawBoxColor(playerid, td_strip[playerid], 0xFF0000FF);
 
-	td_header[playerid] = CreatePlayerTextDraw(playerid, 479.5, 285.0, "Header");
+	td_header[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y - 1.5, "Header");
 	PlayerTextDrawLetterSize(playerid, td_header[playerid], 0.4, 1.5);
-	PlayerTextDrawTextSize(playerid, td_header[playerid], 623.5, 0.0);
+	PlayerTextDrawTextSize(playerid, td_header[playerid], ALERT_POS_X + ALERT_WIDTH, 0.0);
 	PlayerTextDrawAlignment(playerid, td_header[playerid], 1);
 	PlayerTextDrawColor(playerid, td_header[playerid], -5963521);
 	PlayerTextDrawSetShadow(playerid, td_header[playerid], 0);
@@ -56,9 +59,9 @@ stock pl_alert_OnPlayerConnect(playerid)
 	PlayerTextDrawFont(playerid, td_header[playerid], 1);
 	PlayerTextDrawSetProportional(playerid, td_header[playerid], 1);
 
-	td_content[playerid] = CreatePlayerTextDraw(playerid, 479.5, 299.0, "Content");
+	td_content[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y + 12.5, "Content");
 	PlayerTextDrawLetterSize(playerid, td_content[playerid], 0.3, 1.3);
-	PlayerTextDrawTextSize(playerid, td_content[playerid], 623.5, 0.0);
+	PlayerTextDrawTextSize(playerid, td_content[playerid], ALERT_POS_X + ALERT_WIDTH, 0.0);
 	PlayerTextDrawAlignment(playerid, td_content[playerid], 1);
 	PlayerTextDrawColor(playerid, td_content[playerid], -1);
 	PlayerTextDrawUseBox(playerid, td_content[playerid], true);
