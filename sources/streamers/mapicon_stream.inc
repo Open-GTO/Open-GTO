@@ -85,6 +85,10 @@ stock Mapicon_Create(Float:x, Float:y, Float:z, type, color, worldid = -1, inter
 	icons[iconid][icon_dist] = streamdistance;
 	icons[iconid][icon_style] = style;
 	icons[iconid][icon_isvalid] = true;
+
+	if (playerid != -1) {
+		Mapicon_Stream(playerid);
+	}
 	return iconid;
 }
 
@@ -93,6 +97,8 @@ stock Mapicon_Delete(iconid)
 	if (!Mapicon_IsValid(iconid)) {
 		return 0;
 	}
+
+	new playerid = icons[iconid][icon_playerid];
 
 	icons[iconid][icon_x] = 0.0;
 	icons[iconid][icon_y] = 0.0;
@@ -105,6 +111,10 @@ stock Mapicon_Delete(iconid)
 	icons[iconid][icon_dist] = MAP_ICON_STREAM_DISTANCE;
 	icons[iconid][icon_style] = MAPICON_LOCAL;
 	icons[iconid][icon_isvalid] = false;
+
+	if (playerid != -1) {
+		Mapicon_Stream(playerid);
+	}
 	return 1;
 }
 
@@ -117,7 +127,7 @@ Mapicon_Stream(playerid)
 			Mapicon_HideForPlayer(playerid, iconid);
 			continue;
 		}
-		
+
 		if (!Mapicon_IsValid(iconid)) {
 			continue;
 		}
