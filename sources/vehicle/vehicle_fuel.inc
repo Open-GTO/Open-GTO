@@ -292,10 +292,16 @@ public Float:GetVehicleFuel(vehicleid)
 forward Float:SetVehicleFuel(vehicleid, Float:amount);
 public Float:SetVehicleFuel(vehicleid, Float:amount)
 {
+	new Float:max_fuel = GetMaxVehicleFuel( GetVehicleModel(vehicleid) );
+
 	if (amount == -1) {
-		new Float:max_fuel = FuelList[ GetVehicleModel(vehicleid)-400 ] / 2;
-		amount = random(floatround( max_fuel )) + max_fuel;
+		amount = max_fuel / 2 + random(floatround( max_fuel / 2 ));
+	} else if (amount > max_fuel) {
+		amount = max_fuel;
+	} else if (amount < 0) {
+		amount = 0;
 	}
+	
 	Fuel[vehicleid] = amount;
 	return amount;
 }
