@@ -33,7 +33,7 @@
 #define MAX_ICONS 1000
 #define MAX_SHOWED_ICONS 100
 
-#define MAP_ICON_STREAM_DISTANCE 400.0
+#define MAP_ICON_STREAM_DISTANCE 200.0
 
 enum info_Mapicon {
 	Float:icon_x,
