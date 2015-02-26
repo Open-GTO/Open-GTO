@@ -123,24 +123,36 @@ stock trucker_OnGameModeInit()
 	if (!IsMissionEnabled(mission_trucker)) {
 		return 1;
 	}
+
 	// регистрируем миссию
 	mission_Register(mission_trucker);
+
+	new Text3D:trucker_text3d;
 	// создаём прицепы
 	for (new veh_id = 0; veh_id < sizeof(trailer_array); veh_id++) {
 		trailer_array[veh_id][trucker_Id] = AddStaticVehicleEx(trailer_array[veh_id][trucker_Model],
 			trailer_array[veh_id][trucker_X], trailer_array[veh_id][trucker_Y], trailer_array[veh_id][trucker_Z], trailer_array[veh_id][trucker_A],
 			trailer_array[veh_id][trucker_Color1], trailer_array[veh_id][trucker_Color2], TRUCKER_CAR_SPAWN_TIME
 		);
+
+		trucker_text3d = Create3DTextLabel("San Andreas Delivery", 0x1CE89BAA, 0.0, 0.0, 0.0, 20.0, 0, 1);
+		Attach3DTextLabelToVehicle(trucker_text3d, trailer_array[veh_id][trucker_Id], 0.0, 0.0, 0.0);
 	}
+
 	// создаём грузовики
 	for (new veh_id = 0; veh_id < sizeof(linerunner_array); veh_id++) {
 		linerunner_array[veh_id][trucker_Id] = AddStaticVehicleEx(linerunner_array[veh_id][trucker_Model],
 			linerunner_array[veh_id][trucker_X], linerunner_array[veh_id][trucker_Y], linerunner_array[veh_id][trucker_Z], linerunner_array[veh_id][trucker_A],
 			linerunner_array[veh_id][trucker_Color1], linerunner_array[veh_id][trucker_Color2], TRUCKER_CAR_SPAWN_TIME
 		);
+
 		SetVehicleFuel(linerunner_array[veh_id][trucker_Id], -1);
+
+		trucker_text3d = Create3DTextLabel("San Andreas Delivery", 0x1CE89BAA, 0.0, 0.0, 0.0, 20.0, 0, 1);
+		Attach3DTextLabelToVehicle(trucker_text3d, linerunner_array[veh_id][trucker_Id], 0.0, 0.0, 0.0);
 	}
-	//
+
+	// иконки
 	Mapicon_Create(253.0453, 1372.3413, 11.1734, 51, 0);
 	Mapicon_Create(-117.0570, -325.0306, 2.0109, 51, 0);
 	Mapicon_Create(512.6126, 792.6769, -20.8209, 51, 0);
