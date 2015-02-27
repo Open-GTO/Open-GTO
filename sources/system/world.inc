@@ -59,7 +59,6 @@ public OneSecTimer()
 	foreach (new playerid : Player) {
 		Mapicon_Stream(playerid);
 		Checkpoint_Stream(playerid);
-		trucker_RunnerTimer(playerid);
 		player_Sync(playerid);
 		UpdatePlayerWeaponTextDraws(playerid);
 	}

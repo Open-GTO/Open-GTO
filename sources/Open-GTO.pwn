@@ -186,7 +186,6 @@ public OnGameModeInit()
 	housing_OnGameModeInit();
 	interior_OnGameModeInit();
 	weapon_OnGameModeInit();
-	swagup_OnGameModeInit();
 	vip_OnGameModeInit();
 	pl_weapon_OnGameModeInit();
 	pl_textdraw_OnGameModeInit();
@@ -197,6 +196,7 @@ public OnGameModeInit()
 
 	// missions
 	trucker_OnGameModeInit();
+	swagup_OnGameModeInit();
 
 	// services
 	fastfood_OnGameModeInit();
@@ -572,9 +572,9 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	vehicles_OnPlayerStateChange(playerid, newstate, oldstate);
 	pt_speed_OnPlayerStateChange(playerid, newstate, oldstate);
+	trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 
 	if (newstate == PLAYER_STATE_DRIVER) {
-		trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 		vip_OnPlayerStateChange(playerid, newstate, oldstate);
 	}
 
