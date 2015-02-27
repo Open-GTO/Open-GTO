@@ -12,8 +12,6 @@
 #pragma library race_striptease
 
 
-#include "race"
-
 static racename[MAX_NAME] = "Strip Tease"; // unique name of race
 static racefrequency = 6; // frequency that race runs
 static lineupdelay = 240; // how long we wait for people before starting race, in seconds

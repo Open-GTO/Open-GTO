@@ -11,8 +11,6 @@
 #pragma library dm_usnavy
 
 
-#include "deathmatch"
-
 static name[MAX_NAME] = "The US Navy"; // unique name of dm
 static frequency = 1; // frequency that dm runs
 static lineupdelay = 120; // how long we wait for people before starting dm, in seconds

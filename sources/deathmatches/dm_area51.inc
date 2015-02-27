@@ -9,8 +9,6 @@
 #pragma library dm_area51
 
 
-#include "deathmatch"
-
 static name[MAX_NAME] = "Area 51"; // unique name of dm
 static frequency = 1; // frequency that dm runs
 static lineupdelay = 120; // how long we wait for people before starting dm, in seconds

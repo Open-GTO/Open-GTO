@@ -11,8 +11,6 @@
 #pragma library race_majestic
 
 
-#include "race"
-
 static racename[MAX_NAME] = "Majestic"; // unique name of race
 static racefrequency = 2	; // frequency that race runs
 static lineupdelay = 233; // how long we wait for people before starting race, in seconds

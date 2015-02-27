@@ -11,8 +11,6 @@
 #pragma library race_mullholland
 
 
-#include "race"
-
 static racename[MAX_NAME] = "Mullholland Getaway"; // unique name of race
 static racefrequency = 3; // frequency that race runs
 static lineupdelay = 190; // how long we wait for people before starting race, in seconds

@@ -11,8 +11,6 @@
 #pragma library race_fleethecity
 
 
-#include "race"
-
 static racename[MAX_NAME] = "Flee the City"; // unique name of race
 static racefrequency = 5; // frequency that race runs
 static lineupdelay = 260; // how long we wait for people before starting race, in seconds

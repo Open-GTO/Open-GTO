@@ -12,8 +12,6 @@
 #pragma library gang
 
 
-#include "base"
-
 new Gang_Create_Cost = GANG_CREATE_COST,
 	Gang_Colour_Cost = GANG_COLOUR_COST; 
 

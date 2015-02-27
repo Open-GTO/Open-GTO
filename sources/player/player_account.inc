@@ -14,8 +14,6 @@
 #pragma library pl_account
 
 
-#include "base"
-
 stock account_LoadConfig(file_config)
 {
 	ini_getString(file_config, "Account_DB", AccountDB);

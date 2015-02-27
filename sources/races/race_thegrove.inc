@@ -11,8 +11,6 @@
 #pragma library race_thegrove
 
 
-#include "race"
-
 static racename[MAX_NAME] = "Tearin Up The Grove"; // unique name of race
 static racefrequency = 1; // frequency that race runs
 static lineupdelay = 182; // how long we wait for people before starting race, in seconds

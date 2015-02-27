@@ -11,8 +11,6 @@
 #pragma library race_lostinsmoke
 
 
-#include "race"
-
 static racename[MAX_NAME] = "Lost in Smoke"; // unique name of race
 static racefrequency = 4; // frequency that race runs
 static lineupdelay = 195; // how long we wait for people before starting race, in seconds

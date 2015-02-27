@@ -12,8 +12,6 @@
 #pragma library race_murderhorn
 
 
-#include "race"
-
 static racename[MAX_NAME] = "MurderHorn"; // unique name of race
 static racefrequency = 6; // frequency that race runs
 static lineupdelay = 300; // how long we wait for people before starting race, in seconds

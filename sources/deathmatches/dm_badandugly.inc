@@ -11,8 +11,6 @@
 #pragma library dm_badandugly
 
 
-#include "deathmatch"
-
 static name[MAX_NAME] = "The Bad And The Ugly"; // unique name of dm
 static frequency = 4; // frequency that dm runs
 static lineupdelay = 90; // how long we wait for people before starting dm, in seconds

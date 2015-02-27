@@ -11,8 +11,6 @@
 #pragma library race_trailer
 
 
-#include "race"
-
 static racename[MAX_NAME] = "Trailers Racing"; // unique name of race
 static racefrequency = 4; // frequency that race runs
 static lineupdelay = 171; // how long we wait for people before starting race, in seconds

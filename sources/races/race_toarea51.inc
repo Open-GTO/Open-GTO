@@ -11,8 +11,6 @@
 #pragma library race_toarea51
 
 
-#include "race"
-
 static racename[MAX_NAME] = "To Area 51"; // unique name of race
 static racefrequency = 3; // frequency that race runs
 static lineupdelay = 190; // how long we wait for people before starting race, in seconds

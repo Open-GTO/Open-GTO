@@ -11,8 +11,6 @@
 #pragma library dm_poolday
 
 
-#include "deathmatch"
-
 static name[MAX_NAME] = "fy_poolday"; // unique name of dm
 static frequency = 2; // frequency that dm runs
 static lineupdelay = 80; // how long we wait for people before starting dm, in seconds

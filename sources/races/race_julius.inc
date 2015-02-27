@@ -11,8 +11,6 @@
 #pragma library race_julius
 
 
-#include "race"
-
 static racename[MAX_NAME] = "Julius Thruway"; // unique name of race
 static racefrequency = 1	; // frequency that race runs
 static lineupdelay = 184; // how long we wait for people before starting race, in seconds
