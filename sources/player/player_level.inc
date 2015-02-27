@@ -222,7 +222,7 @@ stock SetPlayerXP(playerid, amount)
 	
 	new xp_to_level = 0;
 	if (amount > 0 && level < MAX_LEVEL) {
-		xp_to_level = level_xp_list[level + 1] - GetPlayerXP(playerid);
+		xp_to_level = level_xp_list[level + 1];
 	} else if (amount > 0) {
 		return;
 	}
