@@ -81,13 +81,11 @@ stock player_OnPlayerDisconnect(playerid, reason)
 
 stock player_OnPlayerConnect(playerid)
 {
-	pl_spawn_UpdateCamera(playerid);
-
 	chat_Clean(playerid);
 	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[9][35]);
 
-    new plrIP[MAX_IP], string[MAX_STRING];
-    GetPlayerIp(playerid, plrIP, sizeof(plrIP));
+	new plrIP[MAX_IP], string[MAX_STRING];
+	GetPlayerIp(playerid, plrIP, sizeof(plrIP));
 	SetPVarString(playerid, "IP", plrIP);
 	if (!NameCharCheck( oGetPlayerName(playerid) )) {
 		format(string, sizeof(string), lang_texts[9][12], ALLOWED_NICK_SYMBOLS_STR);
