@@ -81,9 +81,25 @@ stock bar_OnPlayerEnterCheckpoint(playerid, cp)
 forward bar_Gulp(playerid);
 public bar_Gulp(playerid)
 {
+	new id = GetPVarInt(playerid, "bar_Alcohol_Id");
+	SetPlayerDrunkLevel(playerid, GetPlayerDrunkLevel(playerid) + floatround(Drinks[id][Alcohol] * 100 / MAX_GULPS, floatround_round));
+
+	new Float:max_health;
+	GetMaxHealth(playerid, max_health);
+
+	new Float:health;
+	oGetPlayerHealth(playerid, health);
+
+	if (health + Drinks[id][Hp] / MAX_GULPS > max_health) {
+		oSetPlayerHealth(playerid, max_health);
+	} else {
+		oSetPlayerHealth(playerid, health + Drinks[id][Hp] / MAX_GULPS);
+	}
+
 	if (GetPVarInt(playerid, "bar_Gulps") >= MAX_GULPS) {
 		bar_GulpStop(playerid);
 	}
+
 	SetPVarInt(playerid, "bar_Gulping", 0);
 	return 1;
 }
@@ -116,19 +132,7 @@ DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
 	oGivePlayerMoney(playerid,-Drinks[listitem][Cost], 1);
 	SetPlayerSpecialAction(playerid, Drinks[listitem][Action]);
 	SetPVarInt(playerid, "bar_Drinking", 1);
-	SetPlayerDrunkLevel(playerid, GetPlayerDrunkLevel(playerid) + floatround(Drinks[listitem][Alcohol]*100, floatround_round));
-	
-	new Float:max_health;
-	GetMaxHealth(playerid, max_health);
-
-	new Float:health;
-	oGetPlayerHealth(playerid, health);
-
-	if (Drinks[listitem][Hp] + health > max_health) {
-		oSetPlayerHealth(playerid, max_health);
-	} else {
-		oSetPlayerHealth(playerid, health + Drinks[listitem][Hp]);
-	}
+	SetPVarInt(playerid, "bar_Alcohol_Id", listitem);
 
 	new string[MAX_STRING];
 	format(string, sizeof(string),
@@ -151,9 +155,10 @@ stock bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 stock bar_GulpStop(playerid)
 {
 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
-	SetPVarInt(playerid, "bar_Drinking", 0);
-	SetPVarInt(playerid, "bar_Gulps", 0);
-	SetPVarInt(playerid, "bar_Gulping", 0);
+	DeletePVar(playerid, "bar_Drinking");
+	DeletePVar(playerid, "bar_Gulps");
+	DeletePVar(playerid, "bar_Gulping");
+	DeletePVar(playerid, "bar_Alcohol_Id");
 	return 1;
 }
 
