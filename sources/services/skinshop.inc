@@ -14,8 +14,14 @@
 #define _skinshop_included
 #pragma library skinshop
 
+enum SkinShop_Info {
+	Float:ss_x,
+	Float:ss_y,
+	Float:ss_z,
+	ss_checkpoint
+}
 
-new SkinShops[][CoordInfo] = {
+new SkinShops[][SkinShop_Info] = {
 	{207.6596, -100.7878, 1005.2578},
 	{161.5244, -83.5924, 1001.8047},
 	{206.8538, -129.5790, 1003.5078},
@@ -25,8 +31,7 @@ new SkinShops[][CoordInfo] = {
 stock sshop_OnGameModeInit()
 {
 	for (new id = 0; id < sizeof(SkinShops); id++) {
-	    CreatePickup(1275, 23, SkinShops[id][Coord_X], SkinShops[id][Coord_Y], SkinShops[id][Coord_Z]);
-		CreatePickupText("Одежда", SkinShops[id][Coord_X], SkinShops[id][Coord_Y], SkinShops[id][Coord_Z]);
+		SkinShops[id][ss_checkpoint] = Checkpoint_Create(SkinShops[id][ss_x], SkinShops[id][ss_y], SkinShops[id][ss_z], 1.5, .streamdistance = 20.0);
 	}
 	
 	clickText[sshop_left] = TextDrawCreate(288.000000, 372.000000, "<<");
@@ -103,20 +108,25 @@ stock sshop_OnGameModeInit()
 	return 1;
 }
 
-stock sshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+stock ss_OnPlayerEnterCheckpoint(playerid, cp)
 {
-	#pragma unused newkeys, oldkeys
-	// если игрок не в примерочной
-	if (GetPVarInt(playerid, "SkinShop_AtFittingRoom") != 1) {
-		SkinShop_SetPlayerFittingRoom(playerid);
-		SetPVarInt(playerid, "SkinShop_AtFittingRoom", 1);
-		SetPVarInt(playerid, "SkinShop_Old", GetPlayerSkin(playerid));
-		
-		SkinShop_SelectSkin(playerid, SKINS_MINID, SKINS_MINID);
-		sshop_ShowTextDraws(playerid);
-		return 0;
+	if (GetPVarInt(playerid, "SkinShop_IsLeaveFromCp") == 1) {
+		DeletePVar(playerid, "SkinShop_IsLeaveFromCp");
+		return 1;
 	}
-	return 1;
+	for (new id = 0; id < sizeof(SkinShops); id++) {
+		if (cp == SkinShops[id][ss_checkpoint]) {
+			SkinShop_SetPlayerFittingRoom(playerid);
+			SetPVarInt(playerid, "SkinShop_PlayerAtSkinShop", 1);
+			SetPVarInt(playerid, "SkinShop_Old", GetPlayerSkin(playerid));
+			SetPVarInt(playerid, "SkinShop_IsLeaveFromCp", 1);
+			
+			SkinShop_SelectSkin(playerid, SKINS_MINID, SKINS_MINID);
+			sshop_ShowTextDraws(playerid);
+			return 1;
+		}
+	}
+	return 0;
 }
 
 DialogCreate:ServiceSkin(playerid)
@@ -205,7 +215,6 @@ stock SkinShop_DeletePVars(playerid)
 {
 	DeletePVar(playerid, "SkinShop_Old");
 	DeletePVar(playerid, "SkinShop_CurrentSkin");
-	DeletePVar(playerid, "SkinShop_AtFittingRoom");
 	DeletePVar(playerid, "SkinShop_Interior");
 	DeletePVar(playerid, "SkinShop_PlayerAtSkinShop");
 	DeletePVar(playerid, "SkinShop_Coords_X");
@@ -239,7 +248,7 @@ stock IsPlayerAtSkinShop(playerid)
 	}
 
 	for (new id = 0; id < sizeof(SkinShops); id++) {
-		if (IsPlayerInRangeOfPoint(playerid, 2, SkinShops[id][Coord_X], SkinShops[id][Coord_Y], SkinShops[id][Coord_Z])) {
+		if (IsPlayerInRangeOfPoint(playerid, 2, SkinShops[id][ss_x], SkinShops[id][ss_y], SkinShops[id][ss_z])) {
 			SetPVarInt(playerid, "SkinShop_PlayerAtSkinShop", 1);
 			return 1;
 		}

@@ -43,7 +43,7 @@ new Businesses[][BusinessInfo] = {
 	{"Club-Disco", 50000, 1600, 10, "Unknown", 0, 0, 1, 0,		500.7049, -13.3777, 1000.6797},
 	{"Lil Probe-Inn", 47000, 1100, 6, "Unknown", 0, 0, 1, 0,	-225.7790, 1403.9459, 27.7734},
 	{"Sex Shop", 40000, 950, 7, "Unknown", 0, 0, 1, 0,			-103.5525, -22.4661, 1000.7188},
-	{"Strip Club", 60000, 1400, 10, "Unknown", 0, 0, 1, 1,		1212.3918, -10.9459, 1000.9219},
+	{"Strip Club", 60000, 1400, 10, "Unknown", 0, 0, 1, 0,		1212.3918, -10.9459, 1000.9219},
 	{"The Big Spread Ranch", 48000, 1450, 9, "Unknown", 0, 0, 1, 0, 1208.5027, -32.6044, 1000.9531},
 	{"Jizzys", 58000, 1675, 13, "Unknown", 0, 0, 1, 0,			-2650.0667, 1409.2106, 906.2734},
 	{"Cobra Marital Arts", 15000, 800, 5, "Unknown", 0, 0, 1, 0, 768.2014, -36.9461, 1000.6865},
@@ -54,8 +54,8 @@ new Businesses[][BusinessInfo] = {
 	{"Wang Cars", 25000, 1250, 8, "Unknown", 0, 0, 1, 1,		-1957.5327, 300.2131, 35.4688},
 	{"Emerald Isle", 160000, 4100, 17, "Unknown", 0, 0, 1, 1,	2127.5940, 2370.4255, 10.8203},
 	{"The Visage", 145000, 3800, 17, "Unknown", 0, 0, 1, 1,		2022.5179, 1916.6848, 12.3397},
-	{"Caligulas", 3750000, 19900, 20, "Unknown", 0, 0, 1, 1,	2235.5408, 1679.0402, 1008.3594},
-	{"Four Dragons", 2050000, 16000, 20, "Unknown", 0, 0, 1, 1,	1993.9758, 1017.8945, 994.8906},
+	{"Caligulas", 3750000, 19900, 20, "Unknown", 0, 0, 1, 0,	2235.5408, 1679.0402, 1008.3594},
+	{"Four Dragons", 2050000, 16000, 20, "Unknown", 0, 0, 1, 0,	1993.9758, 1017.8945, 994.8906},
 	{"Casino", 50000, 8000, 20, "Unknown", 0, 0, 1, 0,			1130.7843, -2.0449, 1000.6797},
 	{"Restroom", 100000, 3300, 40, "Unknown", 0, 0, 1, 0,		-789.4709,509.9566,1367.3745},
 	{"Reeces", 100000, 3300, 40, "Unknown", 0, 0, 1, 0,			414.4313,-10.6664,1001.8120},
@@ -139,7 +139,7 @@ stock business_OnGameModeInit()
 	
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{
-		CreatePickup(1274, 49, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.5);	//синий домик
+		CreatePickup(1274, 49, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z], -1);
 		
 		if (Businesses[id][Business_ShowIcon] == 1)
 		{

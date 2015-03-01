@@ -141,8 +141,8 @@ stock interior_OnGameModeInit()
 		CreatePickup(19198, 1, interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z] + 0.5);
 		CreatePickupText("Вход", interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z]);
 		
-		CreatePickup(19198, 1, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z] + 0.2);
-		CreatePickupText("Выход", interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z]);
+		CreatePickup(19198, 1, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z] + 0.2, i + 1);
+		CreatePickupText("Выход", interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z], i + 1);
 		
 		if (interior_EnterExits[i][iee_icon_ID] != -1)
 		{
@@ -158,21 +158,20 @@ stock interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	#pragma unused oldkeys, newkeys
 	for (new i = 0; i < sizeof(interior_EnterExits); i++)
 	{
-		if (GetPlayerVirtualWorld(playerid) != 0) {
-			continue;
-		}
 		if (IsPlayerInRangeOfPoint(playerid, 2, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z]))
 		{
-			new id = GetPVarInt(playerid, "interior_Index");
+			new id = interior_GetPlayerIndex(playerid);
 			SetPlayerInterior(playerid, 0);
+			SetPlayerVirtualWorld(playerid, 0);
 			oSetPlayerPos(playerid, interior_EnterExits[id][iee_enter_X], interior_EnterExits[id][iee_enter_Y], interior_EnterExits[id][iee_enter_Z]);
 			SetPlayerFacingAngle(playerid, interior_EnterExits[id][iee_enter_A]);
 			return 1;
 		}
 		else if (IsPlayerInRangeOfPoint(playerid, 2, interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z]+0.25))
 		{
-			SetPVarInt(playerid, "interior_Index", i);
+			interior_SetPlayerIndex(playerid, i);
 			SetPlayerInterior(playerid, interior_EnterExits[i][iee_interior_ID]);
+			SetPlayerVirtualWorld(playerid, i + 1);
 			oSetPlayerPos(playerid, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z]);
 			SetPlayerFacingAngle(playerid, interior_EnterExits[i][iee_exit_A]);
 			return 1;
@@ -192,4 +191,14 @@ stock IsPlayerAtEnterExit(playerid)
 		}
 	}
 	return 0;
+}
+
+stock interior_GetPlayerIndex(playerid)
+{
+	return GetPVarInt(playerid, "interior_Index");
+}
+
+stock interior_SetPlayerIndex(playerid, index)
+{
+	SetPVarInt(playerid, "interior_Index", index);
 }

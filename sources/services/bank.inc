@@ -18,7 +18,14 @@ static
 	ProfitCountVip = BANK_PROFIT_VIP,
 	MaxBankMoney = MAX_BANK_MONEY;
 
-new Banks[][CoordInfo] = {
+enum Bank_Info {
+	Float:bank_x,
+	Float:bank_y,
+	Float:bank_z,
+	bank_checkpoint,
+}
+
+new Banks[][Bank_Info] = {
 	{-22.9578, -54.8951, 1003.5469}, // LV 24/7 bank
 	{-27.0310, -89.5228, 1003.5469} // 24/7 bank
 };
@@ -39,20 +46,22 @@ stock bank_SaveConfig(file_config)
 
 stock bank_OnGameModeInit()
 {
-	for (new bankid = 0; bankid < sizeof(Banks); bankid++)
-	{
-	    CreatePickup(1274, 23, Banks[bankid][Coord_X], Banks[bankid][Coord_Y], Banks[bankid][Coord_Z]);
-		CreatePickupText("Банк", Banks[bankid][Coord_X], Banks[bankid][Coord_Y], Banks[bankid][Coord_Z]);
+	for (new bankid = 0; bankid < sizeof(Banks); bankid++) {
+		Banks[bankid][bank_checkpoint] = Checkpoint_Create(Banks[bankid][bank_x], Banks[bankid][bank_y], Banks[bankid][bank_z], 1.5, .streamdistance = 20.0);
 	}
 	Log_Game(lang_texts[2][0]);
 	return 1;
 }
 
-stock bank_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+stock bank_OnPlayerEnterCheckpoint(playerid, cp)
 {
-	#pragma unused oldkeys, newkeys
-	Dialog_Show(playerid, Dialog:BankStart);
-	return 1;
+	for (new id = 0; id < sizeof(Banks); id++) {
+		if (cp == Banks[id][bank_checkpoint]) {
+			Dialog_Show(playerid, Dialog:BankStart);
+			return 1;
+		}
+	}
+	return 0;
 }
 
 DialogCreate:BankStart(playerid)
@@ -269,7 +278,7 @@ stock IsPlayerAtBank(playerid)
 {
 	for (new bankid = 0; bankid < sizeof(Banks); bankid++)
 	{
-		if (IsPlayerInRangeOfPoint(playerid, 2, Banks[bankid][Coord_X], Banks[bankid][Coord_Y], Banks[bankid][Coord_Z]))
+		if (IsPlayerInRangeOfPoint(playerid, 2, Banks[bankid][bank_x], Banks[bankid][bank_y], Banks[bankid][bank_z]))
 		{
 			return 1;
 		}

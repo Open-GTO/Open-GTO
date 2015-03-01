@@ -328,8 +328,14 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 
 public OnPlayerEnterCheckpoint(playerid)
 {
+	new cp = Checkpoint_GetPlayerVisible(playerid);
 	dm_OnPlayerEnterCheckpoint(playerid);
-	trucker_OnPlayerEnterCheckpoint(playerid);
+	trucker_OnPlayerEnterCheckpoint(playerid, cp);
+	wshop_OnPlayerEnterCheckpoint(playerid, cp);
+	bar_OnPlayerEnterCheckpoint(playerid, cp);
+	ff_OnPlayerEnterCheckpoint(playerid, cp);
+	ss_OnPlayerEnterCheckpoint(playerid, cp);
+	fights_OnPlayerEnterCheckpoint(playerid, cp);
 	return 1;
 }
 
@@ -497,30 +503,6 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 		if (IsPlayerAtBusiness(playerid)) {
 			return business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		}
-
-		if (IsPlayerAtBank(playerid)) {
-			return bank_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		}
-
-		if (IsPlayerAtWeaponShop(playerid)) {
-			return wshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		}
-
-		if (fights_IsPlayerAtTeacher(playerid)) {
-			return fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		}
-
-		if (IsPlayerAtFastFood(playerid)) {
-			return fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		}
-
-		if (IsPlayerAtBar(playerid)) {
-			return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		}
-
-		if (IsPlayerAtSkinShop(playerid)) {
-			return sshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		}
 		
 		new player_state = GetPlayerState(playerid);

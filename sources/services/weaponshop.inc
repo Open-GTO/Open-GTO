@@ -15,7 +15,14 @@
 #pragma library weaponshop
 
 
-new weapon_Shops[][CoordInfo] = {
+enum weapon_Shop_Info {
+	Float:wshop_x,
+	Float:wshop_y,
+	Float:wshop_z,
+	wshop_checkpoint,
+}
+
+new weapon_Shops[][weapon_Shop_Info] = {
 	{295.3583, -80.1250, 1001.5156}, // LVammunation1
 	{290.0941, -109.2533, 1001.5156}, // LSAmmunation2
 	{296.1441, -37.7606, 1001.5156}, // LSAmmunation3
@@ -26,8 +33,7 @@ new weapon_Shops[][CoordInfo] = {
 stock wshop_OnGameModeInit()
 {
 	for (new id = 0; id < sizeof(weapon_Shops); id++) {
-		CreatePickup(1247, 1, weapon_Shops[id][Coord_X], weapon_Shops[id][Coord_Y], weapon_Shops[id][Coord_Z]);
-		CreatePickupText("Оружие", weapon_Shops[id][Coord_X], weapon_Shops[id][Coord_Y], weapon_Shops[id][Coord_Z]);
+		weapon_Shops[id][wshop_checkpoint] = Checkpoint_Create(weapon_Shops[id][wshop_x], weapon_Shops[id][wshop_y], weapon_Shops[id][wshop_z], 1.5, .streamdistance = 20.0);
 	}
 	Log_Game(lang_texts[17][44]);
 	return 1;
@@ -99,11 +105,15 @@ DialogResponse:ServiceWeaponBuy(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-stock wshop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+stock wshop_OnPlayerEnterCheckpoint(playerid, cp)
 {
-	#pragma unused oldkeys, newkeys
-	Dialog_Show(playerid, Dialog:ServiceWeapon);
-	return 1;
+	for (new id = 0; id < sizeof(weapon_Shops); id++) {
+		if (cp == weapon_Shops[id][wshop_checkpoint]) {
+			Dialog_Show(playerid, Dialog:ServiceWeapon);
+			return 1;
+		}
+	}
+	return 0;
 }
 
 stock wshop_Buy(playerid, weaponid, bullets)
@@ -200,7 +210,7 @@ stock wshop_GetSelectedWeaponID(playerid, listitem)
 stock IsPlayerAtWeaponShop(playerid)
 {
 	for (new id = 0; id < sizeof(weapon_Shops); id++) {
-		if (IsPlayerInRangeOfPoint(playerid, 2, weapon_Shops[id][Coord_X], weapon_Shops[id][Coord_Y], weapon_Shops[id][Coord_Z])) {
+		if (IsPlayerInRangeOfPoint(playerid, 2, weapon_Shops[id][wshop_x], weapon_Shops[id][wshop_y], weapon_Shops[id][wshop_z])) {
 			return 1;
 		}
 	}

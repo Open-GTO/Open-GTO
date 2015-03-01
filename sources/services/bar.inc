@@ -10,8 +10,14 @@
 #define _bar_included
 #pragma library bar
 
+enum Bar_Info {
+	Float:bar_x,
+	Float:bar_y,
+	Float:bar_z,
+	bar_checkpoint,
+}
 
-new Bars[][CoordInfo] = {
+new Bars[][Bar_Info] = {
 	{495.3609, -76.0381, 998.7578}, // green bar
 	{681.5761, -453.8308, -25.6172}, // Welcome Pump(Dillimore)
 	{-2654.0112, 1413.2083, 906.2771}, // Jizzy's
@@ -39,9 +45,8 @@ new Drinks[][DrinkInfo] = {
 
 stock bar_OnGameModeInit()
 {
-	for (new b_id = 0; b_id < sizeof(Bars); b_id++) {
-	    CreatePickup(1551, 23, Bars[b_id][Coord_X], Bars[b_id][Coord_Y], Bars[b_id][Coord_Z]);
-		CreatePickupText("Бар", Bars[b_id][Coord_X], Bars[b_id][Coord_Y], Bars[b_id][Coord_Z]);
+	for (new id = 0; id < sizeof(Bars); id++) {
+		Bars[id][bar_checkpoint] = Checkpoint_Create(Bars[id][bar_x], Bars[id][bar_y], Bars[id][bar_z], 1.5, .streamdistance = 20.0);
 	}
 	Log_Game(lang_texts[17][12]);
 	return 1;
@@ -49,10 +54,7 @@ stock bar_OnGameModeInit()
 
 stock bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	if ( PRESSED ( KEY_USING ) ) {
-		Dialog_Show(playerid, Dialog:ServiceBar);
-		return 1;
-	} else if ( PRESSED ( KEY_FIRE ) ) {
+	if ( PRESSED ( KEY_FIRE ) ) {
 		if (GetPVarInt(playerid, "bar_Drinking") == 1 && GetPVarInt(playerid, "bar_Gulping") == 0) {
 			GivePVarInt(playerid, "bar_Gulps", 1);
 			SetPVarInt(playerid, "bar_Gulping", 1);
@@ -63,6 +65,17 @@ stock bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		bar_GulpStop(playerid);
 	}
 	return 1;
+}
+
+stock bar_OnPlayerEnterCheckpoint(playerid, cp)
+{
+	for (new id = 0; id < sizeof(Bars); id++) {
+		if (cp == Bars[id][bar_checkpoint]) {
+			Dialog_Show(playerid, Dialog:ServiceBar);
+			return 1;
+		}
+	}
+	return 0;
 }
 
 forward bar_Gulp(playerid);
@@ -147,7 +160,7 @@ stock bar_GulpStop(playerid)
 stock IsPlayerAtBar(playerid)
 {
 	for (new b_id = 0; b_id < sizeof(Bars); b_id++) {
-		if (IsPlayerInRangeOfPoint(playerid, 2, Bars[b_id][Coord_X], Bars[b_id][Coord_Y], Bars[b_id][Coord_Z])) {
+		if (IsPlayerInRangeOfPoint(playerid, 2, Bars[b_id][bar_x], Bars[b_id][bar_y], Bars[b_id][bar_z])) {
 			return 1;
 		}
 	}

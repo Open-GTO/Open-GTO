@@ -21,6 +21,7 @@ enum FightInfo {
 	Float:Coord_X,
 	Float:Coord_Y,
 	Float:Coord_Z,
+	Checkpoint
 };
 
 new fights_Teachers[][FightInfo] = {
@@ -32,17 +33,12 @@ new fights_Teachers[][FightInfo] = {
 
 stock fights_OnGameModeInit()
 {
-	new string[MAX_STRING];
-
-	for (new fightid = 0; fightid < sizeof(fights_Teachers); fightid++) {
-		if (fights_Teachers[fightid][IsHaveTeacher] == false) {
+	for (new id = 0; id < sizeof(fights_Teachers); id++) {
+		if (fights_Teachers[id][IsHaveTeacher] == false) {
 			continue;
 		}
 
-		CreatePickup(19555, 23, fights_Teachers[fightid][Coord_X], fights_Teachers[fightid][Coord_Y], fights_Teachers[fightid][Coord_Z]);
-
-		format(string, sizeof(string), lang_texts[19][19], fights_Teachers[fightid][StyleName]);
-		CreatePickupText(string, fights_Teachers[fightid][Coord_X], fights_Teachers[fightid][Coord_Y], fights_Teachers[fightid][Coord_Z]);
+		fights_Teachers[id][Checkpoint] = Checkpoint_Create(fights_Teachers[id][Coord_X], fights_Teachers[id][Coord_Y], fights_Teachers[id][Coord_Z], 1.5, .streamdistance = 20.0);
 	}
 	Log_Game(lang_texts[19][0]);
 	return 1;
@@ -67,6 +63,32 @@ stock fights_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 	Dialog_Show(playerid, Dialog:ServiceFights);
 	return 1;
+}
+
+stock fights_OnPlayerEnterCheckpoint(playerid, cp)
+{
+	new
+		string[MAX_STRING],
+		teacherid = fights_GetPlayerTeacherID(playerid);
+
+	for (new id = 0; id < sizeof(fights_Teachers); id++) {
+		if (cp == fights_Teachers[id][Checkpoint]) {
+			if (fights_Teachers[teacherid][StyleID] <= pl_fights_GetPlayerStyle(playerid)) {
+				format(string, sizeof(string), lang_texts[19][1], fights_Teachers[teacherid][StyleName]);
+				Dialog_Message(playerid, lang_texts[19][2], string, lang_texts[19][3]);
+				return 1;
+			}
+
+			if (fights_Teachers[teacherid][StyleID] - 1 > pl_fights_GetPlayerStyle(playerid)) {
+				Dialog_Message(playerid, lang_texts[19][2], lang_texts[19][4], lang_texts[19][3]);
+				return 1;
+			}
+
+			Dialog_Show(playerid, Dialog:ServiceFights);
+			return 1;
+		}
+	}
+	return 0;
 }
 
 DialogCreate:ServiceFights(playerid)
@@ -104,13 +126,13 @@ DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
 
 stock fights_GetPlayerTeacherID(playerid)
 {
-	for (new fightid = 0; fightid < sizeof(fights_Teachers); fightid++) {
-		if (fights_Teachers[fightid][IsHaveTeacher] == false) {
+	for (new id = 0; id < sizeof(fights_Teachers); id++) {
+		if (fights_Teachers[id][IsHaveTeacher] == false) {
 			continue;
 		}
 
-		if (IsPlayerInRangeOfPoint(playerid, 2.0, fights_Teachers[fightid][Coord_X], fights_Teachers[fightid][Coord_Y], fights_Teachers[fightid][Coord_Z])) {
-			return fightid;
+		if (IsPlayerInRangeOfPoint(playerid, 2.0, fights_Teachers[id][Coord_X], fights_Teachers[id][Coord_Y], fights_Teachers[id][Coord_Z])) {
+			return id;
 		}
 	}
 	return -1;

@@ -10,8 +10,14 @@
 #define _fastfood_included
 #pragma library fastfood
 
+enum Fastfood_Info {
+	Float:ff_x,
+	Float:ff_y,
+	Float:ff_z,
+	ff_checkpoint,
+}
 
-new FastFoods[][CoordInfo] = {
+new FastFoods[][Fastfood_Info] = {
 	{373.4858, -119.4608, 1001.4922}, // LS pizza
 	{377.4426, -67.5379, 1001.5078}, // LS burger
 	{369.3667, -6.3469, 1001.8516}, // LS chicken
@@ -34,19 +40,22 @@ new Food[][FoodInfo] = {
 
 stock fastfood_OnGameModeInit()
 {
-	for (new ff_id = 0; ff_id < sizeof(FastFoods); ff_id++) {
-		CreatePickup(2703 , 23, FastFoods[ff_id][Coord_X], FastFoods[ff_id][Coord_Y], FastFoods[ff_id][Coord_Z]);
-		CreatePickupText("Ôàñòôóä", FastFoods[ff_id][Coord_X], FastFoods[ff_id][Coord_Y], FastFoods[ff_id][Coord_Z]);
+	for (new id = 0; id < sizeof(FastFoods); id++) {
+		FastFoods[id][ff_checkpoint] = Checkpoint_Create(FastFoods[id][ff_x], FastFoods[id][ff_y], FastFoods[id][ff_z], 1.5, .streamdistance = 20.0);
 	}
 	Log_Game(lang_texts[17][1]);
 	return 1;
 }
 
-stock fastfood_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+stock ff_OnPlayerEnterCheckpoint(playerid, cp)
 {
-	#pragma unused oldkeys, newkeys
-	Dialog_Show(playerid, Dialog:ServiceFastfood);
-	return 1;
+	for (new id = 0; id < sizeof(FastFoods); id++) {
+		if (cp == FastFoods[id][ff_checkpoint]) {
+			Dialog_Show(playerid, Dialog:ServiceFastfood);
+			return 1;
+		}
+	}
+	return 0;
 }
 
 DialogCreate:ServiceFastfood(playerid)
@@ -98,7 +107,7 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 stock IsPlayerAtFastFood(playerid)
 {
 	for (new ff_id = 0; ff_id < sizeof(FastFoods); ff_id++) {
-		if (IsPlayerInRangeOfPoint(playerid, 2, FastFoods[ff_id][Coord_X], FastFoods[ff_id][Coord_Y], FastFoods[ff_id][Coord_Z])) {
+		if (IsPlayerInRangeOfPoint(playerid, 2, FastFoods[ff_id][ff_x], FastFoods[ff_id][ff_y], FastFoods[ff_id][ff_z])) {
 			return 1;
 		}
 	}

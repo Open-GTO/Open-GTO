@@ -308,13 +308,12 @@ stock trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	return 1;
 }
 
-stock trucker_OnPlayerEnterCheckpoint(playerid)
+stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
 {
 	if (!IsMissionEnabled(mission_trucker)) {
 		return 1;
 	}
 
-	new cp = Checkpoint_GetPlayerVisible(playerid);
 	if (cp != player_checkpoint[playerid]) {
 		return 1;
 	}
