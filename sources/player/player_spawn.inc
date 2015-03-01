@@ -109,8 +109,8 @@ stock pl_spawn_OnPlayerRequestClass(playerid, classid)
 	if (player_IsLogin(playerid)) {
 		TogglePlayerSpectating(playerid, 1);
 
-		new interior, world, Float:spawn_pos[4];
-		pl_spawn_GetSpawnPos(playerid, interior, world, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
+		new Float:spawn_pos[4];
+		pl_spawn_GetSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
 		SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
 		
 		TogglePlayerSpectating(playerid, 0);
@@ -131,7 +131,11 @@ stock pl_spawn_OnPlayerRequestClass(playerid, classid)
 stock pl_spawn_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused killerid, reason
-	player_SetCoord(playerid, 0, 0, 0.0, 0.0, 0.0, 0.0);
+	player_SetCoord(playerid, 0.0, 0.0, 0.0, 0.0);
+	
+	new Float:spawn_pos[4];
+	pl_spawn_GetSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
+	SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
 }
 
 DialogCreate:PlayerSpawnMenu(playerid)
@@ -219,9 +223,17 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-stock pl_spawn_GetSpawnPos(playerid, &interior, &world, &Float:spos_x, &Float:spos_y, &Float:spos_z, &Float:spos_a)
+stock pl_spawn_GetSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &Float:spos_a)
 {
-	player_GetCoord(playerid, interior, world, spos_x, spos_y, spos_z, spos_a);
+	player_GetCoord(playerid, spos_x, spos_y, spos_z, spos_a);
+
+	if (spos_z > 900.0) {
+		spos_x = 0.0;
+		spos_y = 0.0;
+		spos_z = 0.0;
+		spos_a = 0.0;
+		player_SetCoord(playerid, spos_x, spos_y, spos_z, spos_a);
+	}
 
 	if (spos_x != 0.0 && spos_y != 0.0 && spos_z != 0.0) {
 		return 1;
@@ -235,7 +247,7 @@ stock pl_spawn_GetSpawnPos(playerid, &interior, &world, &Float:spos_x, &Float:sp
 	}
 
 	if (house_id == SPAWN_HOUSE_NONE) {
-		new spawnid = pl_spawn_GetRandomID();
+		new spawnid = pl_spawn_GetRandomID(playerid);
 		spos_x = spawns_array[spawnid][spawn_x];
 		spos_y = spawns_array[spawnid][spawn_y];
 		spos_z = spawns_array[spawnid][spawn_z];
@@ -257,16 +269,26 @@ stock pl_spawn_GetSpawnPos(playerid, &interior, &world, &Float:spos_x, &Float:sp
 
 stock pl_spawn_SetSpawnPos(playerid)
 {
-	new interior, world, Float:spawn_pos[4];
-	pl_spawn_GetSpawnPos(playerid, interior, world, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
+	new Float:spawn_pos[4];
+	pl_spawn_GetSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
 
-	SetPlayerPosEx(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
+	SetPlayerPosEx(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0);
 	return 1;
 }
 
-stock pl_spawn_GetRandomID()
+stock pl_spawn_GetRandomID(playerid)
 {
-	return random( sizeof(spawns_array) + 1 );
+	if (GetPVarInt(playerid, "random_id") != -1) {
+		return GetPVarInt(playerid, "random_id");
+	}
+	new id = random( sizeof(spawns_array) + 1 );
+	SetPVarInt(playerid, "random_id", id);
+	return id;
+}
+
+stock pl_spawn_UpdateRandomID(playerid)
+{
+	SetPVarInt(playerid, "random_id", -1);
 }
 
 stock pl_spawn_SetPosByID(playerid, spawnid)
@@ -299,20 +321,16 @@ stock player_SetSpawnHouseID(playerid, houseid) {
 	SetPVarInt(playerid, "SpawnHouseID", houseid);
 }
 
-stock player_SetCoord(playerid, interior, world, Float:x, Float:y, Float:z, Float:a)
+stock player_SetCoord(playerid, Float:x, Float:y, Float:z, Float:a)
 {
-	SetPVarInt(playerid, "Interior", interior);
-	SetPVarInt(playerid, "World", world);
 	SetPVarFloat(playerid, "Coord_X", x);
 	SetPVarFloat(playerid, "Coord_Y", y);
 	SetPVarFloat(playerid, "Coord_Z", z);
 	SetPVarFloat(playerid, "Coord_A", a);
 }
 
-stock player_GetCoord(playerid, &interior, &world, &Float:x, &Float:y, &Float:z, &Float:a)
+stock player_GetCoord(playerid, &Float:x, &Float:y, &Float:z, &Float:a)
 {
-	interior = GetPVarInt(playerid, "Interior");
-	world = GetPVarInt(playerid, "World");
 	x = GetPVarFloat(playerid, "Coord_X");
 	y = GetPVarFloat(playerid, "Coord_Y");
 	z = GetPVarFloat(playerid, "Coord_Z");

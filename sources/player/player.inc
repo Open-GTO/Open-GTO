@@ -51,6 +51,7 @@ stock player_OnPlayerSpawn(playerid)
 	PushHide(playerid);
 	pl_anims_OnPlayerSpawn(playerid);
 	pl_textdraw_Show(playerid);
+	pl_spawn_UpdateRandomID(playerid);
 	return 1;
 }
 
@@ -159,8 +160,8 @@ stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 stock player_OnLogin(playerid)
 {
 	// spawn player
-	new interior, world, Float:spawn_pos[4];
-	pl_spawn_GetSpawnPos(playerid, interior, world, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
+	new Float:spawn_pos[4];
+	pl_spawn_GetSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
 	SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
 	TogglePlayerSpectating(playerid, 0);
 

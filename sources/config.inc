@@ -226,11 +226,11 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define KEY_NAME			"Y"
 #define PICKUP_TEXT			"\n{33AA33}Íàæìèòå êíîïêó '{FFFFFF}"KEY_NAME"{33AA33}'"
 
-stock Text3D:CreatePickupText(text[], Float:pos_x, Float:pos_y, Float:pos_z)
+stock Text3D:CreatePickupText(text[], Float:pos_x, Float:pos_y, Float:pos_z, world = 0)
 {
 	new string[MAX_STRING];
 	format(string, sizeof(string), "%s%s", text, PICKUP_TEXT);
-	return Create3DTextLabel(string, 0xFFFFFFFF, pos_x, pos_y, pos_z, 20.0, 0, 1);
+	return Create3DTextLabel(string, 0xFFFFFFFF, pos_x, pos_y, pos_z, 20.0, world, 1);
 }
 
 enum clickText_Info {

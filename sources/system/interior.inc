@@ -163,7 +163,7 @@ stock interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		}
 		if (IsPlayerInRangeOfPoint(playerid, 2, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z]))
 		{
-			new id = interior_GetPlayerIndex(playerid);
+			new id = GetPVarInt(playerid, "interior_Index");
 			SetPlayerInterior(playerid, 0);
 			oSetPlayerPos(playerid, interior_EnterExits[id][iee_enter_X], interior_EnterExits[id][iee_enter_Y], interior_EnterExits[id][iee_enter_Z]);
 			SetPlayerFacingAngle(playerid, interior_EnterExits[id][iee_enter_A]);
@@ -171,7 +171,7 @@ stock interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		}
 		else if (IsPlayerInRangeOfPoint(playerid, 2, interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z]+0.25))
 		{
-			interior_SetPlayerIndex(playerid, i);
+			SetPVarInt(playerid, "interior_Index", i);
 			SetPlayerInterior(playerid, interior_EnterExits[i][iee_interior_ID]);
 			oSetPlayerPos(playerid, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z]);
 			SetPlayerFacingAngle(playerid, interior_EnterExits[i][iee_exit_A]);
@@ -192,14 +192,4 @@ stock IsPlayerAtEnterExit(playerid)
 		}
 	}
 	return 0;
-}
-
-stock interior_GetPlayerIndex(playerid)
-{
-	return GetPVarInt(playerid, "interior_Index");
-}
-
-stock interior_SetPlayerIndex(playerid, index)
-{
-	SetPVarInt(playerid, "interior_Index", index);
 }
