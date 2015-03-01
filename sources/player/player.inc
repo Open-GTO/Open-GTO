@@ -211,7 +211,7 @@ stock player_OnLogin(playerid)
 
 	if (strlen(gangname) > 0) {
 		new tmpname[MAX_STRING];
-		format(tmpname, sizeof(tmpname), "%s%s"GTO_FILES_FORMAT, GangDB, gangname);
+		format(tmpname, sizeof(tmpname), "%s%s"DATA_FILES_FORMAT, GangDB, gangname);
 
 		if (!ini_fileExist(tmpname)) {
 			player_SetGangName(playerid, nullstr);

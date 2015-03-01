@@ -29,7 +29,7 @@ stock lang_SaveConfig(file_config)
 stock lang_OnGameModeInit()
 {
 	new lang_file[MAX_STRING];
-	format(lang_file, sizeof(lang_file), "%sLanguage-%s%s", GTO_FILES_FOLDER, lang_use, GTO_FILES_FORMAT);
+	format(lang_file, sizeof(lang_file), "%slang_%s%s", DATA_FILES_FOLDER, lang_use, DATA_FILES_FORMAT);
 	lang_ReadFile(lang_file);
 
 	GameMSG("SERVER: Lang module init(%s)", lang_file);

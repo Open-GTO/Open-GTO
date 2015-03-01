@@ -83,7 +83,7 @@ stock business_LoadAll()
 	new file_business, businessdbname[MAX_STRING];
 	for (new i = 0;i < sizeof(Businesses); i++)
 	{
-		format(businessdbname, sizeof(businessdbname), "%s%s"GTO_FILES_FORMAT, BusinessDB, Businesses[i][Business_Name]);
+		format(businessdbname, sizeof(businessdbname), "%s%s"DATA_FILES_FORMAT, BusinessDB, Businesses[i][Business_Name]);
 		if (!ini_fileExist(businessdbname))
 		{
 			continue;
@@ -111,7 +111,7 @@ stock business_SaveAll()
 	new file_business, businessdbname[MAX_STRING];
 	for (new i = 0; i < sizeof(Businesses); i++)
 	{
-		format(businessdbname, sizeof(businessdbname), "%s%s"GTO_FILES_FORMAT, BusinessDB, Businesses[i][Business_Name]);
+		format(businessdbname, sizeof(businessdbname), "%s%s"DATA_FILES_FORMAT, BusinessDB, Businesses[i][Business_Name]);
 		file_business = (!ini_fileExist(businessdbname)) ? ini_createFile(businessdbname) : ini_openFile(businessdbname);
 		ini_setString(file_business, "Name", Businesses[i][Business_Name]);
 		ini_setInteger(file_business, "Cost", Businesses[i][Business_Cost]);
@@ -620,7 +620,7 @@ stock CheckBusinessOwners()
 			continue;
 		}
 		
-		format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, Businesses[i][Business_Owner]);
+		format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, AccountDB, Businesses[i][Business_Owner]);
 		if (!ini_fileExist(filename_account))
 		{
 			continue;

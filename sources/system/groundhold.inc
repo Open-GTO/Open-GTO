@@ -50,7 +50,7 @@ stock groundhold_LoadAll()
 {
 	new file_gh, filename_gh[MAX_STRING];
 	for (new i = 0; i < sizeof(Groundholds); i++) {
-		format(filename_gh, sizeof(filename_gh), "%sid_%d"GTO_FILES_FORMAT, GroundholdDB, Groundholds[i][gh_id]);
+		format(filename_gh, sizeof(filename_gh), "%sid_%d"DATA_FILES_FORMAT, GroundholdDB, Groundholds[i][gh_id]);
 		if (!ini_fileExist(filename_gh)) {
 			continue;
 		}
@@ -75,7 +75,7 @@ stock groundhold_SaveAll()
 {
 	new file_gh, filename_gh[MAX_STRING];
 	for (new i = 0; i < sizeof(Groundholds); i++) {
-		format(filename_gh, sizeof(filename_gh), "%sid_%d"GTO_FILES_FORMAT, GroundholdDB, Groundholds[i][gh_id]);
+		format(filename_gh, sizeof(filename_gh), "%sid_%d"DATA_FILES_FORMAT, GroundholdDB, Groundholds[i][gh_id]);
 		file_gh = (!ini_fileExist(filename_gh)) ? ini_createFile(filename_gh) : ini_openFile(filename_gh);
 
 		ini_setString(file_gh, "Name", Groundholds[i][gh_name]);

@@ -236,7 +236,7 @@ stock houses_LoadAll()
 	new file_housing, housesdbname[MAX_STRING];
 	for (new i = 0; i < sizeof(Houses); i++)
 	{
-		format(housesdbname, sizeof(housesdbname), "%s%s"GTO_FILES_FORMAT, HousesDB, Houses[i][Houses_Name]);
+		format(housesdbname, sizeof(housesdbname), "%s%s"DATA_FILES_FORMAT, HousesDB, Houses[i][Houses_Name]);
 		if (!ini_fileExist(housesdbname)) continue;
 		file_housing = ini_openFile(housesdbname);
 		ini_getString(file_housing, "Name", Houses[i][Houses_Name], MAX_NAME);
@@ -274,7 +274,7 @@ stock houses_SaveAll()
 stock SaveHous(housid)
 {
 	new housesdbname[MAX_STRING];
-	format(housesdbname, sizeof(housesdbname), "%s%s"GTO_FILES_FORMAT, HousesDB, Houses[housid][Houses_Name]);
+	format(housesdbname, sizeof(housesdbname), "%s%s"DATA_FILES_FORMAT, HousesDB, Houses[housid][Houses_Name]);
 	new file_housing = (!ini_fileExist(housesdbname)) ? ini_createFile(housesdbname) : ini_openFile(housesdbname);
 	ini_setString(file_housing, "Name", Houses[housid][Houses_Name]);
 	ini_setInteger(file_housing, "Cost", Houses[housid][Houses_Cost]);
@@ -715,7 +715,7 @@ stock RentRoom(playerid)
 			GivePlayerBankMoney(owner_id, Houses[id][Houses_RentCost]);
 		} else {
 			new filename_player[MAX_STRING];
-			format(filename_player, sizeof(filename_player), "%s%s"GTO_FILES_FORMAT, PlayerDB, Houses[id][Houses_Owner]);
+			format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, PlayerDB, Houses[id][Houses_Owner]);
 			new file_player = ini_openFile(filename_player);
 			new bank_money;
 			ini_getInteger(file_player, "BankMoney", bank_money);
@@ -723,7 +723,7 @@ stock RentRoom(playerid)
 			ini_closeFile(file_player);
 		}
 		
-		format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, HousesDB, Houses[id][Houses_Name]);
+		format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, HousesDB, Houses[id][Houses_Name]);
 		new file_housing = ini_openFile(string);
 		ini_setInteger(file_housing, "Rentabil", 1);
 		ini_setString(file_housing, "RentName", oGetPlayerName(playerid));

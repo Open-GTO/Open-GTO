@@ -136,7 +136,7 @@ stock race_LoadAll()
 stock RaceBaseDBExists(racename[MAX_STRING])
 {
 	new rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"GTO_FILES_FORMAT, RaceBaseDB, racename);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, RaceBaseDB, racename);
 	if (!ini_fileExist(rdbname))
 	{
 		return 0;
@@ -147,7 +147,7 @@ stock RaceBaseDBExists(racename[MAX_STRING])
 stock RaceLoadBaseDB(raceid)
 { 
 	new temp[MAX_STRING], rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"GTO_FILES_FORMAT, RaceBaseDB, Race[raceid][race_name]);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, RaceBaseDB, Race[raceid][race_name]);
 	if (!ini_fileExist(rdbname))
 	{
 		return INVALID_RACE_ID;
@@ -210,7 +210,7 @@ stock RaceLoadBaseDB(raceid)
 stock RaceLoadRecordDB(raceid)
 {
 	new rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"GTO_FILES_FORMAT, RaceRecordDB, Race[raceid][race_name]);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, RaceRecordDB, Race[raceid][race_name]);
 	if (!ini_fileExist(rdbname)) return 0;
 	new file = ini_openFile(rdbname);
 	ini_getInteger(file, "Best_Time_Record", BestScore[raceid][race_score_time]);
@@ -248,7 +248,7 @@ stock RaceSaveBaseDB(raceid)
 		return;
 	}
 	new rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"GTO_FILES_FORMAT, RaceBaseDB, Race[raceid][race_name]);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, RaceBaseDB, Race[raceid][race_name]);
 	new file_race = (!ini_fileExist(rdbname)) ? ini_createFile(rdbname) : ini_openFile(rdbname);
 	ini_setString(file_race, "Name", Race[raceid][race_name]);
     ini_setInteger(file_race, "Race_Frequency", Race[raceid][race_frequency]);
@@ -277,7 +277,7 @@ stock RaceSaveBaseDB(raceid)
 stock RaceSaveRecordDB(raceid)
 {
 	new rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"GTO_FILES_FORMAT, RaceRecordDB, Race[raceid][race_name]);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, RaceRecordDB, Race[raceid][race_name]);
 	new file_race = (!ini_fileExist(rdbname)) ? ini_createFile(rdbname) : ini_openFile(rdbname);
 	ini_setString(file_race, "Name", Race[raceid][race_name]);
 	ini_setInteger(file_race, "Best_Time_Record", BestScore[raceid][race_score_time]);

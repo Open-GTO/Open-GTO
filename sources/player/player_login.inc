@@ -52,7 +52,7 @@ stock player_SaveEx(playerid)
 		playername[MAX_PLAYER_NAME + 1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
-	format(filename_player, sizeof(filename_player), "%s%s"GTO_FILES_FORMAT, PlayerDB, playername);
+	format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, PlayerDB, playername);
 
 	new file_player;
 	if (ini_fileExist(filename_player)) {
@@ -115,7 +115,7 @@ stock player_SaveEx(playerid)
 stock player_Login(playerid)
 {
 	new filename_player[MAX_STRING];
-	format(filename_player, sizeof(filename_player), "%s%s"GTO_FILES_FORMAT, PlayerDB, oGetPlayerName(playerid));
+	format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, PlayerDB, oGetPlayerName(playerid));
 
 	if (!ini_fileExist(filename_player)) {
 		player_Create(playerid);

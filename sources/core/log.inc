@@ -70,7 +70,7 @@ stock WriteLog(log, string[])
 			{
 				return 1;
 			}
-			log_str = GTO_FILES_FOLDER "Logging/GameLog/";
+			log_str = DATA_FILES_FOLDER "log/game/";
 		}
 		case ChatLog:
 		{
@@ -78,7 +78,7 @@ stock WriteLog(log, string[])
 			{
 				return 1;
 			}
-			log_str = GTO_FILES_FOLDER "Logging/ChatLog/";
+			log_str = DATA_FILES_FOLDER "log/player/";
 		}
 		case CMDLog:
 		{
@@ -86,7 +86,7 @@ stock WriteLog(log, string[])
 			{
 				return 1;
 			}
-			log_str = GTO_FILES_FOLDER "Logging/CMDLog/";
+			log_str = DATA_FILES_FOLDER "log/player/";
 		}
 		case DebugLog:
 		{
@@ -94,7 +94,7 @@ stock WriteLog(log, string[])
 			{
 				return 1;
 			}
-			log_str = GTO_FILES_FOLDER "Logging/DebugLog/";
+			log_str = DATA_FILES_FOLDER "log/debug/";
 		}
 	}
 	new filestring[MAX_STRING];

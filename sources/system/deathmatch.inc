@@ -129,7 +129,7 @@ stock deathmatch_LoadAll()
 stock DeathmatchBaseDBExists(dmname[MAX_STRING])
 { 
 	new rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"GTO_FILES_FORMAT, DMBaseDB, dmname);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, DMBaseDB, dmname);
 	if (!ini_fileExist(rdbname))
 	{
 		return 0;
@@ -140,7 +140,7 @@ stock DeathmatchBaseDBExists(dmname[MAX_STRING])
 stock DeathmatchLoadBaseDB(dmid)
 {
 	new temp[MAX_STRING], rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"GTO_FILES_FORMAT, DMBaseDB, Deathmatch[dmid][dm_name]);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, DMBaseDB, Deathmatch[dmid][dm_name]);
 	if (!ini_fileExist(rdbname))
 	{
 		return INVALID_DM_ID;
@@ -244,7 +244,7 @@ stock DeathmatchLoadBaseDB(dmid)
 stock DeathmatchLoadRecordDB(dmid)
 {
 	new rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"GTO_FILES_FORMAT, DMRecordDB, Deathmatch[dmid][dm_name]);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, DMRecordDB, Deathmatch[dmid][dm_name]);
 	if (!ini_fileExist(rdbname)) return 0;
 	new file_dm = ini_openFile(rdbname);
 	ini_getInteger(file_dm, "Best_Score_Record", DMBestScore[dmid][dm_score_record]);
@@ -280,7 +280,7 @@ stock DeathmatchSaveBaseDB(dmid)
 {
 	if (DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED) return;
 	new temp[MAX_STRING], rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"GTO_FILES_FORMAT, DMBaseDB, Deathmatch[dmid][dm_name]);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, DMBaseDB, Deathmatch[dmid][dm_name]);
 	new file_dm = (!ini_fileExist(rdbname)) ? ini_createFile(rdbname) : ini_openFile(rdbname);
 	ini_setString(file_dm, "Name", Deathmatch[dmid][dm_name]);
 	ini_setInteger(file_dm, "Frequency", Deathmatch[dmid][dm_frequency]);
@@ -316,7 +316,7 @@ stock DeathmatchSaveBaseDB(dmid)
 stock DeathmatchSaveRecordDB(dmid)
 {
 	new rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"GTO_FILES_FORMAT, DMRecordDB, Deathmatch[dmid][dm_name]);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, DMRecordDB, Deathmatch[dmid][dm_name]);
 	new file_dm = (!ini_fileExist(rdbname)) ? ini_createFile(rdbname) : ini_openFile(rdbname);
 	ini_setString(file_dm, "Name", Deathmatch[dmid][dm_name]);
 	ini_setInteger(file_dm, "Best_Score_Record", DMBestScore[dmid][dm_score_record]);

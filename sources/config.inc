@@ -16,10 +16,10 @@
 #pragma dynamic 13000
 
 #define VERSION					"v2.0.0 alpha" // версия мода
-#define GTO_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
-#define GTO_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
+#define DATA_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
+#define DATA_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
-#define LANGUAGE_USE			"Russian" // используемый язык
+#define LANGUAGE_USE			"russian" // используемый язык
 
 #define MAX_STRING				160 // не менять, кол-во символов для большинства строковых переменных
 #define MAX_NAME				40 // кол-во символов для имён, паролей и пр.

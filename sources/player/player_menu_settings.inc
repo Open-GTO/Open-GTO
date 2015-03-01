@@ -83,7 +83,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 	
-	format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, AccountDB, Account_NewName);
+	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, AccountDB, Account_NewName);
 	// если файл есть, то выходим сразу-же
 	if (ini_fileExist(string)) {
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Изменение ника", lang_texts[1][9], "Назад", "Отмена");
@@ -116,12 +116,12 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	player_Save(playerid);
 	account_Save(playerid);
 	
-	format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, AccountDB, Account_LastName);
+	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, AccountDB, Account_LastName);
 	if (ini_fileExist(string)) {
 		ini_fileRemove(string);
 	}
 
-	format(string, sizeof(string), "%s%s"GTO_FILES_FORMAT, PlayerDB, Account_LastName);
+	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, PlayerDB, Account_LastName);
 	if (ini_fileExist(string)) {
 		ini_fileRemove(string);
 	}

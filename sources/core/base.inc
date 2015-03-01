@@ -11,24 +11,24 @@
 #pragma library base
 
 
-new ConfigDB[MAX_STRING] = GTO_FILES_FOLDER "Config/Base-cfg"GTO_FILES_FORMAT;
-new LevelDB[MAX_STRING] = GTO_FILES_FOLDER "Config/Levels-cfg"GTO_FILES_FORMAT;
-new GangDB[MAX_STRING] = GTO_FILES_FOLDER "Gang/";
-new AccountDB[MAX_STRING] = GTO_FILES_FOLDER "Account/";
-new PlayerDB[MAX_STRING] = GTO_FILES_FOLDER "Player/";
-new HousesDB[MAX_STRING] = GTO_FILES_FOLDER "Housing/";
-new BusinessDB[MAX_STRING] = GTO_FILES_FOLDER "Business/";
-new WeaponDB[MAX_STRING] = GTO_FILES_FOLDER "Weapon/";
-new GroundholdDB[MAX_STRING] = GTO_FILES_FOLDER "Groundhold/";
-new BanDB[MAX_STRING] = GTO_FILES_FOLDER "Banned/";
+new ConfigDB[MAX_STRING] = DATA_FILES_FOLDER "config/base-cfg"DATA_FILES_FORMAT;
+new LevelDB[MAX_STRING] = DATA_FILES_FOLDER "config/levels-cfg"DATA_FILES_FORMAT;
+new GangDB[MAX_STRING] = DATA_FILES_FOLDER "gang/";
+new AccountDB[MAX_STRING] = DATA_FILES_FOLDER "account/";
+new PlayerDB[MAX_STRING] = DATA_FILES_FOLDER "player/";
+new HousesDB[MAX_STRING] = DATA_FILES_FOLDER "housing/";
+new BusinessDB[MAX_STRING] = DATA_FILES_FOLDER "business/";
+new WeaponDB[MAX_STRING] = DATA_FILES_FOLDER "weapon/";
+new GroundholdDB[MAX_STRING] = DATA_FILES_FOLDER "groundhold/";
+new BanDB[MAX_STRING] = DATA_FILES_FOLDER "banned/";
 
-new DeathmatchDB[MAX_STRING] = GTO_FILES_FOLDER "Deathmatch/!Deathmatches"GTO_FILES_FORMAT;
-new DMBaseDB[MAX_STRING] = GTO_FILES_FOLDER "Deathmatch/";
-new DMRecordDB[MAX_STRING] = GTO_FILES_FOLDER "Deathmatch/Record/";
+new DeathmatchDB[MAX_STRING] = DATA_FILES_FOLDER "deathmatch/!deathmatches"DATA_FILES_FORMAT;
+new DMBaseDB[MAX_STRING] = DATA_FILES_FOLDER "deathmatch/";
+new DMRecordDB[MAX_STRING] = DATA_FILES_FOLDER "deathmatch/record/";
 
-new RaceDB[MAX_STRING] = GTO_FILES_FOLDER "Race/!Races"GTO_FILES_FORMAT;
-new RaceBaseDB[MAX_STRING] = GTO_FILES_FOLDER "Race/";
-new RaceRecordDB[MAX_STRING] = GTO_FILES_FOLDER "Race/Record/";
+new RaceDB[MAX_STRING] = DATA_FILES_FOLDER "race/!races"DATA_FILES_FORMAT;
+new RaceBaseDB[MAX_STRING] = DATA_FILES_FOLDER "race/";
+new RaceRecordDB[MAX_STRING] = DATA_FILES_FOLDER "race/record/";
 
 new nullstr[MAX_STRING];
 

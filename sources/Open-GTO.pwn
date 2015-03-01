@@ -33,7 +33,7 @@ Developers:
 #include "core/core_time"
 #include "core/dialog"
 #include "core/lang"
-#include "core/logging"
+#include "core/log"
 #include "lib/gtolib"
 #include "core/color"
 #include "core/pickup"

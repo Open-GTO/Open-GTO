@@ -42,7 +42,7 @@ stock account_SaveEx(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, playername);
+	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, AccountDB, playername);
 
 	new file_account;
 	if (ini_fileExist(filename_account)) {
@@ -98,7 +98,7 @@ stock account_Login(playerid, password[])
 		playername[MAX_PLAYER_NAME + 1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
-	format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, playername);
+	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, AccountDB, playername);
 	
 	if (!ini_fileExist(filename_account)) {
 		return 0;
@@ -200,7 +200,7 @@ stock account_ShowDialog(playerid)
 		playername[MAX_PLAYER_NAME + 1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
-	format(filename_account, sizeof(filename_account), "%s%s"GTO_FILES_FORMAT, AccountDB, playername);
+	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, AccountDB, playername);
 
 	if (ini_fileExist(filename_account)) {
 		Dialog_Show(playerid, Dialog:AccountLogin);

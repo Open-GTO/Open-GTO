@@ -96,7 +96,7 @@ stock weapon_LoadAll()
 		weapondbname[MAX_STRING];
 	
 	for (new i = 0; i < sizeof(Weapons); i++) {
-		format(weapondbname, sizeof(weapondbname), "%sid_%d"GTO_FILES_FORMAT, WeaponDB, Weapons[i][Weapon_ID]);
+		format(weapondbname, sizeof(weapondbname), "%sid_%d"DATA_FILES_FORMAT, WeaponDB, Weapons[i][Weapon_ID]);
 		if (!ini_fileExist(weapondbname)) {
 			continue;
 		}
@@ -120,7 +120,7 @@ stock weapon_SaveAll()
 		weapondbname[MAX_STRING];
 
 	for (new i = 0; i < sizeof(Weapons); i++) {
-		format(weapondbname, sizeof(weapondbname), "%sid_%d"GTO_FILES_FORMAT, WeaponDB, Weapons[i][Weapon_ID]);
+		format(weapondbname, sizeof(weapondbname), "%sid_%d"DATA_FILES_FORMAT, WeaponDB, Weapons[i][Weapon_ID]);
 		file_weapons = (!ini_fileExist(weapondbname)) ? ini_createFile(weapondbname) : ini_openFile(weapondbname);
 
 		ini_setString(file_weapons, "Name", Weapons[i][Weapon_Name]);
