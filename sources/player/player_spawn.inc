@@ -109,8 +109,8 @@ stock pl_spawn_OnPlayerRequestClass(playerid, classid)
 	if (player_IsLogin(playerid)) {
 		TogglePlayerSpectating(playerid, 1);
 
-		new Float:spawn_pos[4];
-		pl_spawn_GetSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
+		new interior, world, Float:spawn_pos[4];
+		pl_spawn_GetSpawnPos(playerid, interior, world, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
 		SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
 		
 		TogglePlayerSpectating(playerid, 0);
@@ -131,10 +131,7 @@ stock pl_spawn_OnPlayerRequestClass(playerid, classid)
 stock pl_spawn_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused killerid, reason
-	SetPVarFloat(playerid, "Coord_X", 0.0);
-	SetPVarFloat(playerid, "Coord_Y", 0.0);
-	SetPVarFloat(playerid, "Coord_Z", 0.0);
-	SetPVarFloat(playerid, "Coord_A", 0.0);
+	player_SetCoord(playerid, 0, 0, 0.0, 0.0, 0.0, 0.0);
 }
 
 DialogCreate:PlayerSpawnMenu(playerid)
@@ -222,20 +219,11 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-stock pl_spawn_GetSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &Float:spos_a)
+stock pl_spawn_GetSpawnPos(playerid, &interior, &world, &Float:spos_x, &Float:spos_y, &Float:spos_z, &Float:spos_a)
 {
-	spos_a = GetPVarFloat(playerid, "Coord_A");
+	player_GetCoord(playerid, interior, world, spos_x, spos_y, spos_z, spos_a);
 
-	if (GetPVarFloat(playerid, "Coord_Z") > 900.0) {
-		SetPVarFloat(playerid, "Coord_X", 0.0);
-		SetPVarFloat(playerid, "Coord_Y", 0.0);
-		SetPVarFloat(playerid, "Coord_Z", 0.0);
-	}
-
-	if (GetPVarFloat(playerid, "Coord_X") != 0.0 && GetPVarFloat(playerid, "Coord_Y") != 0.0 && GetPVarFloat(playerid, "Coord_Z") != 0.0) {
-		spos_x = GetPVarFloat(playerid, "Coord_X");
-		spos_y = GetPVarFloat(playerid, "Coord_Y");
-		spos_z = GetPVarFloat(playerid, "Coord_Z");
+	if (spos_x != 0.0 && spos_y != 0.0 && spos_z != 0.0) {
 		return 1;
 	}
 
@@ -269,10 +257,10 @@ stock pl_spawn_GetSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z
 
 stock pl_spawn_SetSpawnPos(playerid)
 {
-	new Float:spawn_pos[4];
-	pl_spawn_GetSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
+	new interior, world, Float:spawn_pos[4];
+	pl_spawn_GetSpawnPos(playerid, interior, world, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3]);
 
-	SetPlayerPosEx(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0);
+	SetPlayerPosEx(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
 	return 1;
 }
 
@@ -309,4 +297,24 @@ stock player_GetSpawnHouseID(playerid) {
 
 stock player_SetSpawnHouseID(playerid, houseid) {
 	SetPVarInt(playerid, "SpawnHouseID", houseid);
+}
+
+stock player_SetCoord(playerid, interior, world, Float:x, Float:y, Float:z, Float:a)
+{
+	SetPVarInt(playerid, "Interior", interior);
+	SetPVarInt(playerid, "World", world);
+	SetPVarFloat(playerid, "Coord_X", x);
+	SetPVarFloat(playerid, "Coord_Y", y);
+	SetPVarFloat(playerid, "Coord_Z", z);
+	SetPVarFloat(playerid, "Coord_A", a);
+}
+
+stock player_GetCoord(playerid, &interior, &world, &Float:x, &Float:y, &Float:z, &Float:a)
+{
+	interior = GetPVarInt(playerid, "Interior");
+	world = GetPVarInt(playerid, "World");
+	x = GetPVarFloat(playerid, "Coord_X");
+	y = GetPVarFloat(playerid, "Coord_Y");
+	z = GetPVarFloat(playerid, "Coord_Z");
+	a = GetPVarFloat(playerid, "Coord_A");
 }

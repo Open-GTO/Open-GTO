@@ -25,10 +25,10 @@ stock player_Save(playerid)
 		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 		GetPlayerFacingAngle(playerid, pos[3]);
 
-		SetPVarFloat(playerid, "Coord_X", pos[0]);
-		SetPVarFloat(playerid, "Coord_Y", pos[1]);
-		SetPVarFloat(playerid, "Coord_Z", pos[2]);
-		SetPVarFloat(playerid, "Coord_A", pos[3]);
+		new interior = GetPlayerInterior(playerid);
+		new world = GetPlayerVirtualWorld(playerid);
+
+		player_SetCoord(playerid, interior, world, pos[0], pos[1], pos[2], pos[3]);
 	}
 
 	// save
@@ -82,14 +82,15 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "Reports", player_GetReportCount(playerid));
 	ini_setInteger(file_player, "FightStyle", pl_fights_GetPlayerStyle(playerid));
 	ini_setInteger(file_player, "FightStyleUsed", pl_fights_GetPlayerStyleUsed(playerid));
+	ini_setInteger(file_player, "InteriorIndex", interior_GetPlayerIndex(playerid));
+
+	new interior, world, Float:pos[4];
+	player_GetCoord(playerid, interior, world, pos[0], pos[1], pos[2], pos[3]);
+	ini_setInteger(file_player, "Interior", interior);
+	ini_setInteger(file_player, "World", world);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), "%f,%f,%f,%f",
-		GetPVarFloat(playerid, "Coord_X"),
-		GetPVarFloat(playerid, "Coord_Y"),
-		GetPVarFloat(playerid, "Coord_Z"),
-		GetPVarFloat(playerid, "Coord_A")
-	);
+	format(string, sizeof(string), "%f,%f,%f,%f", pos[0], pos[1], pos[2], pos[3]);
 	ini_setString(file_player, "Coords", string);
 
 	ini_setInteger(file_player, "Status", player_GetStatus(playerid));
@@ -164,6 +165,15 @@ stock player_Login(playerid)
 		
 		ini_getInteger(file_player, "FightStyleUsed", buf);
 		pl_fights_SetPlayerStyleUsed(playerid, buf);
+
+		ini_getInteger(file_player, "InteriorIndex", buf);
+		interior_SetPlayerIndex(playerid, buf);
+
+		ini_getInteger(file_player, "Interior", buf);
+		SetPVarInt(playerid, "Interior", buf);
+
+		ini_getInteger(file_player, "World", buf);
+		SetPVarInt(playerid, "World", buf);
 		
 		buf = 0;
 		ini_getString(file_player, "Coords", s_buf);
