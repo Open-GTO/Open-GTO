@@ -185,16 +185,6 @@ stock vshop_ChangeVehicles()
 		}
 	}
 
-	for (new i = 0; i < sizeof(types_array); i++) {
-		type = types_array[i];
-
-		printf("type: %d, %d", type, models_list_pos[type]);
-		for (new j = 0; j < models_list_pos[type]; j++) {
-			printf("%d", models_list[type][j]);
-		}
-		printf("\n");
-	}
-
 	new
 		string[MAX_STRING],
 		model;
