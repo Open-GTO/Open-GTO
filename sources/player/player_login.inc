@@ -33,7 +33,7 @@ stock player_Save(playerid)
 
 	// save
 	player_SaveEx(playerid);
-	GameMSG("player: %s(%d): player_saved successfully", oGetPlayerName(playerid), playerid);
+	Log_Game("player: %s(%d): player_saved successfully", oGetPlayerName(playerid), playerid);
 	return 1;
 }
 
@@ -42,7 +42,7 @@ stock player_Create(playerid)
 	player_SetDefaultData(playerid);
 
 	player_SaveEx(playerid);
-	GameMSG("player: %s(%d): player_created successfully", oGetPlayerName(playerid), playerid);
+	Log_Game("player: %s(%d): player_created successfully", oGetPlayerName(playerid), playerid);
 	return 1;
 }
 

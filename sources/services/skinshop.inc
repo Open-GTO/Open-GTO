@@ -99,7 +99,7 @@ stock sshop_OnGameModeInit()
 	TextDrawTextSize(clickText[sshop_exit], 10.000000, 50.000000);
 	TextDrawSetSelectable(clickText[sshop_exit], 1);
 
-	GameMSG(lang_texts[17][22]);
+	Log_Game(lang_texts[17][22]);
 	return 1;
 }
 

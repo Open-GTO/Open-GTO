@@ -35,7 +35,7 @@ stock pt_idle_OnGameModeInit()
 		return 0;
 	}
 
-	GameMSG("SERVER: (protections)AntiIdle module init");
+	Log_Game("SERVER: (protections)AntiIdle module init");
 	return 1;
 }
 

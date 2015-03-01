@@ -230,7 +230,7 @@ stock player_OnLogin(playerid)
 	housing_MapiconPlayerSync(playerid);
 	business_MapiconPlayerSync(playerid);
 
-	GameMSG("player: %s(%d): logged in successfully.", playername, playerid);
+	Log_Game("player: %s(%d): logged in successfully.", playername, playerid);
 }
 
 stock player_SetDefaultData(playerid)

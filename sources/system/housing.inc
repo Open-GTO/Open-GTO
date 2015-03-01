@@ -323,7 +323,7 @@ stock housing_OnGameModeInit()
 		
 		Houses[id][Houses_VirtualWorld] = id+1;
 	}
-	GameMSG(lang_texts[8][0]);
+	Log_Game(lang_texts[8][0]);
 }
 
 stock housing_MapiconPlayerSync(playerid)
@@ -837,7 +837,7 @@ stock house_Buy(playerid)
 		Mapicon_UpdateTypeForPlayer(playerid, house_icon[id], 35);
 		format(temp, sizeof(temp), lang_texts[8][17], Houses[id][Houses_Name]);
 		Dialog_Message(playerid, lang_texts[8][98], temp, lang_texts[8][87]);
-		GameMSG("player: %s(%d): bought the '%s' (house)", playername, playerid, Houses[id][Houses_Name]);
+		Log_Game("player: %s(%d): bought the '%s' (house)", playername, playerid, Houses[id][Houses_Name]);
 	}
 	return 1;
 }
@@ -872,7 +872,7 @@ stock house_Sell(playerid)
 		format(temp, sizeof(temp), lang_texts[8][24], Houses[id][Houses_Name]);
 		Dialog_Message(playerid, lang_texts[8][22], temp, lang_texts[8][87]);
 		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[8][25]);
-		GameMSG("player: %s(%d): sold the '%s' (house)", oGetPlayerName(playerid), playerid, Houses[id][Houses_Name]);
+		Log_Game("player: %s(%d): sold the '%s' (house)", oGetPlayerName(playerid), playerid, Houses[id][Houses_Name]);
 	}
 	return 1;
 }

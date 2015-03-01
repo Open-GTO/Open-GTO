@@ -156,7 +156,7 @@ stock RaceLoadBaseDB(raceid)
 	ini_getString(file_race, "Name", Race[raceid][race_name], MAX_NAME);
 	if (raceid == INVALID_RACE_ID)
 	{
-		GameMSG("Race (DB): %s Failed to load", Race[raceid][race_name]);
+		Log_Game("Race (DB): %s Failed to load", Race[raceid][race_name]);
 		ini_closeFile(file_race);
 		return INVALID_RACE_ID;
 	}
@@ -176,7 +176,7 @@ stock RaceLoadBaseDB(raceid)
 	
 	if (cp_count > MAX_CP)
 	{
-		GameMSG("Error: '%s' CP_Count(%d) > MAX_CP(%d)", Race[raceid][race_name], cp_count, MAX_CP);
+		Log_Game("Error: '%s' CP_Count(%d) > MAX_CP(%d)", Race[raceid][race_name], cp_count, MAX_CP);
 	}
 
 	new cellname[MAX_STRING];
@@ -203,7 +203,7 @@ stock RaceLoadBaseDB(raceid)
 	RaceSize[raceid] = cp_count;
 	RaceStats[raceid][race_state] = RACE_STATE_SLEEPING;
 	RaceStats[raceid][race_timer] = MakeRaceSleepTime(raceid);
-	GameMSG("Race (DB): %s Loaded", Race[raceid][race_name]);
+	Log_Game("Race (DB): %s Loaded", Race[raceid][race_name]);
 	return raceid;
 }
 
@@ -290,7 +290,7 @@ stock RaceSaveRecordDB(raceid)
 stock race_OnGameModeInit()
 {
 	race_LoadAll();
-	GameMSG("SERVER: Race module init");
+	Log_Game("SERVER: Race module init");
 	return 1;
 }
 
@@ -697,12 +697,12 @@ stock JoinRace(raceid, playerid)
 	if (Race[raceid][race_minracers] > 1)
 	{
 		format(string, sizeof(string),  lang_texts[10][27] , oGetPlayerName(playerid), RaceStats[raceid][race_racercount], Race[raceid][race_minracers]);
-		GameMSG("player: %s(%d): has joined the race. (Racers:%d/%d)", oGetPlayerName(playerid), playerid, RaceStats[raceid][race_racercount], Race[raceid][race_minracers]);
+		Log_Game("player: %s(%d): has joined the race. (Racers:%d/%d)", oGetPlayerName(playerid), playerid, RaceStats[raceid][race_racercount], Race[raceid][race_minracers]);
 	}
 	else
 	{
 		format(string, sizeof(string), lang_texts[10][28], oGetPlayerName(playerid), RaceStats[raceid][race_racercount]);
-		GameMSG("player: %s(%d): has joined the race. (Racers:%d)", oGetPlayerName(playerid), playerid, RaceStats[raceid][race_racercount]);
+		Log_Game("player: %s(%d): has joined the race. (Racers:%d)", oGetPlayerName(playerid), playerid, RaceStats[raceid][race_racercount]);
 	}
 	SendMessageToRacers(raceid, string, COLOUR_WHITE);
 	
@@ -790,12 +790,12 @@ stock LeaveRace(raceid, playerid)
 		if (Race[raceid][race_minracers] > 1)
 		{
 			format(string, sizeof(string),  lang_texts[10][34] , oGetPlayerName(playerid), RaceStats[raceid][race_racercount], Race[raceid][race_minracers]);
-			GameMSG("player: %s(%d): has left the race. (Racers:%d/%d)", oGetPlayerName(playerid), playerid, RaceStats[raceid][race_racercount], Race[raceid][race_minracers]);
+			Log_Game("player: %s(%d): has left the race. (Racers:%d/%d)", oGetPlayerName(playerid), playerid, RaceStats[raceid][race_racercount], Race[raceid][race_minracers]);
 		}
 		else
 		{
 			format(string, sizeof(string),  lang_texts[10][35] , oGetPlayerName(playerid), RaceStats[raceid][race_racercount]);
-			GameMSG("player: %s(%d): has left the race. (Racers:%d)", oGetPlayerName(playerid), playerid, RaceStats[raceid][race_racercount]);
+			Log_Game("player: %s(%d): has left the race. (Racers:%d)", oGetPlayerName(playerid), playerid, RaceStats[raceid][race_racercount]);
 		}
 		SendMessageToRacers(raceid, string, COLOUR_GREY);
 		oGivePlayerMoney(playerid, Race[raceid][race_cashentry], 1); // give player back thier cash entry
@@ -1016,7 +1016,7 @@ stock StartRaceCountdown(raceid)
 		format(string, sizeof(string), lang_texts[10][45], Race[raceid][race_name]);
 		if (PlayerCount() > 0)
 		{
-			GameMSG("Race: '%s' did not run.", Race[raceid][race_name]);
+			Log_Game("Race: '%s' did not run.", Race[raceid][race_name]);
 		}
 		SendClientMessageToAll(COLOUR_RED, string);
 		CleanupRace(raceid);
@@ -1026,7 +1026,7 @@ stock StartRaceCountdown(raceid)
 
 	format(string, sizeof(string),  lang_texts[10][46] , Race[raceid][race_name]);
 	SendClientMessageToAll(COLOUR_RACE, string);
-	GameMSG("Race: %s starting.", Race[raceid][race_name]);
+	Log_Game("Race: %s starting.", Race[raceid][race_name]);
 	RaceStats[raceid][race_state] = RACE_STATE_COUNTDOWN;
 
 	foreach (Player, playerid)
@@ -1050,7 +1050,7 @@ stock EndRace(raceid)
 		if (player_GetQuestID(playerid) == GetRaceQuestID(raceid)) {
 			GameTextForPlayer(playerid, "~r~Race Failed!", 5000, 6);
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][47]);
-			GameMSG("player: %s(%d): his race ended. Out of time.", oGetPlayerName(playerid), playerid);
+			Log_Game("player: %s(%d): his race ended. Out of time.", oGetPlayerName(playerid), playerid);
 			GivePlayerXP(playerid, -(Race[raceid][race_xpprize] / 3), 1);
 		}
 	}
@@ -1072,7 +1072,7 @@ stock FinishRace(raceid, playerid)
 
 		format(string, sizeof(string),  lang_texts[10][49] , oGetPlayerName(playerid), Race[raceid][race_name], RacePlayerStats[playerid][race_player_time]);
 		SendClientMessageToAll(COLOUR_RACE, string);
-		GameMSG("player: %s(%d): has won race '%s'! Time: %d", oGetPlayerName(playerid), playerid, Race[raceid][race_name], RacePlayerStats[playerid][race_player_time]);
+		Log_Game("player: %s(%d): has won race '%s'! Time: %d", oGetPlayerName(playerid), playerid, Race[raceid][race_name], RacePlayerStats[playerid][race_player_time]);
 		oGivePlayerMoney(playerid, Race[raceid][race_cashprize], 1);
 
 		GivePlayerXP(playerid, Race[raceid][race_xpprize] + (Race[raceid][race_xpbonus] * RaceStats[raceid][race_racercount]), 1);
@@ -1126,7 +1126,7 @@ stock FinishRace(raceid, playerid)
 	{
 		format(string, sizeof(string), lang_texts[10][55], oGetPlayerName(playerid), Race[raceid][race_name], RacePlayerStats[playerid][race_player_time], BestScore[raceid][race_score_time]);
 		SendClientMessageToAll(COLOUR_RACE, string);
-		GameMSG("player: %s(%d): has set a new record for race '%s'! Time: %d. Old record: %d.", oGetPlayerName(playerid), playerid, Race[raceid][race_name], RacePlayerStats[playerid][race_player_time], BestScore[raceid][race_score_time]);
+		Log_Game("player: %s(%d): has set a new record for race '%s'! Time: %d. Old record: %d.", oGetPlayerName(playerid), playerid, Race[raceid][race_name], RacePlayerStats[playerid][race_player_time], BestScore[raceid][race_score_time]);
 		oGivePlayerMoney(playerid, Race[raceid][race_cashprize], 1);
 		GivePlayerXP(playerid, Race[raceid][race_xpprize], 1);
 		BestScore[raceid][race_score_time] = RaceStats[raceid][race_timer];

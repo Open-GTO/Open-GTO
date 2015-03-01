@@ -42,14 +42,12 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define MAX_QUESTS				255
 
 #define WORLD_SAVE_TIME			300000		// 1 раз, за это кол-во милисекунд выполняется сохранение всего мира(300000 - 5 минут)
-#define GameMSG_USE_PRINT // если задефайнен, то функция GameMSG выводит сообщение в консоль сервера
-//#define DebugMSG_USE_PRINT // если задефайнен, то функция DMSG выводит сообщение в консоль сервера
 
+#define LOG_PRINTING // если задефайнен, то функции выводят сообщения в консоль сервера
 // логи(параметры по умолчанию) 1 вкл, 0 выкл
-#define LOGGING_GAME_LOG_ENABLED	1 // логирование серверных сообщений
-#define LOGGING_DEBUG_LOG_ENABLED	1 // логирование отладочных сообщений
-#define LOGGING_CHAT_LOG_ENABLED	1 // логирование сообщений в чат
-#define LOGGING_CMD_LOG_ENABLED		1 // логирование введённых команд
+#define LOG_GAME_ENABLED	1 // логирование серверных сообщений
+#define LOG_DEBUG_ENABLED	1 // логирование отладочных сообщений
+#define LOG_PLAYER_ENABLED	1 // логирование действий игрока в чат
 
 // античит(параметры по умолчанию), в режиме тестирования...
 #define ANTI_HEALTH_HACK_ENABLED	1 // защита от чита на здоровье

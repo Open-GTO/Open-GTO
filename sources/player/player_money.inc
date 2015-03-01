@@ -28,12 +28,12 @@ stock oGivePlayerMoney(playerid, money, showtext=0)
 
 	if (money > MAX_MONEY - oGetPlayerMoney(playerid)) {
 		money = MAX_MONEY - oGetPlayerMoney(playerid);
-		GameMSG("player: %s(%d): is on max money", oGetPlayerName(playerid), playerid);
+		Log_Game("player: %s(%d): is on max money", oGetPlayerName(playerid), playerid);
 	}
 	
 	if (money < -MAX_MONEY - oGetPlayerMoney(playerid)) {
 		money = -MAX_MONEY - oGetPlayerMoney(playerid);
-		GameMSG("player: %s(%d): is on min money", oGetPlayerName(playerid), playerid);
+		Log_Game("player: %s(%d): is on min money", oGetPlayerName(playerid), playerid);
 	}
 
 	if (showtext == 1) {

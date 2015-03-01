@@ -165,7 +165,7 @@ stock PlayerLevelDown(playerid, newlevel, oldlevel)
 	format(string, sizeof(string), lang_texts[9][22], newlevel);
 	SendClientMessage(playerid, COLOUR_XP_BAD, string);
 	
-	GameMSG("player: %s(%d): decreased his level from %d to %d", oGetPlayerName(playerid), playerid, oldlevel, newlevel);
+	Log_Game("player: %s(%d): decreased his level from %d to %d", oGetPlayerName(playerid), playerid, oldlevel, newlevel);
 	return 1;
 }
 
@@ -181,7 +181,7 @@ stock PlayerLevelUp(playerid, newlevel, oldlevel)
 	
 	ShowWeaponsOnLevel(playerid, newlevel, oldlevel);
 	
-	GameMSG("player: %s(%d): increased his level from %d to %d", oGetPlayerName(playerid), playerid, oldlevel, newlevel);
+	Log_Game("player: %s(%d): increased his level from %d to %d", oGetPlayerName(playerid), playerid, oldlevel, newlevel);
 	return 1;
 }
 

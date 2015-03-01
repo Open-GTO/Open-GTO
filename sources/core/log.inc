@@ -1,119 +1,86 @@
-//
-// Created:     27.03.07
-// Aurthor:    Peter Steenbergen
-//
-// Modified in 28.04.2011 by ZiGGi
-//
+/*
+	
+	About: log functions
+	Author: ziggi
 
-#if defined _logging_included
-  #endinput
+*/
+
+#if defined _log_included
+	#endinput
 #endif
 
-#define _logging_included
-#pragma library logging
+#define _log_included
+#pragma library log
 
 
 enum {
-	GameLog,
-	ChatLog,
-	CMDLog,
+	GameLog = 0,
 	DebugLog,
+	PlayerLog,
 }
 
-new LoggingGameToggle = LOGGING_GAME_LOG_ENABLED,
-	LoggingDebug = LOGGING_DEBUG_LOG_ENABLED,
-	LoggingChatToggle = LOGGING_CHAT_LOG_ENABLED,
-	LoggingCMDToggle = LOGGING_CMD_LOG_ENABLED;
+static log_dir[][] = {
+	DATA_FILES_FOLDER "log/game/",
+	DATA_FILES_FOLDER "log/debug/",
+	DATA_FILES_FOLDER "log/player/"
+};
 
-stock logging_LoadConfig(file_config)
+static
+	isGameLogEnabled = LOG_GAME_ENABLED,
+	isDebugLogEnabled = LOG_DEBUG_ENABLED,
+	isPlayerLogEnabled = LOG_PLAYER_ENABLED;
+
+
+stock Log_LoadConfig(file_config)
 {
-	ini_getInteger(file_config, "Log_Game_IsEnabled", LoggingGameToggle);
-	ini_getInteger(file_config, "Log_Debug_IsEnabled", LoggingDebug);
-	ini_getInteger(file_config, "Log_ChatLog_IsEnabled", LoggingChatToggle);
-	ini_getInteger(file_config, "Log_CMDLog_IsEnabled", LoggingCMDToggle);
+	ini_getInteger(file_config, "log_game", isGameLogEnabled);
+	ini_getInteger(file_config, "log_debug", isDebugLogEnabled);
+	ini_getInteger(file_config, "log_player", isPlayerLogEnabled);
 }
 
-stock logging_SaveConfig(file_config)
+stock Log_SaveConfig(file_config)
 {
-	ini_setInteger(file_config, "Log_Game_IsEnabled", LoggingGameToggle);
-	ini_setInteger(file_config, "Log_Debug_IsEnabled", LoggingDebug);
-	ini_setInteger(file_config, "Log_ChatLog_IsEnabled", LoggingChatToggle);
-	ini_setInteger(file_config, "Log_CMDLog_IsEnabled", LoggingCMDToggle);
+	ini_setInteger(file_config, "log_game", isGameLogEnabled);
+	ini_setInteger(file_config, "log_debug", isDebugLogEnabled);
+	ini_setInteger(file_config, "log_player", isPlayerLogEnabled);
 }
 
-stock MakeFilename()
+stock Log_Write(log, string[])
 {
-	new y, m, d;
+	// get log file path
+	new file_path[MAX_STRING], y, m, d;
 	getdate(y, m, d);
-	new string[16];
-	format(string, sizeof(string), "%04d-%02d-%02d.log", y, m, d);
-	return string;
-}
-
-stock MakeFormattedTime()
-{
-	new h, m, s;
+	format(file_path, sizeof(file_path), "%s%04d-%02d-%02d.log", log_dir[log], y, m, d);
+	
+	// make string to write
+	new line_string[MAX_STRING + 32], h, s;
 	gettime(h, m, s);
-	new string[16];
-	format(string, sizeof(string), "[%02d:%02d:%02d]", h, m, s);
-	return string;
-}
-
-stock WriteLog(log, string[])
-{
-	new log_str[MAX_STRING];
-	switch(log)
-	{
-		case GameLog:
-		{
-			if (LoggingGameToggle != 1)
-			{
-				return 1;
-			}
-			log_str = DATA_FILES_FOLDER "log/game/";
-		}
-		case ChatLog:
-		{
-			if (LoggingChatToggle != 1)
-			{
-				return 1;
-			}
-			log_str = DATA_FILES_FOLDER "log/player/";
-		}
-		case CMDLog:
-		{
-			if (LoggingCMDToggle != 1)
-			{
-				return 1;
-			}
-			log_str = DATA_FILES_FOLDER "log/player/";
-		}
-		case DebugLog:
-		{
-			if (LoggingDebug != 1)
-			{
-				return 1;
-			}
-			log_str = DATA_FILES_FOLDER "log/debug/";
-		}
+	format(line_string, sizeof(line_string), "[%02d:%02d:%02d] %s\n", h, m, s, string);
+	
+	// write string in log
+	new File:file_log = fopen(file_path, io_append);
+	if (!file_log) {
+		printf("Error: log file not opened: %s", file_path);
+		return 0;
 	}
-	new filestring[MAX_STRING];
-	format(filestring, sizeof(filestring), "%s%s", log_str, MakeFilename());
-	new File:LogFile = fopen(filestring, io_append);
-	format(filestring, sizeof(filestring), "%s %s\r\n", MakeFormattedTime(), string);
-	for (new i = 0, len = strlen(filestring); i < len; i++)
-	{
-		fputchar(LogFile, filestring[i], false);
+	
+	for (new i = 0, len = strlen(line_string); i < len; i++) {
+		fputchar(file_log, line_string[i], false);
 	}
-	fclose(LogFile);
+	
+	fclose(file_log);
 	return 1;
 }
 
 
 #define BYTES_PER_CELL			4
 
-stock GameMSG(fstring[], {Float, _}:...)
+stock Log_Game(fstring[], {Float, _}:...)
 {
+	if (!isGameLogEnabled) {
+		return 0;
+	}
+
 	static const STATIC_ARGS = 1;
 	new n = (numargs() - STATIC_ARGS) * BYTES_PER_CELL;
 	if (n)
@@ -149,23 +116,27 @@ stock GameMSG(fstring[], {Float, _}:...)
 		#emit LOAD.S.alt		n
 		#emit ADD
 		#emit SCTRL				4
-	#if defined GameMSG_USE_PRINT
+	#if defined LOG_PRINTING
 		printf(message);
 	#endif
-		WriteLog(GameLog, message);
+		Log_Write(GameLog, message);
 	}
 	else
 	{
-	#if defined GameMSG_USE_PRINT
+	#if defined LOG_PRINTING
 		printf(fstring);
 	#endif
-		WriteLog(GameLog, fstring);
+		Log_Write(GameLog, fstring);
 	}
 	return 1;
 }
 
-stock DebugMSG(fstring[], {Float, _}:...)
+stock Log_Debug(fstring[], {Float, _}:...)
 {
+	if (!isDebugLogEnabled) {
+		return 0;
+	}
+
 	static const STATIC_ARGS = 1;
 	new n = (numargs() - STATIC_ARGS) * BYTES_PER_CELL;
 	if (n)
@@ -201,17 +172,73 @@ stock DebugMSG(fstring[], {Float, _}:...)
 		#emit LOAD.S.alt		n
 		#emit ADD
 		#emit SCTRL				4
-	#if defined DebugMSG_USE_PRINT
+	#if defined LOG_PRINTING
 		printf(message);
 	#endif
-		WriteLog(DebugLog, message);
+		Log_Write(DebugLog, message);
 	}
 	else
 	{
-	#if defined DebugMSG_USE_PRINT
+	#if defined LOG_PRINTING
 		printf(fstring);
 	#endif
-		WriteLog(DebugLog, fstring);
+		Log_Write(DebugLog, fstring);
+	}
+	return 1;
+}
+
+stock Log_Player(fstring[], {Float, _}:...)
+{
+	if (!isPlayerLogEnabled) {
+		return 0;
+	}
+
+	static const STATIC_ARGS = 1;
+	new n = (numargs() - STATIC_ARGS) * BYTES_PER_CELL;
+	if (n)
+	{
+		new message[144], arg_start, arg_end;
+		#emit CONST.alt			fstring
+		#emit LCTRL				5
+		#emit ADD
+		#emit STOR.S.pri		arg_start
+
+		#emit LOAD.S.alt		n
+		#emit ADD
+		#emit STOR.S.pri		arg_end
+		do
+		{
+			#emit LOAD.I
+			#emit PUSH.pri
+			arg_end -= BYTES_PER_CELL;
+			#emit LOAD.S.pri	arg_end
+		}
+		while(arg_end > arg_start);
+
+		#emit PUSH.S			fstring
+		#emit PUSH.C			144
+		#emit PUSH.ADR			message
+
+		n += BYTES_PER_CELL * 3;
+		#emit PUSH.S			n
+		#emit SYSREQ.C			format
+
+		n += BYTES_PER_CELL;
+		#emit LCTRL				4
+		#emit LOAD.S.alt		n
+		#emit ADD
+		#emit SCTRL				4
+	#if defined LOG_PRINTING
+		printf(message);
+	#endif
+		Log_Write(DebugLog, message);
+	}
+	else
+	{
+	#if defined LOG_PRINTING
+		printf(fstring);
+	#endif
+		Log_Write(DebugLog, fstring);
 	}
 	return 1;
 }

@@ -171,7 +171,7 @@ stock trucker_OnGameModeInit()
 	Mapicon_Create(-117.0570, -325.0306, 2.0109, 51, 0);
 	Mapicon_Create(512.6126, 792.6769, -20.8209, 51, 0);
 	
-	GameMSG(lang_texts[19][33]);
+	Log_Game(lang_texts[19][33]);
 	return 1;
 }
 

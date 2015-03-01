@@ -76,5 +76,5 @@ stock dm_usnavy_init()
 		DMSpawnPoints[dmid][spid][Coord_Z] = spawnpoints[spid][Coord_Z];
 	}
 
- 	GameMSG("Deathmatch: '%s' Loaded.",name);
+ 	Log_Game("Deathmatch: '%s' Loaded.",name);
 }

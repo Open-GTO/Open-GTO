@@ -149,7 +149,7 @@ stock interior_OnGameModeInit()
 			Mapicon_Create(interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z], interior_EnterExits[i][iee_icon_ID], 0);
 		}
 	}
-	GameMSG("SERVER: Interior module init");
+	Log_Game("SERVER: Interior module init");
 	return 1;
 }
 

@@ -98,7 +98,7 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 					format(string, sizeof(string), lang_texts[6][48], oGetPlayerName(playerid));
 					SendGangMessage(gangid, string, COLOUR_GANG);
 					
-					GameMSG("player: %d:  %s: have joined '%s' gang.", playerid, oGetPlayerName(playerid), Gangs[gangid][gang_name]);
+					Log_Game("player: %d:  %s: have joined '%s' gang.", playerid, oGetPlayerName(playerid), Gangs[gangid][gang_name]);
 				} else {
 					format(string, sizeof(string), lang_texts[6][49], Gangs[gangid][gang_name]);
 					Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "Приглашение в банду", string, "Назад", "Отмена");
@@ -351,7 +351,7 @@ DialogResponse:GangCreate(playerid, response, listitem, inputtext[])
 				oGivePlayerMoney(playerid,-Gang_Create_Cost, 1);
 				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[6][42]);
 				Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], lang_texts[6][42], "Назад", "Отмена");
-				GameMSG("player: %s(%d): created gang '%s' ", oGetPlayerName(playerid), playerid, gangname);
+				Log_Game("player: %s(%d): created gang '%s' ", oGetPlayerName(playerid), playerid, gangname);
 			} else {
 				Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], lang_texts[6][11], "Назад", "Отмена");
 			}
@@ -408,7 +408,7 @@ DialogResponse:GangInvite(playerid, response, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[6][59], oGetPlayerName(inviteid), Gangs[gangid][gang_name]);
 	Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "Приглашение в банду", string, "Назад", "Отмена");
 
-	GameMSG("player: %d:  %s: has invited %s to join gang '%s'.", playerid, oGetPlayerName(playerid), oGetPlayerName(inviteid), Gangs[gangid][gang_name]);
+	Log_Game("player: %d:  %s: has invited %s to join gang '%s'.", playerid, oGetPlayerName(playerid), oGetPlayerName(inviteid), Gangs[gangid][gang_name]);
 	return 1;
 }
 

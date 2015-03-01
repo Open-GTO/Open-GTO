@@ -137,7 +137,7 @@ stock weapon_SaveAll()
 stock weapon_OnGameModeInit()
 {
 	weapon_LoadAll();
-	GameMSG("SERVER: Weapon module init");
+	Log_Game("SERVER: Weapon module init");
 }
 
 stock oGetWeaponName(weaponid)

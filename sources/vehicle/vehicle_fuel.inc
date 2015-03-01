@@ -70,7 +70,7 @@ stock veh_fuel_OnGameModeInit()
 	TextDrawFont(background, 0);
 
 	SetTimer("speed_Timer", 300, 1);
-	GameMSG(lang_texts[19][20]);
+	Log_Game(lang_texts[19][20]);
 	return 1;
 }
 

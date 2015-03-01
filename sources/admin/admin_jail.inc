@@ -91,7 +91,7 @@ stock JailPlayerTimer(playerid)
 		format(string, sizeof(string), lang_texts[13][53], playername);
 		SendClientMessageToAll(COLOUR_WHITE, string);
 
-		GameMSG(lang_texts[13][55], playername);
+		Log_Game(lang_texts[13][55], playername);
 	}
 	return 1;
 }

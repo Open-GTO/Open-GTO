@@ -44,7 +44,7 @@ stock KickPlayer(playerid, reason[], showreason = 1)
 	TogglePlayerControllable(playerid, 0);
 
 	SetTimerEx("PlayerKickFix", 100, 0, "d", playerid);
-	GameMSG("player: %s(%d): has been kicked. Reason: %s", playername, playerid, reason);
+	Log_Game("player: %s(%d): has been kicked. Reason: %s", playername, playerid, reason);
 	return 1;
 }
 

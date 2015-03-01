@@ -58,7 +58,7 @@ public adm_click_MutePlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][50], oGetPlayerName(clickedid), mutetime);
 	SendClientMessageToAll(COLOUR_WHITE, string);
 
-	GameMSG(lang_texts[13][7], oGetPlayerName(clickedid), oGetPlayerName(playerid), mutetime);
+	Log_Game(lang_texts[13][7], oGetPlayerName(clickedid), oGetPlayerName(playerid), mutetime);
 	return 1;
 }
 
@@ -80,7 +80,7 @@ public adm_click_UnMutePlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][51], oGetPlayerName(clickedid));
 	SendClientMessageToAll(COLOUR_WHITE, string);
 
-	GameMSG(lang_texts[13][14], oGetPlayerName(clickedid), oGetPlayerName(playerid));
+	Log_Game(lang_texts[13][14], oGetPlayerName(clickedid), oGetPlayerName(playerid));
 	return 1;
 }
 

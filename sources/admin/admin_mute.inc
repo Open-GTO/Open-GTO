@@ -82,7 +82,7 @@ COMMAND:mute(playerid, params[])
 	format(string, sizeof(string), lang_texts[12][50], oGetPlayerName(muteid), mutetime);
 	SendClientMessageToAll(COLOUR_WHITE, string);
 
-	GameMSG(lang_texts[13][7], oGetPlayerName(muteid), oGetPlayerName(playerid), mutetime);
+	Log_Game(lang_texts[13][7], oGetPlayerName(muteid), oGetPlayerName(playerid), mutetime);
 	return 1;
 }
 
@@ -114,6 +114,6 @@ COMMAND:unmute(playerid, params[])
 	format(string, sizeof(string), lang_texts[12][51], oGetPlayerName(unmuteid));
 	SendClientMessageToAll(COLOUR_WHITE, string);
 	
-	GameMSG(lang_texts[13][14], oGetPlayerName(unmuteid), oGetPlayerName(playerid));
+	Log_Game(lang_texts[13][14], oGetPlayerName(unmuteid), oGetPlayerName(playerid));
 	return 1;
 }

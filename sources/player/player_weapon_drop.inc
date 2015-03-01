@@ -87,7 +87,7 @@ stock wdrop_OnPlayerDeath(playerid)
 		
 		wd_slot = wdrop_FindFreeSlot();
 		if (wd_slot == -1) {
-			GameMSG(lang_texts[19][57]);
+			Log_Game(lang_texts[19][57]);
 			return 1;
 		}
 
@@ -95,7 +95,7 @@ stock wdrop_OnPlayerDeath(playerid)
 
 		weapons_dropped[wd_slot][wd_pickupid] = CreatePickup(pickupmodel, 1, pos[0] + (random(5) - random(5)) / 2, pos[1] + (random(5) - random(5)) / 2, pos[2], -1);
 		if (weapons_dropped[wd_slot][wd_pickupid] == -1) {
-			GameMSG(lang_texts[19][58]);
+			Log_Game(lang_texts[19][58]);
 			return 1;
 		}
 

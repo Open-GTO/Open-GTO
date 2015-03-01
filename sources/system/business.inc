@@ -155,7 +155,7 @@ stock business_OnGameModeInit()
 
 		Business3DTextLabel[id] = Create3DTextLabel(string, COLOUR_WHITE, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.75, BusinessDistanceOfShowLabel, 0, 1);
 	}
-	GameMSG(lang_texts[3][0]);
+	Log_Game(lang_texts[3][0]);
 }
 
 stock business_MapiconPlayerSync(playerid)
@@ -467,7 +467,7 @@ stock bis_Buy(playerid)
 		);
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, lang_texts[3][10], lang_texts[3][8]);
 		
-		GameMSG("player: %s(%d): bought the '%s' (business)", playername, playerid, Businesses[id][Business_Name]);
+		Log_Game("player: %s(%d): bought the '%s' (business)", playername, playerid, Businesses[id][Business_Name]);
 	}
 	return 1;
 }
@@ -505,7 +505,7 @@ stock bis_Sell(playerid)
 		);
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, lang_texts[3][10], lang_texts[3][8]);
 
-		GameMSG("player: %s(%d): sold the '%s' (business)", oGetPlayerName(playerid), playerid, Businesses[id][Business_Name]);
+		Log_Game("player: %s(%d): sold the '%s' (business)", oGetPlayerName(playerid), playerid, Businesses[id][Business_Name]);
 	}
 	return 1;
 }
@@ -637,10 +637,10 @@ stock CheckBusinessOwners()
 		
 		if (DateToNum(year, month, day) > DateToNum(account_year, account_month, account_day) + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60)
 		{
-			GameMSG("Business has been free. Owner '%s'. BUSINESS_UNLOGIN_SELL_DAYS = %d",
+			Log_Game("Business has been free. Owner '%s'. BUSINESS_UNLOGIN_SELL_DAYS = %d",
 				Businesses[i][Business_Owner], BUSINESS_UNLOGIN_SELL_DAYS
 			);
-			GameMSG("\tcurrent date[%02d.%02d.%d]: %d, last login[%02d.%02d.%d]: %d",
+			Log_Game("\tcurrent date[%02d.%02d.%d]: %d, last login[%02d.%02d.%d]: %d",
 				day, month, year, DateToNum(year, month, day),
 				account_day, account_month, account_year, DateToNum(account_year, account_month, account_day)
 			);

@@ -88,7 +88,7 @@ stock account_Register(playerid, password[])
 	account_Login(playerid, password);
 
 	SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][12]);
-	GameMSG("create_account: success %s(%d)", oGetPlayerName(playerid), playerid);
+	Log_Game("create_account: success %s(%d)", oGetPlayerName(playerid), playerid);
 	return 1;
 }
 
@@ -116,7 +116,7 @@ stock account_Login(playerid, password[])
 	if (strcmp(password, dbpassword, false)) {
 		ini_closeFile(file_account);
 
-		GameMSG("player_login: failed: incorrect password by %s(%d)", playername, playerid);
+		Log_Game("player_login: failed: incorrect password by %s(%d)", playername, playerid);
 		
 		GivePVarInt(playerid, "Player_Login_Attempt", 1);
 		if (GetPVarInt(playerid, "Player_Login_Attempt") >= MAX_PLAYER_LOGIN_ATTEMPT) {

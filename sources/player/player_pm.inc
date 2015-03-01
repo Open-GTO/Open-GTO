@@ -55,8 +55,7 @@ stock pl_pm_Send(senderid, receiveid, message[])
 	format(string, sizeof(string), lang_texts[9][32], sendername, senderid, message);
 	SendClientMessage(receiveid, COLOUR_PM, string);
 	
-	format(string, sizeof(string), lang_texts[9][34], sendername, senderid, receivename, receiveid, message);
-	WriteLog(ChatLog, string);
+	Log_Player(lang_texts[9][34], sendername, senderid, receivename, receiveid, message);
 	return 1;
 }
 

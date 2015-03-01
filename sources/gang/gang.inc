@@ -75,7 +75,7 @@ stock GangLoad(gangname[])
 	new gangid = FindGangFreeSlot();
 	if (gangid == 0)
 	{
-		return GameMSG("ERROR: Свободный слот для банды не найден");
+		return Log_Game("ERROR: Свободный слот для банды не найден");
 	}
 	Gangs[gangid][gang_active] = true;
 	gang_load_db_ini(gangid, gangname);
@@ -133,17 +133,17 @@ stock GangJoinMember(gangid, playerid)
 {
 	if (gangid == 0)
 	{
-		GameMSG("script_warning: invalid gang id.");
+		Log_Game("script_warning: invalid gang id.");
 		return 0;
 	}
 	if (player_GetGangID(playerid) != 0)
 	{
-		GameMSG("script_warning: player already in a gang!");
+		Log_Game("script_warning: player already in a gang!");
 		return 0;
 	}
 	if (GangOnlineCount(gangid) >= MAX_GANG_SIZE)
 	{
-		GameMSG("script_warning: Gang is already full.");
+		Log_Game("script_warning: Gang is already full.");
 		return 0;
 	}
 	for (new gangmember = 0; gangmember < MAX_GANG_SIZE; gangmember++)
@@ -218,7 +218,7 @@ stock GangRemoveMember(gangid, kickplayername[])
 		}
 		format(string, sizeof(string), lang_texts[6][70], kickplayername);
 		SendGangMessage(gangid, string, COLOUR_GANG);
-		GameMSG("%s has been removed from gang '%s'", kickplayername, Gangs[gangid][gang_name]);
+		Log_Game("%s has been removed from gang '%s'", kickplayername, Gangs[gangid][gang_name]);
 		if (playerid != INVALID_PLAYER_ID)
 		{
 			format(string, sizeof(string), lang_texts[6][71], Gangs[gangid][gang_name]);
@@ -249,7 +249,7 @@ stock GangCreate(leaderid, gangname[], gangcolour)
 	new gangid = FindGangFreeSlot();
 	if (gangid == 0)
 	{
-		return GameMSG("[ERROR] Свободный слот для банды не найден");
+		return Log_Game("[ERROR] Свободный слот для банды не найден");
 	}
 	Gangs[gangid][gang_active] = true;
 	set(Gangs[gangid][gang_name], gangname);

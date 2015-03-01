@@ -150,7 +150,7 @@ stock DeathmatchLoadBaseDB(dmid)
 
 	if (dmid <= 0)
 	{
-		GameMSG("Deathmatch (DB): '%s' Failed to load.", Deathmatch[dmid][dm_name]);
+		Log_Game("Deathmatch (DB): '%s' Failed to load.", Deathmatch[dmid][dm_name]);
 		ini_closeFile(file_dm);
 		return INVALID_DM_ID;
 	}
@@ -237,7 +237,7 @@ stock DeathmatchLoadBaseDB(dmid)
 	DMSpawnsSize[dmid] = sp_count;
 	DeathmatchStats[dmid][dm_state] = DM_STATE_SLEEPING;
 	DeathmatchStats[dmid][dm_timer] = MakeDMSleepTime(dmid);
-	GameMSG("Deathmatch (DB): '%s' Loaded.", Deathmatch[dmid][dm_name]);
+	Log_Game("Deathmatch (DB): '%s' Loaded.", Deathmatch[dmid][dm_name]);
 	return dmid;
 }
 
@@ -330,7 +330,7 @@ stock DeathmatchSaveRecordDB(dmid)
 stock deathmatch_OnGameModeInit()
 {
 	deathmatch_LoadAll();
-	GameMSG("SERVER: Deathmatch module init");
+	Log_Game("SERVER: Deathmatch module init");
 	return 1;
 }
 
@@ -430,9 +430,7 @@ stock CheckDMPlayersInZone(dmid)
 			if (DMPlayerStats[playerid][dm_player_outzone] > 12)
 			{
 				SendClientMessage(playerid, COLOUR_RED,  lang_texts[4][2] );
-				new logstring[MAX_STRING];
-				format(logstring, sizeof (logstring), "player: %d:  %s: has been kicked from the deathmatch because you he left the deathmatch zone", playerid, oGetPlayerName(playerid));
-				WriteLog(GameLog, logstring);
+				Log_Game("player: %d:  %s: has been kicked from the deathmatch because you he left the deathmatch zone", playerid, oGetPlayerName(playerid));
 				PlayerLeaveDM(playerid, dmid);
 				DMPlayerStats[playerid][dm_player_outzone] = 0;
 				continue;
@@ -535,9 +533,7 @@ stock StartDMCountdown(dmid)
 
 		if (PlayerCount() > 0)
 		{
-			new logstring[MAX_STRING];
-			format(logstring, sizeof (logstring), "Deathmatch: '%s' did not run. Not enough players.", Deathmatch[dmid][dm_name]);
-			WriteLog(GameLog, logstring);
+			Log_Game("Deathmatch: '%s' did not run. Not enough players.", Deathmatch[dmid][dm_name]);
 		}
 		//CleanupDM без удаления чекпоинтов
 		foreach (Player, playerid)
@@ -561,7 +557,7 @@ stock StartDMCountdown(dmid)
 
 	format(string, sizeof(string),  lang_texts[4][11] , Deathmatch[dmid][dm_name]);
 	SendClientMessageToAll(COLOUR_DM, string);
-	GameMSG("Deathmatch: %s starting.", Deathmatch[dmid][dm_name]);
+	Log_Game("Deathmatch: %s starting.", Deathmatch[dmid][dm_name]);
 	DeathmatchStats[dmid][dm_state] = DM_STATE_COUNTDOWN;
 	foreach (Player, playerid)
 	{
@@ -610,16 +606,12 @@ stock JoinDM(playerid, dmid)
 	if (Deathmatch[dmid][dm_minplayers] > 1)
 	{
 		format(string, sizeof(string),  lang_texts[4][14] , oGetPlayerName(playerid), DeathmatchStats[dmid][dm_playercount], Deathmatch[dmid][dm_minplayers]);
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "player: %d:  %s: has joined the deathmatch. (Players:%d/%d)", playerid, oGetPlayerName(playerid), DeathmatchStats[dmid][dm_playercount], Deathmatch[dmid][dm_minplayers]);
-		WriteLog(GameLog, logstring);
+		Log_Game("player: %d:  %s: has joined the deathmatch. (Players:%d/%d)", playerid, oGetPlayerName(playerid), DeathmatchStats[dmid][dm_playercount], Deathmatch[dmid][dm_minplayers]);
 	}
 	else
 	{
 		format(string, sizeof(string),  lang_texts[4][15] , oGetPlayerName(playerid), DeathmatchStats[dmid][dm_playercount]);
-		new logstring[MAX_STRING];
-		format(logstring, sizeof (logstring), "player: %d:  %s: has joined the deathmatch. (Players:%d)", playerid, oGetPlayerName(playerid), DeathmatchStats[dmid][dm_playercount]);
-		WriteLog(GameLog, logstring);
+		Log_Game("player: %d:  %s: has joined the deathmatch. (Players:%d)", playerid, oGetPlayerName(playerid), DeathmatchStats[dmid][dm_playercount]);
 	}
 	SendMessageToDMPlayers(dmid, string, COLOUR_WHITE);
 
@@ -750,7 +742,7 @@ stock PlayerFinishDM(playerid, dmid, position)
 
 			format(string, sizeof(string),  lang_texts[4][21] , oGetPlayerName(playerid), Deathmatch[dmid][dm_name], GetPlayerDMScore(playerid, dmid));
 			SendClientMessageToAll(COLOUR_DM, string);
-			GameMSG("player: %d:  %s: has won deathmatch '%s'! Score: %d", playerid, oGetPlayerName(playerid), Deathmatch[dmid][dm_name], GetPlayerDMScore(playerid, dmid));
+			Log_Game("player: %d:  %s: has won deathmatch '%s'! Score: %d", playerid, oGetPlayerName(playerid), Deathmatch[dmid][dm_name], GetPlayerDMScore(playerid, dmid));
 			oGivePlayerMoney(playerid, Deathmatch[dmid][dm_cashprize], 1);
 			GivePlayerXP(playerid, Deathmatch[dmid][dm_xpprize] + (Deathmatch[dmid][dm_xpbonus] * DeathmatchStats[dmid][dm_playercount]), 1);
 		}
@@ -799,7 +791,7 @@ stock PlayerFinishDM(playerid, dmid, position)
 	{
 		format(string, sizeof(string),  lang_texts[4][27] , oGetPlayerName(playerid), Deathmatch[dmid][dm_name], GetPlayerDMScore(playerid, dmid), DMBestScore[dmid][dm_score_record]);
 		SendClientMessageToAll(COLOUR_DM, string);
-		GameMSG("player: %d:  %s: has set a new record for deathmatch '%s'! Score: %d. Old record: %d.", playerid, oGetPlayerName(playerid), Deathmatch[dmid][dm_name], GetPlayerDMScore(playerid, dmid), DMBestScore[dmid][dm_score_record]);
+		Log_Game("player: %d:  %s: has set a new record for deathmatch '%s'! Score: %d. Old record: %d.", playerid, oGetPlayerName(playerid), Deathmatch[dmid][dm_name], GetPlayerDMScore(playerid, dmid), DMBestScore[dmid][dm_score_record]);
 		oGivePlayerMoney(playerid, (Deathmatch[dmid][dm_cashprize]*3), 1);
 		GivePlayerXP(playerid, (Deathmatch[dmid][dm_xpprize]*3), 1);
 		DMBestScore[dmid][dm_score_record] = GetPlayerDMScore(playerid, dmid);
@@ -827,12 +819,12 @@ stock PlayerLeaveDM(playerid, dmid)
 		if (Deathmatch[dmid][dm_minplayers] > 1)
 		{
 			format(string, sizeof(string),  lang_texts[4][28] , oGetPlayerName(playerid), DeathmatchStats[dmid][dm_playercount], Deathmatch[dmid][dm_minplayers]);
-			GameMSG("player: %s(%d): has left the dm. (Players:%d/%d)", oGetPlayerName(playerid), playerid, DeathmatchStats[dmid][dm_playercount], Deathmatch[dmid][dm_minplayers]);
+			Log_Game("player: %s(%d): has left the dm. (Players:%d/%d)", oGetPlayerName(playerid), playerid, DeathmatchStats[dmid][dm_playercount], Deathmatch[dmid][dm_minplayers]);
 		}
 		else
 		{
 			format(string, sizeof(string),  lang_texts[4][29] , oGetPlayerName(playerid), DeathmatchStats[dmid][dm_playercount]);
-			GameMSG("player: %s(%d): has left the dm. (Players:%d)", oGetPlayerName(playerid), playerid, DeathmatchStats[dmid][dm_playercount]);
+			Log_Game("player: %s(%d): has left the dm. (Players:%d)", oGetPlayerName(playerid), playerid, DeathmatchStats[dmid][dm_playercount]);
 		}
 		SendMessageToDMPlayers(dmid, string, COLOUR_GREY);
 		oGivePlayerMoney(playerid, Deathmatch[dmid][dm_cashentry], 1); // give player back thier cash entry
@@ -843,7 +835,7 @@ stock PlayerLeaveDM(playerid, dmid)
 	{
 		format(string, sizeof(string),  lang_texts[4][31] , oGetPlayerName(playerid), DeathmatchStats[dmid][dm_playercount]);
 		SendMessageToDMPlayers(dmid, string, COLOUR_GREY);
-		GameMSG("player: %s(%d): has left the dm. (Players:%d)", oGetPlayerName(playerid), playerid, DeathmatchStats[dmid][dm_playercount]);
+		Log_Game("player: %s(%d): has left the dm. (Players:%d)", oGetPlayerName(playerid), playerid, DeathmatchStats[dmid][dm_playercount]);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[4][32]);
 	}
 

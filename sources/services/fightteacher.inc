@@ -44,7 +44,7 @@ stock fights_OnGameModeInit()
 		format(string, sizeof(string), lang_texts[19][19], fights_Teachers[fightid][StyleName]);
 		CreatePickupText(string, fights_Teachers[fightid][Coord_X], fights_Teachers[fightid][Coord_Y], fights_Teachers[fightid][Coord_Z]);
 	}
-	GameMSG(lang_texts[19][0]);
+	Log_Game(lang_texts[19][0]);
 	return 1;
 }
 

@@ -32,7 +32,7 @@ stock lang_OnGameModeInit()
 	format(lang_file, sizeof(lang_file), "%slang_%s%s", DATA_FILES_FOLDER, lang_use, DATA_FILES_FORMAT);
 	lang_ReadFile(lang_file);
 
-	GameMSG("SERVER: Lang module init(%s)", lang_file);
+	Log_Game("SERVER: Lang module init(%s)", lang_file);
 	return 1;
 }
 
@@ -40,7 +40,7 @@ stock lang_ReadFile(filename[])
 {
 	new File:fhandle = fopen(filename, io_read);
 	if (!fhandle) {
-		GameMSG("ERROR: No such language file '%s'", filename);
+		Log_Game("ERROR: No such language file '%s'", filename);
 		return 0;
 	}
 

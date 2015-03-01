@@ -105,7 +105,7 @@ stock groundhold_OnGameModeInit()
 		Mapicon_Create(Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z], 56, 0);
 	}
 
-	GameMSG("SERVER: Groundhold module init");
+	Log_Game("SERVER: Groundhold module init");
 	return 1;
 }
 

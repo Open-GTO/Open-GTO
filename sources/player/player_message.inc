@@ -35,8 +35,7 @@ stock pl_message_OnPlayerText(playerid, text[])
 			format(string, sizeof(string), "%s"CHAT_SHOW_ID" банде: {FFFFFF}%s", playername, playerid, text[1]);
 			SendGangMessage(player_GetGangID(playerid), string, COLOUR_GANG_CHAT);
 
-			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <GANG CHAT>: %s", playername, playerid, text[1]);
-			WriteLog(ChatLog, string);
+			Log_Player("Player: %s"CHAT_SHOW_ID": <GANG CHAT>: %s", playername, playerid, text[1]);
 			return 0;
 		}
 		case '@', '"': {
@@ -46,8 +45,7 @@ stock pl_message_OnPlayerText(playerid, text[])
 
 			SendClientMessageToAdmins(playerid, text[1]);
 
-			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <ADMIN TALK>: %s", playername, playerid, text[1]);
-			WriteLog(ChatLog, string);
+			Log_Player("Player: %s"CHAT_SHOW_ID": <ADMIN TALK>: %s", playername, playerid, text[1]);
 			return 0;
 		}
 		case '#', '№': {
@@ -57,8 +55,7 @@ stock pl_message_OnPlayerText(playerid, text[])
 
 			SendClientMessageToModers(playerid, text[1]);
 
-			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <MODERATOR TALK>: %s", playername, playerid, text[1]);
-			WriteLog(ChatLog, string);
+			Log_Player("Player: %s"CHAT_SHOW_ID": <MODERATOR TALK>: %s", playername, playerid, text[1]);
 			return 0;
 		}
 		case '$', ';': {
@@ -73,8 +70,7 @@ stock pl_message_OnPlayerText(playerid, text[])
 
 			SendClientMessageToBeside(playerid, 10, text[1]);
 
-			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <SAY>: %s", playername, playerid, text[1]);
-			WriteLog(ChatLog, string);
+			Log_Player("Player: %s"CHAT_SHOW_ID": <SAY>: %s", playername, playerid, text[1]);
 			return 0;
 		}
 	}

@@ -44,7 +44,7 @@ stock bank_OnGameModeInit()
 	    CreatePickup(1274, 23, Banks[bankid][Coord_X], Banks[bankid][Coord_Y], Banks[bankid][Coord_Z]);
 		CreatePickupText("Банк", Banks[bankid][Coord_X], Banks[bankid][Coord_Y], Banks[bankid][Coord_Z]);
 	}
-	GameMSG(lang_texts[2][0]);
+	Log_Game(lang_texts[2][0]);
 	return 1;
 }
 

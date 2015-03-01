@@ -1884,7 +1884,7 @@ stock vehicles_SaveConfig(file_config)
 stock vehicles_OnGameModeInit()
 {
 	LoadVehicles();
-	GameMSG(lang_texts[5][0]);
+	Log_Game(lang_texts[5][0]);
 	return 1;
 }
 

@@ -123,5 +123,5 @@ stock race_murderhorn_init()
 
 	RaceStats[RaceID][race_timer] = MakeRaceSleepTime(RaceID);
 	RaceStats[RaceID][race_state] = RACE_STATE_SLEEPING;
-  	GameMSG("Race: '%s' Loaded.",racename);
+  	Log_Game("Race: '%s' Loaded.",racename);
 }

@@ -29,7 +29,7 @@ stock wshop_OnGameModeInit()
 		CreatePickup(1247, 1, weapon_Shops[id][Coord_X], weapon_Shops[id][Coord_Y], weapon_Shops[id][Coord_Z]);
 		CreatePickupText("Оружие", weapon_Shops[id][Coord_X], weapon_Shops[id][Coord_Y], weapon_Shops[id][Coord_Z]);
 	}
-	GameMSG(lang_texts[17][44]);
+	Log_Game(lang_texts[17][44]);
 	return 1;
 }
 

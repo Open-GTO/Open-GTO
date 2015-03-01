@@ -43,7 +43,7 @@ stock bar_OnGameModeInit()
 	    CreatePickup(1551, 23, Bars[b_id][Coord_X], Bars[b_id][Coord_Y], Bars[b_id][Coord_Z]);
 		CreatePickupText("Бар", Bars[b_id][Coord_X], Bars[b_id][Coord_Y], Bars[b_id][Coord_Z]);
 	}
-	GameMSG(lang_texts[17][12]);
+	Log_Game(lang_texts[17][12]);
 	return 1;
 }
 

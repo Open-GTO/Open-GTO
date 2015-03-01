@@ -252,7 +252,7 @@ public OnGameModeInit()
 
 	#tryinclude "custom/mapicon"
 	#tryinclude "custom/objects"
-	GameMSG("SERVER: Custom mapicons, objects and pickups init");
+	Log_Game("SERVER: Custom mapicons, objects and pickups init");
 
 	time_Sync();
 	weather_SetRandom();
@@ -262,17 +262,17 @@ public OnGameModeInit()
 	SetTimer("TenMinuteTimer", 600000, 1); // 10 minute
 	SetTimer("OneHourTimer", 3600000, 1); // 1 hour
 	SetTimerEx("WorldSave", WORLD_SAVE_TIME, 1, "d", 0);
-	GameMSG("SERVER: Timers started");
+	Log_Game("SERVER: Timers started");
 	
 	WorldSave(0);
-	GameMSG("SERVER: Open-GTO "#VERSION" initialization complete.");
+	Log_Game("SERVER: Open-GTO "#VERSION" initialization complete.");
 	return 1;
 }
 
 public OnGameModeExit()
 {
 	WorldSave(1);
-	GameMSG("SERVER: Open-GTO "#VERSION" turned off.");
+	Log_Game("SERVER: Open-GTO "#VERSION" turned off.");
 	return 1;
 }
 
@@ -348,9 +348,9 @@ public OnPlayerDeath(playerid, killerid, reason)
 	player_SetSpawned(playerid, 0);
 
 	if (killerid == INVALID_PLAYER_ID) {
-		GameMSG("player: %s(%d): has died > Reason: (%d)", oGetPlayerName(playerid), playerid, reason);
+		Log_Game("player: %s(%d): has died > Reason: (%d)", oGetPlayerName(playerid), playerid, reason);
 	} else {
-		GameMSG("player: %s(%d): has killed player %s(%d)> Reason: (%d)", oGetPlayerName(killerid), killerid, oGetPlayerName(playerid), playerid, reason);
+		Log_Game("player: %s(%d): has killed player %s(%d)> Reason: (%d)", oGetPlayerName(killerid), killerid, oGetPlayerName(playerid), playerid, reason);
 	}
 
 	SendDeathMessage(killerid, playerid, reason);
@@ -434,9 +434,7 @@ public OnPlayerCommandReceived(playerid, cmdtext[])
 public OnPlayerCommandPerformed(playerid, cmdtext[], success)
 {
 	if (success) {
-		new logstring[MAX_STRING];
-		format(logstring, sizeof(logstring), "Player: %s"CHAT_SHOW_ID": %s", oGetPlayerName(playerid), playerid, cmdtext);
-		WriteLog(CMDLog, logstring);
+		Log_Player("Player: %s"CHAT_SHOW_ID": %s", oGetPlayerName(playerid), playerid, cmdtext);
 		return 1;
 	}
 	return 0;
@@ -471,8 +469,7 @@ public OnPlayerText(playerid, text[])
 	format(string, sizeof(string), "%s"CHAT_SHOW_ID": {FFFFFF}%s", playername, playerid, text);
 	SendClientMessageToAll(GetPlayerColor(playerid), string);
 
-	format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": %s", playername, playerid, text);
-	WriteLog(ChatLog, string);
+	Log_Player("Player: %s"CHAT_SHOW_ID": %s", playername, playerid, text);
 	return 0;
 }
 

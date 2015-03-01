@@ -31,7 +31,7 @@ stock pt_rcon_OnRconLoginAttempt(ip[], password[], success)
 		return 0;
 	}
 
-	GameMSG(lang_texts[11][5], ip, password);
+	Log_Game(lang_texts[11][5], ip, password);
 
 	new pip[MAX_IP];
 	foreach (new playerid : Player) {
