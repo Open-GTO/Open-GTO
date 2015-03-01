@@ -101,11 +101,11 @@ DialogCreate:VehicleBuy(playerid)
 	new string[MAX_STRING];
 
 	format(string, sizeof(string),
-		"Вы хотите купить автомобиль '%s' за $%d?",
+		"Вы хотите купить транспорт '%s' за $%d?",
 		GetVehicleName(model), GetVehicleCost(model)
 	);
 
-	Dialog_Open(playerid, Dialog:VehicleBuy, DIALOG_STYLE_MSGBOX, "Магазин автомобилей", string, "Купить", "Выйти");
+	Dialog_Open(playerid, Dialog:VehicleBuy, DIALOG_STYLE_MSGBOX, "Магазин транспорта", string, "Купить", "Выйти");
 }
 
 DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
@@ -117,7 +117,7 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 	}
 
 	if (GetPlayerVehicleCount(playerid) >= GetPlayerVehicleMaximumCount(playerid)) {
-		Dialog_Message(playerid, "Магазин автомобилей", "У вас максимальное количество транспорта", "ОК");
+		Dialog_Message(playerid, "Магазин транспорта", "У вас максимальное количество транспорта", "ОК");
 		return 0;
 	}
 	
@@ -125,16 +125,16 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 	new cost = GetVehicleCost( GetVehicleModel(vehicleid) );
 	
 	if (oGetPlayerMoney(playerid) < cost) {
-		Dialog_Message(playerid, "Магазин автомобилей", "У вас недостаточно денег", "ОК");
+		Dialog_Message(playerid, "Магазин транспорта", "У вас недостаточно денег", "ОК");
 		return 0;
 	}
 	
 	oGivePlayerMoney(playerid, -cost, 1);
 	buyVehicle(playerid, vehicleid);
 	
-	Dialog_Message(playerid, "Магазин автомобилей", "\
-		Вы успешно купили этот автомобиль.\n\
-		Чтобы вызвать купленный автомобиль, зайдите в меню пользователя и выберите его.",
+	Dialog_Message(playerid, "Магазин транспорта", "\
+		Вы успешно купили это транспортное средство.\n\
+		Чтобы вызвать купленный транспорт, зайдите в меню пользователя и выберите его.",
 		"ОК"
 	);
 	return 1;
