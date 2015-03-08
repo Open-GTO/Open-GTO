@@ -130,6 +130,8 @@ Developers:
 #include "protections/armour"
 
 #include "core/cfg"
+
+#include "core/api"
 // Races
 #tryinclude "races/race_monstertruck"
 #tryinclude "races/race_thestrip"

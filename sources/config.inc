@@ -15,6 +15,8 @@
 #pragma tabsize 0
 #pragma dynamic 13000
 
+#define FS_USING // если задефайнено, то компил€ци€ будет в режиме совместимости с FS (fixes, api)
+
 #define VERSION					"v2.0.0 alpha" // верси€ мода
 #define DATA_FILES_FORMAT		".gto" // расширение(.txt дл€ операционных систем на базе GNU/Linux не рекомендуетс€)
 #define DATA_FILES_FOLDER		"Open-GTO/" // папка, где хран€тс€ файлы Open-GTO, в scriptfiles/
