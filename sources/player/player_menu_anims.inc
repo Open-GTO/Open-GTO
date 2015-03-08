@@ -2017,7 +2017,7 @@ COMMAND:handsup(playerid, params[])
 
 COMMAND:piss(playerid, params[])
 {
-	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_PISS);
+	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_PISSING);
 	return 1;
 }
 

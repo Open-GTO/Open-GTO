@@ -245,9 +245,6 @@ enum clickText_Info {
 
 new Text:clickText[clickText_Info];
 
-// прочее
-#define SPECIAL_ACTION_PISS	68
-
 // дополнительные функции 'для' mxINI
 #define ini_fileRemove	fremove
 #define ini_fileExist	fexist
