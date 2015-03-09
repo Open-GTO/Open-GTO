@@ -40,7 +40,7 @@ new anim_lib_array[][MAX_ANIM_LIB_NAME] = {
 	"RUSTLER", "RYDER", "SCRATCHING", "SHAMAL", "SHOP", "SHOTGUN", "SILENCED",
 	"SKATE", "SMOKING", "SNIPER", "SPRAYCAN", "STRIP", "SUNBATHE", "SWAT", "SWEET",
 	"SWIM", "SWORD", "TANK", "TATTOOS", "TEC", "TRAIN", "TRUCK", "UZI", "VAN",
-	"VENDING", "VORTEX", "WAYFARER", "WEAPONS", "WUZI"
+	"VENDING", "VORTEX", "WAYFARER", "WEAPONS", "WUZI", "SAMP"
 };
 
 static anim_array[][Anims_Info] = {
@@ -1895,7 +1895,9 @@ static anim_array[][Anims_Info] = {
 	{"WUZI", "Wuzi_Greet_Wuzi"},
 	{"WUZI", "Wuzi_grnd_chk"},
 	{"WUZI", "Wuzi_stand_loop"},
-	{"WUZI", "Wuzi_Walk"}
+	{"WUZI", "Wuzi_Walk"},
+
+	{"SAMP", "FishingIdle"}
 };
 
 DialogCreate:AnimLib(playerid)
