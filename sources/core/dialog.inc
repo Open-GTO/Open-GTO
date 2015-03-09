@@ -5,6 +5,14 @@
 
 */
 
+#if defined _core_dialog_included
+  #endinput
+#endif
+
+#define _core_dialog_included
+#pragma library core_dialog
+
+
 #define DialogCreate:%0(%1) \
 	forward dcreate_%0(%1); \
 	public dcreate_%0(%1)
