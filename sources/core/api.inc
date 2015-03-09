@@ -18,8 +18,8 @@
 #pragma library api
 
 
-forward api_GivePlayerMoney(playerid, amount, showtext);
-public api_GivePlayerMoney(playerid, amount, showtext)
+forward api_oGivePlayerMoney(playerid, amount, showtext);
+public api_oGivePlayerMoney(playerid, amount, showtext)
 {
 	return oGivePlayerMoney(playerid, amount, showtext);
 }

@@ -15,5 +15,5 @@
 
 stock oGivePlayerMoney(playerid, amount, showtext=0)
 {
-	return CallRemoteFunction("api_GivePlayerMoney", "ddd", playerid, amount, showtext);
+	return CallRemoteFunction("api_oGivePlayerMoney", "ddd", playerid, amount, showtext);
 }
