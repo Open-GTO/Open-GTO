@@ -1972,18 +1972,6 @@ DialogResponse:AnimMenu(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-stock pl_anims_OnPlayerSpawn(playerid)
-{
-	pl_anims_PreloadAll(playerid);
-}
-
-stock pl_anims_PreloadAll(playerid)
-{
-	for (new i = 0; i < sizeof(anim_lib_array); i++) {
-		ApplyAnimation(playerid, anim_lib_array[i], "null", 0.0, 0, 0, 0, 0, 0, 1);
-	}
-}
-
 COMMAND:dance(playerid, params[])
 {
 	if (isnull(params)) {

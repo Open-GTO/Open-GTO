@@ -49,7 +49,6 @@ stock player_OnPlayerSpawn(playerid)
 	GivePlayerAllWeapon(playerid);
 	weapon_SetSkills(playerid);
 	PushHide(playerid);
-	pl_anims_OnPlayerSpawn(playerid);
 	pl_textdraw_Show(playerid);
 	pl_spawn_UpdateRandomID(playerid);
 	return 1;
