@@ -223,14 +223,24 @@ stock GetPlayerVehicleCount(playerid)
 
 stock GetPlayerVehicleMaximumCount(playerid)
 {
-	switch (GetPlayerLevel(playerid))
-	{
-		case 0..29: return 1;
-		case 30..54: return 2;
-		case 55..59: return 3;
-		case 60: return 4;
+	return GetVehicleMaximumCountByLevel( GetPlayerLevel(playerid) );
+}
+
+stock GetVehicleMaximumCountByLevel(level)
+{
+	static increase_levels[] = {0, 15, 24, 30};
+	new count = 0;
+
+	for (new i = 0; i < sizeof(increase_levels); i++) {
+		if (level >= increase_levels[i]) {
+			count++;
+		}
 	}
-	return MAX_PLAYER_VEHICLES;
+	if (count > MAX_PLAYER_VEHICLES) {
+		Log_Debug("GetVehicleMaximumCountByLevel(%d) = %d. But MAX_PLAYER_VEHICLES = %d", level, count, MAX_PLAYER_VEHICLES);
+		return MAX_PLAYER_VEHICLES;
+	}
+	return count;
 }
 
 stock IsValidPlayerVehicleSlot(playerid, slot)
