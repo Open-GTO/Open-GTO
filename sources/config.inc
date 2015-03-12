@@ -23,20 +23,18 @@
 #define EXTRAVERSION    "-alpha"
 #define NAME            "New generation"
 
-#define VERSION_STRING			"v"#VERSION"."#PATCHLEVEL"."#SUBLEVEL EXTRAVERSION
-#define DATA_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
-#define DATA_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
+#define VERSION_STRING          "v"#VERSION"."#PATCHLEVEL"."#SUBLEVEL EXTRAVERSION
+#define DATA_FILES_FORMAT       ".gto" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
+#define DATA_FILES_FOLDER       "Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
-#define LANGUAGE_USE			"russian" // используемый язык
+#define LANGUAGE_USE            "russian" // используемый язык
 
-#define MAX_STRING				160 // не менять, кол-во символов для большинства строковых переменных
-#define MAX_NAME				40 // кол-во символов для имён, паролей и пр.
-#define MAX_IP					16 // максимальное количество символов для IP адреса
+#define MAX_STRING              160 // не менять, кол-во символов для большинства строковых переменных
+#define MAX_NAME                40 // кол-во символов для имён, паролей и пр.
+#define MAX_IP                  16 // максимальное количество символов для IP адреса
 
 #define USE_PASSWORD_ENCRYPT // если задефайнено, то пароль в файле игрока будет шифроваться
-#if defined USE_PASSWORD_ENCRYPT
-new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]$4%5a`Jdny¦IUW@G7s6&l:k;i~ YsoMЈ.cBq#|}NrTtA, ";
-#endif
+#define PASSWORD_ENCRYPT_KEY    "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]$45a`Jdny¦IUW@G7s6&l:k;i~ YsoMЈ.cBq#|}NrTtA, "
 
 #define SERVER_REAL_TIME			1 // мировое время соответствует текущему времени сервера
 #define SERVER_REAL_TIME_OFFSET		0 // смещение времени относительно сервера
@@ -166,8 +164,8 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define VEHICLE_DAMAGE_ENABLE_TIRES // включает прокалывание шин у пустого транспорта
 //#define VEHICLE_DAMAGE_ENABLE_DAMAGE // включает урон у пустого транспорта
 //
-#define MAX_PLAYER_VEHICLES			4 // максимальное количество личного транспорта
-#define VEHSHOP_CAR_CHANGE_TIME		3 // количество часов, через которое транспорт в магазине меняется
+#define MAX_PLAYER_VEHICLES              4 // максимальное количество личного транспорта
+#define VEHSHOP_CAR_CHANGE_TIME          3 // количество часов, через которое транспорт в магазине меняется
 
 // банды
 #define MAX_GANGS			MAX_PLAYERS // максимум банд онлайн
@@ -232,14 +230,6 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 #define MAX_COUNTDOWN		4 // кол-во секунд для отсчёта гонок и дм
 #define KEY_USING			KEY_YES // Кнопка 'Y' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
 #define KEY_NAME			"Y"
-#define PICKUP_TEXT			"\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'"
-
-stock Text3D:CreatePickupText(text[], Float:pos_x, Float:pos_y, Float:pos_z, world = 0)
-{
-	new string[MAX_STRING];
-	format(string, sizeof(string), "%s%s", text, PICKUP_TEXT);
-	return Create3DTextLabel(string, 0xFFFFFFFF, pos_x, pos_y, pos_z, 20.0, world, 1);
-}
 
 enum clickText_Info {
 	Text:sshop_left,
@@ -250,11 +240,3 @@ enum clickText_Info {
 }
 
 new Text:clickText[clickText_Info];
-
-// дополнительные функции 'для' mxINI
-#define ini_fileRemove	fremove
-#define ini_fileExist	fexist
-
-// по кнопкам
-#define PRESSED(%0) \
-	(((newkeys & (%0)) == (%0)) && ((oldkeys & (%0)) != (%0)))

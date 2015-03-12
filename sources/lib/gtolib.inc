@@ -17,7 +17,21 @@
 #define GivePVarInt(%1,%2,%3) SetPVarInt(%1,%2, GetPVarInt(%1,%2)+%3)
 #define set(%0,%1) strmid(%0,%1, 0, 160, MAX_STRING + 32)
 
+// дополнительные функции 'для' mxINI
+#define ini_fileRemove	fremove
+#define ini_fileExist	fexist
 
+// по кнопкам
+#define PRESSED(%0) \
+	(((newkeys & (%0)) == (%0)) && ((oldkeys & (%0)) != (%0)))
+
+#define HOLDING(%0) \
+	((newkeys & (%0)) == (%0))
+
+#define RELEASED(%0) \
+	(((newkeys & (%0)) != (%0)) && ((oldkeys & (%0)) == (%0)))
+
+// strcmp empty string fix
 stock strcmpEx(const string1[], const string2[], bool:ignorecase=false, length=cellmax)
 {
 	if (string1[0])
@@ -228,6 +242,8 @@ stock GetVehicleSpeed(vehicleid)
 #if defined USE_PASSWORD_ENCRYPT
 // encrypt(string[]) by Alex "Y_Less" Cole, Based on code by Jeremy Cole
 // modified by ZiGGi
+static ENCRYPTION_KEY[] = PASSWORD_ENCRYPT_KEY;
+
 stock encrypt(string[])
 {
 	new size = strlen(ENCRYPTION_KEY),

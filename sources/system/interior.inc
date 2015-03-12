@@ -139,11 +139,11 @@ stock interior_OnGameModeInit()
 	for (new i = 0; i < sizeof(interior_EnterExits); i++)
 	{
 		CreatePickup(19198, 1, interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z] + 0.5);
-		CreatePickupText("Вход", interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z]);
-		
+		Create3DTextLabel("Вход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF, interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z], 20.0, 0, 1);
+
 		CreatePickup(19198, 1, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z] + 0.2, i + 1);
-		CreatePickupText("Выход", interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z], i + 1);
-		
+		Create3DTextLabel("Выход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z], 20.0, i + 1, 1);
+
 		if (interior_EnterExits[i][iee_icon_ID] != -1)
 		{
 			Mapicon_Create(interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z], interior_EnterExits[i][iee_icon_ID], 0);
