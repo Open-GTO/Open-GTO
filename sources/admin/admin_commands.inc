@@ -930,7 +930,7 @@ COMMAND:an(playerid, params[])
 
 	new mtype = strval(string);
 	if (mtype < 0 || mtype > 6) {
-		SendClientMessage(playerid, COLOUR_WHITE, "Применение: /an <0-6> <сообщение>");
+		SendClientMessage(playerid, COLOUR_WHITE, "Применение: /an <тип[0-6]> <сообщение>");
 		return 1;
 	}
 
@@ -958,7 +958,7 @@ COMMAND:boom(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_WHITE, "Применение: /boom <тип(0-13)>");
+		SendClientMessage(playerid, COLOUR_WHITE, "Применение: /boom <тип[0-13]>");
 		return 1;
 	}
 
@@ -966,7 +966,7 @@ COMMAND:boom(playerid, params[])
 	new type = strval(strcharsplit(params, idx, ' '));
 
 	if (type < 0 || type > 13) {
-		SendClientMessage(playerid, COLOUR_RED, "Применение: /boom <тип(0-13)>");
+		SendClientMessage(playerid, COLOUR_RED, "Применение: /boom <тип[0-13]>");
 		return 1;
 	}
 
@@ -1278,27 +1278,28 @@ COMMAND:allowport(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, "Применение: /allowport <ID> <1/0>");
+		SendClientMessage(playerid, COLOUR_RED, "Применение: /allowport <ID>");
 		return 1;
 	}
 
 	new idx = 0;
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
-	if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))) {
+	if (!IsPlayerConnected(receiverid) || IsPlayerRconAdmin(receiverid)) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
-	new setport = strval(strcharsplit(params, idx, ' '));
-	if (setport < 0 || setport > 1) {
-		return 0;
-	}
-
-	oAllowPlayerTeleport(receiverid, setport);
-
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][17], oGetPlayerName(receiverid), receiverid);
+
+	if (IsAllowPlayerTeleport(playerid)) {
+		SetPlayerTeleportStatus(receiverid, 0);
+		format(string, sizeof(string), lang_texts[12][16], oGetPlayerName(receiverid), receiverid);
+	} else {
+		SetPlayerTeleportStatus(receiverid, 1);
+		format(string, sizeof(string), lang_texts[12][17], oGetPlayerName(receiverid), receiverid);
+	}
+	
 	SendClientMessage(playerid, COLOUR_WHITE, string);
 	return 1;
 }
@@ -1455,23 +1456,30 @@ COMMAND:kick(playerid, params[])
 		return 1;
 	}
 
-	new idx;
-	new receiverid = strval(strcharsplit(params, idx, ' '));
+	new idx, string[MAX_STRING];
+	string = strcharsplit(params, idx, ' ');
+
+	if (!IsNumeric(string)) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		return 1;
+	}
+
+	new receiverid = strval(string);
+	if (!IsPlayerConnected(receiverid)) {
+		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		return 1;
+	}
 
 	if (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid) && !IsPlayerAdmin(playerid)) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
-	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
-		return 1;
+	if (idx < strlen(params) - 1) {
+		KickPlayer(receiverid, params[idx + 1]);
+	} else {
+		KickPlayer(receiverid, nullstr);
 	}
-	
-	new reason[64];
-	reason = strcharsplit(params, idx, ' ');
-
-	KickPlayer(receiverid, reason);
 	return 1;
 }
 
@@ -1483,6 +1491,7 @@ COMMAND:carresp(playerid, params[])
 
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid == 0) {
+		SendClientMessage(playerid, -1, "{FF2211}[Ошибка]: {FFFFFF}/carresp: нужно быть в транспорте, чтобы использовать эту команду");
 		return 1;
 	}
 
@@ -1531,9 +1540,7 @@ COMMAND:clearchat(playerid, params[])
 		return 0;
 	}
 
-	for (new i = 0; i < 100; i++) {
-		SendClientMessageToAll(0, "");
-	}
+	Chat_ClearAll();
 	return 1;
 }
 

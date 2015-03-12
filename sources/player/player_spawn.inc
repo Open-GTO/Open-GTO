@@ -118,7 +118,7 @@ stock pl_spawn_OnPlayerRequestClass(playerid, classid)
 	}
 
 	// clean chat
-	chat_Clean(playerid);
+	Chat_Clear(playerid);
 
 	// hide class selection buttons
 	TogglePlayerSpectating(playerid, 1);

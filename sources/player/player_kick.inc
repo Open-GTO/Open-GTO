@@ -19,6 +19,10 @@ stock KickPlayer(playerid, reason[], showreason = 1)
 		return 0;
 	}
 
+	if (strlen(reason) == 0) {
+		set(reason, "None");
+	}
+
 	new string[MAX_STRING];
 	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
@@ -27,10 +31,6 @@ stock KickPlayer(playerid, reason[], showreason = 1)
 		format(string, sizeof(string), lang_texts[9][4], reason);
 		SendClientMessage(playerid, COLOUR_YELLOW, string);
 		return 0;
-	}
-
-	if (!strlen(reason)) {
-		set(reason, "None");
 	}
 
 	if (showreason == 1) {

@@ -81,7 +81,7 @@ stock player_OnPlayerDisconnect(playerid, reason)
 
 stock player_OnPlayerConnect(playerid)
 {
-	chat_Clean(playerid);
+	Chat_Clear(playerid);
 	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[9][35]);
 
 	new plrIP[MAX_IP], string[MAX_STRING];

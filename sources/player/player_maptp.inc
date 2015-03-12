@@ -12,7 +12,6 @@
 #define _pl_maptp_included
 #pragma library pl_maptp
 
-
 stock pl_maptp_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
 	if (!IsAllowPlayerTeleport(playerid)) {
@@ -36,6 +35,6 @@ stock IsAllowPlayerTeleport(playerid) {
 	return GetPVarInt(playerid, "AllowTeleport") == 1 ? 1 : 0;
 }
 
-stock oAllowPlayerTeleport(playerid, isallow) {
+stock SetPlayerTeleportStatus(playerid, isallow) {
 	SetPVarInt(playerid, "AllowTeleport", isallow);
 }

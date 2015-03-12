@@ -344,10 +344,17 @@ stock encode_tires_bike(rear, front)
 	return rear | (front << 1);
 }
 
-stock chat_Clean(playerid)
+stock Chat_Clear(playerid)
 {
 	for (new i = 0; i < 20; i++) {
 		SendClientMessage(playerid, -1, "");
+	}
+}
+
+stock Chat_ClearAll()
+{
+	for (new i = 0; i < 20; i++) {
+		SendClientMessageToAll(-1, "");
 	}
 }
 
