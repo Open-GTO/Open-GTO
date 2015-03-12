@@ -178,7 +178,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				"Информация о версии",
 				"{AFE7FF}На сервере запущен:\n\
 				\n\
-				\t{FFFFFF}Open - Grand Theft Online {AA3333}"VERSION"{FFFFFF}.\n\
+				\t{FFFFFF}Open - Grand Theft Online {AA3333}"VERSION_STRING"{FFFFFF}.\n\
 				\n\
 				\n\
 				{00C0DD}Создал {AFE7FF}Iain Gilbert\n\

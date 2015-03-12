@@ -17,7 +17,13 @@
 
 //#define FS_USING // если задефайнено, то компил€ци€ будет в режиме совместимости с FS (fixes, api)
 
-#define VERSION					"v2.0.0 alpha" // верси€ мода
+#define VERSION         2
+#define PATCHLEVEL      0
+#define SUBLEVEL        0
+#define EXTRAVERSION    "-alpha"
+#define NAME            "New generation"
+
+#define VERSION_STRING			"v"#VERSION"."#PATCHLEVEL"."#SUBLEVEL EXTRAVERSION
 #define DATA_FILES_FORMAT		".gto" // расширение(.txt дл€ операционных систем на базе GNU/Linux не рекомендуетс€)
 #define DATA_FILES_FOLDER		"Open-GTO/" // папка, где хран€тс€ файлы Open-GTO, в scriptfiles/
 

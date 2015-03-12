@@ -267,14 +267,14 @@ public OnGameModeInit()
 	Log_Game("SERVER: Timers started");
 	
 	WorldSave(0);
-	Log_Game("SERVER: Open-GTO "#VERSION" initialization complete.");
+	Log_Game("SERVER: Open-GTO "VERSION_STRING" initialization complete.");
 	return 1;
 }
 
 public OnGameModeExit()
 {
 	WorldSave(1);
-	Log_Game("SERVER: Open-GTO "#VERSION" turned off.");
+	Log_Game("SERVER: Open-GTO "VERSION_STRING" turned off.");
 	return 1;
 }
 

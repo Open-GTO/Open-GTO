@@ -40,7 +40,7 @@ enum CoordInfo {
 
 stock base_OnGameModeInit()
 {
-	SetGameModeText("Open-GTO "#VERSION);
+	SetGameModeText("Open-GTO "VERSION_STRING);
 	UsePlayerPedAnims();
 	ShowPlayerMarkers(PLAYER_MARKERS_MODE_GLOBAL);
 	ShowNameTags(1);
