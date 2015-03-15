@@ -173,7 +173,7 @@ stock player_OnLogin(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), lang_texts[15][86], VERSION);
+	format(string, sizeof(string), lang_texts[15][86], VERSION_STRING);
 	SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][87]);
 	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][88]);

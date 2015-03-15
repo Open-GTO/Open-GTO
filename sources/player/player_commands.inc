@@ -102,7 +102,7 @@ COMMAND:version(playerid, params[])
 {
 	SendClientMessage(playerid, COLOUR_MISC, lang_texts[15][74]);
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[15][75], VERSION);
+	format(string, sizeof(string), lang_texts[15][75], VERSION_STRING);
 	SendClientMessage(playerid, COLOUR_GREEN, string);
 	SendClientMessage(playerid, COLOUR_MISC, lang_texts[15][76]);
 	SendClientMessage(playerid, COLOUR_MISC, lang_texts[15][77]);
