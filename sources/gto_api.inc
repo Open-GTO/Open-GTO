@@ -13,7 +13,8 @@
 #pragma library gto_api
 
 
-stock oGivePlayerMoney(playerid, amount, showtext=0)
+stock gto_GivePlayerMoney(playerid, amount, showtext=0)
 {
 	return CallRemoteFunction("api_oGivePlayerMoney", "ddd", playerid, amount, showtext);
 }
+#define GivePlayerMoney gto_GivePlayerMoney
