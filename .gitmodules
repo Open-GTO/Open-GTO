@@ -1,0 +1,3 @@
+[submodule "sources/lib/sa-mp-fixes"]
+	path = sources/lib/sa-mp-fixes
+	url = https://github.com/ziggi/sa-mp-fixes.git

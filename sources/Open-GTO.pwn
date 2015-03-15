@@ -24,7 +24,7 @@ Developers:
 
 #include "compiler/includes/a_samp"
 #include "core/unfixes"
-#include "lib/fixes"
+#include "lib/sa-mp-fixes/fixes"
 #include "lib/foreach"
 #include "lib/zcmd"
 #include "lib/mxINI"
