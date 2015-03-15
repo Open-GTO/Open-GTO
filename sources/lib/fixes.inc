@@ -68,7 +68,7 @@
  * POST:     http://forum.sa-mp.com/showpost.php?p=876854
  * 
  * FIX:      HydraSniper
- * PROBLEM:  Entring military aircraft with a sniper rifle messes up vies.
+ * PROBLEM:  Entering military aircraft with a sniper rifle messes up views.
  * SOLUTION: Set their armed weapon to fists.
  * SEE:      "OnPlayerStateChange", "FIXES_GivePlayerWeapon",
  *           "FIXES_SetPlayerArmedWeapon".
@@ -626,6 +626,13 @@
  * SOLUTION: Remove the operators.
  * SEE:      "File:operator"
  * AUTHOR:   Y_Less
+ * 
+ * FIX:      GetPlayerWeaponData
+ * PROBLEM:  Old weapons with no ammo left are still returned.
+ * SOLUTION: Set "weapons" to 0.  DEFAULTS TO FALSE!
+ * SEE:      "FIXES_GetPlayerWeaponData"
+ * AUTHOR:   Y_Less
+ * POST:     http://forum.sa-mp.com/showthread.php?t=567400
  * 
  * ==============
  *  STYLE RULES: 
@@ -1463,6 +1470,13 @@
 	#define FIX_FileMaths                (2)
 #endif
 
+#if !defined FIX_GetPlayerWeaponData
+	#define FIX_GetPlayerWeaponData      (0)
+#elseif _FIXES_IS_UNSET(FIX_GetPlayerWeaponData)
+	#undef FIX_GetPlayerWeaponData
+	#define FIX_GetPlayerWeaponData      (2)
+#endif
+
 /* 
  * CHAIN_ORDER
  * 
@@ -1647,7 +1661,9 @@ enum e_FIXES_BOOLS (<<= 1)
 	e_FIXES_BOOLS_DRIVE_BY,
 	e_FIXES_BOOLS_FIRST_SPAWN,
 	e_FIXES_BOOLS_FIRST_CLASS,
-	e_FIXES_BOOLS_SPECTATING
+	e_FIXES_BOOLS_SPECTATING,
+	e_FIXES_BOOLS_CP_DELAYED,
+	e_FIXES_BOOLS_RACE_CP_DELAYED
 }
 
 /* 
@@ -1928,12 +1944,12 @@ static stock
 	FIXES_gsClassAnimName[MAX_PLAYERS][60],
 #endif
 	/* 
-	 * FIXES_gsPlayerAnimLibs[MAX_PLAYERS][_FIXES_CEILDIV(134, cellbits)],
+	 * FIXES_gsPlayerAnimLibs[MAX_PLAYERS][_FIXES_CEILDIV(135, cellbits)],
 	 * 
 	 * Which animation libraries the player has synced.
 	 */
 #if FIX_ApplyAnimation_2
-	FIXES_gsPlayerAnimLibs[MAX_PLAYERS][_FIXES_CEILDIV(134, cellbits)],
+	FIXES_gsPlayerAnimLibs[MAX_PLAYERS][_FIXES_CEILDIV(135, cellbits)],
 #endif
 	/* 
 	 * FIXES_pvarNotNewPlayer[]
@@ -2029,6 +2045,30 @@ static stock
 	 * Name of the SetColor timer function.
 	 */
 	FIXES_gscSetColor[] = "_FIXES_SetColor",
+	/* 
+	 * FIXES_gscSetCheckpoint[]
+	 * 
+	 * Name of the SetCheckpoint timer function.
+	 */
+	FIXES_gscSetCheckpoint[] = "_FIXES_SetCheckpoint",
+	/* 
+	 * FIXES_pvarPlayerCheckpoint[]
+	 * 
+	 * Name of the pvar in which to store the player's checkpoint state.
+	 */
+	FIXES_pvarPlayerCheckpoint[] = "FIXES_pvarPlayerCheckpoint",
+	/* 
+	 * FIXES_gscSetRaceCheckpoint[]
+	 * 
+	 * Name of the SetRaceCheckpoint timer function.
+	 */
+	FIXES_gscSetRaceCheckpoint[] = "_FIXES_SetRaceCheckpoint",
+	/* 
+	 * FIXES_pvarPlayerRaceCheckpoint[]
+	 * 
+	 * Name of the pvar in which to store the player's race checkpoint state.
+	 */
+	FIXES_pvarPlayerRaceCheckpoint[] = "FIXES_pvarPlayerRaceCheckpoint",
 	/* 
 	 * FIXES_gscNULL[]
 	 * 
@@ -2323,7 +2363,7 @@ static stock const
 #if FIX_ApplyAnimation || FIX_ApplyAnimation_2
 	FIXES_gscAnimIndexes[24] =
 		{
-			0, 2, 21, 35, 42, 42, 53, 62, 64, 67, 68, 71, 75, 81, 82, 84, 94, 96, 104, 121, 126, 127, 130, 134
+			0, 2, 21, 35, 42, 42, 53, 62, 64, 67, 68, 71, 75, 81, 82, 84, 94, 96, 104, 122, 127, 128, 131, 135
 		},
 #endif
 	/* 
@@ -2332,7 +2372,7 @@ static stock const
 	 * List of valid animation libraries.
 	 */
 #if FIX_ApplyAnimation || FIX_ApplyAnimation_2
-	FIXES_gscAnimLib[134][] =
+	FIXES_gscAnimLib[135][] =
 		{
 			"AIRPORT",      "ATTRACTORS",   "BAR",          "BASEBALL",     "BD_FIRE",
 			"BEACH",        "BENCHPRESS",   "BF_INJECTION", "BIKE_DBZ",     "BIKED",
@@ -2354,13 +2394,13 @@ static stock const
 			"PARK",         "PAULNMAC",     "PED",          "PLAYER_DVBYS", "PLAYIDLES",
 			"POLICE",       "POOL",         "POOR",         "PYTHON",       "QUAD",
 			"QUAD_DBZ",     "RAPPING",      "RIFLE",        "RIOT",         "ROB_BANK",
-			"ROCKET",       "RUNNINGMAN",   "RUSTLER",      "RYDER",        "SCRATCHING",
-			"SEX",          "SHAMAL",       "SHOP",         "SHOTGUN",      "SILENCED",
-			"SKATE",        "SMOKING",      "SNIPER",       "SNM",          "SPRAYCAN",
-			"STRIP",        "SUNBATHE",     "SWAT",         "SWEET",        "SWIM",
-			"SWORD",        "TANK",         "TATTOOS",      "TEC",          "TRAIN",
-			"TRUCK",        "UZI",          "VAN",          "VENDING",      "VORTEX",
-			"WAYFARER",     "WEAPONS",      "WOP",          "WUZI"
+			"ROCKET",       "RUNNINGMAN",   "RUSTLER",      "RYDER",        "SAMP",
+			"SCRATCHING",   "SEX",          "SHAMAL",       "SHOP",         "SHOTGUN",
+			"SILENCED",     "SKATE",        "SMOKING",      "SNIPER",       "SNM",
+			"SPRAYCAN",     "STRIP",        "SUNBATHE",     "SWAT",         "SWEET",
+			"SWIM",         "SWORD",        "TANK",         "TATTOOS",      "TEC",
+			"TRAIN",        "TRUCK",        "UZI",          "VAN",          "VENDING",
+			"VORTEX",       "WAYFARER",     "WEAPONS",      "WOP",          "WUZI"
 		},
 #endif
 	/* 
@@ -6099,6 +6139,36 @@ native BAD_PutPlayerInVehicle(playerid, vehicleid, seatid) = PutPlayerInVehicle;
 #endif
 
 /* 
+ * _FIXES_SetCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size)
+ * 
+ * FIXES:
+ *     SetPlayerCheckpoint
+ */
+
+#if FIX_SetPlayerCheckpoint
+	forward _FIXES_SetCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size);
+	
+	public _FIXES_SetCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size)
+	{
+		#if FIXES_Single
+			if (FIXES_gsPlayerBools[playerid] & e_FIXES_BOOLS_CP_DELAYED)
+		#else
+			if (GetPVarInt(playerid, FIXES_pvarPlayerCheckpoint))
+		#endif
+			{
+				return
+					#if FIXES_Single
+						FIXES_gsPlayerBools[playerid] &= ~e_FIXES_BOOLS_CP_DELAYED,
+					#else
+						DeletePVar(playerid, FIXES_pvarPlayerCheckpoint),
+					#endif
+						SetPlayerCheckpoint(playerid, x, y, z, size);
+			}
+			return 0;
+	}
+#endif
+
+/* 
  * FIXES_SetPlayerCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size)
  * 
  * FIXES:
@@ -6114,12 +6184,76 @@ native BAD_SetPlayerCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size) 
 	stock FIXES_SetPlayerCheckpoint(playerid, Float:x, Float:y, Float:z, Float:size)
 	{
 		return
-			DisablePlayerCheckpoint(playerid),
-			SetPlayerCheckpoint(playerid, x, y, z, size);
+			#if FIXES_Single
+				FIXES_gsPlayerBools[playerid] |= e_FIXES_BOOLS_CP_DELAYED,
+			#else
+				SetPVarInt(playerid, FIXES_pvarPlayerCheckpoint, 1),
+			#endif
+				DisablePlayerCheckpoint(playerid),
+				SetTimerEx(FIXES_gscSetCheckpoint, 50, 0, FIXES_gscSpec@iffff, playerid, x, y, z, size),
+				1;
 	}
 	
 	#define _ALS_SetPlayerCheckpoint
 	#define SetPlayerCheckpoint FIXES_SetPlayerCheckpoint
+#endif
+
+/* 
+ * FIXES_DisablePlayerCheckpoint(playerid)
+ * 
+ * FIXES:
+ *     SetPlayerCheckpoint
+ */
+
+#if defined _ALS_DisablePlayerCheckpoint
+	#error _ALS_DisablePlayerCheckpoint defined
+#endif
+native BAD_DisablePlayerCheckpoint(playerid) = DisablePlayerCheckpoint;
+
+#if FIX_SetPlayerCheckpoint
+	stock FIXES_DisablePlayerCheckpoint(playerid)
+	{
+		return
+			#if FIXES_Single
+				FIXES_gsPlayerBools[playerid] &= ~e_FIXES_BOOLS_CP_DELAYED,
+			#else
+				DeletePVar(playerid, FIXES_pvarPlayerCheckpoint),
+			#endif
+				DisablePlayerCheckpoint(playerid);
+	}
+	
+	#define _ALS_DisablePlayerCheckpoint
+	#define DisablePlayerCheckpoint FIXES_DisablePlayerCheckpoint
+#endif
+
+/* 
+ * _FIXES_SetRaceCheckpoint(playerid, type, Float:x, Float:y, Float:z, Float:nextx, Float:nexty, Float:nextz, Float:size)
+ * 
+ * FIXES:
+ *     SetPlayerRaceCheckpoint
+ */
+
+#if FIX_SetPlayerRaceCheckpoint
+	forward _FIXES_SetRaceCheckpoint(playerid, type, Float:x, Float:y, Float:z, Float:nextx, Float:nexty, Float:nextz, Float:size);
+	
+	public _FIXES_SetRaceCheckpoint(playerid, type, Float:x, Float:y, Float:z, Float:nextx, Float:nexty, Float:nextz, Float:size)
+	{
+		#if FIXES_Single
+			if (FIXES_gsPlayerBools[playerid] & e_FIXES_BOOLS_RACE_CP_DELAYED)
+		#else
+			if (GetPVarInt(playerid, FIXES_pvarPlayerRaceCheckpoint))
+		#endif
+			{
+				return
+					#if FIXES_Single
+						FIXES_gsPlayerBools[playerid] &= ~e_FIXES_BOOLS_RACE_CP_DELAYED,
+					#else
+						DeletePVar(playerid, FIXES_pvarPlayerRaceCheckpoint),
+					#endif
+						SetPlayerRaceCheckpoint(playerid, type, x, y, z, nextx, nexty, nextz, size);
+			}
+			return 0;
+	}
 #endif
 
 /* 
@@ -6138,12 +6272,46 @@ native BAD_SetPlayerRaceCheckpoint(playerid, type, Float:x, Float:y, Float:z, Fl
 	stock FIXES_SetPlayerRaceCheckpoint(playerid, type, Float:x, Float:y, Float:z, Float:nextx, Float:nexty, Float:nextz, Float:size)
 	{
 		return
-			DisablePlayerRaceCheckpoint(playerid),
-			SetPlayerRaceCheckpoint(playerid, type, x, y, z, nextx, nexty, nextz, size);
+			#if FIXES_Single
+				FIXES_gsPlayerBools[playerid] |= e_FIXES_BOOLS_RACE_CP_DELAYED,
+			#else
+				SetPVarInt(playerid, FIXES_pvarPlayerRaceCheckpoint, 1),
+			#endif
+				DisablePlayerRaceCheckpoint(playerid),
+				SetTimerEx(FIXES_gscSetRaceCheckpoint, 50, 0, FIXES_gscSpec@iifffffff, playerid, type, x, y, z, nextx, nexty, nextz, size),
+				1;
 	}
 	
 	#define _ALS_SetPlayerRaceCheckpoint
 	#define SetPlayerRaceCheckpoint FIXES_SetPlayerRaceCheckpoint
+#endif
+
+/* 
+ * FIXES_DisablePlayerRaceCheckpoint(playerid)
+ * 
+ * FIXES:
+ *     SetPlayerRaceCheckpoint
+ */
+
+#if defined _ALS_DisablePlayerRaceCP
+	#error _ALS_DisablePlayerRaceCP defined
+#endif
+native BAD_DisablePlayerRaceCheckpoint(playerid) = DisablePlayerRaceCheckpoint;
+
+#if FIX_SetPlayerRaceCheckpoint
+	stock FIXES_DisablePlayerRaceCP(playerid)
+	{
+		return
+			#if FIXES_Single
+				FIXES_gsPlayerBools[playerid] &= ~e_FIXES_BOOLS_RACE_CP_DELAYED,
+			#else
+				DeletePVar(playerid, FIXES_pvarPlayerRaceCheckpoint),
+			#endif
+				DisablePlayerRaceCheckpoint(playerid);
+	}
+	
+	#define _ALS_DisablePlayerRaceCP
+	#define DisablePlayerRaceCheckpoint FIXES_DisablePlayerRaceCP
 #endif
 
 /* 
@@ -7922,7 +8090,7 @@ native BAD_SetPlayerCameraLookAt(playerid, Float:x, Float:y, Float:z) = SetPlaye
 				if (GetPVarInt(playerid, FIXES_pvarPlayerSpectate) || GetPlayerState(playerid) == PLAYER_STATE_SPECTATING)
 			#endif
 				{
-					SetTimerEx(FIXES_gscSetCamera, 300, 0, FIXES_gscSpec@iifff, playerid, 2, x, y, z);
+					SetTimerEx(FIXES_gscSetCamera, 300, 0, FIXES_gscSpec@iifff, playerid, 0, x, y, z);
 				}
 				else
 				{
@@ -7956,17 +8124,17 @@ native BAD_TogglePlayerSpectating(playerid, toggle) = TogglePlayerSpectating;
 			if (toggle)
 			{
 				#if FIXES_Single
-					FIXES_gsPlayerBools[playerid] &= ~e_FIXES_BOOLS_SPECTATING;
+					FIXES_gsPlayerBools[playerid] |= e_FIXES_BOOLS_SPECTATING;
 				#else
-					DeletePVar(playerid, FIXES_pvarPlayerSpectate);
+					SetPVarInt(playerid, FIXES_pvarPlayerSpectate, 1);
 				#endif
 			}
 			else
 			{
 				#if FIXES_Single
-					FIXES_gsPlayerBools[playerid] |= e_FIXES_BOOLS_SPECTATING;
+					FIXES_gsPlayerBools[playerid] &= ~e_FIXES_BOOLS_SPECTATING;
 				#else
-					SetPVarInt(playerid, FIXES_pvarPlayerSpectate, 1);
+					DeletePVar(playerid, FIXES_pvarPlayerSpectate);
 				#endif
 			}
 			return TogglePlayerSpectating(playerid, toggle);
@@ -8058,6 +8226,33 @@ native BAD_SetPlayerColor(playerid, color) = SetPlayerColor;
 	
 	#define _ALS_SetPlayerColor
 	#define SetPlayerColor FIXES_SetPlayerColor
+#endif
+
+/* 
+ * FIXES_GetPlayerWeaponData(playerid, slot, &weapons, &ammo)
+ * 
+ * FIXES:
+ *     GetPlayerWeaponData
+ */
+
+#if defined _ALS_GetPlayerWeaponData
+	#error _ALS_GetPlayerWeaponData defined
+#endif
+native BAD_GetPlayerWeaponData(playerid, slot, &weapons, &ammo) = GetPlayerWeaponData;
+
+#if FIX_GetPlayerWeaponData
+	stock FIXES_GetPlayerWeaponData(playerid, slot, &weapons, &ammo)
+	{
+		// This reuses the "slot" variable so we don't have to declare a new one
+		// and can put all the code in a single statement.
+		return
+			slot = GetPlayerWeaponData(playerid, slot, weapons, ammo),
+			weapons = ammo ? weapons : 0,
+			slot;
+	}
+	
+	#define _ALS_GetPlayerWeaponData
+	#define GetPlayerWeaponData FIXES_GetPlayerWeaponData
 #endif
 
 /* 
