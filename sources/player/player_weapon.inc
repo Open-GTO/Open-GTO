@@ -79,7 +79,8 @@ stock pl_weapon_Sync(playerid)
 		GetPlayerWeaponData(playerid, i, weapon[0], weapon[1]);
 
 		// is weapon ammo empty
-		if ( (weapon[0] == 0 || weapon[1] == 0) && PlayerWeapons[playerid][i][pwid] != 0 ) {
+		if (weapon[0] == 0 && PlayerWeapons[playerid][i][pwid] != 0) {
+			PlayerWeapons[playerid][i][pwid] = 0;
 			PlayerWeapons[playerid][i][pbullets] = 0;
 			continue;
 		}

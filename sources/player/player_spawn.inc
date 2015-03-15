@@ -26,7 +26,7 @@ enum camera_PlaceArray_Info {
 	Float:camera_look_Z,
 }
 
-new camera_PlaceArray[][camera_PlaceArray_Info] = {
+static camera_PlaceArray[][camera_PlaceArray_Info] = {
 	{0,		-2785.616943, 26.270446, 17.054141,		-2775.761230, 15.552896, 12.677975},
 	{0,		-785.4092, 1668.5923, 67.8387,			-785.9841, 1667.7692, 67.6387},
 	{0,		1937.4159, 1251.2012, 97.4819,			1938.1495, 1251.8807, 97.0875}
@@ -124,7 +124,10 @@ stock pl_spawn_OnPlayerRequestClass(playerid, classid)
 	TogglePlayerSpectating(playerid, 1);
 
 	// set camera pos
-	SetTimerEx("pl_spawn_UpdateCamera", 200, 0, "d", playerid);
+	new camera_id = random( sizeof(camera_PlaceArray) );
+	SetPlayerInterior(playerid, camera_PlaceArray[camera_id][camera_Interior]);
+	SetPlayerCameraPos(playerid, camera_PlaceArray[camera_id][camera_pos_X], camera_PlaceArray[camera_id][camera_pos_Y], camera_PlaceArray[camera_id][camera_pos_Z]);
+	SetPlayerCameraLookAt(playerid, camera_PlaceArray[camera_id][camera_look_X], camera_PlaceArray[camera_id][camera_look_Y], camera_PlaceArray[camera_id][camera_look_Z]);
 	return 1;
 }
 
@@ -286,15 +289,6 @@ stock pl_spawn_UpdateRandomID(playerid)
 stock pl_spawn_SetPosByID(playerid, spawnid)
 {
 	SetPlayerPosEx(playerid, spawns_array[spawnid][spawn_x], spawns_array[spawnid][spawn_y], spawns_array[spawnid][spawn_z], spawns_array[spawnid][spawn_a], 0, 0);
-}
-
-forward pl_spawn_UpdateCamera(playerid);
-public pl_spawn_UpdateCamera(playerid)
-{
-	new camera_id = random( sizeof(camera_PlaceArray) );
-	SetPlayerInterior(playerid, camera_PlaceArray[camera_id][camera_Interior]);
-	SetPlayerCameraPos(playerid, camera_PlaceArray[camera_id][camera_pos_X], camera_PlaceArray[camera_id][camera_pos_Y], camera_PlaceArray[camera_id][camera_pos_Z]);
-	SetPlayerCameraLookAt(playerid, camera_PlaceArray[camera_id][camera_look_X], camera_PlaceArray[camera_id][camera_look_Y], camera_PlaceArray[camera_id][camera_look_Z]);
 }
 
 stock player_IsSpawned(playerid) {

@@ -90,19 +90,12 @@ Checkpoint_Stream(playerid)
 	if (cpid != INVALID_CHECKPOINT_ID && cpid != player_checkpoints[playerid][cp_currentid]) {
 		player_checkpoints[playerid][cp_currentid] = cpid;
 
-		DisablePlayerCheckpoint(playerid);
-		SetTimerEx("SetPlayerCheckpointEx", 100, 0, "dffff", playerid, checkpoints[cpid][cp_x], checkpoints[cpid][cp_y], checkpoints[cpid][cp_z], checkpoints[cpid][cp_size]);
+		SetPlayerCheckpoint(playerid, checkpoints[cpid][cp_x], checkpoints[cpid][cp_y], checkpoints[cpid][cp_z], checkpoints[cpid][cp_size]);
 	} else if (cpid == INVALID_CHECKPOINT_ID) {
 		player_checkpoints[playerid][cp_currentid] = INVALID_CHECKPOINT_ID;
 
 		DisablePlayerCheckpoint(playerid);
 	}
-}
-
-forward SetPlayerCheckpointEx(playerid, Float:x, Float:y, Float:z, Float:size);
-public SetPlayerCheckpointEx(playerid, Float:x, Float:y, Float:z, Float:size)
-{
-	SetPlayerCheckpoint(playerid, x, y, z, size);
 }
 
 stock Checkpoint_GetPlayerClosest(playerid)
