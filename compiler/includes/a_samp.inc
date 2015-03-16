@@ -1,6 +1,6 @@
 /*  SA-MP Functions
  *
- *  (c) Copyright 2005-2014, SA-MP Team
+ *  (c) Copyright 2005-2015, SA-MP Team
  *
  */
 
@@ -25,10 +25,10 @@
 #include "compiler/includes/a_objects"
 #include "compiler/includes/a_sampdb"
 #include "compiler/includes/a_http"
-
+ 
 // Limits and internal constants
 #define MAX_PLAYER_NAME							(24)
-#define MAX_PLAYERS								(500)
+#define MAX_PLAYERS								(1000)
 #define MAX_VEHICLES							(2000)
 #define INVALID_PLAYER_ID						(0xFFFF)
 #define INVALID_VEHICLE_ID						(0xFFFF)
@@ -75,6 +75,8 @@ native Float:asin(Float:value);
 native Float:acos(Float:value);
 native Float:atan(Float:value);
 native Float:atan2(Float:x, Float:y);
+native GetPlayerPoolSize();
+native GetVehiclePoolSize();
 
 // Game
 native SetGameModeText(const string[]);

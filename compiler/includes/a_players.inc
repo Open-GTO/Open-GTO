@@ -221,6 +221,7 @@ native SetCameraBehindPlayer(playerid);
 native GetPlayerCameraPos(playerid, &Float:x, &Float:y, &Float:z);
 native GetPlayerCameraFrontVector(playerid, &Float:x, &Float:y, &Float:z);
 native GetPlayerCameraMode(playerid);
+native EnablePlayerCameraTarget(playerid, enable);
 native GetPlayerCameraTargetObject(playerid);
 native GetPlayerCameraTargetVehicle(playerid);
 native GetPlayerCameraTargetPlayer(playerid);
