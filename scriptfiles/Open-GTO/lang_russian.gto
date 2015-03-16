@@ -611,8 +611,8 @@
 1: Administrator RCON:______________________________________________________________
 2: R: '/ssay <text>', '/an <тип(0-6)> <текст>', '/setlvl <ID> <уровень>', '/setstatus <ID> <статус> (0, 1, 2, 3)'
 3: R: '/disarm <ID>', '/disarmall', '/skydiveall', '/paralyzeall', '/deparalyzeall', '/remcash <ID>', '/remcashall'
-4: R: '/payday', /go <точка(0 - 27)>', '/allowport <ID>', '/setskin <ID> <IDskin>'
-5: R: '/repair', '/carinfo', '/int', '/boom <тип>'
+4: R: '/payday', '/allowport <ID>', '/setskin <ID> <IDskin>'
+5: R: '/repair', '/carinfo', '/boom <тип>'
 6: S: '/sys cmdlist', '/sys about', '/sys info', '/sys weather <param>', '/sys groundhold <param>', '/sys gmx', '/sys reloadlang'
 // mod_commands
 7: SERVER: %s has been muted by %s on %s minutes
