@@ -184,18 +184,19 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				{00C0DD}Создал {AFE7FF}Iain Gilbert\n\
 				\n\
 				{00C0DD}Продолжили:{AFE7FF}\n\
-							\t\tPeter Steenbergen\n\
-							\t\tRobin Kikkert\n\
-							\t\tAsturel\n\
-							\t\tDmitry Frolov (FP)\n\
-							\t\tOpen-GTO Team:\n\
-							\t\t\tCurrent: ziggi\n\
-							\t\t\tPrevious: GhostTT, heufix, Elbi\n\
+							\tPeter Steenbergen\n\
+							\tRobin Kikkert\n\
+							\tAsturel\n\
+							\tDmitry Frolov (FP)\n\
+							\tOpen-GTO Team:\n\
+							\t\tТекущие: ziggi\n\
+							\t\tПредыдущие: GhostTT, heufix, Elbi\n\
 				\n\
-				{00C0DD}Косвенные разработчики: {AFE7FF}\n\
-							\t\tMX_Master(mxINI, Chat-Guard)\n\
-							\t\twups(Default map icons)\n\
-							\t\tY_Less(foreach)\n\
+				{00C0DD}Благодарность: {AFE7FF}\n\
+							\tMX_Master - mxINI, Chat-Guard.\n\
+							\twups - Default map icons.\n\
+							\tY_Less - foreach, fixes.\n\
+							\tZeeX - zcmd.\n\
 				\n\
 				",
 				"Назад", "Выход"
