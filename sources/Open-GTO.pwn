@@ -351,6 +351,7 @@ public OnPlayerEnterCheckpoint(playerid)
 	ff_OnPlayerEnterCheckpoint(playerid, cp);
 	ss_OnPlayerEnterCheckpoint(playerid, cp);
 	fights_OnPlayerEnterCheckpoint(playerid, cp);
+	bank_OnPlayerEnterCheckpoint(playerid, cp);
 	return 1;
 }
 
