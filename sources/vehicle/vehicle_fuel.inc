@@ -13,21 +13,6 @@
 #pragma library vehicle_fuel
 
 
-new FuelList[] = {
-70, 45, 40, 298, 40, 40, 200, 80, 60, 40, 40, 40, 40, 45, 45, 40, 70, 100,
-45, 40, 40, 40, 45, 45, 20, 200, 40, 70, 70, 40, 45, 60, 90, 100, 35, 0,
-40, 50, 40, 40, 45, 5, 40, 50, 65, 40, 35, 90, 20, 60, 0, 40, 20, 20,
-20, 60, 50, 20, 40, 45, 90, 30, 20, 35, 5, 5, 40, 40, 20, 90, 90, 20,
-20, 20, 40, 40, 40, 40, 40, 45, 40, 0, 45, 45, 20, 20, 30, 90, 90, 70,
-70, 40, 40, 20, 40, 45, 40, 90, 50, 50, 40, 5, 40, 40, 40, 50, 40, 40,
-50, 0, 0, 90, 90, 90, 298, 298, 40, 40, 40, 400, 400, 30, 30, 30, 50, 50,
-40, 40, 50, 40, 20, 20, 60, 40, 40, 40, 40, 50, 50, 20, 40, 40, 40, 50,
-70, 40, 40, 40, 90, 40, 40, 40, 40, 300, 50, 40, 80, 80, 40, 40, 40, 40,
-40, 90, 90, 40, 45, 45, 20, 0, 50, 10, 20, 50, 20, 40, 40, 300, 50, 50,
-40, 30, 50, 20, 0, 40, 30, 40, 50, 40, 0, 0, 300, 200, 0, 20, 40, 40,
-40, 50, 40, 60, 40, 40, 40, 45, 0, 0, 0, 50, 0, 0,
-};
-
 new Text:background, PlayerText:speedom[MAX_PLAYERS];
 new Float:Fuel[MAX_VEHICLES];
 new fill_TimerID[MAX_PLAYERS] = {0,...};
@@ -51,10 +36,10 @@ stock veh_fuel_OnGameModeInit()
 	}
 
 	new Float:max_fuel, model;
-	for (new i = 1; i < MAX_VEHICLES; i++) {
+	for (new i = 1; i <= MAX_VEHICLES; i++) {
 		if ((model = GetVehicleModel(i)) != 0) {
-			max_fuel = FuelList[ model - 400 ] / 2;
-			Fuel[i] = random(floatround( max_fuel )) + max_fuel;
+			max_fuel = GetMaxVehicleFuel(model);
+			Fuel[i] = random(floatround( max_fuel / 2 )) + max_fuel / 2;
 		}
 	}
 
@@ -80,8 +65,8 @@ stock veh_fuel_OnVehicleSpawn(vehicleid)
 		return 0;
 	}
 
-	new Float:max_fuel = FuelList[ GetVehicleModel(vehicleid)-400 ] / 2;
-	Fuel[vehicleid] = random(floatround( max_fuel )) + max_fuel;
+	new Float:max_fuel = GetMaxVehicleFuel( GetVehicleModel(vehicleid) );
+	Fuel[vehicleid] = random(floatround( max_fuel / 2 )) + max_fuel / 2;
 	return 1;
 }
 
@@ -164,7 +149,7 @@ COMMAND:fill(playerid, params[])
 		}
 	}
 	
-	if (Fuel[vehicleid] >= FuelList[vehiclemodel-400]) {
+	if (Fuel[vehicleid] >= GetMaxVehicleFuel(vehiclemodel)) {
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][25]);
 		return 1;
 	}
@@ -213,7 +198,7 @@ public speed_Timer()
 		}
 		
 		vehiclemodel = GetVehicleModel(vehicleid);
-		if (FuelList[vehiclemodel - 400] == 0) {
+		if (GetMaxVehicleFuel(vehiclemodel) == 0) {
 			continue;
 		}
 		
@@ -225,8 +210,8 @@ public speed_Timer()
 			Fuel[vehicleid] = 0.0;
 		}
 		
-		if (Fuel[vehicleid] > FuelList[vehiclemodel - 400]) {
-			Fuel[vehicleid] = FuelList[vehiclemodel - 400];
+		if (Fuel[vehicleid] > GetMaxVehicleFuel(vehiclemodel)) {
+			Fuel[vehicleid] = GetMaxVehicleFuel(vehiclemodel);
 		}
 		
 		speed_count = GetVehicleSpeed(vehicleid);
@@ -258,7 +243,7 @@ public fill_Timer(playerid)
 	new vehicleid = GetPlayerVehicleID(playerid);
 	
 	Fuel[vehicleid] += VEHICLE_FUEL_SPEED;
-	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || Fuel[vehicleid] >= FuelList[ GetVehicleModel(vehicleid) - 400 ]) {
+	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || Fuel[vehicleid] >= GetMaxVehicleFuel( GetVehicleModel(vehicleid) )) {
 		new RefueledAmount = floatround( Fuel[vehicleid] - GetPVarFloat(playerid, "OldFuel") ) * VEHICLE_FUEL_TARIF;
 		oGivePlayerMoney(playerid, -RefueledAmount);
 		
@@ -304,9 +289,4 @@ public Float:SetVehicleFuel(vehicleid, Float:amount)
 	
 	Fuel[vehicleid] = amount;
 	return amount;
-}
-
-stock GetMaxVehicleFuel(vehiclemodel)
-{
-	return FuelList[vehiclemodel - 400];
 }

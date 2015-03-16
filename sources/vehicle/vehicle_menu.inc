@@ -54,7 +54,7 @@ stock vh_menu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			}
 		}
 		
-		if (Fuel[vehicleid] >= FuelList[vehiclemodel-400]) {
+		if (Fuel[vehicleid] >= GetMaxVehicleFuel(vehiclemodel)) {
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[19][25]);
 			return 1;
 		}
@@ -179,7 +179,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 				}
 			}
 			
-			if (Fuel[vehicleid] >= FuelList[vehiclemodel-400]) {
+			if (Fuel[vehicleid] >= GetMaxVehicleFuel(vehiclemodel)) {
 				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, lang_texts[19][31], lang_texts[19][25], "Назад", "Отмена");
 				return 1;
 			}
