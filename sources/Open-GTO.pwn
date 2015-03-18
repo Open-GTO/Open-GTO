@@ -99,6 +99,7 @@ Thanks:
 #include "gang/gang_level"
 #include "system/housing"
 #include "system/business"
+#include "streamers/incognito_streamer"
 #include "streamers/mapicon_stream"
 #include "streamers/checkpoint_stream"
 #include "system/race"
