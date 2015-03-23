@@ -18,7 +18,7 @@ new lang_texts[20][100][MAX_LANG_STRING + 10];
 
 stock lang_LoadConfig(file_config)
 {
-    ini_getString(file_config, "Language", lang_use);
+	ini_getString(file_config, "Language", lang_use);
 }
 
 stock lang_SaveConfig(file_config)

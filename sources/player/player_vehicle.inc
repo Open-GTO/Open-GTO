@@ -57,8 +57,8 @@ stock pveh_OnVehiclePaintjob(playerid, vehicleid, paintjobid)
 	if (slot == -1) {
 		return 0;
 	}
-    PlayerVehicle[playerid][slot][pv_Paintjob] = paintjobid;
-    return 1;
+	PlayerVehicle[playerid][slot][pv_Paintjob] = paintjobid;
+	return 1;
 }
 
 stock pveh_OnVehicleRespray(playerid, vehicleid, color1, color2)
@@ -67,9 +67,9 @@ stock pveh_OnVehicleRespray(playerid, vehicleid, color1, color2)
 	if (slot == -1) {
 		return 0;
 	}
-    PlayerVehicle[playerid][slot][pv_Color][0] = color1;
-    PlayerVehicle[playerid][slot][pv_Color][1] = color2;
-    return 1;
+	PlayerVehicle[playerid][slot][pv_Color][0] = color1;
+	PlayerVehicle[playerid][slot][pv_Color][1] = color2;
+	return 1;
 }
 
 stock pveh_OnVehicleMod(playerid, vehicleid, componentid)

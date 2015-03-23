@@ -90,13 +90,13 @@ stock business_LoadAll()
 		}
 		file_business = ini_openFile(businessdbname);
 		ini_getString(file_business, "Name", Businesses[i][Business_Name], MAX_NAME);
-        ini_getInteger(file_business, "Cost", Businesses[i][Business_Cost]);
-        ini_getInteger(file_business, "Value", Businesses[i][Business_Value]);
+		ini_getInteger(file_business, "Cost", Businesses[i][Business_Cost]);
+		ini_getInteger(file_business, "Value", Businesses[i][Business_Value]);
 		ini_getInteger(file_business, "Level", Businesses[i][Business_Level]);
-        ini_getString(file_business, "Owner", Businesses[i][Business_Owner], MAX_NAME);
-        ini_getInteger(file_business, "Buyout", Businesses[i][Business_Buyout]);
-        ini_getInteger(file_business, "Vault", Businesses[i][Business_Vault]);
-        ini_getInteger(file_business, "Upgrade", Businesses[i][Business_Upgrade]);
+		ini_getString(file_business, "Owner", Businesses[i][Business_Owner], MAX_NAME);
+		ini_getInteger(file_business, "Buyout", Businesses[i][Business_Buyout]);
+		ini_getInteger(file_business, "Vault", Businesses[i][Business_Vault]);
+		ini_getInteger(file_business, "Upgrade", Businesses[i][Business_Upgrade]);
 		ini_getInteger(file_business, "ShowIcon", Businesses[i][Business_ShowIcon]);
 		ini_getFloat(file_business, "Coord_X", Businesses[i][Coord_X]);
 		ini_getFloat(file_business, "Coord_Y", Businesses[i][Coord_Y]);
@@ -115,12 +115,12 @@ stock business_SaveAll()
 		file_business = (!ini_fileExist(businessdbname)) ? ini_createFile(businessdbname) : ini_openFile(businessdbname);
 		ini_setString(file_business, "Name", Businesses[i][Business_Name]);
 		ini_setInteger(file_business, "Cost", Businesses[i][Business_Cost]);
-        ini_setInteger(file_business, "Value", Businesses[i][Business_Value]);
+		ini_setInteger(file_business, "Value", Businesses[i][Business_Value]);
 		ini_setInteger(file_business, "Level", Businesses[i][Business_Level]);
 		ini_setString(file_business, "Owner", Businesses[i][Business_Owner]);
-        ini_setInteger(file_business, "Buyout", Businesses[i][Business_Buyout]);
-        ini_setInteger(file_business, "Vault", Businesses[i][Business_Vault]);
-        ini_setInteger(file_business, "Upgrade", Businesses[i][Business_Upgrade]);
+		ini_setInteger(file_business, "Buyout", Businesses[i][Business_Buyout]);
+		ini_setInteger(file_business, "Vault", Businesses[i][Business_Vault]);
+		ini_setInteger(file_business, "Upgrade", Businesses[i][Business_Upgrade]);
 		ini_setInteger(file_business, "ShowIcon", Businesses[i][Business_ShowIcon]);
 		ini_setFloat(file_business, "Coord_X", Businesses[i][Coord_X]);
 		ini_setFloat(file_business, "Coord_Y", Businesses[i][Coord_Y]);

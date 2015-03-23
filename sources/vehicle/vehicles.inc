@@ -21,8 +21,8 @@ enum VehicleSpawnInfo {
 	Float:vspawn_y,         // Y
 	Float:vspawn_z,         // Z
 	Float:vspawn_heading,   // Heading
-    vspawn_colour1,         // Colour1
-    vspawn_colour2          // Colour2
+	vspawn_colour1,         // Colour1
+	vspawn_colour2          // Colour2
 }
 
 // these vehicles will be spawned first, so if you wish to reserve a vehicle model, add it here
@@ -1822,8 +1822,8 @@ enum VehicleSpawnInfo_Interior {
 	Float:vspawn_y,         // Y
 	Float:vspawn_z,         // Z
 	Float:vspawn_heading,   // Heading
-    vspawn_colour1,         // Colour1
-    vspawn_colour2          // Colour2
+	vspawn_colour1,         // Colour1
+	vspawn_colour2          // Colour2
 }
 
 new VehicleModelSpawns_Interior[][VehicleSpawnInfo_Interior] = {

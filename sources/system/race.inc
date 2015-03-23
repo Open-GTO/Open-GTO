@@ -214,8 +214,8 @@ stock RaceLoadRecordDB(raceid)
 	if (!ini_fileExist(rdbname)) return 0;
 	new file = ini_openFile(rdbname);
 	ini_getInteger(file, "Best_Time_Record", BestScore[raceid][race_score_time]);
-    ini_getString(file, "Best_Time_Player", BestScore[raceid][race_score_player], MAX_NAME);
-    ini_getString(file, "Best_Time_Vehicle", BestScore[raceid][race_score_vehicle], MAX_NAME);
+	ini_getString(file, "Best_Time_Player", BestScore[raceid][race_score_player], MAX_NAME);
+	ini_getString(file, "Best_Time_Vehicle", BestScore[raceid][race_score_vehicle], MAX_NAME);
 	ini_closeFile(file);
 	return 1;
 }
@@ -251,17 +251,17 @@ stock RaceSaveBaseDB(raceid)
 	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, RaceBaseDB, Race[raceid][race_name]);
 	new file_race = (!ini_fileExist(rdbname)) ? ini_createFile(rdbname) : ini_openFile(rdbname);
 	ini_setString(file_race, "Name", Race[raceid][race_name]);
-    ini_setInteger(file_race, "Race_Frequency", Race[raceid][race_frequency]);
-    ini_setInteger(file_race, "Lineup_Delay", Race[raceid][race_lineupdelay]);
-    ini_setInteger(file_race, "Min_Racers", Race[raceid][race_minracers]);
-    ini_setInteger(file_race, "Min_Level", Race[raceid][race_minlevel]);
-    ini_setInteger(file_race, "Cash_Prize", Race[raceid][race_cashprize]);
-    ini_setInteger(file_race, "Cash_Entry", Race[raceid][race_cashentry]);
-    ini_setInteger(file_race, "XP_Prize", Race[raceid][race_xpprize]);
-    ini_setInteger(file_race, "XP_Bonus", Race[raceid][race_xpbonus]);
-    ini_setInteger(file_race, "Race_Time", Race[raceid][race_maxracetime]);
-    ini_setInteger(file_race, "Cash_Entry", Race[raceid][race_cashentry]);
-    ini_setFloat(file_race, "Startline_Heading", Race[raceid][race_startheading]);
+	ini_setInteger(file_race, "Race_Frequency", Race[raceid][race_frequency]);
+	ini_setInteger(file_race, "Lineup_Delay", Race[raceid][race_lineupdelay]);
+	ini_setInteger(file_race, "Min_Racers", Race[raceid][race_minracers]);
+	ini_setInteger(file_race, "Min_Level", Race[raceid][race_minlevel]);
+	ini_setInteger(file_race, "Cash_Prize", Race[raceid][race_cashprize]);
+	ini_setInteger(file_race, "Cash_Entry", Race[raceid][race_cashentry]);
+	ini_setInteger(file_race, "XP_Prize", Race[raceid][race_xpprize]);
+	ini_setInteger(file_race, "XP_Bonus", Race[raceid][race_xpbonus]);
+	ini_setInteger(file_race, "Race_Time", Race[raceid][race_maxracetime]);
+	ini_setInteger(file_race, "Cash_Entry", Race[raceid][race_cashentry]);
+	ini_setFloat(file_race, "Startline_Heading", Race[raceid][race_startheading]);
 	ini_setInteger(file_race, "CP_Count", RaceSize[raceid]);
 	
 	new cellname[MAX_STRING], temp[MAX_STRING];

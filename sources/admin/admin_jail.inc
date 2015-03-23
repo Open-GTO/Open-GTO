@@ -14,10 +14,10 @@
 
 
 enum JailCoordInfo {
-    Float:Coord_X,
-    Float:Coord_Y,
-    Float:Coord_Z,
-    Float:Coord_A
+	Float:Coord_X,
+	Float:Coord_Y,
+	Float:Coord_Z,
+	Float:Coord_A
 }
 
 new Float:jail_release_point[][JailCoordInfo] = {

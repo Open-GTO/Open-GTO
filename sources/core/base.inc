@@ -33,9 +33,9 @@ new RaceRecordDB[MAX_STRING] = DATA_FILES_FOLDER "race/record/";
 new nullstr[MAX_STRING];
 
 enum CoordInfo {
-    Float:Coord_X,
-    Float:Coord_Y,
-    Float:Coord_Z
+	Float:Coord_X,
+	Float:Coord_Y,
+	Float:Coord_Z
 }
 
 stock base_OnGameModeInit()

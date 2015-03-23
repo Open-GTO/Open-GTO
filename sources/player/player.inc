@@ -67,9 +67,9 @@ stock player_OnPlayerDisconnect(playerid, reason)
 	format(string, sizeof(string), lang_texts[1][18], oGetPlayerName(playerid), playerid);
 	
 	switch (reason) {
-	    case 0: strcat(string, " (вылетел)", sizeof(string));
-	    case 1: strcat(string, " (вышел)", sizeof(string));
-	    case 2: strcat(string, " (кикнут)", sizeof(string));
+		case 0: strcat(string, " (вылетел)", sizeof(string));
+		case 1: strcat(string, " (вышел)", sizeof(string));
+		case 2: strcat(string, " (кикнут)", sizeof(string));
 	}
 
 	SendClientMessageToAll(COLOUR_GREY, string);

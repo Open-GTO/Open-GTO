@@ -14,12 +14,12 @@
 // Zones
 enum zoneinfo {
 	zone_name[MAX_NAME],
-    Float:zone_minx,
-    Float:zone_miny,
-    Float:zone_minz,
-    Float:zone_maxx,
-    Float:zone_maxy,
-    Float:zone_maxz
+	Float:zone_minx,
+	Float:zone_miny,
+	Float:zone_minz,
+	Float:zone_maxx,
+	Float:zone_maxy,
+	Float:zone_maxz
 }
 new zones[][zoneinfo] = {
 // Indoor zones
