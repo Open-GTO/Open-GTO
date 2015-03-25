@@ -32,17 +32,18 @@ new Teleports[][TeleportsInfo] = {
 
 DialogCreate:PlayerTeleportMenu(playerid)
 {
-	new string[MAX_NAME * sizeof(Teleports)];
+	new string[((MAX_NAME + 8) * 3) * (sizeof(Teleports) + 1)];
+	string = "Название\tЦена\tУровень\n";
 	
 	for (new i = 0; i < sizeof(Teleports); i++) {
-		strcat(string, Teleports[i][Teleports_Name], sizeof(string));
-
-		if (i != sizeof(Teleports) - 1) {
-			strcat(string, "\n", sizeof(string));
-		}
+		format(string, sizeof(string),
+			"%s{CCCCCC}%s\t{00AA00}$%d\t{E6ACDD}%d\n",
+			string,
+			Teleports[i][Teleports_Name], Teleports[i][Teleports_Cost], Teleports[i][Teleports_Level]
+			);
 	}
 	
-	Dialog_Open(playerid, Dialog:PlayerTeleportMenu, DIALOG_STYLE_LIST, "Меню телепортов", string, "ОК", "Назад");
+	Dialog_Open(playerid, Dialog:PlayerTeleportMenu, DIALOG_STYLE_TABLIST_HEADERS, "Меню телепортов", string, "ОК", "Назад");
 }
 
 DialogResponse:PlayerTeleportMenu(playerid, response, listitem, inputtext[])
@@ -54,14 +55,14 @@ DialogResponse:PlayerTeleportMenu(playerid, response, listitem, inputtext[])
 	
 	if (GetPlayerLevel(playerid) < Teleports[listitem][Teleports_Level]) {
 		new string[MAX_STRING];
-		format(string, sizeof(string), "Ваш уровень слишком мал, нужен %d.", Teleports[listitem][Teleports_Level]);
+		format(string, sizeof(string), "{CCCCCC}Ваш уровень слишком мал, нужен {E6ACDD}%d.", Teleports[listitem][Teleports_Level]);
 		Dialog_MessageEx(playerid, Dialog:TeleportReturnMenu, "Телепорт", string, "Назад", "Отмена");
 		return 0;
 	}
 	
 	if (oGetPlayerMoney(playerid) < Teleports[listitem][Teleports_Cost]) {
 		new string[MAX_STRING];
-		format(string, sizeof(string), "Недостаточно денег, нужно $%d.", Teleports[listitem][Teleports_Cost]);
+		format(string, sizeof(string), "{CCCCCC}Недостаточно денег, нужно {00AA00}$%d.", Teleports[listitem][Teleports_Cost]);
 		Dialog_MessageEx(playerid, Dialog:TeleportReturnMenu, "Телепорт", string, "Назад", "Отмена");
 		return 0;
 	}
