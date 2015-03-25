@@ -796,27 +796,27 @@
 0: 
 [17 services]
 // [17] fastfood
-0: 
-1: SERVER: (services)Fastfood module init
-2: %s{CCCCCC}%s [t][{CCCCCC}цена {00AA00}$%d{CCCCCC}, насыщение {00AA00}+%0.0f{CCCCCC}][n]
+0: SERVER: (services)Fastfood module init
+1: Название[t]Цена[t]Насыщение[n]
+2: %s{EEEEEE}%s[t]{00AA00}$%d[t]{E6ACDD}%0.0f[n]
 3: Меню покупки еды
 4: Съесть
 5: Отмена
 6: Покупка еды
 7: Вам не хватает денег!
 8: ОК
-9: {CCCCCC}Вы съели {00AA00}%s{CCCCCC}, за {00AA00}$%d{CCCCCC} и насытились на {00AA00}%0.0f
+9: {CCCCCC}Вы съели {EEEEEE}%s{CCCCCC}, за {00AA00}$%d{CCCCCC} и насытились на {E6ACDD}%0.0f
 10: 
 // [17] bar
-11: 
-12: SERVER: (services)Bar module init
-13: %s{CCCCCC}%s [t][{CCCCCC}цена {00AA00}$%d{CCCCCC}, дурман: {00AA00}%0.1f%%{CCCCCC}, насыщение: {00AA00}+%0.0f{CCCCCC}][n]
+11: SERVER: (services)Bar module init
+12: Название[t]Цена[t]Дурман[t]Насыщение[n]
+13: %s{EEEEEE}%s[t]{00AA00}$%d[t]{BBBAE8}%0.1f%%[t]{E6ACDD}%0.0f[n]
 14: Бар
 15: Взять
 16: Отмена
 17: {CCCCCC}Вам не хватает денег!
 18: ОК
-19: {CCCCCC}Вы купили {00AA00}%s{CCCCCC}, за {00AA00}$%d{CCCCCC}, крепкостью {00AA00}%0.1f%%{CCCCCC} и сытостью {00AA00}%0.0f
+19: {CCCCCC}Вы купили {EEEEEE}%s{CCCCCC}, за {00AA00}$%d{CCCCCC}, крепкостью {BBBAE8}%0.1f%%{CCCCCC} и сытостью {E6ACDD}%0.0f
 20: 
 // [17] SkinShop
 21: 
@@ -855,16 +855,18 @@
 52: Вы купили %d патронов для '%s' за $%d.
 53: Вы купили '%s' за $%d.
 54: Оружие сохранено.
-55: У вас уже максимальное количество патрон.
-56: %s%s, цена $%d[n]
+55: Название[t]Цена[n]
+56: %s{EEEEEE}%s[t]{00AA00}$%d[n]
 57: Меню оружия
 58: Выбрать
 59: Выход
-60: Оружие: %s[n]Цена: $%d
-61: Оружие: %s[n]Цена за 1 патрон: $%d[n]Ваших денег хватит на %d патрон[n][n]Введите количество патрон:
+60: {CCCCCC}Оружие: {EEEEEE}%s[n]{CCCCCC}Цена: {00AA00}$%d
+61: {CCCCCC}Оружие: {EEEEEE}%s[n]{CCCCCC}Цена за 1 патрон: {00AA00}$%d[n]{CCCCCC}Ваших денег хватит на {BBBAE8}%d{CCCCCC} патрон
 62: Покупка оружия
 63: Купить
 64: Назад
+65: У вас уже максимальное количество патрон.
+66: [n][n]{CCCCCC}Введите количество патрон:
 [18 Type A Commands]
 1: Прим.: /mute <ID>
 2: Прим.: /unmute <ID>

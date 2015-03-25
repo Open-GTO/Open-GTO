@@ -43,7 +43,7 @@ stock fastfood_OnGameModeInit()
 	for (new id = 0; id < sizeof(FastFoods); id++) {
 		FastFoods[id][ff_checkpoint] = Checkpoint_Create(FastFoods[id][ff_x], FastFoods[id][ff_y], FastFoods[id][ff_z], 1.5, .streamdistance = 20.0);
 	}
-	Log_Game(lang_texts[17][1]);
+	Log_Game(lang_texts[17][0]);
 	return 1;
 }
 
@@ -61,6 +61,7 @@ stock ff_OnPlayerEnterCheckpoint(playerid, cp)
 DialogCreate:ServiceFastfood(playerid)
 {
 	new string[MAX_STRING * sizeof(Food)];
+	string = lang_texts[17][1];
 
 	for (new i = 0; i < sizeof(Food); i++) {
 		format(string, sizeof(string),
@@ -69,7 +70,7 @@ DialogCreate:ServiceFastfood(playerid)
 		);
 	}
 
-	Dialog_Open(playerid, Dialog:ServiceFastfood, DIALOG_STYLE_LIST, lang_texts[17][3], string, lang_texts[17][4], lang_texts[17][5]);
+	Dialog_Open(playerid, Dialog:ServiceFastfood, DIALOG_STYLE_TABLIST_HEADERS, lang_texts[17][3], string, lang_texts[17][4], lang_texts[17][5]);
 }
 
 DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])

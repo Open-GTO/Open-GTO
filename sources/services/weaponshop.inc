@@ -43,6 +43,7 @@ stock wshop_OnGameModeInit()
 DialogCreate:ServiceWeapon(playerid)
 {
 	new string[ sizeof(Weapons) * (MAX_NAME + 12 + 4) ];
+	string = lang_texts[17][55];
 
 	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++) {
 		if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
@@ -51,7 +52,7 @@ DialogCreate:ServiceWeapon(playerid)
 		format(string, sizeof(string), lang_texts[17][56], string, oGetWeaponName(weaponid), GetWeaponCost(weaponid));
 	}
 
-	Dialog_Open(playerid, Dialog:ServiceWeapon, DIALOG_STYLE_LIST, lang_texts[17][57], string, lang_texts[17][58], lang_texts[17][59]);
+	Dialog_Open(playerid, Dialog:ServiceWeapon, DIALOG_STYLE_TABLIST_HEADERS, lang_texts[17][57], string, lang_texts[17][58], lang_texts[17][59]);
 }
 
 DialogResponse:ServiceWeapon(playerid, response, listitem, inputtext[])
@@ -82,6 +83,7 @@ DialogCreate:ServiceWeaponBuy(playerid)
 			lang_texts[17][61],
 			oGetWeaponName(weaponid), GetWeaponCost(weaponid), oGetPlayerMoney(playerid) / GetWeaponCost(weaponid)
 		);
+		strcat(string, lang_texts[17][66]);
 	}
 
 	Dialog_Open(playerid, Dialog:ServiceWeaponBuy, dialog_style, lang_texts[17][62], string, lang_texts[17][63], lang_texts[17][64]);
@@ -133,12 +135,12 @@ stock wshop_Buy(playerid, weaponid, bullets)
 	if (weaponid > 0 && weaponid < 47) {
 		new current_bullets = GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid));
 		if (current_bullets >= MAX_BULLETS) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[17][55]);
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[17][65]);
 			return 0;
 		}
 
 		if (current_bullets + bullets > MAX_BULLETS) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[17][55]);
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[17][65]);
 
 			bullets = MAX_BULLETS - GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid));
 

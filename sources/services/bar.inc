@@ -48,7 +48,7 @@ stock bar_OnGameModeInit()
 	for (new id = 0; id < sizeof(Bars); id++) {
 		Bars[id][bar_checkpoint] = Checkpoint_Create(Bars[id][bar_x], Bars[id][bar_y], Bars[id][bar_z], 1.5, .streamdistance = 20.0);
 	}
-	Log_Game(lang_texts[17][12]);
+	Log_Game(lang_texts[17][11]);
 	return 1;
 }
 
@@ -107,6 +107,7 @@ public bar_Gulp(playerid)
 DialogCreate:ServiceBar(playerid)
 {
 	new string[MAX_STRING * sizeof(Drinks)];
+	string = lang_texts[17][12];
 
 	for (new i = 0; i < sizeof(Drinks); i++) {
 		format(string, sizeof(string),
@@ -115,7 +116,7 @@ DialogCreate:ServiceBar(playerid)
 		);
 	}
 
-	Dialog_Open(playerid, Dialog:ServiceBar, DIALOG_STYLE_LIST, lang_texts[17][14], string, lang_texts[17][15], lang_texts[17][16]);
+	Dialog_Open(playerid, Dialog:ServiceBar, DIALOG_STYLE_TABLIST_HEADERS, lang_texts[17][14], string, lang_texts[17][15], lang_texts[17][16]);
 }
 
 DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
