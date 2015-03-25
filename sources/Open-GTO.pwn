@@ -13,7 +13,7 @@ Date started:
 		12 August 2006
 
 SA-MP version:
-	0.3z and older
+	0.3.7 RC3 and older
 
 Developers:
 	Open-GTO:
