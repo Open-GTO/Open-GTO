@@ -97,7 +97,7 @@
 // skins
 #define SKINS_COST			0 // цена покупки скина
 #define SKINS_IGNORE		0, 74  // список игнорируемых скинов
-#define SKINS_MAXID			299
+#define SKINS_MAXID			311
 #define SKINS_MINID			1
 #define PLAYER_DEFAULT_SKIN	95
 
