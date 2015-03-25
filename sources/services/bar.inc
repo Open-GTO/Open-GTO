@@ -106,7 +106,7 @@ public bar_Gulp(playerid)
 
 DialogCreate:ServiceBar(playerid)
 {
-	new string[MAX_STRING * sizeof(Drinks)];
+	new string[MAX_STRING * (sizeof(Drinks) + 1)];
 	string = lang_texts[17][12];
 
 	for (new i = 0; i < sizeof(Drinks); i++) {

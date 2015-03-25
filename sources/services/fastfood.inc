@@ -60,7 +60,7 @@ stock ff_OnPlayerEnterCheckpoint(playerid, cp)
 
 DialogCreate:ServiceFastfood(playerid)
 {
-	new string[MAX_STRING * sizeof(Food)];
+	new string[MAX_STRING * (sizeof(Food) + 1)];
 	string = lang_texts[17][1];
 
 	for (new i = 0; i < sizeof(Food); i++) {

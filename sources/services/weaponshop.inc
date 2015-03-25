@@ -42,7 +42,7 @@ stock wshop_OnGameModeInit()
 // select weapon from list
 DialogCreate:ServiceWeapon(playerid)
 {
-	new string[ sizeof(Weapons) * (MAX_NAME + 12 + 4) ];
+	new string[ (sizeof(Weapons) + 1) * (MAX_NAME + 12 + 4) ];
 	string = lang_texts[17][55];
 
 	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++) {
