@@ -25,7 +25,7 @@
 #include "compiler/includes/a_objects"
 #include "compiler/includes/a_sampdb"
 #include "compiler/includes/a_http"
- 
+
 // Limits and internal constants
 #define MAX_PLAYER_NAME							(24)
 #define MAX_PLAYERS								(1000)
@@ -204,10 +204,12 @@ native DeletePlayer3DTextLabel(playerid, PlayerText3D:id);
 native UpdatePlayer3DTextLabelText(playerid, PlayerText3D:id, color, text[]);
 
 // Player GUI Dialog
-#define DIALOG_STYLE_MSGBOX		0
-#define DIALOG_STYLE_INPUT		1
-#define DIALOG_STYLE_LIST		2
-#define DIALOG_STYLE_PASSWORD	3
+#define DIALOG_STYLE_MSGBOX				0
+#define DIALOG_STYLE_INPUT				1
+#define DIALOG_STYLE_LIST				2
+#define DIALOG_STYLE_PASSWORD			3
+#define DIALOG_STYLE_TABLIST			4
+#define DIALOG_STYLE_TABLIST_HEADERS	5
 
 native ShowPlayerDialog(playerid, dialogid, style, caption[], info[], button1[], button2[]);
 
