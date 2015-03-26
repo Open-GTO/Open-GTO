@@ -313,25 +313,41 @@ DialogResponse:BusinessMessage(playerid, response, listitem, inputtext[])
 
 DialogCreate:BusinessPlayerOwned(playerid)
 {
-	new string[MAX_STRING * MAX_PLAYER_BUSINESS],
+	new
+		string[MAX_STRING * MAX_PLAYER_BUSINESS],
 		count = 0,
 		playername[MAX_PLAYER_NAME+1];
 	
+	string = _(BUSINESS_DIALOG_LIST_ITEM_HEAD);
+
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	for (new id = 0; id < sizeof(Businesses); id++) {
 		if (!strcmp(Businesses[id][Business_Owner], playername, true)) {
 			count++;
-			format(string, sizeof(string), lang_texts[3][23], string, Businesses[id][Business_Name], Businesses[id][Business_Vault]);
+			format(string, sizeof(string),
+				_(BUSINESS_DIALOG_LIST_ITEM),
+				string,
+				Businesses[id][Business_Name],
+				Businesses[id][Business_Vault]
+			);
 		}
 	}
 
 	if (count < 1) {
-		Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Мои бизнесы", "У вас нет бизнесов", "Назад", "Выход");
+		Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
+			_(BUSINESS_DIALOG_CAPTION),
+			_(BUSINESS_DIALOG_NO_BUSINESS),
+			_(BUSINESS_DIALOG_BACK), _(BUSINESS_DIALOG_CANCEL)
+		);
 		return 1;
 	}
 
-	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_LIST, "Мои бизнесы", string, "Назад", "Выход");
+	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_TABLIST_HEADERS,
+		_(BUSINESS_DIALOG_CAPTION),
+		string,
+		_(BUSINESS_DIALOG_BACK), _(BUSINESS_DIALOG_CANCEL)
+	);
 	return 1;
 }
 

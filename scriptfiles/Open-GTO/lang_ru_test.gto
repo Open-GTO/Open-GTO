@@ -71,5 +71,13 @@ PLAYER_MENU_SETTINGS_PASSWORD_CHANGED = {CCCCCC}Вы успешно сменили пароль.\nВаш 
 PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY = {CCCCCC}У вас нету {00AA00}$%d{CCCCCC} на смену пароля от аккаунта.
 PLAYER_MENU_SETTINGS_PASSWORD_LENGTH = {CCCCCC}Допустимая длина пароля от {BBBAE8}%d{CCCCCC} до {BBBAE8}%d{CCCCCC} символов.
 
+// business
+BUSINESS_DIALOG_CAPTION = Мои бизнесы
+BUSINESS_DIALOG_BACK = Назад
+BUSINESS_DIALOG_CANCEL = Отмена
+BUSINESS_DIALOG_NO_BUSINESS = {CCCCCC}У вас нет бизнесов
+BUSINESS_DIALOG_LIST_ITEM_HEAD = Название\tТекущая прибыль\n
+BUSINESS_DIALOG_LIST_ITEM = %s{CCCCCC}%s\t{00AA00}$%d\n
+
 // other
 NO_ADMINS = В данный момент в игре нет администраторов, но это не значит, что они не могут за вами наблюдать.
