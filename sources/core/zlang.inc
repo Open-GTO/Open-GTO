@@ -15,7 +15,7 @@
 
 #define MAX_TEXT_ENTRIES  1024
 
-#define MAX_VAR_STRING    32
+#define MAX_VAR_STRING    48
 #define MAX_VALUE_STRING  128
 
 #define LANG_VIRTUAL_MACHINE 1

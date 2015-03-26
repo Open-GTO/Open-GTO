@@ -7,7 +7,6 @@ ACCOUNT_DIALOG_REGISTER_HEAD = {CCCCCC}Регистрация: {FFFFFF}%s
 ACCOUNT_DIALOG_REGISTER = {CCCCCC}Этот аккаунт не зарегистрирован.\n\n{CCCCCC}Введите пароль для {F4A460}регистрации{CCCCCC}:
 ACCOUNT_DIALOG_REGISTER_BUTTON = Создать
 
-ACCOUNT_SAVED = Ваш аккаунт успешно сохранён.
 ACCOUNT_LOGIN_FIRST = Сначала войдите в аккаунт!
 ACCOUNT_SUCCESS_LOGIN = Вы успешно вошли
 ACCOUNT_INCORRECT_PASSWORD = Неверный пароль
@@ -17,15 +16,6 @@ ACCOUNT_SUCCESS_REGISTER = Аккаунт создан.
 ACCOUNT_LOGIN_ROOT = Вы успешно вошли как главный администратор. Введите /about, чтобы узнать о своих обязанностях.
 ACCOUNT_LOGIN_ADMIN = Вы успешно вошли как администратор. Введите /about, чтобы узнать о своих обязанностях.
 ACCOUNT_LOGIN_MODER = Вы успешно вошли как модератор. Введите /about, чтобы узнать о своих обязанностях.
-
-ACCOUNT_PASSWORD_CHANGED = Вы успешно сменили пароль. Ваш новый пароль от аккаунта: %s
-ACCOUNT_PASSWORD_NO_MONEY = У вас нету $%d чтобы сменить пароль от аккаунта.
-ACCOUNT_PASSWORD_LENGTH = Допустимая длина пароля от %d до %d символов!
-
-ACCOUNT_NAME_CHANGED = Вы успешно изменили ник с '%s' на '%s'.
-ACCOUNT_NAME_NO_MONEY = У вас нету $%d чтобы поменять никнейм.
-ACCOUNT_NAME_LENGTH = Длина ника должна быть больше %d!
-ACCOUNT_INCORRECT_NAME = {FF2211}[Ошибка]: {FFFFFF}Недопустимые символы в логине или такой логин уже онлайн
 
 // skydiving
 SKYDIVING_MSG = {FFCC66}[Сервер]: {FFFFFF}Летим! Не забудьте воспользоваться парашютом!
@@ -39,6 +29,36 @@ PLAYER_COMMAND_LOG = Player: %s(%d): %s
 PLAYER_CONNECT = {FFCC66}[Сервер]: {FFFFFF}%s(%d) вошел в игру.
 PLAYER_DISCONNECT = {FFCC66}[Сервер]: {FFFFFF}%s(%d) покинул игру.
 MUTED_HELP_MESSAGE = {FF2211}[Ошибка]: {FFFFFF}Вам запрещено писать в чат! Напишите администраторам через @ о вашей проблеме.
+
+PLAYER_MENU_SETTINGS_CAPTION = Мои настройки
+PLAYER_MENU_SETTINGS_INFO = Название\tЦена\n{CCCCCC}Сохранить аккаунт\n{CCCCCC}Изменить ник\t{00AA00}$%d\n{CCCCCC}Изменить пароль\t{00AA00}$%d
+PLAYER_MENU_SETTINGS_BUTTON_SELECT = Выбрать
+PLAYER_MENU_SETTINGS_BUTTON_BACK = Назад
+
+PLAYER_MENU_SETTINGS_SAVED = {CCCCCC}Ваш аккаунт успешно сохранён.
+PLAYER_MENU_SETTINGS_SAVED_CAPTION = Сохранение аккаунта
+PLAYER_MENU_SETTINGS_SAVED_BUTTON_BACK = Назад
+PLAYER_MENU_SETTINGS_SAVED_BUTTON_CANCEL = Отмена
+
+PLAYER_MENU_SETTINGS_NAME_CAPTION = Изменение ника
+PLAYER_MENU_SETTINGS_NAME_INFO = {CCCCCC}Введите желаемый ник:
+PLAYER_MENU_SETTINGS_NAME_BUTTON_OK = ОК
+PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK = Назад
+PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL = Отмена
+PLAYER_MENU_SETTINGS_NAME_INCORRECT = {CCCCCC}Недопустимые символы в логине или такой логин уже онлайн
+PLAYER_MENU_SETTINGS_NAME_ALLOWED_SYMBOLS = {CCCCCC}Неверный символ в имени игрока.\nРазрешённые символы: {BBBAE8}%s
+PLAYER_MENU_SETTINGS_NAME_CHANGED = {CCCCCC}Вы успешно изменили ник с '{BBBAE8}%s{CCCCCC}' на '{BBBAE8}%s{CCCCCC}'.
+PLAYER_MENU_SETTINGS_NAME_NO_MONEY = {CCCCCC}У вас нету {00AA00}$%d{CCCCCC} на смену имени.
+PLAYER_MENU_SETTINGS_NAME_LENGTH = {CCCCCC}Длина ника должна быть больше {BBBAE8}%d{CCCCCC} символов.
+
+PLAYER_MENU_SETTINGS_PASSWORD_CAPTION = Изменение пароля
+PLAYER_MENU_SETTINGS_PASSWORD_INFO = {CCCCCC}Введите желаемый пароль:
+PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_OK = ОК
+PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_BACK = Назад
+PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_CANCEL = Отмена
+PLAYER_MENU_SETTINGS_PASSWORD_CHANGED = {CCCCCC}Вы успешно сменили пароль.\nВаш новый пароль от аккаунта: {BBBAE8}%s
+PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY = {CCCCCC}У вас нету {00AA00}$%d{CCCCCC} на смену пароля от аккаунта.
+PLAYER_MENU_SETTINGS_PASSWORD_LENGTH = {CCCCCC}Допустимая длина пароля от {BBBAE8}%d{CCCCCC} до {BBBAE8}%d{CCCCCC} символов.
 
 // other
 NO_ADMINS = В данный момент в игре нет администраторов, но это не значит, что они не могут за вами наблюдать.
