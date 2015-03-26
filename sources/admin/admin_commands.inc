@@ -862,6 +862,7 @@ COMMAND:sys(playerid, params[])
 	if (!strcmp(cmd, "reloadlang", true))
 	{
 		lang_OnGameModeInit();
+		Lang_OnGameModeInit();
 		return 1;
 	}
 
