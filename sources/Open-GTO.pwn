@@ -46,6 +46,7 @@ Thanks:
 #include "core/core_time"
 #include "core/dialog"
 #include "core/lang"
+#include "core/zlang"
 #include "core/log"
 #include "lib/gtolib"
 #include "core/color"
@@ -193,6 +194,7 @@ public OnGameModeInit()
 	cfg_LoadConfigs();
 
 	lang_OnGameModeInit();
+	Lang_OnGameModeInit();
 	base_OnGameModeInit();
 	vehicles_OnGameModeInit();
 	race_OnGameModeInit();
