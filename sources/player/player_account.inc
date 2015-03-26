@@ -87,7 +87,7 @@ stock account_Register(playerid, password[])
 	// login
 	account_Login(playerid, password);
 
-	SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][12]);
+	SendClientMessage(playerid, COLOUR_GREEN, _(ACCOUNT_SUCCESS_REGISTER));
 	Log_Game("create_account: success %s(%d)", oGetPlayerName(playerid), playerid);
 	return 1;
 }
@@ -120,8 +120,8 @@ stock account_Login(playerid, password[])
 		
 		GivePVarInt(playerid, "Player_Login_Attempt", 1);
 		if (GetPVarInt(playerid, "Player_Login_Attempt") >= MAX_PLAYER_LOGIN_ATTEMPT) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[1][7]);
-			KickPlayer(playerid, lang_texts[1][4]);
+			SendClientMessage(playerid, COLOUR_RED, _(ACCOUNT_AUTO_KICK));
+			KickPlayer(playerid, _(ACCOUNT_INCORRECT_PASSWORD));
 		} else {
 			Dialog_Show(playerid, Dialog:AccountLogin);
 		}
@@ -153,9 +153,9 @@ DialogCreate:AccountRegister(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(caption, sizeof(caption), lang_texts[1][47], playername);
+	format(caption, sizeof(caption), _(ACCOUNT_DIALOG_REGISTER_HEAD), playername);
 
-	Dialog_Open(playerid, Dialog:AccountRegister, DIALOG_STYLE_INPUT, caption, lang_texts[1][44], lang_texts[1][50], "");
+	Dialog_Open(playerid, Dialog:AccountRegister, DIALOG_STYLE_INPUT, caption, _(ACCOUNT_DIALOG_REGISTER), _(ACCOUNT_DIALOG_REGISTER_BUTTON), "");
 }
 
 DialogResponse:AccountRegister(playerid, response, listitem, inputtext[])
@@ -178,10 +178,10 @@ DialogCreate:AccountLogin(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), lang_texts[1][43], MAX_PLAYER_LOGIN_ATTEMPT - GetPVarInt(playerid, "Player_Login_Attempt"));
-	format(caption, sizeof(caption), lang_texts[1][48], playername);
+	format(string, sizeof(string), _(ACCOUNT_DIALOG_LOGIN), MAX_PLAYER_LOGIN_ATTEMPT - GetPVarInt(playerid, "Player_Login_Attempt"));
+	format(caption, sizeof(caption), _(ACCOUNT_DIALOG_LOGIN_HEAD), playername);
 
-	Dialog_Open(playerid, Dialog:AccountLogin, DIALOG_STYLE_PASSWORD, caption, string, lang_texts[1][49], "");
+	Dialog_Open(playerid, Dialog:AccountLogin, DIALOG_STYLE_PASSWORD, caption, string, _(ACCOUNT_DIALOG_LOGIN_BUTTON), "");
 }
 
 DialogResponse:AccountLogin(playerid, response, listitem, inputtext[])

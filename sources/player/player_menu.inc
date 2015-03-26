@@ -153,7 +153,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 
 			new string[(MAX_PLAYER_NAME + 1 + 5) * 20 + 64];
 			if (idsa == 0 && idsm == 0) {
-				format(string, sizeof(string), lang_texts[1][31]);
+				format(string, sizeof(string), _(NO_ADMINS));
 			} else {
 				if (idsa != 0) {
 					format(string, sizeof(string), "Администрация:\n%s\n", admins);

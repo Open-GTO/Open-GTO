@@ -31,7 +31,7 @@ stock player_SaveConfig(file_config)
 stock player_OnPlayerSpawn(playerid)
 {
 	if (player_IsMuted(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
+		SendClientMessage(playerid, COLOUR_RED, _(MUTED_HELP_MESSAGE));
 	}
 	
 	if (player_IsJailed(playerid)) {
@@ -64,7 +64,7 @@ stock player_OnPlayerDisconnect(playerid, reason)
 	StopAudioStreamForPlayer(playerid);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[1][18], oGetPlayerName(playerid), playerid);
+	format(string, sizeof(string), _(PLAYER_DISCONNECT), oGetPlayerName(playerid), playerid);
 	
 	switch (reason) {
 		case 0: strcat(string, " (вылетел)", sizeof(string));
@@ -180,14 +180,14 @@ stock player_OnLogin(playerid)
 	SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][89]);
 
 	if (IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][25]);
+		SendClientMessage(playerid, COLOUR_GREEN, _(ACCOUNT_LOGIN_ROOT));
 	} else if (IsPlayerAdm(playerid)) {
-		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][26]);
+		SendClientMessage(playerid, COLOUR_GREEN, _(ACCOUNT_LOGIN_ADMIN));
 	} else if (IsPlayerMod(playerid)) {
-		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][27]);
+		SendClientMessage(playerid, COLOUR_GREEN, _(ACCOUNT_LOGIN_MODER));
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	} else {
-		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][2]);
+		SendClientMessage(playerid, COLOUR_GREEN, _(ACCOUNT_SUCCESS_LOGIN));
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	}
 
@@ -196,7 +196,7 @@ stock player_OnLogin(playerid)
 			continue;
 		}
 
-		format(string, sizeof(string), lang_texts[1][17], playername, playerid);
+		format(string, sizeof(string), _(PLAYER_CONNECT), playername, playerid);
 		SendClientMessage(id, COLOUR_WHITE, string);
 	}
 

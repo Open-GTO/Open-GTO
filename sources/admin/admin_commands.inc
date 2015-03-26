@@ -1042,7 +1042,7 @@ COMMAND:skydiveall(playerid, params[])
 
 	foreach (new id : Player) {
 		if (player_IsJailed(id)) {
-			SendClientMessage(id, COLOUR_LIGHTRED, lang_texts[1][22]);
+			SendClientMessage(id, COLOUR_LIGHTRED, _(SKYDIVING_ERROR));
 			continue;
 		}
 
@@ -1055,8 +1055,8 @@ COMMAND:skydiveall(playerid, params[])
 		}
 	}
 
-	SendClientMessageToAll(COLOUR_WHITE, lang_texts[1][19]);
-	GameTextForAll(lang_texts[1][20], 5000, 6);
+	SendClientMessageToAll(COLOUR_WHITE, _(SKYDIVING_MSG));
+	GameTextForAll(_(SKYDIVING_GAMETEXT), 5000, 6);
 	return 1;
 }
 

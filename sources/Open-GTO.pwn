@@ -450,7 +450,7 @@ public OnPlayerRequestSpawn(playerid)
 public OnPlayerCommandReceived(playerid, cmdtext[])
 {
 	if (!player_IsLogin(playerid)) {
-		SendClientMessage(playerid, -1, lang_texts[1][46]);
+		SendClientMessage(playerid, -1, _(ACCOUNT_LOGIN_FIRST));
 		return 0;
 	}
 	return 1;
@@ -459,7 +459,7 @@ public OnPlayerCommandReceived(playerid, cmdtext[])
 public OnPlayerCommandPerformed(playerid, cmdtext[], success)
 {
 	if (success) {
-		Log_Player(lang_texts[1][24], oGetPlayerName(playerid), playerid, cmdtext);
+		Log_Player(_(PLAYER_COMMAND_LOG), oGetPlayerName(playerid), playerid, cmdtext);
 		return 1;
 	}
 	return 0;
@@ -468,7 +468,7 @@ public OnPlayerCommandPerformed(playerid, cmdtext[], success)
 public OnPlayerText(playerid, text[])
 {
 	if (!player_IsLogin(playerid)) {
-		SendClientMessage(playerid, -1, lang_texts[1][46]);
+		SendClientMessage(playerid, -1, _(ACCOUNT_LOGIN_FIRST));
 		return 0;
 	}
 

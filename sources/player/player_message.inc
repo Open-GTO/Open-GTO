@@ -24,7 +24,7 @@ stock pl_message_OnPlayerText(playerid, text[])
 	switch (text[0]) {
 		case '!': {
 			if (player_GetGangID(playerid) == 0 || player_IsMuted(playerid)) {
-				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
+				SendClientMessage(playerid, COLOUR_RED, _(MUTED_HELP_MESSAGE));
 				return 0;
 			}
 
@@ -60,7 +60,7 @@ stock pl_message_OnPlayerText(playerid, text[])
 		}
 		case '$', ';': {
 			if (player_IsMuted(playerid)) {
-				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
+				SendClientMessage(playerid, COLOUR_RED, _(MUTED_HELP_MESSAGE));
 				return 0;
 			}
 

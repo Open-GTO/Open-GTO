@@ -36,7 +36,7 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 		case 0: {
 			player_Save(playerid);
 			account_Save(playerid);
-			Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Сохранение аккаунта", lang_texts[1][45], "Назад", "Отмена");
+			Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Сохранение аккаунта", _(ACCOUNT_SAVED), "Назад", "Отмена");
 			return 1;
 		}
 		// изменить ник
@@ -67,7 +67,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	
 	new string[MAX_STRING];
 	if (oGetPlayerMoney(playerid) < CHANGE_NICK_COST) {
-		format(string, sizeof(string), lang_texts[1][36], CHANGE_NICK_COST);
+		format(string, sizeof(string), _(ACCOUNT_NAME_NO_MONEY), CHANGE_NICK_COST);
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Изменение ника", string, "Назад", "Отмена");
 		return 1;
 	}
@@ -78,7 +78,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	set(Account_NewName, inputtext);
 	
 	if (strlen(Account_NewName) < MIN_PLAYER_NAME) {
-		format(string, sizeof(string), lang_texts[1][37], MIN_PLAYER_NAME);
+		format(string, sizeof(string), _(ACCOUNT_NAME_LENGTH), MIN_PLAYER_NAME);
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Изменение ника", string, "Назад", "Отмена");
 		return 1;
 	}
@@ -86,18 +86,18 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, AccountDB, Account_NewName);
 	// если файл есть, то выходим сразу-же
 	if (ini_fileExist(string)) {
-		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Изменение ника", lang_texts[1][9], "Назад", "Отмена");
+		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Изменение ника", _(ACCOUNT_INCORRECT_NAME), "Назад", "Отмена");
 		return 1;
 	}
 	// проверим ник
 	if (!NameCharCheck(Account_NewName)) {
-		format(string, sizeof(string), lang_texts[1][9], ALLOWED_NICK_SYMBOLS_STR);
+		format(string, sizeof(string), _(ACCOUNT_INCORRECT_NAME), ALLOWED_NICK_SYMBOLS_STR);
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Изменение ника", string, "Назад", "Отмена");
 		return 1;
 	}
 	// переименовываем
 	if (SetPlayerName(playerid, Account_NewName) != 1) {
-		format(string, sizeof(string), lang_texts[1][9], ALLOWED_NICK_SYMBOLS_STR);
+		format(string, sizeof(string), _(ACCOUNT_INCORRECT_NAME), ALLOWED_NICK_SYMBOLS_STR);
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Изменение ника", string, "Назад", "Отмена");
 		return 1;
 	}
@@ -128,7 +128,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	
 	oGivePlayerMoney(playerid,-CHANGE_NICK_COST, 1);
 	
-	format(string, sizeof(string), lang_texts[1][38], Account_LastName, Account_NewName);
+	format(string, sizeof(string), _(ACCOUNT_NAME_CHANGED), Account_LastName, Account_NewName);
 	Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Изменение ника", string, "Назад", "Отмена");
 	return 1;
 }
@@ -147,7 +147,7 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 	
 	new string[MAX_STRING];
 	if (oGetPlayerMoney(playerid) < CHANGE_PASS_COST) {
-		format(string, sizeof(string), lang_texts[1][35], CHANGE_PASS_COST);
+		format(string, sizeof(string), _(ACCOUNT_PASSWORD_NO_MONEY), CHANGE_PASS_COST);
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Изменение пароля", string, "Назад", "Отмена");
 		return 1;
 	}
@@ -156,12 +156,12 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 	set(pass, inputtext);
 
 	if (strlen(pass) < MIN_PASS_LEN || strlen(pass) > MAX_PASS_LEN) {
-		format(string, sizeof(string), lang_texts[1][13], MIN_PASS_LEN, MAX_PASS_LEN);
+		format(string, sizeof(string), _(ACCOUNT_PASSWORD_LENGTH), MIN_PASS_LEN, MAX_PASS_LEN);
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Изменение пароля", string, "Назад", "Отмена");
 		return 1;
 	}
 
-	format(string, sizeof(string), lang_texts[1][34], pass);
+	format(string, sizeof(string), _(ACCOUNT_PASSWORD_CHANGED), pass);
 	Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "Изменение пароля", string, "Назад", "Отмена");
 
 #if defined USE_PASSWORD_ENCRYPT

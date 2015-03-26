@@ -26,7 +26,7 @@ stock admin_OnPlayerText(playerid, text[])
 {
 	new mute_result = adm_mute_OnPlayerText(playerid, text);
 	if (mute_result == 0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
+		SendClientMessage(playerid, COLOUR_RED, _(MUTED_HELP_MESSAGE));
 	}
 	return mute_result;
 }
