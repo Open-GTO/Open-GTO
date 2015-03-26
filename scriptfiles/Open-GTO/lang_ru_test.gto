@@ -30,6 +30,17 @@ PLAYER_CONNECT = {FFCC66}[Сервер]: {FFFFFF}%s(%d) вошел в игру.
 PLAYER_DISCONNECT = {FFCC66}[Сервер]: {FFFFFF}%s(%d) покинул игру.
 MUTED_HELP_MESSAGE = {FF2211}[Ошибка]: {FFFFFF}Вам запрещено писать в чат! Напишите администраторам через @ о вашей проблеме.
 
+PLAYER_MENU_VEHICLE_CAPTION = Мой транспорт
+PLAYER_MENU_VEHICLE_LIST = {CCCCCC}Переместить к себе\n{CCCCCC}Продать [{00AA00}$%d{CCCCCC}]\n{CCCCCC}Снять тюнинг
+PLAYER_MENU_VEHICLE_NO_VEHICLES = {CCCCCC}У вас нет транспорта.
+PLAYER_MENU_VEHICLE_ERROR_INTERIOR = {CCCCCC}Переместить транспорт к себе можно только на улице.
+PLAYER_MENU_VEHICLE_SELLED = {CCCCCC}Продажа завершена.
+PLAYER_MENU_VEHICLE_TUNING_REMOVED = {CCCCCC}Тюнинг был успешно снят.
+PLAYER_MENU_VEHICLE_BUTTON_SELECT = Выбрать
+PLAYER_MENU_VEHICLE_BUTTON_NEXT = Далее
+PLAYER_MENU_VEHICLE_BUTTON_BACK = Назад
+PLAYER_MENU_VEHICLE_BUTTON_CANCEL = Отмена
+
 PLAYER_MENU_SETTINGS_CAPTION = Мои настройки
 PLAYER_MENU_SETTINGS_INFO = Название\tЦена\n{CCCCCC}Сохранить аккаунт\n{CCCCCC}Изменить ник\t{00AA00}$%d\n{CCCCCC}Изменить пароль\t{00AA00}$%d
 PLAYER_MENU_SETTINGS_BUTTON_SELECT = Выбрать

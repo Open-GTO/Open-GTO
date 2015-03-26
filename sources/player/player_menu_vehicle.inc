@@ -16,7 +16,11 @@
 DialogCreate:PlayerVehicleMenu(playerid)
 {
 	if (GetPlayerVehicleCount(playerid) == 0) {
-		Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu, "Мой транспорт", "У вас нет транспорта", "Назад", "Отмена");
+		Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
+			_(PLAYER_MENU_VEHICLE_CAPTION),
+			_(PLAYER_MENU_VEHICLE_NO_VEHICLES),
+			_(PLAYER_MENU_VEHICLE_BUTTON_BACK), _(PLAYER_MENU_VEHICLE_BUTTON_CANCEL)
+		);
 		return 1;
 	}
 
@@ -28,7 +32,11 @@ DialogCreate:PlayerVehicleMenu(playerid)
 		}
 	}
 
-	Dialog_Open(playerid, Dialog:PlayerVehicleMenu, DIALOG_STYLE_LIST, "Мой транспорт", string, "Далее", "Назад");
+	Dialog_Open(playerid, Dialog:PlayerVehicleMenu, DIALOG_STYLE_LIST,
+		_(PLAYER_MENU_VEHICLE_CAPTION),
+		string,
+		_(PLAYER_MENU_VEHICLE_BUTTON_NEXT), _(PLAYER_MENU_VEHICLE_BUTTON_BACK)
+	);
 	return 1;
 }
 
@@ -59,13 +67,14 @@ DialogCreate:PlayerVehicleList(playerid)
 	}
 
 	pl_veh_menu_SetVehicleSlot(playerid, veh_slot);
+
+	new string[MAX_VALUE_STRING * 3];
+	format(string, sizeof(string), _(PLAYER_MENU_VEHICLE_LIST), GetPlayerVehicleCostBySlot(playerid, veh_slot) / 2);
 	
 	Dialog_Open(playerid, Dialog:PlayerVehicleList, DIALOG_STYLE_LIST,
-		"Мой транспорт",
-		"Переместить к себе\n\
-		Продать\n\
-		Снять тюнинг",
-		"Выбрать", "Назад"
+		_(PLAYER_MENU_VEHICLE_CAPTION),
+		string,
+		_(PLAYER_MENU_VEHICLE_BUTTON_SELECT), _(PLAYER_MENU_VEHICLE_BUTTON_BACK)
 	);
 }
 
@@ -80,7 +89,11 @@ DialogResponse:PlayerVehicleList(playerid, response, listitem, inputtext[])
 		// переместить к себе
 		case 0: {
 			if (GetPlayerInterior(playerid) != 0) {
-				Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu, "Мой транспорт", "Переместить транспорт к себе можно только на улице", "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu,
+					_(PLAYER_MENU_VEHICLE_CAPTION),
+					_(PLAYER_MENU_VEHICLE_ERROR_INTERIOR),
+					_(PLAYER_MENU_VEHICLE_BUTTON_BACK), _(PLAYER_MENU_VEHICLE_BUTTON_CANCEL)
+				);
 				return 0;
 			}
 
@@ -97,14 +110,22 @@ DialogResponse:PlayerVehicleList(playerid, response, listitem, inputtext[])
 			oGivePlayerMoney(playerid, GetPlayerVehicleCostBySlot(playerid, slot) / 2, 1);
 			RemovePlayerVehicle(playerid, slot);
 			
-			Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu, "Мой транспорт", "Продажа завершена", "Назад", "Отмена");
+			Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu,
+				_(PLAYER_MENU_VEHICLE_CAPTION),
+				_(PLAYER_MENU_VEHICLE_SELLED),
+				_(PLAYER_MENU_VEHICLE_BUTTON_BACK), _(PLAYER_MENU_VEHICLE_BUTTON_CANCEL)
+			);
 			return 1;
 		}
 		// снять тюнинг
 		case 2: {
 			RemovePlayerVehicleComponents(playerid, pl_veh_menu_GetVehicleSlot(playerid));
 	
-			Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu, "Мой транспорт", "Тюнинг был успешно снят", "Назад", "Отмена");
+			Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu,
+				_(PLAYER_MENU_VEHICLE_CAPTION),
+				_(PLAYER_MENU_VEHICLE_TUNING_REMOVED),
+				_(PLAYER_MENU_VEHICLE_BUTTON_BACK), _(PLAYER_MENU_VEHICLE_BUTTON_CANCEL)
+			);
 			return 1;
 		}
 	}
