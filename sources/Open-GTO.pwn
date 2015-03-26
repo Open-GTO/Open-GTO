@@ -457,7 +457,7 @@ public OnPlayerCommandReceived(playerid, cmdtext[])
 public OnPlayerCommandPerformed(playerid, cmdtext[], success)
 {
 	if (success) {
-		Log_Player("Player: %s"CHAT_SHOW_ID": %s", oGetPlayerName(playerid), playerid, cmdtext);
+		Log_Player(lang_texts[1][24], oGetPlayerName(playerid), playerid, cmdtext);
 		return 1;
 	}
 	return 0;
