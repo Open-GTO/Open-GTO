@@ -70,7 +70,7 @@ DialogResponse:ServiceWeapon(playerid, response, listitem, inputtext[])
 // buy and input bullets count
 DialogCreate:ServiceWeaponBuy(playerid)
 {
-	new string[MAX_STRING],
+	new string[MAX_STRING * 2],
 		dialog_style = DIALOG_STYLE_INPUT,
 		weaponid = GetPVarInt(playerid, "Buy_Weapon_ID");
 
