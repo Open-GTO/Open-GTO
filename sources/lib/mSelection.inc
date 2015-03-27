@@ -514,18 +514,20 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid)
 		{			
 			if(curpage < (mS_GetNumberOfPagesEx(playerid) - 1)) {
 				SetPVarInt(playerid, "mS_list_page", curpage + 1);
-				mS_ShowPlayerMPs(playerid);
-				mS_UpdatePageTextDraw(playerid);
+			} else {
+				SetPVarInt(playerid, "mS_list_page", 0);
 			}
 		}
 		else
 		{
 			if(curpage < (mS_GetNumberOfPages(listID) - 1)) {
 				SetPVarInt(playerid, "mS_list_page", curpage + 1);
-				mS_ShowPlayerMPs(playerid);
-				mS_UpdatePageTextDraw(playerid);
+			} else {
+				SetPVarInt(playerid, "mS_list_page", 0);
 			}
 		}
+		mS_ShowPlayerMPs(playerid);
+		mS_UpdatePageTextDraw(playerid);
 		return 1;
 	}
 	
@@ -533,9 +535,16 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid)
 	if(playertextid == gPrevButtonTextDrawId[playerid]) {
 		if(curpage > 0) {
 			SetPVarInt(playerid, "mS_list_page", curpage - 1);
-			mS_ShowPlayerMPs(playerid);
-			mS_UpdatePageTextDraw(playerid);
+		} else {
+			new listID = mS_GetPlayerCurrentListID(playerid);
+			if(listID == mS_CUSTOM_LISTID) {
+				SetPVarInt(playerid, "mS_list_page", mS_GetNumberOfPagesEx(playerid) - 1);
+			} else {
+				SetPVarInt(playerid, "mS_list_page", mS_GetNumberOfPages(listID) - 1);
+			}
 		}
+		mS_ShowPlayerMPs(playerid);
+		mS_UpdatePageTextDraw(playerid);
 		return 1;
 	}
 	
