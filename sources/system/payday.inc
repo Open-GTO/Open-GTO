@@ -42,8 +42,8 @@ stock payday_Check()
 	gettime(_, minute);
 
 	if (minute == 0 && !payday_isgived) {
+		payday_Give();
 		payday_isgived = true;
-		payday_Check();
 	} else if (minute > 0) {
 		payday_isgived = false;
 	}
@@ -51,7 +51,7 @@ stock payday_Check()
 
 stock payday_Give()
 {
-	new pay_money, pay_xp, string[MAX_STRING];
+	new pay_money, pay_xp, string[MAX_VALUE_STRING];
 
 	foreach (new id : Player) {
 		if (!player_IsLogin(id)) {
@@ -70,10 +70,10 @@ stock payday_Give()
 			GivePlayerXP(id, pay_xp , 0);
 		}
 			
-		format(string, sizeof(string), lang_texts[2][18], pay_money, pay_xp);
+		format(string, sizeof(string), _(PAYDAY_MESSAGE), pay_money, pay_xp);
 		SendClientMessage(id, COLOUR_MONEY_GOOD, string);
 
-		format(string, sizeof(string), lang_texts[2][19], pay_money, pay_xp);
+		format(string, sizeof(string), _(PAYDAY_GAMETEXT), pay_money, pay_xp);
 		GameTextForPlayer(id, string, 1000, 5);
 
 		PlayerPlaySound(id, 1190, 0.0, 0.0, 0.0);
