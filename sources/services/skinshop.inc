@@ -21,19 +21,35 @@ enum SkinShop_Info {
 	ss_checkpoint
 }
 
-new SkinShops[][SkinShop_Info] = {
+static SkinShops[][SkinShop_Info] = {
 	{207.6596, -100.7878, 1005.2578},
 	{161.5244, -83.5924, 1001.8047},
 	{206.8538, -129.5790, 1003.5078},
 	{203.9252, -43.7523, 1001.8047}
 };
 
+static
+	skin_array[SKINS_MAXID + 1],
+	skin_count = 0;
+
 stock sshop_OnGameModeInit()
 {
+	for (new skinid = 0; skinid <= SKINS_MAXID; skinid++) {
+		switch (skinid) {
+			case SKINS_IGNORE: {
+
+			}
+			default: {
+				skin_array[skin_count] = skinid;
+				skin_count++;
+			}
+		}
+	}
+
 	for (new id = 0; id < sizeof(SkinShops); id++) {
 		SkinShops[id][ss_checkpoint] = Checkpoint_Create(SkinShops[id][ss_x], SkinShops[id][ss_y], SkinShops[id][ss_z], 1.5, .streamdistance = 20.0);
 	}
-	
+
 	clickText[sshop_left] = TextDrawCreate(288.000000, 372.000000, "<<");
 	TextDrawAlignment(clickText[sshop_left], 2);
 	TextDrawBackgroundColor(clickText[sshop_left], 255);
@@ -170,25 +186,9 @@ stock sshop_OnPlayerClickTextDraw(playerid, Text:clickedid)
 		Dialog_Show(playerid, Dialog:ServiceSkin);
 		return 1;
 	} else if (clickedid == clickText[sshop_list]) {
-		new
-			skins[SKINS_MAXID + 1],
-			idx = 0;
-
-		for (new skinid = 0; skinid <= SKINS_MAXID; skinid++) {
-			switch (skinid) {
-				case SKINS_IGNORE: {
-
-				}
-				default: {
-					skins[idx] = skinid;
-					idx++;
-				}
-			}
-		}
-
 		SetPVarInt(playerid, "SkinShop_IsInList", 1);
 		sshop_HideTextDraws(playerid, false);
-		ShowModelSelectionMenuEx(playerid, skins, idx, "Select skin", ms_skinshop, 16.0, 0.0, -55.0);
+		ShowModelSelectionMenuEx(playerid, skin_array, skin_count, "Select skin", ms_skinshop, 16.0, 0.0, -55.0);
 		return 1;
 	} else if ((clickedid == clickText[sshop_exit] || clickedid == Text:INVALID_TEXT_DRAW) && GetPVarInt(playerid, "SkinShop_IsInList") == 0) {
 		SkinShop_Exit(playerid);
