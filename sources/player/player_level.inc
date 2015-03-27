@@ -103,7 +103,7 @@ stock GetMinPlayerXP(playerid)
 	return -xp_result;
 }
 
-stock GivePlayerXP(playerid, xpamount, showtext = 0)
+stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 {
 	if (xpamount == 0) {
 		return 0;
@@ -134,16 +134,20 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0)
 
 	new string[MAX_STRING];
 	if (xpamount > 0) {
-		format(string, sizeof(string), lang_texts[9][18], xpamount);
-		GameTextForPlayer(playerid, string, texttime, 3);
+		if (showtd == 1) {
+			format(string, sizeof(string), lang_texts[9][18], xpamount);
+			GameTextForPlayer(playerid, string, texttime, 3);
+		}
 
 		if (showtext == 1) {
 			format(string, sizeof(string), lang_texts[9][20], xpamount);
 			SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 		}
 	} else {
-		format(string, sizeof(string), lang_texts[9][19], -xpamount);
-		GameTextForPlayer(playerid, string, texttime, 3);
+		if (showtd == 1) {
+			format(string, sizeof(string), lang_texts[9][19], -xpamount);
+			GameTextForPlayer(playerid, string, texttime, 3);	
+		}
 
 		if (showtext == 1) {
 			format(string, sizeof(string), lang_texts[9][21], -xpamount);

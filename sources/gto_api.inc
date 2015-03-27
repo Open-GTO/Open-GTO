@@ -30,9 +30,9 @@ stock GetMaxHealth(playerid, &Float:amount)
 	return CallRemoteFunction("api_GetMaxHealth", "df", playerid, amount);
 }
 
-stock GivePlayerXP(playerid, xpamount, showtext = 0)
+stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 {
-	return CallRemoteFunction("api_GivePlayerXP", "ddd", playerid, amount, showtext);
+	return CallRemoteFunction("api_GivePlayerXP", "dddd", playerid, amount, showtext, showtd);
 }
 
 stock GetPlayerLevel(playerid)
