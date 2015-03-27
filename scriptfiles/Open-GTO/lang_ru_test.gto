@@ -71,6 +71,38 @@ PLAYER_MENU_SETTINGS_PASSWORD_CHANGED = {CCCCCC}Вы успешно сменили пароль.\nВаш 
 PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY = {CCCCCC}У вас нету {00AA00}$%d{CCCCCC} на смену пароля от аккаунта.
 PLAYER_MENU_SETTINGS_PASSWORD_LENGTH = {CCCCCC}Допустимая длина пароля от {BBBAE8}%d{CCCCCC} до {BBBAE8}%d{CCCCCC} символов.
 
+// bank
+BANK_INIT = SERVER: Bank module init
+BANK_CAPTION = Банк
+BANK_START_INFO_1 = {CCCCCC}Вы можете хранить здесь деньги и получать {00AA00}+%d%%{CCCCCC} ({00AA00}+%d%%{CCCCCC} для VIP) в час
+BANK_START_INFO_2 = \nТекущий баланс: {00AA00}$%d
+BANK_LIST_INFO = Снять деньги\nПоложить деньги
+BANK_WITHDRAW_INFO = {CCCCCC}Вы сняли {00AA00}$%d\n{CCCCCC}Текущий баланс: {00AA00}$%d
+BANK_DEPOSIT_INFO = {00AA00}$%d{CCCCCC} положено на ваш счет.\nТекущий баланс: {00AA00}$%d
+BANK_BUTTON_OK = ОК
+BANK_BUTTON_BACK = Назад
+BANK_BUTTON_CANCEL = Отмена
+BANK_BUTTON_WITHDRAW = Снять
+BANK_BUTTON_DEPOSIT = Положить
+BANK_BUTTON_OPERATIONS = Операции
+BANK_INCORRECT_VALUE = {CCCCCC}Вы не ввели или ввели неправильное количество денег.
+BANK_MAX_MONEY_ERROR = \n{CCCCCC}Ваш банковский счет полон!
+BANK_PROFIT_MESSAGE = На ваш банковский счёт было зачислено {00AA00}$%d
+
+BANK_GANG_CAPTION = Банк банды
+BANK_GANG_LIST_1 = \nПоложить деньги в банк банды
+BANK_GANG_LIST_2 = \nСнять деньги из банка банды
+BANK_GANG_WITHDRAW_MESSAGE = %s(%d) забрал {00AA00}$%d{FF8C00} из банка банды.
+BANK_GANG_WITHDRAW_INFO = {CCCCCC}Вы забрали {00AA00}$%d{CCCCCC} из банка банды.\nТекущий баланс: {00AA00}$%d
+BANK_GANG_WITHDRAW_MESSAGE_INFO = {CCCCCC}Введите количество денег, которое вы хотите забрать из банка банды:
+BANK_GANG_DEPOSIT_MESSAGE = %s(%d) положил в банк банды {00AA00}$%d{FF8C00}.
+BANK_GANG_DEPOSIT_INFO = {00AA00}$%d{CCCCCC} положено в банк банды.\nТекущий баланс: {00AA00}$%d
+BANK_GANG_DEPOSIT_MESSAGE_INFO = {CCCCCC}Введите количество денег, которое вы хотите положить в банк банды:
+BANK_GANG_INCORRECT_VALUE = {CCCCCC}Вы не ввели или ввели неправильное количество денег.
+
+PAYDAY_MESSAGE = {FFFF00}Зарплата: {00AA00}$%d{FFFF00}, {DD2211}+%d{FFFF00} XP
+PAYDAY_GAMETEXT = ~g~$%d~n~~r~%d ~y~XP
+
 // business
 BUSINESS_DIALOG_CAPTION = Мои бизнесы
 BUSINESS_DIALOG_BACK = Назад
