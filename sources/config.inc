@@ -240,3 +240,7 @@ enum clickText_Info {
 }
 
 new Text:clickText[clickText_Info];
+
+enum {
+	ms_skinshop,
+}

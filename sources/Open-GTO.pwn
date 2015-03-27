@@ -41,6 +41,7 @@ Thanks:
 #include "lib/foreach"
 #include "lib/zcmd"
 #include "lib/mxINI"
+#include "lib/mSelection"
 #include "config"
 #include "core/base"
 #include "core/core_time"
@@ -698,6 +699,14 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid)
 		return sshop_OnPlayerClickTextDraw(playerid, clickedid);
 	}
 	return 0;
+}
+
+public OnPlayerModelSelectionEx(playerid, response, extraid, modelid)
+{
+	if (extraid == ms_skinshop) {
+		sshop_OnPlayerModelSelectionEx(playerid, response, extraid, modelid);
+	}
+	return 1;
 }
 
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)

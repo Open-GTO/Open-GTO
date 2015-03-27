@@ -76,7 +76,7 @@ stock sshop_OnGameModeInit()
 	TextDrawTextSize(clickText[sshop_buy], 14.000000, 105.000000);
 	TextDrawSetSelectable(clickText[sshop_buy], 1);
 
-	/*clickText[sshop_list] = TextDrawCreate(288.000000, 409.000000, "List");
+	clickText[sshop_list] = TextDrawCreate(288.000000, 409.000000, "List");
 	TextDrawAlignment(clickText[sshop_list], 2);
 	TextDrawBackgroundColor(clickText[sshop_list], 255);
 	TextDrawFont(clickText[sshop_list], 1);
@@ -88,7 +88,7 @@ stock sshop_OnGameModeInit()
 	TextDrawUseBox(clickText[sshop_list], 1);
 	TextDrawBoxColor(clickText[sshop_list], 0x00000099);
 	TextDrawTextSize(clickText[sshop_list], 15.000000, 50.000000);
-	TextDrawSetSelectable(clickText[sshop_list], 1);*/
+	TextDrawSetSelectable(clickText[sshop_list], 1);
 
 	clickText[sshop_exit] = TextDrawCreate(343.000000, 409.000000, "Exit");
 	TextDrawAlignment(clickText[sshop_exit], 2);
@@ -170,13 +170,44 @@ stock sshop_OnPlayerClickTextDraw(playerid, Text:clickedid)
 		Dialog_Show(playerid, Dialog:ServiceSkin);
 		return 1;
 	} else if (clickedid == clickText[sshop_list]) {
+		new
+			skins[SKINS_MAXID + 1],
+			idx = 0;
+
+		for (new skinid = 0; skinid <= SKINS_MAXID; skinid++) {
+			switch (skinid) {
+				case SKINS_IGNORE: {
+
+				}
+				default: {
+					skins[idx] = skinid;
+					idx++;
+				}
+			}
+		}
+
+		SetPVarInt(playerid, "SkinShop_IsInList", 1);
+		sshop_HideTextDraws(playerid, false);
+		ShowModelSelectionMenuEx(playerid, skins, idx, "Select skin", ms_skinshop, 16.0, 0.0, -55.0);
 		return 1;
-	} else if (clickedid == clickText[sshop_exit] || clickedid == Text:INVALID_TEXT_DRAW) {
+	} else if ((clickedid == clickText[sshop_exit] || clickedid == Text:INVALID_TEXT_DRAW) && GetPVarInt(playerid, "SkinShop_IsInList") == 0) {
 		SkinShop_Exit(playerid);
 		SkinShop_DeletePVars(playerid);
 		return 1;
 	}
 	return 0;
+}
+
+stock sshop_OnPlayerModelSelectionEx(playerid, response, extraid, modelid)
+{
+	#pragma unused extraid
+	DeletePVar(playerid, "SkinShop_IsInList");
+	sshop_ShowTextDraws(playerid);
+
+	if (response) {
+		SkinShop_SelectSkin(playerid, modelid, modelid);
+	}
+	return 1;
 }
 
 stock SkinShop_SelectSkin(playerid, oldskin, newskin) // включить выбор скинов
@@ -256,25 +287,31 @@ stock IsPlayerAtSkinShop(playerid)
 	return 0;
 }
 
-stock sshop_ShowTextDraws(playerid)
+stock sshop_ShowTextDraws(playerid, bool:set_select = true)
 {
 	TextDrawShowForPlayer(playerid, clickText[sshop_left]);
 	TextDrawShowForPlayer(playerid, clickText[sshop_right]);
 	TextDrawShowForPlayer(playerid, clickText[sshop_buy]);
 	TextDrawShowForPlayer(playerid, clickText[sshop_list]);
 	TextDrawShowForPlayer(playerid, clickText[sshop_exit]);
-	SelectTextDraw(playerid, 0xFFFFFFFF);
+	
+	if (set_select) {
+		SelectTextDraw(playerid, 0xFFFFFFFF);
+	}
 	return 1;
 }
 
-stock sshop_HideTextDraws(playerid)
+stock sshop_HideTextDraws(playerid, bool:cancel_select = true)
 {
-	CancelSelectTextDraw(playerid);
 	TextDrawHideForPlayer(playerid, clickText[sshop_left]);
 	TextDrawHideForPlayer(playerid, clickText[sshop_right]);
 	TextDrawHideForPlayer(playerid, clickText[sshop_buy]);
 	TextDrawHideForPlayer(playerid, clickText[sshop_list]);
 	TextDrawHideForPlayer(playerid, clickText[sshop_exit]);
+
+	if (cancel_select) {
+		CancelSelectTextDraw(playerid);
+	}
 	return 1;
 }
 
