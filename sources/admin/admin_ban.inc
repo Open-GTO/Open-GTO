@@ -30,33 +30,33 @@ stock oBan_Check(playerid)
 	
 	new
 		ban_time,
-		cur_time,
+		duration_time,
 		admin[MAX_PLAYER_NAME+1],
 		reason[MAX_SEND_SYMBOLS];
 
 	new file_ban_db = ini_openFile(filename);
 	ini_getInteger(file_ban_db, "Date", ban_time);
-	ini_getInteger(file_ban_db, "Time", cur_time);
+	ini_getInteger(file_ban_db, "Time", duration_time);
 	ini_getString(file_ban_db, "Admin", admin);
 	ini_getString(file_ban_db, "Reason", reason);
 	
 	ini_closeFile(file_ban_db);
 	
 	new
-		unban_time = ban_time + cur_time - gettime(),
+		unban_time = ban_time + duration_time - gettime(),
 		string[MAX_STRING];
 	
-	if (cur_time == 0) {
-		format(string, sizeof(string), lang_texts[13][48], cur_time);
+	if (duration_time == 0) {
+		format(string, sizeof(string), lang_texts[13][48], duration_time);
 		unban_time = 1;
 	} else {
-		format(string, sizeof(string), lang_texts[13][49], cur_time);
+		format(string, sizeof(string), lang_texts[13][49], duration_time);
 		if (unban_time > 0) {
 			format(string, sizeof(string), lang_texts[13][50], string, unban_time);
 		}
 	}
 
-	format(string, sizeof(string), lang_texts[13][51], admin, date, string, reason);
+	format(string, sizeof(string), lang_texts[13][51], admin, timestamp_to_format_date(ban_time), string, reason);
 	SendClientMessage(playerid, COLOUR_RED, string);
 	
 	if (unban_time > 0) {
