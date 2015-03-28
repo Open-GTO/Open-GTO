@@ -60,6 +60,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			new string[1024];
 			format(string, sizeof(string),
 				"Уровень: %d, опыт до уровня: %d\n\
+				\n\
 				Дата регистрации: %s\n\
 				Время в игре: %s\n\
 				\n\
@@ -76,7 +77,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				GetPlayerLevel(playerid),
 				GetXPToLevel(playerid, GetPlayerLevel(playerid) + 1),
 				timestamp_to_format_date( account_GetRegisterTime(playerid) ),
-				timestamp_to_format_date( account_GetPlayedTime(playerid) ),
+				account_GetPlayedTimeString(playerid),
 
 				player_GetGangName(playerid),
 				

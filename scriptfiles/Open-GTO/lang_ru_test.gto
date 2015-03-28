@@ -17,6 +17,10 @@ ACCOUNT_LOGIN_ROOT = Вы успешно вошли как главный администратор. Введите /about,
 ACCOUNT_LOGIN_ADMIN = Вы успешно вошли как администратор. Введите /about, чтобы узнать о своих обязанностях.
 ACCOUNT_LOGIN_MODER = Вы успешно вошли как модератор. Введите /about, чтобы узнать о своих обязанностях.
 
+ACCOUNT_PLAYED_TIME_DAY = %d суток, %d часов, 
+ACCOUNT_PLAYED_TIME_HOUR = %d часов, 
+ACCOUNT_PLAYED_TIME_MINUTES = %s%d минут, %d секунд
+
 // skydiving
 SKYDIVING_MSG = {FFCC66}[Сервер]: {FFFFFF}Летим! Не забудьте воспользоваться парашютом!
 SKYDIVING_GAMETEXT = !!! SKY DIVING !!!

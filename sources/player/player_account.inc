@@ -238,3 +238,25 @@ stock account_GetPlayedTime(playerid)
 {
 	return GetPVarInt(playerid, "Played_Time");
 }
+
+stock account_GetPlayedTimeString(playerid)
+{
+	new
+		string[MAX_STRING],
+		played_seconds = account_GetPlayedTime(playerid);
+
+	new
+		days = played_seconds / 60 / 60 / 24,
+		hours = (played_seconds / 60 / 60) % 24,
+		minutes = (played_seconds / 60) % 60,
+		seconds = played_seconds % 60;
+
+	if (days != 0) {
+		format(string, sizeof(string), _(ACCOUNT_PLAYED_TIME_DAY), days, hours);
+	} else if (hours != 0) {
+		format(string, sizeof(string), _(ACCOUNT_PLAYED_TIME_HOUR), hours);
+	}
+
+	format(string, sizeof(string), _(ACCOUNT_PLAYED_TIME_MINUTES), string, minutes, seconds);
+	return string;
+}
