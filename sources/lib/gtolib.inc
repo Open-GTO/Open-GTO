@@ -68,7 +68,7 @@ stock timestamp_to_format_date(unix_timestamp)
 	timestamp_to_date(unix_timestamp, year, month, day, hour, minute, second);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), "%04d-%02d-%02d %02d-%02d-%02d", year, month, day, hour, minute, second);
+	format(string, sizeof(string), "%04d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, second);
 	return string;
 }
 
