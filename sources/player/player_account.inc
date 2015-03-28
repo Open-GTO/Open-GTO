@@ -29,6 +29,8 @@ stock account_Save(playerid)
 	if (!player_IsLogin(playerid)) {
 		return 0;
 	}
+	
+	account_UpdatePlayedTime(playerid);
 
 	account_SaveEx(playerid);
 	return 1;
@@ -54,8 +56,9 @@ stock account_SaveEx(playerid)
 	GetPVarString(playerid, "Password", temp, sizeof(temp));
 	ini_setString(file_account, "Password", temp);
 
-	ini_setInteger(file_account, "Creation_Date", GetPVarInt(playerid, "Creation_Date"));
+	ini_setInteger(file_account, "Creation_Date", account_GetRegisterTime(playerid));
 	ini_setInteger(file_account, "Last_Login", GetPVarInt(playerid, "Last_Login"));
+	ini_setInteger(file_account, "Played_Time", account_GetPlayedTime(playerid));
 
 	GetPVarString(playerid, "IP", temp, sizeof(temp));
 	ini_setString(file_account, "LastIP", temp);
@@ -73,7 +76,7 @@ stock account_Register(playerid, password[])
 	SetPVarString(playerid, "Password", password);
 #endif
 
-	SetPVarInt(playerid, "Creation_Date", gettime());
+	account_SetRegisterTime(playerid, gettime());
 	
 	// create account and player
 	account_SaveEx(playerid);
@@ -127,10 +130,13 @@ stock account_Login(playerid, password[])
 	
 	new timestamp;
 	ini_getInteger(file_account, "Creation_Date", timestamp);
-	SetPVarInt(playerid, "Creation_Date", timestamp);
+	account_SetRegisterTime(playerid, timestamp);
 
 	SetPVarInt(playerid, "Last_Login", gettime());
-	
+
+	ini_getInteger(file_account, "Played_Time", timestamp);
+	account_SetPlayedTime(playerid, timestamp);
+
 	ini_closeFile(file_account);
 
 	widestrip_Hide(playerid);
@@ -204,4 +210,31 @@ stock account_ShowDialog(playerid)
 
 	widestrip_Show(playerid);
 	return 1;
+}
+
+stock account_SetRegisterTime(playerid, tiemstamp)
+{
+	SetPVarInt(playerid, "Creation_Date", tiemstamp);
+}
+
+stock account_GetRegisterTime(playerid)
+{
+	return GetPVarInt(playerid, "Creation_Date");
+}
+
+stock account_UpdatePlayedTime(playerid)
+{
+	new value = gettime() - GetPVarInt(playerid, "Last_Login");
+	GivePVarInt(playerid, "Played_Time", value);
+	return value;
+}
+
+stock account_SetPlayedTime(playerid, timestamp)
+{
+	SetPVarInt(playerid, "Played_Time", timestamp);
+}
+
+stock account_GetPlayedTime(playerid)
+{
+	return GetPVarInt(playerid, "Played_Time");
 }

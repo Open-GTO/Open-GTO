@@ -41,6 +41,7 @@ Thanks:
 #include "lib/foreach"
 #include "lib/zcmd"
 #include "lib/mxINI"
+#include "lib/mxDate"
 #include "lib/mSelection"
 #include "config"
 #include "core/base"

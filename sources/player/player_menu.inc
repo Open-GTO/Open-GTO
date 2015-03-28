@@ -60,6 +60,8 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			new string[1024];
 			format(string, sizeof(string),
 				"Уровень: %d, опыт до уровня: %d\n\
+				Дата регистрации: %s\n\
+				Время в игре: %s\n\
 				\n\
 				Банда: %s\n\
 				\n\
@@ -73,7 +75,9 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				VIP статус: %s",
 				GetPlayerLevel(playerid),
 				GetXPToLevel(playerid, GetPlayerLevel(playerid) + 1),
-				
+				timestamp_to_format_date( account_GetRegisterTime(playerid) ),
+				timestamp_to_format_date( account_GetPlayedTime(playerid) ),
+
 				player_GetGangName(playerid),
 				
 				oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid),

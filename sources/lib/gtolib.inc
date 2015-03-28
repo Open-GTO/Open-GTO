@@ -62,6 +62,16 @@ stock strcmpEx(const string1[], const string2[], bool:ignorecase=false, length=c
 }
 #define strcmp strcmpEx
 
+stock timestamp_to_format_date(unix_timestamp)
+{
+	new year, month, day, hour, minute, second;
+	timestamp_to_date(unix_timestamp, year, month, day, hour, minute, second);
+
+	new string[MAX_STRING];
+	format(string, sizeof(string), "%04d-%02d-%02d %02d-%02d-%02d", year, month, day, hour, minute, second);
+	return string;
+}
+
 // from hardforum.ru/t47097/
 stock DateToNum(year, month, day, hour=-1, minute=-1, second=-1)
 {
