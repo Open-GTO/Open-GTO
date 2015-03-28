@@ -18,57 +18,44 @@ stock oBan_Check(playerid)
 	new filename[MAX_STRING];
 	format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, BanDB, oGetPlayerName(playerid));
 	
-	if (!ini_fileExist(filename))
-	{
+	if (!ini_fileExist(filename)) {
 		new plrIP[MAX_IP];
 		GetPVarString(playerid, "IP", plrIP, sizeof(plrIP));
 		format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, BanDB, plrIP);
 		
-		if (!ini_fileExist(filename))
-		{
+		if (!ini_fileExist(filename)) {
 			return 0;
 		}
 	}
 	
-	new date[MAX_NAME], time, admin[MAX_PLAYER_NAME+1], reason[MAX_SEND_SYMBOLS];
+	new
+		ban_time,
+		cur_time,
+		admin[MAX_PLAYER_NAME+1],
+		reason[MAX_SEND_SYMBOLS];
+
 	new file_ban_db = ini_openFile(filename);
-	
-	ini_getString(file_ban_db, "Date", date);
-	ini_getInteger(file_ban_db, "Time", time);
+	ini_getInteger(file_ban_db, "Date", ban_time);
+	ini_getInteger(file_ban_db, "Time", cur_time);
 	ini_getString(file_ban_db, "Admin", admin);
 	ini_getString(file_ban_db, "Reason", reason);
 	
 	ini_closeFile(file_ban_db);
 	
-	new idx = 0,
-		ban_day = strval( strcharsplit(date, idx, '.') ),
-		ban_month = strval( strcharsplit(date, idx, '.') ),
-		ban_year = strval( strcharsplit(date, idx, ',') ),
-		ban_hour = strval( strcharsplit(date, idx, ':') ),
-		ban_minute = strval( strcharsplit(date, idx, ':') ),
-		ban_second = strval( strcharsplit(date, idx, ':') );
+	new
+		unban_time = ban_time + cur_time - gettime(),
+		string[MAX_STRING];
 	
-	new year, month, day;
-	getdate(year, month, day);
-	new hours, minutes, seconds;
-	gettime(hours, minutes, seconds);
-	
-	new unban_time =
-		DateToNum(ban_year, ban_month, ban_day, ban_hour, ban_minute, ban_second) + time
-		-
-		DateToNum(year, month, day, hours, minutes, seconds);
-	
-	new string[MAX_STRING];
-	
-	if (time == 0) {
-		format(string, sizeof(string), lang_texts[13][48], time);
+	if (cur_time == 0) {
+		format(string, sizeof(string), lang_texts[13][48], cur_time);
 		unban_time = 1;
 	} else {
-		format(string, sizeof(string), lang_texts[13][49], time);
+		format(string, sizeof(string), lang_texts[13][49], cur_time);
 		if (unban_time > 0) {
 			format(string, sizeof(string), lang_texts[13][50], string, unban_time);
 		}
 	}
+
 	format(string, sizeof(string), lang_texts[13][51], admin, date, string, reason);
 	SendClientMessage(playerid, COLOUR_RED, string);
 	
@@ -83,10 +70,7 @@ stock oBan_Check(playerid)
 
 stock oBan(user[], reason[], adminid, time_second=0)
 {
-	new date[MAX_NAME], year, month, day, hour, minute, second;
-	getdate(year, month, day);
-	gettime(hour, minute, second);
-	format(date, sizeof(date), "%02d.%02d.%d, %02d:%02d:%02d", day, month, year, hour, minute, second);
+	new timestamp = gettime();
 	
 	if (IsNumeric(user)) {
 		set(user, oGetPlayerName(strval(user)));
@@ -94,9 +78,9 @@ stock oBan(user[], reason[], adminid, time_second=0)
 	
 	new filename_ban[MAX_STRING];
 	format(filename_ban, sizeof(filename_ban), "%s%s"DATA_FILES_FORMAT, BanDB, user);
-	
+
 	new file_ban_db = (!ini_fileExist(filename_ban)) ? ini_createFile(filename_ban) : ini_openFile(filename_ban);
-	ini_setString(file_ban_db, "Date", date);
+	ini_setInteger(file_ban_db, "Date", timestamp);
 	ini_setInteger(file_ban_db, "Time", time_second);
 	ini_setString(file_ban_db, "Admin", oGetPlayerName(adminid));
 	ini_setString(file_ban_db, "Reason", reason);
@@ -109,14 +93,13 @@ stock oBan(user[], reason[], adminid, time_second=0)
 		format(string, sizeof(string), lang_texts[13][49], time_second);
 	}
 
-	format(string, sizeof(string), lang_texts[12][97], user, date, oGetPlayerName(adminid), adminid, string);
+	format(string, sizeof(string), lang_texts[12][97], user, timestamp_to_format_date(timestamp), oGetPlayerName(adminid), adminid, string);
 	
 	if (strlen(reason) > 0) {
 		format(string, sizeof(string), lang_texts[12][98], string, reason);
 	}
 	SendClientMessageToAll(COLOUR_RED, string);
 
-	// если юзер на сервере
 	if (IsIP(user)) {
 		new plrIP[MAX_IP];
 		foreach (new playerid : Player) {

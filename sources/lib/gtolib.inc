@@ -72,50 +72,6 @@ stock timestamp_to_format_date(unix_timestamp)
 	return string;
 }
 
-// from hardforum.ru/t47097/
-stock DateToNum(year, month, day, hour=-1, minute=-1, second=-1)
-{
-	// count day in month
-	static cdm[] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
-	
-	// first sa-mp release
-	year -= 2006;
-	
-	if (month < 1)
-	{
-		month = 1;
-	}
-	else if (month > 12) 
-	{
-		year += (month-1) / 12;
-		month = ((month-1) % 12) + 1;
-	}
-	
-	// convert [y, mo, d] -> num
-	new num = 365 * year + (year / 4) - (year / 100) + (year / 400) + cdm[month - 1] + day;
-	
-	if (month > 2 && is_leap_year(year))
-	{
-		num++;
-	}
-	
-	// convert day to second
-	num *= 24 * 60 * 60;
-	
-	// add to num: [h, mi, s] -> num
-	if (hour != -1 && minute != -1 && second != -1)
-	{
-		num += (hour * 60 * 60 + minute * 60 + second);
-	}
-	
-	return num;
-}
-
-stock is_leap_year(year)
-{
-	return (year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0);
-}
-
 stock PlayerPlaySoundOnPlayer(playerid, soundid)
 {
 	new Float:pos[3];
@@ -272,14 +228,6 @@ stock encrypt(string[])
 	return retval;
 }
 #endif
-
-stock GetCurrentDate(outstr[20])
-{
-	new day, month, year, seconds, minutes, hours;
-	gettime(hours, minutes, seconds);
-	getdate(year, month, day);
-	format(outstr, sizeof(outstr), "%04d-%02d-%02d %02d:%02d:%02d", year, month, day, hours, minutes, seconds);
-}
 
 stock Float:GetDistanceBetweenPoints(Float:x1, Float:y1, Float:z1, Float:x2, Float:y2, Float:z2)
 {
