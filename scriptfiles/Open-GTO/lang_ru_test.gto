@@ -117,3 +117,7 @@ BUSINESS_DIALOG_LIST_ITEM = %s{CCCCCC}%s\t{00AA00}$%d\n
 
 // other
 NO_ADMINS = В данный момент в игре нет администраторов, но это не значит, что они не могут за вами наблюдать.
+
+// admin
+ADMIN_BAN_ISNULL = {FFCC66}[Применение]: {FFFFFF}/ban <ник/id/ip> <время(число[с/м/ч/д/н/г], 0 - навсегда)> <причина>
+ADMIN_BAN_EXAMPLE = {FFCC66}[Пример]: {FFFFFF}/ban 0 5д тест  -  забанит игрока с ID 0 на 5 дней

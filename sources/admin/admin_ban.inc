@@ -125,7 +125,8 @@ COMMAND:ban(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOUR_RED, _(ADMIN_BAN_ISNULL));
+		SendClientMessage(playerid, COLOUR_RED, _(ADMIN_BAN_EXAMPLE));
 		return 1;
 	}
 
@@ -134,8 +135,8 @@ COMMAND:ban(playerid, params[])
 		reason[MAX_SEND_SYMBOLS],
 		time_string[10];
 	
-	set(user, strcharsplit(params, idx, ' '));
-	set(time_string, strcharsplit(params, idx, ' '));
+	user = strcharsplit(params, idx, ' ');
+	time_string = strcharsplit(params, idx, ' ');
 
 	new time_second = strval(time_string);
 	new time_type = time_string[strlen(time_string) - 1];
@@ -153,6 +154,9 @@ COMMAND:ban(playerid, params[])
 		case 'd', 'д': {
 			time_second *= 60 * 60 * 24;
 		}
+		case 'w', 'н': {
+			time_second *= 60 * 60 * 24 * 7;
+		}
 		case 'y', 'г': {
 			time_second *= 60 * 60 * 24 * 365;
 		}
@@ -162,7 +166,8 @@ COMMAND:ban(playerid, params[])
 		set(reason, params[idx + 1]);
 	}
 	
-	if (!IsNumeric(user) && (strlen(user) < MIN_NAME_LEN || strlen(user) > MAX_NAME_LEN)) {
+	new user_length = strlen(user);
+	if (!IsNumeric(user) && (user_length < MIN_NAME_LEN || user_length > MAX_NAME_LEN)) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][33]);
 		return 1;
 	}
