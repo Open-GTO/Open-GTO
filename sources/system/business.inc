@@ -625,40 +625,25 @@ stock business_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME
 
 stock CheckBusinessOwners()
 {
-	new filename_account[MAX_STRING], file_account, account_lastlogin[32], idx,
-		year, month, day, account_year, account_month, account_day;
+	new filename_account[MAX_STRING], file_account, timestamp;
 	
-	getdate(year, month, day);
-	for (new i = 0; i < sizeof(Businesses); i++)
-	{
-		if (!strcmp(Businesses[i][Business_Owner], "Unknown", false))
-		{
+	for (new i = 0; i < sizeof(Businesses); i++) {
+		if (!strcmp(Businesses[i][Business_Owner], "Unknown", false)) {
 			continue;
 		}
 		
 		format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, AccountDB, Businesses[i][Business_Owner]);
-		if (!ini_fileExist(filename_account))
-		{
+		if (!ini_fileExist(filename_account)) {
 			continue;
 		}
 		
 		file_account = ini_openFile(filename_account);
-		ini_getString(file_account, "Last_Login", account_lastlogin);
+		ini_getInteger(file_account, "Last_Login", timestamp);
 		ini_closeFile(file_account);
 		
-		idx = 0;
-		account_day = strval( strcharsplit(account_lastlogin, idx, '.') );
-		account_month = strval( strcharsplit(account_lastlogin, idx, '.') );
-		account_year = strval( strcharsplit(account_lastlogin, idx, ',') );
-		
-		if (DateToNum(year, month, day) > DateToNum(account_year, account_month, account_day) + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60)
-		{
+		if (gettime() > timestamp + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60) {
 			Log_Game("Business has been free. Owner '%s'. BUSINESS_UNLOGIN_SELL_DAYS = %d",
 				Businesses[i][Business_Owner], BUSINESS_UNLOGIN_SELL_DAYS
-			);
-			Log_Game("\tcurrent date[%02d.%02d.%d]: %d, last login[%02d.%02d.%d]: %d",
-				day, month, year, DateToNum(year, month, day),
-				account_day, account_month, account_year, DateToNum(account_year, account_month, account_day)
 			);
 			
 			set(Businesses[i][Business_Owner], "Unknown");

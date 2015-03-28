@@ -54,11 +54,8 @@ stock account_SaveEx(playerid)
 	GetPVarString(playerid, "Password", temp, sizeof(temp));
 	ini_setString(file_account, "Password", temp);
 
-	GetPVarString(playerid, "Creation_Date", temp, sizeof(temp));
-	ini_setString(file_account, "Creation_Date", temp);
-
-	GetPVarString(playerid, "Last_Login", temp, sizeof(temp));
-	ini_setString(file_account, "Last_Login", temp);
+	ini_setInteger(file_account, "Creation_Date", GetPVarInt(playerid, "Creation_Date"));
+	ini_setInteger(file_account, "Last_Login", GetPVarInt(playerid, "Last_Login"));
 
 	GetPVarString(playerid, "IP", temp, sizeof(temp));
 	ini_setString(file_account, "LastIP", temp);
@@ -76,9 +73,7 @@ stock account_Register(playerid, password[])
 	SetPVarString(playerid, "Password", password);
 #endif
 
-	new date[20];
-	GetCurrentDate(date);
-	SetPVarString(playerid, "Creation_Date", date);
+	SetPVarInt(playerid, "Creation_Date", gettime());
 	
 	// create account and player
 	account_SaveEx(playerid);
@@ -130,12 +125,11 @@ stock account_Login(playerid, password[])
 
 	SetPVarString(playerid, "Password", password);
 	
-	new date[20];
-	ini_getString(file_account, "Creation_Date", date);
-	SetPVarString(playerid, "Creation_Date", date);
-	
-	GetCurrentDate(date);
-	SetPVarString(playerid, "Last_Login", date);
+	new timestamp;
+	ini_getInteger(file_account, "Creation_Date", timestamp);
+	SetPVarInt(playerid, "Creation_Date", timestamp);
+
+	SetPVarInt(playerid, "Last_Login", gettime());
 	
 	ini_closeFile(file_account);
 
