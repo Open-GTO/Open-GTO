@@ -162,7 +162,7 @@ COMMAND:ban(playerid, params[])
 		set(reason, params[idx + 1]);
 	}
 	
-	if (!IsNumeric(user) && (strlen(user) < MIN_PLAYER_NAME || strlen(user) > MAX_PLAYER_NAME)) {
+	if (!IsNumeric(user) && (strlen(user) < MIN_NAME_LEN || strlen(user) > MAX_NAME_LEN)) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][33]);
 		return 1;
 	}
@@ -189,12 +189,15 @@ COMMAND:unban(playerid, params[])
 		return 1;
 	}
 
-	new idx = 0,
+	new
+		idx = 0,
+		length,
 		user[MAX_PLAYER_NAME + 1];
 	
-	set(user, strcharsplit(params, idx, ' '));
+	user = strcharsplit(params, idx, ' ');
+	length = strlen(user);
 	
-	if (strlen(user) < MIN_PLAYER_NAME || strlen(user) > MAX_PLAYER_NAME) {
+	if (length < MIN_NAME_LEN || length > MAX_NAME_LEN) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][35]);
 		return 1;
 	}

@@ -189,7 +189,8 @@
 #define HEALTH_REGEN_TARIF		0.1 // степень кол-ва востанавливаемого здоровья, формула: (GetPlayerLevel(id) * HEALTH_REGEN_TARIF)
 
 #define CHANGE_NICK_COST		100000 // кол-во денег, требуемых для смены ника
-#define MIN_PLAYER_NAME			3
+#define MIN_NAME_LEN			3
+#define MAX_NAME_LEN			20
 #define CHANGE_PASS_COST		5000 // кол-во денег, требуемых для смены пароля
 #define MIN_PASS_LEN			3
 #define MAX_PASS_LEN			40

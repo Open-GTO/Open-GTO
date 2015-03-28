@@ -106,13 +106,14 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 
 	new
 		new_name[MAX_PLAYER_NAME+1],
-		old_name[MAX_PLAYER_NAME+1];
+		old_name[MAX_PLAYER_NAME+1],
+		length = strlen(inputtext);
 	
 	GetPlayerName(playerid, old_name, sizeof(old_name));
-	strmid(new_name, inputtext, 0, strlen(inputtext));
+	strmid(new_name, inputtext, 0, length);
 	
-	if (strlen(new_name) < MIN_PLAYER_NAME) {
-		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_LENGTH), MIN_PLAYER_NAME);
+	if (length < MIN_NAME_LEN || length > MAX_NAME_LEN) {
+		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_LENGTH), MIN_NAME_LEN, MAX_NAME_LEN);
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 			_(PLAYER_MENU_SETTINGS_NAME_CAPTION),
 			string,
