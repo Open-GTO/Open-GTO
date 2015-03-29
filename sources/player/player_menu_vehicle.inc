@@ -68,7 +68,7 @@ DialogCreate:PlayerVehicleList(playerid)
 
 	pl_veh_menu_SetVehicleSlot(playerid, veh_slot);
 
-	new string[MAX_VALUE_STRING * 3];
+	new string[MAX_LANG_VALUE_STRING * 3];
 	format(string, sizeof(string), _(PLAYER_MENU_VEHICLE_LIST), GetPlayerVehicleCostBySlot(playerid, veh_slot) / 2);
 	
 	Dialog_Open(playerid, Dialog:PlayerVehicleList, DIALOG_STYLE_LIST,

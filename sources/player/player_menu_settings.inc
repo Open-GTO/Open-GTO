@@ -15,7 +15,7 @@
 
 DialogCreate:PlayerSettingsMenu(playerid)
 {
-	new string[MAX_VALUE_STRING];
+	new string[MAX_LANG_VALUE_STRING];
 	format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_INFO), CHANGE_NICK_COST, CHANGE_PASS_COST);
 	Dialog_Open(playerid, Dialog:PlayerSettingsMenu, DIALOG_STYLE_TABLIST_HEADERS,
 		_(PLAYER_MENU_SETTINGS_CAPTION),

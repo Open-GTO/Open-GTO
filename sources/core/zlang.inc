@@ -13,15 +13,19 @@
 #pragma library zlang
 
 
-#define MAX_TEXT_ENTRIES  1024
+#define MAX_TEXT_ENTRIES       1024
 
-#define MAX_VAR_STRING    48
-#define MAX_VALUE_STRING  128
+#define MAX_MULTI_VAR_COUNT    10
 
-#define LANG_VIRTUAL_MACHINE 1
+#define MAX_LANG_VAR_STRING    48
+#define MAX_LANG_VALUE_STRING  128
+#define MAX_LANG_MULTI_STRING  (MAX_LANG_VALUE_STRING * MAX_MULTI_VAR_COUNT)
+
+#define LANG_VIRTUAL_MACHINE   1
 
 
 #define _(%0) Lang_GetText(#%0)
+#define _m(%0) Lang_GetMultiText(#%0)
 
 
 stock Lang_OnGameModeInit()
@@ -41,8 +45,8 @@ stock Lang_LoadText(filename[])
 	new
 		i,
 		sep_pos,
-		varname[MAX_VAR_STRING],
-		string[MAX_VALUE_STRING + MAX_VAR_STRING];
+		varname[MAX_LANG_VAR_STRING],
+		string[MAX_LANG_VALUE_STRING + MAX_LANG_VAR_STRING];
 
 	while (fread(flang, string, sizeof(string))) {
 		if (string[0] == '\0' || (string[0] == '/' && string[1] == '/')) {
@@ -103,20 +107,50 @@ stock Lang_SetText(varname[], value[])
 
 stock Lang_GetText(varname[])
 {
-	new result[MAX_VALUE_STRING];
+	new string[MAX_LANG_VALUE_STRING];
 	if (!isnull(varname)) {
-		new exist = getproperty(LANG_VIRTUAL_MACHINE, .value = bernstein(varname), .string = result);
+		new exist = getproperty(LANG_VIRTUAL_MACHINE, .value = bernstein(varname), .string = string);
 		if (exist == 0) {
-			strcat(result, "Error: lang value ");
-			strcat(result, varname);
-			strcat(result, " not found.");
+			strcat(string, "Error: lang value ");
+			strcat(string, varname);
+			strcat(string, " not found.");
 		} else {
-			strunpack(result, result);
+			strunpack(string, string);
 		}
 	} else {
-		result = "Error: lang varname is null";
+		string = "Error: lang varname is null";
 	}
-	return result;
+	return string;
+}
+
+stock Lang_GetMultiText(varname[])
+{
+	new string[MAX_LANG_MULTI_STRING];
+	if (!isnull(varname)) {
+		new
+			exist,
+			property_value[MAX_LANG_VALUE_STRING],
+			property_name[MAX_LANG_VAR_STRING + 6];
+
+		for (new i = 0; i < MAX_MULTI_VAR_COUNT; i++) {
+			format(property_name, sizeof(property_name), "%s_%d", varname, i);
+			exist = getproperty(LANG_VIRTUAL_MACHINE, .value = bernstein(property_name), .string = property_value);
+			
+			if (exist != 0) {
+				strcat(string, property_value);
+			} else {
+				if (i == 0) {
+					strcat(string, "Error: multi lang value ");
+					strcat(string, varname);
+					strcat(string, " not found.");
+				}
+				break;
+			}
+		}
+	} else {
+		string = "Error: multi lang varname is null";
+	}
+	return string;
 }
 
 stock Lang_DeleteText(varname[])

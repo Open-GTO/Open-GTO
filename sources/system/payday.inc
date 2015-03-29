@@ -51,7 +51,7 @@ stock payday_Check()
 
 stock payday_Give()
 {
-	new pay_money, pay_xp, string[MAX_VALUE_STRING];
+	new pay_money, pay_xp, string[MAX_LANG_VALUE_STRING];
 
 	foreach (new id : Player) {
 		if (!player_IsLogin(id)) {

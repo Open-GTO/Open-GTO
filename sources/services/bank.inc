@@ -66,7 +66,7 @@ stock bank_OnPlayerEnterCheckpoint(playerid, cp)
 
 DialogCreate:BankStart(playerid)
 {
-	new string[MAX_VALUE_STRING * 2];
+	new string[MAX_LANG_VALUE_STRING * 2];
 	strcat(string, _(BANK_START_INFO_1), sizeof(string));
 	strcat(string, _(BANK_START_INFO_2), sizeof(string));
 	format(string, sizeof(string), string, ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
@@ -88,7 +88,7 @@ DialogResponse:BankStart(playerid, response, listitem, inputtext[])
 
 DialogCreate:BankList(playerid)
 {
-	new string[MAX_VALUE_STRING * 3];
+	new string[MAX_LANG_VALUE_STRING * 3];
 	string = _(BANK_LIST_INFO);
   	
 	if (player_GetGangID(playerid) != 0) {
@@ -139,7 +139,7 @@ DialogResponse:BankReturnWithdrawMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:BankWithdraw(playerid)
 {
-	new string[MAX_VALUE_STRING * 2];
+	new string[MAX_LANG_VALUE_STRING * 2];
 	strcat(string, _(BANK_START_INFO_1), sizeof(string));
 	strcat(string, _(BANK_START_INFO_2), sizeof(string));
 	format(string, sizeof(string), string, ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
@@ -195,7 +195,7 @@ DialogResponse:BankReturnDepositMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:BankDeposit(playerid)
 {
-	new string[MAX_VALUE_STRING * 2];
+	new string[MAX_LANG_VALUE_STRING * 2];
 	strcat(string, _(BANK_START_INFO_1), sizeof(string));
 	strcat(string, _(BANK_START_INFO_2), sizeof(string));
 	format(string, sizeof(string), string, ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
@@ -234,7 +234,7 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 	GivePlayerBankMoney(playerid, amount);
 	oGivePlayerMoney(playerid, -amount, 0);
 
-	new string[MAX_VALUE_STRING * 2];
+	new string[MAX_LANG_VALUE_STRING * 2];
 	format(string, sizeof(string), _(BANK_DEPOSIT_INFO), amount, GetPlayerBankMoney(playerid));
 
 	if (GetPlayerBankMoney(playerid) == MaxBankMoney) {
@@ -294,7 +294,7 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 	TakeGangMoney(gangid, amount);
 	oGivePlayerMoney(playerid, amount);
 			
-	new string[MAX_VALUE_STRING];
+	new string[MAX_LANG_VALUE_STRING];
 	format(string, sizeof(string), _(BANK_GANG_WITHDRAW_INFO), amount, GetGangMoney(gangid));
 	Dialog_Message(playerid, _(BANK_GANG_CAPTION), string, _(BANK_BUTTON_OK));
 
@@ -354,7 +354,7 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 	GiveGangMoney(gangid, amount);
 	oGivePlayerMoney(playerid, -amount);
 	
-	new string[MAX_VALUE_STRING];
+	new string[MAX_LANG_VALUE_STRING];
 	format(string, sizeof(string), _(BANK_GANG_DEPOSIT_INFO), amount, GetGangMoney(gangid));
 	Dialog_Message(playerid, _(BANK_GANG_CAPTION), string, _(BANK_BUTTON_OK));
 
@@ -375,7 +375,7 @@ stock IsPlayerAtBank(playerid)
 
 stock bank_Profit()
 {
-	new string[MAX_VALUE_STRING], amount;
+	new string[MAX_LANG_VALUE_STRING], amount;
 	
 	foreach (new playerid : Player) {
 		if (!player_IsLogin(playerid)) {
