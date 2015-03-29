@@ -67,8 +67,8 @@ stock pl_alert_OnPlayerConnect(playerid)
 	PlayerTextDrawUseBox(playerid, td_content[playerid], true);
 	PlayerTextDrawBoxColor(playerid, td_content[playerid], 100);
 	PlayerTextDrawSetShadow(playerid, td_content[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, td_content[playerid], 0);
-	PlayerTextDrawBackgroundColor(playerid, td_content[playerid], 255);
+	PlayerTextDrawSetOutline(playerid, td_content[playerid], 1);
+	PlayerTextDrawBackgroundColor(playerid, td_content[playerid], 51);
 	PlayerTextDrawFont(playerid, td_content[playerid], 1);
 	PlayerTextDrawSetProportional(playerid, td_content[playerid], 1);
 	return 1;
@@ -86,12 +86,18 @@ stock pl_alert_Show(playerid, header[], content[], time = 4000, hcolor = -596352
 
 		PlayerTextDrawBoxColor(playerid, td_strip[playerid], hcolor);
 		PlayerTextDrawShow(playerid, td_strip[playerid]);
+	} else {
+		PlayerTextDrawHide(playerid, td_header[playerid]);
+		PlayerTextDrawHide(playerid, td_strip[playerid]);
+		TextDrawHideForPlayer(playerid, td_background);
 	}
 
 	if (strlen(content) > 0) {
 		PlayerTextDrawSetString(playerid, td_content[playerid], content);
 
 		PlayerTextDrawShow(playerid, td_content[playerid]);
+	} else {
+		PlayerTextDrawHide(playerid, td_content[playerid]);
 	}
 
 	PlayerPlaySound(playerid, 45400, 0.0, 0.0, 0.0);
