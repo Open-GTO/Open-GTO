@@ -27,15 +27,13 @@ COMMAND:godmod(playerid, params[])
 	if (!IsPlayerRconAdmin(playerid)) {
 		return 0;
 	}
-	
-	oSetPlayerHealth(playerid, Float:0x7F800000);
 
 	if (player_IsGodmod(playerid)) {
 		player_SetGodmod(playerid, 0);
-		SendClientMessage(playerid, COLOUR_WHITE, "Вы выключили режим бога, теперь вас можно убить.");
+		pl_alert_Show(playerid, "", _(ADMIN_GODMOD_OFF_CONTENT));
 	} else {
 		player_SetGodmod(playerid, 1);
-		SendClientMessage(playerid, COLOUR_WHITE, "Вы включили режим бога, вас невозможно убить.");
+		pl_alert_Show(playerid, "", _(ADMIN_GODMOD_ON_CONTENT));
 	}
 	return 1;
 }

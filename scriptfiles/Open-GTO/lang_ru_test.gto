@@ -134,3 +134,6 @@ NO_ADMINS = ¬ данный момент в игре нет администраторов, но это не значит, что он
 // admin
 ADMIN_BAN_ISNULL = {FFCC66}[ѕрименение]: {FFFFFF}/ban <ник/id/ip> <врем€(число[с/м/ч/д/н/г], 0 - навсегда)> <причина>
 ADMIN_BAN_EXAMPLE = {FFCC66}[ѕример]: {FFFFFF}/ban 0 5д тест  -  забанит игрока с ID 0 на 5 дней
+
+ADMIN_GODMOD_ON_CONTENT = Godmod ~h~~g~ENABLED
+ADMIN_GODMOD_OFF_CONTENT = Godmod ~h~~r~DISABLED

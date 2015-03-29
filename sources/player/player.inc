@@ -357,5 +357,10 @@ stock player_IsGodmod(playerid) {
 }
 
 stock player_SetGodmod(playerid, isgodmod) {
+	if (isgodmod) {
+		oSetPlayerHealth(playerid, Float:0x7F800000);
+	} else {
+		SetPlayerMaxHealth(playerid);
+	}
 	SetPVarInt(playerid, "godmod", isgodmod);
 }
