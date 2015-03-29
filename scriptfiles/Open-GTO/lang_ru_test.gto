@@ -7,6 +7,8 @@ ACCOUNT_DIALOG_REGISTER_HEAD = {CCCCCC}Регистрация: {FFFFFF}%s
 ACCOUNT_DIALOG_REGISTER = {CCCCCC}Этот аккаунт не зарегистрирован.\n\n{CCCCCC}Введите пароль для {F4A460}регистрации{CCCCCC}:
 ACCOUNT_DIALOG_REGISTER_BUTTON = Создать
 
+ACCOUNT_DIALOG_INFORMATION_CAPTION = Open-GTO %s
+ACCOUNT_DIALOG_INFORMATION_BUTTON = Ясно
 ACCOUNT_DIALOG_INFORMATION_TEXT_0 = В режиме Open-GTO содержатся все популярные режимы игр: гонки, дм(от англ. Deathmatch), а также элементы RPG.\n\n
 ACCOUNT_DIALOG_INFORMATION_TEXT_1 = В гонках и дмах вы можете проявить свои ездовые и стрелковые умения.\nИ в случае победы – получить хорошее вознаграждение.\n\n
 ACCOUNT_DIALOG_INFORMATION_TEXT_2 = Каждый игрок имеет право создать банду.\nВ банде вам будет проще прокачать своего персонажа и выжить.\n\n

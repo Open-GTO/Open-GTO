@@ -194,6 +194,23 @@ DialogResponse:AccountLogin(playerid, response, listitem, inputtext[])
 	}
 }
 
+DialogCreate:AccountInformation(playerid)
+{
+	new caption[MAX_LANG_VALUE_STRING];
+	format(caption, sizeof(caption), _(ACCOUNT_DIALOG_INFORMATION_CAPTION), VERSION_STRING);
+
+	Dialog_Open(playerid, Dialog:AccountInformation, DIALOG_STYLE_MSGBOX,
+		caption,
+		_m(ACCOUNT_DIALOG_INFORMATION_TEXT),
+		_(ACCOUNT_DIALOG_INFORMATION_BUTTON), ""
+	);
+}
+
+DialogResponse:AccountInformation(playerid, response, listitem, inputtext[])
+{
+	Dialog_Show(playerid, Dialog:AccountRegister);
+}
+
 stock account_ShowDialog(playerid)
 {
 	new filename_account[MAX_STRING],
@@ -205,7 +222,7 @@ stock account_ShowDialog(playerid)
 	if (ini_fileExist(filename_account)) {
 		Dialog_Show(playerid, Dialog:AccountLogin);
 	} else {
-		Dialog_Show(playerid, Dialog:AccountRegister);
+		Dialog_Show(playerid, Dialog:AccountInformation);
 	}
 
 	widestrip_Show(playerid);
