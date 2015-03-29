@@ -91,8 +91,8 @@ PLAYER_MENU_SETTINGS_PASSWORD_LENGTH = {CCCCCC}Допустимая длина пароля от {BBBAE
 // bank
 BANK_INIT = SERVER: Bank module init
 BANK_CAPTION = Банк
-BANK_START_INFO_1 = {CCCCCC}Вы можете хранить здесь деньги и получать {00AA00}+%d%%{CCCCCC} ({00AA00}+%d%%{CCCCCC} для VIP) в час
-BANK_START_INFO_2 = \nТекущий баланс: {00AA00}$%d
+BANK_START_INFO_0 = {CCCCCC}Вы можете хранить здесь деньги и получать {00AA00}+%d%%{CCCCCC} ({00AA00}+%d%%{CCCCCC} для VIP) в час
+BANK_START_INFO_1 = \nТекущий баланс: {00AA00}$%d
 BANK_LIST_INFO = Снять деньги\nПоложить деньги
 BANK_WITHDRAW_INFO = {CCCCCC}Вы сняли {00AA00}$%d\n{CCCCCC}Текущий баланс: {00AA00}$%d
 BANK_DEPOSIT_INFO = {00AA00}$%d{CCCCCC} положено на ваш счет.\nТекущий баланс: {00AA00}$%d

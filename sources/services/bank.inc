@@ -66,10 +66,8 @@ stock bank_OnPlayerEnterCheckpoint(playerid, cp)
 
 DialogCreate:BankStart(playerid)
 {
-	new string[MAX_LANG_VALUE_STRING * 2];
-	strcat(string, _(BANK_START_INFO_1), sizeof(string));
-	strcat(string, _(BANK_START_INFO_2), sizeof(string));
-	format(string, sizeof(string), string, ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
+	new string[MAX_LANG_MULTI_STRING];
+	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
 	Dialog_Open(playerid, Dialog:BankStart, DIALOG_STYLE_MSGBOX,
 		_(BANK_CAPTION),
 		string,
@@ -139,10 +137,8 @@ DialogResponse:BankReturnWithdrawMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:BankWithdraw(playerid)
 {
-	new string[MAX_LANG_VALUE_STRING * 2];
-	strcat(string, _(BANK_START_INFO_1), sizeof(string));
-	strcat(string, _(BANK_START_INFO_2), sizeof(string));
-	format(string, sizeof(string), string, ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
+	new string[MAX_LANG_MULTI_STRING];
+	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
 	Dialog_Open(playerid, Dialog:BankWithdraw, DIALOG_STYLE_INPUT,
 		_(BANK_CAPTION),
 		string,
@@ -195,10 +191,8 @@ DialogResponse:BankReturnDepositMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:BankDeposit(playerid)
 {
-	new string[MAX_LANG_VALUE_STRING * 2];
-	strcat(string, _(BANK_START_INFO_1), sizeof(string));
-	strcat(string, _(BANK_START_INFO_2), sizeof(string));
-	format(string, sizeof(string), string, ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
+	new string[MAX_LANG_MULTI_STRING];
+	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
 	Dialog_Open(playerid, Dialog:BankDeposit, DIALOG_STYLE_INPUT,
 		_(BANK_CAPTION),
 		string,
