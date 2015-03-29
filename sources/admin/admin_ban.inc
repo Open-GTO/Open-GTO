@@ -136,7 +136,7 @@ COMMAND:ban(playerid, params[])
 		time_string[10];
 	
 	user = strcharsplit(params, idx, ' ');
-	time_string = strcharsplit(params, idx, ' ');
+	strmid(time_string, strcharsplit(params, idx, ' '), 0, 10);
 
 	new time_second = strval(time_string);
 	new time_type = time_string[strlen(time_string) - 1];
