@@ -137,6 +137,7 @@ stock Lang_GetMultiText(varname[])
 			exist = getproperty(LANG_VIRTUAL_MACHINE, .value = bernstein(property_name), .string = property_value);
 			
 			if (exist != 0) {
+				strunpack(property_value, property_value);
 				strcat(string, property_value);
 			} else {
 				if (i == 0) {
