@@ -21,17 +21,7 @@ COMMAND:help(playerid, params[])
 
 COMMAND:info(playerid, params[])
 {
-	new string[MAX_STRING * 9];
-	strcat(string, lang_texts[15][6], sizeof(string));
-	strcat(string, lang_texts[15][7], sizeof(string));
-	strcat(string, lang_texts[15][8], sizeof(string));
-	strcat(string, lang_texts[15][9], sizeof(string));
-	strcat(string, lang_texts[15][10], sizeof(string));
-	strcat(string, lang_texts[15][11], sizeof(string));
-	strcat(string, lang_texts[15][12], sizeof(string));
-	strcat(string, lang_texts[15][13], sizeof(string));
-	strcat(string, lang_texts[15][14], sizeof(string));
-	Dialog_Message(playerid, "Информация", string, "ОК");
+	Dialog_Message(playerid, "Информация", _m(ACCOUNT_DIALOG_INFORMATION_TEXT), "ОК");
 	return 1;
 }
 
