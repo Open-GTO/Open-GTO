@@ -88,6 +88,10 @@ PLAYER_MENU_SETTINGS_PASSWORD_CHANGED = {CCCCCC}Вы успешно сменили пароль.\nВаш 
 PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY = {CCCCCC}У вас нету {00AA00}$%d{CCCCCC} на смену пароля от аккаунта.
 PLAYER_MENU_SETTINGS_PASSWORD_LENGTH = {CCCCCC}Допустимая длина пароля от {BBBAE8}%d{CCCCCC} до {BBBAE8}%d{CCCCCC} символов.
 
+// vehicles
+VEHICLE_INIT = SERVER: Vehicles module init
+VEHICLE_NOT_IN_CAR = Вы не в машине.
+
 // bank
 BANK_INIT = SERVER: Bank module init
 BANK_CAPTION = Банк
@@ -137,3 +141,9 @@ ADMIN_BAN_EXAMPLE = {FFCC66}[Пример]: {FFFFFF}/ban 0 5д тест  -  забанит игрока 
 
 ADMIN_GODMOD_ON_CONTENT = Godmod ~h~~g~ENABLED
 ADMIN_GODMOD_OFF_CONTENT = Godmod ~h~~r~DISABLED
+
+ADMIN_PLIST_HEADER = Список заткнутых и посаженых:
+ADMIN_PLIST_JAIL_REMAIN = %s(%d) [арест] осталось %d м.
+ADMIN_PLIST_JAIL_NOTIME = %s(%d) [арест] без времени.
+ADMIN_PLIST_MUTE_REMAIN = %s(%d) [кляп] осталось %d м.
+ADMIN_PLIST_NO_PLAYERS = На сервере нет "забытых" игроков.

@@ -1375,16 +1375,16 @@ COMMAND:plist(playerid, params[])
 		return 0;
 	}
 
-	SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[15][46]);
+	SendClientMessage(playerid, COLOUR_YELLOW, _(ADMIN_PLIST_HEADER));
 	
 	new string[MAX_STRING], count = 0;
 
 	foreach (new id : Player) {
 		if (player_IsJailed(id)) {
 			if (player_GetJailTime(id) > 0) {
-				format(string, sizeof(string), lang_texts[18][3], oGetPlayerName(id), id, (player_GetJailTime(id)- gettime()) / 60 + 1);
+				format(string, sizeof(string), _(ADMIN_PLIST_JAIL_REMAIN), oGetPlayerName(id), id, (player_GetJailTime(id)- gettime()) / 60 + 1);
 			} else {
-				format(string, sizeof(string), lang_texts[18][4], oGetPlayerName(id), id);
+				format(string, sizeof(string), _(ADMIN_PLIST_JAIL_NOTIME), oGetPlayerName(id), id);
 			}
 
 			SendClientMessage(playerid, COLOUR_LIGHTRED, string);
@@ -1393,7 +1393,7 @@ COMMAND:plist(playerid, params[])
 		}
 
 		if (player_IsMuted(playerid)) {
-			format(string, sizeof(string), lang_texts[18][5], oGetPlayerName(id), id, (player_GetMuteTime(id) - gettime()) / 60 + 1);
+			format(string, sizeof(string), _(ADMIN_PLIST_MUTE_REMAIN), oGetPlayerName(id), id, (player_GetMuteTime(id) - gettime()) / 60 + 1);
 			SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
 
 			count++;
@@ -1401,7 +1401,7 @@ COMMAND:plist(playerid, params[])
 	}
 
 	if (count == 0) {
-		SendClientMessage(playerid, COLOUR_XP_GOOD, lang_texts[18][7]);
+		SendClientMessage(playerid, COLOUR_XP_GOOD, _(ADMIN_PLIST_NO_PLAYERS));
 	}
 	return 1;
 }

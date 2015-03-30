@@ -85,7 +85,7 @@ stock vh_menu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 COMMAND:vmenu(playerid, params[])
 {
 	if (!IsPlayerInAnyVehicle(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[5][1]);
+		SendClientMessage(playerid, COLOUR_RED, _(VEHICLE_NOT_IN_CAR));
 		return 0;
 	}
 	
