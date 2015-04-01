@@ -57,6 +57,12 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			new fstylename[MAX_STRING];
 			fights_GetNameByLevel( pl_fights_GetPlayerStyleUsed(playerid) , fstylename);
 			
+			new gangname[MAX_NAME];
+			gangname = player_GetGangName(playerid);
+			if (strlen(gangname) == 0) {
+				gangname = "нет";
+			}
+
 			new string[1024];
 			format(string, sizeof(string),
 				"Уровень: %d, опыт до уровня: %d\n\
@@ -79,7 +85,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				timestamp_to_format_date( account_GetRegisterTime(playerid) ),
 				account_GetPlayedTimeString(playerid),
 
-				player_GetGangName(playerid),
+				gangname,
 				
 				oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid),
 				
