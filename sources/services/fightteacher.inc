@@ -42,7 +42,7 @@ stock fights_OnPlayerEnterCheckpoint(playerid, cp)
 {
 	new
 		string[MAX_STRING],
-		caption[MAX_LANG_VAR_STRING],
+		caption[MAX_LANG_VALUE_STRING],
 		teacherid = fights_GetTeacherIdByCheckpoint(cp);
 
 	if (teacherid == -1) {
@@ -74,7 +74,7 @@ DialogCreate:ServiceFights(playerid)
 {
 	new
 		string[MAX_STRING],
-		caption[MAX_LANG_VAR_STRING],
+		caption[MAX_LANG_VALUE_STRING],
 		teacherid = fights_GetPlayerTeacherID(playerid);
 	
 	fights_GetTeacherName(teacherid, string);
@@ -92,7 +92,7 @@ DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
 
 	new
 		string[MAX_STRING],
-		caption[MAX_LANG_VAR_STRING],
+		caption[MAX_LANG_VALUE_STRING],
 		teachername[MAX_NAME],
 		teacherid = fights_GetPlayerTeacherID(playerid),
 		cost = fights_GetTeacherCost(teacherid);

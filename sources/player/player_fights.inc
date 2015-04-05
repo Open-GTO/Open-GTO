@@ -18,8 +18,8 @@ static
 DialogCreate:PlayerFights(playerid)
 {
 	new
-		temp[MAX_LANG_VAR_STRING],
-		string[MAX_LANG_VAR_STRING * MAX_FIGHTS];
+		temp[MAX_LANG_VALUE_STRING],
+		string[MAX_LANG_VALUE_STRING * MAX_FIGHTS];
 
 	for (new id = 0; id < fights_GetLastId(); id++) {
 		if (!pl_fights_IsLearned(playerid, id)) {
