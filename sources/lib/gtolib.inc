@@ -13,6 +13,16 @@
 #define _gtoutils_included
 #pragma library gtoutils
 
+#define MODE_INFO_VERSION 1
+#define MODE_INFO_NAME    2
+
+enum CoordInfo {
+	Float:Coord_X,
+	Float:Coord_Y,
+	Float:Coord_Z
+}
+
+new nullstr[MAX_STRING];
 
 #define GivePVarInt(%1,%2,%3) SetPVarInt(%1,%2, GetPVarInt(%1,%2)+%3)
 #define set(%0,%1) strmid(%0,%1, 0, 160, MAX_STRING + 32)

@@ -37,20 +37,20 @@ new PlayerHoldingGround[ sizeof(Groundholds) ][MAX_PLAYERS];
 stock groundhold_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Groundhold_IsEnabled", Groundhold_IsEnabled);
-	ini_setString(file_config, "Groundhold_DB", GroundholdDB);
+	ini_setString(file_config, "Groundhold_DB", db_groundhold);
 }
 
 stock groundhold_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Groundhold_IsEnabled", Groundhold_IsEnabled);
-	ini_getString(file_config, "Groundhold_DB", GroundholdDB);
+	ini_getString(file_config, "Groundhold_DB", db_groundhold);
 }
 
 stock groundhold_LoadAll()
 {
 	new file_gh, filename_gh[MAX_STRING];
 	for (new i = 0; i < sizeof(Groundholds); i++) {
-		format(filename_gh, sizeof(filename_gh), "%sid_%d"DATA_FILES_FORMAT, GroundholdDB, Groundholds[i][gh_id]);
+		format(filename_gh, sizeof(filename_gh), "%sid_%d"DATA_FILES_FORMAT, db_groundhold, Groundholds[i][gh_id]);
 		if (!ini_fileExist(filename_gh)) {
 			continue;
 		}
@@ -75,7 +75,7 @@ stock groundhold_SaveAll()
 {
 	new file_gh, filename_gh[MAX_STRING];
 	for (new i = 0; i < sizeof(Groundholds); i++) {
-		format(filename_gh, sizeof(filename_gh), "%sid_%d"DATA_FILES_FORMAT, GroundholdDB, Groundholds[i][gh_id]);
+		format(filename_gh, sizeof(filename_gh), "%sid_%d"DATA_FILES_FORMAT, db_groundhold, Groundholds[i][gh_id]);
 		file_gh = (!ini_fileExist(filename_gh)) ? ini_createFile(filename_gh) : ini_openFile(filename_gh);
 
 		ini_setString(file_gh, "Name", Groundholds[i][gh_name]);

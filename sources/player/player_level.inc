@@ -21,21 +21,21 @@ new level_xp_list[] = {
 
 stock pl_level_LoadConfig(file_config)
 {
-	ini_getString(file_config, "Player_Level_DB", LevelDB);
+	ini_getString(file_config, "Player_Level_DB", db_level);
 }
 
 stock pl_level_SaveConfig(file_config)
 {
-	ini_setString(file_config, "Player_Level_DB", LevelDB);
+	ini_setString(file_config, "Player_Level_DB", db_level);
 }
 
 stock pl_level_LoadLevelConfig()
 {
-	if (!ini_fileExist(LevelDB)) {
+	if (!ini_fileExist(db_level)) {
 		return 0;
 	}
 
-	new file_base_level = ini_openFile(LevelDB),
+	new file_base_level = ini_openFile(db_level),
 		temp[MAX_STRING];
 
 	for (new i = 0; i <= MAX_LEVEL; i++)  {
@@ -51,10 +51,10 @@ stock pl_level_SaveLevelConfig()
 {
 	new file_base_level;
 
-	if (ini_fileExist(LevelDB)) {
-		file_base_level = ini_openFile(LevelDB);
+	if (ini_fileExist(db_level)) {
+		file_base_level = ini_openFile(db_level);
 	} else {
-		file_base_level = ini_createFile(LevelDB);
+		file_base_level = ini_createFile(db_level);
 	}
 
 	new temp[MAX_STRING];

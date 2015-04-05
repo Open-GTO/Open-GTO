@@ -15,23 +15,28 @@
 #pragma tabsize 0
 #pragma dynamic 13000
 
-//#define FS_USING // если задефайнено, то компил€ци€ будет в режиме совместимости с FS (fixes, api)
+#define FS_USING // если задефайнено, то компил€ци€ будет в режиме совместимости с FS (fixes, api)
 
-#define VERSION         2
-#define PATCHLEVEL      0
-#define SUBLEVEL        0
-#define EXTRAVERSION    "-alpha"
-#define NAME            "New generation"
+#define MODE_NAME       "Open-GTO"
+#define VERSION_MAJOR   2
+#define VERSION_MINOR   0
+#define VERSION_BUILD   0
+#define VERSION_EXTRA   "-alpha"
+#define VERSION_NAME    "New generation"
 
-#define VERSION_STRING          "v"#VERSION"."#PATCHLEVEL"."#SUBLEVEL EXTRAVERSION
+#define VERSION_STRING          "v" #VERSION_MAJOR "." #VERSION_MINOR "." #VERSION_BUILD VERSION_EXTRA
+#define GAMEMODE_TEXT           MODE_NAME " " VERSION_STRING
 #define DATA_FILES_FORMAT       ".gto" // расширение(.txt дл€ операционных систем на базе GNU/Linux не рекомендуетс€)
 #define DATA_FILES_FOLDER       "open-gto/" // папка, где хран€тс€ файлы Open-GTO, в scriptfiles/
 
 #define LANGUAGE_USE            "russian" // используемый €зык
 
-#define MAX_STRING              160 // не мен€ть, кол-во символов дл€ большинства строковых переменных
-#define MAX_NAME                40 // кол-во символов дл€ имЄн, паролей и пр.
-#define MAX_IP                  16 // максимальное количество символов дл€ IP адреса
+#define USE_PLAYER_PED_ANIMS
+#define USED_PLAYER_MARKERS     PLAYER_MARKERS_MODE_GLOBAL
+
+#define MAX_STRING              128
+#define MAX_NAME                40
+#define MAX_IP                  16
 
 #define USE_PASSWORD_ENCRYPT // если задефайнено, то пароль в файле игрока будет шифроватьс€
 #define PASSWORD_ENCRYPT_KEY    "_C)2^KђRPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]$45a`Jdny¶IUW@G7s6&l:k;i~ YsoM£.cBq#|}NrTtA, "
@@ -245,4 +250,18 @@ new Text:clickText[clickText_Info];
 
 enum {
 	ms_skinshop,
+}
+
+stock config_OnGameModeInit()
+{
+	SetGameModeText(GAMEMODE_TEXT);
+#if defined USE_PLAYER_PED_ANIMS
+	UsePlayerPedAnims();
+#endif
+	ShowPlayerMarkers(USED_PLAYER_MARKERS);
+	ShowNameTags(1);
+	ManualVehicleEngineAndLights();
+	EnableStuntBonusForAll(0);
+	Log_Game("SERVER: Config module init");
+	return 1;
 }

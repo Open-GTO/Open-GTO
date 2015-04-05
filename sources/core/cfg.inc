@@ -1,5 +1,6 @@
 /*
 	
+	About: save/load config system
 	Author: ziggi
 
 */
@@ -14,11 +15,11 @@
 
 stock cfg_LoadConfigs()
 {
-	if (!ini_fileExist(ConfigDB)) {
+	if (!ini_fileExist(db_config)) {
 		return 0;
 	}
 	
-	new file_config = ini_openFile(ConfigDB);
+	new file_config = ini_openFile(db_config);
 
 	lang_LoadConfig(file_config);
 	Log_LoadConfig(file_config);
@@ -64,10 +65,10 @@ stock cfg_LoadConfigs()
 stock cfg_SaveConfigs()
 {
 	new file_config;
-	if (ini_fileExist(ConfigDB)) {
-		file_config = ini_openFile(ConfigDB);
+	if (ini_fileExist(db_config)) {
+		file_config = ini_openFile(db_config);
 	} else {
-		file_config = ini_createFile(ConfigDB);
+		file_config = ini_createFile(db_config);
 	}
 	
 	lang_SaveConfig(file_config);

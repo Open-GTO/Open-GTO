@@ -82,27 +82,27 @@ new DMCentreCP[MAX_DM][CoordInfo];
 
 stock deathmatch_LoadConfig(file_config)
 {
-	ini_getString(file_config, "Deathmatch_DB", DeathmatchDB);
-	ini_getString(file_config, "Deathmatch_Base_DB", DMBaseDB);
-	ini_getString(file_config, "Deathmatch_Record_DB", DMRecordDB);
+	ini_getString(file_config, "Deathmatch_DB", db_deathmatch);
+	ini_getString(file_config, "Deathmatch_Base_DB", db_dm_base);
+	ini_getString(file_config, "Deathmatch_Record_DB", db_dm_record);
 }
 
 stock deathmatch_SaveConfig(file_config)
 {
-	ini_setString(file_config, "Deathmatch_DB", DeathmatchDB);
-	ini_setString(file_config, "Deathmatch_Base_DB", DMBaseDB);
-	ini_setString(file_config, "Deathmatch_Record_DB", DMRecordDB);
+	ini_setString(file_config, "Deathmatch_DB", db_deathmatch);
+	ini_setString(file_config, "Deathmatch_Base_DB", db_dm_base);
+	ini_setString(file_config, "Deathmatch_Record_DB", db_dm_record);
 }
 
 stock deathmatch_LoadAll()
 {
 	new temp[MAX_STRING];
-	if (!ini_fileExist(DeathmatchDB)) {
+	if (!ini_fileExist(db_deathmatch)) {
 		return 0;
 	}
 	new cellname[MAX_STRING],
 		dms_count = MAX_DM,
-		file_dm = ini_openFile(DeathmatchDB);
+		file_dm = ini_openFile(db_deathmatch);
 	
 	ini_getInteger(file_dm, "Count", dms_count);
 	
@@ -129,7 +129,7 @@ stock deathmatch_LoadAll()
 stock DeathmatchBaseDBExists(dmname[MAX_STRING])
 { 
 	new rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, DMBaseDB, dmname);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, db_dm_base, dmname);
 	if (!ini_fileExist(rdbname))
 	{
 		return 0;
@@ -140,7 +140,7 @@ stock DeathmatchBaseDBExists(dmname[MAX_STRING])
 stock DeathmatchLoadBaseDB(dmid)
 {
 	new temp[MAX_STRING], rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, DMBaseDB, Deathmatch[dmid][dm_name]);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, db_dm_base, Deathmatch[dmid][dm_name]);
 	if (!ini_fileExist(rdbname))
 	{
 		return INVALID_DM_ID;
@@ -244,7 +244,7 @@ stock DeathmatchLoadBaseDB(dmid)
 stock DeathmatchLoadRecordDB(dmid)
 {
 	new rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, DMRecordDB, Deathmatch[dmid][dm_name]);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, db_dm_record, Deathmatch[dmid][dm_name]);
 	if (!ini_fileExist(rdbname)) return 0;
 	new file_dm = ini_openFile(rdbname);
 	ini_getInteger(file_dm, "Best_Score_Record", DMBestScore[dmid][dm_score_record]);
@@ -258,7 +258,7 @@ stock DeathmatchLoadRecordDB(dmid)
 stock deathmatch_SaveAll()
 {
 	new cellname[MAX_STRING],
-		file_dm = (!ini_fileExist(DeathmatchDB)) ? ini_createFile(DeathmatchDB) : ini_openFile(DeathmatchDB);
+		file_dm = (!ini_fileExist(db_deathmatch)) ? ini_createFile(db_deathmatch) : ini_openFile(db_deathmatch);
 	
 	ini_setInteger(file_dm, "Count", DMCount);
 	
@@ -280,7 +280,7 @@ stock DeathmatchSaveBaseDB(dmid)
 {
 	if (DeathmatchStats[dmid][dm_state] == DM_STATE_DISABLED) return;
 	new temp[MAX_STRING], rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, DMBaseDB, Deathmatch[dmid][dm_name]);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, db_dm_base, Deathmatch[dmid][dm_name]);
 	new file_dm = (!ini_fileExist(rdbname)) ? ini_createFile(rdbname) : ini_openFile(rdbname);
 	ini_setString(file_dm, "Name", Deathmatch[dmid][dm_name]);
 	ini_setInteger(file_dm, "Frequency", Deathmatch[dmid][dm_frequency]);
@@ -316,7 +316,7 @@ stock DeathmatchSaveBaseDB(dmid)
 stock DeathmatchSaveRecordDB(dmid)
 {
 	new rdbname[MAX_STRING];
-	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, DMRecordDB, Deathmatch[dmid][dm_name]);
+	format(rdbname, sizeof(rdbname), "%s%s"DATA_FILES_FORMAT, db_dm_record, Deathmatch[dmid][dm_name]);
 	new file_dm = (!ini_fileExist(rdbname)) ? ini_createFile(rdbname) : ini_openFile(rdbname);
 	ini_setString(file_dm, "Name", Deathmatch[dmid][dm_name]);
 	ini_setInteger(file_dm, "Best_Score_Record", DMBestScore[dmid][dm_score_record]);

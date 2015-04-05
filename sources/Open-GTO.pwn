@@ -44,7 +44,7 @@ Thanks:
 #include "lib/mxDate"
 #include "lib/mSelection"
 #include "config"
-#include "core/base"
+#include "core/db"
 #include "core/core_time"
 #include "core/dialog"
 #include "core/lang"
@@ -195,10 +195,10 @@ public OnGameModeInit()
 {
 	// Initialize everything that needs it
 	cfg_LoadConfigs();
-
 	lang_OnGameModeInit();
 	Lang_OnGameModeInit();
-	base_OnGameModeInit();
+
+	config_OnGameModeInit();
 	vehicles_OnGameModeInit();
 	race_OnGameModeInit();
 	deathmatch_OnGameModeInit();

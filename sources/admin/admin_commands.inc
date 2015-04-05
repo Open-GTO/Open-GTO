@@ -713,7 +713,7 @@ COMMAND:getip(playerid, params[])
 		return 1;
 	}
 	
-	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, AccountDB, params);
+	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, params);
 	if (!ini_fileExist(filename_account))
 	{
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][31]);

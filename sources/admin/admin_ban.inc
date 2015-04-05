@@ -16,12 +16,12 @@
 stock oBan_Check(playerid)
 {
 	new filename[MAX_STRING];
-	format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, BanDB, oGetPlayerName(playerid));
+	format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, db_ban, oGetPlayerName(playerid));
 	
 	if (!ini_fileExist(filename)) {
 		new plrIP[MAX_IP];
 		GetPVarString(playerid, "IP", plrIP, sizeof(plrIP));
-		format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, BanDB, plrIP);
+		format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, db_ban, plrIP);
 		
 		if (!ini_fileExist(filename)) {
 			return 0;
@@ -77,7 +77,7 @@ stock oBan(user[], reason[], adminid, time_second=0)
 	}
 	
 	new filename_ban[MAX_STRING];
-	format(filename_ban, sizeof(filename_ban), "%s%s"DATA_FILES_FORMAT, BanDB, user);
+	format(filename_ban, sizeof(filename_ban), "%s%s"DATA_FILES_FORMAT, db_ban, user);
 
 	new file_ban_db = (!ini_fileExist(filename_ban)) ? ini_createFile(filename_ban) : ini_openFile(filename_ban);
 	ini_setInteger(file_ban_db, "Date", timestamp);
@@ -208,7 +208,7 @@ COMMAND:unban(playerid, params[])
 	}
 	
 	new filename[MAX_STRING];
-	format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, BanDB, user);
+	format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, db_ban, user);
 	
 	new string[MAX_STRING];
 

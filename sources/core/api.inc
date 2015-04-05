@@ -17,7 +17,6 @@
 
 #pragma library api
 
-
 forward api_oGivePlayerMoney(playerid, amount, showtext);
 public api_oGivePlayerMoney(playerid, amount, showtext)
 {
@@ -52,4 +51,21 @@ forward api_GetPlayerLevel(playerid);
 public api_GetPlayerLevel(playerid)
 {
 	return GetPlayerLevel(playerid);
+}
+
+forward api_GetModeInfo(type);
+public api_GetModeInfo(type)
+{
+	switch (type) {
+		case MODE_INFO_NAME: {
+			setproperty(.value = bernstein("mode_name"), .string = MODE_NAME);
+		}
+		case MODE_INFO_VERSION: {
+			setproperty(.name = "version_major", .value = VERSION_MAJOR);
+			setproperty(.name = "version_minor", .value = VERSION_MINOR);
+			setproperty(.name = "version_build", .value = VERSION_BUILD);
+			setproperty(.value = bernstein("version_extra"), .string = VERSION_EXTRA);
+			setproperty(.value = bernstein("version_name"), .string = VERSION_NAME);
+		}
+	}
 }

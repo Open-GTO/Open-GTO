@@ -122,7 +122,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 	
-	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, AccountDB, new_name);
+	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_account, new_name);
 	// если файл есть, то выходим сразу-же
 	if (ini_fileExist(string)) {
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
@@ -167,12 +167,12 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	player_Save(playerid);
 	account_Save(playerid);
 	
-	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, AccountDB, old_name);
+	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_account, old_name);
 	if (ini_fileExist(string)) {
 		ini_fileRemove(string);
 	}
 
-	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, PlayerDB, old_name);
+	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_player, old_name);
 	if (ini_fileExist(string)) {
 		ini_fileRemove(string);
 	}

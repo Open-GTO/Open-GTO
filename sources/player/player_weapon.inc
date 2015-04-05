@@ -218,7 +218,7 @@ stock SetWeaponsFromDBString(playerid,dbstring[])
 	}
 }
 // возвращает строку для сохранения оружия
-stock CreateWeaponDBString(playerid)
+stock Createdb_weaponString(playerid)
 {
 	new wepstr[MAX_STRING];
 	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)

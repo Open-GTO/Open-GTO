@@ -38,14 +38,14 @@ new Gangs[MAX_GANGS][GangInfo];
 
 stock gang_LoadConfig(file_config)
 {
-	ini_getString(file_config, "Gang_DB", GangDB);
+	ini_getString(file_config, "Gang_DB", db_gang);
 	ini_getInteger(file_config, "Gang_Create_Cost", Gang_Create_Cost);
 	ini_getInteger(file_config, "Gang_Colour_Cost", Gang_Colour_Cost);
 }
 
 stock gang_SaveConfig(file_config)
 {
-	ini_setString(file_config, "Gang_DB", GangDB);
+	ini_setString(file_config, "Gang_DB", db_gang);
 	ini_setInteger(file_config, "Gang_Create_Cost", Gang_Create_Cost);
 	ini_setInteger(file_config, "Gang_Colour_Cost", Gang_Colour_Cost);
 }
@@ -85,7 +85,7 @@ stock GangLoad(gangname[])
 stock gang_load_db_ini(gangid, gangname[])
 {
 	new filename_gang[MAX_STRING];
-	format(filename_gang, sizeof(filename_gang), "%s%s"DATA_FILES_FORMAT, GangDB, gangname);
+	format(filename_gang, sizeof(filename_gang), "%s%s"DATA_FILES_FORMAT, db_gang, gangname);
 	if (!ini_fileExist(filename_gang)) return;
 	new file_gang = ini_openFile(filename_gang);
 	ini_getString(file_gang, "Name", Gangs[gangid][gang_name], MAX_NAME);
@@ -196,7 +196,7 @@ stock GangRemoveMember(gangid, kickplayername[])
 			SetPlayerColor(playerid, PlayerGangColour(playerid));
 			GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
 		}
-		format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, GangDB, Gangs[gangid][gang_name]);
+		format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_gang, Gangs[gangid][gang_name]);
 		ini_fileRemove(string);
 		Gangs[gangid][gang_active] = false;
 		return 1;
@@ -240,7 +240,7 @@ stock GangCreate(leaderid, gangname[], gangcolour)
 {
 	if (!player_IsLogin(leaderid)) return 0;
 	new filename_gang[MAX_STRING];
-	format(filename_gang, sizeof(filename_gang), "%s%s"DATA_FILES_FORMAT, GangDB, gangname);
+	format(filename_gang, sizeof(filename_gang), "%s%s"DATA_FILES_FORMAT, db_gang, gangname);
 	if (ini_fileExist(filename_gang))
 	{
 		SendClientMessage(leaderid, COLOUR_RED, lang_texts[6][73]);
@@ -331,7 +331,7 @@ stock GangSave(gangid)
 stock gang_save_db_ini(gangid)
 {
 	new filename_gang[MAX_STRING];
-	format(filename_gang, sizeof(filename_gang), "%s%s"DATA_FILES_FORMAT, GangDB, Gangs[gangid][gang_name]);
+	format(filename_gang, sizeof(filename_gang), "%s%s"DATA_FILES_FORMAT, db_gang, Gangs[gangid][gang_name]);
 	new file_gang = (!ini_fileExist(filename_gang)) ? ini_createFile(filename_gang) : ini_openFile(filename_gang);
 	ini_setString(file_gang, "Name", Gangs[gangid][gang_name]);
 	ini_setString(file_gang, "Motd", Gangs[gangid][gang_motd]);

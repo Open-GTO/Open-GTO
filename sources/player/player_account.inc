@@ -16,12 +16,12 @@
 
 stock account_LoadConfig(file_config)
 {
-	ini_getString(file_config, "Account_DB", AccountDB);
+	ini_getString(file_config, "Account_DB", db_account);
 }
 
 stock account_SaveConfig(file_config)
 {
-	ini_setString(file_config, "Account_DB", AccountDB);
+	ini_setString(file_config, "Account_DB", db_account);
 }
 
 stock account_Save(playerid)
@@ -42,7 +42,7 @@ stock account_SaveEx(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, AccountDB, playername);
+	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, playername);
 
 	new file_account;
 	if (ini_fileExist(filename_account)) {
@@ -94,7 +94,7 @@ stock account_Login(playerid, password[])
 		playername[MAX_PLAYER_NAME + 1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
-	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, AccountDB, playername);
+	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, playername);
 	
 	if (!ini_fileExist(filename_account)) {
 		return 0;
@@ -195,7 +195,7 @@ DialogResponse:AccountLogin(playerid, response, listitem, inputtext[])
 DialogCreate:AccountInformation(playerid)
 {
 	new caption[MAX_LANG_VALUE_STRING];
-	format(caption, sizeof(caption), _(ACCOUNT_DIALOG_INFORMATION_CAPTION), VERSION_STRING);
+	format(caption, sizeof(caption), _(ACCOUNT_DIALOG_INFORMATION_CAPTION), VERSION_STRING, VERSION_NAME);
 
 	Dialog_Open(playerid, Dialog:AccountInformation, DIALOG_STYLE_MSGBOX,
 		caption,
@@ -215,7 +215,7 @@ stock account_ShowDialog(playerid)
 		playername[MAX_PLAYER_NAME + 1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
-	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, AccountDB, playername);
+	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, playername);
 
 	if (ini_fileExist(filename_account)) {
 		Dialog_Show(playerid, Dialog:AccountLogin);

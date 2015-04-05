@@ -68,27 +68,27 @@ new business_icon[ sizeof(Businesses) ], Text3D:Business3DTextLabel[ sizeof(Busi
 
 stock business_LoadConfig(file_config)
 {
-	ini_getString(file_config, "Business_DB", BusinessDB);
+	ini_getString(file_config, "Business_DB", db_business);
 	ini_getFloat(file_config, "Business_DistanceOfShowLabel", BusinessDistanceOfShowLabel);
 }
 
 stock business_SaveConfig(file_config)
 {
-	ini_setString(file_config, "Business_DB", BusinessDB);
+	ini_setString(file_config, "Business_DB", db_business);
 	ini_setFloat(file_config, "Business_DistanceOfShowLabel", BusinessDistanceOfShowLabel);
 }
 
 stock business_LoadAll()
 {
-	new file_business, businessdbname[MAX_STRING];
+	new file_business, db_businessname[MAX_STRING];
 	for (new i = 0;i < sizeof(Businesses); i++)
 	{
-		format(businessdbname, sizeof(businessdbname), "%s%s"DATA_FILES_FORMAT, BusinessDB, Businesses[i][Business_Name]);
-		if (!ini_fileExist(businessdbname))
+		format(db_businessname, sizeof(db_businessname), "%s%s"DATA_FILES_FORMAT, db_business, Businesses[i][Business_Name]);
+		if (!ini_fileExist(db_businessname))
 		{
 			continue;
 		}
-		file_business = ini_openFile(businessdbname);
+		file_business = ini_openFile(db_businessname);
 		ini_getString(file_business, "Name", Businesses[i][Business_Name], MAX_NAME);
 		ini_getInteger(file_business, "Cost", Businesses[i][Business_Cost]);
 		ini_getInteger(file_business, "Value", Businesses[i][Business_Value]);
@@ -108,11 +108,11 @@ stock business_LoadAll()
 
 stock business_SaveAll()
 {
-	new file_business, businessdbname[MAX_STRING];
+	new file_business, db_businessname[MAX_STRING];
 	for (new i = 0; i < sizeof(Businesses); i++)
 	{
-		format(businessdbname, sizeof(businessdbname), "%s%s"DATA_FILES_FORMAT, BusinessDB, Businesses[i][Business_Name]);
-		file_business = (!ini_fileExist(businessdbname)) ? ini_createFile(businessdbname) : ini_openFile(businessdbname);
+		format(db_businessname, sizeof(db_businessname), "%s%s"DATA_FILES_FORMAT, db_business, Businesses[i][Business_Name]);
+		file_business = (!ini_fileExist(db_businessname)) ? ini_createFile(db_businessname) : ini_openFile(db_businessname);
 		ini_setString(file_business, "Name", Businesses[i][Business_Name]);
 		ini_setInteger(file_business, "Cost", Businesses[i][Business_Cost]);
 		ini_setInteger(file_business, "Value", Businesses[i][Business_Value]);
@@ -632,7 +632,7 @@ stock CheckBusinessOwners()
 			continue;
 		}
 		
-		format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, AccountDB, Businesses[i][Business_Owner]);
+		format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, Businesses[i][Business_Owner]);
 		if (!ini_fileExist(filename_account)) {
 			continue;
 		}

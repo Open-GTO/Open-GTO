@@ -80,26 +80,26 @@ new Weapons[][WeaponInfo] = {
 
 stock weapon_LoadConfig(file_config)
 {
-	ini_getString(file_config, "Weapon_DB", WeaponDB);
+	ini_getString(file_config, "Weapon_DB", db_weapon);
 }
 
 stock weapon_SaveConfig(file_config)
 {
-	ini_setString(file_config, "Weapon_DB", WeaponDB);
+	ini_setString(file_config, "Weapon_DB", db_weapon);
 }
 
 stock weapon_LoadAll()
 {
 	new file_weapons,
-		weapondbname[MAX_STRING];
+		db_weaponname[MAX_STRING];
 	
 	for (new i = 0; i < sizeof(Weapons); i++) {
-		format(weapondbname, sizeof(weapondbname), "%sid_%d"DATA_FILES_FORMAT, WeaponDB, Weapons[i][Weapon_ID]);
-		if (!ini_fileExist(weapondbname)) {
+		format(db_weaponname, sizeof(db_weaponname), "%sid_%d"DATA_FILES_FORMAT, db_weapon, Weapons[i][Weapon_ID]);
+		if (!ini_fileExist(db_weaponname)) {
 			continue;
 		}
 
-		file_weapons = ini_openFile(weapondbname);
+		file_weapons = ini_openFile(db_weaponname);
 
 		ini_getString(file_weapons, "Name", Weapons[i][Weapon_Name], MAX_NAME);
 		ini_getInteger(file_weapons, "Damage", Weapons[i][Weapon_Damage]);
@@ -115,11 +115,11 @@ stock weapon_LoadAll()
 stock weapon_SaveAll()
 {
 	new file_weapons,
-		weapondbname[MAX_STRING];
+		db_weaponname[MAX_STRING];
 
 	for (new i = 0; i < sizeof(Weapons); i++) {
-		format(weapondbname, sizeof(weapondbname), "%sid_%d"DATA_FILES_FORMAT, WeaponDB, Weapons[i][Weapon_ID]);
-		file_weapons = (!ini_fileExist(weapondbname)) ? ini_createFile(weapondbname) : ini_openFile(weapondbname);
+		format(db_weaponname, sizeof(db_weaponname), "%sid_%d"DATA_FILES_FORMAT, db_weapon, Weapons[i][Weapon_ID]);
+		file_weapons = (!ini_fileExist(db_weaponname)) ? ini_createFile(db_weaponname) : ini_openFile(db_weaponname);
 
 		ini_setString(file_weapons, "Name", Weapons[i][Weapon_Name]);
 		ini_setInteger(file_weapons, "Damage", Weapons[i][Weapon_Damage]);

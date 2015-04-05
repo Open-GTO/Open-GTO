@@ -52,7 +52,7 @@ stock player_SaveEx(playerid)
 		playername[MAX_PLAYER_NAME + 1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
-	format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, PlayerDB, playername);
+	format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, db_player, playername);
 
 	new file_player;
 	if (ini_fileExist(filename_player)) {
@@ -101,7 +101,7 @@ stock player_SaveEx(playerid)
 	ini_setString(file_player, "Coords", string);
 
 	ini_setInteger(file_player, "Status", player_GetStatus(playerid));
-	ini_setString(file_player, "Weapons", CreateWeaponDBString(playerid));
+	ini_setString(file_player, "Weapons", Createdb_weaponString(playerid));
 	ini_setString(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
 	ini_setInteger(file_player, "SkinModel", player_GetSkin(playerid));
 	ini_setString(file_player, "VIP", GetPlayerVIPDate(playerid));
@@ -123,7 +123,7 @@ stock player_SaveEx(playerid)
 stock player_Login(playerid)
 {
 	new filename_player[MAX_STRING];
-	format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, PlayerDB, oGetPlayerName(playerid));
+	format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, db_player, oGetPlayerName(playerid));
 
 	if (!ini_fileExist(filename_player)) {
 		player_Create(playerid);

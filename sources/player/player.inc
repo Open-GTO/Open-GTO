@@ -14,7 +14,7 @@ new PlayerStartMoney = PLAYER_START_MONEY;
 
 stock player_LoadConfig(file_config)
 {
-	ini_getString(file_config, "Player_DB", PlayerDB);
+	ini_getString(file_config, "Player_DB", db_player);
 	ini_getInteger(file_config, "Player_Start_Money", PlayerStartMoney);
 	new s_buf[MAX_STRING];
 	ini_getString(file_config, "Player_Start_Weapon", s_buf);
@@ -23,7 +23,7 @@ stock player_LoadConfig(file_config)
 
 stock player_SaveConfig(file_config)
 {
-	ini_setString(file_config, "Player_DB", PlayerDB);
+	ini_setString(file_config, "Player_DB", db_player);
 	ini_setInteger(file_config, "Player_Start_Money", PlayerStartMoney);
 	ini_setString(file_config, "Player_Start_Weapon", CreatePSWDBString());
 }
@@ -211,7 +211,7 @@ stock player_OnLogin(playerid)
 
 	if (strlen(gangname) > 0) {
 		new tmpname[MAX_STRING];
-		format(tmpname, sizeof(tmpname), "%s%s"DATA_FILES_FORMAT, GangDB, gangname);
+		format(tmpname, sizeof(tmpname), "%s%s"DATA_FILES_FORMAT, db_gang, gangname);
 
 		if (!ini_fileExist(tmpname)) {
 			player_SetGangName(playerid, nullstr);
