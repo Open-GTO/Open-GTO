@@ -29,7 +29,7 @@ stock account_Save(playerid)
 	if (!player_IsLogin(playerid)) {
 		return 0;
 	}
-	
+
 	account_SaveEx(playerid);
 	return 1;
 }
@@ -260,11 +260,23 @@ stock account_GetPlayedTimeString(playerid)
 		seconds = played_seconds % 60;
 
 	if (days != 0) {
-		format(string, sizeof(string), _(ACCOUNT_PLAYED_TIME_DAY), days, hours);
+		format(string, sizeof(string),
+			_(ACCOUNT_PLAYED_TIME_DAY),
+			days, Declension_GetDays(days),
+			hours, Declension_GetHours(hours)
+		);
 	} else if (hours != 0) {
-		format(string, sizeof(string), _(ACCOUNT_PLAYED_TIME_HOUR), hours);
+		format(string, sizeof(string), 
+			_(ACCOUNT_PLAYED_TIME_HOUR),
+			hours, Declension_GetHours(hours)
+		);
 	}
 
-	format(string, sizeof(string), _(ACCOUNT_PLAYED_TIME_MINUTES), string, minutes, seconds);
+	format(string, sizeof(string),
+		_(ACCOUNT_PLAYED_TIME_MINUTES),
+		string,
+		minutes, Declension_GetMinutes(minutes),
+		seconds, Declension_GetSeconds(seconds)
+	);
 	return string;
 }

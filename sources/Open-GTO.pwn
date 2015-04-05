@@ -54,6 +54,7 @@ Thanks:
 #include "core/color"
 #include "core/pickup"
 #include "core/widestrip"
+#include "core/declension"
 #include "vehicle/vehicles"
 #include "vehicle/vehicle_fuel"
 #include "vehicle/vehicle_menu"

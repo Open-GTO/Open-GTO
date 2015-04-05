@@ -30,9 +30,9 @@ ACCOUNT_LOGIN_ROOT = Вы успешно вошли как главный администратор. Введите /about,
 ACCOUNT_LOGIN_ADMIN = Вы успешно вошли как администратор. Введите /about, чтобы узнать о своих обязанностях.
 ACCOUNT_LOGIN_MODER = Вы успешно вошли как модератор. Введите /about, чтобы узнать о своих обязанностях.
 
-ACCOUNT_PLAYED_TIME_DAY = %d суток, %d часов, 
-ACCOUNT_PLAYED_TIME_HOUR = %d часов, 
-ACCOUNT_PLAYED_TIME_MINUTES = %s%d минут, %d секунд
+ACCOUNT_PLAYED_TIME_DAY = %d %s, %d %s, 
+ACCOUNT_PLAYED_TIME_HOUR = %d %s, 
+ACCOUNT_PLAYED_TIME_MINUTES = %s%d %s, %d %s
 
 // skydiving
 SKYDIVING_MSG = {FFCC66}[Сервер]: {FFFFFF}Летим! Не забудьте воспользоваться парашютом!
@@ -134,6 +134,23 @@ BUSINESS_DIALOG_LIST_ITEM = %s{CCCCCC}%s\t{00AA00}$%d\n
 
 // other
 NO_ADMINS = В данный момент в игре нет администраторов, но это не значит, что они не могут за вами наблюдать.
+
+// declension system
+DECLENSION_MONTH_1 = месяц
+DECLENSION_MONTH_2 = месяца
+DECLENSION_MONTH_3 = месяцев
+DECLENSION_DAY_1 = день
+DECLENSION_DAY_2 = дня
+DECLENSION_DAY_3 = дней
+DECLENSION_HOUR_1 = час
+DECLENSION_HOUR_2 = часа
+DECLENSION_HOUR_3 = часов
+DECLENSION_MINUTE_1 = минута
+DECLENSION_MINUTE_2 = минуты
+DECLENSION_MINUTE_3 = минут
+DECLENSION_SECOND_1 = секунда
+DECLENSION_SECOND_2 = секунды
+DECLENSION_SECOND_3 = секунд
 
 // admin
 ADMIN_BAN_ISNULL = {FFCC66}[Применение]: {FFFFFF}/ban <ник/id/ip> <время(число[с/м/ч/д/н/г], 0 - навсегда)> <причина>
