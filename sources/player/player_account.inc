@@ -30,8 +30,6 @@ stock account_Save(playerid)
 		return 0;
 	}
 	
-	account_UpdatePlayedTime(playerid);
-
 	account_SaveEx(playerid);
 	return 1;
 }
@@ -239,13 +237,6 @@ stock account_GetRegisterTime(playerid)
 	return GetPVarInt(playerid, "Creation_Date");
 }
 
-stock account_UpdatePlayedTime(playerid)
-{
-	new value = gettime() - GetPVarInt(playerid, "Last_Login");
-	GivePVarInt(playerid, "Played_Time", value);
-	return value;
-}
-
 stock account_SetPlayedTime(playerid, timestamp)
 {
 	SetPVarInt(playerid, "Played_Time", timestamp);
@@ -253,7 +244,7 @@ stock account_SetPlayedTime(playerid, timestamp)
 
 stock account_GetPlayedTime(playerid)
 {
-	return GetPVarInt(playerid, "Played_Time");
+	return GetPVarInt(playerid, "Played_Time") + gettime() - GetPVarInt(playerid, "Last_Login");
 }
 
 stock account_GetPlayedTimeString(playerid)
