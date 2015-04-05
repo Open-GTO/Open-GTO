@@ -147,3 +147,29 @@ ADMIN_PLIST_JAIL_REMAIN = %s(%d) [арест] осталось %d м.
 ADMIN_PLIST_JAIL_NOTIME = %s(%d) [арест] без времени.
 ADMIN_PLIST_MUTE_REMAIN = %s(%d) [кляп] осталось %d м.
 ADMIN_PLIST_NO_PLAYERS = На сервере нет "забытых" игроков.
+
+// fight styles
+FIGHT_TEACHER_INIT = SERVER: Fightstyles module init
+FIGHT_TEACHER_STYLE_NORMAL = нормальный
+FIGHT_TEACHER_STYLE_BOX = бокс
+FIGHT_TEACHER_STYLE_KUNGFU = кунг-фу
+FIGHT_TEACHER_STYLE_KNEEHEAD = колено-голова
+
+FIGHT_TEACHER_DIALOG_BUTTON_OK = ОК
+
+FIGHT_TEACHER_LEARN_MESSAGE = {CCCCCC}Выучить стиль борьбы {BBBAE8}%s{CCCCCC}, за {00AA00}$%d
+FIGHT_TEACHER_LEARNED_MESSAGE_0 = {CCCCCC}Вы изучили стиль борьбы {BBBAE8}%s{CCCCCC}, за: {00AA00}$%d{CCCCCC}.
+FIGHT_TEACHER_LEARNED_MESSAGE_1 = \nИзменить используемый стиль можно в личном меню.
+
+FIGHT_TEACHER_LOW_LEVEL = {CCCCCC}У вас слишком маленький уровень.\nНужный уровень: {E6ACDD}%d
+FIGHT_TEACHER_NO_MONEY = {CCCCCC}Вам недостаточно денег, нужно {00AA00}$%d
+FIGHT_TEACHER_LEARNED = {CCCCCC}Вы уже выучили стиль {BBBAE8}%s
+
+FIGHT_TEACHER_PLAYER_USED_STYLE = {CCCCCC}Теперь вы используете стиль {BBBAE8}%s
+FIGHT_TEACHER_PLAYER_CAPTION = Стиль борьбы
+FIGHT_TEACHER_PLAYER_BUTTON1 = Назад
+FIGHT_TEACHER_PLAYER_BUTTON2 = Выход
+
+FIGHT_TEACHER_DIALOG_TEACHER_CAPTION = Тренер - "%s"
+FIGHT_TEACHER_DIALOG_TEACHER_BUTTON1 = Выучить
+FIGHT_TEACHER_DIALOG_TEACHER_BUTTON2 = Отмена

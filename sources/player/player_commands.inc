@@ -70,13 +70,9 @@ COMMAND:status(playerid, params[])
 	SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 
 	new fstylename[MAX_STRING];
-	fights_GetNameByLevel(pl_fights_GetPlayerStyleUsed(playerid), fstylename);
+	fights_GetStyleName(pl_fights_GetPlayerStyleUsed(playerid), fstylename);
 
-	format(string, sizeof(string), "Ваш уровень стилей борьбы: %d, используемый стиль: %s(%d)",
-			pl_fights_GetPlayerStyle(playerid),
-			fstylename,
-			pl_fights_GetPlayerStyleUsed(playerid)
-	);
+	format(string, sizeof(string), "Используемый стиль борьбы: %s", fstylename);
 	SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 
 	if (IsPlayerVIP(playerid)) {

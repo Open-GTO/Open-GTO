@@ -55,7 +55,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			}
 
 			new fstylename[MAX_STRING];
-			fights_GetNameByLevel( pl_fights_GetPlayerStyleUsed(playerid) , fstylename);
+			fights_GetStyleName(pl_fights_GetPlayerStyleUsed(playerid), fstylename);
 			
 			new gangname[MAX_NAME];
 			gangname = player_GetGangName(playerid);

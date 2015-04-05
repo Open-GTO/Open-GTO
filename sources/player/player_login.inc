@@ -61,7 +61,9 @@ stock player_SaveEx(playerid)
 		file_player = ini_createFile(filename_player);
 	}
 
-	new Float:temp_float;
+	new
+		string[MAX_STRING],
+		Float:temp_float;
 
 	ini_setString(file_player, "Name", playername);
 	ini_setString(file_player, "Gang", player_GetGangName(playerid));
@@ -80,7 +82,12 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "Muted", player_GetMuteCount(playerid));
 	ini_setInteger(file_player, "MuteTime", player_GetMuteTime(playerid));
 	ini_setInteger(file_player, "Reports", player_GetReportCount(playerid));
-	ini_setInteger(file_player, "FightStyle", pl_fights_GetPlayerStyle(playerid));
+
+	for (new i = 0; i < fights_GetLastId(); i++) {
+		format(string, sizeof(string), "FightStyle_%d", fights_GetTeacherStyleID(i));
+		ini_setInteger(file_player, string, pl_fights_IsLearned(playerid, i));
+	}
+
 	ini_setInteger(file_player, "FightStyleUsed", pl_fights_GetPlayerStyleUsed(playerid));
 	ini_setInteger(file_player, "InteriorIndex", interior_GetPlayerIndex(playerid));
 
@@ -89,7 +96,7 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "Interior", interior);
 	ini_setInteger(file_player, "World", world);
 
-	new string[MAX_STRING];
+	
 	format(string, sizeof(string), "%f,%f,%f,%f", pos[0], pos[1], pos[2], pos[3]);
 	ini_setString(file_player, "Coords", string);
 
@@ -160,8 +167,11 @@ stock player_Login(playerid)
 		ini_getInteger(file_player, "Reports", buf);
 		player_SetReportCount(playerid, buf);
 		
-		ini_getInteger(file_player, "FightStyle", buf);
-		pl_fights_SetPlayerStyle(playerid, buf);
+		for (new i = 0; i < fights_GetLastId(); i++) {
+			format(s_buf, sizeof(s_buf), "FightStyle_%d", fights_GetTeacherStyleID(i));
+			ini_getInteger(file_player, s_buf, buf);
+			pl_fights_SetLearned(playerid, i, buf);
+		}
 		
 		ini_getInteger(file_player, "FightStyleUsed", buf);
 		pl_fights_SetPlayerStyleUsed(playerid, buf);

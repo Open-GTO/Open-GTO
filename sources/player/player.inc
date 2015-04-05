@@ -45,7 +45,7 @@ stock player_OnPlayerSpawn(playerid)
 	SetPlayerColor(playerid, PlayerGangColour(playerid));
 	player_SetSkin(playerid, player_GetSkin(playerid));
 	SetPlayerMaxHealth(playerid);
-	SetPlayerFightingStyle(playerid, pl_fights_GetPlayerStyleUsed(playerid));
+	pl_fights_UpdatePlayerStyleUsed(playerid);
 	GivePlayerAllWeapon(playerid);
 	weapon_SetSkills(playerid);
 	PushHide(playerid);
@@ -243,8 +243,7 @@ stock player_SetDefaultData(playerid)
 	SetPlayerLevel(playerid, FIRST_LEVEL);
 	SetPlayerXP(playerid, 0);
 
-	pl_fights_SetPlayerStyle(playerid, 4);
-	pl_fights_SetPlayerStyleUsed(playerid, 4);
+	pl_fights_SetPlayerStyleUsed(playerid, FIGHT_STYLE_NORMAL);
 
 	oResetPlayerWeapons(playerid);
 	weapon_ResetSkills(playerid);
