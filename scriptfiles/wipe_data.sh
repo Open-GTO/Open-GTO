@@ -1,6 +1,6 @@
 #/bin/sh
 
-for i in `ls -d Open-GTO/*/; ls -d Open-GTO/*/*/`
+for i in `ls -d open-gto/*/; ls -d open-gto/*/*/`
 do
 	rm -f $i*
 done

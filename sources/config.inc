@@ -25,7 +25,7 @@
 
 #define VERSION_STRING          "v"#VERSION"."#PATCHLEVEL"."#SUBLEVEL EXTRAVERSION
 #define DATA_FILES_FORMAT       ".gto" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
-#define DATA_FILES_FOLDER       "Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
+#define DATA_FILES_FOLDER       "open-gto/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
 #define LANGUAGE_USE            "russian" // используемый язык
 
