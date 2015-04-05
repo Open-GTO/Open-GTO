@@ -15,7 +15,7 @@
 #pragma tabsize 0
 #pragma dynamic 13000
 
-#define FS_USING // если задефайнено, то компиляция будет в режиме совместимости с FS (fixes, api)
+//#define FS_USING // если задефайнено, то компиляция будет в режиме совместимости с FS (fixes, api)
 
 #define MODE_NAME       "Open-GTO"
 #define VERSION_MAJOR   2
