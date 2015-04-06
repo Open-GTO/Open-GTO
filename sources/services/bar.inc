@@ -25,7 +25,8 @@ new Bars[][Bar_Info] = {
 	{1139.7212, -4.2430, 1000.6719}, // Redsands Casino
 	{-224.7835, 1407.4834, 27.7734}, // Lil' Probe Inn
 	{499.4490, -16.8206, 1000.6719}, // Alhambra Club
-	{-785.9133, 500.1498, 1371.7422} // Liberty City Restoran
+	{-785.9133, 500.1498, 1371.7422}, // Liberty City Restoran
+	{1215.3257, -13.0094, 1000.9219} // The Pig Pen
 };
 
 enum DrinkInfo {
