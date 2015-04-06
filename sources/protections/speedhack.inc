@@ -145,13 +145,13 @@ stock pt_speed_Sync(playerid)
 		pt_speed_FixSpeed(playerid);
 		return 0;
 	}
-	new Float:player_speed = GetPlayerSpeed(playerid),
-		max_speed;
+
+	new Float:player_speed = GetPlayerSpeed(playerid);
 	
 	switch ( GetPlayerState(playerid) ) {
 		case PLAYER_STATE_ONFOOT: {
 			if (player_speed > 50) {
-				switch (floatround(player_speed,floatround_round)) {
+				switch (floatround(player_speed, floatround_round)) {
 					// 26 - максимум на земле, 50 при полёте с парашютом
 					case 50..349: KickPlayer(playerid, lang_texts[11][17]);
 					case 350..499: KickPlayer(playerid, lang_texts[11][18]);
@@ -160,19 +160,19 @@ stock pt_speed_Sync(playerid)
 			}
 		}
 		case PLAYER_STATE_DRIVER: {
-			switch ( GetVehicleModel( GetPlayerVehicleID(playerid) ) ) {
-				case 481,509,510,462,448,471: max_speed = 40;
-				case 411: max_speed = 130;
-				case 519: max_speed = 165;
-				case 520: max_speed = 180;
-				default: max_speed = 150;
-			}
+			new max_speed = GetMaxVehicleSpeed( GetVehicleModel( GetPlayerVehicleID(playerid) ) );
 			
 			if (player_speed > max_speed) {
-				switch ( floatround(player_speed,floatround_round) ) {
-					case 151..250: KickPlayer(playerid, lang_texts[11][17]);
-					case 251..499: KickPlayer(playerid, lang_texts[11][18]);
-					default: KickPlayer(playerid, lang_texts[11][19]);
+				switch ( floatround(player_speed, floatround_round) ) {
+					case 151..250: {
+						KickPlayer(playerid, lang_texts[11][17]);
+					}
+					case 251..499: {
+						KickPlayer(playerid, lang_texts[11][18]);
+					}
+					default: {
+						KickPlayer(playerid, lang_texts[11][19]);
+					}
 				}
 			}
 		}

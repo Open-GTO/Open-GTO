@@ -260,3 +260,11 @@ stock GetMaxVehicleFuel(vehiclemodel)
 	}
 	return Vehicles[vehiclemodel - 400][vehicle_fuel];
 }
+
+stock GetMaxVehicleSpeed(vehiclemodel)
+{
+	if (vehiclemodel < 400 || vehiclemodel > 611) {
+		return 0;
+	}
+	return Vehicles[vehiclemodel - 400][vehicle_speed];
+}
