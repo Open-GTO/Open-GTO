@@ -16,13 +16,24 @@
 #define ALERT_POS_Y		286.5
 #define ALERT_WIDTH		144
 
+#define MAX_CACHE_ALERT 3
+
+enum e_Alerts_Info {
+	bool:e_aIsBusy,
+	e_aHeader[MAX_LANG_VALUE_STRING],
+	e_aContent[MAX_LANG_VALUE_STRING],
+	e_aTime,
+	e_aColor,
+}
+
 static
 	Text:td_background,
 	PlayerText:td_strip[MAX_PLAYERS],
 	PlayerText:td_header[MAX_PLAYERS],
 	PlayerText:td_content[MAX_PLAYERS],
 
-	alert_TimerID[MAX_PLAYERS] = {0, ...};
+	alert_TimerID[MAX_PLAYERS] = {0, ...},
+	alert_Messages[MAX_PLAYERS][MAX_CACHE_ALERT][e_Alerts_Info];
 
 stock pl_alert_OnGameModeInit()
 {
@@ -76,15 +87,34 @@ stock pl_alert_OnPlayerConnect(playerid)
 
 stock pl_alert_Show(playerid, header[], content[], time = 4000, hcolor = -5963521)
 {
-	if (strlen(header) > 0) {
-		PlayerTextDrawColor(playerid, td_header[playerid], hcolor);
-		PlayerTextDrawSetString(playerid, td_header[playerid], header);
+	new id = pl_alert_GetFreeSlot(playerid);
+	if (id == -1) {
+		id = 0;
+	}
+
+	alert_Messages[playerid][id][e_aIsBusy] = true;
+	strmid(alert_Messages[playerid][id][e_aHeader], header, 0, strlen(header), MAX_LANG_VALUE_STRING);
+	strmid(alert_Messages[playerid][id][e_aContent], content, 0, strlen(content), MAX_LANG_VALUE_STRING);
+	alert_Messages[playerid][id][e_aTime] = time;
+	alert_Messages[playerid][id][e_aColor] = hcolor;
+
+	if (!pl_alert_IsShowed(playerid)) {
+		pl_alert_ShowCached(playerid, id);
+	}
+	return id;
+}
+
+stock pl_alert_ShowCached(playerid, id)
+{
+	if (strlen(alert_Messages[playerid][id][e_aHeader]) > 0) {
+		PlayerTextDrawColor(playerid, td_header[playerid], alert_Messages[playerid][id][e_aColor]);
+		PlayerTextDrawSetString(playerid, td_header[playerid], alert_Messages[playerid][id][e_aHeader]);
 
 		PlayerTextDrawShow(playerid, td_header[playerid]);
 
 		TextDrawShowForPlayer(playerid, td_background);
 
-		PlayerTextDrawBoxColor(playerid, td_strip[playerid], hcolor);
+		PlayerTextDrawBoxColor(playerid, td_strip[playerid], alert_Messages[playerid][id][e_aColor]);
 		PlayerTextDrawShow(playerid, td_strip[playerid]);
 	} else {
 		PlayerTextDrawHide(playerid, td_header[playerid]);
@@ -92,8 +122,8 @@ stock pl_alert_Show(playerid, header[], content[], time = 4000, hcolor = -596352
 		TextDrawHideForPlayer(playerid, td_background);
 	}
 
-	if (strlen(content) > 0) {
-		PlayerTextDrawSetString(playerid, td_content[playerid], content);
+	if (strlen(alert_Messages[playerid][id][e_aContent]) > 0) {
+		PlayerTextDrawSetString(playerid, td_content[playerid], alert_Messages[playerid][id][e_aContent]);
 
 		PlayerTextDrawShow(playerid, td_content[playerid]);
 	} else {
@@ -102,20 +132,56 @@ stock pl_alert_Show(playerid, header[], content[], time = 4000, hcolor = -596352
 
 	PlayerPlaySound(playerid, 45400, 0.0, 0.0, 0.0);
 
-	if (alert_TimerID[playerid] != 0) {
+	if (pl_alert_IsShowed(playerid)) {
 		KillTimer(alert_TimerID[playerid]);
 	}
-	alert_TimerID[playerid] = SetTimerEx("pl_alert_Hide", time, 0, "d", playerid);
+
+	alert_Messages[playerid][id][e_aIsBusy] = false;
+	alert_Messages[playerid][id][e_aHeader][0] = '\0';
+	alert_Messages[playerid][id][e_aContent][0] = '\0';
+
+	alert_TimerID[playerid] = SetTimerEx("pl_alert_Hide", alert_Messages[playerid][id][e_aTime], 0, "d", playerid);
 }
 
 forward pl_alert_Hide(playerid);
 public pl_alert_Hide(playerid)
 {
 	alert_TimerID[playerid] = 0;
-	
+
 	TextDrawHideForPlayer(playerid, td_background);
 	PlayerTextDrawHide(playerid, td_strip[playerid]);
 
 	PlayerTextDrawHide(playerid, td_header[playerid]);
 	PlayerTextDrawHide(playerid, td_content[playerid]);
+
+	SetTimer("pl_alert_ShowBusy", 200, 0);
+}
+
+forward pl_alert_ShowBusy(playerid);
+public pl_alert_ShowBusy(playerid)
+{
+	for (new i = 0; i < MAX_CACHE_ALERT; i++) {
+		if (alert_Messages[playerid][i][e_aIsBusy]) {
+			pl_alert_ShowCached(playerid, i);
+			break;
+		}
+	}
+}
+
+stock pl_alert_GetFreeSlot(playerid)
+{
+	for (new i = 0; i < MAX_CACHE_ALERT; i++) {
+		if (!alert_Messages[playerid][i][e_aIsBusy]) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+stock pl_alert_IsShowed(playerid)
+{
+	if (alert_TimerID[playerid] != 0) {
+		return 1;
+	}
+	return 0;
 }
