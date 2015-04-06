@@ -1891,23 +1891,27 @@ stock vehicles_OnPlayerStateChange(playerid, newstate, oldstate)
 	veh_fuel_OnPlayerStateChange(playerid, newstate, oldstate);
 
 #if defined OLD_ENGINE_DO
-	if (GetPlayerVehicleSeat(playerid) == 0) {
+	if (newstate == PLAYER_STATE_DRIVER) {
 		new vehicleid = GetPlayerVehicleID(playerid);
 
-		if (newstate == PLAYER_STATE_DRIVER) {
-			vehicle_Engine(vehicleid, VEHICLE_PARAMS_ON);
-			
-			new hour;
-			gettime(hour);
-
-			if (hour > VEHICLE_LIGHTS_ON_TIME || hour < VEHICLE_LIGHTS_OFF_TIME) {
-				vehicle_Light(vehicleid, VEHICLE_PARAMS_ON);
-			}
-		}
-		if (newstate == PLAYER_STATE_EXIT_VEHICLE) {
-			vehicle_Engine(vehicleid, VEHICLE_PARAMS_OFF);
+		vehicle_Engine(vehicleid, VEHICLE_PARAMS_ON);
+		
+		new hour = time_GetCurrentHour();
+		if (hour > VEHICLE_LIGHTS_ON_TIME || hour < VEHICLE_LIGHTS_OFF_TIME) {
+			vehicle_Light(vehicleid, VEHICLE_PARAMS_ON);
 		}
 	}
+#endif
+	return 1;
+}
+
+stock vehicles_OnPlayerExitVehicle(playerid, vehicleid)
+{
+	#pragma unused playerid
+#if defined OLD_ENGINE_DO
+	vehicle_Engine(vehicleid, VEHICLE_PARAMS_OFF);
+#else
+	#pragma unused vehicleid
 #endif
 	return 1;
 }

@@ -588,6 +588,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 public OnPlayerExitVehicle(playerid, vehicleid)
 {
 	admin_OnPlayerExitVehicle(playerid, vehicleid);
+	vehicles_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
 }
 
