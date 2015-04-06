@@ -652,7 +652,7 @@ stock RegisterRace(name[])
 	}
 	new raceid = RacesCount;
 	RaceStats[raceid][race_questid] = quest_Register();
-	if (RaceStats[raceid][race_questid] == INVALID_RACE_ID)
+	if (RaceStats[raceid][race_questid] == INVALID_QUEST_ID)
 	{
 		RacesCount--;
 		return INVALID_RACE_ID;
