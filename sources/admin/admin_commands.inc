@@ -756,6 +756,7 @@ COMMAND:sys(playerid, params[])
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][39]);
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][40]);
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][47]);
+		SendClientMessage(playerid, COLOUR_YELLOW, _(ADMIN_SYS_CMDLIST_TIME));
 		return 1;
 	}
 
@@ -863,6 +864,39 @@ COMMAND:sys(playerid, params[])
 	{
 		lang_OnGameModeInit();
 		Lang_OnGameModeInit();
+		return 1;
+	}
+
+	if (!strcmp(cmd, "time", true))
+	{
+		new value, string[MAX_LANG_VALUE_STRING];
+		cmd = strcharsplit(params, idx, ' ');
+
+		if (!strcmp(cmd, "set", true)) {
+			value = strval( strcharsplit(params, idx, ' ') );
+
+			time_SetCurrentHour(value);
+
+			format(string, sizeof(string), _(ADMIN_SYS_TIME_SET), value);
+			SendClientMessage(playerid, -1, string);
+			return 1;
+		}
+
+		if (!strcmp(cmd, "real", true)) {
+			value = strval( strcharsplit(params, idx, ' ') );
+
+			time_SetRealStatus(value == 0 ? false : true);
+
+			if (value == 0) {
+				string = _(ADMIN_SYS_TIME_REAL_FALSE);
+			} else {
+				string = _(ADMIN_SYS_TIME_REAL_TRUE);
+			}
+			SendClientMessage(playerid, -1, string);
+			return 1;
+		}
+
+		SendClientMessage(playerid, -1, _(ADMIN_SYS_TIME_HELP));
 		return 1;
 	}
 

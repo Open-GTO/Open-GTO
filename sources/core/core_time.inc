@@ -32,28 +32,45 @@ stock time_SaveConfig(file_config)
 
 stock time_Sync()
 {
+	new hour = time_GetCurrentHour();
+
 	if (is_real == 0) {
-		current_hour++;
-		
-		if (current_hour > 23) {
-			current_hour = 0;
-		}
+		hour++;
 	} else {
-		new hour;
 		gettime(hour);
-		
-		hour += real_offset;
-		if (hour > 23) {
-			hour -= 23;
-		}
-		
-		current_hour = hour;
 	}
 
-	SetWorldTime(current_hour);
+	time_SetCurrentHour(hour);
 }
 
 stock time_GetCurrentHour()
 {
 	return current_hour;
+}
+
+stock time_SetCurrentHour(value)
+{
+	current_hour = value;
+
+	if (is_real == 0) {
+		if (current_hour > 23) {
+			current_hour = 0;
+		}
+	} else {
+		current_hour += real_offset;
+
+		if (current_hour > 23) {
+			current_hour -= 23;
+		}
+	}
+
+	SetWorldTime(current_hour);
+}
+
+stock time_SetRealStatus(bool:isrealstatus)
+{
+	is_real = isrealstatus ? 1 : 0;
+	if (is_real) {
+		time_Sync();
+	}
 }

@@ -165,6 +165,13 @@ ADMIN_PLIST_JAIL_NOTIME = %s(%d) [арест] без времени.
 ADMIN_PLIST_MUTE_REMAIN = %s(%d) [кляп] осталось %d м.
 ADMIN_PLIST_NO_PLAYERS = На сервере нет "забытых" игроков.
 
+ADMIN_SYS_CMDLIST_TIME = S: '/sys time <set/real> <значение>' - Управление временем
+
+ADMIN_SYS_TIME_HELP = {FFCC66}[Применение]: {FFFFFF}/sys time <set/real> <значение>
+ADMIN_SYS_TIME_SET = Время сервера изменено. Текущее время %d
+ADMIN_SYS_TIME_REAL_TRUE = Тип времени изменён, теперь время реальное
+ADMIN_SYS_TIME_REAL_FALSE = Тип времени изменён, теперь время серверное
+
 // fight styles
 FIGHT_TEACHER_INIT = SERVER: Fightstyles module init
 FIGHT_TEACHER_STYLE_NORMAL = нормальный
