@@ -16,6 +16,10 @@
 
 #define VEHICLES_COMPONENTS 14
 
+new vehicle_increase_levels[] = {PLAYER_VEHICLES_INCREASE_LEVELS};
+
+#define MAX_PLAYER_VEHICLES    sizeof(vehicle_increase_levels)
+
 enum pvInfo {
 	pv_ID,
 	pv_Model,
@@ -228,18 +232,14 @@ stock GetPlayerVehicleMaximumCount(playerid)
 
 stock GetVehicleMaximumCountByLevel(level)
 {
-	static increase_levels[] = {0, 15, 24, 30};
 	new count = 0;
 
-	for (new i = 0; i < sizeof(increase_levels); i++) {
-		if (level >= increase_levels[i]) {
+	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
+		if (level >= vehicle_increase_levels[i]) {
 			count++;
 		}
 	}
-	if (count > MAX_PLAYER_VEHICLES) {
-		Log_Debug("GetVehicleMaximumCountByLevel(%d) = %d. But MAX_PLAYER_VEHICLES = %d", level, count, MAX_PLAYER_VEHICLES);
-		return MAX_PLAYER_VEHICLES;
-	}
+
 	return count;
 }
 

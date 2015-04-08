@@ -205,7 +205,7 @@
  * Vehicle settings
  */
 
-#define MAX_PLAYER_VEHICLES      4 // максимальное количество личного транспорта
+#define PLAYER_VEHICLES_INCREASE_LEVELS  0, 15, 24, 30 // уровни, при достижении которых увеличивается макс. транспорт игрока
 #define VEHSHOP_CAR_CHANGE_TIME  3 // количество часов, через которое транспорт в магазине меняется
 #define CARS_RESPAWN_TIME        600 // время респавна транспорта в секундах (86400 - один день) 
 #define OLD_ENGINE_DO // сел в транспорт - завелось, вышел - заглох(если задефайнено)
