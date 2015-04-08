@@ -494,10 +494,10 @@ public OnPlayerText(playerid, text[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), "%s"CHAT_SHOW_ID": {FFFFFF}%s", playername, playerid, text);
+	format(string, sizeof(string), "%s(%d): {FFFFFF}%s", playername, playerid, text);
 	SendClientMessageToAll(GetPlayerColor(playerid), string);
 
-	Log_Player("Player: %s"CHAT_SHOW_ID": %s", playername, playerid, text);
+	Log_Player("Player: %s(%d): %s", playername, playerid, text);
 	return 0;
 }
 

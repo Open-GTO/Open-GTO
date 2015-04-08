@@ -118,8 +118,6 @@
 #define PAYDAY_CUTOFF		MAX_MONEY / 2 // кол-во денег, при котором перестаётся даваться деньги за PayDay
 #define	PAYDAY_PAYXP		200 // PayDay тариф на опыт
 
-#define CHAT_SHOW_ID		"(%d)" // вид отображения ида в чате
-
 #define WEAPON_SKILL_ENABLED	1 // включить прокачку оружия (если выключено, то оружие на максимуме)
 #define WEAPON_SKILL_SPEED		10 // количество даваемого скилла за одно убийство
 #define WEAPON_DROP_ENABLED		1 // включить выпадание оружия

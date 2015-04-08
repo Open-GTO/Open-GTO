@@ -32,10 +32,10 @@ stock pl_message_OnPlayerText(playerid, text[])
 				return 0;
 			}
 
-			format(string, sizeof(string), "%s"CHAT_SHOW_ID" банде: {FFFFFF}%s", playername, playerid, text[1]);
+			format(string, sizeof(string), "%s(%d) банде: {FFFFFF}%s", playername, playerid, text[1]);
 			SendGangMessage(player_GetGangID(playerid), string, COLOUR_GANG_CHAT);
 
-			Log_Player("Player: %s"CHAT_SHOW_ID": <GANG CHAT>: %s", playername, playerid, text[1]);
+			Log_Player("Player: %s(%d): <GANG CHAT>: %s", playername, playerid, text[1]);
 			return 0;
 		}
 		case '@', '"': {
@@ -45,7 +45,7 @@ stock pl_message_OnPlayerText(playerid, text[])
 
 			SendClientMessageToAdmins(playerid, text[1]);
 
-			Log_Player("Player: %s"CHAT_SHOW_ID": <ADMIN TALK>: %s", playername, playerid, text[1]);
+			Log_Player("Player: %s(%d): <ADMIN TALK>: %s", playername, playerid, text[1]);
 			return 0;
 		}
 		case '#', '№': {
@@ -55,7 +55,7 @@ stock pl_message_OnPlayerText(playerid, text[])
 
 			SendClientMessageToModers(playerid, text[1]);
 
-			Log_Player("Player: %s"CHAT_SHOW_ID": <MODERATOR TALK>: %s", playername, playerid, text[1]);
+			Log_Player("Player: %s(%d): <MODERATOR TALK>: %s", playername, playerid, text[1]);
 			return 0;
 		}
 		case '$', ';': {
@@ -70,7 +70,7 @@ stock pl_message_OnPlayerText(playerid, text[])
 
 			SendClientMessageToBeside(playerid, 10, text[1]);
 
-			Log_Player("Player: %s"CHAT_SHOW_ID": <SAY>: %s", playername, playerid, text[1]);
+			Log_Player("Player: %s(%d): <SAY>: %s", playername, playerid, text[1]);
 			return 0;
 		}
 	}
@@ -84,7 +84,7 @@ stock SendClientMessageToBeside(playerid, dist, text[])
 		color = GetPlayerColor(playerid);
 	
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	format(string, sizeof(string), "$ %s"CHAT_SHOW_ID" говорит: {FFFFFF}%s", oGetPlayerName(playerid), playerid, text);
+	format(string, sizeof(string), "$ %s(%d) говорит: {FFFFFF}%s", oGetPlayerName(playerid), playerid, text);
 	foreach (new i : Player) {
 		if (IsPlayerInRangeOfPoint(i, dist, pos[0], pos[1], pos[2])) {
 			SendClientMessage(i, color, string);
