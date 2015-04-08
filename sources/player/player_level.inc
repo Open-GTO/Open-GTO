@@ -97,7 +97,7 @@ stock GetMaxPlayerXP(playerid)
 stock GetMinPlayerXP(playerid)
 {
 	new xp_result = GetPlayerXP(playerid);
-	for (new i = FIRST_LEVEL + 1; i <= GetPlayerLevel(playerid); i++) {
+	for (new i = PLAYER_START_LEVEL + 1; i <= GetPlayerLevel(playerid); i++) {
 		xp_result += level_xp_list[i];
 	}
 	return -xp_result;

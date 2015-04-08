@@ -1222,7 +1222,7 @@ COMMAND:setlvl(playerid, params[])
 	}
 
 	new newlvl = strval(strcharsplit(params, idx, ' '));
-	if (newlvl > MAX_LEVEL || newlvl < FIRST_LEVEL) {
+	if (newlvl > MAX_LEVEL || newlvl < PLAYER_START_LEVEL) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][33]);
 		return 1;
 	}

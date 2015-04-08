@@ -238,9 +238,9 @@ stock player_SetDefaultData(playerid)
 	oSetPlayerMoney(playerid, PlayerStartMoney);
 	player_SetJailTime(playerid, -1);
 	player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
-	player_SetSkin(playerid, PLAYER_DEFAULT_SKIN);
+	player_SetSkin(playerid, PLAYER_START_SKIN);
 
-	SetPlayerLevel(playerid, FIRST_LEVEL);
+	SetPlayerLevel(playerid, PLAYER_START_LEVEL);
 	SetPlayerXP(playerid, 0);
 
 	pl_fights_SetPlayerStyleUsed(playerid, FIGHT_STYLE_NORMAL);

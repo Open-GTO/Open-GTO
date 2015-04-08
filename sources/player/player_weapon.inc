@@ -26,7 +26,7 @@ enum psw_Info {
 	psw_bull,
 }
 new PlayerStartWeapon[][psw_Info] = {
-	{WEAPON_COLT45, 200}
+	PLAYER_START_WEAPON
 };
 
 
