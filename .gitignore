@@ -1,6 +1,9 @@
 announce
 samp03svr
+filterscripts/
+plugins/
 *.exe
 *.dll
 *.cfg
 *.txt
+*.amx
