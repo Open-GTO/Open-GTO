@@ -19,6 +19,29 @@ new fill_TimerID[MAX_PLAYERS] = {0,...};
 
 static IsEnabled = VEHICLE_FUEL_ENABLED;
 
+forward Float:GetVehicleFuel(vehicleid);
+public Float:GetVehicleFuel(vehicleid)
+{
+	return Fuel[vehicleid];
+}
+
+forward Float:SetVehicleFuel(vehicleid, Float:amount);
+public Float:SetVehicleFuel(vehicleid, Float:amount)
+{
+	new Float:max_fuel = float( GetMaxVehicleFuel( GetVehicleModel(vehicleid) ) );
+
+	if (amount == -1) {
+		amount = max_fuel / 2 + random(floatround( max_fuel / 2 ));
+	} else if (amount > max_fuel) {
+		amount = max_fuel;
+	} else if (amount < 0) {
+		amount = 0;
+	}
+	
+	Fuel[vehicleid] = amount;
+	return amount;
+}
+
 stock veh_fuel_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Vehicle_Fuel_Enabled", IsEnabled);
@@ -35,11 +58,9 @@ stock veh_fuel_OnGameModeInit()
 		return 0;
 	}
 
-	new Float:max_fuel, model;
 	for (new i = 1; i <= MAX_VEHICLES; i++) {
-		if ((model = GetVehicleModel(i)) != 0) {
-			max_fuel = GetMaxVehicleFuel(model);
-			Fuel[i] = random(floatround( max_fuel / 2 )) + max_fuel / 2;
+		if (IsValidVehicle(i)) {
+			SetVehicleFuel(i, -1);
 		}
 	}
 
@@ -65,8 +86,7 @@ stock veh_fuel_OnVehicleSpawn(vehicleid)
 		return 0;
 	}
 
-	new Float:max_fuel = GetMaxVehicleFuel( GetVehicleModel(vehicleid) );
-	Fuel[vehicleid] = random(floatround( max_fuel / 2 )) + max_fuel / 2;
+	SetVehicleFuel(vehicleid, -1);
 	return 1;
 }
 
@@ -142,14 +162,15 @@ COMMAND:fill(playerid, params[])
 	}
 	
 	new vehiclemodel = GetVehicleModel(vehicleid);
-	switch (vehiclemodel) {
-		case 481, 509, 510: {
-			SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][24]);
-			return 1;
-		}
+
+	new max_fuel = GetMaxVehicleFuel(vehiclemodel);
+
+	if (max_fuel == 0) {
+		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][24]);
+		return 1;
 	}
 	
-	if (Fuel[vehicleid] >= GetMaxVehicleFuel(vehiclemodel)) {
+	if (Fuel[vehicleid] >= max_fuel) {
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][25]);
 		return 1;
 	}
@@ -266,27 +287,4 @@ stock fill_Vehicle(vehicleid, playerid)
 	fill_TimerID[playerid] = SetTimerEx("fill_Timer", 1000, 1, "i", playerid);
 	SetPVarInt(playerid, "Refueling", 1);
 	return 1;
-}
-
-forward Float:GetVehicleFuel(vehicleid);
-public Float:GetVehicleFuel(vehicleid)
-{
-	return Fuel[vehicleid];
-}
-
-forward Float:SetVehicleFuel(vehicleid, Float:amount);
-public Float:SetVehicleFuel(vehicleid, Float:amount)
-{
-	new Float:max_fuel = GetMaxVehicleFuel( GetVehicleModel(vehicleid) );
-
-	if (amount == -1) {
-		amount = max_fuel / 2 + random(floatround( max_fuel / 2 ));
-	} else if (amount > max_fuel) {
-		amount = max_fuel;
-	} else if (amount < 0) {
-		amount = 0;
-	}
-	
-	Fuel[vehicleid] = amount;
-	return amount;
 }

@@ -211,7 +211,6 @@ public OnGameModeInit()
 	pl_weapon_OnGameModeInit();
 	pl_textdraw_OnGameModeInit();
 	pl_alert_OnGameModeInit();
-	veh_fuel_OnGameModeInit();
 	pickup_OnGameModeInit();
 	widestrip_OnGameModeInit();
 

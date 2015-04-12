@@ -1877,6 +1877,8 @@ stock LoadVehicles()
 			vehicles_GetRespawnTime()
 		);
 	}
+
+	veh_fuel_OnGameModeInit();
 	return 1;
 }
 
