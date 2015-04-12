@@ -144,7 +144,7 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 		PlayerVehicle[playerid][slot][pv_Model],
 		pveh_X, pveh_Y, pveh_Z, pveh_A,
 		PlayerVehicle[playerid][slot][pv_Color][0], PlayerVehicle[playerid][slot][pv_Color][1],
-		CarsReSpawnTime
+		vehicles_GetRespawnTime()
 	);
 	
 	PlayerVehicle[playerid][slot][pv_ID] = vehicleid;

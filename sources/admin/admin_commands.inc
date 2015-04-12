@@ -773,7 +773,7 @@ COMMAND:sys(playerid, params[])
 		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[15][60]);
 
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[15][65], CarsReSpawnTime);
+		format(string, sizeof(string), lang_texts[15][65], vehicles_GetRespawnTime());
 		SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
 
 		format(string, sizeof(string), lang_texts[15][62], PlayerCount(), GetMaxPlayers());

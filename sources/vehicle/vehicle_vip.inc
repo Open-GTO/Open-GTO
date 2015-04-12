@@ -36,7 +36,13 @@ static vehicle_ids[ sizeof(vehicles_array) ];
 stock vehicle_vip_Load()
 {
 	for (new i = 0; i < sizeof(vehicles_array); i++) {
-		vehicle_ids[i] = AddStaticVehicleEx(vehicles_array[i][Model], vehicles_array[i][Coord_X], vehicles_array[i][Coord_Y], vehicles_array[i][Coord_Z], vehicles_array[i][Coord_A], vehicles_array[i][Color_1], vehicles_array[i][Color_2], CarsReSpawnTime);
+		vehicle_ids[i] = AddStaticVehicleEx(
+			vehicles_array[i][Model],
+			vehicles_array[i][Coord_X], vehicles_array[i][Coord_Y], vehicles_array[i][Coord_Z],
+			vehicles_array[i][Coord_A],
+			vehicles_array[i][Color_1], vehicles_array[i][Color_2],
+			vehicles_GetRespawnTime()
+		);
 	}
 }
 
