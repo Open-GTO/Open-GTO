@@ -1,3 +1,6 @@
 [submodule "sources/lib/sa-mp-fixes"]
 	path = sources/lib/sa-mp-fixes
 	url = https://github.com/ziggi/sa-mp-fixes.git
+[submodule "sources/lib/SAMP-foreach"]
+	path = sources/lib/SAMP-foreach
+	url = https://github.com/Kar2k/SAMP-foreach.git
