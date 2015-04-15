@@ -38,7 +38,7 @@ Thanks:
 #include "compiler/includes/a_samp"
 #include "core/unfixes"
 #include "lib/sa-mp-fixes/fixes"
-#include "lib/SAMP-foreach/foreach"
+#include "lib/sa-mp-foreach/foreach"
 #include "lib/zcmd"
 #include "lib/mxINI"
 #include "lib/mxDate"
