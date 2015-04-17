@@ -84,7 +84,7 @@ native SetTeamCount(count);
 native AddPlayerClass(modelid, Float:spawn_x, Float:spawn_y, Float:spawn_z, Float:z_angle, weapon1, weapon1_ammo, weapon2, weapon2_ammo, weapon3, weapon3_ammo);
 native AddPlayerClassEx(teamid, modelid, Float:spawn_x, Float:spawn_y, Float:spawn_z, Float:z_angle, weapon1, weapon1_ammo, weapon2, weapon2_ammo, weapon3, weapon3_ammo);
 native AddStaticVehicle(modelid, Float:spawn_x, Float:spawn_y, Float:spawn_z, Float:z_angle, color1, color2);
-native AddStaticVehicleEx(modelid, Float:spawn_x, Float:spawn_y, Float:spawn_z, Float:z_angle, color1, color2, respawn_delay);
+native AddStaticVehicleEx(modelid, Float:spawn_x, Float:spawn_y, Float:spawn_z, Float:z_angle, color1, color2, respawn_delay, addsiren=0);
 native AddStaticPickup(model, type, Float:X, Float:Y, Float:Z, virtualworld = 0);
 native CreatePickup(model, type, Float:X, Float:Y, Float:Z, virtualworld = 0);
 native DestroyPickup(pickup);
@@ -359,6 +359,7 @@ forward OnPlayerClickTextDraw(playerid, Text:clickedid);
 forward OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid);
 forward OnIncomingConnection(playerid, ip_address[], port);
 forward OnTrailerUpdate(playerid, vehicleid);
+forward OnVehicleSirenStateChange(playerid, vehicleid, newstate);
 
 #define CLICK_SOURCE_SCOREBOARD		0
 forward OnPlayerClickPlayer(playerid, clickedplayerid, source);
