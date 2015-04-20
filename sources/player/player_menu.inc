@@ -74,7 +74,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				\n\
 				Деньги: $%d, деньги в банке: $%d. Всего денег: $%d\n\
 				\n\
-				Убийств: %d, смертей: %d (%.2f%%)\n\
+				Убийств: %d, смертей: %d (%.2f)\n\
 				Сидок: %d\n\
 				Мутов: %d\n\
 				\n\
