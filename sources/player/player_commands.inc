@@ -133,8 +133,18 @@ COMMAND:skydive(playerid, params[])
 	}
 
 	new string[MAX_STRING];
-	if (player_GetSkydiveTime(playerid) != 0) {
-		format(string, sizeof(string), _(SKYDIVING_NEED_TIME), player_GetSkydiveTime(playerid));
+	new time_sky = player_GetSkydiveTime(playerid) - gettime();
+	if (time_sky > 0) {
+		new
+			minutes = (time_sky / 60) % 60,
+			seconds = time_sky % 60;
+
+		format(string, sizeof(string),
+			_(SKYDIVING_NEED_TIME),
+			minutes, Declension_GetMinutes(minutes),
+			seconds, Declension_GetSeconds(seconds)
+		);
+
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 		return 1;
 	}
@@ -146,7 +156,7 @@ COMMAND:skydive(playerid, params[])
 	GetPlayerPos(playerid, playerx, playery, playerz);
 	oSetPlayerPos(playerid, playerx, playery, playerz + 1200);
 	
-	player_SetSkydiveTime(playerid, SKYDIVE_TIME);
+	player_SetSkydiveTime(playerid, gettime() + SKYDIVE_TIME);
 
 	SendClientMessage(playerid, COLOUR_WHITE, _(SKYDIVING_MSG));
 	GameTextForPlayer(playerid, _(SKYDIVING_GAMETEXT), 4000, 5);

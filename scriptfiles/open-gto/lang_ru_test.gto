@@ -39,7 +39,7 @@ SKYDIVING_MSG = {FFCC66}[Сервер]: {FFFFFF}Летим! Не забудьте воспользоваться пар
 SKYDIVING_GAMETEXT = !!! SKY DIVING !!!
 SKYDIVING_MSG_TO_ALL = {FFCC66}[Сервер]: {FFFFFF}%s(%d) Применил команду /skydive и прыгнул с парашютом!
 SKYDIVING_ERROR = {FFCC66}[Сервер]: {FFFFFF}Вы лишены удовольствия покорять небо.
-SKYDIVING_NEED_TIME = Вы недавно использовали команду /skydive, ещё раз вы сможете использовать её через %d минут.
+SKYDIVING_NEED_TIME = Вы недавно использовали команду /skydive, до следующего использования осталось %d %s %d %s.
 
 // player
 PLAYER_COMMAND_LOG = Player: %s(%d): %s

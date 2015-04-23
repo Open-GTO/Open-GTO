@@ -71,9 +71,6 @@ forward OneMinuteTimer();
 public OneMinuteTimer()
 {
 	foreach (new playerid : Player) {
-		if (player_GetSkydiveTime(playerid) > 0) {
-			player_SetSkydiveTime(playerid, player_GetSkydiveTime(playerid) - 1);
-		}
 		if (player_IsLogin(playerid)) {
 			pt_idle_PlayerTimer(playerid);
 			Gang_GiveXp(playerid);
