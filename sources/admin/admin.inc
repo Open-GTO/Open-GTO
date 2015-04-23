@@ -78,7 +78,7 @@ stock SendClientMessageToAdmins(senderid, text[])
 	new message[MAX_STRING],
 		count = 0;
 	
-	format(message, sizeof(message), lang_texts[12][28], oGetPlayerName(senderid), senderid, text);
+	format(message, sizeof(message), lang_texts[12][28], ReturnPlayerName(senderid), senderid, text);
 	foreach (new adminid : Player) {
 		if (IsPlayerAdm(adminid)) {
 			SendClientMessage(adminid, COLOUR_RED, message);
@@ -100,7 +100,7 @@ stock SendClientMessageToModers(senderid, text[])
 	new message[MAX_STRING],
 		count = 0;
 
-	format(message, sizeof(message), lang_texts[12][79], oGetPlayerName(senderid), senderid, text);
+	format(message, sizeof(message), lang_texts[12][79], ReturnPlayerName(senderid), senderid, text);
 	foreach (new adminid : Player) {
 		if (IsPlayerMod(adminid)) {
 			SendClientMessage(adminid, COLOUR_RED, message);

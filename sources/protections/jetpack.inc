@@ -13,19 +13,33 @@
 #pragma library jetpack
 
 
+/*
+ * Vars
+ */
+
 static IsEnabled = ANTI_JETPACK_ENABLED;
 
-stock pt_jetpack_LoadConfig(file_config)
+
+/*
+ * Config
+ */
+
+pt_jetpack_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Protection_JetPack_IsEnabled", IsEnabled);
 }
 
-stock pt_jetpack_SaveConfig(file_config)
+pt_jetpack_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Protection_JetPack_IsEnabled", IsEnabled);
 }
 
-stock pt_jetpack_Check(playerid)
+
+/*
+ * For timer
+ */
+
+pt_jetpack_Check(playerid)
 {
 	if (!IsEnabled) {
 		return 0;

@@ -84,7 +84,7 @@ stock SendClientMessageToBeside(playerid, dist, text[])
 		color = GetPlayerColor(playerid);
 	
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	format(string, sizeof(string), "$ %s(%d) говорит: {FFFFFF}%s", oGetPlayerName(playerid), playerid, text);
+	format(string, sizeof(string), "$ %s(%d) говорит: {FFFFFF}%s", ReturnPlayerName(playerid), playerid, text);
 	foreach (new i : Player) {
 		if (IsPlayerInRangeOfPoint(i, dist, pos[0], pos[1], pos[2])) {
 			SendClientMessage(i, color, string);

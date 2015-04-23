@@ -27,7 +27,7 @@ stock SetPlayerMaxHealth(playerid)
 {
 	new Float:max_hp;
 	GetMaxHealth(playerid, max_hp);
-	return oSetPlayerHealth(playerid, max_hp);
+	return SetPlayerHealth(playerid, max_hp);
 }
 
 stock pl_health_Regeneration()
@@ -42,7 +42,7 @@ stock pl_health_Regeneration()
 			continue;
 		}
 
-		oGetPlayerHealth(playerid, health_current);
+		GetPlayerHealth(playerid, health_current);
 
 		GetMaxHealth(playerid, health_max);
 
@@ -55,9 +55,9 @@ stock pl_health_Regeneration()
 			health_new = health_current + 1.0 + (GetPlayerLevel(playerid) * HEALTH_REGEN_TARIF);
 
 			if (health_new > health_max) {
-				oSetPlayerHealth(playerid, health_max);
+				SetPlayerHealth(playerid, health_max);
 			} else {
-				oSetPlayerHealth(playerid, health_new);
+				SetPlayerHealth(playerid, health_new);
 			}
 		}
 	}

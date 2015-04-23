@@ -13,23 +13,37 @@
 #pragma library antihighping
 
 
+/*
+ * Vars
+ */
+
 static
 	IsEnabled = ANTI_HIGH_PING_ENABLED,
 	MaxPing = MAXIMAL_PING;
 
-stock pt_ping_LoadConfig(file_config)
+
+/*
+ * Config
+ */
+
+pt_ping_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Protection_Ping_IsEnabled", IsEnabled);
 	ini_getInteger(file_config, "Protection_Ping_MaxPing", MaxPing);
 }
 
-stock pt_ping_SaveConfig(file_config)
+pt_ping_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Protection_Ping_IsEnabled", IsEnabled);
 	ini_setInteger(file_config, "Protection_Ping_MaxPing", MaxPing);
 }
 
-stock pt_ping_Check(playerid)
+
+/*
+ * For timer
+ */
+
+pt_ping_Check(playerid)
 {
 	if (!IsEnabled) {
 		return 0;

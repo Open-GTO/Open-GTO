@@ -153,7 +153,7 @@ stock GangJoinMember(gangid, playerid)
 			continue;
 		}
 
-		set(GangMemberInfo[gangid][gangmember][member_name], oGetPlayerName(playerid));
+		set(GangMemberInfo[gangid][gangmember][member_name], ReturnPlayerName(playerid));
 		GangMemberInfo[gangid][gangmember][member_playerid] = playerid;
 		player_SetGangID(playerid, gangid);
 		player_SetGangName(playerid, Gangs[gangid][gang_name]);
@@ -266,7 +266,7 @@ stock GangCreate(leaderid, gangname[], gangcolour)
 		GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
 		set(GangMemberInfo[gangid][gangmember][member_name], nullstr);
 	}
-	set(GangMemberInfo[gangid][0][member_name], oGetPlayerName(leaderid));
+	set(GangMemberInfo[gangid][0][member_name], ReturnPlayerName(leaderid));
 	GangMemberInfo[gangid][0][member_playerid] = leaderid;
 	player_SetGangName(leaderid, gangname);
 	player_SetGangID(leaderid, gangid);
@@ -312,7 +312,7 @@ stock GangMemberLogout(playerid, gangid)
 	else
 	{
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[6][74], oGetPlayerName(playerid));
+		format(string, sizeof(string), lang_texts[6][74], ReturnPlayerName(playerid));
 		SendGangMessage(gangid, string, COLOUR_GANG);
 	}
 	return;
@@ -365,7 +365,7 @@ stock GangKill(gangid, killerid, victimid, reason)
 	#pragma unused reason
 	if (player_GetGangID(killerid) == player_GetGangID(victimid)) {
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[6][76], oGetPlayerName(killerid));
+		format(string, sizeof(string), lang_texts[6][76], ReturnPlayerName(killerid));
 		SendGangMessage(player_GetGangID(killerid), string, COLOUR_GANG);
 		return 1;
 	}

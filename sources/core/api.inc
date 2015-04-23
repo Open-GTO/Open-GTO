@@ -17,10 +17,10 @@
 
 #pragma library api
 
-forward api_oGivePlayerMoney(playerid, amount, showtext);
-public api_oGivePlayerMoney(playerid, amount, showtext)
+forward api_GivePlayerMoney(playerid, amount, showtext);
+public api_GivePlayerMoney(playerid, amount, showtext)
 {
-	return oGivePlayerMoney(playerid, amount, showtext);
+	return GivePlayerMoney(playerid, amount, showtext);
 }
 
 forward api_GetMaxVehicleFuel(vehiclemodel);
@@ -29,10 +29,10 @@ public api_GetMaxVehicleFuel(vehiclemodel)
 	return GetMaxVehicleFuel(vehiclemodel);
 }
 
-forward api_oSetPlayerHealth(playerid, Float:amount);
-public api_oSetPlayerHealth(playerid, Float:amount)
+forward api_SetPlayerHealth(playerid, Float:amount);
+public api_SetPlayerHealth(playerid, Float:amount)
 {
-	return oSetPlayerHealth(playerid, amount);
+	return SetPlayerHealth(playerid, amount);
 }
 
 forward api_GetMaxHealth(playerid, &Float:amount);

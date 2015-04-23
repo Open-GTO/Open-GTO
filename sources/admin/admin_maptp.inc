@@ -41,7 +41,7 @@ stock adm_maptp_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 		SetPlayerInterior(playerid, 0);
 		SetPlayerVirtualWorld(playerid, 0);
 		
-		oSetVehiclePos(vehicleid, fX, fY, fZ);
+		SetVehiclePos(vehicleid, fX, fY, fZ);
 		LinkVehicleToInterior(vehicleid, 0);
 		SetVehicleVirtualWorld(vehicleid, 0);
 		
@@ -51,7 +51,7 @@ stock adm_maptp_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 			AttachTrailerToVehicle(trailerid, vehicleid);
 		}
 	} else {
-		oSetPlayerPos(playerid, fX, fY, fZ);
+		SetPlayerPos(playerid, fX, fY, fZ);
 		SetPlayerInterior(playerid, 0);
 		SetPlayerVirtualWorld(playerid, 0);
 	}

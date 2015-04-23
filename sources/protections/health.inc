@@ -13,57 +13,69 @@
 #pragma library pthealth
 
 
+/*
+ * Vars
+ */
+
 static IsEnabled = ANTI_HEALTH_HACK_ENABLED;
 
-stock pt_health_LoadConfig(file_config)
+
+/*
+ * Config
+ */
+
+pt_health_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Protection_Health_IsEnabled", IsEnabled);
 }
 
-stock pt_health_SaveConfig(file_config)
+pt_health_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Protection_Health_IsEnabled", IsEnabled);
 }
 
-stock oSetPlayerHealth(playerid, Float:health)
+
+/*
+ * SetPlayerHealth
+ */
+
+stock pt_SetPlayerHealth(playerid, Float:health)
 {
 	SetPVarFloat(playerid, "Health", health);
-	return SetPlayerHealth(playerid, health);
+	return ORIG_SetPlayerHealth(playerid, health);
 }
 
-stock oGetPlayerHealth(playerid, &Float:health)
+
+/*
+ * GetPlayerHealth
+ */
+
+stock pt_GetPlayerHealth(playerid, &Float:health)
 {
 	health = GetPVarFloat(playerid, "Health");
 }
 
-stock pt_health_OnPlayerPickUpPickup(playerid, pickupid)
-{
-	if (!IsEnabled) {
-		return 0;
-	}
 
-	if (GetPickupModel(pickupid) == 1240) {
-		SetPlayerMaxHealth(playerid);
-	}
-	return 1;
-}
+/*
+ * For timer
+ */
 
-stock pt_health_Sync(playerid)
+pt_health_Sync(playerid)
 {
 	if (!IsEnabled) {
 		return 0;
 	}
 
 	new Float:clienthealth;
-	GetPlayerHealth(playerid, clienthealth);
+	ORIG_GetPlayerHealth(playerid, clienthealth);
 
 	new Float:serverhealth;
-	oGetPlayerHealth(playerid, serverhealth);
+	GetPlayerHealth(playerid, serverhealth);
 
 	if (clienthealth < serverhealth) {
 		SetPVarFloat(playerid, "Health", clienthealth);
 	} else if (clienthealth > serverhealth) {
-		oSetPlayerHealth(playerid, serverhealth);
+		SetPlayerHealth(playerid, serverhealth);
 	}
 	return 1;
 }

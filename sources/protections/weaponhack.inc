@@ -13,19 +13,33 @@
 #pragma library weaponhack
 
 
+/*
+ * Vars
+ */
+
 static IsEnabled = ANTI_WEAPON_HACK_ENABLED;
 
-stock pt_weapon_LoadConfig(file_config)
+
+/*
+ * Config
+ */
+
+pt_weapon_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Protection_Weapon_IsEnabled", IsEnabled);
 }
 
-stock pt_weapon_SaveConfig(file_config)
+pt_weapon_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Protection_Weapon_IsEnabled", IsEnabled);
 }
 
-stock pt_weapon_Check(playerid, slotid, weapon[2])
+
+/*
+ * For timer
+ */
+
+pt_weapon_Check(playerid, slotid, weapon[2])
 {
 	if (!IsEnabled) {
 		return 0;

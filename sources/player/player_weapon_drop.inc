@@ -57,7 +57,7 @@ stock wdrop_OnPlayerPickUpPickup(playerid, pickupid)
 
 	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)  {
 		if (pickupid == weapons_dropped[wd_slot][wd_pickupid]) {
-			oGivePlayerWeapon(playerid, weapons_dropped[wd_slot][wd_weaponid], weapons_dropped[wd_slot][wd_bullets]);
+			GivePlayerWeapon(playerid, weapons_dropped[wd_slot][wd_weaponid], weapons_dropped[wd_slot][wd_bullets]);
 			wdrop_DropPickup(wd_slot);
 		}
 	}

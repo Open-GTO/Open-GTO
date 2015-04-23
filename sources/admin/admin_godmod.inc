@@ -17,7 +17,7 @@ stock adm_godmod_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, 
 {
 	#pragma unused issuerid, amount, weaponid, bodypart
 	if (player_IsGodmod(playerid)) {
-		oSetPlayerHealth(playerid, Float:0x7F800000);
+		SetPlayerHealth(playerid, Float:0x7F800000);
 	}
 	return 1;
 }

@@ -100,7 +100,7 @@ DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
 	fights_GetTeacherName(teacherid, teachername);
 	format(caption, sizeof(caption), _(FIGHT_TEACHER_DIALOG_TEACHER_CAPTION), teachername);
 
-	if (oGetPlayerMoney(playerid) < cost) {
+	if (GetPlayerMoney(playerid) < cost) {
 		format(string, sizeof(string), _(FIGHT_TEACHER_NO_MONEY), cost);
 		Dialog_Message(playerid, caption, string, _(FIGHT_TEACHER_DIALOG_BUTTON_OK));
 		return 0;
@@ -108,7 +108,7 @@ DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
 
 	pl_fights_SetLearned(playerid, teacherid, 1);
 	pl_fights_SetPlayerStyleUsed(playerid, fights_GetTeacherStyleID(teacherid));
-	oGivePlayerMoney(playerid, -cost, 0);
+	GivePlayerMoney(playerid, -cost, 0);
 
 	format(string, sizeof(string), _m(FIGHT_TEACHER_LEARNED_MESSAGE), teachername, cost);
 	Dialog_Message(playerid, caption, string, _(FIGHT_TEACHER_DIALOG_BUTTON_OK));

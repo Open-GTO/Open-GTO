@@ -107,7 +107,7 @@ DialogResponse:PlayerVehicleList(playerid, response, listitem, inputtext[])
 		case 1: {
 			new slot = pl_veh_menu_GetVehicleSlot(playerid);
 			
-			oGivePlayerMoney(playerid, GetPlayerVehicleCostBySlot(playerid, slot) / 2, 1);
+			GivePlayerMoney(playerid, GetPlayerVehicleCostBySlot(playerid, slot) / 2, 1);
 			RemovePlayerVehicle(playerid, slot);
 			
 			Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu,

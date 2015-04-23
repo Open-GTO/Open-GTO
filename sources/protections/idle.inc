@@ -13,23 +13,36 @@
 #pragma library antiidle
 
 
+/*
+ * Vars
+ */
+
 static
 	IsEnabled = ANTI_IDLE_ENABLED,
 	MaxTime = MAX_IDLE_TIME;
 
-stock pt_idle_LoadConfig(file_config)
+/*
+ * Config
+ */
+
+pt_idle_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Protection_Idle_IsEnabled", IsEnabled);
 	ini_getInteger(file_config, "Protection_Idle_MaxTime", MaxTime);
 }
 
-stock pt_idle_SaveConfig(file_config)
+pt_idle_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Protection_Idle_IsEnabled", IsEnabled);
 	ini_setInteger(file_config, "Protection_Idle_MaxTime", MaxTime);
 }
 
-stock pt_idle_OnGameModeInit()
+
+/*
+ * For public
+ */
+
+pt_idle_OnGameModeInit()
 {
 	if (!IsEnabled) {
 		return 0;
@@ -39,7 +52,12 @@ stock pt_idle_OnGameModeInit()
 	return 1;
 }
 
-stock pt_idle_PlayerTimer(playerid)
+
+/*
+ * For timer
+ */
+
+pt_idle_PlayerTimer(playerid)
 {
 	if (!IsEnabled) {
 		return 0;

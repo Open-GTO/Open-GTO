@@ -118,10 +118,10 @@ COMMAND:akill(playerid, params[])
 
 	SetPlayerHealth(receiverid, 0.0);
 
-	format(string, sizeof(string), lang_texts[12][62], oGetPlayerName(receiverid), receiverid);
+	format(string, sizeof(string), lang_texts[12][62], ReturnPlayerName(receiverid), receiverid);
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][63], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][63], ReturnPlayerName(playerid));
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -146,7 +146,7 @@ COMMAND:pinfo(playerid, params[])
 	}
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][34], oGetPlayerName(receiverid), receiverid);
+	format(string, sizeof(string), lang_texts[12][34], ReturnPlayerName(receiverid), receiverid);
 	SendClientMessage(playerid, COLOUR_YELLOW, string);
 
 	switch (player_GetStatus(receiverid)) {
@@ -169,7 +169,7 @@ COMMAND:pinfo(playerid, params[])
 	format(string, sizeof(string), lang_texts[12][35], GetPlayerLevel(receiverid), GetPlayerXP(receiverid));
 	SendClientMessage(playerid, COLOUR_WHITE, string);
 
-	format(string, sizeof(string), lang_texts[12][36], oGetPlayerMoney(receiverid), GetPlayerBankMoney(receiverid));
+	format(string, sizeof(string), lang_texts[12][36], GetPlayerMoney(receiverid), GetPlayerBankMoney(receiverid));
 	SendClientMessage(playerid, COLOUR_WHITE, string);
 
 	format(string, sizeof(string), lang_texts[12][38], player_GetDeaths(receiverid), player_GetKills(receiverid));
@@ -220,9 +220,9 @@ COMMAND:teleloc(playerid, params[])
 
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid != 0) {
-		oSetVehiclePos(vehicleid, GetPVarFloat(playerid, "LocX"), GetPVarFloat(playerid, "LocY"), GetPVarFloat(playerid, "LocZ"));
+		SetVehiclePos(vehicleid, GetPVarFloat(playerid, "LocX"), GetPVarFloat(playerid, "LocY"), GetPVarFloat(playerid, "LocZ"));
 	} else {
-		oSetPlayerPos(playerid, GetPVarFloat(playerid, "LocX"), GetPVarFloat(playerid, "LocY"), GetPVarFloat(playerid, "LocZ"));
+		SetPlayerPos(playerid, GetPVarFloat(playerid, "LocX"), GetPVarFloat(playerid, "LocY"), GetPVarFloat(playerid, "LocZ"));
 	}
 
 	SetPlayerFacingAngle(playerid, GetPVarFloat(playerid, "Ang"));
@@ -258,15 +258,15 @@ COMMAND:teleto(playerid, params[])
 
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid != 0) {
-		oSetVehiclePos(vehicleid, receiver_x + 3.01, receiver_y + 3.01, receiver_z + 1);
+		SetVehiclePos(vehicleid, receiver_x + 3.01, receiver_y + 3.01, receiver_z + 1);
 	} else {
 		receiver_x = receiver_x + random(2) - random(4);
 		receiver_y = receiver_y + random(2) - random(4);	
-		oSetPlayerPos(playerid, receiver_x, receiver_y, receiver_z + 1);
+		SetPlayerPos(playerid, receiver_x, receiver_y, receiver_z + 1);
 	}
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][66], oGetPlayerName(receiverid), receiverid);
+	format(string, sizeof(string), lang_texts[12][66], ReturnPlayerName(receiverid), receiverid);
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -300,11 +300,11 @@ COMMAND:telehere(playerid, params[])
 
 	new vehicleid = GetPlayerVehicleID(receiverid);
 	if (vehicleid != 0) {
-		oSetVehiclePos(vehicleid, receiver_x + 3.01, receiver_y + 3.01, receiver_z + 1);
+		SetVehiclePos(vehicleid, receiver_x + 3.01, receiver_y + 3.01, receiver_z + 1);
 	} else {
 		receiver_x = receiver_x + random(2)-random(4);
 		receiver_y = receiver_y + random(2)-random(4);	
-		oSetPlayerPos(receiverid, receiver_x, receiver_y, receiver_z + 1);
+		SetPlayerPos(receiverid, receiver_x, receiver_y, receiver_z + 1);
 
 		new Float:receiver_a;
 		GetPlayerFacingAngle(playerid, receiver_a);
@@ -312,10 +312,10 @@ COMMAND:telehere(playerid, params[])
 	}
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][66], oGetPlayerName(playerid), playerid);
+	format(string, sizeof(string), lang_texts[12][66], ReturnPlayerName(playerid), playerid);
 	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][67], oGetPlayerName(receiverid), receiverid);
+	format(string, sizeof(string), lang_texts[12][67], ReturnPlayerName(receiverid), receiverid);
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -331,7 +331,7 @@ COMMAND:telehereall(playerid, params[])
 	GetPlayerFacingAngle(playerid, receiver_a);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][66], oGetPlayerName(playerid), playerid);
+	format(string, sizeof(string), lang_texts[12][66], ReturnPlayerName(playerid), playerid);
 
 	foreach (new id : Player) {
 		if (id == playerid) {
@@ -341,7 +341,7 @@ COMMAND:telehereall(playerid, params[])
 		if (!player_IsJailed(id) && !IsPlayerRconAdmin(id)  && !IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id)) {
 			receiver_x = receiver_x + random(2) - random(4);
 			receiver_y = receiver_y + random(2) - random(4);	
-			oSetPlayerPos(id, receiver_x, receiver_y, receiver_z);
+			SetPlayerPos(id, receiver_x, receiver_y, receiver_z);
 			SetPlayerFacingAngle(id, receiver_a);
 			
 			SendClientMessage(id, COLOUR_XP_GOOD, string);
@@ -372,7 +372,7 @@ COMMAND:telexyzi(playerid, params[])
 	interior = strval(strcharsplit(params, idx, ' '));
 
 	SetPlayerInterior(playerid, interior);
-	oSetPlayerPos(playerid, pos_x, pos_y, pos_z);
+	SetPlayerPos(playerid, pos_x, pos_y, pos_z);
 	return 1;
 }
 
@@ -413,7 +413,7 @@ COMMAND:sethealth(playerid, params[])
 		health_amount = max_health;
 	}
 	
-	oSetPlayerHealth(receiverid, health_amount);
+	SetPlayerHealth(receiverid, health_amount);
 	return 1;
 }
 
@@ -447,7 +447,7 @@ COMMAND:setarm(playerid, params[])
 		return 1;
 	}
 	
-	oSetPlayerArmour(receiverid, armamount);
+	SetPlayerArmour(receiverid, armamount);
 	return 1;
 }
 
@@ -480,16 +480,16 @@ COMMAND:givexp(playerid, params[])
 
 	new string[MAX_STRING];
 	if (xpamount > 0) {
-		format(string, sizeof(string), lang_texts[12][5] , oGetPlayerName(playerid), xpamount);
+		format(string, sizeof(string), lang_texts[12][5] , ReturnPlayerName(playerid), xpamount);
 		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 
-		format(string, sizeof(string), lang_texts[12][6] , oGetPlayerName(receiverid), xpamount, GetPlayerXP(receiverid));
+		format(string, sizeof(string), lang_texts[12][6] , ReturnPlayerName(receiverid), xpamount, GetPlayerXP(receiverid));
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	} else {
-		format(string, sizeof(string), lang_texts[12][7] , oGetPlayerName(playerid), -xpamount);
+		format(string, sizeof(string), lang_texts[12][7] , ReturnPlayerName(playerid), -xpamount);
 		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 
-		format(string, sizeof(string), lang_texts[12][8] , oGetPlayerName(receiverid), -xpamount, GetPlayerXP(receiverid));
+		format(string, sizeof(string), lang_texts[12][8] , ReturnPlayerName(receiverid), -xpamount, GetPlayerXP(receiverid));
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	}
 	return 1;
@@ -520,20 +520,20 @@ COMMAND:agivecash(playerid, params[])
 		return 1;
 	}
 
-	oGivePlayerMoney(receiverid, cashamount, 1);
+	GivePlayerMoney(receiverid, cashamount, 1);
 
 	new string[MAX_STRING];
 	if (cashamount > 0) {
-		format(string, sizeof(string), lang_texts[12][12], oGetPlayerName(playerid), cashamount);
+		format(string, sizeof(string), lang_texts[12][12], ReturnPlayerName(playerid), cashamount);
 		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 
-		format(string, sizeof(string), lang_texts[12][13], oGetPlayerName(receiverid), cashamount, oGetPlayerMoney(receiverid));
+		format(string, sizeof(string), lang_texts[12][13], ReturnPlayerName(receiverid), cashamount, GetPlayerMoney(receiverid));
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	} else {
-		format(string, sizeof(string), lang_texts[12][14], oGetPlayerName(playerid), -cashamount);
+		format(string, sizeof(string), lang_texts[12][14], ReturnPlayerName(playerid), -cashamount);
 		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 
-		format(string, sizeof(string), lang_texts[12][15], oGetPlayerName(receiverid), -cashamount, oGetPlayerMoney(receiverid));
+		format(string, sizeof(string), lang_texts[12][15], ReturnPlayerName(receiverid), -cashamount, GetPlayerMoney(receiverid));
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	}
 	return 1;
@@ -569,13 +569,13 @@ COMMAND:givegun(playerid, params[])
 		ammamount = 1000;
 	}
 
-	oGivePlayerWeapon(receiverid, weaponid, ammamount);
+	GivePlayerWeapon(receiverid, weaponid, ammamount);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][46], oGetPlayerName(playerid), oGetWeaponName(weaponid), weaponid, ammamount);
+	format(string, sizeof(string), lang_texts[12][46], ReturnPlayerName(playerid), ReturnWeaponName(weaponid), weaponid, ammamount);
 	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 	
-	format(string, sizeof(string), lang_texts[12][47], oGetPlayerName(receiverid), receiverid, oGetWeaponName(weaponid), weaponid, ammamount);
+	format(string, sizeof(string), lang_texts[12][47], ReturnPlayerName(receiverid), receiverid, ReturnWeaponName(weaponid), weaponid, ammamount);
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -607,10 +607,10 @@ COMMAND:paralyze(playerid, params[])
 	TogglePlayerControllable(receiverid, 0);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][54], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][54], ReturnPlayerName(playerid));
 	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 	
-	format(string, sizeof(string), lang_texts[12][55], oGetPlayerName(receiverid));
+	format(string, sizeof(string), lang_texts[12][55], ReturnPlayerName(receiverid));
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -642,10 +642,10 @@ COMMAND:deparalyze(playerid, params[])
 	TogglePlayerControllable(receiverid, 1);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][56], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][56], ReturnPlayerName(playerid));
 	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][57], oGetPlayerName(receiverid));
+	format(string, sizeof(string), lang_texts[12][57], ReturnPlayerName(receiverid));
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -657,7 +657,7 @@ COMMAND:paralyzeall(playerid, params[])
 	}
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][54], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][54], ReturnPlayerName(playerid));
 
 	foreach (new id : Player) {
 		if (id == playerid || player_IsJailed(id) || player_IsAtQuest(id) || IsPlayerRconAdmin(id)) {
@@ -679,7 +679,7 @@ COMMAND:deparalyzeall(playerid, params[])
 	}
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][54], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][54], ReturnPlayerName(playerid));
 
 	foreach (new id : Player) {
 		if (id == playerid || player_IsJailed(id) || player_IsAtQuest(id) || IsPlayerRconAdmin(id)) {
@@ -1040,10 +1040,10 @@ COMMAND:setskin(playerid, params[])
 	player_SetSkin(receiverid, skinid);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][42], oGetPlayerName(playerid), skinid);
+	format(string, sizeof(string), lang_texts[12][42], ReturnPlayerName(playerid), skinid);
 	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][43], oGetPlayerName(receiverid), skinid, oldskin);
+	format(string, sizeof(string), lang_texts[12][43], ReturnPlayerName(receiverid), skinid, oldskin);
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -1082,11 +1082,11 @@ COMMAND:skydiveall(playerid, params[])
 		}
 
 		if (!IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id)) {
-			oGivePlayerWeapon(id, 46, 1);
+			GivePlayerWeapon(id, 46, 1);
 			PlayerPlaySound(id, 1058, 0, 0, 0);
 
 			GetPlayerPos(id, playerx, playery, playerz);
-			oSetPlayerPos(id, playerx, playery, playerz + 1200);
+			SetPlayerPos(id, playerx, playery, playerz + 1200);
 		}
 	}
 
@@ -1114,13 +1114,13 @@ COMMAND:disarm(playerid, params[])
 		return 1;
 	}
 
-	oResetPlayerWeapons(receiverid);
+	ResetPlayerWeapons(receiverid);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][48], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][48], ReturnPlayerName(playerid));
 	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][49], oGetPlayerName(receiverid));
+	format(string, sizeof(string), lang_texts[12][49], ReturnPlayerName(receiverid));
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -1138,9 +1138,9 @@ COMMAND:disarmall(playerid, params[])
 			continue;
 		}
 
-		oResetPlayerWeapons(id);
+		ResetPlayerWeapons(id);
 
-		format(string, sizeof(string), lang_texts[12][48], oGetPlayerName(playerid));
+		format(string, sizeof(string), lang_texts[12][48], ReturnPlayerName(playerid));
 		SendClientMessage(id, COLOUR_XP_GOOD, string);
 	}
 
@@ -1167,13 +1167,13 @@ COMMAND:remcash(playerid, params[])
 		return 1;
 	}
 
-	oSetPlayerMoney(playerid, 0);
+	SetPlayerMoney(playerid, 0);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][58], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][58], ReturnPlayerName(playerid));
 	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][59], oGetPlayerName(receiverid));
+	format(string, sizeof(string), lang_texts[12][59], ReturnPlayerName(receiverid));
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -1191,9 +1191,9 @@ COMMAND:remcashall(playerid, params[])
 			continue;
 		}
 
-		oSetPlayerMoney(id, 0);
+		SetPlayerMoney(id, 0);
 
-		format(string, sizeof(string), lang_texts[12][58], oGetPlayerName(playerid));
+		format(string, sizeof(string), lang_texts[12][58], ReturnPlayerName(playerid));
 		SendClientMessage(id, COLOUR_XP_GOOD, string);
 	}
 
@@ -1235,10 +1235,10 @@ COMMAND:setlvl(playerid, params[])
 	}
 	
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][31], oGetPlayerName(playerid), newlvl);
+	format(string, sizeof(string), lang_texts[12][31], ReturnPlayerName(playerid), newlvl);
 	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][32], oGetPlayerName(receiverid), newlvl, oldlvl);
+	format(string, sizeof(string), lang_texts[12][32], ReturnPlayerName(receiverid), newlvl, oldlvl);
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -1276,10 +1276,10 @@ COMMAND:setstatus(playerid, params[])
 	new string[MAX_STRING];
 	
 	if (sid == STATUS_LEVEL_PLAYER) {
-		format(string, sizeof(string), lang_texts[12][84], oGetPlayerName(playerid), playerid);
+		format(string, sizeof(string), lang_texts[12][84], ReturnPlayerName(playerid), playerid);
 		SendClientMessage(receiverid, COLOUR_WHITE, string);
 
-		format(string, sizeof(string), lang_texts[12][85], oGetPlayerName(receiverid), receiverid);
+		format(string, sizeof(string), lang_texts[12][85], ReturnPlayerName(receiverid), receiverid);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 	} else {
 		new sidstring[64];
@@ -1295,10 +1295,10 @@ COMMAND:setstatus(playerid, params[])
 			}
 		}
 		
-		format(string, sizeof(string), lang_texts[12][82], oGetPlayerName(playerid), playerid, sidstring);
+		format(string, sizeof(string), lang_texts[12][82], ReturnPlayerName(playerid), playerid, sidstring);
 		SendClientMessage(receiverid, COLOUR_WHITE, string);
 		
-		format(string, sizeof(string), lang_texts[12][83], oGetPlayerName(receiverid), receiverid, sidstring);
+		format(string, sizeof(string), lang_texts[12][83], ReturnPlayerName(receiverid), receiverid, sidstring);
 		SendClientMessage(playerid, COLOUR_WHITE, string);
 	}
 
@@ -1329,10 +1329,10 @@ COMMAND:allowport(playerid, params[])
 
 	if (IsAllowPlayerTeleport(playerid)) {
 		SetPlayerTeleportStatus(receiverid, 0);
-		format(string, sizeof(string), lang_texts[12][16], oGetPlayerName(receiverid), receiverid);
+		format(string, sizeof(string), lang_texts[12][16], ReturnPlayerName(receiverid), receiverid);
 	} else {
 		SetPlayerTeleportStatus(receiverid, 1);
-		format(string, sizeof(string), lang_texts[12][17], oGetPlayerName(receiverid), receiverid);
+		format(string, sizeof(string), lang_texts[12][17], ReturnPlayerName(receiverid), receiverid);
 	}
 	
 	SendClientMessage(playerid, COLOUR_WHITE, string);
@@ -1374,7 +1374,7 @@ COMMAND:setvip(playerid, params[])
 		SetPlayerVIP(giveid, 0);
 	}
 	
-	format(string, sizeof(string), lang_texts[12][20], oGetPlayerName(giveid), giveid, GetPlayerVIPDate(giveid));
+	format(string, sizeof(string), lang_texts[12][20], ReturnPlayerName(giveid), giveid, GetPlayerVIPDate(giveid));
 	SendClientMessage(playerid, COLOUR_WHITE, string);
 
 	format(string, sizeof(string), lang_texts[12][22], GetPlayerVIPDate(giveid));
@@ -1390,11 +1390,11 @@ COMMAND:underwater(playerid, params[])
 
 	new veh_id = GetPlayerVehicleID(playerid);
 	if (veh_id != 0) {
-		oSetVehiclePos(veh_id, -2888.677978, 1423.499023, -36.533981);
+		SetVehiclePos(veh_id, -2888.677978, 1423.499023, -36.533981);
 		SetVehicleZAngle(veh_id, 244.428359);
 		LinkVehicleToInterior(veh_id, 0);
 	} else {
-		oSetPlayerPos(playerid, -2888.677978, 1423.499023, -36.533981);
+		SetPlayerPos(playerid, -2888.677978, 1423.499023, -36.533981);
 		SetPlayerFacingAngle(playerid, 244.428359);
 	}
 
@@ -1416,9 +1416,9 @@ COMMAND:plist(playerid, params[])
 	foreach (new id : Player) {
 		if (player_IsJailed(id)) {
 			if (player_GetJailTime(id) > 0) {
-				format(string, sizeof(string), _(ADMIN_PLIST_JAIL_REMAIN), oGetPlayerName(id), id, (player_GetJailTime(id)- gettime()) / 60 + 1);
+				format(string, sizeof(string), _(ADMIN_PLIST_JAIL_REMAIN), ReturnPlayerName(id), id, (player_GetJailTime(id)- gettime()) / 60 + 1);
 			} else {
-				format(string, sizeof(string), _(ADMIN_PLIST_JAIL_NOTIME), oGetPlayerName(id), id);
+				format(string, sizeof(string), _(ADMIN_PLIST_JAIL_NOTIME), ReturnPlayerName(id), id);
 			}
 
 			SendClientMessage(playerid, COLOUR_LIGHTRED, string);
@@ -1427,7 +1427,7 @@ COMMAND:plist(playerid, params[])
 		}
 
 		if (player_IsMuted(playerid)) {
-			format(string, sizeof(string), _(ADMIN_PLIST_MUTE_REMAIN), oGetPlayerName(id), id, (player_GetMuteTime(id) - gettime()) / 60 + 1);
+			format(string, sizeof(string), _(ADMIN_PLIST_MUTE_REMAIN), ReturnPlayerName(id), id, (player_GetMuteTime(id) - gettime()) / 60 + 1);
 			SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
 
 			count++;
@@ -1468,13 +1468,13 @@ COMMAND:remcar(playerid, params[])
 	if (IsPlayerInAnyVehicle(receiverid)) {
 		RemovePlayerFromVehicle(receiverid);
 
-		format(string, sizeof(string), lang_texts[12][64], oGetPlayerName(receiverid), receiverid);
+		format(string, sizeof(string), lang_texts[12][64], ReturnPlayerName(receiverid), receiverid);
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 
-		format(string, sizeof(string), lang_texts[12][65], oGetPlayerName(playerid));
+		format(string, sizeof(string), lang_texts[12][65], ReturnPlayerName(playerid));
 		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 	} else {
-		format(string, sizeof(string), lang_texts[12][73], oGetPlayerName(receiverid), receiverid);
+		format(string, sizeof(string), lang_texts[12][73], ReturnPlayerName(receiverid), receiverid);
 		SendClientMessage(playerid, COLOUR_RED, string);
 	}
 	return 1;
@@ -1604,7 +1604,7 @@ COMMAND:healall(playerid, params[])
 	new Float:max_health;
 	foreach (new id : Player) {
 		GetMaxHealth(id, max_health);
-		oSetPlayerHealth(id, max_health);
+		SetPlayerHealth(id, max_health);
 	}
 	return 1;
 }
@@ -1616,7 +1616,7 @@ COMMAND:setarmall(playerid, params[])
 	}
 
 	foreach (new id : Player) {
-		oSetPlayerArmour(id, 100.0);
+		SetPlayerArmour(id, 100.0);
 	}
 	return 1;
 }

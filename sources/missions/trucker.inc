@@ -327,11 +327,11 @@ stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
 		
 		if (!IsTrailerIsTrue(trailerid)) {
 			trucker_Stop(playerid);
-			oGivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
+			GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
 			
 			new Float:health;
-			oGetPlayerHealth(playerid, health);
-			oSetPlayerHealth(playerid, health - 10);
+			GetPlayerHealth(playerid, health);
+			SetPlayerHealth(playerid, health - 10);
 
 			SendClientMessage(playerid, COLOUR_WHITE, lang_texts[19][40]);
 			return 1;
@@ -339,7 +339,7 @@ stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
 		
 		trucker_Stop(playerid);
 		KillTimer(player_trucker[playerid][pt_MissionTimer]);
-		oGivePlayerMoney(playerid, mission_CalculateMoney(playerid, mission_trucker), 1);
+		GivePlayerMoney(playerid, mission_CalculateMoney(playerid, mission_trucker), 1);
 		GivePlayerXP(playerid, mission_CalculateXP(playerid, mission_trucker), 1);
 
 		if (player_trucker[playerid][pt_TryCount] > 0) {
@@ -439,7 +439,7 @@ stock trucker_OnPlayerDeath(playerid, killerid, reason)
 		return 1;
 	}
 	trucker_Stop(playerid);
-	oGivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
+	GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
 	SendClientMessage(playerid, COLOUR_RED, lang_texts[19][43]);
 	return 1;
 }
@@ -452,7 +452,7 @@ stock trucker_OnVehicleDeath(vehicleid, killerid)
 	if (IsVehicleIsRunner(vehicleid)) {
 		if (IsPlayerInMission(killerid, mission_trucker)) {
 			trucker_Stop(killerid);
-			oGivePlayerMoney(killerid, -mission_CalculateMoney(killerid, mission_trucker), 1);
+			GivePlayerMoney(killerid, -mission_CalculateMoney(killerid, mission_trucker), 1);
 			SendClientMessage(killerid, COLOUR_RED, lang_texts[19][44]);
 		} else {
 			if (player_trucker[killerid][pt_TrailerCheck_Timer] != 0) {
@@ -513,7 +513,7 @@ public trucker_CancelMission(playerid)
 {
 	if (IsPlayerInMission(playerid, mission_trucker)) {
 		trucker_Stop(playerid);
-		oGivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
+		GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[19][54]);
 		
 		new vehicleid = GetPlayerVehicleID(playerid);

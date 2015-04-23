@@ -28,7 +28,7 @@ public adm_click_KickPlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][60], kickedname, clickedid, inputtext);
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][61], kickedname, clickedid, oGetPlayerName(playerid), inputtext);
+	format(string, sizeof(string), lang_texts[12][61], kickedname, clickedid, ReturnPlayerName(playerid), inputtext);
 	SendClientMessageToAll(COLOUR_WHITE, string);
 
 	KickPlayer(clickedid, inputtext);
@@ -52,13 +52,13 @@ public adm_click_MutePlayer(playerid, clickedid, listitem, inputtext[])
 	MutePlayer(clickedid, mutetime);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][24], oGetPlayerName(playerid), mutetime);
+	format(string, sizeof(string), lang_texts[12][24], ReturnPlayerName(playerid), mutetime);
 	SendClientMessage(clickedid, COLOUR_RED, string);
 
-	format(string, sizeof(string), lang_texts[12][50], oGetPlayerName(clickedid), mutetime);
+	format(string, sizeof(string), lang_texts[12][50], ReturnPlayerName(clickedid), mutetime);
 	SendClientMessageToAll(COLOUR_WHITE, string);
 
-	Log_Game(lang_texts[13][7], oGetPlayerName(clickedid), oGetPlayerName(playerid), mutetime);
+	Log_Game(lang_texts[13][7], ReturnPlayerName(clickedid), ReturnPlayerName(playerid), mutetime);
 	return 1;
 }
 
@@ -74,13 +74,13 @@ public adm_click_UnMutePlayer(playerid, clickedid, listitem, inputtext[])
 
 	new string[MAX_STRING];
 
-	format(string, sizeof(string), lang_texts[12][27], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][27], ReturnPlayerName(playerid));
 	SendClientMessage(clickedid, COLOUR_GREEN, string);
 
-	format(string, sizeof(string), lang_texts[12][51], oGetPlayerName(clickedid));
+	format(string, sizeof(string), lang_texts[12][51], ReturnPlayerName(clickedid));
 	SendClientMessageToAll(COLOUR_WHITE, string);
 
-	Log_Game(lang_texts[13][14], oGetPlayerName(clickedid), oGetPlayerName(playerid));
+	Log_Game(lang_texts[13][14], ReturnPlayerName(clickedid), ReturnPlayerName(playerid));
 	return 1;
 }
 
@@ -97,7 +97,7 @@ public adm_click_JailPlayer(playerid, clickedid, listitem, inputtext[])
 	JailPlayer(clickedid, jailt);
 	
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][18], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][18], ReturnPlayerName(playerid));
 	SendClientMessage(clickedid, COLOUR_RED, string);
 	
 	if (1 <= jailt <= 4320) {
@@ -106,7 +106,7 @@ public adm_click_JailPlayer(playerid, clickedid, listitem, inputtext[])
 		set(string, "навсегда");
 	}
 
-	format(string, sizeof(string), "SERVER: %s был арестован %s", oGetPlayerName(clickedid), string);
+	format(string, sizeof(string), "SERVER: %s был арестован %s", ReturnPlayerName(clickedid), string);
 	SendClientMessageToAll(COLOUR_WHITE, string);
 
 	GameTextForPlayer(playerid, "~w~ You has been ~r~Jailed~w~!", 5000, 4);
@@ -129,10 +129,10 @@ public adm_click_UnJailPlayer(playerid, clickedid, listitem, inputtext[])
 	UnJailPlayer(clickedid);
 	
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][21], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][21], ReturnPlayerName(playerid));
 	SendClientMessage(clickedid, COLOUR_GREEN, string);
 
-	format(string, sizeof(string), lang_texts[13][53], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[13][53], ReturnPlayerName(playerid));
 	SendClientMessageToAll(COLOUR_WHITE, string);
 	return 1;
 }
@@ -146,7 +146,7 @@ public adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 	}
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][34], oGetPlayerName(clickedid), clickedid);
+	format(string, sizeof(string), lang_texts[12][34], ReturnPlayerName(clickedid), clickedid);
 	SendClientMessage(playerid, COLOUR_YELLOW, string);
 
 	switch( player_GetStatus(clickedid) ) {
@@ -160,7 +160,7 @@ public adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][35], GetPlayerLevel(clickedid), GetPlayerXP(clickedid));	//Level, XP
 	SendClientMessage(playerid, COLOUR_WHITE, string);
 
-	format(string, sizeof(string), lang_texts[12][36], oGetPlayerMoney(clickedid), GetPlayerBankMoney(clickedid));	//Money, Bank
+	format(string, sizeof(string), lang_texts[12][36], GetPlayerMoney(clickedid), GetPlayerBankMoney(clickedid));	//Money, Bank
 	SendClientMessage(playerid, COLOUR_WHITE, string);
 
 	format(string, sizeof(string), lang_texts[12][38], player_GetDeaths(clickedid), player_GetKills(clickedid));	//Kills, Deaths
@@ -189,14 +189,14 @@ public adm_click_KillPlayer(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
-	oSetPlayerHealth(clickedid, 0.0);
+	SetPlayerHealth(clickedid, 0.0);
 
 	new string[MAX_STRING];
 
-	format(string, sizeof(string), lang_texts[12][62], oGetPlayerName(clickedid), clickedid);
+	format(string, sizeof(string), lang_texts[12][62], ReturnPlayerName(clickedid), clickedid);
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][63], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][63], ReturnPlayerName(playerid));
 	SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -216,7 +216,7 @@ public adm_click_TeleportToPlayer(playerid, clickedid, listitem, inputtext[])
 		GetPlayerPos(clickedid, pos[0], pos[1], pos[2]);
 		GetPlayerFacingAngle(clickedid, pos[3]);
 
-		oSetVehiclePos(vehicleid, pos[0] + 3.01, pos[1] + 3.01, pos[2] + 1.0);
+		SetVehiclePos(vehicleid, pos[0] + 3.01, pos[1] + 3.01, pos[2] + 1.0);
 		SetPlayerFacingAngle(playerid, pos[3]);
 	} else {
 		GetPlayerPos(clickedid, pos[0], pos[1], pos[2]);
@@ -225,12 +225,12 @@ public adm_click_TeleportToPlayer(playerid, clickedid, listitem, inputtext[])
 		pos[0] = pos[0] + random(2) - random(4);
 		pos[1] = pos[1] + random(2) - random(4);
 
-		oSetPlayerPos(playerid, pos[0], pos[1], pos[2] + 1.0);
+		SetPlayerPos(playerid, pos[0], pos[1], pos[2] + 1.0);
 		SetPlayerFacingAngle(playerid, pos[3]);
 	}
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][66], oGetPlayerName(clickedid), clickedid);
+	format(string, sizeof(string), lang_texts[12][66], ReturnPlayerName(clickedid), clickedid);
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -255,7 +255,7 @@ public adm_click_TeleportToMe(playerid, clickedid, listitem, inputtext[])
 		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 		GetPlayerFacingAngle(playerid, pos[3]);
 
-		oSetVehiclePos(vehicleid, pos[0] + 3.01, pos[1] + 3.01, pos[2] + 1.0);
+		SetVehiclePos(vehicleid, pos[0] + 3.01, pos[1] + 3.01, pos[2] + 1.0);
 		SetPlayerFacingAngle(clickedid, pos[3]);
 	} else {
 		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
@@ -264,15 +264,15 @@ public adm_click_TeleportToMe(playerid, clickedid, listitem, inputtext[])
 		pos[0] = pos[0] + random(2) - random(4);
 		pos[1] = pos[1] + random(2) - random(4);
 
-		oSetPlayerPos(clickedid, pos[0], pos[1], pos[2] + 1.0);
+		SetPlayerPos(clickedid, pos[0], pos[1], pos[2] + 1.0);
 		SetPlayerFacingAngle(clickedid, pos[3]);
 	}
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][66], oGetPlayerName(playerid), playerid);
+	format(string, sizeof(string), lang_texts[12][66], ReturnPlayerName(playerid), playerid);
 	SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][67], oGetPlayerName(clickedid), clickedid);
+	format(string, sizeof(string), lang_texts[12][67], ReturnPlayerName(clickedid), clickedid);
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -297,7 +297,7 @@ public adm_click_SetHealth(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
-	oSetPlayerHealth(clickedid, health);
+	SetPlayerHealth(clickedid, health);
 	return 1;
 }
 
@@ -321,7 +321,7 @@ public adm_click_SetArmour(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
-	oSetPlayerArmour(clickedid, armour);
+	SetPlayerArmour(clickedid, armour);
 	return 1;
 }
 
@@ -343,10 +343,10 @@ public adm_click_SetLevel(playerid, clickedid, listitem, inputtext[])
 	GivePlayerXP(clickedid, level_xp_list[newlvl] - GetPlayerXP(clickedid));
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][31], oGetPlayerName(playerid), newlvl);
+	format(string, sizeof(string), lang_texts[12][31], ReturnPlayerName(playerid), newlvl);
 	SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][32], oGetPlayerName(clickedid), newlvl, oldlvl);
+	format(string, sizeof(string), lang_texts[12][32], ReturnPlayerName(clickedid), newlvl, oldlvl);
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -374,16 +374,16 @@ public adm_click_GiveXP(playerid, clickedid, listitem, inputtext[])
 
 	new string[MAX_STRING];
 	if (xpamount > 0) {
-		format(string, sizeof(string), lang_texts[12][5], oGetPlayerName(playerid), xpamount);
+		format(string, sizeof(string), lang_texts[12][5], ReturnPlayerName(playerid), xpamount);
 		SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
 
-		format(string, sizeof(string), lang_texts[12][6], oGetPlayerName(clickedid), xpamount, GetPlayerXP(clickedid));
+		format(string, sizeof(string), lang_texts[12][6], ReturnPlayerName(clickedid), xpamount, GetPlayerXP(clickedid));
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	} else {
-		format(string, sizeof(string), lang_texts[12][7], oGetPlayerName(playerid), xpamount);
+		format(string, sizeof(string), lang_texts[12][7], ReturnPlayerName(playerid), xpamount);
 		SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
 
-		format(string, sizeof(string), lang_texts[12][8], oGetPlayerName(clickedid), xpamount, GetPlayerXP(clickedid));
+		format(string, sizeof(string), lang_texts[12][8], ReturnPlayerName(clickedid), xpamount, GetPlayerXP(clickedid));
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	}
 	return 1;
@@ -403,20 +403,20 @@ public adm_click_GiveMoney(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
-	oGivePlayerMoney(clickedid, cashamount, 1);
+	GivePlayerMoney(clickedid, cashamount, 1);
 
 	new string[MAX_STRING];
 	if (cashamount > 0) {
-		format(string, sizeof(string), lang_texts[12][12], oGetPlayerName(playerid), cashamount);
+		format(string, sizeof(string), lang_texts[12][12], ReturnPlayerName(playerid), cashamount);
 		SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
 
-		format(string, sizeof(string), lang_texts[12][13], oGetPlayerName(clickedid), cashamount, oGetPlayerMoney(clickedid));
+		format(string, sizeof(string), lang_texts[12][13], ReturnPlayerName(clickedid), cashamount, GetPlayerMoney(clickedid));
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	} else {
-		format(string, sizeof(string), lang_texts[12][14], oGetPlayerName(playerid), cashamount);
+		format(string, sizeof(string), lang_texts[12][14], ReturnPlayerName(playerid), cashamount);
 		SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
 
-		format(string, sizeof(string), lang_texts[12][15], oGetPlayerName(clickedid), cashamount, oGetPlayerMoney(clickedid));
+		format(string, sizeof(string), lang_texts[12][15], ReturnPlayerName(clickedid), cashamount, GetPlayerMoney(clickedid));
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	}
 	return 1;
@@ -438,10 +438,10 @@ public adm_click_FreezePlayer(playerid, clickedid, listitem, inputtext[])
 	TogglePlayerControllable(clickedid, 0);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][54], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][54], ReturnPlayerName(playerid));
 	SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][55], oGetPlayerName(clickedid));
+	format(string, sizeof(string), lang_texts[12][55], ReturnPlayerName(clickedid));
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }
@@ -462,10 +462,10 @@ public adm_click_UnFreezePlayer(playerid, clickedid, listitem, inputtext[])
 	TogglePlayerControllable(clickedid, 1);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][56], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][56], ReturnPlayerName(playerid));
 	SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[12][57], oGetPlayerName(clickedid));
+	format(string, sizeof(string), lang_texts[12][57], ReturnPlayerName(clickedid));
 	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 	return 1;
 }

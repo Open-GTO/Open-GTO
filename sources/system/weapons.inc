@@ -138,16 +138,16 @@ stock weapon_OnGameModeInit()
 	Log_Game("SERVER: Weapon module init");
 }
 
-stock oGetWeaponName(weaponid)
+stock ReturnWeaponName(weaponid)
 {
 	new name[MAX_NAME],
 		lookupid = GetWeaponLookupID(weaponid);
 	
-	if (lookupid == -1)
-	{
+	if (lookupid == -1) {
 		return name;
 	}
-	set(name, Weapons[lookupid][Weapon_Name]);
+
+	strmid(name, Weapons[lookupid][Weapon_Name], 0, strlen(Weapons[lookupid][Weapon_Name]));
 	return name;
 }
 
@@ -249,7 +249,7 @@ stock ShowWeaponsOnLevel(playerid, newlevel, oldlevel)
 				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[9][24]);
 				wepfound = 1;
 			}
-			format(string, sizeof(string), lang_texts[9][25], oGetWeaponName(weaponid), GetWeaponCost(weaponid));
+			format(string, sizeof(string), lang_texts[9][25], ReturnWeaponName(weaponid), GetWeaponCost(weaponid));
 			SendClientMessage(playerid, COLOUR_MISC, string);
 		}
 	}

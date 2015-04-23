@@ -108,11 +108,11 @@ stock pickup_OnPlayerPickUpPickup(playerid, pickupid)
 	switch (GetPickupModel(pickupid)) {
 		// armour
 		case 1242: {
-			oSetPlayerArmour(playerid, 100);
+			SetPlayerArmour(playerid, 100);
 		}
 		// parachute
 		case 371: {
-			oGivePlayerWeapon(playerid, 46, 1);
+			GivePlayerWeapon(playerid, 46, 1);
 		}
 		// health
 		case 1240: {

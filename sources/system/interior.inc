@@ -163,7 +163,7 @@ stock interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			new id = interior_GetPlayerIndex(playerid);
 			SetPlayerInterior(playerid, 0);
 			SetPlayerVirtualWorld(playerid, 0);
-			oSetPlayerPos(playerid, interior_EnterExits[id][iee_enter_X], interior_EnterExits[id][iee_enter_Y], interior_EnterExits[id][iee_enter_Z]);
+			SetPlayerPos(playerid, interior_EnterExits[id][iee_enter_X], interior_EnterExits[id][iee_enter_Y], interior_EnterExits[id][iee_enter_Z]);
 			SetPlayerFacingAngle(playerid, interior_EnterExits[id][iee_enter_A]);
 			return 1;
 		}
@@ -172,7 +172,7 @@ stock interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			interior_SetPlayerIndex(playerid, i);
 			SetPlayerInterior(playerid, interior_EnterExits[i][iee_interior_ID]);
 			SetPlayerVirtualWorld(playerid, i + 1);
-			oSetPlayerPos(playerid, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z]);
+			SetPlayerPos(playerid, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z]);
 			SetPlayerFacingAngle(playerid, interior_EnterExits[i][iee_exit_A]);
 			return 1;
 		}

@@ -84,7 +84,7 @@ stock account_Register(playerid, password[])
 	account_Login(playerid, password);
 
 	SendClientMessage(playerid, COLOUR_GREEN, _(ACCOUNT_SUCCESS_REGISTER));
-	Log_Game("create_account: success %s(%d)", oGetPlayerName(playerid), playerid);
+	Log_Game("create_account: success %s(%d)", ReturnPlayerName(playerid), playerid);
 	return 1;
 }
 

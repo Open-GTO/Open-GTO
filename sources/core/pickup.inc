@@ -13,7 +13,7 @@
 
 new pickup_model[MAX_PICKUPS];
 
-stock oCreatePickup(model, type, Float:coord_X, Float:coord_Y, Float:coord_Z, Virtualworld = 0)
+stock Pickup_Create(model, type, Float:coord_X, Float:coord_Y, Float:coord_Z, Virtualworld = 0)
 {
 	new id = CreatePickup(model, type, coord_X, coord_Y, coord_Z, Virtualworld);
 	pickup_model[id] = model;
@@ -21,4 +21,4 @@ stock oCreatePickup(model, type, Float:coord_X, Float:coord_Y, Float:coord_Z, Vi
 }
 
 #define GetPickupModel(%0) pickup_model[%0]
-#define CreatePickup oCreatePickup
+#define CreatePickup Pickup_Create

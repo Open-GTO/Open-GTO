@@ -631,14 +631,14 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 				return 1;
 			}
 
-			if (oGetPlayerMoney(playerid) < HOUSE_UPGRADE_HEALTH_COST) {
+			if (GetPlayerMoney(playerid) < HOUSE_UPGRADE_HEALTH_COST) {
 				new string[MAX_STRING];
 				format(string, sizeof(string), lang_texts[8][63], HOUSE_UPGRADE_HEALTH_COST);
 				return Dialog_Message(playerid, lang_texts[8][88], string, lang_texts[8][87]);
 			}
 			
 			Houses[id][Houses_HealUpgrade] = 1;
-			oGivePlayerMoney(playerid,-HOUSE_UPGRADE_HEALTH_COST, 0);
+			GivePlayerMoney(playerid,-HOUSE_UPGRADE_HEALTH_COST, 0);
 
 			Dialog_Message(playerid, lang_texts[8][83], lang_texts[8][64], lang_texts[8][87]);
 			return 1;
@@ -650,21 +650,21 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 					return 1;
 				}
 
-				oSetPlayerArmour(playerid, 100);
+				SetPlayerArmour(playerid, 100);
 
 				SetPVarInt(playerid, "house_ArmourUpgrade_Used", 1);
 				SetTimerEx("house_ArmourUpgrade_Used", HOUSE_UPGRADE_USE_TIME * 1000, false, "d", playerid);
 				return 1;
 			}
 
-			if (oGetPlayerMoney(playerid) < HOUSE_UPGRADE_ARMOUR_COST) {
+			if (GetPlayerMoney(playerid) < HOUSE_UPGRADE_ARMOUR_COST) {
 				new string[MAX_STRING];
 				format(string, sizeof(string), lang_texts[8][63], HOUSE_UPGRADE_ARMOUR_COST);
 				return Dialog_Message(playerid, lang_texts[8][89], string, lang_texts[8][87]);
 			}
 
 			Houses[id][Houses_ArmourUpgrade] = 1;
-			oGivePlayerMoney(playerid,-HOUSE_UPGRADE_ARMOUR_COST, 0);
+			GivePlayerMoney(playerid,-HOUSE_UPGRADE_ARMOUR_COST, 0);
 
 			Dialog_Message(playerid, lang_texts[8][83], lang_texts[8][64], lang_texts[8][87]);
 			return 1;
@@ -695,18 +695,18 @@ stock RentRoom(playerid)
 	
 	if (!strcmp(Houses[id][Houses_RentName], "Unknown", true))
 	{
-		if (oGetPlayerMoney(playerid) < Houses[id][Houses_RentCost])
+		if (GetPlayerMoney(playerid) < Houses[id][Houses_RentCost])
 		{
 			Dialog_Message(playerid, lang_texts[8][95], lang_texts[8][57], lang_texts[8][87]);
 			return 1;
 		}
-		set(Houses[id][Houses_RentName], oGetPlayerName(playerid));
-		oGivePlayerMoney(playerid, -Houses[id][Houses_RentCost], 0);
+		set(Houses[id][Houses_RentName], ReturnPlayerName(playerid));
+		GivePlayerMoney(playerid, -Houses[id][Houses_RentCost], 0);
 		
 		// перечислим деньги в банк владельцу
 		new owner_id = -1;
 		foreach (Player, pid) {
-			if ( !strcmp(Houses[id][Houses_Owner], oGetPlayerName(pid)) ) {
+			if ( !strcmp(Houses[id][Houses_Owner], ReturnPlayerName(pid)) ) {
 				owner_id = pid;
 				break;
 			}
@@ -726,7 +726,7 @@ stock RentRoom(playerid)
 		format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_houses, Houses[id][Houses_Name]);
 		new file_housing = ini_openFile(string);
 		ini_setInteger(file_housing, "Rentabil", 1);
-		ini_setString(file_housing, "RentName", oGetPlayerName(playerid));
+		ini_setString(file_housing, "RentName", ReturnPlayerName(playerid));
 		ini_closeFile(file_housing);
 		Dialog_Message(playerid, lang_texts[8][95], lang_texts[8][55], lang_texts[8][87]);
 		Mapicon_UpdateTypeForPlayer(playerid, house_icon[id], 35);
@@ -742,19 +742,19 @@ stock RentRoom(playerid)
 stock DeleteRenter(playerid)
 {
 	new id = GetPlayerToHouseID(playerid);
-	if (!strcmp(Houses[id][Houses_Owner], oGetPlayerName(playerid), true)) 
+	if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true)) 
 	{
 		Dialog_Message(playerid, lang_texts[8][95], lang_texts[8][58], lang_texts[8][87]);
 		foreach (Player, i)
 		{
-			if (!strcmp(Houses[id][Houses_RentName], oGetPlayerName(i), true))
+			if (!strcmp(Houses[id][Houses_RentName], ReturnPlayerName(i), true))
 			{
 				SendClientMessage(i, COLOUR_LIGHTRED, lang_texts[8][60]);
 				Mapicon_ResetTypeForPlayer(i, house_icon[id]);
 			}
 		}
 	}
-	else if (!strcmp(Houses[id][Houses_RentName], oGetPlayerName(playerid), true))
+	else if (!strcmp(Houses[id][Houses_RentName], ReturnPlayerName(playerid), true))
 	{
 		Dialog_Message(playerid, lang_texts[8][95], lang_texts[8][59], lang_texts[8][87]);
 		Mapicon_ResetTypeForPlayer(playerid, house_icon[id]);
@@ -795,7 +795,7 @@ stock house_Buy(playerid)
 	}
 
 	new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
-	if (oGetPlayerMoney(playerid) < price) {
+	if (GetPlayerMoney(playerid) < price) {
 		Dialog_Message(playerid, lang_texts[8][98], lang_texts[8][18], lang_texts[8][87]);
 		return 1;
 	}
@@ -815,16 +815,16 @@ stock house_Buy(playerid)
 	#if defined BUY_ALL_HOUSES
 		foreach (Player, ownerid)
 		{
-			if (!strcmp(Houses[id][Houses_Owner], oGetPlayerName(ownerid), true))
+			if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(ownerid), true))
 			{
-				format(temp, sizeof(temp), lang_texts[8][39], oGetPlayerName(playerid), Houses[id][Houses_Name]);
+				format(temp, sizeof(temp), lang_texts[8][39], ReturnPlayerName(playerid), Houses[id][Houses_Name]);
 				SendClientMessage(ownerid, COLOUR_RED, temp);
-				oGivePlayerMoney(ownerid, price, 1);
+				GivePlayerMoney(ownerid, price, 1);
 				break;
 			}
 		}
 	#endif
-		oGivePlayerMoney(playerid,-price, 1);
+		GivePlayerMoney(playerid,-price, 1);
 		set(Houses[id][Houses_Owner], playername);
 		set(Houses[id][Houses_Gang], player_GetGangName(playerid));
 		Houses[id][Houses_Buyout] = 0;
@@ -852,14 +852,14 @@ stock house_Sell(playerid)
 		return 1;
 	}
 
-	if (strcmp(Houses[id][Houses_Owner], oGetPlayerName(playerid), true))
+	if (strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true))
 	{
 		Dialog_Message(playerid, lang_texts[8][22], lang_texts[8][23], lang_texts[8][87]);
 	}
 	else
 	{
 		new price = ((Houses[id][Houses_Cost] + Houses[id][Houses_Buyout]) * 85) / 100;
-		oGivePlayerMoney(playerid, price, 1);
+		GivePlayerMoney(playerid, price, 1);
 		house_Free(id);
 		Mapicon_ResetTypeForPlayer(playerid, house_icon[id]);
 		new gangid = player_GetGangID(playerid);
@@ -872,7 +872,7 @@ stock house_Sell(playerid)
 		format(temp, sizeof(temp), lang_texts[8][24], Houses[id][Houses_Name]);
 		Dialog_Message(playerid, lang_texts[8][22], temp, lang_texts[8][87]);
 		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[8][25]);
-		Log_Game("player: %s(%d): sold the '%s' (house)", oGetPlayerName(playerid), playerid, Houses[id][Houses_Name]);
+		Log_Game("player: %s(%d): sold the '%s' (house)", ReturnPlayerName(playerid), playerid, Houses[id][Houses_Name]);
 	}
 	return 1;
 }
@@ -892,7 +892,7 @@ stock house_Keep(playerid)
 		return 1;
 	}
 	
-	if (oGetPlayerMoney(playerid) < Houses[id][Houses_UpKeepLeft])
+	if (GetPlayerMoney(playerid) < Houses[id][Houses_UpKeepLeft])
 	{
 		Dialog_Message(playerid, lang_texts[8][97], lang_texts[8][46], lang_texts[8][87]);
 		return 1;
@@ -904,7 +904,7 @@ stock house_Keep(playerid)
 		return 1;
 	}
 
-	oGivePlayerMoney(playerid, -Houses[id][Houses_UpKeepLeft], 0);
+	GivePlayerMoney(playerid, -Houses[id][Houses_UpKeepLeft], 0);
 	Dialog_Message(playerid, lang_texts[8][97], lang_texts[8][44], lang_texts[8][87]);
 	Houses[id][Houses_UpKeepLeft] = 0;
 	return 1;
@@ -956,7 +956,7 @@ stock housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			
 			if (strcmp(Houses[id][Houses_Owner], "Unknown", true) && strcmp(Houses[id][Houses_Gang], "Unknown", true))
 			{
-				if (strcmp(Houses[id][Houses_Owner], oGetPlayerName(playerid), true))
+				if (strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true))
 				{
 					format(string, sizeof(string),
 						lang_texts[8][1],

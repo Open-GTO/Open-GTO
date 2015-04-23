@@ -49,7 +49,7 @@ DialogCreate:ServiceWeapon(playerid)
 		if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
 			continue;
 		}
-		format(string, sizeof(string), lang_texts[17][56], string, oGetWeaponName(weaponid), GetWeaponCost(weaponid));
+		format(string, sizeof(string), lang_texts[17][56], string, ReturnWeaponName(weaponid), GetWeaponCost(weaponid));
 	}
 
 	Dialog_Open(playerid, Dialog:ServiceWeapon, DIALOG_STYLE_TABLIST_HEADERS, lang_texts[17][57], string, lang_texts[17][58], lang_texts[17][59]);
@@ -75,13 +75,13 @@ DialogCreate:ServiceWeaponBuy(playerid)
 		weaponid = GetPVarInt(playerid, "Buy_Weapon_ID");
 
 	if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_IsFirearm] == 0) {
-		format(string, sizeof(string), lang_texts[17][60], oGetWeaponName(weaponid), GetWeaponCost(weaponid));
+		format(string, sizeof(string), lang_texts[17][60], ReturnWeaponName(weaponid), GetWeaponCost(weaponid));
 		dialog_style = DIALOG_STYLE_MSGBOX;
 		SetPVarInt(playerid, "weapons_Buy_One_Bullet", 1);
 	} else if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_IsFirearm] == 1) {
 		format(string, sizeof(string),
 			lang_texts[17][61],
-			oGetWeaponName(weaponid), GetWeaponCost(weaponid), oGetPlayerMoney(playerid) / GetWeaponCost(weaponid)
+			ReturnWeaponName(weaponid), GetWeaponCost(weaponid), GetPlayerMoney(playerid) / GetWeaponCost(weaponid)
 		);
 		strcat(string, lang_texts[17][66]);
 	}
@@ -156,36 +156,36 @@ stock wshop_Buy(playerid, weaponid, bullets)
 	}
 
 	if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
-		format(string, sizeof(string), lang_texts[17][49], oGetWeaponName(weaponid));
+		format(string, sizeof(string), lang_texts[17][49], ReturnWeaponName(weaponid));
 		SendClientMessage(playerid, COLOUR_RED, string);
 		return 0;
 	}
 
 	new purchasecost = GetWeaponCost(weaponid) * bullets;
 	if (purchasecost < 1) {
-		format(string, sizeof(string), lang_texts[17][50], oGetWeaponName(weaponid));
+		format(string, sizeof(string), lang_texts[17][50], ReturnWeaponName(weaponid));
 		SendClientMessage(playerid, COLOUR_RED, string);
 		return 0;
 	}
 
-	if (oGetPlayerMoney(playerid) < purchasecost) {
+	if (GetPlayerMoney(playerid) < purchasecost) {
 		format(string, sizeof(string), lang_texts[17][51], purchasecost);
 		SendClientMessage(playerid, COLOUR_RED, string);
 		return 0;
 	}
 
-	oGivePlayerMoney(playerid, -purchasecost, 1);
+	GivePlayerMoney(playerid, -purchasecost, 1);
 
 	switch (weaponid) {
-		case 47: oSetPlayerArmour(playerid, 100.0);
-		case 37: GivePlayerWeaponCheck(playerid, weaponid, bullets * 10); // fix for flamethrower
-		default: GivePlayerWeaponCheck(playerid, weaponid, bullets);
+		case 47: SetPlayerArmour(playerid, 100.0);
+		case 37: GivePlayerWeapon(playerid, weaponid, bullets * 10, true); // fix for flamethrower
+		default: GivePlayerWeapon(playerid, weaponid, bullets, true);
 	}
 
 	if (bullets > 1) {
-		format(string, sizeof(string), lang_texts[17][52], bullets, oGetWeaponName(weaponid), purchasecost);
+		format(string, sizeof(string), lang_texts[17][52], bullets, ReturnWeaponName(weaponid), purchasecost);
 	} else {
-		format(string, sizeof(string), lang_texts[17][53], oGetWeaponName(weaponid), purchasecost);
+		format(string, sizeof(string), lang_texts[17][53], ReturnWeaponName(weaponid), purchasecost);
 	}
 
 	SendClientMessage(playerid, COLOUR_RED, string);

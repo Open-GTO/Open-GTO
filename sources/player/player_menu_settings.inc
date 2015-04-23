@@ -45,7 +45,7 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 		}
 		// изменить ник
 		case 1: {
-			if (oGetPlayerMoney(playerid) < CHANGE_NICK_COST) {
+			if (GetPlayerMoney(playerid) < CHANGE_NICK_COST) {
 				new string[MAX_STRING];
 				format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_NO_MONEY), CHANGE_NICK_COST);
 				Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
@@ -60,7 +60,7 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 		}
 		// изменить пароль
 		case 2: {
-			if (oGetPlayerMoney(playerid) < CHANGE_PASS_COST) {
+			if (GetPlayerMoney(playerid) < CHANGE_PASS_COST) {
 				new string[MAX_STRING];
 				format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY), CHANGE_PASS_COST);
 				Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
@@ -94,7 +94,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	}
 	
 	new string[MAX_STRING];
-	if (oGetPlayerMoney(playerid) < CHANGE_NICK_COST) {
+	if (GetPlayerMoney(playerid) < CHANGE_NICK_COST) {
 		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_NO_MONEY), CHANGE_NICK_COST);
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 			_(PLAYER_MENU_SETTINGS_NAME_CAPTION),
@@ -177,7 +177,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		ini_fileRemove(string);
 	}
 	
-	oGivePlayerMoney(playerid, -CHANGE_NICK_COST, 1);
+	GivePlayerMoney(playerid, -CHANGE_NICK_COST, 1);
 	
 	format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_CHANGED), old_name, new_name);
 	Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
@@ -205,7 +205,7 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 	}
 	
 	new string[MAX_STRING];
-	if (oGetPlayerMoney(playerid) < CHANGE_PASS_COST) {
+	if (GetPlayerMoney(playerid) < CHANGE_PASS_COST) {
 		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY), CHANGE_PASS_COST);
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 			_(PLAYER_MENU_SETTINGS_PASSWORD_CAPTION),
@@ -245,7 +245,7 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 #endif
 
 	account_Save(playerid);
-	oGivePlayerMoney(playerid, -CHANGE_PASS_COST, 1);
+	GivePlayerMoney(playerid, -CHANGE_PASS_COST, 1);
 	return 1;
 }
 

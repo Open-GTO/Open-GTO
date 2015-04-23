@@ -264,7 +264,7 @@ DialogResponse:BusinessMenu(playerid, response, listitem, inputtext[])
 	switch (listitem) {
 		// продать/купить
 		case 0: {
-			if (!strcmp(Businesses[ GetPlayerToBusinessID(playerid) ][Business_Owner], oGetPlayerName(playerid), true)) {
+			if (!strcmp(Businesses[ GetPlayerToBusinessID(playerid) ][Business_Owner], ReturnPlayerName(playerid), true)) {
 				Dialog_Show(playerid, Dialog:BusinessSellAccept);
 			} else {
 				bis_Buy(playerid);
@@ -365,7 +365,7 @@ stock business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	new head[MAX_STRING], string[MAX_STRING * 2];
 	format(head, sizeof(head), lang_texts[3][3], Businesses[id][Business_Name]);
 	
-	if (!strcmp(Businesses[id][Business_Owner], oGetPlayerName(playerid), true))
+	if (!strcmp(Businesses[id][Business_Owner], ReturnPlayerName(playerid), true))
 	{
 		// если мой
 		format(string, sizeof(string), lang_texts[3][11],
@@ -437,7 +437,7 @@ stock bis_Buy(playerid)
 		return 1;
 	}
 	new price = Businesses[id][Business_Cost] + Businesses[id][Business_Buyout];
-	if (oGetPlayerMoney(playerid) < price)
+	if (GetPlayerMoney(playerid) < price)
 	{
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, lang_texts[3][17], lang_texts[3][10], lang_texts[3][8]);
 		return 1;
@@ -458,17 +458,17 @@ stock bis_Buy(playerid)
 	#if defined BUY_ALL_BUSINESS
 		foreach (Player, ownerid)
 		{
-			if (!strcmp(Businesses[id][Business_Owner], oGetPlayerName(ownerid), true))
+			if (!strcmp(Businesses[id][Business_Owner], ReturnPlayerName(ownerid), true))
 			{
 				new temp[MAX_STRING];
 				format(temp, sizeof(temp), lang_texts[3][15], playername, Businesses[id][Business_Name]);
 				SendClientMessage(ownerid, COLOUR_RED, temp);
-				oGivePlayerMoney(ownerid, price, 1);
+				GivePlayerMoney(ownerid, price, 1);
 				break;
 			}
 		}
 	#endif
-		oGivePlayerMoney(playerid, -price, 1);
+		GivePlayerMoney(playerid, -price, 1);
 
 		set(Businesses[id][Business_Owner], playername);
 		Businesses[id][Business_Buyout] = 0;
@@ -497,14 +497,14 @@ stock bis_Sell(playerid)
 	}
 	new head[MAX_STRING];
 	format(head, sizeof(head), lang_texts[3][3], Businesses[id][Business_Name]);
-	if (strcmp(Businesses[id][Business_Owner], oGetPlayerName(playerid), true))
+	if (strcmp(Businesses[id][Business_Owner], ReturnPlayerName(playerid), true))
 	{
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, lang_texts[3][19], lang_texts[3][10], lang_texts[3][8]);
 	}
 	else
 	{
 		new price = ((Businesses[id][Business_Cost] + Businesses[id][Business_Buyout]) * 85) / 100;
-		oGivePlayerMoney(playerid, price, 1);
+		GivePlayerMoney(playerid, price, 1);
 
 		set(Businesses[id][Business_Owner], "Unknown");
 
@@ -521,7 +521,7 @@ stock bis_Sell(playerid)
 		);
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, lang_texts[3][10], lang_texts[3][8]);
 
-		Log_Game("player: %s(%d): sold the '%s' (business)", oGetPlayerName(playerid), playerid, Businesses[id][Business_Name]);
+		Log_Game("player: %s(%d): sold the '%s' (business)", ReturnPlayerName(playerid), playerid, Businesses[id][Business_Name]);
 	}
 	return 1;
 }
@@ -535,7 +535,7 @@ stock bis_Collect(playerid)
 	}
 	new head[MAX_STRING];
 	format(head, sizeof(head), lang_texts[3][3], Businesses[id][Business_Name]);
-	if (strcmp(Businesses[id][Business_Owner], oGetPlayerName(playerid), true))
+	if (strcmp(Businesses[id][Business_Owner], ReturnPlayerName(playerid), true))
 	{
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, lang_texts[3][19], lang_texts[3][10], lang_texts[3][8]);
 	}
@@ -543,7 +543,7 @@ stock bis_Collect(playerid)
 	{
 		if (Businesses[id][Business_Vault] > 0)
 		{
-			oGivePlayerMoney(playerid, Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade], 1);
+			GivePlayerMoney(playerid, Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade], 1);
 			Businesses[id][Business_Vault] = 0;
 
 			Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, lang_texts[3][21], lang_texts[3][10], lang_texts[3][8]);
@@ -572,13 +572,13 @@ stock bis_buyUpgrade(playerid)
 	}
 	new price = business_GetUpgradeCost(id);
 	
-	if (oGetPlayerMoney(playerid) < price) {
+	if (GetPlayerMoney(playerid) < price) {
 		format(string, sizeof(string), lang_texts[3][26], price);
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, lang_texts[3][10], lang_texts[3][8]);
 		return 1;
 	}
 	
-	oGivePlayerMoney(playerid, -price, 0);
+	GivePlayerMoney(playerid, -price, 0);
 	Businesses[id][Business_Upgrade]++;
 	format(string, sizeof(string), lang_texts[3][24], Businesses[id][Business_Name], Businesses[id][Business_Upgrade]);
 	Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, lang_texts[3][10], lang_texts[3][8]);

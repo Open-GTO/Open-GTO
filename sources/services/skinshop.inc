@@ -159,7 +159,7 @@ DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])
 	SkinShop_Exit(playerid);
 	
 	player_SetSkin(playerid, GetPVarInt(playerid, "SkinShop_CurrentSkin"));
-	oGivePlayerMoney(playerid, -SKINS_COST);
+	GivePlayerMoney(playerid, -SKINS_COST);
 	
 	SkinShop_DeletePVars(playerid);
 
@@ -236,7 +236,7 @@ stock SkinShop_Exit(playerid)
 	TogglePlayerControllable(playerid, 1);
 	SetPlayerSkin(playerid, GetPVarInt(playerid, "SkinShop_Old"));
 	SetPlayerInterior(playerid, GetPVarInt(playerid, "SkinShop_Interior"));
-	oSetPlayerPos(playerid, GetPVarFloat(playerid, "SkinShop_Coords_X"), GetPVarFloat(playerid, "SkinShop_Coords_Y"), GetPVarFloat(playerid, "SkinShop_Coords_Z"));
+	SetPlayerPos(playerid, GetPVarFloat(playerid, "SkinShop_Coords_X"), GetPVarFloat(playerid, "SkinShop_Coords_Y"), GetPVarFloat(playerid, "SkinShop_Coords_Z"));
 	SetPlayerFacingAngle(playerid, GetPVarFloat(playerid, "SkinShop_Coords_A"));
 	SetCameraBehindPlayer(playerid);
 	return 1;
@@ -265,7 +265,7 @@ stock SkinShop_SetPlayerFittingRoom(playerid)
 	SetPVarFloat(playerid, "SkinShop_Coords_Z", pos[2]);
 	SetPVarFloat(playerid, "SkinShop_Coords_A", pos[3]);
 	
-	oSetPlayerPos(playerid, 181.751159, -86.932769, 1002.023437);
+	SetPlayerPos(playerid, 181.751159, -86.932769, 1002.023437);
 	SetPlayerFacingAngle(playerid, 122.692977);
 	SetPlayerInterior(playerid, 18);
 	SetPlayerCameraPos(playerid, 179.138198, -88.452796, 1003.536376);

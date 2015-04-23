@@ -13,27 +13,27 @@
 #pragma library pl_money
 
 
-stock oSetPlayerMoney(playerid,money)
+stock SetPlayerMoney(playerid,money)
 {
 	SetPVarInt(playerid, "Money", money);
 	pl_textdraw_SetMoney(playerid, money);
 	return 1;
 }
 
-stock oGivePlayerMoney(playerid, money, showtext=0)
+stock pl_money_GivePlayerMoney(playerid, money, showtext=0)
 {
 	if (money == 0) {
 		return 0;
 	}
 
-	if (money > MAX_MONEY - oGetPlayerMoney(playerid)) {
-		money = MAX_MONEY - oGetPlayerMoney(playerid);
-		Log_Game("player: %s(%d): is on max money", oGetPlayerName(playerid), playerid);
+	if (money > MAX_MONEY - GetPlayerMoney(playerid)) {
+		money = MAX_MONEY - GetPlayerMoney(playerid);
+		Log_Game("player: %s(%d): is on max money", ReturnPlayerName(playerid), playerid);
 	}
 	
-	if (money < -MAX_MONEY - oGetPlayerMoney(playerid)) {
-		money = -MAX_MONEY - oGetPlayerMoney(playerid);
-		Log_Game("player: %s(%d): is on min money", oGetPlayerName(playerid), playerid);
+	if (money < -MAX_MONEY - GetPlayerMoney(playerid)) {
+		money = -MAX_MONEY - GetPlayerMoney(playerid);
+		Log_Game("player: %s(%d): is on min money", ReturnPlayerName(playerid), playerid);
 	}
 
 	if (showtext == 1) {
@@ -47,7 +47,7 @@ stock oGivePlayerMoney(playerid, money, showtext=0)
 		}
 	}
 
-	oSetPlayerMoney(playerid, oGetPlayerMoney(playerid) + money);
+	SetPlayerMoney(playerid, GetPlayerMoney(playerid) + money);
 	return 1;
 }
 
@@ -56,7 +56,7 @@ stock GetPlayerTotalMoney(playerid)
 	return GetPVarInt(playerid, "Money") + GetPVarInt(playerid, "BankMoney");
 }
 
-stock oGetPlayerMoney(playerid)
+stock pl_money_GetPlayerMoney(playerid)
 {
 	return GetPVarInt(playerid, "Money");
 }

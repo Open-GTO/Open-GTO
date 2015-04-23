@@ -89,12 +89,12 @@ public bar_Gulp(playerid)
 	GetMaxHealth(playerid, max_health);
 
 	new Float:health;
-	oGetPlayerHealth(playerid, health);
+	GetPlayerHealth(playerid, health);
 
 	if (health + Drinks[id][Hp] / MAX_GULPS > max_health) {
-		oSetPlayerHealth(playerid, max_health);
+		SetPlayerHealth(playerid, max_health);
 	} else {
-		oSetPlayerHealth(playerid, health + Drinks[id][Hp] / MAX_GULPS);
+		SetPlayerHealth(playerid, health + Drinks[id][Hp] / MAX_GULPS);
 	}
 
 	if (GetPVarInt(playerid, "bar_Gulps") >= MAX_GULPS) {
@@ -126,12 +126,12 @@ DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	if (oGetPlayerMoney(playerid) < Drinks[listitem][Cost]) {
+	if (GetPlayerMoney(playerid) < Drinks[listitem][Cost]) {
 		Dialog_Message(playerid, lang_texts[17][14], lang_texts[17][17], lang_texts[17][18]);
 		return 1;
 	}
 
-	oGivePlayerMoney(playerid,-Drinks[listitem][Cost], 1);
+	GivePlayerMoney(playerid,-Drinks[listitem][Cost], 1);
 	SetPlayerSpecialAction(playerid, Drinks[listitem][Action]);
 	SetPVarInt(playerid, "bar_Drinking", 1);
 	SetPVarInt(playerid, "bar_Alcohol_Id", listitem);

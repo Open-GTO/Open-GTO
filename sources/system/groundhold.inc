@@ -175,7 +175,7 @@ stock CheckGround(ghid)
 				}
 				
 				// выдаём бонусы
-				oGivePlayerMoney(playerid, Groundholds[ghid][gh_money] * PlayerGroundHoldTime[ghid][playerid], 0);
+				GivePlayerMoney(playerid, Groundholds[ghid][gh_money] * PlayerGroundHoldTime[ghid][playerid], 0);
 				
 				if (GetPlayerLevel(playerid) < MAX_LEVEL) {
 					GivePlayerXP(playerid, Groundholds[ghid][gh_xp] * PlayerGroundHoldTime[ghid][playerid], 0);

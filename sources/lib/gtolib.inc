@@ -146,7 +146,7 @@ stock SetPlayerPosEx(playerid, Float:X, Float:Y, Float:Z, Float:Angle, Interior,
 	SetPlayerInterior(playerid, Interior);
 	SetPlayerFacingAngle(playerid, Angle);
 	SetPlayerVirtualWorld(playerid, World);
-	oSetPlayerPos(playerid, X, Y, Z);
+	SetPlayerPos(playerid, X, Y, Z);
 	SetCameraBehindPlayer(playerid);
 }
 

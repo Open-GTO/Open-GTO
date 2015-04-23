@@ -69,7 +69,7 @@ COMMAND:lottery(playerid, params[])
 		}
 	}
 		
-	oGivePlayerMoney(playerid, -TicketCost);
+	GivePlayerMoney(playerid, -TicketCost);
 	SetPVarInt(playerid, "lottery_Value", value);
 		
 	new string[MAX_STRING];
@@ -105,12 +105,12 @@ public lottery_Timer()
 	foreach (new playerid : Player) {
 		if (GetPVarInt(playerid, "lottery_Value") == win_value) {
 			winner = 1;
-			oGivePlayerMoney(playerid, WinMoney, 1);
+			GivePlayerMoney(playerid, WinMoney, 1);
 			
 			format(string, sizeof(string), lang_texts[17][37], WinMoney);
 			SendClientMessage(playerid, COLOUR_GREEN, string);
 			
-			format(string, sizeof(string), lang_texts[17][38], oGetPlayerName(playerid), playerid, WinMoney);
+			format(string, sizeof(string), lang_texts[17][38], ReturnPlayerName(playerid), playerid, WinMoney);
 			SendClientMessageToAll(COLOUR_GREEN, string);
 		}
 

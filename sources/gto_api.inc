@@ -37,13 +37,13 @@ stock bernstein(string[])
 
 stock gto_GivePlayerMoney(playerid, amount, showtext=0)
 {
-	return CallRemoteFunction("api_oGivePlayerMoney", "ddd", playerid, amount, showtext);
+	return CallRemoteFunction("api_GivePlayerMoney", "ddd", playerid, amount, showtext);
 }
 #define GivePlayerMoney gto_GivePlayerMoney
 
 stock gto_SetPlayerHealth(playerid, Float:amount)
 {
-	return CallRemoteFunction("api_oSetPlayerHealth", "df", playerid, amount);
+	return CallRemoteFunction("api_SetPlayerHealth", "df", playerid, amount);
 }
 #define SetPlayerHealth gto_SetPlayerHealth
 

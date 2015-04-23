@@ -46,7 +46,7 @@ stock player_OnPlayerSpawn(playerid)
 	player_SetSkin(playerid, player_GetSkin(playerid));
 	SetPlayerMaxHealth(playerid);
 	pl_fights_UpdatePlayerStyleUsed(playerid);
-	GivePlayerAllWeapon(playerid);
+	GivePlayerOwnedWeapon(playerid);
 	weapon_SetSkills(playerid);
 	PushHide(playerid);
 	pl_textdraw_Show(playerid);
@@ -64,7 +64,7 @@ stock player_OnPlayerDisconnect(playerid, reason)
 	StopAudioStreamForPlayer(playerid);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), _(PLAYER_DISCONNECT), oGetPlayerName(playerid), playerid);
+	format(string, sizeof(string), _(PLAYER_DISCONNECT), ReturnPlayerName(playerid), playerid);
 	
 	switch (reason) {
 		case 0: strcat(string, " (вылетел)", sizeof(string));
@@ -87,7 +87,7 @@ stock player_OnPlayerConnect(playerid)
 	new plrIP[MAX_IP], string[MAX_STRING];
 	GetPlayerIp(playerid, plrIP, sizeof(plrIP));
 	SetPVarString(playerid, "IP", plrIP);
-	if (!NameCharCheck( oGetPlayerName(playerid) )) {
+	if (!NameCharCheck( ReturnPlayerName(playerid) )) {
 		format(string, sizeof(string), lang_texts[9][12], ALLOWED_NICK_SYMBOLS_STR);
 		SendClientMessage(playerid, COLOUR_RED, string);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[9][13]);
@@ -109,10 +109,10 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 		return;
 	}
 
-	new stolencash = (oGetPlayerMoney(playerid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
+	new stolencash = (GetPlayerMoney(playerid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
 	if (stolencash > 0) {
-		oGivePlayerMoney(playerid, -stolencash, 1);
-		oGivePlayerMoney(killerid, stolencash, 1);
+		GivePlayerMoney(playerid, -stolencash, 1);
+		GivePlayerMoney(killerid, stolencash, 1);
 	}
 	
 	if (player_GetGangID(killerid) != 0) {
@@ -235,7 +235,7 @@ stock player_OnLogin(playerid)
 
 stock player_SetDefaultData(playerid)
 {
-	oSetPlayerMoney(playerid, PlayerStartMoney);
+	SetPlayerMoney(playerid, PlayerStartMoney);
 	player_SetJailTime(playerid, -1);
 	player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 	player_SetSkin(playerid, PLAYER_START_SKIN);
@@ -245,11 +245,11 @@ stock player_SetDefaultData(playerid)
 
 	pl_fights_SetPlayerStyleUsed(playerid, FIGHT_STYLE_NORMAL);
 
-	oResetPlayerWeapons(playerid);
+	ResetPlayerWeapons(playerid);
 	weapon_ResetSkills(playerid);
 
 	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
-		GivePlayerWeaponCheck(playerid, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);
+		GivePlayerWeapon(playerid, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull], true);
 	}
 }
 
@@ -285,7 +285,7 @@ stock GetPlayerID(playername[])
 	return INVALID_PLAYER_ID;
 }
 
-stock oGetPlayerName(playerid)
+stock ReturnPlayerName(playerid)
 {
 	new name[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, name, sizeof(name));
@@ -357,7 +357,7 @@ stock player_IsGodmod(playerid) {
 
 stock player_SetGodmod(playerid, isgodmod) {
 	if (isgodmod) {
-		oSetPlayerHealth(playerid, Float:0x7F800000);
+		SetPlayerHealth(playerid, Float:0x7F800000);
 	} else {
 		SetPlayerMaxHealth(playerid);
 	}

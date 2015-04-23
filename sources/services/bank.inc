@@ -167,12 +167,12 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 		amount = GetPlayerBankMoney(playerid);
 	}
 
-	if (amount > MAX_MONEY - oGetPlayerMoney(playerid)) {
-		amount = MAX_MONEY - oGetPlayerMoney(playerid);
+	if (amount > MAX_MONEY - GetPlayerMoney(playerid)) {
+		amount = MAX_MONEY - GetPlayerMoney(playerid);
 	}
 
 	TakePlayerBankMoney(playerid, amount);
-	oGivePlayerMoney(playerid, amount, 0);
+	GivePlayerMoney(playerid, amount, 0);
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), _(BANK_WITHDRAW_INFO), amount, GetPlayerBankMoney(playerid));
@@ -217,8 +217,8 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	if (amount > oGetPlayerMoney(playerid)) {
-		amount = oGetPlayerMoney(playerid);
+	if (amount > GetPlayerMoney(playerid)) {
+		amount = GetPlayerMoney(playerid);
 	}
 
 	if (amount > MaxBankMoney - GetPlayerBankMoney(playerid)) {
@@ -226,7 +226,7 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 	}
 
 	GivePlayerBankMoney(playerid, amount);
-	oGivePlayerMoney(playerid, -amount, 0);
+	GivePlayerMoney(playerid, -amount, 0);
 
 	new string[MAX_LANG_VALUE_STRING * 2];
 	format(string, sizeof(string), _(BANK_DEPOSIT_INFO), amount, GetPlayerBankMoney(playerid));
@@ -274,7 +274,7 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 			
-	if (oGetPlayerMoney(playerid) < amount) {
+	if (GetPlayerMoney(playerid) < amount) {
 		Dialog_MessageEx(playerid, Dialog:GangBankReturnWithdraw,
 			_(BANK_GANG_CAPTION),
 			_(BANK_GANG_INCORRECT_VALUE),
@@ -286,13 +286,13 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 	new gangid = player_GetGangID(playerid);
 		
 	TakeGangMoney(gangid, amount);
-	oGivePlayerMoney(playerid, amount);
+	GivePlayerMoney(playerid, amount);
 			
 	new string[MAX_LANG_VALUE_STRING];
 	format(string, sizeof(string), _(BANK_GANG_WITHDRAW_INFO), amount, GetGangMoney(gangid));
 	Dialog_Message(playerid, _(BANK_GANG_CAPTION), string, _(BANK_BUTTON_OK));
 
-	format(string, sizeof(string), _(BANK_GANG_WITHDRAW_MESSAGE), oGetPlayerName(playerid), playerid, amount);
+	format(string, sizeof(string), _(BANK_GANG_WITHDRAW_MESSAGE), ReturnPlayerName(playerid), playerid, amount);
 	SendGangMessage(gangid, string, COLOUR_GANG);
 	return 1;
 }
@@ -341,18 +341,18 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 	
-	if (oGetPlayerMoney(playerid) > MAX_MONEY - amount) {
-		amount = MAX_MONEY - oGetPlayerMoney(playerid);
+	if (GetPlayerMoney(playerid) > MAX_MONEY - amount) {
+		amount = MAX_MONEY - GetPlayerMoney(playerid);
 	}
 
 	GiveGangMoney(gangid, amount);
-	oGivePlayerMoney(playerid, -amount);
+	GivePlayerMoney(playerid, -amount);
 	
 	new string[MAX_LANG_VALUE_STRING];
 	format(string, sizeof(string), _(BANK_GANG_DEPOSIT_INFO), amount, GetGangMoney(gangid));
 	Dialog_Message(playerid, _(BANK_GANG_CAPTION), string, _(BANK_BUTTON_OK));
 
-	format(string, sizeof(string), _(BANK_GANG_DEPOSIT_MESSAGE), oGetPlayerName(playerid), playerid, amount);
+	format(string, sizeof(string), _(BANK_GANG_DEPOSIT_MESSAGE), ReturnPlayerName(playerid), playerid, amount);
 	SendGangMessage(gangid, string, COLOUR_GANG);
 	return 1;
 }

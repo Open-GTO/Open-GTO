@@ -20,11 +20,11 @@ stock pl_maptp_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid != 0) {
-		oSetVehiclePos(vehicleid, fX, fY, fZ);
+		SetVehiclePos(vehicleid, fX, fY, fZ);
 		LinkVehicleToInterior(vehicleid, 0);
 		SetVehicleVirtualWorld(vehicleid, 0);
 	} else {
-		oSetPlayerPos(playerid, fX, fY, fZ);
+		SetPlayerPos(playerid, fX, fY, fZ);
 		SetPlayerInterior(playerid, 0);
 		SetPlayerVirtualWorld(playerid, 0);
 	}

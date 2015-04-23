@@ -118,65 +118,55 @@ stock GetWeaponSlot(weaponid)
 }
 //
 
-// даёт оружие 'навсегда'
-stock GivePlayerWeaponCheck(playerid, weaponid, ammo)
+stock pl_weapon_GivePlayerWeapon(playerid, weaponid, ammo, bool:allowcheck = false)
 {
-	if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
-		return;
-	}
-
-	new slot = GetWeaponSlot(weaponid);
-	if (ammo > 0) {
-		if (!IsWeaponHandToHand(weaponid)) {
-			// если оружия разные, то обнуляем патроны
-			if (PlayerWeapons[playerid][slot][pwid] == weaponid) {
-				PlayerWeapons[playerid][slot][pbullets] += ammo;
-			} else {
-				PlayerWeapons[playerid][slot][pbullets] = ammo;
-			}
-			PlayerWeapons[playerid][slot][pwid] = weaponid;
-		} else {
-			PlayerWeapons[playerid][slot][pwid] = weaponid;
-			PlayerWeapons[playerid][slot][pbullets] = 1;
-		}
-		GivePlayerWeapon(playerid, PlayerWeapons[playerid][slot][pwid], 0);
-		SetPlayerAmmo(playerid, PlayerWeapons[playerid][slot][pwid], PlayerWeapons[playerid][slot][pbullets]);
-	}
-}
-
-stock oGivePlayerWeapon(playerid, weaponid, ammo)
-{
-	new slot = GetWeaponSlot(weaponid);
-	if (slot == -1) {
+	if (allowcheck && !IsPlayerAllowedWeapon(playerid, weaponid)) {
 		return 0;
 	}
-	
-	PlayerWeapons[playerid][slot][pwid] = weaponid;
-	PlayerWeapons[playerid][slot][pbullets] += ammo;
-	
-	GivePlayerWeapon(playerid, weaponid, ammo);
+
+	new slot = GetWeaponSlot(weaponid);
+	if (slot == -1 || ammo <= 0) {
+		return 0;
+	}
+
+	if (!IsWeaponHandToHand(weaponid)) {
+		// если оружия разные, то обнуляем патроны
+		if (PlayerWeapons[playerid][slot][pwid] == weaponid) {
+			PlayerWeapons[playerid][slot][pbullets] += ammo;
+		} else {
+			PlayerWeapons[playerid][slot][pbullets] = ammo;
+		}
+		PlayerWeapons[playerid][slot][pwid] = weaponid;
+	} else {
+		PlayerWeapons[playerid][slot][pwid] = weaponid;
+		PlayerWeapons[playerid][slot][pbullets] = 1;
+	}
+
+	ORIG_GivePlayerWeapon(playerid, PlayerWeapons[playerid][slot][pwid], 0);
+	SetPlayerAmmo(playerid, PlayerWeapons[playerid][slot][pwid], PlayerWeapons[playerid][slot][pbullets]);
 	return 1;
 }
 
-stock oResetPlayerWeapons(playerid)
+stock pl_weapon_ResetPlayerWeapons(playerid)
 {
 	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
 		PlayerWeapons[playerid][i][pwid] = 0;
 		PlayerWeapons[playerid][i][pbullets] = 0;
 	}
-	ResetPlayerWeapons(playerid);
+
+	ORIG_ResetPlayerWeapons(playerid);
 	return 1;
 }
 
 // даёт всё 'всегдашнее' оружие
-stock GivePlayerAllWeapon(playerid)
+stock GivePlayerOwnedWeapon(playerid)
 {
 	for (new slot = 0; slot < PLAYER_WEAPON_SLOTS; slot++) {
 		if (PlayerWeapons[playerid][slot][pwid] <= 0 || !IsPlayerAllowedWeapon(playerid, PlayerWeapons[playerid][slot][pwid])) {
 			continue;
 		}
 		if (PlayerWeapons[playerid][slot][pwid] > 0 && PlayerWeapons[playerid][slot][pbullets] > 0) {
-			GivePlayerWeapon(playerid, PlayerWeapons[playerid][slot][pwid], PlayerWeapons[playerid][slot][pbullets]);
+			ORIG_GivePlayerWeapon(playerid, PlayerWeapons[playerid][slot][pwid], PlayerWeapons[playerid][slot][pbullets]);
 		}
 	}
 }
@@ -192,12 +182,12 @@ stock SendPlayerOwnedWeapons(playerid)
 		if (PlayerWeapons[playerid][weaponslot][pwid] <= 0) continue;
 		if (PlayerWeapons[playerid][weaponslot][pbullets] > 1)
 		{
-			format(string,sizeof(string), lang_texts[9][8],oGetWeaponName(PlayerWeapons[playerid][weaponslot][pwid]),PlayerWeapons[playerid][weaponslot][pbullets]);
+			format(string,sizeof(string), lang_texts[9][8],ReturnWeaponName(PlayerWeapons[playerid][weaponslot][pwid]),PlayerWeapons[playerid][weaponslot][pbullets]);
 			SendClientMessage(playerid,COLOUR_MISC,string);
 		}
 		else if (PlayerWeapons[playerid][weaponslot][pbullets] == 1)
 		{
-			format(string,sizeof(string), lang_texts[9][9],oGetWeaponName(PlayerWeapons[playerid][weaponslot][pwid]));
+			format(string,sizeof(string), lang_texts[9][9],ReturnWeaponName(PlayerWeapons[playerid][weaponslot][pwid]));
 			SendClientMessage(playerid,COLOUR_MISC,string);
 		}
 	}

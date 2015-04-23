@@ -33,7 +33,7 @@ stock player_Save(playerid)
 
 	// save
 	player_SaveEx(playerid);
-	Log_Game("player: %s(%d): player_saved successfully", oGetPlayerName(playerid), playerid);
+	Log_Game("player: %s(%d): player_saved successfully", ReturnPlayerName(playerid), playerid);
 	return 1;
 }
 
@@ -42,7 +42,7 @@ stock player_Create(playerid)
 	player_SetDefaultData(playerid);
 
 	player_SaveEx(playerid);
-	Log_Game("player: %s(%d): player_created successfully", oGetPlayerName(playerid), playerid);
+	Log_Game("player: %s(%d): player_created successfully", ReturnPlayerName(playerid), playerid);
 	return 1;
 }
 
@@ -68,12 +68,12 @@ stock player_SaveEx(playerid)
 	ini_setString(file_player, "Name", playername);
 	ini_setString(file_player, "Gang", player_GetGangName(playerid));
 
-	oGetPlayerArmour(playerid, temp_float);
+	GetPlayerArmour(playerid, temp_float);
 	ini_setFloat(file_player, "Armour", temp_float);
 	
 	ini_setInteger(file_player, "Level", GetPlayerLevel(playerid));
 	ini_setInteger(file_player, "XP", GetPlayerXP(playerid));
-	ini_setInteger(file_player, "Money", oGetPlayerMoney(playerid));
+	ini_setInteger(file_player, "Money", GetPlayerMoney(playerid));
 	ini_setInteger(file_player, "BankMoney", GetPlayerBankMoney(playerid));
 	ini_setInteger(file_player, "Deaths", player_GetDeaths(playerid));
 	ini_setInteger(file_player, "Kills", player_GetKills(playerid));
@@ -123,7 +123,7 @@ stock player_SaveEx(playerid)
 stock player_Login(playerid)
 {
 	new filename_player[MAX_STRING];
-	format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, db_player, oGetPlayerName(playerid));
+	format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, db_player, ReturnPlayerName(playerid));
 
 	if (!ini_fileExist(filename_player)) {
 		player_Create(playerid);
@@ -132,7 +132,7 @@ stock player_Login(playerid)
 		new file_player = ini_openFile(filename_player);
 		
 		ini_getFloat(file_player, "Armour", f_buf);
-		oSetPlayerArmour(playerid, f_buf);
+		SetPlayerArmour(playerid, f_buf);
 		
 		ini_getInteger(file_player, "Level", buf);
 		SetPlayerLevel(playerid, buf);
@@ -141,7 +141,7 @@ stock player_Login(playerid)
 		SetPlayerXP(playerid, buf);
 		
 		ini_getInteger(file_player, "Money", buf);
-		oSetPlayerMoney(playerid, buf);
+		SetPlayerMoney(playerid, buf);
 		
 		ini_getInteger(file_player, "BankMoney", buf);
 		SetPVarInt(playerid, "BankMoney", buf);

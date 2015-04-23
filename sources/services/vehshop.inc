@@ -143,12 +143,12 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 	new vehicleid = GetPlayerVehicleID(playerid);
 	new cost = GetVehicleCost( GetVehicleModel(vehicleid) );
 	
-	if (oGetPlayerMoney(playerid) < cost) {
+	if (GetPlayerMoney(playerid) < cost) {
 		Dialog_Message(playerid, "Магазин транспорта", "У вас недостаточно денег", "ОК");
 		return 0;
 	}
 	
-	oGivePlayerMoney(playerid, -cost, 1);
+	GivePlayerMoney(playerid, -cost, 1);
 	buyVehicle(playerid, vehicleid);
 	
 	Dialog_Message(playerid, "Магазин транспорта", "\

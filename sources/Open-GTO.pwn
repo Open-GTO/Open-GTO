@@ -36,6 +36,7 @@ Thanks:
 */
 
 #include "compiler/includes/a_samp"
+#include "config"
 #include "core/unfixes"
 #include "lib/sa-mp-fixes/fixes"
 #include "lib/sa-mp-foreach/foreach"
@@ -43,7 +44,7 @@ Thanks:
 #include "lib/mxINI"
 #include "lib/mxDate"
 #include "lib/mSelection"
-#include "config"
+#include "core/redefine"
 #include "core/db"
 #include "core/core_time"
 #include "core/dialog"
@@ -375,9 +376,9 @@ public OnPlayerDeath(playerid, killerid, reason)
 	player_SetSpawned(playerid, 0);
 
 	if (killerid == INVALID_PLAYER_ID) {
-		Log_Game("player: %s(%d): has died > Reason: (%d)", oGetPlayerName(playerid), playerid, reason);
+		Log_Game("player: %s(%d): has died > Reason: (%d)", ReturnPlayerName(playerid), playerid, reason);
 	} else {
-		Log_Game("player: %s(%d): has killed player %s(%d)> Reason: (%d)", oGetPlayerName(killerid), killerid, oGetPlayerName(playerid), playerid, reason);
+		Log_Game("player: %s(%d): has killed player %s(%d)> Reason: (%d)", ReturnPlayerName(killerid), killerid, ReturnPlayerName(playerid), playerid, reason);
 	}
 
 	SendDeathMessage(killerid, playerid, reason);
@@ -461,7 +462,7 @@ public OnPlayerCommandReceived(playerid, cmdtext[])
 public OnPlayerCommandPerformed(playerid, cmdtext[], success)
 {
 	if (success) {
-		Log_Player(_(PLAYER_COMMAND_LOG), oGetPlayerName(playerid), playerid, cmdtext);
+		Log_Player(_(PLAYER_COMMAND_LOG), ReturnPlayerName(playerid), playerid, cmdtext);
 		return 1;
 	}
 	return 0;

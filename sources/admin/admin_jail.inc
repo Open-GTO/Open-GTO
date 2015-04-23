@@ -41,11 +41,11 @@ stock JailPlayer(playerid, &jail_time)
 	player_SetJailCount(playerid, player_GetJailCount(playerid) + 1);
 	
 	SetPlayerInterior(playerid, 6);
-	oSetPlayerPos(playerid, 265.1273, 77.6823, 1001.0391);
+	SetPlayerPos(playerid, 265.1273, 77.6823, 1001.0391);
 	SetPlayerFacingAngle(playerid,-90);	
 	TogglePlayerControllable(playerid, 0);
 	SetCameraBehindPlayer(playerid);
-	oSetPlayerArmour(playerid, 0);
+	SetPlayerArmour(playerid, 0);
 	PlayerPlaySound(playerid, 1082, 265.1273, 77.6823, 1001.0391);
 	return 1;
 }
@@ -53,7 +53,7 @@ stock JailPlayer(playerid, &jail_time)
 stock JailPlayerCheck(playerid)
 {
 	if (player_IsJailed(playerid) && !IsPlayerInRangeOfPoint(playerid, 5, 265.1273, 77.6823, 1001.0391)) {
-		oSetPlayerPos(playerid, 265.1273, 77.6823, 1001.0391);
+		SetPlayerPos(playerid, 265.1273, 77.6823, 1001.0391);
 	}
 	return 1;
 }
@@ -66,7 +66,7 @@ stock UnJailPlayer(playerid)
 	// ставим игрока в рандомное место из всех мест освобождений
 	new j_id = random( sizeof(jail_release_point) );
 	SetPlayerInterior(playerid, 0);
-	oSetPlayerPos(playerid, jail_release_point[j_id][Coord_X], jail_release_point[j_id][Coord_Y], jail_release_point[j_id][Coord_Z] );
+	SetPlayerPos(playerid, jail_release_point[j_id][Coord_X], jail_release_point[j_id][Coord_Y], jail_release_point[j_id][Coord_Z] );
 	SetPlayerFacingAngle(playerid, jail_release_point[j_id][Coord_A]);
 	SetCameraBehindPlayer(playerid);
 	return 1;
@@ -120,11 +120,11 @@ COMMAND:jail(playerid, params[])
 	JailPlayer(jailid, jailt);
 	
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][18], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][18], ReturnPlayerName(playerid));
 	SendClientMessage(jailid, COLOUR_RED, string);
 
 	format(string, sizeof(string), lang_texts[13][15], jailt);
-	format(string, sizeof(string), lang_texts[13][17], oGetPlayerName(jailid), string);
+	format(string, sizeof(string), lang_texts[13][17], ReturnPlayerName(jailid), string);
 	SendClientMessageToAll(COLOUR_WHITE, string);
 
 	GameTextForPlayer(jailid, lang_texts[13][18], 5000, 4);
@@ -158,7 +158,7 @@ COMMAND:unjail(playerid, params[])
 	UnJailPlayer(unjailid);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][21], oGetPlayerName(playerid));
+	format(string, sizeof(string), lang_texts[12][21], ReturnPlayerName(playerid));
 	SendClientMessage(unjailid, COLOUR_GREEN, string);
 	return 1;
 }

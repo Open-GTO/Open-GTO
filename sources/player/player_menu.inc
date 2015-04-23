@@ -87,7 +87,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 
 				gangname,
 				
-				oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid),
+				GetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid),
 				
 				player_GetKills(playerid), player_GetDeaths(playerid), kill_on_death,
 				player_GetJailCount(playerid),
@@ -126,7 +126,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 		}
 		// выбросить оружие
 		case 5: {
-			oResetPlayerWeapons(playerid);
+			ResetPlayerWeapons(playerid);
 			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Выбросить оружие", "Вы добровольно избавились от всего оружия.", "Назад", "Выход");
 			return 1;
 		}
@@ -154,10 +154,10 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			
 			foreach (new id : Player) {
 				if (IsPlayerAdm(id)) {
-					format(admins, sizeof(admins), "%s%s(%d)\n", admins, oGetPlayerName(id), id);
+					format(admins, sizeof(admins), "%s%s(%d)\n", admins, ReturnPlayerName(id), id);
 					idsa++;
 				} else if (IsPlayerMod(id)) {
-					format(moders, sizeof(moders), "%s%s(%d)\n", moders, oGetPlayerName(id), id);
+					format(moders, sizeof(moders), "%s%s(%d)\n", moders, ReturnPlayerName(id), id);
 					idsm++;
 				}
 			}

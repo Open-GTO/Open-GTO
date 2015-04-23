@@ -63,7 +63,7 @@ COMMAND:status(playerid, params[])
 	format(string, sizeof(string), lang_texts[15][37], player_GetGangName(playerid));
 	SendClientMessage(playerid, COLOUR_LIGHTBLUE, string);
 
-	format(string, sizeof(string), lang_texts[15][38], GetPlayerLevel(playerid), GetPlayerXP(playerid), GetXPToLevel(playerid, GetPlayerLevel(playerid) + 1), oGetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
+	format(string, sizeof(string), lang_texts[15][38], GetPlayerLevel(playerid), GetPlayerXP(playerid), GetXPToLevel(playerid, GetPlayerLevel(playerid) + 1), GetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
 	SendClientMessage(playerid, COLOUR_LIGHTBLUE, string);
 
 	format(string, sizeof(string), lang_texts[15][39], player_GetKills(playerid), player_GetDeaths(playerid), kill_on_death, player_GetJailCount(playerid), player_GetMuteCount(playerid));
@@ -149,19 +149,19 @@ COMMAND:skydive(playerid, params[])
 		return 1;
 	}
 
-	oGivePlayerWeapon(playerid, 46, 1);
+	GivePlayerWeapon(playerid, 46, 1);
 	PlayerPlaySound(playerid, 1057, 0, 0, 0);
 
 	new Float:playerx, Float:playery, Float:playerz;
 	GetPlayerPos(playerid, playerx, playery, playerz);
-	oSetPlayerPos(playerid, playerx, playery, playerz + 1200);
+	SetPlayerPos(playerid, playerx, playery, playerz + 1200);
 	
 	player_SetSkydiveTime(playerid, gettime() + SKYDIVE_TIME);
 
 	SendClientMessage(playerid, COLOUR_WHITE, _(SKYDIVING_MSG));
 	GameTextForPlayer(playerid, _(SKYDIVING_GAMETEXT), 4000, 5);
 	
-	format(string, sizeof(string), _(SKYDIVING_MSG_TO_ALL), oGetPlayerName(playerid), playerid);
+	format(string, sizeof(string), _(SKYDIVING_MSG_TO_ALL), ReturnPlayerName(playerid), playerid);
 	SendClientMessageToAll(COLOUR_GREY, string);
 	return 1;
 }

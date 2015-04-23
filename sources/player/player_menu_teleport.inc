@@ -60,7 +60,7 @@ DialogResponse:PlayerTeleportMenu(playerid, response, listitem, inputtext[])
 		return 0;
 	}
 	
-	if (oGetPlayerMoney(playerid) < Teleports[listitem][Teleports_Cost]) {
+	if (GetPlayerMoney(playerid) < Teleports[listitem][Teleports_Cost]) {
 		new string[MAX_STRING];
 		format(string, sizeof(string), "{CCCCCC}Недостаточно денег, нужно {00AA00}$%d.", Teleports[listitem][Teleports_Cost]);
 		Dialog_MessageEx(playerid, Dialog:TeleportReturnMenu, "Телепорт", string, "Назад", "Отмена");
@@ -69,7 +69,7 @@ DialogResponse:PlayerTeleportMenu(playerid, response, listitem, inputtext[])
 	
 	SetPVarInt(playerid, "teleports_Pause", 1);
 	SetTimerEx("teleports_Pause_Time", TELEPORTS_PAUSE_TIME * 1000, 0, "d", playerid);
-	oGivePlayerMoney(playerid, -Teleports[listitem][Teleports_Cost], 1);
+	GivePlayerMoney(playerid, -Teleports[listitem][Teleports_Cost], 1);
 	SetPlayerPosEx(playerid,
 		Teleports[listitem][Teleports_Pos_X], Teleports[listitem][Teleports_Pos_Y], Teleports[listitem][Teleports_Pos_Z], Teleports[listitem][Teleports_Pos_A],
 		Teleports[listitem][Teleports_Interior], 0

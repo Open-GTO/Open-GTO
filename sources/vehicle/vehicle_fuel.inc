@@ -266,7 +266,7 @@ public fill_Timer(playerid)
 	Fuel[vehicleid] += VEHICLE_FUEL_SPEED;
 	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || Fuel[vehicleid] >= GetMaxVehicleFuel( GetVehicleModel(vehicleid) )) {
 		new RefueledAmount = floatround( Fuel[vehicleid] - GetPVarFloat(playerid, "OldFuel") ) * VEHICLE_FUEL_TARIF;
-		oGivePlayerMoney(playerid, -RefueledAmount);
+		GivePlayerMoney(playerid, -RefueledAmount);
 		
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[19][27], RefueledAmount);

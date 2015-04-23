@@ -17,13 +17,13 @@ public pl_click_SendCash(playerid, clickedid, listitem, inputtext[])
 	GetPlayerName(clickedid, giveplayer, sizeof(giveplayer));
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 
-	if (oGetPlayerMoney(playerid) < money || !IsNumeric(inputtext) || money < 0) {
+	if (GetPlayerMoney(playerid) < money || !IsNumeric(inputtext) || money < 0) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[15][93]);
 		return 0;
 	}
 
-	oGivePlayerMoney(playerid, -money, 1);
-	oGivePlayerMoney(clickedid, money, 1);
+	GivePlayerMoney(playerid, -money, 1);
+	GivePlayerMoney(clickedid, money, 1);
 
 	format(string, sizeof(string), lang_texts[15][79], giveplayer, clickedid, money);
 	SendClientMessage(playerid, COLOUR_MONEY_GOOD, string);
@@ -78,7 +78,7 @@ public pl_click_SendReport(playerid, clickedid, listitem, inputtext[])
 			player_SetReportCount(clickedid, 0);
 
 			format(string, sizeof(string), lang_texts[13][15], jail_time);
-			format(string, sizeof(string), lang_texts[13][17], oGetPlayerName(clickedid), string);
+			format(string, sizeof(string), lang_texts[13][17], ReturnPlayerName(clickedid), string);
 			SendClientMessageToAll(COLOUR_WHITE, string);
 		}
 	}

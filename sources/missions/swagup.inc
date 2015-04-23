@@ -109,11 +109,11 @@ stock swagup_OnPlayerPickUpPickup(playerid, pickupid)
 		win_money = mission_CalculateMoney(playerid, mission_swagup),
 		win_xp = mission_CalculateXP(playerid, mission_swagup);
 	
-	oGivePlayerMoney(playerid, win_money);
+	GivePlayerMoney(playerid, win_money);
 	GivePlayerXP(playerid, win_xp, 1);
 	
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[19][63], oGetPlayerName(playerid), playerid, win_money, win_xp);
+	format(string, sizeof(string), lang_texts[19][63], ReturnPlayerName(playerid), playerid, win_money, win_xp);
 	SendClientMessageToAll(COLOUR_RED, string);
 	
 	SetTimer("swagup_SpawnPickup", mission_GetPauseTime(mission_swagup), 0);

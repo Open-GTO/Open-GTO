@@ -16,7 +16,7 @@
 stock oBan_Check(playerid)
 {
 	new filename[MAX_STRING];
-	format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, db_ban, oGetPlayerName(playerid));
+	format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, db_ban, ReturnPlayerName(playerid));
 	
 	if (!ini_fileExist(filename)) {
 		new plrIP[MAX_IP];
@@ -73,7 +73,7 @@ stock oBan(user[], reason[], adminid, time_second=0)
 	new timestamp = gettime();
 	
 	if (IsNumeric(user)) {
-		set(user, oGetPlayerName(strval(user)));
+		set(user, ReturnPlayerName(strval(user)));
 	}
 	
 	new filename_ban[MAX_STRING];
@@ -82,7 +82,7 @@ stock oBan(user[], reason[], adminid, time_second=0)
 	new file_ban_db = (!ini_fileExist(filename_ban)) ? ini_createFile(filename_ban) : ini_openFile(filename_ban);
 	ini_setInteger(file_ban_db, "Date", timestamp);
 	ini_setInteger(file_ban_db, "Time", time_second);
-	ini_setString(file_ban_db, "Admin", oGetPlayerName(adminid));
+	ini_setString(file_ban_db, "Admin", ReturnPlayerName(adminid));
 	ini_setString(file_ban_db, "Reason", reason);
 	ini_closeFile(file_ban_db);
 	
@@ -93,7 +93,7 @@ stock oBan(user[], reason[], adminid, time_second=0)
 		format(string, sizeof(string), lang_texts[13][49], time_second);
 	}
 
-	format(string, sizeof(string), lang_texts[12][97], user, timestamp_to_format_date(timestamp), oGetPlayerName(adminid), adminid, string);
+	format(string, sizeof(string), lang_texts[12][97], user, timestamp_to_format_date(timestamp), ReturnPlayerName(adminid), adminid, string);
 	
 	if (strlen(reason) > 0) {
 		format(string, sizeof(string), lang_texts[12][98], string, reason);
@@ -110,7 +110,7 @@ stock oBan(user[], reason[], adminid, time_second=0)
 		}
 	} else {
 		foreach (new playerid : Player) {
-			if (!strcmp(user, oGetPlayerName(playerid), false)) {
+			if (!strcmp(user, ReturnPlayerName(playerid), false)) {
 				KickPlayer(playerid, "ban", 0);
 			}
 		}
