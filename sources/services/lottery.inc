@@ -87,7 +87,7 @@ public lottery_Timer()
 
 	TickCount++;
 
-	if (TickCount < Time) {
+	if (TickCount < Time && (TickCount % 20 == 0 || TickCount == 10)) {
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[17][36], Time-TickCount);
 		SendClientMessageToAll(COLOUR_GREEN, string);
@@ -97,7 +97,9 @@ public lottery_Timer()
 	KillTimer(lottery_timer);
 	TickCount = -1;
 
-	new win_value = mathrandom(1, 100),
+	new
+		string[MAX_STRING],
+		win_value = mathrandom(1, 100),
 		winner = 0;
 	
 	foreach (new playerid : Player) {
@@ -105,20 +107,17 @@ public lottery_Timer()
 			winner = 1;
 			oGivePlayerMoney(playerid, WinMoney, 1);
 			
-			new string[MAX_STRING];
-			
 			format(string, sizeof(string), lang_texts[17][37], WinMoney);
 			SendClientMessage(playerid, COLOUR_GREEN, string);
 			
 			format(string, sizeof(string), lang_texts[17][38], oGetPlayerName(playerid), playerid, WinMoney);
 			SendClientMessageToAll(COLOUR_GREEN, string);
-		} else {
-			DeletePVar(playerid, "lottery_Value");
 		}
+
+		DeletePVar(playerid, "lottery_Value");
 	}
 
 	if (winner == 0) {
-		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[17][39], win_value);
 		SendClientMessageToAll(COLOUR_GREEN, string);
 	}
@@ -132,7 +131,7 @@ stock lottery_RunTimer()
 	}
 
 	TickCount = 0;
-	lottery_timer = SetTimer("lottery_Timer", 60000, 1);
+	lottery_timer = SetTimer("lottery_Timer", 1000, 1);
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[17][40], WinMoney);

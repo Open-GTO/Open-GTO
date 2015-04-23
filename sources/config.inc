@@ -151,7 +151,7 @@
 
 // lottery
 #define LOTTERY_ENABLED      1 // включен-ли скрипт лотереи
-#define LOTTERY_TIME         10 // время розыгрыша, в минутах
+#define LOTTERY_TIME         60 // время розыгрыша, в секундах
 #define LOTTERY_WIN_MONEY    200000 // количество денег победителю в лотерее
 #define LOTTERY_TICKET_COST  5000 // цена лотерейного билета
 
