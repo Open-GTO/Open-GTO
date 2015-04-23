@@ -476,7 +476,7 @@ COMMAND:race(playerid, params[])
 
 /*		new tempname[MAX_STRING];
 		set(tempname, racename);
-		if (!StringCharCheck(tempname)) return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][3]);
+		if (!IsValidChars(tempname)) return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][3]);
 */
 		new raceid = RegisterRace(racename);
 		if (raceid == INVALID_RACE_ID)

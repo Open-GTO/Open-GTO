@@ -307,7 +307,7 @@ DialogResponse:GangCreate(playerid, response, listitem, inputtext[])
 				return 1;
 			}
 			
-			if (!StringCharCheck(inputtext) || !strcmp(inputtext, "Unknown", true)) {
+			if (!IsValidChars(inputtext) || !strcmp(inputtext, "Unknown", true)) {
 				new string[MAX_STRING];
 				format(string, sizeof(string), lang_texts[6][41], ALLOWED_STRING_SYMBOLS_STR);
 				Dialog_MessageEx(playerid, Dialog:GangCreateReturn, lang_texts[6][9], string, "Назад", "Отмена");

@@ -100,7 +100,7 @@ stock oBan(user[], reason[], adminid, time_second=0)
 	}
 	SendClientMessageToAll(COLOUR_RED, string);
 
-	if (IsIP(user)) {
+	if (IsIpAddress(user)) {
 		new plrIP[MAX_IP];
 		foreach (new playerid : Player) {
 			GetPVarString(playerid, "IP", plrIP, sizeof(plrIP));

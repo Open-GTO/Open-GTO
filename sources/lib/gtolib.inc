@@ -129,7 +129,7 @@ stock NameCharCheck(string[MAX_PLAYER_NAME+1])
 			default: return 0;
 		}
 	}
-	if (IsIP(string))
+	if (IsIpAddress(string))
 	{
 		return 0;
 	}
@@ -159,14 +159,16 @@ stock pow(value, degree)
 	return result;
 }
 
-stock StringCharCheck(string[])
+stock IsValidChars(string[])
 {
-	for (new i = strlen(string)-1; i >= 0; i--)
-	{
-		switch (string[i])
-		{
-			case ALLOWED_STRING_SYMBOLS: continue;
-			default: return 0;
+	for (new i = 0; string[i] != '\0'; i++) {
+		switch (string[i]) {
+			case ALLOWED_STRING_SYMBOLS: {
+				continue;
+			}
+			default: {
+				return 0;
+			}
 		}
 	}
 	return 1;
@@ -174,37 +176,41 @@ stock StringCharCheck(string[])
 
 stock IsNumeric(const string[])
 {
-	for (new i = strlen(string)-1; i >= 0; i--)
-	{
-		switch (string[i])
-		{
-			case '0'..'9': continue;
-			default: return 0;
+	for (new i = 0; string[i] != '\0'; i++) {
+		switch (string[i]) {
+			case '0'..'9': {
+				continue;
+			}
+			default: {
+				return 0;
+			}
 		}
 	}
 	return 1;
 }
 
-stock IsIP(string[])
+stock IsIpAddress(string[])
 {
-	new bufer[MAX_STRING], start_pos = 0, end_pos = 0, len = strlen(string);
-	do
-	{
-		end_pos = strfind(string, ".", false, end_pos+1);
-		if (end_pos == -1)
-		{
-			end_pos = len;
-		}
-		strmid(bufer, string, start_pos, end_pos);
-		if (IsNumeric(bufer) && strlen(bufer) <= 3 && strval(bufer) >= 0 && strval(bufer) <= 255)
-		{
-			start_pos = end_pos+1;
-		}
-		else
-		{
+	new
+		octet_str[4], octet,
+		j = 0;
+
+	for (new i = 0; string[i] != '\0'; i++) {
+		if (string[i] == '.') {
+			octet = strval(octet_str);
+
+			if (0 <= octet <= 255) {
+				j = 0;
+			} else {
+				return 0;
+			}
+		} else if (j < 3 && '0' <= string[i] <= '9') {
+			octet_str[j] = string[i];
+			j++;
+		} else {
 			return 0;
 		}
-	} while (end_pos != len);
+	}
 	return 1;
 }
 
