@@ -35,7 +35,7 @@ Thanks:
 
 */
 
-#include "compiler/includes/a_samp"
+#include <a_samp>
 #include "config"
 #include "core/unfixes"
 #include "lib/sa-mp-fixes/fixes"
