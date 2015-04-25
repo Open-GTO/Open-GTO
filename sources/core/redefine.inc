@@ -17,7 +17,6 @@
  * Weapon
  */
 
-native ORIG_GivePlayerWeapon(playerid, weaponid, ammo) = GivePlayerWeapon;
 // fixes.inc compatible
 #if FIX_HydraSniper
 	stock REDEF_GivePlayerWeapon(playerid, weaponid, ammo, bool:allowcheck = false)
@@ -28,8 +27,10 @@ native ORIG_GivePlayerWeapon(playerid, weaponid, ammo) = GivePlayerWeapon;
 	}
 	
 	#undef GivePlayerWeapon
+	native ORIG_GivePlayerWeapon(playerid, weaponid, ammo) = GivePlayerWeapon;
 	#define GivePlayerWeapon REDEF_GivePlayerWeapon
 #else
+	native ORIG_GivePlayerWeapon(playerid, weaponid, ammo) = GivePlayerWeapon;
 	#define GivePlayerWeapon pl_weapon_GivePlayerWeapon
 #endif
 
