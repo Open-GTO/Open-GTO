@@ -88,3 +88,14 @@ stock lang_FixSpecialChar(string[MAX_LANG_STRING + 32])
 		}
 	}
 }
+
+stock lang_GetLang()
+{
+	return lang_use;
+}
+
+stock lang_SetLang(lang)
+{
+	strmid(lang_use, lang, 0, strlen(lang));
+	return lang_ReadFile(lang);
+}

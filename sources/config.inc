@@ -297,6 +297,12 @@ stock config_OnGameModeInit()
 	ShowNameTags(1);
 	ManualVehicleEngineAndLights();
 	EnableStuntBonusForAll(0);
+	
+	new rcon_command[64];
+	rcon_command = lang_GetLang();
+	format(rcon_command, sizeof(rcon_command), "language %c%s", toupper(rcon_command[0]), rcon_command[1]);
+	SendRconCommand(rcon_command);
+
 	Log_Game("SERVER: Config module init");
 	return 1;
 }
