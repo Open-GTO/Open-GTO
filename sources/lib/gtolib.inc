@@ -191,26 +191,29 @@ stock IsNumeric(const string[])
 
 stock IsIpAddress(string[])
 {
+	#define IS_IN_RANGE(%0,%1,%2) (((%0) - ((%1) + cellmin)) < (((%2) + 1) - ((%1) + cellmin)))
+
 	new
-		octet_str[4], octet,
-		j = 0;
+		octet,
+		j = 100;
 
 	for (new i = 0; string[i] != '\0'; i++) {
-		if (string[i] == '.') {
-			octet = strval(octet_str);
-
-			if (0 <= octet <= 255) {
-				j = 0;
+		if (j != 0 && IS_IN_RANGE(string[i], '0', '9')) {
+			octet += (string[i] - '0') * j;
+			j /= 10;
+		} else if (string[i] == '.') {
+			if (IS_IN_RANGE(octet, 0, 255)) {
+				j = 100;
+				octet = 0;
 			} else {
 				return 0;
 			}
-		} else if (j < 3 && '0' <= string[i] <= '9') {
-			octet_str[j] = string[i];
-			j++;
 		} else {
 			return 0;
 		}
 	}
+
+	#undef IS_IN_RANGE
 	return 1;
 }
 
