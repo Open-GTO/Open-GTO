@@ -339,7 +339,6 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 {
 	// player
 	pl_weapon_OnPlayerPickUpPickup(playerid, pickupid);
-	interior_OnPlayerPickUpPickup(playerid, pickupid);
 	
 	// etc
 	swagup_OnPlayerPickUpPickup(playerid, pickupid);
