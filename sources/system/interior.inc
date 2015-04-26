@@ -138,10 +138,10 @@ stock interior_OnGameModeInit()
 	DisableInteriorEnterExits();
 	for (new i = 0; i < sizeof(interior_EnterExits); i++)
 	{
-		CreatePickup(19198, 1, interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z] + 0.5);
+		CreatePickup(19902, 1, interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z] - 1.0);
 		Create3DTextLabel("Вход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF, interior_EnterExits[i][iee_enter_X], interior_EnterExits[i][iee_enter_Y], interior_EnterExits[i][iee_enter_Z], 20.0, 0, 1);
 
-		CreatePickup(19198, 1, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z] + 0.2, i + 1);
+		CreatePickup(19902, 1, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z] - 1.0, i + 1);
 		Create3DTextLabel("Выход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF, interior_EnterExits[i][iee_exit_X], interior_EnterExits[i][iee_exit_Y], interior_EnterExits[i][iee_exit_Z], 20.0, i + 1, 1);
 
 		if (interior_EnterExits[i][iee_icon_ID] != -1)
