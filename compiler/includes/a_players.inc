@@ -225,6 +225,7 @@ native EnablePlayerCameraTarget(playerid, enable);
 native GetPlayerCameraTargetObject(playerid);
 native GetPlayerCameraTargetVehicle(playerid);
 native GetPlayerCameraTargetPlayer(playerid);
+native GetPlayerCameraTargetActor(playerid);
 native Float:GetPlayerCameraAspectRatio(playerid);
 native Float:GetPlayerCameraZoom(playerid);
 native AttachCameraToObject(playerid, objectid);

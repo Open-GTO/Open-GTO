@@ -23,14 +23,17 @@
 #include <a_players>
 #include <a_vehicles>
 #include <a_objects>
+#include <a_actor>
 #include <a_sampdb>
 
 // Limits and internal constants
 #define MAX_PLAYER_NAME							(24)
 #define MAX_PLAYERS								(1000)
 #define MAX_VEHICLES							(2000)
+#define MAX_ACTORS								(1000)
 #define INVALID_PLAYER_ID						(0xFFFF)
 #define INVALID_VEHICLE_ID						(0xFFFF)
+#define INVALID_ACTOR_ID						(0xFFFF)
 #define NO_TEAM									(255)
 #define MAX_OBJECTS								(1000)
 #define INVALID_OBJECT_ID						(0xFFFF)
