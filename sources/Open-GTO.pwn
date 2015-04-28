@@ -56,6 +56,7 @@ Thanks:
 #include "core/pickup"
 #include "core/widestrip"
 #include "core/declension"
+#include "core/shootingrange"
 #include "vehicle/vehicles"
 #include "vehicle/vehicle_fuel"
 #include "vehicle/vehicle_menu"
