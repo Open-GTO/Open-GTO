@@ -99,14 +99,15 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			CallLocalFunction(call_func, "ddds", playerid, response, listitem, input);
 		}
 	}
-	#if defined GTODIALOG_OnDialogResponse
-		GTODIALOG_OnDialogResponse(playerid, dialogid, response, listitem, input);
-	#endif
+	
+	CallLocalFunction("GTODIALOG_OnDialogResponse", "iiiis", playerid, dialogid, response, listitem, inputtext);
 	return 0;
 }
 
-#define OnDialogResponse GTODIALOG_OnDialogResponse
-
-#if defined GTODIALOG_OnDialogResponse
-	forward GTODIALOG_OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]);
+#if defined _ALS_OnDialogResponse
+	#undef OnDialogResponse
+#else
+	#define _ALS_OnDialogResponse
 #endif
+#define OnDialogResponse GTODIALOG_OnDialogResponse
+forward OnDialogResponse(playerid, dialogid, response, listitem, inputtext[]);
