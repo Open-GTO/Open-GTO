@@ -242,7 +242,7 @@ stock pl_spawn_GetSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z
 	}
 
 	if (house_id == SPAWN_HOUSE_NONE) {
-		new spawnid = pl_spawn_GetRandomID(playerid);
+		new spawnid = pl_spawn_GetNearestSpawn(playerid);
 		spos_x = spawns_array[spawnid][spawn_x];
 		spos_y = spawns_array[spawnid][spawn_y];
 		spos_z = spawns_array[spawnid][spawn_z];
@@ -278,6 +278,25 @@ stock pl_spawn_GetRandomID(playerid)
 	}
 	new id = random( sizeof(spawns_array) + 1 );
 	SetPVarInt(playerid, "random_id", id);
+	return id;
+}
+
+stock pl_spawn_GetNearestSpawn(playerid)
+{
+	new Float: min_distance = 99999.0;
+	new Float: curr_distance;
+	new Float: pos[3];
+	new id = 0;
+
+	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+
+	for(new i = 0; i < sizeof(spawns_array); i++) {
+		curr_distance = GetDistanceBetweenPoints(pos[0], pos[1], pos[2], spawns_array[i][spawn_x], spawns_array[i][spawn_y], spawns_array[spawn_z][spawn_z]);
+		if(min_distance > curr_distance) {
+			min_distance = curr_distance;
+			id = i;
+		}
+	}
 	return id;
 }
 
