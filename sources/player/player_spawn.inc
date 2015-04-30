@@ -134,6 +134,7 @@ stock pl_spawn_OnPlayerRequestClass(playerid, classid)
 stock pl_spawn_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused killerid, reason
+	pl_spawn_SaveDeathPos(playerid);
 	player_SetCoord(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
 	
 	new interior, world, Float:spawn_pos[4];
@@ -242,7 +243,7 @@ stock pl_spawn_GetSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z
 	}
 
 	if (house_id == SPAWN_HOUSE_NONE) {
-		new spawnid = pl_spawn_GetNearestSpawn(playerid);
+		new spawnid = pl_spawn_GetSpawnID(playerid);
 		spos_x = spawns_array[spawnid][spawn_x];
 		spos_y = spawns_array[spawnid][spawn_y];
 		spos_z = spawns_array[spawnid][spawn_z];
@@ -271,38 +272,58 @@ stock pl_spawn_SetSpawnPos(playerid)
 	return 1;
 }
 
-stock pl_spawn_GetRandomID(playerid)
+stock pl_spawn_GetSpawnID(playerid)
 {
-	if (GetPVarInt(playerid, "random_id") != -1) {
-		return GetPVarInt(playerid, "random_id");
+	if (GetPlayerVirtualWorld(playerid) != 0 || GetPlayerInterior(playerid) != 0) {
+		return pl_spawn_GetRandomSpawnID(playerid);
 	}
-	new id = random( sizeof(spawns_array) + 1 );
-	SetPVarInt(playerid, "random_id", id);
-	return id;
+	
+	return pl_spawn_GetNearestSpawnID(playerid);
 }
 
-stock pl_spawn_GetNearestSpawn(playerid)
+stock pl_spawn_GetRandomSpawnID(playerid)
 {
-	new Float: min_distance = 99999.0;
-	new Float: curr_distance;
-	new Float: pos[3];
-	new id = 0;
+	return random( sizeof(spawns_array) + 1 );
+}
 
-	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+stock pl_spawn_GetNearestSpawnID(playerid)
+{
+	new
+		Float:min_distance = 99999.0,
+		Float:curr_distance,
+		Float:pos[3],
+		id = 0;
 
-	for(new i = 0; i < sizeof(spawns_array); i++) {
+	pl_spawn_GetDeathPos(playerid, pos[0], pos[1], pos[2]);
+
+	for (new i = 0; i < sizeof(spawns_array); i++) {
 		curr_distance = GetDistanceBetweenPoints(pos[0], pos[1], pos[2], spawns_array[i][spawn_x], spawns_array[i][spawn_y], spawns_array[spawn_z][spawn_z]);
-		if(min_distance > curr_distance) {
+		
+		if (min_distance > curr_distance) {
 			min_distance = curr_distance;
 			id = i;
 		}
 	}
+
 	return id;
 }
 
-stock pl_spawn_UpdateRandomID(playerid)
+stock pl_spawn_SaveDeathPos(playerid)
 {
-	SetPVarInt(playerid, "random_id", -1);
+	new Float:pos[3];
+	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+	SetPVarFloat(playerid, "pl_spawn_DeathPosX", pos[0]);
+	SetPVarFloat(playerid, "pl_spawn_DeathPosY", pos[1]);
+	SetPVarFloat(playerid, "pl_spawn_DeathPosZ", pos[2]);
+	return 1;
+}
+
+stock pl_spawn_GetDeathPos(playerid, &Float:x, &Float:y, &Float:z)
+{
+	x = GetPVarFloat(playerid, "pl_spawn_DeathPosX");
+	y = GetPVarFloat(playerid, "pl_spawn_DeathPosY");
+	z = GetPVarFloat(playerid, "pl_spawn_DeathPosZ");
+	return 1;
 }
 
 stock pl_spawn_SetPosByID(playerid, spawnid)

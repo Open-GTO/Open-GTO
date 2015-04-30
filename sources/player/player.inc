@@ -50,7 +50,6 @@ stock player_OnPlayerSpawn(playerid)
 	weapon_SetSkills(playerid);
 	PushHide(playerid);
 	pl_textdraw_Show(playerid);
-	pl_spawn_UpdateRandomID(playerid);
 	return 1;
 }
 
