@@ -283,7 +283,20 @@ stock pl_spawn_GetSpawnID(playerid)
 
 stock pl_spawn_GetRandomSpawnID(playerid)
 {
-	return random( sizeof(spawns_array) + 1 );
+	new id = GetPVarInt(playerid, "random_id");
+	if (id != -1) {
+		return id;
+	}
+
+	id = random( sizeof(spawns_array) + 1 );
+	SetPVarInt(playerid, "random_id", id);
+
+	return id;
+}
+
+stock pl_spawn_UpdateRandomSpawnID(playerid)
+{
+	SetPVarInt(playerid, "random_id", -1);
 }
 
 stock pl_spawn_GetNearestSpawnID(playerid)
