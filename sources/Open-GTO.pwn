@@ -355,7 +355,7 @@ public OnPlayerEnterCheckpoint(playerid)
 	trucker_OnPlayerEnterCheckpoint(playerid, cp);
 	wshop_OnPlayerEnterCheckpoint(playerid, cp);
 	bar_OnPlayerEnterCheckpoint(playerid, cp);
-	ff_OnPlayerEnterCheckpoint(playerid, cp);
+	fastfood_OnPlayerEnterCP(playerid, cp);
 	ss_OnPlayerEnterCheckpoint(playerid, cp);
 	fights_OnPlayerEnterCheckpoint(playerid, cp);
 	bank_OnPlayerEnterCheckpoint(playerid, cp);
@@ -717,6 +717,14 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
 {
 	if (hittype == BULLET_HIT_TYPE_VEHICLE) {
 		vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+	}
+	return 1;
+}
+
+public OnActorStreamIn(actorid, forplayerid)
+{
+	if (fastfood_OnActorStreamIn(actorid, forplayerid)) {
+		return 1;
 	}
 	return 1;
 }
