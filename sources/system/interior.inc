@@ -1,9 +1,7 @@
 /*
 
-	Created: 08.02.2011
-	Aurthor: GhostTT
-	
-	Modified 23.02.2012 by ZiGGi
+	About: enter/exit system
+	Author: ziggi & GhostTT
 	
 */
 
@@ -344,7 +342,7 @@ Interior_OnPlayerPickUpPickup(playerid, pickupid)
 			if (pickupid == interior_enters[i][e_ie_pickup_id]) {
 				Interior_SetPlayerIndex(playerid, -1);
 			}
-			
+
 			Interior_SetPlayerEnterID(playerid, i);
 			return 1;
 		}
