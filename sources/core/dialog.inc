@@ -100,7 +100,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		}
 	}
 	
-	CallLocalFunction("GTODIALOG_OnDialogResponse", "iiiis", playerid, dialogid, response, listitem, inputtext);
+	CallLocalFunction("GTODIALOG_OnDialogResponse", "iiiis", playerid, dialogid, response, listitem, input);
 	return 0;
 }
 
