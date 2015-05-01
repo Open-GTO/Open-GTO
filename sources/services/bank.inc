@@ -13,21 +13,31 @@
 #pragma library bank
 
 
+#define MAX_BANK_ACTORS 12
+
 static
 	ProfitCount = BANK_PROFIT,
 	ProfitCountVip = BANK_PROFIT_VIP,
-	MaxBankMoney = MAX_BANK_MONEY;
+	MaxBankMoney = MAX_BANK_MONEY,
+
+	bank_actors[MAX_BANK_ACTORS];
 
 enum Bank_Info {
+	bank_type,
 	Float:bank_x,
 	Float:bank_y,
 	Float:bank_z,
+	bank_actor_model,
+	Float:bank_actor_pos_x,
+	Float:bank_actor_pos_y,
+	Float:bank_actor_pos_z,
+	Float:bank_actor_pos_a,
 	bank_checkpoint,
 }
 
-new Banks[][Bank_Info] = {
-	{-22.9578, -54.8951, 1003.5469}, // LV 24/7 bank
-	{-27.0310, -89.5228, 1003.5469} // 24/7 bank
+static bank_place[][Bank_Info] = {
+	{INTERIOR_TYPE_24ON7_BIG, -22.9578, -54.8951, 1003.5469, 187, -27.4657, -91.6320, 1003.5469, 1.9766}, // LV 24/7 bank
+	{INTERIOR_TYPE_24ON7,     -27.0310, -89.5228, 1003.5469, 187, -22.9353, -57.3491, 1003.5469, 0.0967} // 24/7 bank
 };
 
 stock bank_LoadConfig(file_config)
@@ -44,20 +54,55 @@ stock bank_SaveConfig(file_config)
 	ini_setInteger(file_config, "Bank_MaxBankMoney", MaxBankMoney);
 }
 
-stock bank_OnGameModeInit()
+bank_OnGameModeInit()
 {
-	for (new bankid = 0; bankid < sizeof(Banks); bankid++) {
-		Banks[bankid][bank_checkpoint] = Checkpoint_Create(Banks[bankid][bank_x], Banks[bankid][bank_y], Banks[bankid][bank_z], 1.5, .streamdistance = 20.0);
+	for (new bankid = 0; bankid < sizeof(bank_place); bankid++) {
+		bank_place[bankid][bank_checkpoint] = Checkpoint_Create(bank_place[bankid][bank_x], bank_place[bankid][bank_y], bank_place[bankid][bank_z], 1.5, .streamdistance = 20.0);
 	}
 	Log_Game(_(BANK_INIT));
 	return 1;
 }
 
-stock bank_OnPlayerEnterCheckpoint(playerid, cp)
+bank_OnInteriorCreated(id, type, world)
 {
-	for (new id = 0; id < sizeof(Banks); id++) {
-		if (cp == Banks[id][bank_checkpoint]) {
+	#pragma unused id
+	new slot;
+
+	for (new i = 0; i < sizeof(bank_place); i++) {
+		if (bank_place[i][bank_type] == type) {
+			slot = bank_GetActorFreeSlot();
+			if (slot == -1) {
+				Log_Debug("bank.inc:%d: bank_GetActorFreeSlot() == -1", __line);
+				break;
+			}
+
+			bank_actors[slot] = CreateActor(bank_place[i][bank_actor_model],
+				bank_place[i][bank_actor_pos_x], bank_place[i][bank_actor_pos_y], bank_place[i][bank_actor_pos_z],
+				bank_place[i][bank_actor_pos_a]
+			);
+			SetActorVirtualWorld(bank_actors[slot], world);
+		}
+	}
+}
+
+bank_OnActorStreamIn(actorid, forplayerid)
+{
+	for (new id = 0; id < sizeof(bank_actors); id++) {
+		if (actorid == bank_actors[id]) {
+			SetPVarInt(forplayerid, "bank_actor_id", actorid);
+			ClearActorAnimations(actorid);
+			return 1;
+		}
+	}
+	return 0;
+}
+
+bank_OnPlayerEnterCheckpoint(playerid, cp)
+{
+	for (new id = 0; id < sizeof(bank_place); id++) {
+		if (cp == bank_place[id][bank_checkpoint]) {
 			Dialog_Show(playerid, Dialog:BankStart);
+			ApplyActorAnimation(GetPVarInt(playerid, "bank_actor_id"), "MISC", "Idle_Chat_02", 4.1, 0, 1, 1, 1, 1);
 			return 1;
 		}
 	}
@@ -359,8 +404,8 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 
 stock IsPlayerAtBank(playerid)
 {
-	for (new bankid = 0; bankid < sizeof(Banks); bankid++) {
-		if (IsPlayerInRangeOfPoint(playerid, 2, Banks[bankid][bank_x], Banks[bankid][bank_y], Banks[bankid][bank_z])) {
+	for (new bankid = 0; bankid < sizeof(bank_place); bankid++) {
+		if (IsPlayerInRangeOfPoint(playerid, 2, bank_place[bankid][bank_x], bank_place[bankid][bank_y], bank_place[bankid][bank_z])) {
 			return 1;
 		}
 	}
@@ -415,4 +460,16 @@ stock TakePlayerBankMoney(playerid, &amount)
 stock bank_GetMaxMoney()
 {
 	return MaxBankMoney;
+}
+
+stock bank_GetActorFreeSlot()
+{
+	static slot;
+	slot++;
+
+	if (slot >= sizeof(bank_actors)) {
+		return -1;
+	}
+	
+	return slot;
 }

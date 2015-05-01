@@ -731,5 +731,8 @@ public OnActorStreamIn(actorid, forplayerid)
 	if (fastfood_OnActorStreamIn(actorid, forplayerid)) {
 		return 1;
 	}
+	if (bank_OnActorStreamIn(actorid, forplayerid)) {
+		return 1;
+	}
 	return 1;
 }
