@@ -247,7 +247,7 @@ Interior_OnGameModeInit()
 
 	for (i = 0; i < sizeof(interior_enters); i++) {
 		// enter pos
-		interior_enters[i][e_ie_pickup_id] = CreatePickup(19902, 2,
+		interior_enters[i][e_ie_pickup_id] = CreatePickup(19902, 1,
 			interior_enters[i][e_ie_pos_x], interior_enters[i][e_ie_pos_y], interior_enters[i][e_ie_pos_z] - 1.0
 		);
 		Create3DTextLabel("Вход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF,
@@ -263,7 +263,7 @@ Interior_OnGameModeInit()
 		world = Interior_GetVirtualWorld(i);
 		type = Interior_GetType(i);
 
-		interior_enters[i][e_ie_pickup_exit_id] = CreatePickup(19902, 2,
+		interior_enters[i][e_ie_pickup_exit_id] = CreatePickup(19902, 1,
 			interior_types[type][e_i_pos_x], interior_types[type][e_i_pos_y], interior_types[type][e_i_pos_z] - 1.0, world
 		);
 		Create3DTextLabel("Выход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF,
