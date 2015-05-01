@@ -72,7 +72,7 @@ bank_OnInteriorCreated(id, type, world)
 		if (bank_place[i][bank_type] == type) {
 			slot = bank_GetActorFreeSlot();
 			if (slot == -1) {
-				Log_Debug("bank.inc:%d: bank_GetActorFreeSlot() == -1", __line);
+				Log_Debug("bank.inc:%d: Free slot not found. Increase MAX_BANK_ACTORS value.", __line);
 				break;
 			}
 
@@ -465,11 +465,10 @@ stock bank_GetMaxMoney()
 stock bank_GetActorFreeSlot()
 {
 	static slot;
-	slot++;
 
 	if (slot >= sizeof(bank_actors)) {
 		return -1;
 	}
-	
-	return slot;
+
+	return slot++;
 }

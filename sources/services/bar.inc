@@ -72,6 +72,7 @@ bar_OnInteriorCreated(id, type, world)
 		if (bar_place[i][bar_type] == type) {
 			slot = bar_GetActorFreeSlot();
 			if (slot == -1) {
+				Log_Debug("bar.inc:%d: Free slot not found. Increase MAX_BAR_ACTORS value.", __line);
 				break;
 			}
 
@@ -221,11 +222,10 @@ stock IsPlayerAtBar(playerid)
 stock bar_GetActorFreeSlot()
 {
 	static slot;
-	slot++;
 
 	if (slot >= sizeof(bar_actors)) {
 		return -1;
 	}
 	
-	return slot;
+	return slot++;
 }

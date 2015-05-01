@@ -10,7 +10,7 @@
 #define _fastfood_included
 #pragma library fastfood
 
-#define MAX_FASTFOOD_ACTORS 38
+#define MAX_FASTFOOD_ACTORS 35
 
 enum e_Fastfood_Info {
 	ff_type,
@@ -68,6 +68,7 @@ stock fastfood_OnInteriorCreated(id, type, world)
 		if (type == fastfood_place[i][ff_type]) {
 			slot = fastfood_GetActorFreeSlot();
 			if (slot == -1) {
+				Log_Debug("fastfood.inc:%d: Free slot not found. Increase MAX_FASTFOOD_ACTORS value.", __line);
 				break;
 			}
 
@@ -164,11 +165,10 @@ stock IsPlayerAtFastfood_data(playerid)
 stock fastfood_GetActorFreeSlot()
 {
 	static slot;
-	slot++;
 
 	if (slot >= sizeof(fastfood_actors)) {
 		return -1;
 	}
 
-	return slot;
+	return slot++;
 }
