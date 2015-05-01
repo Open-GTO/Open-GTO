@@ -25,3 +25,10 @@ native SetActorPos(actorid, Float:X, Float:Y, Float:Z);
 native GetActorPos(actorid, &Float:X, &Float:Y, &Float:Z);
 native SetActorFacingAngle(actorid, Float:ang);
 native GetActorFacingAngle(actorid, &Float:ang);
+
+native SetActorHealth(actorid, Float:health);
+native GetActorHealth(actorid, &Float:health);
+native SetActorInvulnerable(actorid, invulnerable = true);
+native IsActorInvulnerable(actorid);
+
+native IsValidActor(actorid);

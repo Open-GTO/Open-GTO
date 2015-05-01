@@ -78,6 +78,7 @@ native SetPlayerAmmo(playerid, weaponslot, ammo);
 native GetPlayerAmmo(playerid);
 native GetPlayerWeaponState(playerid);
 native GetPlayerTargetPlayer(playerid);
+native GetPlayerTargetActor(playerid);
 native SetPlayerTeam(playerid, teamid);
 native GetPlayerTeam(playerid);
 native SetPlayerScore(playerid,score);
