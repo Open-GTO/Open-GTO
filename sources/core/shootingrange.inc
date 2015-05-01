@@ -116,34 +116,44 @@ forward OnGameModeInit();
 
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
-	if (hittype != BULLET_HIT_TYPE_OBJECT) {
-		return 0;
-	}
+	if (hittype == BULLET_HIT_TYPE_OBJECT) {
+		new
+			obj_count,
+			bool:destroyed,
+			bool:is_loop_end = false;
 
-	for (new i = 0; i < MAX_TARGETS; i++) {
-		for (new j = 0; j < targets_array[i][e_ta_ObjectIndex]; j++) {
-			if (targets_array[i][e_ta_Object][j] == hitid && ShootingRange_IsTarget(hitid)) {
-				DestroyObject(targets_array[i][e_ta_Object][j]);
-				targets_array[i][e_ta_Object][j] = INVALID_OBJECT_ID;
+		for (new i = 0; i < MAX_TARGETS; i++) {
+			for (new j = 0; j < targets_array[i][e_ta_ObjectIndex]; j++) {
+				if (targets_array[i][e_ta_Object][j] == hitid && ShootingRange_IsTarget(hitid)) {
+					DestroyObject(targets_array[i][e_ta_Object][j]);
+					targets_array[i][e_ta_Object][j] = INVALID_OBJECT_ID;
 
-				new obj_count = 0;
-				for (new k = 0; k < targets_array[i][e_ta_ObjectIndex]; k++) {
-					if (targets_array[i][e_ta_Object][k] != INVALID_OBJECT_ID &&
-						ShootingRange_IsTarget(targets_array[i][e_ta_Object][k])) {
-						obj_count++;
+					obj_count = 0;
+					for (new k = 0; k < targets_array[i][e_ta_ObjectIndex]; k++) {
+						if (targets_array[i][e_ta_Object][k] != INVALID_OBJECT_ID &&
+							ShootingRange_IsTarget(targets_array[i][e_ta_Object][k])) {
+							obj_count++;
+						}
 					}
+					
+					destroyed = obj_count == 0;
+					if (destroyed) {
+						ShootingRange_DestroyTarget(i);
+					}
+					
+					CallLocalFunction("OnShootingRangeTargetHit", "iii", playerid, i, destroyed);
+					is_loop_end = true;
+					break;
 				}
-				
-				new bool:destroyed = obj_count == 0;
-				if (destroyed) {
-					ShootingRange_DestroyTarget(i);
-				}
-				CallLocalFunction("OnShootingRangeTargetHit", "iii", playerid, i, destroyed);
-				return 1;
+			}
+
+			if (is_loop_end) {
+				break;
 			}
 		}
 	}
-	CallLocalFunction("ShootingRange_OnGameModeInit", "iiiifff", playerid, weaponid, hittype, hitid, fX, fY, fZ);
+
+	CallLocalFunction("SR_OnPlayerWeaponShot", "iiiifff", playerid, weaponid, hittype, hitid, fX, fY, fZ);
 	return 1;
 }
 
