@@ -283,6 +283,7 @@ Interior_OnInteriorCreated(id, type, world)
 {
 	fastfood_OnInteriorCreated(id, type, world);
 	bar_OnInteriorCreated(id, type, world);
+	bank_OnInteriorCreated(id, type, world);
 	return 1;
 }
 
@@ -311,11 +312,10 @@ Interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	if (index == -1) {
 		if (IsPlayerInRangeOfPoint(playerid, 2,
 				interior_enters[id][e_ie_pos_x], interior_enters[id][e_ie_pos_y], interior_enters[id][e_ie_pos_z])) {
-			Interior_SetPlayerEnterID(playerid, -1);
 			Interior_SetPlayerIndex(playerid, id);
 
-			SetPlayerVirtualWorld(playerid, Interior_GetVirtualWorld(id));
 			SetPlayerInterior(playerid, interior_types[type][e_i_interior]);
+			SetPlayerVirtualWorld(playerid, Interior_GetVirtualWorld(id));
 			SetPlayerPos(playerid, interior_types[type][e_i_pos_x], interior_types[type][e_i_pos_y], interior_types[type][e_i_pos_z]);
 			SetPlayerFacingAngle(playerid, interior_types[type][e_i_pos_a]);
 			return 1;
@@ -341,6 +341,10 @@ Interior_OnPlayerPickUpPickup(playerid, pickupid)
 
 	for (new i = 0; i < sizeof(interior_enters); i++) {
 		if (pickupid == interior_enters[i][e_ie_pickup_id] || pickupid == interior_enters[i][e_ie_pickup_exit_id]) {
+			if (pickupid == interior_enters[i][e_ie_pickup_id]) {
+				Interior_SetPlayerIndex(playerid, -1);
+			}
+			
 			Interior_SetPlayerEnterID(playerid, i);
 			return 1;
 		}
