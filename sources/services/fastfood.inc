@@ -17,7 +17,7 @@
 #define e_FASTFOOD_TYPE_RESTAURANT 50
 #define e_FASTFOOD_TYPE_DONUTS     17
 
-#define MAX_FASTFOOD_ACTORS        39
+#define MAX_FASTFOOD_ACTORS        38
 
 enum e_Fastfood_Info {
 	ff_type,
@@ -74,6 +74,9 @@ stock fastfood_OnInteriorCreated(id, type, world)
 	for (new i = 0; i < sizeof(fastfood_place); i++) {
 		if (fastfood_place[i][ff_type] == type) {
 			slot = fastfood_GetActorFreeSlot();
+			if (slot == -1) {
+				break;
+			}
 
 			fastfood_actors[slot] = CreateActor(fastfood_place[i][ff_actor_model],
 				fastfood_place[i][ff_actor_pos_x], fastfood_place[i][ff_actor_pos_y], fastfood_place[i][ff_actor_pos_z],
@@ -167,5 +170,11 @@ stock IsPlayerAtFastfood_data(playerid)
 stock fastfood_GetActorFreeSlot()
 {
 	static slot;
-	return slot++;
+	slot++;
+
+	if (slot >= sizeof(fastfood_actors)) {
+		return -1;
+	}
+	
+	return slot;
 }
