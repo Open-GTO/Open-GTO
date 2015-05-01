@@ -10,7 +10,7 @@
 #define _bar_included
 #pragma library bar
 
-#define MAX_BAR_ACTORS 38
+#define MAX_BAR_ACTORS 11
 
 enum Bar_Info {
 	bar_type,
