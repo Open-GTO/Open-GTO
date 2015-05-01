@@ -128,6 +128,7 @@ Thanks:
 #include "missions/trucker"
 #include "missions/swagup"
 #include "system/click"
+#include "system/interior"
 #include "services/bank"
 #include "services/fastfood"
 #include "services/bar"
@@ -137,7 +138,6 @@ Thanks:
 #include "services/weaponshop"
 #include "services/fightteacher"
 #include "services/fuelstation"
-#include "system/interior"
 #include "system/weather"
 #include "protections/idle"
 #include "protections/rconhack"
@@ -207,7 +207,7 @@ public OnGameModeInit()
 	groundhold_OnGameModeInit();
 	business_OnGameModeInit();
 	housing_OnGameModeInit();
-	interior_OnGameModeInit();
+	Interior_OnGameModeInit();
 	weapon_OnGameModeInit();
 	vip_OnGameModeInit();
 	pl_weapon_OnGameModeInit();
@@ -311,6 +311,7 @@ public OnPlayerConnect(playerid)
 	veh_fuel_OnPlayerConnect(playerid);
 	Mapicon_OnPlayerConnect(playerid);
 	Checkpoint_OnPlayerConnect(playerid);
+	Interior_OnPlayerConnect(playerid);
 	return 1;
 }
 
@@ -345,6 +346,7 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 	swagup_OnPlayerPickUpPickup(playerid, pickupid);
 	vip_OnPlayerPickUpPickup(playerid, pickupid);
 	pickup_OnPlayerPickUpPickup(playerid, pickupid);
+	Interior_OnPlayerPickUpPickup(playerid, pickupid);
 	return 1;
 }
 
@@ -516,8 +518,8 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	}
 
 	if (PRESSED(KEY_USING)) {
-		if (IsPlayerAtEnterExit(playerid)) {
-			return interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		if (Interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+			return 1;
 		}
 
 		if (IsPlayerAtHouse(playerid)) {
@@ -723,6 +725,9 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
 
 public OnActorStreamIn(actorid, forplayerid)
 {
+	if (bar_OnActorStreamIn(actorid, forplayerid)) {
+		return 1;
+	}
 	if (fastfood_OnActorStreamIn(actorid, forplayerid)) {
 		return 1;
 	}

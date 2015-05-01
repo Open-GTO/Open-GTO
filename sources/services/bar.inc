@@ -10,24 +10,33 @@
 #define _bar_included
 #pragma library bar
 
+#define MAX_BAR_ACTORS 38
+
 enum Bar_Info {
+	bar_type,
 	Float:bar_x,
 	Float:bar_y,
 	Float:bar_z,
+	bar_actor_model,
+	Float:bar_actor_pos_x,
+	Float:bar_actor_pos_y,
+	Float:bar_actor_pos_z,
+	Float:bar_actor_pos_a,
 	bar_checkpoint,
 }
 
-new Bars[][Bar_Info] = {
-	{495.3609, -76.0381, 998.7578}, // green bar
-	{681.5761, -453.8308, -25.6172}, // Welcome Pump(Dillimore)
-	{-2654.0112, 1413.2083, 906.2771}, // Jizzy's
-	{1955.3743, 1017.9493, 992.4688}, // 4 Dragons Casino
-	{1139.7212, -4.2430, 1000.6719}, // Redsands Casino
-	{-224.7835, 1407.4834, 27.7734}, // Lil' Probe Inn
-	{499.4490, -16.8206, 1000.6719}, // Alhambra Club
-	{-785.9133, 500.1498, 1371.7422}, // Liberty City Restoran
-	{1215.3257, -13.0094, 1000.9219} // The Pig Pen
+static bar_place[][Bar_Info] = {
+	{INTERIOR_TYPE_BAR, 495.3609, -76.0381, 998.7578,           176, 495.3513, -77.8193, 998.7651, 7.2703}, // green bar
+	{INTERIOR_TYPE_JIZZY, -2654.0112, 1413.2083, 906.2771,      176, -2655.8608, 1413.0214, 906.2734, 269.8462}, // Jizzy's
+	{INTERIOR_TYPE_FOURDRAGONS, 1955.3743, 1017.9493, 992.4688, 176, 1953.7958, 1017.9473, 992.4688, 276.7396}, // 4 Dragons Casino
+	{INTERIOR_TYPE_REDSANS, 1139.7212, -4.2430, 1000.6719,      177, 1141.8073, -4.4088, 1000.6719, 85.2910}, // Redsands Casino
+	{INTERIOR_TYPE_LILPROBEINN, -224.7835, 1407.4834, 27.7734,  176, -223.3067, 1407.3264, 27.7734, 77.1677}, // Lil' Probe Inn
+	{INTERIOR_TYPE_ALHAMBRA, 499.4490, -16.8206, 1000.6719,     177, 501.7473, -17.2167, 1000.6719, 81.5544}, // Alhambra Club
+	{INTERIOR_TYPE_RESTAURANT, -785.9133, 500.1498, 1371.7422,  177, -785.9677, 498.1729, 1371.7422, 4.4737}, // Liberty City Restoran
+	{INTERIOR_TYPE_PIGPEN, 1215.3257, -13.0094, 1000.9219,      177, 1215.1998, -15.2597, 1000.9219, 2.2803} // The Pig Pen
 };
+
+static bar_actors[MAX_BAR_ACTORS];
 
 enum DrinkInfo {
 	Name[MAX_NAME],
@@ -36,7 +45,8 @@ enum DrinkInfo {
 	Float:Alcohol,
 	Action,
 }
-new Drinks[][DrinkInfo] = {
+
+static drinks_data[][DrinkInfo] = {
 	{"Водка", 100, 30.0, 40.0, SPECIAL_ACTION_DRINK_SPRUNK},
 	{"Пиво", 30, 10.0, 4.5, SPECIAL_ACTION_DRINK_BEER},
 	{"Вино", 30, 10.0, 10.0, SPECIAL_ACTION_DRINK_WINE},
@@ -44,16 +54,49 @@ new Drinks[][DrinkInfo] = {
 	{"Сигара", 15, 5.0, 2.0, SPECIAL_ACTION_SMOKE_CIGGY}
 };
 
-stock bar_OnGameModeInit()
+bar_OnGameModeInit()
 {
-	for (new id = 0; id < sizeof(Bars); id++) {
-		Bars[id][bar_checkpoint] = Checkpoint_Create(Bars[id][bar_x], Bars[id][bar_y], Bars[id][bar_z], 1.5, .streamdistance = 20.0);
+	for (new id = 0; id < sizeof(bar_place); id++) {
+		bar_place[id][bar_checkpoint] = Checkpoint_Create(bar_place[id][bar_x], bar_place[id][bar_y], bar_place[id][bar_z], 1.5, .streamdistance = 20.0);
 	}
 	Log_Game(lang_texts[17][11]);
 	return 1;
 }
 
-stock bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+bar_OnInteriorCreated(id, type, world)
+{
+	#pragma unused id
+	new slot;
+
+	for (new i = 0; i < sizeof(bar_place); i++) {
+		if (bar_place[i][bar_type] == type) {
+			slot = bar_GetActorFreeSlot();
+			if (slot == -1) {
+				break;
+			}
+
+			bar_actors[slot] = CreateActor(bar_place[i][bar_actor_model],
+				bar_place[i][bar_actor_pos_x], bar_place[i][bar_actor_pos_y], bar_place[i][bar_actor_pos_z],
+				bar_place[i][bar_actor_pos_a]
+			);
+			SetActorVirtualWorld(bar_actors[slot], world);
+		}
+	}
+}
+
+bar_OnActorStreamIn(actorid, forplayerid)
+{
+	for (new id = 0; id < sizeof(bar_actors); id++) {
+		if (actorid == bar_actors[id]) {
+			SetPVarInt(forplayerid, "bar_actor_id", actorid);
+			ClearActorAnimations(actorid);
+			return 1;
+		}
+	}
+	return 0;
+}
+
+bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	if ( PRESSED ( KEY_FIRE ) ) {
 		if (GetPVarInt(playerid, "bar_Drinking") == 1 && GetPVarInt(playerid, "bar_Gulping") == 0) {
@@ -68,11 +111,12 @@ stock bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	return 1;
 }
 
-stock bar_OnPlayerEnterCheckpoint(playerid, cp)
+bar_OnPlayerEnterCheckpoint(playerid, cp)
 {
-	for (new id = 0; id < sizeof(Bars); id++) {
-		if (cp == Bars[id][bar_checkpoint]) {
+	for (new id = 0; id < sizeof(bar_place); id++) {
+		if (cp == bar_place[id][bar_checkpoint]) {
 			Dialog_Show(playerid, Dialog:ServiceBar);
+			ApplyActorAnimation(GetPVarInt(playerid, "bar_actor_id"), "MISC", "Idle_Chat_02", 4.1, 0, 1, 1, 1, 1);
 			return 1;
 		}
 	}
@@ -83,7 +127,7 @@ forward bar_Gulp(playerid);
 public bar_Gulp(playerid)
 {
 	new id = GetPVarInt(playerid, "bar_Alcohol_Id");
-	SetPlayerDrunkLevel(playerid, GetPlayerDrunkLevel(playerid) + floatround(Drinks[id][Alcohol] * 100 / MAX_GULPS, floatround_round));
+	SetPlayerDrunkLevel(playerid, GetPlayerDrunkLevel(playerid) + floatround(drinks_data[id][Alcohol] * 100 / MAX_GULPS, floatround_round));
 
 	new Float:max_health;
 	GetMaxHealth(playerid, max_health);
@@ -91,10 +135,10 @@ public bar_Gulp(playerid)
 	new Float:health;
 	GetPlayerHealth(playerid, health);
 
-	if (health + Drinks[id][Hp] / MAX_GULPS > max_health) {
+	if (health + drinks_data[id][Hp] / MAX_GULPS > max_health) {
 		SetPlayerHealth(playerid, max_health);
 	} else {
-		SetPlayerHealth(playerid, health + Drinks[id][Hp] / MAX_GULPS);
+		SetPlayerHealth(playerid, health + drinks_data[id][Hp] / MAX_GULPS);
 	}
 
 	if (GetPVarInt(playerid, "bar_Gulps") >= MAX_GULPS) {
@@ -107,13 +151,13 @@ public bar_Gulp(playerid)
 
 DialogCreate:ServiceBar(playerid)
 {
-	new string[MAX_STRING * (sizeof(Drinks) + 1)];
+	new string[MAX_STRING * (sizeof(drinks_data) + 1)];
 	string = lang_texts[17][12];
 
-	for (new i = 0; i < sizeof(Drinks); i++) {
+	for (new i = 0; i < sizeof(drinks_data); i++) {
 		format(string, sizeof(string),
 			lang_texts[17][13],
-			string, Drinks[i][Name], Drinks[i][Cost], Drinks[i][Alcohol], Drinks[i][Hp]
+			string, drinks_data[i][Name], drinks_data[i][Cost], drinks_data[i][Alcohol], drinks_data[i][Hp]
 		);
 	}
 
@@ -126,26 +170,26 @@ DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	if (GetPlayerMoney(playerid) < Drinks[listitem][Cost]) {
+	if (GetPlayerMoney(playerid) < drinks_data[listitem][Cost]) {
 		Dialog_Message(playerid, lang_texts[17][14], lang_texts[17][17], lang_texts[17][18]);
 		return 1;
 	}
 
-	GivePlayerMoney(playerid,-Drinks[listitem][Cost], 1);
-	SetPlayerSpecialAction(playerid, Drinks[listitem][Action]);
+	GivePlayerMoney(playerid,-drinks_data[listitem][Cost], 1);
+	SetPlayerSpecialAction(playerid, drinks_data[listitem][Action]);
 	SetPVarInt(playerid, "bar_Drinking", 1);
 	SetPVarInt(playerid, "bar_Alcohol_Id", listitem);
 
 	new string[MAX_STRING];
 	format(string, sizeof(string),
 		lang_texts[17][19],
-		Drinks[listitem][Name], Drinks[listitem][Cost], Drinks[listitem][Alcohol], Drinks[listitem][Hp]
+		drinks_data[listitem][Name], drinks_data[listitem][Cost], drinks_data[listitem][Alcohol], drinks_data[listitem][Hp]
 	);
 	Dialog_Message(playerid, lang_texts[17][14], string, lang_texts[17][18]);
 	return 1;
 }
 
-stock bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
+bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
 	#pragma unused vehicleid
 	if (ispassenger) {
@@ -166,10 +210,22 @@ stock bar_GulpStop(playerid)
 
 stock IsPlayerAtBar(playerid)
 {
-	for (new b_id = 0; b_id < sizeof(Bars); b_id++) {
-		if (IsPlayerInRangeOfPoint(playerid, 2, Bars[b_id][bar_x], Bars[b_id][bar_y], Bars[b_id][bar_z])) {
+	for (new b_id = 0; b_id < sizeof(bar_place); b_id++) {
+		if (IsPlayerInRangeOfPoint(playerid, 2, bar_place[b_id][bar_x], bar_place[b_id][bar_y], bar_place[b_id][bar_z])) {
 			return 1;
 		}
 	}
 	return 0;
+}
+
+stock bar_GetActorFreeSlot()
+{
+	static slot;
+	slot++;
+
+	if (slot >= sizeof(bar_actors)) {
+		return -1;
+	}
+	
+	return slot;
 }

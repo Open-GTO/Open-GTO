@@ -10,14 +10,7 @@
 #define _fastfood_included
 #pragma library fastfood
 
-// types (icon id's)
-#define e_FASTFOOD_TYPE_PIZZA      29
-#define e_FASTFOOD_TYPE_BURGER     10
-#define e_FASTFOOD_TYPE_CHICKEN    14
-#define e_FASTFOOD_TYPE_RESTAURANT 50
-#define e_FASTFOOD_TYPE_DONUTS     17
-
-#define MAX_FASTFOOD_ACTORS        38
+#define MAX_FASTFOOD_ACTORS 38
 
 enum e_Fastfood_Info {
 	ff_type,
@@ -33,11 +26,11 @@ enum e_Fastfood_Info {
 }
 
 static fastfood_place[][e_Fastfood_Info] = {
-	{e_FASTFOOD_TYPE_PIZZA,       373.4858, -119.4608, 1001.4922,    209,  373.5132, -117.0893, 1001.4995, 178.9151},
-	{e_FASTFOOD_TYPE_BURGER,      377.4426, -67.5379,  1001.5078,    205,  377.2474, -65.2258,  1001.5078, 180.7951},
-	{e_FASTFOOD_TYPE_CHICKEN,     369.3667, -6.3469,   1001.8516,    167,  369.3396, -4.1569,   1001.8516, 178.9150},
-	{e_FASTFOOD_TYPE_RESTAURANT, -784.5101,  505.0186, 1371.7422,    171, -782.3088,  504.5334, 1371.7422, 85.2274},
-	{e_FASTFOOD_TYPE_DONUTS,      379.4050, -190.5775, 1000.6328,    155,  380.6582, -188.8537, 1000.6328, 147.8714}
+	{INTERIOR_TYPE_PIZZA,       373.4858, -119.4608, 1001.4922,    209,  373.5132, -117.0893, 1001.4995, 178.9151},
+	{INTERIOR_TYPE_BURGER,      377.4426, -67.5379,  1001.5078,    205,  377.2474, -65.2258,  1001.5078, 180.7951},
+	{INTERIOR_TYPE_CHICKEN,     369.3667, -6.3469,   1001.8516,    167,  369.3396, -4.1569,   1001.8516, 178.9150},
+	{INTERIOR_TYPE_RESTAURANT, -784.5101,  505.0186, 1371.7422,    171, -782.3088,  504.5334, 1371.7422, 85.2274},
+	{INTERIOR_TYPE_DONUTS,      379.4050, -190.5775, 1000.6328,    155,  380.6582, -188.8537, 1000.6328, 147.8714}
 };
 
 static fastfood_actors[MAX_FASTFOOD_ACTORS];
@@ -72,7 +65,7 @@ stock fastfood_OnInteriorCreated(id, type, world)
 	new slot;
 
 	for (new i = 0; i < sizeof(fastfood_place); i++) {
-		if (fastfood_place[i][ff_type] == type) {
+		if (type == fastfood_place[i][ff_type]) {
 			slot = fastfood_GetActorFreeSlot();
 			if (slot == -1) {
 				break;
@@ -91,11 +84,12 @@ stock fastfood_OnActorStreamIn(actorid, forplayerid)
 {
 	for (new id = 0; id < sizeof(fastfood_actors); id++) {
 		if (actorid == fastfood_actors[id]) {
-			SetPVarInt(forplayerid, "fastfood_current_id", actorid);
+			SetPVarInt(forplayerid, "fastfood_actor_id", actorid);
 			ClearActorAnimations(actorid);
+			return 1;
 		}
 	}
-	return 1;
+	return 0;
 }
 
 stock fastfood_OnPlayerEnterCP(playerid, cp)
@@ -103,7 +97,7 @@ stock fastfood_OnPlayerEnterCP(playerid, cp)
 	for (new id = 0; id < sizeof(fastfood_place); id++) {
 		if (cp == fastfood_place[id][ff_checkpoint_id]) {
 			Dialog_Show(playerid, Dialog:ServiceFastfood);
-			ApplyActorAnimation(GetPVarInt(playerid, "fastfood_current_id"), "MISC", "Idle_Chat_02", 4.1, 0, 1, 1, 1, 1);
+			ApplyActorAnimation(GetPVarInt(playerid, "fastfood_actor_id"), "MISC", "Idle_Chat_02", 4.1, 0, 1, 1, 1, 1);
 			return 1;
 		}
 	}
@@ -175,6 +169,6 @@ stock fastfood_GetActorFreeSlot()
 	if (slot >= sizeof(fastfood_actors)) {
 		return -1;
 	}
-	
+
 	return slot;
 }
