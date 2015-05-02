@@ -123,12 +123,10 @@ Mapicon_Stream(playerid)
 	new is_in_range, is_in_world, is_in_interior, is_for_playerid;
 
 	for (new iconid = 0; iconid < MAX_ICONS; iconid++) {
-		if (!Mapicon_IsValid(iconid) && Mapicon_IsPlayerShowed(playerid, iconid)) {
-			Mapicon_HideForPlayer(playerid, iconid);
-			continue;
-		}
-
 		if (!Mapicon_IsValid(iconid)) {
+			if (Mapicon_IsPlayerShowed(playerid, iconid)) {
+				Mapicon_HideForPlayer(playerid, iconid);	
+			}
 			continue;
 		}
 
