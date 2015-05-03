@@ -134,7 +134,7 @@ stock pl_spawn_OnPlayerRequestClass(playerid, classid)
 stock pl_spawn_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused killerid, reason
-	pl_spawn_SaveDeathPos(playerid);
+	pl_spawn_SaveDeathInfo(playerid);
 	player_SetCoord(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
 	
 	new interior, world, Float:spawn_pos[4];
@@ -274,7 +274,16 @@ stock pl_spawn_SetSpawnPos(playerid)
 
 stock pl_spawn_GetSpawnID(playerid)
 {
-	if (GetPlayerVirtualWorld(playerid) != 0 || GetPlayerInterior(playerid) != 0) {
+	new
+		index = Interior_GetPlayerIndex(playerid),
+		interior = pl_spawn_GetDeathInterior(playerid),
+		world = pl_spawn_GetDeathVirtualWorld(playerid);
+
+	if (Interior_IsPlayerValidInfo(playerid, index, interior, world)) {
+		new Float:pos[3];
+		Interior_GetPos(index, pos[0], pos[1], pos[2]);
+		pl_spawn_SetDeathPos(playerid, pos[0], pos[1], pos[2]);
+	} else if (world != 0 || interior != 0) {
 		return pl_spawn_GetRandomSpawnID(playerid);
 	}
 	
@@ -321,13 +330,13 @@ stock pl_spawn_GetNearestSpawnID(playerid)
 	return id;
 }
 
-stock pl_spawn_SaveDeathPos(playerid)
+stock pl_spawn_SaveDeathInfo(playerid)
 {
 	new Float:pos[3];
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	SetPVarFloat(playerid, "pl_spawn_DeathPosX", pos[0]);
-	SetPVarFloat(playerid, "pl_spawn_DeathPosY", pos[1]);
-	SetPVarFloat(playerid, "pl_spawn_DeathPosZ", pos[2]);
+	pl_spawn_SetDeathPos(playerid, pos[0], pos[1], pos[2]);
+	pl_spawn_SetDeathInterior(playerid, GetPlayerInterior(playerid));
+	pl_spawn_SetDeathVirtualWorld(playerid, GetPlayerVirtualWorld(playerid));
 	return 1;
 }
 
@@ -337,6 +346,36 @@ stock pl_spawn_GetDeathPos(playerid, &Float:x, &Float:y, &Float:z)
 	y = GetPVarFloat(playerid, "pl_spawn_DeathPosY");
 	z = GetPVarFloat(playerid, "pl_spawn_DeathPosZ");
 	return 1;
+}
+
+stock pl_spawn_SetDeathPos(playerid, Float:x, Float:y, Float:z)
+{
+	SetPVarFloat(playerid, "pl_spawn_DeathPosX", x);
+	SetPVarFloat(playerid, "pl_spawn_DeathPosY", y);
+	SetPVarFloat(playerid, "pl_spawn_DeathPosZ", z);
+	return 1;
+}
+
+stock pl_spawn_SetDeathInterior(playerid, interior)
+{
+	SetPVarInt(playerid, "pl_spawn_DeathInterior", interior);
+	return 1;
+}
+
+stock pl_spawn_GetDeathInterior(playerid)
+{
+	return GetPVarInt(playerid, "pl_spawn_DeathInterior");
+}
+
+stock pl_spawn_SetDeathVirtualWorld(playerid, world)
+{
+	SetPVarInt(playerid, "pl_spawn_DeathWorld", world);
+	return 1;
+}
+
+stock pl_spawn_GetDeathVirtualWorld(playerid)
+{
+	return GetPVarInt(playerid, "pl_spawn_DeathWorld");
 }
 
 stock pl_spawn_SetPosByID(playerid, spawnid)

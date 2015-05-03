@@ -381,10 +381,48 @@ stock Interior_SetPlayerEnterID(playerid, id)
 
 stock Interior_GetVirtualWorld(id)
 {
-	return (id + 1);
+	if (0 <= id < sizeof(interior_enters)) {
+		return (id + 1);
+	}
+	return -1;
+}
+
+stock Interior_GetInterior(id)
+{
+	new type = Interior_GetType(id);
+
+	if (0 <= type < sizeof(interior_types)) {
+		return interior_types[type][e_i_interior];
+	}
+	
+	return -1;
 }
 
 stock Interior_GetType(id)
 {
-	return interior_enters[id][e_ie_type];
+	if (0 <= id < sizeof(interior_enters)) {
+		return interior_enters[id][e_ie_type];
+	}
+
+	return -1;
+}
+
+stock Interior_GetPos(id, &Float:x, &Float:y, &Float:z)
+{
+	if (0 <= id < sizeof(interior_enters)) {
+		x = interior_enters[id][e_ie_pos_x];
+		y = interior_enters[id][e_ie_pos_y];
+		z = interior_enters[id][e_ie_pos_z];
+		return 1;
+	}
+	return 0;
+}
+
+stock Interior_IsPlayerValidInfo(playerid, index, interior, world)
+{
+	if (index != -1 && Interior_GetVirtualWorld(index) == world && Interior_GetInterior(index) == interior) {
+		return 1;
+	}
+
+	return 0;
 }
