@@ -253,6 +253,21 @@ stock Float:GetDistanceBetweenPoints(Float:x1, Float:y1, Float:z1, Float:x2, Flo
 	return VectorSize(x1-x2, y1-y2, z1-z2);
 }
 
+stock GetCoordsBefore(Float:x, Float:y, Float:a, Float:distance, &Float:res_x, &Float:res_y)
+{
+	res_x = x + distance * floatcos(90 + a, degrees);
+	res_y = y + distance * floatsin(90 + a, degrees);
+}
+
+stock GetCoordsBeforePlayer(playerid, Float:distance, &Float:x, &Float:y)
+{
+	new Float:pos[4];
+	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+	GetPlayerFacingAngle(playerid, pos[3]);
+
+	GetCoordsBefore(pos[0], pos[1], pos[3], distance, pos[0], pos[1]);
+}
+
 /*
 
 	For UpdateVehicleDamageStatus

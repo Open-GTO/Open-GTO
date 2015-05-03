@@ -100,7 +100,10 @@ DialogResponse:PlayerVehicleList(playerid, response, listitem, inputtext[])
 			new Float:pos[4];
 			GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 			GetPlayerFacingAngle(playerid, pos[3]);
-			CreatePlayerVehicle(playerid, pl_veh_menu_GetVehicleSlot(playerid), pos[0]+1, pos[1]+1, pos[2], pos[3]);
+
+			GetCoordsBefore(pos[0], pos[1], pos[3], 2.0, pos[0], pos[1]);
+
+			CreatePlayerVehicle(playerid, pl_veh_menu_GetVehicleSlot(playerid), pos[0], pos[1], pos[2], pos[3] + 90);
 			return 1;
 		}
 		// продать
