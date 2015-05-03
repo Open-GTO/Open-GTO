@@ -10,7 +10,7 @@
 #define _fastfood_included
 #pragma library fastfood
 
-#define MAX_FASTFOOD_ACTORS 35
+#define MAX_FASTFOOD_ACTORS 37
 
 enum e_Fastfood_Info {
 	ff_type,
