@@ -14,29 +14,85 @@
 #define _weaponshop_included
 #pragma library weaponshop
 
+#define MAX_WSHOP_ACTORS 10
 
 enum weapon_Shop_Info {
+	wshop_type,
 	Float:wshop_x,
 	Float:wshop_y,
 	Float:wshop_z,
+	wshop_actor_model,
+	Float:wshop_actor_pos_x,
+	Float:wshop_actor_pos_y,
+	Float:wshop_actor_pos_z,
+	Float:wshop_actor_pos_a,
 	wshop_checkpoint,
 }
 
-new weapon_Shops[][weapon_Shop_Info] = {
-	{295.3583, -80.1250, 1001.5156}, // LVammunation1
-	{290.0941, -109.2533, 1001.5156}, // LSAmmunation2
-	{296.1441, -37.7606, 1001.5156}, // LSAmmunation3
-	{312.5029, -165.4625, 999.6010} // north
+new wshop_place[][weapon_Shop_Info] = {
+	{INTERIOR_TYPE_AMMUNATION_1, 296.1441, -37.7606, 1001.5156,   179, 296.1232, -40.2155, 1001.5156, 359.9678},
+	{INTERIOR_TYPE_AMMUNATION_2, 295.3583, -80.1250, 1001.5156,   179, 295.3518, -82.5274, 1001.5156, 356.2078},
+	{INTERIOR_TYPE_AMMUNATION_3, 290.0941, -109.2533, 1001.5156,  179, 290.0896, -111.5135, 1001.5156, 356.8344},
+	{INTERIOR_TYPE_AMMUNATION_4, 313.9999, -133.8288, 999.6016,   179, 316.1227, -133.7110, 999.6016, 97.4153},
+	{INTERIOR_TYPE_AMMUNATION_5, 312.5029, -165.4625, 999.6010,   179, 312.5927, -167.7639, 999.5938, 3.1246}
 };
 
+static wshop_actors[MAX_WSHOP_ACTORS];
 
-stock wshop_OnGameModeInit()
+
+wshop_OnGameModeInit()
 {
-	for (new id = 0; id < sizeof(weapon_Shops); id++) {
-		weapon_Shops[id][wshop_checkpoint] = Checkpoint_Create(weapon_Shops[id][wshop_x], weapon_Shops[id][wshop_y], weapon_Shops[id][wshop_z], 1.5, .streamdistance = 20.0);
+	for (new id = 0; id < sizeof(wshop_place); id++) {
+		wshop_place[id][wshop_checkpoint] = Checkpoint_Create(wshop_place[id][wshop_x], wshop_place[id][wshop_y], wshop_place[id][wshop_z], 1.5, .streamdistance = 20.0);
 	}
 	Log_Game(lang_texts[17][44]);
 	return 1;
+}
+
+wshop_OnInteriorCreated(id, type, world)
+{
+	#pragma unused id
+	new slot;
+
+	for (new i = 0; i < sizeof(wshop_place); i++) {
+		if (wshop_place[i][wshop_type] == type) {
+			slot = wshop_GetActorFreeSlot();
+			if (slot == -1) {
+				Log_Debug("weaponshop.inc:%d: Free slot not found. Increase MAX_WSHOP_ACTORS value.", __line);
+				break;
+			}
+
+			wshop_actors[slot] = CreateActor(wshop_place[i][wshop_actor_model],
+				wshop_place[i][wshop_actor_pos_x], wshop_place[i][wshop_actor_pos_y], wshop_place[i][wshop_actor_pos_z],
+				wshop_place[i][wshop_actor_pos_a]
+			);
+			SetActorVirtualWorld(wshop_actors[slot], world);
+		}
+	}
+}
+
+wshop_OnActorStreamIn(actorid, forplayerid)
+{
+	for (new id = 0; id < sizeof(wshop_actors); id++) {
+		if (actorid == wshop_actors[id]) {
+			SetPVarInt(forplayerid, "wshop_actor_id", actorid);
+			ClearActorAnimations(actorid);
+			return 1;
+		}
+	}
+	return 0;
+}
+
+wshop_OnPlayerEnterCheckpoint(playerid, cp)
+{
+	for (new id = 0; id < sizeof(wshop_place); id++) {
+		if (cp == wshop_place[id][wshop_checkpoint]) {
+			Dialog_Show(playerid, Dialog:ServiceWeapon);
+			ApplyActorAnimation(GetPVarInt(playerid, "wshop_actor_id"), "MISC", "Idle_Chat_02", 4.1, 0, 1, 1, 1, 1);
+			return 1;
+		}
+	}
+	return 0;
 }
 
 // select weapon from list
@@ -105,17 +161,6 @@ DialogResponse:ServiceWeaponBuy(playerid, response, listitem, inputtext[])
 	wshop_Buy(playerid, GetPVarInt(playerid, "Buy_Weapon_ID"), bullets);
 	Dialog_Show(playerid, Dialog:ServiceWeapon);
 	return 1;
-}
-
-stock wshop_OnPlayerEnterCheckpoint(playerid, cp)
-{
-	for (new id = 0; id < sizeof(weapon_Shops); id++) {
-		if (cp == weapon_Shops[id][wshop_checkpoint]) {
-			Dialog_Show(playerid, Dialog:ServiceWeapon);
-			return 1;
-		}
-	}
-	return 0;
 }
 
 stock wshop_Buy(playerid, weaponid, bullets)
@@ -211,10 +256,21 @@ stock wshop_GetSelectedWeaponID(playerid, listitem)
 
 stock IsPlayerAtWeaponShop(playerid)
 {
-	for (new id = 0; id < sizeof(weapon_Shops); id++) {
-		if (IsPlayerInRangeOfPoint(playerid, 2, weapon_Shops[id][wshop_x], weapon_Shops[id][wshop_y], weapon_Shops[id][wshop_z])) {
+	for (new id = 0; id < sizeof(wshop_place); id++) {
+		if (IsPlayerInRangeOfPoint(playerid, 2, wshop_place[id][wshop_x], wshop_place[id][wshop_y], wshop_place[id][wshop_z])) {
 			return 1;
 		}
 	}
 	return 0;
+}
+
+stock wshop_GetActorFreeSlot()
+{
+	static slot;
+
+	if (slot >= sizeof(wshop_actors)) {
+		return -1;
+	}
+	
+	return slot++;
 }

@@ -734,5 +734,8 @@ public OnActorStreamIn(actorid, forplayerid)
 	if (bank_OnActorStreamIn(actorid, forplayerid)) {
 		return 1;
 	}
+	if (wshop_OnActorStreamIn(actorid, forplayerid)) {
+		return 1;
+	}
 	return 1;
 }
