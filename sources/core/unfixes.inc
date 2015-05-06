@@ -4,7 +4,9 @@
 
 */
 
-#if !defined FS_USING
+#if defined FS_USING
+	#define FIXES_Single 0
+#else
 	#define FIXES_Single 1
 #endif
 
