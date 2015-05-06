@@ -17,7 +17,6 @@
  * Core settings
  */
 
-#pragma tabsize 0
 #pragma dynamic 13000
 
 #define MAX_STRING  128
