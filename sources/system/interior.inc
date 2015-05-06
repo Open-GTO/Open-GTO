@@ -418,7 +418,7 @@ stock Interior_GetPos(id, &Float:x, &Float:y, &Float:z)
 	return 0;
 }
 
-stock Interior_IsPlayerValidInfo(playerid, index, interior, world)
+stock Interior_IsValidInfo(index, interior, world)
 {
 	if (index != -1 && Interior_GetVirtualWorld(index) == world && Interior_GetInterior(index) == interior) {
 		return 1;

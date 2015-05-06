@@ -279,7 +279,7 @@ stock pl_spawn_GetSpawnID(playerid)
 		interior = pl_spawn_GetDeathInterior(playerid),
 		world = pl_spawn_GetDeathVirtualWorld(playerid);
 
-	if (Interior_IsPlayerValidInfo(playerid, index, interior, world)) {
+	if (Interior_IsValidInfo(index, interior, world)) {
 		new Float:pos[3];
 		Interior_GetPos(index, pos[0], pos[1], pos[2]);
 		pl_spawn_SetDeathPos(playerid, pos[0], pos[1], pos[2]);
