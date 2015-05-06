@@ -14,6 +14,7 @@
 
 
 new db_config[] = DATA_FILES_FOLDER "config/base-cfg"DATA_FILES_FORMAT;
+new db_lang[] = DATA_FILES_FOLDER "language/";
 new db_level[] = DATA_FILES_FOLDER "config/levels-cfg"DATA_FILES_FORMAT;
 new db_gang[] = DATA_FILES_FOLDER "gang/";
 new db_account[] = DATA_FILES_FOLDER "account/";

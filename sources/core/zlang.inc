@@ -30,7 +30,11 @@
 
 stock Lang_OnGameModeInit()
 {
-	Lang_LoadText(DATA_FILES_FOLDER"lang_ru_test.gto");
+	new lang_file[MAX_STRING];
+	format(lang_file, sizeof(lang_file), "%slang_ru_test%s", db_lang, DATA_FILES_FORMAT);
+	Lang_LoadText(lang_file);
+
+	Log_Game("SERVER: Lang module init(%s)", lang_file);
 	return 1;
 }
 
