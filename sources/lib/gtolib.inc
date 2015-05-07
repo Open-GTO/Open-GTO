@@ -26,6 +26,7 @@ new nullstr[MAX_STRING];
 
 #define GivePVarInt(%1,%2,%3) SetPVarInt(%1,%2, GetPVarInt(%1,%2)+%3)
 #define set(%0,%1) strmid(%0,%1, 0, 160, MAX_STRING + 32)
+#define IS_IN_RANGE(%0,%1,%2) (((%0) - ((%1) + cellmin)) < (((%2) + 1) - ((%1) + cellmin)))
 
 // дополнительные функции 'для' mxINI
 #define ini_fileRemove	fremove
@@ -191,8 +192,6 @@ stock IsNumeric(const string[])
 
 stock IsIpAddress(string[])
 {
-	#define IS_IN_RANGE(%0,%1,%2) (((%0) - ((%1) + cellmin)) < (((%2) + 1) - ((%1) + cellmin)))
-
 	new
 		octet,
 		j = 100;
@@ -212,8 +211,6 @@ stock IsIpAddress(string[])
 			return 0;
 		}
 	}
-
-	#undef IS_IN_RANGE
 	return 1;
 }
 
