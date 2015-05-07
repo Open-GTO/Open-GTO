@@ -265,7 +265,7 @@ stock GetCoordsBeforePlayer(playerid, Float:distance, &Float:x, &Float:y)
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 	GetPlayerFacingAngle(playerid, pos[3]);
 
-	GetCoordsBefore(pos[0], pos[1], pos[3], distance, pos[0], pos[1]);
+	GetCoordsBefore(pos[0], pos[1], pos[3], distance, x, y);
 }
 
 /*
