@@ -178,13 +178,8 @@ stock IsValidChars(string[])
 stock IsNumeric(const string[])
 {
 	for (new i = 0; string[i] != '\0'; i++) {
-		switch (string[i]) {
-			case '0'..'9': {
-				continue;
-			}
-			default: {
-				return 0;
-			}
+		if (!IS_IN_RANGE(string[i], '0', '9')) {
+			return 0;
 		}
 	}
 	return 1;
