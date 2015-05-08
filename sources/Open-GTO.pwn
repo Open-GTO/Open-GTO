@@ -98,6 +98,7 @@ Thanks:
 #include "player/player_alert"
 #include "player/player"
 #include "custom/pickups"
+#include "custom/ls_beachside"
 #include "system/weapons"
 #include "core/zones"
 #include "system/world"
@@ -217,6 +218,7 @@ public OnGameModeInit()
 	pl_alert_OnGameModeInit();
 	pickup_OnGameModeInit();
 	widestrip_OnGameModeInit();
+	Beachside_OnGameModeInit();
 
 	// missions
 	trucker_OnGameModeInit();
@@ -314,6 +316,7 @@ public OnPlayerConnect(playerid)
 	Mapicon_OnPlayerConnect(playerid);
 	Checkpoint_OnPlayerConnect(playerid);
 	Interior_OnPlayerConnect(playerid);
+	Beachside_OnPlayerConnect(playerid);
 	return 1;
 }
 
@@ -515,6 +518,10 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 	if (PRESSED(KEY_USING)) {
 		if (Interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+			return 1;
+		}
+
+		if (Beachside_OnPlayerKeySC(playerid, newkeys, oldkeys)) {
 			return 1;
 		}
 
@@ -732,6 +739,12 @@ public OnActorStreamIn(actorid, forplayerid)
 	if (wshop_OnActorStreamIn(actorid, forplayerid)) {
 		return 1;
 	}
+	return 1;
+}
+
+public OnObjectMoved(objectid)
+{
+	Beachside_OnObjectMoved(objectid);
 	return 1;
 }
 

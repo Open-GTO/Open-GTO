@@ -90,6 +90,15 @@ stock PlayerPlaySoundOnPlayer(playerid, soundid)
 	return PlayerPlaySound(playerid, soundid, pos[0], pos[1], pos[2]);
 }
 
+stock PlaySoundForPlayersInRange(soundid, Float:range, Float:x, Float:y, Float:z)
+{
+	foreach (new i : Player) {
+	    if (IsPlayerInRangeOfPoint(i, range, x, y, z)) {
+		    PlayerPlaySound(i, soundid, x, y, z);
+	    }
+	}
+}
+
 stock FormatPosition(position)
 {
 	new string[MAX_STRING];
