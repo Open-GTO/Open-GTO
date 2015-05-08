@@ -42,11 +42,11 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 	switch (listitem) {
 		// информация о персонаже
 		case 0: {
-			new vip_status[MAX_NAME];
-			if (GetPlayerVIP(playerid) == 1) {
-				format(vip_status, sizeof(vip_status), "до %s", GetPlayerVIPDate(playerid));
+			new premium_status[MAX_NAME];
+			if (Premium_GetPlayerStatus(playerid) == 1) {
+				format(premium_status, sizeof(premium_status), "до %s", Premium_GetPlayerDate(playerid));
 			} else {
-				set(vip_status, "нет");
+				set(premium_status, "нет");
 			}
 
 			new Float:kill_on_death = 0.0;
@@ -79,7 +79,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				Мутов: %d\n\
 				\n\
 				Стиль борьбы: %s\n\
-				VIP статус: %s",
+				Премиум статус: %s",
 				GetPlayerLevel(playerid),
 				GetXPToLevel(playerid, GetPlayerLevel(playerid) + 1),
 				timestamp_to_format_date( account_GetRegisterTime(playerid) ),
@@ -94,7 +94,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				player_GetMuteCount(playerid),
 				
 				fstylename,
-				vip_status
+				premium_status
 			);
 
 			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Информация о персонаже", string, "Назад", "Выход");

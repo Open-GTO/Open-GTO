@@ -109,8 +109,8 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 		return 0;
 	}
 
-	if (xpamount > 0 && IsPlayerVIP(playerid)) {
-		xpamount += (xpamount / 100) * PLAYER_XP_VIP_PROFIT;
+	if (xpamount > 0 && Premium_GetPlayerStatus(playerid) == 1) {
+		xpamount += (xpamount / 100) * PLAYER_XP_PREMIUM_PROFIT;
 	}
 
 	GangGivePlayerXP(playerid, xpamount);

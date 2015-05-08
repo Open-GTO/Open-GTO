@@ -1366,18 +1366,12 @@ COMMAND:setvip(playerid, params[])
 		return 1;
 	}
 	
-	SetPlayerVIPDate(giveid, string);
-
-	if (VIPCheck(string)) {
-		SetPlayerVIP(giveid, 1);
-	} else {
-		SetPlayerVIP(giveid, 0);
-	}
+	Premium_UpdatePlayerStatus(giveid, string);
 	
-	format(string, sizeof(string), lang_texts[12][20], ReturnPlayerName(giveid), giveid, GetPlayerVIPDate(giveid));
+	format(string, sizeof(string), lang_texts[12][20], ReturnPlayerName(giveid), giveid, Premium_GetPlayerDate(giveid));
 	SendClientMessage(playerid, COLOUR_WHITE, string);
 
-	format(string, sizeof(string), lang_texts[12][22], GetPlayerVIPDate(giveid));
+	format(string, sizeof(string), lang_texts[12][22], Premium_GetPlayerDate(giveid));
 	SendClientMessage(giveid, COLOUR_WHITE, string);
 	return 1;
 }

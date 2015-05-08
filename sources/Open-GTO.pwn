@@ -63,11 +63,11 @@ Thanks:
 #include "vehicle/vehicle_info"
 #include "vehicle/vehicle_damage"
 #include "vehicle/vehicle_radio"
-#include "vehicle/vehicle_vip"
+#include "vehicle/vehicle_premium"
 #include "vehicle/vehicle_component"
 #include "player/player_textdraw"
 #include "player/player_level"
-#include "player/player_vip"
+#include "player/player_premium"
 #include "player/player_weapon"
 #include "player/player_weapon_drop"
 #include "player/player_weapon_skill"
@@ -112,6 +112,7 @@ Thanks:
 #include "system/deathmatch"
 #include "system/payday"
 #include "system/groundhold"
+#include "system/premium"
 #include "admin/admin_commands"
 #include "admin/admin_ban"
 #include "admin/admin_mute"
@@ -209,7 +210,7 @@ public OnGameModeInit()
 	housing_OnGameModeInit();
 	Interior_OnGameModeInit();
 	weapon_OnGameModeInit();
-	vip_OnGameModeInit();
+	Premium_OnGameModeInit();
 	pl_weapon_OnGameModeInit();
 	pl_textdraw_OnGameModeInit();
 	pl_alert_OnGameModeInit();
@@ -344,7 +345,7 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 	
 	// etc
 	swagup_OnPlayerPickUpPickup(playerid, pickupid);
-	vip_OnPlayerPickUpPickup(playerid, pickupid);
+	Premium_OnPlayerPickUpPickup(playerid, pickupid);
 	pickup_OnPlayerPickUpPickup(playerid, pickupid);
 	Interior_OnPlayerPickUpPickup(playerid, pickupid);
 	return 1;
@@ -579,7 +580,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 
 	if (newstate == PLAYER_STATE_DRIVER) {
-		vip_OnPlayerStateChange(playerid, newstate, oldstate);
+		Premium_OnPlayerStateChange(playerid, newstate, oldstate);
 	}
 
 	if (newstate == PLAYER_STATE_DRIVER || newstate == PLAYER_STATE_PASSENGER) {

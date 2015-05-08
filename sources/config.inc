@@ -132,7 +132,7 @@
 #define CHANGE_NICK_COST      100000 // кол-во денег, требуемых для смены ника
 #define CHANGE_PASS_COST      5000 // кол-во денег, требуемых для смены пароля
 
-#define PLAYER_XP_VIP_PROFIT  10 // vip игроки получают на PLAYER_XP_VIP_PROFIT процентов больше опыта
+#define PLAYER_XP_PREMIUM_PROFIT  10 // премиум игроки получают на PLAYER_XP_PREMIUM_PROFIT процентов больше опыта
 
 #define MIN_REPORTS_FOR_JAIL  3 // минимальное количество репортов для посадки в тюрьму
 #define SKYDIVE_TIME          (5 * 60) // время, через которое игрок может вновь использовать /skydive, в секундах
@@ -166,7 +166,7 @@
 
 // bank
 #define BANK_PROFIT      2 // процент начисления прибыли за хранение в банке
-#define BANK_PROFIT_VIP  (BANK_PROFIT * 2) // процент начисления прибыли за хранение в банке для игроков с VIP
+#define BANK_PROFIT_PREMIUM  (BANK_PROFIT * 2) // процент начисления прибыли за хранение в банке для игроков с премиум
 #define MAX_BANK_MONEY   1000000000 // максимальное количество денег, которых можно хранить в банке
 
 // payday

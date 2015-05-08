@@ -1850,7 +1850,7 @@ new vehicle_spawns_int[][e_Vehicle_Spawns_Int] = {
 
 stock LoadVehicles()
 {
-	vehicle_vip_Load();
+	Premium_VehiclesLoad();
 
 	for (new i = 0; i < sizeof(vehicle_spawns_int); i++) {
 		LinkVehicleToInterior(

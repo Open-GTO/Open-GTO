@@ -60,6 +60,7 @@ stock account_SaveEx(playerid)
 
 	GetPVarString(playerid, "IP", temp, sizeof(temp));
 	ini_setString(file_account, "LastIP", temp);
+	ini_setString(file_account, "Premium_Date", Premium_GetPlayerDate(playerid));
 
 	ini_closeFile(file_account);
 	return 1;
@@ -134,6 +135,10 @@ stock account_Login(playerid, password[])
 
 	ini_getInteger(file_account, "Played_Time", timestamp);
 	account_SetPlayedTime(playerid, timestamp);
+
+	new temp[11];
+	ini_getString(file_account, "Premium_Date", temp);
+	Premium_UpdatePlayerStatus(playerid, temp);
 
 	ini_closeFile(file_account);
 

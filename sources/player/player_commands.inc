@@ -75,10 +75,10 @@ COMMAND:status(playerid, params[])
 	format(string, sizeof(string), "Используемый стиль борьбы: %s", fstylename);
 	SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 
-	if (IsPlayerVIP(playerid)) {
-		format(string, sizeof(string), "У вас есть VIP статус, доступен до: %s", GetPlayerVIPDate(playerid));
+	if (Premium_GetPlayerStatus(playerid) == 1) {
+		format(string, sizeof(string), "У вас есть премиум статус, доступен до: %s", Premium_GetPlayerDate(playerid));
 	} else {
-		format(string, sizeof(string), "У вас нет VIP статуса");
+		format(string, sizeof(string), "У вас нет премиум статуса, для приобретения обратитесь к администрации");
 	}
 	SendClientMessage(playerid, COLOUR_LIGHTRED, string);
 	return 1;

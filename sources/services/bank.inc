@@ -17,7 +17,7 @@
 
 static
 	ProfitCount = BANK_PROFIT,
-	ProfitCountVip = BANK_PROFIT_VIP,
+	ProfitCountPremium = BANK_PROFIT_PREMIUM,
 	MaxBankMoney = MAX_BANK_MONEY,
 
 	bank_actors[MAX_BANK_ACTORS];
@@ -43,14 +43,14 @@ static bank_place[][Bank_Info] = {
 stock bank_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Bank_ProfitCount", ProfitCount);
-	ini_getInteger(file_config, "Bank_ProfitCount_VIP", ProfitCountVip);
+	ini_getInteger(file_config, "Bank_ProfitCount_VIP", ProfitCountPremium);
 	ini_getInteger(file_config, "Bank_MaxBankMoney", MaxBankMoney);
 }
 
 stock bank_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Bank_ProfitCount", ProfitCount);
-	ini_setInteger(file_config, "Bank_ProfitCount_VIP", ProfitCountVip);
+	ini_setInteger(file_config, "Bank_ProfitCount_VIP", ProfitCountPremium);
 	ini_setInteger(file_config, "Bank_MaxBankMoney", MaxBankMoney);
 }
 
@@ -112,7 +112,7 @@ bank_OnPlayerEnterCheckpoint(playerid, cp)
 DialogCreate:BankStart(playerid)
 {
 	new string[MAX_LANG_MULTI_STRING];
-	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
+	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountPremium, GetPlayerBankMoney(playerid));
 	Dialog_Open(playerid, Dialog:BankStart, DIALOG_STYLE_MSGBOX,
 		_(BANK_CAPTION),
 		string,
@@ -183,7 +183,7 @@ DialogResponse:BankReturnWithdrawMenu(playerid, response, listitem, inputtext[])
 DialogCreate:BankWithdraw(playerid)
 {
 	new string[MAX_LANG_MULTI_STRING];
-	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
+	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountPremium, GetPlayerBankMoney(playerid));
 	Dialog_Open(playerid, Dialog:BankWithdraw, DIALOG_STYLE_INPUT,
 		_(BANK_CAPTION),
 		string,
@@ -237,7 +237,7 @@ DialogResponse:BankReturnDepositMenu(playerid, response, listitem, inputtext[])
 DialogCreate:BankDeposit(playerid)
 {
 	new string[MAX_LANG_MULTI_STRING];
-	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountVip, GetPlayerBankMoney(playerid));
+	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountPremium, GetPlayerBankMoney(playerid));
 	Dialog_Open(playerid, Dialog:BankDeposit, DIALOG_STYLE_INPUT,
 		_(BANK_CAPTION),
 		string,
@@ -421,8 +421,8 @@ stock bank_Profit()
 			continue;
 		}
 
-		if (IsPlayerVIP(playerid)) {
-			amount = (GetPlayerBankMoney(playerid) / 100) * ProfitCountVip;
+		if (Premium_GetPlayerStatus(playerid) == 1) {
+			amount = (GetPlayerBankMoney(playerid) / 100) * ProfitCountPremium;
 		} else {
 			amount = (GetPlayerBankMoney(playerid) / 100) * ProfitCount;
 		}
