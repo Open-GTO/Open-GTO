@@ -309,22 +309,6 @@ stock player_SetSkin(playerid, skinid) {
 	SetPVarInt(playerid, "SkinModel", skinid);
 }
 
-stock player_GetSpecID(playerid) {
-	return GetPVarInt(playerid, "SpecID");
-}
-
-stock player_SetSpecID(playerid, specid) {
-	SetPVarInt(playerid, "SpecID", specid);
-}
-
-stock player_IsSpectating(playerid) {
-	return GetPVarInt(playerid, "Spectating");
-}
-
-stock player_SetSpectating(playerid, isspec) {
-	SetPVarInt(playerid, "Spectating", isspec);
-}
-
 stock player_GetSkydiveTime(playerid) {
 	return GetPVarInt(playerid, "SkydiveTime");
 }

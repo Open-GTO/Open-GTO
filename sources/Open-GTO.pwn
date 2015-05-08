@@ -57,6 +57,7 @@ Thanks:
 #include "core/widestrip"
 #include "core/declension"
 #include "core/shootingrange"
+#include "core/spectate"
 #include "vehicle/vehicles"
 #include "vehicle/vehicle_fuel"
 #include "vehicle/vehicle_menu"
@@ -394,7 +395,6 @@ public OnPlayerDeath(playerid, killerid, reason)
 	}
 	
 	player_OnPlayerDeath(playerid, killerid, reason);
-	admin_OnPlayerDeath(playerid, killerid, reason);
 	trucker_OnPlayerDeath(playerid, killerid, reason);
 	gang_OnPlayerDeath(playerid, killerid, reason);
 	pl_weapon_OnPlayerDeath(playerid, killerid, reason);
@@ -410,22 +410,17 @@ public OnPlayerSpawn(playerid)
 		return 1;
 	}
 
-	// после использования TogglePlayerSpectating
-	if (GetPVarInt(playerid, "spec_after_off") == 1) {
-		DeletePVar(playerid, "spec_after_off");
-		adm_spec_OnPlayerSpawn(playerid);
+	// ставим позицию
+	new dmid = GetPlayerDM(playerid);
+	if (dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0) {
+		pl_spawn_SetSpawnPos(playerid);
 	} else {
-		// ставим позицию
-		new dmid = GetPlayerDM(playerid);
-		if (dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0) {
-			pl_spawn_SetSpawnPos(playerid);
-		} else {
-			deathmatch_OnPlayerSpawn(playerid, dmid);
-		}
+		deathmatch_OnPlayerSpawn(playerid, dmid);
 	}
 
 	// spawn player
 	player_OnPlayerSpawn(playerid);
+	Spectate_OnPlayerSpawn(playerid);
 
 	SetTimerEx("OnPlayerSpawned", 2500, 0, "d", playerid);
 	return 1;
@@ -578,6 +573,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	vehicles_OnPlayerStateChange(playerid, newstate, oldstate);
 	pt_speed_OnPlayerStateChange(playerid, newstate, oldstate);
 	trucker_OnPlayerStateChange(playerid, newstate, oldstate);
+	Spectate_OnPlayerStateChange(playerid, newstate, oldstate);
 
 	if (newstate == PLAYER_STATE_DRIVER) {
 		Premium_OnPlayerStateChange(playerid, newstate, oldstate);
@@ -591,7 +587,6 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 
 public OnPlayerExitVehicle(playerid, vehicleid)
 {
-	admin_OnPlayerExitVehicle(playerid, vehicleid);
 	vehicles_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
 }
@@ -599,13 +594,12 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 {
 	pt_speed_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
-	admin_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
+	Spectate_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
 	return 1;
 }
 
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
-	admin_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
 	bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
 	return 1;
 }

@@ -37,30 +37,6 @@ stock admin_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodyp
 	return 1;
 }
 
-stock admin_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
-{
-	adm_spec_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
-	return 1;
-}
-
-stock admin_OnPlayerExitVehicle(playerid, vehicleid)
-{
-	adm_spec_OnPlayerExitVehicle(playerid, vehicleid);
-	return 1;
-}
-
-stock admin_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
-{
-	adm_spec_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
-	return 1;
-}
-
-stock admin_OnPlayerDeath(playerid, killerid, reason)
-{
-	adm_spec_OnPlayerDeath(playerid, killerid, reason);
-	return 1;
-}
-
 stock admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
 	adm_maptp_OnPlayerClickMap(playerid, fX, fY, fZ);
