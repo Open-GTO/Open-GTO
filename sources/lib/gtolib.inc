@@ -256,7 +256,7 @@ stock Float:GetDistanceBetweenPoints(Float:x1, Float:y1, Float:z1, Float:x2, Flo
 
 stock GetCoordsBefore(Float:x, Float:y, Float:a, Float:distance, &Float:res_x, &Float:res_y)
 {
-  	res_y = x + (distance * floatsin(-a, degrees));
+  	res_x = x + (distance * floatsin(-a, degrees));
     res_y = y + (distance * floatcos(-a, degrees));
 }
 
