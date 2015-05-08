@@ -928,14 +928,28 @@ stock house_GetPickupPos(houseid, &Float:house_x, &Float:house_y, &Float:house_z
 
 stock HouseKeepUp()
 {
+	new filename_account[MAX_STRING], file_account, premium_date[11];
+
 	for (new id = 0; id <  sizeof(Houses); id++) {
 		if (!strcmp(Houses[id][Houses_Owner], "Unknown", true)) {
 			continue;
 		}
 		
-		Houses[id][Houses_UpKeepLeft] += Houses[id][Houses_UpKeep];
-		if (Houses[id][Houses_UpKeepLeft] >= house_GetUpKeepMax(id)) {
-			house_Free(id);
+		format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, Houses[id][Houses_Owner]);
+		if (!ini_fileExist(filename_account)) {
+			continue;
+		}
+		
+		file_account = ini_openFile(filename_account);
+		ini_getString(file_account, "Premium_Date", premium_date);
+		ini_closeFile(file_account);
+
+		if (Premium_GetDateStatus(premium_date) == 0) {
+			Houses[id][Houses_UpKeepLeft] += Houses[id][Houses_UpKeep];
+			
+			if (Houses[id][Houses_UpKeepLeft] >= house_GetUpKeepMax(id)) {
+				house_Free(id);
+			}
 		}
 	}
 }
