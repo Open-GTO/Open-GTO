@@ -625,7 +625,7 @@ stock business_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME
 
 stock CheckBusinessOwners()
 {
-	new filename_account[MAX_STRING], file_account, timestamp;
+	new filename_account[MAX_STRING], file_account, timestamp, premium_date[11];
 	
 	for (new i = 0; i < sizeof(Businesses); i++) {
 		if (!strcmp(Businesses[i][Business_Owner], "Unknown", false)) {
@@ -639,9 +639,10 @@ stock CheckBusinessOwners()
 		
 		file_account = ini_openFile(filename_account);
 		ini_getInteger(file_account, "Last_Login", timestamp);
+		ini_getString(file_account, "Premium_Date", premium_date);
 		ini_closeFile(file_account);
 		
-		if (gettime() > timestamp + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60) {
+		if (Premium_GetDateStatus(premium_date) == 0 && gettime() > timestamp + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60) {
 			Log_Game("Business has been free. Owner '%s'. BUSINESS_UNLOGIN_SELL_DAYS = %d",
 				Businesses[i][Business_Owner], BUSINESS_UNLOGIN_SELL_DAYS
 			);
