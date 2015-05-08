@@ -734,3 +734,9 @@ public OnActorStreamIn(actorid, forplayerid)
 	}
 	return 1;
 }
+
+public OnPlayerSpectate(playerid, specid, status)
+{
+	adm_spec_OnPlayerSpectate(playerid, specid, status);
+	return 1;
+}

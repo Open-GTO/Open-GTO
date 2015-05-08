@@ -172,6 +172,13 @@ ADMIN_SYS_TIME_SET = Время сервера изменено. Текущее время %d
 ADMIN_SYS_TIME_REAL_TRUE = Тип времени изменён, теперь время реальное
 ADMIN_SYS_TIME_REAL_FALSE = Тип времени изменён, теперь время серверное
 
+ADMIN_SPEC_PLAYERINFO_0 = id: %d, здоровье: %0.2f, броня: %0.2f, пинг: %d\n
+ADMIN_SPEC_PLAYERINFO_1 = банда: %s, деньги: $%d, уровень: %d, опыт: %d/%d\n
+ADMIN_SPEC_PLAYERINFO_2 = оружие: %s (%d), патроны: %d\n
+ADMIN_SPEC_PLAYERINFO_3 = интерьер: %d, мир: %d\n
+ADMIN_SPEC_PLAYERINFO_4 = расстояние: %0.2f\n
+ADMIN_SPEC_PLAYERINFO_5 = позиция: %0.4f, %0.4f, %0.4f, %0.4f
+
 // fight styles
 FIGHT_TEACHER_INIT = SERVER: Fightstyles module init
 FIGHT_TEACHER_STYLE_NORMAL = нормальный
