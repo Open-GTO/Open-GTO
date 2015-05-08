@@ -269,6 +269,29 @@ stock GetCoordsBeforePlayer(playerid, Float:distance, &Float:x, &Float:y)
 	GetCoordsBefore(pos[0], pos[1], pos[3], distance, x, y);
 }
 
+stock GetVehicleCoordsBeforePlayer(&Float:x, &Float:y, &Float:z, &Float:a, playerid, modelid = -1)
+{
+	new Float:size[3];
+	if (modelid != -1) {
+		GetVehicleModelInfo(modelid, VEHICLE_MODEL_INFO_SIZE, size[0], size[1], size[2]);
+	} else {
+		size[0] = 1.5;
+		size[2] = 1.0;
+	}
+
+	GetPlayerPos(playerid, x, y, z);
+	GetPlayerFacingAngle(playerid, a);
+
+	GetCoordsBefore(x, y, a, size[0] + 0.5, x, y);
+
+	z -= size[2] * 0.25;
+
+	a += 90.0;
+	if (a > 360.0) {
+		a -= 360.0;
+	}
+}
+
 /*
 
 	For UpdateVehicleDamageStatus
