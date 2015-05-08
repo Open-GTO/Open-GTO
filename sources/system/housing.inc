@@ -934,7 +934,7 @@ stock HouseKeepUp()
 		}
 		
 		Houses[id][Houses_UpKeepLeft] += Houses[id][Houses_UpKeep];
-		if (Houses[id][Houses_UpKeepLeft] > house_GetUpKeepMax(id)) {
+		if (Houses[id][Houses_UpKeepLeft] >= house_GetUpKeepMax(id)) {
 			house_Free(id);
 		}
 	}
