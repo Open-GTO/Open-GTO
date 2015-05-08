@@ -235,6 +235,11 @@ stock pl_spawn_GetSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z
 		return 1;
 	}
 
+	if (Spectate_IsAfterSpec(playerid)) {
+		Spectate_GetPlayerPos(playerid, spos_x, spos_y, spos_z, spos_a, interior, world);
+		return 1;
+	}
+
 	new house_id = player_GetSpawnHouseID(playerid);
 	if (house_id >= 0 && !IsPlayerHouse(playerid, house_id) && !IsPlayerRenter(playerid, house_id)) {
 		house_id = SPAWN_HOUSE_NONE;
