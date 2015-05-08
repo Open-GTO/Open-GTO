@@ -28,6 +28,13 @@ static
 forward OnPlayerSpectate(playerid, specid, status);
 
 
+Spectate_OnPlayerConnect(playerid)
+{
+	spec_data[playerid][e_SpecID] = INVALID_PLAYER_ID;
+	spec_data[playerid][e_AfterSpec] = false;
+	return 1;
+}
+
 Spectate_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	#pragma unused oldstate

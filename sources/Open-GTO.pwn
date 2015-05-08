@@ -316,6 +316,7 @@ public OnPlayerConnect(playerid)
 	Mapicon_OnPlayerConnect(playerid);
 	Checkpoint_OnPlayerConnect(playerid);
 	Interior_OnPlayerConnect(playerid);
+	Spectate_OnPlayerConnect(playerid);
 	Beachside_OnPlayerConnect(playerid);
 	return 1;
 }
