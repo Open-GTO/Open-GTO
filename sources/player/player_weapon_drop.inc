@@ -58,10 +58,11 @@ stock wdrop_OnPlayerPickUpPickup(playerid, pickupid)
 	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)  {
 		if (pickupid == weapons_dropped[wd_slot][wd_pickupid]) {
 			GivePlayerWeapon(playerid, weapons_dropped[wd_slot][wd_weaponid], weapons_dropped[wd_slot][wd_bullets]);
-			wdrop_DropPickup(wd_slot);
+			wdrop_DestroyPickup(wd_slot);
+			return 1;
 		}
 	}
-	return 1;
+	return 0;
 }
 
 stock wdrop_OnPlayerDeath(playerid)
@@ -105,7 +106,7 @@ stock wdrop_OnPlayerDeath(playerid)
 		PlayerWeapons[playerid][slot][pbullets] -= weapons_dropped[wd_slot][wd_bullets];
 
 		// запустим таймер асинхронно, чтобы пикапы удалялись постепенно
-		weapons_dropped[wd_slot][wd_timer] = SetTimerEx("wdrop_DropPickup", (WEAPON_DROP_TIME * 1000) + slot * 300, 0, "d", wd_slot);
+		weapons_dropped[wd_slot][wd_timer] = SetTimerEx("wdrop_DestroyPickup", (WEAPON_DROP_TIME * 1000) + slot * 300, 0, "d", wd_slot);
 	}
 	return 1;
 }
@@ -123,8 +124,8 @@ stock wdrop_FindFreeSlot()
 	return -1;
 }
 
-forward wdrop_DropPickup(wd_slot);
-public wdrop_DropPickup(wd_slot)
+forward wdrop_DestroyPickup(wd_slot);
+public wdrop_DestroyPickup(wd_slot)
 {
 	weapons_dropped[wd_slot][wd_weaponid] = -1;
 	weapons_dropped[wd_slot][wd_bullets] = -1;

@@ -34,8 +34,12 @@ stock Premium_OnGameModeInit()
 
 stock Premium_OnPlayerPickUpPickup(playerid, pickupid)
 {
-	if (gate_IsOpening || pickupid != gate_PickupID_Enter && pickupid != gate_PickupID_Exit) {
+	if (pickupid != gate_PickupID_Enter && pickupid != gate_PickupID_Exit) {
 		return 0;
+	}
+
+	if (gate_IsOpening) {
+		return 1;
 	}
 
 	if (Premium_GetPlayerStatus(playerid) == 0) {

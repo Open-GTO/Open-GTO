@@ -53,7 +53,6 @@ Thanks:
 #include "core/log"
 #include "lib/gtolib"
 #include "core/color"
-#include "core/pickup"
 #include "core/widestrip"
 #include "core/declension"
 #include "core/shootingrange"
@@ -97,6 +96,7 @@ Thanks:
 #include "player/player_money"
 #include "player/player_alert"
 #include "player/player"
+#include "custom/pickups"
 #include "custom/ls_beachside"
 #include "system/weapons"
 #include "core/zones"
@@ -344,28 +344,51 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 
 public OnPlayerPickUpPickup(playerid, pickupid)
 {
-	// player
-	pl_weapon_OnPlayerPickUpPickup(playerid, pickupid);
-	
-	// etc
-	swagup_OnPlayerPickUpPickup(playerid, pickupid);
-	Premium_OnPlayerPickUpPickup(playerid, pickupid);
-	Pickup_OnPlayerPickUpPickup(playerid, pickupid);
-	Interior_OnPlayerPickUpPickup(playerid, pickupid);
+	if (pl_weapon_OnPlayerPickUpPickup(playerid, pickupid)) {
+		return 1;
+	}
+	if (swagup_OnPlayerPickUpPickup(playerid, pickupid)) {
+		return 1;
+	}
+	if (Premium_OnPlayerPickUpPickup(playerid, pickupid)) {
+		return 1;
+	}
+	if (Pickup_OnPlayerPickUpPickup(playerid, pickupid)) {
+		return 1;
+	}
+	if (Interior_OnPlayerPickUpPickup(playerid, pickupid)) {
+		return 1;
+	}
 	return 1;
 }
 
 public OnPlayerEnterCheckpoint(playerid)
 {
-	new cp = Checkpoint_GetPlayerVisible(playerid);
 	dm_OnPlayerEnterCheckpoint(playerid);
-	trucker_OnPlayerEnterCheckpoint(playerid, cp);
-	wshop_OnPlayerEnterCheckpoint(playerid, cp);
-	bar_OnPlayerEnterCheckpoint(playerid, cp);
-	fastfood_OnPlayerEnterCP(playerid, cp);
-	ss_OnPlayerEnterCheckpoint(playerid, cp);
-	fights_OnPlayerEnterCheckpoint(playerid, cp);
-	bank_OnPlayerEnterCheckpoint(playerid, cp);
+
+	new cp = Checkpoint_GetPlayerVisible(playerid);
+
+	if (trucker_OnPlayerEnterCheckpoint(playerid, cp)) {
+		return 1;
+	}
+	if (wshop_OnPlayerEnterCheckpoint(playerid, cp)) {
+		return 1;
+	}
+	if (bar_OnPlayerEnterCheckpoint(playerid, cp)) {
+		return 1;
+	}
+	if (fastfood_OnPlayerEnterCP(playerid, cp)) {
+		return 1;
+	}
+	if (ss_OnPlayerEnterCheckpoint(playerid, cp)) {
+		return 1;
+	}
+	if (fights_OnPlayerEnterCheckpoint(playerid, cp)) {
+		return 1;
+	}
+	if (bank_OnPlayerEnterCheckpoint(playerid, cp)) {
+		return 1;
+	}
 	return 1;
 }
 

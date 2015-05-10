@@ -311,18 +311,19 @@ stock trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
 {
 	if (!IsMissionEnabled(mission_trucker)) {
-		return 1;
+		return 0;
 	}
 
 	if (cp != player_checkpoint[playerid]) {
-		return 1;
+		return 0;
 	}
 	
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (IsPlayerInMission(playerid, mission_trucker) && IsVehicleIsRunner(vehicleid)) {
 		new trailerid = GetVehicleTrailer(vehicleid);
 		if (trailerid == 0) {
-			return SendClientMessage(playerid, COLOUR_WHITE, lang_texts[19][39]);
+			SendClientMessage(playerid, COLOUR_WHITE, lang_texts[19][39]);
+			return 1;
 		}
 		
 		if (!IsTrailerIsTrue(trailerid)) {
