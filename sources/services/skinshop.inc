@@ -18,14 +18,18 @@ enum SkinShop_Info {
 	Float:ss_x,
 	Float:ss_y,
 	Float:ss_z,
+	Float:ss_select_x,
+	Float:ss_select_y,
+	Float:ss_select_z,
+	Float:ss_select_a,
 	ss_checkpoint
 }
 
 static SkinShops[][SkinShop_Info] = {
-	{207.6596, -100.7878, 1005.2578},
-	{161.5244, -83.5924, 1001.8047},
-	{206.8538, -129.5790, 1003.5078},
-	{203.9252, -43.7523, 1001.8047}
+	{207.6596, -100.7878, 1005.2578, 217.5216, -98.4044,  1005.2578, 113.2594},
+	{161.5244, -83.5924, 1001.8047,  181.1685, -87.4101,  1002.0234, 110.1505},
+	{206.8538, -129.5790, 1003.5078, 199.9325, -127.3408, 1003.5152, 155.2709},
+	{203.9252, -43.7523, 1001.8047,  214.4611, -41.2278,  1002.0234, 107.1854}
 };
 
 static
@@ -126,16 +130,13 @@ stock sshop_OnGameModeInit()
 
 stock ss_OnPlayerEnterCheckpoint(playerid, cp)
 {
-	if (GetPVarInt(playerid, "SkinShop_IsLeaveFromCp") == 1) {
-		DeletePVar(playerid, "SkinShop_IsLeaveFromCp");
-		return 1;
-	}
 	for (new id = 0; id < sizeof(SkinShops); id++) {
 		if (cp == SkinShops[id][ss_checkpoint]) {
-			SkinShop_SetPlayerFittingRoom(playerid);
+			SkinShop_SetPlayerFittingRoom(playerid, id);
+
+			SetPVarInt(playerid, "SkinShop_ShopID", id);
 			SetPVarInt(playerid, "SkinShop_PlayerAtSkinShop", 1);
 			SetPVarInt(playerid, "SkinShop_Old", GetPlayerSkin(playerid));
-			SetPVarInt(playerid, "SkinShop_IsLeaveFromCp", 1);
 			
 			SkinShop_SelectSkin(playerid, SKINS_MINID, SKINS_MINID);
 			sshop_ShowTextDraws(playerid);
@@ -235,41 +236,39 @@ stock SkinShop_Exit(playerid)
 	sshop_HideTextDraws(playerid);
 	TogglePlayerControllable(playerid, 1);
 	SetPlayerSkin(playerid, GetPVarInt(playerid, "SkinShop_Old"));
-	SetPlayerInterior(playerid, GetPVarInt(playerid, "SkinShop_Interior"));
-	SetPlayerPos(playerid, GetPVarFloat(playerid, "SkinShop_Coords_X"), GetPVarFloat(playerid, "SkinShop_Coords_Y"), GetPVarFloat(playerid, "SkinShop_Coords_Z"));
-	SetPlayerFacingAngle(playerid, GetPVarFloat(playerid, "SkinShop_Coords_A"));
+
+	new shopid = GetPVarInt(playerid, "SkinShop_ShopID");
+	SetPlayerPos(playerid, SkinShops[shopid][ss_select_x], SkinShops[shopid][ss_select_y], SkinShops[shopid][ss_select_z]);
+	SetPlayerFacingAngle(playerid, SkinShops[shopid][ss_select_a]);
+
 	SetCameraBehindPlayer(playerid);
 	return 1;
 }
 
 stock SkinShop_DeletePVars(playerid)
 {
+	DeletePVar(playerid, "SkinShop_ShopID");
 	DeletePVar(playerid, "SkinShop_Old");
 	DeletePVar(playerid, "SkinShop_CurrentSkin");
-	DeletePVar(playerid, "SkinShop_Interior");
 	DeletePVar(playerid, "SkinShop_PlayerAtSkinShop");
-	DeletePVar(playerid, "SkinShop_Coords_X");
-	DeletePVar(playerid, "SkinShop_Coords_Y");
-	DeletePVar(playerid, "SkinShop_Coords_Z");
-	DeletePVar(playerid, "SkinShop_Coords_A");
 }
 
-stock SkinShop_SetPlayerFittingRoom(playerid)
+stock SkinShop_SetPlayerFittingRoom(playerid, shopid)
 {
 	new Float:pos[4];
-	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	GetPlayerFacingAngle(playerid, pos[3]);
-	SetPVarInt(playerid, "SkinShop_Interior", GetPlayerInterior(playerid));
-	SetPVarFloat(playerid, "SkinShop_Coords_X", pos[0]);
-	SetPVarFloat(playerid, "SkinShop_Coords_Y", pos[1]);
-	SetPVarFloat(playerid, "SkinShop_Coords_Z", pos[2]);
-	SetPVarFloat(playerid, "SkinShop_Coords_A", pos[3]);
-	
-	SetPlayerPos(playerid, 181.751159, -86.932769, 1002.023437);
-	SetPlayerFacingAngle(playerid, 122.692977);
-	SetPlayerInterior(playerid, 18);
-	SetPlayerCameraPos(playerid, 179.138198, -88.452796, 1003.536376);
-	SetPlayerCameraLookAt(playerid, 187.413238, -83.639259, 1000.646118);
+	pos[0] = SkinShops[shopid][ss_select_x];
+	pos[1] = SkinShops[shopid][ss_select_y];
+	pos[2] = SkinShops[shopid][ss_select_z];
+	pos[3] = SkinShops[shopid][ss_select_a];
+	SetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+	SetPlayerFacingAngle(playerid, pos[3]);
+
+	new Float:camera_pos[3];
+	camera_pos[2] = SkinShops[shopid][ss_select_z] + 1.0;
+
+	GetCoordsBefore(pos[0], pos[1], pos[3], 2.0, camera_pos[0], camera_pos[1]);
+	SetPlayerCameraPos(playerid, camera_pos[0], camera_pos[1], camera_pos[2]);
+	SetPlayerCameraLookAt(playerid, pos[0], pos[1], pos[2] + 0.5);
 }
 
 stock IsPlayerAtSkinShop(playerid)
