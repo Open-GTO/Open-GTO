@@ -97,7 +97,6 @@ Thanks:
 #include "player/player_money"
 #include "player/player_alert"
 #include "player/player"
-#include "custom/pickups"
 #include "custom/ls_beachside"
 #include "system/weapons"
 #include "core/zones"
@@ -216,7 +215,7 @@ public OnGameModeInit()
 	pl_weapon_OnGameModeInit();
 	pl_textdraw_OnGameModeInit();
 	pl_alert_OnGameModeInit();
-	pickup_OnGameModeInit();
+	Pickup_OnGameModeInit();
 	widestrip_OnGameModeInit();
 	Beachside_OnGameModeInit();
 
@@ -351,7 +350,7 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 	// etc
 	swagup_OnPlayerPickUpPickup(playerid, pickupid);
 	Premium_OnPlayerPickUpPickup(playerid, pickupid);
-	pickup_OnPlayerPickUpPickup(playerid, pickupid);
+	Pickup_OnPlayerPickUpPickup(playerid, pickupid);
 	Interior_OnPlayerPickUpPickup(playerid, pickupid);
 	return 1;
 }
