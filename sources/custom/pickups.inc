@@ -1,7 +1,8 @@
 /*
 
-	Custom pickups
-	Thanks for coordinates to Dmitry Frolov
+	About: custom pickups
+	Author: ziggi
+	Thanks: Dmitry Frolov for coordinates
 
 */
 
@@ -12,6 +13,7 @@ enum e_Pickup_Info {
 	Float:pickup_z,
 	pickup_world,
 	pickup_id,
+	pickup_time,
 };
 
 static pickups_array[][e_Pickup_Info] = {
@@ -96,17 +98,15 @@ static pickups_array[][e_Pickup_Info] = {
 	{1240, 2034.0259, -1407.9951, 17.1690, 0}
 };
 
-stock pickup_OnGameModeInit()
+Pickup_OnGameModeInit()
 {
 	for (new i = 0; i < sizeof(pickups_array); i++) {
-		pickups_array[i][pickup_id] = CreatePickup(pickups_array[i][pickup_model], 1,
-			pickups_array[i][pickup_x], pickups_array[i][pickup_y], pickups_array[i][pickup_z],
-			pickups_array[i][pickup_world]);
+		Pickup_Create(i);
 	}
 	return 1;
 }
 
-stock pickup_OnPlayerPickUpPickup(playerid, pickupid)
+Pickup_OnPlayerPickUpPickup(playerid, pickupid)
 {
 	new id = -1;
 
@@ -139,9 +139,34 @@ stock pickup_OnPlayerPickUpPickup(playerid, pickupid)
 	}
 	switch (model) {
 		case 1242, 371, 1240: {
+			pickups_array[id][pickup_time] = gettime();
+
 			PlayerPlaySoundOnPlayer(playerid, 1150);
 			DestroyPickup(pickupid);
 		}
 	}
 	return 1;
+}
+
+Pickup_Update()
+{
+	new time = gettime();
+
+	for (new i = 0; i < sizeof(pickups_array); i++) {
+		if (pickups_array[i][pickup_time] == -1) {
+			continue;
+		}
+
+		if (time >= pickups_array[i][pickup_time] + PICKUP_UPDATE_TIME) {
+			Pickup_Create(i);
+			pickups_array[i][pickup_time] = -1;
+		}
+	}
+}
+
+stock Pickup_Create(id)
+{
+	pickups_array[id][pickup_id] = CreatePickup(pickups_array[id][pickup_model], 1,
+		pickups_array[id][pickup_x], pickups_array[id][pickup_y], pickups_array[id][pickup_z],
+		pickups_array[id][pickup_world]);
 }

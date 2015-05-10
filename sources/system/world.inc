@@ -64,6 +64,7 @@ public OneSecTimer()
 		adm_spec_UpdateLabel(playerid);
 	}
 	
+	Pickup_Update();
 	CheckDM();
 	CheckRace();
 }
