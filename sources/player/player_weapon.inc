@@ -38,8 +38,10 @@ stock pl_weapon_OnGameModeInit()
 
 stock pl_weapon_OnPlayerPickUpPickup(playerid, pickupid)
 {
-	wdrop_OnPlayerPickUpPickup(playerid, pickupid);
-	return 1;
+	if (wdrop_OnPlayerPickUpPickup(playerid, pickupid)) {
+		return 1;
+	}
+	return 0;
 }
 
 stock pl_weapon_OnPlayerConnect(playerid)
