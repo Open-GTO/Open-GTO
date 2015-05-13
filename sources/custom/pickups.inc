@@ -120,10 +120,8 @@ Pickup_OnPlayerPickUpPickup(playerid, pickupid)
 	if (id == -1) {
 		return 0;
 	}
-
-	new model = pickups_array[id][pickup_model];
-
-	switch (model) {
+	
+	switch (pickups_array[id][pickup_model]) {
 		// armour
 		case 1242: {
 			SetPlayerArmour(playerid, 100);
@@ -137,14 +135,11 @@ Pickup_OnPlayerPickUpPickup(playerid, pickupid)
 			SetPlayerMaxHealth(playerid);
 		}
 	}
-	switch (model) {
-		case 1242, 371, 1240: {
-			pickups_array[id][pickup_time] = gettime();
 
-			PlayerPlaySoundOnPlayer(playerid, 1150);
-			DestroyPickup(pickupid);
-		}
-	}
+	pickups_array[id][pickup_time] = gettime();
+
+	PlayerPlaySoundOnPlayer(playerid, 1150);
+	DestroyPickup(pickupid);
 	return 1;
 }
 
@@ -159,7 +154,6 @@ Pickup_Update()
 
 		if (time >= pickups_array[i][pickup_time] + PICKUP_UPDATE_TIME) {
 			Pickup_Create(i);
-			pickups_array[i][pickup_time] = -1;
 		}
 	}
 }
@@ -169,4 +163,6 @@ stock Pickup_Create(id)
 	pickups_array[id][pickup_id] = CreatePickup(pickups_array[id][pickup_model], 1,
 		pickups_array[id][pickup_x], pickups_array[id][pickup_y], pickups_array[id][pickup_z],
 		pickups_array[id][pickup_world]);
+	
+	pickups_array[id][pickup_time] = -1;
 }
