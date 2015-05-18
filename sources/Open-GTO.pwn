@@ -150,6 +150,7 @@ Thanks:
 #include "protections/weaponhack"
 #include "protections/health"
 #include "protections/armour"
+#include "protections/vehicleteleport"
 
 #include "core/cfg"
 
@@ -621,6 +622,7 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 {
 	vehicles_OnPlayerExitVehicle(playerid, vehicleid);
 	pt_weapon_OnPlayerExitVehicle(playerid, vehicleid);
+	pt_spac_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
 }
 
@@ -634,6 +636,7 @@ public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
 	bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
+	pt_spac_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
 	return 1;
 }
 
@@ -785,4 +788,9 @@ public OnPlayerSpectate(playerid, specid, status)
 {
 	adm_spec_OnPlayerSpectate(playerid, specid, status);
 	return 1;
+}
+
+public OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat, Float:new_x, Float:new_y, Float:new_z, Float:vel_x, Float:vel_y, Float:vel_z)
+{
+	return pt_vehtp_OnUnoccupiedVehicleU(vehicleid, playerid, passenger_seat, new_x, new_y, new_z, vel_x, vel_y, vel_z);
 }

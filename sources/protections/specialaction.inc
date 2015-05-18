@@ -58,6 +58,25 @@ stock pt_GetPlayerSpecialAction(playerid)
 
 
 /*
+ * For public
+ */
+
+pt_spac_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
+{
+	#pragma unused vehicleid, ispassenger
+	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_ENTER_VEHICLE);
+	return 1;
+}
+
+pt_spac_OnPlayerExitVehicle(playerid, vehicleid)
+{
+	#pragma unused vehicleid
+	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_EXIT_VEHICLE);
+	return 1;
+}
+
+
+/*
  * For timer
  */
 
