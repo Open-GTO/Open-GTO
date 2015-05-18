@@ -57,7 +57,7 @@ pt_weapon_Check(playerid)
 	
 	// ammo
 	if (PlayerWeapons[playerid][slotid][pbullets] < ammo) {
-		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_AMMO), PlayerWeapons[playerid][slotid][pbullets], ammo);
+		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_AMMO), weaponid, PlayerWeapons[playerid][slotid][pbullets], ammo);
 	}
 	return 1;
 }

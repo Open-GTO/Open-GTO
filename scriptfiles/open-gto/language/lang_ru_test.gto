@@ -190,7 +190,7 @@ PROTECTION_SPEED_SPEEDHACK = SpeedHack (%0.2f > %0.2f)
 PROTECTION_SPEED_AIRBREAK = AirBreak (%0.2f > %0.2f)
 PROTECTION_SPEED_TELEPORT = Teleport (%0.2f > %0.2f)
 PROTECTION_WEAPON_WEAPON = взлом оружия (%d != %d)
-PROTECTION_WEAPON_AMMO = взлом патрон (%d < %d)
+PROTECTION_WEAPON_AMMO = взлом патрон (%d: %d < %d)
 
 // fight styles
 FIGHT_TEACHER_INIT = SERVER: Fightstyles module init
