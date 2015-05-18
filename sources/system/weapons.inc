@@ -160,6 +160,10 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_DAMAGE), amount, damage);
 	}
 
+	if (IsPlayerInAnyVehicle(playerid)) {
+		damage /= 2.0;
+	}
+
 	GetPlayerHealth(damagedid, health);
 	GetPlayerArmour(damagedid, armour);
 
@@ -167,7 +171,7 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 		difference = armour - damage;
 	}
 
-	if (difference >= 0) {
+	if (difference >= 0.0) {
 		SetPlayerArmour(damagedid, armour - damage);
 	} else {
 		SetPlayerArmour(damagedid, 0.0);
