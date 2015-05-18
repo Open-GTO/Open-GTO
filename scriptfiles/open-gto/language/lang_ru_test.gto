@@ -179,6 +179,11 @@ ADMIN_SPEC_PLAYERINFO_3 = интерьер: %d, мир: %d\n
 ADMIN_SPEC_PLAYERINFO_4 = расстояние: %0.2f\n
 ADMIN_SPEC_PLAYERINFO_5 = позиция: %0.4f, %0.4f, %0.4f, %0.4f
 
+ADMIN_PROTECTION_REPORT = Игрок %s(%d) подозревается в читерстве. Сработала защита: 
+
+// protection
+PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)
+
 // fight styles
 FIGHT_TEACHER_INIT = SERVER: Fightstyles module init
 FIGHT_TEACHER_STYLE_NORMAL = нормальный

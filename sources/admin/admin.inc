@@ -92,3 +92,65 @@ stock SendClientMessageToModers(senderid, text[])
 	}
 	return 0;
 }
+
+stock Admin_SendProtectReport(issuerid, text[], {Float, _}:...)
+{
+	new
+		message[144],
+		playername[MAX_PLAYER_NAME + 1];
+
+	GetPlayerName(issuerid, playername, sizeof(playername));
+
+	format(message, sizeof(message), _(ADMIN_PROTECTION_REPORT), playername, issuerid);
+
+	static const STATIC_ARGS = 2;
+	new n = (numargs() - STATIC_ARGS) * BYTES_PER_CELL;
+	if (n)
+	{
+		new fstring[144], arg_start, arg_end;
+		#emit CONST.alt			text
+		#emit LCTRL				5
+		#emit ADD
+		#emit STOR.S.pri		arg_start
+
+		#emit LOAD.S.alt		n
+		#emit ADD
+		#emit STOR.S.pri		arg_end
+		do
+		{
+			#emit LOAD.I
+			#emit PUSH.pri
+			arg_end -= BYTES_PER_CELL;
+			#emit LOAD.S.pri	arg_end
+		}
+		while(arg_end > arg_start);
+
+		#emit PUSH.S			text
+		#emit PUSH.C			144
+		#emit PUSH.ADR			fstring
+
+		n += BYTES_PER_CELL * 3;
+		#emit PUSH.S			n
+		#emit SYSREQ.C			format
+
+		n += BYTES_PER_CELL;
+		#emit LCTRL				4
+		#emit LOAD.S.alt		n
+		#emit ADD
+		#emit SCTRL				4
+
+		strcat(message, fstring);
+	}
+	else
+	{
+		strcat(message, text);
+	}
+
+	foreach (new adminid : Player) {
+		if (IsPlayerMod(adminid)) {
+			SendClientMessage(adminid, COLOUR_RED, message);
+		}
+	}
+
+	Log_Player(message);
+}
