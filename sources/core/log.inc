@@ -231,14 +231,14 @@ stock Log_Player(fstring[], {Float, _}:...)
 	#if defined LOG_PRINTING
 		printf(message);
 	#endif
-		Log_Write(DebugLog, message);
+		Log_Write(PlayerLog, message);
 	}
 	else
 	{
 	#if defined LOG_PRINTING
 		printf(fstring);
 	#endif
-		Log_Write(DebugLog, fstring);
+		Log_Write(PlayerLog, fstring);
 	}
 	return 1;
 }
