@@ -620,7 +620,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 public OnPlayerExitVehicle(playerid, vehicleid)
 {
 	vehicles_OnPlayerExitVehicle(playerid, vehicleid);
-	weapon_OnPlayerExitVehicle(playerid, vehicleid);
+	pt_weapon_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
 }
 
@@ -703,6 +703,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
+	pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
 	if (hittype == BULLET_HIT_TYPE_VEHICLE) {
 		vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
 	}
