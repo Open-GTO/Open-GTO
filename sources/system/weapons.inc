@@ -159,7 +159,7 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_DAMAGE), amount, damage);
 	}
 
-	if (IsPlayerInAnyVehicle(playerid)) {
+	if (GetPlayerState(playerid) == PLAYER_STATE_DRIVER) {
 		damage /= 2.0;
 	}
 
@@ -200,7 +200,7 @@ weapon_OnPlayerStateChange(playerid, newstate, oldstate)
 			SetPlayerArmedWeapon(playerid, 0);
 		}
 	}
-	
+
 	return 1;
 }
 
