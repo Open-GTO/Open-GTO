@@ -130,11 +130,11 @@ DialogCreate:ServiceWeaponBuy(playerid)
 		dialog_style = DIALOG_STYLE_INPUT,
 		weaponid = GetPVarInt(playerid, "Buy_Weapon_ID");
 
-	if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_IsFirearm] == 0) {
+	if (Weapons[weaponid][Weapon_IsFirearm] == 0) {
 		format(string, sizeof(string), lang_texts[17][60], ReturnWeaponName(weaponid), GetWeaponCost(weaponid));
 		dialog_style = DIALOG_STYLE_MSGBOX;
 		SetPVarInt(playerid, "weapons_Buy_One_Bullet", 1);
-	} else if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_IsFirearm] == 1) {
+	} else if (Weapons[weaponid][Weapon_IsFirearm] == 1) {
 		format(string, sizeof(string),
 			lang_texts[17][61],
 			ReturnWeaponName(weaponid), GetWeaponCost(weaponid), GetPlayerMoney(playerid) / GetWeaponCost(weaponid)
