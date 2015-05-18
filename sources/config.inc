@@ -106,7 +106,9 @@
 #define ANTI_ARMOUR_HACK_ENABLED      1 // защита от чита на броню
 #define ANTI_WEAPON_HACK_ENABLED      1 // защита от чита на оружие и патроны
 #define ANTI_SPECIAL_ACTION_ENABLED   1 // защита от изменения special action
+
 #define ANTI_VEHICLE_TELEPORT_ENABLED 1 // защита от телепортации транспорта
+#define ANTI_VEHICLE_TELEPORT_DISTANCE 20.0
 
 #define ANTI_SPEED_HACK_ENABLED	      0 // защита от speedhack, airbreak, телепортации(если наблюдаются ложные срабатывания, подрегулируйте параметр ниже)
 #define ANTI_SPEED_HACK_CHECK_TIME    900 // время таймера для защиты от спидхака

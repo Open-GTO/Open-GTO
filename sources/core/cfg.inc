@@ -57,6 +57,7 @@ stock cfg_LoadConfigs()
 	pt_weapon_LoadConfig(file_config);
 	pt_health_LoadConfig(file_config);
 	pt_armour_LoadConfig(file_config);
+	pt_vehtp_LoadConfig(file_config);
 
 	ini_closeFile(file_config);
 	return 1;
@@ -107,6 +108,7 @@ stock cfg_SaveConfigs()
 	pt_weapon_SaveConfig(file_config);
 	pt_health_SaveConfig(file_config);
 	pt_armour_SaveConfig(file_config);
+	pt_vehtp_SaveConfig(file_config);
 
 	ini_closeFile(file_config);
 }
