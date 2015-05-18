@@ -39,20 +39,25 @@ pt_weapon_SaveConfig(file_config)
  * For timer
  */
 
-pt_weapon_Check(playerid, slotid, weapon[2])
+pt_weapon_Check(playerid)
 {
 	if (!IsEnabled) {
 		return 0;
 	}
 
+	new
+		weaponid = GetPlayerWeapon(playerid),
+		ammo = GetPlayerAmmo(playerid),
+		slotid = GetWeaponSlot(weaponid);
+
 	// weapon
-	if (PlayerWeapons[playerid][slotid][pwid] != weapon[0] && weapon[0] != 0) {
-		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_WEAPON), PlayerWeapons[playerid][slotid][pwid], weapon[0]);
+	if (PlayerWeapons[playerid][slotid][pwid] != weaponid && weaponid != 0) {
+		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_WEAPON), PlayerWeapons[playerid][slotid][pwid], weaponid);
 	}
 	
 	// ammo
-	if (PlayerWeapons[playerid][slotid][pbullets] < weapon[1]) {
-		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_AMMO), PlayerWeapons[playerid][slotid][pbullets], weapon[1]);
+	if (PlayerWeapons[playerid][slotid][pbullets] < ammo) {
+		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_AMMO), PlayerWeapons[playerid][slotid][pbullets], ammo);
 	}
 	return 1;
 }

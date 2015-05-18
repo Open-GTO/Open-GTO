@@ -266,6 +266,7 @@ stock player_Sync(playerid)
 	pt_jetpack_Check(playerid);
 	pt_health_Sync(playerid);
 	pt_armour_Sync(playerid);
+	pt_weapon_Check(playerid);
 
 	JailPlayerCheck(playerid);
 	return 1;

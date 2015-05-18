@@ -87,8 +87,6 @@ stock pl_weapon_Sync(playerid)
 			continue;
 		}
 
-		pt_weapon_Check(playerid, i, weapon);
-
 		if (PlayerWeapons[playerid][i][pbullets] > weapon[1]) {
 			PlayerWeapons[playerid][i][pbullets] = weapon[1];
 		}
