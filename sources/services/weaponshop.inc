@@ -126,15 +126,21 @@ DialogResponse:ServiceWeapon(playerid, response, listitem, inputtext[])
 // buy and input bullets count
 DialogCreate:ServiceWeaponBuy(playerid)
 {
-	new string[MAX_STRING * 2],
+	new
+		string[MAX_STRING * 2],
 		dialog_style = DIALOG_STYLE_INPUT,
 		weaponid = GetPVarInt(playerid, "Buy_Weapon_ID");
 
-	if (Weapons[weaponid][Weapon_IsFirearm] == 0) {
+	new max_ammo = GetWeaponMaxAmmo(weaponid);
+	if (max_ammo == 0) {
+		return;
+	}
+
+	if (max_ammo == 1) {
 		format(string, sizeof(string), lang_texts[17][60], ReturnWeaponName(weaponid), GetWeaponCost(weaponid));
 		dialog_style = DIALOG_STYLE_MSGBOX;
 		SetPVarInt(playerid, "weapons_Buy_One_Bullet", 1);
-	} else if (Weapons[weaponid][Weapon_IsFirearm] == 1) {
+	} else {
 		format(string, sizeof(string),
 			lang_texts[17][61],
 			ReturnWeaponName(weaponid), GetWeaponCost(weaponid), GetPlayerMoney(playerid) / GetWeaponCost(weaponid)

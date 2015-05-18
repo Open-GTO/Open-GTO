@@ -446,6 +446,7 @@ public OnPlayerSpawn(playerid)
 
 	// spawn player
 	player_OnPlayerSpawn(playerid);
+	weapon_OnPlayerSpawn(playerid);
 	Spectate_OnPlayerSpawn(playerid);
 
 	SetTimerEx("OnPlayerSpawned", 2500, 0, "d", playerid);
@@ -686,9 +687,23 @@ public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 	return 1;
 }
 
+public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
+{
+	weapon_OnPlayerGiveDamage(playerid, damagedid, amount, weaponid, bodypart);
+	return 1;
+}
+
 public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 {
 	admin_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart);
+	return 1;
+}
+
+public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
+{
+	if (hittype == BULLET_HIT_TYPE_VEHICLE) {
+		vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+	}
 	return 1;
 }
 
@@ -736,14 +751,6 @@ public OnPlayerModelSelectionEx(playerid, response, extraid, modelid)
 {
 	if (extraid == ms_skinshop) {
 		sshop_OnPlayerModelSelectionEx(playerid, response, extraid, modelid);
-	}
-	return 1;
-}
-
-public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
-{
-	if (hittype == BULLET_HIT_TYPE_VEHICLE) {
-		vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
 	}
 	return 1;
 }

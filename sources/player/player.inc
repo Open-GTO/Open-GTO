@@ -347,3 +347,37 @@ stock player_SetGodmod(playerid, isgodmod) {
 	}
 	SetPVarInt(playerid, "godmod", isgodmod);
 }
+
+stock GTO_GetPlayerTeam(playerid)
+{
+	if (!IS_IN_RANGE(playerid, 0, MAX_PLAYERS - 1) || !IsPlayerConnected(playerid)) {
+		return NO_TEAM;
+	}
+
+	return GetPVarInt(playerid, "team");
+}
+
+#if defined _ALS_GetPlayerTeam
+	#undef GetPlayerTeam
+#else
+	#define _ALS_GetPlayerTeam
+#endif
+#define GetPlayerTeam GTO_GetPlayerTeam
+
+
+stock GTO_SetPlayerTeam(playerid, team)
+{
+	if (!IS_IN_RANGE(playerid, 0, MAX_PLAYERS - 1)) {
+		return 0;
+	}
+
+	SetPVarInt(playerid, "team", team);
+	return 1;
+}
+
+#if defined _ALS_SetPlayerTeam
+	#undef SetPlayerTeam
+#else
+	#define _ALS_SetPlayerTeam
+#endif
+#define SetPlayerTeam GTO_SetPlayerTeam

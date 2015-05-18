@@ -77,6 +77,9 @@ new Weapons[][WeaponInfo] = {
 	{"Броня",                         0.0,   1, 0, 200,   10}
 };
 
+forward Float:GetWeaponDamage(weaponid);
+
+
 weapon_LoadConfig(file_config)
 {
 	ini_getString(file_config, "Weapon_DB", db_weapon);
@@ -134,7 +137,51 @@ weapon_SaveAll()
 weapon_OnGameModeInit()
 {
 	weapon_LoadAll();
+	EnableVehicleFriendlyFire();
 	Log_Game("SERVER: Weapon module init");
+}
+
+weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
+{
+	#pragma unused bodypart
+
+	Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_DAMAGE), damagedid, weaponid);
+	if (damagedid == INVALID_PLAYER_ID) {
+		return 1;
+	}
+
+	new
+		Float:health,
+		Float:armour,
+		Float:difference,
+		Float:damage = GetWeaponDamage(weaponid);
+
+	if (amount != damage) {
+		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_DAMAGE), amount, damage);
+	}
+
+	GetPlayerHealth(damagedid, health);
+	GetPlayerArmour(damagedid, armour);
+
+	if (armour > 0.0) {
+		difference = armour - damage;
+	}
+
+	if (difference >= 0) {
+		SetPlayerArmour(damagedid, armour - damage);
+	} else {
+		SetPlayerArmour(damagedid, 0.0);
+		SetPlayerHealth(damagedid, health + difference);
+	}
+	return 1;
+}
+
+weapon_OnPlayerSpawn(playerid)
+{
+	if (GetPlayerTeam(playerid) != 0xFE) {
+		SetPlayerTeam(playerid, 0xFE);
+	}
+	return 1;
 }
 
 stock ReturnWeaponName(weaponid)
@@ -201,7 +248,7 @@ stock GetWeaponCost(weaponid)
 stock Float:GetWeaponDamage(weaponid)
 {
 	if (!IS_IN_RANGE(weaponid, 0, sizeof(Weapons))) {
-		return 0;
+		return 0.0;
 	}
 	return Weapons[weaponid][Weapon_Damage];
 }
@@ -237,4 +284,3 @@ stock ShowWeaponsOnLevel(playerid, newlevel, oldlevel)
 	}
 	return 1;
 }
-//
