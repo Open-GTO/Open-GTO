@@ -18,19 +18,17 @@
  */
 
 // fixes.inc compatible
-#if FIX_HydraSniper
+#if defined GivePlayerWeapon
 	stock REDEF_GivePlayerWeapon(playerid, weaponid, ammo, bool:allowcheck = false)
 	{
 		return
-			FIXES_GivePlayerWeapon(playerid, weaponid, ammo),
+			GivePlayerWeapon(playerid, weaponid, ammo),
 			pl_weapon_GivePlayerWeapon(playerid, weaponid, ammo, allowcheck);
 	}
-	
 	#undef GivePlayerWeapon
 	native ORIG_GivePlayerWeapon(playerid, weaponid, ammo) = GivePlayerWeapon;
 	#define GivePlayerWeapon REDEF_GivePlayerWeapon
 #else
-	native ORIG_GivePlayerWeapon(playerid, weaponid, ammo) = GivePlayerWeapon;
 	#define GivePlayerWeapon pl_weapon_GivePlayerWeapon
 #endif
 
@@ -78,3 +76,25 @@ native ORIG_SetPlayerPos(playerid, Float:x, Float:y, Float:z) = SetPlayerPos;
 
 native ORIG_SetVehiclePos(playerid, Float:x, Float:y, Float:z) = SetVehiclePos;
 #define SetVehiclePos pt_SetVehiclePos
+
+
+/*
+ * Special Action
+ */
+
+#if defined SetPlayerSpecialAction
+	stock REDER_SetPlayerSpecialAction(playerid, actionid)
+	{
+		return
+			SetPlayerSpecialAction(playerid, actionid),
+			pt_SetPlayerSpecialAction(playerid, actionid);
+	}
+	#undef SetPlayerSpecialAction
+	native ORIG_SetPlayerSpecialAction(playerid, actionid) = SetPlayerSpecialAction;
+	#define SetPlayerSpecialAction REDER_SetPlayerSpecialAction
+#else
+	#define SetPlayerSpecialAction pt_SetPlayerSpecialAction
+#endif
+
+native ORIG_GetPlayerSpecialAction(playerid) = GetPlayerSpecialAction;
+#define GetPlayerSpecialAction pt_GetPlayerSpecialAction

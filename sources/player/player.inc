@@ -263,7 +263,7 @@ stock player_Sync(playerid)
 	pl_weapon_Sync(playerid);
 	
 	pt_ping_Check(playerid);
-	pt_jetpack_Check(playerid);
+	pt_spac_Check(playerid);
 	pt_health_Sync(playerid);
 	pt_armour_Sync(playerid);
 	pt_weapon_Check(playerid);

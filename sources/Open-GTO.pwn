@@ -145,7 +145,7 @@ Thanks:
 #include "protections/rconhack"
 #include "protections/highping"
 #include "protections/chatguard"
-#include "protections/jetpack"
+#include "protections/specialaction"
 #include "protections/speedhack"
 #include "protections/weaponhack"
 #include "protections/health"

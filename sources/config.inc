@@ -102,10 +102,10 @@
 #define MAX_IDLE_TIME               5 // кол-во минут, после которых кикает
 
 #define CHAT_GUARD_ENABLED          1 // защита чата
-#define ANTI_JETPACK_ENABLED        1 // защита от использования JetPack
 #define ANTI_RCON_HACK_ENABLED      1 // защита от взлома rcon пароля
 #define ANTI_ARMOUR_HACK_ENABLED    1 // защита от чита на броню
 #define ANTI_WEAPON_HACK_ENABLED    1 // защита от чита на оружие и патроны
+#define ANTI_SPECIAL_ACTION_ENABLED 1 // защита от изменения special action
 
 #define ANTI_SPEED_HACK_ENABLED	    0 // защита от speedhack, airbreak, телепортации(если наблюдаются ложные срабатывания, подрегулируйте параметр ниже)
 #define ANTI_SPEED_HACK_CHECK_TIME  900 // время таймера для защиты от спидхака
