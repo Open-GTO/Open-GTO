@@ -183,6 +183,15 @@ ADMIN_PROTECTION_REPORT = »грок %s(%d) подозреваетс€ в читерстве. —работала защи
 
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружи€ (%0.4f != %0.4f)
+PROTECTION_ARMOUR = взлом брони (%0.2f > %0.2f)
+PROTECTION_HEALTH = взлом здоровь€ (%0.2f > %0.2f)
+PROTECTION_JETPACK = взлом JetPack
+PROTECTION_RCON = попытка входа в rcon (ip: %s, пароль: %s)
+PROTECTION_SPEED_SPEEDHACK = SpeedHack (%0.2f > %0.2f)
+PROTECTION_SPEED_AIRBREAK = AirBreak (%0.2f > %0.2f)
+PROTECTION_SPEED_TELEPORT = Teleport (%0.2f > %0.2f)
+PROTECTION_WEAPON_WEAPON = взлом оружи€ (%d != %d)
+PROTECTION_WEAPON_AMMO = взлом патрон (%d < %d)
 
 // fight styles
 FIGHT_TEACHER_INIT = SERVER: Fightstyles module init

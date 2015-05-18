@@ -47,12 +47,12 @@ pt_weapon_Check(playerid, slotid, weapon[2])
 
 	// weapon
 	if (PlayerWeapons[playerid][slotid][pwid] != weapon[0] && weapon[0] != 0) {
-		KickPlayer(playerid, lang_texts[11][20]);
+		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_WEAPON), PlayerWeapons[playerid][slotid][pwid], weapon[0]);
 	}
 	
 	// ammo
 	if (PlayerWeapons[playerid][slotid][pbullets] < weapon[1]) {
-		KickPlayer(playerid, lang_texts[11][21]);
+		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_AMMO), PlayerWeapons[playerid][slotid][pbullets], weapon[1]);
 	}
 	return 1;
 }

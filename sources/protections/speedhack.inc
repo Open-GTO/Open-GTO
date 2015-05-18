@@ -178,17 +178,19 @@ pt_speed_Sync(playerid)
 	
 	switch ( GetPlayerState(playerid) ) {
 		case PLAYER_STATE_ONFOOT: {
-			if (player_speed > 50) {
+			new max_speed = 50;
+			
+			if (player_speed > max_speed) {
 				switch (floatround(player_speed, floatround_round)) {
 					// 26 - максимум на земле, 50 при полёте с парашютом
 					case 50..349: {
-						KickPlayer(playerid, lang_texts[11][17]);
+						Admin_SendProtectReport(playerid, _(PROTECTION_SPEED_SPEEDHACK), player_speed, max_speed);
 					}
 					case 350..499: {
-						KickPlayer(playerid, lang_texts[11][18]);
+						Admin_SendProtectReport(playerid, _(PROTECTION_SPEED_AIRBREAK), player_speed, max_speed);
 					}
 					default: {
-						KickPlayer(playerid, lang_texts[11][19]);
+						Admin_SendProtectReport(playerid, _(PROTECTION_SPEED_TELEPORT), player_speed, max_speed);
 					}
 				}
 			}
@@ -199,13 +201,13 @@ pt_speed_Sync(playerid)
 			if (player_speed > max_speed) {
 				switch ( floatround(player_speed, floatround_round) ) {
 					case 151..250: {
-						KickPlayer(playerid, lang_texts[11][17]);
+						Admin_SendProtectReport(playerid, _(PROTECTION_SPEED_SPEEDHACK), player_speed, max_speed);
 					}
 					case 251..499: {
-						KickPlayer(playerid, lang_texts[11][18]);
+						Admin_SendProtectReport(playerid, _(PROTECTION_SPEED_AIRBREAK), player_speed, max_speed);
 					}
 					default: {
-						KickPlayer(playerid, lang_texts[11][19]);
+						Admin_SendProtectReport(playerid, _(PROTECTION_SPEED_TELEPORT), player_speed, max_speed);
 					}
 				}
 			}

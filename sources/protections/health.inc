@@ -75,6 +75,7 @@ pt_health_Sync(playerid)
 	if (clienthealth < serverhealth) {
 		SetPVarFloat(playerid, "Health", clienthealth);
 	} else if (clienthealth > serverhealth) {
+		Admin_SendProtectReport(playerid, _(PROTECTION_HEALTH), clienthealth, serverhealth);
 		SetPlayerHealth(playerid, serverhealth);
 	}
 	return 1;

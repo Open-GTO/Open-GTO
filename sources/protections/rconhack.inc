@@ -45,14 +45,14 @@ pt_rcon_OnRconLoginAttempt(ip[], password[], success)
 		return 0;
 	}
 
-	Log_Game(lang_texts[11][5], ip, password);
+	new
+		playerip[MAX_IP];
 
-	new pip[MAX_IP];
 	foreach (new playerid : Player) {
-		GetPVarString(playerid, "IP", pip, sizeof(pip));
+		GetPVarString(playerid, "IP", playerip, sizeof(playerip));
 
-		if (!strcmp(ip, pip, false)) {
-			KickPlayer(playerid, lang_texts[11][6]);
+		if (!strcmp(ip, playerip, false)) {
+			Admin_SendProtectReport(playerid, _(PROTECTION_RCON), playerip, password);
 			return 1;
 		}
 	}

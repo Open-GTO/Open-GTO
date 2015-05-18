@@ -46,6 +46,7 @@ pt_jetpack_Check(playerid)
 	}
 
 	if (GetPlayerSpecialAction(playerid) == SPECIAL_ACTION_USEJETPACK) {
+		Admin_SendProtectReport(playerid, _(PROTECTION_JETPACK));
 		KickPlayer(playerid, lang_texts[11][15]);
 	}
 	return 1;
