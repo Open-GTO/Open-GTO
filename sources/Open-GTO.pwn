@@ -605,6 +605,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	pt_speed_OnPlayerStateChange(playerid, newstate, oldstate);
 	trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 	Spectate_OnPlayerStateChange(playerid, newstate, oldstate);
+	weapon_OnPlayerStateChange(playerid, newstate, oldstate);
 
 	if (newstate == PLAYER_STATE_DRIVER) {
 		Premium_OnPlayerStateChange(playerid, newstate, oldstate);

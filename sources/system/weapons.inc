@@ -187,6 +187,23 @@ weapon_OnPlayerSpawn(playerid)
 	return 1;
 }
 
+weapon_OnPlayerStateChange(playerid, newstate, oldstate)
+{
+	#pragma unused oldstate
+	if (newstate != PLAYER_STATE_PASSENGER) {
+		return 1;
+	}
+
+	new weaponid = GetPlayerWeapon(playerid);
+	switch (weaponid) {
+		case WEAPON_COLT45, WEAPON_SILENCED, WEAPON_DEAGLE, WEAPON_SHOTGSPA: {
+			SetPlayerArmedWeapon(playerid, 0);
+		}
+	}
+	
+	return 1;
+}
+
 stock ReturnWeaponName(weaponid)
 {
 	new name[MAX_NAME];
