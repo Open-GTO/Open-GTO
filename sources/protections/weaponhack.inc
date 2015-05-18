@@ -57,9 +57,18 @@ pt_weapon_OnPlayerExitVehicle(playerid, vehicleid)
 
 pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
-	#pragma unused playerid, hittype, hitid, fX, fY, fZ
+	#pragma unused hittype, hitid, fX, fY, fZ
 	new slotid = GetWeaponSlot(weaponid);
 	PlayerWeapons[playerid][slotid][pbullets]--;
+
+	new playerstate = GetPlayerState(playerid);
+	if (playerstate == PLAYER_STATE_PASSENGER) {
+		switch (weaponid) {
+			case WEAPON_DRIVEBY_DISABLED: {
+				Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_NOP_ARMED), playerstate, weaponid);
+			}
+		}
+	}
 	return 1;
 }
 

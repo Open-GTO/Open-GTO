@@ -202,7 +202,7 @@ weapon_OnPlayerStateChange(playerid, newstate, oldstate)
 		weaponid = GetPlayerWeapon(playerid);
 
 		switch (weaponid) {
-			case WEAPON_COLT45, WEAPON_SILENCED, WEAPON_DEAGLE, WEAPON_SHOTGSPA: {
+			case WEAPON_DRIVEBY_DISABLED: {
 				SetPlayerArmedWeapon(playerid, 0);
 			}
 		}
