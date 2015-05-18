@@ -190,14 +190,21 @@ weapon_OnPlayerSpawn(playerid)
 weapon_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	#pragma unused oldstate
-	if (newstate != PLAYER_STATE_PASSENGER) {
-		return 1;
-	}
+	new
+		weaponid,
+		ammo;
 
-	new weaponid = GetPlayerWeapon(playerid);
-	switch (weaponid) {
-		case WEAPON_COLT45, WEAPON_SILENCED, WEAPON_DEAGLE, WEAPON_SHOTGSPA: {
-			SetPlayerArmedWeapon(playerid, 0);
+	if (newstate == PLAYER_STATE_DRIVER) {
+		// fix for GetPlayerAmmo
+		GetPlayerWeaponData(playerid, 4, weaponid, ammo);
+		SetPlayerArmedWeapon(playerid, weaponid);
+	} else if (newstate == PLAYER_STATE_PASSENGER) {
+		weaponid = GetPlayerWeapon(playerid);
+
+		switch (weaponid) {
+			case WEAPON_COLT45, WEAPON_SILENCED, WEAPON_DEAGLE, WEAPON_SHOTGSPA: {
+				SetPlayerArmedWeapon(playerid, 0);
+			}
 		}
 	}
 
@@ -213,7 +220,7 @@ weapon_OnPlayerExitVehicle(playerid, vehicleid)
 		new model = GetVehicleModel(vehicleid);
 		switch (model) {
 			case 592,577,511,512,520,593,553,476,519,460,513,548,425,417,487,488,497,563,447,469: {
-				GivePlayerWeapon(playerid, 46, 1);
+				GivePlayerWeapon(playerid, WEAPON_PARACHUTE, 1);
 			}
 		}
 	}
