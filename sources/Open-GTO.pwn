@@ -620,6 +620,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 public OnPlayerExitVehicle(playerid, vehicleid)
 {
 	vehicles_OnPlayerExitVehicle(playerid, vehicleid);
+	weapon_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
 }
 

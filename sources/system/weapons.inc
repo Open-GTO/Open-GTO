@@ -204,6 +204,22 @@ weapon_OnPlayerStateChange(playerid, newstate, oldstate)
 	return 1;
 }
 
+weapon_OnPlayerExitVehicle(playerid, vehicleid)
+{
+	new Float:pos[3];
+	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+
+	if (pos[2] >= 55.0) {
+		new model = GetVehicleModel(vehicleid);
+		switch (model) {
+			case 592,577,511,512,520,593,553,476,519,460,513,548,425,417,487,488,497,563,447,469: {
+				GivePlayerWeapon(playerid, 46, 1);
+			}
+		}
+	}
+	return 1;
+}
+
 stock ReturnWeaponName(weaponid)
 {
 	new name[MAX_NAME];
