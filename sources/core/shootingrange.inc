@@ -153,8 +153,7 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
 		}
 	}
 
-	CallLocalFunction("SR_OnPlayerWeaponShot", "iiiifff", playerid, weaponid, hittype, hitid, fX, fY, fZ);
-	return 1;
+	return CallLocalFunction("SR_OnPlayerWeaponShot", "iiiifff", playerid, weaponid, hittype, hitid, fX, fY, fZ);
 }
 
 #if defined _ALS_OnPlayerWeaponShot
