@@ -405,6 +405,10 @@ public OnPlayerDeath(playerid, killerid, reason)
 		return 1;
 	}
 
+	if (!pt_weapon_OnPlayerDeath(playerid, killerid, reason)) {
+		return 1;
+	}
+
 	player_SetSpawned(playerid, 0);
 
 	if (killerid == INVALID_PLAYER_ID) {

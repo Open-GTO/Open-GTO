@@ -193,6 +193,7 @@ PROTECTION_WEAPON_AMMO = взлом патрон (%d: %d < %d)
 PROTECTION_WEAPON_NOP_ARMED = использование NOP SetPlayerArmedWeapon (%d, %d)
 PROTECTION_SPECIAL_ACTION = взлом special action (%d != %d)
 PROTECTION_VEHICLE_TELEPORT = телепортация транспорта (%0.4f > %0.4f)
+PROTECTION_WEAPON_FLOOD = флуд убийствами (%d, %d)
 
 // fight styles
 FIGHT_TEACHER_INIT = SERVER: Fightstyles module init

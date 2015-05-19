@@ -72,6 +72,15 @@ pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float
 	return 1;
 }
 
+pt_weapon_OnPlayerDeath(playerid, killerid, reason)
+{
+	if (playerid == killerid) {
+		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_FLOOD), playerid, reason);
+		return 0;
+	}
+	return 1;
+}
+
 
 /*
  * For timer
