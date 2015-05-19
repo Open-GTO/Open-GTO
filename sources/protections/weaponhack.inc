@@ -58,9 +58,7 @@ pt_weapon_OnPlayerExitVehicle(playerid, vehicleid)
 pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
 	#pragma unused hittype, hitid, fX, fY, fZ
-	new slotid = GetWeaponSlot(weaponid);
-	PlayerWeapons[playerid][slotid][pbullets]--;
-
+	
 	new playerstate = GetPlayerState(playerid);
 	if (playerstate == PLAYER_STATE_PASSENGER) {
 		switch (weaponid) {

@@ -30,13 +30,13 @@ new PlayerStartWeapon[][psw_Info] = {
 };
 
 
-stock pl_weapon_OnGameModeInit()
+pl_weapon_OnGameModeInit()
 {
 	wdrop_OnGameModeInit();
 	return 1;
 }
 
-stock pl_weapon_OnPlayerPickUpPickup(playerid, pickupid)
+pl_weapon_OnPlayerPickUpPickup(playerid, pickupid)
 {
 	if (wdrop_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
@@ -44,19 +44,19 @@ stock pl_weapon_OnPlayerPickUpPickup(playerid, pickupid)
 	return 0;
 }
 
-stock pl_weapon_OnPlayerConnect(playerid)
+pl_weapon_OnPlayerConnect(playerid)
 {
 	wskill_OnPlayerConnect(playerid);
 	return 1;
 }
 
-stock pl_weapon_OnPlayerDisconnect(playerid, reason)
+pl_weapon_OnPlayerDisconnect(playerid, reason)
 {
 	wskill_OnPlayerDisconnect(playerid, reason);
 	return 1;
 }
 
-stock pl_weapon_OnPlayerDeath(playerid, killerid, reason)
+pl_weapon_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused killerid
 	if (!IsWeapon(reason)) return 1;
@@ -67,29 +67,22 @@ stock pl_weapon_OnPlayerDeath(playerid, killerid, reason)
 	return 1;
 }
 
-stock pl_weapon_OnPlayerRequestClass(playerid, classid)
+pl_weapon_OnPlayerRequestClass(playerid, classid)
 {
 	wskill_OnPlayerRequestClass(playerid, classid);
 	return 1;
 }
 
-stock pl_weapon_Sync(playerid)
+pl_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
-	new weapon[2];
+	#pragma unused hittype, hitid, fX, fY, fZ
 	
-	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
-		GetPlayerWeaponData(playerid, i, weapon[0], weapon[1]);
-
-		// is weapon ammo empty
-		if (weapon[0] == 0 && PlayerWeapons[playerid][i][pwid] != 0) {
-			PlayerWeapons[playerid][i][pwid] = 0;
-			PlayerWeapons[playerid][i][pbullets] = 0;
-			continue;
-		}
-
-		if (PlayerWeapons[playerid][i][pbullets] > weapon[1]) {
-			PlayerWeapons[playerid][i][pbullets] = weapon[1];
-		}
+	new slotid = GetWeaponSlot(weaponid);
+	if (PlayerWeapons[playerid][slotid][pbullets] > 0) {
+		PlayerWeapons[playerid][slotid][pbullets]--;
+	} else {
+		PlayerWeapons[playerid][slotid][pwid] = 0;
+		PlayerWeapons[playerid][slotid][pbullets] = 0;
 	}
 	return 1;
 }

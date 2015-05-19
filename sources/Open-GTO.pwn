@@ -454,7 +454,7 @@ public OnPlayerSpawn(playerid)
 	weapon_OnPlayerSpawn(playerid);
 	Spectate_OnPlayerSpawn(playerid);
 
-	SetTimerEx("OnPlayerSpawned", 2500, 0, "d", playerid);
+	SetTimerEx("OnPlayerSpawned", 1000, 0, "d", playerid);
 	return 1;
 }
 
@@ -710,7 +710,9 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
+	pl_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
 	pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+
 	if (hittype == BULLET_HIT_TYPE_VEHICLE) {
 		vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
 	}

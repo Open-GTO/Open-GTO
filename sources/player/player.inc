@@ -259,8 +259,6 @@ stock player_Sync(playerid)
 	if (!player_IsSpawned(playerid)) {
 		return 0;
 	}
-
-	pl_weapon_Sync(playerid);
 	
 	pt_ping_Check(playerid);
 	pt_spac_Check(playerid);
