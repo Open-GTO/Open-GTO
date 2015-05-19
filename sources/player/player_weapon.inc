@@ -78,11 +78,11 @@ pl_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float
 	#pragma unused hittype, hitid, fX, fY, fZ
 	
 	new slotid = GetWeaponSlot(weaponid);
-	if (PlayerWeapons[playerid][slotid][pbullets] > 0) {
-		PlayerWeapons[playerid][slotid][pbullets]--;
-	} else {
+
+	PlayerWeapons[playerid][slotid][pbullets]--;
+	
+	if (PlayerWeapons[playerid][slotid][pbullets] == 0) {
 		PlayerWeapons[playerid][slotid][pwid] = 0;
-		PlayerWeapons[playerid][slotid][pbullets] = 0;
 	}
 	return 1;
 }
