@@ -626,7 +626,6 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 {
 	vehicles_OnPlayerExitVehicle(playerid, vehicleid);
 	pt_weapon_OnPlayerExitVehicle(playerid, vehicleid);
-	pt_spac_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
 }
 
@@ -640,7 +639,6 @@ public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
 	bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
-	pt_spac_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
 	return 1;
 }
 
