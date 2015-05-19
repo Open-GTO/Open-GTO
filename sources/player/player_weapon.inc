@@ -201,10 +201,6 @@ stock SetWeaponsFromDBString(playerid,dbstring[])
 	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
 		PlayerWeapons[playerid][i][pwid] = strval( strcharsplit(dbstring, idx, '/') );
 		PlayerWeapons[playerid][i][pbullets] = strval( strcharsplit(dbstring, idx, '|') );
-
-		if (PlayerWeapons[playerid][i][pwid] != 0 && PlayerWeapons[playerid][i][pbullets] == 0) {
-			PlayerWeapons[playerid][i][pwid] = 0;
-		}
 	}
 }
 // возвращает строку для сохранения оружия
