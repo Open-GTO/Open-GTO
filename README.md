@@ -1,5 +1,7 @@
 Open-GTO
 =============
+[![Build Status](https://travis-ci.org/ziggi/Open-GTO.svg?branch=master)](https://travis-ci.org/ziggi/Open-GTO)
+
 Open-GTO – свободный, некоммерческий проект. Является продолжением разработки GTO v0.6.0.
 
 Сборка
