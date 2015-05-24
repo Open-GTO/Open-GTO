@@ -1,5 +1,6 @@
 Open-GTO
 =============
+[![GitHub version](https://badge.fury.io/gh/ziggi%2FOpen-GTO.svg)](http://badge.fury.io/gh/ziggi%2FOpen-GTO)
 [![Build Status](https://travis-ci.org/ziggi/Open-GTO.svg?branch=master)](https://travis-ci.org/ziggi/Open-GTO)
 
 Open-GTO – свободный, некоммерческий проект. Является продолжением разработки GTO v0.6.0.
