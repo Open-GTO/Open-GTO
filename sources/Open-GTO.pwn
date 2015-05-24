@@ -145,11 +145,12 @@ Thanks:
 #include "protections/rconhack"
 #include "protections/highping"
 #include "protections/chatguard"
-#include "protections/jetpack"
+#include "protections/specialaction"
 #include "protections/speedhack"
 #include "protections/weaponhack"
 #include "protections/health"
 #include "protections/armour"
+#include "protections/vehicleteleport"
 
 #include "core/cfg"
 
@@ -404,6 +405,10 @@ public OnPlayerDeath(playerid, killerid, reason)
 		return 1;
 	}
 
+	if (!pt_weapon_OnPlayerDeath(playerid, killerid, reason)) {
+		return 1;
+	}
+
 	player_SetSpawned(playerid, 0);
 
 	if (killerid == INVALID_PLAYER_ID) {
@@ -449,7 +454,7 @@ public OnPlayerSpawn(playerid)
 	weapon_OnPlayerSpawn(playerid);
 	Spectate_OnPlayerSpawn(playerid);
 
-	SetTimerEx("OnPlayerSpawned", 2500, 0, "d", playerid);
+	SetTimerEx("OnPlayerSpawned", 1000, 0, "d", playerid);
 	return 1;
 }
 
@@ -620,7 +625,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 public OnPlayerExitVehicle(playerid, vehicleid)
 {
 	vehicles_OnPlayerExitVehicle(playerid, vehicleid);
-	weapon_OnPlayerExitVehicle(playerid, vehicleid);
+	pt_weapon_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
 }
 
@@ -703,6 +708,9 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
+	pl_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+	pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+
 	if (hittype == BULLET_HIT_TYPE_VEHICLE) {
 		vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
 	}
@@ -784,4 +792,9 @@ public OnPlayerSpectate(playerid, specid, status)
 {
 	adm_spec_OnPlayerSpectate(playerid, specid, status);
 	return 1;
+}
+
+public OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat, Float:new_x, Float:new_y, Float:new_z, Float:vel_x, Float:vel_y, Float:vel_z)
+{
+	return pt_vehtp_OnUnoccupiedVehicleU(vehicleid, playerid, passenger_seat, new_x, new_y, new_z, vel_x, vel_y, vel_z);
 }

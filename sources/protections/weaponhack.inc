@@ -36,6 +36,51 @@ pt_weapon_SaveConfig(file_config)
 
 
 /*
+ * For public
+ */
+
+pt_weapon_OnPlayerExitVehicle(playerid, vehicleid)
+{
+	new Float:pos[3];
+	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+
+	if (pos[2] >= 55.0) {
+		new model = GetVehicleModel(vehicleid);
+		switch (model) {
+			case 592,577,511,512,520,593,553,476,519,460,513,548,425,417,487,488,497,563,447,469: {
+				GivePlayerWeapon(playerid, WEAPON_PARACHUTE, 1);
+			}
+		}
+	}
+	return 1;
+}
+
+pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
+{
+	#pragma unused hittype, hitid, fX, fY, fZ
+	
+	new playerstate = GetPlayerState(playerid);
+	if (playerstate == PLAYER_STATE_PASSENGER) {
+		switch (weaponid) {
+			case WEAPON_DRIVEBY_DISABLED: {
+				Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_NOP_ARMED), playerstate, weaponid);
+			}
+		}
+	}
+	return 1;
+}
+
+pt_weapon_OnPlayerDeath(playerid, killerid, reason)
+{
+	if (playerid == killerid) {
+		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_FLOOD), playerid, reason);
+		return 0;
+	}
+	return 1;
+}
+
+
+/*
  * For timer
  */
 
@@ -50,8 +95,12 @@ pt_weapon_Check(playerid)
 		ammo = GetPlayerAmmo(playerid),
 		slotid = GetWeaponSlot(weaponid);
 
+	if (weaponid == 0) {
+		return 1;
+	}
+
 	// weapon
-	if (PlayerWeapons[playerid][slotid][pwid] != weaponid && weaponid != 0) {
+	if (PlayerWeapons[playerid][slotid][pwid] != weaponid) {
 		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_WEAPON), PlayerWeapons[playerid][slotid][pwid], weaponid);
 	}
 	

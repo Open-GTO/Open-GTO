@@ -93,22 +93,25 @@
  * Protection settings
  */
 
-#define ANTI_HEALTH_HACK_ENABLED    1 // защита от чита на здоровье
+#define ANTI_HEALTH_HACK_ENABLED      1 // защита от чита на здоровье
 
-#define ANTI_HIGH_PING_ENABLED      1 // защита от высокого пинга
-#define MAXIMAL_PING                500 // пинг, при котором кикает
+#define ANTI_HIGH_PING_ENABLED        1 // защита от высокого пинга
+#define MAXIMAL_PING                  500 // пинг, при котором кикает
 
-#define ANTI_IDLE_ENABLED           1 // защита от АФК на точках прокачки
-#define MAX_IDLE_TIME               5 // кол-во минут, после которых кикает
+#define ANTI_IDLE_ENABLED             1 // защита от АФК на точках прокачки
+#define MAX_IDLE_TIME                 5 // кол-во минут, после которых кикает
 
-#define CHAT_GUARD_ENABLED          1 // защита чата
-#define ANTI_JETPACK_ENABLED        1 // защита от использования JetPack
-#define ANTI_RCON_HACK_ENABLED      1 // защита от взлома rcon пароля
-#define ANTI_ARMOUR_HACK_ENABLED    1 // защита от чита на броню
-#define ANTI_WEAPON_HACK_ENABLED    1 // защита от чита на оружие и патроны
+#define CHAT_GUARD_ENABLED            1 // защита чата
+#define ANTI_RCON_HACK_ENABLED        1 // защита от взлома rcon пароля
+#define ANTI_ARMOUR_HACK_ENABLED      1 // защита от чита на броню
+#define ANTI_WEAPON_HACK_ENABLED      1 // защита от чита на оружие и патроны
+#define ANTI_SPECIAL_ACTION_ENABLED   1 // защита от изменения special action
 
-#define ANTI_SPEED_HACK_ENABLED	    0 // защита от speedhack, airbreak, телепортации(если наблюдаются ложные срабатывания, подрегулируйте параметр ниже)
-#define ANTI_SPEED_HACK_CHECK_TIME  900 // время таймера для защиты от спидхака
+#define ANTI_VEHICLE_TELEPORT_ENABLED 1 // защита от телепортации транспорта
+#define ANTI_VEHICLE_TELEPORT_DISTANCE 20.0
+
+#define ANTI_SPEED_HACK_ENABLED	      0 // защита от speedhack, airbreak, телепортации(если наблюдаются ложные срабатывания, подрегулируйте параметр ниже)
+#define ANTI_SPEED_HACK_CHECK_TIME    900 // время таймера для защиты от спидхака
 
 
 /*
@@ -181,6 +184,7 @@
 #define WEAPON_DROP_TIME      10 // время, после которого удалятся пикапы, выпавшие из игрока, в секундах
 #define WEAPON_DROP_BULL      5 // столько процентов количества патрон выпадет из игрока
 #define MAX_DROPPED_WEAPONS   64 // максимальное количество выпавшего оружия единовременно(у всех игроков)
+#define WEAPON_DRIVEBY_DISABLED WEAPON_COLT45, WEAPON_SILENCED, WEAPON_DEAGLE, WEAPON_SHOTGSPA
 
 // house
 #define MAX_PLAYER_HOUSES          3 // количество домов, которые может иметь игрок(много ставить не рекомендуется)

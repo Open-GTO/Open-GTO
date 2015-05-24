@@ -51,12 +51,13 @@ stock cfg_LoadConfigs()
 	pt_idle_LoadConfig(file_config);
 	pt_ping_LoadConfig(file_config);
 	pt_chat_LoadConfig(file_config);
-	pt_jetpack_LoadConfig(file_config);
+	pt_spac_LoadConfig(file_config);
 	pt_rcon_LoadConfig(file_config);
 	pt_speed_LoadConfig(file_config);
 	pt_weapon_LoadConfig(file_config);
 	pt_health_LoadConfig(file_config);
 	pt_armour_LoadConfig(file_config);
+	pt_vehtp_LoadConfig(file_config);
 
 	ini_closeFile(file_config);
 	return 1;
@@ -101,12 +102,13 @@ stock cfg_SaveConfigs()
 	pt_idle_SaveConfig(file_config);
 	pt_ping_SaveConfig(file_config);
 	pt_chat_SaveConfig(file_config);
-	pt_jetpack_SaveConfig(file_config);
+	pt_spac_SaveConfig(file_config);
 	pt_rcon_SaveConfig(file_config);
 	pt_speed_SaveConfig(file_config);
 	pt_weapon_SaveConfig(file_config);
 	pt_health_SaveConfig(file_config);
 	pt_armour_SaveConfig(file_config);
+	pt_vehtp_SaveConfig(file_config);
 
 	ini_closeFile(file_config);
 }
