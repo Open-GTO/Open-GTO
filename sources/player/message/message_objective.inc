@@ -132,7 +132,7 @@ static stock Message_ObjectiveCached(playerid, id)
 		PlayerTextDrawHide(playerid, td_info[playerid]);
 	}
 
-	PlayerPlaySound(playerid, 45400, 0.0, 0.0, 0.0);
+	//PlayerPlaySound(playerid, 45400, 0.0, 0.0, 0.0);
 
 	if (Message_Objective_IsShowed(playerid)) {
 		KillTimer(timer_id[playerid]);
