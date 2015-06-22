@@ -18,21 +18,21 @@ static
 	real_offset = SERVER_REAL_TIME_OFFSET,
 	current_hour;
 
-stock time_LoadConfig(file_config)
+stock Time_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "time_isreal", is_real);
 	ini_getInteger(file_config, "time_real_offset", real_offset);
 }
 
-stock time_SaveConfig(file_config)
+stock Time_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "time_isreal", is_real);
 	ini_setInteger(file_config, "time_real_offset", real_offset);
 }
 
-stock time_Sync()
+stock Time_Sync()
 {
-	new hour = time_GetCurrentHour();
+	new hour = Time_GetCurrentHour();
 
 	if (is_real == 0) {
 		hour++;
@@ -40,15 +40,15 @@ stock time_Sync()
 		gettime(hour);
 	}
 
-	time_SetCurrentHour(hour);
+	Time_SetCurrentHour(hour);
 }
 
-stock time_GetCurrentHour()
+stock Time_GetCurrentHour()
 {
 	return current_hour;
 }
 
-stock time_SetCurrentHour(value)
+stock Time_SetCurrentHour(value)
 {
 	current_hour = value;
 
@@ -67,10 +67,10 @@ stock time_SetCurrentHour(value)
 	SetWorldTime(current_hour);
 }
 
-stock time_SetRealStatus(bool:isrealstatus)
+stock Time_SetRealStatus(bool:isrealstatus)
 {
-	is_real = isrealstatus ? 1 : 0;
+	is_real = _:isrealstatus;
 	if (is_real) {
-		time_Sync();
+		Time_Sync();
 	}
 }

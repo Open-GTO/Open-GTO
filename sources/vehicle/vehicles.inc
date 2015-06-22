@@ -1912,7 +1912,7 @@ stock vehicles_OnPlayerStateChange(playerid, newstate, oldstate)
 
 		vehicle_Engine(vehicleid, VEHICLE_PARAMS_ON);
 		
-		new hour = time_GetCurrentHour();
+		new hour = Time_GetCurrentHour();
 		if (hour > VEHICLE_LIGHTS_ON_TIME || hour < VEHICLE_LIGHTS_OFF_TIME) {
 			vehicle_Light(vehicleid, VEHICLE_PARAMS_ON);
 		}

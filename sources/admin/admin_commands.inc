@@ -875,7 +875,7 @@ COMMAND:sys(playerid, params[])
 		if (!strcmp(cmd, "set", true)) {
 			value = strval( strcharsplit(params, idx, ' ') );
 
-			time_SetCurrentHour(value);
+			Time_SetCurrentHour(value);
 
 			format(string, sizeof(string), _(ADMIN_SYS_TIME_SET), value);
 			SendClientMessage(playerid, -1, string);
@@ -885,7 +885,7 @@ COMMAND:sys(playerid, params[])
 		if (!strcmp(cmd, "real", true)) {
 			value = strval( strcharsplit(params, idx, ' ') );
 
-			time_SetRealStatus(value == 0 ? false : true);
+			Time_SetRealStatus(value == 0 ? false : true);
 
 			if (value == 0) {
 				string = _(ADMIN_SYS_TIME_REAL_FALSE);

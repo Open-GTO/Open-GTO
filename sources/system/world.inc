@@ -79,7 +79,7 @@ public OneMinuteTimer()
 		}
 	}
 	weather_Update();
-	time_Sync();
+	Time_Sync();
 	TurnAround();
 }
 

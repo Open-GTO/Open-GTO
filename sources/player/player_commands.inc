@@ -101,7 +101,7 @@ COMMAND:time(playerid, params[])
 		minute;
 	
 	gettime(_, minute);
-	format(string, sizeof(string), "%02d:%02d", time_GetCurrentHour(), minute);
+	format(string, sizeof(string), "%02d:%02d", Time_GetCurrentHour(), minute);
 	GameTextForPlayer(playerid, string, 2000, 1);
 
 	new jail_time = player_GetJailTime(playerid);
