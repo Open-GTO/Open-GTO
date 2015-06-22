@@ -66,3 +66,10 @@ stock Declension_GetSeconds(value)
 	result = Declension_ReturnWord(value, _(DECLENSION_SECOND_1), _(DECLENSION_SECOND_2), _(DECLENSION_SECOND_3));
 	return result;
 }
+
+stock Declension_GetAmmo(value)
+{
+	new result[MAX_LANG_VALUE_STRING];
+	result = Declension_ReturnWord(value, _(DECLENSION_AMMO_1), _(DECLENSION_AMMO_2), _(DECLENSION_AMMO_3));
+	return result;
+}

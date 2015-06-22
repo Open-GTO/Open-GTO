@@ -228,7 +228,21 @@ stock CreatePSWDBString()
 	return wepstr;
 }
 
-stock GetPlayerWeaponSlotBullet(playerid, weapon_slot)
+stock GetPlayerWeaponSlotAmmo(playerid, weapon_slot)
 {
+	return PlayerWeapons[playerid][weapon_slot][pbullets];
+}
+
+stock GetPlayerWeaponAmmo(playerid, weaponid)
+{
+	new weapon_slot = GetWeaponSlot(weaponid);
+	if (weapon_slot == -1) {
+		return 0;
+	}
+
+	if (weaponid != PlayerWeapons[playerid][weapon_slot][pwid]) {
+		return 0;
+	}
+
 	return PlayerWeapons[playerid][weapon_slot][pbullets];
 }

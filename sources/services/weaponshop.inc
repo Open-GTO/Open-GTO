@@ -139,10 +139,9 @@ DialogCreate:ServiceWeaponBuy(playerid)
 	if (max_ammo == 1) {
 		format(string, sizeof(string), lang_texts[17][60], ReturnWeaponName(weaponid), GetWeaponCost(weaponid));
 		dialog_style = DIALOG_STYLE_MSGBOX;
-		SetPVarInt(playerid, "weapons_Buy_One_Bullet", 1);
 	} else {
 		new
-			max_bullets = max_ammo - GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid)),
+			max_bullets = max_ammo - GetPlayerWeaponAmmo(playerid, weaponid),
 			max_bullets_money = GetPlayerMoney(playerid) / GetWeaponCost(weaponid);
 
 		if (max_bullets_money < max_bullets) {
@@ -151,7 +150,7 @@ DialogCreate:ServiceWeaponBuy(playerid)
 
 		format(string, sizeof(string),
 			lang_texts[17][61],
-			ReturnWeaponName(weaponid), GetWeaponCost(weaponid), max_bullets
+			ReturnWeaponName(weaponid), GetWeaponCost(weaponid), max_bullets, Declension_GetAmmo(max_bullets)
 		);
 		strcat(string, lang_texts[17][66]);
 	}
@@ -166,70 +165,85 @@ DialogResponse:ServiceWeaponBuy(playerid, response, listitem, inputtext[])
 		return 0;
 	}
 
-	new bullets = strval(inputtext);
-	if (GetPVarInt(playerid, "weapons_Buy_One_Bullet") == 1) {
+	new
+		weaponid = GetPVarInt(playerid, "Buy_Weapon_ID"),
+		bullets;
+
+	if (IsWeaponHandToHand(weaponid)) {
 		bullets = 1;
-		DeletePVar(playerid, "weapons_Buy_One_Bullet");
+	} else {
+		bullets = strval(inputtext);
 	}
 
-	wshop_Buy(playerid, GetPVarInt(playerid, "Buy_Weapon_ID"), bullets);
-	Dialog_Show(playerid, Dialog:ServiceWeapon);
+	wshop_Buy(playerid, weaponid, bullets);
+	return 1;
+}
+
+stock wshop_Message(playerid, info[], bool:is_buy_menu = true)
+{
+	if (is_buy_menu) {
+		Dialog_MessageEx(playerid, Dialog:WShopReturnBuyMenu, lang_texts[17][62], info, lang_texts[17][64], lang_texts[17][59]);
+	} else {
+		Dialog_MessageEx(playerid, Dialog:WShopReturnMainMenu, lang_texts[17][62], info, lang_texts[17][64], lang_texts[17][59]);
+	}
+	return 1;
+}
+
+DialogResponse:WShopReturnBuyMenu(playerid, response, listitem, inputtext[])
+{
+	if (response) {
+		Dialog_Show(playerid, Dialog:ServiceWeaponBuy);
+	}
+	return 1;
+}
+
+DialogResponse:WShopReturnMainMenu(playerid, response, listitem, inputtext[])
+{
+	if (response) {
+		Dialog_Show(playerid, Dialog:ServiceWeapon);
+	}
 	return 1;
 }
 
 stock wshop_Buy(playerid, weaponid, bullets)
 {
+	if (!IsPlayerAtWeaponShop(playerid)) {
+		wshop_Message(playerid, lang_texts[17][48]);
+		return 0;
+	}
+
 	new string[MAX_STRING];
 
-	if (weaponid < 0 || weaponid > 47) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[17][46]);
+	if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
+		format(string, sizeof(string), lang_texts[17][49], ReturnWeaponName(weaponid));
+		wshop_Message(playerid, string, false);
 		return 0;
 	}
 
 	if (bullets < 1) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[17][47]);
+		wshop_Message(playerid, lang_texts[17][47]);
 		return 0;
 	}
 
-	if (weaponid > 0 && weaponid < 47) {
-		new current_bullets = GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid));
-		if (current_bullets >= MAX_BULLETS) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[17][65]);
-			return 0;
-		}
-
-		if (current_bullets + bullets > MAX_BULLETS) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[17][65]);
-
-			bullets = MAX_BULLETS - GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid));
-
-			if (bullets < 1) {
-				return 0;
-			}
-		}
-	}
-
-	if (!IsPlayerAtWeaponShop(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[17][48]);
+	new
+		max_ammo = GetWeaponMaxAmmo(weaponid),
+		current_bullets = GetPlayerWeaponAmmo(playerid, weaponid);
+	
+	if (current_bullets >= max_ammo) {
+		wshop_Message(playerid, lang_texts[17][65]);
 		return 0;
 	}
 
-	if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
-		format(string, sizeof(string), lang_texts[17][49], ReturnWeaponName(weaponid));
-		SendClientMessage(playerid, COLOUR_RED, string);
+	if (current_bullets + bullets > max_ammo) {
+		wshop_Message(playerid, lang_texts[17][47]);
 		return 0;
 	}
 
 	new purchasecost = GetWeaponCost(weaponid) * bullets;
-	if (purchasecost < 1) {
-		format(string, sizeof(string), lang_texts[17][50], ReturnWeaponName(weaponid));
-		SendClientMessage(playerid, COLOUR_RED, string);
-		return 0;
-	}
 
 	if (GetPlayerMoney(playerid) < purchasecost) {
 		format(string, sizeof(string), lang_texts[17][51], purchasecost);
-		SendClientMessage(playerid, COLOUR_RED, string);
+		wshop_Message(playerid, string, !IsWeaponHandToHand(weaponid));
 		return 0;
 	}
 
@@ -241,14 +255,13 @@ stock wshop_Buy(playerid, weaponid, bullets)
 		default: GivePlayerWeapon(playerid, weaponid, bullets, true);
 	}
 
-	if (bullets > 1) {
+	if (!IsWeaponHandToHand(weaponid)) {
 		format(string, sizeof(string), lang_texts[17][52], bullets, ReturnWeaponName(weaponid), purchasecost);
 	} else {
 		format(string, sizeof(string), lang_texts[17][53], ReturnWeaponName(weaponid), purchasecost);
 	}
 
-	SendClientMessage(playerid, COLOUR_RED, string);
-	SendClientMessage(playerid, COLOUR_RED, lang_texts[17][54]);
+	wshop_Message(playerid, string, false);
 	return 1;
 }
 

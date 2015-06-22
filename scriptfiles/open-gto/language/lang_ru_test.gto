@@ -151,6 +151,9 @@ DECLENSION_MINUTE_3 = минут
 DECLENSION_SECOND_1 = секунда
 DECLENSION_SECOND_2 = секунды
 DECLENSION_SECOND_3 = секунд
+DECLENSION_AMMO_1 = патрон
+DECLENSION_AMMO_2 = патрона
+DECLENSION_AMMO_3 = патронов
 
 // admin
 ADMIN_BAN_ISNULL = {FFCC66}[Применение]: {FFFFFF}/ban <ник/id/ip> <время(число[с/м/ч/д/н/г], 0 - навсегда)> <причина>

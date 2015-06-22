@@ -104,8 +104,10 @@
 #define CHAT_GUARD_ENABLED            1 // защита чата
 #define ANTI_RCON_HACK_ENABLED        1 // защита от взлома rcon пароля
 #define ANTI_ARMOUR_HACK_ENABLED      1 // защита от чита на броню
-#define ANTI_WEAPON_HACK_ENABLED      1 // защита от чита на оружие и патроны
 #define ANTI_SPECIAL_ACTION_ENABLED   1 // защита от изменения special action
+
+#define ANTI_WEAPON_HACK_ENABLED      1 // защита от чита на оружие и патроны
+#define ANTI_WEAPON_HACK_DELAY_TIME   300 // минимальное время обновления
 
 #define ANTI_VEHICLE_TELEPORT_ENABLED 1 // защита от телепортации транспорта
 #define ANTI_VEHICLE_TELEPORT_DISTANCE 20.0
