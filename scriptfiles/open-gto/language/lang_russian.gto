@@ -774,7 +774,7 @@
 58: Выбрать
 59: Выход
 60: {CCCCCC}Оружие: {EEEEEE}%s[n]{CCCCCC}Цена: {00AA00}$%d
-61: {CCCCCC}Оружие: {EEEEEE}%s[n]{CCCCCC}Цена за 1 патрон: {00AA00}$%d[n]{CCCCCC}Ваших денег хватит на {BBBAE8}%d{CCCCCC} патрон
+61: {CCCCCC}Оружие: {EEEEEE}%s[n]{CCCCCC}Цена за 1 патрон: {00AA00}$%d[n]{CCCCCC}Вы можете купить {BBBAE8}%d{CCCCCC} патрон
 62: Покупка оружия
 63: Купить
 64: Назад

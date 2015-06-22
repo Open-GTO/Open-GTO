@@ -141,9 +141,17 @@ DialogCreate:ServiceWeaponBuy(playerid)
 		dialog_style = DIALOG_STYLE_MSGBOX;
 		SetPVarInt(playerid, "weapons_Buy_One_Bullet", 1);
 	} else {
+		new
+			max_bullets = max_ammo - GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid)),
+			max_bullets_money = GetPlayerMoney(playerid) / GetWeaponCost(weaponid);
+
+		if (max_bullets_money < max_bullets) {
+			max_bullets = max_bullets_money;
+		}
+
 		format(string, sizeof(string),
 			lang_texts[17][61],
-			ReturnWeaponName(weaponid), GetWeaponCost(weaponid), GetPlayerMoney(playerid) / GetWeaponCost(weaponid)
+			ReturnWeaponName(weaponid), GetWeaponCost(weaponid), max_bullets
 		);
 		strcat(string, lang_texts[17][66]);
 	}
