@@ -17,7 +17,10 @@
  * Vars
  */
 
-static IsEnabled = ANTI_WEAPON_HACK_ENABLED;
+static
+	IsEnabled = ANTI_WEAPON_HACK_ENABLED,
+	DelayTickCount = ANTI_WEAPON_HACK_DELAY_TIME,
+	LastTickCount;
 
 
 /*
@@ -27,11 +30,13 @@ static IsEnabled = ANTI_WEAPON_HACK_ENABLED;
 pt_weapon_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Protection_Weapon_IsEnabled", IsEnabled);
+	ini_getInteger(file_config, "Protection_Weapon_DelayTime", DelayTickCount);
 }
 
 pt_weapon_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Protection_Weapon_IsEnabled", IsEnabled);
+	ini_setInteger(file_config, "Protection_Weapon_DelayTime", DelayTickCount);
 }
 
 
@@ -93,14 +98,18 @@ pt_weapon_Check(playerid)
 	new
 		weaponid = GetPlayerWeapon(playerid),
 		ammo = GetPlayerAmmo(playerid),
-		slotid = GetWeaponSlot(weaponid);
+		slotid = GetWeaponSlot(weaponid),
+		current_tick = GetTickCount();
 
-	if (weaponid == 0) {
+	if (weaponid == 0 || current_tick - LastTickCount < DelayTickCount) {
 		return 1;
 	}
 
+	// save last time check
+	LastTickCount = current_tick;
+
 	// weapon
-	if (PlayerWeapons[playerid][slotid][pwid] != weaponid) {
+	if (PlayerWeapons[playerid][slotid][pwid] != weaponid && GetPlayerWeaponState(playerid) != WEAPONSTATE_NO_BULLETS) {
 		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_WEAPON), PlayerWeapons[playerid][slotid][pwid], weaponid);
 	}
 	
