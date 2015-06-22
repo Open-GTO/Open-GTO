@@ -294,7 +294,7 @@ Beachside_OnPlayerKeySC(playerid, newkeys, oldkeys)
 						// Display gametext message to the player
 						if (gettime() >= GetPVarInt(playerid, "ls_beachside_call_time")) {
 							SetPVarInt(playerid, "ls_beachside_call_time", gettime() + ALERT_TIME);
-							pl_alert_Show(playerid, "Elevator", "LS BeachSide Elevator is already on this floor.~n~Walk inside and press '"KEY_NAME"'", ALERT_TIME * 1000);
+							Message_Alert(playerid, "Elevator", "LS BeachSide Elevator is already on this floor.~n~Walk inside and press '"KEY_NAME"'", ALERT_TIME * 1000);
 						}
 
 						// Exit here (return 1 so this callback is processed in other scripts)
@@ -308,7 +308,7 @@ Beachside_OnPlayerKeySC(playerid, newkeys, oldkeys)
 				// Display gametext message to the player
 				if (gettime() >= GetPVarInt(playerid, "ls_beachside_call_time")) {
 					SetPVarInt(playerid, "ls_beachside_call_time", gettime() + ALERT_TIME);
-					pl_alert_Show(playerid, "Elevator", "LS BeachSide Elevator has been called.~n~Please wait", ALERT_TIME * 1000);
+					Message_Alert(playerid, "Elevator", "LS BeachSide Elevator has been called.~n~Please wait", ALERT_TIME * 1000);
 				
 
 					// Create variable for formatted message
@@ -356,9 +356,9 @@ DialogResponse:ElevatorMenu(playerid, response, listitem, inputtext[])
 		return 0;
 
 	if(FloorRequestedBy[listitem] != INVALID_PLAYER_ID || IsFloorInQueue(listitem))
-		pl_alert_Show(playerid, "Elevator", "The floor is already in the queue");
+		Message_Alert(playerid, "Elevator", "The floor is already in the queue");
 	else if(DidPlayerRequestElevator(playerid))
-		pl_alert_Show(playerid, "Elevator", "The floor is already in the queue");
+		Message_Alert(playerid, "Elevator", "The floor is already in the queue");
 	else
 		CallElevator(playerid, listitem);
 

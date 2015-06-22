@@ -1,19 +1,19 @@
 /*
 
-	About: player message system
+	About: player text system
 	Author:	ziggi
 
 */
 
-#if defined _pl_message_included
+#if defined _pl_text_included
 	#endinput
 #endif
 
-#define _pl_message_included
-#pragma library pl_message
+#define _pl_text_included
+#pragma library pl_text
 
 
-stock pl_message_OnPlayerText(playerid, text[])
+stock pl_text_OnPlayerText(playerid, text[])
 {
 	new
 		string[MAX_STRING],

@@ -499,7 +499,7 @@ stock StartDMLineup(dmid)
 		SendClientMessage(playerid, color, string1);
 		SendClientMessage(playerid, color, string2);
 		SendClientMessage(playerid, color, string3);
-		pl_alert_Show(playerid, "Deathmatch", string4, 5000, 0xCC0000FF);
+		Message_Alert(playerid, "Deathmatch", string4, 5000, 0xCC0000FF);
 		if (player_GetQuestID(playerid) == INVALID_QUEST_ID) // if player not on a quest
 		{
 			DMResetPlayerStats(playerid);

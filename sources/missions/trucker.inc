@@ -215,7 +215,7 @@ public trucker_BackCarTimer(playerid)
 	if (player_trucker[playerid][pt_BackCarTime] > 0) {
 		new string[MAX_STRING];
 		format(string, sizeof(string), "Get back in the car!~n~You have only %d seconds.", player_trucker[playerid][pt_BackCarTime]);
-		pl_alert_Show(playerid, "SA Delivery", string, 1200);
+		Message_Alert(playerid, "SA Delivery", string, 1200);
 
 		player_trucker[playerid][pt_BackCarTime]--;
 		SetTimerEx("trucker_BackCarTimer", 1000, 0, "d", playerid);
@@ -236,7 +236,7 @@ stock trucker_Start(playerid)
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[19][37], TRUCKER_TIME_GET_TRAILER);
 		SendClientMessage(playerid, COLOUR_YELLOW, string);
-		pl_alert_Show(playerid, "SA Delivery", "Take the trailer.~n~You have only "#TRUCKER_TIME_GET_TRAILER" seconds.");
+		Message_Alert(playerid, "SA Delivery", "Take the trailer.~n~You have only "#TRUCKER_TIME_GET_TRAILER" seconds.");
 
 		player_trucker[playerid][pt_TrailerCheck_Time] = gettime();
 		player_trucker[playerid][pt_TrailerCheck_Timer] = SetTimerEx("trucker_Trailer_Check", 500, 1, "dd", playerid, vehicleid);
@@ -295,7 +295,7 @@ stock trucker_Start(playerid)
 	SendClientMessage(playerid, COLOUR_YELLOW, string);
 
 	format(string, sizeof(string), "Mission started.~n~You have only %d minutes.", TRUCKER_MISSION_TIME / 60);
-	pl_alert_Show(playerid, "SA Delivery", string);
+	Message_Alert(playerid, "SA Delivery", string);
 	return 1;
 }
 
@@ -350,7 +350,7 @@ stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
 			SendClientMessage(playerid, COLOUR_YELLOW, string);
 
 			format(string, sizeof(string), "Take the trailer.~n~You have only %d minutes.", TRUCKER_MISSION_TIME / 60);
-			pl_alert_Show(playerid, "SA Delivery", string);
+			Message_Alert(playerid, "SA Delivery", string);
 
 			player_trucker[playerid][pt_TrailerCheck_Time] = gettime() + TRUCKER_MISSION_TIME - TRUCKER_TIME_GET_TRAILER;
 			player_trucker[playerid][pt_TrailerCheck_Timer] = SetTimerEx("trucker_Trailer_Check", 500, 1, "dd", playerid, vehicleid);
@@ -458,7 +458,7 @@ stock trucker_OnVehicleDeath(vehicleid, killerid)
 		} else {
 			if (player_trucker[killerid][pt_TrailerCheck_Timer] != 0) {
 				SendClientMessage(killerid, COLOUR_RED, lang_texts[19][56]);
-				pl_alert_Show(killerid, "SA Delivery", "Mission aborted");
+				Message_Alert(killerid, "SA Delivery", "Mission aborted");
 
 				KillTimer(player_trucker[killerid][pt_TrailerCheck_Timer]);
 				player_trucker[killerid][pt_TrailerCheck_Timer] = 0;
@@ -473,7 +473,7 @@ public trucker_Trailer_Check(playerid, vehicleid)
 {
 	if (GetPlayerVehicleID(playerid) == 0) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[19][56]);
-		pl_alert_Show(playerid, "SA Delivery", "Mission aborted");
+		Message_Alert(playerid, "SA Delivery", "Mission aborted");
 
 		KillTimer(player_trucker[playerid][pt_TrailerCheck_Timer]);
 		SetVehicleToRespawn(vehicleid);
@@ -485,7 +485,7 @@ public trucker_Trailer_Check(playerid, vehicleid)
 		case 10, TRUCKER_TIME_GET_TRAILER / 4, TRUCKER_TIME_GET_TRAILER / 2: {
 			new string[MAX_STRING];
 			format(string, sizeof(string), "Take the trailer.~n~You have only %d seconds.", time_left);
-			pl_alert_Show(playerid, "SA Delivery", string);
+			Message_Alert(playerid, "SA Delivery", string);
 		}
 	}
 
@@ -495,7 +495,7 @@ public trucker_Trailer_Check(playerid, vehicleid)
 		player_trucker[playerid][pt_TrailerCheck_Time] = 0;
 		KillTimer(player_trucker[playerid][pt_TrailerCheck_Timer]);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[19][55]);
-		pl_alert_Show(playerid, "SA Delivery", "Mission aborted");
+		Message_Alert(playerid, "SA Delivery", "Mission aborted");
 		return 0;
 	}
 	

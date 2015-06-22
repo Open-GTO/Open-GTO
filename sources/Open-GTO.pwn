@@ -92,9 +92,10 @@ Thanks:
 #include "player/player_commands"
 #include "player/player_kick"
 #include "player/player_maptp"
-#include "player/player_message"
+#include "player/player_text"
 #include "player/player_money"
-#include "player/player_alert"
+#include "player/message/message_alert"
+#include "player/message/message_objective"
 #include "player/player"
 #include "custom/pickups"
 #include "custom/ls_beachside"
@@ -215,7 +216,6 @@ public OnGameModeInit()
 	Premium_OnGameModeInit();
 	pl_weapon_OnGameModeInit();
 	pl_textdraw_OnGameModeInit();
-	pl_alert_OnGameModeInit();
 	Pickup_OnGameModeInit();
 	widestrip_OnGameModeInit();
 	Beachside_OnGameModeInit();
@@ -311,7 +311,6 @@ public OnPlayerConnect(playerid)
 	pt_chat_OnPlayerConnect(playerid);
 	pl_weapon_OnPlayerConnect(playerid);
 	pl_textdraw_OnPlayerConnect(playerid);
-	pl_alert_OnPlayerConnect(playerid);
 	veh_fuel_OnPlayerConnect(playerid);
 	Mapicon_OnPlayerConnect(playerid);
 	Checkpoint_OnPlayerConnect(playerid);
@@ -511,7 +510,7 @@ public OnPlayerText(playerid, text[])
 		return 0;
 	}
 	
-	new pl_result = pl_message_OnPlayerText(playerid, text);
+	new pl_result = pl_text_OnPlayerText(playerid, text);
 	if (pl_result == 0) {
 		return 0;
 	}

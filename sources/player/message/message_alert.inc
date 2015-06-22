@@ -12,11 +12,21 @@
 #define _pl_alert_included
 #pragma library pl_alert
 
-#define ALERT_POS_X		479.5
-#define ALERT_POS_Y		286.5
-#define ALERT_WIDTH		144
+
+/*
+ * Macros
+ */
+
+#define ALERT_POS_X     479.5
+#define ALERT_POS_Y     286.5
+#define ALERT_WIDTH     144
 
 #define MAX_CACHE_ALERT 3
+
+
+/*
+ * Enums
+ */
 
 enum e_Alerts_Info {
 	bool:e_aIsBusy,
@@ -26,16 +36,26 @@ enum e_Alerts_Info {
 	e_aColor,
 }
 
+
+/*
+ * Vars
+ */
+
 static
 	Text:td_background,
 	PlayerText:td_strip[MAX_PLAYERS],
 	PlayerText:td_header[MAX_PLAYERS],
 	PlayerText:td_content[MAX_PLAYERS],
 
-	alert_TimerID[MAX_PLAYERS] = {0, ...},
-	alert_Messages[MAX_PLAYERS][MAX_CACHE_ALERT][e_Alerts_Info];
+	timer_id[MAX_PLAYERS] = {0, ...},
+	messages[MAX_PLAYERS][MAX_CACHE_ALERT][e_Alerts_Info];
 
-stock pl_alert_OnGameModeInit()
+
+/*
+ * For public
+ */
+
+public OnGameModeInit()
 {
 	td_background = TextDrawCreate(ALERT_POS_X, ALERT_POS_Y, "alert_background");
 	TextDrawLetterSize(td_background, 0.0, 0.85);
@@ -48,10 +68,21 @@ stock pl_alert_OnGameModeInit()
 	TextDrawSetOutline(td_background, 0);
 	TextDrawBackgroundColor(td_background, 16777215);
 	TextDrawFont(td_background, 1);
+
+	CallLocalFunction("GTOALERT_OnGameModeInit", "");
 	return 1;
 }
 
-stock pl_alert_OnPlayerConnect(playerid)
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
+#define OnGameModeInit GTOALERT_OnGameModeInit
+forward OnGameModeInit();
+
+
+public OnPlayerConnect(playerid)
 {
 	td_strip[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y + 15.5, "_");
 	PlayerTextDrawLetterSize(playerid, td_strip[playerid], 0.0, -0.6);
@@ -82,39 +113,82 @@ stock pl_alert_OnPlayerConnect(playerid)
 	PlayerTextDrawBackgroundColor(playerid, td_content[playerid], 51);
 	PlayerTextDrawFont(playerid, td_content[playerid], 1);
 	PlayerTextDrawSetProportional(playerid, td_content[playerid], 1);
+
+	CallLocalFunction("GTOALERT_OnPlayerConnect", "i", playerid);
 	return 1;
 }
 
-stock pl_alert_Show(playerid, header[], content[], time = 4000, hcolor = -5963521)
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
+#define OnPlayerConnect GTOALERT_OnPlayerConnect
+forward OnPlayerConnect(playerid);
+
+
+/*
+ * Public functions
+ */
+
+stock Message_Alert(playerid, header[], content[], time = 4000, hcolor = -5963521)
 {
-	new id = pl_alert_GetFreeSlot(playerid);
+	new id = GetFreeSlot(playerid);
 	if (id == -1) {
-		id = 0;
+		Log_Debug("player_alert.inc:%d: Free slot not found. Increase MAX_CACHE_ALERT value.", __line);
+		return id;
 	}
 
-	alert_Messages[playerid][id][e_aIsBusy] = true;
-	strmid(alert_Messages[playerid][id][e_aHeader], header, 0, strlen(header), MAX_LANG_VALUE_STRING);
-	strmid(alert_Messages[playerid][id][e_aContent], content, 0, strlen(content), MAX_LANG_VALUE_STRING);
-	alert_Messages[playerid][id][e_aTime] = time;
-	alert_Messages[playerid][id][e_aColor] = hcolor;
+	messages[playerid][id][e_aIsBusy] = true;
+	strmid(messages[playerid][id][e_aHeader], header, 0, strlen(header), MAX_LANG_VALUE_STRING);
+	strmid(messages[playerid][id][e_aContent], content, 0, strlen(content), MAX_LANG_VALUE_STRING);
+	messages[playerid][id][e_aTime] = time;
+	messages[playerid][id][e_aColor] = hcolor;
 
-	if (!pl_alert_IsShowed(playerid)) {
-		pl_alert_ShowCached(playerid, id);
+	if (!Message_Alert_IsShowed(playerid)) {
+		Message_AlertCached(playerid, id);
 	}
 	return id;
 }
 
-stock pl_alert_ShowCached(playerid, id)
+stock Message_Alert_IsShowed(playerid)
 {
-	if (strlen(alert_Messages[playerid][id][e_aHeader]) > 0) {
-		PlayerTextDrawColor(playerid, td_header[playerid], alert_Messages[playerid][id][e_aColor]);
-		PlayerTextDrawSetString(playerid, td_header[playerid], alert_Messages[playerid][id][e_aHeader]);
+	if (timer_id[playerid] != 0) {
+		return 1;
+	}
+	return 0;
+}
+
+forward Message_AlertHide(playerid);
+public Message_AlertHide(playerid)
+{
+	timer_id[playerid] = 0;
+
+	TextDrawHideForPlayer(playerid, td_background);
+	PlayerTextDrawHide(playerid, td_strip[playerid]);
+
+	PlayerTextDrawHide(playerid, td_header[playerid]);
+	PlayerTextDrawHide(playerid, td_content[playerid]);
+
+	SetTimer("Message_AlertBusy", 200, 0);
+}
+
+
+/*
+ * Private functions
+ */
+
+static stock Message_AlertCached(playerid, id)
+{
+	if (strlen(messages[playerid][id][e_aHeader]) > 0) {
+		PlayerTextDrawColor(playerid, td_header[playerid], messages[playerid][id][e_aColor]);
+		PlayerTextDrawSetString(playerid, td_header[playerid], messages[playerid][id][e_aHeader]);
 
 		PlayerTextDrawShow(playerid, td_header[playerid]);
 
 		TextDrawShowForPlayer(playerid, td_background);
 
-		PlayerTextDrawBoxColor(playerid, td_strip[playerid], alert_Messages[playerid][id][e_aColor]);
+		PlayerTextDrawBoxColor(playerid, td_strip[playerid], messages[playerid][id][e_aColor]);
 		PlayerTextDrawShow(playerid, td_strip[playerid]);
 	} else {
 		PlayerTextDrawHide(playerid, td_header[playerid]);
@@ -122,8 +196,8 @@ stock pl_alert_ShowCached(playerid, id)
 		TextDrawHideForPlayer(playerid, td_background);
 	}
 
-	if (strlen(alert_Messages[playerid][id][e_aContent]) > 0) {
-		PlayerTextDrawSetString(playerid, td_content[playerid], alert_Messages[playerid][id][e_aContent]);
+	if (strlen(messages[playerid][id][e_aContent]) > 0) {
+		PlayerTextDrawSetString(playerid, td_content[playerid], messages[playerid][id][e_aContent]);
 
 		PlayerTextDrawShow(playerid, td_content[playerid]);
 	} else {
@@ -132,56 +206,34 @@ stock pl_alert_ShowCached(playerid, id)
 
 	PlayerPlaySound(playerid, 45400, 0.0, 0.0, 0.0);
 
-	if (pl_alert_IsShowed(playerid)) {
-		KillTimer(alert_TimerID[playerid]);
+	if (Message_Alert_IsShowed(playerid)) {
+		KillTimer(timer_id[playerid]);
 	}
 
-	alert_Messages[playerid][id][e_aIsBusy] = false;
-	alert_Messages[playerid][id][e_aHeader][0] = '\0';
-	alert_Messages[playerid][id][e_aContent][0] = '\0';
+	messages[playerid][id][e_aIsBusy] = false;
+	messages[playerid][id][e_aHeader][0] = '\0';
+	messages[playerid][id][e_aContent][0] = '\0';
 
-	alert_TimerID[playerid] = SetTimerEx("pl_alert_Hide", alert_Messages[playerid][id][e_aTime], 0, "d", playerid);
+	timer_id[playerid] = SetTimerEx("Message_AlertHide", messages[playerid][id][e_aTime], 0, "d", playerid);
 }
 
-forward pl_alert_Hide(playerid);
-public pl_alert_Hide(playerid)
-{
-	alert_TimerID[playerid] = 0;
-
-	TextDrawHideForPlayer(playerid, td_background);
-	PlayerTextDrawHide(playerid, td_strip[playerid]);
-
-	PlayerTextDrawHide(playerid, td_header[playerid]);
-	PlayerTextDrawHide(playerid, td_content[playerid]);
-
-	SetTimer("pl_alert_ShowBusy", 200, 0);
-}
-
-forward pl_alert_ShowBusy(playerid);
-public pl_alert_ShowBusy(playerid)
+forward Message_AlertBusy(playerid);
+public Message_AlertBusy(playerid)
 {
 	for (new i = 0; i < MAX_CACHE_ALERT; i++) {
-		if (alert_Messages[playerid][i][e_aIsBusy]) {
-			pl_alert_ShowCached(playerid, i);
+		if (messages[playerid][i][e_aIsBusy]) {
+			Message_AlertCached(playerid, i);
 			break;
 		}
 	}
 }
 
-stock pl_alert_GetFreeSlot(playerid)
+static stock GetFreeSlot(playerid)
 {
 	for (new i = 0; i < MAX_CACHE_ALERT; i++) {
-		if (!alert_Messages[playerid][i][e_aIsBusy]) {
+		if (!messages[playerid][i][e_aIsBusy]) {
 			return i;
 		}
 	}
 	return -1;
-}
-
-stock pl_alert_IsShowed(playerid)
-{
-	if (alert_TimerID[playerid] != 0) {
-		return 1;
-	}
-	return 0;
 }

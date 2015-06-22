@@ -1153,7 +1153,7 @@ stock StartRaceLineup(raceid)
 		SendClientMessage(playerid, color, string1);
 		SendClientMessage(playerid, color, string2);
 		SendClientMessage(playerid, color, string3);
-		pl_alert_Show(playerid, "Race", string4, 5000, 8388863);
+		Message_Alert(playerid, "Race", string4, 5000, 8388863);
 	}
 	RaceStats[raceid][race_activecpid] = AddActiveRaceCheckpoint(GetRaceCPX(raceid, 0), GetRaceCPY(raceid, 0), GetRaceCPZ(raceid, 0), 10000, RCPSIZE);
 }
