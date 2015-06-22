@@ -107,7 +107,7 @@
 #define ANTI_SPECIAL_ACTION_ENABLED   1 // защита от изменения special action
 
 #define ANTI_WEAPON_HACK_ENABLED      1 // защита от чита на оружие и патроны
-#define ANTI_WEAPON_HACK_DELAY_TIME   300 // минимальное время обновления
+#define ANTI_WEAPON_HACK_DELAY_TIME   1000 // минимальное время обновления
 
 #define ANTI_VEHICLE_TELEPORT_ENABLED 1 // защита от телепортации транспорта
 #define ANTI_VEHICLE_TELEPORT_DISTANCE 20.0

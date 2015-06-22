@@ -109,7 +109,7 @@ pt_weapon_Check(playerid)
 	LastTickCount = current_tick;
 
 	// weapon
-	if (PlayerWeapons[playerid][slotid][pwid] != weaponid && GetPlayerWeaponState(playerid) != WEAPONSTATE_NO_BULLETS) {
+	if (PlayerWeapons[playerid][slotid][pwid] != weaponid) {
 		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_WEAPON), PlayerWeapons[playerid][slotid][pwid], weaponid);
 	}
 	
