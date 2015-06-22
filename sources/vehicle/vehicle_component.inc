@@ -14,14 +14,15 @@
 #pragma library vehicle_component
 
 
-#define MAX_COMPONENT 128
+#define INVALID_COMPONENT_ID  -1
+#define MAX_COMPONENTS        128
 
 enum component_Info {
 	cu_Model = 0,
 	cu_ComponentID = 1,
 }
 
-new component_array[][][MAX_COMPONENT] = {
+static component_array[][][MAX_COMPONENTS] = {
 	{
 		{400},
 		{
@@ -610,7 +611,7 @@ static component_name[][64] = {
 stock IsVehicleUpgradeCompatible(model, componentid)
 {
 	new id = GetComponentArrayID(model);
-	if (id == -1) {
+	if (id == INVALID_COMPONENT_ID) {
 		return 0;
 	}
 
@@ -622,32 +623,58 @@ stock IsVehicleUpgradeCompatible(model, componentid)
 	return 0;
 }
 
-stock GetVehicleCompatibleUpgrades(model, count, &componentid = 0)
+stock GetVehicleCompatibleUpgrades(model, index, &componentid = 0)
 {
-	componentid = 0;
+	componentid = INVALID_COMPONENT_ID;
 
 	new id = GetComponentArrayID(model);
-	if (id == -1) {
-		return 0;
+	if (id == INVALID_COMPONENT_ID) {
+		return componentid;
 	}
 
-	componentid = component_array[id][cu_ComponentID][count];
+	if (index > GetVehicleUpgradesLastIndex(id)) {
+		return componentid;
+	}
+
+	componentid = component_array[id][cu_ComponentID][index];
 	return componentid;
+}
+
+stock GetVehicleUpgradesLastIndex(arrayid)
+{
+	for (new i = 0; i < sizeof(component_array[][]); i++) {
+		if (component_array[arrayid][cu_ComponentID][i] == 0) {
+			return i - 1;
+		}
+	}
+	return 0;
 }
 
 stock GetComponentArrayID(model)
 {
-	for (new i = 0; i < sizeof(component_array); i++) {
-		for (new j = 0; j < sizeof(component_array[][]); j++) {
+	new i, j;
+
+	for (i = 0; i < sizeof(component_array); i++) {
+		for (j = 0; j < sizeof(component_array[][]); j++) {
 			if (component_array[i][cu_Model][j] == model) {
 				return i;
 			}
 		}
 	}
-	return -1;
+
+	return INVALID_COMPONENT_ID;
 }
 
-stock GetComponentName(componentid)
+stock GetComponentName(componentid, cname[], size = sizeof(cname))
 {
-	return component_name[componentid - 1000];
+	cname[0] = '\0';
+
+	new idx = componentid - 1000;
+
+	if (idx < 0 || idx >= sizeof(component_name)) {
+		return 0;
+	}
+
+	strcat(cname, component_name[idx], size);
+	return 1;
 }
