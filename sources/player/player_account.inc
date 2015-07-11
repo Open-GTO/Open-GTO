@@ -69,8 +69,10 @@ stock account_SaveEx(playerid)
 stock account_Register(playerid, password[])
 {
 	// set default data
-#if defined USE_PASSWORD_ENCRYPT
-	SetPVarString(playerid, "Password", encrypt(password));
+#if defined PASSWORD_ENCRYPT_ENABLED
+	new hash[PASSWORD_HASH_LENGTH + 1];
+	SHA256_PassHash(password, PASSWORD_SALT, hash, PASSWORD_HASH_LENGTH);
+	SetPVarString(playerid, "Password", hash);
 #else
 	SetPVarString(playerid, "Password", password);
 #endif
@@ -101,13 +103,13 @@ stock account_Login(playerid, password[])
 		return 0;
 	}
 
-	new dbpassword[MAX_PASS_LEN],
+	new dbpassword[PASSWORD_HASH_LENGTH + 1],
 		file_account = ini_openFile(filename_account);
 
 	ini_getString(file_account, "Password", dbpassword);
 
-#if defined USE_PASSWORD_ENCRYPT
-	set(password, encrypt(password));
+#if defined PASSWORD_ENCRYPT_ENABLED
+	SHA256_PassHash(password, PASSWORD_SALT, password, PASSWORD_HASH_LENGTH);
 #endif
 
 	if (strcmp(password, dbpassword, false)) {

@@ -47,8 +47,9 @@
 #define USE_PLAYER_PED_ANIMS
 #define USED_PLAYER_MARKERS     PLAYER_MARKERS_MODE_GLOBAL
 
-#define USE_PASSWORD_ENCRYPT // если задефайнено, то пароль в файле игрока будет шифроваться
-#define PASSWORD_ENCRYPT_KEY    "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]$45a`Jdny¦IUW@G7s6&l:k;i~ YsoMЈ.cBq#|}NrTtA, "
+#define PASSWORD_ENCRYPT_ENABLED // если задефайнено, то пароль в файле игрока будет шифроваться
+#define PASSWORD_SALT         "Super Open-GTO salt" // соль для хэша (рекомендуется изменить и никому не показывать)
+#define PASSWORD_HASH_LENGTH  64 // длина хэша
 
 #define SERVER_REAL_TIME            1 // мировое время соответствует текущему времени сервера
 #define SERVER_REAL_TIME_OFFSET     0 // смещение времени относительно сервера

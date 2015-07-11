@@ -225,30 +225,6 @@ stock GetVehicleSpeed(vehicleid)
 	return floatround( floatsqroot(pos[0]*pos[0] + pos[1]*pos[1] + pos[2]*pos[2]) * 100 );
 }
 
-#if defined USE_PASSWORD_ENCRYPT
-// encrypt(string[]) by Alex "Y_Less" Cole, Based on code by Jeremy Cole
-// modified by ZiGGi
-static ENCRYPTION_KEY[] = PASSWORD_ENCRYPT_KEY;
-
-stock encrypt(string[])
-{
-	new size = strlen(ENCRYPTION_KEY),
-		retval[MAX_PASS_LEN],
-		j = strlen(string),
-		k = ((j >> 4) + 1) << 4,
-		sum = j,
-		tmp[] = {0, 0};
-	
-	for (new i = 0; i < k; i++)
-	{
-		tmp[0] = (i < j) ? string[i] : ' ';
-		sum = ((sum + strfind(ENCRYPTION_KEY, tmp) + 1) % size);
-		retval[i] = ENCRYPTION_KEY[sum];
-	}
-	return retval;
-}
-#endif
-
 stock Float:GetDistanceBetweenPoints(Float:x1, Float:y1, Float:z1, Float:x2, Float:y2, Float:z2)
 {
 	return VectorSize(x1-x2, y1-y2, z1-z2);
