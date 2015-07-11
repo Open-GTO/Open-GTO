@@ -58,7 +58,7 @@ wshop_OnInteriorCreated(id, type, world)
 		if (wshop_place[i][wshop_type] == type) {
 			slot = wshop_GetActorFreeSlot();
 			if (slot == -1) {
-				Log_Debug("weaponshop.inc:%d: Free slot not found. Increase MAX_WSHOP_ACTORS value.", __line);
+				Log_Debug("weaponshop.inc: Free slot not found. Increase MAX_WSHOP_ACTORS value.");
 				break;
 			}
 

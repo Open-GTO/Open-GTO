@@ -43,7 +43,7 @@ static
 	PlayerText:td_info[MAX_PLAYERS],
 
 	timer_id[MAX_PLAYERS] = {0, ...},
-	messages[MAX_PLAYERS][MAX_CACHE_MESSAGE][e_Objectives_Info];
+	messages[MAX_PLAYERS][MAX_CACHE_OBJECTIVE][e_Objectives_Info];
 
 
 /*
@@ -52,7 +52,7 @@ static
 
 public OnPlayerConnect(playerid)
 {
-	td_info[playerid] = CreatePlayerTextDraw(playerid, MESSAGE_POS_X, MESSAGE_POS_Y, "_");
+	td_info[playerid] = CreatePlayerTextDraw(playerid, OBJECTIVE_POS_X, OBJECTIVE_POS_Y, "_");
 	PlayerTextDrawLetterSize(playerid, td_info[playerid], 0.241999, 1.280593);
 	PlayerTextDrawAlignment(playerid, td_info[playerid], 2);
 	PlayerTextDrawColor(playerid, td_info[playerid], -1);
@@ -83,14 +83,14 @@ stock Message_Objective(playerid, info[], time = 4000, hcolor = -1)
 {
 	new id = GetFreeSlot(playerid);
 	if (id == -1) {
-		Log_Debug("player_message.inc:%d: Free slot not found. Increase MAX_CACHE_MESSAGE value.", __line);
+		Log_Debug("player_message.inc: Free slot not found. Increase MAX_CACHE_OBJECTIVE value.");
 		return id;
 	}
 
-	messages[playerid][id][e_mIsBusy] = true;
-	strmid(messages[playerid][id][e_mInfo], info, 0, strlen(info), MAX_LANG_VALUE_STRING);
-	messages[playerid][id][e_mTime] = time;
-	messages[playerid][id][e_mColor] = hcolor;
+	messages[playerid][id][e_oIsBusy] = true;
+	strmid(messages[playerid][id][e_oInfo], info, 0, strlen(info), MAX_LANG_VALUE_STRING);
+	messages[playerid][id][e_oTime] = time;
+	messages[playerid][id][e_oColor] = hcolor;
 
 	if (!Message_Objective_IsShowed(playerid)) {
 		Message_ObjectiveCached(playerid, id);
@@ -123,9 +123,9 @@ public Message_ObjectiveHide(playerid)
 
 static stock Message_ObjectiveCached(playerid, id)
 {
-	if (strlen(messages[playerid][id][e_mInfo]) > 0) {
-		PlayerTextDrawColor(playerid, td_info[playerid], messages[playerid][id][e_mColor]);
-		PlayerTextDrawSetString(playerid, td_info[playerid], messages[playerid][id][e_mInfo]);
+	if (strlen(messages[playerid][id][e_oInfo]) > 0) {
+		PlayerTextDrawColor(playerid, td_info[playerid], messages[playerid][id][e_oColor]);
+		PlayerTextDrawSetString(playerid, td_info[playerid], messages[playerid][id][e_oInfo]);
 
 		PlayerTextDrawShow(playerid, td_info[playerid]);
 	} else {
@@ -138,17 +138,17 @@ static stock Message_ObjectiveCached(playerid, id)
 		KillTimer(timer_id[playerid]);
 	}
 
-	messages[playerid][id][e_mIsBusy] = false;
-	messages[playerid][id][e_mInfo][0] = '\0';
+	messages[playerid][id][e_oIsBusy] = false;
+	messages[playerid][id][e_oInfo][0] = '\0';
 
-	timer_id[playerid] = SetTimerEx("Message_ObjectiveHide", messages[playerid][id][e_mTime], 0, "d", playerid);
+	timer_id[playerid] = SetTimerEx("Message_ObjectiveHide", messages[playerid][id][e_oTime], 0, "d", playerid);
 }
 
 forward Message_ObjectiveBusy(playerid);
 public Message_ObjectiveBusy(playerid)
 {
-	for (new i = 0; i < MAX_CACHE_MESSAGE; i++) {
-		if (messages[playerid][i][e_mIsBusy]) {
+	for (new i = 0; i < MAX_CACHE_OBJECTIVE; i++) {
+		if (messages[playerid][i][e_oIsBusy]) {
 			Message_ObjectiveCached(playerid, i);
 			break;
 		}
@@ -157,8 +157,8 @@ public Message_ObjectiveBusy(playerid)
 
 static stock GetFreeSlot(playerid)
 {
-	for (new i = 0; i < MAX_CACHE_MESSAGE; i++) {
-		if (!messages[playerid][i][e_mIsBusy]) {
+	for (new i = 0; i < MAX_CACHE_OBJECTIVE; i++) {
+		if (!messages[playerid][i][e_oIsBusy]) {
 			return i;
 		}
 	}

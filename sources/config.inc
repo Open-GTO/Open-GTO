@@ -37,7 +37,7 @@
 #define VERSION_EXTRA   "-alpha"
 #define VERSION_NAME    "New generation"
 
-#define VERSION_STRING          "v" #VERSION_MAJOR "." #VERSION_MINOR "." #VERSION_BUILD VERSION_EXTRA
+#define VERSION_STRING          "v2.0.0-alpha" // от нормального кода виснет компилятор: "v" #VERSION_MAJOR "." #VERSION_MINOR "." #VERSION_BUILD VERSION_EXTRA
 #define GAMEMODE_TEXT           MODE_NAME " " VERSION_STRING
 #define DATA_FILES_FORMAT       ".gto" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
 #define DATA_FILES_FOLDER       "open-gto/" // каталог в scriptfiles/, где хранятся файлы Open-GTO

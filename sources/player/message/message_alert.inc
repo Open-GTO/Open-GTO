@@ -135,7 +135,7 @@ stock Message_Alert(playerid, header[], content[], time = 4000, hcolor = -596352
 {
 	new id = GetFreeSlot(playerid);
 	if (id == -1) {
-		Log_Debug("player_alert.inc:%d: Free slot not found. Increase MAX_CACHE_ALERT value.", __line);
+		Log_Debug("player_alert.inc: Free slot not found. Increase MAX_CACHE_ALERT value.");
 		return id;
 	}
 

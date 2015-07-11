@@ -68,7 +68,7 @@ stock fastfood_OnInteriorCreated(id, type, world)
 		if (type == fastfood_place[i][ff_type]) {
 			slot = fastfood_GetActorFreeSlot();
 			if (slot == -1) {
-				Log_Debug("fastfood.inc:%d: Free slot not found. Increase MAX_FASTFOOD_ACTORS value.", __line);
+				Log_Debug("fastfood.inc: Free slot not found. Increase MAX_FASTFOOD_ACTORS value.");
 				break;
 			}
 
