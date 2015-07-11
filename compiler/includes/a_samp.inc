@@ -81,6 +81,28 @@ native GetPlayerPoolSize();
 native GetVehiclePoolSize();
 native GetActorPoolSize();
 
+// Hash
+native SHA256_PassHash(password[], salt[], ret_hash[], ret_hash_len); // SHA256 for password hashing
+
+// Server wide persistent variable system (SVars)
+native SetSVarInt(varname[], int_value);
+native GetSVarInt(varname[]);
+native SetSVarString(varname[], string_value[]);
+native GetSVarString(varname[], string_return[], len);
+native SetSVarFloat(varname[], Float:float_value);
+native Float:GetSVarFloat(varname[]);
+native DeleteSVar(varname[]);
+
+// SVar enumeration
+#define	SERVER_VARTYPE_NONE			0
+#define SERVER_VARTYPE_INT			1
+#define SERVER_VARTYPE_STRING		2
+#define SERVER_VARTYPE_FLOAT		3
+
+native GetSVarsUpperIndex();
+native GetSVarNameAtIndex(index, ret_varname[], ret_len);
+native GetSVarType(varname[]);
+
 // Game
 native SetGameModeText(const string[]);
 native SetTeamCount(count);
@@ -122,14 +144,20 @@ native Kick(playerid);
 native Ban(playerid);
 native BanEx(playerid, const reason[]);
 native SendRconCommand(command[]);
-native GetServerVarAsString(const varname[], buffer[], len);
-native GetServerVarAsInt(const varname[]);
-native GetServerVarAsBool(const varname[]);
 native GetPlayerNetworkStats(playerid, retstr[], retstr_size);
 native GetNetworkStats(retstr[], retstr_size);
 native GetPlayerVersion(playerid, const version[], len); // Returns the SA-MP client revision as reported by the player
 native BlockIpAddress(ip_address[], timems);
 native UnBlockIpAddress(ip_address[]);
+
+// Deprecated:
+native GetServerVarAsString(const varname[], buffer[], len);
+native GetServerVarAsInt(const varname[]);
+native GetServerVarAsBool(const varname[]);
+// These are the same 3 functions as above although they avoid the name ambiguity/conflict with the SVar system.
+native GetConsoleVarAsString(const varname[], buffer[], len);
+native GetConsoleVarAsInt(const varname[]);
+native GetConsoleVarAsBool(const varname[]);
 
 // Extended admin network stats
 native GetServerTickRate();
