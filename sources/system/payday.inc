@@ -65,7 +65,7 @@ stock payday_Give()
 		}
 		
 		pay_xp = 0;
-		if (GetPlayerLevel(id) < MAX_LEVEL) {
+		if (GetPlayerLevel(id) < GetMaxPlayerLevel()) {
 			pay_xp = xp_base + (xp_base * GetPlayerLevel(id));
 			GivePlayerXP(id, pay_xp , 0, 0);
 		}

@@ -99,7 +99,7 @@ stock adm_spec_GetLabelString(playerid, specid, string[], len = sizeof(string))
 	new money = GetPlayerMoney(specid);
 	new level = GetPlayerLevel(specid);
 	new xp = GetPlayerXP(specid);
-	new xp_to_level = GetPlayerXPToLevel(specid, level + 1);
+	new xp_to_level = GetXPToLevel(level + 1);
 	new weapon_id = GetPlayerWeapon(specid);
 
 	new weapon_name[MAX_NAME];

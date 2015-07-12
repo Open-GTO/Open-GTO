@@ -334,13 +334,13 @@ public adm_click_SetLevel(playerid, clickedid, listitem, inputtext[])
 	}
 
 	new newlvl = strval(inputtext);
-	if (newlvl > MAX_LEVEL || newlvl < PLAYER_START_LEVEL) {
+	if (!IsValidPlayerLevel(newlvl)) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][33]);
 		return 0;
 	}
 
 	new oldlvl = GetPlayerLevel(clickedid);
-	GivePlayerXP(clickedid, level_xp_list[newlvl] - GetPlayerXP(clickedid));
+	SetPlayerLevel(clickedid, newlvl);
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][31], ReturnPlayerName(playerid), newlvl);

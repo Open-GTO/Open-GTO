@@ -134,7 +134,7 @@ stock player_Login(playerid)
 		SetPlayerArmour(playerid, f_buf);
 		
 		ini_getInteger(file_player, "Level", buf);
-		SetPlayerLevel(playerid, buf);
+		SetPlayerLevel(playerid, buf, 0, 0);
 		
 		ini_getInteger(file_player, "XP", buf);
 		SetPlayerXP(playerid, buf);

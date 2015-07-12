@@ -37,8 +37,6 @@ public WorldSave(necessarily) // save all
 	cfg_SaveConfigs();
 
 	// other
-	pl_level_SaveLevelConfig();
-
 	weapon_SaveAll();
 	race_SaveAll();
 	deathmatch_SaveAll();

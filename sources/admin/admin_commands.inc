@@ -1222,18 +1222,14 @@ COMMAND:setlvl(playerid, params[])
 	}
 
 	new newlvl = strval(strcharsplit(params, idx, ' '));
-	if (newlvl > MAX_LEVEL || newlvl < PLAYER_START_LEVEL) {
+	if (!IsValidPlayerLevel(newlvl)) {
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][33]);
 		return 1;
 	}
 
 	new oldlvl = GetPlayerLevel(receiverid);
-	if (newlvl > oldlvl) {
-		PlayerLevelUp(receiverid, newlvl, oldlvl);
-	} else {
-		PlayerLevelDown(receiverid, newlvl, oldlvl);
-	}
-	
+	SetPlayerLevel(receiverid, newlvl);
+
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][31], ReturnPlayerName(playerid), newlvl);
 	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);

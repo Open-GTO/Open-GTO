@@ -444,7 +444,7 @@ stock GangGiveXP(gangid, xpamount, giverid)
 			continue;
 		}
 		
-		if (GetPlayerLevel(playerid) < MAX_LEVEL) {
+		if (GetPlayerLevel(playerid) < GetMaxPlayerLevel()) {
 			GivePVarInt(playerid, "gang_xp_from_players", giveamount);
 		}
 	}

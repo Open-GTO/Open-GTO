@@ -10,97 +10,43 @@
 #define _pl_level_included
 #pragma library player_level
 
-new level_xp_list[] = {
-	0,
-	0, 1000, 1600, 2300, 3100, 4000, 5000, 6100, 7300, 8600,
-	10000, 11500, 13100, 14800, 16600, 18500, 20500, 22600, 24800, 27100,
-	29500, 32000, 34600, 37300, 40100, 43000, 46000, 49100, 52300, 55600
-};
 
-#define MAX_LEVEL	(sizeof(level_xp_list) - 1)
+#define MIN_LEVEL    1
 
-stock pl_level_LoadConfig(file_config)
+#if PLAYER_START_LEVEL < MIN_LEVEL
+	#error PLAYER_START_LEVEL must be greater than MIN_LEVEL
+#endif
+
+static
+	gMaxPlayerLevel = MAX_LEVEL;
+
+pl_level_LoadConfig(file_config)
 {
-	ini_getString(file_config, "Player_Level_DB", db_level);
+	ini_getInteger(file_config, "Player_Level_Max", gMaxPlayerLevel);
 }
 
-stock pl_level_SaveConfig(file_config)
+pl_level_SaveConfig(file_config)
 {
-	ini_setString(file_config, "Player_Level_DB", db_level);
+	ini_setInteger(file_config, "Player_Level_Max", gMaxPlayerLevel);
 }
 
-stock pl_level_LoadLevelConfig()
+pl_level_OnGameModeInit()
 {
-	if (!ini_fileExist(db_level)) {
-		return 0;
+	new
+		level = MIN_LEVEL - 1,
+		xp;
+
+	do {
+		level++;
+		xp = GetPlayerXPToLevel(MIN_LEVEL, level);
+	} while (xp >= 0);
+
+	level--;
+
+	if (level < GetMaxPlayerLevel()) {
+		Log_Debug("player_level.inc: Player_Level_Max is VERY HIGH, maximum supported value is %d", level);
 	}
-
-	new file_base_level = ini_openFile(db_level),
-		temp[MAX_STRING];
-
-	for (new i = 0; i <= MAX_LEVEL; i++)  {
-		format(temp, sizeof(temp), "Level%d_Experience", i);
-		ini_getInteger(file_base_level, temp, level_xp_list[i]);
-	}
-
-	ini_closeFile(file_base_level);
 	return 1;
-}
-
-stock pl_level_SaveLevelConfig()
-{
-	new file_base_level;
-
-	if (ini_fileExist(db_level)) {
-		file_base_level = ini_openFile(db_level);
-	} else {
-		file_base_level = ini_createFile(db_level);
-	}
-
-	new temp[MAX_STRING];
-
-	for (new i = 0; i <= MAX_LEVEL; i++) {
-		format(temp, sizeof(temp), "Level%d_Experience", i);
-		ini_setInteger(file_base_level, temp, level_xp_list[i]);
-	}
-
-	ini_closeFile(file_base_level);
-	return 1;
-}
-
-stock GetXPToLevel(playerid, level)
-{
-	if (level <= MAX_LEVEL && level > GetPlayerLevel(playerid)) {
-		new xp_result = 0;
-		for (new i = GetPlayerLevel(playerid) + 1; i <= level; i++) {
-			xp_result += level_xp_list[i];
-		}
-		return xp_result;
-	}
-	return 0;
-}
-
-stock GetPlayerXPToLevel(playerid, level)
-{
-	return GetXPToLevel(playerid, level) - GetPlayerXP(playerid);
-}
-
-stock GetMaxPlayerXP(playerid)
-{
-	new xp_result = GetPlayerXP(playerid);
-	for (new i = GetPlayerLevel(playerid) + 1; i <= MAX_LEVEL; i++) {
-		xp_result += level_xp_list[i];
-	}
-	return xp_result;
-}
-
-stock GetMinPlayerXP(playerid)
-{
-	new xp_result = GetPlayerXP(playerid);
-	for (new i = PLAYER_START_LEVEL + 1; i <= GetPlayerLevel(playerid); i++) {
-		xp_result += level_xp_list[i];
-	}
-	return -xp_result;
 }
 
 stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
@@ -117,15 +63,17 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 
 	new texttime = (xpamount > 5000) ? 2000 : 1000;
 
-	new minxp = GetMinPlayerXP(playerid);
-	if (GetPlayerXP(playerid) + xpamount < minxp) {
-		xpamount = minxp;
-	}
-
-	new maxxp = GetMaxPlayerXP(playerid);
-	if (GetPlayerXP(playerid) + xpamount >= maxxp) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[9][17]);
-		xpamount = maxxp - GetPlayerXP(playerid);
+	if (xpamount < 0) {
+		new minxp = GetPlayerXPToLevel(playerid, MIN_LEVEL);
+		if (xpamount < minxp) {
+			xpamount = minxp;
+		}
+	} else {
+		new maxxp = GetPlayerXPToLevel(playerid, GetMaxPlayerLevel());
+		if (xpamount >= maxxp) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[9][17]);
+			xpamount = maxxp;
+		}
 	}
 
 	if (xpamount == 0) {
@@ -133,6 +81,7 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 	}
 
 	new string[MAX_STRING];
+
 	if (xpamount > 0) {
 		if (showtd == 1) {
 			format(string, sizeof(string), lang_texts[9][18], xpamount);
@@ -160,56 +109,56 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 	return 1;
 }
 
-stock PlayerLevelDown(playerid, newlevel, oldlevel)
-{
-	SetPlayerLevel(playerid, newlevel);
-	PlayerPlaySoundOnPlayer(playerid, 1057);
-	
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[9][22], newlevel);
-	SendClientMessage(playerid, COLOUR_XP_BAD, string);
-	
-	Log_Game("player: %s(%d): decreased his level from %d to %d", ReturnPlayerName(playerid), playerid, oldlevel, newlevel);
-	return 1;
-}
-
-stock PlayerLevelUp(playerid, newlevel, oldlevel)
-{
-	SetPlayerLevel(playerid, newlevel);
-	SetPlayerMaxHealth(playerid);
-	PlayerPlaySoundOnPlayer(playerid, 1057);
-	
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[9][23], newlevel);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
-	
-	ShowWeaponsOnLevel(playerid, newlevel, oldlevel);
-	
-	Log_Game("player: %s(%d): increased his level from %d to %d", ReturnPlayerName(playerid), playerid, oldlevel, newlevel);
-	return 1;
-}
-
 stock UpdatePlayerLevelTextDraws(playerid)
 {
 	new level = GetPlayerLevel(playerid);
 
 	pl_textdraw_SetLevel(playerid, level);
 
-	if (level >= MAX_LEVEL) {
+	if (level >= GetMaxPlayerLevel()) {
 		pl_textdraw_SetXp(playerid, -1);
 	} else {
 		new Float:current_xp = GetPlayerXP(playerid);
-		new Float:max_current_xp = level_xp_list[level + 1];
+		new Float:max_current_xp = GetXPToLevel(level + 1);
 
 		pl_textdraw_SetXp(playerid, floatround(current_xp / max_current_xp * 100));
 	}
 }
 
-stock SetPlayerLevel(playerid, level)
+stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 {
+	new old_level = GetPlayerLevel(playerid);
+
+	if (old_level == level) {
+		return 0;
+	}
+
 	SetPVarInt(playerid, "Level", level);
 	SetPVarInt(playerid, "XP", 0);
 	SetPlayerScore(playerid, level);
+	
+	if (regenhp == 1 && old_level < level) {
+		SetPlayerMaxHealth(playerid);
+	}
+
+	if (notify == 1) {
+		new string[MAX_STRING];
+		
+		PlayerPlaySoundOnPlayer(playerid, 1057);
+
+		if (old_level < level) {
+			format(string, sizeof(string), lang_texts[9][23], level);
+			SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+			
+			ShowWeaponsOnLevel(playerid, level, old_level);
+		} else {
+			format(string, sizeof(string), lang_texts[9][22], level);
+			SendClientMessage(playerid, COLOUR_XP_BAD, string);
+		}
+	}
+	
+	Log_Debug("player: %s(%d): changed his level from %d to %d", ReturnPlayerName(playerid), playerid, old_level, level);
+	return 1;
 }
 
 stock GetPlayerLevel(playerid)
@@ -221,24 +170,25 @@ stock SetPlayerXP(playerid, amount)
 {
 	new level = GetPlayerLevel(playerid);
 	if (amount == 0) {
+		SetPVarInt(playerid, "XP", 0);
 		return;
 	}
 	
 	new xp_to_level = 0;
-	if (amount > 0 && level < MAX_LEVEL) {
-		xp_to_level = level_xp_list[level + 1];
+	if (amount > 0 && level < GetMaxPlayerLevel()) {
+		xp_to_level = GetXPToLevel(level + 1);
 	} else if (amount > 0) {
 		return;
 	}
 
 	if (amount == xp_to_level) {
-		PlayerLevelUp(playerid, level + 1, level);
+		SetPlayerLevel(playerid, level + 1);
 	} else if (amount > xp_to_level) {
-		PlayerLevelUp(playerid, level + 1, level);
-		SetPlayerXP(playerid, amount - level_xp_list[level + 1]);
+		SetPlayerLevel(playerid, level + 1);
+		SetPlayerXP(playerid, amount - GetXPToLevel(level + 1));
 	} else if (amount < 0) {
-		PlayerLevelDown(playerid, level - 1, level);
-		SetPlayerXP(playerid, level_xp_list[level] + amount);
+		SetPlayerLevel(playerid, level - 1);
+		SetPlayerXP(playerid, GetXPToLevel(level) + amount);
 	} else if (amount < xp_to_level) {
 		SetPVarInt(playerid, "XP", amount);
 	}
@@ -247,4 +197,49 @@ stock SetPlayerXP(playerid, amount)
 stock GetPlayerXP(playerid)
 {
 	return GetPVarInt(playerid, "XP");
+}
+
+stock GetXPToLevel(level)
+{
+	return (XP_RATE * (3 * level + 2) * (level - 1));
+}
+
+stock GetPlayerXPToLevel(playerid, level)
+{
+	new
+		player_level = GetPlayerLevel(playerid),
+		xp_to_level = -GetPlayerXP(playerid);
+
+	if (level == player_level) {
+		return xp_to_level;
+	}
+
+	if (level > player_level) {
+		for (new i = player_level + 1; i <= level; i++) {
+			xp_to_level += GetXPToLevel(i);
+		}
+	} else {
+		xp_to_level = -xp_to_level;
+
+		for (new i = level + 1; i <= player_level; i++) {
+			xp_to_level += GetXPToLevel(i);
+		}
+
+		xp_to_level = -xp_to_level;
+	}
+
+	return xp_to_level;
+}
+
+stock GetMaxPlayerLevel()
+{
+	return gMaxPlayerLevel;
+}
+
+stock IsValidPlayerLevel(level)
+{
+	if (IS_IN_RANGE(level, MIN_LEVEL, GetMaxPlayerLevel())) {
+		return 1;
+	}
+	return 0;
 }

@@ -216,6 +216,7 @@ public OnGameModeInit()
 	Premium_OnGameModeInit();
 	pl_weapon_OnGameModeInit();
 	pl_textdraw_OnGameModeInit();
+	pl_level_OnGameModeInit();
 	Pickup_OnGameModeInit();
 	widestrip_OnGameModeInit();
 	Beachside_OnGameModeInit();
