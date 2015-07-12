@@ -268,6 +268,15 @@ stock GetVehicleCoordsBeforePlayer(&Float:x, &Float:y, &Float:z, &Float:a, playe
 	}
 }
 
+stock FixAscii(text[])
+{
+	for (new i = 0; text[i] != '\0'; i++) {
+		if (text[i] < 0) {
+			text[i] += 256;
+		}
+	}  
+}
+
 /*
 
 	For UpdateVehicleDamageStatus
