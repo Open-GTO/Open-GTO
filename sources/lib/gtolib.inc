@@ -268,15 +268,6 @@ stock GetVehicleCoordsBeforePlayer(&Float:x, &Float:y, &Float:z, &Float:a, playe
 	}
 }
 
-stock FixAscii(text[])
-{
-	for (new i = 0; text[i] != '\0'; i++) {
-		if (text[i] < 0) {
-			text[i] += 256;
-		}
-	}  
-}
-
 /*
 
 	For UpdateVehicleDamageStatus
@@ -376,4 +367,11 @@ stock bernstein(string[])
 		hash = hash * 33 + j;
 	}
 	return hash;
+}
+
+stock FixAscii(text[])
+{
+	for (new i = 0; text[i] != '\0'; i++) {
+		text[i] &= 0xFF;
+	}
 }
