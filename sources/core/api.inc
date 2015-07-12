@@ -58,14 +58,14 @@ public api_GetModeInfo(type)
 {
 	switch (type) {
 		case MODE_INFO_NAME: {
-			setproperty(.value = bernstein("mode_name"), .string = MODE_NAME);
+			SetSVarString("mode_name", MODE_NAME);
 		}
 		case MODE_INFO_VERSION: {
-			setproperty(.name = "version_major", .value = VERSION_MAJOR);
-			setproperty(.name = "version_minor", .value = VERSION_MINOR);
-			setproperty(.name = "version_build", .value = VERSION_BUILD);
-			setproperty(.value = bernstein("version_extra"), .string = VERSION_EXTRA);
-			setproperty(.value = bernstein("version_name"), .string = VERSION_NAME);
+			SetSVarInt("version_major", VERSION_MAJOR);
+			SetSVarInt("version_minor", VERSION_MINOR);
+			SetSVarInt("version_build", VERSION_BUILD);
+			SetSVarString("version_extra", VERSION_EXTRA);
+			SetSVarString("version_name", VERSION_NAME);
 		}
 	}
 }

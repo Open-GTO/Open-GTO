@@ -356,19 +356,6 @@ stock StripNL(str[]) // by Y_Less
 	while (i-- && str[i] <= ' ') str[i] = '\0';
 }
 
-stock bernstein(string[])
-{
-	new
-		hash = -1,
-		i,
-		j;
-	while ((j = string[i++]))
-	{
-		hash = hash * 33 + j;
-	}
-	return hash;
-}
-
 stock FixAscii(text[])
 {
 	for (new i = 0; text[i] != '\0'; i++) {

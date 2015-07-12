@@ -20,19 +20,6 @@
 #define MODE_INFO_VERSION 1
 #define MODE_INFO_NAME    2
 
-stock bernstein(string[])
-{
-	new
-		hash = -1,
-		i,
-		j;
-	while ((j = string[i++]))
-	{
-		hash = hash * 33 + j;
-	}
-	return hash;
-}
-
 // END: gto lib
 
 stock gto_GivePlayerMoney(playerid, amount, showtext=0)
@@ -92,20 +79,15 @@ stock GetModeInfo(type = MODE_INFO_VERSION, &major = 0, &minor = 0, &build = 0, 
 	CallRemoteFunction("api_GetModeInfo", "d", type);
 
 	switch (type) {
-		case MODE_INFO_VERSION: {
-			major = getproperty(.name = "version_major");
-			minor = getproperty(.name = "version_minor");
-			build = getproperty(.name = "version_build");
-
-			getproperty(.value = bernstein("version_extra"), .string = extra);
-			strunpack(extra, extra, MAX_NAME);
-
-			getproperty(.value = bernstein("version_name"), .string = name);
-			strunpack(name, name, MAX_NAME);
-		}
 		case MODE_INFO_NAME: {
-			getproperty(.value = bernstein("mode_name"), .string = mode_name);
-			strunpack(mode_name, mode_name, MAX_NAME);
+			GetSVarString("mode_name", mode_name, MAX_NAME);
+		}
+		case MODE_INFO_VERSION: {
+			major = GetSVarInt("version_major");
+			minor = GetSVarInt("version_minor");
+			build = GetSVarInt("version_build");
+			GetSVarString("version_extra", extra, MAX_NAME);
+			GetSVarString("version_name", name, MAX_NAME);
 		}
 	}
 }
