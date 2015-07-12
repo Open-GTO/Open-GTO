@@ -155,9 +155,9 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 			format(string, sizeof(string), lang_texts[9][22], level);
 			SendClientMessage(playerid, COLOUR_XP_BAD, string);
 		}
+
+		Log_Game("player: %s(%d): changed his level from %d to %d", ReturnPlayerName(playerid), playerid, old_level, level);
 	}
-	
-	Log_Debug("player: %s(%d): changed his level from %d to %d", ReturnPlayerName(playerid), playerid, old_level, level);
 	return 1;
 }
 
