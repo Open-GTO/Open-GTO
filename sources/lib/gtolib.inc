@@ -271,7 +271,9 @@ stock GetVehicleCoordsBeforePlayer(&Float:x, &Float:y, &Float:z, &Float:a, playe
 
 stock GenerateRandomString(result_str[], length, size = sizeof(result_str), alphabet[] = DEFAULT_ALPHABET, alphabet_size = sizeof(alphabet))
 {
-	if (length < size) {
+	result_str[0] = '\0';
+
+	if (length > size) {
 		length = size - 1;
 	}
 	
