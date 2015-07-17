@@ -1,4 +1,4 @@
-.inc linguist-language=Pawn
+.inc linguist-language=PAWN
 
 sources/* linguist-vendored
 scriptfiles/* linguist-vendored
