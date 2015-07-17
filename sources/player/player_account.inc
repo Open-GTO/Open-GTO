@@ -54,6 +54,9 @@ stock account_SaveEx(playerid)
 	GetPVarString(playerid, "Password", temp, sizeof(temp));
 	ini_setString(file_account, "Password", temp);
 
+	GetPVarString(playerid, "Password_Salt", temp, sizeof(temp));
+	ini_setString(file_account, "Password_Salt", temp);
+
 	ini_setInteger(file_account, "Creation_Date", account_GetRegisterTime(playerid));
 	ini_setInteger(file_account, "Last_Login", GetPVarInt(playerid, "Last_Login"));
 	ini_setInteger(file_account, "Played_Time", account_GetPlayedTime(playerid));
@@ -70,8 +73,14 @@ stock account_Register(playerid, password[])
 {
 	// set default data
 #if defined PASSWORD_ENCRYPT_ENABLED
-	new hash[PASSWORD_HASH_LENGTH + 1];
-	SHA256_PassHash(password, PASSWORD_SALT, hash, PASSWORD_HASH_LENGTH);
+	new
+		hash[PASSWORD_HASH_LENGTH + 1],
+		salt[PASSWORD_SALT_LENGTH + 1];
+
+	GenerateRandomString(salt, PASSWORD_SALT_LENGTH);
+	SetPVarString(playerid, "Password_Salt", salt);
+
+	SHA256_PassHash(password, salt, hash, PASSWORD_HASH_LENGTH);
 	SetPVarString(playerid, "Password", hash);
 #else
 	SetPVarString(playerid, "Password", password);
@@ -109,7 +118,11 @@ stock account_Login(playerid, password[])
 	ini_getString(file_account, "Password", dbpassword);
 
 #if defined PASSWORD_ENCRYPT_ENABLED
-	SHA256_PassHash(password, PASSWORD_SALT, password, PASSWORD_HASH_LENGTH);
+	new salt[PASSWORD_SALT_LENGTH + 1];
+	ini_getString(file_account, "Password_Salt", salt);
+	SetPVarString(playerid, "Password_Salt", salt);
+
+	SHA256_PassHash(password, salt, password, PASSWORD_HASH_LENGTH);
 #endif
 
 	if (strcmp(password, dbpassword, false)) {
