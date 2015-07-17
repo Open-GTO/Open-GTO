@@ -646,7 +646,7 @@ stock CheckBusinessOwners()
 		}
 		
 		file_account = ini_openFile(filename_account);
-		ini_getInteger(file_account, "Last_Login", timestamp);
+		ini_getInteger(file_account, "Login_Date", timestamp);
 		ini_getString(file_account, "Premium_Date", premium_date);
 		ini_closeFile(file_account);
 		

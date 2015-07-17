@@ -58,7 +58,7 @@ stock account_SaveEx(playerid)
 	ini_setString(file_account, "Password_Salt", temp);
 
 	ini_setInteger(file_account, "Creation_Date", account_GetRegisterTime(playerid));
-	ini_setInteger(file_account, "Last_Login", GetPVarInt(playerid, "Last_Login"));
+	ini_setInteger(file_account, "Login_Date", account_GetLoginTime(playerid));
 	ini_setInteger(file_account, "Played_Time", account_GetPlayedTime(playerid));
 
 	GetPVarString(playerid, "IP", temp, sizeof(temp));
@@ -87,6 +87,8 @@ stock account_Register(playerid, password[])
 #endif
 
 	account_SetRegisterTime(playerid, gettime());
+	account_SetLoginTime(playerid, gettime());
+	account_SetPlayedTime(playerid, 0);
 	
 	// create account and player
 	account_SaveEx(playerid);
@@ -146,7 +148,7 @@ stock account_Login(playerid, password[])
 	ini_getInteger(file_account, "Creation_Date", timestamp);
 	account_SetRegisterTime(playerid, timestamp);
 
-	SetPVarInt(playerid, "Last_Login", gettime());
+	account_SetLoginTime(playerid, gettime());
 
 	ini_getInteger(file_account, "Played_Time", timestamp);
 	account_SetPlayedTime(playerid, timestamp);
@@ -257,6 +259,16 @@ stock account_GetRegisterTime(playerid)
 	return GetPVarInt(playerid, "Creation_Date");
 }
 
+stock account_SetLoginTime(playerid, tiemstamp)
+{
+	SetPVarInt(playerid, "Login_Date", tiemstamp);
+}
+
+stock account_GetLoginTime(playerid)
+{
+	return GetPVarInt(playerid, "Login_Date");
+}
+
 stock account_SetPlayedTime(playerid, timestamp)
 {
 	SetPVarInt(playerid, "Played_Time", timestamp);
@@ -264,7 +276,7 @@ stock account_SetPlayedTime(playerid, timestamp)
 
 stock account_GetPlayedTime(playerid)
 {
-	return GetPVarInt(playerid, "Played_Time") + gettime() - GetPVarInt(playerid, "Last_Login");
+	return GetPVarInt(playerid, "Played_Time") + gettime() - account_GetLoginTime(playerid);
 }
 
 stock account_GetPlayedTimeString(playerid)
