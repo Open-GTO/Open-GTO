@@ -243,7 +243,7 @@ DialogCreate:VehicleColor(playerid)
 	new string[MAX_NAME * COLOR_COUNT];
 
 	for (new i = 0; i < COLOR_COUNT; i++) {
-		format(string, sizeof(string), "%s{%s}%s\n", string, color_GetEmbeddingCode(i), color_GetName(i));
+		format(string, sizeof(string), "%s{%s}%s\n", string, Color_GetEmbeddingCode(i), Color_GetName(i));
 	}
 
 	Dialog_Open(playerid, Dialog:VehicleColor, DIALOG_STYLE_LIST, "Изменить цвет", string, "ОК", "Назад");
@@ -257,7 +257,7 @@ DialogResponse:VehicleColor(playerid, response, listitem, inputtext[])
 	}
 	
 	new vehicleid = GetPlayerVehicleID(playerid);
-	ChangePlayerVehicleColor(playerid, vehicleid, color_GetVehicleCode(listitem), color_GetVehicleCode(listitem));
+	ChangePlayerVehicleColor(playerid, vehicleid, Color_GetVehicleCode(listitem), Color_GetVehicleCode(listitem));
 	return 1;
 }
 

@@ -113,26 +113,26 @@ new colors_Array[][ColorInfo] = {
 
 #define COLOR_COUNT	sizeof(colors_Array)
 
-stock color_GetEmbeddingCode(id)
+stock Color_GetEmbeddingCode(id)
 {
 	new code[8];
 	format(code, sizeof(code), "%06x", colors_Array[id][color_code] >>> 8);
 	return code;
 }
 
-stock color_GetCode(id)
+stock Color_GetCode(id)
 {
 	return colors_Array[id][color_code];
 }
 
-stock color_GetName(id)
+stock Color_GetName(id)
 {
 	new name[MAX_NAME];
 	set(name, colors_Array[id][color_name]);
 	return name;
 }
 
-stock color_GetIdByName(name[])
+stock Color_GetIdByName(name[])
 {
 	for (new i = 0; i < COLOR_COUNT; i++) {
 		if (!strcmp(name, colors_Array[i][color_name], true)) {
@@ -142,7 +142,7 @@ stock color_GetIdByName(name[])
 	return -1;
 }
 
-stock color_GetCodeByName(name[])
+stock Color_GetCodeByName(name[])
 {
 	for (new i = 0; i < COLOR_COUNT; i++) {
 		if (!strcmp(name, colors_Array[i][color_name], true)) {
@@ -152,7 +152,7 @@ stock color_GetCodeByName(name[])
 	return -1;
 }
 
-stock color_GetVehicleCode(id)
+stock Color_GetVehicleCode(id)
 {
 	return colors_Array[id][color_vehicle];
 }

@@ -240,7 +240,7 @@ DialogCreate:GangCreate(playerid)
 			set(string, "Введите цвет банды:\n\t");
 
 			for (new i = 0; i < COLOR_COUNT; i++) {
-				format(string, sizeof(string), "%s  {%s}%s", string, color_GetEmbeddingCode(i), color_GetName(i));
+				format(string, sizeof(string), "%s  {%s}%s", string, Color_GetEmbeddingCode(i), Color_GetName(i));
 				
 				if ((i+1) % COLORS_IN_STRING == 0) {
 					strcat(string, "\n\t", sizeof(string));
@@ -329,7 +329,7 @@ DialogResponse:GangCreate(playerid, response, listitem, inputtext[])
 				return 1;
 			}
 
-			new colorid = color_GetIdByName(inputtext);
+			new colorid = Color_GetIdByName(inputtext);
 			if (colorid == -1) {
 				Dialog_MessageEx(playerid, Dialog:GangCreateReturn, lang_texts[6][9], lang_texts[6][10], "Назад", "Отмена");
 				return 1;
@@ -342,7 +342,7 @@ DialogResponse:GangCreate(playerid, response, listitem, inputtext[])
 				return 1;
 			}
 
-			new gangcolor = color_GetCode(colorid);
+			new gangcolor = Color_GetCode(colorid);
 
 			new gangname[MAX_NAME];
 			gangmenu_GetCreateName(playerid, gangname);
@@ -490,7 +490,7 @@ DialogCreate:GangColor(playerid)
 	new string[MAX_STRING + MAX_NAME * COLOR_COUNT] = "Введите название цвета, который вы хотите установить для банды. Доступные:\n\t";
 
 	for (new i = 0; i < COLOR_COUNT; i++) {
-		format(string, sizeof(string), "%s  {%s}%s", string, color_GetEmbeddingCode(i), color_GetName(i));
+		format(string, sizeof(string), "%s  {%s}%s", string, Color_GetEmbeddingCode(i), Color_GetName(i));
 		
 		if ((i+1) % 5 == 0) {
 			strcat(string, "\n\t", sizeof(string));
@@ -519,13 +519,13 @@ DialogResponse:GangColor(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new colorid = color_GetIdByName(inputtext);
+	new colorid = Color_GetIdByName(inputtext);
 	if (colorid == -1) {
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "Изменение цвета", "Неверный цвет.", "Назад", "Отмена");
 		return 1;
 	}
 
-	new gangcolor = color_GetCode(colorid);
+	new gangcolor = Color_GetCode(colorid);
 
    	SetGangColour(player_GetGangID(playerid), gangcolor);
    	GivePlayerMoney(playerid, -Gang_Colour_Cost, 1);
