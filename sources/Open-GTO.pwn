@@ -57,6 +57,7 @@ Thanks:
 #include "core/declension"
 #include "core/shootingrange"
 #include "core/spectate"
+#include "core/gpickup"
 #include "vehicle/vehicles"
 #include "vehicle/vehicle_fuel"
 #include "vehicle/vehicle_menu"
@@ -97,7 +98,6 @@ Thanks:
 #include "player/message/message_alert"
 #include "player/message/message_objective"
 #include "player/player"
-#include "custom/pickups"
 #include "custom/ls_beachside"
 #include "system/weapons"
 #include "core/zones"
@@ -217,7 +217,6 @@ public OnGameModeInit()
 	pl_weapon_OnGameModeInit();
 	pl_textdraw_OnGameModeInit();
 	pl_level_OnGameModeInit();
-	Pickup_OnGameModeInit();
 	widestrip_OnGameModeInit();
 	Beachside_OnGameModeInit();
 
@@ -279,6 +278,7 @@ public OnGameModeInit()
 
 	#tryinclude "custom/mapicon"
 	#tryinclude "custom/objects"
+	#tryinclude "custom/pickups"
 	Log_Game("SERVER: Custom mapicons, objects and pickups init");
 
 	Time_Sync();
@@ -354,7 +354,7 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 	if (Premium_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
 	}
-	if (Pickup_OnPlayerPickUpPickup(playerid, pickupid)) {
+	if (GPickup_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
 	}
 	if (Interior_OnPlayerPickUpPickup(playerid, pickupid)) {
