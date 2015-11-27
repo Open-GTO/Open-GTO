@@ -171,7 +171,7 @@ stock trucker_OnGameModeInit()
 	Mapicon_Create(-117.0570, -325.0306, 2.0109, 51, 0);
 	Mapicon_Create(512.6126, 792.6769, -20.8209, 51, 0);
 	
-	Log_Game(lang_texts[19][33]);
+	Log_Game(_(TRUCKER_INIT));
 	return 1;
 }
 
@@ -189,7 +189,7 @@ stock trucker_OnPlayerStateChange(playerid, newstate, oldstate)
 					RemovePlayerFromVehicle(playerid);
 
 					new string[MAX_STRING];
-					format(string, sizeof(string), lang_texts[19][42], player_trucker[playerid][pt_PauseTime] - gettime());
+					format(string, sizeof(string), _(TRUCKER_MISSION_WAIT), player_trucker[playerid][pt_PauseTime] - gettime());
 					SendClientMessage(playerid, COLOUR_RED, string);
 				} else {
 					Dialog_Show(playerid, Dialog:TruckerMenu);
@@ -234,7 +234,7 @@ stock trucker_Start(playerid)
 	
 	if (trailer_type == -1) {
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[19][37], TRUCKER_TIME_GET_TRAILER);
+		format(string, sizeof(string), _(TRUCKER_GET_TRAILER), TRUCKER_TIME_GET_TRAILER);
 		SendClientMessage(playerid, COLOUR_YELLOW, string);
 		Message_Alert(playerid, "SA Delivery", "Take the trailer.~n~You have only "#TRUCKER_TIME_GET_TRAILER" seconds.");
 
@@ -276,13 +276,13 @@ stock trucker_Start(playerid)
 	
 	switch (trailer_type) {
 		case TRAILER_TYPE_PRODUCT: {
-			set(type_name, lang_texts[19][34]);
+			set(type_name, _(TRUCKER_PRODUCTS));
 		}
 		case TRAILER_TYPE_PETROL: {
-			set(type_name, lang_texts[19][35]);
+			set(type_name, _(TRUCKER_FUEL));
 		}
 		case TRAILER_TYPE_CAREER: {
-			set(type_name, lang_texts[19][36]);
+			set(type_name, _(TRUCKER_COAL));
 		}
 	}
 
@@ -291,7 +291,7 @@ stock trucker_Start(playerid)
 
 	new string[MAX_STRING];
 
-	format(string, sizeof(string), lang_texts[19][38], type_name, zone, TRUCKER_MISSION_TIME / 60);
+	format(string, sizeof(string), _(TRUCKER_MISSION_STARTED), type_name, zone, TRUCKER_MISSION_TIME / 60);
 	SendClientMessage(playerid, COLOUR_YELLOW, string);
 
 	format(string, sizeof(string), "Mission started.~n~You have only %d minutes.", TRUCKER_MISSION_TIME / 60);
@@ -322,7 +322,7 @@ stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
 	if (IsPlayerInMission(playerid, mission_trucker) && IsVehicleIsRunner(vehicleid)) {
 		new trailerid = GetVehicleTrailer(vehicleid);
 		if (trailerid == 0) {
-			SendClientMessage(playerid, COLOUR_WHITE, lang_texts[19][39]);
+			SendClientMessage(playerid, COLOUR_WHITE, _(TRUCKER_TRAILER_MISSING));
 			return 1;
 		}
 		
@@ -334,7 +334,7 @@ stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
 			GetPlayerHealth(playerid, health);
 			SetPlayerHealth(playerid, health - 10);
 
-			SendClientMessage(playerid, COLOUR_WHITE, lang_texts[19][40]);
+			SendClientMessage(playerid, COLOUR_WHITE, _(TRUCKER_TRAILER_FAKE));
 			return 1;
 		}
 		
@@ -346,7 +346,7 @@ stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
 		if (player_trucker[playerid][pt_TryCount] > 0) {
 			new string[MAX_STRING];
 
-			format(string, sizeof(string), lang_texts[19][41], TRUCKER_MISSION_TIME / 60);
+			format(string, sizeof(string), _(TRUCKER_MISSION_COMPLETE), TRUCKER_MISSION_TIME / 60);
 			SendClientMessage(playerid, COLOUR_YELLOW, string);
 
 			format(string, sizeof(string), "Take the trailer.~n~You have only %d minutes.", TRUCKER_MISSION_TIME / 60);
@@ -361,13 +361,7 @@ stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
 
 DialogCreate:TruckerMenu(playerid)
 {
-	new string[MAX_STRING * 3];
-	
-	strcat(string, lang_texts[19][51], sizeof(string));
-	strcat(string, lang_texts[19][52], sizeof(string));
-	strcat(string, lang_texts[19][53], sizeof(string));
-
-	Dialog_Open(playerid, Dialog:TruckerMenu, DIALOG_STYLE_MSGBOX, lang_texts[19][45], string, lang_texts[19][49], lang_texts[19][50]);
+	Dialog_Open(playerid, Dialog:TruckerMenu, DIALOG_STYLE_MSGBOX, _(TRUCKER_DIALOG_HEADER), _m(TRUCKER_DIALOG_INFORMATION_TEXT), _(TRUCKER_DIALOG_ACCEPT), _(TRUCKER_DIALOG_DECLINE));
 }
 
 DialogResponse:TruckerMenu(playerid, response, listitem, inputtext[])
@@ -381,7 +375,7 @@ DialogResponse:TruckerMenu(playerid, response, listitem, inputtext[])
 		RemovePlayerFromVehicle(playerid);
 		
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[19][42], player_trucker[playerid][pt_PauseTime] - gettime());
+		format(string, sizeof(string), _(TRUCKER_MISSION_WAIT), player_trucker[playerid][pt_PauseTime] - gettime());
 		SendClientMessage(playerid, COLOUR_RED, string);
 	} else {
 		trucker_Start(playerid);
@@ -391,7 +385,7 @@ DialogResponse:TruckerMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:TruckerCancel(playerid)
 {
-	Dialog_Open(playerid, Dialog:TruckerCancel, DIALOG_STYLE_MSGBOX, lang_texts[19][45], lang_texts[19][46], lang_texts[19][47], lang_texts[19][48]);
+	Dialog_Open(playerid, Dialog:TruckerCancel, DIALOG_STYLE_MSGBOX, _(TRUCKER_DIALOG_HEADER), _(TRUCKER_MISSION_LEAVE), _(TRUCKER_DIALOG_YES), _(TRUCKER_DIALOG_NO));
 }
 
 DialogResponse:TruckerCancel(playerid, response, listitem, inputtext[])
@@ -441,7 +435,7 @@ stock trucker_OnPlayerDeath(playerid, killerid, reason)
 	}
 	trucker_Stop(playerid);
 	GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
-	SendClientMessage(playerid, COLOUR_RED, lang_texts[19][43]);
+	SendClientMessage(playerid, COLOUR_RED, _(TRUCKER_MISSION_FAILED));
 	return 1;
 }
 
@@ -454,10 +448,10 @@ stock trucker_OnVehicleDeath(vehicleid, killerid)
 		if (IsPlayerInMission(killerid, mission_trucker)) {
 			trucker_Stop(killerid);
 			GivePlayerMoney(killerid, -mission_CalculateMoney(killerid, mission_trucker), 1);
-			SendClientMessage(killerid, COLOUR_RED, lang_texts[19][44]);
+			SendClientMessage(killerid, COLOUR_RED, _(TRUCKER_MISSION_FAILED_DESTROY));
 		} else {
 			if (player_trucker[killerid][pt_TrailerCheck_Timer] != 0) {
-				SendClientMessage(killerid, COLOUR_RED, lang_texts[19][56]);
+				SendClientMessage(killerid, COLOUR_RED, _(TRUCKER_MISSION_FAILED_DECLINE));
 				Message_Alert(killerid, "SA Delivery", "Mission aborted");
 
 				KillTimer(player_trucker[killerid][pt_TrailerCheck_Timer]);
@@ -472,7 +466,7 @@ forward trucker_Trailer_Check(playerid, vehicleid);
 public trucker_Trailer_Check(playerid, vehicleid)
 {
 	if (GetPlayerVehicleID(playerid) == 0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[19][56]);
+		SendClientMessage(playerid, COLOUR_RED, _(TRUCKER_MISSION_FAILED_DECLINE));
 		Message_Alert(playerid, "SA Delivery", "Mission aborted");
 
 		KillTimer(player_trucker[playerid][pt_TrailerCheck_Timer]);
@@ -494,7 +488,7 @@ public trucker_Trailer_Check(playerid, vehicleid)
 		SetVehicleToRespawn(vehicleid);
 		player_trucker[playerid][pt_TrailerCheck_Time] = 0;
 		KillTimer(player_trucker[playerid][pt_TrailerCheck_Timer]);
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[19][55]);
+		SendClientMessage(playerid, COLOUR_RED, _(TRUCKER_MISSION_FAILED_TRAILER));
 		Message_Alert(playerid, "SA Delivery", "Mission aborted");
 		return 0;
 	}
@@ -515,7 +509,7 @@ public trucker_CancelMission(playerid)
 	if (IsPlayerInMission(playerid, mission_trucker)) {
 		trucker_Stop(playerid);
 		GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[19][54]);
+		SendClientMessage(playerid, COLOUR_RED, _(TRUCKER_MISSION_FAILED_DESCRIPTION));
 		
 		new vehicleid = GetPlayerVehicleID(playerid);
 		if (vehicleid != 0 && IsVehicleIsRunner(vehicleid)) {
@@ -553,7 +547,7 @@ stock trucker_Stop(playerid)
 		SetVehicleToRespawn(vehicleid);
 
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[19][42], player_trucker[playerid][pt_PauseTime] - gettime());
+		format(string, sizeof(string), _(TRUCKER_MISSION_WAIT), player_trucker[playerid][pt_PauseTime] - gettime());
 		SendClientMessage(playerid, COLOUR_RED, string);
 	}
 }

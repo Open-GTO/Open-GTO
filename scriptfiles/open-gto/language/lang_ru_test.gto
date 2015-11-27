@@ -223,3 +223,77 @@ FIGHT_TEACHER_PLAYER_BUTTON2 = Выход
 FIGHT_TEACHER_DIALOG_TEACHER_CAPTION = Тренер - "%s"
 FIGHT_TEACHER_DIALOG_TEACHER_BUTTON1 = Выучить
 FIGHT_TEACHER_DIALOG_TEACHER_BUTTON2 = Отмена
+
+// Vehicle Fuel
+VEHICLE_FUEL_INIT = Vehicle Fuel System v2.7 initialized.
+VEHICLE_FUEL_EMPTY = В транспортном средстве нет топлива. Заправьте его и заведите (/engine или NUM8).
+VEHICLE_FUEL_NOT_IN_VEHICLE = {FF2211}[Ошибка]: {FFFFFF}Вы не в транспортном средстве!
+VEHICLE_FUEL_NOT_ON_FUEL_ST = {FF2211}[Ошибка]: {FFFFFF}Вы не на заправке!
+VEHICLE_FUEL_IS_FUELING_ERROR = {FF2211}[Ошибка]: {FFFFFF}Вы уже заправляете автомобиль!
+VEHICLE_FUEL_WITHOUT_FUEL_ENGINE = {FF2211}[Ошибка]: {FFFFFF}Это транспортное средство не использует бензин.
+VEHICLE_FUEL_FUEL_IS_FULL = {FF2211}[Ошибка]: {FFFFFF}Ваш бензобак уже полон.
+VEHICLE_FUEL_AFTER_FUEL = {33CC33}[Заправка]: {FFFFFF}Ваш транспорт был заправлен за $%d.
+VEHICLE_FUEL_TD_OPENED = ~G~Opened
+VEHICLE_FUEL_TD_CLOSED = ~R~Closed
+VEHICLE_FUEL_TD_STRING = %d KM/H~n~%0.1f L.
+VEHICLE_FUEL_DIALOG_HEADER = Заправка
+VEHICLE_FUEL_IS_FUELING = {33CC33}[Заправка]: {FFFFFF}Ваше транспортное средство заправляется, ждите.
+
+// Trucker
+TRUCKER_INIT = SERVER: (missions)Trucker module init
+TRUCKER_PRODUCTS = продукты
+TRUCKER_FUEL = топливо
+TRUCKER_COAL = уголь
+TRUCKER_GET_TRAILER = {33CC33}[Диспетчер]: {FFFFFF}Возьми прицеп рядом, у тебя есть %d секунд
+TRUCKER_MISSION_STARTED = {33CC33}[Диспетчер]: {FFFFFF}Договор заключен. Доставь %s в %s, координаты отправлены в твой GPS. У тебя есть %d мин.
+TRUCKER_TRAILER_MISSING = {33CC33}[Диспетчер]: {FFFFFF}Груз где?
+TRUCKER_TRAILER_FAKE = {33CC33}[Диспетчер]: {FFFFFF}Ты привёз пустой прицеп! Получай неустойку и пинок под зад!
+TRUCKER_MISSION_COMPLETE = {33CC33}[Диспетчер]: {FFFFFF}Благодарим за доставку! Вот твоя награда, теперь едь на базу. У тебя есть %d мин.
+TRUCKER_MISSION_WAIT = {33CC33}[Диспетчер]: {FFFFFF}Пока никому ничего не нужно, приходите через %d секунд
+TRUCKER_MISSION_FAILED = {33CC33}[Диспетчер]: {FFFFFF}Ты провалил задание доставки груза, и по договору потерял бабки.
+TRUCKER_MISSION_FAILED_DESTROY = {33CC33}[Диспетчер]: {FFFFFF}Твоя машина уничтожена. Ты заплатишь за это!
+TRUCKER_DIALOG_HEADER = Компания доставки грузов
+TRUCKER_MISSION_LEAVE = Вы действительно хотите уйти с работы? В таком случае вам придётся заплатить неустойку!
+TRUCKER_DIALOG_YES = Да
+TRUCKER_DIALOG_NO = Нет
+TRUCKER_DIALOG_ACCEPT = Принять
+TRUCKER_DIALOG_DECLINE = Отклонить
+TRUCKER_DIALOG_INFORMATION_TEXT_0 = Вы сели в тягач компании по доставке грузов. К счастью, этой компании требуются наёмные работники для перевозки товаров\n
+TRUCKER_DIALOG_INFORMATION_TEXT_1 = Солидная зарплата, премии, полный соц. пакет. Согласны-ли вы поработать на компанию?\n
+TRUCKER_DIALOG_INFORMATION_TEXT_2 = Условия договора: при утере груза вы оплачиваете всю его стоимость.
+TRUCKER_MISSION_FAILED_DESCRIPTION = {33CC33}[Диспетчер]: {FFFFFF}Ты провалил задание доставки груза. Заказчик остался не доволен.
+TRUCKER_MISSION_FAILED_TRAILER = {33CC33}[Диспетчер]: {FFFFFF}Ты не успел взять прицеп.
+TRUCKER_MISSION_FAILED_DECLINE = {33CC33}[Диспетчер]: {FFFFFF}Ты отказался от задания.
+
+// Swagup
+SWAGUP_BAG_FOUND = Игрок %s(%d) нашёл спрятанный пакет! Он получил $%d и %d xp
+SWAGUP_BAG_CREATED = Внимание! В штате пропал секретный пакет, нашедшего ждёт щедрое вознаграждение!
+
+// Premium
+PREMIUM_NEED_STATUS = Чтобы открыть ворота, вам нужен премиум статус!
+PREMIUM_GATES_IS_OPENING = открываю ворота!
+
+// Weapon
+WEAPON_INIT = SERVER: Weapon shop module init
+WEAPON_BAD_AMMO_COUNT = {CCCCCC}Неверное количество патронов.
+WEAPON_NOT_IN_SHOP = {CCCCCC}Вы должны быть в магазине оружия, чтобы иметь возможность покупать оружие.
+WEAPON_BAD_WEAPON = {CCCCCC}Вы не можете купить это оружие: '{EEEEEE}%s{CCCCCC}'. Оружие запрещено или ваш уровень слишком мал.
+WEAPON_NOT_ENOUGH_MONEY = {CCCCCC}Вам нужно {00AA00}$%d{CCCCCC} чтобы купить это.
+WEAPON_BUYED = {CCCCCC}Вы купили {BBBAE8}%d{CCCCCC} патронов для '{EEEEEE}%s{CCCCCC}' за {00AA00}$%d{CCCCCC}.
+WEAPON_BUYED_ONE = {CCCCCC}Вы купили '{EEEEEE}%s{CCCCCC}' за {00AA00}$%d{CCCCCC}.
+WEAPON_DIALOG_LIST_HEADER = Название[t]Цена\n
+WEAPON_DIALOG_LIST_ITEM = %s{EEEEEE}%s[t]{00AA00}$%d\n
+WEAPON_DIALOG_HEADER = Меню оружия
+WEAPON_DIALOG_BUTTON_0 = Выбрать
+WEAPON_DIALOG_BUTTON_1 = Выход
+WEAPON_DIALOG_WEAPON_ONE = {CCCCCC}Оружие: {EEEEEE}%s\n{CCCCCC}Цена: {00AA00}$%d
+WEAPON_DIALOG_WEAPON = {CCCCCC}Оружие: {EEEEEE}%s\n{CCCCCC}Цена за 1 патрон: {00AA00}$%d\n{CCCCCC}Вы можете купить {BBBAE8}%d{CCCCCC} %s
+WEAPON_DIALOG_WEAPON_BUY_HEADER = Покупка оружия
+WEAPON_DIALOG_WEAPON_BUY_BUTTON_0 = Купить
+WEAPON_DIALOG_WEAPON_BUY_BUTTON_1 = Назад
+WEAPON_MAX_AMMO_COUNT = {CCCCCC}У вас уже максимальное количество патронов.
+WEAPON_DIALOG_INFORMATION_TEXT_ENTER_AMMO = \n\n{CCCCCC}Введите количество патронов:
+
+// Weapon drop
+WEAPON_DROP_ERROR_SLOT_NOT_FOUND = ERROR: Drop Weapon: Не найден свободный слот в массиве
+WEAPON_DROP_ERROR_LIMIT_IS_REACHED = ERROR: Drop Weapon: Превышен лимит пикапов

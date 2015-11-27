@@ -32,34 +32,34 @@ stock vh_menu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	// заправить
 	if (PRESSED(KEY_ANALOG_DOWN)) {
 		if (vehicleid == 0) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[19][21]);
+			SendClientMessage(playerid, COLOUR_RED, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
 			return 1;
 		}
 		
 		if (!IsPlayerAtFuelStation(playerid)) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[19][22]);
+			SendClientMessage(playerid, COLOUR_RED, _(VEHICLE_FUEL_NOT_ON_FUEL_ST));
 			return 1;
 		}
 		
 		if (GetPVarInt(playerid, "Refueling")) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[19][23]);
+			SendClientMessage(playerid, COLOUR_RED, _(VEHICLE_FUEL_IS_FUELING_ERROR));
 			return 1;
 		}
 		
 		new vehiclemodel = GetVehicleModel(vehicleid);
 		switch (vehiclemodel) {
 			case 481, 509, 510: {
-				SendClientMessage(playerid, COLOUR_RED, lang_texts[19][24]);
+				SendClientMessage(playerid, COLOUR_RED, _(VEHICLE_FUEL_WITHOUT_FUEL_ENGINE));
 				return 1;
 			}
 		}
 		
 		if (Fuel[vehicleid] >= GetMaxVehicleFuel(vehiclemodel)) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[19][25]);
+			SendClientMessage(playerid, COLOUR_RED, _(VEHICLE_FUEL_FUEL_IS_FULL));
 			return 1;
 		}
 		
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][32]);
+		SendClientMessage(playerid, COLOUR_YELLOW, _(VEHICLE_FUEL_IS_FUELING));
 		fill_Vehicle(vehicleid, playerid);
 		return 1;
 	}
@@ -157,34 +157,34 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 		// заправить
 		case 1: {
 			if (vehicleid == 0) {
-				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, lang_texts[19][31], lang_texts[19][21], "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_NOT_IN_VEHICLE), "Назад", "Отмена");
 				return 1;
 			}
 			
 			if (!IsPlayerAtFuelStation(playerid)) {
-				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, lang_texts[19][31], lang_texts[19][22], "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_NOT_ON_FUEL_ST), "Назад", "Отмена");
 				return 1;
 			}
 			
 			if (GetPVarInt(playerid, "Refueling")) {
-				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, lang_texts[19][31], lang_texts[19][23], "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_IS_FUELING_ERROR), "Назад", "Отмена");
 				return 1;
 			}
 			
 			new vehiclemodel = GetVehicleModel(vehicleid);
 			switch (vehiclemodel) {
 				case 481, 509, 510: {
-					Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, lang_texts[19][31], lang_texts[19][24], "Назад", "Отмена");
+					Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_WITHOUT_FUEL_ENGINE), "Назад", "Отмена");
 					return 1;
 				}
 			}
 			
 			if (Fuel[vehicleid] >= GetMaxVehicleFuel(vehiclemodel)) {
-				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, lang_texts[19][31], lang_texts[19][25], "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_FUEL_IS_FULL), "Назад", "Отмена");
 				return 1;
 			}
 			
-			SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[19][32]);
+			SendClientMessage(playerid, COLOUR_YELLOW, _(VEHICLE_FUEL_IS_FUELING));
 			fill_Vehicle(vehicleid, playerid);
 			return 1;
 		}

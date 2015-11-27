@@ -43,14 +43,14 @@ stock Premium_OnPlayerPickUpPickup(playerid, pickupid)
 	}
 
 	if (Premium_GetPlayerStatus(playerid) == 0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[19][66]);
+		SendClientMessage(playerid, COLOUR_RED, _(PREMIUM_NEED_STATUS));
 		return 1;
 	}
 	
 	gate_IsOpening = true;
 	MoveObject(gate_ObjectID, 227.178, 2001.188, 10.742, 1.00);
 	
-	SendClientMessageToBeside(playerid, 20, lang_texts[19][67]);
+	SendClientMessageToBeside(playerid, 20, _(PREMIUM_GATES_IS_OPENING));
 	SetTimer("Premium_CloseGate", 60000, 0);
 	return 1;
 }
