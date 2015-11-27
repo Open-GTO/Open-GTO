@@ -1161,7 +1161,7 @@ stock StartRaceLineup(raceid)
 stock GetRaceCPZoneName(raceid, cpid)
 {
 	new zone[MAX_NAME];
-	zone = GetXYZZoneName(GetRaceCPX(raceid, cpid), GetRaceCPY(raceid, cpid), GetRaceCPZ(raceid, cpid));
+	zone = Zone_GetNameByCoords(GetRaceCPX(raceid, cpid), GetRaceCPY(raceid, cpid), GetRaceCPZ(raceid, cpid));
 	return zone;
 }
 

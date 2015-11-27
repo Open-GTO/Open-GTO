@@ -272,7 +272,7 @@ stock trucker_Start(playerid)
 		zone[MAX_NAME],
 		type_name[MAX_STRING];
 
-	set(zone, GetXYZZoneName(destination_array[dest_id][dest_x], destination_array[dest_id][dest_y], destination_array[dest_id][dest_z]));
+	set(zone, Zone_GetNameByCoords(destination_array[dest_id][dest_x], destination_array[dest_id][dest_y], destination_array[dest_id][dest_z]));
 	
 	switch (trailer_type) {
 		case TRAILER_TYPE_PRODUCT: {

@@ -393,8 +393,7 @@ new zones[][zoneinfo] = {
 { "Whetstone",                   -2997.40, -2892.90,  -242.90, -1213.90, -1115.50,   900.00}
 };
 
-
-stock GetXYZZoneName(Float:x, Float:y, Float:z) // will return first zone name that XYZ is found in
+stock Zone_GetNameByCoords(Float:x, Float:y, Float:z) // will return first zone name that XYZ is found in
 {
 	new name[MAX_NAME] = "Unknown";
 	if (x == 0.0 && y == 0.0)
@@ -403,7 +402,7 @@ stock GetXYZZoneName(Float:x, Float:y, Float:z) // will return first zone name t
 	}
 	for (new zoneid = 0; zoneid < sizeof(zones); zoneid++)
 	{
-		if (IsXYZInZone(x, y, z, zoneid))// we are in this zone
+		if (Zone_IsCoordsInZone(x, y, z, zoneid))// we are in this zone
 		{
 			set(name, zones[zoneid][zone_name]);
 			return name;
@@ -412,11 +411,11 @@ stock GetXYZZoneName(Float:x, Float:y, Float:z) // will return first zone name t
 	return name;
 }
 
-stock GetXYZZoneID(Float:x, Float:y, Float:z)
+stock Zone_GetIdByCoords(Float:x, Float:y, Float:z)
 {
 	for (new zoneid = 0; zoneid < sizeof(zones); zoneid++)
 	{
-		if (IsXYZInZone(x, y, z, zoneid))
+		if (Zone_IsCoordsInZone(x, y, z, zoneid))
 		{
 			return zoneid;
 		}
@@ -424,7 +423,7 @@ stock GetXYZZoneID(Float:x, Float:y, Float:z)
 	return -1;
 }
 
-stock IsXYZInZone(Float:x, Float:y, Float:z, zoneid)
+stock Zone_IsCoordsInZone(Float:x, Float:y, Float:z, zoneid)
 {
 	if (zoneid == -1) return 0;
 	if (   x >= zones[zoneid][zone_minx] && x < zones[zoneid][zone_maxx]
@@ -437,7 +436,7 @@ stock IsXYZInZone(Float:x, Float:y, Float:z, zoneid)
 	return 0;
 }
 
-stock IsPlayerInZone(playerid, zoneid)
+stock Zone_IsPlayerInZone(playerid, zoneid)
 {
 	if (zoneid == -1)
 	{
@@ -445,10 +444,10 @@ stock IsPlayerInZone(playerid, zoneid)
 	}
 	new Float:x, Float:y, Float:z;
 	GetPlayerPos(playerid, x, y, z);
-	return IsXYZInZone(x, y, z, zoneid);
+	return Zone_IsCoordsInZone(x, y, z, zoneid);
 }
 
-stock IsPlayerInZoneName(playerid, zonename[])
+stock Zone_IsPlayerInZoneName(playerid, zonename[])
 {
 	new Float:x, Float:y, Float:z;
 	GetPlayerPos(playerid, x, y, z);
@@ -456,22 +455,8 @@ stock IsPlayerInZoneName(playerid, zonename[])
 	{
 		if (!strcmp(zonename, zones[zoneid][zone_name], false))
 		{
-			return IsPlayerInZone(playerid, zoneid);
+			return Zone_IsPlayerInZone(playerid, zoneid);
 		}
 	}
-	return 0;
-}
-
-stock IsPlayerInCasino(playerid)
-{
-	if (IsPlayerInZoneName(playerid, "Caligula's Palace") || 
-		IsPlayerInZoneName(playerid, "The Four Dragons Casino")
-	) return 1;
-	return 0;
-}
-
-stock IsPlayerInStore(playerid)
-{ // TODO
-	if (IsPlayerInZoneName(playerid, "24/7")) return 1;
 	return 0;
 }
