@@ -48,9 +48,6 @@ stock Dialog_Open(playerid, function[], style, caption[], info[], button1[], but
 
 stock Dialog_Show(playerid, function[])
 {
-	SetPVarInt(playerid, "Dialog_IsOpen", 1);
-	SetPVarString(playerid, "Dialog_Function", function);
-
 	new call_func[40];
 	strcat(call_func, "dcreate_");
 	strcat(call_func, function);
