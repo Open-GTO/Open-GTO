@@ -152,7 +152,7 @@ DialogCreate:ServiceWeaponBuy(playerid)
 			_(WEAPON_DIALOG_WEAPON),
 			ReturnWeaponName(weaponid), GetWeaponCost(weaponid), max_bullets, Declension_GetAmmo(max_bullets)
 		);
-		strcat(string, _(WEAPON_DIALOG_INFORMATION_TEXT_ENTER_AMMO));
+		strcat(string, _(WEAPON_DIALOG_INFORMATION_TEXT_AMMO));
 	}
 
 	Dialog_Open(playerid, Dialog:ServiceWeaponBuy, dialog_style, _(WEAPON_DIALOG_WEAPON_BUY_HEADER), string, _(WEAPON_DIALOG_WEAPON_BUY_BUTTON_0), _(WEAPON_DIALOG_WEAPON_BUY_BUTTON_1));

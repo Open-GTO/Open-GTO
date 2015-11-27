@@ -39,7 +39,7 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 			Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 				_(PLAYER_MENU_SETTINGS_SAVED_CAPTION),
 				_(PLAYER_MENU_SETTINGS_SAVED),
-				_(PLAYER_MENU_SETTINGS_SAVED_BUTTON_BACK), _(PLAYER_MENU_SETTINGS_SAVED_BUTTON_CANCEL)
+				_(PLAYER_MENU_SETTINGS_SAVED_BTN_BACK), _(PLAYER_MENU_SETTINGS_SAVED_BTN_CANCEL)
 			);
 			return 1;
 		}
@@ -66,7 +66,7 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 				Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 					_(PLAYER_MENU_SETTINGS_PASSWORD_CAPTION),
 					string,
-					_(PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_BACK), _(PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_CANCEL)
+					_(PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK), _(PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL)
 				);
 			} else {
 				Dialog_Show(playerid, Dialog:PlayerChangePassMenu);
@@ -134,7 +134,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	}
 	// проверим ник
 	if (!NameCharCheck(new_name)) {
-		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_ALLOWED_SYMBOLS), ALLOWED_NICK_SYMBOLS_STR);
+		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_ALLOWED_SYMB), ALLOWED_NICK_SYMBOLS_STR);
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 			_(PLAYER_MENU_SETTINGS_NAME_CAPTION),
 			string,
@@ -144,7 +144,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	}
 	// переименовываем
 	if (SetPlayerName(playerid, new_name) != 1) {
-		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_ALLOWED_SYMBOLS), ALLOWED_NICK_SYMBOLS_STR);
+		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_ALLOWED_SYMB), ALLOWED_NICK_SYMBOLS_STR);
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 			_(PLAYER_MENU_SETTINGS_NAME_CAPTION),
 			string,
@@ -193,7 +193,7 @@ DialogCreate:PlayerChangePassMenu(playerid)
 	Dialog_Open(playerid, Dialog:PlayerChangePassMenu, DIALOG_STYLE_INPUT,
 		_(PLAYER_MENU_SETTINGS_PASSWORD_CAPTION),
 		_(PLAYER_MENU_SETTINGS_PASSWORD_INFO),
-		_(PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_OK), _(PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_BACK)
+		_(PLAYER_MENU_SETTINGS_PASSWORD_BTN_OK), _(PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK)
 	);
 }
 
@@ -210,7 +210,7 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 			_(PLAYER_MENU_SETTINGS_PASSWORD_CAPTION),
 			string,
-			_(PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_BACK), _(PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_CANCEL)
+			_(PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK), _(PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL)
 		);
 		return 1;
 	}
@@ -226,7 +226,7 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 			_(PLAYER_MENU_SETTINGS_PASSWORD_CAPTION),
 			string,
-			_(PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_BACK), _(PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_CANCEL)
+			_(PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK), _(PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL)
 		);
 		return 1;
 	}
@@ -235,7 +235,7 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 	Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 		_(PLAYER_MENU_SETTINGS_PASSWORD_CAPTION),
 		string,
-		_(PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_BACK), _(PLAYER_MENU_SETTINGS_PASSWORD_BUTTON_CANCEL)
+		_(PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK), _(PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL)
 	);
 
 #if defined USE_PASSWORD_ENCRYPT
