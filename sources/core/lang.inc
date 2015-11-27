@@ -14,7 +14,7 @@
 #define MAX_LANG_STRING		MAX_STRING * 2
 
 new lang_use[10] = LANGUAGE_USE;
-new lang_texts[20][100][MAX_LANG_STRING + 10];
+new lang_texts[16][100][MAX_LANG_STRING + 10];
 
 stock lang_LoadConfig(file_config)
 {
