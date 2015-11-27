@@ -124,7 +124,7 @@ stock sshop_OnGameModeInit()
 	TextDrawTextSize(clickText[sshop_exit], 10.000000, 50.000000);
 	TextDrawSetSelectable(clickText[sshop_exit], 1);
 
-	Log_Game(lang_texts[17][22]);
+	Log_Game(_(SKINSHOP_INIT));
 	return 1;
 }
 
@@ -148,7 +148,7 @@ stock ss_OnPlayerEnterCheckpoint(playerid, cp)
 
 DialogCreate:ServiceSkin(playerid)
 {
-	Dialog_Open(playerid, Dialog:ServiceSkin, DIALOG_STYLE_MSGBOX, lang_texts[17][26], lang_texts[17][27], lang_texts[17][28], lang_texts[17][29]);
+	Dialog_Open(playerid, Dialog:ServiceSkin, DIALOG_STYLE_MSGBOX, _(SKINSHOP_DIALOG_HEADER), _(SKINSHOP_DIALOG_INFO_BUY), _(SKINSHOP_DIALOG_BUTTON_0), _(SKINSHOP_DIALOG_BUTTON_1));
 }
 
 DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])
@@ -164,7 +164,7 @@ DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])
 	
 	SkinShop_DeletePVars(playerid);
 
-	SendClientMessage(playerid, 0, lang_texts[17][25]);
+	SendClientMessage(playerid, 0, _(SKINSHOP_DIALOG_INFO_THANKS));
 	return 1;
 }
 
@@ -180,7 +180,7 @@ stock sshop_OnPlayerClickTextDraw(playerid, Text:clickedid)
 	} else if (clickedid == clickText[sshop_buy]) {
 		if (GetPlayerMoney(playerid) < SKINS_COST) {
 			new string[MAX_STRING];
-			format(string, sizeof(string), lang_texts[17][23], SKINS_COST);
+			format(string, sizeof(string), _(SKINSHOP_NOT_ENOUGH_MONEY), SKINS_COST);
 			SendClientMessage(playerid, 0, string);
 			return 1;
 		}

@@ -197,6 +197,17 @@ PROTECTION_WEAPON_NOP_ARMED = использование NOP SetPlayerArmedWeapon (%d, %d)
 PROTECTION_SPECIAL_ACTION = взлом special action (%d != %d)
 PROTECTION_VEHICLE_TELEPORT = телепортация транспорта (%0.4f > %0.4f)
 PROTECTION_WEAPON_FLOOD = флуд убийствами (%d, %d)
+PROTECTION_ANTIIDLE_INFO = Вы стоите на месте уже %d минут.
+PROTECTION_ANTIIDLE_LAST_WARN = Если вы не начнёте двигаться в течении 1 минуты вы будете кикнуты.
+PROTECTION_ANTIIDLE_KICK_REASON = Долгий простой на месте
+PROTECTION_ANTIHIGHTPING_KICK_REASON = Пинг больше %d
+PROTECTION_CHAT_NICK_WITH_IP_OR_DOMAIN = В твоём нике засекли IP или запрещенный домен. Чат закрыт.
+PROTECTION_CHAT_COMMAND_DETECTED = Попытка ввода команды? Повнимательней.
+PROTECTION_CHAT_CAPSLOCK_ON = Отключи CAPS LOCK, горе луковое.
+PROTECTION_CHAT_IP_IS_FORBIDDEN = IP адреса писать нельзя.
+PROTECTION_CHAT_DOMAIN_IS_FORBIDDEN = Кое-какие домены и сайты писать нельзя.
+PROTECTION_CHAT_STOP_FLOOD = Не флудить!
+PROTECTION_CHAT_SIMILAR_MESSAGE = Похожие сообщения писать нельзя. Задумайся.
 
 // fight styles
 FIGHT_TEACHER_INIT = SERVER: Fightstyles module init
@@ -272,6 +283,7 @@ SWAGUP_BAG_CREATED = Внимание! В штате пропал секретный пакет, нашедшего ждёт ще
 // Premium
 PREMIUM_NEED_STATUS = Чтобы открыть ворота, вам нужен премиум статус!
 PREMIUM_GATES_IS_OPENING = открываю ворота!
+PREMIUM_VEHICLE_ERROR = Этот транспорт доступен только премиум игрокам!
 
 // Weapon
 WEAPON_INIT = SERVER: Weapon shop module init
@@ -281,8 +293,8 @@ WEAPON_BAD_WEAPON = {CCCCCC}Вы не можете купить это оружие: '{EEEEEE}%s{CCCCCC}'
 WEAPON_NOT_ENOUGH_MONEY = {CCCCCC}Вам нужно {00AA00}$%d{CCCCCC} чтобы купить это.
 WEAPON_BUYED = {CCCCCC}Вы купили {BBBAE8}%d{CCCCCC} патронов для '{EEEEEE}%s{CCCCCC}' за {00AA00}$%d{CCCCCC}.
 WEAPON_BUYED_ONE = {CCCCCC}Вы купили '{EEEEEE}%s{CCCCCC}' за {00AA00}$%d{CCCCCC}.
-WEAPON_DIALOG_LIST_HEADER = Название[t]Цена\n
-WEAPON_DIALOG_LIST_ITEM = %s{EEEEEE}%s[t]{00AA00}$%d\n
+WEAPON_DIALOG_LIST_HEADER = Название\tЦена\n
+WEAPON_DIALOG_LIST_ITEM = %s{EEEEEE}%s\t{00AA00}$%d\n
 WEAPON_DIALOG_HEADER = Меню оружия
 WEAPON_DIALOG_BUTTON_0 = Выбрать
 WEAPON_DIALOG_BUTTON_1 = Выход
@@ -297,3 +309,49 @@ WEAPON_DIALOG_INFORMATION_TEXT_ENTER_AMMO = \n\n{CCCCCC}Введите количество патро
 // Weapon drop
 WEAPON_DROP_ERROR_SLOT_NOT_FOUND = ERROR: Drop Weapon: Не найден свободный слот в массиве
 WEAPON_DROP_ERROR_LIMIT_IS_REACHED = ERROR: Drop Weapon: Превышен лимит пикапов
+
+// Fastfood
+FASTFOOD_INIT = SERVER: (services)Fastfood module init
+FASTFOOD_DIALOG_LIST_HEADER = Название\tЦена\tНасыщение\n
+FASTFOOD_DIALOG_LIST_ITEM = %s{EEEEEE}%s\t{00AA00}$%d\t{E6ACDD}%0.0f\n
+FASTFOOD_DIALOG_HEADER = Меню покупки еды
+FASTFOOD_DIALOG_BUTTON_0 = Съесть
+FASTFOOD_DIALOG_BUTTON_1 = Отмена
+FASTFOOD_DIALOG_BUY_HEADER = Покупка еды
+FASTFOOD_NOT_ENOUGH_MONEY = Вам не хватает денег!
+FASTFOOD_DIALOG_BUTTON_OK = ОК
+FASTFOOD_DIALOG_INFORMATION_TEXT = {CCCCCC}Вы съели {EEEEEE}%s{CCCCCC}, за {00AA00}$%d{CCCCCC} и насытились на {E6ACDD}%0.0f
+
+// Bar
+BAR_INIT = SERVER: (services)Bar module init
+BAR_DIALOG_LIST_HEADER = Название\tЦена\tДурман\tНасыщение\n
+BAR_DIALOG_LIST_ITEM = %s{EEEEEE}%s\t{00AA00}$%d\t{BBBAE8}%0.1f%%\t{E6ACDD}%0.0f\n
+BAR_DIALOG_HEADER = Бар
+BAR_DIALOG_BUTTON_0 = Взять
+BAR_DIALOG_BUTTON_1 = Отмена
+BAR_NOT_ENOUGH_MONEY = {CCCCCC}Вам не хватает денег!
+BAR_DIALOG_BUTTON_OK = ОК
+BAR_DIALOG_INFORMATION_TEXT = {CCCCCC}Вы купили {EEEEEE}%s{CCCCCC}, за {00AA00}$%d{CCCCCC}, крепкостью {BBBAE8}%0.1f%%{CCCCCC} и сытостью {E6ACDD}%0.0f
+
+// Skin Shop
+SKINSHOP_INIT = SERVER: (services)SkinShop module init
+SKINSHOP_NOT_ENOUGH_MONEY = {CCCCCC}Вам не хватает денег на покупку! Нужно {00AA00}$%d
+SKINSHOP_DIALOG_INFO_THANKS = {CCCCCC}Благодарим за покупку одежды, возвращайтесь к нам ещё.
+SKINSHOP_DIALOG_HEADER = Покупка одежды
+SKINSHOP_DIALOG_INFO_BUY = {CCCCCC}Купить эту одежду?
+SKINSHOP_DIALOG_BUTTON_0 = Да
+SKINSHOP_DIALOG_BUTTON_1 = Нет
+
+// Lottery
+LOTTERY_NOT_STARTED = Лотерея ещё не началась!
+LOTTERY_USE_COMMAND = Применение: /lottery <число 1..100>
+LOTTERY_TICKET_BOUGHT_NOW = Лотерея: Вы уже купили билет!
+LOTTERY_TICKET_IS_BOUGHT = Лотерея: Этот билет уже куплен!
+LOTTERY_TICKET_BOUGHT = Удачи, у вас билет с номером %d
+LOTTERY_TIME_TO_END = Лотерея: До окончания розыгрыша осталось %d секунд!
+LOTTERY_YOU_WINNER = Вы победили в лотерее! Ваш приз $%d
+LOTTERY_WINNER = Победителем в лотерее стал %s(%d), он выиграл $%d
+LOTTERY_NO_WINNER = В лотерее никто не победил, выигрышный билет - %d.
+LOTTERY_START_MESSAGE_0 = Лотерея: Начало розыгрыша призов, победитель получает $%d!
+LOTTERY_START_MESSAGE_1 = Лотерея: Введите /lottery <число 1..100>, для покупки билета. Цена билета $%d
+LOTTERY_START_MESSAGE_2 = Лотерея: До окончания розыгрыша осталось %d минут!

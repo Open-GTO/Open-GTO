@@ -55,7 +55,7 @@ stock fastfood_OnGameModeInit()
 		fastfood_place[id][ff_checkpoint_id] = Checkpoint_Create(fastfood_place[id][ff_x], fastfood_place[id][ff_y], fastfood_place[id][ff_z], 1.5, .streamdistance = 20.0);
 	}
 
-	Log_Game(lang_texts[17][0]);
+	Log_Game(_(FASTFOOD_INIT));
 	return 1;
 }
 
@@ -108,16 +108,16 @@ stock fastfood_OnPlayerEnterCP(playerid, cp)
 DialogCreate:ServiceFastfood(playerid)
 {
 	new string[MAX_STRING * (sizeof(food_data) + 1)];
-	string = lang_texts[17][1];
+	string = _(FASTFOOD_DIALOG_LIST_HEADER);
 
 	for (new i = 0; i < sizeof(food_data); i++) {
 		format(string, sizeof(string),
-			lang_texts[17][2],
+			_(FASTFOOD_DIALOG_LIST_ITEM),
 			string, food_data[i][food_name], food_data[i][food_cost], food_data[i][food_hp]
 		);
 	}
 
-	Dialog_Open(playerid, Dialog:ServiceFastfood, DIALOG_STYLE_TABLIST_HEADERS, lang_texts[17][3], string, lang_texts[17][4], lang_texts[17][5]);
+	Dialog_Open(playerid, Dialog:ServiceFastfood, DIALOG_STYLE_TABLIST_HEADERS, _(FASTFOOD_DIALOG_HEADER), string, _(FASTFOOD_DIALOG_BUTTON_0), _(FASTFOOD_DIALOG_BUTTON_1));
 }
 
 DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
@@ -127,7 +127,7 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 	}
 
 	if (GetPlayerMoney(playerid) < food_data[listitem][food_cost]) {
-		Dialog_Message(playerid, lang_texts[17][6], lang_texts[17][7], lang_texts[17][8]);
+		Dialog_Message(playerid, _(FASTFOOD_DIALOG_BUY_HEADER), _(FASTFOOD_NOT_ENOUGH_MONEY), _(FASTFOOD_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
@@ -147,8 +147,8 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 	}
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[17][9], food_data[listitem][food_name], food_data[listitem][food_cost], food_data[listitem][food_hp]);
-	Dialog_Message(playerid, lang_texts[17][6], string, lang_texts[17][8]);
+	format(string, sizeof(string), _(FASTFOOD_DIALOG_INFORMATION_TEXT), food_data[listitem][food_name], food_data[listitem][food_cost], food_data[listitem][food_hp]);
+	Dialog_Message(playerid, _(FASTFOOD_DIALOG_BUY_HEADER), string, _(FASTFOOD_DIALOG_BUTTON_OK));
 	return 1;
 }
 

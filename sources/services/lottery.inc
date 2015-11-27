@@ -46,25 +46,25 @@ COMMAND:lottery(playerid, params[])
 	}
 
 	if (TickCount < 0) {
-		SendClientMessage(playerid, COLOUR_PM, lang_texts[17][31]);
+		SendClientMessage(playerid, COLOUR_PM, _(LOTTERY_NOT_STARTED));
 		return 1;
 	}
 
 	new value = strval(params);
 		
 	if (isnull(params) || value < 1 || value > 100) {
-		SendClientMessage(playerid, COLOUR_PM, lang_texts[17][32]);
+		SendClientMessage(playerid, COLOUR_PM, _(LOTTERY_USE_COMMAND));
 		return 1;
 	}
 
 	if (GetPVarInt(playerid, "lottery_Value") != 0) {
-		SendClientMessage(playerid, COLOUR_PM, lang_texts[17][33]);
+		SendClientMessage(playerid, COLOUR_PM, _(LOTTERY_TICKET_BOUGHT_NOW));
 		return 1;
 	}
 
 	foreach (new id : Player) {
 		if (GetPVarInt(id, "lottery_Value") == value) {
-			SendClientMessage(playerid, COLOUR_PM, lang_texts[17][34]);
+			SendClientMessage(playerid, COLOUR_PM, _(LOTTERY_TICKET_IS_BOUGHT));
 			return 1;
 		}
 	}
@@ -73,7 +73,7 @@ COMMAND:lottery(playerid, params[])
 	SetPVarInt(playerid, "lottery_Value", value);
 		
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[17][35], value);
+	format(string, sizeof(string), _(LOTTERY_TICKET_BOUGHT), value);
 	SendClientMessage(playerid, COLOUR_GREEN, string);
 	return 1;
 }
@@ -89,7 +89,7 @@ public lottery_Timer()
 
 	if (TickCount < Time && (TickCount % 20 == 0 || TickCount == 10)) {
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[17][36], Time-TickCount);
+		format(string, sizeof(string), _(LOTTERY_TIME_TO_END), Time-TickCount);
 		SendClientMessageToAll(COLOUR_GREEN, string);
 		return 0;
 	}
@@ -107,10 +107,10 @@ public lottery_Timer()
 			winner = 1;
 			GivePlayerMoney(playerid, WinMoney, 1);
 			
-			format(string, sizeof(string), lang_texts[17][37], WinMoney);
+			format(string, sizeof(string), _(LOTTERY_YOU_WINNER), WinMoney);
 			SendClientMessage(playerid, COLOUR_GREEN, string);
 			
-			format(string, sizeof(string), lang_texts[17][38], ReturnPlayerName(playerid), playerid, WinMoney);
+			format(string, sizeof(string), _(LOTTERY_WINNER), ReturnPlayerName(playerid), playerid, WinMoney);
 			SendClientMessageToAll(COLOUR_GREEN, string);
 		}
 
@@ -118,7 +118,7 @@ public lottery_Timer()
 	}
 
 	if (winner == 0) {
-		format(string, sizeof(string), lang_texts[17][39], win_value);
+		format(string, sizeof(string), _(LOTTERY_NO_WINNER), win_value);
 		SendClientMessageToAll(COLOUR_GREEN, string);
 	}
 	return 1;
@@ -134,13 +134,13 @@ stock lottery_RunTimer()
 	lottery_timer = SetTimer("lottery_Timer", 1000, 1);
 	
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[17][40], WinMoney);
+	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_0), WinMoney);
 	SendClientMessageToAll(COLOUR_GREEN, string);
 
-	format(string, sizeof(string), lang_texts[17][41], TicketCost);
+	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_1), TicketCost);
 	SendClientMessageToAll(COLOUR_GREEN, string);
 
-	format(string, sizeof(string), lang_texts[17][42], Time);
+	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_2), Time);
 	SendClientMessageToAll(COLOUR_GREEN, string);
 	return 1;
 }

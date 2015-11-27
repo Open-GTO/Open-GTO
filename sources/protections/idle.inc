@@ -79,13 +79,13 @@ pt_idle_PlayerTimer(playerid)
 			GivePVarInt(playerid, "playerIdle", 1);
 			
 			if (GetPVarInt(playerid, "playerIdle") > MaxTime - 1) {
-				format(string, sizeof(string), lang_texts[11][1], MaxTime - 1);
+				format(string, sizeof(string), _(PROTECTION_ANTIIDLE_INFO), MaxTime - 1);
 				SendClientMessage(playerid, COLOUR_RED, string);
-				SendClientMessage(playerid, COLOUR_RED, lang_texts[11][2]);
+				SendClientMessage(playerid, COLOUR_RED, _(PROTECTION_ANTIIDLE_LAST_WARN));
 			}
 			if (GetPVarInt(playerid, "playerIdle") > MaxTime) {
 				SetPVarInt(playerid, "playerIdle", 0);
-				KickPlayer(playerid, lang_texts[11][3]);
+				KickPlayer(playerid, _(PROTECTION_ANTIIDLE_KICK_REASON));
 			}
 		} else {
 			SetPVarInt(playerid, "playerIdle", 0);
