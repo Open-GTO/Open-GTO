@@ -58,6 +58,7 @@ Thanks:
 #include "core/shootingrange"
 #include "core/spectate"
 #include "core/gpickup"
+#include "core/textlist"
 #include "vehicle/vehicles"
 #include "vehicle/vehicle_fuel"
 #include "vehicle/vehicle_menu"
