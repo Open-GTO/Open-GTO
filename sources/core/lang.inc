@@ -97,5 +97,5 @@ stock lang_GetLang()
 stock lang_SetLang(lang)
 {
 	strmid(lang_use, lang, 0, strlen(lang));
-	return lang_ReadFile(lang);
+	lang_OnGameModeInit();
 }
