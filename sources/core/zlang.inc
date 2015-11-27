@@ -60,7 +60,8 @@ stock Lang_LoadText(filename[])
 			if (sep_pos == -1) {
 				if (string[i] == ' ' && string[i + 1] == '=' && string[i + 2] == ' ') {
 					if (i > MAX_LANG_VAR_STRING) {
-						printf("Error: length of lang variable %s more than %d.", varname, MAX_LANG_VAR_STRING);
+						printf("Error: length of lang variable more than %d.", MAX_LANG_VAR_STRING);
+						printf("Error: %s", string);
 					}
 
 					strmid(varname, string, 0, i);
