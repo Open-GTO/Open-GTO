@@ -14,8 +14,11 @@
 #pragma library vehicle_component
 
 
-#define INVALID_COMPONENT_ID  -1
-#define MAX_COMPONENTS        128
+#define INVALID_COMPONENT_ID    -1
+#define MAX_COMPONENTS          128
+#define MAX_COMPONENT_NAME      64
+#define MAX_COMPONENT_TYPES     14
+#define MAX_COMPONENT_TYPE_NAME 16
 
 enum component_Info {
 	cu_Model = 0,
@@ -412,201 +415,308 @@ static component_array[][][MAX_COMPONENTS] = {
 	}
 };
 
-static component_name[][64] = {
-	{"Pro Spoiler"},
-	{"Win Spoiler"},
-	{"Drag Spoiler"},
-	{"Alpha Spoiler"},
-	{"Champ Scoop Hood"},
-	{"Fury Scoop Hood"},
-	{"Roof Scoop"},
-	{"Right Sideskirt"},
-	{"5x Nitro"},
-	{"2x Nitro"},
-	{"10x Nitro"},
-	{"Race Scoop Hood"},
-	{"Worx Scoop Hood"},
-	{"Round Fog Lamps"},
-	{"Champ Spoiler"},
-	{"Race Spoiler"},
-	{"Worx Spoiler"},
-	{"Left Sideskirt"},
-	{"Upswept Exhaust"},
-	{"Twin Exhaust"},
-	{"Large Exhaust"},
-	{"Medium Exhaust"},
-	{"Small Exhaust"},
-	{"Fury Spoiler"},
-	{"Square Fog Lamps"},
-	{"Offroad Wheels"},
-	{"Right Alien Sideskirt 'Sultan'"},
-	{"Left Alien Sideskirt 'Sultan'"},
-	{"Alien Exhaust 'Sultan'"},
-	{"X-Flow Exhaust 'Sultan'"},
-	{"Left X-Flow Sideskirt 'Sultan'"},
-	{"Right X-Flow Sideskirt 'Sultan'"},
-	{"Alien Roof Vent 'Sultan'"},
-	{"X-Flow Roof Vent 'Sultan'"},
-	{"Alien Exhaust 'Elegy'"},
-	{"X-Flow Roof Vent 'Elegy'"},
-	{"Right Alien Sideskirt 'Elegy'"},
-	{"X-Flow Exhaust 'Elegy'"},
-	{"Alien Roof Vent 'Elegy'"},
-	{"Right X-Flow Sideskirt 'Elegy'"},
-	{"Left Alien Sideskirt 'Elegy'"},
-	{"Right X-Flow Sideskirt 'Elegy'"},
-	{"Right Chrome Sideskirt 'Broadway'"},
-	{"Slamin Exhaust 'Broadway'"},
-	{"Chrome Exhaust 'Broadway'"},
-	{"X-Flow Exhaust 'Flash'"},
-	{"Alien Exhaust 'Flash'"},
-	{"Right Alien Sideskirt 'Flash'"},
-	{"Right X-Flow Sideskirt 'Flash'"},
-	{"Alien Spoiler 'Flash'"},
-	{"X-Flow Spoiler 'Flash'"},
-	{"Left Alien Sideskirt 'Flash'"},
-	{"Left X-Flow Sideskirt 'Flash'"},
-	{"X-Flow Roof 'Flash'"},
-	{"Alien Roof 'Flash'"},
-	{"Alien Roof 'Stratum'"},
-	{"Right Alien Sideskirt 'Stratum'"},
-	{"Right X-Flow Sideskirt 'Stratum'"},
-	{"Alien Spoiler 'Stratum'"},
-	{"X-Flow Exhaust 'Stratum'"},
-	{"X-Flow Spoiler 'Stratum'"},
-	{"X-Flow Roof 'Stratum'"},
-	{"Left Alien Sideskirt 'Stratum'"},
-	{"Left X-Flow Sideskirt 'Stratum'"},
-	{"Alien Exhaust 'Stratum'"},
-	{"Alien Exhaust 'Jester'"},
-	{"X-Flow Exhaust 'Jester'"},
-	{"Alien Roof 'Jester'"},
-	{"X-Flow Roof 'Jester'"},
-	{"Right Alien Sideskirt 'Jester'"},
-	{"Right X-Flow Sideskirt 'Jester'"},
-	{"Left Alien Sideskirt 'Jester'"},
-	{"Left X-Flow Sideskirt 'Jester'"},
-	{"Shadow Wheels"},
-	{"Mega Wheels"},
-	{"Rimshine Wheels"},
-	{"Wires Wheels"},
-	{"Classic Wheels"},
-	{"Twist Wheels"},
-	{"Cutter Wheels"},
-	{"Switch Wheels"},
-	{"Grove Wheels"},
-	{"Import Wheels"},
-	{"Dollar Wheels"},
-	{"Trance Wheels"},
-	{"Atomic Wheels"},
-	{"Stereo Sound"},
-	{"Hydraulics"},
-	{"Alien Roof 'Uranus'"},
-	{"X-Flow Exhaust 'Uranus'"},
-	{"Right Alien Sideskirt 'Uranus'"},
-	{"X-Flow Roof 'Uranus'"},
-	{"Alien Exhaust 'Uranus'"},
-	{"Right X-Flow Sideskirt 'Uranus'"},
-	{"Left Alien Sideskirt 'Uranus'"},
-	{"Right X-Flow Sideskirt 'Uranus'"},
-	{"Ahab Wheels"},
-	{"Virtual Wheels"},
-	{"Access Wheels"},
-	{"Left Chrome Sideskirt 'Broadway'"},
-	{"Chrome Grill Bullbar 'Remington'"},
-	{"Left 'Chrome Flames' Sideskirt 'Remington'"},
-	{"Left 'Chrome Strip' Sideskirt 'Savanna'"},
-	{"Corvetible Roof 'Blade'"},
-	{"Chrome Exhaust 'Blade'"},
-	{"Slamin Exhaust 'Blade'"},
-	{"Right 'Chrome Arches' Sideskirt 'Remington'"},
-	{"Left 'Chrome Strip' Sideskirt 'Blade'"},
-	{"Right 'Chrome Strip' Sideskirt 'Blade'"},
-	{"Chrome Rear Bullbars 'Slamvan'"},
-	{"Slamin Rear Bullbars 'Slamvan'"},
-	{"Little Front Sign? 'Slamvan'"},{"Little Front Sign? 'Slamvan'"},
-	{"Chrome Exhaust 'Slamvan'"},
-	{"Slamin Exhaust 'Slamvan'"},
-	{"Chrome Front Bullbars 'Slamvan'"},
-	{"Slamin Front Bullbars 'Slamvan'"},
-	{"Chrome Front Bumper 'Slamvan'"},
-	{"Right 'Chrome Trim' Sideskirt 'Slamvan'"},
-	{"Right 'Wheelcovers' Sideskirt 'Slamvan'"},
-	{"Left 'Chrome Trim' Sideskirt 'Slamvan'"},
-	{"Left 'Wheelcovers' Sideskirt 'Slamvan'"},
-	{"Right 'Chrome Flames' Sideskirt 'Remington'"},
-	{"Bullbar Chrome Bars 'Remington'"},
-	{"Left 'Chrome Arches' Sideskirt 'Remington'"},
-	{"Bullbar Chrome Lights 'Remongton'"},
-	{"Chrome Exhaust 'Remington'"},
-	{"Slamin Exhaust 'Remington'"},
-	{"Vinyl Hardtop 'Blade'"},
-	{"Chrome Exhaust 'Savanna'"},
-	{"Hardtop Roof 'Savanna'"},
-	{"Softtop Roof 'Savanna'"},
-	{"Slamin Exhaust 'Savanna'"},
-	{"Right 'Chrome Strip' Sideskirt 'Savanna'"},
-	{"Right 'Chrome Strip' Sideskirt 'Tornado'"},
-	{"Slamin Exhaust 'Tornado'"},
-	{"Chrome Exhaust 'Tornado'"},
-	{"Left 'Chrome Strip' Sideskirt 'Tornado'"},
-	{"Alien Spoiler 'Sultan'"},
-	{"X-Flow Spoiler 'Sultan'"},
-	{"X-Flow Rear Bumper 'Sultan'"},
-	{"Alien Rear Bumper 'Sultan'"},
-	{"Left Oval Vents"},
-	{"Right Oval Vents"},
-	{"Left Square Vents"},
-	{"Right Square Vents"},
-	{"X-Flow Spoiler 'Elegy'"},
-	{"Alien Spoiler 'Elegy'"},
-	{"X-Flow Rear Bumper 'Elegy'"},
-	{"Alien Rear Bumper 'Elegy'"},
-	{"Alien Rear Bumper 'Flash'"},
-	{"X-Flow Rear Bumper 'Flash'"},
-	{"X-Flow Front Bumper 'Flash'"},
-	{"Alien Front Bumper 'Flash'"},
-	{"Alien Rear Bumper 'Stratum'"},
-	{"Alien Front Bumper 'Stratum'"},
-	{"X-Flow Rear Bumper 'Stratum'"},
-	{"X-Flow Front Bumper 'Stratum'"},
-	{"X-Flow Spoiler 'Jester'"},
-	{"Alien Rear Bumper 'Jester'"},
-	{"Alien Front Bumper 'Jester'"},
-	{"X-Flow Rear Bumper 'Jester'"},
-	{"Alien Spoiler 'Jester'"},
-	{"X-Flow Spoiler 'Uranus'"},
-	{"Alien Spoiler 'Uranus'"},
-	{"X-Flow Front Bumper 'Uranus'"},
-	{"Alien Front Bumper 'Uranus'"},
-	{"X-Flow Rear Bumper 'Uranus'"},
-	{"Alien Rear Bumper 'Uranus'"},
-	{"Alien Front Bumper 'Sultan'"},
-	{"X-Flow Front Bumper 'Sultan'"},
-	{"Alien Front Bumper 'Elegy'"},
-	{"X-Flow Front Bumper 'Elegy'"},
-	{"X-Flow Front Bumper 'Jester'"},
-	{"Chrome Front Bumper 'Broadway'"},
-	{"Slamin Front Bumper 'Broadway'"},
-	{"Chrome Rear Bumper 'Broadway'"},
-	{"Slamin Rear Bumper 'Broadway'"},
-	{"Slamin Rear Bumper 'Remington'"},
-	{"Chrome Front Bumper 'Remington'"},
-	{"Chrome Rear Bumper 'Remington'"},
-	{"Slamin Front Bumper 'Blade'"},
-	{"Chrome Front Bumper 'Blade'"},
-	{"Slamin Rear Bumper 'Blade'"},
-	{"Chrome Rear Bumper 'Blade'"},
-	{"Slamin Front Bumper 'Remington'"},
-	{"Slamin Rear Bumper 'Savanna'"},
-	{"Chrome Rear Bumper 'Savanna'"},
-	{"Slamin Front Bumper 'Savanna'"},
-	{"Chrome Front Bumper 'Savanna'"},
-	{"Slamin Front Bumper 'Tornado'"},
-	{"Chrome Front Bumper 'Tornado'"},
-	{"Chrome Rear Bumper 'Tornado'"},
-	{"Slamin Rear Bumper 'Tornado'"}
+static component_type[MAX_COMPONENT_TYPES][MAX_COMPONENT_TYPE_NAME] = {
+	"Spoiler",
+	"Hood",
+	"Roof",
+	"Sideskirt",
+	"Lamps",
+	"Nitro",
+	"Exhaust",
+	"Wheels",
+	"Stereo",
+	"Hydraulics",
+	"Front Bumper",
+	"Rear Bumper",
+	"Vent Right",
+	"Vent Left"
 };
+
+static component_name[][MAX_COMPONENT_NAME] = {
+	"Pro Spoiler",
+	"Win Spoiler",
+	"Drag Spoiler",
+	"Alpha Spoiler",
+	"Champ Scoop Hood",
+	"Fury Scoop Hood",
+	"Roof Scoop",
+	"Right Sideskirt",
+	"5x Nitro",
+	"2x Nitro",
+	"10x Nitro",
+	"Race Scoop Hood",
+	"Worx Scoop Hood",
+	"Round Fog Lamps",
+	"Champ Spoiler",
+	"Race Spoiler",
+	"Worx Spoiler",
+	"Left Sideskirt",
+	"Upswept Exhaust",
+	"Twin Exhaust",
+	"Large Exhaust",
+	"Medium Exhaust",
+	"Small Exhaust",
+	"Fury Spoiler",
+	"Square Fog Lamps",
+	"Offroad Wheels",
+	"Right Alien Sideskirt 'Sultan'",
+	"Left Alien Sideskirt 'Sultan'",
+	"Alien Exhaust 'Sultan'",
+	"X-Flow Exhaust 'Sultan'",
+	"Left X-Flow Sideskirt 'Sultan'",
+	"Right X-Flow Sideskirt 'Sultan'",
+	"Alien Roof Vent 'Sultan'",
+	"X-Flow Roof Vent 'Sultan'",
+	"Alien Exhaust 'Elegy'",
+	"X-Flow Roof Vent 'Elegy'",
+	"Right Alien Sideskirt 'Elegy'",
+	"X-Flow Exhaust 'Elegy'",
+	"Alien Roof Vent 'Elegy'",
+	"Right X-Flow Sideskirt 'Elegy'",
+	"Left Alien Sideskirt 'Elegy'",
+	"Right X-Flow Sideskirt 'Elegy'",
+	"Right Chrome Sideskirt 'Broadway'",
+	"Slamin Exhaust 'Broadway'",
+	"Chrome Exhaust 'Broadway'",
+	"X-Flow Exhaust 'Flash'",
+	"Alien Exhaust 'Flash'",
+	"Right Alien Sideskirt 'Flash'",
+	"Right X-Flow Sideskirt 'Flash'",
+	"Alien Spoiler 'Flash'",
+	"X-Flow Spoiler 'Flash'",
+	"Left Alien Sideskirt 'Flash'",
+	"Left X-Flow Sideskirt 'Flash'",
+	"X-Flow Roof 'Flash'",
+	"Alien Roof 'Flash'",
+	"Alien Roof 'Stratum'",
+	"Right Alien Sideskirt 'Stratum'",
+	"Right X-Flow Sideskirt 'Stratum'",
+	"Alien Spoiler 'Stratum'",
+	"X-Flow Exhaust 'Stratum'",
+	"X-Flow Spoiler 'Stratum'",
+	"X-Flow Roof 'Stratum'",
+	"Left Alien Sideskirt 'Stratum'",
+	"Left X-Flow Sideskirt 'Stratum'",
+	"Alien Exhaust 'Stratum'",
+	"Alien Exhaust 'Jester'",
+	"X-Flow Exhaust 'Jester'",
+	"Alien Roof 'Jester'",
+	"X-Flow Roof 'Jester'",
+	"Right Alien Sideskirt 'Jester'",
+	"Right X-Flow Sideskirt 'Jester'",
+	"Left Alien Sideskirt 'Jester'",
+	"Left X-Flow Sideskirt 'Jester'",
+	"Shadow Wheels",
+	"Mega Wheels",
+	"Rimshine Wheels",
+	"Wires Wheels",
+	"Classic Wheels",
+	"Twist Wheels",
+	"Cutter Wheels",
+	"Switch Wheels",
+	"Grove Wheels",
+	"Import Wheels",
+	"Dollar Wheels",
+	"Trance Wheels",
+	"Atomic Wheels",
+	"Stereo Sound",
+	"Hydraulics",
+	"Alien Roof 'Uranus'",
+	"X-Flow Exhaust 'Uranus'",
+	"Right Alien Sideskirt 'Uranus'",
+	"X-Flow Roof 'Uranus'",
+	"Alien Exhaust 'Uranus'",
+	"Right X-Flow Sideskirt 'Uranus'",
+	"Left Alien Sideskirt 'Uranus'",
+	"Right X-Flow Sideskirt 'Uranus'",
+	"Ahab Wheels",
+	"Virtual Wheels",
+	"Access Wheels",
+	"Left Chrome Sideskirt 'Broadway'",
+	"Chrome Grill Bullbar 'Remington'",
+	"Left 'Chrome Flames' Sideskirt 'Remington'",
+	"Left 'Chrome Strip' Sideskirt 'Savanna'",
+	"Corvetible Roof 'Blade'",
+	"Chrome Exhaust 'Blade'",
+	"Slamin Exhaust 'Blade'",
+	"Right 'Chrome Arches' Sideskirt 'Remington'",
+	"Left 'Chrome Strip' Sideskirt 'Blade'",
+	"Right 'Chrome Strip' Sideskirt 'Blade'",
+	"Chrome Rear Bullbars 'Slamvan'",
+	"Slamin Rear Bullbars 'Slamvan'",
+	"Little Front Sign? 'Slamvan'",
+	"Little Front Sign? 'Slamvan'",
+	"Chrome Exhaust 'Slamvan'",
+	"Slamin Exhaust 'Slamvan'",
+	"Chrome Front Bullbars 'Slamvan'",
+	"Slamin Front Bullbars 'Slamvan'",
+	"Chrome Front Bumper 'Slamvan'",
+	"Right 'Chrome Trim' Sideskirt 'Slamvan'",
+	"Right 'Wheelcovers' Sideskirt 'Slamvan'",
+	"Left 'Chrome Trim' Sideskirt 'Slamvan'",
+	"Left 'Wheelcovers' Sideskirt 'Slamvan'",
+	"Right 'Chrome Flames' Sideskirt 'Remington'",
+	"Bullbar Chrome Bars 'Remington'",
+	"Left 'Chrome Arches' Sideskirt 'Remington'",
+	"Bullbar Chrome Lights 'Remongton'",
+	"Chrome Exhaust 'Remington'",
+	"Slamin Exhaust 'Remington'",
+	"Vinyl Hardtop 'Blade'",
+	"Chrome Exhaust 'Savanna'",
+	"Hardtop Roof 'Savanna'",
+	"Softtop Roof 'Savanna'",
+	"Slamin Exhaust 'Savanna'",
+	"Right 'Chrome Strip' Sideskirt 'Savanna'",
+	"Right 'Chrome Strip' Sideskirt 'Tornado'",
+	"Slamin Exhaust 'Tornado'",
+	"Chrome Exhaust 'Tornado'",
+	"Left 'Chrome Strip' Sideskirt 'Tornado'",
+	"Alien Spoiler 'Sultan'",
+	"X-Flow Spoiler 'Sultan'",
+	"X-Flow Rear Bumper 'Sultan'",
+	"Alien Rear Bumper 'Sultan'",
+	"Left Oval Vents",
+	"Right Oval Vents",
+	"Left Square Vents",
+	"Right Square Vents",
+	"X-Flow Spoiler 'Elegy'",
+	"Alien Spoiler 'Elegy'",
+	"X-Flow Rear Bumper 'Elegy'",
+	"Alien Rear Bumper 'Elegy'",
+	"Alien Rear Bumper 'Flash'",
+	"X-Flow Rear Bumper 'Flash'",
+	"X-Flow Front Bumper 'Flash'",
+	"Alien Front Bumper 'Flash'",
+	"Alien Rear Bumper 'Stratum'",
+	"Alien Front Bumper 'Stratum'",
+	"X-Flow Rear Bumper 'Stratum'",
+	"X-Flow Front Bumper 'Stratum'",
+	"X-Flow Spoiler 'Jester'",
+	"Alien Rear Bumper 'Jester'",
+	"Alien Front Bumper 'Jester'",
+	"X-Flow Rear Bumper 'Jester'",
+	"Alien Spoiler 'Jester'",
+	"X-Flow Spoiler 'Uranus'",
+	"Alien Spoiler 'Uranus'",
+	"X-Flow Front Bumper 'Uranus'",
+	"Alien Front Bumper 'Uranus'",
+	"X-Flow Rear Bumper 'Uranus'",
+	"Alien Rear Bumper 'Uranus'",
+	"Alien Front Bumper 'Sultan'",
+	"X-Flow Front Bumper 'Sultan'",
+	"Alien Front Bumper 'Elegy'",
+	"X-Flow Front Bumper 'Elegy'",
+	"X-Flow Front Bumper 'Jester'",
+	"Chrome Front Bumper 'Broadway'",
+	"Slamin Front Bumper 'Broadway'",
+	"Chrome Rear Bumper 'Broadway'",
+	"Slamin Rear Bumper 'Broadway'",
+	"Slamin Rear Bumper 'Remington'",
+	"Chrome Front Bumper 'Remington'",
+	"Chrome Rear Bumper 'Remington'",
+	"Slamin Front Bumper 'Blade'",
+	"Chrome Front Bumper 'Blade'",
+	"Slamin Rear Bumper 'Blade'",
+	"Chrome Rear Bumper 'Blade'",
+	"Slamin Front Bumper 'Remington'",
+	"Slamin Rear Bumper 'Savanna'",
+	"Chrome Rear Bumper 'Savanna'",
+	"Slamin Front Bumper 'Savanna'",
+	"Chrome Front Bumper 'Savanna'",
+	"Slamin Front Bumper 'Tornado'",
+	"Chrome Front Bumper 'Tornado'",
+	"Chrome Rear Bumper 'Tornado'",
+	"Slamin Rear Bumper 'Tornado'"
+};
+
+/*
+	Component Type
+*/
+
+stock GetComponentTypeId(name[])
+{
+	for (new i = 0; i < sizeof(component_type); i++) {
+		if (strcmp(component_type[i], name, true) == 0) {
+			return i;
+		}
+	}
+
+	return INVALID_COMPONENT_ID;
+}
+
+stock GetComponentTypeName(type, name[], size = sizeof(name))
+{
+	if (type < 0 || type >= sizeof(component_type)) {
+		return 0;
+	}
+
+	strmid(name, component_type[type], 0, strlen(component_type[type]), size);
+	return 1;
+}
+
+stock GetVehicleCompatibleTypes(model, array[MAX_COMPONENT_TYPES], &array_size)
+{
+	new
+		components[MAX_COMPONENTS],
+		components_size;
+
+	new isok = GetVehicleCompatibleUpgrades(model, components, components_size);
+	if (!isok) {
+		return 0;
+	}
+
+	new
+		type_id,
+		bool:is_type_exist[MAX_COMPONENT_TYPES];
+
+	array_size = 0;
+
+	for (new i = 0; i < components_size; i++) {
+		type_id = GetVehicleComponentType(components[i]);
+
+		if (!is_type_exist[type_id]) {
+			is_type_exist[type_id] = true;
+
+			array[array_size++] = type_id;
+		}
+	}
+
+	return 1;
+}
+
+/*
+	Component Upgrade
+*/
+
+stock GetComponentName(componentid, cname[], size = sizeof(cname))
+{
+	new idx = componentid - 1000;
+	if (idx < 0 || idx >= sizeof(component_name)) {
+		return 0;
+	}
+
+	strmid(cname, component_name[idx], 0, strlen(component_name[idx]), size);
+	return 1;
+}
+
+stock GetVehicleCompatibleUpgrades(model, array[MAX_COMPONENTS], &array_size)
+{
+	new id = GetComponentArrayID(model);
+	if (id == INVALID_COMPONENT_ID) {
+		return 0;
+	}
+
+	for (new i = 0; i < sizeof(array); i++) {
+		if (component_array[id][cu_ComponentID][i] == 0) {
+			array_size = i;
+			return 1;
+		}
+
+		array[i] = component_array[id][cu_ComponentID][i];
+	}
+
+	return 0;
+}
 
 stock IsVehicleUpgradeCompatible(model, componentid)
 {
@@ -620,37 +730,15 @@ stock IsVehicleUpgradeCompatible(model, componentid)
 			return 1;
 		}
 	}
+
 	return 0;
 }
 
-stock GetVehicleCompatibleUpgrades(model, index, &componentid = 0)
-{
-	componentid = INVALID_COMPONENT_ID;
+/*
+	Private functions
+*/
 
-	new id = GetComponentArrayID(model);
-	if (id == INVALID_COMPONENT_ID) {
-		return componentid;
-	}
-
-	if (index > GetVehicleUpgradesLastIndex(id)) {
-		return componentid;
-	}
-
-	componentid = component_array[id][cu_ComponentID][index];
-	return componentid;
-}
-
-stock GetVehicleUpgradesLastIndex(arrayid)
-{
-	for (new i = 0; i < sizeof(component_array[][]); i++) {
-		if (component_array[arrayid][cu_ComponentID][i] == 0) {
-			return i - 1;
-		}
-	}
-	return 0;
-}
-
-stock GetComponentArrayID(model)
+static stock GetComponentArrayID(model)
 {
 	new i, j;
 
@@ -663,18 +751,4 @@ stock GetComponentArrayID(model)
 	}
 
 	return INVALID_COMPONENT_ID;
-}
-
-stock GetComponentName(componentid, cname[], size = sizeof(cname))
-{
-	cname[0] = '\0';
-
-	new idx = componentid - 1000;
-
-	if (idx < 0 || idx >= sizeof(component_name)) {
-		return 0;
-	}
-
-	strcat(cname, component_name[idx], size);
-	return 1;
 }
