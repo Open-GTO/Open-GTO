@@ -1610,3 +1610,136 @@ COMMAND:setarmall(playerid, params[])
 	}
 	return 1;
 }
+
+COMMAND:vehicle(playerid, params[])
+{
+	if (!IsPlayerMod(playerid)) {
+		return 0;
+	}
+
+	new playername[MAX_PLAYER_NAME + 1];
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	new
+		subsubcmd[32],
+		subcmd[32],
+		idx;
+
+	subcmd = strcharsplit(params, idx, ' ');
+
+	if (strcmp(subcmd, "add", true) == 0) {
+		if (!IsPlayerAdm(playerid)) {
+			SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			return 1;
+		}
+
+		new modelid = strval(strcharsplit(params, idx, ' '));
+
+		if (modelid < 400 || modelid > 611) {
+			SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_VEHICLE_ADD_ERROR));
+			return 1;
+		}
+
+		// get info
+		new Float:x, Float:y, Float:z, Float:r, interior, world;
+		GetPlayerPos(playerid, x, y, z);
+		GetPlayerFacingAngle(playerid, r);
+		interior = GetPlayerInterior(playerid);
+		world = GetPlayerVirtualWorld(playerid);
+
+		// create vehicle
+		new vehicleid = CreateVehicle(modelid, x, y, z, r, -1, -1, VEHICLE_RESPAWN_TIME);
+		LinkVehicleToInterior(vehicleid, interior);
+		SetVehicleVirtualWorld(vehicleid, world);
+		SetVehicleFuel(vehicleid, -1);
+
+		// put in
+		PutPlayerInVehicle(playerid, vehicleid, 0);
+
+		// message
+		new string[MAX_LANG_VALUE_STRING];
+		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_ADD_MESSAGE), playername, vehicleid);
+		SendMessageToBesidePlayers(string, 10.0, x, y, z);
+		return 1;
+	} if (strcmp(subcmd, "remove", true) == 0) {
+		if (!IsPlayerAdm(playerid)) {
+			SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			return 1;
+		}
+
+		subsubcmd = strcharsplit(params, idx, ' ');
+
+		new vehicleid;
+
+		if (isnull(subsubcmd)) {
+			vehicleid = GetPlayerVehicleID(playerid);
+		} else {
+			vehicleid = strval(subsubcmd);
+		}
+
+		if (!IsValidVehicle(vehicleid)) {
+			SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_VEHICLE_REMOVE_ERROR));
+			return 1;
+		}
+
+		// get info
+		new Float:x, Float:y, Float:z;
+		GetVehiclePos(vehicleid, x, y, z);
+
+		// destroy
+		DestroyVehicle(vehicleid);
+
+		// message
+		new string[MAX_LANG_VALUE_STRING];
+		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE), playername, vehicleid);
+		SendMessageToBesidePlayers(string, 10.0, x, y, z);
+		return 1;
+	} if (strcmp(subcmd, "respawn", true) == 0) {
+		if (!IsPlayerMod(playerid)) {
+			SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			return 1;
+		}
+
+		subsubcmd = strcharsplit(params, idx, ' ');
+
+		if (strcmp(subsubcmd, "all", true) == 0) {
+			for (new vehid = 1; vehid <= MAX_VEHICLES; vehid++) {
+				SetVehicleToRespawn(vehid);
+			}
+
+			new string[MAX_LANG_VALUE_STRING];
+			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_ALL_MSG), playername);
+			SendClientMessageToAll(-1, string);
+		} else {
+			new vehicleid;
+
+			if (isnull(subsubcmd)) {
+				vehicleid = GetPlayerVehicleID(playerid);
+			} else {
+				vehicleid = strval(subsubcmd);
+			}
+
+			if (!IsValidVehicle(vehicleid)) {
+				SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR));
+				return 1;
+			}
+
+			// get info
+			new Float:x, Float:y, Float:z;
+			GetVehiclePos(vehicleid, x, y, z);
+
+			// respawn
+			SetVehicleToRespawn(vehicleid);
+
+			// message
+			new string[MAX_LANG_VALUE_STRING];
+			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE), playername, vehicleid);
+			SendMessageToBesidePlayers(string, 10.0, x, y, z);
+		}
+		return 1;
+	} else {
+		SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_VEHICLE_HELP));
+	}
+
+	return 1;
+}
