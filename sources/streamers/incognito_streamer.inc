@@ -14,6 +14,7 @@
 #endif
 
 #define INCOGNITO_STREAMER_USED
+#define USE_INCOGNITO_STREAMER // for mapfix
 
 // object
 #define CreateObject CreateDynamicObject

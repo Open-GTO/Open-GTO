@@ -44,6 +44,7 @@ Thanks:
 #include "lib/mxINI"
 #include "lib/mxDate"
 #include "lib/mSelection"
+#include "lib/mapfix"
 #include "core/redefine"
 #include "core/db"
 #include "core/core_time"
