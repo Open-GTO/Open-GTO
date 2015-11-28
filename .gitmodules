@@ -13,3 +13,6 @@
 [submodule "sources/lib/zlang"]
 	path = sources/lib/zlang
 	url = https://gist.github.com/ziggi/05ac3f0bfb3ce98342f5
+[submodule "sources/lib/mdialog"]
+	path = sources/lib/mdialog
+	url = https://gist.github.com/3f7aa687a630a857fa37.git
