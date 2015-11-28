@@ -4,3 +4,6 @@
 [submodule "sources/lib/sa-mp-foreach"]
 	path = sources/lib/sa-mp-foreach
 	url = https://github.com/Kar2k/SAMP-foreach.git
+[submodule "sources/lib/textlist"]
+	path = sources/lib/textlist
+	url = https://gist.github.com/ziggi/276e7d839b79c5792c14
