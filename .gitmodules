@@ -7,3 +7,6 @@
 [submodule "sources/lib/textlist"]
 	path = sources/lib/textlist
 	url = https://gist.github.com/ziggi/276e7d839b79c5792c14
+[submodule "sources/lib/shootingrange"]
+	path = sources/lib/shootingrange
+	url = https://gist.github.com/ziggi/b2e3237f0de4fa8f277b
