@@ -36,6 +36,16 @@ stock lang_OnGameModeInit()
 	return 1;
 }
 
+stock Lang_OnGameModeInit()
+{
+	new lang_file[MAX_STRING];
+	format(lang_file, sizeof(lang_file), "%slang_ru_test%s", db_lang, DATA_FILES_FORMAT);
+	Lang_LoadText(lang_file);
+
+	Log_Game("SERVER: Lang module init(%s)", lang_file);
+	return 1;
+}
+
 stock lang_ReadFile(filename[])
 {
 	new File:fhandle = fopen(filename, io_read);
