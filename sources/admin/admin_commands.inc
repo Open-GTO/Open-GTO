@@ -1660,8 +1660,7 @@ COMMAND:vehicle(playerid, params[])
 		new string[MAX_LANG_VALUE_STRING];
 		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_ADD_MESSAGE), playername, vehicleid);
 		SendMessageToBesidePlayers(string, 10.0, x, y, z);
-		return 1;
-	} if (strcmp(subcmd, "remove", true) == 0) {
+	} else if (strcmp(subcmd, "remove", true) == 0) {
 		if (!IsPlayerAdm(playerid)) {
 			SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
@@ -1693,8 +1692,7 @@ COMMAND:vehicle(playerid, params[])
 		new string[MAX_LANG_VALUE_STRING];
 		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE), playername, vehicleid);
 		SendMessageToBesidePlayers(string, 10.0, x, y, z);
-		return 1;
-	} if (strcmp(subcmd, "respawn", true) == 0) {
+	} else if (strcmp(subcmd, "respawn", true) == 0) {
 		if (!IsPlayerMod(playerid)) {
 			SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
@@ -1736,7 +1734,6 @@ COMMAND:vehicle(playerid, params[])
 			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE), playername, vehicleid);
 			SendMessageToBesidePlayers(string, 10.0, x, y, z);
 		}
-		return 1;
 	} else {
 		SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_VEHICLE_HELP));
 	}
