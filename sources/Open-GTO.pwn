@@ -143,6 +143,7 @@ Thanks:
 #include "services/weaponshop"
 #include "services/fightteacher"
 #include "services/fuelstation"
+#include "services/tuning"
 #include "system/weather"
 #include "protections/idle"
 #include "protections/rconhack"
