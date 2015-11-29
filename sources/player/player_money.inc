@@ -26,14 +26,15 @@ stock pl_money_GivePlayerMoney(playerid, money, showtext=0)
 		return 0;
 	}
 
-	if (money > MAX_MONEY - GetPlayerMoney(playerid)) {
-		money = MAX_MONEY - GetPlayerMoney(playerid);
-		Log_Game("player: %s(%d): is on max money", ReturnPlayerName(playerid), playerid);
+	new player_money = GetPlayerMoney(playerid);
+
+	if (money + player_money < 0) {
+		return 0;
 	}
-	
-	if (money < -MAX_MONEY - GetPlayerMoney(playerid)) {
-		money = -MAX_MONEY - GetPlayerMoney(playerid);
-		Log_Game("player: %s(%d): is on min money", ReturnPlayerName(playerid), playerid);
+
+	if (money > MAX_MONEY - player_money) {
+		money = MAX_MONEY - player_money;
+		Log_Game("player: %s(%d): is on max money", ReturnPlayerName(playerid), playerid);
 	}
 
 	if (showtext == 1) {
@@ -47,7 +48,7 @@ stock pl_money_GivePlayerMoney(playerid, money, showtext=0)
 		}
 	}
 
-	SetPlayerMoney(playerid, GetPlayerMoney(playerid) + money);
+	SetPlayerMoney(playerid, player_money + money);
 	return 1;
 }
 
