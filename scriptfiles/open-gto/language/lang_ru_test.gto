@@ -199,6 +199,22 @@ ADMIN_SPEC_PLAYERINFO_5 = позиция: %0.4f, %0.4f, %0.4f, %0.4f
 
 ADMIN_PROTECTION_REPORT = Игрок %s(%d) подозревается в читерстве. Сработала защита: 
 
+ADMIN_COMMAND_NOT_ALLOWED = Нет доступа к этой команде
+
+ADMIN_COMMAND_VEHICLE_HELP = {FFCC66}[Применение]: {FFFFFF}/vehicle <add/remove/respawn> <модель/id/тип>
+ADMIN_COMMAND_VEHICLE_ADD_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle add <модель>
+ADMIN_COMMAND_VEHICLE_ADD_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}создал транспорт %d
+ADMIN_COMMAND_VEHICLE_REMOVE_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle remove <id/>
+ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}удалил транспорт %d
+ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle respawn <id/all>
+ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}заспавнил транспорт %d
+ADMIN_COMMAND_VEHICLE_RESPAWN_ALL_MSG = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}заспавнил весь транспорт
+
+ADMIN_COMMAND_CAMERA_HELP = {FFCC66}[Применение]: {FFFFFF}/camera <get/set/reset>
+ADMIN_COMMAND_CAMERA_GET_MESSAGE_CPOS = {FFCC66}CameraPos: {FFFFFF}%f, %f, %f
+ADMIN_COMMAND_CAMERA_GET_MESSAGE_LPOS = {FFCC66}LookatPos: {FFFFFF}%f, %f, %f
+ADMIN_COMMAND_CAMERA_SET_ERROR = {FFCC66}[Применение]: {FFFFFF}/camera set <cX> <cY> <cZ> <lX> <lY> <lZ>
+
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)
 PROTECTION_ARMOUR = взлом брони (%0.2f > %0.2f)

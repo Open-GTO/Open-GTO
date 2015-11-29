@@ -288,6 +288,15 @@ stock GenerateRandomString(result_str[], length, size = sizeof(result_str), alph
 	return 1;
 }
 
+stock SendMessageToBesidePlayers(message[], Float:range, Float:x, Float:y, Float:z)
+{
+	foreach (new playerid : Player) {
+		if (IsPlayerInRangeOfPoint(playerid, range, x, y, z)) {
+			SendClientMessage(playerid, -1, message);
+		}
+	}
+}
+
 /*
 
 	For UpdateVehicleDamageStatus
