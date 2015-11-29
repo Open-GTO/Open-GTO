@@ -38,6 +38,7 @@ Thanks:
 #include <a_samp>
 #include "config"
 #include "core/unfixes"
+#include "lib/streamer"
 #include "lib/sa-mp-fixes/fixes"
 #include "lib/sa-mp-foreach/foreach"
 #include "lib/zcmd"
@@ -49,6 +50,7 @@ Thanks:
 #include "lib/shootingrange/shootingrange.pwn"
 #include "lib/zlang/zlang.pwn"
 #include "lib/mdialog/mdialog.pwn"
+#include "lib/GarageBlock"
 #include "core/redefine"
 #include "core/db"
 #include "core/core_time"
@@ -109,7 +111,6 @@ Thanks:
 #include "gang/gang_level"
 #include "system/housing"
 #include "system/business"
-#include "streamers/incognito_streamer"
 #include "streamers/mapicon_stream"
 #include "streamers/checkpoint_stream"
 #include "system/race"
@@ -236,6 +237,7 @@ public OnGameModeInit()
 	fuelstation_OnGameModeInit();
 	bank_OnGameModeInit();
 	fights_OnGameModeInit();
+	Tuning_OnGameModeInit();
 
 	// protection
 	pt_idle_OnGameModeInit();
@@ -582,6 +584,11 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		if ( vehicleid != 0 && IsVehicleIsRunner(vehicleid) ) {
 			trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		}
+
+		if (Tuning_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+			return 1;
+		}
+
 		return 1;
 	}
 
@@ -722,19 +729,34 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
 
 public OnVehiclePaintjob(playerid, vehicleid, paintjobid)
 {
+	return 0;
+}
+
+public OnVehicleRespray(playerid, vehicleid, color1, color2)
+{
+	return 0;
+}
+
+public OnVehicleMod(playerid, vehicleid, componentid)
+{
+	return 0;
+}
+
+public OnVehicleTuningPaintjob(playerid, vehicleid, paintjobid)
+{
 	pveh_OnVehiclePaintjob(playerid, vehicleid, paintjobid);
 	return 1;
 }
 
-public OnVehicleRespray(playerid, vehicleid, color1, color2)
+public OnVehicleTuningRespray(playerid, vehicleid, color1, color2)
 {
 	pveh_OnVehicleRespray(playerid, vehicleid, color1, color2);
 	return 1;
 }
 
-public OnVehicleMod(playerid, vehicleid, componentid)
+public OnVehicleTuning(playerid, vehicleid, componentid)
 {
-	pveh_OnVehicleMod(playerid, vehicleid, componentid);
+	pveh_OnVehicleTuning(playerid, vehicleid, componentid);
 	return 1;
 }
 
@@ -800,4 +822,22 @@ public OnPlayerSpectate(playerid, specid, status)
 public OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat, Float:new_x, Float:new_y, Float:new_z, Float:vel_x, Float:vel_y, Float:vel_z)
 {
 	return pt_vehtp_OnUnoccupiedVehicleU(vehicleid, playerid, passenger_seat, new_x, new_y, new_z, vel_x, vel_y, vel_z);
+}
+
+public OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
+{
+	if (Tuning_OnPlayerEnterDynamicArea(playerid, areaid)) {
+		return 1;
+	}
+
+	return 1;
+}
+
+public OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
+{
+	if (Tuning_OnPlayerLeaveDynamicArea(playerid, areaid)) {
+		return 1;
+	}
+
+	return 1;
 }

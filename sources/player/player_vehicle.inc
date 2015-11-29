@@ -76,9 +76,8 @@ stock pveh_OnVehicleRespray(playerid, vehicleid, color1, color2)
 	return 1;
 }
 
-stock pveh_OnVehicleMod(playerid, vehicleid, componentid)
+stock pveh_OnVehicleTuning(playerid, vehicleid, componentid)
 {
-	#pragma unused vehicleid
 	new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
 	if (slot == -1) {
 		return 0;

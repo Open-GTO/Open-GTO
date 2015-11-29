@@ -18,6 +18,7 @@
 	Mapicon_Create(1021.8, -1018.7, 30.9, 63, 0);
 	Mapicon_Create(-1908.9, 292.3, 40.0, 63, 0);
 	Mapicon_Create(-103.6, 1112.4, 18.7, 63, 0);
+	Mapicon_Create(2394.5698,1479.0856,10.4525, 63, 0);
 #endif
 
 #if defined MAPICON_TUNE

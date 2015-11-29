@@ -372,7 +372,14 @@ COMMAND:telexyzi(playerid, params[])
 	interior = strval(strcharsplit(params, idx, ' '));
 
 	SetPlayerInterior(playerid, interior);
-	SetPlayerPos(playerid, pos_x, pos_y, pos_z);
+
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if (vehicleid != 0) {
+		LinkVehicleToInterior(vehicleid, interior);
+		SetVehiclePos(vehicleid, pos_x, pos_y, pos_z);
+	} else {
+		SetPlayerPos(playerid, pos_x, pos_y, pos_z);
+	}
 	return 1;
 }
 
