@@ -38,13 +38,33 @@ static gCameraTypes[MAX_COMPONENT_TYPES][e_Camera_Info] = {
 	{608.847595, -77.565200, 999.306823, 615.645690, -74.584510, 998.223815}  // 13 - CARMODTYPE_VENT_LEFT
 };
 
+static gTypeCost[MAX_COMPONENT_TYPES] = {
+	30000, // 0 - CARMODTYPE_SPOILER
+	30000, // 1 - CARMODTYPE_HOOD
+	30000, // 2 - CARMODTYPE_ROOF
+	5000, // 3 - CARMODTYPE_SIDESKIRT
+	3000, // 4 - CARMODTYPE_LAMPS
+	10000, // 5 - CARMODTYPE_NITRO
+	3000, // 6 - CARMODTYPE_EXHAUST
+	10000, // 7 - CARMODTYPE_WHEELS
+	1000, // 8 - CARMODTYPE_STEREO
+	3000, // 9 - CARMODTYPE_HYDRAULICS
+	30000, // 10 - CARMODTYPE_FRONT_BUMPER
+	30000, // 11 - CARMODTYPE_REAR_BUMPER
+	10000, // 12 - CARMODTYPE_VENT_RIGHT
+	10000 // 13 - CARMODTYPE_VENT_LEFT
+};
+
 enum e_Tuning_Info {
 	e_tVehicle,
 	e_tModel,
 	e_tType,
 	e_tComponent,
+	e_tCameraType,
+	e_tListTypes[MAX_COMPONENT_TYPES],
 	e_tListComponents[MAX_COMPONENTS],
 	e_tListCount,
+	e_tPrevComponent,
 	Float:e_tPrevPos[4],
 	e_tPrevInterior,
 	e_tPrevWorld,
@@ -53,33 +73,30 @@ enum e_Tuning_Info {
 static
 	gInfo[MAX_PLAYERS][e_Tuning_Info];
 
-
-COMMAND:tuning(playerid, params[])
-{
-	new result = Tuning_Start(playerid);
-	if (result == 0) {
-		SendClientMessage(playerid, -1, "Нужно быть в тачке");
-	}
-	return 1;
-}
-
 TextListCreate:component_type(playerid)
 {
 	new compatible_types[MAX_COMPONENT_TYPES], compatible_types_count;
 	GetVehicleCompatibleTypes(gInfo[playerid][e_tModel], compatible_types, compatible_types_count);
 
-	new items[MAX_COMPONENT_TYPES][TEXTLIST_MAX_ITEM_NAME];
+	new
+		type_name[MAX_COMPONENT_TYPE_NAME],
+		items[MAX_COMPONENT_TYPES][TEXTLIST_MAX_ITEM_NAME];
+
 	for (new i = 0; i < compatible_types_count; i++) {
-		GetComponentTypeName(compatible_types[i], items[i], TEXTLIST_MAX_ITEM_NAME);
+		GetComponentTypeName(compatible_types[i], type_name);
+		gInfo[playerid][e_tListTypes][i] = compatible_types[i];
+		format(items[i], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_TYPE_FORMAT), type_name, gTypeCost[i]);
 	}
 
-	TextList_Open(playerid, TextList:component_type, items, compatible_types_count, "Tuning", "Exit");
+	TextList_Open(playerid, TextList:component_type, items, compatible_types_count, _(TUNING_TD_HEADER), _(TUNING_TD_BUTTON_EXIT));
 }
 
 TextListResponse:component_type(playerid, TextListType:response, itemid, itemvalue[])
 {
 	if (response == TextList_ListItem) {
-		gInfo[playerid][e_tType] = GetComponentTypeId(itemvalue);
+		gInfo[playerid][e_tType] = gInfo[playerid][e_tListTypes][itemid];
+		gInfo[playerid][e_tComponent] = INVALID_COMPONENT_ID;
+		gInfo[playerid][e_tPrevComponent] = GetVehicleComponentInSlot(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tType]);
 
 		Tuning_UpdateCamera(playerid, gInfo[playerid][e_tType]);
 
@@ -117,7 +134,7 @@ TextListCreate:component_list(playerid)
 
 	gInfo[playerid][e_tListCount] = item_index;
 
-	TextList_Open(playerid, TextList:component_list, items, item_index, "Tuning", "Buy", "Back");
+	TextList_Open(playerid, TextList:component_list, items, item_index, _(TUNING_TD_HEADER), _(TUNING_TD_BUTTON_BUY), _(TUNING_TD_BUTTON_BACK));
 	return 1;
 }
 
@@ -126,17 +143,26 @@ TextListResponse:component_list(playerid, TextListType:response, itemid, itemval
 	if (response == TextList_ListItem) {
 		gInfo[playerid][e_tComponent] = gInfo[playerid][e_tListComponents][itemid];
 		AddVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
-		
-		new string[128];
-		format(string, sizeof(string), " %d | %d | %d | %s", playerid, _:response, itemid, itemvalue);
-		SendClientMessage(playerid, -1, string);
+		PlayerPlaySoundOnPlayer(playerid, 1050);
 	} else if (response == TextList_Button1) {
-		SendClientMessage(playerid, -1, "Buy");
-
-		Tuning_UpdateCamera(playerid, CARMODTYPE_HOOD);
-		TextList_Show(playerid, TextList:component_type);
+		if (gInfo[playerid][e_tComponent] == INVALID_COMPONENT_ID) {
+			Dialog_Message(playerid, _(TUNING_DIALOG_HEADER), _(TUNING_NOT_COMPONENT_SELECT), _(TUNING_DIALOG_BUTTON_OK));
+		} else {
+			if (!GivePlayerMoney(playerid, -GetTypeCost(gInfo[playerid][e_tType]))) {
+				PlayerPlaySoundOnPlayer(playerid, 1085);
+				Dialog_Message(playerid, _(TUNING_DIALOG_HEADER), _(TUNING_NO_ENOUGH_MONEY), _(TUNING_DIALOG_BUTTON_OK));
+			} else {
+				PlayerPlaySoundOnPlayer(playerid, 1133);
+				Tuning_UpdateCamera(playerid, CARMODTYPE_HOOD);
+				TextList_Show(playerid, TextList:component_type);
+			}
+		}
 	} else if (response == TextList_Button2) {
-		RemoveVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
+		if (gInfo[playerid][e_tPrevComponent] == 0) {
+			RemoveVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
+		} else {
+			AddVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPrevComponent]);
+		}
 
 		Tuning_UpdateCamera(playerid, CARMODTYPE_HOOD);
 		TextList_Show(playerid, TextList:component_type);
@@ -174,6 +200,7 @@ stock Tuning_Start(playerid)
 	TogglePlayerControllable(playerid, 0);
 
 	new type = CARMODTYPE_HOOD;
+	gInfo[playerid][e_tCameraType] = type;
 	SetPlayerCameraPos(playerid, gCameraTypes[type][e_cPos_X], gCameraTypes[type][e_cPos_Y], gCameraTypes[type][e_cPos_Z]);
 	SetPlayerCameraLookAt(playerid, gCameraTypes[type][e_cLook_X], gCameraTypes[type][e_cLook_Y], gCameraTypes[type][e_cLook_Z]);
 
@@ -203,25 +230,23 @@ stock Tuning_Stop(playerid)
 
 static stock Tuning_UpdateCamera(playerid, type)
 {
-	// camera pos
-	new Float:x, Float:y, Float:z;
-	GetPlayerCameraPos(playerid, x, y, z);
+	new current_type = gInfo[playerid][e_tCameraType];
+	gInfo[playerid][e_tCameraType] = type;
 
+	// camera pos
 	InterpolateCameraPos(playerid,
-			x, y, z,
+			gCameraTypes[current_type][e_cPos_X], gCameraTypes[current_type][e_cPos_Y], gCameraTypes[current_type][e_cPos_Z],
 			gCameraTypes[type][e_cPos_X], gCameraTypes[type][e_cPos_Y], gCameraTypes[type][e_cPos_Z],
 			800, CAMERA_MOVE);
 
 	// camera look at
-	new Float:lx, Float:ly, Float:lz;
-	GetPlayerCameraFrontVector(playerid, lx, ly, lz);
-
-	lx = x + floatmul(lx, 5.0);
-	ly = y + floatmul(ly, 5.0);
-	lz = z + floatmul(lz, 5.0);
-
 	InterpolateCameraLookAt(playerid,
-			lx, ly, lz,
+			gCameraTypes[current_type][e_cLook_X], gCameraTypes[current_type][e_cLook_Y], gCameraTypes[current_type][e_cLook_Z],
 			gCameraTypes[type][e_cLook_X], gCameraTypes[type][e_cLook_Y], gCameraTypes[type][e_cLook_Z],
 			800, CAMERA_MOVE);
+}
+
+static stock GetTypeCost(type)
+{
+	return gTypeCost[type];
 }

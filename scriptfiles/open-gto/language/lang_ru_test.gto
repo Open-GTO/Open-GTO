@@ -371,3 +371,16 @@ LOTTERY_NO_WINNER = В лотерее никто не победил, выигрышный билет - %d.
 LOTTERY_START_MESSAGE_0 = Лотерея: Начало розыгрыша призов, победитель получает $%d!
 LOTTERY_START_MESSAGE_1 = Лотерея: Введите /lottery <число 1..100>, для покупки билета. Цена билета $%d
 LOTTERY_START_MESSAGE_2 = Лотерея: До окончания розыгрыша осталось %d минут!
+
+// Tuning
+TUNING_TD_HEADER = Tuning
+TUNING_TD_TYPE_FORMAT = %s ~g~$%d
+TUNING_TD_BUTTON_BUY = Buy
+TUNING_TD_BUTTON_BACK = Back
+TUNING_TD_BUTTON_EXIT = Exit
+
+TUNING_DIALOG_HEADER = Тюнинг
+TUNING_DIALOG_BUTTON_OK = ОК
+
+TUNING_NO_ENOUGH_MONEY = У вас недостаточно денег для покупки этой модификации
+TUNING_NOT_COMPONENT_SELECT = Сначала выберите модификацию
