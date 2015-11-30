@@ -323,6 +323,7 @@ public OnPlayerConnect(playerid)
 	Interior_OnPlayerConnect(playerid);
 	Spectate_OnPlayerConnect(playerid);
 	Beachside_OnPlayerConnect(playerid);
+	Tuning_OnPlayerConnect(playerid);
 	return 1;
 }
 

@@ -125,6 +125,12 @@ Tuning_OnGameModeInit()
 	return 1;
 }
 
+Tuning_OnPlayerConnect(playerid)
+{
+	gInfo[playerid][e_tPlaceID] = -1;
+	return 1;
+}
+
 Tuning_OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 {
 	for (new i = 0; i < sizeof(gTuningPlace); i++) {
@@ -195,7 +201,6 @@ TextListResponse:component_type(playerid, TextListType:response, itemid, itemval
 
 		TextList_Show(playerid, TextList:component_list);
 	} else if (response == TextList_Button1) {
-		PlayerPlaySoundOnPlayer(playerid, 1133);
 		Tuning_Stop(playerid);
 	}
 	return 1;
@@ -216,19 +221,28 @@ TextListCreate:component_list(playerid)
 
 	new
 		items[MAX_COMPONENTS][TEXTLIST_MAX_ITEM_NAME],
+		items_colors[TEXTLIST_MAX_ITEMS] = {0xFFFFFFFF, ...},
 		item_index;
 
 	for (new i = 0; i < components_size; i++) {
 		if (type == GetVehicleComponentType(components[i])) {
 			GetComponentName(components[i], items[item_index], TEXTLIST_MAX_ITEM_NAME);
+
 			gInfo[playerid][e_tListComponents][item_index] = components[i];
+
+			if (GetVehicleComponentInSlot(gInfo[playerid][e_tVehicle], type) == components[i]) {
+				items_colors[item_index] = 0xAAAAAAFF;
+			}
+
 			item_index++;
 		}
 	}
 
 	gInfo[playerid][e_tListCount] = item_index;
 
-	TextList_Open(playerid, TextList:component_list, items, item_index, _(TUNING_TD_HEADER), _(TUNING_TD_BUTTON_BUY), _(TUNING_TD_BUTTON_BACK));
+	TextList_Open(playerid, TextList:component_list, items, item_index,
+		          _(TUNING_TD_HEADER), _(TUNING_TD_BUTTON_BUY), _(TUNING_TD_BUTTON_BACK),
+		          .lists_fg_color = items_colors);
 	return 1;
 }
 
@@ -241,7 +255,7 @@ TextListResponse:component_list(playerid, TextListType:response, itemid, itemval
 	} else if (response == TextList_Button1) {
 		if (gInfo[playerid][e_tComponent] == INVALID_COMPONENT_ID) {
 			Dialog_Message(playerid, _(TUNING_DIALOG_HEADER), _(TUNING_NOT_COMPONENT_SELECT), _(TUNING_DIALOG_BUTTON_OK));
-		} else {
+		} else if (gInfo[playerid][e_tPrevComponent] != gInfo[playerid][e_tComponent]) {
 			if (!GivePlayerMoney(playerid, -GetTypeCost(gInfo[playerid][e_tType]))) {
 				PlayerPlaySoundOnPlayer(playerid, 1085);
 				Dialog_Message(playerid, _(TUNING_DIALOG_HEADER), _(TUNING_NO_ENOUGH_MONEY), _(TUNING_DIALOG_BUTTON_OK));
