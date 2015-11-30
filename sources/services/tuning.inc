@@ -190,10 +190,12 @@ TextListResponse:component_type(playerid, TextListType:response, itemid, itemval
 		gInfo[playerid][e_tComponent] = INVALID_COMPONENT_ID;
 		gInfo[playerid][e_tPrevComponent] = GetVehicleComponentInSlot(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tType]);
 
+		PlayerPlaySoundOnPlayer(playerid, 1083);
 		Tuning_UpdateCamera(playerid, gInfo[playerid][e_tType]);
 
 		TextList_Show(playerid, TextList:component_list);
 	} else if (response == TextList_Button1) {
+		PlayerPlaySoundOnPlayer(playerid, 1133);
 		Tuning_Stop(playerid);
 	}
 	return 1;
@@ -235,7 +237,7 @@ TextListResponse:component_list(playerid, TextListType:response, itemid, itemval
 	if (response == TextList_ListItem) {
 		gInfo[playerid][e_tComponent] = gInfo[playerid][e_tListComponents][itemid];
 		AddVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
-		PlayerPlaySoundOnPlayer(playerid, 1050);
+		PlayerPlaySoundOnPlayer(playerid, 1083);
 	} else if (response == TextList_Button1) {
 		if (gInfo[playerid][e_tComponent] == INVALID_COMPONENT_ID) {
 			Dialog_Message(playerid, _(TUNING_DIALOG_HEADER), _(TUNING_NOT_COMPONENT_SELECT), _(TUNING_DIALOG_BUTTON_OK));
@@ -256,6 +258,8 @@ TextListResponse:component_list(playerid, TextListType:response, itemid, itemval
 		} else {
 			AddVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPrevComponent]);
 		}
+
+		PlayerPlaySoundOnPlayer(playerid, 1084);
 
 		Tuning_UpdateCamera(playerid, CARMODTYPE_HOOD);
 		TextList_Show(playerid, TextList:component_type);
