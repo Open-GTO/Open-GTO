@@ -374,6 +374,8 @@ LOTTERY_START_MESSAGE_2 = Лотерея: До окончания розыгрыша осталось %d минут!
 
 // Tuning
 TUNING_TD_HEADER = Tuning
+TUNING_TD_COLOR = Color ~g~$%d
+TUNING_TD_PAINTJOB = Paintjob ~g~$%d
 TUNING_TD_TYPE_FORMAT = %s ~g~$%d
 TUNING_TD_BUTTON_BUY = Buy
 TUNING_TD_BUTTON_BACK = Back

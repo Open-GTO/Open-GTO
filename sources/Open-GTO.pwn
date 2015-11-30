@@ -70,6 +70,7 @@ Thanks:
 #include "vehicle/vehicle_radio"
 #include "vehicle/vehicle_premium"
 #include "vehicle/vehicle_component"
+#include "vehicle/vehicle_paintjob"
 #include "player/player_textdraw"
 #include "player/player_level"
 #include "player/player_premium"
