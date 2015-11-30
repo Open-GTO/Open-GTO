@@ -96,7 +96,7 @@ enum e_Tuning_Info {
 }
 
 static
-	gInfo[MAX_PLAYERS][e_Tuning_Info] = {-1, ...};
+	gInfo[MAX_PLAYERS][e_Tuning_Info];
 
 #define CARMODTYPE_COLOR    14
 #define CARMODTYPE_PAINTJOB 15
@@ -357,9 +357,6 @@ stock Tuning_Start(playerid)
 stock Tuning_Stop(playerid)
 {
 	// vehicle
-	gInfo[playerid][e_tVehicle] = 0;
-	gInfo[playerid][e_tModel] = 0;
-
 	new placeid = gInfo[playerid][e_tPlaceID];
 	gInfo[playerid][e_tPlaceID] = -1;
 
@@ -369,6 +366,9 @@ stock Tuning_Stop(playerid)
 	LinkVehicleToInterior(gInfo[playerid][e_tVehicle], 0);
 
 	vehicle_Engine(gInfo[playerid][e_tVehicle], VEHICLE_PARAMS_ON);
+
+	gInfo[playerid][e_tVehicle] = 0;
+	gInfo[playerid][e_tModel] = 0;
 
 	// player
 	SetPlayerVirtualWorld(playerid, 0);
