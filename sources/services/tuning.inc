@@ -237,7 +237,7 @@ TextListResponse:tuning_menu(playerid, TextListType:response, itemid, itemvalue[
 				}
 			}
 		}
-	} else if (response == TextList_Button1) {
+	} else if (response == TextList_Button1 || response == TextList_Cancel) {
 		Tuning_Stop(playerid);
 	}
 	return 1;
@@ -306,7 +306,7 @@ TextListResponse:component_list(playerid, TextListType:response, itemid, itemval
 				TextList_Show(playerid, TextList:tuning_menu);
 			}
 		}
-	} else if (response == TextList_Button2) {
+	} else if (response == TextList_Button2 || response == TextList_Cancel) {
 		if (gInfo[playerid][e_tPrevComponent] == 0) {
 			RemoveVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
 		} else {
