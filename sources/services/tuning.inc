@@ -158,7 +158,7 @@ Tuning_OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 Tuning_OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 {
 	for (new i = 0; i < sizeof(gTuningPlace); i++) {
-		if (areaid == gTuningPlace[i][e_tpDynamic] && !IsPlayerInRangeOfPoint(playerid, 5.0, gVPosX, gVPosY, gVPosZ)) {
+		if (areaid == gTuningPlace[i][e_tpDynamic] && !IsPlayerInTuning(playerid)) {
 			gInfo[playerid][e_tPlaceID] = -1;
 			return 1;
 		}
@@ -357,6 +357,9 @@ stock Tuning_Start(playerid)
 stock Tuning_Stop(playerid)
 {
 	// vehicle
+	gInfo[playerid][e_tVehicle] = 0;
+	gInfo[playerid][e_tModel] = 0;
+
 	new placeid = gInfo[playerid][e_tPlaceID];
 	gInfo[playerid][e_tPlaceID] = -1;
 
@@ -375,6 +378,11 @@ stock Tuning_Stop(playerid)
 	SetCameraBehindPlayer(playerid);
 
 	TextList_Close(playerid);
+}
+
+stock IsPlayerInTuning(playerid)
+{
+	return gInfo[playerid][e_tVehicle] != 0;
 }
 
 static stock Tuning_UpdateCamera(playerid, type)
