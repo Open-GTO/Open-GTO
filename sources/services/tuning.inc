@@ -12,11 +12,10 @@
 #define _tuning_included
 #pragma library tuning
 
-static const
-	Float:gVPosX = 615.5866,
-	Float:gVPosY = -74.4647,
-	Float:gVPosZ = 997.7192,
-	Float:gVPosA = 89.5622;
+#define TUNING_VEHICLE_POS_X 615.5866
+#define TUNING_VEHICLE_POS_Y -74.4647
+#define TUNING_VEHICLE_POS_Z 997.7192
+#define TUNING_VEHICLE_POS_A 89.5622
 
 forward OnVehicleTuning(playerid, vehicleid, componentid);
 forward OnVehicleTuningPaintjob(playerid, vehicleid, paintjobid);
@@ -331,8 +330,8 @@ stock Tuning_Start(playerid)
 	}
 
 	// vehicle
-	SetVehiclePos(gInfo[playerid][e_tVehicle], gVPosX, gVPosY, gVPosZ);
-	SetVehicleZAngle(gInfo[playerid][e_tVehicle], gVPosA);
+	SetVehiclePos(gInfo[playerid][e_tVehicle], TUNING_VEHICLE_POS_X, TUNING_VEHICLE_POS_Y, TUNING_VEHICLE_POS_Z);
+	SetVehicleZAngle(gInfo[playerid][e_tVehicle], TUNING_VEHICLE_POS_A);
 	SetVehicleVirtualWorld(gInfo[playerid][e_tVehicle], playerid);
 	LinkVehicleToInterior(gInfo[playerid][e_tVehicle], 2);
 
