@@ -16,3 +16,9 @@
 [submodule "sources/lib/mdialog"]
 	path = sources/lib/mdialog
 	url = https://github.com/Open-GTO/mdialog.git
+[submodule "sources/lib/zvehcomp"]
+	path = sources/lib/zvehcomp
+	url = https://github.com/Open-GTO/zvehcomp.git
+[submodule "sources/lib/zvehpaintjob"]
+	path = sources/lib/zvehpaintjob
+	url = https://github.com/Open-GTO/zvehpaintjob.git
