@@ -71,7 +71,6 @@ Thanks:
 #include "vehicle/vehicle_damage"
 #include "vehicle/vehicle_radio"
 #include "vehicle/vehicle_premium"
-#include "player/player_textdraw"
 #include "player/player_level"
 #include "player/player_premium"
 #include "player/player_weapon"
@@ -100,6 +99,7 @@ Thanks:
 #include "player/player_maptp"
 #include "player/player_text"
 #include "player/player_money"
+#include "player/player_money_td"
 #include "player/message/message_alert"
 #include "player/message/message_objective"
 #include "player/player"
@@ -220,7 +220,7 @@ public OnGameModeInit()
 	weapon_OnGameModeInit();
 	Premium_OnGameModeInit();
 	pl_weapon_OnGameModeInit();
-	pl_textdraw_OnGameModeInit();
+	pl_money_td_OnGameModeInit();
 	pl_level_OnGameModeInit();
 	widestrip_OnGameModeInit();
 	Beachside_OnGameModeInit();
@@ -317,7 +317,7 @@ public OnPlayerConnect(playerid)
 	player_OnPlayerConnect(playerid);
 	pt_chat_OnPlayerConnect(playerid);
 	pl_weapon_OnPlayerConnect(playerid);
-	pl_textdraw_OnPlayerConnect(playerid);
+	pl_money_td_OnPlayerConnect(playerid);
 	veh_fuel_OnPlayerConnect(playerid);
 	Mapicon_OnPlayerConnect(playerid);
 	Checkpoint_OnPlayerConnect(playerid);
@@ -338,7 +338,7 @@ public OnPlayerDisconnect(playerid, reason)
 	pt_chat_OnPlayerDisconnect(playerid, reason);
 	gh_OnPlayerDisconnect(playerid, reason);
 	pl_weapon_OnPlayerDisconnect(playerid, reason);
-	pl_textdraw_OnPlayerDisconnect(playerid, reason);
+	pl_money_td_OnPlayerDisconnect(playerid, reason);
 	pveh_OnPlayerDisconnect(playerid, reason);
 	player_SetSpawned(playerid, 0);
 	return 1;

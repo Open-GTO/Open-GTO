@@ -111,7 +111,8 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 
 stock UpdatePlayerLevelTextDraws(playerid)
 {
-	new level = GetPlayerLevel(playerid);
+	#pragma unused playerid
+	/*new level = GetPlayerLevel(playerid);
 
 	pl_textdraw_SetLevel(playerid, level);
 
@@ -122,7 +123,7 @@ stock UpdatePlayerLevelTextDraws(playerid)
 		new Float:max_current_xp = GetXPToLevel(level + 1);
 
 		pl_textdraw_SetXp(playerid, floatround(current_xp / max_current_xp * 100));
-	}
+	}*/
 }
 
 stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)

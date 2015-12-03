@@ -391,3 +391,14 @@ stock FixAscii(text[])
 		text[i] &= 0xFF;
 	}
 }
+
+stock InsertSpacesInString(string[], const size = sizeof(string), const between_pos = 3)
+{
+	for (new i = 1, length = strlen(string); i < length; i++) {
+		if ((length - i) % between_pos == 0) {
+			strins(string, " ", i, size);
+			i++;
+			length++;
+		}
+	}
+}

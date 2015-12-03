@@ -49,7 +49,7 @@ stock player_OnPlayerSpawn(playerid)
 	GivePlayerOwnedWeapon(playerid);
 	weapon_SetSkills(playerid);
 	PushHide(playerid);
-	pl_textdraw_Show(playerid);
+	pl_money_td_ShowTextDraw(playerid);
 	pl_spawn_UpdateRandomSpawnID(playerid);
 	return 1;
 }
@@ -138,7 +138,7 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 stock player_OnPlayerRequestClass(playerid, classid)
 {
 	#pragma unused classid
-	pl_textdraw_Hide(playerid);
+	pl_money_td_HideTextDraw(playerid);
 
 	// spawn system
 	pl_spawn_OnPlayerRequestClass(playerid, classid);

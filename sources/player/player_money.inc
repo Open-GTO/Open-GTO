@@ -13,14 +13,13 @@
 #pragma library pl_money
 
 
-stock SetPlayerMoney(playerid,money)
+stock SetPlayerMoney(playerid, money)
 {
 	SetPVarInt(playerid, "Money", money);
-	pl_textdraw_SetMoney(playerid, money);
-	return 1;
+	pl_money_td_SetMoney(playerid, money);
 }
 
-stock pl_money_GivePlayerMoney(playerid, money, showtext=0)
+stock pl_money_GivePlayerMoney(playerid, money, showtext = 1)
 {
 	if (money == 0) {
 		return 0;
@@ -38,14 +37,7 @@ stock pl_money_GivePlayerMoney(playerid, money, showtext=0)
 	}
 
 	if (showtext == 1) {
-		new string[MAX_STRING];
-		if (money > 0) {
-			format(string, sizeof(string), lang_texts[9][28], money);
-			SendClientMessage(playerid, COLOUR_MONEY_GOOD, string);
-		} else {
-			format(string, sizeof(string), lang_texts[9][29], -money);
-			SendClientMessage(playerid, COLOUR_MONEY_BAD, string);
-		}
+		pl_money_td_GiveMoney(playerid, money);
 	}
 
 	SetPlayerMoney(playerid, player_money + money);
