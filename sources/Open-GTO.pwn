@@ -588,7 +588,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		return 1;
 	}
 
-	if (PRESSED(KEY_CTRL_BACK) || PRESSED(KEY_ANALOG_UP) || PRESSED(KEY_ANALOG_DOWN) ||
+	if (PRESSED(KEY_NO) || PRESSED(KEY_ANALOG_UP) || PRESSED(KEY_ANALOG_DOWN) ||
 		PRESSED(KEY_ANALOG_LEFT) || PRESSED(KEY_ANALOG_RIGHT)
 		) {
 		new player_state = GetPlayerState(playerid);

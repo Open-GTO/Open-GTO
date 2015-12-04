@@ -15,7 +15,7 @@
 
 stock vh_menu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	if (PRESSED(KEY_CTRL_BACK)) {
+	if (PRESSED(KEY_NO)) {
 		Dialog_Show(playerid, Dialog:VehicleMenu);
 		return 1;
 	}
