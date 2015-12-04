@@ -51,20 +51,18 @@ stock ss_OnPlayerEnterCheckpoint(playerid, cp)
 			SetPVarInt(playerid, "SkinShop_ShopID", id);
 			SetPVarInt(playerid, "SkinShop_PlayerAtSkinShop", 1);
 
-			SkinSelect_Start(playerid);
+			SkinSelect_Start(playerid, SkinSelect:SkinShop);
 			return 1;
 		}
 	}
 	return 0;
 }
 
-stock ss_OnSkinSelectResponse(playerid, SS_Response:type, oldskin, newskin)
+SkinSelectResponse:SkinShop(playerid, SS_Response:type, oldskin, newskin)
 {
-	#pragma unused oldskin, newskin
 	if (type == SS_Response:SS_Response_Stop) {
 		SkinShop_Exit(playerid);
 		SkinShop_DeletePVars(playerid);
-		return 0;
 	} else if (type == SS_Response:SS_Response_Select) {
 		if (GetPlayerMoney(playerid) < SKINS_COST) {
 			new string[MAX_STRING];
@@ -73,10 +71,7 @@ stock ss_OnSkinSelectResponse(playerid, SS_Response:type, oldskin, newskin)
 		} else {
 			Dialog_Show(playerid, Dialog:ServiceSkin);
 		}
-		return 0;
 	}
-
-	return 1;
 }
 
 DialogCreate:ServiceSkin(playerid)
@@ -90,10 +85,12 @@ DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])
 		return 0;
 	}
 
+	new newskin = SkinSelect_GetCurrentSkin(playerid);
+
 	SkinSelect_Stop(playerid);
 	SkinShop_Exit(playerid);
 	
-	player_SetSkin(playerid, SkinSelect_GetCurrentSkin(playerid));
+	player_SetSkin(playerid, newskin);
 	GivePlayerMoney(playerid, -SKINS_COST);
 	
 	SkinShop_DeletePVars(playerid);

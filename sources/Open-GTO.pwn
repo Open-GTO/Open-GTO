@@ -820,12 +820,3 @@ public OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 
 	return 1;
 }
-
-public OnSkinSelectResponse(playerid, SS_Response:type, oldskin, newskin)
-{
-	if (ss_OnSkinSelectResponse(playerid, type, oldskin, newskin)) {
-		return 0;
-	}
-
-	return 1;
-}
