@@ -380,13 +380,19 @@ TUNING_TD_TYPE_FORMAT = %s ~g~$%d
 TUNING_TD_BUTTON_BUY = Buy
 TUNING_TD_BUTTON_BACK = Back
 TUNING_TD_BUTTON_EXIT = Exit
+TUNING_TD_COLOR_HEADER = Color
+TUNING_TD_COLOR_COLOR1 = Color 1
+TUNING_TD_COLOR_COLOR2 = Color 2
 
 TUNING_ALERT_HEADER = Tuning
 TUNING_ALERT_MESSAGE = Press ~k~~TOGGLE_SUBMISSIONS~ to enter
 TUNING_ALERT_ERROR_MESSAGE = Only for players with vehicles
 
 TUNING_DIALOG_HEADER = Тюнинг
+TUNING_DIALOG_COLOR_HEADER = Покраска
 TUNING_DIALOG_BUTTON_OK = ОК
 
 TUNING_NO_ENOUGH_MONEY = У вас недостаточно денег для покупки этой модификации
 TUNING_NOT_COMPONENT_SELECT = Сначала выберите модификацию
+TUNING_COLOR_NO_ENOUGH_MONEY = У вас недостаточно денег для покупки этого цвета
+TUNING_COLOR_NOT_SELECT = Сначала выберите цвет

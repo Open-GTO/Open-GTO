@@ -83,19 +83,32 @@ static gTuningPlace[][e_TuningPlace_Info] = {
 enum e_Tuning_Info {
 	e_tVehicle,
 	e_tModel,
+	// component
 	e_tType,
 	e_tComponent,
-	e_tCameraType,
 	e_tListTypes[MAX_COMPONENT_TYPES],
 	e_tListComponents[MAX_COMPONENTS],
 	e_tListCount,
 	e_tListOffset,
 	e_tPrevComponent,
+	// color
+	e_tColorType,
+	e_tColor[2],
+	e_tPrevColor[2],
+	// paintjob
+	e_tPaintjob,
+	e_tPrevPaintjob,
+	// camera
+	e_tCameraType,
+	// other
 	e_tPlaceID,
 }
 
 static
 	gInfo[MAX_PLAYERS][e_Tuning_Info];
+
+#define INVALID_COLOR_ID    -1
+#define INVALID_PAINTJOB_ID -1
 
 #define CARMODTYPE_COLOR    14
 #define CARMODTYPE_PAINTJOB 15
@@ -225,20 +238,140 @@ TextListResponse:tuning_menu(playerid, TextListType:response, itemid, itemvalue[
 		} else {
 			switch (itemid) {
 				case 0: {
-					new string[128];
-					format(string, 128, "color %d %s", itemid, itemvalue);
-					SendClientMessage(playerid, -1, string);
+					TextList_Show(playerid, TextList:color_menu);
 				}
 				case 1: {
-					new string[128];
-					format(string, 128, "paintjob %d %s", itemid, itemvalue);
-					SendClientMessage(playerid, -1, string);
+					TextList_Show(playerid, TextList:paintjob_select);
 				}
 			}
 		}
 	} else if (response == TextList_Button1 || response == TextList_Cancel) {
 		Tuning_Stop(playerid);
 	}
+	return 1;
+}
+
+TextListCreate:color_menu(playerid)
+{
+	new items[2][TEXTLIST_MAX_ITEM_NAME];
+
+	strcat(items[0], _(TUNING_TD_COLOR_COLOR1));
+	strcat(items[1], _(TUNING_TD_COLOR_COLOR2));
+
+	TextList_Open(playerid, TextList:color_menu, items, 2,
+	              _(TUNING_TD_COLOR_HEADER), _(TUNING_TD_BUTTON_BACK));
+	return 1;
+}
+
+TextListResponse:color_menu(playerid, TextListType:response, itemid, itemvalue[])
+{
+	if (response == TextList_ListItem) {
+		gInfo[playerid][e_tColorType] = itemid;
+		gInfo[playerid][e_tColor][0] = INVALID_COLOR_ID;
+		gInfo[playerid][e_tColor][1] = INVALID_COLOR_ID;
+
+		GetVehicleColor(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPrevColor][0], gInfo[playerid][e_tPrevColor][1]); 
+
+		TextList_Show(playerid, TextList:color_select);
+
+		PlayerPlaySoundOnPlayer(playerid, 1083);
+	} else if (response == TextList_Button1 || response == TextList_Cancel) {
+		TextList_Show(playerid, TextList:tuning_menu);
+
+		PlayerPlaySoundOnPlayer(playerid, 1084);
+	}
+	return 1;
+}
+
+TextListCreate:color_select(playerid)
+{
+	new
+		items[TEXTLIST_MAX_ITEMS][TEXTLIST_MAX_ITEM_NAME],
+		items_bg_colors[TEXTLIST_MAX_ITEMS] = {0xFFFFFFFF, ...},
+		items_fg_colors[TEXTLIST_MAX_ITEMS] = {0x000000FF, ...},
+		item_index;
+
+	for (new i = 0; i < COLOR_COUNT; i++) {
+		if (colors_Array[item_index][color_name][0] == '\0') {
+			continue;
+		}
+
+		strmid(items[item_index], colors_Array[item_index][color_name], 0, strlen(colors_Array[item_index][color_name]));
+		
+		items_bg_colors[item_index] = colors_Array[item_index][color_code];
+
+		if (colors_Array[item_index][color_code] == 0x000000FF) {
+			items_fg_colors[item_index] = 0xFFFFFFFF;
+		}
+
+		item_index++;
+		if (item_index >= TEXTLIST_MAX_ITEMS) {
+			break;
+		}
+	}
+
+	new header[16];
+	format(header, sizeof(header), "%s %d", _(TUNING_TD_COLOR_HEADER), gInfo[playerid][e_tColorType] + 1);
+
+	TextList_Open(playerid, TextList:color_select, items, item_index,
+	              header, _(TUNING_TD_BUTTON_BUY), _(TUNING_TD_BUTTON_BACK),
+	              .lists_fg_color = items_fg_colors,
+	              .lists_bg_color = items_bg_colors);
+	return 1;
+}
+
+TextListResponse:color_select(playerid, TextListType:response, itemid, itemvalue[])
+{
+	if (response == TextList_ListItem) {
+		new type = gInfo[playerid][e_tColorType];
+		gInfo[playerid][e_tColor][type] = Color_GetVehicleCode(itemid);
+
+		if (type == 0) {
+			ChangeVehicleColor(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tColor][0], gInfo[playerid][e_tPrevColor][1]);
+		} else if (type == 1) {
+			ChangeVehicleColor(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPrevColor][0], gInfo[playerid][e_tColor][1]);
+		}
+
+		PlayerPlaySoundOnPlayer(playerid, 1083);
+	} else if (response == TextList_Button1) {
+		new type = gInfo[playerid][e_tColorType];
+
+		if (gInfo[playerid][e_tColor][type] == INVALID_COLOR_ID) {
+			Dialog_Message(playerid, _(TUNING_COLOR_DIALOG_HEADER), _(TUNING_COLOR_NOT_SELECT), _(TUNING_DIALOG_BUTTON_OK));
+		} else if (gInfo[playerid][e_tPrevColor][type] != gInfo[playerid][e_tColor][type]) {
+			if (!GivePlayerMoney(playerid, -GetModCost(CARMODTYPE_COLOR))) {
+				Dialog_Message(playerid, _(TUNING_COLOR_DIALOG_HEADER), _(TUNING_COLOR_NO_ENOUGH_MONEY), _(TUNING_DIALOG_BUTTON_OK));
+				PlayerPlaySoundOnPlayer(playerid, 1085);
+			} else {
+				CallLocalFunction("OnVehicleTuningRespray", "iii", playerid, gInfo[playerid][e_tVehicle],
+				                  gInfo[playerid][e_tColor][0], gInfo[playerid][e_tColor][1]);
+				TextList_Show(playerid, TextList:color_menu);
+				PlayerPlaySoundOnPlayer(playerid, 1134);
+			}
+		}
+	} else if (response == TextList_Button2 || response == TextList_Cancel) {
+		new type = gInfo[playerid][e_tColorType];
+
+		if (gInfo[playerid][e_tPrevColor][type] == 0) {
+			ChangeVehicleColor(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tColor][0], gInfo[playerid][e_tColor][1]);
+		} else {
+			ChangeVehicleColor(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPrevColor][0], gInfo[playerid][e_tPrevColor][1]);
+		}
+
+		PlayerPlaySoundOnPlayer(playerid, 1084);
+
+		TextList_Show(playerid, TextList:color_menu);
+	}
+	return 1;
+}
+
+TextListCreate:paintjob_select(playerid)
+{
+	return 1;
+}
+
+TextListResponse:paintjob_select(playerid, TextListType:response, itemid, itemvalue[])
+{
 	return 1;
 }
 
@@ -280,8 +413,8 @@ TextListCreate:component_list(playerid)
 	GetComponentTypeName(type, header);
 
 	TextList_Open(playerid, TextList:component_list, items, item_index,
-		          header, _(TUNING_TD_BUTTON_BUY), _(TUNING_TD_BUTTON_BACK),
-		          .lists_fg_color = items_colors);
+	              header, _(TUNING_TD_BUTTON_BUY), _(TUNING_TD_BUTTON_BACK),
+	              .lists_fg_color = items_colors);
 	return 1;
 }
 

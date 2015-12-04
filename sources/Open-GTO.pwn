@@ -51,6 +51,7 @@ Thanks:
 #include "lib/zlang/zlang"
 #include "lib/zvehcomp/zvehcomp"
 #include "lib/zvehpaintjob/zvehpaintjob"
+#include "lib/zvehcolor/zvehcolor"
 #include "lib/mdialog/mdialog"
 #include "lib/skinselect/skinselect"
 #include "lib/GarageBlock"
