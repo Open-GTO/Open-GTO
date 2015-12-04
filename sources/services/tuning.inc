@@ -287,7 +287,12 @@ TextListResponse:color_menu(playerid, TextListType:response, itemid, itemvalue[]
 
 		PlayerPlaySoundOnPlayer(playerid, 1083);
 	} else if (response == TextList_Button1 || response == TextList_Cancel) {
-		TextList_Show(playerid, TextList:tuning_menu);
+		new placeid = gInfo[playerid][e_tPlaceID];
+		if (gTuningPlace[placeid][e_tpType] == TUNING_PLACE_TYPE_SPRAY) {
+			Tuning_Stop(playerid);
+		} else {
+			TextList_Show(playerid, TextList:tuning_menu);
+		}
 
 		PlayerPlaySoundOnPlayer(playerid, 1084);
 	}
