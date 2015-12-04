@@ -98,7 +98,7 @@ stock account_Register(playerid, password[])
 	// login
 	account_Login(playerid, password);
 
-	SendClientMessage(playerid, COLOUR_GREEN, _(ACCOUNT_SUCCESS_REGISTER));
+	SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_SUCCESS_REGISTER));
 	Log_Game("create_account: success %s(%d)", ReturnPlayerName(playerid), playerid);
 	return 1;
 }
@@ -135,7 +135,7 @@ stock account_Login(playerid, password[])
 		
 		GivePVarInt(playerid, "Player_Login_Attempt", 1);
 		if (GetPVarInt(playerid, "Player_Login_Attempt") >= MAX_PLAYER_LOGIN_ATTEMPT) {
-			SendClientMessage(playerid, COLOUR_RED, _(ACCOUNT_AUTO_KICK));
+			SendClientMessage(playerid, COLOR_RED, _(ACCOUNT_AUTO_KICK));
 			KickPlayer(playerid, _(ACCOUNT_INCORRECT_PASSWORD));
 		} else {
 			Dialog_Show(playerid, Dialog:AccountLogin);

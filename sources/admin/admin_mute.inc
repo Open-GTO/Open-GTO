@@ -44,7 +44,7 @@ stock MutePlayerTimer(playerid)
 
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[13][54], ReturnPlayerName(playerid), playerid);
-		SendClientMessageToAll(COLOUR_YELLOW, string);
+		SendClientMessageToAll(COLOR_YELLOW, string);
 	}
 }
 
@@ -55,7 +55,7 @@ COMMAND:mute(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -64,12 +64,12 @@ COMMAND:mute(playerid, params[])
 		mutetime = strval(strcharsplit(params, idx, ' '));
 
 	if (mutetime < 1) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][13]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[13][13]);
 		return 1;
 	}
 
 	if (!IsPlayerConnected(muteid)) {
-		SendClientMessage(playerid, COLOUR_RED, "Этот игрок отключился!");
+		SendClientMessage(playerid, COLOR_RED, "Этот игрок отключился!");
 		return 1;
 	}
 
@@ -77,10 +77,10 @@ COMMAND:mute(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][24], ReturnPlayerName(playerid), mutetime);
-	SendClientMessage(muteid, COLOUR_RED, string);
+	SendClientMessage(muteid, COLOR_RED, string);
 
 	format(string, sizeof(string), lang_texts[12][50], ReturnPlayerName(muteid), mutetime);
-	SendClientMessageToAll(COLOUR_WHITE, string);
+	SendClientMessageToAll(COLOR_WHITE, string);
 
 	Log_Game(lang_texts[13][7], ReturnPlayerName(muteid), ReturnPlayerName(playerid), mutetime);
 	return 1;
@@ -93,7 +93,7 @@ COMMAND:unmute(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -101,7 +101,7 @@ COMMAND:unmute(playerid, params[])
 	new unmuteid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(unmuteid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -109,10 +109,10 @@ COMMAND:unmute(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][27], ReturnPlayerName(playerid));
-	SendClientMessage(unmuteid, COLOUR_GREEN, string);
+	SendClientMessage(unmuteid, COLOR_GREEN, string);
 	
 	format(string, sizeof(string), lang_texts[12][51], ReturnPlayerName(unmuteid));
-	SendClientMessageToAll(COLOUR_WHITE, string);
+	SendClientMessageToAll(COLOR_WHITE, string);
 	
 	Log_Game(lang_texts[13][14], ReturnPlayerName(unmuteid), ReturnPlayerName(playerid));
 	return 1;

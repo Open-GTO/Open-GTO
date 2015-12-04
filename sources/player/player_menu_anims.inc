@@ -1975,7 +1975,7 @@ DialogResponse:AnimMenu(playerid, response, listitem, inputtext[])
 COMMAND:dance(playerid, params[])
 {
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[15][83]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[15][83]);
 		return 1;
 	}
 
@@ -1993,7 +1993,7 @@ COMMAND:dance(playerid, params[])
 			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DANCE4);
 		}
 		default: {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[15][83]);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[15][83]);
 		}
 	}
 	return 1;

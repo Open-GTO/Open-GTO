@@ -302,11 +302,11 @@ stock ShowWeaponsOnLevel(playerid, newlevel, oldlevel)
 
 		if (Weapons[weaponid][Weapon_Level] > oldlevel && Weapons[weaponid][Weapon_Level] <= newlevel) {
 			if (wepfound == 0) {
-				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[9][24]);
+				SendClientMessage(playerid, COLOR_GREEN, lang_texts[9][24]);
 				wepfound = 1;
 			}
 			format(string, sizeof(string), lang_texts[9][25], ReturnWeaponName(weaponid), GetWeaponCost(weaponid));
-			SendClientMessage(playerid, COLOUR_MISC, string);
+			SendClientMessage(playerid, COLOR_MISC, string);
 		}
 	}
 	return 1;

@@ -31,7 +31,7 @@ stock player_SaveConfig(file_config)
 stock player_OnPlayerSpawn(playerid)
 {
 	if (player_IsMuted(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, _(MUTED_HELP_MESSAGE));
+		SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
 	}
 	
 	if (player_IsJailed(playerid)) {
@@ -74,7 +74,7 @@ stock player_OnPlayerDisconnect(playerid, reason)
 		case 2: strcat(string, " (кикнут)", sizeof(string));
 	}
 
-	SendClientMessageToAll(COLOUR_GREY, string);
+	SendClientMessageToAll(COLOR_GREY, string);
 
 	GangMemberLogout(playerid, player_GetGangID(playerid));
 	DisablePlayerRaceCheckpoint(playerid);
@@ -84,18 +84,18 @@ stock player_OnPlayerDisconnect(playerid, reason)
 stock player_OnPlayerConnect(playerid)
 {
 	Chat_Clear(playerid);
-	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[9][35]);
+	SendClientMessage(playerid, COLOR_WHITE, lang_texts[9][35]);
 
 	new plrIP[MAX_IP], string[MAX_STRING];
 	GetPlayerIp(playerid, plrIP, sizeof(plrIP));
 	SetPVarString(playerid, "IP", plrIP);
 	if (!NameCharCheck( ReturnPlayerName(playerid) )) {
 		format(string, sizeof(string), lang_texts[9][12], ALLOWED_NICK_SYMBOLS_STR);
-		SendClientMessage(playerid, COLOUR_RED, string);
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[9][13]);
+		SendClientMessage(playerid, COLOR_RED, string);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[9][13]);
 		KickPlayer(playerid, "Такой ник запрещён.");
 	}
-	SetPlayerColor(playerid, COLOUR_PLAYER);
+	SetPlayerColor(playerid, COLOR_PLAYER);
 	oBan_Check(playerid);
 }
 
@@ -192,20 +192,20 @@ stock player_OnLogin(playerid)
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	format(string, sizeof(string), lang_texts[15][86], VERSION_STRING);
-	SendClientMessage(playerid, COLOUR_LIGHTRED, string);
-	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][87]);
-	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][88]);
-	SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][89]);
+	SendClientMessage(playerid, COLOR_LIGHTRED, string);
+	SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][87]);
+	SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][88]);
+	SendClientMessage(playerid, COLOR_GREEN, lang_texts[15][89]);
 
 	if (IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_GREEN, _(ACCOUNT_LOGIN_ROOT));
+		SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_ROOT));
 	} else if (IsPlayerAdm(playerid)) {
-		SendClientMessage(playerid, COLOUR_GREEN, _(ACCOUNT_LOGIN_ADMIN));
+		SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_ADMIN));
 	} else if (IsPlayerMod(playerid)) {
-		SendClientMessage(playerid, COLOUR_GREEN, _(ACCOUNT_LOGIN_MODER));
+		SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_MODER));
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	} else {
-		SendClientMessage(playerid, COLOUR_GREEN, _(ACCOUNT_SUCCESS_LOGIN));
+		SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_SUCCESS_LOGIN));
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	}
 
@@ -215,7 +215,7 @@ stock player_OnLogin(playerid)
 		}
 
 		format(string, sizeof(string), _(PLAYER_CONNECT), playername, playerid);
-		SendClientMessage(id, COLOUR_WHITE, string);
+		SendClientMessage(id, COLOR_WHITE, string);
 	}
 
 	// admin
@@ -236,7 +236,7 @@ stock player_OnLogin(playerid)
 			player_SetGangID(playerid, 0);
 
 			format(tmpname, sizeof(tmpname), "Банда '%s' была расформирована.", gangname);
-			SendClientMessage(playerid, COLOUR_ORANGE, tmpname);
+			SendClientMessage(playerid, COLOR_ORANGE, tmpname);
 		} else {
 			GangMemberLogin(playerid, GangLoad(gangname));
 		}

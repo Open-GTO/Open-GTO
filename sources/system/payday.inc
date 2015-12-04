@@ -71,7 +71,7 @@ stock payday_Give()
 		}
 			
 		format(string, sizeof(string), _(PAYDAY_MESSAGE), pay_money, pay_xp);
-		SendClientMessage(id, COLOUR_MONEY_GOOD, string);
+		SendClientMessage(id, COLOR_MONEY_GOOD, string);
 
 		format(string, sizeof(string), _(PAYDAY_GAMETEXT), pay_money, pay_xp);
 		GameTextForPlayer(id, string, 2000, 5);

@@ -29,15 +29,15 @@ stock KickPlayer(playerid, reason[], showreason = 1)
 
 	if (IsPlayerRconAdmin(playerid)) {
 		format(string, sizeof(string), lang_texts[9][4], reason);
-		SendClientMessage(playerid, COLOUR_YELLOW, string);
+		SendClientMessage(playerid, COLOR_YELLOW, string);
 		return 0;
 	}
 
 	if (showreason == 1) {
 		format(string, sizeof(string), lang_texts[9][5], reason);
-		SendClientMessage(playerid, COLOUR_RED, string);
+		SendClientMessage(playerid, COLOR_RED, string);
 		format(string, sizeof(string), lang_texts[9][6], playername, reason);
-		SendClientMessageToAll(COLOUR_MISC, string);
+		SendClientMessageToAll(COLOR_MISC, string);
 	}
 	
 	GameTextForPlayer(playerid, "~r~Connection Lost.", 1000, 5); //  send msg first

@@ -84,7 +84,7 @@ stock DisableVehicleRadio(vehicleid)
 	foreach (new playerid : Player) {
 		if (vehicleid == GetPlayerVehicleID(playerid)) {
 			StopAudioStreamForPlayer(playerid);
-			SendClientMessage(playerid, COLOUR_SKYBLUE, "* Радио выключено");
+			SendClientMessage(playerid, COLOR_SKYBLUE, "* Радио выключено");
 		}
 	}
 	return 1;
@@ -100,7 +100,7 @@ stock SetVehicleRadio(vehicleid, radioid)
 	foreach (new playerid : Player) {
 		if (vehicleid == GetPlayerVehicleID(playerid)) {
 			PlayAudioStreamForPlayer(playerid, vehicle_radio[radioid][vehradio_URL]);
-			SendClientMessage(playerid, COLOUR_SKYBLUE, string);
+			SendClientMessage(playerid, COLOR_SKYBLUE, string);
 		}
 	}
 	return 1;

@@ -319,7 +319,7 @@ stock housing_OnGameModeInit()
 		house_icon[id] = Mapicon_Create(Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ], icon_type, 0);
 		
 		housing_Create3DTextLabelString(id, string);
-		House3DTextLabel[id] = Create3DTextLabel(string, COLOUR_WHITE, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.75, HouseDistanceOfShowLabel, 0, 1);
+		House3DTextLabel[id] = Create3DTextLabel(string, COLOR_WHITE, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.75, HouseDistanceOfShowLabel, 0, 1);
 		
 		Houses[id][Houses_VirtualWorld] = id+1;
 	}
@@ -487,7 +487,7 @@ DialogResponse:HouseMenu(playerid, response, listitem, inputtext[])
 				return 1;
 			}
 			SetPlayerPosEx(playerid, Houses[id][Houses_EnterX], Houses[id][Houses_EnterY], Houses[id][Houses_EnterZ], 0, Houses[id][Houses_Interior], Houses[id][Houses_VirtualWorld]);
-			SendClientMessage(playerid, COLOUR_GREEN, lang_texts[8][73]);
+			SendClientMessage(playerid, COLOR_GREEN, lang_texts[8][73]);
 			return 1;
 		}
 		case 2:
@@ -749,7 +749,7 @@ stock DeleteRenter(playerid)
 		{
 			if (!strcmp(Houses[id][Houses_RentName], ReturnPlayerName(i), true))
 			{
-				SendClientMessage(i, COLOUR_LIGHTRED, lang_texts[8][60]);
+				SendClientMessage(i, COLOR_LIGHTRED, lang_texts[8][60]);
 				Mapicon_ResetTypeForPlayer(i, house_icon[id]);
 			}
 		}
@@ -818,7 +818,7 @@ stock house_Buy(playerid)
 			if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(ownerid), true))
 			{
 				format(temp, sizeof(temp), lang_texts[8][39], ReturnPlayerName(playerid), Houses[id][Houses_Name]);
-				SendClientMessage(ownerid, COLOUR_RED, temp);
+				SendClientMessage(ownerid, COLOR_RED, temp);
 				GivePlayerMoney(ownerid, price, 1);
 				break;
 			}
@@ -871,7 +871,7 @@ stock house_Sell(playerid)
 		new temp[MAX_STRING];
 		format(temp, sizeof(temp), lang_texts[8][24], Houses[id][Houses_Name]);
 		Dialog_Message(playerid, lang_texts[8][22], temp, lang_texts[8][87]);
-		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[8][25]);
+		SendClientMessage(playerid, COLOR_GREEN, lang_texts[8][25]);
 		Log_Game("player: %s(%d): sold the '%s' (house)", ReturnPlayerName(playerid), playerid, Houses[id][Houses_Name]);
 	}
 	return 1;
@@ -1036,7 +1036,7 @@ stock housing_Update3DTextLabelText()
 	for (new id = 0; id < sizeof(Houses); id++)
 	{
 		housing_Create3DTextLabelString(id, string);
-		Update3DTextLabelText(House3DTextLabel[id], COLOUR_WHITE, string);
+		Update3DTextLabelText(House3DTextLabel[id], COLOR_WHITE, string);
 	}
 	return 1;
 }

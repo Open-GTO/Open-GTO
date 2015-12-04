@@ -11,12 +11,12 @@ forward adm_click_KickPlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_KickPlayer(playerid, clickedid, listitem, inputtext[])
 {
 	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
 
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 0;
 	}
 
@@ -26,10 +26,10 @@ public adm_click_KickPlayer(playerid, clickedid, listitem, inputtext[])
 	GetPlayerName(clickedid, kickedname, sizeof(kickedname));
 
 	format(string, sizeof(string), lang_texts[12][60], kickedname, clickedid, inputtext);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][61], kickedname, clickedid, ReturnPlayerName(playerid), inputtext);
-	SendClientMessageToAll(COLOUR_WHITE, string);
+	SendClientMessageToAll(COLOR_WHITE, string);
 
 	KickPlayer(clickedid, inputtext);
 	return 1;
@@ -40,12 +40,12 @@ public adm_click_MutePlayer(playerid, clickedid, listitem, inputtext[])
 {
 	new mutetime = strval(inputtext);
 	if (mutetime < 1) {
-		SendClientMessage(playerid, COLOUR_RED, "Неправильное время затыкания!");
+		SendClientMessage(playerid, COLOR_RED, "Неправильное время затыкания!");
 		return 0;
 	}
 
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, "Этот игрок отключился!");
+		SendClientMessage(playerid, COLOR_RED, "Этот игрок отключился!");
 		return 0;
 	}
 
@@ -53,10 +53,10 @@ public adm_click_MutePlayer(playerid, clickedid, listitem, inputtext[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][24], ReturnPlayerName(playerid), mutetime);
-	SendClientMessage(clickedid, COLOUR_RED, string);
+	SendClientMessage(clickedid, COLOR_RED, string);
 
 	format(string, sizeof(string), lang_texts[12][50], ReturnPlayerName(clickedid), mutetime);
-	SendClientMessageToAll(COLOUR_WHITE, string);
+	SendClientMessageToAll(COLOR_WHITE, string);
 
 	Log_Game(lang_texts[13][7], ReturnPlayerName(clickedid), ReturnPlayerName(playerid), mutetime);
 	return 1;
@@ -66,7 +66,7 @@ forward adm_click_UnMutePlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_UnMutePlayer(playerid, clickedid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][26]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][26]);
 		return 1;
 	}
 
@@ -75,10 +75,10 @@ public adm_click_UnMutePlayer(playerid, clickedid, listitem, inputtext[])
 	new string[MAX_STRING];
 
 	format(string, sizeof(string), lang_texts[12][27], ReturnPlayerName(playerid));
-	SendClientMessage(clickedid, COLOUR_GREEN, string);
+	SendClientMessage(clickedid, COLOR_GREEN, string);
 
 	format(string, sizeof(string), lang_texts[12][51], ReturnPlayerName(clickedid));
-	SendClientMessageToAll(COLOUR_WHITE, string);
+	SendClientMessageToAll(COLOR_WHITE, string);
 
 	Log_Game(lang_texts[13][14], ReturnPlayerName(clickedid), ReturnPlayerName(playerid));
 	return 1;
@@ -88,7 +88,7 @@ forward adm_click_JailPlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_JailPlayer(playerid, clickedid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(clickedid) || (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid))) {
-		SendClientMessage(playerid,COLOUR_RED,lang_texts[12][2]);
+		SendClientMessage(playerid,COLOR_RED,lang_texts[12][2]);
 		return 0;
 	}
 	
@@ -98,7 +98,7 @@ public adm_click_JailPlayer(playerid, clickedid, listitem, inputtext[])
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][18], ReturnPlayerName(playerid));
-	SendClientMessage(clickedid, COLOUR_RED, string);
+	SendClientMessage(clickedid, COLOR_RED, string);
 	
 	if (1 <= jailt <= 4320) {
 		format(string, sizeof(string), "на %d минут", jailt);
@@ -107,7 +107,7 @@ public adm_click_JailPlayer(playerid, clickedid, listitem, inputtext[])
 	}
 
 	format(string, sizeof(string), "SERVER: %s был арестован %s", ReturnPlayerName(clickedid), string);
-	SendClientMessageToAll(COLOUR_WHITE, string);
+	SendClientMessageToAll(COLOR_WHITE, string);
 
 	GameTextForPlayer(playerid, "~w~ You has been ~r~Jailed~w~!", 5000, 4);
 	return 1;
@@ -117,12 +117,12 @@ forward adm_click_UnJailPlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_UnJailPlayer(playerid, clickedid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
 
 	if (!player_IsJailed(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][22]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[13][22]);
 		return 0;
 	}
 
@@ -130,10 +130,10 @@ public adm_click_UnJailPlayer(playerid, clickedid, listitem, inputtext[])
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][21], ReturnPlayerName(playerid));
-	SendClientMessage(clickedid, COLOUR_GREEN, string);
+	SendClientMessage(clickedid, COLOR_GREEN, string);
 
 	format(string, sizeof(string), lang_texts[13][53], ReturnPlayerName(playerid));
-	SendClientMessageToAll(COLOUR_WHITE, string);
+	SendClientMessageToAll(COLOR_WHITE, string);
 	return 1;
 }
 
@@ -141,13 +141,13 @@ forward adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 0;
 	}
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][34], ReturnPlayerName(clickedid), clickedid);
-	SendClientMessage(playerid, COLOUR_YELLOW, string);
+	SendClientMessage(playerid, COLOR_YELLOW, string);
 
 	switch( player_GetStatus(clickedid) ) {
 		case STATUS_LEVEL_MODER: set(string, lang_texts[12][87]);
@@ -155,24 +155,24 @@ public adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 		case STATUS_LEVEL_RCON: set(string, lang_texts[12][94]);
 		default: set(string, lang_texts[12][88]);
 	}
-	SendClientMessage(playerid,COLOUR_LIGHTRED,string);
+	SendClientMessage(playerid,COLOR_LIGHTRED,string);
 
 	format(string, sizeof(string), lang_texts[12][35], GetPlayerLevel(clickedid), GetPlayerXP(clickedid));	//Level, XP
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), lang_texts[12][36], GetPlayerMoney(clickedid), GetPlayerBankMoney(clickedid));	//Money, Bank
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), lang_texts[12][38], player_GetDeaths(clickedid), player_GetKills(clickedid));	//Kills, Deaths
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), lang_texts[12][71], player_GetJailCount(clickedid), player_GetMuteCount(clickedid));	//Jailed, Muted
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 	
 	new playerIP[MAX_IP];
 	GetPVarString(clickedid, "IP", playerIP, sizeof(playerIP));
 	format(string, sizeof(string), lang_texts[12][72], GetPlayerPing(clickedid), playerIP);
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 	return 1;
 }
 
@@ -180,12 +180,12 @@ forward adm_click_KillPlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_KillPlayer(playerid, clickedid, listitem, inputtext[])
 {
 	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
 
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 0;
 	}
 
@@ -194,10 +194,10 @@ public adm_click_KillPlayer(playerid, clickedid, listitem, inputtext[])
 	new string[MAX_STRING];
 
 	format(string, sizeof(string), lang_texts[12][62], ReturnPlayerName(clickedid), clickedid);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][63], ReturnPlayerName(playerid));
-	SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
+	SendClientMessage(clickedid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -205,7 +205,7 @@ forward adm_click_TeleportToPlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_TeleportToPlayer(playerid, clickedid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 0;
 	}
 
@@ -231,7 +231,7 @@ public adm_click_TeleportToPlayer(playerid, clickedid, listitem, inputtext[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][66], ReturnPlayerName(clickedid), clickedid);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -239,12 +239,12 @@ forward adm_click_TeleportToMe(playerid, clickedid, listitem, inputtext[]);
 public adm_click_TeleportToMe(playerid, clickedid, listitem, inputtext[])
 {
 	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
 
 	if (!IsPlayerConnected(clickedid) || IsPlayerInAnyDM(clickedid) || IsPlayerInAnyRace(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 0;
 	}
 
@@ -270,10 +270,10 @@ public adm_click_TeleportToMe(playerid, clickedid, listitem, inputtext[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][66], ReturnPlayerName(playerid), playerid);
-	SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
+	SendClientMessage(clickedid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][67], ReturnPlayerName(clickedid), clickedid);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -281,19 +281,19 @@ forward adm_click_SetHealth(playerid, clickedid, listitem, inputtext[]);
 public adm_click_SetHealth(playerid, clickedid, listitem, inputtext[])
 {
 	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
 
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 0;
 	}
 
 	new Float:health = floatstr(inputtext);
 
 	if (health < 10.0 || health > 300.0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][44]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][44]);
 		return 0;
 	}
 
@@ -305,19 +305,19 @@ forward adm_click_SetArmour(playerid, clickedid, listitem, inputtext[]);
 public adm_click_SetArmour(playerid, clickedid, listitem, inputtext[])
 {
 	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
 
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 0;
 	}
 
 	new Float:armour = floatstr(inputtext);
 
 	if (armour < 0.0 || armour > 300.0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][44]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][44]);
 		return 0;
 	}
 
@@ -329,13 +329,13 @@ forward adm_click_SetLevel(playerid, clickedid, listitem, inputtext[]);
 public adm_click_SetLevel(playerid, clickedid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(clickedid) || (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid))) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
 
 	new newlvl = strval(inputtext);
 	if (!IsValidPlayerLevel(newlvl)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][33]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][33]);
 		return 0;
 	}
 
@@ -344,10 +344,10 @@ public adm_click_SetLevel(playerid, clickedid, listitem, inputtext[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][31], ReturnPlayerName(playerid), newlvl);
-	SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
+	SendClientMessage(clickedid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][32], ReturnPlayerName(clickedid), newlvl, oldlvl);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -355,18 +355,18 @@ forward adm_click_GiveXP(playerid, clickedid, listitem, inputtext[]);
 public adm_click_GiveXP(playerid, clickedid, listitem, inputtext[])
 {
 	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
 
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 0;
 	}
 
 	new xpamount = strval(inputtext);
 	if (xpamount == 0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][4]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][4]);
 		return 0;
 	}
 
@@ -375,16 +375,16 @@ public adm_click_GiveXP(playerid, clickedid, listitem, inputtext[])
 	new string[MAX_STRING];
 	if (xpamount > 0) {
 		format(string, sizeof(string), lang_texts[12][5], ReturnPlayerName(playerid), xpamount);
-		SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
+		SendClientMessage(clickedid, COLOR_XP_GOOD, string);
 
 		format(string, sizeof(string), lang_texts[12][6], ReturnPlayerName(clickedid), xpamount, GetPlayerXP(clickedid));
-		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+		SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	} else {
 		format(string, sizeof(string), lang_texts[12][7], ReturnPlayerName(playerid), xpamount);
-		SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
+		SendClientMessage(clickedid, COLOR_XP_GOOD, string);
 
 		format(string, sizeof(string), lang_texts[12][8], ReturnPlayerName(clickedid), xpamount, GetPlayerXP(clickedid));
-		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+		SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	}
 	return 1;
 }
@@ -393,13 +393,13 @@ forward adm_click_GiveMoney(playerid, clickedid, listitem, inputtext[]);
 public adm_click_GiveMoney(playerid, clickedid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
 	
 	new cashamount = strval(inputtext);
 	if (cashamount > 999999999 || cashamount < -999999999 || cashamount == 0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][11]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][11]);
 		return 0;
 	}
 
@@ -408,16 +408,16 @@ public adm_click_GiveMoney(playerid, clickedid, listitem, inputtext[])
 	new string[MAX_STRING];
 	if (cashamount > 0) {
 		format(string, sizeof(string), lang_texts[12][12], ReturnPlayerName(playerid), cashamount);
-		SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
+		SendClientMessage(clickedid, COLOR_XP_GOOD, string);
 
 		format(string, sizeof(string), lang_texts[12][13], ReturnPlayerName(clickedid), cashamount, GetPlayerMoney(clickedid));
-		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+		SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	} else {
 		format(string, sizeof(string), lang_texts[12][14], ReturnPlayerName(playerid), cashamount);
-		SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
+		SendClientMessage(clickedid, COLOR_XP_GOOD, string);
 
 		format(string, sizeof(string), lang_texts[12][15], ReturnPlayerName(clickedid), cashamount, GetPlayerMoney(clickedid));
-		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+		SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	}
 	return 1;
 }
@@ -426,12 +426,12 @@ forward adm_click_FreezePlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_FreezePlayer(playerid, clickedid, listitem, inputtext[])
 {
 	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][9]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][9]);
 		return 0;
 	}
 
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][10]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][10]);
 		return 0;
 	}
 
@@ -439,10 +439,10 @@ public adm_click_FreezePlayer(playerid, clickedid, listitem, inputtext[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][54], ReturnPlayerName(playerid));
-	SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
+	SendClientMessage(clickedid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][55], ReturnPlayerName(clickedid));
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -450,12 +450,12 @@ forward adm_click_UnFreezePlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_UnFreezePlayer(playerid, clickedid, listitem, inputtext[])
 {
 	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][9]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][9]);
 		return 0;
 	}
 
 	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][10]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][10]);
 		return 0;
 	}
 
@@ -463,10 +463,10 @@ public adm_click_UnFreezePlayer(playerid, clickedid, listitem, inputtext[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][56], ReturnPlayerName(playerid));
-	SendClientMessage(clickedid, COLOUR_XP_GOOD, string);
+	SendClientMessage(clickedid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][57], ReturnPlayerName(clickedid));
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 

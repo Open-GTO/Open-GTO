@@ -109,7 +109,7 @@ stock veh_fuel_OnPlayerStateChange(playerid, newstate, oldstate)
 			SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, lights, alarm, doors, bonnet, boot, objective);
 
 			if (!vshop_IsShopVehicle(vehicleid)) {
-				SendClientMessage(playerid, COLOUR_YELLOW, _(VEHICLE_FUEL_EMPTY));
+				SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_EMPTY));
 			}
 		} else {
 			SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_ON, lights, alarm, doors, bonnet, boot, objective);
@@ -147,17 +147,17 @@ COMMAND:fill(playerid, params[])
 
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid == 0) {
-		SendClientMessage(playerid, COLOUR_RED, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
+		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
 		return 1;
 	}
 	
 	if (!IsPlayerAtFuelStation(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, _(VEHICLE_FUEL_NOT_ON_FUEL_ST));
+		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_ON_FUEL_ST));
 		return 1;
 	}
 	
 	if (GetPVarInt(playerid, "Refueling")) {
-		SendClientMessage(playerid, COLOUR_RED, _(VEHICLE_FUEL_IS_FUELING_ERROR));
+		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_IS_FUELING_ERROR));
 		return 1;
 	}
 	
@@ -166,16 +166,16 @@ COMMAND:fill(playerid, params[])
 	new max_fuel = GetMaxVehicleFuel(vehiclemodel);
 
 	if (max_fuel == 0) {
-		SendClientMessage(playerid, COLOUR_YELLOW, _(VEHICLE_FUEL_WITHOUT_FUEL_ENGINE));
+		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_WITHOUT_FUEL_ENGINE));
 		return 1;
 	}
 	
 	if (Fuel[vehicleid] >= max_fuel) {
-		SendClientMessage(playerid, COLOUR_YELLOW, _(VEHICLE_FUEL_FUEL_IS_FULL));
+		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_FUEL_IS_FULL));
 		return 1;
 	}
 	
-	SendClientMessage(playerid, COLOUR_YELLOW, _(VEHICLE_FUEL_IS_FUELING));
+	SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_IS_FUELING));
 	fill_Vehicle(vehicleid, playerid);
 	return 1;
 }
@@ -188,12 +188,12 @@ COMMAND:engine(playerid, params[])
 	
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid == 0) {
-		SendClientMessage(playerid, COLOUR_RED, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
+		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
 		return 1;
 	}
 	
 	if (Fuel[vehicleid] <= 0.1) {
-		SendClientMessage(playerid, COLOUR_YELLOW, _(VEHICLE_FUEL_EMPTY));
+		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_EMPTY));
 	} else {
 		new engine, lights, alarm, doors, bonnet, boot, objective;
 		GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
@@ -270,7 +270,7 @@ public fill_Timer(playerid)
 		
 		new string[MAX_STRING];
 		format(string, sizeof(string), _(VEHICLE_FUEL_AFTER_FUEL), RefueledAmount);
-		SendClientMessage(playerid, COLOUR_YELLOW, string);
+		SendClientMessage(playerid, COLOR_YELLOW, string);
 		
 		if (fill_TimerID[playerid] != 0) {
 			KillTimer(fill_TimerID[playerid]);

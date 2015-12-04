@@ -114,7 +114,7 @@ stock swagup_OnPlayerPickUpPickup(playerid, pickupid)
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), _(SWAGUP_BAG_FOUND), ReturnPlayerName(playerid), playerid, win_money, win_xp);
-	SendClientMessageToAll(COLOUR_RED, string);
+	SendClientMessageToAll(COLOR_RED, string);
 	
 	SetTimer("swagup_SpawnPickup", mission_GetPauseTime(mission_swagup), 0);
 	return 1;
@@ -125,6 +125,6 @@ public swagup_SpawnPickup()
 {
 	new swid = random( sizeof(swagup_Coords) );
 	g_pickup_id = CreatePickup(410, 3, swagup_Coords[swid][Coord_X], swagup_Coords[swid][Coord_Y], swagup_Coords[swid][Coord_Z], -1);
-	SendClientMessageToAll(COLOUR_RED, _(SWAGUP_BAG_CREATED));
+	SendClientMessageToAll(COLOR_RED, _(SWAGUP_BAG_CREATED));
 	return 1;
 }

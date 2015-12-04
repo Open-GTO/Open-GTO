@@ -96,7 +96,7 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 					Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "Приглашение в банду", string, "Назад", "Отмена");
 					
 					format(string, sizeof(string), lang_texts[6][48], ReturnPlayerName(playerid));
-					SendGangMessage(gangid, string, COLOUR_GANG);
+					SendGangMessage(gangid, string, COLOR_GANG);
 					
 					Log_Game("player: %d:  %s: have joined '%s' gang.", playerid, ReturnPlayerName(playerid), Gangs[gangid][gang_name]);
 				} else {
@@ -349,7 +349,7 @@ DialogResponse:GangCreate(playerid, response, listitem, inputtext[])
 
 			if (GangCreate(playerid, gangname, gangcolor) != 0) {
 				GivePlayerMoney(playerid,-Gang_Create_Cost, 1);
-				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[6][42]);
+				SendClientMessage(playerid, COLOR_GREEN, lang_texts[6][42]);
 				Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], lang_texts[6][42], "Назад", "Отмена");
 				Log_Game("player: %s(%d): created gang '%s' ", ReturnPlayerName(playerid), playerid, gangname);
 			} else {
@@ -403,7 +403,7 @@ DialogResponse:GangInvite(playerid, response, listitem, inputtext[])
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[6][58], ReturnPlayerName(playerid), Gangs[gangid][gang_name]);
-	SendClientMessage(inviteid, COLOUR_GANG, string);
+	SendClientMessage(inviteid, COLOR_GANG, string);
 
 	format(string, sizeof(string), lang_texts[6][59], ReturnPlayerName(inviteid), Gangs[gangid][gang_name]);
 	Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "Приглашение в банду", string, "Назад", "Отмена");
@@ -507,9 +507,9 @@ DialogResponse:GangColor(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 	
-	if (GetPlayerMoney(playerid) < Gang_Colour_Cost) {
+	if (GetPlayerMoney(playerid) < Gang_Color_Cost) {
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[6][65], Gang_Colour_Cost);
+		format(string, sizeof(string), lang_texts[6][65], Gang_Color_Cost);
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "Изменение цвета", string, "Назад", "Отмена");
 		return 1;
    	}
@@ -528,10 +528,10 @@ DialogResponse:GangColor(playerid, response, listitem, inputtext[])
 	new gangcolor = Color_GetCode(colorid);
 
    	SetGangColour(player_GetGangID(playerid), gangcolor);
-   	GivePlayerMoney(playerid, -Gang_Colour_Cost, 1);
+   	GivePlayerMoney(playerid, -Gang_Color_Cost, 1);
    	
    	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[6][69], Gang_Colour_Cost);
+	format(string, sizeof(string), lang_texts[6][69], Gang_Color_Cost);
 	Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "Изменение цвета", string, "Назад", "Отмена");
 	return 1;
 }
@@ -569,7 +569,7 @@ DialogResponse:GangMotd(playerid, response, listitem, inputtext[])
 	
 	if (len == 0) {
 		Gangs[gangid][gang_motd][0] = '\0';
-		SendGangMessage(gangid, lang_texts[6][87], COLOUR_GANG);
+		SendGangMessage(gangid, lang_texts[6][87], COLOR_GANG);
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][86], lang_texts[6][87], "Назад", "Отмена");
 		return 1;
 	}
@@ -580,7 +580,7 @@ DialogResponse:GangMotd(playerid, response, listitem, inputtext[])
 	Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][86], string, "Назад", "Отмена");
 	
 	format(string, sizeof(string), lang_texts[6][81], ReturnPlayerName(playerid), playerid, Gangs[gangid][gang_motd]);
-	SendGangMessage(gangid, string, COLOUR_GANG);
+	SendGangMessage(gangid, string, COLOR_GANG);
 	return 1;
 }
 

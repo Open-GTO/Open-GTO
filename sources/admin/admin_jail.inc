@@ -89,7 +89,7 @@ stock JailPlayerTimer(playerid)
 		GetPlayerName(playerid, playername, sizeof(playername));
 		
 		format(string, sizeof(string), lang_texts[13][53], playername);
-		SendClientMessageToAll(COLOUR_WHITE, string);
+		SendClientMessageToAll(COLOR_WHITE, string);
 
 		Log_Game(lang_texts[13][55], playername);
 	}
@@ -103,7 +103,7 @@ COMMAND:jail(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -111,7 +111,7 @@ COMMAND:jail(playerid, params[])
 	new jailid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(jailid) || (IsPlayerRconAdmin(jailid) && !IsPlayerRconAdmin(playerid))) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -121,11 +121,11 @@ COMMAND:jail(playerid, params[])
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][18], ReturnPlayerName(playerid));
-	SendClientMessage(jailid, COLOUR_RED, string);
+	SendClientMessage(jailid, COLOR_RED, string);
 
 	format(string, sizeof(string), lang_texts[13][15], jailt);
 	format(string, sizeof(string), lang_texts[13][17], ReturnPlayerName(jailid), string);
-	SendClientMessageToAll(COLOUR_WHITE, string);
+	SendClientMessageToAll(COLOR_WHITE, string);
 
 	GameTextForPlayer(jailid, lang_texts[13][18], 5000, 4);
 	return 1;
@@ -138,7 +138,7 @@ COMMAND:unjail(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -146,12 +146,12 @@ COMMAND:unjail(playerid, params[])
 	new unjailid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(unjailid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
 	if (!player_IsJailed(unjailid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][22]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[13][22]);
 		return 1;
 	}
 
@@ -159,6 +159,6 @@ COMMAND:unjail(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][21], ReturnPlayerName(playerid));
-	SendClientMessage(unjailid, COLOUR_GREEN, string);
+	SendClientMessage(unjailid, COLOR_GREEN, string);
 	return 1;
 }

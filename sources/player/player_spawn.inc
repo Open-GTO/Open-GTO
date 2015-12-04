@@ -197,7 +197,7 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 	new gangid = player_GetGangID(playerid);
 	if (listitem == 0 && gangid != 0 && gang_GetHouseID(gangid) != -1) {
 		player_SetSpawnHouseID(playerid, SPAWN_HOUSE_GANG);
-		SendClientMessage(playerid, COLOUR_WHITE, "Место спавна изменено.");
+		SendClientMessage(playerid, COLOR_WHITE, "Место спавна изменено.");
 		return 1;
 	}
 	
@@ -213,11 +213,11 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 
 		if (listitem == count) {
 			player_SetSpawnHouseID(playerid, i);
-			SendClientMessage(playerid, COLOUR_WHITE, "Место спавна изменено.");
+			SendClientMessage(playerid, COLOR_WHITE, "Место спавна изменено.");
 			// если игрок, сменивший спавн - лидер банды, то устанавливаем домом банды этот дом
 			if (gang_IsLeader(playerid)) {
 				gang_SetHouse(player_GetGangID(playerid), i);
-				SendClientMessage(playerid, COLOUR_WHITE, "Место спавна для банды изменено.");
+				SendClientMessage(playerid, COLOR_WHITE, "Место спавна для банды изменено.");
 			}
 			return 1;
 		}
@@ -244,7 +244,7 @@ stock pl_spawn_GetSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z
 	if (house_id >= 0 && !IsPlayerHouse(playerid, house_id) && !IsPlayerRenter(playerid, house_id)) {
 		house_id = SPAWN_HOUSE_NONE;
 		player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[8][60]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[8][60]);
 	}
 
 	if (house_id == SPAWN_HOUSE_NONE) {

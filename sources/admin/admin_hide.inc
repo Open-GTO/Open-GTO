@@ -42,7 +42,7 @@ COMMAND:ahideme(playerid, params[])
 	}
 	
 	admin_SetHideStatus(playerid, 1);
-	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][25]);
+	SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][25]);
 	return 1;
 }
 
@@ -53,6 +53,6 @@ COMMAND:ashoweme(playerid, params[])
 	}
 	
 	admin_SetHideStatus(playerid, 0);
-	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][26]);
+	SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][26]);
 	return 1;
 }

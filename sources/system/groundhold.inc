@@ -143,14 +143,14 @@ stock CheckGround(ghid)
 					new string[MAX_STRING];
 					
 					format(string, sizeof(string), lang_texts[7][1], Groundholds[ghid][gh_name]);
-					SendClientMessage(playerid, COLOUR_GREEN, string);
+					SendClientMessage(playerid, COLOR_GREEN, string);
 					
 					format(string, sizeof(string),
 						lang_texts[7][2],
 						Groundholds[ghid][gh_money] * Groundholds[ghid][gh_multi],
 						Groundholds[ghid][gh_xp] * Groundholds[ghid][gh_multi]
 					);
-					SendClientMessage(playerid, COLOUR_GREEN, string);
+					SendClientMessage(playerid, COLOR_GREEN, string);
 				}
 				// увеличиваем время, если можно
 				if (PlayerGroundHoldTime[ghid][playerid] == 0 || groundenemycount == 0) {
@@ -166,7 +166,7 @@ stock CheckGround(ghid)
 					if (PlayerGroundHoldTime[ghid][playerid] > 2) {
 						new string[MAX_STRING];
 						format(string, sizeof(string), lang_texts[7][3], Groundholds[ghid][gh_name]);
-						SendClientMessage(playerid, COLOUR_RED, string);
+						SendClientMessage(playerid, COLOR_RED, string);
 					}
 					
 					if (PlayerGroundHoldTime[ghid][playerid] > 1) {
@@ -180,13 +180,13 @@ stock CheckGround(ghid)
 				if (GetPlayerLevel(playerid) < GetMaxPlayerLevel()) {
 					GivePlayerXP(playerid, Groundholds[ghid][gh_xp] * PlayerGroundHoldTime[ghid][playerid], 0);
 				} else {
-					SendClientMessage(playerid, COLOUR_RED, lang_texts[9][17]);
+					SendClientMessage(playerid, COLOR_RED, lang_texts[9][17]);
 				}
 			}
 		} else {
 			if (PlayerGroundHoldTime[ghid][playerid] > 0) {
 				if (PlayerHoldingGround[ghid][playerid] == 1) {
-					SendClientMessage(playerid, COLOUR_RED, lang_texts[7][4]);
+					SendClientMessage(playerid, COLOR_RED, lang_texts[7][4]);
 				}
 
 				PlayerGroundHoldTime[ghid][playerid] -= GROUNDHOLD_HOLD_TIME;
@@ -195,7 +195,7 @@ stock CheckGround(ghid)
 					PlayerGroundHoldTime[ghid][playerid] = 0;
 					new string[MAX_STRING];
 					format(string, sizeof(string), lang_texts[7][5], Groundholds[ghid][gh_name]);
-					SendClientMessage(playerid, COLOUR_RED, string);
+					SendClientMessage(playerid, COLOR_RED, string);
 				}
 			}
 			PlayerHoldingGround[ghid][playerid] = 0;

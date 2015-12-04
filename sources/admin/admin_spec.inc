@@ -30,20 +30,20 @@ COMMAND:spec(playerid, params[])
 		if (Spectate_IsSpectating(playerid)) {
 			Spectate_Stop(playerid);
 		} else {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[13][19]);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[13][19]);
 		}
 		return 1;
 	}
 
 	new specid = strval(params);
 	if (!IsPlayerConnected(specid) || specid == playerid) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][20]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[13][20]);
 		return 1;
 	}
 
 	Spectate_Start(playerid, specid);
 	
-	SendClientMessage(playerid, COLOUR_BLUE, lang_texts[13][21]);
+	SendClientMessage(playerid, COLOR_BLUE, lang_texts[13][21]);
 	return 1;
 }
 

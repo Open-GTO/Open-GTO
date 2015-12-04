@@ -26,7 +26,7 @@ stock admin_OnPlayerText(playerid, text[])
 {
 	new mute_result = adm_mute_OnPlayerText(playerid, text);
 	if (mute_result == 0) {
-		SendClientMessage(playerid, COLOUR_RED, _(MUTED_HELP_MESSAGE));
+		SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
 	}
 	return mute_result;
 }
@@ -57,16 +57,16 @@ stock SendClientMessageToAdmins(senderid, text[])
 	format(message, sizeof(message), lang_texts[12][28], ReturnPlayerName(senderid), senderid, text);
 	foreach (new adminid : Player) {
 		if (IsPlayerAdm(adminid)) {
-			SendClientMessage(adminid, COLOUR_RED, message);
+			SendClientMessage(adminid, COLOR_RED, message);
 			count++;
 		}
 	}
 
 	if (count == 0) {
-		SendClientMessage(senderid, COLOUR_RED, lang_texts[12][29]);
+		SendClientMessage(senderid, COLOR_RED, lang_texts[12][29]);
 	} else {
 		format(message, sizeof(message), lang_texts[12][30], text);
-		SendClientMessage(senderid, COLOUR_GREEN, message);
+		SendClientMessage(senderid, COLOR_GREEN, message);
 	}
 	return 0;
 }
@@ -79,16 +79,16 @@ stock SendClientMessageToModers(senderid, text[])
 	format(message, sizeof(message), lang_texts[12][79], ReturnPlayerName(senderid), senderid, text);
 	foreach (new adminid : Player) {
 		if (IsPlayerMod(adminid)) {
-			SendClientMessage(adminid, COLOUR_RED, message);
+			SendClientMessage(adminid, COLOR_RED, message);
 			count++;
 		}
 	}
 
 	if (count == 0) {
-		SendClientMessage(senderid, COLOUR_RED, lang_texts[12][80]);
+		SendClientMessage(senderid, COLOR_RED, lang_texts[12][80]);
 	} else {
 		format(message, sizeof(message), lang_texts[12][81], text);
-		SendClientMessage(senderid, COLOUR_GREEN, message);
+		SendClientMessage(senderid, COLOR_GREEN, message);
 	}
 	return 0;
 }
@@ -148,7 +148,7 @@ stock Admin_SendProtectReport(issuerid, text[], {Float, _}:...)
 
 	foreach (new adminid : Player) {
 		if (IsPlayerMod(adminid)) {
-			SendClientMessage(adminid, COLOUR_RED, message);
+			SendClientMessage(adminid, COLOR_RED, message);
 		}
 	}
 

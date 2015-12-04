@@ -161,7 +161,7 @@ stock business_OnGameModeInit()
 
 		business_Create3DTextLabelStr(id, string);
 
-		Business3DTextLabel[id] = Create3DTextLabel(string, COLOUR_WHITE, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.75, BusinessDistanceOfShowLabel, 0, 1);
+		Business3DTextLabel[id] = Create3DTextLabel(string, COLOR_WHITE, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.75, BusinessDistanceOfShowLabel, 0, 1);
 	}
 	Log_Game(lang_texts[3][0]);
 }
@@ -221,7 +221,7 @@ stock TurnAround()
 					GivePlayerBankMoney(playerid, amount);
 					new string[MAX_STRING];
 					format(string, sizeof(string), lang_texts[3][28], Businesses[id][Business_Name], amount);
-					SendClientMessage(playerid, COLOUR_RED, string);
+					SendClientMessage(playerid, COLOR_RED, string);
 					Businesses[id][Business_Vault] = 0;
 				}
 			}
@@ -365,7 +365,7 @@ stock business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	new id = GetBusinessID(playerid);
 	if (id <= -1)
 	{
-		return SendClientMessage(playerid, COLOUR_RED, lang_texts[3][2]);
+		return SendClientMessage(playerid, COLOR_RED, lang_texts[3][2]);
 	}
 
 	SetPlayerToBusinessID(playerid, id);
@@ -426,14 +426,14 @@ stock bis_Buy(playerid)
 			pl_business++;
 			if (pl_business >= MAX_PLAYER_BUSINESS)
 			{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[3][27]);
+				return SendClientMessage(playerid, COLOR_RED, lang_texts[3][27]);
 			}
 		}
 	}
 	new id = GetPlayerToBusinessID(playerid);
 	if (id <= -1)
 	{
-		return SendClientMessage(playerid, COLOUR_RED, lang_texts[3][2]);
+		return SendClientMessage(playerid, COLOR_RED, lang_texts[3][2]);
 	}
 	new head[MAX_STRING];
 	format(head, sizeof(head), lang_texts[3][3], Businesses[id][Business_Name]);
@@ -458,7 +458,7 @@ stock bis_Buy(playerid)
 #if !defined BUY_ALL_BUSINESS
 	else if (strcmp(Businesses[id][Business_Owner], "Unknown", true))
 	{
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[3][12]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[3][12]);
 	}
 #endif
 	else
@@ -470,7 +470,7 @@ stock bis_Buy(playerid)
 			{
 				new temp[MAX_STRING];
 				format(temp, sizeof(temp), lang_texts[3][15], playername, Businesses[id][Business_Name]);
-				SendClientMessage(ownerid, COLOUR_RED, temp);
+				SendClientMessage(ownerid, COLOR_RED, temp);
 				GivePlayerMoney(ownerid, price, 1);
 				break;
 			}
@@ -501,7 +501,7 @@ stock bis_Sell(playerid)
 	new id = GetPlayerToBusinessID(playerid);
 	if (id <= -1)
 	{
-		return SendClientMessage(playerid, COLOUR_RED, lang_texts[3][2]);
+		return SendClientMessage(playerid, COLOR_RED, lang_texts[3][2]);
 	}
 	new head[MAX_STRING];
 	format(head, sizeof(head), lang_texts[3][3], Businesses[id][Business_Name]);
@@ -539,7 +539,7 @@ stock bis_Collect(playerid)
 	new id = GetPlayerToBusinessID(playerid);
 	if (id <= -1)
 	{
-		return SendClientMessage(playerid, COLOUR_RED, lang_texts[3][2]);
+		return SendClientMessage(playerid, COLOR_RED, lang_texts[3][2]);
 	}
 	new head[MAX_STRING];
 	format(head, sizeof(head), lang_texts[3][3], Businesses[id][Business_Name]);
@@ -604,7 +604,7 @@ stock business_Update3DTextLabelText()
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{
 		business_Create3DTextLabelStr(id, string);
-		Update3DTextLabelText(Business3DTextLabel[id], COLOUR_WHITE, string);
+		Update3DTextLabelText(Business3DTextLabel[id], COLOR_WHITE, string);
 	}
 	return 1;
 }

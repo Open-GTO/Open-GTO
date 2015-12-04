@@ -14,25 +14,25 @@
 COMMAND:cmdlist(playerid, params[])
 {
 	if (IsPlayerMod(playerid)) {
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[13][8]);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[13][9]);
+		SendClientMessage(playerid, COLOR_LIGHTGREEN, lang_texts[13][8]);
+		SendClientMessage(playerid, COLOR_LIGHTGREEN, lang_texts[13][9]);
 	}
 
 	if (IsPlayerAdm(playerid)) {
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[13][23]);
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[13][24]);
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[13][25]);
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[13][26]);
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[13][27]);
+		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[13][23]);
+		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[13][24]);
+		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[13][25]);
+		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[13][26]);
+		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[13][27]);
 	}
 
 	if (IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[13][1]);
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][2]);
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][3]);
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][4]);
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][5]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][6]);
+		SendClientMessage(playerid, COLOR_GREEN, lang_texts[13][1]);
+		SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][2]);
+		SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][3]);
+		SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][4]);
+		SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][5]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][6]);
 	}
 	return 1;
 }
@@ -40,24 +40,24 @@ COMMAND:cmdlist(playerid, params[])
 COMMAND:about(playerid, params[])
 {
 	if (IsPlayerMod(playerid)) {
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[15][41]);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, lang_texts[15][42]);
-		SendClientMessage(playerid, COLOUR_LIGHTRED, lang_texts[15][43]);
-		SendClientMessage(playerid, COLOUR_LIGHTRED, lang_texts[15][44]);
+		SendClientMessage(playerid, COLOR_LIGHTGREEN, lang_texts[15][41]);
+		SendClientMessage(playerid, COLOR_LIGHTGREEN, lang_texts[15][42]);
+		SendClientMessage(playerid, COLOR_LIGHTRED, lang_texts[15][43]);
+		SendClientMessage(playerid, COLOR_LIGHTRED, lang_texts[15][44]);
 	}
 
 	if (IsPlayerAdm(playerid)) {
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[15][47]);
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[15][48]);
-		SendClientMessage(playerid, COLOUR_LIGHTBLUE, lang_texts[15][49]);
+		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[15][47]);
+		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[15][48]);
+		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[15][49]);
 	}
 
 	if (IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[15][55]);
-		SendClientMessage(playerid, COLOUR_LIGHTRED, lang_texts[15][51]);
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][52]);
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][53]);
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[15][54]);
+		SendClientMessage(playerid, COLOR_GREEN, lang_texts[15][55]);
+		SendClientMessage(playerid, COLOR_LIGHTRED, lang_texts[15][51]);
+		SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][52]);
+		SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][53]);
+		SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][54]);
 	}
 	return 1;
 }
@@ -70,7 +70,7 @@ COMMAND:say(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][37], params);
-	SendClientMessageToAll(COLOUR_BLUE, string);
+	SendClientMessageToAll(COLOR_BLUE, string);
 	return 1;
 }
 
@@ -93,7 +93,7 @@ COMMAND:akill(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_WHITE, "Применение: /akill <id>");
+		SendClientMessage(playerid, COLOR_WHITE, "Применение: /akill <id>");
 		return 1;
 	}
 
@@ -101,28 +101,28 @@ COMMAND:akill(playerid, params[])
 	string = strcharsplit(params, idx, ' ');
 
 	if (!IsNumeric(string)) {
-		SendClientMessage(playerid, COLOUR_WHITE, "Применение: /akill <id>");
+		SendClientMessage(playerid, COLOR_WHITE, "Применение: /akill <id>");
 		return 1;
 	}
 
 	new receiverid = strval(string);
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][3]);
 		return 1;
 	}
 
 	if (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
 	SetPlayerHealth(receiverid, 0.0);
 
 	format(string, sizeof(string), lang_texts[12][62], ReturnPlayerName(receiverid), receiverid);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][63], ReturnPlayerName(playerid));
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -133,7 +133,7 @@ COMMAND:pinfo(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -141,13 +141,13 @@ COMMAND:pinfo(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][34], ReturnPlayerName(receiverid), receiverid);
-	SendClientMessage(playerid, COLOUR_YELLOW, string);
+	SendClientMessage(playerid, COLOR_YELLOW, string);
 
 	switch (player_GetStatus(receiverid)) {
 		case STATUS_LEVEL_MODER: {
@@ -164,25 +164,25 @@ COMMAND:pinfo(playerid, params[])
 		}
 	}
 
-	SendClientMessage(playerid, COLOUR_LIGHTRED, string);
+	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	format(string, sizeof(string), lang_texts[12][35], GetPlayerLevel(receiverid), GetPlayerXP(receiverid));
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), lang_texts[12][36], GetPlayerMoney(receiverid), GetPlayerBankMoney(receiverid));
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), lang_texts[12][38], player_GetDeaths(receiverid), player_GetKills(receiverid));
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), lang_texts[12][71], player_GetJailCount(receiverid), player_GetMuteCount(receiverid));
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	new player_ip[MAX_IP];
 	GetPVarString(receiverid, "IP", player_ip, sizeof(player_ip));
 
 	format(string, sizeof(string), lang_texts[12][72], GetPlayerPing(receiverid), player_ip);
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 	return 1;
 }
 
@@ -203,7 +203,7 @@ COMMAND:teleset(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][68], pos[0], pos[1], pos[2], pos[3]);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -214,7 +214,7 @@ COMMAND:teleloc(playerid, params[])
 	}
 
 	if (GetPVarFloat(playerid, "LocX") == 0.0 && GetPVarFloat(playerid, "LocY") == 0.0 && GetPVarFloat(playerid, "LocZ") == 0.0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][69]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][69]);
 		return 1;
 	}
 
@@ -227,7 +227,7 @@ COMMAND:teleloc(playerid, params[])
 
 	SetPlayerFacingAngle(playerid, GetPVarFloat(playerid, "Ang"));
 
-	SendClientMessage(playerid, COLOUR_XP_GOOD, lang_texts[12][70]);
+	SendClientMessage(playerid, COLOR_XP_GOOD, lang_texts[12][70]);
 	return 1;
 }
 
@@ -238,7 +238,7 @@ COMMAND:teleto(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -246,7 +246,7 @@ COMMAND:teleto(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -267,7 +267,7 @@ COMMAND:teleto(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][66], ReturnPlayerName(receiverid), receiverid);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -278,7 +278,7 @@ COMMAND:telehere(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -286,12 +286,12 @@ COMMAND:telehere(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(receiverid) || IsPlayerNPC(receiverid) || player_IsAtQuest(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
 	if (IsPlayerRconAdmin(receiverid) && receiverid != playerid) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 	
@@ -313,10 +313,10 @@ COMMAND:telehere(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][66], ReturnPlayerName(playerid), playerid);
-	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+	SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][67], ReturnPlayerName(receiverid), receiverid);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -344,11 +344,11 @@ COMMAND:telehereall(playerid, params[])
 			SetPlayerPos(id, receiver_x, receiver_y, receiver_z);
 			SetPlayerFacingAngle(id, receiver_a);
 			
-			SendClientMessage(id, COLOUR_XP_GOOD, string);
+			SendClientMessage(id, COLOR_XP_GOOD, string);
 		}
 	}
 
-	SendClientMessage(playerid, COLOUR_XP_GOOD, lang_texts[12][74]);
+	SendClientMessage(playerid, COLOR_XP_GOOD, lang_texts[12][74]);
 	return 1;
 }
 
@@ -359,7 +359,7 @@ COMMAND:telexyzi(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -390,7 +390,7 @@ COMMAND:sethealth(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -398,18 +398,18 @@ COMMAND:sethealth(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (IsPlayerRconAdmin(receiverid) && receiverid != playerid) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 	
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 	
 	new Float:health_amount = floatstr(strcharsplit(params, idx, ' '));
 	if (health_amount > 300.0 || health_amount < 10.0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][44]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][44]);
 		return 1;
 	}
 	
@@ -431,7 +431,7 @@ COMMAND:setarm(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -439,18 +439,18 @@ COMMAND:setarm(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (IsPlayerRconAdmin(receiverid) && receiverid != playerid) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 	
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 	
 	new Float:armamount = floatstr(strcharsplit(params, idx, ' '));
 	if (armamount > 300.0 || armamount < 0.0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][44]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][44]);
 		return 1;
 	}
 	
@@ -465,7 +465,7 @@ COMMAND:givexp(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -473,13 +473,13 @@ COMMAND:givexp(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 	
 	new xpamount = strval(strcharsplit(params, idx, ' '));
 	if (xpamount == 0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][4]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][4]);
 		return 1;
 	}
 
@@ -488,16 +488,16 @@ COMMAND:givexp(playerid, params[])
 	new string[MAX_STRING];
 	if (xpamount > 0) {
 		format(string, sizeof(string), lang_texts[12][5] , ReturnPlayerName(playerid), xpamount);
-		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+		SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 
 		format(string, sizeof(string), lang_texts[12][6] , ReturnPlayerName(receiverid), xpamount, GetPlayerXP(receiverid));
-		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+		SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	} else {
 		format(string, sizeof(string), lang_texts[12][7] , ReturnPlayerName(playerid), -xpamount);
-		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+		SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 
 		format(string, sizeof(string), lang_texts[12][8] , ReturnPlayerName(receiverid), -xpamount, GetPlayerXP(receiverid));
-		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+		SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	}
 	return 1;
 }
@@ -509,7 +509,7 @@ COMMAND:agivecash(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -517,13 +517,13 @@ COMMAND:agivecash(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 	
 	new cashamount = strval(strcharsplit(params, idx, ' '));
 	if (cashamount > MAX_MONEY || cashamount < -MAX_MONEY || cashamount == 0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][11]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][11]);
 		return 1;
 	}
 
@@ -532,16 +532,16 @@ COMMAND:agivecash(playerid, params[])
 	new string[MAX_STRING];
 	if (cashamount > 0) {
 		format(string, sizeof(string), lang_texts[12][12], ReturnPlayerName(playerid), cashamount);
-		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+		SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 
 		format(string, sizeof(string), lang_texts[12][13], ReturnPlayerName(receiverid), cashamount, GetPlayerMoney(receiverid));
-		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+		SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	} else {
 		format(string, sizeof(string), lang_texts[12][14], ReturnPlayerName(playerid), -cashamount);
-		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+		SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 
 		format(string, sizeof(string), lang_texts[12][15], ReturnPlayerName(receiverid), -cashamount, GetPlayerMoney(receiverid));
-		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+		SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	}
 	return 1;
 }
@@ -553,7 +553,7 @@ COMMAND:givegun(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -561,13 +561,13 @@ COMMAND:givegun(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 	
 	new weaponid = strval(strcharsplit(params, idx, ' '));
 	if (weaponid < 0 && weaponid > 46) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][45]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][45]);
 		return 1;
 	}
 	
@@ -580,10 +580,10 @@ COMMAND:givegun(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][46], ReturnPlayerName(playerid), ReturnWeaponName(weaponid), weaponid, ammamount);
-	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+	SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 	
 	format(string, sizeof(string), lang_texts[12][47], ReturnPlayerName(receiverid), receiverid, ReturnWeaponName(weaponid), weaponid, ammamount);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -594,7 +594,7 @@ COMMAND:paralyze(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -602,12 +602,12 @@ COMMAND:paralyze(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 	
 	if (IsPlayerRconAdmin(receiverid) && receiverid != playerid) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 	
@@ -615,10 +615,10 @@ COMMAND:paralyze(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][54], ReturnPlayerName(playerid));
-	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+	SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 	
 	format(string, sizeof(string), lang_texts[12][55], ReturnPlayerName(receiverid));
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -629,7 +629,7 @@ COMMAND:deparalyze(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -637,12 +637,12 @@ COMMAND:deparalyze(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 	
 	if (IsPlayerRconAdmin(receiverid) && receiverid != playerid) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 	
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 	
@@ -650,10 +650,10 @@ COMMAND:deparalyze(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][56], ReturnPlayerName(playerid));
-	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+	SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][57], ReturnPlayerName(receiverid));
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -672,10 +672,10 @@ COMMAND:paralyzeall(playerid, params[])
 		}
 
 		TogglePlayerControllable(id, 1);
-		SendClientMessage(id, COLOUR_XP_GOOD, string);
+		SendClientMessage(id, COLOR_XP_GOOD, string);
 	}
 
-	SendClientMessage(playerid, COLOUR_XP_GOOD, lang_texts[12][77]);
+	SendClientMessage(playerid, COLOR_XP_GOOD, lang_texts[12][77]);
 	return 1;
 }
 
@@ -694,10 +694,10 @@ COMMAND:deparalyzeall(playerid, params[])
 		}
 
 		TogglePlayerControllable(id, 0);
-		SendClientMessage(id, COLOUR_XP_GOOD, string);
+		SendClientMessage(id, COLOR_XP_GOOD, string);
 	}
 
-	SendClientMessage(playerid, COLOUR_XP_GOOD, lang_texts[12][76]);
+	SendClientMessage(playerid, COLOR_XP_GOOD, lang_texts[12][76]);
 	return 1;
 }
 
@@ -708,7 +708,7 @@ COMMAND:getip(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -716,14 +716,14 @@ COMMAND:getip(playerid, params[])
 		filename_account[MAX_STRING];
 	
 	if (strlen(params) <= 0) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][30]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[13][30]);
 		return 1;
 	}
 	
 	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, params);
 	if (!ini_fileExist(filename_account))
 	{
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][31]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[13][31]);
 		return 1;
 	}
 	
@@ -733,7 +733,7 @@ COMMAND:getip(playerid, params[])
 	
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[13][32], params, last_ip);
-	SendClientMessage(playerid, COLOUR_RED, string);
+	SendClientMessage(playerid, COLOR_RED, string);
 	return 1;
 }
 
@@ -744,11 +744,11 @@ COMMAND:sys(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][36]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][37]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][38]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][39]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][40]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][36]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][37]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][38]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][39]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][40]);
 		return 1;
 	}
 
@@ -757,51 +757,51 @@ COMMAND:sys(playerid, params[])
 
 	if (!strcmp(cmd, "cmdlist", true))
 	{
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][36]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][37]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][38]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][39]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][40]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][47]);
-		SendClientMessage(playerid, COLOUR_YELLOW, _(ADMIN_SYS_CMDLIST_TIME));
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][36]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][37]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][38]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][39]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][40]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][47]);
+		SendClientMessage(playerid, COLOR_YELLOW, _(ADMIN_SYS_CMDLIST_TIME));
 		return 1;
 	}
 
 	if (!strcmp(cmd, "about", true))
 	{
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[15][57]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[15][58]);
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[15][59]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[15][57]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[15][58]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[15][59]);
 		return 1;
 	}
 
 	if (!strcmp(cmd, "info", true))
 	{
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[15][60]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[15][60]);
 
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[15][65], vehicles_GetRespawnTime());
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
+		SendClientMessage(playerid, COLOR_LIGHTGREEN, string);
 
 		format(string, sizeof(string), lang_texts[15][62], PlayerCount(), GetMaxPlayers());
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
+		SendClientMessage(playerid, COLOR_LIGHTGREEN, string);
 
 		new hour, minute, second;
 		gettime(hour, minute, second);
 		format(string, sizeof(string), "%02d:%02d:%02d", hour, minute, second);
 		format(string, sizeof(string), lang_texts[15][63], string);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
+		SendClientMessage(playerid, COLOR_LIGHTGREEN, string);
 
 		format(string, sizeof(string), lang_texts[15][64], bank_GetMaxMoney(), MAX_MONEY);
-		SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
+		SendClientMessage(playerid, COLOR_LIGHTGREEN, string);
 
-		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[15][66]);
+		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[15][66]);
 
 		format(string, sizeof(string), lang_texts[13][41], weather_GetTime());
-		SendClientMessage(playerid, COLOUR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 
 		format(string, sizeof(string), lang_texts[13][42], Groundhold_IsEnabled);
-		SendClientMessage(playerid, COLOUR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 		return 1;
 	}
 
@@ -811,17 +811,17 @@ COMMAND:sys(playerid, params[])
 		switch (paramid) {
 			case 0: {
 				weather_SetTime(0);
-				SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][43]);
+				SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][43]);
 			}
 			case 1..20: {
 				weather_SetTime(paramid);
 
 				new string[MAX_STRING];
 				format(string, sizeof(string), lang_texts[13][44], paramid);
-				SendClientMessage(playerid, COLOUR_WHITE, string);
+				SendClientMessage(playerid, COLOR_WHITE, string);
 			}
 			default: {
-				SendClientMessage(playerid, COLOUR_RED, lang_texts[15][67]);
+				SendClientMessage(playerid, COLOR_RED, lang_texts[15][67]);
 			}
 		}
 		return 1;
@@ -840,7 +840,7 @@ COMMAND:sys(playerid, params[])
 					CheckGround(ghid);
 				}
 
-				SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][45]);
+				SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][45]);
 			}
 			case 1: {
 				Groundhold_IsEnabled = 1;
@@ -851,7 +851,7 @@ COMMAND:sys(playerid, params[])
 					CheckGround(ghid);
 				}
 
-				SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][46]);
+				SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][46]);
 			}
 		}
 		return 1;
@@ -928,7 +928,7 @@ COMMAND:carinfo(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][9], GetVehicleName( GetVehicleModel(veh_id) ), veh_id, health, x, y, z, a);
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 	return 1;
 }
 
@@ -947,7 +947,7 @@ COMMAND:repair(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][10], veh_id);
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 	return 1;
 }
 
@@ -958,7 +958,7 @@ COMMAND:an(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_WHITE, "Применение: /an <тип[0-6]> <сообщение>");
+		SendClientMessage(playerid, COLOR_WHITE, "Применение: /an <тип[0-6]> <сообщение>");
 		return 1;
 	}
 
@@ -966,13 +966,13 @@ COMMAND:an(playerid, params[])
 	string = strcharsplit(params, idx, ' ');
 
 	if (!IsNumeric(string) || strlen(string) <= 0) {
-		SendClientMessage(playerid, COLOUR_WHITE, "Применение: /an <тип[0-6]> <сообщение>");
+		SendClientMessage(playerid, COLOR_WHITE, "Применение: /an <тип[0-6]> <сообщение>");
 		return 1;
 	}
 
 	new mtype = strval(string);
 	if (mtype < 0 || mtype > 6) {
-		SendClientMessage(playerid, COLOUR_WHITE, "Применение: /an <тип[0-6]> <сообщение>");
+		SendClientMessage(playerid, COLOR_WHITE, "Применение: /an <тип[0-6]> <сообщение>");
 		return 1;
 	}
 
@@ -989,7 +989,7 @@ COMMAND:payday(playerid, params[])
 	}
 
 	payday_Check();
-	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][90]);
+	SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][90]);
 	return 1;
 }
 
@@ -1000,7 +1000,7 @@ COMMAND:boom(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_WHITE, "Применение: /boom <тип[0-13]>");
+		SendClientMessage(playerid, COLOR_WHITE, "Применение: /boom <тип[0-13]>");
 		return 1;
 	}
 
@@ -1008,7 +1008,7 @@ COMMAND:boom(playerid, params[])
 	new type = strval(strcharsplit(params, idx, ' '));
 
 	if (type < 0 || type > 13) {
-		SendClientMessage(playerid, COLOUR_RED, "Применение: /boom <тип[0-13]>");
+		SendClientMessage(playerid, COLOR_RED, "Применение: /boom <тип[0-13]>");
 		return 1;
 	}
 
@@ -1025,7 +1025,7 @@ COMMAND:setskin(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -1033,13 +1033,13 @@ COMMAND:setskin(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 	
 	if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
 	new skinid = strval(strcharsplit(params, idx, ' '));
 	if (!IsSkinValid(skinid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][41]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][41]);
 		return 1;
 	}
 
@@ -1048,10 +1048,10 @@ COMMAND:setskin(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][42], ReturnPlayerName(playerid), skinid);
-	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+	SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][43], ReturnPlayerName(receiverid), skinid, oldskin);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -1062,13 +1062,13 @@ COMMAND:ssay(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, "Применение: /ssay <текст>");
+		SendClientMessage(playerid, COLOR_RED, "Применение: /ssay <текст>");
 		return 1;
 	}
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][1], params);
-	SendClientMessageToAll(COLOUR_YELLOW, string);
+	SendClientMessageToAll(COLOR_YELLOW, string);
 	return 1;
 }
 
@@ -1084,7 +1084,7 @@ COMMAND:skydiveall(playerid, params[])
 
 	foreach (new id : Player) {
 		if (player_IsJailed(id)) {
-			SendClientMessage(id, COLOUR_LIGHTRED, _(SKYDIVING_ERROR));
+			SendClientMessage(id, COLOR_LIGHTRED, _(SKYDIVING_ERROR));
 			continue;
 		}
 
@@ -1097,7 +1097,7 @@ COMMAND:skydiveall(playerid, params[])
 		}
 	}
 
-	SendClientMessageToAll(COLOUR_WHITE, _(SKYDIVING_MSG));
+	SendClientMessageToAll(COLOR_WHITE, _(SKYDIVING_MSG));
 	GameTextForAll(_(SKYDIVING_GAMETEXT), 5000, 6);
 	return 1;
 }
@@ -1109,7 +1109,7 @@ COMMAND:disarm(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, "Применение: /disarm <ID>");
+		SendClientMessage(playerid, COLOR_RED, "Применение: /disarm <ID>");
 		return 1;
 	}
 
@@ -1117,7 +1117,7 @@ COMMAND:disarm(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(receiverid) && !IsPlayerInAnyDM(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -1125,10 +1125,10 @@ COMMAND:disarm(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][48], ReturnPlayerName(playerid));
-	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+	SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][49], ReturnPlayerName(receiverid));
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -1148,10 +1148,10 @@ COMMAND:disarmall(playerid, params[])
 		ResetPlayerWeapons(id);
 
 		format(string, sizeof(string), lang_texts[12][48], ReturnPlayerName(playerid));
-		SendClientMessage(id, COLOUR_XP_GOOD, string);
+		SendClientMessage(id, COLOR_XP_GOOD, string);
 	}
 
-	SendClientMessage(playerid, COLOUR_XP_GOOD, lang_texts[12][75]);
+	SendClientMessage(playerid, COLOR_XP_GOOD, lang_texts[12][75]);
 	return 1;
 }
 
@@ -1162,7 +1162,7 @@ COMMAND:remcash(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, "Применение: /remcash <ID>");
+		SendClientMessage(playerid, COLOR_RED, "Применение: /remcash <ID>");
 		return 1;
 	}
 
@@ -1170,7 +1170,7 @@ COMMAND:remcash(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -1178,10 +1178,10 @@ COMMAND:remcash(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][58], ReturnPlayerName(playerid));
-	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+	SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][59], ReturnPlayerName(receiverid));
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -1201,11 +1201,11 @@ COMMAND:remcashall(playerid, params[])
 		SetPlayerMoney(id, 0);
 
 		format(string, sizeof(string), lang_texts[12][58], ReturnPlayerName(playerid));
-		SendClientMessage(id, COLOUR_XP_GOOD, string);
+		SendClientMessage(id, COLOR_XP_GOOD, string);
 	}
 
 	format(string, sizeof(string), lang_texts[12][78]);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -1216,7 +1216,7 @@ COMMAND:setlvl(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, "Применение: /setlvl <ID> <уровень>");
+		SendClientMessage(playerid, COLOR_RED, "Применение: /setlvl <ID> <уровень>");
 		return 1;
 	}
 
@@ -1224,13 +1224,13 @@ COMMAND:setlvl(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
 	new newlvl = strval(strcharsplit(params, idx, ' '));
 	if (!IsValidPlayerLevel(newlvl)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][33]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][33]);
 		return 1;
 	}
 
@@ -1239,10 +1239,10 @@ COMMAND:setlvl(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][31], ReturnPlayerName(playerid), newlvl);
-	SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+	SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 
 	format(string, sizeof(string), lang_texts[12][32], ReturnPlayerName(receiverid), newlvl, oldlvl);
-	SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
@@ -1253,7 +1253,7 @@ COMMAND:setstatus(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, "Применение: /setstatus <ID> <уровень>");
+		SendClientMessage(playerid, COLOR_RED, "Применение: /setstatus <ID> <уровень>");
 		return 1;
 	}
 
@@ -1261,18 +1261,18 @@ COMMAND:setstatus(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 	
 	new sid = strval(strcharsplit(params, idx, ' '));
 	if (sid < 0 || sid > 3) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][44]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][44]);
 		return 1;
 	}
 	
 	if (IsPlayerRconAdmin(receiverid) && !IsPlayerAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][89]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][89]);
 		return 1;
 	}
 	
@@ -1280,10 +1280,10 @@ COMMAND:setstatus(playerid, params[])
 	
 	if (sid == STATUS_LEVEL_PLAYER) {
 		format(string, sizeof(string), lang_texts[12][84], ReturnPlayerName(playerid), playerid);
-		SendClientMessage(receiverid, COLOUR_WHITE, string);
+		SendClientMessage(receiverid, COLOR_WHITE, string);
 
 		format(string, sizeof(string), lang_texts[12][85], ReturnPlayerName(receiverid), receiverid);
-		SendClientMessage(playerid, COLOUR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 	} else {
 		new sidstring[64];
 		switch (sid) {
@@ -1299,10 +1299,10 @@ COMMAND:setstatus(playerid, params[])
 		}
 		
 		format(string, sizeof(string), lang_texts[12][82], ReturnPlayerName(playerid), playerid, sidstring);
-		SendClientMessage(receiverid, COLOUR_WHITE, string);
+		SendClientMessage(receiverid, COLOR_WHITE, string);
 		
 		format(string, sizeof(string), lang_texts[12][83], ReturnPlayerName(receiverid), receiverid, sidstring);
-		SendClientMessage(playerid, COLOUR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 	}
 
 	player_SetStatus(receiverid, sid);
@@ -1316,7 +1316,7 @@ COMMAND:allowport(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, "Применение: /allowport <ID>");
+		SendClientMessage(playerid, COLOR_RED, "Применение: /allowport <ID>");
 		return 1;
 	}
 
@@ -1324,7 +1324,7 @@ COMMAND:allowport(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(receiverid) || IsPlayerRconAdmin(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -1338,7 +1338,7 @@ COMMAND:allowport(playerid, params[])
 		format(string, sizeof(string), lang_texts[12][17], ReturnPlayerName(receiverid), receiverid);
 	}
 	
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 	return 1;
 }
 
@@ -1349,7 +1349,7 @@ COMMAND:setvip(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][19]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][19]);
 		return 1;
 	}
 
@@ -1357,7 +1357,7 @@ COMMAND:setvip(playerid, params[])
 	new giveid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(giveid)) {
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][19]);
+		SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][19]);
 		return 1;
 	}
 	
@@ -1365,17 +1365,17 @@ COMMAND:setvip(playerid, params[])
 	string = strcharsplit(params, idx, ' ');
 	
 	if (strlen(string) < 10) {
-		SendClientMessage(playerid, COLOUR_WHITE, lang_texts[12][19]);
+		SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][19]);
 		return 1;
 	}
 	
 	Premium_UpdatePlayerStatus(giveid, string);
 	
 	format(string, sizeof(string), lang_texts[12][20], ReturnPlayerName(giveid), giveid, Premium_GetPlayerDate(giveid));
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), lang_texts[12][22], Premium_GetPlayerDate(giveid));
-	SendClientMessage(giveid, COLOUR_WHITE, string);
+	SendClientMessage(giveid, COLOR_WHITE, string);
 	return 1;
 }
 
@@ -1406,7 +1406,7 @@ COMMAND:plist(playerid, params[])
 		return 0;
 	}
 
-	SendClientMessage(playerid, COLOUR_YELLOW, _(ADMIN_PLIST_HEADER));
+	SendClientMessage(playerid, COLOR_YELLOW, _(ADMIN_PLIST_HEADER));
 	
 	new string[MAX_STRING], count = 0;
 
@@ -1418,21 +1418,21 @@ COMMAND:plist(playerid, params[])
 				format(string, sizeof(string), _(ADMIN_PLIST_JAIL_NOTIME), ReturnPlayerName(id), id);
 			}
 
-			SendClientMessage(playerid, COLOUR_LIGHTRED, string);
+			SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 			count++;
 		}
 
 		if (player_IsMuted(playerid)) {
 			format(string, sizeof(string), _(ADMIN_PLIST_MUTE_REMAIN), ReturnPlayerName(id), id, (player_GetMuteTime(id) - gettime()) / 60 + 1);
-			SendClientMessage(playerid, COLOUR_LIGHTGREEN, string);
+			SendClientMessage(playerid, COLOR_LIGHTGREEN, string);
 
 			count++;
 		}
 	}
 
 	if (count == 0) {
-		SendClientMessage(playerid, COLOUR_XP_GOOD, _(ADMIN_PLIST_NO_PLAYERS));
+		SendClientMessage(playerid, COLOR_XP_GOOD, _(ADMIN_PLIST_NO_PLAYERS));
 	}
 	return 1;
 }
@@ -1444,7 +1444,7 @@ COMMAND:remcar(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -1452,12 +1452,12 @@ COMMAND:remcar(playerid, params[])
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
 	if (IsPlayerRconAdmin(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -1466,13 +1466,13 @@ COMMAND:remcar(playerid, params[])
 		RemovePlayerFromVehicle(receiverid);
 
 		format(string, sizeof(string), lang_texts[12][64], ReturnPlayerName(receiverid), receiverid);
-		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+		SendClientMessage(playerid, COLOR_XP_GOOD, string);
 
 		format(string, sizeof(string), lang_texts[12][65], ReturnPlayerName(playerid));
-		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+		SendClientMessage(receiverid, COLOR_XP_GOOD, string);
 	} else {
 		format(string, sizeof(string), lang_texts[12][73], ReturnPlayerName(receiverid), receiverid);
-		SendClientMessage(playerid, COLOUR_RED, string);
+		SendClientMessage(playerid, COLOR_RED, string);
 	}
 	return 1;
 }
@@ -1484,7 +1484,7 @@ COMMAND:kick(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -1492,18 +1492,18 @@ COMMAND:kick(playerid, params[])
 	string = strcharsplit(params, idx, ' ');
 
 	if (!IsNumeric(string)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
 	new receiverid = strval(string);
 	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
 	if (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid) && !IsPlayerAdmin(playerid)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
@@ -1531,7 +1531,7 @@ COMMAND:carresp(playerid, params[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[13][10], vehicleid);
-	SendClientMessage(playerid, COLOUR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 	return 1;
 }
 
@@ -1545,7 +1545,7 @@ COMMAND:carrespall(playerid, params[])
 		SetVehicleToRespawn(vehid);
 	}
 
-	SendClientMessage(playerid, COLOUR_WHITE, lang_texts[13][11]);
+	SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][11]);
 	return 1;
 }
 
@@ -1556,13 +1556,13 @@ COMMAND:mole(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][93], params);
-	SendClientMessageToAll(COLOUR_BLUE, string);
+	SendClientMessageToAll(COLOR_BLUE, string);
 	return 1;
 }
 
@@ -1583,7 +1583,7 @@ COMMAND:weather(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][96]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][96]);
 		return 1;
 	}
 
@@ -1636,14 +1636,14 @@ COMMAND:vehicle(playerid, params[])
 
 	if (strcmp(subcmd, "add", true) == 0) {
 		if (!IsPlayerAdm(playerid)) {
-			SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
 
 		new modelid = strval(strcharsplit(params, idx, ' '));
 
 		if (modelid < 400 || modelid > 611) {
-			SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_VEHICLE_ADD_ERROR));
+			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_ADD_ERROR));
 			return 1;
 		}
 
@@ -1669,7 +1669,7 @@ COMMAND:vehicle(playerid, params[])
 		SendMessageToBesidePlayers(string, 10.0, x, y, z);
 	} else if (strcmp(subcmd, "remove", true) == 0) {
 		if (!IsPlayerAdm(playerid)) {
-			SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
 
@@ -1684,7 +1684,7 @@ COMMAND:vehicle(playerid, params[])
 		}
 
 		if (!IsValidVehicle(vehicleid)) {
-			SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_VEHICLE_REMOVE_ERROR));
+			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_REMOVE_ERROR));
 			return 1;
 		}
 
@@ -1701,7 +1701,7 @@ COMMAND:vehicle(playerid, params[])
 		SendMessageToBesidePlayers(string, 10.0, x, y, z);
 	} else if (strcmp(subcmd, "respawn", true) == 0) {
 		if (!IsPlayerMod(playerid)) {
-			SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
 
@@ -1725,7 +1725,7 @@ COMMAND:vehicle(playerid, params[])
 			}
 
 			if (!IsValidVehicle(vehicleid)) {
-				SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR));
+				SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR));
 				return 1;
 			}
 
@@ -1742,7 +1742,7 @@ COMMAND:vehicle(playerid, params[])
 			SendMessageToBesidePlayers(string, 10.0, x, y, z);
 		}
 	} else {
-		SendClientMessage(playerid, COLOUR_RED, _(ADMIN_COMMAND_VEHICLE_HELP));
+		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_HELP));
 	}
 
 	return 1;

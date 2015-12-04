@@ -337,7 +337,7 @@ stock CheckRace() // must be ran by timer every second
 					if (racecountdown % 30 == 0 || racecountdown <= 15 && racecountdown % 5 == 0)
 					{
 						format(string, sizeof(string), lang_texts[10][7], racecountdown);
-						SendMessageToRacers(raceid, string, COLOUR_RACE);
+						SendMessageToRacers(raceid, string, COLOR_RACE);
 					}
 				}
 			}
@@ -392,44 +392,44 @@ COMMAND:race(playerid, params[])
 
 	if (!strcmp(cmd, "help", true) || strlen(cmd) == 0)
 	{
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][8]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][9]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][10]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][11]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][12]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][13]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][14]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][15]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][16]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][17]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[10][8]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[10][9]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[10][10]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[10][11]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[10][12]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[10][13]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[10][14]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[10][15]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[10][16]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[10][17]);
 		return 1;
 	}
 
 	if (!strcmp(cmd, "join", true))
 	{
 		if (player_IsAtQuest(playerid)) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][18]);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[10][18]);
 			return 1;
 		}
 
 		new raceid = strval(strcharsplit(params, idx, ' '));
 		if (raceid == 0 || raceid >= MAX_RACES) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][19]);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[10][19]);
 			return 1;
 		}
 
 		if (RaceStats[raceid][race_state] == RACE_STATE_DISABLED) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][20]);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[10][20]);
 			return 1;
 		}
 
 		if (RaceStats[raceid][race_state] == RACE_STATE_RACING) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][21]);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[10][21]);
 			return 1;
 		}
 
 		if (RaceStats[raceid][race_state] != RACE_STATE_LINEUP) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][22]);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[10][22]);
 			return 1;
 		}
 
@@ -440,13 +440,13 @@ COMMAND:race(playerid, params[])
 	if (!strcmp(cmd, "leave", true) || !strcmp(cmd, "quit", true))
 	{
 		if (!player_IsAtQuest(playerid)) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][23]);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[10][23]);
 			return 1;
 		}
 
 		new raceid = GetPlayerRace(playerid);
 		if (raceid == 0) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][24]);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[10][24]);
 			return 1;
 		}
 
@@ -467,21 +467,21 @@ COMMAND:race(playerid, params[])
 		
 		if (strlen(racename) < 3)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][1]);
+			return SendClientMessage(playerid, COLOR_RED, lang_texts[14][1]);
 		}
 		if (strlen(racename) > MAX_NAME)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][2]);
+			return SendClientMessage(playerid, COLOR_RED, lang_texts[14][2]);
 		}
 
 /*		new tempname[MAX_STRING];
 		set(tempname, racename);
-		if (!IsValidChars(tempname)) return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][3]);
+		if (!IsValidChars(tempname)) return SendClientMessage(playerid, COLOR_RED, lang_texts[14][3]);
 */
 		new raceid = RegisterRace(racename);
 		if (raceid == INVALID_RACE_ID)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][4]);
+			return SendClientMessage(playerid, COLOR_RED, lang_texts[14][4]);
 		}
 		
 		SetPlayerRaceEditID(playerid, raceid);
@@ -490,11 +490,11 @@ COMMAND:race(playerid, params[])
 		new Float:x, Float:y, Float:z;
 		GetPlayerPos(playerid, x, y, z);
 		AddRaceCP(raceid, x, y, z);
-		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[14][5]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[14][6]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[14][7]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[14][8]);
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[14][9]);
+		SendClientMessage(playerid, COLOR_GREEN, lang_texts[14][5]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[14][6]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[14][7]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[14][8]);
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[14][9]);
 		return 1;
 	}
 
@@ -503,17 +503,17 @@ COMMAND:race(playerid, params[])
 		new raceid = GetPlayerRaceEditID(playerid);
 		if (raceid == INVALID_RACE_ID)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][10]);
+			return SendClientMessage(playerid, COLOR_RED, lang_texts[14][10]);
 		}
 		if (RaceStats[raceid][race_state] != RACE_STATE_DISABLED)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][11]);
+			return SendClientMessage(playerid, COLOR_RED, lang_texts[14][11]);
 		}
 		
 		new Float:x, Float:y, Float:z;
 		GetPlayerPos(playerid, x, y, z);
 		AddRaceCP(raceid, x, y, z);
-		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[14][12]);
+		SendClientMessage(playerid, COLOR_GREEN, lang_texts[14][12]);
 		return 1;
 	}
 
@@ -522,17 +522,17 @@ COMMAND:race(playerid, params[])
 		new raceid = GetPlayerRaceEditID(playerid);
 		if (raceid == INVALID_RACE_ID)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][13]);
+			return SendClientMessage(playerid, COLOR_RED, lang_texts[14][13]);
 		}
 		if (RaceStats[raceid][race_state] != RACE_STATE_DISABLED)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][14]);
+			return SendClientMessage(playerid, COLOR_RED, lang_texts[14][14]);
 		}
 		
 		new Float:x, Float:y, Float:z;
 		GetPlayerPos(playerid, x, y, z);
 		RemoveLastRaceCP(raceid);
-		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[14][15]);
+		SendClientMessage(playerid, COLOR_GREEN, lang_texts[14][15]);
 		return 1;
 	}
 
@@ -541,11 +541,11 @@ COMMAND:race(playerid, params[])
 		new raceid = GetPlayerRaceEditID(playerid);
 		if (raceid == INVALID_RACE_ID)
 		{
-			return SendClientMessage(playerid, COLOUR_GREEN, lang_texts[14][16]);
+			return SendClientMessage(playerid, COLOR_GREEN, lang_texts[14][16]);
 		}
 		if (RaceStats[raceid][race_state] != RACE_STATE_DISABLED)
 		{
-			return SendClientMessage(playerid, COLOUR_GREEN, lang_texts[14][17]);
+			return SendClientMessage(playerid, COLOR_GREEN, lang_texts[14][17]);
 		}
 		// set default values
 		Race[raceid][race_frequency] = 5;
@@ -562,7 +562,7 @@ COMMAND:race(playerid, params[])
 		SetPlayerRaceEditID(playerid, INVALID_RACE_ID);
 		RaceStats[raceid][race_timer] = 5;
 
-		SendClientMessage(playerid, COLOUR_GREEN, lang_texts[14][18]);
+		SendClientMessage(playerid, COLOR_GREEN, lang_texts[14][18]);
 		return 1;
 	}
 
@@ -572,18 +572,18 @@ COMMAND:race(playerid, params[])
 		
 		if (raceid == 0 || raceid >= MAX_RACES)
 		{
-			return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][19]);
+			return SendClientMessage(playerid, COLOR_RED, lang_texts[14][19]);
 		}
 		
 		switch (RaceStats[raceid][race_state])
 		{
 			case RACE_STATE_DISABLED:
 			{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][20]);
+				return SendClientMessage(playerid, COLOR_RED, lang_texts[14][20]);
 			}
 			case RACE_STATE_RACING:
 			{
-				return SendClientMessage(playerid, COLOUR_RED, lang_texts[14][21]);
+				return SendClientMessage(playerid, COLOR_RED, lang_texts[14][21]);
 			}
 			case RACE_STATE_LINEUP:
 			{
@@ -683,13 +683,13 @@ stock JoinRace(raceid, playerid)
 	if (GetPlayerMoney(playerid) < Race[raceid][race_cashentry])
 	{
 		format(string, sizeof(string), lang_texts[10][25], Race[raceid][race_cashentry]);
-		SendClientMessage(playerid, COLOUR_RED, string);
+		SendClientMessage(playerid, COLOR_RED, string);
 		return;
 	}
 	if (GetPlayerLevel(playerid) < Race[raceid][race_minlevel])
 	{
 		format(string, sizeof(string), lang_texts[10][26], Race[raceid][race_minlevel]);
-		SendClientMessage(playerid, COLOUR_RED, string);
+		SendClientMessage(playerid, COLOR_RED, string);
 		return;
 	}
 
@@ -704,7 +704,7 @@ stock JoinRace(raceid, playerid)
 		format(string, sizeof(string), lang_texts[10][28], ReturnPlayerName(playerid), RaceStats[raceid][race_racercount]);
 		Log_Game("player: %s(%d): has joined the race. (Racers:%d)", ReturnPlayerName(playerid), playerid, RaceStats[raceid][race_racercount]);
 	}
-	SendMessageToRacers(raceid, string, COLOUR_WHITE);
+	SendMessageToRacers(raceid, string, COLOR_WHITE);
 	
 	GivePlayerMoney(playerid, 0-Race[raceid][race_cashentry], 1);
 	GameTextForPlayer(playerid, "~g~Race Entered.", 3000, 6);
@@ -716,16 +716,16 @@ stock JoinRace(raceid, playerid)
 	if (RaceStats[raceid][race_state] == RACE_STATE_LINEUP)
 	{
 		format(string, sizeof(string), lang_texts[10][29], (Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer]));
-		SendClientMessage(playerid, COLOUR_RACE, string);
+		SendClientMessage(playerid, COLOR_RACE, string);
 	}
 
 	if (PlayerState != PLAYER_STATE_DRIVER && PlayerState != PLAYER_STATE_PASSENGER)
 	{
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[10][30]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[10][30]);
 	}
 	else if (PlayerState == PLAYER_STATE_PASSENGER)
 	{
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[10][31]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[10][31]);
 	}
 	new playervehiclemodel = GetVehicleModel(GetPlayerVehicleID(playerid)); //-1
 
@@ -733,7 +733,7 @@ stock JoinRace(raceid, playerid)
 	{
 		if (IsVehicleAllowedInRace(raceid, playervehiclemodel) == 0)
 		{
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][32]);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[10][32]);
 			SendPlayerAllowedRaceVehicles(playerid, raceid);
 		}
 	}
@@ -757,18 +757,18 @@ stock SendPlayerAllowedRaceVehicles(playerid, raceid)
 			}
 			strins(string, GetVehicleName( Race[raceid][race_vehicles][i] ), strlen(string));
 		}
-		SendClientMessage(playerid, COLOUR_GREY, string);
+		SendClientMessage(playerid, COLOR_GREY, string);
 	}
 	else
 	{
-		SendClientMessage(playerid, COLOUR_MISC, lang_texts[10][33] );
+		SendClientMessage(playerid, COLOR_MISC, lang_texts[10][33] );
 		for (new i = 0, len = strlen(Race[raceid][race_vehicles]); i < len; i++)
 		{
 			if (Race[raceid][race_vehicles][i] == 0)
 			{
 				break;
 			}
-			SendClientMessage(playerid, COLOUR_MISC, GetVehicleName( Race[raceid][race_vehicles][i] ));
+			SendClientMessage(playerid, COLOR_MISC, GetVehicleName( Race[raceid][race_vehicles][i] ));
 		}
 	}
 }
@@ -797,16 +797,16 @@ stock LeaveRace(raceid, playerid)
 			format(string, sizeof(string),  lang_texts[10][35] , ReturnPlayerName(playerid), RaceStats[raceid][race_racercount]);
 			Log_Game("player: %s(%d): has left the race. (Racers:%d)", ReturnPlayerName(playerid), playerid, RaceStats[raceid][race_racercount]);
 		}
-		SendMessageToRacers(raceid, string, COLOUR_GREY);
+		SendMessageToRacers(raceid, string, COLOR_GREY);
 		GivePlayerMoney(playerid, Race[raceid][race_cashentry], 1); // give player back thier cash entry
 		GameTextForPlayer(playerid, "~r~Race Aborted.", 5000, 6);
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[10][36]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[10][36]);
 	}
 	else
 	{
 		format(string, sizeof(string), lang_texts[10][37], ReturnPlayerName(playerid), RaceStats[raceid][race_racercount]);
-		SendMessageToRacers(raceid, string, COLOUR_GREY);
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[10][38]);
+		SendMessageToRacers(raceid, string, COLOR_GREY);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[10][38]);
 	}
 }
 
@@ -844,19 +844,19 @@ stock IsPlayerInAnyRace(playerid)
 
 stock GetRaceColourForPlayer(playerid, raceid)
 {
-	new colour = COLOUR_RACE;
+	new colour = COLOR_RACE;
 	if (RaceStats[raceid][race_racercount] >= Race[raceid][race_minracers]-1)
 	{
-		colour = COLOUR_RACE;
+		colour = COLOR_RACE;
 	}
 	else if (RaceStats[raceid][race_racercount] < (Race[raceid][race_minracers]-1))
 	{
-		colour = COLOUR_RACE_BAD;
+		colour = COLOR_RACE_BAD;
 	}
 
 	if (GetPlayerLevel(playerid) < Race[raceid][race_minlevel])
 	{
-		colour = COLOUR_RACE_BAD;
+		colour = COLOR_RACE_BAD;
 	}
 	return colour;
 }
@@ -870,7 +870,7 @@ stock SendPlayerCurrentRaces(playerid)
 		{
 			if (racefound == 0)
 			{
-				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[10][39]);
+				SendClientMessage(playerid, COLOR_GREEN, lang_texts[10][39]);
 				racefound++;
 			}
 			if (RaceStats[raceid][race_racercount] >= Race[raceid][race_minracers])
@@ -887,7 +887,7 @@ stock SendPlayerCurrentRaces(playerid)
 		{
 			if (racefound == 0)
 			{
-				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[10][39]);
+				SendClientMessage(playerid, COLOR_GREEN, lang_texts[10][39]);
 				racefound++;
 			}
 			format(string, sizeof(string), lang_texts[10][6], Race[raceid][race_name], raceid, Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer] + MAX_COUNTDOWN, RaceStats[raceid][race_racercount], GetRaceCPZoneName(raceid, 0), Race[raceid][race_minlevel], Race[raceid][race_cashentry]);
@@ -897,7 +897,7 @@ stock SendPlayerCurrentRaces(playerid)
 		{
 			if (racefound == 0)
 			{
-				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[10][39]);
+				SendClientMessage(playerid, COLOR_GREEN, lang_texts[10][39]);
 				racefound++;
 			}
 			format(string, sizeof(string), lang_texts[10][6], Race[raceid][race_name], raceid, Race[raceid][race_lineupdelay] - RaceStats[raceid][race_timer], RaceStats[raceid][race_racercount], GetRaceCPZoneName(raceid, 0), Race[raceid][race_minlevel], Race[raceid][race_cashentry]);
@@ -907,19 +907,19 @@ stock SendPlayerCurrentRaces(playerid)
 		{
 			if (racefound == 0)
 			{
-				SendClientMessage(playerid, COLOUR_GREEN, lang_texts[10][39]);
+				SendClientMessage(playerid, COLOR_GREEN, lang_texts[10][39]);
 				racefound++;
 			}
 			if (strlen(Race[raceid][race_name]) > 0)
 			{
 				format(string, sizeof(string), lang_texts[10][42], Race[raceid][race_name], raceid);
-				SendClientMessage(playerid, COLOUR_RED, string);
+				SendClientMessage(playerid, COLOR_RED, string);
 			}
 		}
 	}
 	if (racefound == 0)
 	{
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[10][43]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[10][43]);
 		RaceRunning = 0;
 	}
 	return 1;
@@ -1006,7 +1006,7 @@ stock StartRaceCountdown(raceid)
 			if (!oIsPlayerInRaceCheckpoint(playerid, GetRaceCPX(raceid, 0), GetRaceCPY(raceid, 0), GetRaceCPZ(raceid, 0), 60))
 			{
 				LeaveRace(raceid, playerid);
-				SendClientMessage(playerid, COLOUR_RED, lang_texts[10][44]);
+				SendClientMessage(playerid, COLOR_RED, lang_texts[10][44]);
 			}
 		}
 	}
@@ -1018,14 +1018,14 @@ stock StartRaceCountdown(raceid)
 		{
 			Log_Game("Race: '%s' did not run.", Race[raceid][race_name]);
 		}
-		SendClientMessageToAll(COLOUR_RED, string);
+		SendClientMessageToAll(COLOR_RED, string);
 		CleanupRace(raceid);
 		RaceRunning=0;
 		return;
 	}
 
 	format(string, sizeof(string),  lang_texts[10][46] , Race[raceid][race_name]);
-	SendClientMessageToAll(COLOUR_RACE, string);
+	SendClientMessageToAll(COLOR_RACE, string);
 	Log_Game("Race: %s starting.", Race[raceid][race_name]);
 	RaceStats[raceid][race_state] = RACE_STATE_COUNTDOWN;
 
@@ -1049,7 +1049,7 @@ stock EndRace(raceid)
 		// if player is in this race
 		if (player_GetQuestID(playerid) == GetRaceQuestID(raceid)) {
 			GameTextForPlayer(playerid, "~r~Race Failed!", 5000, 6);
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[10][47]);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[10][47]);
 			Log_Game("player: %s(%d): his race ended. Out of time.", ReturnPlayerName(playerid), playerid);
 			GivePlayerXP(playerid, -(Race[raceid][race_xpprize] / 3), 1);
 		}
@@ -1068,10 +1068,10 @@ stock FinishRace(raceid, playerid)
 	if (RaceStats[raceid][race_position] == 1)
 	{
 		format(string, sizeof(string),  lang_texts[10][48] , Race[raceid][race_name], FormatPosition(RaceStats[raceid][race_position]), RacePlayerStats[playerid][race_player_time]);
-		SendClientMessage(playerid, COLOUR_GREEN, string);
+		SendClientMessage(playerid, COLOR_GREEN, string);
 
 		format(string, sizeof(string),  lang_texts[10][49] , ReturnPlayerName(playerid), Race[raceid][race_name], RacePlayerStats[playerid][race_player_time]);
-		SendClientMessageToAll(COLOUR_RACE, string);
+		SendClientMessageToAll(COLOR_RACE, string);
 		Log_Game("player: %s(%d): has won race '%s'! Time: %d", ReturnPlayerName(playerid), playerid, Race[raceid][race_name], RacePlayerStats[playerid][race_player_time]);
 		GivePlayerMoney(playerid, Race[raceid][race_cashprize], 1);
 
@@ -1080,10 +1080,10 @@ stock FinishRace(raceid, playerid)
 	else if (RaceStats[raceid][race_position] == 2)
 	{
 		format(string, sizeof(string),  lang_texts[10][50] , Race[raceid][race_name], FormatPosition(RaceStats[raceid][race_position]), RacePlayerStats[playerid][race_player_time]);
-		SendClientMessage(playerid, COLOUR_GREEN, string);
+		SendClientMessage(playerid, COLOR_GREEN, string);
 
 		format(string, sizeof(string),  lang_texts[10][51] , ReturnPlayerName(playerid), FormatPosition(RaceStats[raceid][race_position]), Race[raceid][race_name], RacePlayerStats[playerid][race_player_time]);
-		SendClientMessageToAll(COLOUR_RACE, string);
+		SendClientMessageToAll(COLOR_RACE, string);
 		if (RaceStats[raceid][race_racercount] > 2)
 		{
 			GivePlayerMoney(playerid, (Race[raceid][race_cashprize]/2), 1);
@@ -1097,10 +1097,10 @@ stock FinishRace(raceid, playerid)
 	else if (RaceStats[raceid][race_position] == 3 && RaceStats[raceid][race_racercount] > 3)
 	{
 		format(string, sizeof(string),  lang_texts[10][52] , Race[raceid][race_name], FormatPosition(RaceStats[raceid][race_position]), RacePlayerStats[playerid][race_player_time]);
-		SendClientMessage(playerid, COLOUR_GREEN, string);
+		SendClientMessage(playerid, COLOR_GREEN, string);
 
 		format(string, sizeof(string),  lang_texts[10][53] , ReturnPlayerName(playerid), FormatPosition(RaceStats[raceid][race_position]), Race[raceid][race_name], RacePlayerStats[playerid][race_player_time]);
-		SendClientMessageToAll(COLOUR_RACE, string);
+		SendClientMessageToAll(COLOR_RACE, string);
 		if (RaceStats[raceid][race_racercount] > 3)
 		{
 			GivePlayerMoney(playerid, (Race[raceid][race_cashprize]/3), 1);
@@ -1114,7 +1114,7 @@ stock FinishRace(raceid, playerid)
 	else
 	{
 		format(string, sizeof(string),  lang_texts[10][54] , Race[raceid][race_name], FormatPosition(RaceStats[raceid][race_position]), RacePlayerStats[playerid][race_player_time]);
-		SendClientMessage(playerid, COLOUR_GREEN, string);
+		SendClientMessage(playerid, COLOR_GREEN, string);
 		GivePlayerXP(playerid, Race[raceid][race_xpbonus] * RaceStats[raceid][race_racercount], 1);
 	}
 
@@ -1125,7 +1125,7 @@ stock FinishRace(raceid, playerid)
 	if (RaceStats[raceid][race_timer] < BestScore[raceid][race_score_time] || BestScore[raceid][race_score_time] == 0)
 	{
 		format(string, sizeof(string), lang_texts[10][55], ReturnPlayerName(playerid), Race[raceid][race_name], RacePlayerStats[playerid][race_player_time], BestScore[raceid][race_score_time]);
-		SendClientMessageToAll(COLOUR_RACE, string);
+		SendClientMessageToAll(COLOR_RACE, string);
 		Log_Game("player: %s(%d): has set a new record for race '%s'! Time: %d. Old record: %d.", ReturnPlayerName(playerid), playerid, Race[raceid][race_name], RacePlayerStats[playerid][race_player_time], BestScore[raceid][race_score_time]);
 		GivePlayerMoney(playerid, Race[raceid][race_cashprize], 1);
 		GivePlayerXP(playerid, Race[raceid][race_xpprize], 1);
@@ -1192,12 +1192,12 @@ stock race_OnPlayerEnterCheckpoint(playerid)
 
 						if (IsVehicleAllowedInRace(raceid, playervehiclemodel) == 0)
 						{
-							SendClientMessage(playerid, COLOUR_RED,  lang_texts[10][59] );
+							SendClientMessage(playerid, COLOR_RED,  lang_texts[10][59] );
 							SendPlayerAllowedRaceVehicles(playerid, raceid);
 						}
 						else
 						{
-							SendClientMessage(playerid, COLOUR_RACE,  lang_texts[10][60] );
+							SendClientMessage(playerid, COLOR_RACE,  lang_texts[10][60] );
 						}
 					}
 				}
@@ -1213,7 +1213,7 @@ stock race_OnPlayerEnterCheckpoint(playerid)
 
 				if (IsVehicleAllowedInRace(raceid, playervehiclemodel) == 0)
 				{
-					SendClientMessage(playerid, COLOUR_RED,  lang_texts[10][61] );
+					SendClientMessage(playerid, COLOR_RED,  lang_texts[10][61] );
 					SendPlayerAllowedRaceVehicles(playerid, raceid);
 					continue;
 				}

@@ -80,8 +80,8 @@ pt_idle_PlayerTimer(playerid)
 			
 			if (GetPVarInt(playerid, "playerIdle") > MaxTime - 1) {
 				format(string, sizeof(string), _(PROTECTION_ANTIIDLE_INFO), MaxTime - 1);
-				SendClientMessage(playerid, COLOUR_RED, string);
-				SendClientMessage(playerid, COLOUR_RED, _(PROTECTION_ANTIIDLE_LAST_WARN));
+				SendClientMessage(playerid, COLOR_RED, string);
+				SendClientMessage(playerid, COLOR_RED, _(PROTECTION_ANTIIDLE_LAST_WARN));
 			}
 			if (GetPVarInt(playerid, "playerIdle") > MaxTime) {
 				SetPVarInt(playerid, "playerIdle", 0);

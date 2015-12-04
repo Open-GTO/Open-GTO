@@ -169,19 +169,19 @@ stock GivePlayerOwnedWeapon(playerid)
 stock SendPlayerOwnedWeapons(playerid)
 {
 	new string[MAX_STRING];
-	SendClientMessage(playerid,COLOUR_GREEN,lang_texts[9][7]);
+	SendClientMessage(playerid,COLOR_GREEN,lang_texts[9][7]);
 	for (new weaponslot=0;weaponslot<PLAYER_WEAPON_SLOTS;weaponslot++)
 	{
 		if (PlayerWeapons[playerid][weaponslot][pwid] <= 0) continue;
 		if (PlayerWeapons[playerid][weaponslot][pbullets] > 1)
 		{
 			format(string,sizeof(string), lang_texts[9][8],ReturnWeaponName(PlayerWeapons[playerid][weaponslot][pwid]),PlayerWeapons[playerid][weaponslot][pbullets]);
-			SendClientMessage(playerid,COLOUR_MISC,string);
+			SendClientMessage(playerid,COLOR_MISC,string);
 		}
 		else if (PlayerWeapons[playerid][weaponslot][pbullets] == 1)
 		{
 			format(string,sizeof(string), lang_texts[9][9],ReturnWeaponName(PlayerWeapons[playerid][weaponslot][pwid]));
-			SendClientMessage(playerid,COLOUR_MISC,string);
+			SendClientMessage(playerid,COLOR_MISC,string);
 		}
 	}
 }

@@ -57,13 +57,13 @@ stock oBan_Check(playerid)
 	}
 
 	format(string, sizeof(string), lang_texts[13][51], admin, timestamp_to_format_date(ban_time), string, reason);
-	SendClientMessage(playerid, COLOUR_RED, string);
+	SendClientMessage(playerid, COLOR_RED, string);
 	
 	if (unban_time > 0) {
 		KickPlayer(playerid, "ban check", 0);
 	} else {
 		ini_fileRemove(filename);
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][52]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[13][52]);
 	}
 	return 1;
 }
@@ -98,7 +98,7 @@ stock oBan(user[], reason[], adminid, time_second=0)
 	if (strlen(reason) > 0) {
 		format(string, sizeof(string), lang_texts[12][98], string, reason);
 	}
-	SendClientMessageToAll(COLOUR_RED, string);
+	SendClientMessageToAll(COLOR_RED, string);
 
 	if (IsIpAddress(user)) {
 		new plrIP[MAX_IP];
@@ -125,8 +125,8 @@ COMMAND:ban(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, _(ADMIN_BAN_ISNULL));
-		SendClientMessage(playerid, COLOUR_RED, _(ADMIN_BAN_EXAMPLE));
+		SendClientMessage(playerid, COLOR_RED, _(ADMIN_BAN_ISNULL));
+		SendClientMessage(playerid, COLOR_RED, _(ADMIN_BAN_EXAMPLE));
 		return 1;
 	}
 
@@ -168,14 +168,14 @@ COMMAND:ban(playerid, params[])
 	
 	new user_length = strlen(user);
 	if (!IsNumeric(user) && (user_length < MIN_NAME_LEN || user_length > MAX_NAME_LEN)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][33]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[13][33]);
 		return 1;
 	}
 
 	if (strlen(reason) > MAX_SEND_SYMBOLS) {
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[13][34], MAX_SEND_SYMBOLS);
-		SendClientMessage(playerid, COLOUR_RED, string);
+		SendClientMessage(playerid, COLOR_RED, string);
 		return 1;
 	}
 
@@ -190,7 +190,7 @@ COMMAND:unban(playerid, params[])
 	}
 
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[12][3]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
 
@@ -203,7 +203,7 @@ COMMAND:unban(playerid, params[])
 	length = strlen(user);
 	
 	if (length < MIN_NAME_LEN || length > MAX_NAME_LEN) {
-		SendClientMessage(playerid, COLOUR_RED, lang_texts[13][35]);
+		SendClientMessage(playerid, COLOR_RED, lang_texts[13][35]);
 		return 1;
 	}
 	
@@ -220,6 +220,6 @@ COMMAND:unban(playerid, params[])
 		format(string, sizeof(string), lang_texts[13][58], user);
 	}
 
-	SendClientMessage(playerid, COLOUR_RED, string);
+	SendClientMessage(playerid, COLOR_RED, string);
 	return 1;
 }

@@ -338,7 +338,7 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 	Dialog_Message(playerid, _(BANK_GANG_CAPTION), string, _(BANK_BUTTON_OK));
 
 	format(string, sizeof(string), _(BANK_GANG_WITHDRAW_MESSAGE), ReturnPlayerName(playerid), playerid, amount);
-	SendGangMessage(gangid, string, COLOUR_GANG);
+	SendGangMessage(gangid, string, COLOR_GANG);
 	return 1;
 }
 
@@ -398,7 +398,7 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 	Dialog_Message(playerid, _(BANK_GANG_CAPTION), string, _(BANK_BUTTON_OK));
 
 	format(string, sizeof(string), _(BANK_GANG_DEPOSIT_MESSAGE), ReturnPlayerName(playerid), playerid, amount);
-	SendGangMessage(gangid, string, COLOUR_GANG);
+	SendGangMessage(gangid, string, COLOR_GANG);
 	return 1;
 }
 
@@ -430,7 +430,7 @@ stock bank_Profit()
 		GivePlayerBankMoney(playerid, amount);
 		
 		format(string, sizeof(string), _(BANK_PROFIT_MESSAGE), amount);
-		SendClientMessage(playerid, COLOUR_MONEY_GOOD, string);
+		SendClientMessage(playerid, COLOR_MONEY_GOOD, string);
 	}
 	return 1;
 }

@@ -71,7 +71,7 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 	} else {
 		new maxxp = GetPlayerXPToLevel(playerid, GetMaxPlayerLevel());
 		if (xpamount >= maxxp) {
-			SendClientMessage(playerid, COLOUR_RED, lang_texts[9][17]);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[9][17]);
 			xpamount = maxxp;
 		}
 	}
@@ -90,7 +90,7 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 
 		if (showtext == 1) {
 			format(string, sizeof(string), lang_texts[9][20], xpamount);
-			SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+			SendClientMessage(playerid, COLOR_XP_GOOD, string);
 		}
 	} else {
 		if (showtd == 1) {
@@ -100,7 +100,7 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 
 		if (showtext == 1) {
 			format(string, sizeof(string), lang_texts[9][21], -xpamount);
-			SendClientMessage(playerid, COLOUR_XP_BAD, string);
+			SendClientMessage(playerid, COLOR_XP_BAD, string);
 		}
 	}
 
@@ -149,12 +149,12 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 
 		if (old_level < level) {
 			format(string, sizeof(string), lang_texts[9][23], level);
-			SendClientMessage(playerid, COLOUR_XP_GOOD, string);
+			SendClientMessage(playerid, COLOR_XP_GOOD, string);
 			
 			ShowWeaponsOnLevel(playerid, level, old_level);
 		} else {
 			format(string, sizeof(string), lang_texts[9][22], level);
-			SendClientMessage(playerid, COLOUR_XP_BAD, string);
+			SendClientMessage(playerid, COLOR_XP_BAD, string);
 		}
 
 		Log_Game("player: %s(%d): changed his level from %d to %d", ReturnPlayerName(playerid), playerid, old_level, level);
