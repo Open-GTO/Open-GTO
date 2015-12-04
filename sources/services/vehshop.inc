@@ -140,7 +140,12 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 		return 0;
 	}
 	
-	new vehicleid = GetPlayerVehicleID(playerid);
+	new
+		vehicleid = GetPlayerVehicleID(playerid),
+		color1, color2;
+	
+	GetVehicleColor(vehicleid, color1, color2);
+
 	new cost = GetVehicleCost( GetVehicleModel(vehicleid) );
 	
 	if (GetPlayerMoney(playerid) < cost) {
@@ -149,7 +154,7 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 	}
 	
 	GivePlayerMoney(playerid, -cost, 1);
-	buyVehicle(playerid, vehicleid);
+	buyVehicle(playerid, vehicleid, color1, color2);
 	
 	Dialog_Message(playerid, "Магазин транспорта", "\
 		Вы успешно купили это транспортное средство.\n\
@@ -229,7 +234,7 @@ stock vshop_ChangeVehicles()
 
 		vehicles_array[i][vshop_ID] = CreateVehicle(model,
 			vehicles_array[i][vshop_X], vehicles_array[i][vshop_Y], vehicles_array[i][vshop_Z], vehicles_array[i][vshop_A],
-			colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], 0
+			-1, -1, 0
 		);
 		SetVehicleFuel(vehicles_array[i][vshop_ID], 0);
 		
@@ -250,10 +255,10 @@ stock vshop_OneHourTimer()
 	}
 }
 
-stock buyVehicle(playerid, vehicleid)
+stock buyVehicle(playerid, vehicleid, color1, color2)
 {
 	new model = GetVehicleModel(vehicleid);
-	AddPlayerVehicle(playerid, model, colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], colors_Array[ random( sizeof(colors_Array) ) ][color_vehicle], float(GetMaxVehicleFuel(model)));
+	AddPlayerVehicle(playerid, model, color1, color2, float(GetMaxVehicleFuel(model)));
 	return 1;
 }
 
