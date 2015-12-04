@@ -89,6 +89,7 @@ stock account_Register(playerid, password[])
 	account_SetRegisterTime(playerid, gettime());
 	account_SetLoginTime(playerid, gettime());
 	account_SetPlayedTime(playerid, 0);
+	account_SetAfterRegisterStatus(playerid, true);
 	
 	// create account and player
 	account_SaveEx(playerid);
@@ -247,6 +248,16 @@ stock account_ShowDialog(playerid)
 
 	widestrip_Show(playerid);
 	return 1;
+}
+
+stock account_SetAfterRegisterStatus(playerid, bool:status)
+{
+	SetPVarInt(playerid, "is_after_register", _:status);
+}
+
+stock account_IsAfterRegister(playerid)
+{
+	return GetPVarInt(playerid, "is_after_register");
 }
 
 stock account_SetRegisterTime(playerid, tiemstamp)

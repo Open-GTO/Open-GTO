@@ -43,7 +43,9 @@ stock player_OnPlayerSpawn(playerid)
 	UpdatePlayerWeaponTextDraws(playerid);
 
 	SetPlayerColor(playerid, PlayerGangColour(playerid));
-	player_SetSkin(playerid, player_GetSkin(playerid));
+	if (!account_IsAfterRegister(playerid)) {
+		player_SetSkin(playerid, player_GetSkin(playerid));
+	}
 	SetPlayerMaxHealth(playerid);
 	pl_fights_UpdatePlayerStyleUsed(playerid);
 	GivePlayerOwnedWeapon(playerid);
@@ -164,6 +166,22 @@ stock player_OnLogin(playerid)
 	SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
 	TogglePlayerSpectating(playerid, 0);
 
+	// skin select
+	if (account_IsAfterRegister(playerid)) {
+		#if defined PLAYER_START_SKIN
+			player_SetSkin(playerid, PLAYER_START_SKIN);
+		#else
+			new Float:camera_pos[3];
+			camera_pos[2] = spawn_pos[2] + 1.0;
+
+			GetCoordsBefore(spawn_pos[0], spawn_pos[1], spawn_pos[3], 2.0, camera_pos[0], camera_pos[1]);
+			SetPlayerCameraPos(playerid, camera_pos[0], camera_pos[1], camera_pos[2]);
+			SetPlayerCameraLookAt(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2] + 0.5);
+
+			SkinSelect_Start(playerid, SkinSelect:RegisterSkin);
+		#endif
+	}
+
 	// reset data
 	player_SetQuestID(playerid, INVALID_QUEST_ID);
 
@@ -233,12 +251,29 @@ stock player_OnLogin(playerid)
 	Log_Game("player: %s(%d): logged in successfully.", playername, playerid);
 }
 
+SkinSelectResponse:RegisterSkin(playerid, SS_Response:type, oldskin, newskin)
+{
+	if (type == SS_Response:SS_Response_Stop || type == SS_Response:SS_Response_Select) {
+		player_SetSkin(playerid, newskin);
+		SetCameraBehindPlayer(playerid);
+	}
+
+	if (type == SS_Response:SS_Response_Select) {
+		SkinSelect_Stop(playerid);
+	}
+}
+
 stock player_SetDefaultData(playerid)
 {
 	SetPlayerMoney(playerid, PlayerStartMoney);
 	player_SetJailTime(playerid, -1);
 	player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+
+#if defined PLAYER_START_SKIN
 	player_SetSkin(playerid, PLAYER_START_SKIN);
+#else
+	player_SetSkin(playerid, SKINS_MINID);
+#endif
 
 	SetPlayerLevel(playerid, PLAYER_START_LEVEL, 0, 0);
 

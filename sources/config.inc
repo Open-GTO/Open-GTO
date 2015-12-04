@@ -127,7 +127,7 @@
 #define PLAYER_START_LEVEL    1 // уровень, который даётся игроку после регистрации
 #define PLAYER_START_MONEY    1500 // кол-во стартовых денег
 #define PLAYER_START_WEAPON   {WEAPON_COLT45, 200}
-#define PLAYER_START_SKIN     95
+#define PLAYER_START_SKIN     95 // скин по умолчанию (если выключено, то выбор после регистрации)
 
 // player
 #define MIN_HEALTH            35.0 // минимальное(стартовое) кол-во здоровья
