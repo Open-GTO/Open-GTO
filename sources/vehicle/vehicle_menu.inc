@@ -107,7 +107,6 @@ DialogCreate:VehicleMenu(playerid)
 	strcat(string, "Перевернуть\n", sizeof(string));
 	strcat(string, "Заправить\n", sizeof(string));
 	strcat(string, "Радио\n", sizeof(string));
-	strcat(string, "Изменить цвет\n", sizeof(string));
 	
 	// фары
 	if (lights == VEHICLE_PARAMS_ON) {
@@ -198,13 +197,8 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			Dialog_Show(playerid, Dialog:VehicleRadio);
 			return 1;
 		}
-		// цвет
-		case 3: {
-			Dialog_Show(playerid, Dialog:VehicleColor);
-			return 1;
-		}
 		// фары
-		case 4: {
+		case 3: {
 			if (lights == VEHICLE_PARAMS_ON) {
 				SetVehicleParamsEx(vehicleid, engine, VEHICLE_PARAMS_OFF, alarm, doors, bonnet, boot, objective);
 			} else {
@@ -213,7 +207,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 		// двигатель
-		case 5: {
+		case 4: {
 			if (engine == VEHICLE_PARAMS_ON) {
 				SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, lights, alarm, doors, bonnet, boot, objective);
 			} else {
@@ -222,7 +216,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 		// капот
-		case 6: {
+		case 5: {
 			if (bonnet == VEHICLE_PARAMS_ON) {
 				SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, VEHICLE_PARAMS_OFF, boot, objective);
 			} else {
@@ -231,7 +225,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 		// багажник
-		case 7: {
+		case 6: {
 			if (boot == VEHICLE_PARAMS_ON) {
 				SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, VEHICLE_PARAMS_OFF, objective);
 			} else {
@@ -240,29 +234,6 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 	}
-	return 1;
-}
-
-DialogCreate:VehicleColor(playerid)
-{
-	new string[MAX_NAME * COLOR_COUNT];
-
-	for (new i = 0; i < COLOR_COUNT; i++) {
-		format(string, sizeof(string), "%s{%s}%s\n", string, Color_GetEmbeddingCode(i), Color_GetName(i));
-	}
-
-	Dialog_Open(playerid, Dialog:VehicleColor, DIALOG_STYLE_LIST, "Изменить цвет", string, "ОК", "Назад");
-}
-
-DialogResponse:VehicleColor(playerid, response, listitem, inputtext[])
-{
-	if (!response) {
-		Dialog_Show(playerid, Dialog:VehicleMenu);
-		return 1;
-	}
-	
-	new vehicleid = GetPlayerVehicleID(playerid);
-	ChangePlayerVehicleColor(playerid, vehicleid, Color_GetVehicleCode(listitem), Color_GetVehicleCode(listitem));
 	return 1;
 }
 

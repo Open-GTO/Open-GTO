@@ -113,7 +113,12 @@ new colors_Array[][ColorInfo] = {
 
 #define COLOR_COUNT	sizeof(colors_Array)
 
-stock Color_GetEmbeddingCode(id)
+stock Color_GetEmbeddingCode(id, code[], size = sizeof(code))
+{
+	format(code, size, "%06x", colors_Array[id][color_code] >>> 8);
+}
+
+stock Color_ReturnEmbeddingCode(id)
 {
 	new code[8];
 	format(code, sizeof(code), "%06x", colors_Array[id][color_code] >>> 8);
@@ -125,7 +130,12 @@ stock Color_GetCode(id)
 	return colors_Array[id][color_code];
 }
 
-stock Color_GetName(id)
+stock Color_GetName(id, name[], size = sizeof(name))
+{
+	strmid(name, colors_Array[id][color_name], 0, strlen(colors_Array[id][color_name]), size);
+}
+
+stock Color_ReturnName(id)
 {
 	new name[MAX_NAME];
 	set(name, colors_Array[id][color_name]);
@@ -135,7 +145,7 @@ stock Color_GetName(id)
 stock Color_GetIdByName(name[])
 {
 	for (new i = 0; i < COLOR_COUNT; i++) {
-		if (!strcmp(name, colors_Array[i][color_name], true)) {
+		if (strcmp(name, colors_Array[i][color_name], true) == 0) {
 			return i;
 		}
 	}
@@ -145,7 +155,7 @@ stock Color_GetIdByName(name[])
 stock Color_GetCodeByName(name[])
 {
 	for (new i = 0; i < COLOR_COUNT; i++) {
-		if (!strcmp(name, colors_Array[i][color_name], true)) {
+		if (strcmp(name, colors_Array[i][color_name], true) == 0) {
 			return colors_Array[id][color_code];
 		}
 	}

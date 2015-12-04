@@ -240,7 +240,7 @@ DialogCreate:GangCreate(playerid)
 			set(string, "Введите цвет банды:\n\t");
 
 			for (new i = 0; i < COLOR_COUNT; i++) {
-				format(string, sizeof(string), "%s  {%s}%s", string, Color_GetEmbeddingCode(i), Color_GetName(i));
+				format(string, sizeof(string), "%s  {%s}%s", string, Color_ReturnEmbeddingCode(i), Color_ReturnName(i));
 				
 				if ((i+1) % COLORS_IN_STRING == 0) {
 					strcat(string, "\n\t", sizeof(string));
@@ -490,7 +490,7 @@ DialogCreate:GangColor(playerid)
 	new string[MAX_STRING + MAX_NAME * COLOR_COUNT] = "Введите название цвета, который вы хотите установить для банды. Доступные:\n\t";
 
 	for (new i = 0; i < COLOR_COUNT; i++) {
-		format(string, sizeof(string), "%s  {%s}%s", string, Color_GetEmbeddingCode(i), Color_GetName(i));
+		format(string, sizeof(string), "%s  {%s}%s", string, Color_ReturnEmbeddingCode(i), Color_ReturnName(i));
 		
 		if ((i+1) % 5 == 0) {
 			strcat(string, "\n\t", sizeof(string));
