@@ -15,6 +15,11 @@
 
 stock vh_menu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
+	if (PRESSED(KEY_CTRL_BACK)) {
+		Dialog_Show(playerid, Dialog:VehicleMenu);
+		return 1;
+	}
+
 	new engine, lights, alarm, doors, bonnet, boot, objective;
 	new vehicleid = GetPlayerVehicleID(playerid);
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);

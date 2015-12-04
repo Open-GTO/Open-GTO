@@ -570,15 +570,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			return business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
 		}
 		
-		new player_state = GetPlayerState(playerid);
-		switch (player_state) {
-			case PLAYER_STATE_ONFOOT: {
-				Dialog_Show(playerid, Dialog:PlayerMenu);
-			}
-			case PLAYER_STATE_DRIVER: {
-				Dialog_Show(playerid, Dialog:VehicleMenu);
-			}
-		}
+		Dialog_Show(playerid, Dialog:PlayerMenu);
 		return 1;
 	}
 
@@ -595,7 +587,9 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		return 1;
 	}
 
-	if (PRESSED(KEY_ANALOG_UP) || PRESSED(KEY_ANALOG_DOWN) || PRESSED(KEY_ANALOG_LEFT) || PRESSED(KEY_ANALOG_RIGHT)) {
+	if (PRESSED(KEY_CTRL_BACK) || PRESSED(KEY_ANALOG_UP) || PRESSED(KEY_ANALOG_DOWN) ||
+		PRESSED(KEY_ANALOG_LEFT) || PRESSED(KEY_ANALOG_RIGHT)
+		) {
 		new player_state = GetPlayerState(playerid);
 		switch (player_state) {
 			case PLAYER_STATE_DRIVER: {
