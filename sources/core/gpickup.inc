@@ -131,6 +131,7 @@ GPickup_OnPlayerPickUpPickup(playerid, pickupid)
 	new respawn_time = GPickup_GetRespawnTime(id);
 	if (respawn_time > 0) {
 		GPickup_Hide(id);
+		Iter_Add(HiddenPickups, id);
 	} else if (respawn_time == -1) {
 		GPickup_Remove(id);
 	}
@@ -149,13 +150,9 @@ GPickup_Update()
 	new time = gettime();
 
 	foreach (new id : HiddenPickups) {
-		if (!GPickup_IsExist(id)) {
-			Iter_SafeRemove(HiddenPickups, id, id);
-			continue;
-		}
-
 		if (time >= GPickup_GetTime(id) + GPickup_GetRespawnTime(id)) {
 			GPickup_Show(id);
+			Iter_SafeRemove(HiddenPickups, id, id);
 		}
 	}
 }
@@ -185,6 +182,7 @@ stock GPickup_Create(model, Float:x, Float:y, Float:z, world = -1,
 
 	if (is_showed) {
 		GPickup_Show(id);
+		Iter_Remove(HiddenPickups, id);
 	}
 
 	return id;
@@ -301,16 +299,12 @@ static stock GPickup_Show(id)
 		pickups_array[id][pickup_world]);
 	
 	pickups_array[id][pickup_time] = -1;
-
-	Iter_Remove(HiddenPickups, id);
 }
 
 static stock GPickup_Hide(id)
 {
 	DestroyPickup(pickups_array[id][pickup_id]);
 	pickups_array[id][pickup_time] = gettime();
-
-	Iter_Add(HiddenPickups, id);
 }
 
 static stock GPickup_GetFreeId()
