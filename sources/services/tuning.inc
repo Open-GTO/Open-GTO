@@ -241,6 +241,9 @@ TextListResponse:tuning_menu(playerid, TextListType:response, itemid, itemvalue[
 					TextList_Show(playerid, TextList:color_menu);
 				}
 				case 1: {
+					gInfo[playerid][e_tPaintjob] = INVALID_PAINTJOB_ID;
+					gInfo[playerid][e_tPrevPaintjob] = GetVehiclePaintjob(gInfo[playerid][e_tVehicle]);
+
 					TextList_Show(playerid, TextList:paintjob_select);
 				}
 			}
@@ -270,7 +273,7 @@ TextListResponse:color_menu(playerid, TextListType:response, itemid, itemvalue[]
 		gInfo[playerid][e_tColor][0] = INVALID_COLOR_ID;
 		gInfo[playerid][e_tColor][1] = INVALID_COLOR_ID;
 
-		GetVehicleColor(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPrevColor][0], gInfo[playerid][e_tPrevColor][1]); 
+		GetVehicleColor(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPrevColor][0], gInfo[playerid][e_tPrevColor][1]);
 
 		TextList_Show(playerid, TextList:color_select);
 
@@ -317,7 +320,6 @@ TextListCreate:color_select(playerid)
 	              header, _(TUNING_TD_BUTTON_BUY), _(TUNING_TD_BUTTON_BACK),
 	              .lists_fg_color = items_fg_colors,
 	              .lists_bg_color = items_bg_colors);
-	return 1;
 }
 
 TextListResponse:color_select(playerid, TextListType:response, itemid, itemvalue[])
@@ -343,36 +345,65 @@ TextListResponse:color_select(playerid, TextListType:response, itemid, itemvalue
 				Dialog_Message(playerid, _(TUNING_COLOR_DIALOG_HEADER), _(TUNING_COLOR_NO_ENOUGH_MONEY), _(TUNING_DIALOG_BUTTON_OK));
 				PlayerPlaySoundOnPlayer(playerid, 1085);
 			} else {
-				CallLocalFunction("OnVehicleTuningRespray", "iii", playerid, gInfo[playerid][e_tVehicle],
+				GetVehicleColor(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tColor][0], gInfo[playerid][e_tColor][1]);
+
+				CallLocalFunction("OnVehicleTuningRespray", "iiii", playerid, gInfo[playerid][e_tVehicle],
 				                  gInfo[playerid][e_tColor][0], gInfo[playerid][e_tColor][1]);
 				TextList_Show(playerid, TextList:color_menu);
 				PlayerPlaySoundOnPlayer(playerid, 1134);
 			}
 		}
 	} else if (response == TextList_Button2 || response == TextList_Cancel) {
-		new type = gInfo[playerid][e_tColorType];
-
-		if (gInfo[playerid][e_tPrevColor][type] == 0) {
-			ChangeVehicleColor(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tColor][0], gInfo[playerid][e_tColor][1]);
-		} else {
-			ChangeVehicleColor(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPrevColor][0], gInfo[playerid][e_tPrevColor][1]);
-		}
+		ChangeVehicleColor(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPrevColor][0], gInfo[playerid][e_tPrevColor][1]);
 
 		PlayerPlaySoundOnPlayer(playerid, 1084);
 
 		TextList_Show(playerid, TextList:color_menu);
 	}
-	return 1;
 }
 
 TextListCreate:paintjob_select(playerid)
 {
-	return 1;
+	new
+		paintjob_level = GetVehicleModelPaintjobLevel(gInfo[playerid][e_tModel]),
+		items[MAX_PAINTJOB_LEVEL][TEXTLIST_MAX_ITEM_NAME];
+
+	for (new i = 0; i < paintjob_level; i++) {
+		format(items[i], TEXTLIST_MAX_ITEM_NAME, "%s %d", _(TUNING_TD_PAINTJOB_TEXT), i + 1);
+	}
+
+	TextList_Open(playerid, TextList:paintjob_select, items, paintjob_level,
+	              _(TUNING_TD_PAINTJOB_HEADER), _(TUNING_TD_BUTTON_BUY), _(TUNING_TD_BUTTON_BACK));
 }
 
 TextListResponse:paintjob_select(playerid, TextListType:response, itemid, itemvalue[])
 {
-	return 1;
+	if (response == TextList_ListItem) {
+		gInfo[playerid][e_tPaintjob] = itemid;
+
+		ChangeVehiclePaintjob(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPaintjob]);
+
+		PlayerPlaySoundOnPlayer(playerid, 1083);
+	} else if (response == TextList_Button1) {
+		if (gInfo[playerid][e_tPaintjob] == INVALID_PAINTJOB_ID) {
+			Dialog_Message(playerid, _(TUNING_PAINTJOB_DIALOG_HEADER), _(TUNING_PAINTJOB_NOT_SELECT), _(TUNING_DIALOG_BUTTON_OK));
+		} else if (gInfo[playerid][e_tPrevPaintjob] != gInfo[playerid][e_tPaintjob]) {
+			if (!GivePlayerMoney(playerid, -GetModCost(CARMODTYPE_PAINTJOB))) {
+				Dialog_Message(playerid, _(TUNING_PAINTJOB_DIALOG_HEADER), _(TUNING_PAINTJOB_NO_ENOUGH_MONEY), _(TUNING_DIALOG_BUTTON_OK));
+				PlayerPlaySoundOnPlayer(playerid, 1085);
+			} else {
+				CallLocalFunction("OnVehicleTuningPaintjob", "iii", playerid, gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPaintjob]);
+				TextList_Show(playerid, TextList:tuning_menu);
+				PlayerPlaySoundOnPlayer(playerid, 1134);
+			}
+		}
+	} else if (response == TextList_Button2 || response == TextList_Cancel) {
+		ChangeVehiclePaintjob(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPrevPaintjob]);
+
+		PlayerPlaySoundOnPlayer(playerid, 1084);
+
+		TextList_Show(playerid, TextList:tuning_menu);
+	}
 }
 
 TextListCreate:component_list(playerid)
@@ -450,7 +481,6 @@ TextListResponse:component_list(playerid, TextListType:response, itemid, itemval
 		Tuning_UpdateCamera(playerid, CARMODTYPE_HOOD);
 		TextList_Show(playerid, TextList:tuning_menu);
 	}
-	return 1;
 }
 
 stock Tuning_Start(playerid)

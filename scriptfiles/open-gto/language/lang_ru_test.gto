@@ -374,25 +374,36 @@ LOTTERY_START_MESSAGE_2 = Лотерея: До окончания розыгрыша осталось %d минут!
 
 // Tuning
 TUNING_TD_HEADER = Tuning
-TUNING_TD_COLOR = Color ~g~$%d
-TUNING_TD_PAINTJOB = Paintjob ~g~$%d
 TUNING_TD_TYPE_FORMAT = %s ~g~$%d
 TUNING_TD_BUTTON_BUY = Buy
 TUNING_TD_BUTTON_BACK = Back
 TUNING_TD_BUTTON_EXIT = Exit
-TUNING_TD_COLOR_HEADER = Color
-TUNING_TD_COLOR_COLOR1 = Color 1
-TUNING_TD_COLOR_COLOR2 = Color 2
 
 TUNING_ALERT_HEADER = Tuning
 TUNING_ALERT_MESSAGE = Press ~k~~TOGGLE_SUBMISSIONS~ to enter
 TUNING_ALERT_ERROR_MESSAGE = Only for players with vehicles
 
 TUNING_DIALOG_HEADER = Тюнинг
-TUNING_DIALOG_COLOR_HEADER = Покраска
 TUNING_DIALOG_BUTTON_OK = ОК
 
 TUNING_NO_ENOUGH_MONEY = У вас недостаточно денег для покупки этой модификации
 TUNING_NOT_COMPONENT_SELECT = Сначала выберите модификацию
+
+// Tuning color
+TUNING_TD_COLOR = Color ~g~$%d
+TUNING_TD_COLOR_HEADER = Color
+TUNING_TD_COLOR_COLOR1 = Color 1
+TUNING_TD_COLOR_COLOR2 = Color 2
+
+TUNING_COLOR_DIALOG_HEADER = Покраска
 TUNING_COLOR_NO_ENOUGH_MONEY = У вас недостаточно денег для покупки этого цвета
 TUNING_COLOR_NOT_SELECT = Сначала выберите цвет
+
+// Tuning paintjob
+TUNING_TD_PAINTJOB = Paintjob ~g~$%d
+TUNING_TD_PAINTJOB_HEADER = Paintjob
+TUNING_TD_PAINTJOB_TEXT = Paintjob
+
+TUNING_PAINTJOB_DIALOG_HEADER = Поркасочная работа
+TUNING_PAINTJOB_NOT_SELECT = Сначала выберите окрасочную работу
+TUNING_PAINTJOB_NO_ENOUGH_MONEY = У вас недостаточно денег для покупки этой покрасочной работы
