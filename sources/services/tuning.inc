@@ -195,8 +195,9 @@ TextListCreate:tuning_menu(playerid)
 	GetVehicleCompatibleTypes(gInfo[playerid][e_tModel], compatible_types, compatible_types_count);
 
 	new items[MAX_COMPONENT_TYPES + 2][TEXTLIST_MAX_ITEM_NAME];
+	
+	new list_offset, item_index;
 
-	new list_offset;
 	// add color
 	format(items[list_offset++], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_COLOR), GetModCost(CARMODTYPE_COLOR));
 
@@ -207,18 +208,24 @@ TextListCreate:tuning_menu(playerid)
 	}
 
 	// add component types
-	new type_name[MAX_COMPONENT_TYPE_NAME];
-	for (new i = 0; i < compatible_types_count; i++) {
-		gInfo[playerid][e_tListTypes][i] = compatible_types[i];
+	new placeid = gInfo[playerid][e_tPlaceID];
 
-		GetComponentTypeName(compatible_types[i], type_name);
-		format(items[list_offset + i], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_TYPE_FORMAT), type_name, GetModCost(i));
+	if (gTuningPlace[placeid][e_tpType] == TUNING_PLACE_TYPE_TUNING) {
+		new type_name[MAX_COMPONENT_TYPE_NAME];
+
+		for (new i = 0; i < compatible_types_count; i++) {
+			gInfo[playerid][e_tListTypes][i] = compatible_types[i];
+
+			GetComponentTypeName(compatible_types[i], type_name);
+			format(items[list_offset + i], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_TYPE_FORMAT), type_name, GetModCost(i));
+			item_index++;
+		}
 	}
 
 	//
 	gInfo[playerid][e_tListOffset] = list_offset;
 
-	TextList_Open(playerid, TextList:tuning_menu, items, list_offset + compatible_types_count, _(TUNING_TD_HEADER), _(TUNING_TD_BUTTON_EXIT));
+	TextList_Open(playerid, TextList:tuning_menu, items, list_offset + item_index, _(TUNING_TD_HEADER), _(TUNING_TD_BUTTON_EXIT));
 }
 
 TextListResponse:tuning_menu(playerid, TextListType:response, itemid, itemvalue[])
