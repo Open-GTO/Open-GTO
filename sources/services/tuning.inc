@@ -201,17 +201,16 @@ TextListCreate:tuning_menu(playerid)
 	// add color
 	format(items[list_offset++], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_COLOR), GetModCost(CARMODTYPE_COLOR));
 
-	new placeid = gInfo[playerid][e_tPlaceID];
-	if (gTuningPlace[placeid][e_tpType] == TUNING_PLACE_TYPE_SPRAY) {
-		TextList_Open(playerid, TextList:color_menu, items, list_offset + item_index, _(TUNING_TD_HEADER), _(TUNING_TD_BUTTON_EXIT));
-	} else if (gTuningPlace[placeid][e_tpType] == TUNING_PLACE_TYPE_TUNING) {
-		// add paintjob
-		new paintjob = GetVehicleModelPaintjobLevel(gInfo[playerid][e_tModel]);
-		if (paintjob != 0) {
-			format(items[list_offset++], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_PAINTJOB), GetModCost(CARMODTYPE_PAINTJOB));
-		}
+	// add paintjob
+	new paintjob = GetVehicleModelPaintjobLevel(gInfo[playerid][e_tModel]);
+	if (paintjob != 0) {
+		format(items[list_offset++], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_PAINTJOB), GetModCost(CARMODTYPE_PAINTJOB));
+	}
 
-		// add component types
+	// add component types
+	new placeid = gInfo[playerid][e_tPlaceID];
+
+	if (gTuningPlace[placeid][e_tpType] == TUNING_PLACE_TYPE_TUNING) {
 		new type_name[MAX_COMPONENT_TYPE_NAME];
 
 		for (new i = 0; i < compatible_types_count; i++) {
@@ -221,12 +220,12 @@ TextListCreate:tuning_menu(playerid)
 			format(items[list_offset + i], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_TYPE_FORMAT), type_name, GetModCost(i));
 			item_index++;
 		}
-
-		//
-		gInfo[playerid][e_tListOffset] = list_offset;
-
-		TextList_Open(playerid, TextList:tuning_menu, items, list_offset + item_index, _(TUNING_TD_HEADER), _(TUNING_TD_BUTTON_EXIT));
 	}
+
+	//
+	gInfo[playerid][e_tListOffset] = list_offset;
+
+	TextList_Open(playerid, TextList:tuning_menu, items, list_offset + item_index, _(TUNING_TD_HEADER), _(TUNING_TD_BUTTON_EXIT));
 }
 
 TextListResponse:tuning_menu(playerid, TextListType:response, itemid, itemvalue[])
