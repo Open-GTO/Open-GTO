@@ -337,7 +337,7 @@ DialogCreate:BusinessPlayerOwned(playerid)
 				_(BUSINESS_DIALOG_LIST_ITEM),
 				string,
 				Businesses[id][Business_Name],
-				Businesses[id][Business_Vault]
+				Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade]
 			);
 		}
 	}
