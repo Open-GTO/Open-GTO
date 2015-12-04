@@ -22,3 +22,6 @@
 [submodule "sources/lib/zvehpaintjob"]
 	path = sources/lib/zvehpaintjob
 	url = https://github.com/Open-GTO/zvehpaintjob.git
+[submodule "sources/lib/skinselect"]
+	path = sources/lib/skinselect
+	url = https://github.com/Open-GTO/skinselect.git

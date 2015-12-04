@@ -52,6 +52,7 @@ Thanks:
 #include "lib/zvehcomp/zvehcomp"
 #include "lib/zvehpaintjob/zvehpaintjob"
 #include "lib/mdialog/mdialog"
+#include "lib/skinselect/skinselect"
 #include "lib/GarageBlock"
 #include "core/redefine"
 #include "core/db"
@@ -768,30 +769,6 @@ public OnEnterExitModShop(playerid, enterexit, interiorid)
 	return 1;
 }
 
-public OnPlayerClickTextDraw(playerid, Text:clickedid)
-{
-	if (clickedid == Text:INVALID_TEXT_DRAW) {
-		if (IsPlayerAtSkinShop(playerid)) {
-			return sshop_OnPlayerClickTextDraw(playerid, clickedid);
-		}
-	}
-
-	if (clickedid == clickText[sshop_left] || clickedid == clickText[sshop_right] || clickedid == clickText[sshop_buy] || 
-		clickedid == clickText[sshop_list] || clickedid == clickText[sshop_exit]
-		) {
-		return sshop_OnPlayerClickTextDraw(playerid, clickedid);
-	}
-	return 0;
-}
-
-public OnPlayerModelSelectionEx(playerid, response, extraid, modelid)
-{
-	if (extraid == ms_skinshop) {
-		sshop_OnPlayerModelSelectionEx(playerid, response, extraid, modelid);
-	}
-	return 1;
-}
-
 public OnActorStreamIn(actorid, forplayerid)
 {
 	if (bar_OnActorStreamIn(actorid, forplayerid)) {
@@ -839,6 +816,15 @@ public OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 {
 	if (Tuning_OnPlayerLeaveDynamicArea(playerid, areaid)) {
 		return 1;
+	}
+
+	return 1;
+}
+
+public OnSkinSelectResponse(playerid, SS_Response:type, oldskin, newskin)
+{
+	if (ss_OnSkinSelectResponse(playerid, type, oldskin, newskin)) {
+		return 0;
 	}
 
 	return 1;

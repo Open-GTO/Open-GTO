@@ -274,26 +274,6 @@
 #define SWAGUP_XP_RATE      300 // коэффициент количества опыта за поднятие поклажи
 #define SWAGUP_PAUSE_TIME   480000
 
-
-/*
- * Textdraw click trash
- */
-
-enum clickText_Info {
-	Text:sshop_left,
-	Text:sshop_right,
-	Text:sshop_buy,
-	Text:sshop_list,
-	Text:sshop_exit,
-}
-
-new Text:clickText[clickText_Info];
-
-enum {
-	ms_skinshop,
-}
-
-
 /*
  * Functions
  */
