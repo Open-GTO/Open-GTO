@@ -307,7 +307,7 @@ TextListCreate:color_select(playerid)
 		items_fg_colors[TEXTLIST_MAX_ITEMS] = {0x000000FF, ...},
 		item_index;
 
-	for (new i = 0, count = Color_GetCount(); i < count; i++) {
+	for (new i = 0; i < MAX_COLOR_COUNT; i++) {
 		Color_GetName(item_index, items[item_index]);
 
 		items_bg_colors[item_index] = Color_GetCode(item_index);

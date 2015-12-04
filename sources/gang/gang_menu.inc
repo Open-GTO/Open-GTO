@@ -227,7 +227,7 @@ DialogCreate:GangCreate(playerid)
 		COLORS_IN_STRING = 5;
 
 	new
-		string[(MAX_NAME + 8 + 2) * COLOR_COUNT + 2 * (COLOR_COUNT / COLORS_IN_STRING + 1) + 1],
+		string[(MAX_NAME + 8 + 2) * MAX_COLOR_COUNT + 2 * (MAX_COLOR_COUNT / COLORS_IN_STRING + 1) + 1],
 		step = gangmenu_GetCreateStep(playerid);
 
 	switch (step) {
@@ -239,7 +239,7 @@ DialogCreate:GangCreate(playerid)
 		case 1: {
 			set(string, "Введите цвет банды:\n\t");
 
-			for (new i = 0; i < COLOR_COUNT; i++) {
+			for (new i = 0; i < MAX_COLOR_COUNT; i++) {
 				format(string, sizeof(string), "%s  {%s}%s", string, Color_ReturnEmbeddingCode(i), Color_ReturnName(i));
 				
 				if ((i+1) % COLORS_IN_STRING == 0) {
@@ -487,9 +487,9 @@ stock gangmenu_GetMemberID(gangid, listitem)
 
 DialogCreate:GangColor(playerid)
 {
-	new string[MAX_STRING + MAX_NAME * COLOR_COUNT] = "Введите название цвета, который вы хотите установить для банды. Доступные:\n\t";
+	new string[MAX_STRING + MAX_NAME * MAX_COLOR_COUNT] = "Введите название цвета, который вы хотите установить для банды. Доступные:\n\t";
 
-	for (new i = 0; i < COLOR_COUNT; i++) {
+	for (new i = 0; i < MAX_COLOR_COUNT; i++) {
 		format(string, sizeof(string), "%s  {%s}%s", string, Color_ReturnEmbeddingCode(i), Color_ReturnName(i));
 		
 		if ((i+1) % 5 == 0) {

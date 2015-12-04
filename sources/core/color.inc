@@ -13,6 +13,10 @@
 #pragma library color
 
 
+/*
+	Color defines
+*/
+
 // gto colors
 #define COLOR_GREY 0xAFAFAFFF
 #define COLOR_GREEN 0x33FF33FF
@@ -72,8 +76,16 @@
 #define COLOR_MAROON_OAK 0x4E0E27FF
 #define COLOR_TUNA 0x3B3E42FF
 
-#define COLOR_COUNT sizeof(gColors)
+/*
+	Param defines
+*/
+
+#define MAX_COLOR_COUNT 30
 #define MAX_COLOR_NAME 16
+
+/*
+	gColors
+*/
 
 enum e_Colors_Info {
 	e_cName[MAX_COLOR_NAME],
@@ -81,7 +93,7 @@ enum e_Colors_Info {
 	e_cVehicle,
 }
 
-new gColors[][e_Colors_Info] = {
+static gColors[MAX_COLOR_COUNT][e_Colors_Info] = {
 	{"Black", COLOR_BLACK, 0},
 	{"Red Devil", COLOR_RED_DEVIL, 3},
 	{"Golden Bell", COLOR_GOLDEN_BELL, 6},
@@ -114,10 +126,9 @@ new gColors[][e_Colors_Info] = {
 	{"Tuna", COLOR_TUNA, 251}
 };
 
-stock Color_GetCount()
-{
-	return sizeof(gColors);
-}
+/*
+	Public functions
+*/
 
 stock Color_GetEmbeddingCode(id, code[], size = sizeof(code))
 {
@@ -155,7 +166,7 @@ stock Color_ReturnName(id)
 
 stock Color_GetIdByName(name[])
 {
-	for (new i = Color_GetCount() - 1; i != -1; i--) {
+	for (new i = 0; i < MAX_COLOR_COUNT; i++) {
 		if (strcmp(name, gColors[i][e_cName], true) == 0) {
 			return i;
 		}
@@ -165,7 +176,7 @@ stock Color_GetIdByName(name[])
 
 stock Color_GetCodeByName(name[])
 {
-	for (new i = Color_GetCount() - 1; i != -1; i--) {
+	for (new i = 0; i < MAX_COLOR_COUNT; i++) {
 		if (strcmp(name, gColors[i][e_cName], true) == 0) {
 			return gColors[id][e_cCode];
 		}
