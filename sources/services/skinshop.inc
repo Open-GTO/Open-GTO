@@ -32,6 +32,9 @@ static SkinShops[][SkinShop_Info] = {
 	{203.9252, -43.7523, 1001.8047,  214.4611, -41.2278,  1002.0234, 107.1854}
 };
 
+static
+	ShopID[MAX_PLAYERS] = {-1, ...};
+
 stock sshop_OnGameModeInit()
 {
 	for (new id = 0; id < sizeof(SkinShops); id++) {
@@ -48,8 +51,7 @@ stock ss_OnPlayerEnterCheckpoint(playerid, cp)
 		if (cp == SkinShops[id][ss_checkpoint]) {
 			SkinShop_SetPlayerFittingRoom(playerid, id);
 
-			SetPVarInt(playerid, "SkinShop_ShopID", id);
-			SetPVarInt(playerid, "SkinShop_PlayerAtSkinShop", 1);
+			ShopID[playerid] = id;
 
 			SkinSelect_Start(playerid, SkinSelect:SkinShop);
 			return 1;
@@ -60,9 +62,12 @@ stock ss_OnPlayerEnterCheckpoint(playerid, cp)
 
 SkinSelectResponse:SkinShop(playerid, SS_Response:type, oldskin, newskin)
 {
+	if (ShopID[playerid] == -1) {
+		return;
+	}
+
 	if (type == SS_Response:SS_Response_Stop) {
-		SkinShop_Exit(playerid);
-		SkinShop_DeletePVars(playerid);
+		SkinShop_Exit(playerid, ShopID[playerid]);
 	} else if (type == SS_Response:SS_Response_Select) {
 		if (GetPlayerMoney(playerid) < SKINS_COST) {
 			new string[MAX_STRING];
@@ -85,37 +90,30 @@ DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])
 		return 0;
 	}
 
-	new newskin = SkinSelect_GetCurrentSkin(playerid);
+	new
+		skinid = SkinSelect_GetCurrentSkin(playerid),
+		shopid = ShopID[playerid];
 
 	SkinSelect_Stop(playerid);
-	SkinShop_Exit(playerid);
+	SkinShop_Exit(playerid, shopid);
 	
-	player_SetSkin(playerid, newskin);
+	player_SetSkin(playerid, skinid);
 	GivePlayerMoney(playerid, -SKINS_COST);
-	
-	SkinShop_DeletePVars(playerid);
 
 	SendClientMessage(playerid, 0, _(SKINSHOP_DIALOG_INFO_THANKS));
 	return 1;
 }
 
-stock SkinShop_Exit(playerid)
+stock SkinShop_Exit(playerid, shopid)
 {
 	TogglePlayerControllable(playerid, 1);
 	SetPlayerSkin(playerid, SkinSelect_GetOldSkin(playerid));
 
-	new shopid = GetPVarInt(playerid, "SkinShop_ShopID");
 	SetPlayerPos(playerid, SkinShops[shopid][ss_select_x], SkinShops[shopid][ss_select_y], SkinShops[shopid][ss_select_z]);
 	SetPlayerFacingAngle(playerid, SkinShops[shopid][ss_select_a]);
 
 	SetCameraBehindPlayer(playerid);
 	return 1;
-}
-
-stock SkinShop_DeletePVars(playerid)
-{
-	DeletePVar(playerid, "SkinShop_ShopID");
-	DeletePVar(playerid, "SkinShop_PlayerAtSkinShop");
 }
 
 stock SkinShop_SetPlayerFittingRoom(playerid, shopid)
@@ -134,19 +132,4 @@ stock SkinShop_SetPlayerFittingRoom(playerid, shopid)
 	GetCoordsBefore(pos[0], pos[1], pos[3], 2.0, camera_pos[0], camera_pos[1]);
 	SetPlayerCameraPos(playerid, camera_pos[0], camera_pos[1], camera_pos[2]);
 	SetPlayerCameraLookAt(playerid, pos[0], pos[1], pos[2] + 0.5);
-}
-
-stock IsPlayerAtSkinShop(playerid)
-{
-	if (GetPVarInt(playerid, "SkinShop_PlayerAtSkinShop") == 1) {
-		return 1;
-	}
-
-	for (new id = 0; id < sizeof(SkinShops); id++) {
-		if (IsPlayerInRangeOfPoint(playerid, 2, SkinShops[id][ss_x], SkinShops[id][ss_y], SkinShops[id][ss_z])) {
-			SetPVarInt(playerid, "SkinShop_PlayerAtSkinShop", 1);
-			return 1;
-		}
-	}
-	return 0;
 }
