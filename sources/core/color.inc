@@ -6,146 +6,157 @@
 */
 
 #if defined _color_included
-  #endinput
+	#endinput
 #endif
 
 #define _color_included
 #pragma library color
 
 
-// цвета
-#define COLOUR_GREY 0xAFAFAFFF // grey
-#define COLOUR_GREEN 0x33FF33FF // green
-#define COLOUR_LIGHTGREEN 0x9ACD32FF //lightgreen
-#define COLOUR_RED 0xAA3333FF // red
-#define COLOUR_LIGHTRED 0xFF6347FF // lightred
-#define COLOUR_YELLOW 0xFFFF00FF // yellow
-#define COLOUR_WHITE 0xFFFFFFFF // white
-#define COLOUR_BLUE 0x0000FFFF // blue
-#define COLOUR_LIGHTBLUE 0x33CCFFFF // LightBlue
-#define COLOUR_ORANGE 0xFF9900FF //orange
-#define COLOUR_PURPLE 0xC2A2DAFF //purple
-#define COLOUR_CRIMSON 0xDC143CFF
-#define COLOUR_LIMEGREEN 0x32CD32FF
-#define COLOUR_AQUA 0x00FFFFFF
-#define COLOUR_FLBLUE 0x6495EDFF
-#define COLOUR_MAGENTA 0xFF00FFFF
-#define COLOUR_PINK 0xFFC0CBFF
-#define COLOUR_MISC 0xAFAFAFFF // Grey - Misc
-#define COLOUR_CHAT 0xFFFFFFFF // White - Chat
-#define COLOUR_PLAYER 0xAAAAAAFF // White - Player
-#define COLOUR_XP_GOOD 0x00C7FFFF // Blue - XP
-#define COLOUR_XP_BAD 0x00008BFF // Blue - XP
-#define COLOUR_MONEY_GOOD 0xFFFF00FF // Yellow - Money
-#define COLOUR_MONEY_BAD 0xDAA520FF // Yellow - Money
-#define COLOUR_RACE 0x005407FF // green - dark
-#define COLOUR_RACE_BAD 0x545407FF // yellow-green-dark
-#define COLOUR_GANG 0xFF8C00FF // orange
-#define COLOUR_GANG_CHAT 0xFFA500FF // orange
-#define COLOUR_DM 0xFF0066FF // red - purple
-#define COLOUR_DM_BAD 0xFF0066FF // red - purple
+// gto colors
+#define COLOUR_GREY 0xAFAFAFFF
+#define COLOUR_GREEN 0x33FF33FF
+#define COLOUR_LIGHTGREEN 0x9ACD32FF
+#define COLOUR_RED 0xAA3333FF
+#define COLOUR_LIGHTRED 0xFF6347FF
+#define COLOUR_YELLOW 0xFFFF00FF
+#define COLOUR_WHITE 0xFFFFFFFF
+#define COLOUR_BLUE 0x0000FFFF
+#define COLOUR_LIGHTBLUE 0x33CCFFFF
+#define COLOUR_SKYBLUE 0x87CEEBFF
+#define COLOUR_ORANGE 0xFF9900FF
+#define COLOUR_PURPLE 0xC2A2DAFF
+#define COLOUR_MISC 0xAFAFAFFF
+#define COLOUR_PLAYER 0xAAAAAAFF
+#define COLOUR_XP_GOOD 0x00C7FFFF
+#define COLOUR_XP_BAD 0x00008BFF
+#define COLOUR_MONEY_GOOD 0xFFFF00FF
+#define COLOUR_RACE 0x005407FF
+#define COLOUR_RACE_BAD 0x545407FF
+#define COLOUR_GANG 0xFF8C00FF
+#define COLOUR_GANG_CHAT 0xFFA500FF
+#define COLOUR_DM 0xFF0066FF
+#define COLOUR_DM_BAD 0xFF0066FF
 #define COLOUR_PM 0xFFCC22FF
 #define WARN_MS_COLOR 0xFF5050FF
-#define COLOUR_DARKRED 0x8B0000FF
-#define COLOUR_DEEPPINK 0xFF1493FF
-#define COLOUR_TOMATO 0xFF6347FF
-#define COLOUR_ORANGERED 0xFF4500FF
-#define COLOUR_DARKORANGE 0xFF8C00FF
-#define COLOUR_MOCCASIN 0xFFE4B5FF
-#define COLOUR_KHAKI 0xF0E68CFF
-#define COLOUR_DARKVIOLET 0x9400D3FF
-#define COLOUR_INDIGO 0x4B0082FF
-#define COLOUR_GREENYELLOW 0xADFF2FFF
-#define COLOUR_LIME 0x00FF00FF
-#define COLOUR_SPRINGGREEN 0x00FF7FFF
-#define COLOUR_OLIVE 0x808000FF
-#define COLOUR_TEAL 0x008080FF
-#define COLOUR_AQUAMARINE 0x7FFFD4FF
-#define COLOUR_STEELBLUE 0x4682B4FF
-#define COLOUR_SKYBLUE 0x87CEEBFF
-#define COLOUR_TAN 0xD2B48CFF
-#define COLOUR_PERU 0xCD853FFF
-#define COLOUR_SIENNA 0xA0522DFF
-#define COLOUR_MISTYROSE 0xFFE4E1FF
-#define COLOUR_DIMGRAY 0x696969FF
-#define COLOUR_BLACK 0x000000FF
 
+// vehicle compatible colors
+#define COLOR_BLACK 0x000000FF
+#define COLOR_RED_DEVIL 0x840410FF
+#define COLOR_GOLDEN_BELL 0xD78E10FF
+#define COLOR_DEEP_BLUSH 0xEC6AAEFF
+#define COLOR_JELLY_BEAN 0x2C89AAFF
+#define COLOR_FUCHSIA_BLUE 0x8A4DBDFF
+#define COLOR_APPLE 0x35963AFF
+#define COLOR_EAST_BAY 0x464C8DFF
+#define COLOR_OLIVINE 0x8CB972FF
+#define COLOR_MATISSE 0x1E4C99FF
+#define COLOR_EUCALYPTUS 0x1E9948FF
+#define COLOR_EASTERN_BLUE 0x1E9999FF
+#define COLOR_VIN_ROUGE 0x993E4DFF
+#define COLOR_VAN_CLEEF 0x481A0EFF
+#define COLOR_OLD_BRICK 0x991E1EFF
+#define COLOR_GOBLIN 0x368452FF
+#define COLOR_ROPE 0x99581EFF
+#define COLOR_PRAIRIE_SAND 0x99311EFF
+#define COLOR_VIDA_LOCA 0x4C991EFF
+#define COLOR_HACIENDA 0x96821DFF
+#define COLOR_CEDAR 0x3B141FFF
+#define COLOR_DISCO 0x7E1A6CFF
+#define COLOR_GREEN_HOUSE 0x27450DFF
+#define COLOR_BOTTLE_GREEN 0x071F24FF
+#define COLOR_POTTERS_CLAY 0x8A653AFF
+#define COLOR_MOCHA 0x732617FF
+#define COLOR_LOCHINVAR 0x319490FF
+#define COLOR_CHAMBRAY 0x355D8EFF
+#define COLOR_MAROON_OAK 0x4E0E27FF
+#define COLOR_TUNA 0x3B3E42FF
 
-enum ColorInfo {
-	color_name[MAX_NAME],
-	color_code,
-	color_vehicle,
+#define COLOR_COUNT sizeof(gColors)
+#define MAX_COLOR_NAME 16
+
+enum e_Colors_Info {
+	e_cName[MAX_COLOR_NAME],
+	e_cCode,
+	e_cVehicle,
 }
 
-new colors_Array[][ColorInfo] = {
-	{"Crimson",	 	COLOUR_CRIMSON,		3},
-	{"DarkRed",	 	COLOUR_DARKRED,		43},
-	{"Pink",	 	COLOUR_PINK,		126},
-	{"DeepPink",	COLOUR_DEEPPINK,	220},
-	{"Tomato",	 	COLOUR_TOMATO,		183},
-	{"OrangeRed",	COLOUR_ORANGERED,	222},
-	{"DarkOrange",	COLOUR_DARKORANGE,	219},
-	{"Yellow",		COLOUR_YELLOW,		6},
-	{"Moccasin",	COLOUR_MOCCASIN,	200},
-	{"Khaki",		COLOUR_KHAKI,		57},
-	{"Magenta",		COLOUR_MAGENTA,		136},
-	{"DarkViolet",	COLOUR_DARKVIOLET,	134},
-	{"Indigo",		COLOUR_INDIGO,		211},
-	{"GreenYellow",	COLOUR_GREENYELLOW,	241},
-	{"Lime",		COLOUR_LIME,		128},
-	{"LimeGreen",	COLOUR_LIMEGREEN,	229},
-	{"SpringGreen",	COLOUR_SPRINGGREEN,	154},
-	{"Olive",		COLOUR_OLIVE,		225},
-	{"Teal",		COLOUR_TEAL,		130},
-	{"Aqua",		COLOUR_AQUA,		135},
-	{"Aquamarine",	COLOUR_AQUAMARINE,	155},
-	{"SteelBlue",	COLOUR_STEELBLUE,	162},
-	{"SkyBlue",		COLOUR_SKYBLUE,		166},
-	{"Blue",		COLOUR_BLUE,		162},
-	{"Tan",			COLOUR_TAN,			254},
-	{"Peru",		COLOUR_PERU,		174},
-	{"Sienna",		COLOUR_SIENNA,		239},
-	{"White",		COLOUR_WHITE,		1},
-	{"MistyRose",	COLOUR_MISTYROSE,	185},
-	{"Black",		COLOUR_BLACK,		0},
-	{"DimGray",		COLOUR_DIMGRAY,		252}
+static gColors[][e_Colors_Info] = {
+	{"Black", COLOR_BLACK, 0},
+	{"Red Devil", COLOR_RED_DEVIL, 3},
+	{"Golden Bell", COLOR_GOLDEN_BELL, 6},
+	{"Deep Blush", COLOR_DEEP_BLUSH, 126},
+	{"Jelly Bean", COLOR_JELLY_BEAN, 135},
+	{"Fuchsia Blue", COLOR_FUCHSIA_BLUE, 136},
+	{"Apple", COLOR_APPLE, 137},
+	{"East Bay", COLOR_EAST_BAY, 139},
+	{"Olivine", COLOR_OLIVINE, 145},
+	{"Matisse", COLOR_MATISSE, 152},
+	{"Eucalyptus", COLOR_EUCALYPTUS, 154},
+	{"Eastern Blue", COLOR_EASTERN_BLUE, 155},
+	{"Vin Rouge", COLOR_VIN_ROUGE, 161},
+	{"Van Cleef", COLOR_VAN_CLEEF, 168},
+	{"Old Brick", COLOR_OLD_BRICK, 175},
+	{"Goblin", COLOR_GOBLIN, 191},
+	{"Rope", COLOR_ROPE, 219},
+	{"Prairie Sand", COLOR_PRAIRIE_SAND, 222},
+	{"Vida Loca", COLOR_VIDA_LOCA, 226},
+	{"Hacienda", COLOR_HACIENDA, 228},
+	{"Cedar", COLOR_CEDAR, 230},
+	{"Disco", COLOR_DISCO, 233},
+	{"Green House", COLOR_GREEN_HOUSE, 235},
+	{"Bottle Green", COLOR_BOTTLE_GREEN, 236},
+	{"Potters Clay", COLOR_POTTERS_CLAY, 238},
+	{"Mocha", COLOR_MOCHA, 239},
+	{"Lochinvar", COLOR_LOCHINVAR, 240},
+	{"Chambray", COLOR_CHAMBRAY, 246},
+	{"Maroon Oak", COLOR_MAROON_OAK, 249},
+	{"Tuna", COLOR_TUNA, 251}
 };
 
-#define COLOR_COUNT	sizeof(colors_Array)
+stock Color_GetCount()
+{
+	return sizeof(gColors);
+}
 
 stock Color_GetEmbeddingCode(id, code[], size = sizeof(code))
 {
-	format(code, size, "%06x", colors_Array[id][color_code] >>> 8);
+	format(code, size, "%06x", gColors[id][e_cCode] >>> 8);
 }
 
 stock Color_ReturnEmbeddingCode(id)
 {
 	new code[8];
-	format(code, sizeof(code), "%06x", colors_Array[id][color_code] >>> 8);
+	format(code, sizeof(code), "%06x", gColors[id][e_cCode] >>> 8);
 	return code;
 }
 
 stock Color_GetCode(id)
 {
-	return colors_Array[id][color_code];
+	return gColors[id][e_cCode];
+}
+
+stock Color_GetVehicleCode(id)
+{
+	return gColors[id][e_cVehicle];
 }
 
 stock Color_GetName(id, name[], size = sizeof(name))
 {
-	strmid(name, colors_Array[id][color_name], 0, strlen(colors_Array[id][color_name]), size);
+	strmid(name, gColors[id][e_cName], 0, strlen(gColors[id][e_cName]), size);
 }
 
 stock Color_ReturnName(id)
 {
-	new name[MAX_NAME];
-	set(name, colors_Array[id][color_name]);
+	new name[MAX_COLOR_NAME];
+	strmid(name, gColors[id][e_cName], 0, strlen(gColors[id][e_cName]));
 	return name;
 }
 
 stock Color_GetIdByName(name[])
 {
-	for (new i = 0; i < COLOR_COUNT; i++) {
-		if (strcmp(name, colors_Array[i][color_name], true) == 0) {
+	for (new i = Color_GetCount() - 1; i != -1; i--) {
+		if (strcmp(name, gColors[i][e_cName], true) == 0) {
 			return i;
 		}
 	}
@@ -154,15 +165,10 @@ stock Color_GetIdByName(name[])
 
 stock Color_GetCodeByName(name[])
 {
-	for (new i = 0; i < COLOR_COUNT; i++) {
-		if (strcmp(name, colors_Array[i][color_name], true) == 0) {
-			return colors_Array[id][color_code];
+	for (new i = Color_GetCount() - 1; i != -1; i--) {
+		if (strcmp(name, gColors[i][e_cName], true) == 0) {
+			return gColors[id][e_cCode];
 		}
 	}
 	return -1;
-}
-
-stock Color_GetVehicleCode(id)
-{
-	return colors_Array[id][color_vehicle];
 }

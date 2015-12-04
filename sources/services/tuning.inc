@@ -307,16 +307,12 @@ TextListCreate:color_select(playerid)
 		items_fg_colors[TEXTLIST_MAX_ITEMS] = {0x000000FF, ...},
 		item_index;
 
-	for (new i = 0; i < COLOR_COUNT; i++) {
-		if (colors_Array[item_index][color_name][0] == '\0') {
-			continue;
-		}
+	for (new i = 0, count = Color_GetCount(); i < count; i++) {
+		Color_GetName(item_index, items[item_index]);
 
-		strmid(items[item_index], colors_Array[item_index][color_name], 0, strlen(colors_Array[item_index][color_name]));
-		
-		items_bg_colors[item_index] = colors_Array[item_index][color_code];
+		items_bg_colors[item_index] = Color_GetCode(item_index);
 
-		if (colors_Array[item_index][color_code] == 0x000000FF) {
+		if (items_bg_colors[item_index] == 0x000000FF) {
 			items_fg_colors[item_index] = 0xFFFFFFFF;
 		}
 
