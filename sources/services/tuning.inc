@@ -319,6 +319,13 @@ TextListCreate:component_list(playerid)
 	new header[TEXTLIST_MAX_ITEM_NAME];
 	GetComponentTypeName(type, header);
 
+	if (type == CARMODTYPE_VENT_RIGHT) {
+		new spacepos = strfind(header, " ");
+		if (spacepos != -1) {
+			strmid(header, header, 0, spacepos);
+		}
+	}
+
 	TextList_Open(playerid, TextList:component_list, items, item_index,
 	              header, _(TUNING_TD_BUTTON_BUY), _(TUNING_TD_BUTTON_BACK),
 	              .lists_fg_color = items_colors);
