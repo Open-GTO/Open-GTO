@@ -429,7 +429,17 @@ TextListCreate:component_list(playerid)
 
 	for (new i = 0; i < components_size; i++) {
 		if (type == GetVehicleComponentType(components[i])) {
-			GetComponentName(components[i], items[item_index], TEXTLIST_MAX_ITEM_NAME);
+			GetComponentName(components[i], items[item_index]);
+
+			if (type == CARMODTYPE_SIDESKIRT) {
+				printf(items[item_index]);
+				if (strfind(items[item_index], "Left ") != -1) {
+					strmid(items[item_index], items[item_index], 5, strlen(items[item_index]));
+					printf(items[item_index]);
+				} else {
+					continue;
+				}
+			}
 
 			gInfo[playerid][e_tListComponents][item_index] = components[i];
 
