@@ -215,7 +215,7 @@ TextListCreate:tuning_menu(playerid)
 		new type_name[MAX_COMPONENT_TYPE_NAME];
 
 		for (new i = 0; i < compatible_types_count; i++) {
-			if (compatible_types[i] == CARMODTYPE_VENT_RIGHT) {
+			if (compatible_types[i] == CARMODTYPE_VENT_LEFT) {
 				continue;
 			}
 
@@ -223,7 +223,7 @@ TextListCreate:tuning_menu(playerid)
 
 			GetComponentTypeName(compatible_types[i], type_name);
 
-			if (compatible_types[i] == CARMODTYPE_VENT_LEFT) {
+			if (compatible_types[i] == CARMODTYPE_VENT_RIGHT) {
 				new spacepos = strfind(type_name, " ");
 				if (spacepos != -1) {
 					strmid(type_name, type_name, 0, spacepos);
@@ -296,10 +296,9 @@ TextListCreate:component_list(playerid)
 		if (type == GetVehicleComponentType(components[i])) {
 			GetComponentName(components[i], items[item_index]);
 
-			if (type == CARMODTYPE_SIDESKIRT || type == CARMODTYPE_VENT_LEFT) {
-				new spacepos = strfind(items[item_index], " ");
-				if (spacepos != -1) {
-					strmid(items[item_index], items[item_index], spacepos, strlen(items[item_index]));
+			if (type == CARMODTYPE_SIDESKIRT || type == CARMODTYPE_VENT_RIGHT) {
+				if (strfind(items[item_index], "Left ") != -1) {
+					strmid(items[item_index], items[item_index], 5, strlen(items[item_index]));
 				} else {
 					continue;
 				}
