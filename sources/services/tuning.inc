@@ -196,7 +196,7 @@ TextListCreate:tuning_menu(playerid)
 
 	new items[MAX_COMPONENT_TYPES + 2][TEXTLIST_MAX_ITEM_NAME];
 	
-	new list_offset, item_index;
+	new list_offset;
 
 	// add color
 	format(items[list_offset++], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_COLOR), GetModCost(CARMODTYPE_COLOR));
@@ -208,16 +208,29 @@ TextListCreate:tuning_menu(playerid)
 	}
 
 	// add component types
+	new item_index;
 	new placeid = gInfo[playerid][e_tPlaceID];
 
 	if (gTuningPlace[placeid][e_tpType] == TUNING_PLACE_TYPE_TUNING) {
 		new type_name[MAX_COMPONENT_TYPE_NAME];
 
 		for (new i = 0; i < compatible_types_count; i++) {
-			gInfo[playerid][e_tListTypes][i] = compatible_types[i];
+			if (compatible_types[i] == CARMODTYPE_VENT_RIGHT) {
+				continue;
+			}
+
+			gInfo[playerid][e_tListTypes][item_index] = compatible_types[i];
 
 			GetComponentTypeName(compatible_types[i], type_name);
-			format(items[list_offset + i], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_TYPE_FORMAT), type_name, GetModCost(i));
+
+			if (compatible_types[i] == CARMODTYPE_VENT_LEFT) {
+				new spacepos = strfind(type_name, " ");
+				if (spacepos != -1) {
+					strmid(type_name, type_name, 0, spacepos);
+				}
+			}
+
+			format(items[list_offset + item_index], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_TYPE_FORMAT), type_name, GetModCost(i));
 			item_index++;
 		}
 	}
@@ -259,6 +272,92 @@ TextListResponse:tuning_menu(playerid, TextListType:response, itemid, itemvalue[
 		Tuning_Stop(playerid);
 	}
 	return 1;
+}
+
+TextListCreate:component_list(playerid)
+{
+	new type = gInfo[playerid][e_tType];
+
+	new
+		components[MAX_COMPONENTS],
+		components_size;
+
+	new isok = GetVehicleCompatibleUpgrades(gInfo[playerid][e_tModel], components, components_size);
+	if (!isok) {
+		return 0;
+	}
+
+	new
+		items[MAX_COMPONENTS][TEXTLIST_MAX_ITEM_NAME],
+		items_colors[TEXTLIST_MAX_ITEMS] = {0xFFFFFFFF, ...},
+		item_index;
+
+	for (new i = 0; i < components_size; i++) {
+		if (type == GetVehicleComponentType(components[i])) {
+			GetComponentName(components[i], items[item_index]);
+
+			if (type == CARMODTYPE_SIDESKIRT || type == CARMODTYPE_VENT_LEFT) {
+				new spacepos = strfind(items[item_index], " ");
+				if (spacepos != -1) {
+					strmid(items[item_index], items[item_index], spacepos, strlen(items[item_index]));
+				} else {
+					continue;
+				}
+			}
+
+			gInfo[playerid][e_tListComponents][item_index] = components[i];
+
+			if (GetVehicleComponentInSlot(gInfo[playerid][e_tVehicle], type) == components[i]) {
+				items_colors[item_index] = 0xAAAAAAFF;
+			}
+
+			item_index++;
+		}
+	}
+
+	gInfo[playerid][e_tListCount] = item_index;
+
+	new header[TEXTLIST_MAX_ITEM_NAME];
+	GetComponentTypeName(type, header);
+
+	TextList_Open(playerid, TextList:component_list, items, item_index,
+	              header, _(TUNING_TD_BUTTON_BUY), _(TUNING_TD_BUTTON_BACK),
+	              .lists_fg_color = items_colors);
+	return 1;
+}
+
+TextListResponse:component_list(playerid, TextListType:response, itemid, itemvalue[])
+{
+	if (response == TextList_ListItem) {
+		gInfo[playerid][e_tComponent] = gInfo[playerid][e_tListComponents][itemid];
+		AddVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
+		PlayerPlaySoundOnPlayer(playerid, 1083);
+	} else if (response == TextList_Button1) {
+		if (gInfo[playerid][e_tComponent] == INVALID_COMPONENT_ID) {
+			Dialog_Message(playerid, _(TUNING_DIALOG_HEADER), _(TUNING_NOT_COMPONENT_SELECT), _(TUNING_DIALOG_BUTTON_OK));
+		} else if (gInfo[playerid][e_tPrevComponent] != gInfo[playerid][e_tComponent]) {
+			if (!GivePlayerMoney(playerid, -GetModCost(gInfo[playerid][e_tType]))) {
+				PlayerPlaySoundOnPlayer(playerid, 1085);
+				Dialog_Message(playerid, _(TUNING_DIALOG_HEADER), _(TUNING_NO_ENOUGH_MONEY), _(TUNING_DIALOG_BUTTON_OK));
+			} else {
+				CallLocalFunction("OnVehicleTuning", "iii", playerid, gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
+				PlayerPlaySoundOnPlayer(playerid, 1133);
+				Tuning_UpdateCamera(playerid, CARMODTYPE_HOOD);
+				TextList_Show(playerid, TextList:tuning_menu);
+			}
+		}
+	} else if (response == TextList_Button2 || response == TextList_Cancel) {
+		if (gInfo[playerid][e_tPrevComponent] == 0) {
+			RemoveVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
+		} else {
+			AddVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPrevComponent]);
+		}
+
+		PlayerPlaySoundOnPlayer(playerid, 1084);
+
+		Tuning_UpdateCamera(playerid, CARMODTYPE_HOOD);
+		TextList_Show(playerid, TextList:tuning_menu);
+	}
 }
 
 TextListCreate:color_menu(playerid)
@@ -405,93 +504,6 @@ TextListResponse:paintjob_select(playerid, TextListType:response, itemid, itemva
 
 		PlayerPlaySoundOnPlayer(playerid, 1084);
 
-		TextList_Show(playerid, TextList:tuning_menu);
-	}
-}
-
-TextListCreate:component_list(playerid)
-{
-	new type = gInfo[playerid][e_tType];
-
-	new
-		components[MAX_COMPONENTS],
-		components_size;
-
-	new isok = GetVehicleCompatibleUpgrades(gInfo[playerid][e_tModel], components, components_size);
-	if (!isok) {
-		return 0;
-	}
-
-	new
-		items[MAX_COMPONENTS][TEXTLIST_MAX_ITEM_NAME],
-		items_colors[TEXTLIST_MAX_ITEMS] = {0xFFFFFFFF, ...},
-		item_index;
-
-	for (new i = 0; i < components_size; i++) {
-		if (type == GetVehicleComponentType(components[i])) {
-			GetComponentName(components[i], items[item_index]);
-
-			if (type == CARMODTYPE_SIDESKIRT) {
-				printf(items[item_index]);
-				if (strfind(items[item_index], "Left ") != -1) {
-					strmid(items[item_index], items[item_index], 5, strlen(items[item_index]));
-					printf(items[item_index]);
-				} else {
-					continue;
-				}
-			}
-
-			gInfo[playerid][e_tListComponents][item_index] = components[i];
-
-			if (GetVehicleComponentInSlot(gInfo[playerid][e_tVehicle], type) == components[i]) {
-				items_colors[item_index] = 0xAAAAAAFF;
-			}
-
-			item_index++;
-		}
-	}
-
-	gInfo[playerid][e_tListCount] = item_index;
-
-	new header[TEXTLIST_MAX_ITEM_NAME];
-	GetComponentTypeName(type, header);
-
-	TextList_Open(playerid, TextList:component_list, items, item_index,
-	              header, _(TUNING_TD_BUTTON_BUY), _(TUNING_TD_BUTTON_BACK),
-	              .lists_fg_color = items_colors);
-	return 1;
-}
-
-TextListResponse:component_list(playerid, TextListType:response, itemid, itemvalue[])
-{
-	if (response == TextList_ListItem) {
-		gInfo[playerid][e_tComponent] = gInfo[playerid][e_tListComponents][itemid];
-		AddVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
-		PlayerPlaySoundOnPlayer(playerid, 1083);
-	} else if (response == TextList_Button1) {
-		if (gInfo[playerid][e_tComponent] == INVALID_COMPONENT_ID) {
-			Dialog_Message(playerid, _(TUNING_DIALOG_HEADER), _(TUNING_NOT_COMPONENT_SELECT), _(TUNING_DIALOG_BUTTON_OK));
-		} else if (gInfo[playerid][e_tPrevComponent] != gInfo[playerid][e_tComponent]) {
-			if (!GivePlayerMoney(playerid, -GetModCost(gInfo[playerid][e_tType]))) {
-				PlayerPlaySoundOnPlayer(playerid, 1085);
-				Dialog_Message(playerid, _(TUNING_DIALOG_HEADER), _(TUNING_NO_ENOUGH_MONEY), _(TUNING_DIALOG_BUTTON_OK));
-			} else {
-				CallLocalFunction("OnVehicleTuning", "iii", playerid, gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
-				PlayerPlaySoundOnPlayer(playerid, 1133);
-				Tuning_UpdateCamera(playerid, CARMODTYPE_HOOD);
-				TextList_Show(playerid, TextList:tuning_menu);
-			}
-		}
-	} else if (response == TextList_Button2 || response == TextList_Cancel) {
-		if (gInfo[playerid][e_tPrevComponent] == 0) {
-			RemoveVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
-		} else {
-			AddVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tPrevComponent]);
-		}
-
-		PlayerPlaySoundOnPlayer(playerid, 1084);
-
-		Tuning_UpdateCamera(playerid, CARMODTYPE_HOOD);
 		TextList_Show(playerid, TextList:tuning_menu);
 	}
 }
