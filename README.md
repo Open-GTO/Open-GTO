@@ -1,8 +1,8 @@
 Open-GTO
 =============
 
-[![GitHub version](https://badge.fury.io/gh/ziggi%2FOpen-GTO.svg)](http://badge.fury.io/gh/ziggi%2FOpen-GTO)
-[![Build Status](https://travis-ci.org/ziggi/Open-GTO.svg?branch=master)](https://travis-ci.org/ziggi/Open-GTO)
+[![GitHub version](https://badge.fury.io/gh/Open-GTO%2FOpen-GTO.svg)](http://badge.fury.io/gh/ziggi%2FOpen-GTO)
+[![Build Status](https://travis-ci.org/Open-GTO/Open-GTO.svg?branch=master)](https://travis-ci.org/ziggi/Open-GTO)
 [![Join the chat at https://gitter.im/Open-GTO/Open-GTO](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Open-GTO/Open-GTO?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Open-GTO – свободный, некоммерческий проект. Является продолжением разработки GTO v0.6.0.
