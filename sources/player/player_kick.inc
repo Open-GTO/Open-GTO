@@ -13,7 +13,7 @@
 #pragma library pl_kick
 
 
-stock KickPlayer(playerid, reason[], showreason = 1)
+stock KickPlayer(playerid, reason[] = "", showreason = 1)
 {
 	if (!IsPlayerConnected(playerid)) {
 		return 0;

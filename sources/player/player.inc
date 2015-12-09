@@ -232,7 +232,7 @@ stock player_OnLogin(playerid)
 		format(tmpname, sizeof(tmpname), "%s%s"DATA_FILES_FORMAT, db_gang, gangname);
 
 		if (!ini_fileExist(tmpname)) {
-			player_SetGangName(playerid, nullstr);
+			player_SetGangName(playerid, "");
 			player_SetGangID(playerid, 0);
 
 			format(tmpname, sizeof(tmpname), "Банда '%s' была расформирована.", gangname);

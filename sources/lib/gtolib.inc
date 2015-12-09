@@ -1,38 +1,57 @@
-//
-// Created:	 05.09.06
-// Aurthor:	Iain Gilbert
-//
 /*
-	Модифицировал ZiGGi
+
+	About: grand theft online standart library
+	Author: Iain Gilbert
+	Co-author: ziggi
+
 */
 
-#if defined _gtoutils_included
-  #endinput
+#if !defined _samp_included
+	#error "Please include a_samp or a_npc before gtolib"
 #endif
 
-#define _gtoutils_included
-#pragma library gtoutils
+#if !defined _FOREACH_LOCAL_VERSION
+	#error "Please include foreach before gtolib"
+#endif
+
+#if defined _gtolib_included
+	#endinput
+#endif
+
+#define _gtolib_included
+#pragma library gtolib
+
+/*
+
+	Defines
+
+*/
 
 #define MODE_INFO_VERSION 1
 #define MODE_INFO_NAME    2
 
-enum CoordInfo {
-	Float:Coord_X,
-	Float:Coord_Y,
-	Float:Coord_Z
-}
-
-new nullstr[MAX_STRING];
-
-#define GivePVarInt(%1,%2,%3) SetPVarInt(%1,%2, GetPVarInt(%1,%2)+%3)
-#define set(%0,%1) strmid(%0,%1, 0, 160, MAX_STRING + 32)
-#define IS_IN_RANGE(%0,%1,%2) (((%0) - ((%1) + cellmin)) < (((%2) + 1) - ((%1) + cellmin)))
-
-// дополнительные функции 'для' mxINI
+// additional mxINI-like functions
 #define ini_fileRemove	fremove
 #define ini_fileExist	fexist
 
-// по кнопкам
+//#define IS_IN_RANGE(%0,%1,%2) (((%0) - ((%1) + cellmin)) < (((%2) + 1) - ((%1) + cellmin)))
+#define IS_IN_RANGE(%0,%1,%2) ((%0) >= (%1) && (%0) <= (%2))
+
+/*
+
+	Deprecated stuff
+
+*/
+
+#define GivePVarInt(%1,%2,%3) SetPVarInt(%1,%2, GetPVarInt(%1,%2)+(%3))
+#define set(%0,%1) strmid(%0,%1, 0, 160, MAX_STRING + 32)
+
+/*
+
+	Key functions
+
+*/
+
 #define PRESSED(%0) \
 	(((newkeys & (%0)) == (%0)) && ((oldkeys & (%0)) != (%0)))
 
@@ -42,7 +61,212 @@ new nullstr[MAX_STRING];
 #define RELEASED(%0) \
 	(((newkeys & (%0)) != (%0)) && ((oldkeys & (%0)) == (%0)))
 
-// strcmp empty string fix
+/*
+
+	Time functions
+
+*/
+
+#if defined timestamp_to_date
+
+stock timestamp_to_format_date(unix_timestamp)
+{
+	new year, month, day, hour, minute, second;
+	timestamp_to_date(unix_timestamp, year, month, day, hour, minute, second);
+
+	new string[20];
+	format(string, sizeof(string), "%04d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, second);
+	return string;
+}
+
+#endif
+
+/*
+
+	Player functions
+
+*/
+
+stock PlayerPlaySoundOnPlayer(playerid, soundid)
+{
+	return PlayerPlaySound(playerid, soundid, 0.0, 0.0, 0.0);
+}
+
+stock PlaySoundForPlayersInRange(soundid, Float:range, Float:x, Float:y, Float:z)
+{
+	foreach (new i : Player) {
+	    if (IsPlayerInRangeOfPoint(i, range, x, y, z)) {
+		    PlayerPlaySound(i, soundid, x, y, z);
+	    }
+	}
+}
+
+stock GetPlayersCount()
+{
+	return Iter_Count(Player);
+}
+
+stock SetPlayerPosEx(playerid, Float:x, Float:y, Float:z, Float:angle, interior, world = 0)
+{
+	SetPlayerInterior(playerid, interior);
+	SetPlayerFacingAngle(playerid, angle);
+	SetPlayerVirtualWorld(playerid, world);
+	SetPlayerPos(playerid, x, y, z);
+	SetCameraBehindPlayer(playerid);
+}
+
+stock SendMessageToBesidePlayers(message[], Float:range, Float:x, Float:y, Float:z)
+{
+	foreach (new playerid : Player) {
+		if (IsPlayerInRangeOfPoint(playerid, range, x, y, z)) {
+			SendClientMessage(playerid, -1, message);
+		}
+	}
+}
+
+/*
+
+	Chat functions
+
+*/
+
+stock Chat_Clear(playerid)
+{
+	for (new i = 0; i < 20; i++) {
+		SendClientMessage(playerid, -1, "");
+	}
+}
+
+stock Chat_ClearAll()
+{
+	for (new i = 0; i < 20; i++) {
+		SendClientMessageToAll(-1, "");
+	}
+}
+
+/*
+
+	Coords functions
+
+*/
+
+stock Float:GetDistanceBetweenPoints(Float:x1, Float:y1, Float:z1, Float:x2, Float:y2, Float:z2)
+{
+	return VectorSize(x1 - x2, y1 - y2, z1 - z2);
+}
+
+stock GetCoordsBefore(Float:x, Float:y, Float:a, Float:distance, &Float:res_x, &Float:res_y)
+{
+	res_x = x + (distance * floatsin(-a, degrees));
+	res_y = y + (distance * floatcos(-a, degrees));
+}
+
+stock GetCoordsBeforePlayer(playerid, Float:distance, &Float:x, &Float:y)
+{
+	new
+		Float:x,
+		Float:y,
+		Float:z,
+		Float:angle;
+
+	GetPlayerPos(playerid, x, y, z);
+	GetPlayerFacingAngle(playerid, angle);
+
+	GetCoordsBefore(x, y, angle, distance, x, y);
+}
+
+stock GetVehicleCoordsBeforePlayer(&Float:x, &Float:y, &Float:z, &Float:a, playerid, modelid = -1)
+{
+	new Float:size[3];
+	if (modelid != -1) {
+		GetVehicleModelInfo(modelid, VEHICLE_MODEL_INFO_SIZE, size[0], size[1], size[2]);
+	} else {
+		size[0] = 1.5;
+		size[2] = 1.0;
+	}
+
+	GetPlayerPos(playerid, x, y, z);
+	GetPlayerFacingAngle(playerid, a);
+
+	GetCoordsBefore(x, y, a, size[0] + 0.5, x, y);
+
+	z -= size[2] * 0.25;
+
+	a += 90.0;
+	if (a > 360.0) {
+		a -= 360.0;
+	}
+}
+
+/*
+
+	String functions
+
+*/
+
+stock StripNL(str[]) // by Y_Less
+{
+	new i = strlen(str);
+	while (i-- && str[i] <= ' ') {
+		str[i] = '\0';
+	}
+}
+
+stock FixAscii(text[])
+{
+	for (new i = 0; text[i] != '\0'; i++) {
+		text[i] &= 0xFF;
+	}
+}
+
+stock InsertSpacesInString(string[], const size = sizeof(string), const between_pos = 3)
+{
+	for (new i = 1, length = strlen(string); i < length; i++) {
+		if ((length - i) % between_pos == 0) {
+			strins(string, " ", i, size);
+			i++;
+			length++;
+		}
+	}
+}
+
+
+/*
+	
+	GenerateRandomString(result_str[], length, size = sizeof(result_str), alphabet[] = DEFAULT_ALPHABET, alphabet_size = sizeof(alphabet))
+
+*/
+
+#if !defined DEFAULT_ALPHABET
+	#define DEFAULT_ALPHABET "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+#endif
+
+stock GenerateRandomString(result_str[], length, size = sizeof(result_str), alphabet[] = DEFAULT_ALPHABET, alphabet_size = sizeof(alphabet))
+{
+	result_str[0] = '\0';
+
+	if (length > size) {
+		length = size - 1;
+	}
+	
+	if (length < 1) {
+		return 0;
+	}
+
+	for (new i = 0; i < length; i++) {
+		result_str[i] = alphabet[ random(alphabet_size) ];
+	}
+
+	return 1;
+}
+
+/*
+	
+	About: strcmp empty string fix
+	Author: Y_Less
+
+*/
+
 stock strcmpEx(const string1[], const string2[], bool:ignorecase=false, length=cellmax)
 {
 	if (string1[0])
@@ -73,101 +297,71 @@ stock strcmpEx(const string1[], const string2[], bool:ignorecase=false, length=c
 }
 #define strcmp strcmpEx
 
-stock timestamp_to_format_date(unix_timestamp)
-{
-	new year, month, day, hour, minute, second;
-	timestamp_to_date(unix_timestamp, year, month, day, hour, minute, second);
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), "%04d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, second);
-	return string;
-}
-
-stock PlayerPlaySoundOnPlayer(playerid, soundid)
-{
-	new Float:pos[3];
-	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	return PlayerPlaySound(playerid, soundid, pos[0], pos[1], pos[2]);
-}
-
-stock PlaySoundForPlayersInRange(soundid, Float:range, Float:x, Float:y, Float:z)
-{
-	foreach (new i : Player) {
-	    if (IsPlayerInRangeOfPoint(i, range, x, y, z)) {
-		    PlayerPlaySound(i, soundid, x, y, z);
-	    }
-	}
-}
-
 stock FormatPosition(position)
 {
-	new string[MAX_STRING];
-	switch (position)
-	{
-		case 1: set(string, "1st!");
-		case 2: set(string, "2nd!");
-		case 3: set(string, "3rd!");
-		default: format(string, sizeof(string), "%dth", position);
+	static pos_string[] = {"st!", "nd!", "rd!", "th"};
+	new string[8];
+
+	valstr(string, position);
+
+	if (IS_IN_RANGE(position, 1, 3)) {
+		strcat(string, pos_string[position - 1]);
+	} else if (position > 3) {
+		strcat(string, pos_string[3]);
 	}
+
 	return string;
 }
 
+// deprecated
 stock strcharsplit(const string[], &index, seperator=' ')
 {
-	new result[20], i = 0;
-	if (index != 0 && string[index] != '\0') index++;
-	while (string[index] && string[index] != seperator && string[index] != '\r' && string[index] != '\n')
-	{
+	new
+		result[20],
+		i = 0;
+
+	if (index != 0 && string[index] != '\0') {
+		index++;
+	}
+
+	while (string[index] && string[index] != seperator && string[index] != '\r' && string[index] != '\n') {
 		result[i++] = string[index++];
 	}
+
 	return result;
 }
 
-stock mathrandom(min, max)
-{
-	return (random(max - min + 1) + min);
-}
+#if !defined ALLOWED_NICK_SYMBOLS
+	#define ALLOWED_NICK_SYMBOLS 'a'..'z','A'..'Z','0'..'9','_','[',']','.','=','(',')'
+#endif
 
-stock NameCharCheck(string[MAX_PLAYER_NAME+1])
+stock NameCharCheck(playername[MAX_PLAYER_NAME + 1])
 {
-	if (!strcmp(string, "Unknown", true) || IsNumeric(string)) return 0;
-	for (new i = strlen(string)-1; i >= 0; i--)
-	{
-		switch (string[i])
-		{
-			case ALLOWED_NICK_SYMBOLS: continue;
-			default: return 0;
-		}
-	}
-	if (IsIpAddress(string))
-	{
+	if (!strcmp(playername, "Unknown", true) || IsNumeric(playername)) {
 		return 0;
 	}
+
+	for (new i = 0; playername[i] != '\0'; i++) {
+		switch (playername[i]) {
+			case ALLOWED_NICK_SYMBOLS: {
+				continue;
+			}
+			default: {
+				return 0;
+			}
+		}
+	}
+
+	if (IsIpAddress(playername)) {
+		return 0;
+	}
+
 	return 1;
 }
 
-stock PlayerCount()
-{
-	return Iter_Count(Player);
-}
-
-stock SetPlayerPosEx(playerid, Float:X, Float:Y, Float:Z, Float:Angle, Interior, World=0)
-{
-	SetPlayerInterior(playerid, Interior);
-	SetPlayerFacingAngle(playerid, Angle);
-	SetPlayerVirtualWorld(playerid, World);
-	SetPlayerPos(playerid, X, Y, Z);
-	SetCameraBehindPlayer(playerid);
-}
-
-stock pow(value, degree)
-{
-	new result = 1;
-	while (degree--) {
-		result *= value;
-	}
-	return result;
-}
+#if !defined ALLOWED_STRING_SYMBOLS
+	#define ALLOWED_STRING_SYMBOLS 'a'..'z','A'..'Z','0'..'9','_','[',']','=','(',')',' '
+#endif
 
 stock IsValidChars(string[])
 {
@@ -218,83 +412,36 @@ stock IsIpAddress(string[])
 	return 1;
 }
 
+/*
+
+	Math functions
+
+*/
+
+stock mathrandom(min, max)
+{
+	return (random(max - min + 1) + min);
+}
+
+stock pow(value, degree)
+{
+	new result = 1;
+	while (degree--) {
+		result *= value;
+	}
+	return result;
+}
+
 stock GetVehicleSpeed(vehicleid)
 {
-	new Float:pos[3];
-	GetVehicleVelocity(vehicleid, pos[0], pos[1], pos[2]);
-	return floatround( floatsqroot(pos[0]*pos[0] + pos[1]*pos[1] + pos[2]*pos[2]) * 100 );
-}
+	new
+		Float:x,
+		Float:y,
+		Float:z;
 
-stock Float:GetDistanceBetweenPoints(Float:x1, Float:y1, Float:z1, Float:x2, Float:y2, Float:z2)
-{
-	return VectorSize(x1-x2, y1-y2, z1-z2);
-}
+	GetVehicleVelocity(vehicleid, x, y, z);
 
-stock GetCoordsBefore(Float:x, Float:y, Float:a, Float:distance, &Float:res_x, &Float:res_y)
-{
-	res_x = x + (distance * floatsin(-a, degrees));
-	res_y = y + (distance * floatcos(-a, degrees));
-}
-
-stock GetCoordsBeforePlayer(playerid, Float:distance, &Float:x, &Float:y)
-{
-	new Float:pos[4];
-	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	GetPlayerFacingAngle(playerid, pos[3]);
-
-	GetCoordsBefore(pos[0], pos[1], pos[3], distance, x, y);
-}
-
-stock GetVehicleCoordsBeforePlayer(&Float:x, &Float:y, &Float:z, &Float:a, playerid, modelid = -1)
-{
-	new Float:size[3];
-	if (modelid != -1) {
-		GetVehicleModelInfo(modelid, VEHICLE_MODEL_INFO_SIZE, size[0], size[1], size[2]);
-	} else {
-		size[0] = 1.5;
-		size[2] = 1.0;
-	}
-
-	GetPlayerPos(playerid, x, y, z);
-	GetPlayerFacingAngle(playerid, a);
-
-	GetCoordsBefore(x, y, a, size[0] + 0.5, x, y);
-
-	z -= size[2] * 0.25;
-
-	a += 90.0;
-	if (a > 360.0) {
-		a -= 360.0;
-	}
-}
-
-
-stock GenerateRandomString(result_str[], length, size = sizeof(result_str), alphabet[] = DEFAULT_ALPHABET, alphabet_size = sizeof(alphabet))
-{
-	result_str[0] = '\0';
-
-	if (length > size) {
-		length = size - 1;
-	}
-	
-	if (length < 1) {
-		return 0;
-	}
-
-	for (new i = 0; i < length; i++) {
-		result_str[i] = alphabet[ random(alphabet_size) ];
-	}
-
-	return 1;
-}
-
-stock SendMessageToBesidePlayers(message[], Float:range, Float:x, Float:y, Float:z)
-{
-	foreach (new playerid : Player) {
-		if (IsPlayerInRangeOfPoint(playerid, range, x, y, z)) {
-			SendClientMessage(playerid, -1, message);
-		}
-	}
+	return floatround( floatsqroot(x*x + y*y + z*z) * 100 );
 }
 
 /*
@@ -363,42 +510,4 @@ stock encode_tires(tire1, tire2, tire3, tire4)
 stock encode_tires_bike(rear, front)
 {
 	return rear | (front << 1);
-}
-
-stock Chat_Clear(playerid)
-{
-	for (new i = 0; i < 20; i++) {
-		SendClientMessage(playerid, -1, "");
-	}
-}
-
-stock Chat_ClearAll()
-{
-	for (new i = 0; i < 20; i++) {
-		SendClientMessageToAll(-1, "");
-	}
-}
-
-stock StripNL(str[]) // by Y_Less
-{
-	new i = strlen(str);
-	while (i-- && str[i] <= ' ') str[i] = '\0';
-}
-
-stock FixAscii(text[])
-{
-	for (new i = 0; text[i] != '\0'; i++) {
-		text[i] &= 0xFF;
-	}
-}
-
-stock InsertSpacesInString(string[], const size = sizeof(string), const between_pos = 3)
-{
-	for (new i = 1, length = strlen(string); i < length; i++) {
-		if ((length - i) % between_pos == 0) {
-			strins(string, " ", i, size);
-			i++;
-			length++;
-		}
-	}
 }

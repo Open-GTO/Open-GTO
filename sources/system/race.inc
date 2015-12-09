@@ -1014,7 +1014,7 @@ stock StartRaceCountdown(raceid)
 	if (RaceStats[raceid][race_racercount] < Race[raceid][race_minracers])
 	{
 		format(string, sizeof(string), lang_texts[10][45], Race[raceid][race_name]);
-		if (PlayerCount() > 0)
+		if (GetPlayersCount() > 0)
 		{
 			Log_Game("Race: '%s' did not run.", Race[raceid][race_name]);
 		}

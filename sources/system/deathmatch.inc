@@ -224,7 +224,7 @@ stock DeathmatchLoadBaseDB(dmid)
 		X = floatstr(strcharsplit(temp, idx,','));
 		Y = floatstr(strcharsplit(temp, idx,','));
 		Z = floatstr(strcharsplit(temp, idx,','));
-		set(temp, nullstr);
+		temp[0] = '\0';
 		if (X == 0.0 && Y == 0.0)
 		{
 			break;
@@ -531,7 +531,7 @@ stock StartDMCountdown(dmid)
 		format(string, sizeof(string), lang_texts[4][10], Deathmatch[dmid][dm_name]);
 		SendMessageToDMPlayers(dmid, string, COLOR_DM);
 
-		if (PlayerCount() > 0)
+		if (GetPlayersCount() > 0)
 		{
 			Log_Game("Deathmatch: '%s' did not run. Not enough players.", Deathmatch[dmid][dm_name]);
 		}

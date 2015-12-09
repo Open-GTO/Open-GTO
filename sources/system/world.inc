@@ -17,7 +17,7 @@ public WorldSave(necessarily) // save all
 {
 	static emptyServerSaved = 0;
 	
-	if (PlayerCount() == 0 && necessarily != 1) {
+	if (GetPlayersCount() == 0 && necessarily != 1) {
 		if (emptyServerSaved == 0) {
 			emptyServerSaved = 1;
 		} else {

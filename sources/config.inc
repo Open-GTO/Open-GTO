@@ -274,6 +274,17 @@
 #define SWAGUP_XP_RATE      300 // коэффициент количества опыта за поднятие поклажи
 #define SWAGUP_PAUSE_TIME   480000
 
+
+/*
+ * CoordInfo
+ */
+
+enum CoordInfo {
+	Float:Coord_X,
+	Float:Coord_Y,
+	Float:Coord_Z
+}
+
 /*
  * Functions
  */

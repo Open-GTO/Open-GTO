@@ -14,7 +14,7 @@
 
 stock pl_report_GetMaxCount()
 {
-	return (MIN_REPORTS_FOR_JAIL + PlayerCount() / 10);
+	return (MIN_REPORTS_FOR_JAIL + GetPlayersCount() / 10);
 }
 
 stock player_SetReportCount(playerid, buf)

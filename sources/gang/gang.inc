@@ -186,12 +186,12 @@ stock GangRemoveMember(gangid, kickplayername[])
 			}
 			playerid = GangMemberInfo[gangid][gangmember][member_playerid];
 			player_SetGangID(playerid, 0);
-			player_SetGangName(playerid, nullstr);
+			player_SetGangName(playerid, "");
 			if (player_GetSpawnHouseID(playerid) == SPAWN_HOUSE_GANG)
 			{
 				player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
 			}
-			set(GangMemberInfo[gangid][gangmember][member_name], nullstr);
+			GangMemberInfo[gangid][gangmember][member_name][0] = '\0';
 			SendClientMessage(playerid, COLOR_RED, string);
 			SetPlayerColor(playerid, PlayerGangColour(playerid));
 			GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
@@ -211,7 +211,7 @@ stock GangRemoveMember(gangid, kickplayername[])
 
 		playerid = GangMemberInfo[gangid][gangmember][member_playerid];
 		GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
-		set(GangMemberInfo[gangid][gangmember][member_name], nullstr);
+		GangMemberInfo[gangid][gangmember][member_name][0] = '\0';
 		if (player_GetSpawnHouseID(playerid) == SPAWN_HOUSE_GANG)
 		{
 			player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
@@ -224,7 +224,7 @@ stock GangRemoveMember(gangid, kickplayername[])
 			format(string, sizeof(string), lang_texts[6][71], Gangs[gangid][gang_name]);
 			SendClientMessage(playerid, COLOR_GANG, string);
 			player_SetGangID(playerid, 0);
-			player_SetGangName(playerid, nullstr);
+			player_SetGangName(playerid, "");
 		}
 		SetPlayerColor(playerid, PlayerGangColour(playerid));
 		if (GangOnlineCount(gangid) == 0)
@@ -260,11 +260,11 @@ stock GangCreate(leaderid, gangname[], gangcolour)
 	Gangs[gangid][gang_xp] = 0;
 	Gangs[gangid][gang_money] = 0;
 	Gangs[gangid][gang_house] = player_GetSpawnHouseID(leaderid);
-	set(Gangs[gangid][gang_motd], nullstr);
+	Gangs[gangid][gang_motd][0] = '\0';
 	for (new gangmember =0 ; gangmember < MAX_GANG_SIZE; gangmember++)
 	{
 		GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
-		set(GangMemberInfo[gangid][gangmember][member_name], nullstr);
+		GangMemberInfo[gangid][gangmember][member_name][0] = '\0';
 	}
 	set(GangMemberInfo[gangid][0][member_name], ReturnPlayerName(leaderid));
 	GangMemberInfo[gangid][0][member_playerid] = leaderid;

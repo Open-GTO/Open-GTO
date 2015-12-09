@@ -783,7 +783,7 @@ COMMAND:sys(playerid, params[])
 		format(string, sizeof(string), lang_texts[15][65], vehicles_GetRespawnTime());
 		SendClientMessage(playerid, COLOR_LIGHTGREEN, string);
 
-		format(string, sizeof(string), lang_texts[15][62], PlayerCount(), GetMaxPlayers());
+		format(string, sizeof(string), lang_texts[15][62], GetPlayersCount(), GetMaxPlayers());
 		SendClientMessage(playerid, COLOR_LIGHTGREEN, string);
 
 		new hour, minute, second;
@@ -1510,7 +1510,7 @@ COMMAND:kick(playerid, params[])
 	if (idx < strlen(params) - 1) {
 		KickPlayer(receiverid, params[idx + 1]);
 	} else {
-		KickPlayer(receiverid, nullstr);
+		KickPlayer(receiverid);
 	}
 	return 1;
 }

@@ -236,12 +236,12 @@ new Vehicles[][Vehicle_Info] = {
 
 stock GetVehicleName(vehiclemodel)
 {
-	if (vehiclemodel < 400 || vehiclemodel > 611) {
-		return nullstr;
+	new veh_name[MAX_NAME];
+
+	if (vehiclemodel >= 400 && vehiclemodel <= 611) {
+		strmid(veh_name, Vehicles[vehiclemodel - 400][vehicle_name], 0, strlen(Vehicles[vehiclemodel - 400][vehicle_name]));
 	}
 
-	new veh_name[MAX_STRING];
-	set(veh_name, Vehicles[vehiclemodel - 400][vehicle_name]);
 	return veh_name;
 }
 
