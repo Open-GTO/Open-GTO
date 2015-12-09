@@ -233,7 +233,7 @@ stock trucker_Start(playerid)
 		trailer_type = GetTrailerType(vehicleid);
 	
 	if (trailer_type == -1) {
-		new string[MAX_STRING];
+		new string[MAX_LANG_VALUE_STRING];
 		format(string, sizeof(string), _(TRUCKER_GET_TRAILER), TRUCKER_TIME_GET_TRAILER);
 		SendClientMessage(playerid, COLOR_YELLOW, string);
 		Message_Alert(playerid, "SA Delivery", "Take the trailer.~n~You have only "#TRUCKER_TIME_GET_TRAILER" seconds.");
