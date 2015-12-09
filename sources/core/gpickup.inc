@@ -22,8 +22,6 @@
 		GPickup_SetModel(id, model)
 		GPickup_GetWorld(id)
 		GPickup_SetWorld(id, world)
-		GPickup_IsDefaultAction(id)
-		GPickup_SetDefaultAction(id, bool:action_state)
 		GPickup_GetPos(id, &Float:x, &Float:y, &Float:z)
 		GPickup_SetPos(id, Float:x, Float:y, Float:z)
 
