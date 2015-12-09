@@ -48,6 +48,13 @@
 
 */
 
+#if defined CreateDynamicPickup
+	native ORIG_CreatePickup(model, type, Float:X, Float:Y, Float:Z, virtualworld = 0) = CreatePickup;
+
+	#define _ALS_CreatePickup
+	#define CreatePickup CreateDynamicPickup
+#endif
+
 #if !defined GPICKUP_RESPAWN_TIME
 	#define GPICKUP_RESPAWN_TIME 10
 #endif
@@ -334,3 +341,11 @@ static stock GPickup_GetFreeId()
 
 	return INVALID_PICKUP_ID;
 }
+
+#if defined _ALS_CreatePickup
+	#undef CreatePickup
+#else
+	#define _ALS_CreatePickup
+#endif
+ 
+#define CreatePickup ORIG_CreatePickup
