@@ -35,6 +35,10 @@
 	#error "Please include foreach before gpickup"
 #endif
 
+#if !defined CreateDynamicPickup
+	#error "Please include streamer before gpickup"
+#endif
+
 #if defined _global_pickup_included
 	#endinput
 #endif
@@ -47,13 +51,6 @@
 	Defines
 
 */
-
-#if defined CreateDynamicPickup
-	native ORIG_CreatePickup(model, type, Float:X, Float:Y, Float:Z, virtualworld = 0) = CreatePickup;
-
-	#define _ALS_CreatePickup
-	#define CreatePickup CreateDynamicPickup
-#endif
 
 #if !defined GPICKUP_RESPAWN_TIME
 	#define GPICKUP_RESPAWN_TIME 10
@@ -95,10 +92,10 @@ static
 forward OnPlayerPickUpGlobalPickup(playerid, pickupid, gpickupid, model);
 
 /*
-	OnPlayerPickUpPickup(playerid, pickupid) hook
+	OnPlayerPickUpDynamicPickup(playerid, pickupid) hook
 */
 
-public OnPlayerPickUpPickup(playerid, pickupid)
+public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
 	// find in array
 	new id = INVALID_PICKUP_ID;
@@ -124,21 +121,21 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 		}
 	}
 
-	#if defined GPickup_OnPlayerPickUpPickup
-		return GPickup_OnPlayerPickUpPickup(playerid, pickupid);
+	#if defined GPickup_OnPlayerPickUpDP
+		return GPickup_OnPlayerPickUpDP(playerid, pickupid);
 	#else
 		return 1;
 	#endif
 }
-#if defined _ALS_OnPlayerPickUpPickup
-	#undef OnPlayerPickUpPickup
+#if defined _ALS_OnPlayerPickUpDP
+	#undef OnPlayerPickUpDynamicPickup
 #else
-	#define _ALS_OnPlayerPickUpPickup
+	#define _ALS_OnPlayerPickUpDP
 #endif
  
-#define OnPlayerPickUpPickup GPickup_OnPlayerPickUpPickup
-#if defined GPickup_OnPlayerPickUpPickup
-	forward GPickup_OnPlayerPickUpPickup(playerid, pickupid);
+#define OnPlayerPickUpDynamicPickup GPickup_OnPlayerPickUpDP
+#if defined GPickup_OnPlayerPickUpDP
+	forward GPickup_OnPlayerPickUpDP(playerid, pickupid);
 #endif
 
 /*
@@ -313,9 +310,9 @@ stock GPickup_SetPos(id, Float:x, Float:y, Float:z)
 
 static stock GPickup_Show(id)
 {
-	new realid = CreatePickup(gPickups[id][e_gpModel], 1,
-	                          gPickups[id][e_gpPosX], gPickups[id][e_gpPosY], gPickups[id][e_gpPosZ],
-	                          gPickups[id][e_gpWorld]);
+	new realid = CreateDynamicPickup(gPickups[id][e_gpModel], 1,
+	                                 gPickups[id][e_gpPosX], gPickups[id][e_gpPosY], gPickups[id][e_gpPosZ],
+	                                 gPickups[id][e_gpWorld]);
 
 	GPickup_SetID(id, realid);
 	GPickup_SetTime(id, -1);
@@ -323,7 +320,7 @@ static stock GPickup_Show(id)
 
 static stock GPickup_Hide(id)
 {
-	DestroyPickup(gPickups[id][e_gpID]);
+	DestroyDynamicPickup(gPickups[id][e_gpID]);
 
 	GPickup_SetID(id, INVALID_PICKUP_ID);
 	GPickup_SetTime(id, gettime());
@@ -339,11 +336,3 @@ static stock GPickup_GetFreeId()
 
 	return INVALID_PICKUP_ID;
 }
-
-#if defined _ALS_CreatePickup
-	#undef CreatePickup
-#else
-	#define _ALS_CreatePickup
-#endif
- 
-#define CreatePickup ORIG_CreatePickup
