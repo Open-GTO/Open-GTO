@@ -377,7 +377,7 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 	}
 		
 	new gangid = player_GetGangID(playerid);
-	if (GetGangMoney(gangid) < amount) {
+	if (GetPlayerMoney(playerid) < amount) {
 		Dialog_MessageEx(playerid, Dialog:GangBankReturnDeposit,
 			_(BANK_GANG_CAPTION),
 			_(BANK_GANG_INCORRECT_VALUE),
