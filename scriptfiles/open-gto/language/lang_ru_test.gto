@@ -201,14 +201,17 @@ ADMIN_PROTECTION_REPORT = Игрок %s(%d) подозревается в читерстве. Сработала защи
 
 ADMIN_COMMAND_NOT_ALLOWED = Нет доступа к этой команде
 
-ADMIN_COMMAND_VEHICLE_HELP = {FFCC66}[Применение]: {FFFFFF}/vehicle <add/remove/respawn> <модель/id/тип>
+ADMIN_COMMAND_VEHICLE_HELP = {FFCC66}[Применение]: {FFFFFF}/vehicle <add/remove/respawn/repair> <модель/id/тип>
 ADMIN_COMMAND_VEHICLE_ADD_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle add <модель>
 ADMIN_COMMAND_VEHICLE_ADD_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}создал транспорт %d
 ADMIN_COMMAND_VEHICLE_REMOVE_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle remove <id/>
 ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}удалил транспорт %d
-ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle respawn <id/all>
+ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle respawn <id/all/>
 ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}заспавнил транспорт %d
 ADMIN_COMMAND_VEHICLE_RESPAWN_ALL_MSG = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}заспавнил весь транспорт
+ADMIN_COMMAND_VEHICLE_REPAIR_ERROR =  {FFCC66}[Применение]: {FFFFFF}/vehicle repair <id/all/>
+ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}починил транспорт %d
+ADMIN_COMMAND_VEHICLE_REPAIR_ALL_MSG = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}починил весь транспорт
 
 ADMIN_COMMAND_CAMERA_HELP = {FFCC66}[Применение]: {FFFFFF}/camera <get/set/reset>
 ADMIN_COMMAND_CAMERA_GET_MESSAGE_CPOS = {FFCC66}CameraPos: {FFFFFF}%f, %f, %f

@@ -1683,7 +1683,9 @@ COMMAND:vehicle(playerid, params[])
 
 		if (vehicleid == 0) {
 			vehicleid = GetPlayerVehicleID(playerid);
-		} else if (!IsValidVehicle(vehicleid)) {
+		}
+
+		if (!IsValidVehicle(vehicleid)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_REMOVE_ERROR));
 			return 1;
 		}
@@ -1723,7 +1725,9 @@ COMMAND:vehicle(playerid, params[])
 
 			if (vehicleid == 0) {
 				vehicleid = GetPlayerVehicleID(playerid);
-			} else if (!IsValidVehicle(vehicleid)) {
+			}
+
+			if (!IsValidVehicle(vehicleid)) {
 				SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR));
 				return 1;
 			}
@@ -1738,6 +1742,49 @@ COMMAND:vehicle(playerid, params[])
 			// message
 			new string[MAX_LANG_VALUE_STRING];
 			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE), playername, vehicleid);
+			SendMessageToBesidePlayers(string, 40.0, x, y, z);
+		}
+	} else if (strcmp(subcmd, "repair", true) == 0) {
+		if (!IsPlayerMod(playerid)) {
+			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			return 1;
+		}
+
+		if (strcmp(subparams, "all", true) == 0) {
+			for (new vehid = 1; vehid <= MAX_VEHICLES; vehid++) {
+				RepairVehicle(vehid);
+			}
+
+			new string[MAX_LANG_VALUE_STRING];
+			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REPAIR_ALL_MSG), playername);
+			SendClientMessageToAll(-1, string);
+		} else {
+			new vehicleid;
+
+			if (sscanf(subparams, "I(0)", vehicleid)) {
+				SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_REPAIR_ERROR));
+				return 1;
+			}
+
+			if (vehicleid == 0) {
+				vehicleid = GetPlayerVehicleID(playerid);
+			}
+
+			if (!IsValidVehicle(vehicleid)) {
+				SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_REPAIR_ERROR));
+				return 1;
+			}
+
+			// get info
+			new Float:x, Float:y, Float:z;
+			GetVehiclePos(vehicleid, x, y, z);
+
+			// respawn
+			RepairVehicle(vehicleid);
+
+			// message
+			new string[MAX_LANG_VALUE_STRING];
+			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE), playername, vehicleid);
 			SendMessageToBesidePlayers(string, 40.0, x, y, z);
 		}
 	}
