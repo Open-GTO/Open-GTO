@@ -158,6 +158,33 @@ GPickup_Update()
 }
 
 /*
+	OnGameModeInit hook
+*/
+
+public OnGameModeInit()
+{
+	for (new i = 0; i < sizeof(pickups_array); i++) {
+		pickups_array[i][pickup_id] = -1;
+	}
+
+	#if defined GPickup_OnGameModeInit
+		return GPickup_OnGameModeInit();
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
+ 
+#define OnGameModeInit GPickup_OnGameModeInit
+#if defined GPickup_OnGameModeInit
+	forward GPickup_OnGameModeInit();
+#endif
+
+/*
 
 	Public functions
 
@@ -304,6 +331,7 @@ static stock GPickup_Show(id)
 static stock GPickup_Hide(id)
 {
 	DestroyPickup(pickups_array[id][pickup_id]);
+	pickups_array[id][pickup_id] = -1;
 	pickups_array[id][pickup_time] = gettime();
 }
 
