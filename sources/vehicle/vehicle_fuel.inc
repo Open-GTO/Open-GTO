@@ -64,9 +64,9 @@ stock veh_fuel_OnGameModeInit()
 		}
 	}
 
-	background = TextDrawCreate(610.470397, 368.416748, "-");
-	TextDrawLetterSize(background, 0.000000, 4.251411);
-	TextDrawTextSize(background, 527.411682, 0.000000);
+	background = TextDrawCreate(610.0, 368.0, "-");
+	TextDrawLetterSize(background, 0.0, 5.9);
+	TextDrawTextSize(background, 527.0, 0.0);
 	TextDrawAlignment(background, 1);
 	TextDrawColor(background, 0);
 	TextDrawUseBox(background, true);
@@ -250,8 +250,11 @@ public speed_Timer()
 				Fuel[vehicleid] -= 0.005;
 			}
 		}
-		
-		format(string, sizeof(string), _(VEHICLE_FUEL_TD_STRING), speed_count, Fuel[vehicleid]);
+
+		new Float:health;
+		GetVehicleHealth(vehicleid, health);
+
+		format(string, sizeof(string), _(VEHICLE_FUEL_TD_STRING), speed_count, Fuel[vehicleid], health);
 		
 		PlayerTextDrawSetString(playerid, speedom[playerid], string);
 	}

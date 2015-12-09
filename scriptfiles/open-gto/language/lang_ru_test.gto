@@ -103,7 +103,7 @@ VEHICLE_FUEL_FUEL_IS_FULL = {FF2211}[Ошибка]: {FFFFFF}Ваш бензобак уже полон.
 VEHICLE_FUEL_AFTER_FUEL = {33CC33}[Заправка]: {FFFFFF}Ваш транспорт был заправлен за $%d.
 VEHICLE_FUEL_TD_OPENED = ~G~Opened
 VEHICLE_FUEL_TD_CLOSED = ~R~Closed
-VEHICLE_FUEL_TD_STRING = %d KM/H~n~%0.1f L.
+VEHICLE_FUEL_TD_STRING = %d KM/H~n~%0.1f L.~n~%0.0f HP
 VEHICLE_FUEL_DIALOG_HEADER = Заправка
 VEHICLE_FUEL_IS_FUELING = {33CC33}[Заправка]: {FFFFFF}Ваше транспортное средство заправляется, ждите.
 
