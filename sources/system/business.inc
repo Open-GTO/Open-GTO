@@ -156,7 +156,7 @@ stock business_OnGameModeInit()
 			} else {
 				icon_type = 52;
 			}
-			business_icon[id] = Mapicon_Create(Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z], icon_type, 0);
+			business_icon[id] = CreateDynamicMapIcon(Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z], icon_type, 0);
 		}
 
 		business_Create3DTextLabelStr(id, string);
@@ -164,18 +164,6 @@ stock business_OnGameModeInit()
 		Business3DTextLabel[id] = Create3DTextLabel(string, COLOR_WHITE, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.75, BusinessDistanceOfShowLabel, 0, 1);
 	}
 	Log_Game(lang_texts[3][0]);
-}
-
-stock business_MapiconPlayerSync(playerid)
-{
-	new playername[MAX_PLAYER_NAME + 1];
-	GetPlayerName(playerid, playername, sizeof(playername));
-
-	for (new id = 0; id < sizeof(Businesses); id++) {
-		if (!strcmp(Businesses[id][Business_Owner], playername)) {
-			Mapicon_UpdateTypeForPlayer(playerid, business_icon[id], 38);
-		}
-	}
 }
 
 stock IsPlayerAtBusiness(playerid)
@@ -481,8 +469,7 @@ stock bis_Buy(playerid)
 		set(Businesses[id][Business_Owner], playername);
 		Businesses[id][Business_Buyout] = 0;
 
-		Mapicon_Update(business_icon[id], 36);
-		Mapicon_UpdateTypeForPlayer(playerid, business_icon[id], 38);
+		Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, business_icon[id], E_STREAMER_TYPE, 36);
 
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[3][16],
@@ -519,8 +506,7 @@ stock bis_Sell(playerid)
 		Businesses[id][Business_Buyout] = 0;
 		Businesses[id][Business_Upgrade] = 1;
 
-		Mapicon_Update(business_icon[id], 52);
-		Mapicon_ResetTypeForPlayer(playerid, business_icon[id]);
+		Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, business_icon[id], E_STREAMER_TYPE, 52);
 		
 		new string[MAX_STRING * 2];
 		format(string, sizeof(string), lang_texts[3][20],
@@ -658,7 +644,7 @@ stock CheckBusinessOwners()
 			set(Businesses[i][Business_Owner], "Unknown");
 			Businesses[i][Business_Buyout] = 0;
 			Businesses[i][Business_Upgrade] = 1;
-			Mapicon_Update(business_icon[i], 52);
+			Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, business_icon[i], E_STREAMER_TYPE, 52);
 		}
 	}
 }

@@ -43,7 +43,7 @@ static wshop_actors[MAX_WSHOP_ACTORS];
 wshop_OnGameModeInit()
 {
 	for (new id = 0; id < sizeof(wshop_place); id++) {
-		wshop_place[id][wshop_checkpoint] = Checkpoint_Create(wshop_place[id][wshop_x], wshop_place[id][wshop_y], wshop_place[id][wshop_z], 1.5, .streamdistance = 20.0);
+		wshop_place[id][wshop_checkpoint] = CreateDynamicCP(wshop_place[id][wshop_x], wshop_place[id][wshop_y], wshop_place[id][wshop_z], 1.5, .streamdistance = 20.0);
 	}
 	Log_Game(_(WEAPON_INIT));
 	return 1;

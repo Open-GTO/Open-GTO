@@ -10,7 +10,6 @@
 #define _race_included
 #pragma library race
 
-
 #define MAX_CP 100
 #define MAX_RACES 50
 #define RCPSIZE 7		//diameter of checkpoints
@@ -1277,11 +1276,11 @@ stock oIsPlayerInRaceCheckpoint(playerid, Float:cpx, Float:cpy, Float:cpz, dist)
 
 stock AddActiveRaceCheckpoint(Float:cpx, Float:cpy, Float:cpz, cpdist, cpsize) //
 {
-	if (ActiveRaceCPCount == MAX_CHECKPOINTS)
+	if (ActiveRaceCPCount == MAX_CP)
 	{
 		return 0;
 	}
-	for (new cpid = 1; cpid <= MAX_CHECKPOINTS; cpid++)
+	for (new cpid = 1; cpid <= MAX_CP; cpid++)
 	{
 		// we have found an inactive cp to use
 		if (ActiveRaceCheckpoints[cpid][IsActive] == false)

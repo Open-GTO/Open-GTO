@@ -116,8 +116,6 @@ Thanks:
 #include "gang/gang_level"
 #include "system/housing"
 #include "system/business"
-#include "streamers/mapicon_stream"
-#include "streamers/checkpoint_stream"
 #include "system/race"
 #include "system/deathmatch"
 #include "system/payday"
@@ -325,8 +323,6 @@ public OnPlayerConnect(playerid)
 	pl_weapon_OnPlayerConnect(playerid);
 	pl_money_td_OnPlayerConnect(playerid);
 	veh_fuel_OnPlayerConnect(playerid);
-	Mapicon_OnPlayerConnect(playerid);
-	Checkpoint_OnPlayerConnect(playerid);
 	Interior_OnPlayerConnect(playerid);
 	Spectate_OnPlayerConnect(playerid);
 	Beachside_OnPlayerConnect(playerid);
@@ -381,33 +377,36 @@ public OnPlayerPickUpGlobalPickup(playerid, pickupid, gpickupid, model)
 	return 1;
 }
 
-public OnPlayerEnterCheckpoint(playerid)
+public OnPlayerEnterDynamicCP(playerid, checkpointid)
 {
 	dm_OnPlayerEnterCheckpoint(playerid);
 
-	new cp = Checkpoint_GetPlayerVisible(playerid);
+	if (trucker_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
+		return 1;
+	}
+	if (wshop_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
+		return 1;
+	}
+	if (bar_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
+		return 1;
+	}
+	if (fastfood_OnPlayerEnterCP(playerid, checkpointid)) {
+		return 1;
+	}
+	if (ss_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
+		return 1;
+	}
+	if (fights_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
+		return 1;
+	}
+	if (bank_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
+		return 1;
+	}
+	return 1;
+}
 
-	if (trucker_OnPlayerEnterCheckpoint(playerid, cp)) {
-		return 1;
-	}
-	if (wshop_OnPlayerEnterCheckpoint(playerid, cp)) {
-		return 1;
-	}
-	if (bar_OnPlayerEnterCheckpoint(playerid, cp)) {
-		return 1;
-	}
-	if (fastfood_OnPlayerEnterCP(playerid, cp)) {
-		return 1;
-	}
-	if (ss_OnPlayerEnterCheckpoint(playerid, cp)) {
-		return 1;
-	}
-	if (fights_OnPlayerEnterCheckpoint(playerid, cp)) {
-		return 1;
-	}
-	if (bank_OnPlayerEnterCheckpoint(playerid, cp)) {
-		return 1;
-	}
+public OnPlayerEnterDynamicRaceCP(playerid, checkpointid)
+{
 	return 1;
 }
 

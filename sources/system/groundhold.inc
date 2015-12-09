@@ -101,8 +101,8 @@ stock groundhold_OnGameModeInit()
 	groundhold_LoadAll();
 
 	for (new i = 0; i < sizeof(Groundholds); i++) {
-		Checkpoint_Create(Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z], 20.0);
-		Mapicon_Create(Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z], 56, 0);
+		CreateDynamicCP(Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z], 20.0);
+		CreateDynamicMapIcon(Groundholds[i][gh_x], Groundholds[i][gh_y], Groundholds[i][gh_z], 56, 0);
 	}
 
 	Log_Game("SERVER: Groundhold module init");

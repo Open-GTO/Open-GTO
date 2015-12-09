@@ -486,7 +486,7 @@ stock StartDMLineup(dmid)
 	DeathmatchStats[dmid][dm_state] = DM_STATE_LINEUP;
 	DeathmatchStats[dmid][dm_timer] = 0;
 	DeathmatchStats[dmid][dm_playercount] = 0;
-	DeathmatchStats[dmid][dm_activecpid] = Checkpoint_Create(GetDMCPX(dmid), GetDMCPY(dmid), GetDMCPZ(dmid), DMCPSize, _, _, _, CHECKPOINT_STREAM_MAX_DISTANCE);
+	DeathmatchStats[dmid][dm_activecpid] = CreateDynamicCP(GetDMCPX(dmid), GetDMCPY(dmid), GetDMCPZ(dmid), DMCPSize);
 	new string1[MAX_STRING], string2[MAX_STRING], string3[MAX_STRING], string4[MAX_STRING], color;
 	format(string1, sizeof(string1), lang_texts[4][4], Deathmatch[dmid][dm_name], dmid, Deathmatch[dmid][dm_lineupdelay], GetDMStartZoneName(dmid));
 	format(string2, sizeof(string2), lang_texts[4][5], Deathmatch[dmid][dm_cashentry], Deathmatch[dmid][dm_minlevel], Deathmatch[dmid][dm_minplayers]);
@@ -547,10 +547,10 @@ stock StartDMCountdown(dmid)
 		DeathmatchStats[dmid][dm_timer] = MakeDMSleepTime(dmid);
 		DeathmatchStats[dmid][dm_state] = DM_STATE_SLEEPING;
 
-		if (DeathmatchStats[dmid][dm_activecpid] != INVALID_CHECKPOINT_ID)
+		if (DeathmatchStats[dmid][dm_activecpid] != -1)
 		{
-			Checkpoint_Delete(DeathmatchStats[dmid][dm_activecpid]);
-			DeathmatchStats[dmid][dm_activecpid] = INVALID_CHECKPOINT_ID;
+			DestroyDynamicCP(DeathmatchStats[dmid][dm_activecpid]);
+			DeathmatchStats[dmid][dm_activecpid] = -1;
 		}
 		return;
 	}
@@ -623,8 +623,8 @@ stock JoinDM(playerid, dmid)
 	{
 		format(string, sizeof(string),  lang_texts[4][16] , (Deathmatch[dmid][dm_lineupdelay] - DeathmatchStats[dmid][dm_timer]));
 		SendClientMessage(playerid, COLOR_DM, string);
-		Checkpoint_ToggleAllForPlayer(playerid, 0);
-		Checkpoint_ToggleForPlayer(playerid, DeathmatchStats[dmid][dm_activecpid], 1);
+		TogglePlayerAllDynamicCPs(playerid, 0);
+		TogglePlayerDynamicCP(playerid, DeathmatchStats[dmid][dm_activecpid], 1);
 	}
 	else if ((DeathmatchStats[dmid][dm_state] == DM_STATE_ACTIVE) && (Deathmatch[dmid][dm_activedmjoin] == 1))
 	{
@@ -639,8 +639,8 @@ stock JoinDM(playerid, dmid)
 		else
 		{
 			SendClientMessage(playerid, COLOR_DM, lang_texts[4][18]);
-			Checkpoint_ToggleAllForPlayer(playerid, 0);
-			Checkpoint_ToggleForPlayer(playerid, DeathmatchStats[dmid][dm_activecpid], 1);
+			TogglePlayerAllDynamicCPs(playerid, 0);
+			TogglePlayerDynamicCP(playerid, DeathmatchStats[dmid][dm_activecpid], 1);
 		}
 	}
 	else
@@ -713,16 +713,16 @@ stock CleanupDM(dmid)
 		{
 			PlayerLeaveDM(playerid, dmid);
 		}
-		Checkpoint_ToggleAllForPlayer(playerid, 0);
+		TogglePlayerAllDynamicCPs(playerid, 0);
 	}
 	DeathmatchStats[dmid][dm_playercount] = 0;
 	DeathmatchStats[dmid][dm_timer] = MakeDMSleepTime(dmid);
 	DeathmatchStats[dmid][dm_state] = DM_STATE_SLEEPING;
 
-	if (DeathmatchStats[dmid][dm_activecpid] != INVALID_CHECKPOINT_ID)
+	if (DeathmatchStats[dmid][dm_activecpid] != -1)
 	{
-		Checkpoint_Delete(DeathmatchStats[dmid][dm_activecpid]);
-		DeathmatchStats[dmid][dm_activecpid] = INVALID_CHECKPOINT_ID;
+		DestroyDynamicCP(DeathmatchStats[dmid][dm_activecpid]);
+		DeathmatchStats[dmid][dm_activecpid] = -1;
 	}
 }
 
@@ -845,7 +845,7 @@ stock PlayerLeaveDM(playerid, dmid)
 		SetPlayerPos(playerid, DMStartCP[dmid][Coord_X], DMStartCP[dmid][Coord_Y], DMStartCP[dmid][Coord_Z]);
 		SetPlayerInterior(playerid, 0);
 		SetPlayerMaxHealth(playerid);
-		Checkpoint_ToggleAllForPlayer(playerid, 0);
+		TogglePlayerAllDynamicCPs(playerid, 0);
 		GivePlayerOwnedWeapon(playerid);
 	}
 	DMResetPlayerStats(playerid);

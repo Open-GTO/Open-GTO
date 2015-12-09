@@ -58,7 +58,7 @@ static drinks_data[][DrinkInfo] = {
 bar_OnGameModeInit()
 {
 	for (new id = 0; id < sizeof(bar_place); id++) {
-		bar_place[id][bar_checkpoint] = Checkpoint_Create(bar_place[id][bar_x], bar_place[id][bar_y], bar_place[id][bar_z], 1.5, .streamdistance = 20.0);
+		bar_place[id][bar_checkpoint] = CreateDynamicCP(bar_place[id][bar_x], bar_place[id][bar_y], bar_place[id][bar_z], 1.5, .streamdistance = 20.0);
 	}
 	Log_Game(_(BAR_INIT));
 	return 1;

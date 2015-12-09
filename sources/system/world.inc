@@ -55,8 +55,6 @@ forward OneSecTimer();
 public OneSecTimer()
 {
 	foreach (new playerid : Player) {
-		Mapicon_Stream(playerid);
-		Checkpoint_Stream(playerid);
 		player_Sync(playerid);
 		UpdatePlayerWeaponTextDraws(playerid);
 		adm_spec_UpdateLabel(playerid);

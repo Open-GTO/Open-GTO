@@ -38,7 +38,7 @@ static
 stock sshop_OnGameModeInit()
 {
 	for (new id = 0; id < sizeof(SkinShops); id++) {
-		SkinShops[id][ss_checkpoint] = Checkpoint_Create(SkinShops[id][ss_x], SkinShops[id][ss_y], SkinShops[id][ss_z], 1.5, .streamdistance = 20.0);
+		SkinShops[id][ss_checkpoint] = CreateDynamicCP(SkinShops[id][ss_x], SkinShops[id][ss_y], SkinShops[id][ss_z], 1.5, .streamdistance = 20.0);
 	}
 
 	Log_Game(_(SKINSHOP_INIT));

@@ -57,7 +57,7 @@ stock bank_SaveConfig(file_config)
 bank_OnGameModeInit()
 {
 	for (new bankid = 0; bankid < sizeof(bank_place); bankid++) {
-		bank_place[bankid][bank_checkpoint] = Checkpoint_Create(bank_place[bankid][bank_x], bank_place[bankid][bank_y], bank_place[bankid][bank_z], 1.5, .streamdistance = 20.0);
+		bank_place[bankid][bank_checkpoint] = CreateDynamicCP(bank_place[bankid][bank_x], bank_place[bankid][bank_y], bank_place[bankid][bank_z], 1.5, .streamdistance = 20.0);
 	}
 	Log_Game(_(BANK_INIT));
 	return 1;

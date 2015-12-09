@@ -134,7 +134,7 @@ stock fights_AddStyle(minlvl, styleid, stylename[], bool:haveteacher, cost = 0, 
 	fights_array[id][e_fCoord_Z] = pos_z;
 
 	if (haveteacher) {
-		fights_array[id][e_fCheckpoint] = Checkpoint_Create(pos_x, pos_y, pos_z, 1.5, .streamdistance = 20.0);
+		fights_array[id][e_fCheckpoint] = CreateDynamicCP(pos_x, pos_y, pos_z, 1.5, .streamdistance = 20.0);
 	}
 	return id;
 }

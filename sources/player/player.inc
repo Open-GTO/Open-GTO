@@ -243,10 +243,6 @@ stock player_OnLogin(playerid)
 		player_SetGangID(playerid, 0);
 	}
 
-	// icons
-	housing_MapiconPlayerSync(playerid);
-	business_MapiconPlayerSync(playerid);
-
 	Log_Game("player: %s(%d): logged in successfully.", playername, playerid);
 }
 

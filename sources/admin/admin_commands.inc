@@ -825,7 +825,7 @@ COMMAND:sys(playerid, params[])
 		}
 		return 1;
 	}
-	
+	/*
 	if (!strcmp(cmd, "groundhold", true))
 	{
 		new paramid = strval(strcharsplit(params, idx, ' '));
@@ -845,8 +845,8 @@ COMMAND:sys(playerid, params[])
 				Groundhold_IsEnabled = 1;
 
 				for (new ghid = 0; ghid < sizeof(Groundholds);  ghid++) {
-					Checkpoint_Create(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 20.0);
-					Mapicon_Create(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 56, 0);
+					CreateDynamicCP(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 20.0);
+					CreateDynamicMapIcon(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 56, 0);
 					CheckGround(ghid);
 				}
 
@@ -854,7 +854,7 @@ COMMAND:sys(playerid, params[])
 			}
 		}
 		return 1;
-	}
+	}*/
 	
 	if (!strcmp(cmd, "gmx", true))
 	{

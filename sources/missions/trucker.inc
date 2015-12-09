@@ -167,9 +167,9 @@ stock trucker_OnGameModeInit()
 	}
 
 	// иконки
-	Mapicon_Create(253.0453, 1372.3413, 11.1734, 51, 0);
-	Mapicon_Create(-117.0570, -325.0306, 2.0109, 51, 0);
-	Mapicon_Create(512.6126, 792.6769, -20.8209, 51, 0);
+	CreateDynamicMapIcon(253.0453, 1372.3413, 11.1734, 51, 0);
+	CreateDynamicMapIcon(-117.0570, -325.0306, 2.0109, 51, 0);
+	CreateDynamicMapIcon(512.6126, 792.6769, -20.8209, 51, 0);
 	
 	Log_Game(_(TRUCKER_INIT));
 	return 1;
@@ -258,15 +258,15 @@ stock trucker_Start(playerid)
 
 	new dest_id = dest_list[ random(dest_list_pos) ];
 
-	player_mapicon[playerid] = Mapicon_Create(
+	player_mapicon[playerid] = CreateDynamicMapIcon(
 		destination_array[dest_id][dest_x], destination_array[dest_id][dest_y], destination_array[dest_id][dest_z],
 		0, 0xAA0000FF, .playerid = playerid, .style = MAPICON_GLOBAL
 	);
-	player_checkpoint[playerid] = Checkpoint_Create(
+	player_checkpoint[playerid] = CreateDynamicCP(
 		destination_array[dest_id][dest_x], destination_array[dest_id][dest_y], destination_array[dest_id][dest_z],
-		10.0, .playerid = playerid
+		10.0, .playerid = playerid, .streamdistance = 65000.0
 	);
-	Checkpoint_ToggleForPlayer(playerid, player_checkpoint[playerid], 1);
+	TogglePlayerDynamicCP(playerid, player_checkpoint[playerid], 1);
 
 	new
 		zone[MAX_NAME],
@@ -520,9 +520,9 @@ public trucker_CancelMission(playerid)
 
 stock trucker_Stop(playerid)
 {
-	Checkpoint_ToggleForPlayer(playerid, player_checkpoint[playerid], 0);
-	Checkpoint_Delete(player_checkpoint[playerid]);
-	Mapicon_Delete(player_mapicon[playerid]);
+	TogglePlayerDynamicCP(playerid, player_checkpoint[playerid], 0);
+	DestroyDynamicCP(player_checkpoint[playerid]);
+	DestroyDynamicMapIcon(player_mapicon[playerid]);
 
 	player_ResetQuest(playerid);
 

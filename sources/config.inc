@@ -47,6 +47,8 @@
 #define USE_PLAYER_PED_ANIMS
 #define USED_PLAYER_MARKERS     PLAYER_MARKERS_MODE_GLOBAL
 
+#define STREAMER_MAP_ICON_SD 400.0
+
 #define PASSWORD_ENCRYPT_ENABLED // если задефайнено, то пароль в файле игрока будет шифроваться
 #define PASSWORD_SALT_LENGTH  12 // длина соли для хэша
 #define PASSWORD_HASH_LENGTH  64 // длина хэша

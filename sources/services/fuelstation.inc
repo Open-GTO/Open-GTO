@@ -39,7 +39,7 @@ stock fuelstation_OnGameModeInit()
 	}
 	
 	for (new i = 0; i < sizeof(FuelStations); i++) {
-		Mapicon_Create(FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z], 55, 0);
+		CreateDynamicMapIcon(FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z], 55, 0);
 		CreatePickup(1650 , 23, FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z]);
 		Create3DTextLabel(
 			"Заправка\n{33AA33}Нажмите кнопку '{FFFFFF}NUM2{33AA33}'", 0xFFFFFFFF,

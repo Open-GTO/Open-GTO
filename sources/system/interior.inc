@@ -281,7 +281,7 @@ Interior_OnGameModeInit()
 		);
 
 		if (interior_enters[i][e_ie_icon_id] != -1) {
-			Mapicon_Create(interior_enters[i][e_ie_pos_x], interior_enters[i][e_ie_pos_y], interior_enters[i][e_ie_pos_z], interior_enters[i][e_ie_icon_id], 0);
+			CreateDynamicMapIcon(interior_enters[i][e_ie_pos_x], interior_enters[i][e_ie_pos_y], interior_enters[i][e_ie_pos_z], interior_enters[i][e_ie_icon_id], 0);
 		}
 
 		// exit pos
