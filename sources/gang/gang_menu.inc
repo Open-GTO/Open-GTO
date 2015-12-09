@@ -223,11 +223,9 @@ DialogResponse:GangExitAccept(playerid, response, listitem, inputtext[])
 
 DialogCreate:GangCreate(playerid)
 {
-	const
-		COLORS_IN_STRING = 5;
-
 	new
-		string[(MAX_NAME + 8 + 2) * MAX_COLOR_COUNT + 2 * (MAX_COLOR_COUNT / COLORS_IN_STRING + 1) + 1],
+		string[(MAX_NAME + 8 + 2) * MAX_COLOR_COUNT + 2 * (MAX_COLOR_COUNT + 1) + 1],
+		style = DIALOG_STYLE_INPUT,
 		step = gangmenu_GetCreateStep(playerid);
 
 	switch (step) {
@@ -237,19 +235,15 @@ DialogCreate:GangCreate(playerid)
 		}
 		// цвет
 		case 1: {
-			set(string, "Введите цвет банды:\n\t");
+			style = DIALOG_STYLE_LIST;
 
 			for (new i = 0; i < MAX_COLOR_COUNT; i++) {
-				format(string, sizeof(string), "%s  {%s}%s", string, Color_ReturnEmbeddingCode(i), Color_ReturnName(i));
-				
-				if ((i+1) % COLORS_IN_STRING == 0) {
-					strcat(string, "\n\t", sizeof(string));
-				}
+				format(string, sizeof(string), "%s{%s}%s\n", string, Color_ReturnEmbeddingCode(i), Color_ReturnName(i));
 			}
 		}
 	}
 
-	Dialog_Open(playerid, Dialog:GangCreate, DIALOG_STYLE_INPUT, lang_texts[6][9], string, "ОК", "Назад");
+	Dialog_Open(playerid, Dialog:GangCreate, style, lang_texts[6][9], string, "ОК", "Назад");
 }
 
 stock gangmenu_SetCreateStep(playerid, step)
@@ -328,7 +322,7 @@ DialogResponse:GangCreate(playerid, response, listitem, inputtext[])
 				Dialog_Show(playerid, Dialog:GangCreate);
 				return 1;
 			}
-
+			printf(inputtext);
 			new colorid = Color_GetIdByName(inputtext);
 			if (colorid == -1) {
 				Dialog_MessageEx(playerid, Dialog:GangCreateReturn, lang_texts[6][9], lang_texts[6][10], "Назад", "Отмена");
@@ -457,7 +451,7 @@ DialogResponse:GangKick(playerid, response, listitem, inputtext[])
 	new memberid = gangmenu_GetMemberID(gangid, listitem);
 	
 	new kickplayername[MAX_PLAYER_NAME + 1];
-	set(kickplayername, GangMemberInfo[gangid][memberid][member_name]);
+	strmid(kickplayername, GangMemberInfo[gangid][memberid][member_name], 0, strlen(GangMemberInfo[gangid][memberid][member_name]));
 
 	GangRemoveMember(gangid, kickplayername);
 	
@@ -538,14 +532,15 @@ DialogResponse:GangColor(playerid, response, listitem, inputtext[])
 
 DialogCreate:GangMotd(playerid)
 {
-	new string[256];
+	new
+		gangid = player_GetGangID(playerid),
+		length = strlen(Gangs[gangid][gang_motd]),
+		string[128];
 
-	set(string, Gangs[ player_GetGangID(playerid) ][gang_motd]);
-
-	if (strlen(string) == 0) {
-		set(string, lang_texts[6][90]);
+	if (length == 0) {
+		strcat(string, lang_texts[6][90]);
 	} else {
-		format(string, sizeof(string), lang_texts[6][89], string);
+		format(string, sizeof(string), lang_texts[6][89], Gangs[gangid][gang_motd]);
 	}
 	
 	Dialog_Open(playerid, Dialog:GangMotd, DIALOG_STYLE_INPUT, lang_texts[6][86], string, "ОК", "Назад");
@@ -574,7 +569,7 @@ DialogResponse:GangMotd(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	set(Gangs[gangid][gang_motd], inputtext);
+	strmid(Gangs[gangid][gang_motd], inputtext, 0, strlen(inputtext), MAX_STRING);
 
 	format(string, sizeof(string), lang_texts[6][88], Gangs[gangid][gang_motd]);
 	Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][86], string, "Назад", "Отмена");

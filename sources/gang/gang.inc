@@ -199,6 +199,7 @@ stock GangRemoveMember(gangid, kickplayername[])
 		format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_gang, Gangs[gangid][gang_name]);
 		ini_fileRemove(string);
 		Gangs[gangid][gang_active] = false;
+		Gangs[gangid][gang_motd][0] = '\0';
 		return 1;
 	}
 	playerid = INVALID_PLAYER_ID;
