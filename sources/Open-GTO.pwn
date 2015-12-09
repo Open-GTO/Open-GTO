@@ -41,6 +41,7 @@ Thanks:
 #include "lib/streamer"
 #include "lib/sa-mp-fixes/fixes"
 #include "lib/sa-mp-foreach/foreach"
+#include "lib/sscanf2"
 #include "lib/zcmd"
 #include "lib/mxINI"
 #include "lib/mxDate"

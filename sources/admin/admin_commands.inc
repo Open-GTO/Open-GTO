@@ -364,12 +364,11 @@ COMMAND:telexyzi(playerid, params[])
 	}
 
 	new Float:pos_x, Float:pos_y, Float:pos_z, interior;
-	new idx = 0;
 
-	pos_x = floatstr(strcharsplit(params, idx, ' '));
-	pos_y = floatstr(strcharsplit(params, idx, ' '));
-	pos_z = floatstr(strcharsplit(params, idx, ' '));
-	interior = strval(strcharsplit(params, idx, ' '));
+	if (sscanf(params, "p<,>fffi", pos_x, pos_y, pos_z, interior)) {
+		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
+		return 1;
+	}
 
 	SetPlayerInterior(playerid, interior);
 
@@ -1628,11 +1627,13 @@ COMMAND:vehicle(playerid, params[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	new
-		subsubcmd[32],
 		subcmd[32],
-		idx;
+		subparams[64];
 
-	subcmd = strcharsplit(params, idx, ' ');
+	if (sscanf(params, "s[32]S()[64]", subcmd, subparams)) {
+		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_HELP));
+		return 1;
+	}
 
 	if (strcmp(subcmd, "add", true) == 0) {
 		if (!IsPlayerAdm(playerid)) {
@@ -1640,9 +1641,9 @@ COMMAND:vehicle(playerid, params[])
 			return 1;
 		}
 
-		new modelid = strval(strcharsplit(params, idx, ' '));
+		new modelid;
 
-		if (modelid < 400 || modelid > 611) {
+		if (sscanf(subparams, "k<vehicle>", modelid)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_ADD_ERROR));
 			return 1;
 		}
@@ -1666,24 +1667,23 @@ COMMAND:vehicle(playerid, params[])
 		// message
 		new string[MAX_LANG_VALUE_STRING];
 		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_ADD_MESSAGE), playername, vehicleid);
-		SendMessageToBesidePlayers(string, 10.0, x, y, z);
+		SendMessageToBesidePlayers(string, 40.0, x, y, z);
 	} else if (strcmp(subcmd, "remove", true) == 0) {
 		if (!IsPlayerAdm(playerid)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
 
-		subsubcmd = strcharsplit(params, idx, ' ');
-
 		new vehicleid;
 
-		if (isnull(subsubcmd)) {
-			vehicleid = GetPlayerVehicleID(playerid);
-		} else {
-			vehicleid = strval(subsubcmd);
+		if (sscanf(subparams, "I(0)", vehicleid)) {
+			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_REMOVE_ERROR));
+			return 1;
 		}
 
-		if (!IsValidVehicle(vehicleid)) {
+		if (vehicleid == 0) {
+			vehicleid = GetPlayerVehicleID(playerid);
+		} else if (!IsValidVehicle(vehicleid)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_REMOVE_ERROR));
 			return 1;
 		}
@@ -1698,16 +1698,14 @@ COMMAND:vehicle(playerid, params[])
 		// message
 		new string[MAX_LANG_VALUE_STRING];
 		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE), playername, vehicleid);
-		SendMessageToBesidePlayers(string, 10.0, x, y, z);
+		SendMessageToBesidePlayers(string, 40.0, x, y, z);
 	} else if (strcmp(subcmd, "respawn", true) == 0) {
 		if (!IsPlayerMod(playerid)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
 
-		subsubcmd = strcharsplit(params, idx, ' ');
-
-		if (strcmp(subsubcmd, "all", true) == 0) {
+		if (strcmp(subparams, "all", true) == 0) {
 			for (new vehid = 1; vehid <= MAX_VEHICLES; vehid++) {
 				SetVehicleToRespawn(vehid);
 			}
@@ -1718,13 +1716,14 @@ COMMAND:vehicle(playerid, params[])
 		} else {
 			new vehicleid;
 
-			if (isnull(subsubcmd)) {
-				vehicleid = GetPlayerVehicleID(playerid);
-			} else {
-				vehicleid = strval(subsubcmd);
+			if (sscanf(subparams, "I(0)", vehicleid)) {
+				SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR));
+				return 1;
 			}
 
-			if (!IsValidVehicle(vehicleid)) {
+			if (vehicleid == 0) {
+				vehicleid = GetPlayerVehicleID(playerid);
+			} else if (!IsValidVehicle(vehicleid)) {
 				SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR));
 				return 1;
 			}
@@ -1739,10 +1738,8 @@ COMMAND:vehicle(playerid, params[])
 			// message
 			new string[MAX_LANG_VALUE_STRING];
 			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE), playername, vehicleid);
-			SendMessageToBesidePlayers(string, 10.0, x, y, z);
+			SendMessageToBesidePlayers(string, 40.0, x, y, z);
 		}
-	} else {
-		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_HELP));
 	}
 
 	return 1;
@@ -1756,9 +1753,12 @@ COMMAND:camera(playerid, params[])
 
 	new
 		subcmd[32],
-		idx;
+		subparams[64];
 
-	subcmd = strcharsplit(params, idx, ' ');
+	if (sscanf(params, "s[32]S()[64]", subcmd, subparams)) {
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_CAMERA_HELP));
+		return 1;
+	}
 
 	if (strcmp(subcmd, "get", true) == 0) {
 		new
@@ -1788,7 +1788,7 @@ COMMAND:camera(playerid, params[])
 		format(string, sizeof(string), _(ADMIN_COMMAND_CAMERA_GET_MESSAGE_LPOS), lpos[0], lpos[1], lpos[2]);
 		SendClientMessage(playerid, -1, string);
 	} else if (strcmp(subcmd, "set", true) == 0) {
-		if (strlen(params[idx]) == 0) {
+		if (strlen(subparams) == 0) {
 			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_CAMERA_SET_ERROR));
 			return 1;
 		}
@@ -1797,20 +1797,15 @@ COMMAND:camera(playerid, params[])
 			Float:cpos[3],
 			Float:lpos[3];
 
-		cpos[0] = floatstr(strcharsplit(params, idx, ' '));
-		cpos[1] = floatstr(strcharsplit(params, idx, ' '));
-		cpos[2] = floatstr(strcharsplit(params, idx, ' '));
-
-		lpos[0] = floatstr(strcharsplit(params, idx, ' '));
-		lpos[1] = floatstr(strcharsplit(params, idx, ' '));
-		lpos[2] = floatstr(strcharsplit(params, idx, ' '));
+		if (sscanf(subparams, "p<,>a<f>[3]a<f>[3]", cpos, lpos)) {
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_CAMERA_SET_ERROR));
+			return 1;
+		}
 
 		SetPlayerCameraPos(playerid, cpos[0], cpos[1], cpos[2]);
 		SetPlayerCameraLookAt(playerid, lpos[0], lpos[1], lpos[2]);
 	} else if (strcmp(subcmd, "reset", true) == 0) {
 		SetCameraBehindPlayer(playerid);
-	} else {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_CAMERA_HELP));
 	}
 
 	return 1;
