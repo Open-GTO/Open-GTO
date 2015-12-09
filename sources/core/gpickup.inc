@@ -110,20 +110,18 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 		}
 	}
 
-	if (id == INVALID_PICKUP_ID) {
-		return 0;
-	}
-	
-	// callback
-	CallRemoteFunction("OnPlayerPickUpGlobalPickup", "iiii", playerid, pickupid, id, GPickup_GetModel(id));
+	if (id != INVALID_PICKUP_ID) {
+		// callback
+		CallRemoteFunction("OnPlayerPickUpGlobalPickup", "iiii", playerid, pickupid, id, GPickup_GetModel(id));
 
-	// hide pickup
-	new respawn_time = GPickup_GetRespawnTime(id);
-	if (respawn_time > 0) {
-		GPickup_Hide(id);
-		Iter_Add(HiddenPickups, id);
-	} else if (respawn_time == -1) {
-		GPickup_Remove(id);
+		// hide pickup
+		new respawn_time = GPickup_GetRespawnTime(id);
+		if (respawn_time > 0) {
+			GPickup_Hide(id);
+			Iter_Add(HiddenPickups, id);
+		} else if (respawn_time == -1) {
+			GPickup_Remove(id);
+		}
 	}
 
 	#if defined GPickup_OnPlayerPickUpPickup
