@@ -102,14 +102,14 @@ stock player_OnPlayerConnect(playerid)
 stock player_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused reason
-	pl_spawn_OnPlayerDeath(playerid, killerid, reason);
-
-	GivePVarInt(playerid, "Deaths", 1);
-	GivePVarInt(killerid, "Kills", 1);
+	UpdatePlayerSpawnInfo(playerid);
 
 	if (killerid == INVALID_PLAYER_ID) {
 		return;
 	}
+
+	GivePVarInt(playerid, "Deaths", 1);
+	GivePVarInt(killerid, "Kills", 1);
 
 	new stolencash = (GetPlayerMoney(playerid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
 	if (stolencash > 0) {

@@ -131,9 +131,8 @@ stock pl_spawn_OnPlayerRequestClass(playerid, classid)
 	return 1;
 }
 
-stock pl_spawn_OnPlayerDeath(playerid, killerid, reason)
+stock UpdatePlayerSpawnInfo(playerid)
 {
-	#pragma unused killerid, reason
 	pl_spawn_SaveDeathInfo(playerid);
 	player_SetCoord(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
 	
