@@ -101,7 +101,6 @@ stock player_OnPlayerConnect(playerid)
 
 stock player_OnPlayerDeath(playerid, killerid, reason)
 {
-	#pragma unused reason
 	UpdatePlayerSpawnInfo(playerid);
 
 	if (killerid == INVALID_PLAYER_ID) {
