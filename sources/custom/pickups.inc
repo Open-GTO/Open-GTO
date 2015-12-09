@@ -4,6 +4,40 @@
 
 */
 
+
+/*
+	Custom_OnPlayerPickUpGP(playerid, pickupid, gpickupid, model)
+ */
+
+Custom_OnPlayerPickUpGP(playerid, pickupid, gpickupid, model)
+{
+	#pragma unused gpickupid, pickupid
+
+	switch (model) {
+		case 1240: {
+			SetPlayerHealth(playerid, 100.0);
+		}
+		case 371: {
+			GivePlayerWeapon(playerid, 46, 1);
+		}
+		case 1242: {
+			SetPlayerArmour(playerid, 100.0);
+		}
+		default: {
+			return 0;
+		}
+	}
+
+	PlayerPlaySoundOnPlayer(playerid, 1150);
+	return 1;
+}
+
+/*
+	Custom_OnGameModeInit()
+ */
+
+Custom_OnGameModeInit()
+{
 	// armour
 	GPickup_Create(1242, -2511.776367, 776.052978, 35.1719, 0);
 	GPickup_Create(1242, 2770.699462, 598.954406, 5.432977, 0);
@@ -91,3 +125,6 @@
 	GPickup_Create(1240, -1514.7905, 2523.2778, 55.8166, 0);
 	GPickup_Create(1240, -315.2769, 1050.2379, 20.3403, 0);
 	GPickup_Create(1240, 1607.2784, 1817.3463, 10.8203, 0);
+
+	return 1;
+}

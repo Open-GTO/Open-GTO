@@ -8,7 +8,7 @@
 
 	Useful functions:
 		GPickup_Create(model, Float:x, Float:y, Float:z, world = -1,
-			respawn_time = GPICKUP_RESPAWN_TIME, bool:default_action = true, bool:is_showed = true)
+		               respawn_time = GPICKUP_RESPAWN_TIME, bool:is_showed = true)
 		GPickup_Remove(id)
 		GPickup_IsExist(id)
 		GPickup_IsHidden(id)
@@ -29,21 +29,36 @@
 
 */
 
-#if !defined _FOREACH_LOCAL_VERSION
-	#error "Please include foreach before pickup"
+#if !defined _samp_included
+	#error "Please include a_samp or a_npc before gpickup"
 #endif
 
-#if defined _core_pickup_included
+#if !defined _FOREACH_LOCAL_VERSION
+	#error "Please include foreach before gpickup"
+#endif
+
+#if defined _global_pickup_included
 	#endinput
 #endif
 
-#define _core_pickup_included
-#pragma library core_pickup
+#define _global_pickup_included
+#pragma library global_pickup
 
+/*
+
+	Defines
+
+*/
 
 #if !defined GPICKUP_RESPAWN_TIME
 	#define GPICKUP_RESPAWN_TIME 10
 #endif
+
+#if !defined MAX_GLOBAL_PICKUPS
+	#define MAX_GLOBAL_PICKUPS MAX_PICKUPS
+#endif
+
+#define INVALID_PICKUP_ID -1
 
 /*
 
@@ -58,8 +73,6 @@ enum e_GPickup_Info {
 	Float:e_gpPosZ,
 	e_gpWorld,
 	e_gpRespawnTime,
-	bool:e_gpDefaultAction,
-
 	e_gpID,
 	e_gpTime,
 };
@@ -71,8 +84,10 @@ enum e_GPickup_Info {
 */
 
 static
-	gPickups[MAX_PICKUPS][e_GPickup_Info],
-	Iterator:HiddenPickups<MAX_PICKUPS>;
+	gPickups[MAX_GLOBAL_PICKUPS][e_GPickup_Info],
+	Iterator:HiddenPickups<MAX_GLOBAL_PICKUPS>;
+
+forward OnPlayerPickUpGlobalPickup(playerid, pickupid, gpickupid, model);
 
 /*
 	OnPlayerPickUpPickup(playerid, pickupid) hook
@@ -81,39 +96,21 @@ static
 public OnPlayerPickUpPickup(playerid, pickupid)
 {
 	// find in array
-	new id = -1;
+	new id = INVALID_PICKUP_ID;
 
 	for (new i = 0; i < sizeof(gPickups); i++) {
-		if (pickupid == gPickups[i][e_gpID]) {
+		if (pickupid == GPickup_GetID(i)) {
 			id = i;
 			break;
 		}
 	}
 
-	if (id == -1) {
+	if (id == INVALID_PICKUP_ID) {
 		return 0;
 	}
 	
-	// default action
-	if (gPickups[id][e_gpDefaultAction]) {
-		switch (gPickups[id][e_gpModel]) {
-			// armour
-			case 1242: {
-				SetPlayerArmour(playerid, 100);
-			}
-			// parachute
-			case 371: {
-				GivePlayerWeapon(playerid, 46, 1);
-			}
-			// health
-			case 1240: {
-				SetPlayerHealth(playerid, 100.0);
-			}
-		}
-	}
-
-	// other action
-	PlayerPlaySoundOnPlayer(playerid, 1150);
+	// callback
+	CallRemoteFunction("OnPlayerPickUpGlobalPickup", "iiii", playerid, pickupid, id, GPickup_GetModel(id));
 
 	// hide pickup
 	new respawn_time = GPickup_GetRespawnTime(id);
@@ -169,7 +166,7 @@ public GPickup_Update()
 public OnGameModeInit()
 {
 	for (new i = 0; i < sizeof(gPickups); i++) {
-		gPickups[i][e_gpID] = -1;
+		GPickup_SetID(i, INVALID_PICKUP_ID);
 	}
 
 	SetTimer("GPickup_Update", 1000, 1);
@@ -198,21 +195,18 @@ public OnGameModeInit()
 */
 
 stock GPickup_Create(model, Float:x, Float:y, Float:z, world = -1,
-	respawn_time = GPICKUP_RESPAWN_TIME, bool:default_action = true, bool:is_showed = true)
+                     respawn_time = GPICKUP_RESPAWN_TIME, bool:is_showed = true)
 {
 	new id = GPickup_GetFreeId();
-	if (id == -1) {
-		Log_Debug("pickup.inc: Free slot not found. Increase MAX_PICKUPS value.");
-		return -1;
+	if (id == INVALID_PICKUP_ID) {
+		printf("gpickup.inc: Free slot not found. Increase MAX_GLOBAL_PICKUPS value.");
+		return INVALID_PICKUP_ID;
 	}
 
-	gPickups[id][e_gpModel] = model;
-	gPickups[id][e_gpPosX] = x;
-	gPickups[id][e_gpPosY] = y;
-	gPickups[id][e_gpPosZ] = z;
-	gPickups[id][e_gpWorld] = world;
-	gPickups[id][e_gpRespawnTime] = respawn_time;
-	gPickups[id][e_gpDefaultAction] = default_action;
+	GPickup_SetModel(id, model);
+	GPickup_SetPos(id, x, y, z);
+	GPickup_SetWorld(id, world);
+	GPickup_SetRespawnTime(id, respawn_time);
 
 	if (is_showed) {
 		GPickup_Show(id);
@@ -224,20 +218,19 @@ stock GPickup_Create(model, Float:x, Float:y, Float:z, world = -1,
 
 stock GPickup_Remove(id)
 {
-	gPickups[id][e_gpModel] = 0;
-
+	GPickup_SetModel(id, 0);
 	GPickup_Hide(id);
 }
 
 stock GPickup_IsExist(id)
 {
-	return gPickups[id][e_gpModel] != 0;
+	return GPickup_GetModel(id) != 0;
 }
 
 // time
 stock GPickup_IsHidden(id)
 {
-	return gPickups[id][e_gpTime] != -1;
+	return GPickup_GetTime(id) != -1;
 }
 
 stock GPickup_GetTime(id)
@@ -294,17 +287,6 @@ stock GPickup_SetWorld(id, world)
 	gPickups[id][e_gpWorld] = world;
 }
 
-// default action
-stock GPickup_IsDefaultAction(id)
-{
-	return gPickups[id][e_gpDefaultAction];
-}
-
-stock GPickup_SetDefaultAction(id, bool:action_state)
-{
-	gPickups[id][e_gpDefaultAction] = action_state;
-}
-
 // pos
 stock GPickup_GetPos(id, &Float:x, &Float:y, &Float:z)
 {
@@ -328,18 +310,20 @@ stock GPickup_SetPos(id, Float:x, Float:y, Float:z)
 
 static stock GPickup_Show(id)
 {
-	gPickups[id][e_gpID] = CreatePickup(gPickups[id][e_gpModel], 1,
-		gPickups[id][e_gpPosX], gPickups[id][e_gpPosY], gPickups[id][e_gpPosZ],
-		gPickups[id][e_gpWorld]);
-	
-	gPickups[id][e_gpTime] = -1;
+	new realid = CreatePickup(gPickups[id][e_gpModel], 1,
+	                          gPickups[id][e_gpPosX], gPickups[id][e_gpPosY], gPickups[id][e_gpPosZ],
+	                          gPickups[id][e_gpWorld]);
+
+	GPickup_SetID(id, realid);
+	GPickup_SetTime(id, -1);
 }
 
 static stock GPickup_Hide(id)
 {
 	DestroyPickup(gPickups[id][e_gpID]);
-	gPickups[id][e_gpID] = -1;
-	gPickups[id][e_gpTime] = gettime();
+
+	GPickup_SetID(id, INVALID_PICKUP_ID);
+	GPickup_SetTime(id, gettime());
 }
 
 static stock GPickup_GetFreeId()
@@ -350,5 +334,5 @@ static stock GPickup_GetFreeId()
 		}
 	}
 
-	return -1;
+	return INVALID_PICKUP_ID;
 }

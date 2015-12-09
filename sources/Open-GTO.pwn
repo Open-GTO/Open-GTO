@@ -106,6 +106,7 @@ Thanks:
 #include "player/message/message_objective"
 #include "player/player"
 #include "custom/ls_beachside"
+#include "custom/pickups"
 #include "system/weapons"
 #include "core/zones"
 #include "system/world"
@@ -225,7 +226,10 @@ public OnGameModeInit()
 	pl_money_td_OnGameModeInit();
 	pl_level_OnGameModeInit();
 	widestrip_OnGameModeInit();
+
+	// custom
 	Beachside_OnGameModeInit();
+	Custom_OnGameModeInit();
 
 	// missions
 	trucker_OnGameModeInit();
@@ -286,7 +290,6 @@ public OnGameModeInit()
 
 	#tryinclude "custom/mapicon"
 	#tryinclude "custom/objects"
-	#tryinclude "custom/pickups"
 	Log_Game("SERVER: Custom mapicons, objects and pickups init");
 
 	Time_Sync();
@@ -364,6 +367,14 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 		return 1;
 	}
 	if (Interior_OnPlayerPickUpPickup(playerid, pickupid)) {
+		return 1;
+	}
+	return 1;
+}
+
+public OnPlayerPickUpGlobalPickup(playerid, pickupid, gpickupid, model)
+{
+	if (Custom_OnPlayerPickUpGP(playerid, pickupid, gpickupid, model)) {
 		return 1;
 	}
 	return 1;
