@@ -524,6 +524,8 @@ stock trucker_Stop(playerid)
 	DestroyDynamicCP(player_checkpoint[playerid]);
 	DestroyDynamicMapIcon(player_mapicon[playerid]);
 
+	player_trucker[playerid][pt_BackCarTime] = 0;
+
 	player_ResetQuest(playerid);
 
 	new vehicleid = GetPlayerVehicleID(playerid);
