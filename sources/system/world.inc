@@ -62,7 +62,6 @@ public OneSecTimer()
 		adm_spec_UpdateLabel(playerid);
 	}
 	
-	GPickup_Update();
 	CheckDM();
 	CheckRace();
 }

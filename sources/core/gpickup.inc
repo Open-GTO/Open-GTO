@@ -4,15 +4,7 @@
 	Author: ziggi
 	
 	Instalation:
-		Include this file after a_samp.inc
-
-		Add GPickup_OnPlayerPickUpPickup(playerid, pickupid) into you OnPlayerPickUpPickup callback
-		Like this:
-			if (GPickup_OnPlayerPickUpPickup(playerid, pickupid)) {
-				return 1;
-			}
-
-		Add GPickup_Update() into you one second timer
+		Include this file after a_samp.inc and foreach.inc
 
 	Useful functions:
 		GPickup_Create(model, Float:x, Float:y, Float:z, world = -1,
@@ -49,6 +41,10 @@
 #pragma library core_pickup
 
 
+#if !defined GPICKUP_RESPAWN_TIME
+	#define GPICKUP_RESPAWN_TIME 10
+#endif
+
 /*
 
 	Enums
@@ -56,16 +52,16 @@
 */
 
 enum e_GPickup_Info {
-	pickup_model,
-	Float:pickup_x,
-	Float:pickup_y,
-	Float:pickup_z,
-	pickup_world,
-	pickup_respawntime,
-	bool:pickup_defaultaction,
+	e_gpModel,
+	Float:e_gpPosX,
+	Float:e_gpPosY,
+	Float:e_gpPosZ,
+	e_gpWorld,
+	e_gpRespawnTime,
+	bool:e_gpDefaultAction,
 
-	pickup_id,
-	pickup_time,
+	e_gpID,
+	e_gpTime,
 };
 
 /*
@@ -75,28 +71,20 @@ enum e_GPickup_Info {
 */
 
 static
-	pickups_array[MAX_PICKUPS][e_GPickup_Info],
+	gPickups[MAX_PICKUPS][e_GPickup_Info],
 	Iterator:HiddenPickups<MAX_PICKUPS>;
 
 /*
-	GPickup_OnPlayerPickUpPickup(playerid, pickupid)
-
-	Usage:
-		Add GPickup_OnPlayerPickUpPickup(playerid, pickupid) into you OnPlayerPickUpPickup callback
-		Like this:
-			if (GPickup_OnPlayerPickUpPickup(playerid, pickupid)) {
-				return 1;
-			}
-
+	OnPlayerPickUpPickup(playerid, pickupid) hook
 */
 
-GPickup_OnPlayerPickUpPickup(playerid, pickupid)
+public OnPlayerPickUpPickup(playerid, pickupid)
 {
 	// find in array
 	new id = -1;
 
-	for (new i = 0; i < sizeof(pickups_array); i++) {
-		if (pickupid == pickups_array[i][pickup_id]) {
+	for (new i = 0; i < sizeof(gPickups); i++) {
+		if (pickupid == gPickups[i][e_gpID]) {
 			id = i;
 			break;
 		}
@@ -107,8 +95,8 @@ GPickup_OnPlayerPickUpPickup(playerid, pickupid)
 	}
 	
 	// default action
-	if (pickups_array[id][pickup_defaultaction]) {
-		switch (pickups_array[id][pickup_model]) {
+	if (gPickups[id][e_gpDefaultAction]) {
+		switch (gPickups[id][e_gpModel]) {
 			// armour
 			case 1242: {
 				SetPlayerArmour(playerid, 100);
@@ -119,7 +107,7 @@ GPickup_OnPlayerPickUpPickup(playerid, pickupid)
 			}
 			// health
 			case 1240: {
-				SetPlayerMaxHealth(playerid);
+				SetPlayerHealth(playerid, 100.0);
 			}
 		}
 	}
@@ -135,18 +123,35 @@ GPickup_OnPlayerPickUpPickup(playerid, pickupid)
 	} else if (respawn_time == -1) {
 		GPickup_Remove(id);
 	}
-	return 1;
+
+	#if defined GPickup_OnPlayerPickUpPickup
+		return GPickup_OnPlayerPickUpPickup(playerid, pickupid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerPickUpPickup
+	#undef OnPlayerPickUpPickup
+#else
+	#define _ALS_OnPlayerPickUpPickup
+#endif
+ 
+#define OnPlayerPickUpPickup GPickup_OnPlayerPickUpPickup
+#if defined GPickup_OnPlayerPickUpPickup
+	forward GPickup_OnPlayerPickUpPickup(playerid, pickupid);
+#endif
 
 /*
-	GPickup_Update()
-
-	Usage:
-		Add GPickup_Update() into you one second timer
+	GPickup_Update() timer
 */
 
-GPickup_Update()
+forward GPickup_Update();
+public GPickup_Update()
 {
+	if (Iter_Count(HiddenPickups) == 0) {
+		return;
+	}
+
 	new time = gettime();
 
 	foreach (new id : HiddenPickups) {
@@ -163,9 +168,11 @@ GPickup_Update()
 
 public OnGameModeInit()
 {
-	for (new i = 0; i < sizeof(pickups_array); i++) {
-		pickups_array[i][pickup_id] = -1;
+	for (new i = 0; i < sizeof(gPickups); i++) {
+		gPickups[i][e_gpID] = -1;
 	}
+
+	SetTimer("GPickup_Update", 1000, 1);
 
 	#if defined GPickup_OnGameModeInit
 		return GPickup_OnGameModeInit();
@@ -199,13 +206,13 @@ stock GPickup_Create(model, Float:x, Float:y, Float:z, world = -1,
 		return -1;
 	}
 
-	pickups_array[id][pickup_model] = model;
-	pickups_array[id][pickup_x] = x;
-	pickups_array[id][pickup_y] = y;
-	pickups_array[id][pickup_z] = z;
-	pickups_array[id][pickup_world] = world;
-	pickups_array[id][pickup_respawntime] = respawn_time;
-	pickups_array[id][pickup_defaultaction] = default_action;
+	gPickups[id][e_gpModel] = model;
+	gPickups[id][e_gpPosX] = x;
+	gPickups[id][e_gpPosY] = y;
+	gPickups[id][e_gpPosZ] = z;
+	gPickups[id][e_gpWorld] = world;
+	gPickups[id][e_gpRespawnTime] = respawn_time;
+	gPickups[id][e_gpDefaultAction] = default_action;
 
 	if (is_showed) {
 		GPickup_Show(id);
@@ -217,100 +224,100 @@ stock GPickup_Create(model, Float:x, Float:y, Float:z, world = -1,
 
 stock GPickup_Remove(id)
 {
-	pickups_array[id][pickup_model] = 0;
+	gPickups[id][e_gpModel] = 0;
 
 	GPickup_Hide(id);
 }
 
 stock GPickup_IsExist(id)
 {
-	return pickups_array[id][pickup_model] != 0;
+	return gPickups[id][e_gpModel] != 0;
 }
 
 // time
 stock GPickup_IsHidden(id)
 {
-	return pickups_array[id][pickup_time] != -1;
+	return gPickups[id][e_gpTime] != -1;
 }
 
 stock GPickup_GetTime(id)
 {
-	return pickups_array[id][pickup_time];
+	return gPickups[id][e_gpTime];
 }
 
 stock GPickup_SetTime(id, time)
 {
-	pickups_array[id][pickup_time] = time;
+	gPickups[id][e_gpTime] = time;
 }
 
 // respawn time
 stock GPickup_GetRespawnTime(id)
 {
-	return pickups_array[id][pickup_respawntime];
+	return gPickups[id][e_gpRespawnTime];
 }
 
 stock GPickup_SetRespawnTime(id, time)
 {
-	pickups_array[id][pickup_respawntime] = time;
+	gPickups[id][e_gpRespawnTime] = time;
 }
 
 // id
 stock GPickup_GetID(id)
 {
-	return pickups_array[id][pickup_id];
+	return gPickups[id][e_gpID];
 }
 
 stock GPickup_SetID(id, pickupid)
 {
-	pickups_array[id][pickup_id] = pickupid;
+	gPickups[id][e_gpID] = pickupid;
 }
 
 // model
 stock GPickup_GetModel(id)
 {
-	return pickups_array[id][pickup_model];
+	return gPickups[id][e_gpModel];
 }
 
 stock GPickup_SetModel(id, model)
 {
-	pickups_array[id][pickup_model] = model;
+	gPickups[id][e_gpModel] = model;
 }
 
 // world
 stock GPickup_GetWorld(id)
 {
-	return pickups_array[id][pickup_world];
+	return gPickups[id][e_gpWorld];
 }
 
 stock GPickup_SetWorld(id, world)
 {
-	pickups_array[id][pickup_world] = world;
+	gPickups[id][e_gpWorld] = world;
 }
 
 // default action
 stock GPickup_IsDefaultAction(id)
 {
-	return pickups_array[id][pickup_defaultaction];
+	return gPickups[id][e_gpDefaultAction];
 }
 
 stock GPickup_SetDefaultAction(id, bool:action_state)
 {
-	pickups_array[id][pickup_defaultaction] = action_state;
+	gPickups[id][e_gpDefaultAction] = action_state;
 }
 
 // pos
 stock GPickup_GetPos(id, &Float:x, &Float:y, &Float:z)
 {
-	x = pickups_array[id][pickup_x];
-	y = pickups_array[id][pickup_y];
-	z = pickups_array[id][pickup_z];
+	x = gPickups[id][e_gpPosX];
+	y = gPickups[id][e_gpPosY];
+	z = gPickups[id][e_gpPosZ];
 }
 
 stock GPickup_SetPos(id, Float:x, Float:y, Float:z)
 {
-	pickups_array[id][pickup_x] = x;
-	pickups_array[id][pickup_y] = y;
-	pickups_array[id][pickup_z] = z;
+	gPickups[id][e_gpPosX] = x;
+	gPickups[id][e_gpPosY] = y;
+	gPickups[id][e_gpPosZ] = z;
 }
 
 /*
@@ -321,23 +328,23 @@ stock GPickup_SetPos(id, Float:x, Float:y, Float:z)
 
 static stock GPickup_Show(id)
 {
-	pickups_array[id][pickup_id] = CreatePickup(pickups_array[id][pickup_model], 1,
-		pickups_array[id][pickup_x], pickups_array[id][pickup_y], pickups_array[id][pickup_z],
-		pickups_array[id][pickup_world]);
+	gPickups[id][e_gpID] = CreatePickup(gPickups[id][e_gpModel], 1,
+		gPickups[id][e_gpPosX], gPickups[id][e_gpPosY], gPickups[id][e_gpPosZ],
+		gPickups[id][e_gpWorld]);
 	
-	pickups_array[id][pickup_time] = -1;
+	gPickups[id][e_gpTime] = -1;
 }
 
 static stock GPickup_Hide(id)
 {
-	DestroyPickup(pickups_array[id][pickup_id]);
-	pickups_array[id][pickup_id] = -1;
-	pickups_array[id][pickup_time] = gettime();
+	DestroyPickup(gPickups[id][e_gpID]);
+	gPickups[id][e_gpID] = -1;
+	gPickups[id][e_gpTime] = gettime();
 }
 
 static stock GPickup_GetFreeId()
 {
-	for (new i = 0; i < sizeof(pickups_array); i++) {
+	for (new i = 0; i < sizeof(gPickups); i++) {
 		if (!GPickup_IsExist(i)) {
 			return i;
 		}

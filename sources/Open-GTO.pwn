@@ -363,9 +363,6 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 	if (Premium_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
 	}
-	if (GPickup_OnPlayerPickUpPickup(playerid, pickupid)) {
-		return 1;
-	}
 	if (Interior_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
 	}
