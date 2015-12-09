@@ -177,20 +177,27 @@ stock GetCoordsBeforePlayer(playerid, Float:distance, &Float:x, &Float:y)
 
 stock GetVehicleCoordsBeforePlayer(&Float:x, &Float:y, &Float:z, &Float:a, playerid, modelid = -1)
 {
-	new Float:size[3];
+	new
+		Float:wide, Float:long, Float:high,
+		Float:wheel_x, Float:wheel_y, Float:wheel_z;
+
 	if (modelid != -1) {
-		GetVehicleModelInfo(modelid, VEHICLE_MODEL_INFO_SIZE, size[0], size[1], size[2]);
+		GetVehicleModelInfo(modelid, VEHICLE_MODEL_INFO_SIZE, wide, long, high);
+		GetVehicleModelInfo(modelid, VEHICLE_MODEL_INFO_WHEELSFRONT, wheel_x, wheel_y, wheel_z);
 	} else {
-		size[0] = 1.5;
-		size[2] = 1.0;
+		wide = 1.5;
+		high = 1.0;
 	}
 
 	GetPlayerPos(playerid, x, y, z);
 	GetPlayerFacingAngle(playerid, a);
 
-	GetCoordsBefore(x, y, a, size[0] + 0.5, x, y);
+	GetCoordsBefore(x, y, a, wide + 0.5, x, y);
 
-	z -= size[2] * 0.25;
+	z += 0.1;
+	if (wheel_z != 0.0) {
+		z -= high / 2 + wheel_z;
+	}
 
 	a += 90.0;
 	if (a > 360.0) {
