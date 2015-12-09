@@ -246,12 +246,13 @@ TextListResponse:tuning_menu(playerid, TextListType:response, itemid, itemvalue[
 	if (response == TextList_ListItem) {
 		new type_id = itemid - gInfo[playerid][e_tListOffset];
 
+		PlayerPlaySoundOnPlayer(playerid, 1083);
+
 		if (type_id >= 0) {
 			gInfo[playerid][e_tType] = gInfo[playerid][e_tListTypes][type_id];
 			gInfo[playerid][e_tComponent] = INVALID_COMPONENT_ID;
 			gInfo[playerid][e_tPrevComponent] = GetVehicleComponentInSlot(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tType]);
 
-			PlayerPlaySoundOnPlayer(playerid, 1083);
 			Tuning_UpdateCamera(playerid, gInfo[playerid][e_tType]);
 
 			TextList_Show(playerid, TextList:component_list);
@@ -270,6 +271,8 @@ TextListResponse:tuning_menu(playerid, TextListType:response, itemid, itemvalue[
 		}
 	} else if (response == TextList_Button1 || response == TextList_Cancel) {
 		Tuning_Stop(playerid);
+
+		PlayerPlaySoundOnPlayer(playerid, 1084);
 	}
 	return 1;
 }
