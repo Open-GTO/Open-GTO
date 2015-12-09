@@ -137,7 +137,7 @@ Thanks:
 #include "missions/trucker"
 #include "missions/swagup"
 #include "system/click"
-#include "system/interior"
+#include "system/enterexit"
 #include "services/bank"
 #include "services/fastfood"
 #include "services/bar"
@@ -218,7 +218,7 @@ public OnGameModeInit()
 	groundhold_OnGameModeInit();
 	business_OnGameModeInit();
 	housing_OnGameModeInit();
-	Interior_OnGameModeInit();
+	Enterexit_OnGameModeInit();
 	weapon_OnGameModeInit();
 	Premium_OnGameModeInit();
 	pl_weapon_OnGameModeInit();
@@ -323,7 +323,7 @@ public OnPlayerConnect(playerid)
 	pl_weapon_OnPlayerConnect(playerid);
 	pl_money_td_OnPlayerConnect(playerid);
 	veh_fuel_OnPlayerConnect(playerid);
-	Interior_OnPlayerConnect(playerid);
+	Enterexit_OnPlayerConnect(playerid);
 	Spectate_OnPlayerConnect(playerid);
 	Beachside_OnPlayerConnect(playerid);
 	Tuning_OnPlayerConnect(playerid);
@@ -363,7 +363,7 @@ public OnPlayerPickUpPickup(playerid, pickupid)
 	if (Premium_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
 	}
-	if (Interior_OnPlayerPickUpPickup(playerid, pickupid)) {
+	if (Enterexit_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
 	}
 	return 1;
@@ -563,7 +563,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	}
 
 	if (PRESSED(KEY_USING)) {
-		if (Interior_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+		if (Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)) {
 			return 1;
 		}
 

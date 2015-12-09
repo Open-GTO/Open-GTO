@@ -89,7 +89,7 @@ stock player_SaveEx(playerid)
 	}
 
 	ini_setInteger(file_player, "FightStyleUsed", pl_fights_GetPlayerStyleUsed(playerid));
-	ini_setInteger(file_player, "InteriorIndex", Interior_GetPlayerIndex(playerid));
+	ini_setInteger(file_player, "InteriorIndex", Enterexit_GetPlayerIndex(playerid));
 
 	new interior, world, Float:pos[4];
 	player_GetCoord(playerid, pos[0], pos[1], pos[2], pos[3], interior, world);
@@ -176,7 +176,7 @@ stock player_Login(playerid)
 		pl_fights_SetPlayerStyleUsed(playerid, buf);
 
 		ini_getInteger(file_player, "InteriorIndex", buf);
-		Interior_SetPlayerIndex(playerid, buf);
+		Enterexit_SetPlayerIndex(playerid, buf);
 
 		ini_getInteger(file_player, "Interior", buf);
 		SetPVarInt(playerid, "Interior", buf);
