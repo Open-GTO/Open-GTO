@@ -909,25 +909,6 @@ COMMAND:sys(playerid, params[])
 	return 1;
 }
 
-COMMAND:repair(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-	
-	new veh_id = GetPlayerVehicleID(playerid);
-	if (veh_id == 0) {
-		return 1;
-	}
-
-	RepairVehicle(veh_id);
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][10], veh_id);
-	SendClientMessage(playerid, COLOR_WHITE, string);
-	return 1;
-}
-
 COMMAND:an(playerid, params[])
 {
 	if (!IsPlayerRconAdmin(playerid)) {
@@ -1671,6 +1652,11 @@ COMMAND:vehicle(playerid, params[])
 			SendMessageToBesidePlayers(string, 40.0, x, y, z);
 		}
 	} else if (strcmp(subcmd, "info", true) == 0) {
+		if (!IsPlayerMod(playerid)) {
+			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			return 1;
+		}
+
 		new vehicleid;
 
 		if (sscanf(subparams, "I(0)", vehicleid)) {
@@ -1700,7 +1686,7 @@ COMMAND:vehicle(playerid, params[])
 		GetVehicleZAngle(vehicleid, angle);
 		GetVehicleHealth(vehicleid, health);
 		model = GetVehicleModel(vehicleid);
-		GetVehicleModelName(vehicleid, name)
+		GetVehicleModelName(vehicleid, name);
 
 		// print
 		new string[MAX_LANG_VALUE_STRING];

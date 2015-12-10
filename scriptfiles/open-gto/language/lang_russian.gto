@@ -497,7 +497,7 @@
 2: R: '/ssay <text>', '/an <тип(0-6)> <текст>', '/setlvl <ID> <уровень>', '/setstatus <ID> <статус> (0, 1, 2, 3)'
 3: R: '/disarm <ID>', '/disarmall', '/skydiveall', '/paralyzeall', '/deparalyzeall', '/remcash <ID>', '/remcashall'
 4: R: '/payday', '/allowport <ID>', '/setskin <ID> <IDskin>'
-5: R: '/carinfo', '/boom <тип>'
+5: R: '/boom <тип>'
 6: S: '/sys cmdlist', '/sys about', '/sys info', '/sys weather <param>', '/sys groundhold <param>', '/sys gmx', '/sys reloadlang'
 // mod_commands
 7: SERVER: %s has been muted by %s on %s minutes

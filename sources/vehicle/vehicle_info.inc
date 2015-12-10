@@ -240,7 +240,7 @@ stock GetVehicleModelName(model, name[], size = sizeof(name))
 		return 0;
 	}
 
-	strmid(name, Vehicles[model - 400][vehicle_name], 0, strlen(Vehicles[model - 400][vehicle_name]));
+	strmid(name, Vehicles[model - 400][vehicle_name], 0, strlen(Vehicles[model - 400][vehicle_name]), size);
 	return 1;
 }
 
