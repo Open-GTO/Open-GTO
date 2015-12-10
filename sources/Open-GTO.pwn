@@ -57,7 +57,7 @@ Thanks:
 #include "lib/skinselect/skinselect"
 #include "lib/GarageBlock"
 #include "lib/gpickup/gpickup"
-#include "lib/gtolib"
+#include "lib/gtolib/gtolib"
 #include "core/redefine"
 #include "core/db"
 #include "core/core_time"

@@ -31,3 +31,6 @@
 [submodule "sources/lib/gpickup"]
 	path = sources/lib/gpickup
 	url = https://github.com/Open-GTO/gpickup.git
+[submodule "sources/lib/gtolib"]
+	path = sources/lib/gtolib
+	url = https://github.com/Open-GTO/gtolib.git
