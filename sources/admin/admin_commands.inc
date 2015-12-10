@@ -1378,27 +1378,6 @@ COMMAND:setvip(playerid, params[])
 	return 1;
 }
 
-COMMAND:underwater(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	new veh_id = GetPlayerVehicleID(playerid);
-	if (veh_id != 0) {
-		SetVehiclePos(veh_id, -2888.677978, 1423.499023, -36.533981);
-		SetVehicleZAngle(veh_id, 244.428359);
-		LinkVehicleToInterior(veh_id, 0);
-	} else {
-		SetPlayerPos(playerid, -2888.677978, 1423.499023, -36.533981);
-		SetPlayerFacingAngle(playerid, 244.428359);
-	}
-
-	SetPlayerInterior(playerid, 0); 
-	SendClientMessage(playerid, 0x0000FFAA, lang_texts[12][23]);
-	return 1;
-}
-
 COMMAND:plist(playerid, params[])
 {
 	if (!IsPlayerMod(playerid)) {
@@ -1432,46 +1411,6 @@ COMMAND:plist(playerid, params[])
 
 	if (count == 0) {
 		SendClientMessage(playerid, COLOR_XP_GOOD, _(ADMIN_PLIST_NO_PLAYERS));
-	}
-	return 1;
-}
-
-COMMAND:remcar(playerid, params[])
-{
-	if (!IsPlayerMod(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 1;
-	}
-
-	new idx;
-	new receiverid = strval(strcharsplit(params, idx, ' '));
-
-	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
-		return 1;
-	}
-
-	if (IsPlayerRconAdmin(receiverid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 1;
-	}
-
-	new string[MAX_STRING];
-	if (IsPlayerInAnyVehicle(receiverid)) {
-		RemovePlayerFromVehicle(receiverid);
-
-		format(string, sizeof(string), lang_texts[12][64], ReturnPlayerName(receiverid), receiverid);
-		SendClientMessage(playerid, COLOR_XP_GOOD, string);
-
-		format(string, sizeof(string), lang_texts[12][65], ReturnPlayerName(playerid));
-		SendClientMessage(receiverid, COLOR_XP_GOOD, string);
-	} else {
-		format(string, sizeof(string), lang_texts[12][73], ReturnPlayerName(receiverid), receiverid);
-		SendClientMessage(playerid, COLOR_RED, string);
 	}
 	return 1;
 }
@@ -1511,40 +1450,6 @@ COMMAND:kick(playerid, params[])
 	} else {
 		KickPlayer(receiverid);
 	}
-	return 1;
-}
-
-COMMAND:carresp(playerid, params[])
-{
-	if (!IsPlayerMod(playerid)) {
-		return 0;
-	}
-
-	new vehicleid = GetPlayerVehicleID(playerid);
-	if (vehicleid == 0) {
-		SendClientMessage(playerid, -1, "{FF2211}[Ошибка]: {FFFFFF}/carresp: нужно быть в транспорте, чтобы использовать эту команду");
-		return 1;
-	}
-
-	SetVehicleToRespawn(vehicleid);
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[13][10], vehicleid);
-	SendClientMessage(playerid, COLOR_WHITE, string);
-	return 1;
-}
-
-COMMAND:carrespall(playerid, params[])
-{
-	if (!IsPlayerMod(playerid)) {
-		return 0;
-	}
-
-	for (new vehid = 1; vehid <= MAX_VEHICLES; vehid++) {
-		SetVehicleToRespawn(vehid);
-	}
-
-	SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][11]);
 	return 1;
 }
 
