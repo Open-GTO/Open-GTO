@@ -179,17 +179,17 @@ stock CreateVehicleDbString(playerid, slot)
 
 stock SetVehicleFromDbString(playerid, slot, dbstring[])
 {
-	new idx = 0;
-	PlayerVehicle[playerid][slot][pv_Model] = strval( strcharsplit(dbstring, idx, '/') );
-	PlayerVehicle[playerid][slot][pv_Color][0] = strval( strcharsplit(dbstring, idx, '/') );
-	PlayerVehicle[playerid][slot][pv_Color][1] = strval( strcharsplit(dbstring, idx, '/') );
-	PlayerVehicle[playerid][slot][pv_Fuel] = floatstr( strcharsplit(dbstring, idx, '/') );
-	PlayerVehicle[playerid][slot][pv_Lock] = strval( strcharsplit(dbstring, idx, '/') );
-	PlayerVehicle[playerid][slot][pv_Paintjob] = strval( strcharsplit(dbstring, idx, '/') );
-	
-	for (new i = 0; i < VEHICLES_COMPONENTS; i++) {
-		PlayerVehicle[playerid][slot][pv_Component][i] = strval( strcharsplit(dbstring, idx, '/') );
+	if (sscanf(dbstring, "p</>ii[2]fiii[" #VEHICLES_COMPONENTS "]",
+		    PlayerVehicle[playerid][slot][pv_Model],
+		    PlayerVehicle[playerid][slot][pv_Color],
+		    PlayerVehicle[playerid][slot][pv_Fuel],
+		    PlayerVehicle[playerid][slot][pv_Lock],
+		    PlayerVehicle[playerid][slot][pv_Paintjob],
+		    PlayerVehicle[playerid][slot][pv_Component])
+		) {
+		return 0;
 	}
+
 	return 1;
 }
 
