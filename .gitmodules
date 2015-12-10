@@ -28,3 +28,6 @@
 [submodule "sources/lib/zvehcolor"]
 	path = sources/lib/zvehcolor
 	url = https://github.com/Open-GTO/zvehcolor.git
+[submodule "sources/lib/gpickup"]
+	path = sources/lib/gpickup
+	url = https://github.com/Open-GTO/gpickup.git
