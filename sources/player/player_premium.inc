@@ -46,11 +46,9 @@ stock Premium_GetPlayerStatus(playerid)
 
 stock Premium_GetDateStatus(date[])
 {
-	new
-		idx,
-		input_day = strval(strcharsplit(date, idx, '.')),
-		input_month = strval(strcharsplit(date, idx, '.')),
-		input_year = strval(strcharsplit(date, idx, '.'));
+	if (sscanf(date, "p<.>iii", input_day, input_month, input_year)) {
+		return 0;
+	}
 
 	if (getdate() <= date_to_timestamp(input_year, input_month, input_day)) {
 		return 1;
