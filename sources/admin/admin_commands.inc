@@ -909,28 +909,6 @@ COMMAND:sys(playerid, params[])
 	return 1;
 }
 
-COMMAND:carinfo(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	new veh_id = GetPlayerVehicleID(playerid);
-	if (veh_id == 0) {
-		return 1;
-	}
-
-	new Float:x, Float:y, Float:z, Float:a, Float:health;
-	GetVehiclePos(veh_id, x, y, z);
-	GetVehicleZAngle(veh_id, a);
-	GetVehicleHealth(veh_id, health);
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][9], GetVehicleName( GetVehicleModel(veh_id) ), veh_id, health, x, y, z, a);
-	SendClientMessage(playerid, COLOR_WHITE, string);
-	return 1;
-}
-
 COMMAND:repair(playerid, params[])
 {
 	if (!IsPlayerRconAdmin(playerid)) {
@@ -1692,6 +1670,46 @@ COMMAND:vehicle(playerid, params[])
 			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE), playername, vehicleid);
 			SendMessageToBesidePlayers(string, 40.0, x, y, z);
 		}
+	} else if (strcmp(subcmd, "info", true) == 0) {
+		new vehicleid;
+
+		if (sscanf(subparams, "I(0)", vehicleid)) {
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_VEHICLE_INFO_ERROR));
+			return 1;
+		}
+
+		if (vehicleid == 0) {
+			vehicleid = GetPlayerVehicleID(playerid);
+		}
+
+		if (!IsValidVehicle(vehicleid)) {
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_VEHICLE_INFO_ERROR));
+			return 1;
+		}
+
+		new
+			Float:x,
+			Float:y,
+			Float:z,
+			Float:angle,
+			Float:health,
+			model,
+			name[MAX_NAME];
+
+		GetVehiclePos(vehicleid, x, y, z);
+		GetVehicleZAngle(vehicleid, angle);
+		GetVehicleHealth(vehicleid, health);
+		model = GetVehicleModel(vehicleid);
+		GetVehicleModelName(vehicleid, name)
+
+		// print
+		new string[MAX_LANG_VALUE_STRING];
+
+		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_0), vehicleid, name, model);
+		SendClientMessage(playerid, -1, string);
+
+		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1), health, x, y, z, angle);
+		SendClientMessage(playerid, -1, string);
 	}
 
 	return 1;

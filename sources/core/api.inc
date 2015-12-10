@@ -23,10 +23,10 @@ public api_GivePlayerMoney(playerid, amount, showtext)
 	return GivePlayerMoney(playerid, amount, showtext);
 }
 
-forward api_GetMaxVehicleFuel(vehiclemodel);
-public api_GetMaxVehicleFuel(vehiclemodel)
+forward api_GetMaxVehicleModelFuel(vehiclemodel);
+public api_GetMaxVehicleModelFuel(vehiclemodel)
 {
-	return GetMaxVehicleFuel(vehiclemodel);
+	return GetMaxVehicleModelFuel(vehiclemodel);
 }
 
 forward api_SetPlayerHealth(playerid, Float:amount);

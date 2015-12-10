@@ -234,7 +234,17 @@ new Vehicles[][Vehicle_Info] = {
 	{"UtilityTrailer",  160,    0,     0,    0}
 };
 
-stock GetVehicleName(vehiclemodel)
+stock GetVehicleModelName(model, name[], size = sizeof(name))
+{
+	if (model >= 400 && model <= 611) {
+		return 0;
+	}
+
+	strmid(name, Vehicles[model - 400][vehicle_name], 0, strlen(Vehicles[model - 400][vehicle_name]));
+	return 1;
+}
+
+stock ReturnVehicleModelName(vehiclemodel)
 {
 	new veh_name[MAX_NAME];
 
@@ -245,7 +255,7 @@ stock GetVehicleName(vehiclemodel)
 	return veh_name;
 }
 
-stock GetVehicleCost(vehiclemodel)
+stock GetVehicleModelCost(vehiclemodel)
 {
 	if (vehiclemodel < 400 || vehiclemodel > 611) {
 		return 0;
@@ -253,7 +263,7 @@ stock GetVehicleCost(vehiclemodel)
 	return Vehicles[vehiclemodel - 400][vehicle_cost];
 }
 
-stock GetMaxVehicleFuel(vehiclemodel)
+stock GetMaxVehicleModelFuel(vehiclemodel)
 {
 	if (vehiclemodel < 400 || vehiclemodel > 611) {
 		return 0;
@@ -261,7 +271,7 @@ stock GetMaxVehicleFuel(vehiclemodel)
 	return Vehicles[vehiclemodel - 400][vehicle_fuel];
 }
 
-stock GetMaxVehicleSpeed(vehiclemodel)
+stock GetMaxVehicleModelSpeed(vehiclemodel)
 {
 	if (vehiclemodel < 400 || vehiclemodel > 611) {
 		return 0;

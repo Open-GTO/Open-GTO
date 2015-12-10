@@ -258,7 +258,7 @@ stock ChangePlayerVehicleColor(playerid, vehicleid, color1, color2)
 
 stock GetPlayerVehicleCostBySlot(playerid, slot)
 {
-	return GetVehicleCost( PlayerVehicle[playerid][slot][pv_Model] );
+	return GetVehicleModelCost( PlayerVehicle[playerid][slot][pv_Model] );
 }
 
 stock GetPlayerVehicleModelBySlot(playerid, slot)

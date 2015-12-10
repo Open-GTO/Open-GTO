@@ -28,7 +28,7 @@ public Float:GetVehicleFuel(vehicleid)
 forward Float:SetVehicleFuel(vehicleid, Float:amount);
 public Float:SetVehicleFuel(vehicleid, Float:amount)
 {
-	new Float:max_fuel = float( GetMaxVehicleFuel( GetVehicleModel(vehicleid) ) );
+	new Float:max_fuel = float( GetMaxVehicleModelFuel( GetVehicleModel(vehicleid) ) );
 
 	if (amount == -1) {
 		amount = max_fuel / 2 + random(floatround( max_fuel / 2 ));
@@ -163,7 +163,7 @@ COMMAND:fill(playerid, params[])
 	
 	new vehiclemodel = GetVehicleModel(vehicleid);
 
-	new max_fuel = GetMaxVehicleFuel(vehiclemodel);
+	new max_fuel = GetMaxVehicleModelFuel(vehiclemodel);
 
 	if (max_fuel == 0) {
 		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_WITHOUT_FUEL_ENGINE));
@@ -219,7 +219,7 @@ public speed_Timer()
 		}
 		
 		vehiclemodel = GetVehicleModel(vehicleid);
-		if (GetMaxVehicleFuel(vehiclemodel) == 0) {
+		if (GetMaxVehicleModelFuel(vehiclemodel) == 0) {
 			continue;
 		}
 		
@@ -231,8 +231,8 @@ public speed_Timer()
 			Fuel[vehicleid] = 0.0;
 		}
 		
-		if (Fuel[vehicleid] > GetMaxVehicleFuel(vehiclemodel)) {
-			Fuel[vehicleid] = GetMaxVehicleFuel(vehiclemodel);
+		if (Fuel[vehicleid] > GetMaxVehicleModelFuel(vehiclemodel)) {
+			Fuel[vehicleid] = GetMaxVehicleModelFuel(vehiclemodel);
 		}
 		
 		speed_count = GetVehicleSpeed(vehicleid);
@@ -267,7 +267,7 @@ public fill_Timer(playerid)
 	new vehicleid = GetPlayerVehicleID(playerid);
 	
 	Fuel[vehicleid] += VEHICLE_FUEL_SPEED;
-	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || Fuel[vehicleid] >= GetMaxVehicleFuel( GetVehicleModel(vehicleid) )) {
+	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || Fuel[vehicleid] >= GetMaxVehicleModelFuel( GetVehicleModel(vehicleid) )) {
 		new RefueledAmount = floatround( Fuel[vehicleid] - GetPVarFloat(playerid, "OldFuel") ) * VEHICLE_FUEL_TARIF;
 		GivePlayerMoney(playerid, -RefueledAmount);
 		

@@ -28,7 +28,7 @@ DialogCreate:PlayerVehicleMenu(playerid)
 
 	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
 		if (IsValidPlayerVehicleSlot(playerid, i)) {
-			format(string, sizeof(string), "%s%s\n", string, GetVehicleName(PlayerVehicle[playerid][i][pv_Model]));
+			format(string, sizeof(string), "%s%s\n", string, ReturnVehicleModelName(PlayerVehicle[playerid][i][pv_Model]));
 		}
 	}
 

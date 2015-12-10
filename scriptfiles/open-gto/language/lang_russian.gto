@@ -497,11 +497,11 @@
 2: R: '/ssay <text>', '/an <тип(0-6)> <текст>', '/setlvl <ID> <уровень>', '/setstatus <ID> <статус> (0, 1, 2, 3)'
 3: R: '/disarm <ID>', '/disarmall', '/skydiveall', '/paralyzeall', '/deparalyzeall', '/remcash <ID>', '/remcashall'
 4: R: '/payday', '/allowport <ID>', '/setskin <ID> <IDskin>'
-5: R: '/repair', '/carinfo', '/boom <тип>'
+5: R: '/carinfo', '/boom <тип>'
 6: S: '/sys cmdlist', '/sys about', '/sys info', '/sys weather <param>', '/sys groundhold <param>', '/sys gmx', '/sys reloadlang'
 // mod_commands
 7: SERVER: %s has been muted by %s on %s minutes
-8: M: '/carresp', '/carrespall', '/remcar <ID>', '/kick <ID>', /clearchat, /weather <ID>
+8: M: '/kick <ID>', /clearchat, /weather <ID>
 9: M: '/cmdlist', '/about', '/mute <ID> <Time>', '/unmute <ID>', '/jail <ID>', '/unjail <ID>', '/plist', '/spec <ID>'
 10: *** Транспорт (ИД %d) возвращен на свой спавн.
 11: *** Весь транспорт возвращен на свой спавн.

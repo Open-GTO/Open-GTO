@@ -754,7 +754,7 @@ stock SendPlayerAllowedRaceVehicles(playerid, raceid)
 			{
 				strins(string, ",", strlen(string));
 			}
-			strins(string, GetVehicleName( Race[raceid][race_vehicles][i] ), strlen(string));
+			strins(string, ReturnVehicleModelName( Race[raceid][race_vehicles][i] ), strlen(string));
 		}
 		SendClientMessage(playerid, COLOR_GREY, string);
 	}
@@ -767,7 +767,7 @@ stock SendPlayerAllowedRaceVehicles(playerid, raceid)
 			{
 				break;
 			}
-			SendClientMessage(playerid, COLOR_MISC, GetVehicleName( Race[raceid][race_vehicles][i] ));
+			SendClientMessage(playerid, COLOR_MISC, ReturnVehicleModelName( Race[raceid][race_vehicles][i] ));
 		}
 	}
 }
@@ -1130,7 +1130,7 @@ stock FinishRace(raceid, playerid)
 		GivePlayerXP(playerid, Race[raceid][race_xpprize], 1);
 		BestScore[raceid][race_score_time] = RaceStats[raceid][race_timer];
 		set(BestScore[raceid][race_score_player], ReturnPlayerName(playerid));
-		set(BestScore[raceid][race_score_vehicle], GetVehicleName( GetVehicleModel( GetPlayerVehicleID(playerid) ) ));
+		set(BestScore[raceid][race_score_vehicle], ReturnVehicleModelName( GetVehicleModel( GetPlayerVehicleID(playerid) ) ));
 	}
 
 	LeaveRace(raceid, playerid);

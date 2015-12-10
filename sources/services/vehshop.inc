@@ -121,7 +121,7 @@ DialogCreate:VehicleBuy(playerid)
 
 	format(string, sizeof(string),
 		"Вы хотите купить транспорт '%s' за $%d?",
-		GetVehicleName(model), GetVehicleCost(model)
+		ReturnVehicleModelName(model), GetVehicleModelCost(model)
 	);
 
 	Dialog_Open(playerid, Dialog:VehicleBuy, DIALOG_STYLE_MSGBOX, "Магазин транспорта", string, "Купить", "Выйти");
@@ -146,7 +146,7 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 	
 	GetVehicleColor(vehicleid, color1, color2);
 
-	new cost = GetVehicleCost( GetVehicleModel(vehicleid) );
+	new cost = GetVehicleModelCost( GetVehicleModel(vehicleid) );
 	
 	if (GetPlayerMoney(playerid) < cost) {
 		Dialog_Message(playerid, "Магазин транспорта", "У вас недостаточно денег", "ОК");
@@ -238,7 +238,7 @@ stock vshop_ChangeVehicles()
 		);
 		SetVehicleFuel(vehicles_array[i][vshop_ID], 0);
 		
-		format(string, sizeof(string), "{CCFF66}%s\n{CCCCCC}Цена: {FFFFFF}$%d\n{999999}Сядьте для покупки", GetVehicleName(model), GetVehicleCost(model));
+		format(string, sizeof(string), "{CCFF66}%s\n{CCCCCC}Цена: {FFFFFF}$%d\n{999999}Сядьте для покупки", ReturnVehicleModelName(model), GetVehicleModelCost(model));
 		vehicles_array[i][vshop_Text3D] = Create3DTextLabel(string, COLOR_WHITE, vehicles_array[i][vshop_X], vehicles_array[i][vshop_Y], vehicles_array[i][vshop_Z], 20.0, 0, 1);
 		Attach3DTextLabelToVehicle(vehicles_array[i][vshop_Text3D], vehicles_array[i][vshop_ID], 0.0, 0.0, 0.2);
 	}
@@ -258,7 +258,7 @@ stock vshop_OneHourTimer()
 stock buyVehicle(playerid, vehicleid, color1, color2)
 {
 	new model = GetVehicleModel(vehicleid);
-	AddPlayerVehicle(playerid, model, color1, color2, float(GetMaxVehicleFuel(model)));
+	AddPlayerVehicle(playerid, model, color1, color2, float(GetMaxVehicleModelFuel(model)));
 	return 1;
 }
 

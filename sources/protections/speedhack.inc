@@ -196,7 +196,7 @@ pt_speed_Sync(playerid)
 			}
 		}
 		case PLAYER_STATE_DRIVER: {
-			new max_speed = GetMaxVehicleSpeed( GetVehicleModel( GetPlayerVehicleID(playerid) ) );
+			new max_speed = GetMaxVehicleModelSpeed( GetVehicleModel( GetPlayerVehicleID(playerid) ) );
 			
 			if (player_speed > max_speed) {
 				switch ( floatround(player_speed, floatround_round) ) {

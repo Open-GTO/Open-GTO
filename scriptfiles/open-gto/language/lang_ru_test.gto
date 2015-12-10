@@ -209,9 +209,12 @@ ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%
 ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle respawn <id/all/>
 ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}заспавнил транспорт %d
 ADMIN_COMMAND_VEHICLE_RESPAWN_ALL_MSG = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}заспавнил весь транспорт
-ADMIN_COMMAND_VEHICLE_REPAIR_ERROR =  {FFCC66}[Применение]: {FFFFFF}/vehicle repair <id/all/>
+ADMIN_COMMAND_VEHICLE_REPAIR_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle repair <id/all/>
 ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}починил транспорт %d
 ADMIN_COMMAND_VEHICLE_REPAIR_ALL_MSG = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}починил весь транспорт
+ADMIN_COMMAND_VEHICLE_INFO_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle info <id/>
+ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_0 = {FFCC66}* {FFFFFF}ID транспорта: {FFCC66}%d{FFFFFF}, модель: {FFCC66}%s {FFFFFF}(%d)
+ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1 = {FFCC66}* {FFFFFF}Здоровье транспорта: {FFCC66}%f{FFFFFF}, координаты: {FFCC66}%f, %f, %f, %f
 
 ADMIN_COMMAND_CAMERA_HELP = {FFCC66}[Применение]: {FFFFFF}/camera <get/set/reset>
 ADMIN_COMMAND_CAMERA_GET_MESSAGE_CPOS = {FFCC66}CameraPos: {FFFFFF}%f, %f, %f
