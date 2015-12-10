@@ -308,8 +308,8 @@ stock housing_OnGameModeInit()
 
 	for (new id = 0; id < sizeof(Houses); id++)
 	{
-		CreatePickup(1273, 1, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.5);	//зеленый домик
-		CreatePickup(1559, 1, Houses[id][Houses_EnterX], Houses[id][Houses_EnterY], Houses[id][Houses_EnterZ]+0.5, id+1);
+		CreateDynamicPickup(1273, 1, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.5);	//зеленый домик
+		CreateDynamicPickup(1559, 1, Houses[id][Houses_EnterX], Houses[id][Houses_EnterY], Houses[id][Houses_EnterZ]+0.5, id+1);
 
 		if (strcmp(Houses[id][Houses_Owner], "Unknown")) {
 			icon_type = 32;
@@ -318,8 +318,10 @@ stock housing_OnGameModeInit()
 		}
 		house_icon[id] = CreateDynamicMapIcon(Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ], icon_type, 0);
 		
-		housing_Create3DTextLabelString(id, string);
-		House3DTextLabel[id] = Create3DTextLabel(string, COLOR_WHITE, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.75, HouseDistanceOfShowLabel, 0, 1);
+		housing_GetTextLabelString(id, string);
+		House3DTextLabel[id] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
+			Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.75,
+			HouseDistanceOfShowLabel, .testlos = 1);
 		
 		Houses[id][Houses_VirtualWorld] = id+1;
 	}
@@ -1018,13 +1020,13 @@ stock housing_Update3DTextLabelText()
 	new string[MAX_STRING * 2];
 	for (new id = 0; id < sizeof(Houses); id++)
 	{
-		housing_Create3DTextLabelString(id, string);
-		Update3DTextLabelText(House3DTextLabel[id], COLOR_WHITE, string);
+		housing_GetTextLabelString(id, string);
+		UpdateDynamic3DTextLabelText(House3DTextLabel[id], COLOR_WHITE, string);
 	}
 	return 1;
 }
 
-stock housing_Create3DTextLabelString(houseid, string[MAX_STRING * 2])
+stock housing_GetTextLabelString(houseid, string[MAX_STRING * 2])
 {
 	format(string, sizeof(string), lang_texts[8][5], Houses[houseid][Houses_Name], Houses[houseid][Houses_Cost]);
 	if (strcmp(Houses[houseid][Houses_Owner], "Unknown", false)) {

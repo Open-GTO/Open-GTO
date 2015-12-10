@@ -15,7 +15,7 @@
 
 #define ADMIN_SPEC_LABEL_COLOR 0x20B2AAFF
 
-static PlayerText3D:spec_label[MAX_PLAYERS];
+static Text3D:spec_label[MAX_PLAYERS];
 
 forward adm_spec_UpdateLabel(playerid);
 
@@ -61,25 +61,25 @@ stock adm_spec_CreateLabel(playerid, specid)
 	new string[MAX_LANG_VALUE_STRING * 5];
 	adm_spec_GetLabelString(playerid, specid, string);
 
-	spec_label[playerid] = CreatePlayer3DTextLabel(playerid, string, ADMIN_SPEC_LABEL_COLOR, 0.0, 0.0, 0.0, 20.0, specid);
+	spec_label[playerid] = CreateDynamic3DTextLabel(string, ADMIN_SPEC_LABEL_COLOR, 0.0, 0.0, 0.0, 20.0, .playerid = playerid, .attachedplayer = specid);
 }
 
 stock adm_spec_DestroyLabel(playerid)
 {
-	DeletePlayer3DTextLabel(playerid, spec_label[playerid]);
-	spec_label[playerid] = PlayerText3D:INVALID_3DTEXT_ID;
+	DestroyDynamic3DTextLabel(spec_label[playerid]);
+	spec_label[playerid] = Text3D:INVALID_3DTEXT_ID;
 }
 
 public adm_spec_UpdateLabel(playerid)
 {
-	if (!Spectate_IsSpectating(playerid) || spec_label[playerid] == PlayerText3D:INVALID_3DTEXT_ID) {
+	if (!Spectate_IsSpectating(playerid) || spec_label[playerid] == Text3D:INVALID_3DTEXT_ID) {
 		return 0;
 	}
 
 	new string[MAX_LANG_VALUE_STRING * 5];
 	adm_spec_GetLabelString(playerid, Spectate_GetSpecID(playerid), string);
 
-	UpdatePlayer3DTextLabelText(playerid, spec_label[playerid], ADMIN_SPEC_LABEL_COLOR, string);
+	UpdateDynamic3DTextLabelText(spec_label[playerid], ADMIN_SPEC_LABEL_COLOR, string);
 	return 1;
 }
 

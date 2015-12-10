@@ -226,7 +226,7 @@ stock vshop_ChangeVehicles()
 			DestroyVehicle(vehicles_array[i][vshop_ID]);
 			vehicles_array[i][vshop_ID] = 0;
 			
-			Delete3DTextLabel(vehicles_array[i][vshop_Text3D]);
+			DestroyDynamic3DTextLabel(vehicles_array[i][vshop_Text3D]);
 		}
 
 		type = vehicles_array[i][vshop_Type];
@@ -239,8 +239,9 @@ stock vshop_ChangeVehicles()
 		SetVehicleFuel(vehicles_array[i][vshop_ID], 0);
 		
 		format(string, sizeof(string), "{CCFF66}%s\n{CCCCCC}Цена: {FFFFFF}$%d\n{999999}Сядьте для покупки", ReturnVehicleModelName(model), GetVehicleModelCost(model));
-		vehicles_array[i][vshop_Text3D] = Create3DTextLabel(string, COLOR_WHITE, vehicles_array[i][vshop_X], vehicles_array[i][vshop_Y], vehicles_array[i][vshop_Z], 20.0, 0, 1);
-		Attach3DTextLabelToVehicle(vehicles_array[i][vshop_Text3D], vehicles_array[i][vshop_ID], 0.0, 0.0, 0.2);
+		vehicles_array[i][vshop_Text3D] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
+			vehicles_array[i][vshop_X], vehicles_array[i][vshop_Y], vehicles_array[i][vshop_Z], 20.0, 0,
+			.attachedvehicle = vehicles_array[i][vshop_ID], .testlos = 1);
 	}
 }
 

@@ -124,7 +124,7 @@ forward swagup_SpawnPickup();
 public swagup_SpawnPickup()
 {
 	new swid = random( sizeof(swagup_Coords) );
-	g_pickup_id = CreatePickup(410, 3, swagup_Coords[swid][Coord_X], swagup_Coords[swid][Coord_Y], swagup_Coords[swid][Coord_Z], -1);
+	g_pickup_id = CreateDynamicPickup(410, 3, swagup_Coords[swid][Coord_X], swagup_Coords[swid][Coord_Y], swagup_Coords[swid][Coord_Z], -1);
 	SendClientMessageToAll(COLOR_RED, _(SWAGUP_BAG_CREATED));
 	return 1;
 }

@@ -147,7 +147,7 @@ stock business_OnGameModeInit()
 	
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{
-		CreatePickup(1274, 49, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z], -1);
+		CreateDynamicPickup(1274, 49, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z], -1);
 		
 		if (Businesses[id][Business_ShowIcon] == 1)
 		{
@@ -159,9 +159,10 @@ stock business_OnGameModeInit()
 			business_icon[id] = CreateDynamicMapIcon(Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z], icon_type, 0);
 		}
 
-		business_Create3DTextLabelStr(id, string);
-
-		Business3DTextLabel[id] = Create3DTextLabel(string, COLOR_WHITE, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.75, BusinessDistanceOfShowLabel, 0, 1);
+		business_GetTextLabelString(id, string);
+		Business3DTextLabel[id] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
+			Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.75,
+			BusinessDistanceOfShowLabel, .testlos = 1);
 	}
 	Log_Game(lang_texts[3][0]);
 }
@@ -589,13 +590,13 @@ stock business_Update3DTextLabelText()
 	new string[MAX_STRING * 2];
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{
-		business_Create3DTextLabelStr(id, string);
-		Update3DTextLabelText(Business3DTextLabel[id], COLOR_WHITE, string);
+		business_GetTextLabelString(id, string);
+		UpdateDynamic3DTextLabelText(Business3DTextLabel[id], COLOR_WHITE, string);
 	}
 	return 1;
 }
 
-stock business_Create3DTextLabelStr(id, string[MAX_STRING * 2])
+stock business_GetTextLabelString(id, string[MAX_STRING * 2])
 {
 	format(string, sizeof(string), lang_texts[3][1], Businesses[id][Business_Name], Businesses[id][Business_Cost], Businesses[id][Business_Value], Businesses[id][Business_Level]);
 	if (strcmp(Businesses[id][Business_Owner], "Unknown", false)) {

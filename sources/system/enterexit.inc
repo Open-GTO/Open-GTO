@@ -272,12 +272,12 @@ Enterexit_OnGameModeInit()
 
 	for (i = 0; i < sizeof(gEnters); i++) {
 		// enter pos
-		gEnters[i][e_ie_pickup_id] = CreatePickup(19902, 1,
+		gEnters[i][e_ie_pickup_id] = CreateDynamicPickup(19902, 1,
 			gEnters[i][e_ie_pos_x], gEnters[i][e_ie_pos_y], gEnters[i][e_ie_pos_z] - 1.0
 		);
-		Create3DTextLabel("Вход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF,
+		CreateDynamic3DTextLabel("Вход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF,
 			gEnters[i][e_ie_pos_x], gEnters[i][e_ie_pos_y], gEnters[i][e_ie_pos_z],
-			20.0, 0, 1
+			20.0, .testlos = 1
 		);
 
 		if (gEnters[i][e_ie_icon_id] != -1) {
@@ -288,12 +288,12 @@ Enterexit_OnGameModeInit()
 		world = Enterexit_GetVirtualWorld(i);
 		type = Enterexit_GetType(i);
 
-		gEnters[i][e_ie_pickup_exit_id] = CreatePickup(19902, 1,
+		gEnters[i][e_ie_pickup_exit_id] = CreateDynamicPickup(19902, 1,
 			gTypes[type][e_ee_pos_x], gTypes[type][e_ee_pos_y], gTypes[type][e_ee_pos_z] - 1.0, world
 		);
-		Create3DTextLabel("Выход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF,
+		CreateDynamic3DTextLabel("Выход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF,
 			gTypes[type][e_ee_pos_x], gTypes[type][e_ee_pos_y], gTypes[type][e_ee_pos_z],
-			20.0, world, 1
+			20.0, .worldid = world, .testlos = 1
 		);
 
 		// callback

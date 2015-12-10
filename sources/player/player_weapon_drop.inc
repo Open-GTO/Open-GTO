@@ -94,7 +94,7 @@ stock wdrop_OnPlayerDeath(playerid)
 
 		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 
-		weapons_dropped[wd_slot][wd_pickupid] = CreatePickup(pickupmodel, 1, pos[0] + (random(5) - random(5)) / 2, pos[1] + (random(5) - random(5)) / 2, pos[2], -1);
+		weapons_dropped[wd_slot][wd_pickupid] = CreateDynamicPickup(pickupmodel, 1, pos[0] + (random(5) - random(5)) / 2, pos[1] + (random(5) - random(5)) / 2, pos[2], -1);
 		if (weapons_dropped[wd_slot][wd_pickupid] == -1) {
 			Log_Game(_(WEAPON_DROP_ERROR_LIMIT_IS_REACHED));
 			return 1;

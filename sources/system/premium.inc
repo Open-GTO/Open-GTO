@@ -27,8 +27,8 @@ stock Premium_OnGameModeInit()
 	
 	gate_ObjectID = CreateDynamicObject(8210, 227.178, 2001.188, 19.742, 0.0, 0.0, -180.000);
 	
-	gate_PickupID_Enter = CreatePickup(1239, 1, 247.4141, 2007.1927, 17.6406, -1);
-	gate_PickupID_Exit = CreatePickup(1239, 1, 247.1882,1995.4537,17.6406, -1);
+	gate_PickupID_Enter = CreateDynamicPickup(1239, 1, 247.4141, 2007.1927, 17.6406, -1);
+	gate_PickupID_Exit = CreateDynamicPickup(1239, 1, 247.1882,1995.4537,17.6406, -1);
 	return 1;
 }
 
