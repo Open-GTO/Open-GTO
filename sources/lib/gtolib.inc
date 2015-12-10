@@ -27,6 +27,14 @@
 
 */
 
+#if !defined MAX_STRING
+	#define MAX_STRING 128
+#endif
+
+#if !defined MAX_NAME
+	#define MAX_NAME 40
+#endif
+
 #define MODE_INFO_VERSION 1
 #define MODE_INFO_NAME    2
 

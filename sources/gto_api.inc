@@ -1,26 +1,20 @@
 /*
 	
-	Author: ziggi
 	About: api for using Open-GTO functions in FS
+	Author: ziggi
 
 */
 
-#if defined _gto_api_included
+#if defined _gtoapi_included
 	#endinput
 #endif
 
-#define _gto_api_included
-#pragma library gto_api
+#define _gtoapi_included
+#pragma library gtoapi
 
-// gto lib
-
-#define MAX_STRING  128
-#define MAX_NAME    40
-
-#define MODE_INFO_VERSION 1
-#define MODE_INFO_NAME    2
-
-// END: gto lib
+#if !defined _gtolib_included
+	#error "Please include gtolib before gtoapi"
+#endif
 
 stock gto_GivePlayerMoney(playerid, amount, showtext=0)
 {
