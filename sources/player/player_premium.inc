@@ -46,11 +46,13 @@ stock Premium_GetPlayerStatus(playerid)
 
 stock Premium_GetDateStatus(date[])
 {
-	if (sscanf(date, "p<.>iii", input_day, input_month, input_year)) {
+	new day, month, year;
+
+	if (sscanf(date, "p<.>iii", day, month, year)) {
 		return 0;
 	}
 
-	if (getdate() <= date_to_timestamp(input_year, input_month, input_day)) {
+	if (getdate() <= date_to_timestamp(year, month, day)) {
 		return 1;
 	}
 	
