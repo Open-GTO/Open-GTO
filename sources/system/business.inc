@@ -441,19 +441,19 @@ stock bis_Buy(playerid)
 	{
 		new string[MAX_STRING];
 		format(string, sizeof(string), _(BUSINESS_LEVEL_ERROR), Businesses[id][Business_Level]);
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_BACK));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
 		return 1;
 	}
 	new price = Businesses[id][Business_Cost] + Businesses[id][Business_Buyout];
 	if (GetPlayerMoney(playerid) < price)
 	{
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_NO_MONEY), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_BACK));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_NO_MONEY), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
 		return 1;
 	}
 	
 	if (!strcmp(Businesses[id][Business_Owner], playername, true))
 	{
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_YOU_BUSINESS), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_BACK));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_YOU_BUSINESS), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
 	}
 #if !defined BUY_ALL_BUSINESS
 	else if (strcmp(Businesses[id][Business_Owner], "Unknown", true))
@@ -488,7 +488,7 @@ stock bis_Buy(playerid)
 			Businesses[id][Business_Name],
 			Businesses[id][Business_Vault]
 		);
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_BACK));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
 		
 		Log_Game("player: %s(%d): bought the '%s' (business)", playername, playerid, Businesses[id][Business_Name]);
 	}
@@ -506,7 +506,7 @@ stock bis_Sell(playerid)
 	format(head, sizeof(head), _(BUSINESS_DIALOG_HEAD), Businesses[id][Business_Name]);
 	if (strcmp(Businesses[id][Business_Owner], ReturnPlayerName(playerid), true))
 	{
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_NOT_YOU), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_BACK));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_NOT_YOU), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
 	}
 	else
 	{
@@ -525,7 +525,7 @@ stock bis_Sell(playerid)
 			Businesses[id][Business_Name],
 			Businesses[id][Business_Vault]
 		);
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_BACK));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
 
 		Log_Game("player: %s(%d): sold the '%s' (business)", ReturnPlayerName(playerid), playerid, Businesses[id][Business_Name]);
 	}
@@ -543,7 +543,7 @@ stock bis_Collect(playerid)
 	format(head, sizeof(head), _(BUSINESS_DIALOG_HEAD), Businesses[id][Business_Name]);
 	if (strcmp(Businesses[id][Business_Owner], ReturnPlayerName(playerid), true))
 	{
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_NOT_YOU), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_BACK));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_NOT_YOU), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
 	}
 	else
 	{
@@ -552,11 +552,11 @@ stock bis_Collect(playerid)
 			GivePlayerMoney(playerid, Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade], 1);
 			Businesses[id][Business_Vault] = 0;
 
-			Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_TOOK_VAULT), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_BACK));
+			Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_TOOK_VAULT), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
 		}
 		else
 		{
-			Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_NO_VAULT), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_BACK));
+			Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_NO_VAULT), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
 		}
 	}
 	return 1;
@@ -573,21 +573,21 @@ stock bis_buyUpgrade(playerid)
 
 	if (Businesses[id][Business_Upgrade] >= MAX_BUSINESS_LEVEL) {
 		format(string, sizeof(string), _(BUSINESS_UPGRADE_MAX), Businesses[id][Business_Name]);
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_BACK));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
 		return 1;
 	}
 	new price = business_GetUpgradeCost(id);
 	
 	if (GetPlayerMoney(playerid) < price) {
 		format(string, sizeof(string), _(BUSINESS_UPGRADE_NO_MONEY), price);
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_BACK));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
 		return 1;
 	}
 	
 	GivePlayerMoney(playerid, -price, 0);
 	Businesses[id][Business_Upgrade]++;
 	format(string, sizeof(string), _(BUSINESS_UPGRADE_UP), Businesses[id][Business_Name], Businesses[id][Business_Upgrade]);
-	Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_BACK));
+	Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
 	return 1;
 }
 
