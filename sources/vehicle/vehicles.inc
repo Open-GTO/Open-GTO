@@ -1914,7 +1914,7 @@ stock vehicles_OnPlayerStateChange(playerid, newstate, oldstate)
 		
 		new hour = Time_GetCurrentHour();
 		if (hour > VEHICLE_LIGHTS_ON_TIME || hour < VEHICLE_LIGHTS_OFF_TIME) {
-			vehicle_Light(vehicleid, VEHICLE_PARAMS_ON);
+			Vehicle_ToggleLight(vehicleid, 1);
 		}
 	}
 #endif
@@ -1996,11 +1996,24 @@ stock Vehicle_ToggleEngine(vehicleid, newstate = -1)
 	return SetVehicleParamsEx(vehicleid, newstate, lights, alarm, doors, bonnet, boot, objective);
 }
 
-stock vehicle_Light(vehicleid, newstate)
+stock Vehicle_ToggleLight(vehicleid, newstate = -1)
 {
 	new engine, lights, alarm, doors, bonnet, boot, objective;
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
-	SetVehicleParamsEx(vehicleid, engine, newstate, alarm, doors, bonnet, boot, objective);
+
+	if (newstate == engine) {
+		return 0;
+	}
+
+	if (newstate == -1) {
+		if (engine == VEHICLE_PARAMS_OFF) {
+			newstate = VEHICLE_PARAMS_ON;
+		} else {
+			newstate = VEHICLE_PARAMS_OFF;
+		}
+	}
+
+	return SetVehicleParamsEx(vehicleid, engine, newstate, alarm, doors, bonnet, boot, objective);
 }
 
 stock IsVehicleOccupied(vehicleid)
