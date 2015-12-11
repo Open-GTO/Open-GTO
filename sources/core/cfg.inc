@@ -30,8 +30,6 @@ stock cfg_LoadConfigs()
 	payday_LoadConfig(file_config);
 	account_LoadConfig(file_config);
 	player_LoadConfig(file_config);
-	race_LoadConfig(file_config);
-	deathmatch_LoadConfig(file_config);
 	Vehicle_LoadConfig(file_config);
 	Vehicle_Fuel_LoadConfig(file_config);
 	weapon_LoadConfig(file_config);
@@ -82,8 +80,6 @@ stock cfg_SaveConfigs()
 	account_SaveConfig(file_config);
 	player_SaveConfig(file_config);
 	Vehicle_Fuel_SaveConfig(file_config);
-	race_SaveConfig(file_config);
-	deathmatch_SaveConfig(file_config);
 	Vehicle_SaveConfig(file_config);
 	weapon_SaveConfig(file_config);
 	bank_SaveConfig(file_config);

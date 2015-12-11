@@ -161,9 +161,6 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	housing_RenameOwner(old_name, new_name);
 	business_RenameOwner(old_name, new_name);
 	
-	races_RenameBestPlayer(old_name, new_name);
-	dm_RenameBestPlayer(old_name, new_name);
-	
 	player_Save(playerid);
 	account_Save(playerid);
 	

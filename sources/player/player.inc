@@ -61,8 +61,7 @@ stock player_OnPlayerDisconnect(playerid, reason)
 	// save
 	player_Save(playerid);
 	account_Save(playerid);
-	
-	DMPlayerDisconnect(playerid);
+
 	StopAudioStreamForPlayer(playerid);
 
 	new string[MAX_STRING];

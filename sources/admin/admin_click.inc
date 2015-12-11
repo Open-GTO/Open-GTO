@@ -238,7 +238,7 @@ public adm_click_TeleportToMe(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
-	if (!IsPlayerConnected(clickedid) || IsPlayerInAnyDM(clickedid) || IsPlayerInAnyRace(clickedid)) {
+	if (!IsPlayerConnected(clickedid)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 0;
 	}

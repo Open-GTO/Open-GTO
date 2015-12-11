@@ -24,10 +24,10 @@ new db_weapon[] = DATA_FILES_FOLDER "weapon/";
 new db_groundhold[] = DATA_FILES_FOLDER "groundhold/";
 new db_ban[] = DATA_FILES_FOLDER "banned/";
 
-new db_deathmatch[] = DATA_FILES_FOLDER "deathmatch/!deathmatches"DATA_FILES_FORMAT;
-new db_dm_base[] = DATA_FILES_FOLDER "deathmatch/";
-new db_dm_record[] = DATA_FILES_FOLDER "deathmatch/record/";
+//new db_deathmatch[] = DATA_FILES_FOLDER "deathmatch/!deathmatches"DATA_FILES_FORMAT;
+//new db_dm_base[] = DATA_FILES_FOLDER "deathmatch/";
+//new db_dm_record[] = DATA_FILES_FOLDER "deathmatch/record/";
 
-new db_race[] = DATA_FILES_FOLDER "race/!races"DATA_FILES_FORMAT;
-new db_race_base[] = DATA_FILES_FOLDER "race/";
-new db_race_record[] = DATA_FILES_FOLDER "race/record/";
+//new db_race[] = DATA_FILES_FOLDER "race/!races"DATA_FILES_FORMAT;
+//new db_race_base[] = DATA_FILES_FOLDER "race/";
+//new db_race_record[] = DATA_FILES_FOLDER "race/record/";

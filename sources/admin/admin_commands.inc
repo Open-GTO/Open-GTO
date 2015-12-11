@@ -321,7 +321,7 @@ COMMAND:telehereall(playerid, params[])
 			continue;
 		}
 
-		if (!player_IsJailed(id) && !IsPlayerRconAdmin(id)  && !IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id)) {
+		if (!player_IsJailed(id) && !IsPlayerRconAdmin(id)) {
 			receiver_x = receiver_x + random(2) - random(4);
 			receiver_y = receiver_y + random(2) - random(4);	
 			SetPlayerPos(id, receiver_x, receiver_y, receiver_z);
@@ -1029,13 +1029,11 @@ COMMAND:skydiveall(playerid, params[])
 			continue;
 		}
 
-		if (!IsPlayerInAnyDM(id) && !IsPlayerInAnyRace(id)) {
-			GivePlayerWeapon(id, 46, 1);
-			PlayerPlaySound(id, 1058, 0, 0, 0);
+		GivePlayerWeapon(id, 46, 1);
+		PlayerPlaySound(id, 1058, 0, 0, 0);
 
-			GetPlayerPos(id, playerx, playery, playerz);
-			SetPlayerPos(id, playerx, playery, playerz + 1200);
-		}
+		GetPlayerPos(id, playerx, playery, playerz);
+		SetPlayerPos(id, playerx, playery, playerz + 1200);
 	}
 
 	SendClientMessageToAll(COLOR_WHITE, _(SKYDIVING_MSG));
@@ -1057,7 +1055,7 @@ COMMAND:disarm(playerid, params[])
 	new idx = 0;
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 
-	if (!IsPlayerConnected(receiverid) && !IsPlayerInAnyDM(receiverid)) {
+	if (!IsPlayerConnected(receiverid)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
@@ -1082,7 +1080,7 @@ COMMAND:disarmall(playerid, params[])
 	new string[MAX_STRING];
 
 	foreach (new id : Player) {
-		if (id == playerid || IsPlayerInAnyDM(id)) {
+		if (id == playerid) {
 			continue;
 		}
 

@@ -117,8 +117,6 @@ Thanks:
 #include "gang/gang_level"
 #include "system/housing"
 #include "system/business"
-#include "system/race"
-#include "system/deathmatch"
 #include "system/payday"
 #include "system/groundhold"
 #include "system/premium"
@@ -164,44 +162,6 @@ Thanks:
 #include "core/cfg"
 
 #include "core/api"
-// Races
-#tryinclude "races/race_monstertruck"
-#tryinclude "races/race_thestrip"
-#tryinclude "races/race_riversiderun"
-#tryinclude "races/race_fleethecity"
-#tryinclude "races/race_lostinsmoke"
-#tryinclude "races/race_backstreetbang"
-#tryinclude "races/race_flyingfree"
-#tryinclude "races/race_murderhorn"
-#tryinclude "races/race_roundwego"
-#tryinclude "races/race_striptease"
-#tryinclude "races/race_countrycruise"
-#tryinclude "races/race_thegrove"
-#tryinclude "races/race_mullholland"
-#tryinclude "races/race_julius"
-#tryinclude "races/race_trailer"
-#tryinclude "races/race_fuckinwood"
-#tryinclude "races/race_majestic"
-#tryinclude "races/race_toarea51"
-#tryinclude "races/race_mountchilliad"
-#tryinclude "races/race_m25"
-#tryinclude "races/race_vinewood"
-#tryinclude "races/race_fromsftolv"
-#tryinclude "races/race_annoying"
-#tryinclude "races/race_roadtohell"
-#tryinclude "races/race_bayside_tour"
-
-// Deathmatches
-#tryinclude "deathmatches/dm_air"
-#tryinclude "deathmatches/dm_area51"
-#tryinclude "deathmatches/dm_badandugly"
-#tryinclude "deathmatches/dm_bluemountains"
-#tryinclude "deathmatches/dm_cargoship"
-#tryinclude "deathmatches/dm_dildo"
-#tryinclude "deathmatches/dm_mbase"
-#tryinclude "deathmatches/dm_minigunmadness"
-#tryinclude "deathmatches/dm_poolday"
-#tryinclude "deathmatches/dm_usnavy"
 
 main() {}
 
@@ -215,8 +175,6 @@ public OnGameModeInit()
 	config_OnGameModeInit();
 	Vehicle_OnGameModeInit();
 	Vehicle_Textdraw_OnGameModeInit();
-	race_OnGameModeInit();
-	deathmatch_OnGameModeInit();
 	groundhold_OnGameModeInit();
 	business_OnGameModeInit();
 	housing_OnGameModeInit();
@@ -251,44 +209,8 @@ public OnGameModeInit()
 	pt_idle_OnGameModeInit();
 	pt_chat_OnGameModeInit();
 	pt_speed_OnGameModeInit();
-	//
-	race_thestrip_init();
-	race_riversiderun_init();
-	race_fleethecity_init();
-	race_lostinsmoke_init();
-	race_backstreetbang_init();
-	race_flyingfree_init();
-	race_murderhorn_init();
-	race_roundwego_init();
-	race_striptease_init();
-	race_monstertruck_init();
-	race_countrycruise_init();
-	race_thegrove_init();
-	race_mullholland_init();
-	race_julius_init();
-	race_trailer_init();
-	race_fuckinwood_init();
-	race_majestic_init();
-	race_toarea51_init();
-	race_mountchilliad_init();
-	race_m25_init();
-	race_vinewood_init();
-	race_fromsftolv_init();
-	race_annoying_init();
-	race_roadtohell_init();
-	race_bayside_tour_init();
-	//
-	dm_air_init();
-	dm_area51_init();
-	dm_badandugly_init();
-	dm_bluemountains_init();
-	dm_cargoship_init();
-	dm_dildo_init();
-	dm_mbase_init();
-	dm_minigunmadness_init();
-	dm_poolday_init();
-	dm_usnavy_init();
 
+	// custom
 	#tryinclude "custom/mapicon"
 	#tryinclude "custom/objects"
 	Log_Game("SERVER: Custom mapicons, objects and pickups init");
@@ -381,8 +303,6 @@ public OnPlayerPickUpGlobalPickup(playerid, pickupid, gpickupid, model)
 
 public OnPlayerEnterDynamicCP(playerid, checkpointid)
 {
-	dm_OnPlayerEnterCheckpoint(playerid);
-
 	if (Trucker_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
 		return 1;
 	}
@@ -414,7 +334,6 @@ public OnPlayerEnterDynamicRaceCP(playerid, checkpointid)
 
 public OnPlayerEnterRaceCheckpoint(playerid)
 {
-	race_OnPlayerEnterCheckpoint(playerid);
 	return 1;
 }
 
@@ -438,12 +357,6 @@ public OnPlayerDeath(playerid, killerid, reason)
 
 	SendDeathMessage(killerid, playerid, reason);
 	
-	if (IsPlayerInAnyDM(playerid)) {
-		deathmatch_OnPlayerDeath(playerid, killerid);
-		deathmatch_OnPlayerKill(killerid, playerid, reason);
-		return 1;
-	}
-	
 	player_OnPlayerDeath(playerid, killerid, reason);
 	Trucker_OnPlayerDeath(playerid, killerid, reason);
 	gang_OnPlayerDeath(playerid, killerid, reason);
@@ -461,12 +374,7 @@ public OnPlayerSpawn(playerid)
 	}
 
 	// ставим позицию
-	new dmid = GetPlayerDM(playerid);
-	if (dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0) {
-		SetPlayerPosToSpawn(playerid);
-	} else {
-		deathmatch_OnPlayerSpawn(playerid, dmid);
-	}
+	SetPlayerPosToSpawn(playerid);
 
 	// spawn player
 	player_OnPlayerSpawn(playerid);

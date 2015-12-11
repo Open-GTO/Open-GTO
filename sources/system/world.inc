@@ -38,8 +38,6 @@ public WorldSave(necessarily) // save all
 
 	// other
 	weapon_SaveAll();
-	race_SaveAll();
-	deathmatch_SaveAll();
 	business_SaveAll();
 	houses_SaveAll();
 	gang_SaveAll();
@@ -59,9 +57,6 @@ public OneSecTimer()
 		UpdatePlayerWeaponTextDraws(playerid);
 		adm_spec_UpdateLabel(playerid);
 	}
-	
-	CheckDM();
-	CheckRace();
 }
 
 forward OneMinuteTimer();
