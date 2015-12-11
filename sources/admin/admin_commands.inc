@@ -725,7 +725,11 @@ COMMAND:sys(playerid, params[])
 		return 0;
 	}
 
-	if (isnull(params)) {
+	new
+		subcmd[20],
+		subparams[32];
+
+	if (sscanf(params, "s[20]S()[32]", subcmd, subparams)) {
 		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][36]);
 		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][37]);
 		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][38]);
@@ -734,10 +738,7 @@ COMMAND:sys(playerid, params[])
 		return 1;
 	}
 
-	new cmd[20], idx;
-	cmd = strcharsplit(params, idx, ' ');
-
-	if (!strcmp(cmd, "cmdlist", true))
+	if (!strcmp(subcmd, "cmdlist", true))
 	{
 		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][36]);
 		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[13][37]);
@@ -749,7 +750,7 @@ COMMAND:sys(playerid, params[])
 		return 1;
 	}
 
-	if (!strcmp(cmd, "about", true))
+	if (!strcmp(subcmd, "about", true))
 	{
 		SendClientMessage(playerid, COLOR_YELLOW, _(ADMIN_SYS_ABOUT_0));
 		SendClientMessage(playerid, COLOR_YELLOW, _(ADMIN_SYS_ABOUT_1));
@@ -757,7 +758,7 @@ COMMAND:sys(playerid, params[])
 		return 1;
 	}
 
-	if (!strcmp(cmd, "info", true))
+	if (!strcmp(subcmd, "info", true))
 	{
 		SendClientMessage(playerid, COLOR_YELLOW, _(ADMIN_SYS_INFO_HEAD));
 
@@ -787,9 +788,9 @@ COMMAND:sys(playerid, params[])
 		return 1;
 	}
 
-	if (!strcmp(cmd, "weather", true))
+	if (!strcmp(subcmd, "weather", true))
 	{
-		new paramid = strval( strcharsplit(params, idx, ' ') );
+		new paramid = strval(subparams);
 		switch (paramid) {
 			case 0: {
 				weather_SetTime(0);
@@ -809,11 +810,11 @@ COMMAND:sys(playerid, params[])
 		return 1;
 	}
 	
-	if (!strcmp(cmd, "groundhold", true))
+	if (!strcmp(subcmd, "groundhold", true))
 	{
 		new toggle;
 
-		if (sscanf(params, "i", toggle)) {
+		if (sscanf(subparams, "i", toggle)) {
 			SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][39]);
 			return 1;
 		}
@@ -828,7 +829,7 @@ COMMAND:sys(playerid, params[])
 		return 1;
 	}
 	
-	if (!strcmp(cmd, "gmx", true))
+	if (!strcmp(subcmd, "gmx", true))
 	{
 		foreach (new id : Player) {
 			player_Save(id);
@@ -838,43 +839,39 @@ COMMAND:sys(playerid, params[])
 		return 1;
 	}
 	
-	if (!strcmp(cmd, "reloadlang", true))
+	if (!strcmp(subcmd, "reloadlang", true))
 	{
 		lang_OnGameModeInit();
 		Lang_OnGameModeInit();
 		return 1;
 	}
 
-	if (!strcmp(cmd, "time", true))
+	if (!strcmp(subcmd, "time", true))
 	{
-		new value, string[MAX_LANG_VALUE_STRING];
-		cmd = strcharsplit(params, idx, ' ');
+		new
+			subsubcmd[20],
+			string[MAX_LANG_VALUE_STRING],
+			value;
 
-		if (!strcmp(cmd, "set", true)) {
-			value = strval( strcharsplit(params, idx, ' ') );
+		if (sscanf(subparams, "s[20]I", subsubcmd, value)) {
+			SendClientMessage(playerid, -1, _(ADMIN_SYS_TIME_HELP));
+		}
 
+		if (strcmp(subcmd, "set", true) == 0) {
 			Time_SetCurrentHour(value);
 
 			format(string, sizeof(string), _(ADMIN_SYS_TIME_SET), value);
-			SendClientMessage(playerid, -1, string);
-			return 1;
-		}
-
-		if (!strcmp(cmd, "real", true)) {
-			value = strval( strcharsplit(params, idx, ' ') );
-
+		} else if (strcmp(subcmd, "real", true) == 0) {
 			Time_SetRealStatus(value == 0 ? false : true);
 
 			if (value == 0) {
-				string = _(ADMIN_SYS_TIME_REAL_FALSE);
+				__(ADMIN_SYS_TIME_REAL_FALSE, string);
 			} else {
-				string = _(ADMIN_SYS_TIME_REAL_TRUE);
+				__(ADMIN_SYS_TIME_REAL_TRUE, string);
 			}
-			SendClientMessage(playerid, -1, string);
-			return 1;
 		}
 
-		SendClientMessage(playerid, -1, _(ADMIN_SYS_TIME_HELP));
+		SendClientMessage(playerid, -1, string);
 		return 1;
 	}
 

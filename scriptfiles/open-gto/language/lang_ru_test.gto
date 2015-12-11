@@ -578,8 +578,12 @@ TUNING_PAINTJOB_NOT_SELECT = Сначала выберите окрасочную работу
 TUNING_PAINTJOB_NO_ENOUGH_MONEY = У вас недостаточно денег для покупки этой покрасочной работы
 
 // Groundhold
-GROUNDHOLD_INFO = '%s'. Удерживайте эту точку для получения денег и опыта.
+GROUNDHOLD_INFO = %s. Удерживайте эту точку для получения денег и опыта.
 GROUNDHOLD_BONUS = Вы будете получать $%d и %d XP за каждые пять секунд удерживания этой точки.
 GROUNDHOLD_ENEMY = Посторонний в зоне точки '%s'.
 GROUNDHOLD_HOLD = Удерживайте свою точку.
 GROUNDHOLD_MISSING = Точка '%s' потеряна.
+GROUNDHOLD_OBJECTIVE = Hold the point
+GROUNDHOLD_ALERT_HEADER = Ground Hold
+GROUNDHOLD_ALERT_ENEMY = Enemy in the point!
+GROUNDHOLD_ALERT_MISSING = Point lost
