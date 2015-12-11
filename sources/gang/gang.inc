@@ -540,3 +540,19 @@ stock GetGangMoney(gangid)
 {
 	return Gangs[gangid][gang_money];
 }
+
+stock IsPlayersTeammates(...)
+{
+	new gangid = player_GetGangID(getarg(0));
+	if (gangid == 0) {
+		return 0;
+	}
+
+	for (new i = numargs() - 1; i != 0; i--) {
+		if (gangid != player_GetGangID(getarg(i))) {
+			return 0;
+		}
+	}
+
+	return 1;
+}

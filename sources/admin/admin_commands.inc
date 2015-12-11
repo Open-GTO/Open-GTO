@@ -782,7 +782,7 @@ COMMAND:sys(playerid, params[])
 		format(string, sizeof(string), lang_texts[13][41], weather_GetTime());
 		SendClientMessage(playerid, COLOR_WHITE, string);
 
-		format(string, sizeof(string), lang_texts[13][42], Groundhold_IsEnabled);
+		format(string, sizeof(string), lang_texts[13][42], IsGroundholdEnabled());
 		SendClientMessage(playerid, COLOR_WHITE, string);
 		return 1;
 	}
@@ -808,36 +808,25 @@ COMMAND:sys(playerid, params[])
 		}
 		return 1;
 	}
-	/*
+	
 	if (!strcmp(cmd, "groundhold", true))
 	{
-		new paramid = strval(strcharsplit(params, idx, ' '));
-		switch(paramid) {
-			case 0: {
-				Groundhold_IsEnabled = 0;
+		new toggle;
 
-				for (new ghid = 0; ghid < sizeof(Groundholds); ghid++) {
-					Checkpoint_Delete(Checkpoint_FindByCoord(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]));
-					Mapicon_Delete(Mapicon_FindByCoord(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z]));
-					CheckGround(ghid);
-				}
+		if (sscanf(params, "i", toggle)) {
+			SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][39]);
+			return 1;
+		}
 
-				SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][45]);
-			}
-			case 1: {
-				Groundhold_IsEnabled = 1;
+		ToggleGroundholdStatus(toggle != 0);
 
-				for (new ghid = 0; ghid < sizeof(Groundholds);  ghid++) {
-					CreateDynamicCP(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 20.0);
-					CreateDynamicMapIcon(Groundholds[ghid][gh_x], Groundholds[ghid][gh_y], Groundholds[ghid][gh_z], 56, 0);
-					CheckGround(ghid);
-				}
-
-				SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][46]);
-			}
+		if (toggle != 0) {
+			SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][46]);
+		} else {
+			SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][45]);
 		}
 		return 1;
-	}*/
+	}
 	
 	if (!strcmp(cmd, "gmx", true))
 	{

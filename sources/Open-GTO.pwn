@@ -175,7 +175,7 @@ public OnGameModeInit()
 	config_OnGameModeInit();
 	Vehicle_OnGameModeInit();
 	Vehicle_Textdraw_OnGameModeInit();
-	groundhold_OnGameModeInit();
+	Groundhold_OnGameModeInit();
 	business_OnGameModeInit();
 	housing_OnGameModeInit();
 	Enterexit_OnGameModeInit();
@@ -262,7 +262,7 @@ public OnPlayerDisconnect(playerid, reason)
 	player_OnPlayerDisconnect(playerid, reason);
 	Trucker_OnPlayerDisconnect(playerid, reason);
 	pt_chat_OnPlayerDisconnect(playerid, reason);
-	gh_OnPlayerDisconnect(playerid, reason);
+	Groundhold_OnPlayerDisconnect(playerid, reason);
 	pl_weapon_OnPlayerDisconnect(playerid, reason);
 	pl_money_td_OnPlayerDisconnect(playerid, reason);
 	pveh_OnPlayerDisconnect(playerid, reason);

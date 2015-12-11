@@ -24,7 +24,7 @@ stock cfg_LoadConfigs()
 	lang_LoadConfig(file_config);
 	Log_LoadConfig(file_config);
 	Time_LoadConfig(file_config);
-	groundhold_LoadConfig(file_config);
+	Groundhold_LoadConfig(file_config);
 	gang_LoadConfig(file_config);
 	mission_LoadConfig(file_config);
 	payday_LoadConfig(file_config);
@@ -73,7 +73,7 @@ stock cfg_SaveConfigs()
 	lang_SaveConfig(file_config);
 	Log_SaveConfig(file_config);
 	Time_SaveConfig(file_config);
-	groundhold_SaveConfig(file_config);
+	Groundhold_SaveConfig(file_config);
 	gang_SaveConfig(file_config);
 	mission_SaveConfig(file_config);
 	payday_SaveConfig(file_config);

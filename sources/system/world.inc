@@ -41,7 +41,7 @@ public WorldSave(necessarily) // save all
 	business_SaveAll();
 	houses_SaveAll();
 	gang_SaveAll();
-	groundhold_SaveAll();
+	Groundhold_SaveAll();
 	
 	Log_Game("World save complete! Time taken: %d milliseconds.", (GetTickCount() - starttime));
 	return 1;
@@ -98,7 +98,7 @@ public FiveSecondTimer()
 		}
 	}
 
-	CheckAllGround();
+	Groundhold_CheckAll();
 	pl_health_Regeneration();
 	business_Update3DTextLabelText();
 	housing_Update3DTextLabelText();
