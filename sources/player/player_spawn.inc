@@ -12,10 +12,19 @@
 #define _pl_spawn_included
 #pragma library pl_spawn
 
-// типы спавнов
-#define SPAWN_HOUSE_NONE	-1
-#define SPAWN_HOUSE_GANG	-2
+// spawn types
+forward SpawnType:Player_GetSpawnType(playerid);
 
+enum SpawnType {
+	SPAWN_TYPE_NONE,
+	SPAWN_TYPE_HOUSE,
+	SPAWN_TYPE_GANG,
+}
+
+static
+	SpawnType:gPlayerSpawnType[MAX_PLAYERS];
+
+// camera
 enum camera_PlaceArray_Info {
 	camera_Interior,
 	Float:camera_pos_X,
@@ -143,12 +152,15 @@ stock UpdatePlayerSpawnInfo(playerid)
 
 DialogCreate:PlayerSpawnMenu(playerid)
 {
-	new string[ MAX_NAME * (MAX_PLAYER_HOUSES + 1) + 8 + (2 * (MAX_PLAYER_HOUSES + 1)) ],
+	new
+		string[ MAX_NAME * (MAX_PLAYER_HOUSES + 2) ],
 		count = 0,
-		playername[MAX_PLAYER_NAME+1];
+		playername[MAX_PLAYER_NAME + 1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
 	
+	strcat(string, "Ближайшая точка\n", sizeof(string));
+
 	new gangid = player_GetGangID(playerid);
 	new gang_houseid = -1;
 
@@ -193,14 +205,20 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 	new playername[MAX_PLAYER_NAME + 1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	
+	if (listitem == 0) {
+		Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
+		SendClientMessage(playerid, COLOR_WHITE, "Место спавна изменено.");
+		return 1;
+	}
+
 	new gangid = player_GetGangID(playerid);
-	if (listitem == 0 && gangid != 0 && gang_GetHouseID(gangid) != -1) {
-		player_SetSpawnHouseID(playerid, SPAWN_HOUSE_GANG);
+	if (listitem == 1 && gangid != 0 && gang_GetHouseID(gangid) != -1) {
+		Player_SetSpawnType(playerid, SPAWN_TYPE_GANG);
 		SendClientMessage(playerid, COLOR_WHITE, "Место спавна изменено.");
 		return 1;
 	}
 	
-	new count = 0;
+	new count = 1;
 	if (gangid != 0 && gang_GetHouseID(gangid) != -1) {
 		count++;
 	}
@@ -211,7 +229,9 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 		}
 
 		if (listitem == count) {
-			player_SetSpawnHouseID(playerid, i);
+			Player_SetSpawnType(playerid, SPAWN_TYPE_HOUSE);
+			Player_SetSpawnHouseID(playerid, i);
+
 			SendClientMessage(playerid, COLOR_WHITE, "Место спавна изменено.");
 			// если игрок, сменивший спавн - лидер банды, то устанавливаем домом банды этот дом
 			if (gang_IsLeader(playerid)) {
@@ -239,31 +259,36 @@ stock pl_spawn_GetSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z
 		return 1;
 	}
 
-	new house_id = player_GetSpawnHouseID(playerid);
-	if (house_id >= 0 && !IsPlayerHouse(playerid, house_id) && !IsPlayerRenter(playerid, house_id)) {
-		house_id = SPAWN_HOUSE_NONE;
-		player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
-		SendClientMessage(playerid, COLOR_RED, lang_texts[8][60]);
+	new SpawnType:spawn_type = Player_GetSpawnType(playerid);
+
+	if (spawn_type == SPAWN_TYPE_HOUSE) {
+		new house_id = Player_GetSpawnHouseID(playerid);
+		if (house_id >= 0 && !IsPlayerHouse(playerid, house_id) && !IsPlayerRenter(playerid, house_id)) {
+			Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
+			Player_SetSpawnHouseID(playerid, -1);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[8][60]);
+		} else {
+			house_GetPickupPos(house_id, spos_x, spos_y, spos_z);
+		}
+	} else if (spawn_type == SPAWN_TYPE_GANG) {
+		new gangid = player_GetGangID(playerid);
+		new gang_houseid = gang_GetHouseID(gangid);
+
+		if (gangid == 0 || gang_houseid == -1) {
+			Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
+		} else {
+			house_GetPickupPos(gang_houseid, spos_x, spos_y, spos_z);
+		}
 	}
 
-	if (house_id == SPAWN_HOUSE_NONE) {
+	if (spawn_type == SPAWN_TYPE_NONE) {
 		new spawnid = pl_spawn_GetSpawnID(playerid);
 		spos_x = spawns_array[spawnid][spawn_x];
 		spos_y = spawns_array[spawnid][spawn_y];
 		spos_z = spawns_array[spawnid][spawn_z];
 		spos_a = spawns_array[spawnid][spawn_a];
-	} else if (house_id == SPAWN_HOUSE_GANG) {
-		new gangid = player_GetGangID(playerid);
-		new gang_houseid = gang_GetHouseID(gangid);
-
-		if (gangid == 0 || gang_houseid == -1) {
-			player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
-		} else {
-			house_GetPickupPos(gang_houseid, spos_x, spos_y, spos_z);
-		}
-	} else {
-		house_GetPickupPos(house_id, spos_x, spos_y, spos_z);
 	}
+
 	return 1;
 }
 
@@ -395,11 +420,11 @@ stock player_SetSpawned(playerid, isspawned) {
 	SetPVarInt(playerid, "Spawned", isspawned);
 }
 
-stock player_GetSpawnHouseID(playerid) {
+stock Player_GetSpawnHouseID(playerid) {
 	return GetPVarInt(playerid, "SpawnHouseID");
 }
 
-stock player_SetSpawnHouseID(playerid, houseid) {
+stock Player_SetSpawnHouseID(playerid, houseid) {
 	SetPVarInt(playerid, "SpawnHouseID", houseid);
 }
 
@@ -421,4 +446,13 @@ stock player_GetCoord(playerid, &Float:x, &Float:y, &Float:z, &Float:a, &interio
 	a = GetPVarFloat(playerid, "Coord_A");
 	interior = GetPVarInt(playerid, "Interior");
 	world = GetPVarInt(playerid, "World");
+}
+
+stock Player_SetSpawnType(playerid, SpawnType:type)
+{
+	gPlayerSpawnType[playerid] = type;
+}
+stock SpawnType:Player_GetSpawnType(playerid)
+{
+	return gPlayerSpawnType[playerid];
 }

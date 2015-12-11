@@ -105,7 +105,8 @@ stock player_SaveEx(playerid)
 	ini_setString(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
 	ini_setInteger(file_player, "SkinModel", player_GetSkin(playerid));
 	ini_setInteger(file_player, "Hide", admin_GetHideStatus(playerid));
-	ini_setInteger(file_player, "SpawnHouseID", player_GetSpawnHouseID(playerid));
+	ini_setInteger(file_player, "SpawnType", _:Player_GetSpawnType(playerid));
+	ini_setInteger(file_player, "SpawnHouseID", Player_GetSpawnHouseID(playerid));
 	
 	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
 		format(string, sizeof(string), "Vehicle_%d", i);
@@ -209,8 +210,11 @@ stock player_Login(playerid)
 		ini_getInteger(file_player, "Hide", buf);
 		admin_SetHideStatus(playerid, buf);
 		
+		ini_getInteger(file_player, "SpawnType", buf);
+		Player_SetSpawnType(playerid, SpawnType:buf);
+		
 		ini_getInteger(file_player, "SpawnHouseID", buf);
-		player_SetSpawnHouseID(playerid, buf);
+		Player_SetSpawnHouseID(playerid, buf);
 		
 		for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
 			format(s_buf, sizeof(s_buf), "Vehicle_%d", i);

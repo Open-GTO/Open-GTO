@@ -159,11 +159,6 @@ stock GangJoinMember(gangid, playerid)
 		player_SetGangName(playerid, Gangs[gangid][gang_name]);
 		GangMemberLogin(playerid, gangid);
 		SetPlayerColor(playerid, PlayerGangColour(playerid));
-		new houseid = gang_GetHouseID(gangid);
-		if (houseid != -1)
-		{
-			player_SetSpawnHouseID(playerid, houseid);
-		}
 		return 1;
 	}
 	return 0;
@@ -187,9 +182,9 @@ stock GangRemoveMember(gangid, kickplayername[])
 			playerid = GangMemberInfo[gangid][gangmember][member_playerid];
 			player_SetGangID(playerid, 0);
 			player_SetGangName(playerid, "");
-			if (player_GetSpawnHouseID(playerid) == SPAWN_HOUSE_GANG)
+			if (Player_GetSpawnType(playerid) == SPAWN_TYPE_NONE)
 			{
-				player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+				Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
 			}
 			GangMemberInfo[gangid][gangmember][member_name][0] = '\0';
 			SendClientMessage(playerid, COLOR_RED, string);
@@ -213,9 +208,9 @@ stock GangRemoveMember(gangid, kickplayername[])
 		playerid = GangMemberInfo[gangid][gangmember][member_playerid];
 		GangMemberInfo[gangid][gangmember][member_playerid] = INVALID_PLAYER_ID;
 		GangMemberInfo[gangid][gangmember][member_name][0] = '\0';
-		if (player_GetSpawnHouseID(playerid) == SPAWN_HOUSE_GANG)
+		if (Player_GetSpawnType(playerid) == SPAWN_TYPE_GANG)
 		{
-			player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+			Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
 		}
 		format(string, sizeof(string), lang_texts[6][70], kickplayername);
 		SendGangMessage(gangid, string, COLOR_GANG);
@@ -260,7 +255,7 @@ stock GangCreate(leaderid, gangname[], gangcolour)
 	Gangs[gangid][gang_level] = 0;
 	Gangs[gangid][gang_xp] = 0;
 	Gangs[gangid][gang_money] = 0;
-	Gangs[gangid][gang_house] = player_GetSpawnHouseID(leaderid);
+	Gangs[gangid][gang_house] = Player_GetSpawnHouseID(leaderid);
 	Gangs[gangid][gang_motd][0] = '\0';
 	for (new gangmember =0 ; gangmember < MAX_GANG_SIZE; gangmember++)
 	{

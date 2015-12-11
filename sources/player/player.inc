@@ -262,7 +262,7 @@ stock player_SetDefaultData(playerid)
 {
 	SetPlayerMoney(playerid, PlayerStartMoney);
 	player_SetJailTime(playerid, -1);
-	player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+	Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
 
 #if defined PLAYER_START_SKIN
 	player_SetSkin(playerid, PLAYER_START_SKIN);
