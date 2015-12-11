@@ -91,6 +91,7 @@ PLAYER_MENU_SETTINGS_PASSWORD_LENGTH = {CCCCCC}Допустимая длина пароля от {BBBAE
 // vehicles
 VEHICLE_INIT = SERVER: Vehicles module init
 VEHICLE_NOT_IN_CAR = Вы не в машине.
+VEHICLE_TEXTDRAW_STRING = %d KM/H~n~%0.1f L.~n~%0.0f HP
 
 // Vehicle Fuel
 VEHICLE_FUEL_INIT = Vehicle Fuel System v2.7 initialized.
@@ -103,7 +104,6 @@ VEHICLE_FUEL_FUEL_IS_FULL = {FF2211}[Ошибка]: {FFFFFF}Ваш бензобак уже полон.
 VEHICLE_FUEL_AFTER_FUEL = {33CC33}[Заправка]: {FFFFFF}Ваш транспорт был заправлен за $%d.
 VEHICLE_FUEL_TD_OPENED = ~G~Opened
 VEHICLE_FUEL_TD_CLOSED = ~R~Closed
-VEHICLE_FUEL_TD_STRING = %d KM/H~n~%0.1f L.~n~%0.0f HP
 VEHICLE_FUEL_DIALOG_HEADER = Заправка
 VEHICLE_FUEL_IS_FUELING = {33CC33}[Заправка]: {FFFFFF}Ваше транспортное средство заправляется, ждите.
 

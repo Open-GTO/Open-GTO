@@ -74,6 +74,7 @@ Thanks:
 #include "vehicle/vehicle_damage"
 #include "vehicle/vehicle_radio"
 #include "vehicle/vehicle_premium"
+#include "vehicle/vehicle_textdraw"
 #include "player/player_level"
 #include "player/player_premium"
 #include "player/player_weapon"
@@ -213,6 +214,7 @@ public OnGameModeInit()
 
 	config_OnGameModeInit();
 	Vehicle_OnGameModeInit();
+	Vehicle_Textdraw_OnGameModeInit();
 	race_OnGameModeInit();
 	deathmatch_OnGameModeInit();
 	groundhold_OnGameModeInit();
@@ -322,7 +324,7 @@ public OnPlayerConnect(playerid)
 	pt_chat_OnPlayerConnect(playerid);
 	pl_weapon_OnPlayerConnect(playerid);
 	pl_money_td_OnPlayerConnect(playerid);
-	Vehicle_Fuel_OnPlayerConnect(playerid);
+	Vehicle_Textdraw_OnPlayerConn(playerid);
 	Enterexit_OnPlayerConnect(playerid);
 	Spectate_OnPlayerConnect(playerid);
 	Beachside_OnPlayerConnect(playerid);
