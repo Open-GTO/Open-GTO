@@ -149,21 +149,7 @@ COMMAND:pinfo(playerid, params[])
 	format(string, sizeof(string), lang_texts[12][34], ReturnPlayerName(receiverid), receiverid);
 	SendClientMessage(playerid, COLOR_YELLOW, string);
 
-	switch (player_GetStatus(receiverid)) {
-		case STATUS_LEVEL_MODER: {
-			set(string, lang_texts[12][87]);
-		}
-		case STATUS_LEVEL_ADMIN: {
-			set(string, lang_texts[12][86]);
-		}
-		case STATUS_LEVEL_RCON: {
-			set(string, lang_texts[12][94]);
-		}
-		default: {
-			set(string, lang_texts[12][88]);
-		}
-	}
-
+	GetStatusName(player_GetStatus(playerid), string);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	format(string, sizeof(string), lang_texts[12][35], GetPlayerLevel(receiverid), GetPlayerXP(receiverid));
@@ -1244,18 +1230,8 @@ COMMAND:setstatus(playerid, params[])
 		SendClientMessage(playerid, COLOR_WHITE, string);
 	} else {
 		new sidstring[64];
-		switch (sid) {
-			case STATUS_LEVEL_MODER: {
-				set(sidstring, lang_texts[12][87]);
-			}
-			case STATUS_LEVEL_ADMIN: {
-				set(sidstring, lang_texts[12][86]);
-			}
-			case STATUS_LEVEL_RCON: {
-				set(sidstring, lang_texts[12][94]);
-			}
-		}
-		
+		GetStatusName(sid, sidstring);
+
 		format(string, sizeof(string), lang_texts[12][82], ReturnPlayerName(playerid), playerid, sidstring);
 		SendClientMessage(receiverid, COLOR_WHITE, string);
 		

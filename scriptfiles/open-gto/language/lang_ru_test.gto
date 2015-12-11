@@ -88,6 +88,40 @@ PLAYER_MENU_SETTINGS_PASSWORD_CHANGED = {CCCCCC}Вы успешно сменили пароль.\nВаш 
 PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY = {CCCCCC}У вас нету {00AA00}$%d{CCCCCC} на смену пароля от аккаунта.
 PLAYER_MENU_SETTINGS_PASSWORD_LENGTH = {CCCCCC}Допустимая длина пароля от {BBBAE8}%d{CCCCCC} до {BBBAE8}%d{CCCCCC} символов.
 
+// command
+COMMAND_HELP_0 = /help - первая помощь, /info - краткое описание, /commands - список всех команд. 
+COMMAND_HELP_1 = /status - информация о вашем герое.
+COMMAND_HELP_2 = Вы можете использовать меню игрока, оно вызывается клавишей 'Y'.
+COMMAND_HELP_3 = Для взаимодействия с вращающимися значками (пикапами), пользуйтесь клавишей 'Y'.
+
+COMMAND_INFO_CAPTION = Информация
+COMMAND_INFO_BUTTON_OK = Информация
+
+COMMAND_COMMANDS_0 = {FF2211}Справка по командам:
+COMMAND_COMMANDS_1 = {FFCC66}[Аккаунт]: {FFFFFF}/help, /info, /commands, /status
+COMMAND_COMMANDS_2 = {FFCC66}[Сервер]: {FFFFFF}/version, /time
+COMMAND_COMMANDS_3 = {FFCC66}[Банда]: {FFFFFF}! <сообщение>
+COMMAND_COMMANDS_4 = {FFCC66}[Гонки]: {FFFFFF}/races, /race join <ID>, /race quit
+COMMAND_COMMANDS_5 = {FFCC66}[Десматчи]: {FFFFFF}/dms, /dm join <ID>, /dm quit
+COMMAND_COMMANDS_6 = {FFCC66}[Анимации]: {FFFFFF}/dance [1-4], /handsup, /piss, /smoke
+COMMAND_COMMANDS_7 = {FFCC66}[Разговор]: {FFFFFF}/pm <ID> <сообщение>, $ <сообщение>, @ <сообщение>, # <сообщение>
+COMMAND_COMMANDS_8 = {FFCC66}[Транспорт]: {FFFFFF}/repair, /fill, /engine
+COMMAND_COMMANDS_9 = {FFCC66}[Разное]: {FFFFFF}/skydive, /lottery
+
+COMMAND_STATUS_0 = Информация об игроке:
+COMMAND_STATUS_1 = Банда: %s
+COMMAND_STATUS_2 = Уровень: %d, опыт: %d/%d. Наличные: $%d, в банке: $%d. Всего денег: $%d 
+COMMAND_STATUS_3 = Убийств: %d, смертей: %d (%.2f). Арестов: %d. Затыканий: %d
+COMMAND_STATUS_FIGHTSTYLE = Используемый стиль борьбы: %s
+COMMAND_STATUS_VIP = У вас есть премиум статус, доступен до: %s
+COMMAND_STATUS_NO_VIP = У вас нет премиум статуса, для приобретения обратитесь к администрации
+
+// status
+STATUS_ADMIN = Администратор (полный доступ)
+STATUS_MODER = Модератор (повышеный доступ)
+STATUS_USER = Просто пользователь (обычные права)
+STATUS_RCON = RCON администратор (расширенный доступ)
+
 // vehicles
 VEHICLE_INIT = SERVER: Vehicles module init
 VEHICLE_NOT_IN_CAR = Вы не в машине.

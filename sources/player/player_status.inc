@@ -41,3 +41,21 @@ stock IsPlayerMod(playerid)
 {
 	return (player_GetStatus(playerid) >= STATUS_LEVEL_MODER) ? 1 : 0;
 }
+
+stock GetStatusName(status, name[], size = sizeof(name))
+{
+	switch (status) {
+		case STATUS_LEVEL_MODER: {
+			__(STATUS_MODER, string, size);
+		}
+		case STATUS_LEVEL_ADMIN: {
+			__(STATUS_ADMIN, string, size);
+		}
+		case STATUS_LEVEL_RCON: {
+			__(STATUS_RCON, string, size);
+		}
+		default: {
+			__(STATUS_USER, string, size);
+		}
+	}
+}

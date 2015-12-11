@@ -149,12 +149,7 @@ public adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][34], ReturnPlayerName(clickedid), clickedid);
 	SendClientMessage(playerid, COLOR_YELLOW, string);
 
-	switch( player_GetStatus(clickedid) ) {
-		case STATUS_LEVEL_MODER: set(string, lang_texts[12][87]);
-		case STATUS_LEVEL_ADMIN: set(string, lang_texts[12][86]);
-		case STATUS_LEVEL_RCON: set(string, lang_texts[12][94]);
-		default: set(string, lang_texts[12][88]);
-	}
+	GetStatusName(player_GetStatus(clickedid), string);
 	SendClientMessage(playerid,COLOR_LIGHTRED,string);
 
 	format(string, sizeof(string), lang_texts[12][35], GetPlayerLevel(clickedid), GetPlayerXP(clickedid));	//Level, XP

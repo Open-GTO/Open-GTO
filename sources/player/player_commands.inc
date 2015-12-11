@@ -12,37 +12,37 @@
 
 COMMAND:help(playerid, params[])
 {
-	SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][2]);
-	SendClientMessage(playerid, COLOR_LIGHTRED, lang_texts[15][3]);
-	SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][4]);
-	SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][5]);
+	SendClientMessage(playerid, -1, _(COMMAND_HELP_0));
+	SendClientMessage(playerid, -1, _(COMMAND_HELP_1));
+	SendClientMessage(playerid, -1, _(COMMAND_HELP_2));
+	SendClientMessage(playerid, -1, _(COMMAND_HELP_3));
 	return 1;
 }
 
 COMMAND:info(playerid, params[])
 {
-	Dialog_Message(playerid, "Информация", _m(ACCOUNT_DIALOG_INFORMATION_TEXT), "ОК");
+	Dialog_Message(playerid, _(COMMAND_INFO_CAPTION), _m(ACCOUNT_DIALOG_INFORMATION_TEXT), _(COMMAND_INFO_BUTTON_OK));
 	return 1;
 }
 
 COMMAND:commands(playerid, params[])
 {
-	SendClientMessage(playerid, COLOR_PURPLE, lang_texts[15][15]);
-	SendClientMessage(playerid, COLOR_PURPLE, lang_texts[15][16]);
-	SendClientMessage(playerid, COLOR_PURPLE, lang_texts[15][17]);
-	SendClientMessage(playerid, COLOR_PURPLE, lang_texts[15][18]);
-	SendClientMessage(playerid, COLOR_PURPLE, lang_texts[15][19]);
-	SendClientMessage(playerid, COLOR_PURPLE, lang_texts[15][20]);
-	SendClientMessage(playerid, COLOR_PURPLE, lang_texts[15][21]);
-	SendClientMessage(playerid, COLOR_PURPLE, lang_texts[15][22]);
-	SendClientMessage(playerid, COLOR_PURPLE, lang_texts[15][23]);
-	SendClientMessage(playerid, COLOR_PURPLE, lang_texts[15][24]);
+	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_0));
+	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_1));
+	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_2));
+	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_3));
+	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_4));
+	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_5));
+	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_6));
+	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_7));
+	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_8));
+	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_9));
 	return 1;
 }
 
 COMMAND:status(playerid, params[])
 {
-	SendClientMessage(playerid, COLOR_GREEN, lang_texts[15][35]);
+	SendClientMessage(playerid, COLOR_GREEN, _(COMMAND_STATUS_0));
 	
 	new Float:kill_on_death = 0.0;
 	if (player_GetDeaths(playerid) != 0) {
@@ -51,34 +51,28 @@ COMMAND:status(playerid, params[])
 	
 	new string[MAX_STRING];
 
-	switch ( player_GetStatus(playerid) )
-	{
-		case STATUS_LEVEL_MODER: set(string, lang_texts[12][87]);
-		case STATUS_LEVEL_ADMIN: set(string, lang_texts[12][86]);
-		case STATUS_LEVEL_RCON: set(string, lang_texts[12][94]);
-		default: set(string, lang_texts[12][88]);
-	}
+	GetStatusName(player_GetStatus(playerid), string);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
-	format(string, sizeof(string), lang_texts[15][37], player_GetGangName(playerid));
+	format(string, sizeof(string), _(COMMAND_STATUS_1), player_GetGangName(playerid));
 	SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
 
-	format(string, sizeof(string), lang_texts[15][38], GetPlayerLevel(playerid), GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1), GetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
+	format(string, sizeof(string), _(COMMAND_STATUS_2), GetPlayerLevel(playerid), GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1), GetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
 	SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
 
-	format(string, sizeof(string), lang_texts[15][39], player_GetKills(playerid), player_GetDeaths(playerid), kill_on_death, player_GetJailCount(playerid), player_GetMuteCount(playerid));
+	format(string, sizeof(string), _(COMMAND_STATUS_3), player_GetKills(playerid), player_GetDeaths(playerid), kill_on_death, player_GetJailCount(playerid), player_GetMuteCount(playerid));
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	new fstylename[MAX_STRING];
 	fights_GetStyleName(pl_fights_GetPlayerStyleUsed(playerid), fstylename);
 
-	format(string, sizeof(string), "Используемый стиль борьбы: %s", fstylename);
+	format(string, sizeof(string), _(COMMAND_STATUS_FIGHTSTYLE), fstylename);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	if (Premium_GetPlayerStatus(playerid) == 1) {
-		format(string, sizeof(string), "У вас есть премиум статус, доступен до: %s", Premium_GetPlayerDate(playerid));
+		format(string, sizeof(string), _(COMMAND_STATUS_VIP), Premium_GetPlayerDate(playerid));
 	} else {
-		format(string, sizeof(string), "У вас нет премиум статуса, для приобретения обратитесь к администрации");
+		format(string, sizeof(string), _(COMMAND_STATUS_NO_VIP));
 	}
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 	return 1;
