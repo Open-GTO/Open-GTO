@@ -14,9 +14,9 @@
 #pragma library pvehicle
 
 
-#define VEHICLES_COMPONENTS 14
+#define Vehicle_COMPONENTS 14
 
-new vehicle_increase_levels[] = {PLAYER_VEHICLES_INCREASE_LEVELS};
+new vehicle_increase_levels[] = {PLAYER_Vehicle_INCREASE_LEVELS};
 
 #define MAX_PLAYER_VEHICLES    sizeof(vehicle_increase_levels)
 
@@ -27,7 +27,7 @@ enum pvInfo {
 	Float:pv_Fuel,
 	pv_Lock,
 	pv_Paintjob,
-	pv_Component[VEHICLES_COMPONENTS]
+	pv_Component[Vehicle_COMPONENTS]
 }
 new PlayerVehicle[MAX_PLAYERS][MAX_PLAYER_VEHICLES][pvInfo];
 
@@ -86,7 +86,7 @@ stock pveh_OnVehicleTuning(playerid, vehicleid, componentid)
 	return 1;
 }
 
-stock AddPlayerVehicle(playerid, model, color1, color2, Float:fuel, lock = 0, paintjob = -1, component[VEHICLES_COMPONENTS] = {0, ...})
+stock AddPlayerVehicle(playerid, model, color1, color2, Float:fuel, lock = 0, paintjob = -1, component[Vehicle_COMPONENTS] = {0, ...})
 {
 	new slot = GetPlayerVehicleFreeSlot(playerid);
 	PlayerVehicle[playerid][slot][pv_ID] = 0;
@@ -96,7 +96,7 @@ stock AddPlayerVehicle(playerid, model, color1, color2, Float:fuel, lock = 0, pa
 	PlayerVehicle[playerid][slot][pv_Fuel] = fuel;
 	PlayerVehicle[playerid][slot][pv_Lock] = lock;
 	PlayerVehicle[playerid][slot][pv_Paintjob] = paintjob;
-	for (new i = 0; i < VEHICLES_COMPONENTS; i++) {
+	for (new i = 0; i < Vehicle_COMPONENTS; i++) {
 		PlayerVehicle[playerid][slot][pv_Component][i] = component[i];
 	}
 	return slot;
@@ -115,7 +115,7 @@ stock RemovePlayerVehicle(playerid, slot)
 	PlayerVehicle[playerid][slot][pv_Fuel] = 0;
 	PlayerVehicle[playerid][slot][pv_Lock] = 0;
 	PlayerVehicle[playerid][slot][pv_Paintjob] = -1;
-	for (new i = 0; i < VEHICLES_COMPONENTS; i++) {
+	for (new i = 0; i < Vehicle_COMPONENTS; i++) {
 		PlayerVehicle[playerid][slot][pv_Component][i] = 0;
 	}
 	return 1;
@@ -143,7 +143,7 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 		PlayerVehicle[playerid][slot][pv_Model],
 		pveh_X, pveh_Y, pveh_Z, pveh_A,
 		PlayerVehicle[playerid][slot][pv_Color][0], PlayerVehicle[playerid][slot][pv_Color][1],
-		vehicles_GetRespawnTime()
+		GetVehicleRespawnTime()
 	);
 	
 	PlayerVehicle[playerid][slot][pv_ID] = vehicleid;
@@ -154,7 +154,7 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 		ChangeVehiclePaintjob(vehicleid, PlayerVehicle[playerid][slot][pv_Paintjob]);
 	}
 	
-	for (new i = 0; i < VEHICLES_COMPONENTS; i++) {
+	for (new i = 0; i < Vehicle_COMPONENTS; i++) {
 		AddVehicleComponent(vehicleid, PlayerVehicle[playerid][slot][pv_Component][i]);
 	}
 	
@@ -171,7 +171,7 @@ stock CreateVehicleDbString(playerid, slot)
 		PlayerVehicle[playerid][slot][pv_Model], PlayerVehicle[playerid][slot][pv_Color][0], PlayerVehicle[playerid][slot][pv_Color][1],
 		PlayerVehicle[playerid][slot][pv_Fuel], PlayerVehicle[playerid][slot][pv_Lock], PlayerVehicle[playerid][slot][pv_Paintjob]
 	);
-	for (new i = 0; i < VEHICLES_COMPONENTS; i++) {
+	for (new i = 0; i < Vehicle_COMPONENTS; i++) {
 		format(vehstr, sizeof(vehstr), "%s/%d", vehstr, PlayerVehicle[playerid][slot][pv_Component][i]);
 	}
 	return vehstr;
@@ -179,7 +179,7 @@ stock CreateVehicleDbString(playerid, slot)
 
 stock SetVehicleFromDbString(playerid, slot, dbstring[])
 {
-	if (sscanf(dbstring, "p</>ii[2]fiii[" #VEHICLES_COMPONENTS "]",
+	if (sscanf(dbstring, "p</>ii[2]fiii[" #Vehicle_COMPONENTS "]",
 		    PlayerVehicle[playerid][slot][pv_Model],
 		    PlayerVehicle[playerid][slot][pv_Color],
 		    PlayerVehicle[playerid][slot][pv_Fuel],
@@ -268,7 +268,7 @@ stock GetPlayerVehicleModelBySlot(playerid, slot)
 
 stock RemovePlayerVehicleComponents(playerid, slot)
 {
-	for (new i = 0; i < VEHICLES_COMPONENTS; i++) {
+	for (new i = 0; i < Vehicle_COMPONENTS; i++) {
 		if (PlayerVehicle[playerid][slot][pv_ID] != 0) {
 			RemoveVehicleComponent(PlayerVehicle[playerid][slot][pv_ID], PlayerVehicle[playerid][slot][pv_Component][i]);
 		}

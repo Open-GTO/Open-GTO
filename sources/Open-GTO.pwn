@@ -68,7 +68,7 @@ Thanks:
 #include "core/declension"
 #include "core/spectate"
 #include "vehicle/vehicle_fuel"
-#include "vehicle/vehicles"
+#include "vehicle/vehicle"
 #include "vehicle/vehicle_menu"
 #include "vehicle/vehicle_info"
 #include "vehicle/vehicle_damage"
@@ -212,7 +212,7 @@ public OnGameModeInit()
 	Lang_OnGameModeInit();
 
 	config_OnGameModeInit();
-	vehicles_OnGameModeInit();
+	Vehicle_OnGameModeInit();
 	race_OnGameModeInit();
 	deathmatch_OnGameModeInit();
 	groundhold_OnGameModeInit();
@@ -240,7 +240,7 @@ public OnGameModeInit()
 	sshop_OnGameModeInit();
 	vshop_OnGameModeInit();
 	wshop_OnGameModeInit();
-	fuelstation_OnGameModeInit();
+	Fuelstation_OnGameModeInit();
 	bank_OnGameModeInit();
 	fights_OnGameModeInit();
 	Tuning_OnGameModeInit();
@@ -593,16 +593,18 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			return 1;
 		}
 
+		if (Fuelstation_PlayerFillVehicle(playerid, vehicleid)) {
+			return 1;
+		}
+
 		return 1;
 	}
 
-	if (PRESSED(KEY_NO) || PRESSED(KEY_ANALOG_UP) || PRESSED(KEY_ANALOG_DOWN) ||
-		PRESSED(KEY_ANALOG_LEFT) || PRESSED(KEY_ANALOG_RIGHT)
-		) {
+	if (PRESSED(KEY_NO)) {
 		new player_state = GetPlayerState(playerid);
 		switch (player_state) {
 			case PLAYER_STATE_DRIVER: {
-				vh_menu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+				Dialog_Show(playerid, Dialog:VehicleMenu);
 			}
 		}
 		return 1;
@@ -622,7 +624,7 @@ public OnPlayerExitedMenu(playerid)
 
 public OnPlayerStateChange(playerid, newstate, oldstate)
 {
-	vehicles_OnPlayerStateChange(playerid, newstate, oldstate);
+	Vehicle_OnPlayerStateChange(playerid, newstate, oldstate);
 	pt_speed_OnPlayerStateChange(playerid, newstate, oldstate);
 	trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 	Spectate_OnPlayerStateChange(playerid, newstate, oldstate);
@@ -640,7 +642,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 
 public OnPlayerExitVehicle(playerid, vehicleid)
 {
-	vehicles_OnPlayerExitVehicle(playerid, vehicleid);
+	Vehicle_OnPlayerExitVehicle(playerid, vehicleid);
 	pt_weapon_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
 }
@@ -728,7 +730,7 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
 	pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
 
 	if (hittype == BULLET_HIT_TYPE_VEHICLE) {
-		vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+		Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
 	}
 	return 1;
 }
@@ -768,7 +770,6 @@ public OnVehicleTuning(playerid, vehicleid, componentid)
 
 public OnEnterExitModShop(playerid, enterexit, interiorid)
 {
-	vehicles_OnEnterExitModShop(playerid, enterexit, interiorid);
 	return 1;
 }
 

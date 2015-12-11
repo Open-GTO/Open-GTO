@@ -34,7 +34,7 @@ enum vshop_Info {
 	vshop_ID,
 	Text3D:vshop_Text3D,
 }
-static vehicles_array[][vshop_Info] = {
+static Vehicle_array[][vshop_Info] = {
 	// wang cars
 	{VEHSHOP_TYPE_CAR, -1948.7234, 269.2943, 35.2865, 124.3050},
 	{VEHSHOP_TYPE_CAR, -1950.4930, 259.6267, 35.3084, 53.4259},
@@ -174,10 +174,10 @@ stock vshop_OnVehicleSpawn(vehicleid)
 
 stock vshop_SetVehiclesToRespawn()
 {
-	for (new i = 0; i < sizeof(vehicles_array); i++) {
-		new Float:dist = GetVehicleDistanceFromPoint(vehicles_array[i][vshop_ID], vehicles_array[i][vshop_X], vehicles_array[i][vshop_Y], vehicles_array[i][vshop_Z]);
+	for (new i = 0; i < sizeof(Vehicle_array); i++) {
+		new Float:dist = GetVehicleDistanceFromPoint(Vehicle_array[i][vshop_ID], Vehicle_array[i][vshop_X], Vehicle_array[i][vshop_Y], Vehicle_array[i][vshop_Z]);
 		if (dist >= 4.0) {
-			SetVehicleToRespawn(vehicles_array[i][vshop_ID]);
+			SetVehicleToRespawn(Vehicle_array[i][vshop_ID]);
 		}
 	}
 }
@@ -213,35 +213,35 @@ stock vshop_ChangeVehicles()
 		string[MAX_STRING],
 		model;
 
-	for (new i = 0; i < sizeof(vehicles_array); i++) {
-		if (vehicles_array[i][vshop_ID] != 0) {
+	for (new i = 0; i < sizeof(Vehicle_array); i++) {
+		if (Vehicle_array[i][vshop_ID] != 0) {
 			// если кто-то есть в транспорте
 			foreach (new playerid : Player) {
-				if (vehicles_array[i][vshop_ID] == GetPlayerVehicleID(playerid)) {
+				if (Vehicle_array[i][vshop_ID] == GetPlayerVehicleID(playerid)) {
 					Dialog_Close(playerid);
 					RemovePlayerFromVehicle(playerid);
 				}
 			}
 			// удаляем транспорт
-			DestroyVehicle(vehicles_array[i][vshop_ID]);
-			vehicles_array[i][vshop_ID] = 0;
+			DestroyVehicle(Vehicle_array[i][vshop_ID]);
+			Vehicle_array[i][vshop_ID] = 0;
 			
-			DestroyDynamic3DTextLabel(vehicles_array[i][vshop_Text3D]);
+			DestroyDynamic3DTextLabel(Vehicle_array[i][vshop_Text3D]);
 		}
 
-		type = vehicles_array[i][vshop_Type];
+		type = Vehicle_array[i][vshop_Type];
 		model = models_list[type][ random(models_list_pos[type]) ];
 
-		vehicles_array[i][vshop_ID] = CreateVehicle(model,
-			vehicles_array[i][vshop_X], vehicles_array[i][vshop_Y], vehicles_array[i][vshop_Z], vehicles_array[i][vshop_A],
+		Vehicle_array[i][vshop_ID] = CreateVehicle(model,
+			Vehicle_array[i][vshop_X], Vehicle_array[i][vshop_Y], Vehicle_array[i][vshop_Z], Vehicle_array[i][vshop_A],
 			-1, -1, 0
 		);
-		SetVehicleFuel(vehicles_array[i][vshop_ID], 0);
+		SetVehicleFuel(Vehicle_array[i][vshop_ID], 0);
 		
 		format(string, sizeof(string), "{CCFF66}%s\n{CCCCCC}Цена: {FFFFFF}$%d\n{999999}Сядьте для покупки", ReturnVehicleModelName(model), GetVehicleModelCost(model));
-		vehicles_array[i][vshop_Text3D] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
-			vehicles_array[i][vshop_X], vehicles_array[i][vshop_Y], vehicles_array[i][vshop_Z], 20.0, 0,
-			.attachedvehicle = vehicles_array[i][vshop_ID], .testlos = 1);
+		Vehicle_array[i][vshop_Text3D] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
+			Vehicle_array[i][vshop_X], Vehicle_array[i][vshop_Y], Vehicle_array[i][vshop_Z], 20.0, 0,
+			.attachedvehicle = Vehicle_array[i][vshop_ID], .testlos = 1);
 	}
 }
 
@@ -265,8 +265,8 @@ stock buyVehicle(playerid, vehicleid, color1, color2)
 
 stock vshop_IsShopVehicle(vehicleid)
 {
-	for (new i = 0; i < sizeof(vehicles_array); i++) {
-		if (vehicles_array[i][vshop_ID] == vehicleid) {
+	for (new i = 0; i < sizeof(Vehicle_array); i++) {
+		if (Vehicle_array[i][vshop_ID] == vehicleid) {
 			return 1;
 		}
 	}

@@ -11,15 +11,15 @@
 #pragma library vehicle_info
 
 
-enum Vehicle_Info {
-	vehicle_name[MAX_NAME],
-	vehicle_speed,
-	vehicle_fuel,
-	vehicle_level,
-	vehicle_cost,
+enum e_Vehicle_Info {
+	e_viName[MAX_NAME],
+	e_viSpeed,
+	e_viFuel,
+	e_viLevel,
+	e_viCost,
 };
 
-new Vehicles[][Vehicle_Info] = {
+new gVehicleInfo[][e_Vehicle_Info] = {
 	{"Landstalker",     160,    70,    5,    600000},
 	{"Bravura",         160,    45,    0,    0},
 	{"Buffalo",         200,    40,    9,    800000},
@@ -240,7 +240,7 @@ stock GetVehicleModelName(model, name[], size = sizeof(name))
 		return 0;
 	}
 
-	strmid(name, Vehicles[model - 400][vehicle_name], 0, strlen(Vehicles[model - 400][vehicle_name]), size);
+	strmid(name, gVehicleInfo[model - 400][e_viName], 0, strlen(gVehicleInfo[model - 400][e_viName]), size);
 	return 1;
 }
 
@@ -249,7 +249,7 @@ stock ReturnVehicleModelName(vehiclemodel)
 	new veh_name[MAX_NAME];
 
 	if (vehiclemodel >= 400 && vehiclemodel <= 611) {
-		strmid(veh_name, Vehicles[vehiclemodel - 400][vehicle_name], 0, strlen(Vehicles[vehiclemodel - 400][vehicle_name]));
+		strmid(veh_name, gVehicleInfo[vehiclemodel - 400][e_viName], 0, strlen(gVehicleInfo[vehiclemodel - 400][e_viName]));
 	}
 
 	return veh_name;
@@ -260,7 +260,7 @@ stock GetVehicleModelCost(vehiclemodel)
 	if (vehiclemodel < 400 || vehiclemodel > 611) {
 		return 0;
 	}
-	return Vehicles[vehiclemodel - 400][vehicle_cost];
+	return gVehicleInfo[vehiclemodel - 400][e_viCost];
 }
 
 stock GetMaxVehicleModelFuel(vehiclemodel)
@@ -268,7 +268,7 @@ stock GetMaxVehicleModelFuel(vehiclemodel)
 	if (vehiclemodel < 400 || vehiclemodel > 611) {
 		return 0;
 	}
-	return Vehicles[vehiclemodel - 400][vehicle_fuel];
+	return gVehicleInfo[vehiclemodel - 400][e_viFuel];
 }
 
 stock GetMaxVehicleModelSpeed(vehiclemodel)
@@ -276,5 +276,5 @@ stock GetMaxVehicleModelSpeed(vehiclemodel)
 	if (vehiclemodel < 400 || vehiclemodel > 611) {
 		return 0;
 	}
-	return Vehicles[vehiclemodel - 400][vehicle_speed];
+	return gVehicleInfo[vehiclemodel - 400][e_viSpeed];
 }

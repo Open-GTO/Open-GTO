@@ -606,7 +606,7 @@
 20: {FFCC66}[Десматчи]: {FFFFFF}/dms, /dm join <ID>, /dm quit
 21: {FFCC66}[Анимации]: {FFFFFF}/dance [1-4], /handsup, /piss, /smoke
 22: {FFCC66}[Разговор]: {FFFFFF}/pm <ID> <сообщение>, $ <сообщение>, @ <сообщение>, # <сообщение>
-23: {FFCC66}[Транспорт]: {FFFFFF}/repair, /fill (NUM2), /engine (NUM8)
+23: {FFCC66}[Транспорт]: {FFFFFF}/repair, /fill, /engine
 24: {FFCC66}[Разное]: {FFFFFF}/skydive, /lottery
 25: 
 26: {FFCC66}[Применение]: {FFFFFF}/pm <ID> <сообщение>

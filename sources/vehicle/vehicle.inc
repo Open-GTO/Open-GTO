@@ -24,7 +24,7 @@ enum e_Vehicle_Spawn {
 	e_vs_colour2
 }
 
-static vehicle_spawns[][e_Vehicle_Spawn] = {
+static gVehicleSpawns[][e_Vehicle_Spawn] = {
 	{513, 291.1346, 2535.5850, 17.3778, 180.2974, 21, 36},
 	{512, 324.4324, 2535.6506, 17.5121, 181.8785, 89, 91},
 	{476, 403.6754, 2456.9727, 16.7825, 357.7751, 15, 123},
@@ -1810,18 +1810,18 @@ static vehicle_spawns[][e_Vehicle_Spawn] = {
 	{538, 1700.7551, -1953.6531, 14.8756, 200.0, -1, -1}
 };
 
-enum e_Vehicle_Spawns_Int {
-	e_vsi_model,
-	e_vsi_interior,
-	Float:e_vsi_x,
-	Float:e_vsi_y,
-	Float:e_vsi_z,
-	Float:e_vsi_heading,
-	e_vsi_colour1,
-	e_vsi_colour2
+enum e_Vehicle_Interior_Spawns {
+	e_vis_model,
+	e_vis_interior,
+	Float:e_vis_x,
+	Float:e_vis_y,
+	Float:e_vis_z,
+	Float:e_vis_heading,
+	e_vis_colour1,
+	e_vis_colour2
 }
 
-new vehicle_spawns_int[][e_Vehicle_Spawns_Int] = {
+static gVehicleInteriorSpawns[][e_Vehicle_Interior_Spawns] = {
 	// в стадионе 1
 	{503, 7, -1407.9211, -257.8641, 1043.5564, 348.0061, 126, 3},
 	{494, 7, -1406.0990, -249.1452, 1043.4298, 347.7101, 61, 6},
@@ -1848,60 +1848,56 @@ new vehicle_spawns_int[][e_Vehicle_Spawns_Int] = {
 	{468, 4, -1427.4252, -638.8242, 1050.1759, 163.1665, 0, 1}
 };
 
-stock LoadVehicles()
+Vehicle_LoadConfig(file_config)
+{
+	new respawn_time;
+	ini_getInteger(file_config, "Vehicle_RespawnTime", respawn_time);
+	SetVehicleRespawnTime(respawn_time);
+}
+
+Vehicle_SaveConfig(file_config)
+{
+	ini_setInteger(file_config, "Vehicle_RespawnTime", GetVehicleRespawnTime());
+}
+
+Vehicle_OnGameModeInit()
 {
 	Premium_VehiclesLoad();
 
-	for (new i = 0; i < sizeof(vehicle_spawns_int); i++) {
+	for (new i = 0; i < sizeof(gVehicleInteriorSpawns); i++) {
 		LinkVehicleToInterior(
 			AddStaticVehicleEx(
-				vehicle_spawns_int[i][e_vsi_model],
-				vehicle_spawns_int[i][e_vsi_x], vehicle_spawns_int[i][e_vsi_y], vehicle_spawns_int[i][e_vsi_z],
-				vehicle_spawns_int[i][e_vsi_heading],
-				vehicle_spawns_int[i][e_vsi_colour1], vehicle_spawns_int[i][e_vsi_colour2],
-				vehicles_GetRespawnTime()
+				gVehicleInteriorSpawns[i][e_vis_model],
+				gVehicleInteriorSpawns[i][e_vis_x], gVehicleInteriorSpawns[i][e_vis_y], gVehicleInteriorSpawns[i][e_vis_z],
+				gVehicleInteriorSpawns[i][e_vis_heading],
+				gVehicleInteriorSpawns[i][e_vis_colour1], gVehicleInteriorSpawns[i][e_vis_colour2],
+				GetVehicleRespawnTime()
 			),
-			vehicle_spawns_int[i][e_vsi_interior]
+			gVehicleInteriorSpawns[i][e_vis_interior]
 		);
 	}
 
-	for (new i = 0; i < sizeof(vehicle_spawns); i++) {
-		if (vehicle_spawns[i][e_vs_model] == 0) {
+	for (new i = 0; i < sizeof(gVehicleSpawns); i++) {
+		if (gVehicleSpawns[i][e_vs_model] == 0) {
 			continue;
 		}
+
 		AddStaticVehicleEx(
-			vehicle_spawns[i][e_vs_model],
-			vehicle_spawns[i][e_vs_x], vehicle_spawns[i][e_vs_y], vehicle_spawns[i][e_vs_z],
-			vehicle_spawns[i][e_vs_heading],
-			vehicle_spawns[i][e_vs_colour1], vehicle_spawns[i][e_vs_colour2],
-			vehicles_GetRespawnTime()
+			gVehicleSpawns[i][e_vs_model],
+			gVehicleSpawns[i][e_vs_x], gVehicleSpawns[i][e_vs_y], gVehicleSpawns[i][e_vs_z],
+			gVehicleSpawns[i][e_vs_heading],
+			gVehicleSpawns[i][e_vs_colour1], gVehicleSpawns[i][e_vs_colour2],
+			GetVehicleRespawnTime()
 		);
 	}
 
 	Vehicle_Fuel_OnGameModeInit();
-	return 1;
-}
 
-stock vehicles_LoadConfig(file_config)
-{
-	new buf_int;
-	ini_getInteger(file_config, "Vehicle_RespawnTime", buf_int);
-	vehicles_SetRespawnTime(buf_int);
-}
-
-stock vehicles_SaveConfig(file_config)
-{
-	ini_setInteger(file_config, "Vehicle_RespawnTime", vehicles_GetRespawnTime());
-}
-
-stock vehicles_OnGameModeInit()
-{
-	LoadVehicles();
 	Log_Game(_(VEHICLE_INIT));
 	return 1;
 }
 
-stock vehicles_OnPlayerStateChange(playerid, newstate, oldstate)
+Vehicle_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	vh_radio_OnPlayerStateChange(playerid, newstate, oldstate);
 	Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate);
@@ -1921,7 +1917,7 @@ stock vehicles_OnPlayerStateChange(playerid, newstate, oldstate)
 	return 1;
 }
 
-stock vehicles_OnPlayerExitVehicle(playerid, vehicleid)
+Vehicle_OnPlayerExitVehicle(playerid, vehicleid)
 {
 	#pragma unused playerid
 #if defined OLD_ENGINE_DO
@@ -1929,23 +1925,6 @@ stock vehicles_OnPlayerExitVehicle(playerid, vehicleid)
 #else
 	#pragma unused vehicleid
 #endif
-	return 1;
-}
-
-stock vehicles_OnEnterExitModShop(playerid, enterexit, interiorid)
-{
-	#pragma unused interiorid
-	
-	new vehicleid = GetPlayerVehicleID(playerid);
-	if (vehicleid != 0) {
-		if (enterexit == 1) {
-			SetVehicleVirtualWorld(vehicleid, playerid + 1);
-			SetPlayerVirtualWorld(playerid, playerid + 1);
-		} else {
-			SetVehicleVirtualWorld(vehicleid, 0);
-			SetPlayerVirtualWorld(playerid, 0);
-		}
-	}
 	return 1;
 }
 
@@ -1966,12 +1945,12 @@ COMMAND:engine(playerid, params[])
 	return 1;
 }
 
-stock vehicles_GetRespawnTime()
+stock GetVehicleRespawnTime()
 {
 	return vehicle_respawn_time;
 }
 
-stock vehicles_SetRespawnTime(value)
+stock SetVehicleRespawnTime(value)
 {
 	vehicle_respawn_time = value;
 }

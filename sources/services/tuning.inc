@@ -533,7 +533,7 @@ stock Tuning_Start(playerid)
 	LinkVehicleToInterior(gInfo[playerid][e_tVehicle], 2);
 
 	RepairVehicle(gInfo[playerid][e_tVehicle]);
-	vehicle_Engine(gInfo[playerid][e_tVehicle], VEHICLE_PARAMS_OFF);
+	Vehicle_ToggleEngine(gInfo[playerid][e_tVehicle], 0);
 
 	// player
 	SetPlayerInterior(playerid, 2);
@@ -561,7 +561,7 @@ stock Tuning_Stop(playerid)
 	SetVehicleVirtualWorld(gInfo[playerid][e_tVehicle], 0);
 	LinkVehicleToInterior(gInfo[playerid][e_tVehicle], 0);
 
-	vehicle_Engine(gInfo[playerid][e_tVehicle], VEHICLE_PARAMS_ON);
+	Vehicle_ToggleEngine(gInfo[playerid][e_tVehicle], 1);
 
 	gInfo[playerid][e_tVehicle] = 0;
 	gInfo[playerid][e_tModel] = 0;

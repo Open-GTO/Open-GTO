@@ -13,80 +13,6 @@
 #pragma library vehicle_menu
 
 
-stock vh_menu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
-{
-	if (PRESSED(KEY_NO)) {
-		Dialog_Show(playerid, Dialog:VehicleMenu);
-		return 1;
-	}
-
-	new engine, lights, alarm, doors, bonnet, boot, objective;
-	new vehicleid = GetPlayerVehicleID(playerid);
-	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
-
-	// двигатель
-	if (PRESSED(KEY_ANALOG_UP)) {
-		if (engine == VEHICLE_PARAMS_ON) {
-			SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, lights, alarm, doors, bonnet, boot, objective);
-		} else {
-			SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_ON, lights, alarm, doors, bonnet, boot, objective);
-		}
-		return 1;
-	}
-
-	// заправить
-	if (PRESSED(KEY_ANALOG_DOWN)) {
-		if (vehicleid == 0) {
-			SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
-			return 1;
-		}
-		
-		if (!IsPlayerAtFuelStation(playerid)) {
-			SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_ON_FUEL_ST));
-			return 1;
-		}
-		
-		if (GetPVarInt(playerid, "Refueling")) {
-			SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_IS_FUELING_ERROR));
-			return 1;
-		}
-		
-		new vehiclemodel = GetVehicleModel(vehicleid);
-		switch (vehiclemodel) {
-			case 481, 509, 510: {
-				SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_WITHOUT_FUEL_ENGINE));
-				return 1;
-			}
-		}
-		
-		if (GetVehicleFuel(vehicleid) >= float(GetMaxVehicleModelFuel(vehiclemodel))) {
-			SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_FUEL_IS_FULL));
-			return 1;
-		}
-		
-		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_IS_FUELING));
-		FillVehicle(vehicleid, playerid);
-		return 1;
-	}
-
-	// радио
-	if (PRESSED(KEY_ANALOG_LEFT)) {
-		Dialog_Show(playerid, Dialog:VehicleRadio);
-		return 1;
-	}
-
-	// фары
-	if (PRESSED(KEY_ANALOG_RIGHT)) {
-		if (lights == VEHICLE_PARAMS_ON) {
-			SetVehicleParamsEx(vehicleid, engine, VEHICLE_PARAMS_OFF, alarm, doors, bonnet, boot, objective);
-		} else {
-			SetVehicleParamsEx(vehicleid, engine, VEHICLE_PARAMS_ON, alarm, doors, bonnet, boot, objective);
-		}
-		return 1;
-	}
-	return 1;
-}
-
 COMMAND:vmenu(playerid, params[])
 {
 	if (!IsPlayerInAnyVehicle(playerid)) {
@@ -170,7 +96,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 				return 1;
 			}
 			
-			if (GetPVarInt(playerid, "Refueling")) {
+			if (IsVehicleRefilling(vehicleid)) {
 				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_IS_FUELING_ERROR), "Назад", "Отмена");
 				return 1;
 			}

@@ -231,6 +231,11 @@ public Vehicle_Fuel_SpeedTimer()
 	return 1;
 }
 
+stock IsVehicleFuelEnabled()
+{
+	return IsEnabled;
+}
+
 stock ToggleVehicleRefillingStatus(vehicleid, bool:toggle)
 {
 	gIsRefilling{vehicleid} = _:toggle;

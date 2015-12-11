@@ -10,9 +10,8 @@
 #define _fuelstation_included
 #pragma library fuelstation
 
-static IsEnabled = VEHICLE_FUEL_ENABLED;
 
-static FuelStations[][CoordInfo] = {
+static gFuelstation[][CoordInfo] = {
 	{1595.5406, 2198.0520, 10.3863},
 	{2202.0649, 2472.6697, 10.5677},
 	{2115.1929, 919.9908, 10.5266},
@@ -32,26 +31,65 @@ static FuelStations[][CoordInfo] = {
 	{1383.1796, 461.9314, 20.1255}
 };
 
-stock fuelstation_OnGameModeInit()
+Fuelstation_OnGameModeInit()
 {
-	if (!IsEnabled) {
-		return 1;
+	if (!IsVehicleFuelEnabled()) {
+		return 0;
 	}
 	
-	for (new i = 0; i < sizeof(FuelStations); i++) {
-		CreateDynamicMapIcon(FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z], 55, 0);
-		CreateDynamicPickup(1650 , 23, FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z]);
+	for (new i = 0; i < sizeof(gFuelstation); i++) {
+		CreateDynamicMapIcon(gFuelstation[i][Coord_X], gFuelstation[i][Coord_Y], gFuelstation[i][Coord_Z], 55, 0);
+		CreateDynamicPickup(1650, 23, gFuelstation[i][Coord_X], gFuelstation[i][Coord_Y], gFuelstation[i][Coord_Z]);
 		CreateDynamic3DTextLabel(
 			"Заправка\n{33AA33}Нажмите кнопку '{FFFFFF}NUM2{33AA33}'", 0xFFFFFFFF,
-			FuelStations[i][Coord_X], FuelStations[i][Coord_Y], FuelStations[i][Coord_Z], 20.0, .testlos = 1);
+			gFuelstation[i][Coord_X], gFuelstation[i][Coord_Y], gFuelstation[i][Coord_Z], 20.0, .testlos = 1);
 	}
+	return 1;
+}
+
+Fuelstation_PlayerFillVehicle(playerid, vehicleid)
+{
+	if (!IsVehicleFuelEnabled()) {
+		return 0;
+	}
+
+	if (vehicleid == 0) {
+		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
+		return 1;
+	}
+
+	if (!IsPlayerAtFuelStation(playerid)) {
+		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_ON_FUEL_ST));
+		return 1;
+	}
+
+	if (IsVehicleRefilling(vehicleid)) {
+		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_IS_FUELING_ERROR));
+		return 1;
+	}
+
+	new vehiclemodel = GetVehicleModel(vehicleid);
+	switch (vehiclemodel) {
+		case 481, 509, 510: {
+			SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_WITHOUT_FUEL_ENGINE));
+			return 1;
+		}
+	}
+
+	if (GetVehicleFuel(vehicleid) >= float(GetMaxVehicleModelFuel(vehiclemodel))) {
+		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_FUEL_IS_FULL));
+		return 1;
+	}
+
+	FillVehicle(vehicleid, playerid);
+	SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_IS_FUELING));
 	return 1;
 }
 
 stock IsPlayerAtFuelStation(playerid)
 {
-	for (new fuelid = 0; fuelid < sizeof(FuelStations); fuelid++) {
-		if (IsPlayerInRangeOfPoint(playerid, 10, FuelStations[fuelid][Coord_X], FuelStations[fuelid][Coord_Y], FuelStations[fuelid][Coord_Z])) {
+	for (new fuelid = 0; fuelid < sizeof(gFuelstation); fuelid++) {
+		if (IsPlayerInRangeOfPoint(playerid, 10, gFuelstation[fuelid][Coord_X], gFuelstation[fuelid][Coord_Y], gFuelstation[fuelid][Coord_Z])) {
 			return 1;
 		}
 	}

@@ -94,7 +94,7 @@ VEHICLE_NOT_IN_CAR = Вы не в машине.
 
 // Vehicle Fuel
 VEHICLE_FUEL_INIT = Vehicle Fuel System v2.7 initialized.
-VEHICLE_FUEL_EMPTY = В транспортном средстве нет топлива. Заправьте его и заведите (/engine или NUM8).
+VEHICLE_FUEL_EMPTY = В транспортном средстве нет топлива. Заправьте его и заведите (/engine).
 VEHICLE_FUEL_NOT_IN_VEHICLE = {FF2211}[Ошибка]: {FFFFFF}Вы не в транспортном средстве!
 VEHICLE_FUEL_NOT_ON_FUEL_ST = {FF2211}[Ошибка]: {FFFFFF}Вы не на заправке!
 VEHICLE_FUEL_IS_FUELING_ERROR = {FF2211}[Ошибка]: {FFFFFF}Вы уже заправляете автомобиль!
