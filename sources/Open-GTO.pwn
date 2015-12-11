@@ -67,8 +67,8 @@ Thanks:
 #include "core/widestrip"
 #include "core/declension"
 #include "core/spectate"
-#include "vehicle/vehicles"
 #include "vehicle/vehicle_fuel"
+#include "vehicle/vehicles"
 #include "vehicle/vehicle_menu"
 #include "vehicle/vehicle_info"
 #include "vehicle/vehicle_damage"
@@ -322,7 +322,7 @@ public OnPlayerConnect(playerid)
 	pt_chat_OnPlayerConnect(playerid);
 	pl_weapon_OnPlayerConnect(playerid);
 	pl_money_td_OnPlayerConnect(playerid);
-	veh_fuel_OnPlayerConnect(playerid);
+	Vehicle_Fuel_OnPlayerConnect(playerid);
 	Enterexit_OnPlayerConnect(playerid);
 	Spectate_OnPlayerConnect(playerid);
 	Beachside_OnPlayerConnect(playerid);
@@ -685,7 +685,7 @@ public OnVehicleStreamOut(vehicleid, forplayerid)
 
 public OnVehicleSpawn(vehicleid)
 {
-	veh_fuel_OnVehicleSpawn(vehicleid);
+	Vehicle_Fuel_OnVehicleSpawn(vehicleid);
 	vshop_OnVehicleSpawn(vehicleid);
 	return 1;
 }

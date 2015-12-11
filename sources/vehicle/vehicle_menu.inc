@@ -59,13 +59,13 @@ stock vh_menu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			}
 		}
 		
-		if (Fuel[vehicleid] >= GetMaxVehicleModelFuel(vehiclemodel)) {
+		if (GetVehicleFuel(vehicleid) >= float(GetMaxVehicleModelFuel(vehiclemodel))) {
 			SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_FUEL_IS_FULL));
 			return 1;
 		}
 		
 		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_IS_FUELING));
-		fill_Vehicle(vehicleid, playerid);
+		FillVehicle(vehicleid, playerid);
 		return 1;
 	}
 
@@ -183,13 +183,13 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 				}
 			}
 			
-			if (Fuel[vehicleid] >= GetMaxVehicleModelFuel(vehiclemodel)) {
+			if (GetVehicleFuel(vehicleid) >= float(GetMaxVehicleModelFuel(vehiclemodel))) {
 				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_FUEL_IS_FULL), "Назад", "Отмена");
 				return 1;
 			}
 			
 			SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_IS_FUELING));
-			fill_Vehicle(vehicleid, playerid);
+			FillVehicle(vehicleid, playerid);
 			return 1;
 		}
 		// радио

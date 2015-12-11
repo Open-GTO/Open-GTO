@@ -234,8 +234,8 @@
 #define VEHICLE_FUEL_ENABLED     1
 #define VEHICLE_FUEL_TD_FONT     2 // используемый id шрифта в текстдраве
 #define VEHICLE_FUEL_SPEED       2 // количество бензина, заправляемого за 1 секунду
-#define VEHICLE_FUEL_TARIF       10 // цена одного литра бензина, в долларах
-
+#define VEHICLE_FUEL_FILL_TARIF  10 // цена одного литра бензина, в долларах
+#define VEHICLE_FUEL_TARIF       20000
 
 /*
  * Gang settings

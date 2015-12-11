@@ -1878,7 +1878,7 @@ stock LoadVehicles()
 		);
 	}
 
-	veh_fuel_OnGameModeInit();
+	Vehicle_Fuel_OnGameModeInit();
 	return 1;
 }
 
@@ -1904,7 +1904,7 @@ stock vehicles_OnGameModeInit()
 stock vehicles_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	vh_radio_OnPlayerStateChange(playerid, newstate, oldstate);
-	veh_fuel_OnPlayerStateChange(playerid, newstate, oldstate);
+	Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate);
 
 #if defined OLD_ENGINE_DO
 	if (newstate == PLAYER_STATE_DRIVER) {
@@ -1946,6 +1946,32 @@ stock vehicles_OnEnterExitModShop(playerid, enterexit, interiorid)
 			SetPlayerVirtualWorld(playerid, 0);
 		}
 	}
+	return 1;
+}
+
+COMMAND:engine(playerid, params[])
+{
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if (vehicleid == 0) {
+		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
+		return 1;
+	}
+	
+	if (GetVehicleFuel(vehicleid) <= 0.1) {
+		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_EMPTY));
+	} else {
+		new engine, lights, alarm, doors, bonnet, boot, objective;
+		GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+
+		if (engine == VEHICLE_PARAMS_ON) {
+			engine = VEHICLE_PARAMS_OFF;
+		} else {
+			engine = VEHICLE_PARAMS_ON;
+		}
+
+		SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+	}
+
 	return 1;
 }
 
