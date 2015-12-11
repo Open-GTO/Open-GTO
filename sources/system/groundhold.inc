@@ -155,6 +155,7 @@ stock Groundhold_Check(ghid)
 
 				SendClientMessage(playerid, COLOR_RED, _(GROUNDHOLD_HOLD));
 				Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_OBJECTIVE));
+				Message_Objective(playerid, _(GROUNDHOLD_OBJECTIVE_BACK), -1);
 			}
 
 			if (pHoldTime[playerid] < 1) {
@@ -182,10 +183,14 @@ stock Groundhold_Check(ghid)
 			enemy_count++;
 		}
 
+		if (pIsHold[playerid] == false) {
+			pIsHold[playerid] = true;
+			Message_Objective(playerid, _(GROUNDHOLD_OBJECTIVE), -1);
+		}
+
 		if (pHoldTime[playerid] < gGroundholds[ghid][e_ghMulti]) {
 			// игрок только что попал на точку
 			if (pHoldTime[playerid] == 0 && pGroundID[playerid] != ghid) {
-				pIsHold[playerid] = true;
 				pGroundID[playerid] = ghid;
 				Iter_Add(PlayerOnGround[ghid], playerid);
 				
@@ -198,8 +203,6 @@ stock Groundhold_Check(ghid)
 					gGroundholds[ghid][e_ghXP] * gGroundholds[ghid][e_ghMulti]
 				);
 				SendClientMessage(playerid, COLOR_GREEN, string);
-
-				Message_Objective(playerid, _(GROUNDHOLD_OBJECTIVE), -1);
 			}
 
 			if (pHoldTime[playerid] == 0 || enemy_count == 0) {
@@ -207,7 +210,6 @@ stock Groundhold_Check(ghid)
 			}
 		}
 
-		// игрок на точке
 		if (pHoldTime[playerid] > 0) {
 			// если на точке есть враги
 			if (enemy_count > 0) {
