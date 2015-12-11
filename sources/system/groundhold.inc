@@ -154,7 +154,7 @@ stock Groundhold_Check(ghid)
 				pIsHold[playerid] = false;
 
 				SendClientMessage(playerid, COLOR_RED, _(GROUNDHOLD_HOLD));
-				Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_OBJECTIVE));
+				Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_OBJECTIVE_BACK));
 				Message_Objective(playerid, _(GROUNDHOLD_OBJECTIVE_BACK), -1);
 			}
 
@@ -203,6 +203,8 @@ stock Groundhold_Check(ghid)
 					gGroundholds[ghid][e_ghXP] * gGroundholds[ghid][e_ghMulti]
 				);
 				SendClientMessage(playerid, COLOR_GREEN, string);
+
+				Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_OBJECTIVE));
 			}
 
 			if (pHoldTime[playerid] == 0 || enemy_count == 0) {
