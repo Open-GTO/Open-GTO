@@ -57,15 +57,13 @@ Fuelst_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		return 0;
 	}
 
-	new vehicleid = GetPlayerVehicleID(playerid);
-	if (vehicleid == 0) {
-		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
-		return 1;
+	if (!IsPlayerAtFuelStation(playerid)) {
+		return 0;
 	}
 
-	if (!IsPlayerAtFuelStation(playerid)) {
-		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_ON_FUEL_ST));
-		return 1;
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if (vehicleid == 0) {
+		return 0;
 	}
 
 	if (IsVehicleRefilling(vehicleid)) {
