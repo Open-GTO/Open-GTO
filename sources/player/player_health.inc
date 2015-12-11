@@ -38,7 +38,7 @@ stock pl_health_Regeneration()
 		Float:health_new;
 
 	foreach (new playerid : Player) {
-		if (!player_IsSpawned(playerid) || player_IsGodmod(playerid)) {
+		if (!Player_IsSpawned(playerid) || player_IsGodmod(playerid)) {
 			continue;
 		}
 

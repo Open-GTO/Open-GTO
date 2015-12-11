@@ -88,6 +88,17 @@ PLAYER_MENU_SETTINGS_PASSWORD_CHANGED = {CCCCCC}Вы успешно сменили пароль.\nВаш 
 PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY = {CCCCCC}У вас нету {00AA00}$%d{CCCCCC} на смену пароля от аккаунта.
 PLAYER_MENU_SETTINGS_PASSWORD_LENGTH = {CCCCCC}Допустимая длина пароля от {BBBAE8}%d{CCCCCC} до {BBBAE8}%d{CCCCCC} символов.
 
+// player spawn
+PLAYER_SPAWN_LIST_NEARLY_POINT = Ближайшая точка\n
+PLAYER_SPAWN_LIST_GANG = %s[банда] %s\n
+PLAYER_SPAWN_DIALOG_HEADER = Меню выбора спавна
+PLAYER_SPAWN_DIALOG_INFO = У вас нет доступных спавнов
+PLAYER_SPAWN_DIALOG_BUTTON_BACK = Назад
+PLAYER_SPAWN_DIALOG_BUTTON_CANCEL = Отмена
+PLAYER_SPAWN_DIALOG_BUTTON_OK = ОК
+PLAYER_SPAWN_HAS_CHANGED = Место спавна изменено.
+PLAYER_SPAWN_GANG_HAS_CHANGED = Место спавна для вас и банды изменено.
+
 // vehicles
 VEHICLE_INIT = SERVER: Vehicles module init
 VEHICLE_NOT_IN_CAR = Вы не в машине.

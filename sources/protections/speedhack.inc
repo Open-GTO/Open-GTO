@@ -165,7 +165,7 @@ public pt_speed_NotHack(playerid)
 
 pt_speed_Sync(playerid)
 {
-	if (!player_IsSpawned(playerid) || GetPVarInt(playerid, "ac_NotSpeedHack") == 1) {
+	if (!Player_IsSpawned(playerid) || GetPVarInt(playerid, "ac_NotSpeedHack") == 1) {
 		new Float:pos[3];
 		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 

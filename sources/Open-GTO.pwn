@@ -344,7 +344,7 @@ public OnPlayerDisconnect(playerid, reason)
 	pl_weapon_OnPlayerDisconnect(playerid, reason);
 	pl_money_td_OnPlayerDisconnect(playerid, reason);
 	pveh_OnPlayerDisconnect(playerid, reason);
-	player_SetSpawned(playerid, 0);
+	Player_SetSpawned(playerid, 0);
 	return 1;
 }
 
@@ -428,7 +428,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 		return 1;
 	}
 
-	player_SetSpawned(playerid, 0);
+	Player_SetSpawned(playerid, 0);
 
 	if (killerid == INVALID_PLAYER_ID) {
 		Log_Game("player: %s(%d): has died > Reason: (%d)", ReturnPlayerName(playerid), playerid, reason);
@@ -463,7 +463,7 @@ public OnPlayerSpawn(playerid)
 	// ставим позицию
 	new dmid = GetPlayerDM(playerid);
 	if (dmid == INVALID_DM_ID || DMPlayerStats[playerid][dm_player_active] == 0) {
-		pl_spawn_SetSpawnPos(playerid);
+		SetPlayerPosToSpawn(playerid);
 	} else {
 		deathmatch_OnPlayerSpawn(playerid, dmid);
 	}
@@ -480,13 +480,13 @@ public OnPlayerSpawn(playerid)
 forward OnPlayerSpawned(playerid);
 public OnPlayerSpawned(playerid)
 {
-	player_SetSpawned(playerid, 1);
+	Player_SetSpawned(playerid, 1);
 	return 1;
 }
 
 public OnPlayerRequestClass(playerid, classid)
 {
-	player_SetSpawned(playerid, 0);
+	Player_SetSpawned(playerid, 0);
 	player_OnPlayerRequestClass(playerid, classid);
 	pl_weapon_OnPlayerRequestClass(playerid, classid);
 	return 1;

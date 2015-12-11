@@ -19,7 +19,7 @@ stock player_Save(playerid)
 		return 0;
 	}
 
-	if (player_IsSpawned(playerid)) {
+	if (Player_IsSpawned(playerid)) {
 		new Float:pos[4];
 
 		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
@@ -28,7 +28,7 @@ stock player_Save(playerid)
 		new interior = GetPlayerInterior(playerid);
 		new world = GetPlayerVirtualWorld(playerid);
 
-		player_SetCoord(playerid, pos[0], pos[1], pos[2], pos[3], interior, world);
+		Player_SetCoord(playerid, pos[0], pos[1], pos[2], pos[3], interior, world);
 	}
 
 	// save
@@ -92,7 +92,7 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "InteriorIndex", Enterexit_GetPlayerIndex(playerid));
 
 	new interior, world, Float:pos[4];
-	player_GetCoord(playerid, pos[0], pos[1], pos[2], pos[3], interior, world);
+	Player_GetCoord(playerid, pos[0], pos[1], pos[2], pos[3], interior, world);
 	ini_setInteger(file_player, "Interior", interior);
 	ini_setInteger(file_player, "World", world);
 
