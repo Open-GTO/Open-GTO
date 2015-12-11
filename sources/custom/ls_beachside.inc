@@ -245,7 +245,10 @@ Beachside_OnObjectMoved(objectid)
 
 Beachside_OnPlayerKeySC(playerid, newkeys, oldkeys)
 {
-	#pragma unused newkeys, oldkeys
+	if (!PRESSED(KEY_USING)) {
+		return 0;
+	}
+
 	// Check if the player is not in a vehicle and pressed the conversation yes key (Y by default)
 	if (IsPlayerInAnyVehicle(playerid)) {
 		return 0;

@@ -112,8 +112,8 @@ stock player_SaveEx(playerid)
 		ini_setString(file_player, string, CreateVehicleDbString(playerid, i));
 	}
 	
-	ini_setInteger(file_player, "Trucker_TryCount", trucker_GetPlayerTryCount(playerid));
-	ini_setInteger(file_player, "Trucker_PauseTime", trucker_GetPlayerPauseTime(playerid));
+	ini_setInteger(file_player, "Trucker_TryCount", Trucker_GetPlayerTryCount(playerid));
+	ini_setInteger(file_player, "Trucker_PauseTime", Trucker_GetPlayerPauseTime(playerid));
 
 	ini_closeFile(file_player);
 	return 1;
@@ -224,10 +224,10 @@ stock player_Login(playerid)
 		}
 
 		ini_getInteger(file_player, "Trucker_TryCount", buf);
-		trucker_SetPlayerTryCount(playerid, buf);
+		Trucker_SetPlayerTryCount(playerid, buf);
 
 		ini_getInteger(file_player, "Trucker_PauseTime", buf);
-		trucker_SetPlayerPauseTime(playerid, buf);
+		Trucker_SetPlayerPauseTime(playerid, buf);
 		
 		ini_closeFile(file_player);
 	}

@@ -47,12 +47,17 @@ Fuelstation_OnGameModeInit()
 	return 1;
 }
 
-Fuelstation_PlayerFillVehicle(playerid, vehicleid)
+Fuelst_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	if (!IsVehicleFuelEnabled()) {
 		return 0;
 	}
 
+	if (!PRESSED(KEY_SUBMISSION)) {
+		return 0;
+	}
+
+	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid == 0) {
 		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
 		return 1;

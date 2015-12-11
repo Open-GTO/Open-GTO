@@ -11,25 +11,28 @@
 #define _trucker_included
 #pragma library trucker
 
-enum {
+forward TrailerType:GetTrailerType(vehicleid);
+
+enum TrailerType {
+	TRAILER_TYPE_UNKNOWN,
 	TRAILER_TYPE_PRODUCT,
 	TRAILER_TYPE_PETROL,
 	TRAILER_TYPE_CAREER,
 };
 
-enum Info_Trucker {
-	trucker_Model,
-	Float:trucker_X,
-	Float:trucker_Y,
-	Float:trucker_Z,
-	Float:trucker_A,
-	trucker_Color1,
-	trucker_Color2,
-	trucker_Id,
+enum e_Trucker_Info {
+	e_tModel,
+	Float:e_tPosX,
+	Float:e_tPosY,
+	Float:e_tPosZ,
+	Float:e_tAngle,
+	e_tColor1,
+	e_tColor2,
+	e_tID,
 }
 
 // прицепы
-static trailer_array[][Info_Trucker] = {
+static gTrailer[][e_Trucker_Info] = {
 	// цистерны дл€ заправок
 	{584, 253.0453, 1372.3413, 11.1734, 269.9365, -1, -1},
 	{584, 252.4802, 1397.2062, 11.1703, 271.6770, -1, -1},
@@ -46,7 +49,7 @@ static trailer_array[][Info_Trucker] = {
 };
 
 // грузовики
-static linerunner_array[][Info_Trucker] = {
+static gLinerunner[][e_Trucker_Info] = {
 	// т€гачи дл€ заправки
 	{514, 285.8618, 1374.7434, 11.1717, 1.7211, 3, 1},
 	{515, 285.3164, 1395.3885, 11.1710, 3.4315, 1, 1},
@@ -63,14 +66,14 @@ static linerunner_array[][Info_Trucker] = {
 	{515, 855.1014, 878.3007, 14.3702, 206.1360, 7, -1}
 };
 
-enum Info_Destination {
-	dest_type,
-	Float:dest_x,
-	Float:dest_y,
-	Float:dest_z,
+enum e_Destination_Info {
+	TrailerType:e_dType,
+	Float:e_dPosX,
+	Float:e_dPosY,
+	Float:e_dPosZ,
 }
 
-static destination_array[][Info_Destination] = {
+static gDestination[][e_Destination_Info] = {
 	{TRAILER_TYPE_PETROL, 1725.4000, -2414.7, 13.5},
 	{TRAILER_TYPE_PETROL, 2109.2126, 917.5845, 10.8203},
 	{TRAILER_TYPE_PETROL, 2640.1831, 1103.9224, 10.8203},
@@ -132,7 +135,7 @@ static
 	player_mapicon[MAX_PLAYERS],
 	player_checkpoint[MAX_PLAYERS];
 
-stock trucker_OnGameModeInit()
+stock Trucker_OnGameModeInit()
 {
 	if (!IsMissionEnabled(mission_trucker)) {
 		return 1;
@@ -142,27 +145,27 @@ stock trucker_OnGameModeInit()
 	mission_Register(mission_trucker);
 
 	// создаЄм прицепы
-	for (new veh_id = 0; veh_id < sizeof(trailer_array); veh_id++) {
-		trailer_array[veh_id][trucker_Id] = AddStaticVehicleEx(trailer_array[veh_id][trucker_Model],
-			trailer_array[veh_id][trucker_X], trailer_array[veh_id][trucker_Y], trailer_array[veh_id][trucker_Z], trailer_array[veh_id][trucker_A],
-			trailer_array[veh_id][trucker_Color1], trailer_array[veh_id][trucker_Color2], TRUCKER_CAR_SPAWN_TIME
+	for (new veh_id = 0; veh_id < sizeof(gTrailer); veh_id++) {
+		gTrailer[veh_id][e_tID] = AddStaticVehicleEx(gTrailer[veh_id][e_tModel],
+			gTrailer[veh_id][e_tPosX], gTrailer[veh_id][e_tPosY], gTrailer[veh_id][e_tPosZ], gTrailer[veh_id][e_tAngle],
+			gTrailer[veh_id][e_tColor1], gTrailer[veh_id][e_tColor2], TRUCKER_CAR_SPAWN_TIME
 		);
 
-		CreateDynamic3DTextLabel("San Andreas Delivery", 0x1CE89BAA, 0.0, 0.0, 0.0, 20.0,
-			.attachedvehicle = trailer_array[veh_id][trucker_Id], .testlos = 1);
+		CreateDynamic3DTextLabel(_(TRUCKER_3D_TEXT), 0x1CE89BAA, 0.0, 0.0, 0.0, 20.0,
+			.attachedvehicle = gTrailer[veh_id][e_tID], .testlos = 1);
 	}
 
 	// создаЄм грузовики
-	for (new veh_id = 0; veh_id < sizeof(linerunner_array); veh_id++) {
-		linerunner_array[veh_id][trucker_Id] = AddStaticVehicleEx(linerunner_array[veh_id][trucker_Model],
-			linerunner_array[veh_id][trucker_X], linerunner_array[veh_id][trucker_Y], linerunner_array[veh_id][trucker_Z], linerunner_array[veh_id][trucker_A],
-			linerunner_array[veh_id][trucker_Color1], linerunner_array[veh_id][trucker_Color2], TRUCKER_CAR_SPAWN_TIME
+	for (new veh_id = 0; veh_id < sizeof(gLinerunner); veh_id++) {
+		gLinerunner[veh_id][e_tID] = AddStaticVehicleEx(gLinerunner[veh_id][e_tModel],
+			gLinerunner[veh_id][e_tPosX], gLinerunner[veh_id][e_tPosY], gLinerunner[veh_id][e_tPosZ], gLinerunner[veh_id][e_tAngle],
+			gLinerunner[veh_id][e_tColor1], gLinerunner[veh_id][e_tColor2], TRUCKER_CAR_SPAWN_TIME
 		);
 
-		SetVehicleFuel(linerunner_array[veh_id][trucker_Id], -1);
+		SetVehicleFuel(gLinerunner[veh_id][e_tID], -1);
 
-		CreateDynamic3DTextLabel("San Andreas Delivery", 0x1CE89BAA, 0.0, 0.0, 0.0, 20.0,
-			.attachedvehicle = trailer_array[veh_id][trucker_Id], .testlos = 1);
+		CreateDynamic3DTextLabel(_(TRUCKER_3D_TEXT), 0x1CE89BAA, 0.0, 0.0, 0.0, 20.0,
+			.attachedvehicle = gLinerunner[veh_id][e_tID], .testlos = 1);
 	}
 
 	// иконки
@@ -174,7 +177,7 @@ stock trucker_OnGameModeInit()
 	return 1;
 }
 
-stock trucker_OnPlayerStateChange(playerid, newstate, oldstate)
+stock Trucker_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	#pragma unused newstate, oldstate
 	if (!IsMissionEnabled(mission_trucker)) {
@@ -202,52 +205,57 @@ stock trucker_OnPlayerStateChange(playerid, newstate, oldstate)
 		player_trucker[playerid][pt_BackCarTime] = TRUCKER_BACK_CAR_TIME;
 
 		if (IsPlayerInMission(playerid, mission_trucker)) {
-			trucker_BackCarTimer(playerid);
+			Trucker_BackCarTimer(playerid);
 		}
 	}
 	return 1;
 }
 
-forward trucker_BackCarTimer(playerid);
-public trucker_BackCarTimer(playerid)
+forward Trucker_BackCarTimer(playerid);
+public Trucker_BackCarTimer(playerid)
 {
 	if (player_trucker[playerid][pt_BackCarTime] > 0) {
 		new string[MAX_STRING];
-		format(string, sizeof(string), "Get back in the car!~n~You have only %d seconds.", player_trucker[playerid][pt_BackCarTime]);
-		Message_Alert(playerid, "SA Delivery", string, 1200);
+		format(string, sizeof(string), _(TRUCKER_ALERT_GET_BACK), player_trucker[playerid][pt_BackCarTime]);
+		Message_Alert(playerid, _(TRUCKER_ALERT_HEADER), string, 1200);
 
 		player_trucker[playerid][pt_BackCarTime]--;
-		SetTimerEx("trucker_BackCarTimer", 1000, 0, "d", playerid);
+		SetTimerEx("Trucker_BackCarTimer", 1000, 0, "d", playerid);
 	} else if (!IsVehicleIsRunner( GetPlayerVehicleID(playerid) )) {
-		trucker_CancelMission(playerid);
+		Trucker_CancelMission(playerid);
 		KillTimer(player_trucker[playerid][pt_MissionTimer]);
 	}
 	return 1;
 }
 
-stock trucker_Start(playerid)
+stock Trucker_Start(playerid)
 {
 	new
 		vehicleid = GetPlayerVehicleID(playerid),
-		trailer_type = GetTrailerType(vehicleid);
+		TrailerType:trailer_type = GetTrailerType(vehicleid);
 	
-	if (trailer_type == -1) {
+	if (trailer_type == TRAILER_TYPE_UNKNOWN) {
 		new string[MAX_LANG_VALUE_STRING];
+
 		format(string, sizeof(string), _(TRUCKER_GET_TRAILER), TRUCKER_TIME_GET_TRAILER);
 		SendClientMessage(playerid, COLOR_YELLOW, string);
-		Message_Alert(playerid, "SA Delivery", "Take the trailer.~n~You have only "#TRUCKER_TIME_GET_TRAILER" seconds.");
+
+		format(string, sizeof(string), _(TRUCKER_ALERT_GET_TRAILER_S), TRUCKER_TIME_GET_TRAILER);
+		Message_Alert(playerid, _(TRUCKER_ALERT_HEADER), string);
+		
+		Message_Objective(playerid, _(TRUCKER_OBJECTIVE_GET_TRAILER), -1);
 
 		player_trucker[playerid][pt_TrailerCheck_Time] = gettime();
-		player_trucker[playerid][pt_TrailerCheck_Timer] = SetTimerEx("trucker_Trailer_Check", 500, 1, "dd", playerid, vehicleid);
+		player_trucker[playerid][pt_TrailerCheck_Timer] = SetTimerEx("Trucker_Trailer_Check", 500, 1, "dd", playerid, vehicleid);
 		return 0;
 	}
 
 	new
-		dest_list[ sizeof(destination_array) ],
+		dest_list[ sizeof(gDestination) ],
 		dest_list_pos = 0;
 
-	for (new i = 0; i < sizeof(destination_array); i++) {
-		if (destination_array[i][dest_type] != trailer_type) {
+	for (new i = 0; i < sizeof(gDestination); i++) {
+		if (gDestination[i][e_dType] != trailer_type) {
 			continue;
 		}
 
@@ -258,56 +266,68 @@ stock trucker_Start(playerid)
 	new dest_id = dest_list[ random(dest_list_pos) ];
 
 	player_mapicon[playerid] = CreateDynamicMapIcon(
-		destination_array[dest_id][dest_x], destination_array[dest_id][dest_y], destination_array[dest_id][dest_z],
+		gDestination[dest_id][e_dPosX], gDestination[dest_id][e_dPosY], gDestination[dest_id][e_dPosZ],
 		0, 0xAA0000FF, .playerid = playerid, .style = MAPICON_GLOBAL
 	);
 	player_checkpoint[playerid] = CreateDynamicCP(
-		destination_array[dest_id][dest_x], destination_array[dest_id][dest_y], destination_array[dest_id][dest_z],
+		gDestination[dest_id][e_dPosX], gDestination[dest_id][e_dPosY], gDestination[dest_id][e_dPosZ],
 		10.0, .playerid = playerid, .streamdistance = 65000.0
 	);
 	TogglePlayerDynamicCP(playerid, player_checkpoint[playerid], 1);
 
 	new
 		zone[MAX_NAME],
-		type_name[MAX_STRING];
+		td_type_name[MAX_LANG_VALUE_STRING],
+		type_name[MAX_LANG_VALUE_STRING];
 
-	set(zone, Zone_GetNameByCoords(destination_array[dest_id][dest_x], destination_array[dest_id][dest_y], destination_array[dest_id][dest_z]));
+	Zone_GetNameByCoords(gDestination[dest_id][e_dPosX], gDestination[dest_id][e_dPosY], gDestination[dest_id][e_dPosZ], zone);
 	
 	switch (trailer_type) {
 		case TRAILER_TYPE_PRODUCT: {
-			set(type_name, _(TRUCKER_PRODUCTS));
+			strcat(type_name, _(TRUCKER_PRODUCTS));
+			strcat(td_type_name, _(TRUCKER_TEXTDRAW_PRODUCTS));
 		}
 		case TRAILER_TYPE_PETROL: {
-			set(type_name, _(TRUCKER_FUEL));
+			strcat(type_name, _(TRUCKER_FUEL));
+			strcat(td_type_name, _(TRUCKER_TEXTDRAW_FUEL));
 		}
 		case TRAILER_TYPE_CAREER: {
-			set(type_name, _(TRUCKER_COAL));
+			strcat(type_name, _(TRUCKER_COAL));
+			strcat(td_type_name, _(TRUCKER_TEXTDRAW_COAL));
 		}
 	}
 
 	player_SetQuestID(playerid, mission_GetQuestID(mission_trucker));
-	player_trucker[playerid][pt_MissionTimer] = SetTimerEx("trucker_CancelMission", TRUCKER_MISSION_TIME * 1000, 0, "d", playerid);
+	player_trucker[playerid][pt_MissionTimer] = SetTimerEx("Trucker_CancelMission", TRUCKER_MISSION_TIME * 1000, 0, "d", playerid);
 
 	new string[MAX_STRING];
 
 	format(string, sizeof(string), _(TRUCKER_MISSION_STARTED), type_name, zone, TRUCKER_MISSION_TIME / 60);
 	SendClientMessage(playerid, COLOR_YELLOW, string);
 
-	format(string, sizeof(string), "Mission started.~n~You have only %d minutes.", TRUCKER_MISSION_TIME / 60);
-	Message_Alert(playerid, "SA Delivery", string);
+	format(string, sizeof(string), _(TRUCKER_ALERT_STARTED), TRUCKER_MISSION_TIME / 60);
+	Message_Alert(playerid, _(TRUCKER_ALERT_HEADER), string);
+
+	format(string, sizeof(string), _(TRUCKER_OBJECTIVE_STARTED), td_type_name, zone);
+	Message_Objective(playerid, string, -1);
 	return 1;
 }
 
-stock trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+stock Trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	#pragma unused oldkeys, newkeys
+	if (!PRESSED(KEY_SUBMISSION)) {
+		return 0;
+	}
+
 	if (IsPlayerInMission(playerid, mission_trucker)) {
 		Dialog_Show(playerid, Dialog:TruckerCancel);
+		return 1;
 	}
-	return 1;
+
+	return 0;
 }
 
-stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
+stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 {
 	if (!IsMissionEnabled(mission_trucker)) {
 		return 0;
@@ -325,8 +345,8 @@ stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
 			return 1;
 		}
 		
-		if (!IsTrailerIsTrue(trailerid)) {
-			trucker_Stop(playerid);
+		if (!IsMissionTrailer(trailerid)) {
+			Trucker_Stop(playerid);
 			GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
 			
 			new Float:health;
@@ -337,7 +357,7 @@ stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
 			return 1;
 		}
 		
-		trucker_Stop(playerid);
+		Trucker_Stop(playerid);
 		KillTimer(player_trucker[playerid][pt_MissionTimer]);
 		GivePlayerMoney(playerid, mission_CalculateMoney(playerid, mission_trucker), 1);
 		GivePlayerXP(playerid, mission_CalculateXP(playerid, mission_trucker), 1);
@@ -348,11 +368,13 @@ stock trucker_OnPlayerEnterCheckpoint(playerid, cp)
 			format(string, sizeof(string), _(TRUCKER_MISSION_COMPLETE), TRUCKER_MISSION_TIME / 60);
 			SendClientMessage(playerid, COLOR_YELLOW, string);
 
-			format(string, sizeof(string), "Take the trailer.~n~You have only %d minutes.", TRUCKER_MISSION_TIME / 60);
-			Message_Alert(playerid, "SA Delivery", string);
+			format(string, sizeof(string), _(TRUCKER_ALERT_GET_TRAILER_M), TRUCKER_MISSION_TIME / 60);
+			Message_Alert(playerid, _(TRUCKER_ALERT_HEADER), string);
+
+			Message_Objective(playerid, _(TRUCKER_OBJECTIVE_GET_TRAILER), -1);
 
 			player_trucker[playerid][pt_TrailerCheck_Time] = gettime() + TRUCKER_MISSION_TIME - TRUCKER_TIME_GET_TRAILER;
-			player_trucker[playerid][pt_TrailerCheck_Timer] = SetTimerEx("trucker_Trailer_Check", 500, 1, "dd", playerid, vehicleid);
+			player_trucker[playerid][pt_TrailerCheck_Timer] = SetTimerEx("Trucker_Trailer_Check", 500, 1, "dd", playerid, vehicleid);
 		}
 	}
 	return 1;
@@ -377,7 +399,7 @@ DialogResponse:TruckerMenu(playerid, response, listitem, inputtext[])
 		format(string, sizeof(string), _(TRUCKER_MISSION_WAIT), player_trucker[playerid][pt_PauseTime] - gettime());
 		SendClientMessage(playerid, COLOR_RED, string);
 	} else {
-		trucker_Start(playerid);
+		Trucker_Start(playerid);
 	}
 	return 1;
 }
@@ -394,13 +416,13 @@ DialogResponse:TruckerCancel(playerid, response, listitem, inputtext[])
 	}
 
 	if (IsPlayerInMission(playerid, mission_trucker)) {
-		trucker_CancelMission(playerid);
+		Trucker_CancelMission(playerid);
 		KillTimer(player_trucker[playerid][pt_MissionTimer]);
 	}
 	return 1;
 }
 
-stock trucker_OnPlayerDisconnect(playerid, reason)
+stock Trucker_OnPlayerDisconnect(playerid, reason)
 {
 	#pragma unused reason
 	if (!IsMissionEnabled(mission_trucker)) {
@@ -413,7 +435,7 @@ stock trucker_OnPlayerDisconnect(playerid, reason)
 			player_trucker[playerid][pt_MissionTimer] = 0;
 		}
 
-		trucker_Stop(playerid);
+		Trucker_Stop(playerid);
 	}
 
 	if (player_trucker[playerid][pt_TrailerCheck_Timer] != 0) {
@@ -426,32 +448,32 @@ stock trucker_OnPlayerDisconnect(playerid, reason)
 	return 1;
 }
 
-stock trucker_OnPlayerDeath(playerid, killerid, reason)
+stock Trucker_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused killerid, reason
 	if (!IsMissionEnabled(mission_trucker) || !IsPlayerInMission(playerid, mission_trucker)) {
 		return 1;
 	}
-	trucker_Stop(playerid);
+	Trucker_Stop(playerid);
 	GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
 	SendClientMessage(playerid, COLOR_RED, _(TRUCKER_MISSION_FAILED));
 	return 1;
 }
 
-stock trucker_OnVehicleDeath(vehicleid, killerid)
+stock Trucker_OnVehicleDeath(vehicleid, killerid)
 {
 	if (!IsMissionEnabled(mission_trucker)) {
 		return 0;
 	}
 	if (IsVehicleIsRunner(vehicleid)) {
 		if (IsPlayerInMission(killerid, mission_trucker)) {
-			trucker_Stop(killerid);
+			Trucker_Stop(killerid);
 			GivePlayerMoney(killerid, -mission_CalculateMoney(killerid, mission_trucker), 1);
 			SendClientMessage(killerid, COLOR_RED, _(TRUCKER_MISSION_FAILED_DESTROY));
 		} else {
 			if (player_trucker[killerid][pt_TrailerCheck_Timer] != 0) {
 				SendClientMessage(killerid, COLOR_RED, _(TRUCKER_MISSION_FAILED_DECLINE));
-				Message_Alert(killerid, "SA Delivery", "Mission aborted");
+				Message_Alert(killerid, _(TRUCKER_ALERT_HEADER), _(TRUCKER_ALERT_ABORTED));
 
 				KillTimer(player_trucker[killerid][pt_TrailerCheck_Timer]);
 				player_trucker[killerid][pt_TrailerCheck_Timer] = 0;
@@ -461,25 +483,33 @@ stock trucker_OnVehicleDeath(vehicleid, killerid)
 	return 1;
 }
 
-forward trucker_Trailer_Check(playerid, vehicleid);
-public trucker_Trailer_Check(playerid, vehicleid)
+forward Trucker_Trailer_Check(playerid, vehicleid);
+public Trucker_Trailer_Check(playerid, vehicleid)
 {
 	if (GetPlayerVehicleID(playerid) == 0) {
 		SendClientMessage(playerid, COLOR_RED, _(TRUCKER_MISSION_FAILED_DECLINE));
-		Message_Alert(playerid, "SA Delivery", "Mission aborted");
+		Message_Alert(playerid, _(TRUCKER_ALERT_HEADER), _(TRUCKER_ALERT_ABORTED));
+
+		Message_ObjectiveHide(playerid);
 
 		KillTimer(player_trucker[playerid][pt_TrailerCheck_Timer]);
 		SetVehicleToRespawn(vehicleid);
 		return 0;
 	}
 
+	static previous_time;
 	new time_left = player_trucker[playerid][pt_TrailerCheck_Time] + TRUCKER_TIME_GET_TRAILER - gettime();
-	switch (time_left) {
-		case 10, TRUCKER_TIME_GET_TRAILER / 4, TRUCKER_TIME_GET_TRAILER / 2: {
-			new string[MAX_STRING];
-			format(string, sizeof(string), "Take the trailer.~n~You have only %d seconds.", time_left);
-			Message_Alert(playerid, "SA Delivery", string);
+
+	if (time_left != previous_time) {
+		switch (time_left) {
+			case 10, TRUCKER_TIME_GET_TRAILER / 4, TRUCKER_TIME_GET_TRAILER / 2: {
+				new string[MAX_STRING];
+				format(string, sizeof(string), _(TRUCKER_ALERT_GET_TRAILER_S), time_left);
+				Message_Alert(playerid, _(TRUCKER_ALERT_HEADER), string);
+			}
 		}
+
+		previous_time = time_left;
 	}
 
 	if (time_left <= 0) {
@@ -488,25 +518,26 @@ public trucker_Trailer_Check(playerid, vehicleid)
 		player_trucker[playerid][pt_TrailerCheck_Time] = 0;
 		KillTimer(player_trucker[playerid][pt_TrailerCheck_Timer]);
 		SendClientMessage(playerid, COLOR_RED, _(TRUCKER_MISSION_FAILED_TRAILER));
-		Message_Alert(playerid, "SA Delivery", "Mission aborted");
+		Message_Alert(playerid, _(TRUCKER_ALERT_HEADER), _(TRUCKER_ALERT_ABORTED));
+		Message_ObjectiveHide(playerid);
 		return 0;
 	}
 	
 	new trailerid = GetVehicleTrailer(vehicleid);
-	if (trailerid == 0 || !IsTrailerIsTrue(trailerid)) {
+	if (trailerid == 0 || !IsMissionTrailer(trailerid)) {
 		return 0;
 	}
 	
 	KillTimer(player_trucker[playerid][pt_TrailerCheck_Timer]);
-	trucker_Start(playerid);
+	Trucker_Start(playerid);
 	return 1;
 }
 
-forward trucker_CancelMission(playerid);
-public trucker_CancelMission(playerid)
+forward Trucker_CancelMission(playerid);
+public Trucker_CancelMission(playerid)
 {
 	if (IsPlayerInMission(playerid, mission_trucker)) {
-		trucker_Stop(playerid);
+		Trucker_Stop(playerid);
 		GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
 		SendClientMessage(playerid, COLOR_RED, _(TRUCKER_MISSION_FAILED_DESCRIPTION));
 		
@@ -517,11 +548,13 @@ public trucker_CancelMission(playerid)
 	}
 }
 
-stock trucker_Stop(playerid)
+stock Trucker_Stop(playerid)
 {
 	TogglePlayerDynamicCP(playerid, player_checkpoint[playerid], 0);
 	DestroyDynamicCP(player_checkpoint[playerid]);
 	DestroyDynamicMapIcon(player_mapicon[playerid]);
+
+	Message_ObjectiveHide(playerid);
 
 	player_trucker[playerid][pt_BackCarTime] = 0;
 
@@ -553,52 +586,58 @@ stock trucker_Stop(playerid)
 	}
 }
 
-stock IsVehicleIsRunner(vehicleid)
+static stock IsVehicleIsRunner(vehicleid)
 {
-	for (new i = 0; i < sizeof(linerunner_array); i++) {
-		if (linerunner_array[i][trucker_Id] == vehicleid) {
+	for (new i = 0; i < sizeof(gLinerunner); i++) {
+		if (gLinerunner[i][e_tID] == vehicleid) {
 			return 1;
 		}
 	}
 	return 0;
 }
 
-stock IsTrailerIsTrue(trailerid)
+static stock IsMissionTrailer(trailerid)
 {
-	for (new i = 0; i < sizeof(trailer_array); i++) {
-		if (trailer_array[i][trucker_Id] == trailerid) {
+	for (new i = 0; i < sizeof(gTrailer); i++) {
+		if (gTrailer[i][e_tID] == trailerid) {
 			return 1;
 		}
 	}
 	return 0;
 }
 
-stock GetTrailerType(vehicleid)
+static stock TrailerType:GetTrailerType(vehicleid)
 {
 	switch ( GetVehicleModel( GetVehicleTrailer(vehicleid) ) ) {
-		case 435, 591: return TRAILER_TYPE_PRODUCT;
-		case 584: return TRAILER_TYPE_PETROL;
-		case 450: return TRAILER_TYPE_CAREER;
+		case 435, 591: {
+			return TRAILER_TYPE_PRODUCT;
+		}
+		case 584: {
+			return TRAILER_TYPE_PETROL;
+		}
+		case 450: {
+			return TRAILER_TYPE_CAREER;
+		}
 	}
-	return -1;
+	return TRAILER_TYPE_UNKNOWN;
 }
 
-stock trucker_SetPlayerTryCount(playerid, value)
+stock Trucker_SetPlayerTryCount(playerid, value)
 {
 	player_trucker[playerid][pt_TryCount] = value;
 }
 
-stock trucker_GetPlayerTryCount(playerid)
+stock Trucker_GetPlayerTryCount(playerid)
 {
 	return player_trucker[playerid][pt_TryCount];
 }
 
-stock trucker_SetPlayerPauseTime(playerid, value)
+stock Trucker_SetPlayerPauseTime(playerid, value)
 {
 	player_trucker[playerid][pt_PauseTime] = value;
 }
 
-stock trucker_GetPlayerPauseTime(playerid)
+stock Trucker_GetPlayerPauseTime(playerid)
 {
 	return player_trucker[playerid][pt_PauseTime];
 }

@@ -393,22 +393,20 @@ new zones[][zoneinfo] = {
 { "Whetstone",                   -2997.40, -2892.90,  -242.90, -1213.90, -1115.50,   900.00}
 };
 
-stock Zone_GetNameByCoords(Float:x, Float:y, Float:z) // will return first zone name that XYZ is found in
+stock Zone_GetNameByCoords(Float:x, Float:y, Float:z, name[], size = sizeof(name))
 {
-	new name[MAX_NAME] = "Unknown";
-	if (x == 0.0 && y == 0.0)
-	{
-		return name;
+	if (x == 0.0 && y == 0.0) {
+		return 0;
 	}
-	for (new zoneid = 0; zoneid < sizeof(zones); zoneid++)
-	{
-		if (Zone_IsCoordsInZone(x, y, z, zoneid))// we are in this zone
-		{
-			set(name, zones[zoneid][zone_name]);
-			return name;
+
+	for (new zoneid = 0; zoneid < sizeof(zones); zoneid++) {
+		if (Zone_IsCoordsInZone(x, y, z, zoneid)) {
+			strmid(name, zones[zoneid][zone_name], 0, strlen(zones[zoneid][zone_name]), size);
+			break;
 		}
 	}
-	return name;
+
+	return 1;
 }
 
 stock Zone_GetIdByCoords(Float:x, Float:y, Float:z)

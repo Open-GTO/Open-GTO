@@ -322,7 +322,9 @@ Enterexit_OnPlayerConnect(playerid)
 
 Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
 {
-	#pragma unused oldkeys, newkeys
+	if (!PRESSED(KEY_USING)) {
+		return 0;
+	}
 
 	new
 		id = Enterexit_GetPlayerEnterID(playerid);
@@ -358,6 +360,7 @@ Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
 			return 1;
 		}
 	}
+
 	return 0;
 }
 

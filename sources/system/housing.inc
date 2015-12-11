@@ -939,9 +939,16 @@ stock HouseKeepUp()
 	}
 }
 
-stock housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	#pragma unused oldkeys, newkeys
+	if (!PRESSED(KEY_USING)) {
+		return 0;
+	}
+
+	if (!IsPlayerAtHouse(playerid)) {
+		return 0;
+	}
+
 	new player_vw = GetPlayerVirtualWorld(playerid);
 	for (new id = 0; id < sizeof(Houses); id++)
 	{
@@ -1012,6 +1019,7 @@ stock housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		}
 		SetPlayerToHouseID(playerid,-1);
 	}
+
 	return 1;
 }
 

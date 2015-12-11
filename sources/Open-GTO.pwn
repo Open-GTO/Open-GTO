@@ -233,7 +233,7 @@ public OnGameModeInit()
 	Custom_OnGameModeInit();
 
 	// missions
-	trucker_OnGameModeInit();
+	Trucker_OnGameModeInit();
 	swagup_OnGameModeInit();
 
 	// services
@@ -338,7 +338,7 @@ public OnPlayerDisconnect(playerid, reason)
 		return 1;
 	}
 	player_OnPlayerDisconnect(playerid, reason);
-	trucker_OnPlayerDisconnect(playerid, reason);
+	Trucker_OnPlayerDisconnect(playerid, reason);
 	pt_chat_OnPlayerDisconnect(playerid, reason);
 	gh_OnPlayerDisconnect(playerid, reason);
 	pl_weapon_OnPlayerDisconnect(playerid, reason);
@@ -383,7 +383,7 @@ public OnPlayerEnterDynamicCP(playerid, checkpointid)
 {
 	dm_OnPlayerEnterCheckpoint(playerid);
 
-	if (trucker_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
+	if (Trucker_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
 		return 1;
 	}
 	if (wshop_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
@@ -445,7 +445,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	}
 	
 	player_OnPlayerDeath(playerid, killerid, reason);
-	trucker_OnPlayerDeath(playerid, killerid, reason);
+	Trucker_OnPlayerDeath(playerid, killerid, reason);
 	gang_OnPlayerDeath(playerid, killerid, reason);
 	pl_weapon_OnPlayerDeath(playerid, killerid, reason);
 
@@ -558,59 +558,46 @@ public OnPlayerUpdate(playerid)
 
 public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	if (PRESSED(KEY_FIRE) || PRESSED(KEY_SECONDARY_ATTACK)) {
-		if ( GetPVarInt(playerid, "bar_Drinking") == 1 ) {
-			return bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		}
-	}
-
-	if (PRESSED(KEY_USING)) {
-		if (Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)) {
-			return 1;
-		}
-
-		if (Beachside_OnPlayerKeySC(playerid, newkeys, oldkeys)) {
-			return 1;
-		}
-
-		if (IsPlayerAtHouse(playerid)) {
-			return housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		}
-
-		if (IsPlayerAtBusiness(playerid)) {
-			return business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		}
-		
-		Dialog_Show(playerid, Dialog:PlayerMenu);
+	if (bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
 		return 1;
 	}
 
-	if (PRESSED(KEY_SUBMISSION)) {
-		new vehicleid = GetPlayerVehicleID(playerid);
-		if ( vehicleid != 0 && IsVehicleIsRunner(vehicleid) ) {
-			trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
-		}
-
-		if (Tuning_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
-			return 1;
-		}
-
-		if (Fuelstation_PlayerFillVehicle(playerid, vehicleid)) {
-			return 1;
-		}
-
+	if (Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)) {
 		return 1;
 	}
 
-	if (PRESSED(KEY_NO)) {
-		new player_state = GetPlayerState(playerid);
-		switch (player_state) {
-			case PLAYER_STATE_DRIVER: {
-				Dialog_Show(playerid, Dialog:VehicleMenu);
-			}
-		}
+	if (Beachside_OnPlayerKeySC(playerid, newkeys, oldkeys)) {
 		return 1;
 	}
+
+	if (housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+		return 1;
+	}
+
+	if (business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+		return 1;
+	}
+
+	if (PMenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+		return 1;
+	}
+
+	if (Trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+		return 1;
+	}
+
+	if (Tuning_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+		return 1;
+	}
+
+	if (Fuelst_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+		return 1;
+	}
+
+	if (VMenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+		return 1;
+	}
+
 	return 1;
 }
 
@@ -628,7 +615,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	Vehicle_OnPlayerStateChange(playerid, newstate, oldstate);
 	pt_speed_OnPlayerStateChange(playerid, newstate, oldstate);
-	trucker_OnPlayerStateChange(playerid, newstate, oldstate);
+	Trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 	Spectate_OnPlayerStateChange(playerid, newstate, oldstate);
 	weapon_OnPlayerStateChange(playerid, newstate, oldstate);
 
@@ -696,7 +683,7 @@ public OnVehicleSpawn(vehicleid)
 
 public OnVehicleDeath(vehicleid, killerid)
 {
-	trucker_OnVehicleDeath(vehicleid, killerid);
+	Trucker_OnVehicleDeath(vehicleid, killerid);
 	pveh_OnVehicleDeath(vehicleid, killerid);
 	return 1;
 }

@@ -77,7 +77,12 @@ new DMCentreCP[MAX_DM][CoordInfo];
 #define GetDMCPY(%0) DMStartCP[%0][Coord_Y]
 #define GetDMCPZ(%0) DMStartCP[%0][Coord_Z]
 
-#define GetDMStartZoneName(%0) Zone_GetNameByCoords(GetDMCPX(%0), GetDMCPY(%0), GetDMCPZ(%0))
+stock GetDMStartZoneName(dmid)
+{
+	new name[MAX_NAME];
+	Zone_GetNameByCoords(GetDMCPX(dmid), GetDMCPY(dmid), GetDMCPZ(dmid), name);
+	return name;
+}
 //--------------------------------------------------------------
 
 stock deathmatch_LoadConfig(file_config)

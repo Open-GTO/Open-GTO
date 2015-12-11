@@ -189,7 +189,7 @@ public Vehicle_Fuel_SpeedTimer()
 		}
 		
 		speed_count = GetVehicleSpeed(vehicleid);
-		gFuel[vehicleid] -= (speed_count + 1) / VEHICLE_FUEL_TARIF;
+		gFuel[vehicleid] -= float(speed_count + 1) / float(VEHICLE_FUEL_TARIF);
 
 		Vehicle_UpdateTextdraw(playerid, speed_count, gFuel[vehicleid]);
 	}

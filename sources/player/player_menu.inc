@@ -12,6 +12,15 @@
 #define _player_menu_included
 #pragma library player_menu
 
+PMenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+{
+	if (!PRESSED(KEY_USING)) {
+		return 0;
+	}
+
+	Dialog_Show(playerid, Dialog:PlayerMenu);
+	return 1;
+}
 
 DialogCreate:PlayerMenu(playerid)
 {
