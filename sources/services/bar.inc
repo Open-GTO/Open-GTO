@@ -111,7 +111,7 @@ bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		bar_GulpStop(playerid);
 		return 1;
 	}
-	return 1;
+	return 0;
 }
 
 bar_OnPlayerEnterCheckpoint(playerid, cp)
