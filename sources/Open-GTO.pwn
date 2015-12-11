@@ -354,7 +354,7 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 	return 1;
 }
 
-public OnPlayerPickUpPickup(playerid, pickupid)
+public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
 	if (pl_weapon_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
