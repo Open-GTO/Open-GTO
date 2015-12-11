@@ -109,8 +109,9 @@ bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		}
 	} else if ( PRESSED ( KEY_SECONDARY_ATTACK ) ) {
 		bar_GulpStop(playerid);
+		return 1;
 	}
-	return 1;
+	return 0;
 }
 
 bar_OnPlayerEnterCheckpoint(playerid, cp)

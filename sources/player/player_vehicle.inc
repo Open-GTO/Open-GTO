@@ -179,7 +179,7 @@ stock CreateVehicleDbString(playerid, slot)
 
 stock SetVehicleFromDbString(playerid, slot, dbstring[])
 {
-	if (sscanf(dbstring, "p</>ii[2]fiii[" #Vehicle_COMPONENTS "]",
+	if (sscanf(dbstring, "p</>ia<i>[2]fiia<i>[" #Vehicle_COMPONENTS "]",
 		    PlayerVehicle[playerid][slot][pv_Model],
 		    PlayerVehicle[playerid][slot][pv_Color],
 		    PlayerVehicle[playerid][slot][pv_Fuel],

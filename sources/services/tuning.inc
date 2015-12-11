@@ -181,11 +181,14 @@ Tuning_OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 
 Tuning_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	#pragma unused newkeys, oldkeys
+	if (!PRESSED(KEY_SUBMISSION)) {
+		return 0;
+	}
 
 	if (gInfo[playerid][e_tPlaceID] != -1) {
 		return Tuning_Start(playerid);
 	}
+
 	return 0;
 }
 

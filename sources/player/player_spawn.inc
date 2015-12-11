@@ -12,34 +12,43 @@
 #define _pl_spawn_included
 #pragma library pl_spawn
 
-// типы спавнов
-#define SPAWN_HOUSE_NONE	-1
-#define SPAWN_HOUSE_GANG	-2
+// spawn types
+forward SpawnType:Player_GetSpawnType(playerid);
 
-enum camera_PlaceArray_Info {
-	camera_Interior,
-	Float:camera_pos_X,
-	Float:camera_pos_Y,
-	Float:camera_pos_Z,
-	Float:camera_look_X,
-	Float:camera_look_Y,
-	Float:camera_look_Z,
+enum SpawnType {
+	SPAWN_TYPE_NONE,
+	SPAWN_TYPE_HOUSE,
+	SPAWN_TYPE_GANG,
 }
 
-static camera_PlaceArray[][camera_PlaceArray_Info] = {
-	{0,		-2785.616943, 26.270446, 17.054141,		-2775.761230, 15.552896, 12.677975},
-	{0,		-785.4092, 1668.5923, 67.8387,			-785.9841, 1667.7692, 67.6387},
-	{0,		1937.4159, 1251.2012, 97.4819,			1938.1495, 1251.8807, 97.0875}
+static
+	SpawnType:gPlayerSpawnType[MAX_PLAYERS];
+
+// camera
+enum e_Spawn_Camera_Info {
+	e_scInterior,
+	Float:e_scPosX,
+	Float:e_scPosY,
+	Float:e_scPosZ,
+	Float:e_scLookPosX,
+	Float:e_scLookPosY,
+	Float:e_scLookPosZ,
+}
+
+static gCamera[][e_Spawn_Camera_Info] = {
+	{0, -2785.616943, 26.270446, 17.054141, -2775.761230, 15.552896, 12.677975},
+	{0, -785.4092, 1668.5923, 67.8387,      -785.9841, 1667.7692, 67.6387},
+	{0, 1937.4159, 1251.2012, 97.4819,      1938.1495, 1251.8807, 97.0875}
 };
 
-enum spawns_Info {
-	Float:spawn_x,
-	Float:spawn_y,
-	Float:spawn_z,
-	Float:spawn_a
+enum e_Spawns_Info {
+	Float:e_sPosX,
+	Float:e_sPosY,
+	Float:e_sPosZ,
+	Float:e_sAngle
 }
 
-static Float:spawns_array[][spawns_Info] = {
+static Float:gSpawns[][e_Spawns_Info] = {
 	{2517.5344, -1694.0607, 18.4772, 47.2527},
 	{2494.6113, -1694.2920, 23.5697, 7.8082},
 	{2524.2092, -1675.8125, 19.9302, 65.8183},
@@ -103,52 +112,45 @@ static Float:spawns_array[][spawns_Info] = {
 	{1705.2347, 1025.6808, 10.8203, 0.0}
 };
 
-stock pl_spawn_OnPlayerRequestClass(playerid, classid)
+Player_Spawn_OnPlayerRequestC(playerid, classid)
 {
 	#pragma unused classid
 	if (player_IsLogin(playerid)) {
 		TogglePlayerSpectating(playerid, 1);
 
 		new interior, world, Float:spawn_pos[4];
-		pl_spawn_GetSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
+		GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
 		SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
 		
 		TogglePlayerSpectating(playerid, 0);
 		return 0;
 	}
 
-	// clean chat
+	// clear chat
 	Chat_Clear(playerid);
 
 	// hide class selection buttons
 	TogglePlayerSpectating(playerid, 1);
 
 	// set camera pos
-	new camera_id = random( sizeof(camera_PlaceArray) );
-	SetPlayerInterior(playerid, camera_PlaceArray[camera_id][camera_Interior]);
-	SetPlayerCameraPos(playerid, camera_PlaceArray[camera_id][camera_pos_X], camera_PlaceArray[camera_id][camera_pos_Y], camera_PlaceArray[camera_id][camera_pos_Z]);
-	SetPlayerCameraLookAt(playerid, camera_PlaceArray[camera_id][camera_look_X], camera_PlaceArray[camera_id][camera_look_Y], camera_PlaceArray[camera_id][camera_look_Z]);
+	new camera_id = random( sizeof(gCamera) );
+	SetPlayerInterior(playerid, gCamera[camera_id][e_scInterior]);
+	SetPlayerCameraPos(playerid, gCamera[camera_id][e_scPosX], gCamera[camera_id][e_scPosY], gCamera[camera_id][e_scPosZ]);
+	SetPlayerCameraLookAt(playerid, gCamera[camera_id][e_scLookPosX], gCamera[camera_id][e_scLookPosY], gCamera[camera_id][e_scLookPosZ]);
 	return 1;
-}
-
-stock UpdatePlayerSpawnInfo(playerid)
-{
-	pl_spawn_SaveDeathInfo(playerid);
-	player_SetCoord(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
-	
-	new interior, world, Float:spawn_pos[4];
-	pl_spawn_GetSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
-	SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
 }
 
 DialogCreate:PlayerSpawnMenu(playerid)
 {
-	new string[ MAX_NAME * (MAX_PLAYER_HOUSES + 1) + 8 + (2 * (MAX_PLAYER_HOUSES + 1)) ],
+	new
+		string[ MAX_NAME * (MAX_PLAYER_HOUSES + 2) ],
 		count = 0,
-		playername[MAX_PLAYER_NAME+1];
+		playername[MAX_PLAYER_NAME + 1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
 	
+	strcat(string, _(PLAYER_SPAWN_LIST_NEARLY_POINT), sizeof(string));
+
 	new gangid = player_GetGangID(playerid);
 	new gang_houseid = -1;
 
@@ -156,9 +158,7 @@ DialogCreate:PlayerSpawnMenu(playerid)
 		gang_houseid = gang_GetHouseID(gangid);
 		if (gang_houseid != -1) {
 			count++;
-			strcat(string, "[банда] ", sizeof(string));
-			strcat(string, house_GetName(gang_houseid), sizeof(string));
-			strcat(string, "\n", sizeof(string));
+			format(string, sizeof(string), _(PLAYER_SPAWN_LIST_GANG), string, house_GetName(gang_houseid));
 		}
 	}
 
@@ -171,14 +171,17 @@ DialogCreate:PlayerSpawnMenu(playerid)
 	}
 
 	if (count < 1) {
-		Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu, "Меню выбора спавна", "У вас нет доступных спавнов", "Назад", "Отмена");
+		Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
+			_(PLAYER_SPAWN_DIALOG_HEADER),
+			_(PLAYER_SPAWN_DIALOG_INFO),
+			_(PLAYER_SPAWN_DIALOG_BUTTON_BACK), _(PLAYER_SPAWN_DIALOG_BUTTON_BACK));
 		return 1;
 	}
 
 	Dialog_Open(playerid, Dialog:PlayerSpawnMenu, DIALOG_STYLE_LIST,
-		"Меню выбора спавна",
+		_(PLAYER_SPAWN_DIALOG_HEADER),
 		string,
-		"ОК", "Назад"
+		_(PLAYER_SPAWN_DIALOG_BUTTON_OK), _(PLAYER_SPAWN_DIALOG_BUTTON_BACK)
 	);
 	return 1;
 }
@@ -193,14 +196,20 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 	new playername[MAX_PLAYER_NAME + 1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	
+	if (listitem == 0) {
+		Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
+		Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
+		return 1;
+	}
+
 	new gangid = player_GetGangID(playerid);
-	if (listitem == 0 && gangid != 0 && gang_GetHouseID(gangid) != -1) {
-		player_SetSpawnHouseID(playerid, SPAWN_HOUSE_GANG);
-		SendClientMessage(playerid, COLOR_WHITE, "Место спавна изменено.");
+	if (listitem == 1 && gangid != 0 && gang_GetHouseID(gangid) != -1) {
+		Player_SetSpawnType(playerid, SPAWN_TYPE_GANG);
+		Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
 		return 1;
 	}
 	
-	new count = 0;
+	new count = 1;
 	if (gangid != 0 && gang_GetHouseID(gangid) != -1) {
 		count++;
 	}
@@ -211,12 +220,15 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 		}
 
 		if (listitem == count) {
-			player_SetSpawnHouseID(playerid, i);
-			SendClientMessage(playerid, COLOR_WHITE, "Место спавна изменено.");
+			Player_SetSpawnType(playerid, SPAWN_TYPE_HOUSE);
+			Player_SetSpawnHouseID(playerid, i);
+
 			// если игрок, сменивший спавн - лидер банды, то устанавливаем домом банды этот дом
 			if (gang_IsLeader(playerid)) {
 				gang_SetHouse(player_GetGangID(playerid), i);
-				SendClientMessage(playerid, COLOR_WHITE, "Место спавна для банды изменено.");
+				Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_GANG_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
+			} else {
+				Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
 			}
 			return 1;
 		}
@@ -226,9 +238,9 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-stock pl_spawn_GetSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &Float:spos_a, &interior, &world)
+stock GetPlayerSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &Float:spos_a, &interior, &world)
 {
-	player_GetCoord(playerid, spos_x, spos_y, spos_z, spos_a, interior, world);
+	Player_GetCoord(playerid, spos_x, spos_y, spos_z, spos_a, interior, world);
 
 	if (spos_x != 0.0 && spos_y != 0.0 && spos_z != 0.0) {
 		return 1;
@@ -239,80 +251,94 @@ stock pl_spawn_GetSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z
 		return 1;
 	}
 
-	new house_id = player_GetSpawnHouseID(playerid);
-	if (house_id >= 0 && !IsPlayerHouse(playerid, house_id) && !IsPlayerRenter(playerid, house_id)) {
-		house_id = SPAWN_HOUSE_NONE;
-		player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
-		SendClientMessage(playerid, COLOR_RED, lang_texts[8][60]);
-	}
+	new SpawnType:spawn_type = Player_GetSpawnType(playerid);
 
-	if (house_id == SPAWN_HOUSE_NONE) {
-		new spawnid = pl_spawn_GetSpawnID(playerid);
-		spos_x = spawns_array[spawnid][spawn_x];
-		spos_y = spawns_array[spawnid][spawn_y];
-		spos_z = spawns_array[spawnid][spawn_z];
-		spos_a = spawns_array[spawnid][spawn_a];
-	} else if (house_id == SPAWN_HOUSE_GANG) {
+	if (spawn_type == SPAWN_TYPE_HOUSE) {
+		new house_id = Player_GetSpawnHouseID(playerid);
+		if (house_id >= 0 && !IsPlayerHouse(playerid, house_id) && !IsPlayerRenter(playerid, house_id)) {
+			Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
+			Player_SetSpawnHouseID(playerid, -1);
+			SendClientMessage(playerid, COLOR_RED, lang_texts[8][60]);
+		} else {
+			house_GetPickupPos(house_id, spos_x, spos_y, spos_z);
+		}
+	} else if (spawn_type == SPAWN_TYPE_GANG) {
 		new gangid = player_GetGangID(playerid);
 		new gang_houseid = gang_GetHouseID(gangid);
 
 		if (gangid == 0 || gang_houseid == -1) {
-			player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+			Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
 		} else {
 			house_GetPickupPos(gang_houseid, spos_x, spos_y, spos_z);
 		}
-	} else {
-		house_GetPickupPos(house_id, spos_x, spos_y, spos_z);
 	}
+
+	if (spawn_type == SPAWN_TYPE_NONE) {
+		new spawnid = GetPlayerSpawnID(playerid);
+		spos_x = gSpawns[spawnid][e_sPosX];
+		spos_y = gSpawns[spawnid][e_sPosY];
+		spos_z = gSpawns[spawnid][e_sPosZ];
+		spos_a = gSpawns[spawnid][e_sAngle];
+	}
+
 	return 1;
 }
 
-stock pl_spawn_SetSpawnPos(playerid)
+stock SetPlayerPosToSpawn(playerid)
 {
 	new interior, world, Float:spawn_pos[4];
-	pl_spawn_GetSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
+	GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
 
 	SetPlayerPosEx(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
 	return 1;
 }
 
-stock pl_spawn_GetSpawnID(playerid)
+stock UpdatePlayerSpawnInfo(playerid)
+{
+	SaveDeathInfo(playerid);
+	Player_SetCoord(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
+	
+	new interior, world, Float:spawn_pos[4];
+	GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
+	SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
+}
+
+/*
+	Private functions
+*/
+
+static stock GetPlayerSpawnID(playerid)
 {
 	new
 		index = Enterexit_GetPlayerIndex(playerid),
-		interior = pl_spawn_GetDeathInterior(playerid),
-		world = pl_spawn_GetDeathVirtualWorld(playerid);
+		interior = GetDeathInterior(playerid),
+		world = GetDeathVirtualWorld(playerid);
 
 	if (Enterexit_IsValidInfo(index, interior, world)) {
 		new Float:pos[3];
 		Enterexit_GetPos(index, pos[0], pos[1], pos[2]);
-		pl_spawn_SetDeathPos(playerid, pos[0], pos[1], pos[2]);
+		SetDeathPos(playerid, pos[0], pos[1], pos[2]);
 	} else if (world != 0 || interior != 0) {
-		return pl_spawn_GetRandomSpawnID(playerid);
+		return GetRandomSpawnID(playerid);
 	}
 	
-	return pl_spawn_GetNearestSpawnID(playerid);
+	return GetNearestSpawnID(playerid);
 }
 
-stock pl_spawn_GetRandomSpawnID(playerid)
+static stock GetRandomSpawnID(playerid)
 {
 	new id = GetPVarInt(playerid, "random_id");
 	if (id != -1) {
 		return id;
 	}
 
-	id = random( sizeof(spawns_array) + 1 );
+	id = random( sizeof(gSpawns) + 1 );
 	SetPVarInt(playerid, "random_id", id);
 
 	return id;
 }
 
-stock pl_spawn_UpdateRandomSpawnID(playerid)
-{
-	SetPVarInt(playerid, "random_id", -1);
-}
-
-stock pl_spawn_GetNearestSpawnID(playerid)
+static stock GetNearestSpawnID(playerid)
 {
 	new
 		Float:min_distance = 99999.0,
@@ -320,10 +346,10 @@ stock pl_spawn_GetNearestSpawnID(playerid)
 		Float:pos[3],
 		id = 0;
 
-	pl_spawn_GetDeathPos(playerid, pos[0], pos[1], pos[2]);
+	GetDeathPos(playerid, pos[0], pos[1], pos[2]);
 
-	for (new i = 0; i < sizeof(spawns_array); i++) {
-		curr_distance = GetDistanceBetweenPoints(pos[0], pos[1], pos[2], spawns_array[i][spawn_x], spawns_array[i][spawn_y], spawns_array[spawn_z][spawn_z]);
+	for (new i = 0; i < sizeof(gSpawns); i++) {
+		curr_distance = GetDistanceBetweenPoints(pos[0], pos[1], pos[2], gSpawns[i][e_sPosX], gSpawns[i][e_sPosY], gSpawns[e_sPosZ][e_sPosZ]);
 		
 		if (min_distance > curr_distance) {
 			min_distance = curr_distance;
@@ -334,17 +360,17 @@ stock pl_spawn_GetNearestSpawnID(playerid)
 	return id;
 }
 
-stock pl_spawn_SaveDeathInfo(playerid)
+static stock SaveDeathInfo(playerid)
 {
 	new Float:pos[3];
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	pl_spawn_SetDeathPos(playerid, pos[0], pos[1], pos[2]);
-	pl_spawn_SetDeathInterior(playerid, GetPlayerInterior(playerid));
-	pl_spawn_SetDeathVirtualWorld(playerid, GetPlayerVirtualWorld(playerid));
+	SetDeathPos(playerid, pos[0], pos[1], pos[2]);
+	SetDeathInterior(playerid, GetPlayerInterior(playerid));
+	SetDeathVirtualWorld(playerid, GetPlayerVirtualWorld(playerid));
 	return 1;
 }
 
-stock pl_spawn_GetDeathPos(playerid, &Float:x, &Float:y, &Float:z)
+static stock GetDeathPos(playerid, &Float:x, &Float:y, &Float:z)
 {
 	x = GetPVarFloat(playerid, "pl_spawn_DeathPosX");
 	y = GetPVarFloat(playerid, "pl_spawn_DeathPosY");
@@ -352,7 +378,7 @@ stock pl_spawn_GetDeathPos(playerid, &Float:x, &Float:y, &Float:z)
 	return 1;
 }
 
-stock pl_spawn_SetDeathPos(playerid, Float:x, Float:y, Float:z)
+static stock SetDeathPos(playerid, Float:x, Float:y, Float:z)
 {
 	SetPVarFloat(playerid, "pl_spawn_DeathPosX", x);
 	SetPVarFloat(playerid, "pl_spawn_DeathPosY", y);
@@ -360,50 +386,54 @@ stock pl_spawn_SetDeathPos(playerid, Float:x, Float:y, Float:z)
 	return 1;
 }
 
-stock pl_spawn_SetDeathInterior(playerid, interior)
+static stock SetDeathInterior(playerid, interior)
 {
 	SetPVarInt(playerid, "pl_spawn_DeathInterior", interior);
 	return 1;
 }
 
-stock pl_spawn_GetDeathInterior(playerid)
+static stock GetDeathInterior(playerid)
 {
 	return GetPVarInt(playerid, "pl_spawn_DeathInterior");
 }
 
-stock pl_spawn_SetDeathVirtualWorld(playerid, world)
+static stock SetDeathVirtualWorld(playerid, world)
 {
 	SetPVarInt(playerid, "pl_spawn_DeathWorld", world);
 	return 1;
 }
 
-stock pl_spawn_GetDeathVirtualWorld(playerid)
+static stock GetDeathVirtualWorld(playerid)
 {
 	return GetPVarInt(playerid, "pl_spawn_DeathWorld");
 }
 
-stock pl_spawn_SetPosByID(playerid, spawnid)
+/*
+	Public functions
+*/
+
+stock UpdatePlayerRandomSpawnID(playerid)
 {
-	SetPlayerPosEx(playerid, spawns_array[spawnid][spawn_x], spawns_array[spawnid][spawn_y], spawns_array[spawnid][spawn_z], spawns_array[spawnid][spawn_a], 0, 0);
+	SetPVarInt(playerid, "random_id", -1);
 }
 
-stock player_IsSpawned(playerid) {
+stock Player_IsSpawned(playerid) {
 	return (GetPVarInt(playerid, "Spawned") == 1 ? 1 : 0);
 }
 
-stock player_SetSpawned(playerid, isspawned) {
+stock Player_SetSpawned(playerid, isspawned) {
 	SetPVarInt(playerid, "Spawned", isspawned);
 }
 
-stock player_GetSpawnHouseID(playerid) {
+stock Player_GetSpawnHouseID(playerid) {
 	return GetPVarInt(playerid, "SpawnHouseID");
 }
 
-stock player_SetSpawnHouseID(playerid, houseid) {
+stock Player_SetSpawnHouseID(playerid, houseid) {
 	SetPVarInt(playerid, "SpawnHouseID", houseid);
 }
 
-stock player_SetCoord(playerid, Float:x, Float:y, Float:z, Float:a, interior, world)
+stock Player_SetCoord(playerid, Float:x, Float:y, Float:z, Float:a, interior, world)
 {
 	SetPVarFloat(playerid, "Coord_X", x);
 	SetPVarFloat(playerid, "Coord_Y", y);
@@ -413,7 +443,7 @@ stock player_SetCoord(playerid, Float:x, Float:y, Float:z, Float:a, interior, wo
 	SetPVarInt(playerid, "World", world);
 }
 
-stock player_GetCoord(playerid, &Float:x, &Float:y, &Float:z, &Float:a, &interior, &world)
+stock Player_GetCoord(playerid, &Float:x, &Float:y, &Float:z, &Float:a, &interior, &world)
 {
 	x = GetPVarFloat(playerid, "Coord_X");
 	y = GetPVarFloat(playerid, "Coord_Y");
@@ -421,4 +451,13 @@ stock player_GetCoord(playerid, &Float:x, &Float:y, &Float:z, &Float:a, &interio
 	a = GetPVarFloat(playerid, "Coord_A");
 	interior = GetPVarInt(playerid, "Interior");
 	world = GetPVarInt(playerid, "World");
+}
+
+stock Player_SetSpawnType(playerid, SpawnType:type)
+{
+	gPlayerSpawnType[playerid] = type;
+}
+stock SpawnType:Player_GetSpawnType(playerid)
+{
+	return gPlayerSpawnType[playerid];
 }

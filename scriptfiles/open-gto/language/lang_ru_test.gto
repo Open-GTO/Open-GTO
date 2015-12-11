@@ -122,6 +122,17 @@ STATUS_MODER = Модератор (повышеный доступ)
 STATUS_USER = Просто пользователь (обычные права)
 STATUS_RCON = RCON администратор (расширенный доступ)
 
+// player spawn
+PLAYER_SPAWN_LIST_NEARLY_POINT = Ближайшая точка\n
+PLAYER_SPAWN_LIST_GANG = %s[банда] %s\n
+PLAYER_SPAWN_DIALOG_HEADER = Меню выбора спавна
+PLAYER_SPAWN_DIALOG_INFO = У вас нет доступных спавнов
+PLAYER_SPAWN_DIALOG_BUTTON_BACK = Назад
+PLAYER_SPAWN_DIALOG_BUTTON_CANCEL = Отмена
+PLAYER_SPAWN_DIALOG_BUTTON_OK = ОК
+PLAYER_SPAWN_HAS_CHANGED = Место спавна изменено.
+PLAYER_SPAWN_GANG_HAS_CHANGED = Место спавна для вас и банды изменено.
+
 // vehicles
 VEHICLE_INIT = SERVER: Vehicles module init
 VEHICLE_NOT_IN_CAR = Вы не в машине.
@@ -311,8 +322,20 @@ TRUCKER_INIT = SERVER: (missions)Trucker module init
 TRUCKER_PRODUCTS = продукты
 TRUCKER_FUEL = топливо
 TRUCKER_COAL = уголь
+TRUCKER_TEXTDRAW_PRODUCTS = products
+TRUCKER_TEXTDRAW_FUEL = fuel
+TRUCKER_TEXTDRAW_COAL = coal
 TRUCKER_GET_TRAILER = {33CC33}[Диспетчер]: {FFFFFF}Возьми прицеп рядом, у тебя есть %d секунд
 TRUCKER_MISSION_STARTED = {33CC33}[Диспетчер]: {FFFFFF}Договор заключен. Доставь %s в %s, координаты в твоём GPS. У тебя есть %d мин.
+TRUCKER_OBJECTIVE_STARTED = Deliver the %s to the ~r~%s
+TRUCKER_ALERT_HEADER = SA Delivery
+TRUCKER_ALERT_STARTED = Mission started.~n~You have only %d minutes.
+TRUCKER_ALERT_GET_TRAILER_S = Take the trailer.~n~You have only %d seconds.
+TRUCKER_ALERT_GET_TRAILER_M = Take the trailer.~n~You have only %d minutes.
+TRUCKER_ALERT_GET_BACK = Get back in the car!~n~You have only %d seconds.
+TRUCKER_OBJECTIVE_GET_TRAILER = Take the ~r~trailer
+TRUCKER_ALERT_ABORTED = Mission aborted
+TRUCKER_3D_TEXT = San Andreas Delivery
 TRUCKER_TRAILER_MISSING = {33CC33}[Диспетчер]: {FFFFFF}Груз где?
 TRUCKER_TRAILER_FAKE = {33CC33}[Диспетчер]: {FFFFFF}Ты привёз пустой прицеп! Получай неустойку и пинок под зад!
 TRUCKER_MISSION_COMPLETE = {33CC33}[Диспетчер]: {FFFFFF}Благодарим за доставку! Вот твоя награда, теперь едь на базу. У тебя есть %d мин.

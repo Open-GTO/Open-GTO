@@ -13,6 +13,20 @@
 #pragma library vehicle_menu
 
 
+VMenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+{
+	if (!PRESSED(KEY_NO)) {
+		return 0;
+	}
+
+	if (GetPlayerState(playerid) == PLAYER_STATE_DRIVER) {
+		Dialog_Show(playerid, Dialog:VehicleMenu);
+		return 1;
+	}
+
+	return 0;
+}
+
 COMMAND:vmenu(playerid, params[])
 {
 	if (!IsPlayerInAnyVehicle(playerid)) {

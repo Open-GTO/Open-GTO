@@ -52,7 +52,7 @@ stock player_OnPlayerSpawn(playerid)
 	weapon_SetSkills(playerid);
 	PushHide(playerid);
 	pl_money_td_ShowTextDraw(playerid);
-	pl_spawn_UpdateRandomSpawnID(playerid);
+	UpdatePlayerRandomSpawnID(playerid);
 	return 1;
 }
 
@@ -142,7 +142,7 @@ stock player_OnPlayerRequestClass(playerid, classid)
 	pl_money_td_HideTextDraw(playerid);
 
 	// spawn system
-	pl_spawn_OnPlayerRequestClass(playerid, classid);
+	Player_Spawn_OnPlayerRequestC(playerid, classid);
 
 	// show login dialog
 	if (!player_IsLogin(playerid)) {
@@ -161,7 +161,7 @@ stock player_OnLogin(playerid)
 {
 	// spawn player
 	new interior, world, Float:spawn_pos[4];
-	pl_spawn_GetSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
+	GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
 	SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
 	TogglePlayerSpectating(playerid, 0);
 
@@ -262,7 +262,7 @@ stock player_SetDefaultData(playerid)
 {
 	SetPlayerMoney(playerid, PlayerStartMoney);
 	player_SetJailTime(playerid, -1);
-	player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+	Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
 
 #if defined PLAYER_START_SKIN
 	player_SetSkin(playerid, PLAYER_START_SKIN);
@@ -285,7 +285,7 @@ stock player_SetDefaultData(playerid)
 stock player_Sync(playerid)
 {
 	// если игрок мертв, то защиты не срабатывают
-	if (!player_IsSpawned(playerid)) {
+	if (!Player_IsSpawned(playerid)) {
 		return 0;
 	}
 	

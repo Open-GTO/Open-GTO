@@ -19,7 +19,7 @@ stock player_Save(playerid)
 		return 0;
 	}
 
-	if (player_IsSpawned(playerid)) {
+	if (Player_IsSpawned(playerid)) {
 		new Float:pos[4];
 
 		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
@@ -28,7 +28,7 @@ stock player_Save(playerid)
 		new interior = GetPlayerInterior(playerid);
 		new world = GetPlayerVirtualWorld(playerid);
 
-		player_SetCoord(playerid, pos[0], pos[1], pos[2], pos[3], interior, world);
+		Player_SetCoord(playerid, pos[0], pos[1], pos[2], pos[3], interior, world);
 	}
 
 	// save
@@ -92,7 +92,7 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "InteriorIndex", Enterexit_GetPlayerIndex(playerid));
 
 	new interior, world, Float:pos[4];
-	player_GetCoord(playerid, pos[0], pos[1], pos[2], pos[3], interior, world);
+	Player_GetCoord(playerid, pos[0], pos[1], pos[2], pos[3], interior, world);
 	ini_setInteger(file_player, "Interior", interior);
 	ini_setInteger(file_player, "World", world);
 
@@ -105,15 +105,16 @@ stock player_SaveEx(playerid)
 	ini_setString(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
 	ini_setInteger(file_player, "SkinModel", player_GetSkin(playerid));
 	ini_setInteger(file_player, "Hide", admin_GetHideStatus(playerid));
-	ini_setInteger(file_player, "SpawnHouseID", player_GetSpawnHouseID(playerid));
+	ini_setInteger(file_player, "SpawnType", _:Player_GetSpawnType(playerid));
+	ini_setInteger(file_player, "SpawnHouseID", Player_GetSpawnHouseID(playerid));
 	
 	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
 		format(string, sizeof(string), "Vehicle_%d", i);
 		ini_setString(file_player, string, CreateVehicleDbString(playerid, i));
 	}
 	
-	ini_setInteger(file_player, "Trucker_TryCount", trucker_GetPlayerTryCount(playerid));
-	ini_setInteger(file_player, "Trucker_PauseTime", trucker_GetPlayerPauseTime(playerid));
+	ini_setInteger(file_player, "Trucker_TryCount", Trucker_GetPlayerTryCount(playerid));
+	ini_setInteger(file_player, "Trucker_PauseTime", Trucker_GetPlayerPauseTime(playerid));
 
 	ini_closeFile(file_player);
 	return 1;
@@ -209,8 +210,11 @@ stock player_Login(playerid)
 		ini_getInteger(file_player, "Hide", buf);
 		admin_SetHideStatus(playerid, buf);
 		
+		ini_getInteger(file_player, "SpawnType", buf);
+		Player_SetSpawnType(playerid, SpawnType:buf);
+		
 		ini_getInteger(file_player, "SpawnHouseID", buf);
-		player_SetSpawnHouseID(playerid, buf);
+		Player_SetSpawnHouseID(playerid, buf);
 		
 		for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
 			format(s_buf, sizeof(s_buf), "Vehicle_%d", i);
@@ -224,10 +228,10 @@ stock player_Login(playerid)
 		}
 
 		ini_getInteger(file_player, "Trucker_TryCount", buf);
-		trucker_SetPlayerTryCount(playerid, buf);
+		Trucker_SetPlayerTryCount(playerid, buf);
 
 		ini_getInteger(file_player, "Trucker_PauseTime", buf);
-		trucker_SetPlayerPauseTime(playerid, buf);
+		Trucker_SetPlayerPauseTime(playerid, buf);
 		
 		ini_closeFile(file_player);
 	}

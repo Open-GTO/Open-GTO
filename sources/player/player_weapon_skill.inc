@@ -171,7 +171,7 @@ stock UpdatePlayerWeaponTextDraws(playerid)
 		return 0;
 	}
 	
-	if (!player_IsSpawned(playerid)) {
+	if (!Player_IsSpawned(playerid)) {
 		return 0;
 	}
 

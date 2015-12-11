@@ -348,9 +348,16 @@ DialogCreate:BusinessPlayerOwned(playerid)
 	return 1;
 }
 
-stock business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	#pragma unused oldkeys, newkeys
+	if (!PRESSED(KEY_USING)) {
+		return 0;
+	}
+
+	if (!IsPlayerAtBusiness(playerid)) {
+		return 0;
+	}
+
 	new id = GetBusinessID(playerid);
 	if (id <= -1)
 	{

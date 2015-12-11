@@ -757,13 +757,11 @@ stock house_Buy(playerid)
 {
 	new playername[MAX_PLAYER_NAME+1], pl_houses=0;
 	GetPlayerName(playerid, playername, sizeof(playername));
-	for (new i = 0; i < sizeof(Houses); i++)
-	{
-		if (!strcmp(Houses[i][Houses_Owner], playername, true))
-		{
+
+	for (new i = 0; i < sizeof(Houses); i++) {
+		if (!strcmp(Houses[i][Houses_Owner], playername, true)) {
 			pl_houses++;
-			if (pl_houses >= MAX_PLAYER_HOUSES)
-			{
+			if (pl_houses >= MAX_PLAYER_HOUSES) {
 				Dialog_Message(playerid, lang_texts[8][98], lang_texts[8][78], lang_texts[8][87]);
 				return 1;
 			}
@@ -787,23 +785,18 @@ stock house_Buy(playerid)
 		return 1;
 	}
 
-	if (!strcmp(Houses[id][Houses_Owner], playername, true))
-	{
+	if (!strcmp(Houses[id][Houses_Owner], playername, true)) {
 		Dialog_Message(playerid, lang_texts[8][98], lang_texts[8][16], lang_texts[8][87]);
 	}
 #if !defined BUY_ALL_HOUSES
-	else if (strcmp(Houses[id][Houses_Owner], "Unknown", true))
-	{
+	else if (strcmp(Houses[id][Houses_Owner], "Unknown", true)) {
 		Dialog_Message(playerid, lang_texts[8][98], lang_texts[8][77], lang_texts[8][87]);
 	}
 #endif
-	else
-	{
+	else {
 	#if defined BUY_ALL_HOUSES
-		foreach (Player, ownerid)
-		{
-			if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(ownerid), true))
-			{
+		foreach (new ownerid : Player) {
+			if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(ownerid), true)) {
 				format(temp, sizeof(temp), lang_texts[8][39], ReturnPlayerName(playerid), Houses[id][Houses_Name]);
 				SendClientMessage(ownerid, COLOR_RED, temp);
 				GivePlayerMoney(ownerid, price, 1);
@@ -811,14 +804,13 @@ stock house_Buy(playerid)
 			}
 		}
 	#endif
-		GivePlayerMoney(playerid,-price, 1);
+		GivePlayerMoney(playerid, -price, 1);
 		set(Houses[id][Houses_Owner], playername);
 		set(Houses[id][Houses_Gang], player_GetGangName(playerid));
 		Houses[id][Houses_Buyout] = 0;
 		// если игрок купил свой первый дом, то ставим спавн к нему
-		if (pl_houses == 0)
-		{
-			player_SetSpawnHouseID(playerid, id);
+		if (pl_houses == 0) {
+			Player_SetSpawnHouseID(playerid, id);
 		}
 		Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, house_icon[id], E_STREAMER_TYPE, 32);
 		format(temp, sizeof(temp), lang_texts[8][17], Houses[id][Houses_Name]);
@@ -831,31 +823,34 @@ stock house_Buy(playerid)
 stock house_Sell(playerid) 
 {
 	house_Keep(playerid);
+
 	new id = GetPlayerToHouseID(playerid);
-	if (id <= -1)
-	{
+	if (id <= -1) {
 		Dialog_Message(playerid, lang_texts[8][22], lang_texts[8][28], lang_texts[8][87]);
 		return 1;
 	}
 
-	if (strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true))
-	{
+	if (strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true)) {
 		Dialog_Message(playerid, lang_texts[8][22], lang_texts[8][23], lang_texts[8][87]);
-	}
-	else
-	{
+	} else {
 		new price = ((Houses[id][Houses_Cost] + Houses[id][Houses_Buyout]) * 85) / 100;
 		GivePlayerMoney(playerid, price, 1);
+
 		house_Free(id);
+
 		new gangid = player_GetGangID(playerid);
-		if (gang_GetHouseID(gangid) == id)
-		{
+		if (gang_GetHouseID(gangid) == id) {
 			gang_SetHouse(gangid, -1);
 		}
-		player_SetSpawnHouseID(playerid, SPAWN_HOUSE_NONE);
+
+		if (Player_GetSpawnHouseID(playerid) == id) {
+			Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
+		}
+
 		new temp[MAX_STRING];
 		format(temp, sizeof(temp), lang_texts[8][24], Houses[id][Houses_Name]);
 		Dialog_Message(playerid, lang_texts[8][22], temp, lang_texts[8][87]);
+
 		SendClientMessage(playerid, COLOR_GREEN, lang_texts[8][25]);
 		Log_Game("player: %s(%d): sold the '%s' (house)", ReturnPlayerName(playerid), playerid, Houses[id][Houses_Name]);
 	}
@@ -939,9 +934,16 @@ stock HouseKeepUp()
 	}
 }
 
-stock housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	#pragma unused oldkeys, newkeys
+	if (!PRESSED(KEY_USING)) {
+		return 0;
+	}
+
+	if (!IsPlayerAtHouse(playerid)) {
+		return 0;
+	}
+
 	new player_vw = GetPlayerVirtualWorld(playerid);
 	for (new id = 0; id < sizeof(Houses); id++)
 	{
@@ -1012,6 +1014,7 @@ stock housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		}
 		SetPlayerToHouseID(playerid,-1);
 	}
+
 	return 1;
 }
 
