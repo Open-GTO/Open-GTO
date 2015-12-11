@@ -85,15 +85,11 @@ Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate)
 		PlayerTextDrawShow(playerid, TD_Text[playerid]);
 		TextDrawShowForPlayer(playerid, TD_Background);
 
-		if (gFuel[vehicleid] <= 0.1) {
-			vehicle_Engine(vehicleid, VEHICLE_PARAMS_OFF);
-
-			if (!vshop_IsShopVehicle(vehicleid)) {
-				SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_EMPTY));
-			}
-		} else {
-			vehicle_Engine(vehicleid, VEHICLE_PARAMS_ON);
+		if (gFuel[vehicleid] <= 0.1 && !vshop_IsShopVehicle(vehicleid)) {
+			SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_EMPTY));
 		}
+
+		Vehicle_ToggleEngine(vehicleid);
 		return 1;
 	}
 
@@ -213,7 +209,7 @@ public Vehicle_Fuel_SpeedTimer()
 		}
 
 		if (gFuel[vehicleid] <= 0.1) {
-			vehicle_Engine(vehicleid, VEHICLE_PARAMS_OFF);
+			Vehicle_ToggleEngine(vehicleid, 0);
 
 			gFuel[vehicleid] = 0.0;
 		}

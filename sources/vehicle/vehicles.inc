@@ -1910,7 +1910,7 @@ stock vehicles_OnPlayerStateChange(playerid, newstate, oldstate)
 	if (newstate == PLAYER_STATE_DRIVER) {
 		new vehicleid = GetPlayerVehicleID(playerid);
 
-		vehicle_Engine(vehicleid, VEHICLE_PARAMS_ON);
+		Vehicle_ToggleEngine(vehicleid, 1);
 		
 		new hour = Time_GetCurrentHour();
 		if (hour > VEHICLE_LIGHTS_ON_TIME || hour < VEHICLE_LIGHTS_OFF_TIME) {
@@ -1925,7 +1925,7 @@ stock vehicles_OnPlayerExitVehicle(playerid, vehicleid)
 {
 	#pragma unused playerid
 #if defined OLD_ENGINE_DO
-	vehicle_Engine(vehicleid, VEHICLE_PARAMS_OFF);
+	Vehicle_ToggleEngine(vehicleid, 0);
 #else
 	#pragma unused vehicleid
 #endif
@@ -1960,16 +1960,7 @@ COMMAND:engine(playerid, params[])
 	if (GetVehicleFuel(vehicleid) <= 0.1) {
 		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_EMPTY));
 	} else {
-		new engine, lights, alarm, doors, bonnet, boot, objective;
-		GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
-
-		if (engine == VEHICLE_PARAMS_ON) {
-			engine = VEHICLE_PARAMS_OFF;
-		} else {
-			engine = VEHICLE_PARAMS_ON;
-		}
-
-		SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+		Vehicle_ToggleEngine(vehicleid);
 	}
 
 	return 1;
@@ -1985,11 +1976,24 @@ stock vehicles_SetRespawnTime(value)
 	vehicle_respawn_time = value;
 }
 
-stock vehicle_Engine(vehicleid, newstate)
+stock Vehicle_ToggleEngine(vehicleid, newstate = -1)
 {
 	new engine, lights, alarm, doors, bonnet, boot, objective;
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
-	SetVehicleParamsEx(vehicleid, newstate, lights, alarm, doors, bonnet, boot, objective);
+
+	if (newstate == engine) {
+		return 0;
+	}
+
+	if (newstate == -1) {
+		if (engine == VEHICLE_PARAMS_OFF) {
+			newstate = VEHICLE_PARAMS_ON;
+		} else {
+			newstate = VEHICLE_PARAMS_OFF;
+		}
+	}
+
+	return SetVehicleParamsEx(vehicleid, newstate, lights, alarm, doors, bonnet, boot, objective);
 }
 
 stock vehicle_Light(vehicleid, newstate)
