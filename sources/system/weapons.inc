@@ -201,9 +201,23 @@ weapon_OnPlayerStateChange(playerid, newstate, oldstate)
 	} else if (newstate == PLAYER_STATE_PASSENGER) {
 		weaponid = GetPlayerWeapon(playerid);
 
+		new bool:is_allowed_semi_automatic;
+
+		GetPlayerWeaponData(playerid, 4, weaponid, ammo);
+
 		switch (weaponid) {
 			case WEAPON_DRIVEBY_DISABLED: {
-				SetPlayerArmedWeapon(playerid, 0);
+				is_allowed_semi_automatic = true;
+			}
+		}
+
+		switch (weaponid) {
+			case WEAPON_DRIVEBY_DISABLED: {
+				if (is_allowed_semi_automatic) {
+					SetPlayerArmedWeapon(playerid, weaponid);
+				} else {
+					SetPlayerArmedWeapon(playerid, 0);
+				}
 			}
 		}
 	}
