@@ -18,17 +18,17 @@ public pl_click_SendCash(playerid, clickedid, listitem, inputtext[])
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 
 	if (GetPlayerMoney(playerid) < money || !IsNumeric(inputtext) || money < 0) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[15][93]);
+		SendClientMessage(playerid, COLOR_RED, _(CLICK_SENDCASH_NOT_VALID));
 		return 0;
 	}
 
 	GivePlayerMoney(playerid, -money, 1);
 	GivePlayerMoney(clickedid, money, 1);
 
-	format(string, sizeof(string), lang_texts[15][79], giveplayer, clickedid, money);
+	format(string, sizeof(string), _(CLICK_SENDCASH_GIVE), giveplayer, clickedid, money);
 	SendClientMessage(playerid, COLOR_MONEY_GOOD, string);
 
-	format(string, sizeof(string), lang_texts[15][80], money, sendername, playerid);
+	format(string, sizeof(string), _(CLICK_SENDCASH_GET), money, sendername, playerid);
 	SendClientMessage(clickedid, COLOR_MONEY_GOOD, string);
 	return 1;
 }
@@ -48,11 +48,11 @@ public pl_click_SendReport(playerid, clickedid, listitem, inputtext[])
 
 	GetPlayerName(clickedid, abusename, sizeof(abusename));
 
-	format(string, sizeof(string), lang_texts[15][91], abusename, clickedid, inputtext);
+	format(string, sizeof(string), _(CLICK_REPORT_SELF), abusename, clickedid, inputtext);
 	SendClientMessage(playerid, COLOR_RED, string);
 
 	GetPlayerName(playerid, sendername, sizeof(sendername));
-	format(string, sizeof(string), lang_texts[15][92], sendername, playerid, abusename, clickedid, inputtext);
+	format(string, sizeof(string), _(CLICK_REPORT_PLAYER), sendername, playerid, abusename, clickedid, inputtext);
 	
 	new admin_count = 0;
 
@@ -69,7 +69,7 @@ public pl_click_SendReport(playerid, clickedid, listitem, inputtext[])
 
 		new reports_max = pl_report_GetMaxCount();
 
-		format(string, sizeof(string), lang_texts[13][16], reports, reports_max, abusename, clickedid, inputtext);
+		format(string, sizeof(string), _(CLICK_REPORT_MESSAGE), reports, reports_max, abusename, clickedid, inputtext);
 		SendClientMessageToAll(COLOR_WHITE, string);
 
 		if (reports >= reports_max) {
@@ -77,8 +77,8 @@ public pl_click_SendReport(playerid, clickedid, listitem, inputtext[])
 			JailPlayer(clickedid, jail_time);
 			player_SetReportCount(clickedid, 0);
 
-			format(string, sizeof(string), lang_texts[13][15], jail_time);
-			format(string, sizeof(string), lang_texts[13][17], ReturnPlayerName(clickedid), string);
+			format(string, sizeof(string), _(CLICK_REPORT_BY_MINUTE), jail_time);
+			format(string, sizeof(string), _(CLICK_REPORT_SERVER), ReturnPlayerName(clickedid), string);
 			SendClientMessageToAll(COLOR_WHITE, string);
 		}
 	}

@@ -284,16 +284,16 @@ stock Trucker_Start(playerid)
 	
 	switch (trailer_type) {
 		case TRAILER_TYPE_PRODUCT: {
-			strcat(type_name, _(TRUCKER_PRODUCTS));
-			strcat(td_type_name, _(TRUCKER_TEXTDRAW_PRODUCTS));
+			__(TRUCKER_PRODUCTS, type_name);
+			__(TRUCKER_TEXTDRAW_PRODUCTS, td_type_name);
 		}
 		case TRAILER_TYPE_PETROL: {
-			strcat(type_name, _(TRUCKER_FUEL));
-			strcat(td_type_name, _(TRUCKER_TEXTDRAW_FUEL));
+			__(TRUCKER_FUEL, type_name);
+			__(TRUCKER_TEXTDRAW_FUEL, td_type_name);
 		}
 		case TRAILER_TYPE_CAREER: {
-			strcat(type_name, _(TRUCKER_COAL));
-			strcat(td_type_name, _(TRUCKER_TEXTDRAW_COAL));
+			__(TRUCKER_COAL, type_name);
+			__(TRUCKER_TEXTDRAW_COAL, td_type_name);
 		}
 	}
 

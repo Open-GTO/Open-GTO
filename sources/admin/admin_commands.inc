@@ -40,24 +40,21 @@ COMMAND:cmdlist(playerid, params[])
 COMMAND:about(playerid, params[])
 {
 	if (IsPlayerMod(playerid)) {
-		SendClientMessage(playerid, COLOR_LIGHTGREEN, lang_texts[15][41]);
-		SendClientMessage(playerid, COLOR_LIGHTGREEN, lang_texts[15][42]);
-		SendClientMessage(playerid, COLOR_LIGHTRED, lang_texts[15][43]);
-		SendClientMessage(playerid, COLOR_LIGHTRED, lang_texts[15][44]);
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_MODER_HELP_0));
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_MODER_HELP_1));
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_MODER_HELP_2));
 	}
 
 	if (IsPlayerAdm(playerid)) {
-		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[15][47]);
-		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[15][48]);
-		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[15][49]);
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ADMIN_HELP_0));
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ADMIN_HELP_1));
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ADMIN_HELP_2));
 	}
 
 	if (IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOR_GREEN, lang_texts[15][55]);
-		SendClientMessage(playerid, COLOR_LIGHTRED, lang_texts[15][51]);
-		SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][52]);
-		SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][53]);
-		SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][54]);
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_RCON_HELP_0));
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_RCON_HELP_1));
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_RCON_HELP_2));
 	}
 	return 1;
 }
@@ -754,33 +751,33 @@ COMMAND:sys(playerid, params[])
 
 	if (!strcmp(cmd, "about", true))
 	{
-		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[15][57]);
-		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[15][58]);
-		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[15][59]);
+		SendClientMessage(playerid, COLOR_YELLOW, _(ADMIN_SYS_ABOUT_0));
+		SendClientMessage(playerid, COLOR_YELLOW, _(ADMIN_SYS_ABOUT_1));
+		SendClientMessage(playerid, COLOR_YELLOW, _(ADMIN_SYS_ABOUT_2));
 		return 1;
 	}
 
 	if (!strcmp(cmd, "info", true))
 	{
-		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[15][60]);
+		SendClientMessage(playerid, COLOR_YELLOW, _(ADMIN_SYS_INFO_HEAD));
 
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[15][65], GetVehicleRespawnTime());
+		format(string, sizeof(string), _(ADMIN_SYS_INFO_AUTORESPAWN), GetVehicleRespawnTime());
 		SendClientMessage(playerid, COLOR_LIGHTGREEN, string);
 
-		format(string, sizeof(string), lang_texts[15][62], GetPlayersCount(), GetMaxPlayers());
+		format(string, sizeof(string), _(ADMIN_SYS_INFO_ONLINE), GetPlayersCount(), GetMaxPlayers());
 		SendClientMessage(playerid, COLOR_LIGHTGREEN, string);
 
 		new hour, minute, second;
 		gettime(hour, minute, second);
 		format(string, sizeof(string), "%02d:%02d:%02d", hour, minute, second);
-		format(string, sizeof(string), lang_texts[15][63], string);
+		format(string, sizeof(string), _(ADMIN_SYS_INFO_TIME), string);
 		SendClientMessage(playerid, COLOR_LIGHTGREEN, string);
 
-		format(string, sizeof(string), lang_texts[15][64], bank_GetMaxMoney(), MAX_MONEY);
+		format(string, sizeof(string), _(ADMIN_SYS_INFO_BANK), bank_GetMaxMoney(), MAX_MONEY);
 		SendClientMessage(playerid, COLOR_LIGHTGREEN, string);
 
-		SendClientMessage(playerid, COLOR_YELLOW, lang_texts[15][66]);
+		SendClientMessage(playerid, COLOR_YELLOW, _(ADMIN_SYS_INFO_CONTROL_HELP));
 
 		format(string, sizeof(string), lang_texts[13][41], weather_GetTime());
 		SendClientMessage(playerid, COLOR_WHITE, string);
@@ -796,17 +793,17 @@ COMMAND:sys(playerid, params[])
 		switch (paramid) {
 			case 0: {
 				weather_SetTime(0);
-				SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][43]);
+				SendClientMessage(playerid, COLOR_WHITE, _(ADMIN_SYS_WEATHER_DISABLED));
 			}
 			case 1..20: {
 				weather_SetTime(paramid);
 
 				new string[MAX_STRING];
-				format(string, sizeof(string), lang_texts[13][44], paramid);
+				format(string, sizeof(string), _(ADMIN_SYS_WEATHER_ENABLED), paramid);
 				SendClientMessage(playerid, COLOR_WHITE, string);
 			}
 			default: {
-				SendClientMessage(playerid, COLOR_RED, lang_texts[15][67]);
+				SendClientMessage(playerid, COLOR_RED, _(ADMIN_SYS_WEATHER_ERROR));
 			}
 		}
 		return 1;

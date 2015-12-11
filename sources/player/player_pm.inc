@@ -62,13 +62,13 @@ stock pl_pm_Send(senderid, receiveid, message[])
 COMMAND:pm(playerid, params[])
 {
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_PM, lang_texts[15][26]);
+		SendClientMessage(playerid, COLOR_PM, _(COMMAND_PM_USE));
 		return 1;
 	}
 
 	new id = strval(params);
 	if (!IsPlayerConnected(id) || id == playerid) {
-		SendClientMessage(playerid, COLOR_PM, lang_texts[15][27]);
+		SendClientMessage(playerid, COLOR_PM, _(COMMAND_PM_ERROR_ID));
 		return 1;
 	}
 	

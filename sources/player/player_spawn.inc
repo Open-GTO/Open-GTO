@@ -149,7 +149,7 @@ DialogCreate:PlayerSpawnMenu(playerid)
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
 	
-	strcat(string, _(PLAYER_SPAWN_LIST_NEARLY_POINT), sizeof(string));
+	__(PLAYER_SPAWN_LIST_NEARLY_POINT, string);
 
 	new gangid = player_GetGangID(playerid);
 	new gang_houseid = -1;

@@ -190,11 +190,11 @@ stock player_OnLogin(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), lang_texts[15][86], VERSION_STRING);
+	format(string, sizeof(string), _(ACCOUNT_LOGIN_MESSAGE_0), VERSION_STRING);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
-	SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][87]);
-	SendClientMessage(playerid, COLOR_WHITE, lang_texts[15][88]);
-	SendClientMessage(playerid, COLOR_GREEN, lang_texts[15][89]);
+	SendClientMessage(playerid, COLOR_WHITE, _(ACCOUNT_LOGIN_MESSAGE_1));
+	SendClientMessage(playerid, COLOR_WHITE, _(ACCOUNT_LOGIN_MESSAGE_2));
+	SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_MESSAGE_3));
 
 	if (IsPlayerRconAdmin(playerid)) {
 		SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_ROOT));

@@ -80,12 +80,12 @@ COMMAND:status(playerid, params[])
 
 COMMAND:version(playerid, params[])
 {
-	SendClientMessage(playerid, COLOR_MISC, lang_texts[15][74]);
+	SendClientMessage(playerid, COLOR_MISC, _(COMMAND_VERSION_0));
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[15][75], VERSION_STRING);
+	format(string, sizeof(string), _(COMMAND_VERSION_1), VERSION_STRING);
 	SendClientMessage(playerid, COLOR_GREEN, string);
-	SendClientMessage(playerid, COLOR_MISC, lang_texts[15][76]);
-	SendClientMessage(playerid, COLOR_MISC, lang_texts[15][77]);
+	SendClientMessage(playerid, COLOR_MISC, _(COMMAND_VERSION_2));
+	SendClientMessage(playerid, COLOR_MISC, _(COMMAND_VERSION_3));
 	return 1;
 }
 
@@ -102,16 +102,16 @@ COMMAND:time(playerid, params[])
 	new mute_time = player_GetMuteTime(playerid);
 
 	if (jail_time != -1 || mute_time != 0) {
-		SendClientMessage(playerid, COLOR_LIGHTRED, lang_texts[15][29]);
+		SendClientMessage(playerid, COLOR_LIGHTRED, _(COMMAND_TIME_ABOUT));
 	}
 
 	if (jail_time != -1) {
-		format(string, sizeof(string), lang_texts[13][56], (jail_time - gettime()) / 60 + 1);
+		format(string, sizeof(string), _(COMMAND_TIME_JAIL), (jail_time - gettime()) / 60 + 1);
 		SendClientMessage(playerid, COLOR_LIGHTRED, string);
 	}
 
 	if (mute_time != 0) {
-		format(string, sizeof(string), lang_texts[13][59], (mute_time - gettime()) / 60 + 1);
+		format(string, sizeof(string), _(COMMAND_TIME_MUTE), (mute_time - gettime()) / 60 + 1);
 		SendClientMessage(playerid, COLOR_LIGHTRED, string);
 	}
 	

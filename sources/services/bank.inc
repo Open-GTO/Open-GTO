@@ -132,7 +132,7 @@ DialogResponse:BankStart(playerid, response, listitem, inputtext[])
 DialogCreate:BankList(playerid)
 {
 	new string[MAX_LANG_VALUE_STRING * 3];
-	string = _(BANK_LIST_INFO);
+	__(BANK_GANG_LIST_1, string);
   	
 	if (player_GetGangID(playerid) != 0) {
 		strcat(string, _(BANK_GANG_LIST_1), sizeof(string));

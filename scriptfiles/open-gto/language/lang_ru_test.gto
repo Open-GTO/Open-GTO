@@ -26,6 +26,10 @@ ACCOUNT_INCORRECT_PASSWORD = Неверный пароль
 ACCOUNT_AUTO_KICK = Вы будете автоматически кикнуты для общей безопасности.
 ACCOUNT_SUCCESS_REGISTER = Аккаунт создан.
 
+ACCOUNT_LOGIN_MESSAGE_0 = Добро пожаловать в Open-GTO %s!
+ACCOUNT_LOGIN_MESSAGE_1 = {FFCC66}[Помощь]: {FFFFFF}/help - справка, /info - краткое описание, /commands - список команд.
+ACCOUNT_LOGIN_MESSAGE_2 = {FFCC66}[Помощь]: {FFFFFF}Все действия с пикапами, входы, выходы и тому подобное происходит по нажатию клавиши 'Y'.
+ACCOUNT_LOGIN_MESSAGE_3 = {FFCC66}[Помощь]: {FFFFFF}Поле ввода вызывается клавишей F6, T или '~'.
 ACCOUNT_LOGIN_ROOT = Вы успешно вошли как главный администратор. Введите /about, чтобы узнать о своих обязанностях.
 ACCOUNT_LOGIN_ADMIN = Вы успешно вошли как администратор. Введите /about, чтобы узнать о своих обязанностях.
 ACCOUNT_LOGIN_MODER = Вы успешно вошли как модератор. Введите /about, чтобы узнать о своих обязанностях.
@@ -47,6 +51,18 @@ PLAYER_CONNECT = {FFCC66}[Сервер]: {FFFFFF}%s(%d) вошел в игру.
 PLAYER_DISCONNECT = {FFCC66}[Сервер]: {FFFFFF}%s(%d) покинул игру.
 MUTED_HELP_MESSAGE = {FF2211}[Ошибка]: {FFFFFF}Вам запрещено писать в чат! Напишите администраторам через @ о вашей проблеме.
 
+// player click
+CLICK_REPORT_SELF = Жалоба на %s(%d): %s
+CLICK_REPORT_PLAYER = Жалоба игрока %s(%d) на %s(%d): %s
+CLICK_REPORT_BY_MINUTE = на %d минут
+CLICK_REPORT_MESSAGE = Жалоба (%d/%d) на %s(%d), причина: %s
+CLICK_REPORT_SERVER = {FFCC66}[Сервер]: {FFFFFF}%s был арестован %s
+
+CLICK_SENDCASH_GIVE = Вы отдали %s(%d) $%d собственных наличных.
+CLICK_SENDCASH_GET = Вы получили $%d наличных от %s(%d).
+CLICK_SENDCASH_NOT_VALID = Неверная сумма
+
+// player menu
 PLAYER_MENU_VEHICLE_CAPTION = Мой транспорт
 PLAYER_MENU_VEHICLE_LIST = {CCCCCC}Переместить к себе\n{CCCCCC}Продать [{00AA00}$%d{CCCCCC}]\n{CCCCCC}Снять тюнинг
 PLAYER_MENU_VEHICLE_NO_VEHICLES = {CCCCCC}У вас нет транспорта.
@@ -108,6 +124,15 @@ COMMAND_COMMANDS_7 = {FFCC66}[Разговор]: {FFFFFF}/pm <ID> <сообщение>, $ <сообще
 COMMAND_COMMANDS_8 = {FFCC66}[Транспорт]: {FFFFFF}/repair, /fill, /engine
 COMMAND_COMMANDS_9 = {FFCC66}[Разное]: {FFFFFF}/skydive, /lottery
 
+COMMAND_VERSION_0 = На сервере запущен:
+COMMAND_VERSION_1 = SA-MP: Open-GTO %s.
+COMMAND_VERSION_2 = Created by Iain Gilbert. Continued by Peter Steenbergen, Robin Kikkert, Asturel, Dmitry Frolov (FP).
+COMMAND_VERSION_3 = Continued by Open-GTO Team [ Current: ziggi | Previous: GhostTT, heufix, Elbi]
+
+COMMAND_TIME_ABOUT = {FF2211}Информация о времени:
+COMMAND_TIME_JAIL = {FFCC66}[Сервер]: {FFFFFF}До окончания ареста осталось %d мин
+COMMAND_TIME_MUTE = {FFCC66}[Сервер]: {FFFFFF}До окончания мута осталось %d мин
+
 COMMAND_STATUS_0 = Информация об игроке:
 COMMAND_STATUS_1 = Банда: %s
 COMMAND_STATUS_2 = Уровень: %d, опыт: %d/%d. Наличные: $%d, в банке: $%d. Всего денег: $%d 
@@ -115,6 +140,11 @@ COMMAND_STATUS_3 = Убийств: %d, смертей: %d (%.2f). Арестов: %d. Затыканий: %d
 COMMAND_STATUS_FIGHTSTYLE = Используемый стиль борьбы: %s
 COMMAND_STATUS_VIP = У вас есть премиум статус, доступен до: %s
 COMMAND_STATUS_NO_VIP = У вас нет премиум статуса, для приобретения обратитесь к администрации
+
+COMMAND_DANCE_ERROR = Применение: /dance <1-4>. Управление - стрелки, + пробел или левый шифт.
+
+COMMAND_PM_USE = {FFCC66}[Применение]: {FFFFFF}/pm <ID> <сообщение>
+COMMAND_PM_ERROR_ID = {FF2211}[Ошибка]: {FFFFFF}/pm: неверный ID
 
 // status
 STATUS_ADMIN = Администратор (полный доступ)
@@ -235,6 +265,21 @@ ADMIN_SYS_TIME_SET = Время сервера изменено. Текущее время %d
 ADMIN_SYS_TIME_REAL_TRUE = Тип времени изменён, теперь время реальное
 ADMIN_SYS_TIME_REAL_FALSE = Тип времени изменён, теперь время серверное
 
+ADMIN_SYS_ABOUT_0 = Система управления Open-GTO
+ADMIN_SYS_ABOUT_1 = Изменение и просмотр основных параметров системы и игрового режима Open-GTO.
+ADMIN_SYS_ABOUT_2 = Включение и отключение скриптов, управление частотой обновления некоторых параметров.
+
+ADMIN_SYS_INFO_HEAD = Стартовая конфигурация:
+ADMIN_SYS_INFO_AUTORESPAWN = Автореспавн транспорта через: %d сек.
+ADMIN_SYS_INFO_ONLINE = Игроков онлайн: %d из %d
+ADMIN_SYS_INFO_TIME = Время сервера: %s
+ADMIN_SYS_INFO_BANK = Максимум в банке: $%d, максимум наличными: $%d
+ADMIN_SYS_INFO_CONTROL_HELP = Управление скриптами: 0 - режим (скрипт) выключен.
+
+ADMIN_SYS_WEATHER_DISABLED = SYS: {FFFFFF}Автоматическое изменение погоды {AA0000}выкл
+ADMIN_SYS_WEATHER_ENABLED = SYS: {FFFFFF}Автоматическое изменение погоды {00AA00}вкл{FFFFFF}, изменение раз в %d минут
+ADMIN_SYS_WEATHER_ERROR = SYS: Неверный параметр: 0 - выкл., 1-20 - вкл.
+
 ADMIN_SPEC_PLAYERINFO_0 = id: %d, здоровье: %0.2f, броня: %0.2f, пинг: %d\n
 ADMIN_SPEC_PLAYERINFO_1 = банда: %s, деньги: $%d, уровень: %d, опыт: %d/%d\n
 ADMIN_SPEC_PLAYERINFO_2 = оружие: %s (%d), патроны: %d\n
@@ -265,6 +310,18 @@ ADMIN_COMMAND_CAMERA_HELP = {FFCC66}[Применение]: {FFFFFF}/camera <get/set/reset
 ADMIN_COMMAND_CAMERA_GET_MESSAGE_CPOS = {FFCC66}CameraPos: {FFFFFF}%f, %f, %f
 ADMIN_COMMAND_CAMERA_GET_MESSAGE_LPOS = {FFCC66}LookatPos: {FFFFFF}%f, %f, %f
 ADMIN_COMMAND_CAMERA_SET_ERROR = {FFCC66}[Применение]: {FFFFFF}/camera set <cX> <cY> <cZ> <lX> <lY> <lZ>
+
+ADMIN_COMMAND_MODER_HELP_0 = {FFCC66}* {FFFFFF}Основная обязанность модератора - следить за порядком в игровом мире.
+ADMIN_COMMAND_MODER_HELP_1 = {FFCC66}* {FFFFFF}Модератор имеет право и обязан наказывать нарушителей тюрьмой или запрещением общаться в чатах.
+ADMIN_COMMAND_MODER_HELP_2 = {FFCC66}* {FFFFFF}Все доступные команды можно увидеть по {FFCC66}/cmdlist
+
+ADMIN_COMMAND_ADMIN_HELP_0 = {FFCC66}* {FFFFFF}Основная обязанность администратора - следить за порядком в игровом мире, и за правильным
+ADMIN_COMMAND_ADMIN_HELP_1 = {FFCC66}* {FFFFFF}исполнением своих обязанностей модераторами.
+ADMIN_COMMAND_ADMIN_HELP_2 = {FFCC66}* {FFFFFF}Администратор имеет все права модератора, плюс более важные функции.
+
+ADMIN_COMMAND_RCON_HELP_0 = {FFCC66}* {FFFFFF}У вас максимальные права. Вы можете использовать команды управления модераторов и администраторов,
+ADMIN_COMMAND_RCON_HELP_1 = {FFCC66}* {FFFFFF}присваивать игрокам права модератора или администратора. Управлять сервером и игровым режимом в полной
+ADMIN_COMMAND_RCON_HELP_2 = мере, предоставленной в Open-GTO.
 
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)

@@ -46,16 +46,16 @@ stock GetStatusName(status, name[], size = sizeof(name))
 {
 	switch (status) {
 		case STATUS_LEVEL_MODER: {
-			__(STATUS_MODER, string, size);
+			__(STATUS_MODER, name, size);
 		}
 		case STATUS_LEVEL_ADMIN: {
-			__(STATUS_ADMIN, string, size);
+			__(STATUS_ADMIN, name, size);
 		}
 		case STATUS_LEVEL_RCON: {
-			__(STATUS_RCON, string, size);
+			__(STATUS_RCON, name, size);
 		}
 		default: {
-			__(STATUS_USER, string, size);
+			__(STATUS_USER, name, size);
 		}
 	}
 }
