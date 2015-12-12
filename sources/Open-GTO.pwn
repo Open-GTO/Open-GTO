@@ -710,12 +710,20 @@ public OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 		return 1;
 	}
 
+	if (Groundhold_OnPlayerEnterDynArea(playerid, areaid)) {
+		return 1;
+	}
+
 	return 1;
 }
 
 public OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 {
 	if (Tuning_OnPlayerLeaveDynamicArea(playerid, areaid)) {
+		return 1;
+	}
+
+	if (Groundhold_OnPlayerLeaveDynArea(playerid, areaid)) {
 		return 1;
 	}
 

@@ -24,8 +24,10 @@ enum e_Groundhold_Info {
 	Float:e_ghPosX,
 	Float:e_ghPosY,
 	Float:e_ghPosZ,
+	bool:e_ghIsEnemies,
 	e_ghCheckpointID,
 	e_ghMapiconID,
+	e_ghAreaID,
 }
 
 static gGroundholds[][e_Groundhold_Info] = {
@@ -104,6 +106,85 @@ Groundhold_OnPlayerDisconnect(playerid, reason)
 	pGroundID[playerid] = INVALID_GROUNDHOLD_ID;
 }
 
+Groundhold_OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA areaid)
+{
+	if (Spectate_IsSpectating(playerid)) {
+		return 0;
+	}
+
+	new ghid = INVALID_GROUNDHOLD_ID;
+
+	for (new i = 0; i < sizeof(gGroundholds); i++) {
+		if (gGroundholds[i][e_ghAreaID] == areaid) {
+			ghid = i;
+			break;
+		}
+	}
+
+	if (ghid == INVALID_GROUNDHOLD_ID) {
+		return 0;
+	}
+
+	pIsHold[playerid] = true;
+
+	if (pHoldTime[playerid] == 0 && pGroundID[playerid] != ghid) {
+		pGroundID[playerid] = ghid;
+		Iter_Add(PlayerOnGround[ghid], playerid);
+		
+		// message
+		new string[MAX_LANG_VALUE_STRING];
+
+		format(string, sizeof(string), _(GROUNDHOLD_INFO), gGroundholds[ghid][e_ghName]);
+		SendClientMessage(playerid, COLOR_GREEN, string);
+		
+		format(string, sizeof(string),
+			_(GROUNDHOLD_BONUS),
+			gGroundholds[ghid][e_ghMoney] * gGroundholds[ghid][e_ghMulti],
+			gGroundholds[ghid][e_ghXP] * gGroundholds[ghid][e_ghMulti]
+		);
+		SendClientMessage(playerid, COLOR_GREEN, string);
+	}
+
+	// check enemy
+	if (UpdateEnemiesStatus(ghid, playerid)) {
+		foreach (new i : PlayerOnGround[ghid]) {
+			Message_Alert(i, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_ALERT_ENEMIES));
+			Message_Objective(i, _(GROUNDHOLD_ALERT_ENEMIES), -1);
+		}
+	}
+
+	// message
+	if (!IsGroundWithEnemies(ghid)) {
+		Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_OBJECTIVE));
+		Message_Objective(playerid, _(GROUNDHOLD_OBJECTIVE), -1);
+	}
+
+	return 1;
+}
+
+Groundhold_OnPlayerLeaveDynArea(playerid, STREAMER_TAG_AREA areaid)
+{
+	new ghid = pGroundID[playerid];
+	if (ghid == INVALID_GROUNDHOLD_ID) {
+		return 0;
+	}
+
+	if (gGroundholds[ghid][e_ghAreaID] != areaid) {
+		return 0;
+	}
+
+	pIsHold[playerid] = false;
+
+	SendClientMessage(playerid, COLOR_RED, _(GROUNDHOLD_HOLD));
+	Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_OBJECTIVE_BACK));
+	Message_Objective(playerid, _(GROUNDHOLD_OBJECTIVE_BACK), -1);
+
+	// check enemy
+	UpdateEnemiesStatus(ghid, playerid);
+
+	return 1;
+}
+
 stock Groundhold_SaveAll()
 {
 	new
@@ -134,98 +215,43 @@ stock Groundhold_SaveAll()
 
 stock Groundhold_Check(ghid)
 {
-	new
-		enemy_count,
-		string[MAX_STRING];
-
-	foreach (new playerid : Player) {
-		if (Spectate_IsSpectating(playerid)) {
-			continue;
-		}
-
-		if (!IsPlayerInRangeOfPoint(playerid, gGroundholds[ghid][e_ghDist], gGroundholds[ghid][e_ghPosX], gGroundholds[ghid][e_ghPosY], gGroundholds[ghid][e_ghPosZ])) {
-			if (pGroundID[playerid] != ghid || pHoldTime[playerid] == 0) {
+	foreach (new playerid : PlayerOnGround[ghid]) {
+		if (!pIsHold[playerid]) {
+			if (pHoldTime[playerid] == 0) {
 				continue;
 			}
 
 			pHoldTime[playerid] -= GROUNDHOLD_HOLD_TIME;
 
-			if (pIsHold[playerid] == true) {
-				pIsHold[playerid] = false;
-
-				SendClientMessage(playerid, COLOR_RED, _(GROUNDHOLD_HOLD));
-				Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_OBJECTIVE_BACK));
-				Message_Objective(playerid, _(GROUNDHOLD_OBJECTIVE_BACK), -1);
-			}
-
+			// remove player from ground
 			if (pHoldTime[playerid] < 1) {
-				Iter_Remove(PlayerOnGround[ghid], playerid);
-				pHoldTime[playerid] = 0;
-				pGroundID[playerid] = INVALID_GROUNDHOLD_ID;
+				// message
+				new string[MAX_STRING];
 
 				format(string, sizeof(string), _(GROUNDHOLD_MISSING), gGroundholds[ghid][e_ghName]);
 				SendClientMessage(playerid, COLOR_RED, string);
 
 				Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_ALERT_MISSING));
 				Message_ObjectiveHide(playerid);
+
+				// clean
+				pHoldTime[playerid] = 0;
+				pGroundID[playerid] = INVALID_GROUNDHOLD_ID;
+				Iter_SafeRemove(PlayerOnGround[ghid], playerid, playerid);
 			}
-			continue;
-		}
-
-		// узнаём количество врагов на точке
-		enemy_count = 0;
-
-		foreach (new i : PlayerOnGround[ghid]) {
-			if (i == playerid || pHoldTime[i] == 0 || IsPlayersTeammates(i, playerid)) {
-				continue;
-			}
-
-			enemy_count++;
-		}
-
-		if (pIsHold[playerid] == false) {
-			pIsHold[playerid] = true;
-			Message_Objective(playerid, _(GROUNDHOLD_OBJECTIVE), -1);
-		}
-
-		if (pHoldTime[playerid] < gGroundholds[ghid][e_ghMulti]) {
-			// игрок только что попал на точку
-			if (pHoldTime[playerid] == 0 && pGroundID[playerid] != ghid) {
-				pGroundID[playerid] = ghid;
-				Iter_Add(PlayerOnGround[ghid], playerid);
-				
-				format(string, sizeof(string), _(GROUNDHOLD_INFO), gGroundholds[ghid][e_ghName]);
-				SendClientMessage(playerid, COLOR_GREEN, string);
-				
-				format(string, sizeof(string),
-					_(GROUNDHOLD_BONUS),
-					gGroundholds[ghid][e_ghMoney] * gGroundholds[ghid][e_ghMulti],
-					gGroundholds[ghid][e_ghXP] * gGroundholds[ghid][e_ghMulti]
-				);
-				SendClientMessage(playerid, COLOR_GREEN, string);
-
-				Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_OBJECTIVE));
-			}
-
-			if (pHoldTime[playerid] == 0 || enemy_count == 0) {
-				pHoldTime[playerid]++;
-			}
-		}
-
-		if (pHoldTime[playerid] > 0) {
-			// если на точке есть враги
-			if (enemy_count > 0) {
-				if (pHoldTime[playerid] % 10 == 0) {
-					format(string, sizeof(string), _(GROUNDHOLD_ENEMY), gGroundholds[ghid][e_ghName]);
-					SendClientMessage(playerid, COLOR_RED, string);
-
-					Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_ALERT_ENEMY));
+		} else {
+			// check enemies on the ground
+			if (IsGroundWithEnemies(ghid)) {
+				if (pHoldTime[playerid] > 0) {
+					pHoldTime[playerid]--;
 				}
-				
-				pHoldTime[playerid]--;
+			} else {
+				if (pHoldTime[playerid] < gGroundholds[ghid][e_ghMulti]) {
+					pHoldTime[playerid]++;
+				}
 			}
-			
-			// выдаём бонусы
+
+			// give reward
 			GivePlayerMoney(playerid, gGroundholds[ghid][e_ghMoney] * pHoldTime[playerid]);
 			GivePlayerXP(playerid, gGroundholds[ghid][e_ghXP] * pHoldTime[playerid]);
 		}
@@ -259,9 +285,11 @@ stock ToggleGroundholdStatus(bool:toggle)
 		if (IsEnabled) {
 			gGroundholds[ghid][e_ghCheckpointID] = CreateDynamicCP(gGroundholds[ghid][e_ghPosX], gGroundholds[ghid][e_ghPosY], gGroundholds[ghid][e_ghPosZ], 20.0);
 			gGroundholds[ghid][e_ghMapiconID] = CreateDynamicMapIcon(gGroundholds[ghid][e_ghPosX], gGroundholds[ghid][e_ghPosY], gGroundholds[ghid][e_ghPosZ], 56, 0);
+			gGroundholds[ghid][e_ghAreaID] = CreateDynamicSphere(gGroundholds[ghid][e_ghPosX], gGroundholds[ghid][e_ghPosY], gGroundholds[ghid][e_ghPosZ], gGroundholds[ghid][e_ghDist]);
 		} else {
 			DestroyDynamicCP(gGroundholds[ghid][e_ghCheckpointID]);
 			DestroyDynamicMapIcon(gGroundholds[ghid][e_ghMapiconID]);
+			DestroyDynamicArea(gGroundholds[ghid][e_ghAreaID]);
 		}
 	}
 }
@@ -274,4 +302,29 @@ stock IsPlayerInAnyGround(playerid)
 		}
 	}
 	return 0;
+}
+
+
+static stock UpdateEnemiesStatus(ghid, playerid)
+{
+	new
+		bool:previous_status = gGroundholds[ghid][e_ghIsEnemies];
+
+	gGroundholds[ghid][e_ghIsEnemies] = false;
+
+	foreach (new i : PlayerOnGround[ghid]) {
+		if (i == playerid || pHoldTime[i] == 0 || IsPlayersTeammates(i, playerid) || !pIsHold[playerid]) {
+			continue;
+		}
+
+		gGroundholds[ghid][e_ghIsEnemies] = true;
+		break;
+	}
+
+	return !previous_status && gGroundholds[ghid][e_ghIsEnemies];
+}
+
+static stock IsGroundWithEnemies(ghid)
+{
+	return _:gGroundholds[ghid][e_ghIsEnemies];
 }
