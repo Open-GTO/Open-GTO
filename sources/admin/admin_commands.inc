@@ -853,16 +853,17 @@ COMMAND:sys(playerid, params[])
 			string[MAX_LANG_VALUE_STRING],
 			value;
 
-		if (sscanf(subparams, "s[20]I", subsubcmd, value)) {
+		if (sscanf(subparams, "s[20]I(0)", subsubcmd, value)) {
 			SendClientMessage(playerid, -1, _(ADMIN_SYS_TIME_HELP));
+			return 1;
 		}
 
-		if (strcmp(subcmd, "set", true) == 0) {
+		if (strcmp(subsubcmd, "set", true) == 0) {
 			Time_SetCurrentHour(value);
 
 			format(string, sizeof(string), _(ADMIN_SYS_TIME_SET), value);
-		} else if (strcmp(subcmd, "real", true) == 0) {
-			Time_SetRealStatus(value == 0 ? false : true);
+		} else if (strcmp(subsubcmd, "real", true) == 0) {
+			Time_SetRealStatus(value == 0);
 
 			if (value == 0) {
 				__(ADMIN_SYS_TIME_REAL_FALSE, string);
