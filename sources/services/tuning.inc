@@ -137,7 +137,7 @@ Tuning_OnGameModeInit()
 	BlockGarages();
 
 	for (new i = 0; i < sizeof(gTuningPlace); i++) {
-		CreateDynamicPickup(1318, 1, gTuningPlace[i][e_tpCoord_X], gTuningPlace[i][e_tpCoord_Y], gTuningPlace[i][e_tpCoord_Z]);
+		CreateDynamicPickup(19132, 1, gTuningPlace[i][e_tpCoord_X], gTuningPlace[i][e_tpCoord_Y], gTuningPlace[i][e_tpCoord_Z]);
 		gTuningPlace[i][e_tpDynamic] = CreateDynamicSphere(gTuningPlace[i][e_tpCoord_X], gTuningPlace[i][e_tpCoord_Y], gTuningPlace[i][e_tpCoord_Z], 5.0);
 	}
 	return 1;
