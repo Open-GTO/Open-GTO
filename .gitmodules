@@ -25,9 +25,9 @@
 [submodule "sources/lib/skinselect"]
 	path = sources/lib/skinselect
 	url = https://github.com/Open-GTO/skinselect.git
-[submodule "sources/lib/zvehcolor"]
-	path = sources/lib/zvehcolor
-	url = https://github.com/Open-GTO/zvehcolor.git
+[submodule "sources/lib/zvehgetcolor"]
+	path = sources/lib/zvehgetcolor
+	url = https://github.com/Open-GTO/zvehgetcolor.git
 [submodule "sources/lib/gpickup"]
 	path = sources/lib/gpickup
 	url = https://github.com/Open-GTO/gpickup.git
