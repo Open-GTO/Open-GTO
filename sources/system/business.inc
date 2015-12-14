@@ -611,7 +611,7 @@ stock business_GetTextLabelString(id, string[MAX_STRING * 2])
 {
 	format(string, sizeof(string), _(BUSINESS_TEXT_LABEL), Businesses[id][Business_Name], Businesses[id][Business_Cost], Businesses[id][Business_Value], Businesses[id][Business_Level]);
 	if (strcmp(Businesses[id][Business_Owner], "Unknown", false)) {
-		format(string, sizeof(string), _(BUSINESS_TEXT_LABEL), string, Businesses[id][Business_Upgrade], Businesses[id][Business_Owner]);
+		format(string, sizeof(string), _(BUSINESS_TEXT_LABEL_INFO), string, Businesses[id][Business_Upgrade], Businesses[id][Business_Owner]);
 	}
 	return 1;
 }

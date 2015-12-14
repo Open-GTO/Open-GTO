@@ -267,7 +267,7 @@ BUSINESS_UPGRADE_MAX = {CCCCCC}Бизнес '{00AA00}%s{CCCCCC}' имеет максимальный ур
 BUSINESS_UPGRADE_NO_MONEY = {CCCCCC}Вам не хватает денег на модификацию, нужно {00AA00}$%d
 BUSINESS_MAX_COUNT = Вы больше не можете иметь бизнесов.
 BUSINESS_COLLECT = На ваш банковский счёт была перечислена прибыль с вашего бизнеса '%s', она составляла $%d.
-BUSINESS_TEXT_LABEL = %s\n{CCCCCC}Уровень бизнеса: {FFFFFF}%d\n{CCCCCC}Принадлежит: {FFFFFF}%s
+BUSINESS_TEXT_LABEL_INFO = %s\n{CCCCCC}Уровень бизнеса: {FFFFFF}%d\n{CCCCCC}Принадлежит: {FFFFFF}%s
 BUSINESS_ACCEPT_HEADER = Продать бизнес?
 BUSINESS_ACCEPT_INFO = Вы действительно хотите продать этот бизнес?
 
