@@ -104,6 +104,25 @@ PLAYER_MENU_SETTINGS_PASSWORD_CHANGED = {CCCCCC}Вы успешно сменили пароль.\nВаш 
 PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY = {CCCCCC}У вас нету {00AA00}$%d{CCCCCC} на смену пароля от аккаунта.
 PLAYER_MENU_SETTINGS_PASSWORD_LENGTH = {CCCCCC}Допустимая длина пароля от {BBBAE8}%d{CCCCCC} до {BBBAE8}%d{CCCCCC} символов.
 
+// vehicle menu
+VEHICLE_MENU_HEADER = Меню транспорта
+VEHICLE_MENU_BUTTON_OK = ОК
+VEHICLE_MENU_BUTTON_CANCEL = Отмена
+VEHICLE_MENU_BUTTON_OK = ОК
+VEHICLE_MENU_LIST_FLIP = Перевернуть
+VEHICLE_MENU_LIST_FILL = Заправить
+VEHICLE_MENU_LIST_RADIO = Радио
+VEHICLE_MENU_LIST_DISABLE_LIGHTS = {FF0000}Выключить фары\n
+VEHICLE_MENU_LIST_ENABLE_LIGHTS = {00FF00}Включить фары\n
+VEHICLE_MENU_LIST_DISABLE_ENGINE = {FF0000}Выключить двигатель\n
+VEHICLE_MENU_LIST_ENABLE_ENGINE = {00FF00}Включить двигатель\n
+VEHICLE_MENU_LIST_CLOSE_BONNET = {FF0000}Закрыть капот\n
+VEHICLE_MENU_LIST_OPEN_BONNET = {00FF00}Открыть капот\n
+VEHICLE_MENU_LIST_CLOSE_BOOT = {FF0000}Закрыть багажник\n
+VEHICLE_MENU_LIST_OPEN_BOOT = {00FF00}Открыть багажник\n
+VEHICLE_MENU_LIST_CLOSE_WINDOWS = {FF0000}Закрыть окна\n
+VEHICLE_MENU_LIST_OPEN_WIDNOWS = {00FF00}Открыть окна\n
+
 // command
 COMMAND_HELP_0 = /help - первая помощь, /info - краткое описание, /commands - список всех команд. 
 COMMAND_HELP_1 = /status - информация о вашем герое.

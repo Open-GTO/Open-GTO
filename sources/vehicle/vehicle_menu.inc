@@ -40,40 +40,41 @@ COMMAND:vmenu(playerid, params[])
 
 DialogCreate:VehicleMenu(playerid)
 {
-	new string[512], engine, lights, alarm, doors, bonnet, boot, objective;
 	new vehicleid = GetPlayerVehicleID(playerid);
+	new engine, lights, alarm, doors, bonnet, boot, objective;
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 	
-	strcat(string, "Перевернуть\n", sizeof(string));
-	strcat(string, "Заправить\n", sizeof(string));
-	strcat(string, "Радио\n", sizeof(string));
+	new string[MAX_LANG_VALUE_STRING * 8];
+	strcat(string, _(VEHICLE_MENU_LIST_FLIP), sizeof(string));
+	strcat(string, _(VEHICLE_MENU_LIST_FILL), sizeof(string));
+	strcat(string, _(VEHICLE_MENU_LIST_RADIO), sizeof(string));
 	
 	// фары
 	if (lights == VEHICLE_PARAMS_ON) {
-		strcat(string, "{FF0000}Выключить  фары\n", sizeof(string));
+		strcat(string, _(VEHICLE_MENU_LIST_DISABLE_LIGHTS), sizeof(string));
 	} else {
-		strcat(string, "{00FF00}Включить фары\n", sizeof(string));
+		strcat(string, _(VEHICLE_MENU_LIST_ENABLE_LIGHTS), sizeof(string));
 	}
 	
 	// двигатель
 	if (engine == VEHICLE_PARAMS_ON) {
-		strcat(string, "{FF0000}Выключить двигатель\n", sizeof(string));
+		strcat(string, _(VEHICLE_MENU_LIST_DISABLE_ENGINE), sizeof(string));
 	} else {
-		strcat(string, "{00FF00}Включить двигатель\n", sizeof(string));
+		strcat(string, _(VEHICLE_MENU_LIST_ENABLE_ENGINE), sizeof(string));
 	}
 
 	// капот
 	if (bonnet == VEHICLE_PARAMS_ON) {
-		strcat(string, "{FF0000}Закрыть капот\n", sizeof(string));
+		strcat(string, _(VEHICLE_MENU_LIST_CLOSE_BONNET), sizeof(string));
 	} else {
-		strcat(string, "{00FF00}Открыть капот\n", sizeof(string));
+		strcat(string, _(VEHICLE_MENU_LIST_OPEN_BONNET), sizeof(string));
 	}
 	
 	// багажник
 	if (boot == VEHICLE_PARAMS_ON) {
-		strcat(string, "{FF0000}Закрыть багажник\n", sizeof(string));
+		strcat(string, _(VEHICLE_MENU_LIST_CLOSE_BOOT), sizeof(string));
 	} else {
-		strcat(string, "{00FF00}Открыть багажник\n", sizeof(string));
+		strcat(string, _(VEHICLE_MENU_LIST_OPEN_BOOT), sizeof(string));
 	}
 	
 	// окна
@@ -81,12 +82,12 @@ DialogCreate:VehicleMenu(playerid)
 	GetVehicleParamsCarWindows(vehicleid, window_state, window_state, window_state, window_state);
 
 	if (window_state == VEHICLE_WINDOW_OPENED) {
-		strcat(string, "{FF0000}Закрыть окна\n", sizeof(string));
+		strcat(string, _(VEHICLE_MENU_LIST_CLOSE_WINDOWS), sizeof(string));
 	} else {
-		strcat(string, "{00FF00}Открыть окна\n", sizeof(string));
+		strcat(string, _(VEHICLE_MENU_LIST_OPEN_WINDOWS), sizeof(string));
 	}
 		
-	Dialog_Open(playerid, Dialog:VehicleMenu, DIALOG_STYLE_LIST, "Меню транспорта", string, "ОК", "Отмена");
+	Dialog_Open(playerid, Dialog:VehicleMenu, DIALOG_STYLE_LIST, _(VEHICLE_MENU_HEADER), string, _(VEHICLE_MENU_BUTTON_OK), _(VEHICLE_MENU_BUTTON_CANCEL));
 }
 
 DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
