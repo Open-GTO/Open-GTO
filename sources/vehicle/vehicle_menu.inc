@@ -75,6 +75,16 @@ DialogCreate:VehicleMenu(playerid)
 	} else {
 		strcat(string, "{00FF00}Открыть багажник\n", sizeof(string));
 	}
+	
+	// окна
+	new window_state;
+	GetVehicleParamsCarWindows(vehicleid, window_state, window_state, window_state, window_state);
+
+	if (window_state == VEHICLE_WINDOW_OPENED) {
+		strcat(string, "{FF0000}Закрыть окна\n", sizeof(string));
+	} else {
+		strcat(string, "{00FF00}Открыть окна\n", sizeof(string));
+	}
 		
 	Dialog_Open(playerid, Dialog:VehicleMenu, DIALOG_STYLE_LIST, "Меню транспорта", string, "ОК", "Отмена");
 }
@@ -170,6 +180,18 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 				SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, VEHICLE_PARAMS_OFF, objective);
 			} else {
 				SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, VEHICLE_PARAMS_ON, objective);
+			}
+			return 1;
+		}
+		// окна
+		case 7: {
+			new window_state;
+			GetVehicleParamsCarWindows(vehicleid, window_state, window_state, window_state, window_state);
+
+			if (window_state != VEHICLE_WINDOW_OPENED) {
+				SetVehicleParamsCarWindows(vehicleid, VEHICLE_WINDOW_OPENED, VEHICLE_WINDOW_OPENED, VEHICLE_WINDOW_OPENED, VEHICLE_WINDOW_OPENED);
+			} else {
+				SetVehicleParamsCarWindows(vehicleid, VEHICLE_WINDOW_CLOSED, VEHICLE_WINDOW_CLOSED, VEHICLE_WINDOW_CLOSED, VEHICLE_WINDOW_CLOSED);
 			}
 			return 1;
 		}
