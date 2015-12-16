@@ -75,6 +75,7 @@ Thanks:
 #include "vehicle/vehicle_radio"
 #include "vehicle/vehicle_premium"
 #include "vehicle/vehicle_textdraw"
+#include "vehicle/vehicle_doors"
 #include "player/player_level"
 #include "player/player_premium"
 #include "player/player_weapon"

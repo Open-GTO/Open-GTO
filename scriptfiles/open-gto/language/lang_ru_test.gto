@@ -108,10 +108,10 @@ PLAYER_MENU_SETTINGS_PASSWORD_LENGTH = {CCCCCC}Допустимая длина пароля от {BBBAE
 VEHICLE_MENU_HEADER = Меню транспорта
 VEHICLE_MENU_BUTTON_OK = ОК
 VEHICLE_MENU_BUTTON_CANCEL = Отмена
-VEHICLE_MENU_BUTTON_OK = ОК
 VEHICLE_MENU_LIST_FLIP = Перевернуть\n
 VEHICLE_MENU_LIST_FILL = Заправить\n
 VEHICLE_MENU_LIST_RADIO = Радио\n
+VEHICLE_MENU_LIST_DOORS = %sДвери {CCCCCC}[%s]\n
 VEHICLE_MENU_LIST_DISABLE_LIGHTS = {FF0000}Выключить фары\n
 VEHICLE_MENU_LIST_ENABLE_LIGHTS = {00FF00}Включить фары\n
 VEHICLE_MENU_LIST_DISABLE_ENGINE = {FF0000}Выключить двигатель\n
@@ -122,6 +122,13 @@ VEHICLE_MENU_LIST_CLOSE_BOOT = {FF0000}Закрыть багажник\n
 VEHICLE_MENU_LIST_OPEN_BOOT = {00FF00}Открыть багажник\n
 VEHICLE_MENU_LIST_CLOSE_WINDOWS = {FF0000}Закрыть окна\n
 VEHICLE_MENU_LIST_OPEN_WINDOWS = {00FF00}Открыть окна\n
+
+VEHICLE_MENU_DOORS_NOTOWNER = Доступно только для личного транспорта
+
+VEHICLE_DOORS_ACCESS_INVALID = не доступно
+VEHICLE_DOORS_ACCESS_EVERYONE = открыты всем
+VEHICLE_DOORS_ACCESS_NOONE = закрыты для всех
+VEHICLE_DOORS_ACCESS_GANG = открыты банде
 
 // command
 COMMAND_HELP_0 = /help - первая помощь, /info - краткое описание, /commands - список всех команд. 

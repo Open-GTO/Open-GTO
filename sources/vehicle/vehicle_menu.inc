@@ -48,7 +48,10 @@ DialogCreate:VehicleMenu(playerid)
 	strcat(string, _(VEHICLE_MENU_LIST_FLIP), sizeof(string));
 	strcat(string, _(VEHICLE_MENU_LIST_FILL), sizeof(string));
 	strcat(string, _(VEHICLE_MENU_LIST_RADIO), sizeof(string));
-	
+
+	// двери
+	format(string, sizeof(string), _(VEHICLE_MENU_LIST_DOORS), string, ReturnVehicleDoorsAccessName(vehicleid));
+
 	// фары
 	if (lights == VEHICLE_PARAMS_ON) {
 		strcat(string, _(VEHICLE_MENU_LIST_DISABLE_LIGHTS), sizeof(string));
@@ -148,8 +151,19 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			Dialog_Show(playerid, Dialog:VehicleRadio);
 			return 1;
 		}
-		// фары
+		// двери
 		case 3: {
+			new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
+			if (slot == -1) {
+				Dialog_Message(playerid, _(VEHICLE_MENU_HEADER), _(VEHICLE_MENU_DOORS_NOTOWNER), _(VEHICLE_MENU_BUTTON_OK));
+			} else {
+				ChangePlayerVehicleDoorsAccess(vehicleid, playerid, slot);
+				Dialog_Show(playerid, Dialog:VehicleMenu);
+			}
+			return 1;
+		}
+		// фары
+		case 4: {
 			if (lights == VEHICLE_PARAMS_ON) {
 				SetVehicleParamsEx(vehicleid, engine, VEHICLE_PARAMS_OFF, alarm, doors, bonnet, boot, objective);
 			} else {
@@ -158,7 +172,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 		// двигатель
-		case 4: {
+		case 5: {
 			if (engine == VEHICLE_PARAMS_ON) {
 				SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, lights, alarm, doors, bonnet, boot, objective);
 			} else {
@@ -167,7 +181,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 		// капот
-		case 5: {
+		case 6: {
 			if (bonnet == VEHICLE_PARAMS_ON) {
 				SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, VEHICLE_PARAMS_OFF, boot, objective);
 			} else {
@@ -176,7 +190,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 		// багажник
-		case 6: {
+		case 7: {
 			if (boot == VEHICLE_PARAMS_ON) {
 				SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, VEHICLE_PARAMS_OFF, objective);
 			} else {
@@ -185,7 +199,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 		// окна
-		case 7: {
+		case 8: {
 			new window_state;
 			GetVehicleParamsCarWindows(vehicleid, window_state, window_state, window_state, window_state);
 

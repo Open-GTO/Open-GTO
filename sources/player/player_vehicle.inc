@@ -25,7 +25,7 @@ enum pvInfo {
 	pv_Model,
 	pv_Color[2],
 	Float:pv_Fuel,
-	pv_Lock,
+	pv_Access,
 	pv_Paintjob,
 	pv_Component[VEHICLE_COMPONENTS]
 }
@@ -86,7 +86,8 @@ stock pveh_OnVehicleTuning(playerid, vehicleid, componentid)
 	return 1;
 }
 
-stock AddPlayerVehicle(playerid, model, color1, color2, Float:fuel, lock = 0, paintjob = -1, component[VEHICLE_COMPONENTS] = {0, ...})
+stock AddPlayerVehicle(playerid, model, color1, color2, Float:fuel, access = VEHICLE_DOORS_ACCESS_EVERYONE,
+                       paintjob = -1, component[VEHICLE_COMPONENTS] = {0, ...})
 {
 	new slot = GetPlayerVehicleFreeSlot(playerid);
 	PlayerVehicle[playerid][slot][pv_ID] = 0;
@@ -94,7 +95,7 @@ stock AddPlayerVehicle(playerid, model, color1, color2, Float:fuel, lock = 0, pa
 	PlayerVehicle[playerid][slot][pv_Color][0] = color1;
 	PlayerVehicle[playerid][slot][pv_Color][1] = color2;
 	PlayerVehicle[playerid][slot][pv_Fuel] = fuel;
-	PlayerVehicle[playerid][slot][pv_Lock] = lock;
+	PlayerVehicle[playerid][slot][pv_Access] = access;
 	PlayerVehicle[playerid][slot][pv_Paintjob] = paintjob;
 	for (new i = 0; i < VEHICLE_COMPONENTS; i++) {
 		PlayerVehicle[playerid][slot][pv_Component][i] = component[i];
@@ -113,7 +114,7 @@ stock RemovePlayerVehicle(playerid, slot)
 	PlayerVehicle[playerid][slot][pv_Color][0] = 0;
 	PlayerVehicle[playerid][slot][pv_Color][1] = 0;
 	PlayerVehicle[playerid][slot][pv_Fuel] = 0;
-	PlayerVehicle[playerid][slot][pv_Lock] = 0;
+	PlayerVehicle[playerid][slot][pv_Access] = 0;
 	PlayerVehicle[playerid][slot][pv_Paintjob] = -1;
 	for (new i = 0; i < VEHICLE_COMPONENTS; i++) {
 		PlayerVehicle[playerid][slot][pv_Component][i] = 0;
@@ -149,6 +150,7 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 	PlayerVehicle[playerid][slot][pv_ID] = vehicleid;
 	
 	SetVehicleFuel(vehicleid, PlayerVehicle[playerid][slot][pv_Fuel]);
+	SetPlayerVehicleDoorsAccess(vehicleid, playerid, PlayerVehicle[playerid][slot][pv_Access], slot);
 	
 	if (PlayerVehicle[playerid][slot][pv_Paintjob] != -1) {
 		ChangeVehiclePaintjob(vehicleid, PlayerVehicle[playerid][slot][pv_Paintjob]);
@@ -169,7 +171,7 @@ stock CreateVehicleDbString(playerid, slot)
 	new vehstr[MAX_STRING];
 	format(vehstr, sizeof(vehstr), "%d/%d/%d/%f/%d/%d",
 		PlayerVehicle[playerid][slot][pv_Model], PlayerVehicle[playerid][slot][pv_Color][0], PlayerVehicle[playerid][slot][pv_Color][1],
-		PlayerVehicle[playerid][slot][pv_Fuel], PlayerVehicle[playerid][slot][pv_Lock], PlayerVehicle[playerid][slot][pv_Paintjob]
+		PlayerVehicle[playerid][slot][pv_Fuel], PlayerVehicle[playerid][slot][pv_Access], PlayerVehicle[playerid][slot][pv_Paintjob]
 	);
 	for (new i = 0; i < VEHICLE_COMPONENTS; i++) {
 		format(vehstr, sizeof(vehstr), "%s/%d", vehstr, PlayerVehicle[playerid][slot][pv_Component][i]);
@@ -183,7 +185,7 @@ stock SetVehicleFromDbString(playerid, slot, dbstring[])
 		    PlayerVehicle[playerid][slot][pv_Model],
 		    PlayerVehicle[playerid][slot][pv_Color],
 		    PlayerVehicle[playerid][slot][pv_Fuel],
-		    PlayerVehicle[playerid][slot][pv_Lock],
+		    PlayerVehicle[playerid][slot][pv_Access],
 		    PlayerVehicle[playerid][slot][pv_Paintjob],
 		    PlayerVehicle[playerid][slot][pv_Component])
 		) {
@@ -264,6 +266,34 @@ stock GetPlayerVehicleCostBySlot(playerid, slot)
 stock GetPlayerVehicleModelBySlot(playerid, slot)
 {
 	return PlayerVehicle[playerid][slot][pv_Model];
+}
+
+stock SetPlayerVehicleDoorsAccess(vehicleid, playerid, status, slot = -1)
+{
+	if (slot == -1) {
+		slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
+		if (slot == -1) {
+			return 0;
+		}
+	}
+
+	PlayerVehicle[playerid][slot][pv_Access] = status;
+	SetVehicleDoorsAccess(vehicleid, playerid, status);
+	return 1;
+}
+
+stock ChangePlayerVehicleDoorsAccess(vehicleid, playerid, slot = -1)
+{
+	if (slot == -1) {
+		slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
+		if (slot == -1) {
+			return 0;
+		}
+	}
+
+	ChangeVehicleDoorsAccess(vehicleid, playerid);
+	PlayerVehicle[playerid][slot][pv_Access] = GetVehicleDoorsAccess(vehicleid);
+	return 1;
 }
 
 stock RemovePlayerVehicleComponents(playerid, slot)
