@@ -19,7 +19,9 @@
 
 static
 	IsEnabled = ANTI_IDLE_ENABLED,
-	MaxTime = MAX_IDLE_TIME;
+	MaxTime = ANTI_IDLE_TIME,
+	gIdleTime[MAX_PLAYERS],
+	Float:gIdlePos[MAX_PLAYERS][3];
 
 /*
  * Config
@@ -64,36 +66,30 @@ pt_idle_PlayerTimer(playerid)
 	}
 
 	if (IsGroundholdEnabled() && IsPlayerInAnyGround(playerid) && !IsPlayerRconAdmin(playerid)) {
-		new
-			Float:pos[3],
-			Float:idle_pos[3],
-			string[MAX_STRING];
-
+		new Float:pos[3];
 		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-		
-		idle_pos[0] = GetPVarFloat(playerid, "playerIdlePos_X");
-		idle_pos[1] = GetPVarFloat(playerid, "playerIdlePos_Y");
-		idle_pos[2] = GetPVarFloat(playerid, "playerIdlePos_Z");
 
-		if (pos[0] == idle_pos[0] && pos[1] == idle_pos[1] && pos[2] == idle_pos[2]) {
-			GivePVarInt(playerid, "playerIdle", 1);
+		if (pos[0] == gIdlePos[playerid][0] && pos[1] == gIdlePos[playerid][1] && pos[2] == gIdlePos[playerid][2]) {
+			gIdleTime[playerid]++;
 			
-			if (GetPVarInt(playerid, "playerIdle") > MaxTime - 1) {
+			if (gIdleTime[playerid] > MaxTime - 1) {
+				new string[MAX_LANG_VALUE_STRING];
 				format(string, sizeof(string), _(PROTECTION_ANTIIDLE_INFO), MaxTime - 1);
 				SendClientMessage(playerid, COLOR_RED, string);
 				SendClientMessage(playerid, COLOR_RED, _(PROTECTION_ANTIIDLE_LAST_WARN));
 			}
-			if (GetPVarInt(playerid, "playerIdle") > MaxTime) {
-				SetPVarInt(playerid, "playerIdle", 0);
+			if (gIdleTime[playerid] > MaxTime) {
+				gIdleTime[playerid] = 0;
 				KickPlayer(playerid, _(PROTECTION_ANTIIDLE_KICK_REASON));
 			}
 		} else {
-			SetPVarInt(playerid, "playerIdle", 0);
+			gIdleTime[playerid] = 0;
 		}
 
-		SetPVarFloat(playerid, "playerIdlePos_X", pos[0]);
-		SetPVarFloat(playerid, "playerIdlePos_Y", pos[1]);
-		SetPVarFloat(playerid, "playerIdlePos_Z", pos[2]);
-   	}
-   	return 1;
+		gIdlePos[playerid][0] = pos[0];
+		gIdlePos[playerid][1] = pos[1];
+		gIdlePos[playerid][2] = pos[2];
+	}
+
+	return 1;
 }

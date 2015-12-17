@@ -104,7 +104,7 @@
 #define MAXIMAL_PING                  500 // пинг, при котором кикает
 
 #define ANTI_IDLE_ENABLED             1 // защита от АФК на точках прокачки
-#define MAX_IDLE_TIME                 5 // кол-во минут, после которых кикает
+#define ANTI_IDLE_TIME                5 // кол-во минут, после которых кикает
 
 #define CHAT_GUARD_ENABLED            1 // защита чата
 #define ANTI_RCON_HACK_ENABLED        1 // защита от взлома rcon пароля
