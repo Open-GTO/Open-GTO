@@ -143,8 +143,6 @@ weapon_OnGameModeInit()
 
 weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 {
-	#pragma unused bodypart
-
 	if (damagedid == INVALID_PLAYER_ID) {
 		return 1;
 	}
@@ -161,6 +159,10 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 
 	if (GetPlayerState(playerid) == PLAYER_STATE_DRIVER) {
 		damage /= 2.0;
+	}
+
+	if (bodypart == BODY_PART_HEAD) {
+		damage *= 2.0;
 	}
 
 	GetPlayerHealth(damagedid, health);
