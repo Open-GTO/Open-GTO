@@ -398,7 +398,7 @@ ADMIN_COMMAND_ADMIN_HELP_2 = {FFCC66}* {FFFFFF}јдминистратор имеет все права мод
 
 ADMIN_COMMAND_RCON_HELP_0 = {FFCC66}* {FFFFFF}” вас максимальные права. ¬ы можете использовать команды управлени€ модераторов и администраторов,
 ADMIN_COMMAND_RCON_HELP_1 = {FFCC66}* {FFFFFF}присваивать игрокам права модератора или администратора. ”правл€ть сервером и игровым режимом в полной
-ADMIN_COMMAND_RCON_HELP_2 = мере, предоставленной в Open-GTO.
+ADMIN_COMMAND_RCON_HELP_2 = {FFCC66}* {FFFFFF}мере, предоставленной в Open-GTO.
 
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружи€ (%0.4f != %0.4f)
