@@ -553,6 +553,9 @@ SKINSHOP_DIALOG_INFO_BUY = {CCCCCC}Купить эту одежду?
 SKINSHOP_DIALOG_BUTTON_0 = Да
 SKINSHOP_DIALOG_BUTTON_1 = Нет
 
+// fuel station
+FUEL_STATION_3DTEXT = Заправка\n{33AA33}Нажмите кнопку '{FFFFFF}2{33AA33}'
+
 // Lottery
 LOTTERY_NOT_STARTED = Лотерея ещё не началась!
 LOTTERY_USE_COMMAND = Применение: /lottery <число 1..100>

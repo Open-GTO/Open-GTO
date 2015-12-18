@@ -41,7 +41,7 @@ Fuelstation_OnGameModeInit()
 		CreateDynamicMapIcon(gFuelstation[i][Coord_X], gFuelstation[i][Coord_Y], gFuelstation[i][Coord_Z], 55, 0);
 		CreateDynamicPickup(1650, 23, gFuelstation[i][Coord_X], gFuelstation[i][Coord_Y], gFuelstation[i][Coord_Z]);
 		CreateDynamic3DTextLabel(
-			"Заправка\n{33AA33}Нажмите кнопку '{FFFFFF}NUM2{33AA33}'", 0xFFFFFFFF,
+			_(FUEL_STATION_3DTEXT), 0xFFFFFFFF,
 			gFuelstation[i][Coord_X], gFuelstation[i][Coord_Y], gFuelstation[i][Coord_Z], 20.0, .testlos = 1);
 	}
 	return 1;
