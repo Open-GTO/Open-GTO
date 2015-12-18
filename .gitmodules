@@ -34,3 +34,6 @@
 [submodule "sources/lib/gtolib"]
 	path = sources/lib/gtolib
 	url = https://github.com/Open-GTO/gtolib.git
+[submodule "sources/lib/getspawninfo"]
+	path = sources/lib/getspawninfo
+	url = https://github.com/Open-GTO/getspawninfo.git

@@ -121,7 +121,7 @@ Player_Spawn_OnPlayerRequestC(playerid, classid)
 		new interior, world, Float:spawn_pos[4];
 		GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
 		SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
-		
+
 		TogglePlayerSpectating(playerid, 0);
 		return 0;
 	}
@@ -457,6 +457,7 @@ stock Player_SetSpawnType(playerid, SpawnType:type)
 {
 	gPlayerSpawnType[playerid] = type;
 }
+
 stock SpawnType:Player_GetSpawnType(playerid)
 {
 	return gPlayerSpawnType[playerid];

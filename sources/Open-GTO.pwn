@@ -58,6 +58,7 @@ Thanks:
 #include "lib/GarageBlock"
 #include "lib/gpickup/gpickup"
 #include "lib/gtolib/gtolib"
+#include "lib/getspawninfo/getspawninfo"
 #include "core/redefine"
 #include "core/db"
 #include "core/core_time"
@@ -154,7 +155,7 @@ Thanks:
 #include "protections/highping"
 #include "protections/chatguard"
 #include "protections/specialaction"
-#include "protections/speedhack"
+#include "protections/teleport"
 #include "protections/weaponhack"
 #include "protections/health"
 #include "protections/armour"
@@ -209,7 +210,7 @@ public OnGameModeInit()
 	// protection
 	pt_idle_OnGameModeInit();
 	pt_chat_OnGameModeInit();
-	pt_speed_OnGameModeInit();
+	Prot_Teleport_OnGameModeInit();
 
 	// custom
 	#tryinclude "custom/mapicon"
@@ -374,6 +375,9 @@ public OnPlayerSpawn(playerid)
 		return 1;
 	}
 
+	// protections
+	Prot_Teleport_OnPlayerSpawn(playerid);
+
 	// ставим позицию
 	SetPlayerPosToSpawn(playerid);
 
@@ -523,7 +527,6 @@ public OnPlayerExitedMenu(playerid)
 public OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	Vehicle_OnPlayerStateChange(playerid, newstate, oldstate);
-	pt_speed_OnPlayerStateChange(playerid, newstate, oldstate);
 	Trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 	Spectate_OnPlayerStateChange(playerid, newstate, oldstate);
 	weapon_OnPlayerStateChange(playerid, newstate, oldstate);
@@ -547,7 +550,6 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 
 public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 {
-	pt_speed_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
 	Spectate_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
 	return 1;
 }

@@ -51,7 +51,7 @@ stock cfg_LoadConfigs()
 	pt_chat_LoadConfig(file_config);
 	pt_spac_LoadConfig(file_config);
 	pt_rcon_LoadConfig(file_config);
-	pt_speed_LoadConfig(file_config);
+	Prot_Teleport_LoadConfig(file_config);
 	pt_weapon_LoadConfig(file_config);
 	pt_health_LoadConfig(file_config);
 	pt_armour_LoadConfig(file_config);
@@ -100,7 +100,7 @@ stock cfg_SaveConfigs()
 	pt_chat_SaveConfig(file_config);
 	pt_spac_SaveConfig(file_config);
 	pt_rcon_SaveConfig(file_config);
-	pt_speed_SaveConfig(file_config);
+	Prot_Teleport_SaveConfig(file_config);
 	pt_weapon_SaveConfig(file_config);
 	pt_health_SaveConfig(file_config);
 	pt_armour_SaveConfig(file_config);
