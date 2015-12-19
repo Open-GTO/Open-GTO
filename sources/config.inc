@@ -120,8 +120,8 @@
 #define PROTECTION_TELEPORT_ENABLED       1 // защита от speedhack, airbreak, телепортации(если наблюдаются ложные срабатывания, подрегулируйте параметр ниже)
 #define PROTECTION_TELEPORT_DELAY         1000 // время задержки между каждой проверкой
 #define PROTECTION_TELEPORT_TIMER         400 // время таймера
-#define PROTECTION_TELEPORT_MAX_VEHICLE_DISTANCE 80.0
-#define PROTECTION_TELEPORT_MAX_DISTANCE         140.0
+#define PROTECTION_TELEPORT_MAX_VEHICLE_DISTANCE 140.0
+#define PROTECTION_TELEPORT_MAX_DISTANCE         80.0
 
 /*
  * Gameplay settings
