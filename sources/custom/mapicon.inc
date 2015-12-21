@@ -30,15 +30,12 @@
 	CreateDynamicMapIcon(2386.543457, 1042.123413, 10.483552, 27, 0);
 #endif
 
-// health
-	CreateDynamicMapIcon(2034.0259, -1407.9951, 17.1690, 22, 0);
-	CreateDynamicMapIcon(1183.4502, -1323.8809, 13.5770, 22, 0);
-	CreateDynamicMapIcon(1245.5424, 336.0700, 19.5547, 22, 0);
-	CreateDynamicMapIcon(-2195.9592, -2304.9924, 30.6250, 22, 0);
-	CreateDynamicMapIcon(-2657.3501, 607.0751, 14.4531, 22, 0);
-	CreateDynamicMapIcon(-1514.9010, 2533.1780, 55.6918, 22, 0);
-	CreateDynamicMapIcon(-322.0205, 1056.3918, 19.7422, 22, 0);
-	CreateDynamicMapIcon(1607.8369, 1826.6384, 10.8203, 22, 0);
-
-// other
-	CreateDynamicMapIcon(850.7032, 861.6425, 13.3516, 51, 0);
+// MAPICON_HOSPITAL
+	CreateDynamicMapIcon(2029.6674, -1401.6702, 17.2519, 22, 0);
+	CreateDynamicMapIcon(1172.0767, -1323.3510, 15.4030, 22, 0);
+	CreateDynamicMapIcon(1241.3876, 325.8805, 19.7555, 22, 0);
+	CreateDynamicMapIcon(-2204.0369, -2309.5132, 31.3750, 22, 0);
+	CreateDynamicMapIcon(-2655.0667, 640.1652, 14.4545, 22, 0);
+	CreateDynamicMapIcon(-1514.7858, 2518.9285, 56.0703, 22, 0);
+	CreateDynamicMapIcon(-320.2129, 1048.2340, 20.3403, 22, 0);
+	CreateDynamicMapIcon(1607.3724, 1815.2407, 10.8203, 22, 0);
