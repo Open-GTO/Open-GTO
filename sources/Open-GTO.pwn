@@ -44,7 +44,7 @@ Thanks:
 #include "lib/sscanf2"
 #include "lib/zcmd"
 #include "lib/mxINI"
-#include "lib/mxDate"
+#include "lib/time_t/time_t"
 #include "lib/mSelection"
 #include "lib/mapfix"
 #include "lib/textlist/textlist"

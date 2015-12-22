@@ -52,7 +52,7 @@ stock Premium_GetDateStatus(date[])
 		return 0;
 	}
 
-	if (getdate() <= date_to_timestamp(year, month, day)) {
+	if (getdate() <= mktime(year, month, day)) {
 		return 1;
 	}
 	
