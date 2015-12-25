@@ -15,7 +15,7 @@
 
 stock PushHide(playerid)
 {
-	new hidecont = (admin_GetHideStatus(playerid) == 1) ? 0 : PlayerGangColour(playerid);
+	new hidecont = (admin_GetHideStatus(playerid) == 1) ? 0 : GetPlayerGangColor(playerid);
 
 	foreach (new id : Player) {
 		if (id != playerid) {

@@ -31,12 +31,6 @@ stock admin_OnPlayerText(playerid, text[])
 	return mute_result;
 }
 
-stock admin_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
-{
-	adm_godmod_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart);
-	return 1;
-}
-
 stock admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
 	adm_maptp_OnPlayerClickMap(playerid, fX, fY, fZ);

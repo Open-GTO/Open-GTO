@@ -59,7 +59,7 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 		xpamount += (xpamount / 100) * PLAYER_XP_PREMIUM_PROFIT;
 	}
 
-	GangGivePlayerXP(playerid, xpamount);
+	Gang_GiveXpFromPlayer(playerid, xpamount);
 
 	new texttime = (xpamount > 5000) ? 2000 : 1000;
 

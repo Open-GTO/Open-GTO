@@ -66,7 +66,7 @@ stock player_SaveEx(playerid)
 		Float:temp_float;
 
 	ini_setString(file_player, "Name", playername);
-	ini_setString(file_player, "Gang", player_GetGangName(playerid));
+	ini_setString(file_player, "Gang", ReturnPlayerGangName(playerid));
 
 	GetPlayerArmour(playerid, temp_float);
 	ini_setFloat(file_player, "Armour", temp_float);
@@ -75,8 +75,8 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "XP", GetPlayerXP(playerid));
 	ini_setInteger(file_player, "Money", GetPlayerMoney(playerid));
 	ini_setInteger(file_player, "BankMoney", GetPlayerBankMoney(playerid));
-	ini_setInteger(file_player, "Deaths", player_GetDeaths(playerid));
-	ini_setInteger(file_player, "Kills", player_GetKills(playerid));
+	ini_setInteger(file_player, "Deaths", GetPlayerDeaths(playerid));
+	ini_setInteger(file_player, "Kills", GetPlayerKills(playerid));
 	ini_setInteger(file_player, "Jailed", player_GetJailCount(playerid));
 	ini_setInteger(file_player, "JailTime", player_GetJailTime(playerid));
 	ini_setInteger(file_player, "Muted", player_GetMuteCount(playerid));
@@ -103,7 +103,7 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "Status", player_GetStatus(playerid));
 	ini_setString(file_player, "Weapons", Createdb_weaponString(playerid));
 	ini_setString(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
-	ini_setInteger(file_player, "SkinModel", player_GetSkin(playerid));
+	ini_setInteger(file_player, "SkinModel", GetPlayerSkin(playerid));
 	ini_setInteger(file_player, "Hide", admin_GetHideStatus(playerid));
 	ini_setInteger(file_player, "SpawnType", _:Player_GetSpawnType(playerid));
 	ini_setInteger(file_player, "SpawnHouseID", Player_GetSpawnHouseID(playerid));
@@ -147,10 +147,10 @@ stock player_Login(playerid)
 		SetPVarInt(playerid, "BankMoney", buf);
 		
 		ini_getInteger(file_player, "Deaths", buf);
-		SetPVarInt(playerid, "Deaths", buf);
+		SetPlayerDeaths(playerid, buf);
 		
 		ini_getInteger(file_player, "Kills", buf);
-		SetPVarInt(playerid, "Kills", buf);
+		SetPlayerKills(playerid, buf);
 		
 		ini_getInteger(file_player, "Jailed", buf);
 		player_SetJailCount(playerid, buf);
@@ -196,7 +196,7 @@ stock player_Login(playerid)
 		player_SetStatus(playerid, buf);
 
 		ini_getString(file_player, "Gang", s_buf);
-		player_SetGangName(playerid, s_buf);
+		SetPlayerGangName(playerid, s_buf);
 
 		ini_getString(file_player, "Weapons", s_buf);
 		SetWeaponsFromDBString(playerid, s_buf);
@@ -205,7 +205,7 @@ stock player_Login(playerid)
 		SetWeaponsSkillsFromDBString(playerid, s_buf);
 		
 		ini_getInteger(file_player, "SkinModel", buf);
-		player_SetSkin(playerid, buf);
+		SetPlayerSkin(playerid, buf);
 		
 		ini_getInteger(file_player, "Hide", buf);
 		admin_SetHideStatus(playerid, buf);

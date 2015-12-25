@@ -42,9 +42,9 @@ stock player_OnPlayerSpawn(playerid)
 	UpdatePlayerLevelTextDraws(playerid);
 	UpdatePlayerWeaponTextDraws(playerid);
 
-	SetPlayerColor(playerid, PlayerGangColour(playerid));
+	SetPlayerColor(playerid, GetPlayerGangColor(playerid));
 	if (!account_IsAfterRegister(playerid)) {
-		player_SetSkin(playerid, player_GetSkin(playerid));
+		SetPlayerSkin(playerid, Player_GetPlayerSkin(playerid));
 	}
 	SetPlayerMaxHealth(playerid);
 	pl_fights_UpdatePlayerStyleUsed(playerid);
@@ -75,7 +75,7 @@ stock player_OnPlayerDisconnect(playerid, reason)
 
 	SendClientMessageToAll(COLOR_GREY, string);
 
-	GangMemberLogout(playerid, player_GetGangID(playerid));
+	Gang_MemberLogout(playerid, GetPlayerGangID(playerid));
 	DisablePlayerRaceCheckpoint(playerid);
 	SendDeathMessage(INVALID_PLAYER_ID, playerid, 201);
 }
@@ -100,14 +100,15 @@ stock player_OnPlayerConnect(playerid)
 
 stock player_OnPlayerDeath(playerid, killerid, reason)
 {
+	#pragma unused reason
 	UpdatePlayerSpawnInfo(playerid);
 
 	if (killerid == INVALID_PLAYER_ID) {
 		return;
 	}
 
-	GivePVarInt(playerid, "Deaths", 1);
-	GivePVarInt(killerid, "Kills", 1);
+	AddPlayerDeaths(playerid);
+	AddPlayerKills(killerid);
 
 	new stolencash = (GetPlayerMoney(playerid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
 	if (stolencash > 0) {
@@ -115,8 +116,13 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 		GivePlayerMoney(killerid, stolencash, 1);
 	}
 	
-	if (player_GetGangID(killerid) != 0) {
-		if (GangKill(player_GetGangID(killerid), killerid, playerid, reason) == 1) {
+	new killer_gang_id = GetPlayerGangID(killerid);
+	if (killer_gang_id != 0) {
+		if (Gang_PlayerKill(killer_gang_id, killerid, playerid) == 1) {
+			new string[MAX_STRING];
+			GetPlayerName(killerid, string, sizeof(string));
+			format(string, sizeof(string), lang_texts[6][76], string);
+			Gang_SendMessage(GetPlayerGangID(killerid), string, COLOR_GANG);
 			return;
 		}
 	}
@@ -161,13 +167,13 @@ stock player_OnLogin(playerid)
 	// spawn player
 	new interior, world, Float:spawn_pos[4];
 	GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
-	SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
+	SetSpawnInfo(playerid, 0, Player_GetPlayerSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
 	TogglePlayerSpectating(playerid, 0);
 
 	// skin select
 	if (account_IsAfterRegister(playerid)) {
 		#if defined PLAYER_START_SKIN
-			player_SetSkin(playerid, PLAYER_START_SKIN);
+			SetPlayerSkin(playerid, PLAYER_START_SKIN);
 		#else
 			new Float:camera_pos[3];
 			camera_pos[2] = spawn_pos[2] + 1.0;
@@ -184,7 +190,8 @@ stock player_OnLogin(playerid)
 	player_SetQuestID(playerid, INVALID_QUEST_ID);
 
 	// send message
-	new string[MAX_STRING],
+	new
+		string[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
@@ -222,24 +229,34 @@ stock player_OnLogin(playerid)
 	}
 
 	// gang
-	new gangname[MAX_NAME];
-	set(gangname, player_GetGangName(playerid));
+	new gangname[MAX_GANG_NAME + 1];
+	GetPlayerGangName(playerid, gangname);
 
-	if (strlen(gangname) > 0) {
-		new tmpname[MAX_STRING];
-		format(tmpname, sizeof(tmpname), "%s%s"DATA_FILES_FORMAT, db_gang, gangname);
+	new gangid = Gang_Load(gangname);
 
-		if (!ini_fileExist(tmpname)) {
-			player_SetGangName(playerid, "");
-			player_SetGangID(playerid, 0);
+	if (gangid == INVALID_GANG_ID) {
+		SetPlayerGangName(playerid, "");
+		SetPlayerGangID(playerid, INVALID_GANG_ID);
 
-			format(tmpname, sizeof(tmpname), "Банда '%s' была расформирована.", gangname);
-			SendClientMessage(playerid, COLOR_ORANGE, tmpname);
-		} else {
-			GangMemberLogin(playerid, GangLoad(gangname));
-		}
+		format(string, sizeof(string), "Банда '%s' была расформирована.", gangname);
+		SendClientMessage(playerid, COLOR_ORANGE, string);
 	} else {
-		player_SetGangID(playerid, 0);
+		new is_ok = Gang_MemberLogin(playerid, gangid);
+
+		if (is_ok) {
+			format(string, sizeof(string), lang_texts[6][77], playername);
+			Gang_SendMessage(gangid, string, COLOR_GANG);
+
+			format(string, sizeof(string), lang_texts[6][78], gangname, Gang_GetOnlineCount(gangid) - 1);
+			SendClientMessage(playerid, COLOR_GANG, string);
+
+			Gang_GetMotd(gangid, string);
+
+			if (strlen(string) > 0) {
+				format(string, sizeof(string), lang_texts[6][80], string);
+				SendClientMessage(playerid, COLOR_GANG, string);
+			}
+		}
 	}
 
 	Log_Game("player: %s(%d): logged in successfully.", playername, playerid);
@@ -248,7 +265,7 @@ stock player_OnLogin(playerid)
 SkinSelectResponse:RegisterSkin(playerid, SS_Response:type, oldskin, newskin)
 {
 	if (type == SS_Response:SS_Response_Stop || type == SS_Response:SS_Response_Select) {
-		player_SetSkin(playerid, newskin);
+		SetPlayerSkin(playerid, newskin);
 		SetCameraBehindPlayer(playerid);
 	}
 
@@ -264,9 +281,9 @@ stock player_SetDefaultData(playerid)
 	Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
 
 #if defined PLAYER_START_SKIN
-	player_SetSkin(playerid, PLAYER_START_SKIN);
+	SetPlayerSkin(playerid, PLAYER_START_SKIN);
 #else
-	player_SetSkin(playerid, SKINS_MINID);
+	SetPlayerSkin(playerid, SKINS_MINID);
 #endif
 
 	SetPlayerLevel(playerid, PLAYER_START_LEVEL, 0, 0);
@@ -301,14 +318,15 @@ stock player_Sync(playerid)
 stock GetPlayerID(playername[])
 {
 	new name[MAX_PLAYER_NAME+1];
-	foreach (Player, playerid)
-	{
+
+	foreach (new playerid : Player) {
 		GetPlayerName(playerid, name, sizeof(name));
-		if (!strcmp(playername, name, true))
-		{
+
+		if (!strcmp(playername, name, true)) {
 			return playerid;
 		}
 	}
+
 	return INVALID_PLAYER_ID;
 }
 
@@ -319,61 +337,79 @@ stock ReturnPlayerName(playerid)
 	return name;
 }
 
-stock player_GetKills(playerid) {
-	return GetPVarInt(playerid, "Kills");
+static
+	gPlayerDeaths[MAX_PLAYERS],
+	gPlayerKills[MAX_PLAYERS],
+	gPlayerSkin[MAX_PLAYERS];
+
+/*
+	Kills
+*/
+
+stock GetPlayerKills(playerid) {
+	return gPlayerKills[playerid];
 }
 
-stock player_GetDeaths(playerid) {
-	return GetPVarInt(playerid, "Deaths");
+stock SetPlayerKills(playerid, amount) {
+	gPlayerKills[playerid] = amount;
 }
 
-stock player_GetSkin(playerid) {
-	return GetPVarInt(playerid, "SkinModel");
+stock AddPlayerKills(playerid, amount = 1) {
+	gPlayerKills[playerid] += amount;
 }
 
-stock player_SetSkin(playerid, skinid) {
-	SetPlayerSkin(playerid, skinid);
-	SetPVarInt(playerid, "SkinModel", skinid);
+/*
+	Deaths
+*/
+
+stock GetPlayerDeaths(playerid) {
+	return gPlayerDeaths[playerid];
 }
 
-stock player_GetSkydiveTime(playerid) {
-	return GetPVarInt(playerid, "SkydiveTime");
+stock SetPlayerDeaths(playerid, amount) {
+	gPlayerDeaths[playerid] = amount;
 }
 
-stock player_SetSkydiveTime(playerid, skydivetime) {
-	SetPVarInt(playerid, "SkydiveTime", skydivetime);
+stock AddPlayerDeaths(playerid, amount = 1) {
+	gPlayerDeaths[playerid] += amount;
 }
 
-stock player_GetGangName(playerid) {
-	new string[MAX_NAME];
-	GetPVarString(playerid, "GangName", string, sizeof(string));
-	return string;
-}
+/*
+	Kills-Deaths ratio
+*/
 
-stock player_SetGangName(playerid, gangname[]) {
-	SetPVarString(playerid, "GangName", gangname);
-}
-
-stock player_GetGangID(playerid) {
-	return GetPVarInt(playerid, "GangID");
-}
-
-stock player_SetGangID(playerid, gangid) {
-	SetPVarInt(playerid, "GangID", gangid);
-}
-
-stock player_IsGodmod(playerid) {
-	return GetPVarInt(playerid, "godmod");
-}
-
-stock player_SetGodmod(playerid, isgodmod) {
-	if (isgodmod) {
-		SetPlayerHealth(playerid, Float:0x7F800000);
-	} else {
-		SetPlayerMaxHealth(playerid);
+stock Float:GetPlayerKillDeathRatio(playerid) {
+	if (GetPlayerDeaths(playerid) != 0) {
+		return float(GetPlayerKills(playerid)) / float(GetPlayerDeaths(playerid));
 	}
-	SetPVarInt(playerid, "godmod", isgodmod);
+
+	return 0.0;
 }
+
+/*
+	Skin
+*/
+
+stock Player_GetPlayerSkin(playerid) {
+	return gPlayerSkin[playerid];
+}
+
+stock Player_SetPlayerSkin(playerid, skinid)
+{
+	gPlayerSkin[playerid] = skinid;
+	return SetPlayerSkin(playerid, skinid);
+}
+#if defined _ALS_SetPlayerSkin
+	#undef SetPlayerSkin
+#else
+	#define _ALS_SetPlayerSkin
+#endif
+ 
+#define SetPlayerSkin Player_SetPlayerSkin
+
+/*
+	Team
+*/
 
 stock GTO_GetPlayerTeam(playerid)
 {

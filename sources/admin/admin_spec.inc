@@ -94,7 +94,7 @@ stock adm_spec_GetLabelString(playerid, specid, string[], len = sizeof(string))
 	new ping = GetPlayerPing(specid);
 
 	new gang_string[MAX_NAME];
-	gang_string = player_GetGangName(specid);
+	gang_string = ReturnPlayerGangName(specid);
 
 	new money = GetPlayerMoney(specid);
 	new level = GetPlayerLevel(specid);

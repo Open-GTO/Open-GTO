@@ -43,24 +43,19 @@ COMMAND:commands(playerid, params[])
 COMMAND:status(playerid, params[])
 {
 	SendClientMessage(playerid, COLOR_GREEN, _(COMMAND_STATUS_0));
-	
-	new Float:kill_on_death = 0.0;
-	if (player_GetDeaths(playerid) != 0) {
-		kill_on_death = float(player_GetKills(playerid)) / float(player_GetDeaths(playerid));
-	}
-	
+
 	new string[MAX_STRING];
 
 	GetStatusName(player_GetStatus(playerid), string);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
-	format(string, sizeof(string), _(COMMAND_STATUS_1), player_GetGangName(playerid));
+	format(string, sizeof(string), _(COMMAND_STATUS_1), ReturnPlayerGangName(playerid));
 	SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
 
 	format(string, sizeof(string), _(COMMAND_STATUS_2), GetPlayerLevel(playerid), GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1), GetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
 	SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
 
-	format(string, sizeof(string), _(COMMAND_STATUS_3), player_GetKills(playerid), player_GetDeaths(playerid), kill_on_death, player_GetJailCount(playerid), player_GetMuteCount(playerid));
+	format(string, sizeof(string), _(COMMAND_STATUS_3), GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid), player_GetJailCount(playerid), player_GetMuteCount(playerid));
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	new fstylename[MAX_STRING];
@@ -116,46 +111,5 @@ COMMAND:time(playerid, params[])
 	}
 	
 	PlayerPlaySound(playerid, 1085, 0, 0, 0);
-	return 1;
-}
-
-COMMAND:skydive(playerid, params[])
-{
-	if (player_IsJailed(playerid) || GetPlayerInterior(playerid) != 0 || player_IsAtQuest(playerid)) {
-		SendClientMessage(playerid, COLOR_WHITE, _(SKYDIVING_ERROR));
-		return 1;
-	}
-
-	new string[MAX_STRING];
-	new time_sky = player_GetSkydiveTime(playerid) - gettime();
-	if (time_sky > 0) {
-		new
-			minutes = (time_sky / 60) % 60,
-			seconds = time_sky % 60;
-
-		format(string, sizeof(string),
-			_(SKYDIVING_NEED_TIME),
-			minutes, Declension_GetMinutes(minutes),
-			seconds, Declension_GetSeconds(seconds)
-		);
-
-		SendClientMessage(playerid, COLOR_WHITE, string);
-		return 1;
-	}
-
-	GivePlayerWeapon(playerid, 46, 1);
-	PlayerPlaySound(playerid, 1057, 0, 0, 0);
-
-	new Float:playerx, Float:playery, Float:playerz;
-	GetPlayerPos(playerid, playerx, playery, playerz);
-	SetPlayerPos(playerid, playerx, playery, playerz + 1200);
-	
-	player_SetSkydiveTime(playerid, gettime() + SKYDIVE_TIME);
-
-	SendClientMessage(playerid, COLOR_WHITE, _(SKYDIVING_MSG));
-	GameTextForPlayer(playerid, _(SKYDIVING_GAMETEXT), 4000, 5);
-	
-	format(string, sizeof(string), _(SKYDIVING_MSG_TO_ALL), ReturnPlayerName(playerid), playerid);
-	SendClientMessageToAll(COLOR_GREY, string);
 	return 1;
 }

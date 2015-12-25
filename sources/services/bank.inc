@@ -137,10 +137,10 @@ DialogCreate:BankList(playerid)
 	new string[MAX_LANG_VALUE_STRING * 3];
 	__(BANK_LIST_INFO, string);
   	
-	if (player_GetGangID(playerid) != 0) {
+	if (GetPlayerGangID(playerid) != 0) {
 		strcat(string, _(BANK_GANG_LIST_1), sizeof(string));
 		
-		if (gang_IsLeader(playerid)) {
+		if (Gang_IsPlayerLeader(playerid)) {
 			strcat(string, _(BANK_GANG_LIST_2), sizeof(string));
 		}
 	}
@@ -350,17 +350,17 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 			
-	new gangid = player_GetGangID(playerid);
+	new gangid = GetPlayerGangID(playerid);
 		
-	TakeGangMoney(gangid, amount);
+	Gang_TakeMoney(gangid, amount);
 	GivePlayerMoney(playerid, amount);
 			
 	new string[MAX_LANG_VALUE_STRING];
-	format(string, sizeof(string), _(BANK_GANG_WITHDRAW_INFO), amount, GetGangMoney(gangid));
+	format(string, sizeof(string), _(BANK_GANG_WITHDRAW_INFO), amount, Gang_GetMoney(gangid));
 	Dialog_Message(playerid, _(BANK_GANG_CAPTION), string, _(BANK_BUTTON_OK));
 
 	format(string, sizeof(string), _(BANK_GANG_WITHDRAW_MESSAGE), ReturnPlayerName(playerid), playerid, amount);
-	SendGangMessage(gangid, string, COLOR_GANG);
+	Gang_SendMessage(gangid, string, COLOR_GANG);
 	return 1;
 }
 
@@ -398,7 +398,7 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 		
-	new gangid = player_GetGangID(playerid);
+	new gangid = GetPlayerGangID(playerid);
 	if (GetPlayerMoney(playerid) < amount) {
 		Dialog_MessageEx(playerid, Dialog:GangBankReturnDeposit,
 			_(BANK_GANG_CAPTION),
@@ -412,15 +412,15 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 		amount = MAX_MONEY - GetPlayerMoney(playerid);
 	}
 
-	GiveGangMoney(gangid, amount);
+	Gang_GiveMoney(gangid, amount);
 	GivePlayerMoney(playerid, -amount);
 	
 	new string[MAX_LANG_VALUE_STRING];
-	format(string, sizeof(string), _(BANK_GANG_DEPOSIT_INFO), amount, GetGangMoney(gangid));
+	format(string, sizeof(string), _(BANK_GANG_DEPOSIT_INFO), amount, Gang_GetMoney(gangid));
 	Dialog_Message(playerid, _(BANK_GANG_CAPTION), string, _(BANK_BUTTON_OK));
 
 	format(string, sizeof(string), _(BANK_GANG_DEPOSIT_MESSAGE), ReturnPlayerName(playerid), playerid, amount);
-	SendGangMessage(gangid, string, COLOR_GANG);
+	Gang_SendMessage(gangid, string, COLOR_GANG);
 	return 1;
 }
 

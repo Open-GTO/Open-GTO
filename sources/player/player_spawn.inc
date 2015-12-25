@@ -120,7 +120,7 @@ Player_Spawn_OnPlayerRequestC(playerid, classid)
 
 		new interior, world, Float:spawn_pos[4];
 		GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
-		SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
+		SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
 
 		TogglePlayerSpectating(playerid, 0);
 		return 0;
@@ -151,11 +151,11 @@ DialogCreate:PlayerSpawnMenu(playerid)
 	
 	__(PLAYER_SPAWN_LIST_NEARLY_POINT, string);
 
-	new gangid = player_GetGangID(playerid);
+	new gangid = GetPlayerGangID(playerid);
 	new gang_houseid = -1;
 
 	if (gangid != 0) {
-		gang_houseid = gang_GetHouseID(gangid);
+		gang_houseid = Gang_GetHouseID(gangid);
 		if (gang_houseid != -1) {
 			count++;
 			format(string, sizeof(string), _(PLAYER_SPAWN_LIST_GANG), string, house_GetName(gang_houseid));
@@ -202,20 +202,20 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new gangid = player_GetGangID(playerid);
-	if (listitem == 1 && gangid != 0 && gang_GetHouseID(gangid) != -1) {
+	new gangid = GetPlayerGangID(playerid);
+	if (listitem == 1 && gangid != 0 && Gang_GetHouseID(gangid) != -1) {
 		Player_SetSpawnType(playerid, SPAWN_TYPE_GANG);
 		Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
 		return 1;
 	}
 	
 	new count = 1;
-	if (gangid != 0 && gang_GetHouseID(gangid) != -1) {
+	if (gangid != 0 && Gang_GetHouseID(gangid) != -1) {
 		count++;
 	}
 
 	for (new i = 0; i < house_GetCount(); i++) {
-		if (gang_GetHouseID(gangid) == i || strcmp(house_GetOwner(i), playername, true) && strcmp(house_GetRenter(i), playername, true)) {
+		if (Gang_GetHouseID(gangid) == i || strcmp(house_GetOwner(i), playername, true) && strcmp(house_GetRenter(i), playername, true)) {
 			continue;
 		}
 
@@ -224,8 +224,8 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 			Player_SetSpawnHouseID(playerid, i);
 
 			// если игрок, сменивший спавн - лидер банды, то устанавливаем домом банды этот дом
-			if (gang_IsLeader(playerid)) {
-				gang_SetHouse(player_GetGangID(playerid), i);
+			if (Gang_IsPlayerLeader(playerid)) {
+				Gang_SetHouseID(GetPlayerGangID(playerid), i);
 				Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_GANG_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
 			} else {
 				Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
@@ -263,8 +263,8 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &
 			house_GetPickupPos(house_id, spos_x, spos_y, spos_z);
 		}
 	} else if (spawn_type == SPAWN_TYPE_GANG) {
-		new gangid = player_GetGangID(playerid);
-		new gang_houseid = gang_GetHouseID(gangid);
+		new gangid = GetPlayerGangID(playerid);
+		new gang_houseid = Gang_GetHouseID(gangid);
 
 		if (gangid == 0 || gang_houseid == -1) {
 			Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
@@ -300,7 +300,7 @@ stock UpdatePlayerSpawnInfo(playerid)
 	
 	new interior, world, Float:spawn_pos[4];
 	GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
-	SetSpawnInfo(playerid, 0, player_GetSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
+	SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
 }
 
 /*

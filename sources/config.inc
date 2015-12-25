@@ -246,16 +246,16 @@
 #define MAX_GANGS           MAX_PLAYERS // максимум банд онлайн
 #define MAX_GANG_SIZE       12 // максимальное кол-во людей в банде
 
-#define MIN_GANG_NAME_LEN   3 // минимальная длина имени банды
-#define MAX_GANG_NAME_LEN   40 // максимальная длина имени банды
+#define MIN_GANG_NAME       3 // минимальная длина имени банды
+#define MAX_GANG_NAME       40 // максимальная длина имени банды
 
-#define MAX_GANG_MOTD_LEN   64 // максимальная длина объявления банды
+#define MAX_GANG_MOTD       64 // максимальная длина объявления банды
 
 #define GANG_CREATE_COST    500000 // кол-во денег, требуемое на создание банды
-#define GANG_COLOR_COST    20000 // кол-во денег, требуемое на смены цвета банды
+#define GANG_COLOR_COST     20000 // кол-во денег, требуемое на смены цвета банды
 
 #define MAX_GANG_BANK       2000000000 // максимальное количество денег, которых можно хранить в банке банды
-
+#define GANG_XP_RATE        1000
 
 /*
  * Mission settings

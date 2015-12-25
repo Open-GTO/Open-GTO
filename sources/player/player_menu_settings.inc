@@ -153,9 +153,9 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 	
-	new gangid = player_GetGangID(playerid);
+	new gangid = GetPlayerGangID(playerid);
 	if (gangid != 0) {
-		gang_RenameMember(gangid, old_name, new_name);
+		GangMember_SetName(gangid, GetPlayerGangMemberID(playerid), new_name);
 	}
 	
 	housing_RenameOwner(old_name, new_name);

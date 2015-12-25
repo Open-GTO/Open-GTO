@@ -158,7 +158,7 @@ public adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][36], GetPlayerMoney(clickedid), GetPlayerBankMoney(clickedid));	//Money, Bank
 	SendClientMessage(playerid, COLOR_WHITE, string);
 
-	format(string, sizeof(string), lang_texts[12][38], player_GetDeaths(clickedid), player_GetKills(clickedid));	//Kills, Deaths
+	format(string, sizeof(string), lang_texts[12][38], GetPlayerDeaths(clickedid), GetPlayerKills(clickedid));	//Kills, Deaths
 	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), lang_texts[12][71], player_GetJailCount(clickedid), player_GetMuteCount(clickedid));	//Jailed, Muted

@@ -25,7 +25,8 @@ stock cfg_LoadConfigs()
 	Log_LoadConfig(file_config);
 	Time_LoadConfig(file_config);
 	Groundhold_LoadConfig(file_config);
-	gang_LoadConfig(file_config);
+	Gang_LoadConfig(file_config);
+	GangLevel_LoadConfig(file_config);
 	mission_LoadConfig(file_config);
 	payday_LoadConfig(file_config);
 	account_LoadConfig(file_config);
@@ -74,7 +75,8 @@ stock cfg_SaveConfigs()
 	Log_SaveConfig(file_config);
 	Time_SaveConfig(file_config);
 	Groundhold_SaveConfig(file_config);
-	gang_SaveConfig(file_config);
+	Gang_SaveConfig(file_config);
+	GangLevel_SaveConfig(file_config);
 	mission_SaveConfig(file_config);
 	payday_SaveConfig(file_config);
 	account_SaveConfig(file_config);

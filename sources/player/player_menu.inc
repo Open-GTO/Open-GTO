@@ -58,16 +58,11 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				set(premium_status, "нет");
 			}
 
-			new Float:kill_on_death = 0.0;
-			if (player_GetDeaths(playerid) != 0) {
-				kill_on_death = float(player_GetKills(playerid)) / float(player_GetDeaths(playerid));
-			}
-
 			new fstylename[MAX_STRING];
 			fights_GetStyleName(pl_fights_GetPlayerStyleUsed(playerid), fstylename);
 			
 			new gangname[MAX_NAME];
-			gangname = player_GetGangName(playerid);
+			gangname = ReturnPlayerGangName(playerid);
 			if (strlen(gangname) == 0) {
 				gangname = "нет";
 			}
@@ -82,7 +77,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 
 			format(string, sizeof(string),
 				string,
-				
+
 				GetPlayerLevel(playerid),
 				GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1),
 				timestamp_to_format_date( account_GetRegisterTime(playerid) ),
@@ -92,7 +87,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				
 				money_str, bank_money_str, total_money_str,
 				
-				player_GetKills(playerid), player_GetDeaths(playerid), kill_on_death,
+				GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid),
 				player_GetJailCount(playerid),
 				player_GetMuteCount(playerid),
 				

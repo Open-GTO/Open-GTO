@@ -40,7 +40,7 @@ public WorldSave(necessarily) // save all
 	weapon_SaveAll();
 	business_SaveAll();
 	houses_SaveAll();
-	gang_SaveAll();
+	Gang_SaveAll();
 	Groundhold_SaveAll();
 	
 	Log_Game("World save complete! Time taken: %d milliseconds.", (GetTickCount() - starttime));
@@ -65,7 +65,7 @@ public OneMinuteTimer()
 	foreach (new playerid : Player) {
 		if (player_IsLogin(playerid)) {
 			pt_idle_PlayerTimer(playerid);
-			Gang_GiveXp(playerid);
+			Gang_GiveMemberXP(playerid);
 		}
 	}
 	weather_Update();

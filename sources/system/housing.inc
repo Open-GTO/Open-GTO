@@ -677,7 +677,7 @@ stock RentRoom(playerid)
 		return 1;
 	}
 	
-	if (strlen(player_GetGangName(playerid)) > 0)
+	if (strlen(ReturnPlayerGangName(playerid)) > 0)
 	{
 		Dialog_Message(playerid, lang_texts[8][95], lang_texts[8][79], lang_texts[8][87]);
 		return 1;
@@ -774,7 +774,7 @@ stock house_Buy(playerid)
 		return 1;
 	}
 	
-	if (player_GetGangID(playerid) == 0) {
+	if (GetPlayerGangID(playerid) == 0) {
 		Dialog_Message(playerid, lang_texts[8][98], lang_texts[8][19], lang_texts[8][87]);
 		return 1;
 	}
@@ -806,7 +806,7 @@ stock house_Buy(playerid)
 	#endif
 		GivePlayerMoney(playerid, -price, 1);
 		set(Houses[id][Houses_Owner], playername);
-		set(Houses[id][Houses_Gang], player_GetGangName(playerid));
+		set(Houses[id][Houses_Gang], ReturnPlayerGangName(playerid));
 		Houses[id][Houses_Buyout] = 0;
 		// если игрок купил свой первый дом, то ставим спавн к нему
 		if (pl_houses == 0) {
@@ -838,9 +838,9 @@ stock house_Sell(playerid)
 
 		house_Free(id);
 
-		new gangid = player_GetGangID(playerid);
-		if (gang_GetHouseID(gangid) == id) {
-			gang_SetHouse(gangid, -1);
+		new gangid = GetPlayerGangID(playerid);
+		if (Gang_GetHouseID(gangid) == id) {
+			Gang_SetHouseID(gangid, -1);
 		}
 
 		if (Player_GetSpawnHouseID(playerid) == id) {
@@ -866,7 +866,7 @@ stock house_Keep(playerid)
 		return 1;
 	}
 	
-	if (strcmp(Houses[id][Houses_Gang], player_GetGangName(playerid), true))
+	if (strcmp(Houses[id][Houses_Gang], ReturnPlayerGangName(playerid), true))
 	{
 		Dialog_Message(playerid, lang_texts[8][97], lang_texts[8][47], lang_texts[8][87]);
 		return 1;

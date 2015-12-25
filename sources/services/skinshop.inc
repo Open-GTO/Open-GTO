@@ -97,7 +97,7 @@ DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])
 	SkinSelect_Stop(playerid);
 	SkinShop_Exit(playerid, shopid);
 	
-	player_SetSkin(playerid, skinid);
+	SetPlayerSkin(playerid, skinid);
 	GivePlayerMoney(playerid, -SKINS_COST);
 
 	SendClientMessage(playerid, 0, _(SKINSHOP_DIALOG_INFO_THANKS));

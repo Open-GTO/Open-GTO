@@ -155,7 +155,7 @@ COMMAND:pinfo(playerid, params[])
 	format(string, sizeof(string), lang_texts[12][36], GetPlayerMoney(receiverid), GetPlayerBankMoney(receiverid));
 	SendClientMessage(playerid, COLOR_WHITE, string);
 
-	format(string, sizeof(string), lang_texts[12][38], player_GetDeaths(receiverid), player_GetKills(receiverid));
+	format(string, sizeof(string), lang_texts[12][38], GetPlayerDeaths(receiverid), GetPlayerKills(receiverid));
 	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), lang_texts[12][71], player_GetJailCount(receiverid), player_GetMuteCount(receiverid));
@@ -972,7 +972,7 @@ COMMAND:setskin(playerid, params[])
 	}
 
 	new oldskin = GetPlayerSkin(receiverid);
-	player_SetSkin(receiverid, skinid);
+	SetPlayerSkin(receiverid, skinid);
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][42], ReturnPlayerName(playerid), skinid);

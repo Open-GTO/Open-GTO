@@ -68,6 +68,8 @@ Thanks:
 #include "core/widestrip"
 #include "core/declension"
 #include "core/spectate"
+#include "gang/gang_header"
+#include "player/player_header"
 #include "vehicle/vehicle_fuel"
 #include "vehicle/vehicle"
 #include "vehicle/vehicle_menu"
@@ -106,6 +108,8 @@ Thanks:
 #include "player/player_text"
 #include "player/player_money"
 #include "player/player_money_td"
+#include "player/player_gang"
+#include "player/player_skydive"
 #include "player/message/message_alert"
 #include "player/message/message_objective"
 #include "player/player"
@@ -177,6 +181,7 @@ public OnGameModeInit()
 	config_OnGameModeInit();
 	Vehicle_OnGameModeInit();
 	Vehicle_Textdraw_OnGameModeInit();
+	GangLevel_OnGameModeInit();
 	Groundhold_OnGameModeInit();
 	business_OnGameModeInit();
 	housing_OnGameModeInit();
@@ -361,7 +366,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	
 	player_OnPlayerDeath(playerid, killerid, reason);
 	Trucker_OnPlayerDeath(playerid, killerid, reason);
-	gang_OnPlayerDeath(playerid, killerid, reason);
+	Gang_OnPlayerDeath(playerid, killerid, reason);
 	pl_weapon_OnPlayerDeath(playerid, killerid, reason);
 
 	PlayCrimeReportForPlayer(killerid, killerid, random(18)+3);
@@ -620,7 +625,6 @@ public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 
 public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 {
-	admin_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart);
 	return 1;
 }
 
