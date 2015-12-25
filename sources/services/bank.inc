@@ -112,7 +112,10 @@ bank_OnPlayerEnterCheckpoint(playerid, cp)
 DialogCreate:BankStart(playerid)
 {
 	new string[MAX_LANG_MULTI_STRING];
-	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountPremium, GetPlayerBankMoney(playerid));
+
+	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
+	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountPremium, string);
+	
 	Dialog_Open(playerid, Dialog:BankStart, DIALOG_STYLE_MSGBOX,
 		_(BANK_CAPTION),
 		string,
@@ -132,7 +135,7 @@ DialogResponse:BankStart(playerid, response, listitem, inputtext[])
 DialogCreate:BankList(playerid)
 {
 	new string[MAX_LANG_VALUE_STRING * 3];
-	__(BANK_GANG_LIST_1, string);
+	__(BANK_LIST_INFO, string);
   	
 	if (player_GetGangID(playerid) != 0) {
 		strcat(string, _(BANK_GANG_LIST_1), sizeof(string));
@@ -183,7 +186,10 @@ DialogResponse:BankReturnWithdrawMenu(playerid, response, listitem, inputtext[])
 DialogCreate:BankWithdraw(playerid)
 {
 	new string[MAX_LANG_MULTI_STRING];
-	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountPremium, GetPlayerBankMoney(playerid));
+
+	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
+	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountPremium, string);
+
 	Dialog_Open(playerid, Dialog:BankWithdraw, DIALOG_STYLE_INPUT,
 		_(BANK_CAPTION),
 		string,
@@ -219,9 +225,16 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 	TakePlayerBankMoney(playerid, amount);
 	GivePlayerMoney(playerid, amount, 0);
 	
-	new string[MAX_STRING];
-	format(string, sizeof(string), _(BANK_WITHDRAW_INFO), amount, GetPlayerBankMoney(playerid));
+	new
+		amount_string[16],
+		string[MAX_LANG_VALUE_STRING];
+
+	InsertSpacesInInt(amount, amount_string);
+	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
+	format(string, sizeof(string), _(BANK_WITHDRAW_INFO), amount_string, string);
+
 	Dialog_Message(playerid, _(BANK_CAPTION), string, _(BANK_BUTTON_OK));
+
 	PlayerPlaySoundOnPlayer(playerid, 1084);
 	return 1;
 }
@@ -237,7 +250,10 @@ DialogResponse:BankReturnDepositMenu(playerid, response, listitem, inputtext[])
 DialogCreate:BankDeposit(playerid)
 {
 	new string[MAX_LANG_MULTI_STRING];
-	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountPremium, GetPlayerBankMoney(playerid));
+
+	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
+	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountPremium, string);
+
 	Dialog_Open(playerid, Dialog:BankDeposit, DIALOG_STYLE_INPUT,
 		_(BANK_CAPTION),
 		string,
@@ -273,8 +289,14 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 	GivePlayerBankMoney(playerid, amount);
 	GivePlayerMoney(playerid, -amount, 0);
 
-	new string[MAX_LANG_VALUE_STRING * 2];
-	format(string, sizeof(string), _(BANK_DEPOSIT_INFO), amount, GetPlayerBankMoney(playerid));
+	new
+		amount_string[16],
+		string[MAX_LANG_VALUE_STRING];
+
+	InsertSpacesInInt(amount, amount_string);
+	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
+
+	format(string, sizeof(string), _(BANK_DEPOSIT_INFO), amount_string, string);
 
 	if (GetPlayerBankMoney(playerid) == MaxBankMoney) {
 		strcat(string, _(BANK_MAX_MONEY_ERROR), sizeof(string));

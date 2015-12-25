@@ -72,6 +72,11 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				gangname = "нет";
 			}
 
+			new money_str[16], bank_money_str[16], total_money_str[16];
+			InsertSpacesInInt(GetPlayerMoney(playerid), money_str);
+			InsertSpacesInInt(GetPlayerBankMoney(playerid), bank_money_str);
+			InsertSpacesInInt(GetPlayerTotalMoney(playerid), total_money_str);
+
 			new string[1024];
 			format(string, sizeof(string),
 				"Уровень: %d, опыт: %d/%d\n\
@@ -81,7 +86,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				\n\
 				Банда: %s\n\
 				\n\
-				Деньги: $%d, деньги в банке: $%d. Всего денег: $%d\n\
+				Деньги: $%s, деньги в банке: $%s. Всего денег: $%s\n\
 				\n\
 				Убийств: %d, смертей: %d (%.2f)\n\
 				Сидок: %d\n\
@@ -96,7 +101,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 
 				gangname,
 				
-				GetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid),
+				money_str, bank_money_str, total_money_str,
 				
 				player_GetKills(playerid), player_GetDeaths(playerid), kill_on_death,
 				player_GetJailCount(playerid),
