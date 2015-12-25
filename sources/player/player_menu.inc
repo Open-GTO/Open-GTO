@@ -78,22 +78,11 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			InsertSpacesInInt(GetPlayerTotalMoney(playerid), total_money_str);
 
 			new string[1024];
+			__m(PLAYER_MENU_INFO, string);
+
 			format(string, sizeof(string),
-				"Уровень: %d, опыт: %d/%d\n\
-				\n\
-				Дата регистрации: %s\n\
-				Время в игре: %s\n\
-				\n\
-				Банда: %s\n\
-				\n\
-				Деньги: $%s, деньги в банке: $%s. Всего денег: $%s\n\
-				\n\
-				Убийств: %d, смертей: %d (У/С: %.2f)\n\
-				Сидок: %d\n\
-				Мутов: %d\n\
-				\n\
-				Стиль борьбы: %s\n\
-				Премиум статус: %s",
+				string,
+				
 				GetPlayerLevel(playerid),
 				GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1),
 				timestamp_to_format_date( account_GetRegisterTime(playerid) ),

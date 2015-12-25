@@ -104,6 +104,16 @@ PLAYER_MENU_SETTINGS_PASSWORD_CHANGED = {CCCCCC}Вы успешно сменили пароль.\nВаш 
 PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY = {CCCCCC}У вас нету {00AA00}$%d{CCCCCC} на смену пароля от аккаунта.
 PLAYER_MENU_SETTINGS_PASSWORD_LENGTH = {CCCCCC}Допустимая дли
 
+PLAYER_MENU_INFO_0 = Уровень: %d, опыт: %d/%d\n\n
+PLAYER_MENU_INFO_1 = Дата регистрации: %s\n
+PLAYER_MENU_INFO_2 = Время в игре: %s\n\n
+PLAYER_MENU_INFO_3 = Банда: %s\n\n
+PLAYER_MENU_INFO_4 = Деньги: $%s, деньги в банке: $%s. Всего денег: $%s\n\n
+PLAYER_MENU_INFO_5 = Убийств: %d, смертей: %d (У/С: %.2f)\n
+PLAYER_MENU_INFO_6 = Арестов: %d. Затыканий: %d\n\n
+PLAYER_MENU_INFO_7 = Стиль борьбы: %s\n
+PLAYER_MENU_INFO_8 = Премиум статус: %s
+
 // command
 COMMAND_HELP_0 = /help - первая помощь, /info - краткое описание, /commands - список всех команд. 
 COMMAND_HELP_1 = /status - информация о вашем герое.
