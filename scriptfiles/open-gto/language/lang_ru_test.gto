@@ -138,8 +138,8 @@ COMMAND_STATUS_1 = Банда: %s
 COMMAND_STATUS_2 = Уровень: %d, опыт: %d/%d. Наличные: $%d, в банке: $%d. Всего денег: $%d 
 COMMAND_STATUS_3 = Убийств: %d, смертей: %d (%.2f). Арестов: %d. Затыканий: %d
 COMMAND_STATUS_FIGHTSTYLE = Используемый стиль борьбы: %s
-COMMAND_STATUS_VIP = У вас есть премиум статус, доступен до: %s
-COMMAND_STATUS_NO_VIP = У вас нет премиум статуса, для приобретения обратитесь к администрации
+COMMAND_STATUS_PREMIUM = У вас есть премиум статус, доступен до: %s
+COMMAND_STATUS_NO_PREMIUM = У вас нет премиум статуса, для приобретения обратитесь к администрации
 
 COMMAND_DANCE_ERROR = Применение: /dance <1-4>. Управление - стрелки, + пробел или левый шифт.
 
@@ -213,7 +213,7 @@ VEHICLE_MENU_DOORS_NOTOWNER = Изменение статуса дверей доступно только для лично
 // bank
 BANK_INIT = SERVER: Bank module init
 BANK_CAPTION = Банк
-BANK_START_INFO_0 = {CCCCCC}Вы можете хранить здесь деньги и получать {00AA00}+%d%%{CCCCCC} ({00AA00}+%d%%{CCCCCC} для VIP) в час
+BANK_START_INFO_0 = {CCCCCC}Вы можете хранить здесь деньги и получать {00AA00}+%d%%{CCCCCC} ({00AA00}+%d%%{CCCCCC} для премиум) в час
 BANK_START_INFO_1 = \nТекущий баланс: {00AA00}$%s
 BANK_LIST_INFO = Снять деньги\nПоложить деньги
 BANK_WITHDRAW_INFO = {CCCCCC}Вы сняли {00AA00}$%s\n{CCCCCC}Текущий баланс: {00AA00}$%s

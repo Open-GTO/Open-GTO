@@ -70,9 +70,9 @@ COMMAND:status(playerid, params[])
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	if (Premium_GetPlayerStatus(playerid) == 1) {
-		format(string, sizeof(string), _(COMMAND_STATUS_VIP), Premium_GetPlayerDate(playerid));
+		format(string, sizeof(string), _(COMMAND_STATUS_PREMIUM), Premium_GetPlayerDate(playerid));
 	} else {
-		format(string, sizeof(string), _(COMMAND_STATUS_NO_VIP));
+		format(string, sizeof(string), _(COMMAND_STATUS_NO_PREMIUM));
 	}
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 	return 1;
