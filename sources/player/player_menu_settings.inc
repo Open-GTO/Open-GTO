@@ -154,7 +154,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	}
 	
 	new gangid = GetPlayerGangID(playerid);
-	if (gangid != 0) {
+	if (gangid != INVALID_GANG_ID) {
 		GangMember_SetName(gangid, GetPlayerGangMemberID(playerid), new_name);
 	}
 	

@@ -203,7 +203,7 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 	}
 
 	new gangid = GetPlayerGangID(playerid);
-	if (listitem == 1 && gangid != 0 && Gang_GetHouseID(gangid) != -1) {
+	if (listitem == 1 && gangid != INVALID_GANG_ID && Gang_GetHouseID(gangid) != -1) {
 		Player_SetSpawnType(playerid, SPAWN_TYPE_GANG);
 		Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
 		return 1;
@@ -266,7 +266,7 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &
 		new gangid = GetPlayerGangID(playerid);
 		new gang_houseid = Gang_GetHouseID(gangid);
 
-		if (gangid == 0 || gang_houseid == -1) {
+		if (gangid == INVALID_GANG_ID || gang_houseid == -1) {
 			Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
 		} else {
 			house_GetPickupPos(gang_houseid, spos_x, spos_y, spos_z);

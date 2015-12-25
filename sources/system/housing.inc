@@ -774,7 +774,7 @@ stock house_Buy(playerid)
 		return 1;
 	}
 	
-	if (GetPlayerGangID(playerid) == 0) {
+	if (GetPlayerGangID(playerid) == INVALID_GANG_ID) {
 		Dialog_Message(playerid, lang_texts[8][98], lang_texts[8][19], lang_texts[8][87]);
 		return 1;
 	}

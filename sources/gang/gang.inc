@@ -335,7 +335,7 @@ stock Gang_MemberJoin(gangid, playerid, GangMemberRank:rank = GangMemberSoldier)
 		return 0;
 	}
 
-	if (GetPlayerGangID(playerid) != 0) {
+	if (GetPlayerGangID(playerid) != INVALID_GANG_ID) {
 		Log_Debug("Error <gang:Gang_MemberJoin>: player already in a gang.");
 		return 0;
 	}

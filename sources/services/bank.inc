@@ -137,7 +137,7 @@ DialogCreate:BankList(playerid)
 	new string[MAX_LANG_VALUE_STRING * 3];
 	__(BANK_LIST_INFO, string);
   	
-	if (GetPlayerGangID(playerid) != 0) {
+	if (GetPlayerGangID(playerid) != INVALID_GANG_ID) {
 		strcat(string, _(BANK_GANG_LIST_1), sizeof(string));
 		
 		if (Gang_IsPlayerLeader(playerid)) {

@@ -406,7 +406,7 @@ DialogResponse:GangInvite(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 	
-	if (GetPlayerGangID(inviteid) != 0) {
+	if (GetPlayerGangID(inviteid) != INVALID_GANG_ID) {
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "Приглашение в банду", lang_texts[6][57], "Назад", "Отмена");
 		return 1;
 	}

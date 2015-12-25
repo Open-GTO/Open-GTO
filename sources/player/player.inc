@@ -117,12 +117,12 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 	}
 	
 	new killer_gang_id = GetPlayerGangID(killerid);
-	if (killer_gang_id != 0) {
+	if (killer_gang_id != INVALID_GANG_ID) {
 		if (Gang_PlayerKill(killer_gang_id, killerid, playerid) == 1) {
 			new string[MAX_STRING];
 			GetPlayerName(killerid, string, sizeof(string));
 			format(string, sizeof(string), lang_texts[6][76], string);
-			Gang_SendMessage(GetPlayerGangID(killerid), string, COLOR_GANG);
+			Gang_SendMessage(killer_gang_id, string, COLOR_GANG);
 			return;
 		}
 	}

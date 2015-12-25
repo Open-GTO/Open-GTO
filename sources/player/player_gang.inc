@@ -80,7 +80,7 @@ stock SetPlayerInvitedGangID(playerid, gangid, bool:status) {
 stock IsPlayersTeammates(...)
 {
 	new gangid = GetPlayerGangID(getarg(0));
-	if (gangid == 0) {
+	if (gangid == INVALID_GANG_ID) {
 		return 0;
 	}
 

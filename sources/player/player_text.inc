@@ -23,7 +23,7 @@ stock pl_text_OnPlayerText(playerid, text[])
 
 	switch (text[0]) {
 		case '!': {
-			if (GetPlayerGangID(playerid) == 0 || player_IsMuted(playerid)) {
+			if (GetPlayerGangID(playerid) == INVALID_GANG_ID || player_IsMuted(playerid)) {
 				SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
 				return 0;
 			}
