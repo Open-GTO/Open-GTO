@@ -229,32 +229,36 @@ stock player_OnLogin(playerid)
 	}
 
 	// gang
+	SetPlayerGangID(playerid, INVALID_GANG_ID);
+	SetPlayerGangMemberID(playerid, INVALID_MEMBER_ID);
+
 	new gangname[MAX_GANG_NAME + 1];
 	GetPlayerGangName(playerid, gangname);
 
-	new gangid = Gang_Load(gangname);
+	if (strlen(gangname) > 0) {
+		new gangid = Gang_Load(gangname);
 
-	if (gangid == INVALID_GANG_ID) {
-		SetPlayerGangName(playerid, "");
-		SetPlayerGangID(playerid, INVALID_GANG_ID);
+		if (gangid == INVALID_GANG_ID) {
+			SetPlayerGangName(playerid, "");
 
-		format(string, sizeof(string), "Банда '%s' была расформирована.", gangname);
-		SendClientMessage(playerid, COLOR_ORANGE, string);
-	} else {
-		new is_ok = Gang_MemberLogin(playerid, gangid);
+			format(string, sizeof(string), "Банда '%s' была расформирована.", gangname);
+			SendClientMessage(playerid, COLOR_ORANGE, string);
+		} else {
+			new is_ok = Gang_MemberLogin(playerid, gangid);
 
-		if (is_ok) {
-			format(string, sizeof(string), lang_texts[6][77], playername);
-			Gang_SendMessage(gangid, string, COLOR_GANG);
+			if (is_ok) {
+				format(string, sizeof(string), lang_texts[6][77], playername);
+				Gang_SendMessage(gangid, string, COLOR_GANG);
 
-			format(string, sizeof(string), lang_texts[6][78], gangname, Gang_GetOnlineCount(gangid) - 1);
-			SendClientMessage(playerid, COLOR_GANG, string);
-
-			Gang_GetMotd(gangid, string);
-
-			if (strlen(string) > 0) {
-				format(string, sizeof(string), lang_texts[6][80], string);
+				format(string, sizeof(string), lang_texts[6][78], gangname, Gang_GetOnlineCount(gangid) - 1);
 				SendClientMessage(playerid, COLOR_GANG, string);
+
+				Gang_GetMotd(gangid, string);
+
+				if (strlen(string) > 0) {
+					format(string, sizeof(string), lang_texts[6][80], string);
+					SendClientMessage(playerid, COLOR_GANG, string);
+				}
 			}
 		}
 	}

@@ -148,7 +148,7 @@ stock Gang_Load(gangname[])
 	ini_getInteger(file, "Money", gGang[gangid][e_gMoney]);
 	ini_getInteger(file, "House", gGang[gangid][e_gHouse]);
 
-	for (new memberid = 0, tmp_int; memberid < MAX_GANG_SIZE; memberid++) {
+	for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
 		gMember[gangid][memberid][e_gmID] = INVALID_PLAYER_ID;
 		
 		format(string, sizeof(string), "Member%d", memberid);
@@ -160,13 +160,12 @@ stock Gang_Load(gangname[])
 
 		format(string, sizeof(string), "MemberRank%d", memberid);
 		ini_getInteger(file, string, _:gMember[gangid][memberid][e_gmRank]);
-		gMember[gangid][memberid][e_gmRank] = GangMemberRank:tmp_int;
 	}
 
 	ini_closeFile(file);
 
 	// load other
-	Iter_Init(LoadedGangMembers);
+	Gang_SetActiveStatus(gangid, true);
 
 	return gangid;
 }
@@ -498,6 +497,12 @@ stock Gang_GiveXpFromPlayer(giverid, xpamount)
 	For publics
 */
 
+Gang_OnGameModeInit()
+{
+	Iter_Init(LoadedGangMembers);
+	return 1;
+}
+
 Gang_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused reason, playerid
@@ -562,6 +567,10 @@ stock Gang_IsPlayerLeader(playerid)
 		gangid = GetPlayerGangID(playerid),
 		memberid = GetPlayerGangMemberID(playerid);
 	
+	if (gangid == INVALID_GANG_ID || memberid == INVALID_MEMBER_ID) {
+		return 0;
+	}
+
 	return gMember[gangid][memberid][e_gmRank] == GangMemberLeader;
 }
 

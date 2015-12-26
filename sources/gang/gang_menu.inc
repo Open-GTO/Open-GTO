@@ -15,10 +15,9 @@
 
 DialogCreate:GangMenu(playerid)
 {
-	new string[MAX_STRING * 6],
-		gangid = GetPlayerGangID(playerid);
+	new string[MAX_STRING * 6];
 	
-	if (gangid == 0) {
+	if (!IsPlayerInGang(playerid)) {
 		strcat(string, "Информация о бандах\n", sizeof(string));
 		strcat(string, "Создать банду\n", sizeof(string));
 		if (GetPVarInt(playerid, "GangInvite") != 0) {
@@ -52,7 +51,7 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 	}
 
 	new gangid = GetPlayerGangID(playerid);
-	if (gangid == 0) {
+	if (gangid == INVALID_GANG_ID) {
 		switch (listitem) {
 			// информация
 			case 0: {
@@ -346,13 +345,14 @@ DialogResponse:Gang_CreateColor(playerid, response, listitem, inputtext[])
 	new gangname[MAX_NAME];
 	gangmenu_GetCreateName(playerid, gangname);
 
-	if (Gang_Create(playerid, gangname, gangcolor) != 0) {
+	new gangid = Gang_Create(playerid, gangname, gangcolor);
+
+	if (gangid != INVALID_GANG_ID) {
 		GivePlayerMoney(playerid, -Gang_GetCreateCost(), 1);
 		SendClientMessage(playerid, COLOR_GREEN, lang_texts[6][42]);
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], lang_texts[6][42], "Назад", "Отмена");
 		Log_Game("player: %s(%d): created gang '%s' ", ReturnPlayerName(playerid), playerid, gangname);
 	} else {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[6][73]);
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, lang_texts[6][9], lang_texts[6][11], "Назад", "Отмена");
 	}
 	

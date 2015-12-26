@@ -181,6 +181,7 @@ public OnGameModeInit()
 	config_OnGameModeInit();
 	Vehicle_OnGameModeInit();
 	Vehicle_Textdraw_OnGameModeInit();
+	Gang_OnGameModeInit();
 	GangLevel_OnGameModeInit();
 	Groundhold_OnGameModeInit();
 	business_OnGameModeInit();

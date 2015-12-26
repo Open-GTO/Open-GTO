@@ -73,6 +73,14 @@ GangLevel_OnGameModeInit()
 	return 1;
 }
 
+COMMAND:gangxp(playerid, params[])
+{
+	new gangid = GetPlayerGangID(playerid);
+	new amount = strval(params);
+	GiveGangXP(gangid, amount == 0 ? 1000 : amount);
+	return 1;
+}
+
 /*
 	GiveGangXP
 */
