@@ -118,9 +118,10 @@ Thanks:
 #include "system/weapons"
 #include "core/zones"
 #include "system/world"
+#include "gang/gang_member"
+#include "gang/gang_level"
 #include "gang/gang"
 #include "gang/gang_menu"
-#include "gang/gang_level"
 #include "system/housing"
 #include "system/business"
 #include "system/payday"
@@ -181,7 +182,7 @@ public OnGameModeInit()
 	config_OnGameModeInit();
 	Vehicle_OnGameModeInit();
 	Vehicle_Textdraw_OnGameModeInit();
-	Gang_OnGameModeInit();
+	GangMember_OnGameModeInit();
 	GangLevel_OnGameModeInit();
 	Groundhold_OnGameModeInit();
 	business_OnGameModeInit();
@@ -367,7 +368,6 @@ public OnPlayerDeath(playerid, killerid, reason)
 	
 	player_OnPlayerDeath(playerid, killerid, reason);
 	Trucker_OnPlayerDeath(playerid, killerid, reason);
-	Gang_OnPlayerDeath(playerid, killerid, reason);
 	pl_weapon_OnPlayerDeath(playerid, killerid, reason);
 
 	PlayCrimeReportForPlayer(killerid, killerid, random(18)+3);

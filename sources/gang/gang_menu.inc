@@ -129,6 +129,7 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 				new
 					member_playerid,
 					member_name[MAX_PLAYER_NAME + 1],
+					member_rank_name[MAX_GANG_RANK_NAME],
 					members[64 * MAX_GANG_SIZE];
 
 				for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
@@ -137,37 +138,48 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 					}
 
 					GangMember_GetName(gangid, memberid, member_name);
+					GangMember_GetRankName(gangid, memberid, member_rank_name);
 
 					if (GangMember_IsActive(gangid, memberid)) {
 						member_playerid = GangMember_GetID(gangid, memberid);
 
 						format(members, sizeof(members),
-							"%s   {AFAFAF}%02d\t{33AA33}%s\t{AFAFAF}ID: {FFFFFF}%d\t{AFAFAF}Уровень: {FFFFFF}%d\n",
+							"%s  {AFAFAF}%02d  {33AA33}%s {AFAFAF}(%s, id: %d, уровень: %d)\n",
 							members,
 							memberid,
 							member_name,
+							member_rank_name,
 							member_playerid,
 							GetPlayerLevel(member_playerid)
 						);
 					} else {
-						format(members, sizeof(members), "%s   {AFAFAF}%02d\t{AA3333}%s      \n",
-							members, memberid, member_name
+						format(members, sizeof(members), "%s  {AFAFAF}%02d  {AA3333}%s {AFAFAF}(%s, не в сети)\n",
+							members,
+							memberid,
+							member_name,
+							member_rank_name
 						);
 					}
 				}
 
-				new string[MAX_STRING + sizeof(members)];
+				new
+					gang_money[16],
+					string[MAX_STRING + sizeof(members)];
+
+				InsertSpacesInInt(Gang_GetMoney(gangid), gang_money);
+
 				format(string, sizeof(string), "\
-					Убийства банды: %d\n\
-					Деньги банды: $%d\n\
-					Очки банды: %d\n\
-					XP банды: %d\n\
-					Уровень банды: %d\n\
-					Ваших онлайн: %d\n\n\
+					{AFAFAF}Убийства: {CCCCCC}%d\n\
+					{AFAFAF}Деньги: {008800}$%s\n\
+					{AFAFAF}Очки: {CCCCCC}%d\n\
+					{AFAFAF}Уровень: {CCCCCC}%d{AFAFAF}. Опыт: {CCCCCC}%d/%d\n\
+					\n\
+					{AFAFAF}Онлайн {CCCCCC}(%d/%d){AFAFAF}:\n\
 					%s",
-					Gang_GetKills(gangid), Gang_GetMoney(gangid), Gang_GetScore(gangid),
-					Gang_GetXP(gangid), Gang_GetLevel(gangid),
-					Gang_GetOnlineCount(gangid), members
+					Gang_GetKills(gangid), gang_money, Gang_GetScore(gangid),
+					GetGangLevel(gangid), GetGangXP(gangid), GetXPToGangLevel(GetGangLevel(gangid) + 1),
+					Gang_GetOnlineCount(gangid), Gang_GetExistsCount(gangid),
+					members
 				);
 				Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "Информация о банде", string, "Назад", "Отмена");
 				return 1;

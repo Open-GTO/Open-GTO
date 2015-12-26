@@ -23,19 +23,31 @@ stock pl_text_OnPlayerText(playerid, text[])
 
 	switch (text[0]) {
 		case '!': {
-			if (GetPlayerGangID(playerid) == INVALID_GANG_ID || player_IsMuted(playerid)) {
+			new gangid = GetPlayerGangID(playerid);
+			if (gangid == INVALID_GANG_ID) {
+				SendClientMessage(playerid, COLOR_RED, _(GANG_TEXT_NO_GANG));
+				return 0;
+			}
+
+			if (player_IsMuted(playerid)) {
 				SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
 				return 0;
 			}
 
-			if (strlen(text[1]) < 2) {
+			new start_pos = 1;
+			while (text[start_pos] == ' ' || text[start_pos] == '\t') {
+				start_pos++;
+			}
+
+			if (strlen(text[start_pos]) < 2) {
+				SendClientMessage(playerid, COLOR_RED, _(GANG_TEXT_SHORT_MESSAGE));
 				return 0;
 			}
 
-			format(string, sizeof(string), "%s(%d) банде: {FFFFFF}%s", playername, playerid, text[1]);
-			Gang_SendMessage(GetPlayerGangID(playerid), string, COLOR_GANG_CHAT);
+			format(string, sizeof(string), _(GANG_TEXT_PATTERN), playername, playerid, text[start_pos]);
+			Gang_SendMessage(gangid, string, COLOR_GANG_CHAT);
 
-			Log_Player("Player: %s(%d): <GANG CHAT>: %s", playername, playerid, text[1]);
+			Log_Player("Player: %s(%d): <GANG CHAT>: %s", playername, playerid, text[start_pos]);
 			return 0;
 		}
 		case '@', '"': {

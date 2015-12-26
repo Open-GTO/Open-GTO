@@ -123,6 +123,19 @@ stock SetGangLevel(gangid, level)
 	Gang_SetLevel(gangid, level);
 	Gang_SetXP(gangid, 0);
 
+	new string[MAX_STRING];
+
+	if (old_level < level) {
+		format(string, sizeof(string), _(GANG_LEVEL_INCREASE), level);
+		Gang_SendMessage(gangid, string, Gang_GetColor(gangid));
+	} else {
+		format(string, sizeof(string), _(GANG_LEVEL_DECREASE), level);
+		Gang_SendMessage(gangid, string, Gang_GetColor(gangid));
+	}
+
+	Gang_GetName(gangid, string);
+	Log_Game("gang: %s(%d): changed his level from %d to %d", string, gangid, old_level, level);
+
 	return 1;
 }
 

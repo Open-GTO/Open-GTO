@@ -125,6 +125,8 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 			Gang_SendMessage(killer_gang_id, string, COLOR_GANG);
 			return;
 		}
+
+		GiveGangXP(killer_gang_id, (GetGangLevel(killer_gang_id) + 1) * 20);
 	}
 
 	// Give XP

@@ -13,51 +13,8 @@
 #pragma library gang
 
 /*
-	Defines
-*/
-
-#if !defined MAX_GANG
-	#define MAX_GANG MAX_PLAYERS
-#endif
-
-#if !defined MAX_GANG_SIZE
-	#define MAX_GANG_SIZE 12
-#endif
-
-#if !defined MIN_GANG_SIZE
-	#define MIN_GANG_SIZE 3
-#endif
-
-#if !defined MAX_GANG_NAME
-	#define MAX_GANG_NAME 40
-#endif
-
-#if !defined MAX_GANG_MOTD
-	#define MAX_GANG_MOTD 64
-#endif
-
-#if !defined GANG_CREATE_COST
-	#define GANG_CREATE_COST 500000
-#endif
-
-#if !defined GANG_COLOR_COST
-	#define GANG_COLOR_COST 20000
-#endif
-
-#if !defined MAX_GANG_BANK
-	#define MAX_GANG_BANK 2000000000
-#endif
-
-/*
 	Enums
 */
-
-enum e_Gang_Member_Info {
-	e_gmName[MAX_PLAYER_NAME + 1],
-	e_gmID,
-	GangMemberRank:e_gmRank,
-	bool:e_gmIsExists,
-}
 
 enum e_Gang_Info {
 	e_gName[MAX_GANG_NAME],
@@ -79,15 +36,13 @@ static
 	gGangDB[] = DATA_FILES_FOLDER "gang/",
 
 	gGang[MAX_GANG][e_Gang_Info],
-	gMember[MAX_GANG][MAX_GANG_SIZE][e_Gang_Member_Info],
 
 	gCreateCost = GANG_CREATE_COST,
 	gColorCost = GANG_COLOR_COST,
 
 	gPlayerGiveXP[MAX_PLAYERS],
 
-	Iterator:LoadedGangs<MAX_GANG>,
-	Iterator:LoadedGangMembers[MAX_GANGS]<MAX_GANG_SIZE>;
+	Iterator:LoadedGangs<MAX_GANG>;
 
 /*
 	Config
@@ -148,18 +103,24 @@ stock Gang_Load(gangname[])
 	ini_getInteger(file, "Money", gGang[gangid][e_gMoney]);
 	ini_getInteger(file, "House", gGang[gangid][e_gHouse]);
 
+	new
+		tmp_int,
+		tmp_str[MAX_STRING];
+
 	for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
-		gMember[gangid][memberid][e_gmID] = INVALID_PLAYER_ID;
+		GangMember_SetID(gangid, memberid, INVALID_PLAYER_ID);
 		
 		format(string, sizeof(string), "Member%d", memberid);
-		ini_getString(file, string, gMember[gangid][memberid][e_gmName], MAX_PLAYER_NAME + 1);
+		ini_getString(file, string, tmp_str, MAX_PLAYER_NAME + 1);
+		GangMember_SetName(gangid, memberid, tmp_str);
 
-		if (strlen(gMember[gangid][memberid][e_gmName]) > 0) {
-			gMember[gangid][memberid][e_gmIsExists] = true;
+		if (strlen(tmp_str) > 0) {
+			GangMember_SetExists(gangid, memberid, true);
 		}
 
 		format(string, sizeof(string), "MemberRank%d", memberid);
-		ini_getInteger(file, string, _:gMember[gangid][memberid][e_gmRank]);
+		ini_getInteger(file, string, tmp_int);
+		GangMember_SetRank(gangid, memberid, GangMemberRank:tmp_int);
 	}
 
 	ini_closeFile(file);
@@ -179,7 +140,7 @@ stock Gang_Unload(gangid)
 	Gang_Save(gangid);
 	
 	foreach (new memberid : LoadedGangMembers[gangid]) {
-		gMember[gangid][memberid][e_gmID] = INVALID_PLAYER_ID;
+		GangMember_SetID(gangid, memberid, INVALID_PLAYER_ID);
 
 		Iter_SafeRemove(LoadedGangMembers[gangid], memberid, memberid);
 	}
@@ -220,14 +181,18 @@ stock Gang_Save(gangid)
 	ini_setInteger(file, "Money", gGang[gangid][e_gMoney]);
 	ini_setInteger(file, "House", gGang[gangid][e_gHouse]);
 
-	for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
-		format(string, sizeof(string), "Member%d", memberid);
-		ini_setString(file, string, gMember[gangid][memberid][e_gmName]);
+	new
+		tmp_str[MAX_STRING];
 
-		gMember[gangid][memberid][e_gmIsExists] = false;
+	for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
+		GangMember_GetName(gangid, memberid, tmp_str);
+		format(string, sizeof(string), "Member%d", memberid);
+		ini_setString(file, string, tmp_str);
+
+		GangMember_SetExists(gangid, memberid, false);
 
 		format(string, sizeof(string), "MemberRank%d", memberid);
-		ini_setInteger(file, string, _:gMember[gangid][memberid][e_gmRank]);
+		ini_setInteger(file, string, _:GangMember_GetRank(gangid, memberid));
 	}
 
 	ini_closeFile(file);
@@ -282,10 +247,10 @@ stock Gang_Create(playerid, gangname[], gangcolour)
 	gGang[gangid][e_gHouse] = Player_GetSpawnHouseID(playerid);
 
 	for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
-		gMember[gangid][memberid][e_gmID] = INVALID_PLAYER_ID;
-		gMember[gangid][memberid][e_gmName][0] = '\0';
-		gMember[gangid][memberid][e_gmIsExists] = false;
-		gMember[gangid][memberid][e_gmRank] = GangMemberSoldier;
+		GangMember_SetID(gangid, memberid, INVALID_PLAYER_ID);
+		GangMember_SetName(gangid, memberid, "");
+		GangMember_SetExists(gangid, memberid, false);
+		GangMember_SetRank(gangid, memberid, GangMemberSoldier);
 	}
 
 	Gang_SetActiveStatus(gangid, true);
@@ -350,10 +315,13 @@ stock Gang_MemberJoin(gangid, playerid, GangMemberRank:rank = GangMemberSoldier)
 		return 0;
 	}
 
-	GetPlayerName(playerid, gMember[gangid][memberid][e_gmName], MAX_PLAYER_NAME + 1);
-	gMember[gangid][memberid][e_gmID] = playerid;
-	gMember[gangid][memberid][e_gmIsExists] = true;
-	gMember[gangid][memberid][e_gmRank] = rank;
+	new player_name[MAX_PLAYER_NAME + 1];
+	GetPlayerName(playerid, player_name, sizeof(player_name));
+
+	GangMember_SetID(gangid, memberid, playerid);
+	GangMember_SetName(gangid, memberid, player_name);
+	GangMember_SetExists(gangid, memberid, true);
+	GangMember_SetRank(gangid, memberid, rank);
 
 	return Gang_MemberLogin(playerid, gangid, memberid);
 }
@@ -364,17 +332,17 @@ stock Gang_MemberJoin(gangid, playerid, GangMemberRank:rank = GangMemberSoldier)
 
 stock Gang_MemberRemove(gangid, memberid)
 {
-	new playerid = gMember[gangid][memberid][e_gmID];
+	new playerid = GangMember_GetID(gangid, memberid);
 	
-	gMember[gangid][memberid][e_gmID] = INVALID_PLAYER_ID;
-	gMember[gangid][memberid][e_gmName][0] = '\0';
-	gMember[gangid][memberid][e_gmIsExists] = false;
-	gMember[gangid][memberid][e_gmRank] = GangMemberSoldier;
+	GangMember_SetID(gangid, memberid, INVALID_PLAYER_ID);
+	GangMember_SetName(gangid, memberid, "");
+	GangMember_SetExists(gangid, memberid, false);
+	GangMember_SetRank(gangid, memberid, GangMemberSoldier);
 
 	SetPlayerGangID(playerid, INVALID_GANG_ID);
 	SetPlayerGangName(playerid, "");
 	SetPlayerGangMemberID(playerid, INVALID_MEMBER_ID);
-	SetPlayerColor(playerid, Gang_GetColor(gangid));
+	SetPlayerColor(playerid, GetPlayerGangColor(playerid));
 
 	if (Player_GetSpawnType(playerid) == SPAWN_TYPE_GANG) {
 		Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
@@ -403,7 +371,7 @@ stock Gang_MemberLogin(playerid, gangid, memberid = INVALID_MEMBER_ID)
 		memberid = GangMember_GetFreeSlot(gangid);
 	}
 
-	gMember[gangid][memberid][e_gmID] = playerid;
+	GangMember_SetID(gangid, memberid, playerid);
 	GangMember_SetActiveStatus(gangid, memberid, true);
 
 	SetPlayerGangID(playerid, gangid);
@@ -428,7 +396,7 @@ stock Gang_MemberLogout(playerid, gangid)
 
 	new memberid = GetPlayerGangMemberID(playerid);
 
-	gMember[gangid][memberid][e_gmID] = INVALID_PLAYER_ID;
+	GangMember_SetID(gangid, memberid, INVALID_PLAYER_ID);
 	GangMember_SetActiveStatus(gangid, memberid, false);
 
 	if (Gang_GetOnlineCount(gangid) == 0) {
@@ -494,28 +462,6 @@ stock Gang_GiveXpFromPlayer(giverid, xpamount)
 }
 
 /*
-	For publics
-*/
-
-Gang_OnGameModeInit()
-{
-	Iter_Init(LoadedGangMembers);
-	return 1;
-}
-
-Gang_OnPlayerDeath(playerid, killerid, reason)
-{
-	#pragma unused reason, playerid
-	if (killerid == INVALID_PLAYER_ID) {
-		return 0;
-	}
-
-	new gangid = GetPlayerGangID(killerid);
-	Gang_GiveXP(gangid, (Gang_GetLevel(gangid) + 1) * 20);
-	return 1;
-}
-
-/*
 	On player kill
 */
 
@@ -539,7 +485,7 @@ stock Gang_PlayerKill(gangid, killerid, victimid)
 stock Gang_SendMessage(gangid, message[], color = COLOR_GANG)
 {
 	foreach (new memberid : LoadedGangMembers[gangid]) {
-		SendClientMessage(gMember[gangid][memberid][e_gmID], color, message);
+		SendClientMessage(GangMember_GetID(gangid, memberid), color, message);
 	}
 }
 
@@ -571,7 +517,7 @@ stock Gang_IsPlayerLeader(playerid)
 		return 0;
 	}
 
-	return gMember[gangid][memberid][e_gmRank] == GangMemberLeader;
+	return GangMember_IsHaveRank(gangid, memberid, GangMemberLeader);
 }
 
 /*
@@ -581,6 +527,23 @@ stock Gang_IsPlayerLeader(playerid)
 stock Gang_GetOnlineCount(gangid)
 {
 	return Iter_Count(LoadedGangMembers[gangid]);
+}
+
+/*
+	Gang_GetExistsCount
+*/
+
+stock Gang_GetExistsCount(gangid)
+{
+	new count = 0;
+
+	for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
+		if (GangMember_IsExists(gangid, memberid)) {
+			count++;
+		}
+	}
+	
+	return count;
 }
 
 /*
@@ -690,7 +653,7 @@ stock Gang_SetColor(gangid, color)
 	gGang[gangid][e_gColor] = color;
 
 	foreach (new memberid : LoadedGangMembers[gangid]) {
-		SetPlayerColor(gMember[gangid][memberid][e_gmID], color);
+		SetPlayerColor(GangMember_GetID(gangid, memberid), color);
 	}
 }
 
@@ -768,64 +731,4 @@ stock Gang_SetActiveStatus(gangid, bool:status)
 stock Gang_GetFreeSlot()
 {
 	return Iter_Free(LoadedGangs);
-}
-
-/*
-	Member ID
-*/
-
-stock GangMember_GetID(gangid, memberid)
-{
-	return gMember[gangid][memberid][e_gmID];
-}
-
-stock GangMember_SetID(gangid, memberid, id)
-{
-	gMember[gangid][memberid][e_gmID] = id;
-}
-
-/*
-	Active member status
-*/
-
-stock GangMember_IsActive(gangid, memberid)
-{
-	return Iter_Contains(LoadedGangMembers[gangid], memberid);
-}
-
-stock GangMember_SetActiveStatus(gangid, memberid, bool:status)
-{
-	if (status) {
-		Iter_Add(LoadedGangMembers[gangid], memberid);
-	} else {
-		Iter_Remove(LoadedGangMembers[gangid], memberid);
-	}
-}
-
-stock GangMember_GetFreeSlot(gangid)
-{
-	return Iter_Free(LoadedGangMembers[gangid]);
-}
-
-/*
-	Gang Member Name
-*/
-
-stock GangMember_SetName(gangid, memberid, name[])
-{
-	strmid(gMember[gangid][memberid][e_gmName], name, 0, strlen(name), MAX_PLAYER_NAME);
-}
-
-stock GangMember_GetName(gangid, memberid, name[], const size = sizeof(name))
-{
-	strmid(name, gMember[gangid][memberid][e_gmName], 0, strlen(gMember[gangid][memberid][e_gmName]), size);
-}
-
-/*
-	Gang Member Exists
-*/
-
-stock GangMember_IsExists(gangid, memberid)
-{
-	return _:gMember[gangid][memberid][e_gmIsExists];
 }

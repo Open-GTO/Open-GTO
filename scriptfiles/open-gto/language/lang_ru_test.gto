@@ -173,6 +173,16 @@ PLAYER_SPAWN_DIALOG_BUTTON_OK = ОК
 PLAYER_SPAWN_HAS_CHANGED = Место спавна изменено.
 PLAYER_SPAWN_GANG_HAS_CHANGED = Место спавна для вас и банды изменено.
 
+// gang
+GANG_TEXT_NO_GANG = Что-бы писать в чат банды, нужно в ней состоять.
+GANG_TEXT_SHORT_MESSAGE = Слишком короткое сообщение.
+GANG_TEXT_PATTERN = %s(%d) банде: {FFFFFF}%s
+GANG_LEVEL_INCREASE = Банда достигла %d уровня.
+GANG_LEVEL_DECREASE = Банда снизилась до %d уровня.
+GANG_RANK_LEADER = лидер
+GANG_RANK_HELPER = помощник
+GANG_RANK_SOLDIER = рядовой
+
 // vehicles
 VEHICLE_INIT = SERVER: Vehicles module init
 VEHICLE_NOT_IN_CAR = Вы не в машине.
