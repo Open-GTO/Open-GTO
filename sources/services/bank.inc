@@ -140,7 +140,7 @@ DialogCreate:BankList(playerid)
 	if (GetPlayerGangID(playerid) != INVALID_GANG_ID) {
 		strcat(string, _(BANK_GANG_LIST_1), sizeof(string));
 		
-		if (Gang_IsPlayerLeader(playerid)) {
+		if (GangMember_IsPlayerHaveRank(playerid, GangMemberPaymaster)) {
 			strcat(string, _(BANK_GANG_LIST_2), sizeof(string));
 		}
 	}
