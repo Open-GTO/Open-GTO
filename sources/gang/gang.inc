@@ -368,7 +368,19 @@ stock Gang_MemberLogin(playerid, gangid, memberid = INVALID_MEMBER_ID)
 	Gang_GetName(gangid, gang_name);
 
 	if (memberid == INVALID_MEMBER_ID) {
-		memberid = GangMember_GetFreeSlot(gangid);
+		new
+			player_name[MAX_PLAYER_NAME + 1],
+			member_name[MAX_PLAYER_NAME + 1];
+
+		GetPlayerName(playerid, player_name, sizeof(player_name));
+
+		for (memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
+			GangMember_GetName(gangid, memberid, member_name);
+
+			if (strcmp(player_name, member_name, true) == 0) {
+				break;
+			}
+		}
 	}
 
 	GangMember_SetID(gangid, memberid, playerid);
@@ -401,10 +413,6 @@ stock Gang_MemberLogout(playerid, gangid)
 
 	if (Gang_GetOnlineCount(gangid) == 0) {
 		Gang_Unload(gangid);
-	} else {
-		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[6][74], ReturnPlayerName(playerid));
-		Gang_SendMessage(gangid, string, COLOR_GANG);
 	}
 
 	return 1;
@@ -426,7 +434,7 @@ stock Gang_GiveMemberXP(playerid)
 	GivePlayerXP(playerid, xp_amount, 0);
 	
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[6][79], xp_amount);
+	format(string, sizeof(string), _(GANG_GIVE_MEMBER_XP), xp_amount);
 	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 }
 
@@ -544,6 +552,15 @@ stock Gang_GetExistsCount(gangid)
 	}
 	
 	return count;
+}
+
+/*
+	Gang_GetExistsCount
+*/
+
+stock Gang_IsGangFull(gangid)
+{
+	return Gang_GetExistsCount(gangid) >= MAX_GANG_SIZE;
 }
 
 /*

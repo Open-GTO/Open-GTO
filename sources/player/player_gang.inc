@@ -34,6 +34,16 @@ static
 	Invite ID
 */
 
+stock IsPlayerInvitedInAnyGang(playerid) {
+	for (new i = 0; i < sizeof(gPlayerInvitedGangID[]); i++) {
+		if (gPlayerInvitedGangID[playerid]{i} != INVALID_GANG_ID) {
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
 stock IsPlayerInvitedInGang(playerid, gangid) {
 	return gPlayerInvitedGangID[playerid]{gangid} != INVALID_GANG_ID;
 }

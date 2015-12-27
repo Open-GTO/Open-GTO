@@ -319,7 +319,7 @@ DialogCreate:BusinessPlayerOwned(playerid)
 		count = 0,
 		playername[MAX_PLAYER_NAME+1];
 	
-	string = _(BUSINESS_DIALOG_LIST_ITEM_HEAD);
+	__(BUSINESS_DIALOG_LIST_ITEM_HEAD, string);
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 

@@ -64,18 +64,31 @@ stock player_OnPlayerDisconnect(playerid, reason)
 
 	StopAudioStreamForPlayer(playerid);
 
-	new string[MAX_STRING];
+	new string[MAX_LANG_VALUE_STRING];
 	format(string, sizeof(string), _(PLAYER_DISCONNECT), ReturnPlayerName(playerid), playerid);
 	
 	switch (reason) {
-		case 0: strcat(string, " (вылетел)", sizeof(string));
-		case 1: strcat(string, " (вышел)", sizeof(string));
-		case 2: strcat(string, " (кикнут)", sizeof(string));
+		case 0: {
+			strcat(string, " (вылетел)", sizeof(string));
+		}
+		case 1: {
+			strcat(string, " (вышел)", sizeof(string));
+		}
+		case 2: {
+			strcat(string, " (кикнут)", sizeof(string));
+		}
 	}
 
 	SendClientMessageToAll(COLOR_GREY, string);
 
-	Gang_MemberLogout(playerid, GetPlayerGangID(playerid));
+	new gangid = GetPlayerGangID(playerid);
+
+	new is_ok = Gang_MemberLogout(playerid, gangid);
+	if (is_ok) {
+		format(string, sizeof(string), _(GANG_MEMBER_LOGOUT), ReturnPlayerName(playerid));
+		Gang_SendMessage(gangid, string, COLOR_GANG);
+	}
+
 	DisablePlayerRaceCheckpoint(playerid);
 	SendDeathMessage(INVALID_PLAYER_ID, playerid, 201);
 }
@@ -121,7 +134,7 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 		if (Gang_PlayerKill(killer_gang_id, killerid, playerid) == 1) {
 			new string[MAX_STRING];
 			GetPlayerName(killerid, string, sizeof(string));
-			format(string, sizeof(string), lang_texts[6][76], string);
+			format(string, sizeof(string), _(GANG_KILL_TEAMMATE), string);
 			Gang_SendMessage(killer_gang_id, string, COLOR_GANG);
 			return;
 		}
@@ -243,22 +256,22 @@ stock player_OnLogin(playerid)
 		if (gangid == INVALID_GANG_ID) {
 			SetPlayerGangName(playerid, "");
 
-			format(string, sizeof(string), "Банда '%s' была расформирована.", gangname);
+			format(string, sizeof(string), _(GANG_MEMBER_LOGIN_REMOVED), gangname);
 			SendClientMessage(playerid, COLOR_ORANGE, string);
 		} else {
 			new is_ok = Gang_MemberLogin(playerid, gangid);
 
 			if (is_ok) {
-				format(string, sizeof(string), lang_texts[6][77], playername);
+				format(string, sizeof(string), _(GANG_MEMBER_LOGIN), playername);
 				Gang_SendMessage(gangid, string, COLOR_GANG);
 
-				format(string, sizeof(string), lang_texts[6][78], gangname, Gang_GetOnlineCount(gangid) - 1);
+				format(string, sizeof(string), _(GANG_MEMBER_LOGIN_SELF), gangname, Gang_GetOnlineCount(gangid) - 1);
 				SendClientMessage(playerid, COLOR_GANG, string);
 
 				Gang_GetMotd(gangid, string);
 
 				if (strlen(string) > 0) {
-					format(string, sizeof(string), lang_texts[6][80], string);
+					format(string, sizeof(string), _(GANG_MEMBER_LOGIN_MOTD), string);
 					SendClientMessage(playerid, COLOR_GANG, string);
 				}
 			}
