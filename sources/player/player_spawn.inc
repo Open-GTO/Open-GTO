@@ -12,15 +12,6 @@
 #define _pl_spawn_included
 #pragma library pl_spawn
 
-// spawn types
-forward SpawnType:Player_GetSpawnType(playerid);
-
-enum SpawnType {
-	SPAWN_TYPE_NONE,
-	SPAWN_TYPE_HOUSE,
-	SPAWN_TYPE_GANG,
-}
-
 static
 	SpawnType:gPlayerSpawnType[MAX_PLAYERS];
 
@@ -224,7 +215,7 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 			Player_SetSpawnHouseID(playerid, i);
 
 			// если игрок, сменивший спавн - лидер банды, то устанавливаем домом банды этот дом
-			if (Gang_IsPlayerLeader(playerid)) {
+			if (GangMember_IsPlayerHaveRank(playerid, GangMemberLeader)) {
 				Gang_SetHouseID(GetPlayerGangID(playerid), i);
 				Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_GANG_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
 			} else {

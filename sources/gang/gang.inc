@@ -512,23 +512,6 @@ stock Gang_GetHouseID(gangid)
 }
 
 /*
-	Gang_IsPlayerLeader
-*/
-
-stock Gang_IsPlayerLeader(playerid)
-{
-	new
-		gangid = GetPlayerGangID(playerid),
-		memberid = GetPlayerGangMemberID(playerid);
-	
-	if (gangid == INVALID_GANG_ID || memberid == INVALID_MEMBER_ID) {
-		return 0;
-	}
-
-	return GangMember_IsHaveRank(gangid, memberid, GangMemberLeader);
-}
-
-/*
 	Gang_GetOnlineCount
 */
 

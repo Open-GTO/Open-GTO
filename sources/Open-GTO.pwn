@@ -36,8 +36,14 @@ Thanks:
 */
 
 #include <a_samp>
+
+// header
+#include "gang/gang_header"
+#include "player/player_header"
 #include "config"
 #include "core/unfixes"
+
+// lib
 #include "lib/streamer"
 #include "lib/sa-mp-fixes/fixes"
 #include "core/redefine"
@@ -60,7 +66,11 @@ Thanks:
 #include "lib/gpickup/gpickup"
 #include "lib/gtolib/gtolib"
 #include "lib/getspawninfo/getspawninfo"
+
+// core
+#include "core/api"
 #include "core/db"
+#include "core/cfg"
 #include "core/core_time"
 #include "core/lang"
 #include "core/log"
@@ -68,8 +78,9 @@ Thanks:
 #include "core/widestrip"
 #include "core/declension"
 #include "core/spectate"
-#include "gang/gang_header"
-#include "player/player_header"
+#include "core/zones"
+
+// vehicle
 #include "vehicle/vehicle_fuel"
 #include "vehicle/vehicle"
 #include "vehicle/vehicle_menu"
@@ -79,6 +90,14 @@ Thanks:
 #include "vehicle/vehicle_premium"
 #include "vehicle/vehicle_textdraw"
 #include "vehicle/vehicle_doors"
+
+// gang
+#include "gang/gang_member"
+#include "gang/gang_level"
+#include "gang/gang_menu"
+#include "gang/gang"
+
+// player
 #include "player/player_level"
 #include "player/player_premium"
 #include "player/player_weapon"
@@ -113,20 +132,24 @@ Thanks:
 #include "player/message/message_alert"
 #include "player/message/message_objective"
 #include "player/player"
+
+// custom
 #include "custom/ls_beachside"
 #include "custom/pickups"
+
+// system
 #include "system/weapons"
-#include "core/zones"
 #include "system/world"
-#include "gang/gang_member"
-#include "gang/gang_level"
-#include "gang/gang"
-#include "gang/gang_menu"
 #include "system/housing"
 #include "system/business"
 #include "system/payday"
 #include "system/groundhold"
 #include "system/premium"
+#include "system/click"
+#include "system/enterexit"
+#include "system/weather"
+
+// admin
 #include "admin/admin_commands"
 #include "admin/admin_ban"
 #include "admin/admin_mute"
@@ -139,11 +162,13 @@ Thanks:
 #include "admin/admin_click"
 #include "admin/admin_login"
 #include "admin/admin"
+
+// mission
 #include "missions/missions"
 #include "missions/trucker"
 #include "missions/swagup"
-#include "system/click"
-#include "system/enterexit"
+
+// service
 #include "services/bank"
 #include "services/fastfood"
 #include "services/bar"
@@ -154,7 +179,8 @@ Thanks:
 #include "services/fightteacher"
 #include "services/fuelstation"
 #include "services/tuning"
-#include "system/weather"
+
+// protection
 #include "protections/idle"
 #include "protections/rconhack"
 #include "protections/highping"
@@ -165,10 +191,6 @@ Thanks:
 #include "protections/health"
 #include "protections/armour"
 #include "protections/vehicleteleport"
-
-#include "core/cfg"
-
-#include "core/api"
 
 main() {}
 

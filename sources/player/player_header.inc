@@ -13,7 +13,20 @@
 #pragma library player_header
 
 /*
-	Forwards
+	K/D ratio
 */
 
 forward Float:GetPlayerKillDeathRatio(playerid);
+
+
+/*
+	Spawn types
+*/
+
+forward SpawnType:Player_GetSpawnType(playerid);
+
+enum SpawnType {
+	SPAWN_TYPE_NONE,
+	SPAWN_TYPE_HOUSE,
+	SPAWN_TYPE_GANG,
+}
