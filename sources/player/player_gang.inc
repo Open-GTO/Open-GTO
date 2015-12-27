@@ -20,6 +20,19 @@
 	#define MAX_GANG_INVITES 3
 #endif
 
+#if !defined MAX_GANG_INVITE_TIME
+	#define MAX_GANG_INVITE_TIME 60
+#endif
+
+/*
+	Enums
+*/
+
+enum e_Player_Invited_Gang_Info {
+	e_pigID,
+	e_pigTime,
+}
+
 /*
 	Vars
 */
@@ -27,7 +40,7 @@
 static
 	gPlayerGangID[MAX_PLAYERS],
 	gPlayerGangName[MAX_PLAYERS][MAX_NAME],
-	gPlayerInvitedGangID[MAX_PLAYERS][MAX_GANG_INVITES char],
+	gPlayerInvitedGang[MAX_PLAYERS][MAX_GANG_INVITES][e_Player_Invited_Gang_Info],
 	gPlayerGangMemberID[MAX_PLAYERS char];
 
 /*
@@ -35,8 +48,8 @@ static
 */
 
 stock IsPlayerInvitedInAnyGang(playerid) {
-	for (new i = 0; i < sizeof(gPlayerInvitedGangID[]); i++) {
-		if (gPlayerInvitedGangID[playerid]{i} != INVALID_GANG_ID) {
+	for (new i = 0; i < MAX_GANG_INVITES; i++) {
+		if (gPlayerInvitedGang[playerid][i][e_pigID] != INVALID_GANG_ID) {
 			return 1;
 		}
 	}
@@ -45,15 +58,21 @@ stock IsPlayerInvitedInAnyGang(playerid) {
 }
 
 stock IsPlayerInvitedInGang(playerid, gangid) {
-	return gPlayerInvitedGangID[playerid]{gangid} != INVALID_GANG_ID;
+	for (new i = 0; i < MAX_GANG_INVITES; i++) {
+		if (gPlayerInvitedGang[playerid][i][e_pigID] == gangid) {
+			return 1;
+		}
+	}
+
+	return 0;
 }
 
-stock GetPlayerInvitedGangID(playerid, invited_gangs[], &size) {
+stock GetPlayerInvitedGangArrayID(playerid, invited_gangs[], &size) {
 	size = 0;
 
-	for (new i = 0; i < sizeof(gPlayerInvitedGangID[]); i++) {
-		if (gPlayerInvitedGangID[playerid]{i} != INVALID_GANG_ID) {
-			invited_gangs[size++] = gPlayerInvitedGangID[playerid]{i};
+	for (new i = 0; i < MAX_GANG_INVITES; i++) {
+		if (gPlayerInvitedGang[playerid][i][e_pigID] != INVALID_GANG_ID) {
+			invited_gangs[size++] = gPlayerInvitedGang[playerid][i][e_pigID];
 		}
 	}
 
@@ -61,21 +80,48 @@ stock GetPlayerInvitedGangID(playerid, invited_gangs[], &size) {
 }
 
 stock SetPlayerInvitedGangID(playerid, gangid, bool:status) {
-	for (new i = 0; i < sizeof(gPlayerInvitedGangID[]); i++) {
+	for (new i = 0; i < MAX_GANG_INVITES; i++) {
 		if (status) {
-			if (gPlayerInvitedGangID[playerid]{i} == INVALID_GANG_ID) {
-				gPlayerInvitedGangID[playerid]{i} = gangid;
+			if (gPlayerInvitedGang[playerid][i][e_pigID] == INVALID_GANG_ID) {
+				gPlayerInvitedGang[playerid][i][e_pigID] = gangid;
+				gPlayerInvitedGang[playerid][i][e_pigTime] = gettime();
 				return 1;
 			}
 		} else {
-			if (gPlayerInvitedGangID[playerid]{i} == gangid) {
-				gPlayerInvitedGangID[playerid]{i} = INVALID_GANG_ID;
+			if (gPlayerInvitedGang[playerid][i][e_pigID] == gangid) {
+				gPlayerInvitedGang[playerid][i][e_pigID] = INVALID_GANG_ID;
+				gPlayerInvitedGang[playerid][i][e_pigTime] = 0;
 				return 1;
 			}
 		}
 	}
 
 	return 0;
+}
+
+stock GetPlayerInvitedGangArrayTime(playerid, invited_times[], &size)
+{
+	size = 0;
+
+	for (new i = 0; i < MAX_GANG_INVITES; i++) {
+		if (gPlayerInvitedGang[playerid][i][e_pigID] != INVALID_GANG_ID) {
+			invited_times[size++] = gPlayerInvitedGang[playerid][i][e_pigTime];
+		}
+	}
+
+	return size != 0;
+}
+
+stock CheckPlayerInvitedGangTime(playerid)
+{
+	new
+		current_time = gettime();
+
+	for (new i = 0; i < MAX_GANG_INVITES; i++) {
+		if (current_time >= MAX_GANG_INVITE_TIME + gPlayerInvitedGang[playerid][i][e_pigTime]) {
+			SetPlayerInvitedGangID(playerid, gPlayerInvitedGang[playerid][i][e_pigID], false);
+		}
+	}
 }
 
 /*

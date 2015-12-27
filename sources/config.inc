@@ -257,6 +257,9 @@
 #define MAX_GANG_BANK       2000000000 // максимальное количество денег, которых можно хранить в банке банды
 #define GANG_XP_RATE        1000
 
+#define MAX_GANG_INVITES     3 // максимальное количество инвайтов в банды одновременно
+#define MAX_GANG_INVITE_TIME 60 // секунд до удаления отправленного инвайта
+
 /*
  * Mission settings
  */

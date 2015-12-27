@@ -409,25 +409,31 @@ DialogResponse:Gang_CreateReturn(playerid, response, listitem, inputtext[])
 DialogCreate:GangInviteAccept(playerid)
 {
 	new
-		string[(MAX_GANG_NAME + 1) * MAX_GANG_INVITES],
-		gang_name[MAX_GANG_NAME + 1],
-		invited_gang[MAX_GANG_INVITES],
+		string[(MAX_LANG_VALUE_STRING + 1) * MAX_GANG_INVITES + 1],
+		temp_str[MAX_LANG_VALUE_STRING],
+		invited_gangid[MAX_GANG_INVITES],
+		invited_times[MAX_GANG_INVITES],
 		size;
 
-	GetPlayerInvitedGangID(playerid, invited_gang, size);
+	__(GANG_INVITE_ACCEPT_LIST_HEADER, string);
+
+	GetPlayerInvitedGangArrayID(playerid, invited_gangid, size);
+	GetPlayerInvitedGangArrayTime(playerid, invited_times, size);
 
 	for (new i = 0; i < size; i++) {
-		Gang_GetName(invited_gang[i], gang_name);
+		Gang_GetName(invited_gangid[i], temp_str);
 
-		strcat(string, gang_name);
+		format(temp_str, sizeof(temp_str), _(GANG_INVITE_ACCEPT_LIST), temp_str, invited_times[i]);
+
+		strcat(string, temp_str);
 		strcat(string, "\n");
 	}
 
 	Dialog_Open(playerid, Dialog:GangInvite, DIALOG_STYLE_INPUT,
-		_(GANG_INVITE_HEADER),
-		string,
-		_(GANG_MENU_BUTTON_ACCEPT), _(GANG_MENU_BUTTON_BACK)
-	);
+			_(GANG_INVITE_HEADER),
+			string,
+			_(GANG_MENU_BUTTON_ACCEPT), _(GANG_MENU_BUTTON_BACK)
+		);
 }
 
 DialogResponse:GangInviteAccept(playerid, response, listitem, inputtext[])
@@ -441,7 +447,7 @@ DialogResponse:GangInviteAccept(playerid, response, listitem, inputtext[])
 		invited_gang[MAX_GANG_INVITES],
 		size;
 
-	GetPlayerInvitedGangID(playerid, invited_gang, size);
+	GetPlayerInvitedGangArrayID(playerid, invited_gang, size);
 
 	new gangid = invited_gang[listitem];
 
@@ -534,11 +540,22 @@ DialogResponse:GangInvite(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 	
-	new gangid = GetPlayerGangID(playerid);
+	new
+		is_error,
+		gangid = GetPlayerGangID(playerid);
 
-	new is_invited = SetPlayerInvitedGangID(inviteid, gangid, true);
+	is_error = IsPlayerInvitedInGang(inviteid, gangid);
+	if (is_error) {
+		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+				_(GANG_INVITE_HEADER),
+				_(GANG_INVITE_ALREADY_INVITED),
+				_(GANG_MENU_BUTTON_BACK), _(GANG_MENU_BUTTON_CANCEL)
+			);
+		return 1;
+	}
 
-	if (!is_invited) {
+	is_error = !SetPlayerInvitedGangID(inviteid, gangid, true);
+	if (is_error) {
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
 				_(GANG_INVITE_HEADER),
 				_(GANG_INVITE_LIST_IS_FULL),
