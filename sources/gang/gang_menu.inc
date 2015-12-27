@@ -17,7 +17,7 @@ DialogCreate:GangMenu(playerid)
 {
 	new
 		temp_str[MAX_LANG_VALUE_STRING],
-		string[MAX_LANG_VALUE_STRING * 6];
+		string[MAX_LANG_VALUE_STRING * 7];
 	
 	if (!IsPlayerInGang(playerid)) {
 		strcat(string, _(GANG_MENU_LIST_INFO), sizeof(string));
@@ -32,14 +32,23 @@ DialogCreate:GangMenu(playerid)
 		strcat(string, _(GANG_MENU_LIST_INFO_SELF), sizeof(string));
 		strcat(string, _(GANG_MENU_LIST_EXIT), sizeof(string));
 
-		if (Gang_IsPlayerLeader(playerid)) {
+		new gangid = GetPlayerGangID(playerid);
+		new memberid = GetPlayerGangMemberID(playerid);
+
+		if (GangMember_IsHaveRank(gangid, memberid, GangMemberInviter)) {
 			strcat(string, _(GANG_MENU_LIST_INVITE), sizeof(string));
+		}
+
+		if (GangMember_IsHaveRank(gangid, memberid, GangMemberHelper)) {
 			strcat(string, _(GANG_MENU_LIST_KICK), sizeof(string));
-		
+			strcat(string, _(GANG_MENU_LIST_MOTD), sizeof(string));
+		}
+
+		if (GangMember_IsHaveRank(gangid, memberid, GangMemberLeader)) {
+			strcat(string, _(GANG_MENU_LIST_RANK), sizeof(string));
+
 			format(temp_str, sizeof(temp_str), _(GANG_MENU_LIST_COLOR), Gang_GetColorCost());
 			strcat(string, temp_str, sizeof(string));
-
-			strcat(string, _(GANG_MENU_LIST_MOTD), sizeof(string));
 		}
 	}
 	
@@ -58,6 +67,8 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 	}
 
 	new gangid = GetPlayerGangID(playerid);
+	new memberid = GetPlayerGangMemberID(playerid);
+
 	if (gangid == INVALID_GANG_ID) {
 		switch (listitem) {
 			// информаци€
@@ -104,40 +115,9 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 			// информаци€ о банде
 			case 0: {
 				new
-					member_playerid,
-					member_name[MAX_PLAYER_NAME + 1],
-					member_rank_name[MAX_GANG_RANK_NAME],
 					members[64 * MAX_GANG_SIZE];
 
-				for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
-					if (!GangMember_IsExists(gangid, memberid)) {
-						continue;
-					}
-
-					GangMember_GetName(gangid, memberid, member_name);
-					GangMember_GetRankName(gangid, memberid, member_rank_name);
-
-					if (GangMember_IsActive(gangid, memberid)) {
-						member_playerid = GangMember_GetID(gangid, memberid);
-
-						format(members, sizeof(members),
-								_(GANG_MENU_PLAYER_LIST_ITEM_ON),
-								members,
-								memberid,
-								member_name,
-								member_rank_name,
-								member_playerid,
-								GetPlayerLevel(member_playerid)
-							);
-					} else {
-						format(members, sizeof(members), _(GANG_MENU_PLAYER_LIST_ITEM_OFF),
-								members,
-								memberid,
-								member_name,
-								member_rank_name
-							);
-					}
-				}
+				GetGangMemberListArray(gangid, members);
 
 				new
 					gang_money[16],
@@ -161,16 +141,17 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 			}
 			// выйти из банды
 			case 1: {
-				if (Gang_IsPlayerLeader(playerid)) {
+				if (GangMember_IsHaveRank(gangid, memberid, GangMemberLeader)) {
 					Dialog_Show(playerid, Dialog:GangExitAccept);
 				} else {
-					Gang_MemberRemove(gangid, GetPlayerGangMemberID(playerid));
+					Gang_MemberRemove(gangid, memberid);
+					Dialog_Message(playerid, _(GANG_EXIT_HEADER), _(GANG_EXIT_INFO), _(GANG_MENU_BUTTON_OK));
 				}
 				return 1;
 			}
 			// пригласить игрока
 			case 2: {
-				if (!Gang_IsPlayerLeader(playerid)) {
+				if (!GangMember_IsHaveRank(gangid, memberid, GangMemberInviter)) {
 					return 0;
 				}
 
@@ -179,29 +160,38 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 			}
 			// выгнать игрока
 			case 3: {
-				if (!Gang_IsPlayerLeader(playerid)) {
+				if (!GangMember_IsHaveRank(gangid, memberid, GangMemberHelper)) {
 					return 0;
 				}
 
 				Dialog_Show(playerid, Dialog:GangKick);
 				return 1;
 			}
-			// изменить цвет
-			case 4: {
-				if (!Gang_IsPlayerLeader(playerid)) {
-					return 0;
-				}
-
-				Dialog_Show(playerid, Dialog:GangColor);
-				return 1;
-			}
 			// изменить объ€вление
-			case 5: {
-				if (!Gang_IsPlayerLeader(playerid)) {
+			case 4: {
+				if (!GangMember_IsHaveRank(gangid, memberid, GangMemberHelper)) {
 					return 0;
 				}
 				
 				Dialog_Show(playerid, Dialog:GangMotd);
+				return 1;
+			}
+			// изменить звание
+			case 5: {
+				if (!GangMember_IsHaveRank(gangid, memberid, GangMemberLeader)) {
+					return 0;
+				}
+
+				Dialog_Show(playerid, Dialog:GangRank);
+				return 1;
+			}
+			// изменить цвет
+			case 6: {
+				if (!GangMember_IsHaveRank(gangid, memberid, GangMemberLeader)) {
+					return 0;
+				}
+
+				Dialog_Show(playerid, Dialog:GangColor);
 				return 1;
 			}
 		}
@@ -443,22 +433,14 @@ DialogResponse:GangInviteAccept(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new
-		invited_gang[MAX_GANG_INVITES],
-		size;
+	new gangid = Gang_GetID(inputtext);
 
-	GetPlayerInvitedGangArrayID(playerid, invited_gang, size);
-
-	new gangid = invited_gang[listitem];
-
-	if (Gang_IsGangFull(gangid)) {
+	if (!IsPlayerInvitedInGang(playerid, gangid)) {
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
 				_(GANG_INVITE_HEADER),
-				_(GANG_INVITE_IS_FULL),
+				_(GANG_INVITE_TIME_SPENT),
 				_(GANG_MENU_INVITE_BUTTON_BACK), _(GANG_MENU_INVITE_BUTTON_CANCEL)
 			);
-
-		SetPlayerInvitedGangID(playerid, gangid, false);
 		return 1;
 	}
 
@@ -593,41 +575,10 @@ DialogResponse:GangInvite(playerid, response, listitem, inputtext[])
 DialogCreate:GangKick(playerid)
 {
 	new
-		member_playerid,
-		member_name[MAX_PLAYER_NAME + 1],
-		member_rank_name[MAX_GANG_RANK_NAME],
 		members[64 * MAX_GANG_SIZE],
 		gangid = GetPlayerGangID(playerid);
 
-	for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
-		if (!GangMember_IsExists(gangid, memberid)) {
-			continue;
-		}
-
-		GangMember_GetName(gangid, memberid, member_name);
-		GangMember_GetRankName(gangid, memberid, member_rank_name);
-
-		if (GangMember_IsActive(gangid, memberid)) {
-			member_playerid = GangMember_GetID(gangid, memberid);
-
-			format(members, sizeof(members),
-					_(GANG_MENU_PLAYER_LIST_ITEM_ON),
-					members,
-					memberid,
-					member_name,
-					member_rank_name,
-					member_playerid,
-					GetPlayerLevel(member_playerid)
-				);
-		} else {
-			format(members, sizeof(members), _(GANG_MENU_PLAYER_LIST_ITEM_OFF),
-					members,
-					memberid,
-					member_name,
-					member_rank_name
-				);
-		}
-	}
+	GetGangMemberListArray(gangid, members);
 
 	Dialog_Open(playerid, Dialog:GangKick, DIALOG_STYLE_LIST,
 			_(GANG_KICK_HEADER),
@@ -649,7 +600,7 @@ DialogResponse:GangKick(playerid, response, listitem, inputtext[])
 	}
 
 	new gangid = GetPlayerGangID(playerid);
-	new memberid = gangmenu_GetMemberID(gangid, listitem);
+	new memberid = GetGangMemberID(gangid, listitem);
 
 	new member_name[MAX_PLAYER_NAME + 1];
 	GangMember_GetName(gangid, memberid, member_name);
@@ -666,23 +617,87 @@ DialogResponse:GangKick(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-stock gangmenu_GetMemberID(gangid, listitem)
+DialogCreate:GangRank(playerid)
 {
-	new id = 0;
+	new
+		members[64 * MAX_GANG_SIZE],
+		gangid;
 
-	for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
-		if (!GangMember_IsExists(gangid, memberid)) {
-			continue;
-		}
+	gangid = GetPlayerGangID(playerid);
 
-		if (id == listitem) {
-			return memberid;
-		}
+	GetGangMemberListArray(gangid, members);
 
-		id++;
+	Dialog_Open(playerid, Dialog:GangRank, DIALOG_STYLE_LIST,
+			_(GANG_RANK_HEADER),
+			members,
+			_(GANG_RANK_BUTTON), _(GANG_MENU_BUTTON_BACK)
+		);
+}
+
+DialogResponse:GangRank(playerid, response, listitem, inputtext[])
+{
+	new
+		working_memberid,
+		gangid;
+
+	gangid = GetPlayerGangID(playerid);
+	working_memberid = GetGangMemberID(gangid, listitem);
+
+	SetPlayerWorkingMemberID(playerid, working_memberid);
+
+	Dialog_Show(playerid, Dialog:GangRankList);
+}
+
+DialogCreate:GangRankList(playerid)
+{
+	new string[MAX_LANG_VALUE_STRING * MAX_GANG_RANK_COUNT];
+
+	strcat(string, _(GANG_RANK_LEADER), sizeof(string));
+	strcat(string, "\n", sizeof(string));
+
+	strcat(string, _(GANG_RANK_HELPER), sizeof(string));
+	strcat(string, "\n", sizeof(string));
+
+	strcat(string, _(GANG_RANK_PAYMASTER), sizeof(string));
+	strcat(string, "\n", sizeof(string));
+
+	strcat(string, _(GANG_RANK_INVITER), sizeof(string));
+	strcat(string, "\n", sizeof(string));
+
+	strcat(string, _(GANG_RANK_SOLDIER), sizeof(string));
+	strcat(string, "\n", sizeof(string));
+
+	Dialog_Open(playerid, Dialog:GangRankList, DIALOG_STYLE_LIST,
+			_(GANG_RANK_HEADER),
+			string,
+			_(GANG_RANK_BUTTON), _(GANG_MENU_BUTTON_BACK)
+		);
+}
+
+DialogResponse:GangRankList(playerid, response, listitem, inputtext[])
+{
+	new
+		GangMemberRank:new_rank,
+		working_memberid,
+		memberid,
+		gangid;
+
+	new_rank = GangMemberRank:listitem;
+	working_memberid = GetPlayerWorkingMemberID(playerid);
+	memberid = GetPlayerGangMemberID(playerid);
+	gangid = GetPlayerGangID(playerid);
+
+	if (new_rank == GangMemberLeader) {
+		GangMember_SetRank(gangid, memberid, GangMemberHelper);
 	}
 
-	return -1;
+	GangMember_SetRank(gangid, working_memberid, new_rank);
+
+	Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+			_(GANG_RANK_HEADER),
+			_(GANG_RANK_CHANGED_MESSAGE),
+			_(GANG_MENU_BUTTON_BACK), _(GANG_MENU_BUTTON_CANCEL)
+		);
 }
 
 DialogCreate:GangColor(playerid)
@@ -826,4 +841,91 @@ DialogResponse:GangReturnMenu(playerid, response, listitem, inputtext[])
 		Dialog_Show(playerid, Dialog:GangMenu);
 	}
 	return 1;
+}
+
+/*
+	GetGangMemberID
+*/
+
+static stock GetGangMemberID(gangid, listitem)
+{
+	new id = 0;
+
+	for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
+		if (!GangMember_IsExists(gangid, memberid)) {
+			continue;
+		}
+
+		if (id == listitem) {
+			return memberid;
+		}
+
+		id++;
+	}
+
+	return INVALID_MEMBER_ID;
+}
+
+/*
+	GetGangMemberListArray
+*/
+
+static stock GetGangMemberListArray(gangid, members[], const size = sizeof(members))
+{
+	new
+		member_playerid,
+		member_name[MAX_PLAYER_NAME + 1],
+		member_rank_name[MAX_GANG_RANK_NAME],
+		member_str[MAX_PLAYER_NAME + MAX_GANG_RANK_NAME + 64];
+
+	for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
+		if (!GangMember_IsExists(gangid, memberid)) {
+			continue;
+		}
+
+		GangMember_GetName(gangid, memberid, member_name);
+		GangMember_GetRankName(gangid, memberid, member_rank_name);
+
+		if (GangMember_IsActive(gangid, memberid)) {
+			member_playerid = GangMember_GetID(gangid, memberid);
+
+			format(member_str, sizeof(member_str),
+					_(GANG_MENU_PLAYER_LIST_ITEM_ON),
+					memberid,
+					member_name,
+					member_rank_name,
+					member_playerid,
+					GetPlayerLevel(member_playerid)
+				);
+
+			strcat(members, member_str, size);
+		} else {
+			format(member_str, sizeof(member_str),
+					_(GANG_MENU_PLAYER_LIST_ITEM_OFF),
+					members,
+					memberid,
+					member_name,
+					member_rank_name
+				);
+
+			strcat(members, member_str, size);
+		}
+	}
+}
+
+/*
+	Working member id
+*/
+
+static
+	gWorkingMemberID[MAX_PLAYERS char];
+
+static stock SetPlayerWorkingMemberID(playerid, memberid)
+{
+	gWorkingMemberID{playerid} = memberid;
+}
+
+static stock GetPlayerWorkingMemberID(playerid)
+{
+	return gWorkingMemberID{playerid};
 }

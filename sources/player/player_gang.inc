@@ -47,7 +47,8 @@ static
 	Invite ID
 */
 
-stock IsPlayerInvitedInAnyGang(playerid) {
+stock IsPlayerInvitedInAnyGang(playerid)
+{ 
 	for (new i = 0; i < MAX_GANG_INVITES; i++) {
 		if (gPlayerInvitedGang[playerid][i][e_pigID] != INVALID_GANG_ID) {
 			return 1;
@@ -57,7 +58,12 @@ stock IsPlayerInvitedInAnyGang(playerid) {
 	return 0;
 }
 
-stock IsPlayerInvitedInGang(playerid, gangid) {
+stock IsPlayerInvitedInGang(playerid, gangid)
+{
+	if (gangid == INVALID_GANG_ID) {
+		return 0;
+	}
+
 	for (new i = 0; i < MAX_GANG_INVITES; i++) {
 		if (gPlayerInvitedGang[playerid][i][e_pigID] == gangid) {
 			return 1;
@@ -67,7 +73,28 @@ stock IsPlayerInvitedInGang(playerid, gangid) {
 	return 0;
 }
 
-stock GetPlayerInvitedGangArrayID(playerid, invited_gangs[], &size) {
+stock IsPlayerInvitedInGangByName(playerid, gangname[])
+{
+	new
+		temp_name[MAX_GANG_NAME + 1];
+
+	for (new i = 0; i < MAX_GANG_INVITES; i++) {
+		if (gPlayerInvitedGang[playerid][i][e_pigID] == INVALID_GANG_ID) {
+			continue;
+		}
+
+		Gang_GetName(gPlayerInvitedGang[playerid][i][e_pigID], temp_name);
+
+		if (strcmp(temp_name, gangname, true) == 0) {
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+stock GetPlayerInvitedGangArrayID(playerid, invited_gangs[], &size)
+{
 	size = 0;
 
 	for (new i = 0; i < MAX_GANG_INVITES; i++) {
@@ -79,7 +106,8 @@ stock GetPlayerInvitedGangArrayID(playerid, invited_gangs[], &size) {
 	return size != 0;
 }
 
-stock SetPlayerInvitedGangID(playerid, gangid, bool:status) {
+stock SetPlayerInvitedGangID(playerid, gangid, bool:status)
+{
 	for (new i = 0; i < MAX_GANG_INVITES; i++) {
 		if (status) {
 			if (gPlayerInvitedGang[playerid][i][e_pigID] == INVALID_GANG_ID) {
@@ -148,15 +176,18 @@ stock IsPlayersTeammates(...)
 	GangName
 */
 
-stock GetPlayerGangName(playerid, name[], const size = sizeof(name)) {
+stock GetPlayerGangName(playerid, name[], const size = sizeof(name))
+{
 	strmid(name, gPlayerGangName[playerid], 0, strlen(gPlayerGangName[playerid]), size);
 }
 
-stock ReturnPlayerGangName(playerid) {
+stock ReturnPlayerGangName(playerid)
+{
 	return gPlayerGangName[playerid];
 }
 
-stock SetPlayerGangName(playerid, name[]) {
+stock SetPlayerGangName(playerid, name[])
+{
 	strmid(gPlayerGangName[playerid], name, 0, strlen(name), MAX_NAME);
 }
 
@@ -164,15 +195,18 @@ stock SetPlayerGangName(playerid, name[]) {
 	GangID
 */
 
-stock IsPlayerInGang(playerid) {
+stock IsPlayerInGang(playerid)
+{
 	return gPlayerGangID[playerid] != INVALID_GANG_ID;
 }
 
-stock GetPlayerGangID(playerid) {
+stock GetPlayerGangID(playerid)
+{
 	return gPlayerGangID[playerid];
 }
 
-stock SetPlayerGangID(playerid, gangid) {
+stock SetPlayerGangID(playerid, gangid)
+{
 	gPlayerGangID[playerid] = gangid;
 }
 
@@ -181,11 +215,13 @@ stock SetPlayerGangID(playerid, gangid) {
 	GangMemberID
 */
 
-stock GetPlayerGangMemberID(playerid) {
+stock GetPlayerGangMemberID(playerid)
+{
 	return gPlayerGangMemberID{playerid};
 }
 
-stock SetPlayerGangMemberID(playerid, memberid) {
+stock SetPlayerGangMemberID(playerid, memberid)
+{
 	gPlayerGangMemberID{playerid} = memberid;
 }
 

@@ -17,6 +17,7 @@
 */
 
 #define MAX_GANG_RANK_NAME 32
+#define MAX_GANG_RANK_COUNT 5
 
 /*
 	Enums
@@ -26,6 +27,8 @@
 enum GangMemberRank {
 	GangMemberLeader,
 	GangMemberHelper,
+	GangMemberPaymaster,
+	GangMemberInviter,
 	GangMemberSoldier,
 }
 
@@ -59,6 +62,8 @@ GangMember_OnGameModeInit()
 	// init rank names
 	GangRankMember_SetName(GangMemberLeader, _(GANG_RANK_LEADER));
 	GangRankMember_SetName(GangMemberHelper, _(GANG_RANK_HELPER));
+	GangRankMember_SetName(GangMemberPaymaster, _(GANG_RANK_PAYMASTER));
+	GangRankMember_SetName(GangMemberInviter, _(GANG_RANK_INVITER));
 	GangRankMember_SetName(GangMemberSoldier, _(GANG_RANK_SOLDIER));
 	return 1;
 }
