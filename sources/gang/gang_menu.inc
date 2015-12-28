@@ -902,10 +902,10 @@ static stock GetGangMemberListArray(gangid, members[], const size = sizeof(membe
 		} else {
 			format(member_str, sizeof(member_str),
 					_(GANG_MENU_PLAYER_LIST_ITEM_OFF),
-					members,
 					memberid,
 					member_name,
-					member_rank_name
+					member_rank_name,
+					timestamp_to_format_date( Account_GetLoginTimeByName(member_name) )
 				);
 
 			strcat(members, member_str, size);

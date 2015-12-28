@@ -29,7 +29,7 @@ stock cfg_LoadConfigs()
 	GangLevel_LoadConfig(file_config);
 	mission_LoadConfig(file_config);
 	payday_LoadConfig(file_config);
-	account_LoadConfig(file_config);
+	Account_LoadConfig(file_config);
 	player_LoadConfig(file_config);
 	Vehicle_LoadConfig(file_config);
 	Vehicle_Fuel_LoadConfig(file_config);
@@ -79,7 +79,7 @@ stock cfg_SaveConfigs()
 	GangLevel_SaveConfig(file_config);
 	mission_SaveConfig(file_config);
 	payday_SaveConfig(file_config);
-	account_SaveConfig(file_config);
+	Account_SaveConfig(file_config);
 	player_SaveConfig(file_config);
 	Vehicle_Fuel_SaveConfig(file_config);
 	Vehicle_SaveConfig(file_config);

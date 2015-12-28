@@ -833,7 +833,7 @@ COMMAND:sys(playerid, params[])
 	{
 		foreach (new id : Player) {
 			player_Save(id);
-			account_Save(id);
+			Account_Save(id);
 		}
 		SendRconCommand("gmx");
 		return 1;

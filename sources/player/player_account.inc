@@ -14,27 +14,27 @@
 #pragma library pl_account
 
 
-stock account_LoadConfig(file_config)
+stock Account_LoadConfig(file_config)
 {
 	ini_getString(file_config, "Account_DB", db_account);
 }
 
-stock account_SaveConfig(file_config)
+stock Account_SaveConfig(file_config)
 {
 	ini_setString(file_config, "Account_DB", db_account);
 }
 
-stock account_Save(playerid)
+stock Account_Save(playerid)
 {
 	if (!player_IsLogin(playerid)) {
 		return 0;
 	}
 
-	account_SaveEx(playerid);
+	Account_SaveEx(playerid);
 	return 1;
 }
 
-stock account_SaveEx(playerid)
+stock Account_SaveEx(playerid)
 {
 	new filename_account[MAX_STRING],
 		temp[MAX_STRING],
@@ -57,9 +57,9 @@ stock account_SaveEx(playerid)
 	GetPVarString(playerid, "Password_Salt", temp, sizeof(temp));
 	ini_setString(file_account, "Password_Salt", temp);
 
-	ini_setInteger(file_account, "Creation_Date", account_GetRegisterTime(playerid));
-	ini_setInteger(file_account, "Login_Date", account_GetLoginTime(playerid));
-	ini_setInteger(file_account, "Played_Time", account_GetPlayedTime(playerid));
+	ini_setInteger(file_account, "Creation_Date", Account_GetRegisterTime(playerid));
+	ini_setInteger(file_account, "Login_Date", Account_GetLoginTime(playerid));
+	ini_setInteger(file_account, "Played_Time", Account_GetPlayedTime(playerid));
 
 	GetPVarString(playerid, "IP", temp, sizeof(temp));
 	ini_setString(file_account, "LastIP", temp);
@@ -69,7 +69,7 @@ stock account_SaveEx(playerid)
 	return 1;
 }
 
-stock account_Register(playerid, password[])
+stock Account_Register(playerid, password[])
 {
 	// set default data
 #if defined PASSWORD_ENCRYPT_ENABLED
@@ -86,24 +86,24 @@ stock account_Register(playerid, password[])
 	SetPVarString(playerid, "Password", password);
 #endif
 
-	account_SetRegisterTime(playerid, gettime());
-	account_SetLoginTime(playerid, gettime());
-	account_SetPlayedTime(playerid, 0);
-	account_SetAfterRegisterStatus(playerid, true);
+	Account_SetRegisterTime(playerid, gettime());
+	Account_SetLoginTime(playerid, gettime());
+	Account_SetPlayedTime(playerid, 0);
+	Account_SetAfterRegisterStatus(playerid, true);
 	
 	// create account and player
-	account_SaveEx(playerid);
+	Account_SaveEx(playerid);
 	player_Create(playerid);
 
 	// login
-	account_Login(playerid, password);
+	Account_Login(playerid, password);
 
 	SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_SUCCESS_REGISTER));
 	Log_Game("create_account: success %s(%d)", ReturnPlayerName(playerid), playerid);
 	return 1;
 }
 
-stock account_Login(playerid, password[])
+stock Account_Login(playerid, password[])
 {
 	new filename_account[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
@@ -147,12 +147,12 @@ stock account_Login(playerid, password[])
 	
 	new timestamp;
 	ini_getInteger(file_account, "Creation_Date", timestamp);
-	account_SetRegisterTime(playerid, timestamp);
+	Account_SetRegisterTime(playerid, timestamp);
 
-	account_SetLoginTime(playerid, gettime());
+	Account_SetLoginTime(playerid, gettime());
 
 	ini_getInteger(file_account, "Played_Time", timestamp);
-	account_SetPlayedTime(playerid, timestamp);
+	Account_SetPlayedTime(playerid, timestamp);
 
 	new temp[11];
 	ini_getString(file_account, "Premium_Date", temp);
@@ -183,7 +183,7 @@ DialogResponse:AccountRegister(playerid, response, listitem, inputtext[])
 {
 	new pass_len = strlen(inputtext);
 	if (pass_len >= MIN_PASS_LEN && pass_len <= MAX_PASS_LEN) {
-		account_Register(playerid, inputtext);
+		Account_Register(playerid, inputtext);
 	} else {
 		Dialog_Show(playerid, Dialog:AccountRegister);
 	}
@@ -209,7 +209,7 @@ DialogResponse:AccountLogin(playerid, response, listitem, inputtext[])
 {
 	new pass_len = strlen(inputtext);
 	if (pass_len >= MIN_PASS_LEN && pass_len <= MAX_PASS_LEN) {
-		account_Login(playerid, inputtext);
+		Account_Login(playerid, inputtext);
 	} else {
 		Dialog_Show(playerid, Dialog:AccountLogin);
 	}
@@ -232,7 +232,7 @@ DialogResponse:AccountInformation(playerid, response, listitem, inputtext[])
 	Dialog_Show(playerid, Dialog:AccountRegister);
 }
 
-stock account_ShowDialog(playerid)
+stock Account_ShowDialog(playerid)
 {
 	new filename_account[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
@@ -250,51 +250,51 @@ stock account_ShowDialog(playerid)
 	return 1;
 }
 
-stock account_SetAfterRegisterStatus(playerid, bool:status)
+stock Account_SetAfterRegisterStatus(playerid, bool:status)
 {
 	SetPVarInt(playerid, "is_after_register", _:status);
 }
 
-stock account_IsAfterRegister(playerid)
+stock Account_IsAfterRegister(playerid)
 {
 	return GetPVarInt(playerid, "is_after_register");
 }
 
-stock account_SetRegisterTime(playerid, tiemstamp)
+stock Account_SetRegisterTime(playerid, tiemstamp)
 {
 	SetPVarInt(playerid, "Creation_Date", tiemstamp);
 }
 
-stock account_GetRegisterTime(playerid)
+stock Account_GetRegisterTime(playerid)
 {
 	return GetPVarInt(playerid, "Creation_Date");
 }
 
-stock account_SetLoginTime(playerid, tiemstamp)
+stock Account_SetLoginTime(playerid, tiemstamp)
 {
 	SetPVarInt(playerid, "Login_Date", tiemstamp);
 }
 
-stock account_GetLoginTime(playerid)
+stock Account_GetLoginTime(playerid)
 {
 	return GetPVarInt(playerid, "Login_Date");
 }
 
-stock account_SetPlayedTime(playerid, timestamp)
+stock Account_SetPlayedTime(playerid, timestamp)
 {
 	SetPVarInt(playerid, "Played_Time", timestamp);
 }
 
-stock account_GetPlayedTime(playerid)
+stock Account_GetPlayedTime(playerid)
 {
-	return GetPVarInt(playerid, "Played_Time") + gettime() - account_GetLoginTime(playerid);
+	return GetPVarInt(playerid, "Played_Time") + gettime() - Account_GetLoginTime(playerid);
 }
 
-stock account_GetPlayedTimeString(playerid)
+stock Account_GetPlayedTimeString(playerid)
 {
 	new
 		string[MAX_STRING],
-		played_seconds = account_GetPlayedTime(playerid);
+		played_seconds = Account_GetPlayedTime(playerid);
 
 	new
 		days = played_seconds / 60 / 60 / 24,
@@ -321,5 +321,26 @@ stock account_GetPlayedTimeString(playerid)
 		minutes, Declension_GetMinutes(minutes),
 		seconds, Declension_GetSeconds(seconds)
 	);
+
 	return string;
+}
+
+stock Account_GetLoginTimeByName(playername[])
+{
+	new
+		timestamp,
+		filename_account[MAX_STRING];
+
+	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, playername);
+	
+	new file_account = ini_openFile(filename_account);
+	if (file_account < 0) {
+		return 0;
+	}
+
+	ini_getInteger(file_account, "Played_Time", timestamp);
+
+	ini_closeFile(file_account);
+
+	return timestamp;
 }

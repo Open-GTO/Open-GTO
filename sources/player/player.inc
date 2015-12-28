@@ -43,7 +43,7 @@ stock player_OnPlayerSpawn(playerid)
 	UpdatePlayerWeaponTextDraws(playerid);
 
 	SetPlayerColor(playerid, GetPlayerGangColor(playerid));
-	if (!account_IsAfterRegister(playerid)) {
+	if (!Account_IsAfterRegister(playerid)) {
 		SetPlayerSkin(playerid, Player_GetPlayerSkin(playerid));
 	}
 	SetPlayerMaxHealth(playerid);
@@ -60,7 +60,7 @@ stock player_OnPlayerDisconnect(playerid, reason)
 {
 	// save
 	player_Save(playerid);
-	account_Save(playerid);
+	Account_Save(playerid);
 
 	StopAudioStreamForPlayer(playerid);
 
@@ -166,7 +166,7 @@ stock player_OnPlayerRequestClass(playerid, classid)
 
 	// show login dialog
 	if (!player_IsLogin(playerid)) {
-		account_ShowDialog(playerid);
+		Account_ShowDialog(playerid);
 	}
 	return 1;
 }
@@ -186,7 +186,7 @@ stock player_OnLogin(playerid)
 	TogglePlayerSpectating(playerid, 0);
 
 	// skin select
-	if (account_IsAfterRegister(playerid)) {
+	if (Account_IsAfterRegister(playerid)) {
 		#if defined PLAYER_START_SKIN
 			SetPlayerSkin(playerid, PLAYER_START_SKIN);
 		#else

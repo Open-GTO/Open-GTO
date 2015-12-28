@@ -35,7 +35,7 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 		// сохранить аккаунт
 		case 0: {
 			player_Save(playerid);
-			account_Save(playerid);
+			Account_Save(playerid);
 			Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 				_(PLAYER_MENU_SETTINGS_SAVED_CAPTION),
 				_(PLAYER_MENU_SETTINGS_SAVED),
@@ -162,7 +162,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	business_RenameOwner(old_name, new_name);
 	
 	player_Save(playerid);
-	account_Save(playerid);
+	Account_Save(playerid);
 	
 	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_account, old_name);
 	if (ini_fileExist(string)) {
@@ -241,7 +241,7 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 	SetPVarString(playerid, "Password", password);
 #endif
 
-	account_Save(playerid);
+	Account_Save(playerid);
 	GivePlayerMoney(playerid, -CHANGE_PASS_COST, 1);
 	return 1;
 }
