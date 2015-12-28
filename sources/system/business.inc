@@ -481,8 +481,6 @@ stock bis_Buy(playerid)
 		set(Businesses[id][Business_Owner], playername);
 		Businesses[id][Business_Buyout] = 0;
 
-		Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, business_icon[id], E_STREAMER_TYPE, 36);
-
 		new string[MAX_STRING];
 		format(string, sizeof(string), _m(BUSINESS_DIALOG_INFO_BUY),
 			Businesses[id][Business_Name],
@@ -517,8 +515,6 @@ stock bis_Sell(playerid)
 
 		Businesses[id][Business_Buyout] = 0;
 		Businesses[id][Business_Upgrade] = 1;
-
-		Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, business_icon[id], E_STREAMER_TYPE, 52);
 		
 		new string[MAX_STRING * 2];
 		format(string, sizeof(string), _m(BUSINESS_DIALOG_INFO_SELL),
@@ -649,7 +645,6 @@ stock CheckBusinessOwners()
 			set(Businesses[i][Business_Owner], "Unknown");
 			Businesses[i][Business_Buyout] = 0;
 			Businesses[i][Business_Upgrade] = 1;
-			Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, business_icon[i], E_STREAMER_TYPE, 52);
 		}
 	}
 }
