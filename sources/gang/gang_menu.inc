@@ -873,6 +873,7 @@ static stock GetGangMemberID(gangid, listitem)
 static stock GetGangMemberListArray(gangid, members[], const size = sizeof(members))
 {
 	new
+		account_data[e_Account_Info],
 		member_playerid,
 		member_name[MAX_PLAYER_NAME + 1],
 		member_rank_name[MAX_GANG_RANK_NAME],
@@ -900,12 +901,14 @@ static stock GetGangMemberListArray(gangid, members[], const size = sizeof(membe
 
 			strcat(members, member_str, size);
 		} else {
+			Account_LoadData(member_name, account_data);
+
 			format(member_str, sizeof(member_str),
 					_(GANG_MENU_PLAYER_LIST_ITEM_OFF),
 					memberid,
 					member_name,
 					member_rank_name,
-					timestamp_to_format_date( Account_GetLoginTimeByName(member_name) )
+					timestamp_to_format_date(account_data[e_aLoginTime])
 				);
 
 			strcat(members, member_str, size);

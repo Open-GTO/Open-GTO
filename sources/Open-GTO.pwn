@@ -38,10 +38,10 @@ Thanks:
 #include <a_samp>
 
 // header
-#include "gang/gang_header"
-#include "player/player_header"
 #include "config"
 #include "core/unfixes"
+#include "gang/gang_header"
+#include "player/player_header"
 
 // lib
 #include "lib/streamer"
