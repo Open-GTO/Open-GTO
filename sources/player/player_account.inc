@@ -13,6 +13,36 @@
 #define _pl_account_included
 #pragma library pl_account
 
+/*
+	Enums
+*/
+
+enum e_Account_Info {
+#if defined PASSWORD_ENCRYPT_ENABLED
+	e_aPassword[PASSWORD_HASH_LENGTH + 1],
+	e_aPasswordSalt[PASSWORD_SALT_LENGTH + 1],
+#else
+	e_aPassword[MAX_PASS_LEN + 1],
+#endif
+	e_aIP[MAX_IP],
+	e_aLoginTime,
+	e_aCreationTime,
+	e_aPlayedSeconds,
+	e_aPremiumTime,
+}
+
+/*
+	Vars
+*/
+
+static
+	gAccount[MAX_PLAYERS][e_Account_Info],
+	bool:gIsAfterRegistration[MAX_PLAYERS],
+	gLoginAttempt[MAX_PLAYERS char];
+
+/*
+	Config
+*/
 
 stock Account_LoadConfig(file_config)
 {
@@ -24,117 +54,87 @@ stock Account_SaveConfig(file_config)
 	ini_setString(file_config, "Account_DB", db_account);
 }
 
+/*
+	Save
+*/
+
 stock Account_Save(playerid)
 {
 	if (!player_IsLogin(playerid)) {
 		return 0;
 	}
 
-	Account_SaveEx(playerid);
-	return 1;
-}
-
-stock Account_SaveEx(playerid)
-{
-	new filename_account[MAX_STRING],
-		temp[MAX_STRING],
+	new
 		playername[MAX_PLAYER_NAME + 1];
-
+	
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, playername);
+	Account_SaveData(playername, gAccount[playerid]);
 
-	new file_account;
-	if (ini_fileExist(filename_account)) {
-		file_account = ini_openFile(filename_account);
-	} else {
-		file_account = ini_createFile(filename_account);
-	}
-
-	GetPVarString(playerid, "Password", temp, sizeof(temp));
-	ini_setString(file_account, "Password", temp);
-
-	GetPVarString(playerid, "Password_Salt", temp, sizeof(temp));
-	ini_setString(file_account, "Password_Salt", temp);
-
-	ini_setInteger(file_account, "Creation_Date", Account_GetRegisterTime(playerid));
-	ini_setInteger(file_account, "Login_Date", Account_GetLoginTime(playerid));
-	ini_setInteger(file_account, "Played_Time", Account_GetPlayedTime(playerid));
-
-	GetPVarString(playerid, "IP", temp, sizeof(temp));
-	ini_setString(file_account, "LastIP", temp);
-	ini_setString(file_account, "Premium_Date", Premium_GetPlayerDate(playerid));
-
-	ini_closeFile(file_account);
 	return 1;
 }
+
+/*
+	Register
+*/
 
 stock Account_Register(playerid, password[])
 {
 	// set default data
 #if defined PASSWORD_ENCRYPT_ENABLED
-	new
-		hash[PASSWORD_HASH_LENGTH + 1],
-		salt[PASSWORD_SALT_LENGTH + 1];
+	GenerateRandomString(gAccount[playerid][e_aPasswordSalt], PASSWORD_SALT_LENGTH);
 
-	GenerateRandomString(salt, PASSWORD_SALT_LENGTH);
-	SetPVarString(playerid, "Password_Salt", salt);
-
-	SHA256_PassHash(password, salt, hash, PASSWORD_HASH_LENGTH);
-	SetPVarString(playerid, "Password", hash);
+	SHA256_PassHash(password, gAccount[playerid][e_aPasswordSalt], gAccount[playerid][e_aPassword], PASSWORD_HASH_LENGTH);
 #else
-	SetPVarString(playerid, "Password", password);
+	strmid(gAccount[playerid][e_aPassword], password, 0, strlen(password), MAX_PASS_LEN);
 #endif
 
-	Account_SetRegisterTime(playerid, gettime());
+	Account_SetRegistrationTime(playerid, gettime());
 	Account_SetLoginTime(playerid, gettime());
 	Account_SetPlayedTime(playerid, 0);
-	Account_SetAfterRegisterStatus(playerid, true);
+	Account_SetAfterRegistration(playerid, true);
 	
+	new playername[MAX_PLAYER_NAME + 1];
+	GetPlayerName(playerid, playername, sizeof(playername));
+
 	// create account and player
-	Account_SaveEx(playerid);
+	Account_SaveData(playername, gAccount[playerid]);
 	player_Create(playerid);
 
 	// login
 	Account_Login(playerid, password);
 
 	SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_SUCCESS_REGISTER));
-	Log_Game("create_account: success %s(%d)", ReturnPlayerName(playerid), playerid);
+	Log_Game("create_account: success %s(%d)", playername, playerid);
 	return 1;
 }
 
+/*
+	Login
+*/
+
 stock Account_Login(playerid, password[])
 {
-	new filename_account[MAX_STRING],
+	new
+		result[e_Account_Info],
 		playername[MAX_PLAYER_NAME + 1];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
-	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, playername);
-	
-	if (!ini_fileExist(filename_account)) {
-		return 0;
-	}
 
-	new dbpassword[PASSWORD_HASH_LENGTH + 1],
-		file_account = ini_openFile(filename_account);
+	// get data
+	Account_LoadData(playername, result);
 
-	ini_getString(file_account, "Password", dbpassword);
-
+	// check password
 #if defined PASSWORD_ENCRYPT_ENABLED
-	new salt[PASSWORD_SALT_LENGTH + 1];
-	ini_getString(file_account, "Password_Salt", salt);
-	SetPVarString(playerid, "Password_Salt", salt);
-
-	SHA256_PassHash(password, salt, password, PASSWORD_HASH_LENGTH);
+	SHA256_PassHash(password, result[e_aPasswordSalt], password, PASSWORD_HASH_LENGTH);
 #endif
 
-	if (strcmp(password, dbpassword, false)) {
-		ini_closeFile(file_account);
-
+	if (strcmp(password, result[e_aPassword], false)) {
 		Log_Game("player_login: failed: incorrect password by %s(%d)", playername, playerid);
 		
-		GivePVarInt(playerid, "Player_Login_Attempt", 1);
-		if (GetPVarInt(playerid, "Player_Login_Attempt") >= MAX_PLAYER_LOGIN_ATTEMPT) {
+		AddLoginAttempt(playerid);
+
+		if (IsLoginAttemptsEnded(playerid)) {
 			SendClientMessage(playerid, COLOR_RED, _(ACCOUNT_AUTO_KICK));
 			KickPlayer(playerid, _(ACCOUNT_INCORRECT_PASSWORD));
 		} else {
@@ -143,28 +143,95 @@ stock Account_Login(playerid, password[])
 		return 0;
 	}
 
-	SetPVarString(playerid, "Password", password);
-	
-	new timestamp;
-	ini_getInteger(file_account, "Creation_Date", timestamp);
-	Account_SetRegisterTime(playerid, timestamp);
-
+	// set data
+	Account_SetRegistrationTime(playerid, result[e_aCreationTime]);
 	Account_SetLoginTime(playerid, gettime());
+	Account_SetPlayedTime(playerid, result[e_aPlayedSeconds]);
+	Premium_SetPlayerTime(playerid, result[e_aPremiumTime]);
 
-	ini_getInteger(file_account, "Played_Time", timestamp);
-	Account_SetPlayedTime(playerid, timestamp);
-
-	new temp[11];
-	ini_getString(file_account, "Premium_Date", temp);
-	Premium_UpdatePlayerStatus(playerid, temp);
-
-	ini_closeFile(file_account);
-
+	// some actions
+	ResetLoginAttempt(playerid);
 	widestrip_Hide(playerid);
+
 	// login player
 	player_Login(playerid);
+
 	return 1;
 }
+
+/*
+	Account_SaveData
+*/
+
+stock Account_SaveData(account_name[], data[e_Account_Info])
+{
+	new
+		file_account,
+		filename_account[MAX_STRING];
+
+	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, account_name);
+
+	if (ini_fileExist(filename_account)) {
+		file_account = ini_openFile(filename_account);
+	} else {
+		file_account = ini_createFile(filename_account);
+	}
+
+	if (file_account < 0) {
+		Log_Debug("Error <account:Account_SaveData>: account '%s' has not been opened (error code: %d).", account_name, file_account);
+		return 0;
+	}
+
+	ini_setString(file_account, "Password", data[e_aPassword]);
+#if defined PASSWORD_ENCRYPT_ENABLED
+	ini_setString(file_account, "Password_Salt", data[e_aPasswordSalt]);
+#endif
+	ini_setString(file_account, "LastIP", data[e_aIP]);
+	ini_setInteger(file_account, "Creation_Timestamp", data[e_aCreationTime]);
+	ini_setInteger(file_account, "Login_Timestamp", data[e_aLoginTime]);
+	ini_setInteger(file_account, "Played_Seconds", data[e_aPlayedSeconds]);
+	ini_setString(file_account, "Premium_Timestamp", data[e_aPremiumTime]);
+
+	ini_closeFile(file_account);
+	return 1;
+}
+
+/*
+	Account_LoadData
+*/
+
+stock Account_LoadData(account_name[], result[e_Account_Info])
+{
+	new
+		file_account,
+		filename_account[MAX_STRING];
+
+	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, account_name);
+
+	file_account = ini_openFile(filename_account);
+
+	if (file_account < 0) {
+		Log_Debug("Error <account:Account_LoadData>: account '%s' has not been opened (error code: %d).", account_name, file_account);
+		return 0;
+	}
+
+	ini_getString(file_account, "Password", result[e_aPassword], MAX_PASS_LEN);
+#if defined PASSWORD_ENCRYPT_ENABLED
+	ini_getString(file_account, "Password_Salt", result[e_aPasswordSalt], PASSWORD_SALT_LENGTH);
+#endif
+	ini_getString(file_account, "LastIP", result[e_aIP], MAX_IP);
+	ini_getInteger(file_account, "Creation_Timestamp", result[e_aCreationTime]);
+	ini_getInteger(file_account, "Login_Timestamp", result[e_aLoginTime]);
+	ini_getInteger(file_account, "Played_Seconds", result[e_aPlayedSeconds]);
+	ini_getInteger(file_account, "Premium_Timestamp", result[e_aPremiumTime]);
+
+	ini_closeFile(file_account);
+	return 1;
+}
+
+/*
+	Dialogs
+*/
 
 DialogCreate:AccountRegister(playerid)
 {
@@ -199,7 +266,7 @@ DialogCreate:AccountLogin(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), _(ACCOUNT_DIALOG_LOGIN), MAX_PLAYER_LOGIN_ATTEMPT - GetPVarInt(playerid, "Player_Login_Attempt"));
+	format(string, sizeof(string), _(ACCOUNT_DIALOG_LOGIN), GetLoginAttemptCount(playerid));
 	format(caption, sizeof(caption), _(ACCOUNT_DIALOG_LOGIN_HEAD), playername);
 
 	Dialog_Open(playerid, Dialog:AccountLogin, DIALOG_STYLE_PASSWORD, caption, string, _(ACCOUNT_DIALOG_LOGIN_BUTTON), "");
@@ -250,45 +317,85 @@ stock Account_ShowDialog(playerid)
 	return 1;
 }
 
-stock Account_SetAfterRegisterStatus(playerid, bool:status)
+/*
+	Register functions
+*/
+
+stock Account_SetAfterRegistration(playerid, bool:status)
 {
-	SetPVarInt(playerid, "is_after_register", _:status);
+	gIsAfterRegistration[playerid] = status;
 }
 
-stock Account_IsAfterRegister(playerid)
+stock Account_IsAfterRegistration(playerid)
 {
-	return GetPVarInt(playerid, "is_after_register");
+	return _:gIsAfterRegistration[playerid];
 }
 
-stock Account_SetRegisterTime(playerid, tiemstamp)
+stock Account_SetRegistrationTime(playerid, timestamp)
 {
-	SetPVarInt(playerid, "Creation_Date", tiemstamp);
+	gAccount[playerid][e_aCreationTime] = timestamp;
 }
 
-stock Account_GetRegisterTime(playerid)
+stock Account_GetRegistrationTime(playerid)
 {
-	return GetPVarInt(playerid, "Creation_Date");
+	return gAccount[playerid][e_aCreationTime];
 }
 
-stock Account_SetLoginTime(playerid, tiemstamp)
+/*
+	Login attempt
+*/
+
+static stock ResetLoginAttempt(playerid)
 {
-	SetPVarInt(playerid, "Login_Date", tiemstamp);
+	gLoginAttempt{playerid} = 0;
+}
+
+static stock GetLoginAttemptCount(playerid)
+{
+	return MAX_PLAYER_LOGIN_ATTEMPT - gLoginAttempt{playerid};
+}
+
+static stock AddLoginAttempt(playerid, value = 1)
+{
+	gLoginAttempt{playerid} += value;
+}
+
+static stock IsLoginAttemptsEnded(playerid)
+{
+	return gLoginAttempt{playerid} >= MAX_PLAYER_LOGIN_ATTEMPT;
+}
+
+/*
+	Login time
+*/
+
+stock Account_SetLoginTime(playerid, timestamp)
+{
+	gAccount[playerid][e_aLoginTime] = timestamp;
 }
 
 stock Account_GetLoginTime(playerid)
 {
-	return GetPVarInt(playerid, "Login_Date");
+	return gAccount[playerid][e_aLoginTime];
 }
 
-stock Account_SetPlayedTime(playerid, timestamp)
+/*
+	Played time
+*/
+
+stock Account_SetPlayedTime(playerid, seconds)
 {
-	SetPVarInt(playerid, "Played_Time", timestamp);
+	gAccount[playerid][e_aPlayedSeconds] = seconds;
 }
 
 stock Account_GetPlayedTime(playerid)
 {
-	return GetPVarInt(playerid, "Played_Time") + gettime() - Account_GetLoginTime(playerid);
+	return gAccount[playerid][e_aPlayedSeconds] + gettime() - Account_GetLoginTime(playerid);
 }
+
+/*
+	Account_GetPlayedTimeString
+*/
 
 stock Account_GetPlayedTimeString(playerid)
 {
@@ -325,6 +432,10 @@ stock Account_GetPlayedTimeString(playerid)
 	return string;
 }
 
+/*
+	Account_GetLoginTimeByName
+*/
+
 stock Account_GetLoginTimeByName(playername[])
 {
 	new
@@ -338,7 +449,7 @@ stock Account_GetLoginTimeByName(playername[])
 		return 0;
 	}
 
-	ini_getInteger(file_account, "Played_Time", timestamp);
+	ini_getInteger(file_account, "Login_Timestamp", timestamp);
 
 	ini_closeFile(file_account);
 

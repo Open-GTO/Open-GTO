@@ -631,27 +631,20 @@ stock business_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME
 
 stock CheckBusinessOwners()
 {
-	new filename_account[MAX_STRING], file_account, timestamp, premium_date[11];
+	new
+		result[e_Account_Info];
 	
 	for (new i = 0; i < sizeof(Businesses); i++) {
-		if (!strcmp(Businesses[i][Business_Owner], "Unknown", false)) {
+		if (strcmp(Businesses[i][Business_Owner], "Unknown", false) == 0) {
 			continue;
 		}
 		
-		format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, Businesses[i][Business_Owner]);
-		if (!ini_fileExist(filename_account)) {
-			continue;
-		}
-		
-		file_account = ini_openFile(filename_account);
-		ini_getInteger(file_account, "Login_Date", timestamp);
-		ini_getString(file_account, "Premium_Date", premium_date);
-		ini_closeFile(file_account);
-		
-		if (Premium_GetDateStatus(premium_date) == 0 && gettime() > timestamp + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60) {
+		Account_LoadData(Businesses[i][Business_Owner], result);
+
+		if (Premium_IsDateExpired(result[e_aPremiumTime]) && gettime() > result[e_aLoginTime] + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60) {
 			Log_Game("Business has been free. Owner '%s'. BUSINESS_UNLOGIN_SELL_DAYS = %d",
-				Businesses[i][Business_Owner], BUSINESS_UNLOGIN_SELL_DAYS
-			);
+					Businesses[i][Business_Owner], BUSINESS_UNLOGIN_SELL_DAYS
+				);
 			
 			set(Businesses[i][Business_Owner], "Unknown");
 			Businesses[i][Business_Buyout] = 0;

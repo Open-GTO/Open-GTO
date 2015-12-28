@@ -12,49 +12,59 @@
 #define _pl_premium_included
 #pragma library pl_premium
 
+/*
+	Vars
+*/
 
-stock Premium_UpdatePlayerStatus(playerid, date[])
+static
+	gPremiumTime[MAX_PLAYERS];
+
+/*
+	Functions
+*/
+
+stock Premium_SetPlayerTime(playerid, timestamp)
 {
-	Premium_SetPlayerDate(playerid, date);
-	
-	new status = Premium_GetDateStatus(date);
-	Premium_SetPlayerStatus(playerid, status);
-	return 0;
+	gPremiumTime[playerid] = timestamp;
 }
 
-stock Premium_SetPlayerDate(playerid, date[])
+stock Premium_GetPlayerTime(playerid)
 {
-	SetPVarString(playerid, "Premium_Date", date);
+	return gPremiumTime[playerid];
+}
+
+stock Premium_IsPlayerHave(playerid)
+{
+	new time = Premium_GetPlayerTime(playerid);
+
+	if (Premium_IsDateExpired(time)) {
+		return 0;
+	}
+
+	return 1;
+}
+
+stock Premium_IsDateExpired(timestamp)
+{
+	if (getdate() <= timestamp) {
+		return 0;
+	}
+	
+	return 1;
 }
 
 stock Premium_GetPlayerDate(playerid)
 {
+	new
+		time,
+		year,
+		month,
+		day;
+
+	time = Premium_GetPlayerTime(playerid);
+	gmtime(time, year, month, day);
+
 	new string[11];
-	GetPVarString(playerid, "Premium_Date", string, sizeof(string));
+	format(string, sizeof(string), "%02d.%02d.%04d", day, month, year);
 	return string;
-}
-
-stock Premium_SetPlayerStatus(playerid, status)
-{
-	SetPVarInt(playerid, "Premium_Status", status == 1 ? 1 : 0);
-}
-
-stock Premium_GetPlayerStatus(playerid)
-{
-	return GetPVarInt(playerid, "Premium_Status");
-}
-
-stock Premium_GetDateStatus(date[])
-{
-	new day, month, year;
-
-	if (sscanf(date, "p<.>iii", day, month, year)) {
-		return 0;
-	}
-
-	if (getdate() <= mktime(year, month, day)) {
-		return 1;
-	}
-	
-	return 0;
 }

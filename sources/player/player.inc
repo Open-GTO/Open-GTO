@@ -43,7 +43,7 @@ stock player_OnPlayerSpawn(playerid)
 	UpdatePlayerWeaponTextDraws(playerid);
 
 	SetPlayerColor(playerid, GetPlayerGangColor(playerid));
-	if (!Account_IsAfterRegister(playerid)) {
+	if (!Account_IsAfterRegistration(playerid)) {
 		SetPlayerSkin(playerid, Player_GetPlayerSkin(playerid));
 	}
 	SetPlayerMaxHealth(playerid);
@@ -186,7 +186,7 @@ stock player_OnLogin(playerid)
 	TogglePlayerSpectating(playerid, 0);
 
 	// skin select
-	if (Account_IsAfterRegister(playerid)) {
+	if (Account_IsAfterRegistration(playerid)) {
 		#if defined PLAYER_START_SKIN
 			SetPlayerSkin(playerid, PLAYER_START_SKIN);
 		#else

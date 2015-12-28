@@ -236,7 +236,7 @@ stock player_Login(playerid)
 		ini_closeFile(file_player);
 	}
 
-	player_SetLogin(playerid, 1);
+	player_SetLogin(playerid, true);
 	player_OnLogin(playerid);
 	return 1;
 }
@@ -245,6 +245,6 @@ stock player_IsLogin(playerid) {
 	return GetPVarInt(playerid, "IsLogin");
 }
 
-stock player_SetLogin(playerid, islogin) {
-	SetPVarInt(playerid, "IsLogin", islogin);
+stock player_SetLogin(playerid, bool:islogin) {
+	SetPVarInt(playerid, "IsLogin", _:islogin);
 }

@@ -55,7 +55,7 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 		return 0;
 	}
 
-	if (xpamount > 0 && Premium_GetPlayerStatus(playerid) == 1) {
+	if (xpamount > 0 && Premium_IsPlayerHave(playerid)) {
 		xpamount += (xpamount / 100) * PLAYER_XP_PREMIUM_PROFIT;
 	}
 

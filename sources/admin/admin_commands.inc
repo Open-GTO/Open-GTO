@@ -1264,29 +1264,17 @@ COMMAND:setvip(playerid, params[])
 		return 0;
 	}
 
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][19]);
-		return 1;
-	}
+	new giveid, day, month, year;
 
-	new idx = 0;
-	new giveid = strval(strcharsplit(params, idx, ' '));
-
-	if (!IsPlayerConnected(giveid)) {
+	if (sscanf(params, "p<.>uiii", giveid, day, month, year)) {
 		SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][19]);
-		return 1;
+		return 0;
 	}
+
+	new timestamp = mktime(year, month, day);
+	Premium_SetPlayerTime(giveid, timestamp);
 	
 	new string[MAX_STRING];
-	string = strcharsplit(params, idx, ' ');
-	
-	if (strlen(string) < 10) {
-		SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][19]);
-		return 1;
-	}
-	
-	Premium_UpdatePlayerStatus(giveid, string);
-	
 	format(string, sizeof(string), lang_texts[12][20], ReturnPlayerName(giveid), giveid, Premium_GetPlayerDate(giveid));
 	SendClientMessage(playerid, COLOR_WHITE, string);
 

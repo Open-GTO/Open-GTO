@@ -52,7 +52,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 		// информация о персонаже
 		case 0: {
 			new premium_status[MAX_NAME];
-			if (Premium_GetPlayerStatus(playerid) == 1) {
+			if (Premium_IsPlayerHave(playerid)) {
 				format(premium_status, sizeof(premium_status), "до %s", Premium_GetPlayerDate(playerid));
 			} else {
 				set(premium_status, "нет");
@@ -80,7 +80,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 
 				GetPlayerLevel(playerid),
 				GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1),
-				timestamp_to_format_date( Account_GetRegisterTime(playerid) ),
+				timestamp_to_format_date( Account_GetRegistrationTime(playerid) ),
 				Account_GetPlayedTimeString(playerid),
 
 				gangname,
