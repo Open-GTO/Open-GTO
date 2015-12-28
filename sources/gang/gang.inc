@@ -402,7 +402,6 @@ stock Gang_MemberLogin(playerid, gangid, memberid = INVALID_MEMBER_ID)
 stock Gang_MemberLogout(playerid, gangid)
 {
 	if (!Gang_IsActive(gangid)) {
-		Log_Debug("Error <gang:Gang_MemberLogout>: gang is not active.");
 		return 0;
 	}
 
