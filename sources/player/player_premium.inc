@@ -13,47 +13,21 @@
 #pragma library pl_premium
 
 /*
-	Vars
-*/
-
-static
-	gPremiumTime[MAX_PLAYERS];
-
-/*
 	Functions
 */
 
-stock Premium_SetPlayerTime(playerid, timestamp)
+stock IsPlayerHavePremium(playerid)
 {
-	gPremiumTime[playerid] = timestamp;
-}
+	new time = Account_GetPremiumTime(playerid);
 
-stock Premium_GetPlayerTime(playerid)
-{
-	return gPremiumTime[playerid];
-}
-
-stock Premium_IsPlayerHave(playerid)
-{
-	new time = Premium_GetPlayerTime(playerid);
-
-	if (Premium_IsDateExpired(time)) {
+	if (IsDateExpired(time)) {
 		return 0;
 	}
 
 	return 1;
 }
 
-stock Premium_IsDateExpired(timestamp)
-{
-	if (getdate() <= timestamp) {
-		return 0;
-	}
-	
-	return 1;
-}
-
-stock Premium_GetPlayerDate(playerid)
+stock ReturnPlayerPremiumDateString(playerid)
 {
 	new
 		time,
@@ -61,7 +35,7 @@ stock Premium_GetPlayerDate(playerid)
 		month,
 		day;
 
-	time = Premium_GetPlayerTime(playerid);
+	time = Account_GetPremiumTime(playerid);
 	gmtime(time, year, month, day);
 
 	new string[11];

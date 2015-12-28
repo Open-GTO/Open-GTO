@@ -64,8 +64,8 @@ COMMAND:status(playerid, params[])
 	format(string, sizeof(string), _(COMMAND_STATUS_FIGHTSTYLE), fstylename);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
-	if (Premium_IsPlayerHave(playerid)) {
-		format(string, sizeof(string), _(COMMAND_STATUS_PREMIUM), Premium_GetPlayerDate(playerid));
+	if (IsPlayerHavePremium(playerid)) {
+		format(string, sizeof(string), _(COMMAND_STATUS_PREMIUM), ReturnPlayerPremiumDateString(playerid));
 	} else {
 		format(string, sizeof(string), _(COMMAND_STATUS_NO_PREMIUM));
 	}

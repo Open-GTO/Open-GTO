@@ -44,7 +44,7 @@ stock player_OnPlayerSpawn(playerid)
 
 	SetPlayerColor(playerid, GetPlayerGangColor(playerid));
 	if (!Account_IsAfterRegistration(playerid)) {
-		SetPlayerSkin(playerid, Player_GetPlayerSkin(playerid));
+		SetPlayerSkin(playerid, GetPlayerSkin(playerid));
 	}
 	SetPlayerMaxHealth(playerid);
 	pl_fights_UpdatePlayerStyleUsed(playerid);
@@ -98,10 +98,10 @@ stock player_OnPlayerConnect(playerid)
 	Chat_Clear(playerid);
 	SendClientMessage(playerid, COLOR_WHITE, lang_texts[9][35]);
 
-	new plrIP[MAX_IP], string[MAX_STRING];
-	GetPlayerIp(playerid, plrIP, sizeof(plrIP));
-	SetPVarString(playerid, "IP", plrIP);
+	Player_UpdateIP(playerid);
+	
 	if (!NameCharCheck( ReturnPlayerName(playerid) )) {
+		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[9][12], ALLOWED_NICK_SYMBOLS_STR);
 		SendClientMessage(playerid, COLOR_RED, string);
 		SendClientMessage(playerid, COLOR_RED, lang_texts[9][13]);
@@ -182,7 +182,7 @@ stock player_OnLogin(playerid)
 	// spawn player
 	new interior, world, Float:spawn_pos[4];
 	GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
-	SetSpawnInfo(playerid, 0, Player_GetPlayerSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
+	SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
 	TogglePlayerSpectating(playerid, 0);
 
 	// skin select
@@ -278,6 +278,9 @@ stock player_OnLogin(playerid)
 		}
 	}
 
+	// hide widstrip
+	widestrip_Hide(playerid);
+
 	Log_Game("player: %s(%d): logged in successfully.", playername, playerid);
 }
 
@@ -332,21 +335,6 @@ stock player_Sync(playerid)
 
 	JailPlayerCheck(playerid);
 	return 1;
-}
-
-stock GetPlayerID(playername[])
-{
-	new name[MAX_PLAYER_NAME+1];
-
-	foreach (new playerid : Player) {
-		GetPlayerName(playerid, name, sizeof(name));
-
-		if (!strcmp(playername, name, true)) {
-			return playerid;
-		}
-	}
-
-	return INVALID_PLAYER_ID;
 }
 
 stock ReturnPlayerName(playerid)
@@ -416,21 +404,14 @@ stock Player_GetPlayerSkin(playerid) {
 stock Player_SetPlayerSkin(playerid, skinid)
 {
 	gPlayerSkin[playerid] = skinid;
-	return SetPlayerSkin(playerid, skinid);
+	return ORIG_SetPlayerSkin(playerid, skinid);
 }
-#if defined _ALS_SetPlayerSkin
-	#undef SetPlayerSkin
-#else
-	#define _ALS_SetPlayerSkin
-#endif
- 
-#define SetPlayerSkin Player_SetPlayerSkin
 
 /*
 	Team
 */
 
-stock GTO_GetPlayerTeam(playerid)
+stock Player_GetPlayerTeam(playerid)
 {
 	if (!IS_IN_RANGE(playerid, 0, MAX_PLAYERS - 1) || !IsPlayerConnected(playerid)) {
 		return NO_TEAM;
@@ -439,15 +420,7 @@ stock GTO_GetPlayerTeam(playerid)
 	return GetPVarInt(playerid, "team");
 }
 
-#if defined _ALS_GetPlayerTeam
-	#undef GetPlayerTeam
-#else
-	#define _ALS_GetPlayerTeam
-#endif
-#define GetPlayerTeam GTO_GetPlayerTeam
-
-
-stock GTO_SetPlayerTeam(playerid, team)
+stock Player_SetPlayerTeam(playerid, team)
 {
 	if (!IS_IN_RANGE(playerid, 0, MAX_PLAYERS - 1)) {
 		return 0;
@@ -456,10 +429,3 @@ stock GTO_SetPlayerTeam(playerid, team)
 	SetPVarInt(playerid, "team", team);
 	return 1;
 }
-
-#if defined _ALS_SetPlayerTeam
-	#undef SetPlayerTeam
-#else
-	#define _ALS_SetPlayerTeam
-#endif
-#define SetPlayerTeam GTO_SetPlayerTeam

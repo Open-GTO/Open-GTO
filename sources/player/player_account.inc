@@ -75,6 +75,7 @@ stock Account_Register(playerid, password[])
 	Account_SetLoginTime(playerid, gettime());
 	Account_SetPlayedTime(playerid, 0);
 	Account_SetAfterRegistration(playerid, true);
+	Account_UpdateIP(playerid);
 	
 	new playername[MAX_PLAYER_NAME + 1];
 	GetPlayerName(playerid, playername, sizeof(playername));
@@ -84,7 +85,7 @@ stock Account_Register(playerid, password[])
 	player_Create(playerid);
 
 	// login
-	Account_Login(playerid, password);
+	player_Login(playerid);
 
 	SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_SUCCESS_REGISTER));
 	Log_Game("create_account: success %s(%d)", playername, playerid);
@@ -126,14 +127,12 @@ stock Account_Login(playerid, password[])
 	}
 
 	// set data
-	Account_SetRegistrationTime(playerid, result[e_aCreationTime]);
+	Account_SetData(playerid, result);
 	Account_SetLoginTime(playerid, gettime());
-	Account_SetPlayedTime(playerid, result[e_aPlayedSeconds]);
-	Premium_SetPlayerTime(playerid, result[e_aPremiumTime]);
+	Account_UpdateIP(playerid);
 
 	// some actions
 	ResetLoginAttempt(playerid);
-	widestrip_Hide(playerid);
 
 	// login player
 	player_Login(playerid);
@@ -172,7 +171,7 @@ stock Account_SaveData(account_name[], data[e_Account_Info])
 	ini_setInteger(file_account, "Creation_Timestamp", data[e_aCreationTime]);
 	ini_setInteger(file_account, "Login_Timestamp", data[e_aLoginTime]);
 	ini_setInteger(file_account, "Played_Seconds", data[e_aPlayedSeconds]);
-	ini_setString(file_account, "Premium_Timestamp", data[e_aPremiumTime]);
+	ini_setInteger(file_account, "Premium_Timestamp", data[e_aPremiumTime]);
 
 	ini_closeFile(file_account);
 	return 1;
@@ -197,9 +196,11 @@ stock Account_LoadData(account_name[], result[e_Account_Info])
 		return 0;
 	}
 
-	ini_getString(file_account, "Password", result[e_aPassword], MAX_PASS_LEN);
 #if defined PASSWORD_ENCRYPT_ENABLED
-	ini_getString(file_account, "Password_Salt", result[e_aPasswordSalt], PASSWORD_SALT_LENGTH);
+	ini_getString(file_account, "Password", result[e_aPassword], PASSWORD_HASH_LENGTH + 1);
+	ini_getString(file_account, "Password_Salt", result[e_aPasswordSalt], PASSWORD_SALT_LENGTH + 1);
+#else
+	ini_getString(file_account, "Password", result[e_aPassword], MAX_PASS_LEN + 1);
 #endif
 	ini_getString(file_account, "LastIP", result[e_aIP], MAX_IP);
 	ini_getInteger(file_account, "Creation_Timestamp", result[e_aCreationTime]);
@@ -324,6 +325,29 @@ stock Account_GetRegistrationTime(playerid)
 }
 
 /*
+	Account data
+*/
+
+stock Account_SetData(playerid, data[e_Account_Info])
+{
+	gAccount[playerid] = data;
+}
+
+stock Account_GetData(playerid, data[e_Account_Info])
+{
+	data = gAccount[playerid];
+}
+
+/*
+	Account_UpdateIP
+*/
+
+stock Account_UpdateIP(playerid)
+{
+	Player_GetIP(playerid, gAccount[playerid][e_aIP], MAX_IP);
+}
+
+/*
 	Login attempt
 */
 
@@ -373,6 +397,20 @@ stock Account_SetPlayedTime(playerid, seconds)
 stock Account_GetPlayedTime(playerid)
 {
 	return gAccount[playerid][e_aPlayedSeconds] + gettime() - Account_GetLoginTime(playerid);
+}
+
+/*
+	Played time
+*/
+
+stock Account_SetPremiumTime(playerid, seconds)
+{
+	gAccount[playerid][e_aPremiumTime] = seconds;
+}
+
+stock Account_GetPremiumTime(playerid)
+{
+	return gAccount[playerid][e_aPremiumTime];
 }
 
 /*

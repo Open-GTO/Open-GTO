@@ -52,8 +52,8 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 		// информация о персонаже
 		case 0: {
 			new premium_status[MAX_NAME];
-			if (Premium_IsPlayerHave(playerid)) {
-				format(premium_status, sizeof(premium_status), "до %s", Premium_GetPlayerDate(playerid));
+			if (IsPlayerHavePremium(playerid)) {
+				format(premium_status, sizeof(premium_status), "до %s", ReturnPlayerPremiumDateString(playerid));
 			} else {
 				set(premium_status, "нет");
 			}

@@ -43,10 +43,14 @@ Thanks:
 #include "gang/gang_header"
 #include "player/player_header"
 
+// important lib
+#include "lib/sa-mp-fixes/fixes"
+
+// redefine standart functions
+#include "core/redefine"
+
 // lib
 #include "lib/streamer"
-#include "lib/sa-mp-fixes/fixes"
-#include "core/redefine"
 #include "lib/sa-mp-foreach/foreach"
 #include "lib/sscanf2"
 #include "lib/zcmd"
@@ -112,6 +116,7 @@ Thanks:
 #include "player/player_login"
 #include "player/player_pm"
 #include "player/player_mute"
+#include "player/player_ip"
 #include "player/player_jail"
 #include "player/player_report"
 #include "player/player_click"

@@ -162,7 +162,7 @@ COMMAND:pinfo(playerid, params[])
 	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	new player_ip[MAX_IP];
-	GetPVarString(receiverid, "IP", player_ip, sizeof(player_ip));
+	Player_GetIP(playerid, player_ip);
 
 	format(string, sizeof(string), lang_texts[12][72], GetPlayerPing(receiverid), player_ip);
 	SendClientMessage(playerid, COLOR_WHITE, string);
@@ -1268,17 +1268,17 @@ COMMAND:setvip(playerid, params[])
 
 	if (sscanf(params, "p<.>uiii", giveid, day, month, year)) {
 		SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][19]);
-		return 0;
+		return 1;
 	}
 
 	new timestamp = mktime(year, month, day);
-	Premium_SetPlayerTime(giveid, timestamp);
+	Account_SetPremiumTime(giveid, timestamp);
 	
 	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][20], ReturnPlayerName(giveid), giveid, Premium_GetPlayerDate(giveid));
+	format(string, sizeof(string), lang_texts[12][20], ReturnPlayerName(giveid), giveid, ReturnPlayerPremiumDateString(giveid));
 	SendClientMessage(playerid, COLOR_WHITE, string);
 
-	format(string, sizeof(string), lang_texts[12][22], Premium_GetPlayerDate(giveid));
+	format(string, sizeof(string), lang_texts[12][22], ReturnPlayerPremiumDateString(giveid));
 	SendClientMessage(giveid, COLOR_WHITE, string);
 	return 1;
 }

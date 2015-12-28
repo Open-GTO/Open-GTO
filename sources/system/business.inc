@@ -203,16 +203,18 @@ stock TurnAround()
 			}
 			else
 			{
-				new playerid = GetPlayerID(Businesses[id][Business_Owner]);
-				if (playerid != INVALID_PLAYER_ID)
-				{
-					new amount = Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade];
-					GivePlayerBankMoney(playerid, amount);
-					new string[MAX_STRING];
-					format(string, sizeof(string), _(BUSINESS_COLLECT), Businesses[id][Business_Name], amount);
-					SendClientMessage(playerid, COLOR_RED, string);
-					Businesses[id][Business_Vault] = 0;
+				new playerid;
+
+				if (sscanf(Businesses[id][Business_Owner], "u", playerid)) {
+					continue;
 				}
+
+				new amount = Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade];
+				GivePlayerBankMoney(playerid, amount);
+				new string[MAX_STRING];
+				format(string, sizeof(string), _(BUSINESS_COLLECT), Businesses[id][Business_Name], amount);
+				SendClientMessage(playerid, COLOR_RED, string);
+				Businesses[id][Business_Vault] = 0;
 			}
 		}
 	}
@@ -637,7 +639,7 @@ stock CheckBusinessOwners()
 		
 		Account_LoadData(Businesses[i][Business_Owner], result);
 
-		if (Premium_IsDateExpired(result[e_aPremiumTime]) && gettime() > result[e_aLoginTime] + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60) {
+		if (IsDateExpired(result[e_aPremiumTime]) && gettime() > result[e_aLoginTime] + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60) {
 			Log_Game("Business has been free. Owner '%s'. BUSINESS_UNLOGIN_SELL_DAYS = %d",
 					Businesses[i][Business_Owner], BUSINESS_UNLOGIN_SELL_DAYS
 				);

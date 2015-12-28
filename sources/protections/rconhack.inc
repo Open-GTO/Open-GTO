@@ -46,13 +46,13 @@ pt_rcon_OnRconLoginAttempt(ip[], password[], success)
 	}
 
 	new
-		playerip[MAX_IP];
+		player_ip[MAX_IP];
 
 	foreach (new playerid : Player) {
-		GetPVarString(playerid, "IP", playerip, sizeof(playerip));
+		Player_GetIP(playerid, player_ip);
 
-		if (!strcmp(ip, playerip, false)) {
-			Admin_SendProtectReport(playerid, _(PROTECTION_RCON), playerip, password);
+		if (!strcmp(ip, player_ip, false)) {
+			Admin_SendProtectReport(playerid, _(PROTECTION_RCON), player_ip, password);
 			return 1;
 		}
 	}

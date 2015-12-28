@@ -918,7 +918,7 @@ stock HouseKeepUp()
 		
 		Account_LoadData(Houses[id][Houses_Owner], result);
 
-		if (Premium_IsDateExpired(result[e_aPremiumTime])) {
+		if (IsDateExpired(result[e_aPremiumTime])) {
 			Houses[id][Houses_UpKeepLeft] += Houses[id][Houses_UpKeep];
 			
 			if (Houses[id][Houses_UpKeepLeft] >= house_GetUpKeepMax(id)) {

@@ -164,9 +164,9 @@ public adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][71], player_GetJailCount(clickedid), player_GetMuteCount(clickedid));	//Jailed, Muted
 	SendClientMessage(playerid, COLOR_WHITE, string);
 	
-	new playerIP[MAX_IP];
-	GetPVarString(clickedid, "IP", playerIP, sizeof(playerIP));
-	format(string, sizeof(string), lang_texts[12][72], GetPlayerPing(clickedid), playerIP);
+	new player_ip[MAX_IP];
+	Player_GetIP(playerid, player_ip);
+	format(string, sizeof(string), lang_texts[12][72], GetPlayerPing(clickedid), player_ip);
 	SendClientMessage(playerid, COLOR_WHITE, string);
 	return 1;
 }

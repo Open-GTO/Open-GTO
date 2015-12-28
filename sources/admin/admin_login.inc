@@ -21,12 +21,12 @@ stock adm_login_OnRconLoginAttempt(ip[], password[], success)
 		}
 		case 1: {
 			// если игрок заходит ркон админом, то дадим ему полные права
-			new pip[MAX_IP];
+			new player_ip[MAX_IP];
 
-			foreach (new playerid: Player) {
-				GetPVarString(playerid, "IP", pip, sizeof(pip));
+			foreach (new playerid : Player) {
+				Player_GetIP(playerid, player_ip);
 
-				if (!strcmp(ip, pip, false)) {
+				if (!strcmp(ip, player_ip, false)) {
 					player_SetStatus(playerid, STATUS_LEVEL_RCON);
 					break;
 				}

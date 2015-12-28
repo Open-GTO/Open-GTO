@@ -19,9 +19,10 @@ stock oBan_Check(playerid)
 	format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, db_ban, ReturnPlayerName(playerid));
 	
 	if (!ini_fileExist(filename)) {
-		new plrIP[MAX_IP];
-		GetPVarString(playerid, "IP", plrIP, sizeof(plrIP));
-		format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, db_ban, plrIP);
+		new player_ip[MAX_IP];
+		Player_GetIP(playerid, player_ip);
+
+		format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, db_ban, player_ip);
 		
 		if (!ini_fileExist(filename)) {
 			return 0;
@@ -101,10 +102,11 @@ stock oBan(user[], reason[], adminid, time_second=0)
 	SendClientMessageToAll(COLOR_RED, string);
 
 	if (IsIpAddress(user)) {
-		new plrIP[MAX_IP];
+		new player_ip[MAX_IP];
 		foreach (new playerid : Player) {
-			GetPVarString(playerid, "IP", plrIP, sizeof(plrIP));
-			if (!strcmp(user, plrIP, false)) {
+			Player_GetIP(playerid, player_ip);
+			
+			if (!strcmp(user, player_ip, false)) {
 				KickPlayer(playerid, "ban", 0);
 			}
 		}

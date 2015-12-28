@@ -443,7 +443,7 @@ stock bank_Profit()
 			continue;
 		}
 
-		if (Premium_IsPlayerHave(playerid)) {
+		if (IsPlayerHavePremium(playerid)) {
 			amount = (GetPlayerBankMoney(playerid) / 100) * ProfitCountPremium;
 		} else {
 			amount = (GetPlayerBankMoney(playerid) / 100) * ProfitCount;

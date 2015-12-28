@@ -42,7 +42,7 @@ stock Premium_OnPlayerPickUpPickup(playerid, pickupid)
 		return 1;
 	}
 
-	if (!Premium_IsPlayerHave(playerid)) {
+	if (!IsPlayerHavePremium(playerid)) {
 		SendClientMessage(playerid, COLOR_RED, _(PREMIUM_NEED_STATUS));
 		return 1;
 	}
@@ -58,7 +58,7 @@ stock Premium_OnPlayerPickUpPickup(playerid, pickupid)
 stock Premium_OnPlayerStateChange(playerid,newstate,oldstate)
 {
 	#pragma unused newstate,oldstate
-	if (!Premium_IsPlayerHave(playerid) && Premium_GetVehicleStatus( GetPlayerVehicleID(playerid) )) {
+	if (!IsPlayerHavePremium(playerid) && Premium_GetVehicleStatus( GetPlayerVehicleID(playerid) )) {
 		RemovePlayerFromVehicle(playerid);
 		SendClientMessage(playerid, COLOR_RED, _(PREMIUM_VEHICLE_ERROR));
 	}
