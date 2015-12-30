@@ -1,8 +1,7 @@
 /*
 
-	About: lottery script
+	About: lottery system
 	Author: ziggi
-	Date: 08.05.2011
 
 */
 
@@ -14,133 +13,278 @@
 #define _lottery_included
 #pragma library lottery
 
+/*
+	Defines
+*/
+
+#if !defined MIN_LOTTERY_TICKET
+	#define MIN_LOTTERY_TICKET 1
+#endif
+
+#if !defined MAX_LOTTERY_TICKET
+	#define MAX_LOTTERY_TICKET 100
+#endif
+
+#define INVALID_TICKET_ID -1
+
+/*
+	Enums
+*/
+
+enum {
+	LOTTERY_ERROR_NO = 0,
+	LOTTERY_ERROR_TICKET_VALUE_BAD = -1,
+	LOTTERY_ERROR_TICKET_HAVE = -2,
+	LOTTERY_ERROR_TICKET_BOUGHT = -3,
+	LOTTERY_ERROR_NO_WINNER = -4,
+}
+
+enum LotteryStatus {
+	LotteryWait,
+	LotteryStart,
+}
+
+/*
+	Vars
+*/
 
 static
 	IsEnabled = LOTTERY_ENABLED,
-	Time = LOTTERY_TIME,
+	DelayStartSecondCount = LOTTERY_START_DELAY,
+	DelayWaitSecondCount = LOTTERY_WAIT_DELAY,
 	WinMoney = LOTTERY_WIN_MONEY,
 	TicketCost = LOTTERY_TICKET_COST,
-	TickCount = -1,
-	lottery_timer;
 
-stock lottery_LoadConfig(file_config)
+	LastSecondCount,
+
+	LotteryStatus:gStatus,
+	gBusyTicket[1 + MAX_LOTTERY_TICKET],
+	gPlayerTicket[MAX_PLAYERS];
+
+static const
+	NULL_gBusyTicket[ sizeof(gBusyTicket) ] = {INVALID_PLAYER_ID, ...},
+	NULL_gPlayerTicket[ sizeof(gPlayerTicket) ] = {INVALID_TICKET_ID, ...};
+
+/*
+	Config
+*/
+
+stock Lottery_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Lottery_IsEnabled", IsEnabled);
-	ini_getInteger(file_config, "Lottery_Time", Time);
+	ini_getInteger(file_config, "Lottery_StartDelay", DelayStartSecondCount);
+	ini_getInteger(file_config, "Lottery_WaitDelay", DelayWaitSecondCount);
 	ini_getInteger(file_config, "Lottery_Win_Money", WinMoney);
 	ini_getInteger(file_config, "Lottery_Ticket_Cost", TicketCost);
 }
 
-stock lottery_SaveConfig(file_config)
+stock Lottery_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Lottery_IsEnabled", IsEnabled);
-	ini_setInteger(file_config, "Lottery_Time", Time);
+	ini_setInteger(file_config, "Lottery_StartDelay", DelayStartSecondCount);
+	ini_setInteger(file_config, "Lottery_WaitDelay", DelayWaitSecondCount);
 	ini_setInteger(file_config, "Lottery_Win_Money", WinMoney);
 	ini_setInteger(file_config, "Lottery_Ticket_Cost", TicketCost);
 }
 
+/*
+	For public
+*/
+
+Lottery_OnGameModeInit()
+{
+	SetLotteryStatus(LotteryWait);
+}
+
+/*
+	Command
+*/
+
 COMMAND:lottery(playerid, params[])
 {
-	if (IsEnabled) {
+	if (!IsEnabled) {
 		return 0;
 	}
 
-	if (TickCount < 0) {
+	if (!IsLotteryHaveStatus(LotteryStart)) {
 		SendClientMessage(playerid, COLOR_PM, _(LOTTERY_NOT_STARTED));
 		return 1;
 	}
 
-	new value = strval(params);
-		
-	if (isnull(params) || value < 1 || value > 100) {
+	new value;
+
+	if (sscanf(params, "i", value)) {
 		SendClientMessage(playerid, COLOR_PM, _(LOTTERY_USE_COMMAND));
 		return 1;
 	}
-
-	if (GetPVarInt(playerid, "lottery_Value") != 0) {
-		SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_BOUGHT_NOW));
+		
+	new is_have_money = GivePlayerMoney(playerid, -TicketCost);
+	if (!is_have_money) {
+		new string[MAX_STRING];
+		format(string, sizeof(string), _(LOTTERY_NO_MONEY), TicketCost);
+		SendClientMessage(playerid, COLOR_PM, string);
 		return 1;
 	}
 
-	foreach (new id : Player) {
-		if (GetPVarInt(id, "lottery_Value") == value) {
-			SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_IS_BOUGHT));
-			return 1;
+	new error = GivePlayerLotteryTicket(playerid, value);
+	if (error < 0) {
+		switch (error) {
+			case LOTTERY_ERROR_TICKET_VALUE_BAD: {
+				SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_VALUE_IS_BAD));
+			}
+			case LOTTERY_ERROR_TICKET_HAVE: {
+				SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_BOUGHT_NOW));
+			}
+			case LOTTERY_ERROR_TICKET_BOUGHT: {
+				SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_IS_BOUGHT));
+			}
 		}
+		return 1;
 	}
-		
-	GivePlayerMoney(playerid, -TicketCost);
-	SetPVarInt(playerid, "lottery_Value", value);
-		
+
 	new string[MAX_STRING];
 	format(string, sizeof(string), _(LOTTERY_TICKET_BOUGHT), value);
 	SendClientMessage(playerid, COLOR_GREEN, string);
+
 	return 1;
 }
 
-forward lottery_Timer();
-public lottery_Timer()
+/*
+	Function
+*/
+
+stock Lottery_WaitTimer()
 {
-	if (IsEnabled) {
+	if (!IsEnabled) {
 		return 0;
 	}
 
-	TickCount++;
+	if (IsLotteryHaveStatus(LotteryStart)) {
+		return
+			Lottery_StartTimer();
+	}
 
-	if (TickCount < Time && (TickCount % 20 == 0 || TickCount == 10)) {
-		new string[MAX_STRING];
-		format(string, sizeof(string), _(LOTTERY_TIME_TO_END), Time-TickCount);
-		SendClientMessageToAll(COLOR_GREEN, string);
+	if (GetLotterySecondGone() < DelayWaitSecondCount) {
 		return 0;
 	}
 
-	KillTimer(lottery_timer);
-	TickCount = -1;
+	SetLotteryStatus(LotteryStart);
 
-	new
-		string[MAX_STRING],
-		win_value = mathrandom(1, 100),
-		winner = 0;
-	
-	foreach (new playerid : Player) {
-		if (GetPVarInt(playerid, "lottery_Value") == win_value) {
-			winner = 1;
-			GivePlayerMoney(playerid, WinMoney, 1);
-			
-			format(string, sizeof(string), _(LOTTERY_YOU_WINNER), WinMoney);
-			SendClientMessage(playerid, COLOR_GREEN, string);
-			
-			format(string, sizeof(string), _(LOTTERY_WINNER), ReturnPlayerName(playerid), playerid, WinMoney);
-			SendClientMessageToAll(COLOR_GREEN, string);
-		}
-
-		DeletePVar(playerid, "lottery_Value");
-	}
-
-	if (winner == 0) {
-		format(string, sizeof(string), _(LOTTERY_NO_WINNER), win_value);
-		SendClientMessageToAll(COLOR_GREEN, string);
-	}
-	return 1;
-}
-
-stock lottery_RunTimer()
-{
-	if (IsEnabled) {
-		return 0;
-	}
-
-	TickCount = 0;
-	lottery_timer = SetTimer("lottery_Timer", 1000, 1);
-	
 	new string[MAX_STRING];
+
 	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_0), WinMoney);
 	SendClientMessageToAll(COLOR_GREEN, string);
 
 	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_1), TicketCost);
 	SendClientMessageToAll(COLOR_GREEN, string);
 
-	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_2), Time);
+	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_2), DelayStartSecondCount);
 	SendClientMessageToAll(COLOR_GREEN, string);
+
 	return 1;
+}
+
+stock Lottery_StartTimer()
+{
+	new
+		string[MAX_LANG_VALUE_STRING],
+		sec_to_end = DelayStartSecondCount - GetLotterySecondGone();
+
+	if (sec_to_end > 0) {
+		if (sec_to_end % 20 == 0 || sec_to_end == 10) {
+			format(string, sizeof(string), _(LOTTERY_TIME_TO_END), sec_to_end);
+			SendClientMessageToAll(COLOR_GREEN, string);
+		}
+
+		return 0;
+	}
+
+	new
+		winner_id,
+		win_value,
+		error;
+	
+	error = GetLotteryWinner(winner_id, win_value);
+
+	if (error < 0) {
+		format(string, sizeof(string), _(LOTTERY_NO_WINNER), win_value);
+		SendClientMessageToAll(COLOR_GREEN, string);
+	} else {
+		GivePlayerMoney(winner_id, WinMoney, 1);
+		
+		format(string, sizeof(string), _(LOTTERY_YOU_WINNER), WinMoney);
+		SendClientMessage(winner_id, COLOR_GREEN, string);
+		
+		format(string, sizeof(string), _(LOTTERY_WINNER), ReturnPlayerName(winner_id), winner_id, WinMoney);
+		SendClientMessageToAll(COLOR_GREEN, string);
+	}
+
+	SetLotteryStatus(LotteryWait);
+
+	return 1;
+}
+
+/*
+	Lottery status
+*/
+
+static stock SetLotteryStatus(LotteryStatus:status)
+{
+	gStatus = status;
+	LastSecondCount = gettime();
+	
+	if (status == LotteryStart) {
+		gPlayerTicket = NULL_gPlayerTicket;
+		gBusyTicket = NULL_gBusyTicket;
+	}
+}
+
+static stock IsLotteryHaveStatus(LotteryStatus:status)
+{
+	return gStatus == status;
+}
+
+/*
+	Time
+*/
+
+static stock GetLotterySecondGone()
+{
+	return gettime() - LastSecondCount;
+}
+
+/*
+	Lottery ticket
+*/
+
+static stock GivePlayerLotteryTicket(playerid, value)
+{
+	if (value < MIN_LOTTERY_TICKET || value > MAX_LOTTERY_TICKET) {
+		return LOTTERY_ERROR_TICKET_VALUE_BAD;
+	}
+
+	if (gPlayerTicket[playerid] != INVALID_TICKET_ID) {
+		return LOTTERY_ERROR_TICKET_HAVE;
+	}
+
+	if (gBusyTicket[value] != INVALID_PLAYER_ID) {
+		return LOTTERY_ERROR_TICKET_BOUGHT;
+	}
+
+	gPlayerTicket[playerid] = value;
+	gBusyTicket[value] = playerid;
+
+	return LOTTERY_ERROR_NO;
+}
+
+static stock GetLotteryWinner(&playerid, &value)
+{
+	value = mathrandom(MIN_LOTTERY_TICKET, MAX_LOTTERY_TICKET);
+	playerid = gBusyTicket[value];
+
+	if (playerid == INVALID_PLAYER_ID) {
+		return LOTTERY_ERROR_NO_WINNER;
+	}
+
+	return LOTTERY_ERROR_NO;
 }

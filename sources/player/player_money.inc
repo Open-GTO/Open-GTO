@@ -22,7 +22,7 @@ stock SetPlayerMoney(playerid, money)
 stock pl_money_GivePlayerMoney(playerid, money, showtext = 1)
 {
 	if (money == 0) {
-		return 0;
+		return 1;
 	}
 
 	new player_money = GetPlayerMoney(playerid);

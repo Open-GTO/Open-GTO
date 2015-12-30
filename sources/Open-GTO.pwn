@@ -240,6 +240,7 @@ public OnGameModeInit()
 	bank_OnGameModeInit();
 	fights_OnGameModeInit();
 	Tuning_OnGameModeInit();
+	Lottery_OnGameModeInit();
 
 	// protection
 	pt_idle_OnGameModeInit();

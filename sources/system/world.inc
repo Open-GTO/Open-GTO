@@ -57,6 +57,8 @@ public OneSecTimer()
 		UpdatePlayerWeaponTextDraws(playerid);
 		adm_spec_UpdateLabel(playerid);
 	}
+
+	Lottery_WaitTimer();
 }
 
 forward OneMinuteTimer();
@@ -78,7 +80,6 @@ public OneHourTimer()
 {
 	bank_Profit();
 	CheckBusinessOwners();
-	lottery_RunTimer();
 	vshop_OneHourTimer();
 }
 

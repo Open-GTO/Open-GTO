@@ -664,18 +664,20 @@ SKINSHOP_DIALOG_BUTTON_1 = Нет
 FUEL_STATION_3DTEXT = Заправка\n{33AA33}Нажмите кнопку '{FFFFFF}2{33AA33}'
 
 // Lottery
-LOTTERY_NOT_STARTED = Лотерея ещё не началась!
-LOTTERY_USE_COMMAND = Применение: /lottery <число 1..100>
-LOTTERY_TICKET_BOUGHT_NOW = Лотерея: Вы уже купили билет!
-LOTTERY_TICKET_IS_BOUGHT = Лотерея: Этот билет уже куплен!
-LOTTERY_TICKET_BOUGHT = Удачи, у вас билет с номером %d
-LOTTERY_TIME_TO_END = Лотерея: До окончания розыгрыша осталось %d секунд!
-LOTTERY_YOU_WINNER = Вы победили в лотерее! Ваш приз $%d
-LOTTERY_WINNER = Победителем в лотерее стал %s(%d), он выиграл $%d
-LOTTERY_NO_WINNER = В лотерее никто не победил, выигрышный билет - %d.
-LOTTERY_START_MESSAGE_0 = Лотерея: Начало розыгрыша призов, победитель получает $%d!
-LOTTERY_START_MESSAGE_1 = Лотерея: Введите /lottery <число 1..100>, для покупки билета. Цена билета $%d
-LOTTERY_START_MESSAGE_2 = Лотерея: До окончания розыгрыша осталось %d минут!
+LOTTERY_NOT_STARTED = {F4511E}[Лотерея]: {FFFFFF}Лотерея ещё не началась!
+LOTTERY_USE_COMMAND = {FFCC66}[Применение]: {FFFFFF}/lottery <число 1..100>
+LOTTERY_TICKET_VALUE_IS_BAD = {FFCC66}[Применение]: {FFFFFF}/lottery <число 1..100>
+LOTTERY_TICKET_BOUGHT_NOW = {F4511E}[Лотерея]: {FFFFFF}Вы уже купили билет!
+LOTTERY_TICKET_IS_BOUGHT = {F4511E}[Лотерея]: {FFFFFF}Этот билет уже куплен!
+LOTTERY_TICKET_BOUGHT = {F4511E}[Лотерея]: {FFFFFF}Удачи, у вас билет с номером %d
+LOTTERY_TIME_TO_END = {F4511E}[Лотерея]: {FFFFFF}До окончания розыгрыша осталось %d секунд!
+LOTTERY_YOU_WINNER = {F4511E}[Лотерея]: {FFFFFF}Вы победили в лотерее! Ваш приз $%d
+LOTTERY_WINNER = {F4511E}[Лотерея]: {FFFFFF}Победителем в лотерее стал %s(%d), он выиграл $%d
+LOTTERY_NO_WINNER = {F4511E}[Лотерея]: {FFFFFF}В лотерее никто не победил, выигрышный билет - %d.
+LOTTERY_START_MESSAGE_0 = {F4511E}[Лотерея]: {FFFFFF}Начало розыгрыша призов, победитель получает $%d!
+LOTTERY_START_MESSAGE_1 = {F4511E}[Лотерея]: {FFFFFF}Введите /lottery <число 1..100>, для покупки билета. Цена билета $%d
+LOTTERY_START_MESSAGE_2 = {F4511E}[Лотерея]: {FFFFFF}До окончания розыгрыша осталось %d секунд!
+LOTTERY_NO_MONEY = {F4511E}[Лотерея]: {FFFFFF}У вас недостаточно денег для покупки билета, нужно $%d.
 
 // Tuning
 TUNING_TD_HEADER = Tuning

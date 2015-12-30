@@ -44,7 +44,7 @@ stock cfg_LoadConfigs()
 	wdrop_LoadConfig(file_config);
 	wskill_LoadConfig(file_config);
 
-	lottery_LoadConfig(file_config);
+	Lottery_LoadConfig(file_config);
 
 	// protections
 	pt_idle_LoadConfig(file_config);
@@ -94,7 +94,7 @@ stock cfg_SaveConfigs()
 	wdrop_SaveConfig(file_config);
 	wskill_SaveConfig(file_config);
 
-	lottery_SaveConfig(file_config);
+	Lottery_SaveConfig(file_config);
 
 	// protections
 	pt_idle_SaveConfig(file_config);
