@@ -348,7 +348,7 @@ COMMAND:telexyzi(playerid, params[])
 
 	new Float:pos_x, Float:pos_y, Float:pos_z, interior;
 
-	if (sscanf(params, "p<,>fffi", pos_x, pos_y, pos_z, interior)) {
+	if (sscanf(params, "p<,>fffI(0)", pos_x, pos_y, pos_z, interior)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
 		return 1;
 	}
