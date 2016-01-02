@@ -253,7 +253,7 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &
 		if (house_id >= 0 && !IsPlayerHouse(playerid, house_id) && !IsPlayerRenter(playerid, house_id)) {
 			Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
 			Player_SetSpawnHouseID(playerid, -1);
-			SendClientMessage(playerid, COLOR_RED, lang_texts[8][60]);
+			SendClientMessage(playerid, COLOR_RED, _(HOUSING_KICKED));
 		} else {
 			house_GetPickupPos(house_id, spos_x, spos_y, spos_z);
 		}
