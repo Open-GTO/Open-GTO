@@ -398,7 +398,7 @@ public adm_click_GiveMoney(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
-	GivePlayerMoney(clickedid, cashamount, 1);
+	GivePlayerMoney(clickedid, cashamount);
 
 	new string[MAX_STRING];
 	if (cashamount > 0) {

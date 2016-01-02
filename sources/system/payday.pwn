@@ -61,7 +61,7 @@ stock payday_Give()
 		pay_money = 0;
 		if (GetPlayerTotalMoney(id) < money_cutoff) {
 			pay_money = money_base + (money_base * GetPlayerLevel(id) * GetPlayerLevel(id));
-			GivePlayerMoney(id, pay_money, 0);
+			GivePlayerMoney(id, pay_money);
 		}
 		
 		pay_xp = 0;

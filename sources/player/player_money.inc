@@ -1,55 +1,49 @@
 /*
 
-	About: money system
+	About: player money header
 	Author:	ziggi
 
 */
 
-#if defined _pl_money_included
+#if defined _player_money_h_included
 	#endinput
 #endif
 
-#define _pl_money_included
-#pragma library pl_money
+#define _player_money_h_included
+#pragma library player_money_h
 
+/*
+	GivePlayerMoney
+*/
 
-stock SetPlayerMoney(playerid, money)
+stock ORIG_GivePlayerMoney(playerid, money)
 {
-	SetPVarInt(playerid, "Money", money);
-	pl_money_td_SetMoney(playerid, money);
+	return
+		GivePlayerMoney(playerid, money);
 }
 
-stock pl_money_GivePlayerMoney(playerid, money, showtext = 1)
+#if defined _ALS_GivePlayerMoney
+	#undef GivePlayerMoney
+#else
+	#define _ALS_GivePlayerMoney
+#endif
+ 
+#define GivePlayerMoney REDEF_GivePlayerMoney
+
+/*
+	GetPlayerMoney
+*/
+
+stock ORIG_GetPlayerMoney(playerid)
 {
-	if (money == 0) {
-		return 1;
-	}
-
-	new player_money = GetPlayerMoney(playerid);
-
-	if (money + player_money < 0) {
-		return 0;
-	}
-
-	if (money > MAX_MONEY - player_money) {
-		money = MAX_MONEY - player_money;
-		Log_Game("player: %s(%d): is on max money", ReturnPlayerName(playerid), playerid);
-	}
-
-	if (showtext == 1) {
-		pl_money_td_GiveMoney(playerid, money);
-	}
-
-	SetPlayerMoney(playerid, player_money + money);
-	return 1;
+	return
+		GetPlayerMoney(playerid);
 }
 
-stock GetPlayerTotalMoney(playerid)
-{
-	return GetPVarInt(playerid, "Money") + GetPVarInt(playerid, "BankMoney");
-}
-
-stock pl_money_GetPlayerMoney(playerid)
-{
-	return GetPVarInt(playerid, "Money");
-}
+#if defined _ALS_GetPlayerMoney
+	#undef GetPlayerMoney
+#else
+	#define _ALS_GetPlayerMoney
+#endif
+ 
+#define GetPlayerMoney REDEF_GetPlayerMoney

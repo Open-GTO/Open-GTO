@@ -210,7 +210,7 @@ stock Lottery_StartTimer()
 		format(string, sizeof(string), _(LOTTERY_NO_WINNER), win_value);
 		SendClientMessageToAll(COLOR_GREEN, string);
 	} else {
-		GivePlayerMoney(winner_id, WinMoney, 1);
+		GivePlayerMoney(winner_id, WinMoney);
 		
 		format(string, sizeof(string), _(LOTTERY_YOU_WINNER), WinMoney);
 		SendClientMessage(winner_id, COLOR_GREEN, string);

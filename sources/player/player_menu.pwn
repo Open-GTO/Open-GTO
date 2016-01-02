@@ -12,6 +12,16 @@
 #define _player_menu_included
 #pragma library player_menu
 
+/*
+	Includes
+*/
+
+#include "player.inc"
+
+/*
+	PMenu_OnPlayerKeyStateChange
+*/
+
 PMenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	if (!PRESSED(KEY_USING)) {

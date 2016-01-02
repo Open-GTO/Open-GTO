@@ -247,7 +247,7 @@ stock wshop_Buy(playerid, weaponid, bullets)
 		return 0;
 	}
 
-	GivePlayerMoney(playerid, -purchasecost, 1);
+	GivePlayerMoney(playerid, -purchasecost);
 
 	switch (weaponid) {
 		case 47: SetPlayerArmour(playerid, 100.0);

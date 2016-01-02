@@ -509,7 +509,7 @@ COMMAND:agivecash(playerid, params[])
 		return 1;
 	}
 
-	GivePlayerMoney(receiverid, cashamount, 1);
+	GivePlayerMoney(receiverid, cashamount);
 
 	new string[MAX_STRING];
 	if (cashamount > 0) {

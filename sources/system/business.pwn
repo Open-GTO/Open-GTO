@@ -473,12 +473,12 @@ stock bis_Buy(playerid)
 				new temp[MAX_STRING];
 				format(temp, sizeof(temp), _(BUSINESS_OUTBIDDING), playername, Businesses[id][Business_Name]);
 				SendClientMessage(ownerid, COLOR_RED, temp);
-				GivePlayerMoney(ownerid, price, 1);
+				GivePlayerMoney(ownerid, price);
 				break;
 			}
 		}
 	#endif
-		GivePlayerMoney(playerid, -price, 1);
+		GivePlayerMoney(playerid, -price);
 
 		set(Businesses[id][Business_Owner], playername);
 		Businesses[id][Business_Buyout] = 0;
@@ -511,7 +511,7 @@ stock bis_Sell(playerid)
 	else
 	{
 		new price = ((Businesses[id][Business_Cost] + Businesses[id][Business_Buyout]) * 85) / 100;
-		GivePlayerMoney(playerid, price, 1);
+		GivePlayerMoney(playerid, price);
 
 		set(Businesses[id][Business_Owner], "Unknown");
 
@@ -547,7 +547,7 @@ stock bis_Collect(playerid)
 	{
 		if (Businesses[id][Business_Vault] > 0)
 		{
-			GivePlayerMoney(playerid, Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade], 1);
+			GivePlayerMoney(playerid, Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade]);
 			Businesses[id][Business_Vault] = 0;
 
 			Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(BUSINESS_TOOK_VAULT), _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));
@@ -582,7 +582,7 @@ stock bis_buyUpgrade(playerid)
 		return 1;
 	}
 	
-	GivePlayerMoney(playerid, -price, 0);
+	GivePlayerMoney(playerid, -price);
 	Businesses[id][Business_Upgrade]++;
 	format(string, sizeof(string), _(BUSINESS_UPGRADE_UP), Businesses[id][Business_Name], Businesses[id][Business_Upgrade]);
 	Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, string, _(BUSINESS_DIALOG_BUTTON_BACK), _(BUSINESS_DIALOG_BUTTON_CANCEL));

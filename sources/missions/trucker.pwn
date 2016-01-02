@@ -347,7 +347,7 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 		
 		if (!IsMissionTrailer(trailerid)) {
 			Trucker_Stop(playerid);
-			GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
+			GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker));
 			
 			new Float:health;
 			GetPlayerHealth(playerid, health);
@@ -359,7 +359,7 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 		
 		Trucker_Stop(playerid);
 		KillTimer(player_trucker[playerid][pt_MissionTimer]);
-		GivePlayerMoney(playerid, mission_CalculateMoney(playerid, mission_trucker), 1);
+		GivePlayerMoney(playerid, mission_CalculateMoney(playerid, mission_trucker));
 		GivePlayerXP(playerid, mission_CalculateXP(playerid, mission_trucker), 1);
 
 		if (player_trucker[playerid][pt_TryCount] > 0) {
@@ -455,7 +455,7 @@ stock Trucker_OnPlayerDeath(playerid, killerid, reason)
 		return 1;
 	}
 	Trucker_Stop(playerid);
-	GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
+	GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker));
 	SendClientMessage(playerid, COLOR_RED, _(TRUCKER_MISSION_FAILED));
 	return 1;
 }
@@ -468,7 +468,7 @@ stock Trucker_OnVehicleDeath(vehicleid, killerid)
 	if (IsVehicleIsRunner(vehicleid)) {
 		if (IsPlayerInMission(killerid, mission_trucker)) {
 			Trucker_Stop(killerid);
-			GivePlayerMoney(killerid, -mission_CalculateMoney(killerid, mission_trucker), 1);
+			GivePlayerMoney(killerid, -mission_CalculateMoney(killerid, mission_trucker));
 			SendClientMessage(killerid, COLOR_RED, _(TRUCKER_MISSION_FAILED_DESTROY));
 		} else {
 			if (player_trucker[killerid][pt_TrailerCheck_Timer] != 0) {
@@ -538,7 +538,7 @@ public Trucker_CancelMission(playerid)
 {
 	if (IsPlayerInMission(playerid, mission_trucker)) {
 		Trucker_Stop(playerid);
-		GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker), 1);
+		GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker));
 		SendClientMessage(playerid, COLOR_RED, _(TRUCKER_MISSION_FAILED_DESCRIPTION));
 		
 		new vehicleid = GetPlayerVehicleID(playerid);

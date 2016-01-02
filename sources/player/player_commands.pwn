@@ -10,6 +10,16 @@
 #define _commands_included
 #pragma library commands
 
+/*
+	Includes
+*/
+
+#include "player.inc"
+
+/*
+	Commands
+*/
+
 COMMAND:help(playerid, params[])
 {
 	SendClientMessage(playerid, -1, _(COMMAND_HELP_0));

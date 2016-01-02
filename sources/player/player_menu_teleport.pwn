@@ -72,7 +72,7 @@ DialogResponse:PlayerTeleportMenu(playerid, response, listitem, inputtext[])
 	
 	SetPVarInt(playerid, "teleports_Pause", 1);
 	SetTimerEx("teleports_Pause_Time", TELEPORTS_PAUSE_TIME * 1000, 0, "d", playerid);
-	GivePlayerMoney(playerid, -Teleports[listitem][Teleports_Cost], 1);
+	GivePlayerMoney(playerid, -Teleports[listitem][Teleports_Cost]);
 	SetPlayerPosEx(playerid,
 		Teleports[listitem][Teleports_Pos_X], Teleports[listitem][Teleports_Pos_Y], Teleports[listitem][Teleports_Pos_Z], Teleports[listitem][Teleports_Pos_A],
 		Teleports[listitem][Teleports_Interior], 0

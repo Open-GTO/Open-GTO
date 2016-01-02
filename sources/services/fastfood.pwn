@@ -131,7 +131,7 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	GivePlayerMoney(playerid,-food_data[listitem][food_cost], 1);
+	GivePlayerMoney(playerid,-food_data[listitem][food_cost]);
 	ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.1, 0, 1, 1, 1, 1, 1);
 
 	new Float:max_health;

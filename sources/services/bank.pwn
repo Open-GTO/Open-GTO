@@ -223,7 +223,7 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 	}
 
 	TakePlayerBankMoney(playerid, amount);
-	GivePlayerMoney(playerid, amount, 0);
+	GivePlayerMoney(playerid, amount);
 	
 	new
 		amount_string[16],
@@ -287,7 +287,7 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 	}
 
 	GivePlayerBankMoney(playerid, amount);
-	GivePlayerMoney(playerid, -amount, 0);
+	GivePlayerMoney(playerid, -amount);
 
 	new
 		amount_string[16],

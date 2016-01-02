@@ -628,7 +628,7 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 			}
 			
 			Houses[id][Houses_HealUpgrade] = 1;
-			GivePlayerMoney(playerid,-HOUSE_UPGRADE_HEALTH_COST, 0);
+			GivePlayerMoney(playerid,-HOUSE_UPGRADE_HEALTH_COST);
 
 			Dialog_Message(playerid, lang_texts[8][83], lang_texts[8][64], lang_texts[8][87]);
 			return 1;
@@ -654,7 +654,7 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 			}
 
 			Houses[id][Houses_ArmourUpgrade] = 1;
-			GivePlayerMoney(playerid,-HOUSE_UPGRADE_ARMOUR_COST, 0);
+			GivePlayerMoney(playerid,-HOUSE_UPGRADE_ARMOUR_COST);
 
 			Dialog_Message(playerid, lang_texts[8][83], lang_texts[8][64], lang_texts[8][87]);
 			return 1;
@@ -691,7 +691,7 @@ stock RentRoom(playerid)
 			return 1;
 		}
 		set(Houses[id][Houses_RentName], ReturnPlayerName(playerid));
-		GivePlayerMoney(playerid, -Houses[id][Houses_RentCost], 0);
+		GivePlayerMoney(playerid, -Houses[id][Houses_RentCost]);
 		
 		// перечислим деньги в банк владельцу
 		new owner_id = -1;
@@ -799,12 +799,12 @@ stock house_Buy(playerid)
 			if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(ownerid), true)) {
 				format(temp, sizeof(temp), lang_texts[8][39], ReturnPlayerName(playerid), Houses[id][Houses_Name]);
 				SendClientMessage(ownerid, COLOR_RED, temp);
-				GivePlayerMoney(ownerid, price, 1);
+				GivePlayerMoney(ownerid, price);
 				break;
 			}
 		}
 	#endif
-		GivePlayerMoney(playerid, -price, 1);
+		GivePlayerMoney(playerid, -price);
 		set(Houses[id][Houses_Owner], playername);
 		set(Houses[id][Houses_Gang], ReturnPlayerGangName(playerid));
 		Houses[id][Houses_Buyout] = 0;
@@ -834,7 +834,7 @@ stock house_Sell(playerid)
 		Dialog_Message(playerid, lang_texts[8][22], lang_texts[8][23], lang_texts[8][87]);
 	} else {
 		new price = ((Houses[id][Houses_Cost] + Houses[id][Houses_Buyout]) * 85) / 100;
-		GivePlayerMoney(playerid, price, 1);
+		GivePlayerMoney(playerid, price);
 
 		house_Free(id);
 
@@ -884,7 +884,7 @@ stock house_Keep(playerid)
 		return 1;
 	}
 
-	GivePlayerMoney(playerid, -Houses[id][Houses_UpKeepLeft], 0);
+	GivePlayerMoney(playerid, -Houses[id][Houses_UpKeepLeft]);
 	Dialog_Message(playerid, lang_texts[8][97], lang_texts[8][44], lang_texts[8][87]);
 	Houses[id][Houses_UpKeepLeft] = 0;
 	return 1;

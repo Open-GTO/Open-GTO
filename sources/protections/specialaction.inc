@@ -1,87 +1,49 @@
 /*
-	
-	About: special action protection
+
+	About: special action header
 	Author:	ziggi
 
 */
 
-#if defined _specialaction_included
+#if defined _special_action_h_included
 	#endinput
 #endif
 
-#define _specialaction_included
-#pragma library specialaction
-
-
-/*
- * Vars
- */
-
-static
-	IsEnabled = ANTI_SPECIAL_ACTION_ENABLED;
-
+#define _special_action_h_included
+#pragma library special_action_h
 
 /*
- * Config
- */
+	SetPlayerSpecialAction
+*/
 
-pt_spac_LoadConfig(file_config)
+stock ORIG_SetPlayerSpecialAction(playerid, actionid)
 {
-	ini_getInteger(file_config, "Protection_SpecialAction_IsEnabled", IsEnabled);
+	return
+		SetPlayerSpecialAction(playerid, actionid);
 }
 
-pt_spac_SaveConfig(file_config)
-{
-	ini_setInteger(file_config, "Protection_SpecialAction_IsEnabled", IsEnabled);
-}
-
+#if defined _ALS_SetPlayerSpecialAction
+	#undef SetPlayerSpecialAction
+#else
+	#define _ALS_SetPlayerSpecialAction
+#endif
+ 
+#define SetPlayerSpecialAction REDEF_SetPlayerSpecialAction
 
 /*
- * SetPlayerSpecialAction
- */
+	GetPlayerSpecialAction
+*/
 
-stock pt_SetPlayerSpecialAction(playerid, actionid)
+stock ORIG_GetPlayerSpecialAction(playerid)
 {
-	SetPVarInt(playerid, "specialaction", actionid);
-	return ORIG_SetPlayerSpecialAction(playerid, actionid);
+	return
+		GetPlayerSpecialAction(playerid);
 }
 
-
-/*
- * GetPlayerSpecialAction
- */
-
-stock pt_GetPlayerSpecialAction(playerid)
-{
-	return GetPVarInt(playerid, "specialaction");
-}
-
-
-/*
- * For timer
- */
-
-pt_spac_Check(playerid)
-{
-	if (!IsEnabled) {
-		return 0;
-	}
-
-	new clientaction = ORIG_GetPlayerSpecialAction(playerid);
-	new serveraction = GetPlayerSpecialAction(playerid);
-
-	if (clientaction == SPECIAL_ACTION_DUCK ||
-		clientaction == SPECIAL_ACTION_ENTER_VEHICLE ||
-		clientaction == SPECIAL_ACTION_EXIT_VEHICLE) {
-		return 1;
-	}
-
-	if (clientaction != serveraction) {
-		if (clientaction == SPECIAL_ACTION_NONE) {
-			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
-		} else {
-			Admin_SendProtectReport(playerid, _(PROTECTION_SPECIAL_ACTION), clientaction, serveraction);
-		}
-	}
-	return 1;
-}
+#if defined _ALS_GetPlayerSpecialAction
+	#undef GetPlayerSpecialAction
+#else
+	#define _ALS_GetPlayerSpecialAction
+#endif
+ 
+#define GetPlayerSpecialAction REDEF_GetPlayerSpecialAction

@@ -178,7 +178,7 @@ DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	GivePlayerMoney(playerid,-drinks_data[listitem][Cost], 1);
+	GivePlayerMoney(playerid,-drinks_data[listitem][Cost]);
 	SetPlayerSpecialAction(playerid, drinks_data[listitem][Action]);
 	SetPVarInt(playerid, "bar_Drinking", 1);
 	SetPVarInt(playerid, "bar_Alcohol_Id", listitem);

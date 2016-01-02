@@ -174,7 +174,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		ini_fileRemove(string);
 	}
 	
-	GivePlayerMoney(playerid, -CHANGE_NICK_COST, 1);
+	GivePlayerMoney(playerid, -CHANGE_NICK_COST);
 	
 	format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_CHANGED), old_name, new_name);
 	Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
@@ -242,7 +242,7 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 #endif
 
 	Account_Save(playerid);
-	GivePlayerMoney(playerid, -CHANGE_PASS_COST, 1);
+	GivePlayerMoney(playerid, -CHANGE_PASS_COST);
 	return 1;
 }
 

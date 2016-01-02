@@ -12,6 +12,16 @@
 #define _gang_menu_included
 #pragma library gang_menu
 
+/*
+	Includes
+*/
+
+#include "gang.inc"
+#include "../player/player_account.inc"
+
+/*
+	Dialogs
+*/
 
 DialogCreate:GangMenu(playerid)
 {
@@ -352,7 +362,7 @@ DialogResponse:GangCreateColor(playerid, response, listitem, inputtext[])
 	new gangid = Gang_Create(playerid, gangname, gangcolor);
 
 	if (gangid != INVALID_GANG_ID) {
-		GivePlayerMoney(playerid, -Gang_GetCreateCost(), 1);
+		GivePlayerMoney(playerid, -Gang_GetCreateCost());
 		SendClientMessage(playerid, COLOR_GREEN, _(GANG_CREATE_SUCCESS));
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
 				_(GANG_CREATE_HEADER),
@@ -759,7 +769,7 @@ DialogResponse:GangColor(playerid, response, listitem, inputtext[])
 	new gangcolor = Color_GetCode(colorid);
 
 	Gang_SetColor(GetPlayerGangID(playerid), gangcolor);
-	GivePlayerMoney(playerid, -Gang_GetColorCost(), 1);
+	GivePlayerMoney(playerid, -Gang_GetColorCost());
 
 	Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
 			_(GANG_COLOR_HEADER),

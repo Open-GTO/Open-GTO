@@ -153,7 +153,7 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 		return 0;
 	}
 	
-	GivePlayerMoney(playerid, -cost, 1);
+	GivePlayerMoney(playerid, -cost);
 	buyVehicle(playerid, vehicleid, color1, color2);
 	
 	Dialog_Message(playerid, "Магазин транспорта", "\

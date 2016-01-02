@@ -22,8 +22,8 @@ public pl_click_SendCash(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
-	GivePlayerMoney(playerid, -money, 1);
-	GivePlayerMoney(clickedid, money, 1);
+	GivePlayerMoney(playerid, -money);
+	GivePlayerMoney(clickedid, money);
 
 	format(string, sizeof(string), _(CLICK_SENDCASH_GIVE), giveplayer, clickedid, money);
 	SendClientMessage(playerid, COLOR_MONEY_GOOD, string);
