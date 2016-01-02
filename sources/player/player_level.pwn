@@ -71,7 +71,7 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 	} else {
 		new maxxp = GetPlayerXPToLevel(playerid, GetMaxPlayerLevel());
 		if (xpamount >= maxxp) {
-			SendClientMessage(playerid, COLOR_RED, lang_texts[9][17]);
+			SendClientMessage(playerid, COLOR_RED, _(PLAYER_XP_MAX));
 			xpamount = maxxp;
 		}
 	}
@@ -84,22 +84,22 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 
 	if (xpamount > 0) {
 		if (showtd == 1) {
-			format(string, sizeof(string), lang_texts[9][18], xpamount);
+			format(string, sizeof(string), _(PLAYER_XP_GAMETEXT), '+', xpamount);
 			GameTextForPlayer(playerid, string, texttime, 3);
 		}
 
 		if (showtext == 1) {
-			format(string, sizeof(string), lang_texts[9][20], xpamount);
+			format(string, sizeof(string), _(PLAYER_XP_GET), xpamount);
 			SendClientMessage(playerid, COLOR_XP_GOOD, string);
 		}
 	} else {
 		if (showtd == 1) {
-			format(string, sizeof(string), lang_texts[9][19], -xpamount);
+			format(string, sizeof(string), _(PLAYER_XP_GAMETEXT), '-', -xpamount);
 			GameTextForPlayer(playerid, string, texttime, 3);	
 		}
 
 		if (showtext == 1) {
-			format(string, sizeof(string), lang_texts[9][21], -xpamount);
+			format(string, sizeof(string), _(PLAYER_XP_MISS), -xpamount);
 			SendClientMessage(playerid, COLOR_XP_BAD, string);
 		}
 	}
@@ -148,12 +148,12 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 		PlayerPlaySoundOnPlayer(playerid, 1057);
 
 		if (old_level < level) {
-			format(string, sizeof(string), lang_texts[9][23], level);
+			format(string, sizeof(string), _(PLAYER_LEVEL_UP), level);
 			SendClientMessage(playerid, COLOR_XP_GOOD, string);
 			
 			ShowWeaponsOnLevel(playerid, level, old_level);
 		} else {
-			format(string, sizeof(string), lang_texts[9][22], level);
+			format(string, sizeof(string), _(PLAYER_LEVEL_DOWN), level);
 			SendClientMessage(playerid, COLOR_XP_BAD, string);
 		}
 

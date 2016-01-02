@@ -50,6 +50,21 @@ PLAYER_COMMAND_LOG = Player: %s(%d): %s
 PLAYER_CONNECT = {FFCC66}[Сервер]: {FFFFFF}%s(%d) вошел в игру.
 PLAYER_DISCONNECT = {FFCC66}[Сервер]: {FFFFFF}%s(%d) покинул игру.
 MUTED_HELP_MESSAGE = {FF2211}[Ошибка]: {FFFFFF}Вам запрещено писать в чат! Напишите администраторам через @ о вашей проблеме.
+PLAYER_NICK_BAD_SYMBOLS = {FF2211}[Ошибка]: {FFFFFF}Неверный символ в имени игрока. Разрешённые символы: %s
+PLAYER_NICK_IS_IP = {FF2211}[Ошибка]: {FFFFFF}Ник не должен являться IP адресом!
+PLAYER_XP_MAX = Вы не можете заработать больше опыта!
+PLAYER_XP_GAMETEXT = ~g~%c~r~%d ~g~XP
+PLAYER_XP_GET = Вы получили %d XP.
+PLAYER_XP_MISS = Вы потеряли %d XP.
+PLAYER_LEVEL_UP = Вы снизились до %d-го уровня.
+PLAYER_LEVEL_DOWN = Вы достигли %d-го уровня.
+PLAYER_LEVEL_NEW_WEAPON = Открыто новое оружие:
+PLAYER_LEVEL_NEW_WEAPON_ITEM = Оружие: '%s'. Цена: %d.
+PLAYER_PM_FOR = ЛС для %s(%d): %s
+PLAYER_PM_FROM = ЛС от %s(%d): %s
+PLAYER_PM_ADMIN = * Админ: ЛС от %s(%d) к %s(%d): %s
+PLAYER_PM_LOG = PM from %s(%d) to %s(%d): %s
+PLAYER_LOADING = {FFCC66}[Сервер]: {FFFFFF}Загрузка...
 
 // player click
 CLICK_REPORT_SELF = Жалоба на %s(%d): %s
@@ -488,7 +503,9 @@ ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%
 ADMIN_COMMAND_VEHICLE_REPAIR_ALL_MSG = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}починил весь транспорт
 ADMIN_COMMAND_VEHICLE_INFO_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle info <id/>
 ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_0 = {FFCC66}* {FFFFFF}ID транспорта: {FFCC66}%d{FFFFFF}, модель: {FFCC66}%s {FFFFFF}(%d)
-ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1 = {FFCC66}* {FFFFFF}Здоровье транспорта: {FFCC66}%f{FFFFFF}, координаты: {FFCC66}%f, %f, %f, %f
+ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1 = {FFCC66}* {FFFFFF}Здоровье транспорта: {FFCC66}%02f{FFFFFF}, координаты: {FFCC66}%f, %f, %f, %f
+ADMIN_COMMAND_VEHICLE_HEALTH_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle health <set/get/give> <id/all/> <количество/>
+ADMIN_COMMAND_VEHICLE_HEALTH_GET = {FFCC66}* {FFFFFF}Здоровье транспорта: {FFCC66}%02f
 
 ADMIN_COMMAND_CAMERA_HELP = {FFCC66}[Применение]: {FFFFFF}/camera <get/set/reset>
 ADMIN_COMMAND_CAMERA_GET_MESSAGE_CPOS = {FFCC66}CameraPos: {FFFFFF}%f, %f, %f
@@ -506,6 +523,10 @@ ADMIN_COMMAND_ADMIN_HELP_2 = {FFCC66}* {FFFFFF}Администратор имеет все права мод
 ADMIN_COMMAND_RCON_HELP_0 = {FFCC66}* {FFFFFF}У вас максимальные права. Вы можете использовать команды управления модераторов и администраторов,
 ADMIN_COMMAND_RCON_HELP_1 = {FFCC66}* {FFFFFF}присваивать игрокам права модератора или администратора. Управлять сервером и игровым режимом в полной
 ADMIN_COMMAND_RCON_HELP_2 = {FFCC66}* {FFFFFF}мере, предоставленной в Open-GTO.
+
+ADMIN_COMMAND_KICK_IS_ADMIN = Не кикнут, так как является администратором. Причина: %s
+ADMIN_COMMAND_KICK_KICKED_SELF = Вы были кикнуты. Причина: %s.
+ADMIN_COMMAND_KICK_KICKED = %s был кикнут. Причина: %s.
 
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)

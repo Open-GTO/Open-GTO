@@ -28,15 +28,15 @@ stock KickPlayer(playerid, reason[] = "", showreason = 1)
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (IsPlayerRconAdmin(playerid)) {
-		format(string, sizeof(string), lang_texts[9][4], reason);
+		format(string, sizeof(string), _(ADMIN_COMMAND_KICK_IS_ADMIN), reason);
 		SendClientMessage(playerid, COLOR_YELLOW, string);
 		return 0;
 	}
 
 	if (showreason == 1) {
-		format(string, sizeof(string), lang_texts[9][5], reason);
+		format(string, sizeof(string), _(ADMIN_COMMAND_KICK_KICKED_SELF), reason);
 		SendClientMessage(playerid, COLOR_RED, string);
-		format(string, sizeof(string), lang_texts[9][6], playername, reason);
+		format(string, sizeof(string), _(ADMIN_COMMAND_KICK_KICKED), playername, reason);
 		SendClientMessageToAll(COLOR_MISC, string);
 	}
 	

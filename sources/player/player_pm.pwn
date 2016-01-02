@@ -45,17 +45,17 @@ stock pl_pm_Send(senderid, receiveid, message[])
 			continue;
 		}
 
-		format(string, sizeof(string), lang_texts[9][33], sendername, senderid, receivename, receiveid, message);
+		format(string, sizeof(string), _(PLAYER_PM_ADMIN), sendername, senderid, receivename, receiveid, message);
 		SendClientMessage(i, COLOR_PM, string);
 	}
 	
-	format(string, sizeof(string), lang_texts[9][31], receivename, receiveid, message);
+	format(string, sizeof(string), _(PLAYER_PM_FOR), receivename, receiveid, message);
 	SendClientMessage(senderid, COLOR_PM, string);
 	
-	format(string, sizeof(string), lang_texts[9][32], sendername, senderid, message);
+	format(string, sizeof(string), _(PLAYER_PM_FROM), sendername, senderid, message);
 	SendClientMessage(receiveid, COLOR_PM, string);
 	
-	Log_Player(lang_texts[9][34], sendername, senderid, receivename, receiveid, message);
+	Log_Player(_(PLAYER_PM_LOG), sendername, senderid, receivename, receiveid, message);
 	return 1;
 }
 

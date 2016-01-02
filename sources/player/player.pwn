@@ -100,15 +100,15 @@ stock player_OnPlayerDisconnect(playerid, reason)
 stock player_OnPlayerConnect(playerid)
 {
 	Chat_Clear(playerid);
-	SendClientMessage(playerid, COLOR_WHITE, lang_texts[9][35]);
+	SendClientMessage(playerid, COLOR_WHITE, _(PLAYER_LOADING));
 
 	Player_UpdateIP(playerid);
 	
 	if (!NameCharCheck( ReturnPlayerName(playerid) )) {
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[9][12], ALLOWED_NICK_SYMBOLS_STR);
+		format(string, sizeof(string), _(PLAYER_NICK_BAD_SYMBOLS), ALLOWED_NICK_SYMBOLS_STR);
 		SendClientMessage(playerid, COLOR_RED, string);
-		SendClientMessage(playerid, COLOR_RED, lang_texts[9][13]);
+		SendClientMessage(playerid, COLOR_RED, _(PLAYER_NICK_IS_IP));
 		KickPlayer(playerid, "Такой ник запрещён.");
 	}
 	SetPlayerColor(playerid, COLOR_PLAYER);
