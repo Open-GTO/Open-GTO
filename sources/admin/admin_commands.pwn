@@ -1642,6 +1642,68 @@ COMMAND:vehicle(playerid, params[])
 
 		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1), health, x, y, z, angle);
 		SendClientMessage(playerid, -1, string);
+	} else if (strcmp(subcmd, "health", true) == 0) {
+		if (!IsPlayerMod(playerid)) {
+			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			return 1;
+		}
+
+		new
+			action[5],
+			target[5],
+			Float:amount;
+
+		if (sscanf(subparams, "s[5]S()[5]F(1000.0)", action, target, amount)) {
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_VEHICLE_HEALTH_ERROR));
+			return 1;
+		}
+
+		// get target
+		new
+			vehicleid = INVALID_VEHICLE_ID;
+
+		if (isnull(target)) {
+			vehicleid = GetPlayerVehicleID(playerid);
+		} else if (strcmp(action, "all", true) == 0) {
+			vehicleid = 0;
+		} else if (IsNumeric(target)) {
+			vehicleid = strval(target);
+		}
+
+		if (vehicleid != 0 && !IsValidVehicle(vehicleid)) {
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_VEHICLE_HEALTH_ERROR));
+			return 1;
+		}
+
+		// get action
+		if (strcmp(action, "set", true) == 0) {
+			if (vehicleid == 0) {
+				for (new vehid = 0; vehid <= MAX_VEHICLES; vehid++) {
+					SetVehicleHealth(vehid, amount);
+				}
+			} else {
+				SetVehicleHealth(vehicleid, amount);
+			}
+		} else if (strcmp(action, "get", true) == 0) {
+			GetVehicleHealth(vehicleid, amount);
+
+			new string[MAX_LANG_VALUE_STRING];
+			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_GET), amount);
+			SendClientMessage(playerid, -1, string);
+		} else if (strcmp(action, "give", true) == 0) {
+			new
+				Float:current_health;
+
+			if (vehicleid == 0) {
+				for (new vehid = 0; vehid <= MAX_VEHICLES; vehid++) {
+					GetVehicleHealth(vehid, current_health);
+					SetVehicleHealth(vehid, current_health + amount);
+				}
+			} else {
+				GetVehicleHealth(vehicleid, current_health);
+				SetVehicleHealth(vehicleid, current_health + amount);
+			}
+		}
 	}
 
 	return 1;
