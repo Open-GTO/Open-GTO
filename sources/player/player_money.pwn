@@ -13,12 +13,6 @@
 #pragma library pl_money
 
 /*
-	Includes
-*/
-
-#include "player_money.inc"
-
-/*
 	Functions
 */
 

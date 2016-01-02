@@ -13,12 +13,6 @@
 #pragma library pthealth
 
 /*
-	Includes
-*/
-
-#include "health.inc"
-
-/*
 	Vars
 */
 

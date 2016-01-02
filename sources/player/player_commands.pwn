@@ -11,12 +11,6 @@
 #pragma library commands
 
 /*
-	Includes
-*/
-
-#include "player.inc"
-
-/*
 	Commands
 */
 

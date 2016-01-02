@@ -13,12 +13,6 @@
 #pragma library player_menu
 
 /*
-	Includes
-*/
-
-#include "player.inc"
-
-/*
 	PMenu_OnPlayerKeyStateChange
 */
 

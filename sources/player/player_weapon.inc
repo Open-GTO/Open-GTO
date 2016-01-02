@@ -14,12 +14,6 @@
 #pragma library player_weapon_h
 
 /*
-	Includes
-*/
-
-#include "player_weapon.inc"
-
-/*
 	GivePlayerWeapon
 */
 

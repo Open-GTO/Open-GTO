@@ -14,12 +14,6 @@
 #pragma library pl_account
 
 /*
-	Includes
-*/
-
-#include "player_account.inc"
-
-/*
 	Vars
 */
 

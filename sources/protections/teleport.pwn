@@ -13,12 +13,6 @@
 #pragma library teleport
 
 /*
-	Includes
-*/
-
-#include "teleport.inc"
-
-/*
 	Vars
 */
 

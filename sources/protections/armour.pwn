@@ -13,12 +13,6 @@
 #pragma library ptarmour
 
 /*
-	Includes
-*/
-
-#include "armour.inc"
-
-/*
 	Vars
 */
 

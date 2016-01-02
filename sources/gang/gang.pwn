@@ -13,12 +13,6 @@
 #pragma library gang
 
 /*
-	Includes
-*/
-
-#include "gang.inc"
-
-/*
 	Enums
 */
 

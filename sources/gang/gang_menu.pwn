@@ -13,13 +13,6 @@
 #pragma library gang_menu
 
 /*
-	Includes
-*/
-
-#include "gang.inc"
-#include "../player/player_account.inc"
-
-/*
 	Dialogs
 */
 

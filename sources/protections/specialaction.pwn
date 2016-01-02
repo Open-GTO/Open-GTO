@@ -13,12 +13,6 @@
 #pragma library specialaction
 
 /*
-	Includes
-*/
-
-#include "specialaction.inc"
-
-/*
 	Vars
 */
 

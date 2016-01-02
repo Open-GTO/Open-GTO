@@ -13,12 +13,6 @@
 #pragma library pl_spawn
 
 /*
-	Includes
-*/
-
-#include "player_spawn.inc"
-
-/*
 	Vars
 */
 

@@ -13,12 +13,6 @@
 #pragma library gang_header
 
 /*
-	Includes
-*/
-
-#include "../player/player_spawn.inc"
-
-/*
 	Defines
 */
 

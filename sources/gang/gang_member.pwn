@@ -13,12 +13,6 @@
 #pragma library gang_member
 
 /*
-	Includes
-*/
-
-#include "gang.inc"
-
-/*
 	Defines
 */
 

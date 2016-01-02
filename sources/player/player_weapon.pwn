@@ -14,12 +14,6 @@
 #pragma library weapon
 
 /*
-	Includes
-*/
-
-#include "player_weapon.inc"
-
-/*
 	Vars
 */
 

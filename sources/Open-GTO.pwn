@@ -47,6 +47,8 @@ Thanks:
 // header files
 #include "gang/gang.inc"
 #include "player/player.inc"
+#include "player/player_account.inc"
+#include "player/player_spawn.inc"
 #include "player/player_weapon.inc"
 #include "player/player_money.inc"
 #include "protections/armour.inc"
