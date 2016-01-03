@@ -604,6 +604,14 @@ ADMIN_COMMAND_ARMOUR_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d
 ADMIN_COMMAND_ARMOUR_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил броню всех игроков до {FFCC66}%.2f
 ADMIN_COMMAND_ARMOUR_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил броню {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%.2f
 
+ADMIN_COMMAND_HEALTH_HELP = {FFCC66}[Применение]: {FFFFFF}/health <set/get/give> <id/ник/all> <количество/>
+ADMIN_COMMAND_HEALTH_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_HEALTH_GET =  {FFCC66}* {FFFFFF}Броня игрока {FFCC66}%s(%d): {FFCC66}%0.2f
+ADMIN_COMMAND_HEALTH_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил здоровье всех игроков на {FFCC66}%.2f
+ADMIN_COMMAND_HEALTH_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил здоровье {FFCC66}%s(%d) на {FFCC66}%.2f
+ADMIN_COMMAND_HEALTH_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил здоровье всех игроков до {FFCC66}%.2f
+ADMIN_COMMAND_HEALTH_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил здоровье {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%.2f
+
 ADMIN_COMMAND_MODER_HELP_0 = {FFCC66}* {FFFFFF}Основная обязанность модератора - следить за порядком в игровом мире.
 ADMIN_COMMAND_MODER_HELP_1 = {FFCC66}* {FFFFFF}Модератор имеет право и обязан наказывать нарушителей тюрьмой или запрещением общаться в чатах.
 ADMIN_COMMAND_MODER_HELP_2 = {FFCC66}* {FFFFFF}Все доступные команды можно увидеть по {FFCC66}/cmdlist
