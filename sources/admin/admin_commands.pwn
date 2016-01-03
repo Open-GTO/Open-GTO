@@ -882,31 +882,6 @@ COMMAND:setstatus(playerid, params[])
 	return 1;
 }
 
-COMMAND:setvip(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	new giveid, day, month, year;
-
-	if (sscanf(params, "p<.>uiii", giveid, day, month, year)) {
-		SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][19]);
-		return 1;
-	}
-
-	new timestamp = mktime(year, month, day);
-	Account_SetPremiumTime(giveid, timestamp);
-	
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][20], ReturnPlayerName(giveid), giveid, ReturnPlayerPremiumDateString(giveid));
-	SendClientMessage(playerid, COLOR_WHITE, string);
-
-	format(string, sizeof(string), lang_texts[12][22], ReturnPlayerPremiumDateString(giveid));
-	SendClientMessage(giveid, COLOR_WHITE, string);
-	return 1;
-}
-
 COMMAND:plist(playerid, params[])
 {
 	if (!IsPlayerMod(playerid)) {
