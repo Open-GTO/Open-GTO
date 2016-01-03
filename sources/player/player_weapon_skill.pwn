@@ -120,21 +120,30 @@ stock weapon_ResetSkills(playerid)
 // ид скилла для ида оружия
 stock GetWeaponSkillID(weaponid)
 {
-	switch (weaponid)
-	{
-		case 22: return WEAPONSKILL_PISTOL;
-		case 23: return WEAPONSKILL_PISTOL_SILENCED;
-		case 24: return WEAPONSKILL_DESERT_EAGLE;
-		case 25: return WEAPONSKILL_SHOTGUN;
-		case 26: return WEAPONSKILL_SAWNOFF_SHOTGUN;
-		case 27: return WEAPONSKILL_SPAS12_SHOTGUN;
-		case 28, 32: return WEAPONSKILL_MICRO_UZI;
-		case 29: return WEAPONSKILL_MP5;
-		case 30: return WEAPONSKILL_AK47;
-		case 31: return WEAPONSKILL_M4;
-		case 34: return WEAPONSKILL_SNIPERRIFLE;
+	static const
+		weapon_skills[] = {
+			WEAPONSKILL_PISTOL, // 22
+			WEAPONSKILL_PISTOL_SILENCED, // 23
+			WEAPONSKILL_DESERT_EAGLE, // 24
+			WEAPONSKILL_SHOTGUN, // 25
+			WEAPONSKILL_SAWNOFF_SHOTGUN, // 26
+			WEAPONSKILL_SPAS12_SHOTGUN, // 27
+			WEAPONSKILL_MICRO_UZI, // 28
+			WEAPONSKILL_MP5, // 29
+			WEAPONSKILL_AK47, // 30
+			WEAPONSKILL_M4, // 31
+			WEAPONSKILL_MICRO_UZI, // 32
+			WEAPONSKILL_SNIPERRIFLE, // 33
+			WEAPONSKILL_SNIPERRIFLE // 34
+		};
+
+	new index = weaponid - 22;
+
+	if (index < 0 || index > sizeof(weapon_skills) - 1) {
+		return -1;
 	}
-	return -1;
+
+	return weapon_skills[index];
 }
 //
 
