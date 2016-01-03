@@ -164,6 +164,9 @@ Thanks:
 
 // admin
 #include "admin/admin_commands.pwn"
+#include "admin/admin_commands/cmd_armour.pwn"
+#include "admin/admin_commands/cmd_vehicle.pwn"
+#include "admin/admin_commands/cmd_camera.pwn"
 #include "admin/admin_ban.pwn"
 #include "admin/admin_mute.pwn"
 #include "admin/admin_jail.pwn"
