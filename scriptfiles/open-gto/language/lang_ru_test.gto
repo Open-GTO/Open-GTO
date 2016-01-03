@@ -636,7 +636,7 @@ ADMIN_COMMAND_LEVEL_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d)
 ADMIN_COMMAND_LEVEL_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили уровень {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%d
 ADMIN_COMMAND_LEVEL_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил уровень всех игроков до {FFCC66}%d
 ADMIN_COMMAND_LEVEL_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваш уровень до {FFCC66}%d
-ADMIN_COMMAND_LEVEL_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили уровень у {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%.2f
+ADMIN_COMMAND_LEVEL_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили уровень у {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%d
 
 ADMIN_COMMAND_XP_HELP = {FFCC66}[Применение]: {FFFFFF}/xp <set/get/give> <id/ник/all> <количество/>
 ADMIN_COMMAND_XP_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
@@ -646,7 +646,7 @@ ADMIN_COMMAND_XP_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {F
 ADMIN_COMMAND_XP_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили опыт {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%d
 ADMIN_COMMAND_XP_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил опыт всех игроков до {FFCC66}%d
 ADMIN_COMMAND_XP_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваш опыт до {FFCC66}%d
-ADMIN_COMMAND_XP_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили опыт у {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%.2f
+ADMIN_COMMAND_XP_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили опыт у {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%d
 
 ADMIN_COMMAND_SAY_HELP = {FFCC66}[Применение]: {FFFFFF}/say <текст>
 ADMIN_COMMAND_SAY_TEXT = {FFCC66}Администратор %s(%d): {FFFFFF}%s
@@ -675,6 +675,17 @@ ADMIN_COMMAND_BAN_UNBANED = Наступил срок истечения бана, теперь вы разбанены!
 ADMIN_COMMAND_UNBAN_HELP = {FFCC66}[Применение]: {FFFFFF}/unban <id/ник/ip>
 ADMIN_COMMAND_UNBAN_SUCCESS = Игрок '%s' успешно разбанен.
 ADMIN_COMMAND_UNBAN_FAIL = Игрок '%s' не забанен.
+
+ADMIN_COMMAND_WEAPON_HELP = {FFCC66}[Применение]: {FFFFFF}/weapon <set/get/give> <id/ник/all> <количество/>
+ADMIN_COMMAND_WEAPON_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_WEAPON_GET =  {FFCC66}* {FFFFFF}Оружие игрока {FFCC66}%s(%d){FFFFFF}:
+ADMIN_COMMAND_WEAPON_GET_ITEM = {FFCC66}* {FFFFFF}Слот {FFCC66}%d{FFFFFF}, id: {FFCC66}%d{FFFFFF}, патронов: {FFCC66}%d
+ADMIN_COMMAND_WEAPON_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил оружие всех игроков на {FFCC66}%d (%d)
+ADMIN_COMMAND_WEAPON_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил вам оружие на {FFCC66}%d (%d)
+ADMIN_COMMAND_WEAPON_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили оружие {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%d (%d)
+ADMIN_COMMAND_WEAPON_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил оружие всех игроков до {FFCC66}%d (%d)
+ADMIN_COMMAND_WEAPON_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваш оружие до {FFCC66}%d (%d)
+ADMIN_COMMAND_WEAPON_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили оружие у {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%d (%d)
 
 ADMIN_COMMAND_MODER_HELP_0 = {FFCC66}* {FFFFFF}Основная обязанность модератора - следить за порядком в игровом мире.
 ADMIN_COMMAND_MODER_HELP_1 = {FFCC66}* {FFFFFF}Модератор имеет право и обязан наказывать нарушителей тюрьмой или запрещением общаться в чатах.

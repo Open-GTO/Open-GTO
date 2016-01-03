@@ -176,6 +176,7 @@ Thanks:
 #include "admin/admin_commands/cmd_say.pwn"
 #include "admin/admin_commands/cmd_unban.pwn"
 #include "admin/admin_commands/cmd_vehicle.pwn"
+#include "admin/admin_commands/cmd_weapon.pwn"
 #include "admin/admin_commands/cmd_weather.pwn"
 #include "admin/admin_commands/cmd_xp.pwn"
 #include "admin/admin_ban.pwn"

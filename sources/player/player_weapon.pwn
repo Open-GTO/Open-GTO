@@ -114,6 +114,29 @@ stock GetWeaponSlot(weaponid)
 }
 //
 
+stock SetPlayerWeapon(playerid, weaponid, ammo, bool:allowcheck = false)
+{
+	if (allowcheck && !IsPlayerAllowedWeapon(playerid, weaponid)) {
+		return 0;
+	}
+
+	new slot = GetWeaponSlot(weaponid);
+	if (slot == -1 || ammo <= 0) {
+		return 0;
+	}
+
+	PlayerWeapons[playerid][slot][pwid] = weaponid;
+	PlayerWeapons[playerid][slot][pbullets] = ammo;
+
+	if (IsWeaponHandToHand(weaponid)) {
+		PlayerWeapons[playerid][slot][pbullets] = 1;
+	}
+
+	new result = ORIG_GivePlayerWeapon(playerid, PlayerWeapons[playerid][slot][pwid], 0);
+	SetPlayerAmmo(playerid, PlayerWeapons[playerid][slot][pwid], PlayerWeapons[playerid][slot][pbullets]);
+	return result;
+}
+
 stock REDEF_GivePlayerWeapon(playerid, weaponid, ammo, bool:allowcheck = false)
 {
 	if (allowcheck && !IsPlayerAllowedWeapon(playerid, weaponid)) {
