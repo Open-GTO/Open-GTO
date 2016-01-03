@@ -166,6 +166,7 @@ Thanks:
 #include "admin/admin_commands.pwn"
 #include "admin/admin_commands/cmd_armour.pwn"
 #include "admin/admin_commands/cmd_health.pwn"
+#include "admin/admin_commands/cmd_money.pwn"
 #include "admin/admin_commands/cmd_vehicle.pwn"
 #include "admin/admin_commands/cmd_camera.pwn"
 #include "admin/admin_ban.pwn"
