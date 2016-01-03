@@ -613,10 +613,10 @@ ADMIN_COMMAND_HEALTH_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_HEALTH_GET =  {FFCC66}* {FFFFFF}Здоровье игрока {FFCC66}%s(%d): {FFCC66}%0.2f
 ADMIN_COMMAND_HEALTH_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил здоровье всех игроков на {FFCC66}%.2f
 ADMIN_COMMAND_HEALTH_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил здоровье {FFCC66}%s(%d) на {FFCC66}%.2f
-ADMIN_COMMAND_ARMOUR_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили здоровье у {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%.2f
+ADMIN_COMMAND_HEALTH_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили здоровье у {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%.2f
 ADMIN_COMMAND_HEALTH_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил здоровье всех игроков до {FFCC66}%.2f
 ADMIN_COMMAND_HEALTH_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил здоровье {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%.2f
-ADMIN_COMMAND_ARMOUR_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили здоровье у {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%.2f
+ADMIN_COMMAND_HEALTH_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили здоровье у {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%.2f
 
 ADMIN_COMMAND_MONEY_HELP = {FFCC66}[Применение]: {FFFFFF}/money <set/get/give> <id/ник/all> <количество/>
 ADMIN_COMMAND_MONEY_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
