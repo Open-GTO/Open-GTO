@@ -88,19 +88,14 @@ COMMAND:weapon(playerid, params[])
 		format(string, sizeof(string), _(ADMIN_COMMAND_WEAPON_GET), targetname, targetid);
 		SendClientMessage(playerid, -1, string);
 
-		new
-			slot,
-			wid,
-			wbullet;
+		for (new slot = 0; slot < PLAYER_WEAPON_SLOTS; slot++) {
+			GetPlayerWeaponData(playerid, slot, weaponid, amount);
 
-		for (slot = 0; slot < PLAYER_WEAPON_SLOTS; slot++) {
-			GetPlayerWeaponData(playerid, slot, wid, wbullet);
-
-			if (wid == 0) {
+			if (weaponid == 0) {
 				continue;
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_WEAPON_GET_ITEM), slot, wid, wbullet);
+			format(string, sizeof(string), _(ADMIN_COMMAND_WEAPON_GET_ITEM), slot, weaponid, amount);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "give", true) == 0) {
