@@ -22,15 +22,15 @@ stock player_LoadConfig(file_config)
 	ini_getInteger(file_config, "Player_Start_Money", PlayerStartMoney);
 	
 	new
-		weapons[PLAYER_START_WEAPON_SLOTS],
-		bullets[PLAYER_START_WEAPON_SLOTS],
+		weapons[START_PLAYER_WEAPON_SLOTS],
+		bullets[START_PLAYER_WEAPON_SLOTS],
 		s_buf[MAX_STRING];
 
 	ini_getString(file_config, "Player_Start_Weapon", s_buf);
-	sscanf(s_buf, "p</>a<i>[" #PLAYER_START_WEAPON_SLOTS "]", weapons);
+	sscanf(s_buf, "p</>a<i>[" #START_PLAYER_WEAPON_SLOTS "]", weapons);
 
 	ini_getString(file_config, "Player_Start_Weapon", s_buf);
-	sscanf(s_buf, "p</>a<i>[" #PLAYER_START_WEAPON_SLOTS "]", bullets);
+	sscanf(s_buf, "p</>a<i>[" #START_PLAYER_WEAPON_SLOTS "]", bullets);
 
 	SetStartPlayerWeaponsFromArray(weapons);
 	SetStartPlayerBulletsFromArray(bullets);
