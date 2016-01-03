@@ -33,7 +33,7 @@ COMMAND:xp(playerid, params[])
 
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
-	} else if (sscanf(subparams, "u", targetid)) {
+	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_XP_TARGET_ERROR));
 		return 1;
 	}
@@ -67,11 +67,6 @@ COMMAND:xp(playerid, params[])
 			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
-		if (!IsPlayerConnected(targetid)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_XP_TARGET_ERROR));
-			return 1;
-		}
-
 		amount = GetPlayerXP(targetid);
 
 		format(string, sizeof(string), _(ADMIN_COMMAND_XP_GET), targetname, targetid, amount);

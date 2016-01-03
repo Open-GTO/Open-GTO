@@ -657,6 +657,7 @@ ADMIN_COMMAND_WEATHER_HELP = {FFCC66}[Применение]: {FFFFFF}/weather <id погоды>
 ADMIN_COMMAND_WEATHER_CHANGED = {FFCC66}* {FFFFFF}Установлена новая погода {FFCC66}%d, {FFFFFF}предыдущая: {FFCC66}%d
 
 ADMIN_COMMAND_PREMIUM_HELP = {FFCC66}[Применение]: {FFFFFF}/premium <set/get> <id/ник> <время(ДД.ММ.ГГГГ)/>
+ADMIN_COMMAND_PREMIUM_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_PREMIUM_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}установил вам премиум статус до %02d.%02d.%04d
 ADMIN_COMMAND_PREMIUM_SET_SELF = {FFCC66}* {FFFFFF}Вы установили {FFCC66}%s(%d) {FFFFFF}премиум статус до %02d.%02d.%04d
 ADMIN_COMMAND_PREMIUM_GET = {FFCC66}* {FFFFFF}Дата окончания премиум статуса у {FFCC66}%s(%d){FFFFFF}: %02d.%02d.%04d

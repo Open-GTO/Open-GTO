@@ -30,6 +30,11 @@ COMMAND:premium(playerid, params[])
 		return 1;
 	}
 
+	if (targetid == INVALID_PLAYER_ID) {
+		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_PREMIUM_TARGET_ERROR));
+		return 1;
+	}
+
 	new
 		timestamp,
 		string[MAX_LANG_VALUE_STRING],

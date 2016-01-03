@@ -33,7 +33,7 @@ COMMAND:health(playerid, params[])
 
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
-	} else if (sscanf(subparams, "u", targetid)) {
+	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_HEALTH_TARGET_ERROR));
 		return 1;
 	}
