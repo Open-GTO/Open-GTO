@@ -83,46 +83,6 @@ COMMAND:admincnn(playerid, params[])
 	return 1;
 }
 
-COMMAND:akill(playerid, params[])
-{
-	if (!IsPlayerAdm(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_WHITE, "Применение: /akill <id>");
-		return 1;
-	}
-
-	new string[MAX_STRING], idx;
-	string = strcharsplit(params, idx, ' ');
-
-	if (!IsNumeric(string)) {
-		SendClientMessage(playerid, COLOR_WHITE, "Применение: /akill <id>");
-		return 1;
-	}
-
-	new receiverid = strval(string);
-	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][3]);
-		return 1;
-	}
-
-	if (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 1;
-	}
-
-	SetPlayerHealth(receiverid, 0.0);
-
-	format(string, sizeof(string), lang_texts[12][62], ReturnPlayerName(receiverid), receiverid);
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
-
-	format(string, sizeof(string), lang_texts[12][63], ReturnPlayerName(playerid));
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
-	return 1;
-}
-
 COMMAND:pinfo(playerid, params[])
 {
 	if (!IsPlayerAdm(playerid)) {
@@ -365,46 +325,6 @@ COMMAND:telexyzi(playerid, params[])
 	return 1;
 }
 
-COMMAND:sethealth(playerid, params[])
-{
-	if (!IsPlayerAdm(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
-		return 1;
-	}
-
-	new idx = 0;
-	new receiverid = strval(strcharsplit(params, idx, ' '));
-
-	if (IsPlayerRconAdmin(receiverid) && receiverid != playerid) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 1;
-	}
-	
-	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
-		return 1;
-	}
-	
-	new Float:health_amount = floatstr(strcharsplit(params, idx, ' '));
-	if (health_amount > 300.0 || health_amount < 10.0) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][44]);
-		return 1;
-	}
-	
-	new Float:max_health;
-	GetMaxHealth(playerid, max_health);
-	
-	if (health_amount > max_health) {
-		health_amount = max_health;
-	}
-	
-	SetPlayerHealth(receiverid, health_amount);
-	return 1;
-}
 
 COMMAND:givexp(playerid, params[])
 {
@@ -1364,19 +1284,5 @@ COMMAND:weather(playerid, params[])
 
 	new weatherid = strval(params);
 	SetWeather(weatherid);
-	return 1;
-}
-
-COMMAND:healall(playerid, params[])
-{
-	if (!IsPlayerAdm(playerid)) {
-		return 0;
-	}
-
-	new Float:max_health;
-	foreach (new id : Player) {
-		GetMaxHealth(id, max_health);
-		SetPlayerHealth(id, max_health);
-	}
 	return 1;
 }
