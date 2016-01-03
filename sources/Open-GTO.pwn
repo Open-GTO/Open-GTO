@@ -77,6 +77,7 @@ Thanks:
 #include "lib/gpickup/gpickup.inc"
 #include "lib/gtolib/gtolib.inc"
 #include "lib/getspawninfo/getspawninfo.inc"
+#include "lib/getweather/getweather.inc"
 
 // core
 #include "core/api.pwn"

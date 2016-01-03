@@ -991,19 +991,3 @@ COMMAND:clearchat(playerid, params[])
 	Chat_ClearAll();
 	return 1;
 }
-
-COMMAND:weather(playerid, params[])
-{
-	if (!IsPlayerMod(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][96]);
-		return 1;
-	}
-
-	new weatherid = strval(params);
-	SetWeather(weatherid);
-	return 1;
-}

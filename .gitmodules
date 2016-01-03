@@ -40,3 +40,6 @@
 [submodule "sources/lib/time_t"]
 	path = sources/lib/time_t
 	url = https://github.com/Open-GTO/time_t.git
+[submodule "sources/lib/getweather"]
+	path = sources/lib/getweather
+	url = https://github.com/Open-GTO/GetWeather.git

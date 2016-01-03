@@ -633,6 +633,9 @@ ADMIN_COMMAND_SAY_TEXT = {FFCC66}Администратор %s(%d): {FFFFFF}%s
 
 ADMIN_COMMAND_ANNOUNCE_HELP = {FFCC66}[Применение]: {FFFFFF}/announce <тип(0-6)> <текст>
 
+ADMIN_COMMAND_WEATHER_HELP = {FFCC66}[Применение]: {FFFFFF}/weather <id погоды>
+ADMIN_COMMAND_WEATHER_CHANGED = {FFCC66}* {FFFFFF}Установлена новая погода {FFCC66}%d, {FFFFFF}предыдущая: {FFCC66}%d
+
 ADMIN_COMMAND_MODER_HELP_0 = {FFCC66}* {FFFFFF}Основная обязанность модератора - следить за порядком в игровом мире.
 ADMIN_COMMAND_MODER_HELP_1 = {FFCC66}* {FFFFFF}Модератор имеет право и обязан наказывать нарушителей тюрьмой или запрещением общаться в чатах.
 ADMIN_COMMAND_MODER_HELP_2 = {FFCC66}* {FFFFFF}Все доступные команды можно увидеть по {FFCC66}/cmdlist
