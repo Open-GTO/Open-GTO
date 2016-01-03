@@ -1427,6 +1427,11 @@ COMMAND:setarmall(playerid, params[])
 	return 1;
 }
 
+COMMAND:v(playerid, params[])
+{
+	return cmd_vehicle(playerid, params);
+}
+
 COMMAND:vehicle(playerid, params[])
 {
 	if (!IsPlayerMod(playerid)) {
@@ -1707,6 +1712,11 @@ COMMAND:vehicle(playerid, params[])
 	}
 
 	return 1;
+}
+
+COMMAND:c(playerid, params[])
+{
+	return cmd_camera(playerid, params);
 }
 
 COMMAND:camera(playerid, params[])

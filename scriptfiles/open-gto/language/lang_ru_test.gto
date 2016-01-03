@@ -570,27 +570,27 @@ ADMIN_PROTECTION_REPORT = Игрок %s(%d) подозревается в читерстве. Сработала защи
 
 ADMIN_COMMAND_NOT_ALLOWED = Нет доступа к этой команде
 
-ADMIN_COMMAND_VEHICLE_HELP = {FFCC66}[Применение]: {FFFFFF}/vehicle <add/remove/respawn/repair> <модель/id/тип>
-ADMIN_COMMAND_VEHICLE_ADD_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle add <модель>
+ADMIN_COMMAND_VEHICLE_HELP = {FFCC66}[Применение]: {FFFFFF}/v[ehicle] <add/remove/respawn/repair/health> <модель/id/тип/количество/>
+ADMIN_COMMAND_VEHICLE_ADD_ERROR = {FFCC66}[Применение]: {FFFFFF}/v[ehicle] add <модель>
 ADMIN_COMMAND_VEHICLE_ADD_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}создал транспорт %d
-ADMIN_COMMAND_VEHICLE_REMOVE_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle remove <id/>
+ADMIN_COMMAND_VEHICLE_REMOVE_ERROR = {FFCC66}[Применение]: {FFFFFF}/v[ehicle] remove <id/>
 ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}удалил транспорт %d
-ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle respawn <id/all/>
+ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR = {FFCC66}[Применение]: {FFFFFF}/v[ehicle] respawn <id/all/>
 ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}заспавнил транспорт %d
 ADMIN_COMMAND_VEHICLE_RESPAWN_ALL_MSG = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}заспавнил весь транспорт
-ADMIN_COMMAND_VEHICLE_REPAIR_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle repair <id/all/>
+ADMIN_COMMAND_VEHICLE_REPAIR_ERROR = {FFCC66}[Применение]: {FFFFFF}/v[ehicle] repair <id/all/>
 ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}починил транспорт %d
 ADMIN_COMMAND_VEHICLE_REPAIR_ALL_MSG = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s {FFFFFF}починил весь транспорт
-ADMIN_COMMAND_VEHICLE_INFO_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle info <id/>
+ADMIN_COMMAND_VEHICLE_INFO_ERROR = {FFCC66}[Применение]: {FFFFFF}/v[ehicle] info <id/>
 ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_0 = {FFCC66}* {FFFFFF}ID транспорта: {FFCC66}%d{FFFFFF}, модель: {FFCC66}%s {FFFFFF}(%d)
 ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1 = {FFCC66}* {FFFFFF}Здоровье транспорта: {FFCC66}%02f{FFFFFF}, координаты: {FFCC66}%f, %f, %f, %f
-ADMIN_COMMAND_VEHICLE_HEALTH_ERROR = {FFCC66}[Применение]: {FFFFFF}/vehicle health <set/get/give> <id/all/> <количество/>
+ADMIN_COMMAND_VEHICLE_HEALTH_ERROR = {FFCC66}[Применение]: {FFFFFF}/v[ehicle] health <set/get/give> <id/all/> <количество/>
 ADMIN_COMMAND_VEHICLE_HEALTH_GET = {FFCC66}* {FFFFFF}Здоровье транспорта: {FFCC66}%02f
 
-ADMIN_COMMAND_CAMERA_HELP = {FFCC66}[Применение]: {FFFFFF}/camera <get/set/reset>
+ADMIN_COMMAND_CAMERA_HELP = {FFCC66}[Применение]: {FFFFFF}/c[amera] <get/set/reset>
 ADMIN_COMMAND_CAMERA_GET_MESSAGE_CPOS = {FFCC66}CameraPos: {FFFFFF}%f, %f, %f
 ADMIN_COMMAND_CAMERA_GET_MESSAGE_LPOS = {FFCC66}LookatPos: {FFFFFF}%f, %f, %f
-ADMIN_COMMAND_CAMERA_SET_ERROR = {FFCC66}[Применение]: {FFFFFF}/camera set <cX> <cY> <cZ> <lX> <lY> <lZ>
+ADMIN_COMMAND_CAMERA_SET_ERROR = {FFCC66}[Применение]: {FFFFFF}/c[amera] set <cX> <cY> <cZ> <lX> <lY> <lZ>
 
 ADMIN_COMMAND_MODER_HELP_0 = {FFCC66}* {FFFFFF}Основная обязанность модератора - следить за порядком в игровом мире.
 ADMIN_COMMAND_MODER_HELP_1 = {FFCC66}* {FFFFFF}Модератор имеет право и обязан наказывать нарушителей тюрьмой или запрещением общаться в чатах.
