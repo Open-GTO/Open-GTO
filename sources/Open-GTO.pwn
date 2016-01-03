@@ -545,7 +545,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		return 1;
 	}
 
-	if (Fuelst_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+	if (Fuelstation_OnPlayerKeyStateCh(playerid, newkeys, oldkeys)) {
 		return 1;
 	}
 
@@ -572,6 +572,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	Trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 	Spectate_OnPlayerStateChange(playerid, newstate, oldstate);
 	weapon_OnPlayerStateChange(playerid, newstate, oldstate);
+	Fuelstation_OnPlayerStateChange(playerid, newstate, oldstate);
 
 	if (newstate == PLAYER_STATE_DRIVER) {
 		Premium_OnPlayerStateChange(playerid, newstate, oldstate);
@@ -758,6 +759,10 @@ public OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 		return 1;
 	}
 
+	if (Fuelstation_OnPlayerEnterDyArea(playerid, areaid)) {
+		return 1;
+	}
+
 	return 1;
 }
 
@@ -768,6 +773,19 @@ public OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 	}
 
 	if (Groundhold_OnPlayerLeaveDynArea(playerid, areaid)) {
+		return 1;
+	}
+
+	if (Fuelstation_OnPlayerLeaveDyArea(playerid, areaid)) {
+		return 1;
+	}
+
+	return 1;
+}
+
+public OnVehicleFilled(vehicleid, playerid, money)
+{
+	if (Fuelstation_OnVehicleFilled(vehicleid, playerid, money)) {
 		return 1;
 	}
 

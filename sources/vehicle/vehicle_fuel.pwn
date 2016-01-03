@@ -12,9 +12,18 @@
 #define _vehicle_fuel_included
 #pragma library vehicle_fuel
 
+/*
+	Forwards
+*/
+
 forward Float:GetVehicleFuel(vehicleid);
 forward Float:SetVehicleFuel(vehicleid, Float:amount);
 forward Float:GiveVehicleFuel(vehicleid, Float:amount);
+forward OnVehicleFilled(vehicleid, playerid, money);
+
+/*
+	Vars
+*/
 
 static
 	IsEnabled = VEHICLE_FUEL_ENABLED,
@@ -22,6 +31,10 @@ static
 	Float:gOldFuel[MAX_VEHICLES],
 	gIsRefilling[MAX_VEHICLES char],
 	Timer_Fill[MAX_PLAYERS] = {0,...};
+
+/*
+	Config
+*/
 
 Vehicle_Fuel_LoadConfig(file_config)
 {
@@ -32,6 +45,10 @@ Vehicle_Fuel_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Vehicle_Fuel_Enabled", IsEnabled);
 }
+
+/*
+	OnGameModeInit
+*/
 
 Vehicle_Fuel_OnGameModeInit()
 {
@@ -50,6 +67,10 @@ Vehicle_Fuel_OnGameModeInit()
 	return 1;
 }
 
+/*
+	OnVehicleSpawn
+*/
+
 Vehicle_Fuel_OnVehicleSpawn(vehicleid)
 {
 	if (!IsEnabled) {
@@ -59,6 +80,10 @@ Vehicle_Fuel_OnVehicleSpawn(vehicleid)
 	SetVehicleFuel(vehicleid, -1);
 	return 1;
 }
+
+/*
+	OnPlayerStateChange
+*/
 
 Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate)
 {
@@ -154,10 +179,11 @@ public Vehicle_Fuel_FillTimer(playerid)
 		}
 
 		ToggleVehicleRefillingStatus(vehicleid, false);
-		
-		new string[MAX_LANG_VALUE_STRING];
-		format(string, sizeof(string), _(VEHICLE_FUEL_AFTER_FUEL), fill_money);
-		SendClientMessage(playerid, COLOR_YELLOW, string);
+	#if defined OnVehicleFilled
+		OnVehicleFilled(vehicleid, playerid, fill_money);
+	#else
+		CallRemoteFunction("OnVehicleFilled", "iii", vehicleid, playerid, fill_money);
+	#endif
 	}
 	return 0;
 }
