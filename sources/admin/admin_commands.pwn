@@ -406,40 +406,6 @@ COMMAND:sethealth(playerid, params[])
 	return 1;
 }
 
-COMMAND:setarm(playerid, params[])
-{
-	if (!IsPlayerAdm(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
-		return 1;
-	}
-
-	new idx = 0;
-	new receiverid = strval(strcharsplit(params, idx, ' '));
-
-	if (IsPlayerRconAdmin(receiverid) && receiverid != playerid) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 1;
-	}
-	
-	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
-		return 1;
-	}
-	
-	new Float:armamount = floatstr(strcharsplit(params, idx, ' '));
-	if (armamount > 300.0 || armamount < 0.0) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][44]);
-		return 1;
-	}
-	
-	SetPlayerArmour(receiverid, armamount);
-	return 1;
-}
-
 COMMAND:givexp(playerid, params[])
 {
 	if (!IsPlayerAdm(playerid)) {
@@ -1415,15 +1381,88 @@ COMMAND:healall(playerid, params[])
 	return 1;
 }
 
-COMMAND:setarmall(playerid, params[])
+COMMAND:armour(playerid, params[])
 {
 	if (!IsPlayerAdm(playerid)) {
 		return 0;
 	}
 
-	foreach (new id : Player) {
-		SetPlayerArmour(id, 100.0);
+	new
+		subcmd[5],
+		subparams[32],
+		Float:amount;
+
+	if (sscanf(params, "s[5]s[32]F(100.0)", subcmd, subparams, amount)) {
+		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_ARMOUR_HELP));
+		return 1;
 	}
+
+	new
+		targetid = INVALID_PLAYER_ID;
+
+	if (strcmp(subparams, "all", true) == 0) {
+		targetid = -1;
+	} else if (sscanf(subparams, "u", targetid)) {
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ARMOUR_TARGET_ERROR));
+		return 1;
+	}
+
+	new
+		string[MAX_LANG_VALUE_STRING],
+		playername[MAX_PLAYER_NAME + 1],
+		targetname[MAX_PLAYER_NAME + 1];
+
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	if (targetid != -1) {
+		GetPlayerName(targetid, targetname, sizeof(targetname));
+	}
+
+	if (strcmp(subcmd, "set", true) == 0) {
+		if (targetid == -1) {
+			foreach (new id : Player) {
+				SetPlayerArmour(id, amount);
+			}
+
+			format(string, sizeof(string), _(ADMIN_COMMAND_ARMOUR_SET_ALL), playername, playerid, amount);
+			SendClientMessageToAll(-1, string);
+		} else {
+			SetPlayerArmour(targetid, amount);
+
+			format(string, sizeof(string), _(ADMIN_COMMAND_ARMOUR_SET_PLAYER), playername, playerid, targetname, targetid, amount);
+			SendMessageToNearPlayerPlayers(string, 40.0, playerid);
+		}
+	} else if (strcmp(subcmd, "get", true) == 0) {
+		if (!IsPlayerConnected(targetid)) {
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ARMOUR_TARGET_ERROR));
+			return 1;
+		}
+
+		GetPlayerArmour(targetid, amount);
+
+		format(string, sizeof(string), _(ADMIN_COMMAND_ARMOUR_GET), targetname, targetid, amount);
+		SendClientMessage(playerid, -1, string);
+	} else if (strcmp(subcmd, "give", true) == 0) {
+		new
+			Float:current_armour;
+
+		if (targetid == -1) {
+			foreach (new id : Player) {
+				GetPlayerArmour(id, current_armour);
+				SetPlayerArmour(id, current_armour + amount);
+			}
+
+			format(string, sizeof(string), _(ADMIN_COMMAND_ARMOUR_GIVE_ALL), playername, playerid, amount);
+			SendClientMessageToAll(-1, string);
+		} else {
+			GetPlayerArmour(targetid, current_armour);
+			SetPlayerArmour(targetid, current_armour + amount);
+
+			format(string, sizeof(string), _(ADMIN_COMMAND_ARMOUR_GIVE_PLAYER), playername, playerid, targetname, targetid, amount);
+			SendMessageToNearPlayerPlayers(string, 40.0, playerid);
+		}
+	}
+
 	return 1;
 }
 
@@ -1438,9 +1477,6 @@ COMMAND:vehicle(playerid, params[])
 		return 0;
 	}
 
-	new playername[MAX_PLAYER_NAME + 1];
-	GetPlayerName(playerid, playername, sizeof(playername));
-
 	new
 		subcmd[32],
 		subparams[64];
@@ -1449,6 +1485,12 @@ COMMAND:vehicle(playerid, params[])
 		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_HELP));
 		return 1;
 	}
+
+	new
+		string[MAX_LANG_VALUE_STRING],
+		playername[MAX_PLAYER_NAME + 1];
+	
+	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (strcmp(subcmd, "add", true) == 0) {
 		if (!IsPlayerAdm(playerid)) {
@@ -1480,9 +1522,8 @@ COMMAND:vehicle(playerid, params[])
 		PutPlayerInVehicle(playerid, vehicleid, 0);
 
 		// message
-		new string[MAX_LANG_VALUE_STRING];
-		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_ADD_MESSAGE), playername, vehicleid);
-		SendMessageToBesidePlayers(string, 40.0, x, y, z);
+		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_ADD_MESSAGE), playername, playerid, vehicleid);
+		SendMessageToNearPlayers(string, 40.0, x, y, z);
 	} else if (strcmp(subcmd, "remove", true) == 0) {
 		if (!IsPlayerAdm(playerid)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
@@ -1505,17 +1546,12 @@ COMMAND:vehicle(playerid, params[])
 			return 1;
 		}
 
-		// get info
-		new Float:x, Float:y, Float:z;
-		GetVehiclePos(vehicleid, x, y, z);
+		// message
+		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE), playername, playerid, vehicleid);
+		SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
 		// destroy
 		DestroyVehicle(vehicleid);
-
-		// message
-		new string[MAX_LANG_VALUE_STRING];
-		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE), playername, vehicleid);
-		SendMessageToBesidePlayers(string, 40.0, x, y, z);
 	} else if (strcmp(subcmd, "respawn", true) == 0) {
 		if (!IsPlayerMod(playerid)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
@@ -1527,8 +1563,7 @@ COMMAND:vehicle(playerid, params[])
 				SetVehicleToRespawn(vehid);
 			}
 
-			new string[MAX_LANG_VALUE_STRING];
-			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_ALL_MSG), playername);
+			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_ALL_MSG), playername, playerid);
 			SendClientMessageToAll(-1, string);
 		} else {
 			new vehicleid;
@@ -1547,17 +1582,12 @@ COMMAND:vehicle(playerid, params[])
 				return 1;
 			}
 
-			// get info
-			new Float:x, Float:y, Float:z;
-			GetVehiclePos(vehicleid, x, y, z);
+			// message
+			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE), playername, playerid, vehicleid);
+			SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
 			// respawn
 			SetVehicleToRespawn(vehicleid);
-
-			// message
-			new string[MAX_LANG_VALUE_STRING];
-			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE), playername, vehicleid);
-			SendMessageToBesidePlayers(string, 40.0, x, y, z);
 		}
 	} else if (strcmp(subcmd, "repair", true) == 0) {
 		if (!IsPlayerMod(playerid)) {
@@ -1570,8 +1600,7 @@ COMMAND:vehicle(playerid, params[])
 				RepairVehicle(vehid);
 			}
 
-			new string[MAX_LANG_VALUE_STRING];
-			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REPAIR_ALL_MSG), playername);
+			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REPAIR_ALL_MSG), playername, playerid);
 			SendClientMessageToAll(-1, string);
 		} else {
 			new vehicleid;
@@ -1590,17 +1619,12 @@ COMMAND:vehicle(playerid, params[])
 				return 1;
 			}
 
-			// get info
-			new Float:x, Float:y, Float:z;
-			GetVehiclePos(vehicleid, x, y, z);
+			// message
+			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE), playername, playerid, vehicleid);
+			SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
 			// respawn
 			RepairVehicle(vehicleid);
-
-			// message
-			new string[MAX_LANG_VALUE_STRING];
-			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE), playername, vehicleid);
-			SendMessageToBesidePlayers(string, 40.0, x, y, z);
 		}
 	} else if (strcmp(subcmd, "info", true) == 0) {
 		if (!IsPlayerMod(playerid)) {
@@ -1640,8 +1664,6 @@ COMMAND:vehicle(playerid, params[])
 		GetVehicleModelName(vehicleid, name);
 
 		// print
-		new string[MAX_LANG_VALUE_STRING];
-
 		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_0), vehicleid, name, model);
 		SendClientMessage(playerid, -1, string);
 
@@ -1669,7 +1691,7 @@ COMMAND:vehicle(playerid, params[])
 
 		if (isnull(target)) {
 			vehicleid = GetPlayerVehicleID(playerid);
-		} else if (strcmp(action, "all", true) == 0) {
+		} else if (strcmp(target, "all", true) == 0) {
 			vehicleid = 0;
 		} else if (IsNumeric(target)) {
 			vehicleid = strval(target);
@@ -1683,30 +1705,41 @@ COMMAND:vehicle(playerid, params[])
 		// get action
 		if (strcmp(action, "set", true) == 0) {
 			if (vehicleid == 0) {
-				for (new vehid = 0; vehid <= MAX_VEHICLES; vehid++) {
+				for (new vehid = 1; vehid <= MAX_VEHICLES; vehid++) {
 					SetVehicleHealth(vehid, amount);
 				}
+
+				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_SET_ALL), playername, playerid, amount);
+				SendClientMessageToAll(-1, string);
 			} else {
 				SetVehicleHealth(vehicleid, amount);
+
+				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_SET), playername, playerid, vehicleid, amount);
+				SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 			}
 		} else if (strcmp(action, "get", true) == 0) {
 			GetVehicleHealth(vehicleid, amount);
 
-			new string[MAX_LANG_VALUE_STRING];
-			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_GET), amount);
+			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_GET), vehicleid, amount);
 			SendClientMessage(playerid, -1, string);
 		} else if (strcmp(action, "give", true) == 0) {
 			new
 				Float:current_health;
 
 			if (vehicleid == 0) {
-				for (new vehid = 0; vehid <= MAX_VEHICLES; vehid++) {
+				for (new vehid = 1; vehid <= MAX_VEHICLES; vehid++) {
 					GetVehicleHealth(vehid, current_health);
 					SetVehicleHealth(vehid, current_health + amount);
 				}
+
+				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_ALL), playername, playerid, amount);
+				SendClientMessageToAll(-1, string);
 			} else {
 				GetVehicleHealth(vehicleid, current_health);
 				SetVehicleHealth(vehicleid, current_health + amount);
+
+				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_GIVE), playername, playerid, vehicleid, amount);
+				SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 			}
 		}
 	}
