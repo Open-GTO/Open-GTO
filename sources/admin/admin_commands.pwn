@@ -796,17 +796,6 @@ COMMAND:an(playerid, params[])
 	return 1;
 }
 
-COMMAND:payday(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	payday_Check();
-	SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][90]);
-	return 1;
-}
-
 COMMAND:boom(playerid, params[])
 {
 	if (!IsPlayerRconAdmin(playerid)) {
@@ -883,34 +872,6 @@ COMMAND:ssay(playerid, params[])
 	new string[MAX_STRING];
 	format(string, sizeof(string), lang_texts[12][1], params);
 	SendClientMessageToAll(COLOR_YELLOW, string);
-	return 1;
-}
-
-COMMAND:skydiveall(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	new Float:playerx,
-		Float:playery,
-		Float:playerz;
-
-	foreach (new id : Player) {
-		if (player_IsJailed(id)) {
-			SendClientMessage(id, COLOR_LIGHTRED, _(SKYDIVING_ERROR));
-			continue;
-		}
-
-		GivePlayerWeapon(id, 46, 1);
-		PlayerPlaySound(id, 1058, 0, 0, 0);
-
-		GetPlayerPos(id, playerx, playery, playerz);
-		SetPlayerPos(id, playerx, playery, playerz + 1200);
-	}
-
-	SendClientMessageToAll(COLOR_WHITE, _(SKYDIVING_MSG));
-	GameTextForAll(_(SKYDIVING_GAMETEXT), 5000, 6);
 	return 1;
 }
 
@@ -1111,39 +1072,6 @@ COMMAND:setstatus(playerid, params[])
 	return 1;
 }
 
-COMMAND:allowport(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, "Применение: /allowport <ID>");
-		return 1;
-	}
-
-	new idx = 0;
-	new receiverid = strval(strcharsplit(params, idx, ' '));
-
-	if (!IsPlayerConnected(receiverid) || IsPlayerRconAdmin(receiverid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 1;
-	}
-
-	new string[MAX_STRING];
-
-	if (IsAllowPlayerTeleport(playerid)) {
-		SetPlayerTeleportStatus(receiverid, 0);
-		format(string, sizeof(string), lang_texts[12][16], ReturnPlayerName(receiverid), receiverid);
-	} else {
-		SetPlayerTeleportStatus(receiverid, 1);
-		format(string, sizeof(string), lang_texts[12][17], ReturnPlayerName(receiverid), receiverid);
-	}
-	
-	SendClientMessage(playerid, COLOR_WHITE, string);
-	return 1;
-}
-
 COMMAND:setvip(playerid, params[])
 {
 	if (!IsPlayerRconAdmin(playerid)) {
@@ -1241,23 +1169,6 @@ COMMAND:kick(playerid, params[])
 	} else {
 		KickPlayer(receiverid);
 	}
-	return 1;
-}
-
-COMMAND:mole(playerid, params[])
-{
-	if (!IsPlayerMod(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 1;
-	}
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][93], params);
-	SendClientMessageToAll(COLOR_BLUE, string);
 	return 1;
 }
 
