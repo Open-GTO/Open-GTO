@@ -25,7 +25,7 @@ COMMAND:premium(playerid, params[])
 		month,
 		year;
 
-	if (sscanf(params, "p<.>s[5]uiii", subcmd, targetid, day, month, year)) {
+	if (sscanf(params, "s[5]up<.>I(0)I(0)I(0)", subcmd, targetid, day, month, year)) {
 		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_PREMIUM_HELP));
 		return 1;
 	}
