@@ -162,6 +162,11 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 	return 1;
 }
 
+stock GivePlayerLevel(playerid, amount, regenhp = 1, notify = 1)
+{
+	return SetPlayerLevel(playerid, GetPlayerLevel(playerid) + amount, regenhp, notify);
+}
+
 stock GetPlayerLevel(playerid)
 {
 	return GetPVarInt(playerid, "Level");
