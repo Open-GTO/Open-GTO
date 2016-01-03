@@ -18,7 +18,7 @@
 */
 
 #define PLAYER_WEAPON_SLOTS 13
-#define PLAYER_START_WEAPON_SLOTS 3
+#define START_PLAYER_WEAPON_SLOTS 3
 
 /*
 	Enums
@@ -35,7 +35,7 @@ enum PWeap {
 
 new PlayerWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap];
 
-new PlayerStartWeapon[PLAYER_START_WEAPON_SLOTS][PWeap] = {
+new PlayerStartWeapon[START_PLAYER_WEAPON_SLOTS][PWeap] = {
 	PLAYER_START_WEAPON,
 	0,
 	0
@@ -225,17 +225,17 @@ stock CreatePlayerWeaponDBString(playerid)
 	return wepstr;
 }
 
-stock SetPlayerStartWeaponsFromArray(playerid, array[PLAYER_WEAPON_SLOTS])
+stock SetStartPlayerWeaponsFromArray(array[START_PLAYER_WEAPON_SLOTS])
 {
-	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
-		PlayerStartWeapon[playerid][i][pwid] = array[i];
+	for (new i = 0; i < START_PLAYER_WEAPON_SLOTS; i++) {
+		PlayerStartWeapon[i][pwid] = array[i];
 	}
 }
 
-stock SetPlayerStartBulletsFromArray(playerid, array[PLAYER_WEAPON_SLOTS])
+stock SetStartPlayerBulletsFromArray(array[START_PLAYER_WEAPON_SLOTS])
 {
-	for (new i = 0; i < PLAYER_START_WEAPON_SLOTS; i++) {
-		PlayerStartWeapon[playerid][i][pbullets] = array[i];
+	for (new i = 0; i < START_PLAYER_WEAPON_SLOTS; i++) {
+		PlayerStartWeapon[i][pbullets] = array[i];
 	}
 }
 

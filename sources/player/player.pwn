@@ -32,8 +32,8 @@ stock player_LoadConfig(file_config)
 	ini_getString(file_config, "Player_Start_Weapon", s_buf);
 	sscanf(s_buf, "p</>a<i>[" #PLAYER_START_WEAPON_SLOTS "]", bullets);
 
-	SetPlayerStartWeaponsFromArray(weapons);
-	SetPlayerStartBulletsFromArray(bullets);
+	SetStartPlayerWeaponsFromArray(weapons);
+	SetStartPlayerBulletsFromArray(bullets);
 }
 
 stock player_SaveConfig(file_config)
