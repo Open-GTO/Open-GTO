@@ -59,17 +59,6 @@ COMMAND:about(playerid, params[])
 	return 1;
 }
 
-COMMAND:say(playerid, params[])
-{
-	if (!IsPlayerAdm(playerid)) {
-		return 0;
-	}
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][37], params);
-	SendClientMessageToAll(COLOR_BLUE, string);
-	return 1;
-}
 
 COMMAND:admincnn(playerid, params[])
 {

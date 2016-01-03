@@ -628,6 +628,9 @@ ADMIN_COMMAND_LEVEL_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d)
 ADMIN_COMMAND_LEVEL_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил уровень всех игроков до {FFCC66}%d
 ADMIN_COMMAND_LEVEL_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваш уровень до {FFCC66}%d
 
+ADMIN_COMMAND_SAY_HELP = {FFCC66}[Применение]: {FFFFFF}/say <текст>
+ADMIN_COMMAND_SAY_TEXT = {FFCC66}Администратор %s(%d): {FFFFFF}%s
+
 ADMIN_COMMAND_MODER_HELP_0 = {FFCC66}* {FFFFFF}Основная обязанность модератора - следить за порядком в игровом мире.
 ADMIN_COMMAND_MODER_HELP_1 = {FFCC66}* {FFFFFF}Модератор имеет право и обязан наказывать нарушителей тюрьмой или запрещением общаться в чатах.
 ADMIN_COMMAND_MODER_HELP_2 = {FFCC66}* {FFFFFF}Все доступные команды можно увидеть по {FFCC66}/cmdlist
