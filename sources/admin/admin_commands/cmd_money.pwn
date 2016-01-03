@@ -62,6 +62,9 @@ COMMAND:money(playerid, params[])
 
 			format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_SET_PLAYER), playername, playerid, amount);
 			SendClientMessage(targetid, -1, string);
+
+			format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_SET_SELF), targetname, targetid, amount);
+			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
@@ -86,6 +89,9 @@ COMMAND:money(playerid, params[])
 
 			format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_GIVE_PLAYER), playername, playerid, amount);
 			SendClientMessage(targetid, -1, string);
+
+			format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_GIVE_SELF), targetname, targetid, amount);
+			SendClientMessage(playerid, -1, string);
 		}
 	}
 

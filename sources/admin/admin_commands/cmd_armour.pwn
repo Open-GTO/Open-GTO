@@ -62,6 +62,9 @@ COMMAND:armour(playerid, params[])
 
 			format(string, sizeof(string), _(ADMIN_COMMAND_ARMOUR_SET_PLAYER), playername, playerid, targetname, targetid, amount);
 			SendMessageToNearPlayerPlayers(string, 40.0, playerid);
+
+			format(string, sizeof(string), _(ADMIN_COMMAND_ARMOUR_SET_SELF), targetname, targetid, amount);
+			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
@@ -91,6 +94,9 @@ COMMAND:armour(playerid, params[])
 
 			format(string, sizeof(string), _(ADMIN_COMMAND_ARMOUR_GIVE_PLAYER), playername, playerid, targetname, targetid, amount);
 			SendMessageToNearPlayerPlayers(string, 40.0, playerid);
+
+			format(string, sizeof(string), _(ADMIN_COMMAND_ARMOUR_GIVE_SELF), targetname, targetid, amount);
+			SendClientMessage(playerid, -1, string);
 		}
 	}
 

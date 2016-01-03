@@ -96,6 +96,9 @@ COMMAND:vehicle(playerid, params[])
 		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE), playername, playerid, vehicleid);
 		SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
+		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REMOVE_MSG_SELF), vehicleid);
+		SendClientMessage(playerid, -1, string);
+
 		// destroy
 		DestroyVehicle(vehicleid);
 	} else if (strcmp(subcmd, "respawn", true) == 0) {
@@ -131,6 +134,9 @@ COMMAND:vehicle(playerid, params[])
 			// message
 			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE), playername, playerid, vehicleid);
 			SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
+
+			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_MSG_SELF), vehicleid);
+			SendClientMessage(playerid, -1, string);
 
 			// respawn
 			SetVehicleToRespawn(vehicleid);
@@ -168,6 +174,9 @@ COMMAND:vehicle(playerid, params[])
 			// message
 			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE), playername, playerid, vehicleid);
 			SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
+
+			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REPAIR_MSG_SELF), vehicleid);
+			SendClientMessage(playerid, -1, string);
 
 			// respawn
 			RepairVehicle(vehicleid);
@@ -262,6 +271,9 @@ COMMAND:vehicle(playerid, params[])
 
 				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_SET), playername, playerid, vehicleid, amount);
 				SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
+
+				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_SET_SELF), vehicleid, amount);
+				SendClientMessage(playerid, -1, string);
 			}
 		} else if (strcmp(action, "get", true) == 0) {
 			GetVehicleHealth(vehicleid, amount);
@@ -286,6 +298,9 @@ COMMAND:vehicle(playerid, params[])
 
 				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_GIVE), playername, playerid, vehicleid, amount);
 				SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
+
+				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_SELF), vehicleid, amount);
+				SendClientMessage(playerid, -1, string);
 			}
 		}
 	}
