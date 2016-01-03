@@ -78,6 +78,7 @@ Thanks:
 #include "lib/gtolib/gtolib.inc"
 #include "lib/getspawninfo/getspawninfo.inc"
 #include "lib/getweather/getweather.inc"
+#include "lib/weaponskill/weaponskill.inc"
 
 // core
 #include "core/api.pwn"

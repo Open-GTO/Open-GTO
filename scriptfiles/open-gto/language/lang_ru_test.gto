@@ -687,6 +687,18 @@ ADMIN_COMMAND_WEAPON_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {F
 ADMIN_COMMAND_WEAPON_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваш оружие до {FFCC66}%d (%d)
 ADMIN_COMMAND_WEAPON_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили оружие у {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%d (%d)
 
+ADMIN_COMMAND_SKILL_HELP = {FFCC66}[Применение]: {FFFFFF}/skill <set/get/give> <id/ник/all> <количество/>
+ADMIN_COMMAND_SKILL_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_SKILL_WEAPON_ERROR = {FF2211}[Ошибка]: {FFFFFF}У этого оружия нельзя изменить навык прокачки.
+ADMIN_COMMAND_SKILL_GET =  {FFCC66}* {FFFFFF}Навыки игрока {FFCC66}%s(%d){FFFFFF}:
+ADMIN_COMMAND_SKILL_GET_ITEM = {FFCC66}* {FFFFFF}Навык {FFCC66}%d{FFFFFF}, оружие {FFCC66}%s{FFFFFF}, уровень: {FFCC66}%d
+ADMIN_COMMAND_SKILL_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил навык оружия {FFCC66}%s {FFFFFF}всех игроков на {FFCC66}%d
+ADMIN_COMMAND_SKILL_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил вам навык оружия {FFCC66}%s {FFFFFF}на {FFCC66}%d
+ADMIN_COMMAND_SKILL_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили {FFCC66}%s(%d) {FFFFFF}навык оружия {FFCC66}%s {FFFFFF}на {FFCC66}%d
+ADMIN_COMMAND_SKILL_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил навык оружия {FFCC66}%s {FFFFFF}всех игроков до {FFCC66}%d
+ADMIN_COMMAND_SKILL_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваш навык оружия {FFCC66}%s {FFFFFF}до {FFCC66}%d
+ADMIN_COMMAND_SKILL_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили {FFCC66}%s(%d) {FFFFFF}навык оружия {FFCC66}%s {FFFFFF}до {FFCC66}%d
+
 ADMIN_COMMAND_MODER_HELP_0 = {FFCC66}* {FFFFFF}Основная обязанность модератора - следить за порядком в игровом мире.
 ADMIN_COMMAND_MODER_HELP_1 = {FFCC66}* {FFFFFF}Модератор имеет право и обязан наказывать нарушителей тюрьмой или запрещением общаться в чатах.
 ADMIN_COMMAND_MODER_HELP_2 = {FFCC66}* {FFFFFF}Все доступные команды можно увидеть по {FFCC66}/cmdlist

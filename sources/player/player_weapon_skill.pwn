@@ -16,8 +16,7 @@
 
 static wskill_Enabled = WEAPON_SKILL_ENABLED;
 
-#define PLAYER_WEAPON_SKILLS 11
-new PlayerWeaponsSkills[MAX_PLAYERS][PLAYER_WEAPON_SKILLS];
+new PlayerWeaponsSkills[MAX_PLAYERS][MAX_WEAPON_SKILLS];
 new Text:weapon_TextDraw_Level[MAX_PLAYERS];
 
 stock wskill_LoadConfig(file_config)
@@ -101,7 +100,7 @@ stock wskill_OnPlayerRequestClass(playerid, classid)
 
 stock weapon_SetSkills(playerid)
 {
-	for (new i = 0; i < PLAYER_WEAPON_SKILLS; i++)
+	for (new i = 0; i < MAX_WEAPON_SKILLS; i++)
 	{
 		SetPlayerSkillLevel(playerid, i, PlayerWeaponsSkills[playerid][i]);
 	}
@@ -110,48 +109,18 @@ stock weapon_SetSkills(playerid)
 
 stock weapon_ResetSkills(playerid)
 {
-	for (new i = 0; i < PLAYER_WEAPON_SKILLS; i++) {
+	for (new i = 0; i < MAX_WEAPON_SKILLS; i++) {
 		PlayerWeaponsSkills[playerid][i] = 0;
 		SetPlayerSkillLevel(playerid, i, 0);
 	}
 	return 1;
 }
 
-// ид скилла для ида оружия
-stock GetWeaponSkillID(weaponid)
-{
-	static const
-		weapon_skills[] = {
-			WEAPONSKILL_PISTOL, // 22
-			WEAPONSKILL_PISTOL_SILENCED, // 23
-			WEAPONSKILL_DESERT_EAGLE, // 24
-			WEAPONSKILL_SHOTGUN, // 25
-			WEAPONSKILL_SAWNOFF_SHOTGUN, // 26
-			WEAPONSKILL_SPAS12_SHOTGUN, // 27
-			WEAPONSKILL_MICRO_UZI, // 28
-			WEAPONSKILL_MP5, // 29
-			WEAPONSKILL_AK47, // 30
-			WEAPONSKILL_M4, // 31
-			WEAPONSKILL_MICRO_UZI, // 32
-			WEAPONSKILL_SNIPERRIFLE, // 33
-			WEAPONSKILL_SNIPERRIFLE // 34
-		};
-
-	new index = weaponid - 22;
-
-	if (index < 0 || index > sizeof(weapon_skills) - 1) {
-		return -1;
-	}
-
-	return weapon_skills[index];
-}
-//
-
 // парсит строку, устанавливая нужные значения
 stock SetWeaponsSkillsFromDBString(playerid, dbstring[])
 {
 	new idx;
-	for (new i = 0; i < PLAYER_WEAPON_SKILLS; i++)
+	for (new i = 0; i < MAX_WEAPON_SKILLS; i++)
 	{
 		PlayerWeaponsSkills[playerid][i] = strval( strcharsplit(dbstring, idx, '/') );
 	}
@@ -160,7 +129,7 @@ stock SetWeaponsSkillsFromDBString(playerid, dbstring[])
 stock CreateWeaponSkillsDBString(playerid)
 {
 	new wepstr[MAX_STRING];
-	for (new i = 0; i < PLAYER_WEAPON_SKILLS; i++)
+	for (new i = 0; i < MAX_WEAPON_SKILLS; i++)
 	{
 		format(wepstr, sizeof(wepstr), "%s%d/", wepstr, PlayerWeaponsSkills[playerid][i]);
 	}
