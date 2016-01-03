@@ -31,6 +31,7 @@ COMMAND:premium(playerid, params[])
 	}
 
 	new
+		timestamp,
 		string[MAX_LANG_VALUE_STRING],
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
@@ -39,7 +40,7 @@ COMMAND:premium(playerid, params[])
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
 	if (strcmp(subcmd, "set", true) == 0) {
-		new timestamp = mktime(year, month, day);
+		timestamp = mktime(year, month, day);
 
 		Account_SetPremiumTime(targetid, timestamp);
 
@@ -50,8 +51,8 @@ COMMAND:premium(playerid, params[])
 		SendClientMessage(playerid, -1, string);
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (IsPlayerHavePremium(targetid)) {
-			amount = Account_GetPremiumTime(targetid);
-			gmtime(amount, year, month, day);
+			timestamp = Account_GetPremiumTime(targetid);
+			gmtime(timestamp, year, month, day);
 
 			format(string, sizeof(string), _(ADMIN_COMMAND_PREMIUM_GET), targetname, targetid, day, month, year);
 			SendClientMessage(playerid, -1, string);
