@@ -43,3 +43,6 @@
 [submodule "sources/lib/getweather"]
 	path = sources/lib/getweather
 	url = https://github.com/Open-GTO/GetWeather.git
+[submodule "sources/lib/weaponskill"]
+	path = sources/lib/weaponskill
+	url = https://github.com/Open-GTO/weaponskill.git
