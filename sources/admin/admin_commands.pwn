@@ -59,19 +59,6 @@ COMMAND:about(playerid, params[])
 	return 1;
 }
 
-
-COMMAND:admincnn(playerid, params[])
-{
-	if (!IsPlayerAdm(playerid)) {
-		return 0;
-	}
-
-	if (strlen(params) > 0) {
-		GameTextForAll(params, 4000, 6);
-	}
-	return 1;
-}
-
 COMMAND:pinfo(playerid, params[])
 {
 	if (!IsPlayerAdm(playerid)) {
@@ -358,51 +345,6 @@ COMMAND:givexp(playerid, params[])
 	}
 	return 1;
 }
-
-COMMAND:agivecash(playerid, params[])
-{
-	if (!IsPlayerAdm(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
-		return 1;
-	}
-
-	new idx = 0;
-	new receiverid = strval(strcharsplit(params, idx, ' '));
-
-	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 1;
-	}
-	
-	new cashamount = strval(strcharsplit(params, idx, ' '));
-	if (cashamount > MAX_MONEY || cashamount < -MAX_MONEY || cashamount == 0) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][11]);
-		return 1;
-	}
-
-	GivePlayerMoney(receiverid, cashamount);
-
-	new string[MAX_STRING];
-	if (cashamount > 0) {
-		format(string, sizeof(string), lang_texts[12][12], ReturnPlayerName(playerid), cashamount);
-		SendClientMessage(receiverid, COLOR_XP_GOOD, string);
-
-		format(string, sizeof(string), lang_texts[12][13], ReturnPlayerName(receiverid), cashamount, GetPlayerMoney(receiverid));
-		SendClientMessage(playerid, COLOR_XP_GOOD, string);
-	} else {
-		format(string, sizeof(string), lang_texts[12][14], ReturnPlayerName(playerid), -cashamount);
-		SendClientMessage(receiverid, COLOR_XP_GOOD, string);
-
-		format(string, sizeof(string), lang_texts[12][15], ReturnPlayerName(receiverid), -cashamount, GetPlayerMoney(receiverid));
-		SendClientMessage(playerid, COLOR_XP_GOOD, string);
-	}
-	return 1;
-}
-
 COMMAND:givegun(playerid, params[])
 {
 	if (!IsPlayerAdm(playerid)) {
@@ -754,36 +696,6 @@ COMMAND:sys(playerid, params[])
 	return 1;
 }
 
-COMMAND:an(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_WHITE, "Применение: /an <тип[0-6]> <сообщение>");
-		return 1;
-	}
-
-	new string[MAX_STRING], idx;
-	string = strcharsplit(params, idx, ' ');
-
-	if (!IsNumeric(string) || strlen(string) <= 0) {
-		SendClientMessage(playerid, COLOR_WHITE, "Применение: /an <тип[0-6]> <сообщение>");
-		return 1;
-	}
-
-	new mtype = strval(string);
-	if (mtype < 0 || mtype > 6) {
-		SendClientMessage(playerid, COLOR_WHITE, "Применение: /an <тип[0-6]> <сообщение>");
-		return 1;
-	}
-
-	set(string, params[idx + 1]);
-
-	GameTextForAll(string, 5000, mtype);
-	return 1;
-}
 
 COMMAND:boom(playerid, params[])
 {
@@ -914,97 +826,6 @@ COMMAND:disarmall(playerid, params[])
 	}
 
 	SendClientMessage(playerid, COLOR_XP_GOOD, lang_texts[12][75]);
-	return 1;
-}
-
-COMMAND:remcash(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, "Применение: /remcash <ID>");
-		return 1;
-	}
-
-	new idx = 0;
-	new receiverid = strval(strcharsplit(params, idx, ' '));
-
-	if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 1;
-	}
-
-	SetPlayerMoney(playerid, 0);
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][58], ReturnPlayerName(playerid));
-	SendClientMessage(receiverid, COLOR_XP_GOOD, string);
-
-	format(string, sizeof(string), lang_texts[12][59], ReturnPlayerName(receiverid));
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
-	return 1;
-}
-
-COMMAND:remcashall(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	new string[MAX_STRING];
-
-	foreach (new id : Player) {
-		if (IsPlayerRconAdmin(id)) {
-			continue;
-		}
-
-		SetPlayerMoney(id, 0);
-
-		format(string, sizeof(string), lang_texts[12][58], ReturnPlayerName(playerid));
-		SendClientMessage(id, COLOR_XP_GOOD, string);
-	}
-
-	format(string, sizeof(string), lang_texts[12][78]);
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
-	return 1;
-}
-
-COMMAND:setlvl(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, "Применение: /setlvl <ID> <уровень>");
-		return 1;
-	}
-
-	new idx = 0;
-	new receiverid = strval(strcharsplit(params, idx, ' '));
-
-	if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 1;
-	}
-
-	new newlvl = strval(strcharsplit(params, idx, ' '));
-	if (!IsValidPlayerLevel(newlvl)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][33]);
-		return 1;
-	}
-
-	new oldlvl = GetPlayerLevel(receiverid);
-	SetPlayerLevel(receiverid, newlvl);
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][31], ReturnPlayerName(playerid), newlvl);
-	SendClientMessage(receiverid, COLOR_XP_GOOD, string);
-
-	format(string, sizeof(string), lang_texts[12][32], ReturnPlayerName(receiverid), newlvl, oldlvl);
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
