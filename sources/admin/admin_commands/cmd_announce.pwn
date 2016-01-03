@@ -36,9 +36,9 @@ COMMAND:announce(playerid, params[])
 
 	new
 		type,
-		text[ANNOUNCE_MAX_LENGTH]
+		text[ANNOUNCE_MAX_LENGTH];
 
-	if (sscanf(params, "is[" ANNOUNCE_MAX_LENGTH "]", type, text)) {
+	if (sscanf(params, "is[" #ANNOUNCE_MAX_LENGTH "]", type, text)) {
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ANNOUNCE_HELP));
 		return 1;
 	}
