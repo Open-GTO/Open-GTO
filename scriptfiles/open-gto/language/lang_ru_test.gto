@@ -525,9 +525,6 @@ DECLENSION_AMMO_2 = патрона
 DECLENSION_AMMO_3 = патронов
 
 // admin
-ADMIN_BAN_ISNULL = {FFCC66}[Применение]: {FFFFFF}/ban <ник/id/ip> <время(число[с/м/ч/д/н/г], 0 - навсегда)> <причина>
-ADMIN_BAN_EXAMPLE = {FFCC66}[Пример]: {FFFFFF}/ban 0 5д тест  -  забанит игрока с ID 0 на 5 дней
-
 ADMIN_GODMOD_ON_CONTENT = Godmod ~h~~g~ENABLED
 ADMIN_GODMOD_OFF_CONTENT = Godmod ~h~~r~DISABLED
 
@@ -641,6 +638,16 @@ ADMIN_COMMAND_LEVEL_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FF
 ADMIN_COMMAND_LEVEL_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваш уровень до {FFCC66}%d
 ADMIN_COMMAND_LEVEL_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили уровень у {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%.2f
 
+ADMIN_COMMAND_XP_HELP = {FFCC66}[Применение]: {FFFFFF}/xp <set/get/give> <id/ник/all> <количество/>
+ADMIN_COMMAND_XP_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_XP_GET =  {FFCC66}* {FFFFFF}Опыт игрока {FFCC66}%s(%d): {FFCC66}%d
+ADMIN_COMMAND_XP_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил опыт всех игроков на {FFCC66}%d
+ADMIN_COMMAND_XP_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил вам опыт на {FFCC66}%d
+ADMIN_COMMAND_XP_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили опыт {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%d
+ADMIN_COMMAND_XP_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил опыт всех игроков до {FFCC66}%d
+ADMIN_COMMAND_XP_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваш опыт до {FFCC66}%d
+ADMIN_COMMAND_XP_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили опыт у {FFCC66}%s(%d) {FFFFFF}до {FFCC66}%.2f
+
 ADMIN_COMMAND_SAY_HELP = {FFCC66}[Применение]: {FFFFFF}/say <текст>
 ADMIN_COMMAND_SAY_TEXT = {FFCC66}Администратор %s(%d): {FFFFFF}%s
 
@@ -654,6 +661,20 @@ ADMIN_COMMAND_PREMIUM_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d
 ADMIN_COMMAND_PREMIUM_SET_SELF = {FFCC66}* {FFFFFF}Вы установили {FFCC66}%s(%d) {FFFFFF}премиум статус до %02d.%02d.%04d
 ADMIN_COMMAND_PREMIUM_GET = {FFCC66}* {FFFFFF}Дата окончания премиум статуса у {FFCC66}%s(%d){FFFFFF}: %02d.%02d.%04d
 ADMIN_COMMAND_PREMIUM_GET_NO_PREMIUM =  {FFCC66}* {FFFFFF}У {FFCC66}%s(%d){FFFFFF} нет премиум статуса
+
+ADMIN_COMMAND_BAN_HELP = {FFCC66}[Применение]: {FFFFFF}/ban <id/ник/ip> <время(число[с/м/ч/д/н/г], 0 - навсегда)/> <причина/>
+ADMIN_COMMAND_BAN_EXAMPLE = {FFCC66}[Пример]: {FFFFFF}/ban 0 5д тест  -  забанит игрока с ID 0 на 5 дней
+ADMIN_COMMAND_BAN_TIME_FOREVER = навсегда
+ADMIN_COMMAND_BAN_TIME_SECOND = на %d секунд
+ADMIN_COMMAND_BAN_TIME_REMAIN = %s, до разбана осталось %d секунд
+ADMIN_COMMAND_BAN_SUCCESS = %s забанен в %s администратором %s(%d) %s
+ADMIN_COMMAND_BAN_SUCCESS_REASON = %s, по причине "%s"
+ADMIN_COMMAND_BAN_PLAYER_MESSAGE = Администратор %s забанил вас %s %s, по причине "%s".
+ADMIN_COMMAND_BAN_UNBANED = Наступил срок истечения бана, теперь вы разбанены!
+
+ADMIN_COMMAND_UNBAN_HELP = {FFCC66}[Применение]: {FFFFFF}/unban <id/ник/ip>
+ADMIN_COMMAND_UNBAN_SUCCESS = Игрок '%s' успешно разбанен.
+ADMIN_COMMAND_UNBAN_FAIL = Игрок '%s' не забанен.
 
 ADMIN_COMMAND_MODER_HELP_0 = {FFCC66}* {FFFFFF}Основная обязанность модератора - следить за порядком в игровом мире.
 ADMIN_COMMAND_MODER_HELP_1 = {FFCC66}* {FFFFFF}Модератор имеет право и обязан наказывать нарушителей тюрьмой или запрещением общаться в чатах.
