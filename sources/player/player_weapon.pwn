@@ -14,24 +14,36 @@
 #pragma library weapon
 
 /*
-	Vars
+	Defines
 */
 
 #define PLAYER_WEAPON_SLOTS 13
+#define PLAYER_START_WEAPON_SLOTS 3
+
+/*
+	Enums
+*/
+
 enum PWeap {
 	pwid,
 	pbullets
 }
+
+/*
+	Vars
+*/
+
 new PlayerWeapons[MAX_PLAYERS][PLAYER_WEAPON_SLOTS][PWeap];
 
-enum psw_Info {
-	psw_id,
-	psw_bull,
-}
-new PlayerStartWeapon[][psw_Info] = {
-	PLAYER_START_WEAPON
+new PlayerStartWeapon[PLAYER_START_WEAPON_SLOTS][PWeap] = {
+	PLAYER_START_WEAPON,
+	0,
+	0
 };
 
+/*
+	OnGameModeInit
+*/
 
 pl_weapon_OnGameModeInit()
 {
@@ -189,17 +201,21 @@ stock GivePlayerOwnedWeapon(playerid)
 	}
 }
 
-// парсит строку, устанавливая нужные значения
-stock SetWeaponsFromDBString(playerid,dbstring[])
+stock SetPlayerWeaponsFromArray(playerid, array[PLAYER_WEAPON_SLOTS])
 {
-	new idx = 0;
 	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
-		PlayerWeapons[playerid][i][pwid] = strval( strcharsplit(dbstring, idx, '/') );
-		PlayerWeapons[playerid][i][pbullets] = strval( strcharsplit(dbstring, idx, '|') );
+		PlayerWeapons[playerid][i][pwid] = array[i];
 	}
 }
-// возвращает строку для сохранения оружия
-stock Createdb_weaponString(playerid)
+
+stock SetPlayerBulletsFromArray(playerid, array[PLAYER_WEAPON_SLOTS])
+{
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
+		PlayerWeapons[playerid][i][pbullets] = array[i];
+	}
+}
+
+stock CreatePlayerWeaponDBString(playerid)
 {
 	new wepstr[MAX_STRING];
 	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
@@ -209,23 +225,26 @@ stock Createdb_weaponString(playerid)
 	return wepstr;
 }
 
-// парсит строку, устанавливая нужные значения для стартового оружия
-stock SetPSWFromDBString(dbstring[])
+stock SetPlayerStartWeaponsFromArray(playerid, array[PLAYER_WEAPON_SLOTS])
 {
-	new idx = 0;
-	for (new i = 0; i < sizeof(PlayerStartWeapon); i++)
-	{
-		PlayerStartWeapon[i][psw_id] = strval( strcharsplit(dbstring, idx, '/') );
-		PlayerStartWeapon[i][psw_bull] = strval( strcharsplit(dbstring, idx, '|') );
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
+		PlayerStartWeapon[playerid][i][pwid] = array[i];
 	}
 }
-// возвращает строку для сохранения стартового оружия
-stock CreatePSWDBString()
+
+stock SetPlayerStartBulletsFromArray(playerid, array[PLAYER_WEAPON_SLOTS])
+{
+	for (new i = 0; i < PLAYER_START_WEAPON_SLOTS; i++) {
+		PlayerStartWeapon[playerid][i][pbullets] = array[i];
+	}
+}
+
+stock CreatePlayerStartWeaponDBString()
 {
 	new wepstr[MAX_STRING];
 	for (new i = 0; i < sizeof(PlayerStartWeapon); i++)
 	{
-		format(wepstr, sizeof(wepstr), "%s%d/%d|", wepstr, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull]);
+		format(wepstr, sizeof(wepstr), "%s%d/%d|", wepstr, PlayerStartWeapon[i][pwid], PlayerStartWeapon[i][pbullets]);
 	}
 	return wepstr;
 }

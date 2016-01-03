@@ -101,7 +101,7 @@ stock player_SaveEx(playerid)
 	ini_setString(file_player, "Coords", string);
 
 	ini_setInteger(file_player, "Status", player_GetStatus(playerid));
-	ini_setString(file_player, "Weapons", Createdb_weaponString(playerid));
+	ini_setString(file_player, "Weapons", CreatePlayerWeaponDBString(playerid));
 	ini_setString(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
 	ini_setInteger(file_player, "SkinModel", GetPlayerSkin(playerid));
 	ini_setInteger(file_player, "Hide", admin_GetHideStatus(playerid));
@@ -128,7 +128,11 @@ stock player_Login(playerid)
 	if (!ini_fileExist(filename_player)) {
 		player_Create(playerid);
 	} else {
-		new buf, s_buf[MAX_STRING], Float:f_buf;
+		new
+			buf,
+			s_buf[MAX_STRING],
+			Float:f_buf;
+		
 		new file_player = ini_openFile(filename_player);
 		
 		ini_getFloat(file_player, "Armour", f_buf);
@@ -179,27 +183,38 @@ stock player_Login(playerid)
 		ini_getInteger(file_player, "InteriorIndex", buf);
 		Enterexit_SetPlayerIndex(playerid, buf);
 
-		ini_getInteger(file_player, "Interior", buf);
-		SetPVarInt(playerid, "Interior", buf);
+		// player pos
+		new
+			interior,
+			world,
+			Float:coords[4];
 
-		ini_getInteger(file_player, "World", buf);
-		SetPVarInt(playerid, "World", buf);
-		
-		buf = 0;
+		ini_getInteger(file_player, "Interior", interior);
+		ini_getInteger(file_player, "World", world);
 		ini_getString(file_player, "Coords", s_buf);
-		SetPVarFloat(playerid, "Coord_X", floatstr(strcharsplit(s_buf, buf, ',')));
-		SetPVarFloat(playerid, "Coord_Y", floatstr(strcharsplit(s_buf, buf, ',')));
-		SetPVarFloat(playerid, "Coord_Z", floatstr(strcharsplit(s_buf, buf, ',')));
-		SetPVarFloat(playerid, "Coord_A", floatstr(strcharsplit(s_buf, buf, ',')));
+		sscanf(s_buf, "p<,>a<f>[4]", coords);
+
+		Player_SetCoord(playerid, coords[0], coords[1], coords[2], coords[3], interior, world);
 		
+		// 
 		ini_getInteger(file_player, "Status", buf);
 		player_SetStatus(playerid, buf);
 
 		ini_getString(file_player, "Gang", s_buf);
 		SetPlayerGangName(playerid, s_buf);
 
+		// weapon db
+		new
+			bullets[PLAYER_WEAPON_SLOTS],
+			weapons[PLAYER_WEAPON_SLOTS];
+
 		ini_getString(file_player, "Weapons", s_buf);
-		SetWeaponsFromDBString(playerid, s_buf);
+		sscanf(s_buf, "p</>a<i>[" #PLAYER_WEAPON_SLOTS "]", weapons);
+		SetPlayerWeaponsFromArray(playerid, weapons);
+
+		ini_getString(file_player, "Bullets", s_buf);
+		sscanf(s_buf, "p</>a<i>[" #PLAYER_WEAPON_SLOTS "]", bullets);
+		SetPlayerBulletsFromArray(playerid, bullets);
 		
 		ini_getString(file_player, "WeaponsSkills", s_buf);
 		SetWeaponsSkillsFromDBString(playerid, s_buf);

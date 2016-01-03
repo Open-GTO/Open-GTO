@@ -20,16 +20,27 @@ stock player_LoadConfig(file_config)
 {
 	ini_getString(file_config, "Player_DB", db_player);
 	ini_getInteger(file_config, "Player_Start_Money", PlayerStartMoney);
-	new s_buf[MAX_STRING];
+	
+	new
+		weapons[PLAYER_START_WEAPON_SLOTS],
+		bullets[PLAYER_START_WEAPON_SLOTS],
+		s_buf[MAX_STRING];
+
 	ini_getString(file_config, "Player_Start_Weapon", s_buf);
-	SetPSWFromDBString(s_buf);
+	sscanf(s_buf, "p</>a<i>[" #PLAYER_START_WEAPON_SLOTS "]", weapons);
+
+	ini_getString(file_config, "Player_Start_Weapon", s_buf);
+	sscanf(s_buf, "p</>a<i>[" #PLAYER_START_WEAPON_SLOTS "]", bullets);
+
+	SetPlayerStartWeaponsFromArray(weapons);
+	SetPlayerStartBulletsFromArray(bullets);
 }
 
 stock player_SaveConfig(file_config)
 {
 	ini_setString(file_config, "Player_DB", db_player);
 	ini_setInteger(file_config, "Player_Start_Money", PlayerStartMoney);
-	ini_setString(file_config, "Player_Start_Weapon", CreatePSWDBString());
+	ini_setString(file_config, "Player_Start_Weapon", CreatePlayerStartWeaponDBString());
 }
 
 stock player_OnPlayerSpawn(playerid)
@@ -320,7 +331,7 @@ stock player_SetDefaultData(playerid)
 	weapon_ResetSkills(playerid);
 
 	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
-		GivePlayerWeapon(playerid, PlayerStartWeapon[i][psw_id], PlayerStartWeapon[i][psw_bull], true);
+		GivePlayerWeapon(playerid, PlayerStartWeapon[i][pwid], PlayerStartWeapon[i][pbullets], true);
 	}
 }
 

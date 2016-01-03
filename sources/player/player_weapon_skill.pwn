@@ -116,16 +116,11 @@ stock weapon_ResetSkills(playerid)
 	return 1;
 }
 
-// парсит строку, устанавливая нужные значения
 stock SetWeaponsSkillsFromDBString(playerid, dbstring[])
 {
-	new idx;
-	for (new i = 0; i < MAX_WEAPON_SKILLS; i++)
-	{
-		PlayerWeaponsSkills[playerid][i] = strval( strcharsplit(dbstring, idx, '/') );
-	}
+	sscanf(dbstring, "p</>a<i>[" #MAX_WEAPON_SKILLS "]", PlayerWeaponsSkills[playerid]);
 }
-// возвращает строку для сохранения скиллов оружий
+
 stock CreateWeaponSkillsDBString(playerid)
 {
 	new wepstr[MAX_STRING];
@@ -135,7 +130,6 @@ stock CreateWeaponSkillsDBString(playerid)
 	}
 	return wepstr;
 }
-//
 
 stock wskill_HideTextDraw(playerid)
 {
