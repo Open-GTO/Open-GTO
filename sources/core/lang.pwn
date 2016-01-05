@@ -12,9 +12,10 @@
 #pragma library lang
 
 #define MAX_LANG_STRING		MAX_STRING * 2
+#define MAX_LANG_FILE_NAME  10
 
-new lang_use[10] = LANGUAGE_USE;
-new lang_texts[16][100][MAX_LANG_STRING + 10];
+new lang_use[MAX_LANG_FILE_NAME] = LANGUAGE_USE;
+new lang_texts[16][100][MAX_LANG_STRING + MAX_LANG_FILE_NAME];
 
 stock lang_LoadConfig(file_config)
 {
@@ -31,6 +32,11 @@ stock lang_OnGameModeInit()
 	new lang_file[MAX_STRING];
 	format(lang_file, sizeof(lang_file), "%slang_%s%s", db_lang, lang_use, DATA_FILES_FORMAT);
 	lang_ReadFile(lang_file);
+
+	new rcon_command[8 + 1 + 1 + MAX_LANG_FILE_NAME + 1];
+	Lang_GetLang(rcon_command);
+	format(rcon_command, sizeof(rcon_command), "language %c%s", toupper(rcon_command[0]), rcon_command[1]);
+	SendRconCommand(rcon_command);
 
 	Log_Game("SERVER: Lang module init(%s)", lang_file);
 	return 1;
@@ -99,13 +105,14 @@ stock lang_FixSpecialChar(string[MAX_LANG_STRING + 32])
 	}
 }
 
-stock lang_GetLang()
+stock Lang_GetLang(lang[], const size = sizeof(lang))
 {
-	return lang_use;
+	strmid(lang, lang_use, 0, strlen(lang_use), size);
 }
 
-stock lang_SetLang(lang)
+stock Lang_SetLang(langname[])
 {
-	strmid(lang_use, lang, 0, strlen(lang));
+	strmid(lang_use, langname, 0, strlen(langname));
 	lang_OnGameModeInit();
+	Lang_OnGameModeInit();
 }

@@ -534,28 +534,6 @@ ADMIN_PLIST_JAIL_NOTIME = %s(%d) [арест] без времени.
 ADMIN_PLIST_MUTE_REMAIN = %s(%d) [кляп] осталось %d м.
 ADMIN_PLIST_NO_PLAYERS = На сервере нет "забытых" игроков.
 
-ADMIN_SYS_CMDLIST_TIME = S: '/sys time <set/real> <значение>' - Управление временем
-
-ADMIN_SYS_TIME_HELP = {FFCC66}[Применение]: {FFFFFF}/sys time <set/real> <значение>
-ADMIN_SYS_TIME_SET = Время сервера изменено. Текущее время %d
-ADMIN_SYS_TIME_REAL_TRUE = Тип времени изменён, теперь время реальное
-ADMIN_SYS_TIME_REAL_FALSE = Тип времени изменён, теперь время серверное
-
-ADMIN_SYS_ABOUT_0 = Система управления Open-GTO
-ADMIN_SYS_ABOUT_1 = Изменение и просмотр основных параметров системы и игрового режима Open-GTO.
-ADMIN_SYS_ABOUT_2 = Включение и отключение скриптов, управление частотой обновления некоторых параметров.
-
-ADMIN_SYS_INFO_HEAD = Стартовая конфигурация:
-ADMIN_SYS_INFO_AUTORESPAWN = Автореспавн транспорта через: %d сек.
-ADMIN_SYS_INFO_ONLINE = Игроков онлайн: %d из %d
-ADMIN_SYS_INFO_TIME = Время сервера: %s
-ADMIN_SYS_INFO_BANK = Максимум в банке: $%d, максимум наличными: $%d
-ADMIN_SYS_INFO_CONTROL_HELP = Управление скриптами: 0 - режим (скрипт) выключен.
-
-ADMIN_SYS_WEATHER_DISABLED = SYS: {FFFFFF}Автоматическое изменение погоды {AA0000}выкл
-ADMIN_SYS_WEATHER_ENABLED = SYS: {FFFFFF}Автоматическое изменение погоды {00AA00}вкл{FFFFFF}, изменение раз в %d минут
-ADMIN_SYS_WEATHER_ERROR = SYS: Неверный параметр: 0 - выкл., 1-20 - вкл.
-
 ADMIN_SPEC_PLAYERINFO_0 = id: %d, здоровье: %0.2f, броня: %0.2f, пинг: %d\n
 ADMIN_SPEC_PLAYERINFO_1 = банда: %s, деньги: $%d, уровень: %d, опыт: %d/%d\n
 ADMIN_SPEC_PLAYERINFO_2 = оружие: %s (%d), патроны: %d\n
@@ -715,6 +693,33 @@ ADMIN_COMMAND_RCON_HELP_2 = {FFCC66}* {FFFFFF}мере, предоставленной в Open-GTO.
 ADMIN_COMMAND_KICK_IS_ADMIN = Не кикнут, так как является администратором. Причина: %s
 ADMIN_COMMAND_KICK_KICKED_SELF = Вы были кикнуты. Причина: %s.
 ADMIN_COMMAND_KICK_KICKED = %s был кикнут. Причина: %s.
+
+ADMIN_COMMAND_SYSTEM_HELP = {FFCC66}* System: {FFFFFF}Системные команды:
+ADMIN_COMMAND_SYSTEM_HELP_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] help
+
+ADMIN_COMMAND_SYSTEM_WEATHER_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] weather <время(в минутах, 0 выключить)>
+ADMIN_COMMAND_SYSTEM_WEATHER_DISABLED = {FFCC66}* System: {FFFFFF}Автоматическое изменение погоды {AA0000}выключено
+ADMIN_COMMAND_SYSTEM_WEATHER_ENABLED = {FFCC66}* System: {FFFFFF}Автоматическое изменение погоды {00AA00}включено{FFFFFF}, изменение раз в %d %s.
+
+ADMIN_COMMAND_SYSTEM_TIME_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] time <set/real> <значение>
+ADMIN_COMMAND_SYSTEM_TIME_SET = {FFCC66}* System: {FFFFFF}Время сервера изменено. Текущее время %d
+ADMIN_COMMAND_SYSTEM_TIME_TYPE_REAL = {FFCC66}* System: {FFFFFF}Тип времени изменён, теперь время реальное
+ADMIN_COMMAND_SYSTEM_TIME_TYPE_SERVER = {FFCC66}* System: {FFFFFF}Тип времени изменён, теперь время серверное
+
+ADMIN_COMMAND_SYSTEM_GMX_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] gmx
+ADMIN_COMMAND_SYSTEM_GMX_MESSAGE = {FFCC66}* System: {FFFFFF}Сервер перезагружен администратором.
+
+ADMIN_COMMAND_SYSTEM_GROUNDHOLD_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] groundhold <1/0>
+ADMIN_COMMAND_SYSTEM_GROUNDHOLD_ON = {FFCC66}* System: {FFFFFF}Точки прокачки были {00AA00}включены
+ADMIN_COMMAND_SYSTEM_GROUNDHOLD_OFF = {FFCC66}* System: {FFFFFF}Точки прокачки были {AA0000}выключены
+
+ADMIN_COMMAND_SYSTEM_LANG_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] lang <set/get/reload> <имя файла/>
+ADMIN_COMMAND_SYSTEM_LANG_SET = {FFCC66}* System: {FFFFFF}Язык сервера изменён на {FFCC66}%s
+ADMIN_COMMAND_SYSTEM_LANG_GET = {FFCC66}* System: {FFFFFF}Текущий язык сервера: {FFCC66}%s
+ADMIN_COMMAND_SYSTEM_LANG_RELOAD = {FFCC66}* System: {FFFFFF}Язык сервера перезагружен.
+
+ADMIN_COMMAND_SYSTEM_SAY_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] say <текст>
+ADMIN_COMMAND_SYSTEM_SAY_MESSAGE = {FFCC66}* System: {FFFFFF}%s
 
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)
