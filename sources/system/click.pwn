@@ -15,36 +15,36 @@ enum click_dialogArray_Info {
 	cda_info[512],
 	cda_button1[16],
 	cda_button2[16],
-	cda_statusLevel,
+	PlayerPrivilege:cda_privilege,
 	cda_function[32],
 }
 
 static click_dialogArray[][click_dialogArray_Info] = {
 	// player
-	{DIALOG_STYLE_INPUT, "Отправить деньги", "Введите сумму $", "Отправить", "Назад", STATUS_LEVEL_PLAYER, "pl_click_SendCash"},
-	{DIALOG_STYLE_INPUT, "Личное сообщение", "Введите сообщение", "Отправить", "Назад", STATUS_LEVEL_PLAYER, "pl_click_SendMessage"},
-	{DIALOG_STYLE_INPUT, "Жалоба на игрока", "Введите текст", "Отправить", "Назад", STATUS_LEVEL_PLAYER, "pl_click_SendReport"},
+	{DIALOG_STYLE_INPUT, "Отправить деньги", "Введите сумму $", "Отправить", "Назад", PlayerPrivilegePlayer, "pl_click_SendCash"},
+	{DIALOG_STYLE_INPUT, "Личное сообщение", "Введите сообщение", "Отправить", "Назад", PlayerPrivilegePlayer, "pl_click_SendMessage"},
+	{DIALOG_STYLE_INPUT, "Жалоба на игрока", "Введите текст", "Отправить", "Назад", PlayerPrivilegePlayer, "pl_click_SendReport"},
 
 	// moder
-	{DIALOG_STYLE_INPUT, "Кикнуть", "Введите причину", "Кикнуть", "Назад", STATUS_LEVEL_MODER, "adm_click_KickPlayer"},
-	{DIALOG_STYLE_INPUT, "Заглушить", "Введите время, на которое нужно заткнуть игрока", "Заткнуть", "Назад", STATUS_LEVEL_MODER, "adm_click_MutePlayer"},
-	{DIALOG_STYLE_NONE, "Разглушить", "", "", "", STATUS_LEVEL_MODER, "adm_click_UnMutePlayer"},
-	{DIALOG_STYLE_INPUT, "Посадить в тюрьму", "Введите время заключения", "Посадить", "Назад", STATUS_LEVEL_MODER, "adm_click_JailPlayer"},
-	{DIALOG_STYLE_NONE, "Выпустить из тюрьмы", "", "", "", STATUS_LEVEL_MODER, "adm_click_UnJailPlayer"},
+	{DIALOG_STYLE_INPUT, "Кикнуть", "Введите причину", "Кикнуть", "Назад", PlayerPrivilegeModer, "adm_click_KickPlayer"},
+	{DIALOG_STYLE_INPUT, "Заглушить", "Введите время, на которое нужно заткнуть игрока", "Заткнуть", "Назад", PlayerPrivilegeModer, "adm_click_MutePlayer"},
+	{DIALOG_STYLE_NONE, "Разглушить", "", "", "", PlayerPrivilegeModer, "adm_click_UnMutePlayer"},
+	{DIALOG_STYLE_INPUT, "Посадить в тюрьму", "Введите время заключения", "Посадить", "Назад", PlayerPrivilegeModer, "adm_click_JailPlayer"},
+	{DIALOG_STYLE_NONE, "Выпустить из тюрьмы", "", "", "", PlayerPrivilegeModer, "adm_click_UnJailPlayer"},
 
 	// admin
-	{DIALOG_STYLE_NONE, "Информация", "", "", "", STATUS_LEVEL_ADMIN, "adm_click_InfoPlayer"},
-	{DIALOG_STYLE_NONE, "Убить", "", "", "", STATUS_LEVEL_ADMIN, "adm_click_KillPlayer"},
-	{DIALOG_STYLE_NONE, "Телепортироваться к игроку", "", "", "", STATUS_LEVEL_ADMIN, "adm_click_TeleportToPlayer"},
-	{DIALOG_STYLE_NONE, "Телепортировать к себе", "", "", "", STATUS_LEVEL_ADMIN, "adm_click_TeleportToMe"},
-	{DIALOG_STYLE_INPUT, "Изменить здоровье", "Введите значение", "Изменить", "Назад", STATUS_LEVEL_ADMIN, "adm_click_SetHealth"},
-	{DIALOG_STYLE_INPUT, "Изменить броню", "Введите значение", "Изменить", "Назад", STATUS_LEVEL_ADMIN, "adm_click_SetArmour"},
-	{DIALOG_STYLE_INPUT, "Изменить уровень", "Введите новый уровень", "Изменить", "Назад", STATUS_LEVEL_ADMIN, "adm_click_SetLevel"},
-	{DIALOG_STYLE_INPUT, "Дать опыт", "Введите количество опыта", "Дать", "Назад", STATUS_LEVEL_ADMIN, "adm_click_GiveXP"},
-	{DIALOG_STYLE_INPUT, "Дать денег", "Введите количество денег", "Дать", "Назад", STATUS_LEVEL_ADMIN, "adm_click_GiveMoney"},
-	{DIALOG_STYLE_NONE, "Заморозить", "", "", "", STATUS_LEVEL_ADMIN, "adm_click_FreezePlayer"},
-	{DIALOG_STYLE_NONE, "Разморозить", "", "", "", STATUS_LEVEL_ADMIN, "adm_click_UnFreezePlayer"},
-	{DIALOG_STYLE_NONE, "Получить NetStats", "", "", "", STATUS_LEVEL_ADMIN, "adm_click_GetNetStats"}
+	{DIALOG_STYLE_NONE, "Информация", "", "", "", PlayerPrivilegeAdmin, "adm_click_InfoPlayer"},
+	{DIALOG_STYLE_NONE, "Убить", "", "", "", PlayerPrivilegeAdmin, "adm_click_KillPlayer"},
+	{DIALOG_STYLE_NONE, "Телепортироваться к игроку", "", "", "", PlayerPrivilegeAdmin, "adm_click_TeleportToPlayer"},
+	{DIALOG_STYLE_NONE, "Телепортировать к себе", "", "", "", PlayerPrivilegeAdmin, "adm_click_TeleportToMe"},
+	{DIALOG_STYLE_INPUT, "Изменить здоровье", "Введите значение", "Изменить", "Назад", PlayerPrivilegeAdmin, "adm_click_SetHealth"},
+	{DIALOG_STYLE_INPUT, "Изменить броню", "Введите значение", "Изменить", "Назад", PlayerPrivilegeAdmin, "adm_click_SetArmour"},
+	{DIALOG_STYLE_INPUT, "Изменить уровень", "Введите новый уровень", "Изменить", "Назад", PlayerPrivilegeAdmin, "adm_click_SetLevel"},
+	{DIALOG_STYLE_INPUT, "Дать опыт", "Введите количество опыта", "Дать", "Назад", PlayerPrivilegeAdmin, "adm_click_GiveXP"},
+	{DIALOG_STYLE_INPUT, "Дать денег", "Введите количество денег", "Дать", "Назад", PlayerPrivilegeAdmin, "adm_click_GiveMoney"},
+	{DIALOG_STYLE_NONE, "Заморозить", "", "", "", PlayerPrivilegeAdmin, "adm_click_FreezePlayer"},
+	{DIALOG_STYLE_NONE, "Разморозить", "", "", "", PlayerPrivilegeAdmin, "adm_click_UnFreezePlayer"},
+	{DIALOG_STYLE_NONE, "Получить NetStats", "", "", "", PlayerPrivilegeAdmin, "adm_click_GetNetStats"}
 };
 
 /*
@@ -77,10 +77,9 @@ stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
 DialogCreate:PlayerClick(playerid)
 {
 	new listitems[MAX_DIALOG_CAPTION_SIZE * sizeof(click_dialogArray)];
-	new player_status = player_GetStatus(playerid);
 
 	for (new i = 0; i < sizeof(click_dialogArray); i++) {
-		if (player_status >= click_dialogArray[i][cda_statusLevel]) {
+		if (IsPlayerHavePrivilege(playerid, click_dialogArray[i][cda_privilege])) {
 			strcat(listitems, click_dialogArray[i][cda_caption]);
 			strcat(listitems, "\n");
 		}
@@ -95,7 +94,7 @@ DialogResponse:PlayerClick(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new id = click_GetIdByListitem(player_GetStatus(playerid), listitem);
+	new id = click_GetIdByListitem(GetPlayerPrivilege(playerid), listitem);
 
 	if (click_dialogArray[id][cda_style] == -1) {
 		click_CallFunction(playerid, id, listitem, inputtext);
@@ -126,7 +125,7 @@ DialogResponse:PlayerClickResponse(playerid, response, listitem, inputtext[])
 
 	new id = click_GetResponseID(playerid);
 
-	if (player_GetStatus(playerid) >= click_dialogArray[id][cda_statusLevel]) {
+	if (GetPlayerPrivilege(playerid) >= click_dialogArray[id][cda_privilege]) {
 		click_CallFunction(playerid, id, listitem, inputtext);
 	}
 	return 1;
@@ -144,12 +143,12 @@ stock click_CallFunction(playerid, dialogid, listitem, inputtext[])
 	CallLocalFunction(click_dialogArray[dialogid][cda_function], "ddds", playerid, clickedid, listitem, inputtext);
 }
 
-stock click_GetIdByListitem(player_status, listitem)
+stock click_GetIdByListitem(PlayerPrivilege:privilege, listitem)
 {
 	new id = 0;
 
 	for (new i = 0; i < sizeof(click_dialogArray); i++) {
-		if (player_status >= click_dialogArray[i][cda_statusLevel]) {
+		if (_:privilege >= _:click_dialogArray[i][cda_privilege]) {
 			if (listitem == id) {
 				return id;
 			}

@@ -27,7 +27,7 @@ stock adm_login_OnRconLoginAttempt(ip[], password[], success)
 				Player_GetIP(playerid, player_ip);
 
 				if (!strcmp(ip, player_ip, false)) {
-					player_SetStatus(playerid, STATUS_LEVEL_RCON);
+					SetPlayerPrivilege(playerid, PlayerPrivilegeRcon);
 					break;
 				}
 			}

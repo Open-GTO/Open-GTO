@@ -100,7 +100,7 @@ stock player_SaveEx(playerid)
 	format(string, sizeof(string), "%f,%f,%f,%f", pos[0], pos[1], pos[2], pos[3]);
 	ini_setString(file_player, "Coords", string);
 
-	ini_setInteger(file_player, "Status", player_GetStatus(playerid));
+	ini_setInteger(file_player, "Privilege", _:GetPlayerPrivilege(playerid));
 	ini_setString(file_player, "Weapons", CreatePlayerWeaponDBString(playerid));
 	ini_setString(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
 	ini_setInteger(file_player, "SkinModel", GetPlayerSkin(playerid));
@@ -197,8 +197,8 @@ stock player_Login(playerid)
 		Player_SetCoord(playerid, coords[0], coords[1], coords[2], coords[3], interior, world);
 		
 		// 
-		ini_getInteger(file_player, "Status", buf);
-		player_SetStatus(playerid, buf);
+		ini_getInteger(file_player, "Privilege", buf);
+		SetPlayerPrivilege(playerid, PlayerPrivilege:buf);
 
 		ini_getString(file_player, "Gang", s_buf);
 		SetPlayerGangName(playerid, s_buf);

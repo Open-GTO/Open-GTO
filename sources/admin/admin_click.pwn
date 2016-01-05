@@ -149,7 +149,7 @@ public adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][34], ReturnPlayerName(clickedid), clickedid);
 	SendClientMessage(playerid, COLOR_YELLOW, string);
 
-	GetStatusName(player_GetStatus(clickedid), string);
+	GetPlayerPrivilegeName(clickedid, string);
 	SendClientMessage(playerid,COLOR_LIGHTRED,string);
 
 	format(string, sizeof(string), lang_texts[12][35], GetPlayerLevel(clickedid), GetPlayerXP(clickedid));	//Level, XP

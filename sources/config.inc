@@ -161,7 +161,7 @@
 
 // admin
 #define ADMIN_TELEPORT_ENABLED       1 // включена-ли система телепортации администрации по клику на карте
-#define ADMIN_TELEPORT_MIN_STATUS    STATUS_LEVEL_ADMIN // минимальный уровень доступа для телепортации
+#define ADMIN_TELEPORT_MIN_PRIVILEGE    PlayerPrivilegeAdmin // минимальный уровень доступа для телепортации
 
 // lottery
 #define LOTTERY_ENABLED      1 // включен-ли скрипт лотереи

@@ -255,7 +255,7 @@ stock player_OnLogin(playerid)
 
 	// admin
 	if (IsPlayerAdmin(playerid)) {
-		player_SetStatus(playerid, STATUS_LEVEL_RCON);
+		SetPlayerPrivilege(playerid, PlayerPrivilegeAdmin);
 	}
 
 	// gang

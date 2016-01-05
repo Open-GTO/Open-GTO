@@ -50,7 +50,7 @@ COMMAND:status(playerid, params[])
 
 	new string[MAX_STRING];
 
-	GetStatusName(player_GetStatus(playerid), string);
+	GetPlayerPrivilegeName(playerid, string);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	format(string, sizeof(string), _(COMMAND_STATUS_1), ReturnPlayerGangName(playerid));

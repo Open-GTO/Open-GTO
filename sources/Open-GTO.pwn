@@ -120,7 +120,7 @@ Thanks:
 #include "player/player_health.pwn"
 #include "player/player_fights.pwn"
 #include "player/player_vehicle.pwn"
-#include "player/player_status.pwn"
+#include "player/player_privilege.pwn"
 #include "player/player_account.pwn"
 #include "player/player_spawn.pwn"
 #include "player/player_login.pwn"
