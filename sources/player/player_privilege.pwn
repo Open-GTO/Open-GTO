@@ -53,13 +53,13 @@ stock GetPlayerPrivilegeName(playerid, name[], size = sizeof(name))
 stock GetPrivilegeName(PlayerPrivilege:privilege, name[], size = sizeof(name))
 {
 	if (privilege == PlayerPrivilegeModer) {
-		__(STATUS_MODER, name, size);
+		__(PRIVILEGE_MODER, name, size);
 	} else if (privilege == PlayerPrivilegeAdmin) {
-		__(STATUS_ADMIN, name, size);
+		__(PRIVILEGE_ADMIN, name, size);
 	} else if (privilege == PlayerPrivilegeRcon) {
-		__(STATUS_RCON, name, size);
+		__(PRIVILEGE_RCON, name, size);
 	} else {
-		__(STATUS_USER, name, size);
+		__(PRIVILEGE_PLAYER, name, size);
 	}
 }
 

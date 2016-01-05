@@ -171,11 +171,11 @@ COMMAND_DANCE_ERROR = Применение: /dance <1-4>. Управление - стрелки, + пробел и
 COMMAND_PM_USE = {FFCC66}[Применение]: {FFFFFF}/pm <ID> <сообщение>
 COMMAND_PM_ERROR_ID = {FF2211}[Ошибка]: {FFFFFF}/pm: неверный ID
 
-// status
-STATUS_ADMIN = Администратор (полный доступ)
-STATUS_MODER = Модератор (повышеный доступ)
-STATUS_USER = Просто пользователь (обычные права)
-STATUS_RCON = RCON администратор (расширенный доступ)
+// privilege
+PRIVILEGE_PLAYER = игрок
+PRIVILEGE_MODER = модератор
+PRIVILEGE_ADMIN = администратор
+PRIVILEGE_RCON = ркон администратор
 
 // player spawn
 PLAYER_SPAWN_LIST_NEARLY_POINT = Ближайшая точка\n
@@ -720,6 +720,11 @@ ADMIN_COMMAND_SYSTEM_LANG_RELOAD = {FFCC66}* System: {FFFFFF}Язык сервера переза
 
 ADMIN_COMMAND_SYSTEM_SAY_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] say <текст>
 ADMIN_COMMAND_SYSTEM_SAY_MESSAGE = {FFCC66}* System: {FFFFFF}%s
+
+ADMIN_COMMAND_PRIVILEGE_HELP = {FFCC66}[Применение]: {FFFFFF}/privilege <set/get> <id/ник> <статус(игрок, модератор, администратор, ркон)/>
+ADMIN_COMMAND_PRIVILEGE_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}установил вам уровень привилегий: {FFCC66}%s
+ADMIN_COMMAND_PRIVILEGE_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили {FFCC66}%s(%d) {FFFFFF}уровень привилегий до {FFCC66}%s
+ADMIN_COMMAND_PRIVILEGE_GET =  {FFCC66}* {FFFFFF}Привилегии игрока {FFCC66}%s(%d){FFFFFF}: {FFCC66}%s
 
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)
