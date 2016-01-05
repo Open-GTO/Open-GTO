@@ -514,23 +514,6 @@ COMMAND:setskin(playerid, params[])
 	return 1;
 }
 
-COMMAND:ssay(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, "Применение: /ssay <текст>");
-		return 1;
-	}
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][1], params);
-	SendClientMessageToAll(COLOR_YELLOW, string);
-	return 1;
-}
-
 COMMAND:setstatus(playerid, params[])
 {
 	if (!IsPlayerRconAdmin(playerid)) {
