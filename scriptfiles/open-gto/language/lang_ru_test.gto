@@ -721,7 +721,7 @@ ADMIN_COMMAND_SYSTEM_LANG_RELOAD = {FFCC66}* System: {FFFFFF}Язык сервера переза
 ADMIN_COMMAND_SYSTEM_SAY_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] say <текст>
 ADMIN_COMMAND_SYSTEM_SAY_MESSAGE = {FFCC66}* System: {FFFFFF}%s
 
-ADMIN_COMMAND_PRIVILEGE_HELP = {FFCC66}[Применение]: {FFFFFF}/privilege <set/get> <id/ник> <статус(игрок, модератор, администратор, ркон)/>
+ADMIN_COMMAND_PRIVILEGE_HELP = {FFCC66}[Применение]: {FFFFFF}/priv[ilege] <set/get> <id/ник> <статус(игрок, модератор, администратор, ркон)/>
 ADMIN_COMMAND_PRIVILEGE_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}установил вам уровень привилегий: {FFCC66}%s
 ADMIN_COMMAND_PRIVILEGE_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили {FFCC66}%s(%d) {FFFFFF}уровень привилегий до {FFCC66}%s
 ADMIN_COMMAND_PRIVILEGE_GET =  {FFCC66}* {FFFFFF}Привилегии игрока {FFCC66}%s(%d){FFFFFF}: {FFCC66}%s

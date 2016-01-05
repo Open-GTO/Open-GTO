@@ -12,6 +12,11 @@
 #define _admin_cmd_privileje_included
 #pragma library admin_cmd_privileje
 
+COMMAND:priv(playerid, params[])
+{
+	return cmd_privileje(playerid, params);
+}
+
 COMMAND:privileje(playerid, params[])
 {
 	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
