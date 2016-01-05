@@ -13,12 +13,12 @@
 
 COMMAND:cmdlist(playerid, params[])
 {
-	if (IsPlayerMod(playerid)) {
+	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		SendClientMessage(playerid, COLOR_LIGHTGREEN, lang_texts[13][8]);
 		SendClientMessage(playerid, COLOR_LIGHTGREEN, lang_texts[13][9]);
 	}
 
-	if (IsPlayerAdm(playerid)) {
+	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[13][23]);
 		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[13][24]);
 		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[13][25]);
@@ -26,7 +26,7 @@ COMMAND:cmdlist(playerid, params[])
 		SendClientMessage(playerid, COLOR_LIGHTBLUE, lang_texts[13][27]);
 	}
 
-	if (IsPlayerRconAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		SendClientMessage(playerid, COLOR_GREEN, lang_texts[13][1]);
 		SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][2]);
 		SendClientMessage(playerid, COLOR_WHITE, lang_texts[13][3]);
@@ -39,19 +39,19 @@ COMMAND:cmdlist(playerid, params[])
 
 COMMAND:about(playerid, params[])
 {
-	if (IsPlayerMod(playerid)) {
+	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_MODER_HELP_0));
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_MODER_HELP_1));
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_MODER_HELP_2));
 	}
 
-	if (IsPlayerAdm(playerid)) {
+	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ADMIN_HELP_0));
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ADMIN_HELP_1));
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ADMIN_HELP_2));
 	}
 
-	if (IsPlayerRconAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_RCON_HELP_0));
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_RCON_HELP_1));
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_RCON_HELP_2));
@@ -61,7 +61,7 @@ COMMAND:about(playerid, params[])
 
 COMMAND:pinfo(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 
@@ -82,7 +82,7 @@ COMMAND:pinfo(playerid, params[])
 	format(string, sizeof(string), lang_texts[12][34], ReturnPlayerName(receiverid), receiverid);
 	SendClientMessage(playerid, COLOR_YELLOW, string);
 
-	GetStatusName(player_GetStatus(playerid), string);
+	GetPlayerPrivilegeName(playerid, string);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	format(string, sizeof(string), lang_texts[12][35], GetPlayerLevel(receiverid), GetPlayerXP(receiverid));
@@ -107,7 +107,7 @@ COMMAND:pinfo(playerid, params[])
 
 COMMAND:teleset(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 
@@ -128,7 +128,7 @@ COMMAND:teleset(playerid, params[])
 
 COMMAND:teleloc(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 
@@ -152,7 +152,7 @@ COMMAND:teleloc(playerid, params[])
 
 COMMAND:teleto(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 
@@ -192,7 +192,7 @@ COMMAND:teleto(playerid, params[])
 
 COMMAND:telehere(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 
@@ -209,7 +209,7 @@ COMMAND:telehere(playerid, params[])
 		return 1;
 	}
 
-	if (IsPlayerRconAdmin(receiverid) && receiverid != playerid) {
+	if (IsPlayerHavePrivilege(receiverid, PlayerPrivilegeRcon) && receiverid != playerid) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
@@ -241,7 +241,7 @@ COMMAND:telehere(playerid, params[])
 
 COMMAND:telehereall(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 
@@ -257,7 +257,7 @@ COMMAND:telehereall(playerid, params[])
 			continue;
 		}
 
-		if (!player_IsJailed(id) && !IsPlayerRconAdmin(id)) {
+		if (!player_IsJailed(id) && !IsPlayerHavePrivilege(id, PlayerPrivilegeRcon)) {
 			receiver_x = receiver_x + random(2) - random(4);
 			receiver_y = receiver_y + random(2) - random(4);	
 			SetPlayerPos(id, receiver_x, receiver_y, receiver_z);
@@ -273,7 +273,7 @@ COMMAND:telehereall(playerid, params[])
 
 COMMAND:telexyzi(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 
@@ -303,7 +303,7 @@ COMMAND:telexyzi(playerid, params[])
 
 COMMAND:paralyze(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 
@@ -315,7 +315,7 @@ COMMAND:paralyze(playerid, params[])
 	new idx = 0;
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 	
-	if (IsPlayerRconAdmin(receiverid) && receiverid != playerid) {
+	if (IsPlayerHavePrivilege(receiverid, PlayerPrivilegeRcon) && receiverid != playerid) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
@@ -338,7 +338,7 @@ COMMAND:paralyze(playerid, params[])
 
 COMMAND:deparalyze(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 
@@ -350,7 +350,7 @@ COMMAND:deparalyze(playerid, params[])
 	new idx = 0;
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 	
-	if (IsPlayerRconAdmin(receiverid) && receiverid != playerid) {
+	if (IsPlayerHavePrivilege(receiverid, PlayerPrivilegeRcon) && receiverid != playerid) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
@@ -373,7 +373,7 @@ COMMAND:deparalyze(playerid, params[])
 
 COMMAND:paralyzeall(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 
@@ -381,7 +381,7 @@ COMMAND:paralyzeall(playerid, params[])
 	format(string, sizeof(string), lang_texts[12][54], ReturnPlayerName(playerid));
 
 	foreach (new id : Player) {
-		if (id == playerid || player_IsJailed(id) || player_IsAtQuest(id) || IsPlayerRconAdmin(id)) {
+		if (id == playerid || player_IsJailed(id) || player_IsAtQuest(id) || IsPlayerHavePrivilege(id, PlayerPrivilegeRcon)) {
 			continue;
 		}
 
@@ -395,7 +395,7 @@ COMMAND:paralyzeall(playerid, params[])
 
 COMMAND:deparalyzeall(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 
@@ -403,7 +403,7 @@ COMMAND:deparalyzeall(playerid, params[])
 	format(string, sizeof(string), lang_texts[12][54], ReturnPlayerName(playerid));
 
 	foreach (new id : Player) {
-		if (id == playerid || player_IsJailed(id) || player_IsAtQuest(id) || IsPlayerRconAdmin(id)) {
+		if (id == playerid || player_IsJailed(id) || player_IsAtQuest(id) || IsPlayerHavePrivilege(id, PlayerPrivilegeRcon)) {
 			continue;
 		}
 
@@ -417,7 +417,7 @@ COMMAND:deparalyzeall(playerid, params[])
 
 COMMAND:getip(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 
@@ -454,7 +454,7 @@ COMMAND:getip(playerid, params[])
 
 COMMAND:boom(playerid, params[])
 {
-	if (!IsPlayerRconAdmin(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		return 0;
 	}
 
@@ -479,7 +479,7 @@ COMMAND:boom(playerid, params[])
 
 COMMAND:setskin(playerid, params[])
 {
-	if (!IsPlayerRconAdmin(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		return 0;
 	}
 
@@ -491,7 +491,7 @@ COMMAND:setskin(playerid, params[])
 	new idx;
 	new receiverid = strval(strcharsplit(params, idx, ' '));
 	
-	if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))) {
+	if (!IsPlayerConnected(receiverid) || (IsPlayerHavePrivilege(receiverid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon))) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
@@ -514,62 +514,9 @@ COMMAND:setskin(playerid, params[])
 	return 1;
 }
 
-COMMAND:setstatus(playerid, params[])
-{
-	if (!IsPlayerRconAdmin(playerid)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, "Применение: /setstatus <ID> <уровень>");
-		return 1;
-	}
-
-	new idx = 0;
-	new receiverid = strval(strcharsplit(params, idx, ' '));
-
-	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 1;
-	}
-	
-	new sid = strval(strcharsplit(params, idx, ' '));
-	if (sid < 0 || sid > 3) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][44]);
-		return 1;
-	}
-	
-	if (IsPlayerRconAdmin(receiverid) && !IsPlayerAdmin(playerid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][89]);
-		return 1;
-	}
-	
-	new string[MAX_STRING];
-	
-	if (sid == STATUS_LEVEL_PLAYER) {
-		format(string, sizeof(string), lang_texts[12][84], ReturnPlayerName(playerid), playerid);
-		SendClientMessage(receiverid, COLOR_WHITE, string);
-
-		format(string, sizeof(string), lang_texts[12][85], ReturnPlayerName(receiverid), receiverid);
-		SendClientMessage(playerid, COLOR_WHITE, string);
-	} else {
-		new sidstring[64];
-		GetStatusName(sid, sidstring);
-
-		format(string, sizeof(string), lang_texts[12][82], ReturnPlayerName(playerid), playerid, sidstring);
-		SendClientMessage(receiverid, COLOR_WHITE, string);
-		
-		format(string, sizeof(string), lang_texts[12][83], ReturnPlayerName(receiverid), receiverid, sidstring);
-		SendClientMessage(playerid, COLOR_WHITE, string);
-	}
-
-	player_SetStatus(receiverid, sid);
-	return 1;
-}
-
 COMMAND:plist(playerid, params[])
 {
-	if (!IsPlayerMod(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		return 0;
 	}
 
@@ -606,7 +553,7 @@ COMMAND:plist(playerid, params[])
 
 COMMAND:kick(playerid, params[])
 {
-	if (!IsPlayerMod(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		return 0;
 	}
 
@@ -629,7 +576,7 @@ COMMAND:kick(playerid, params[])
 		return 1;
 	}
 
-	if (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid) && !IsPlayerAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(receiverid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon) && !IsPlayerAdmin(playerid)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
@@ -644,7 +591,7 @@ COMMAND:kick(playerid, params[])
 
 COMMAND:clearchat(playerid, params[])
 {
-	if (!IsPlayerMod(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		return 0;
 	}
 

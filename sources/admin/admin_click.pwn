@@ -10,7 +10,7 @@
 forward adm_click_KickPlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_KickPlayer(playerid, clickedid, listitem, inputtext[])
 {
-	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
@@ -87,7 +87,7 @@ public adm_click_UnMutePlayer(playerid, clickedid, listitem, inputtext[])
 forward adm_click_JailPlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_JailPlayer(playerid, clickedid, listitem, inputtext[])
 {
-	if (!IsPlayerConnected(clickedid) || (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid))) {
+	if (!IsPlayerConnected(clickedid) || (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon))) {
 		SendClientMessage(playerid,COLOR_RED,lang_texts[12][2]);
 		return 0;
 	}
@@ -174,7 +174,7 @@ public adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 forward adm_click_KillPlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_KillPlayer(playerid, clickedid, listitem, inputtext[])
 {
-	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
@@ -233,7 +233,7 @@ public adm_click_TeleportToPlayer(playerid, clickedid, listitem, inputtext[])
 forward adm_click_TeleportToMe(playerid, clickedid, listitem, inputtext[]);
 public adm_click_TeleportToMe(playerid, clickedid, listitem, inputtext[])
 {
-	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
@@ -275,7 +275,7 @@ public adm_click_TeleportToMe(playerid, clickedid, listitem, inputtext[])
 forward adm_click_SetHealth(playerid, clickedid, listitem, inputtext[]);
 public adm_click_SetHealth(playerid, clickedid, listitem, inputtext[])
 {
-	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
@@ -299,7 +299,7 @@ public adm_click_SetHealth(playerid, clickedid, listitem, inputtext[])
 forward adm_click_SetArmour(playerid, clickedid, listitem, inputtext[]);
 public adm_click_SetArmour(playerid, clickedid, listitem, inputtext[])
 {
-	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
@@ -323,7 +323,7 @@ public adm_click_SetArmour(playerid, clickedid, listitem, inputtext[])
 forward adm_click_SetLevel(playerid, clickedid, listitem, inputtext[]);
 public adm_click_SetLevel(playerid, clickedid, listitem, inputtext[])
 {
-	if (!IsPlayerConnected(clickedid) || (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid))) {
+	if (!IsPlayerConnected(clickedid) || (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon))) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
@@ -349,7 +349,7 @@ public adm_click_SetLevel(playerid, clickedid, listitem, inputtext[])
 forward adm_click_GiveXP(playerid, clickedid, listitem, inputtext[]);
 public adm_click_GiveXP(playerid, clickedid, listitem, inputtext[])
 {
-	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 0;
 	}
@@ -420,7 +420,7 @@ public adm_click_GiveMoney(playerid, clickedid, listitem, inputtext[])
 forward adm_click_FreezePlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_FreezePlayer(playerid, clickedid, listitem, inputtext[])
 {
-	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][9]);
 		return 0;
 	}
@@ -444,7 +444,7 @@ public adm_click_FreezePlayer(playerid, clickedid, listitem, inputtext[])
 forward adm_click_UnFreezePlayer(playerid, clickedid, listitem, inputtext[]);
 public adm_click_UnFreezePlayer(playerid, clickedid, listitem, inputtext[])
 {
-	if (IsPlayerRconAdmin(clickedid) && !IsPlayerRconAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][9]);
 		return 0;
 	}

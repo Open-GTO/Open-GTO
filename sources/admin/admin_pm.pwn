@@ -15,7 +15,7 @@
 
 COMMAND:showpm(playerid, params[])
 {
-	if (!IsPlayerAdm(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
 

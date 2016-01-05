@@ -13,17 +13,6 @@
 #pragma library pl_privilege
 
 /*
-	Enums
-*/
-
-enum PlayerPrivilege {
-	PlayerPrivilegePlayer,
-	PlayerPrivilegeModer,
-	PlayerPrivilegeAdmin,
-	PlayerPrivilegeRcon,
-}
-
-/*
 	Vars
 */
 
@@ -81,23 +70,4 @@ stock GetPrivilegeName(PlayerPrivilege:privilege, name[], size = sizeof(name))
 stock IsPlayerHavePrivilege(playerid, PlayerPrivilege:privilege)
 {
 	return _:GetPlayerPrivilege(playerid) >= _:privilege;
-}
-
-/*
-	Is*
-*/
-
-stock IsPlayerRconAdmin(playerid)
-{
-	return IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon);
-}
-
-stock IsPlayerAdm(playerid)
-{
-	return IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin);
-}
-
-stock IsPlayerMod(playerid)
-{
-	return IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer);
 }

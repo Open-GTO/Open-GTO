@@ -50,7 +50,7 @@ stock MutePlayerTimer(playerid)
 
 COMMAND:mute(playerid, params[])
 {
-	if (!IsPlayerMod(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		return 0;
 	}
 
@@ -88,7 +88,7 @@ COMMAND:mute(playerid, params[])
 
 COMMAND:unmute(playerid, params[])
 {
-	if (!IsPlayerMod(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		return 0;
 	}
 

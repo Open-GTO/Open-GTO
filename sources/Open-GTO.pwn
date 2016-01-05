@@ -51,6 +51,7 @@ Thanks:
 #include "player/player_spawn.inc"
 #include "player/player_weapon.inc"
 #include "player/player_money.inc"
+#include "player/player_privilege.inc"
 #include "protections/armour.inc"
 #include "protections/health.inc"
 #include "protections/specialaction.inc"

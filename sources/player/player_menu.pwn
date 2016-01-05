@@ -155,10 +155,10 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				moders[(MAX_PLAYER_NAME + 1 + 5) * 10];
 			
 			foreach (new id : Player) {
-				if (IsPlayerAdm(id)) {
+				if (IsPlayerHavePrivilege(id, PlayerPrivilegeAdmin)) {
 					format(admins, sizeof(admins), "%s%s(%d)\n", admins, ReturnPlayerName(id), id);
 					idsa++;
-				} else if (IsPlayerMod(id)) {
+				} else if (IsPlayerHavePrivilege(id, PlayerPrivilegeModer)) {
 					format(moders, sizeof(moders), "%s%s(%d)\n", moders, ReturnPlayerName(id), id);
 					idsm++;
 				}

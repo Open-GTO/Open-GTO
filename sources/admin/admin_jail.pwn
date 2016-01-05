@@ -98,7 +98,7 @@ stock JailPlayerTimer(playerid)
 
 COMMAND:jail(playerid, params[])
 {
-	if (!IsPlayerMod(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		return 0;
 	}
 
@@ -110,7 +110,7 @@ COMMAND:jail(playerid, params[])
 	new idx;
 	new jailid = strval(strcharsplit(params, idx, ' '));
 
-	if (!IsPlayerConnected(jailid) || (IsPlayerRconAdmin(jailid) && !IsPlayerRconAdmin(playerid))) {
+	if (!IsPlayerConnected(jailid) || (IsPlayerHavePrivilege(jailid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon))) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
 		return 1;
 	}
@@ -133,7 +133,7 @@ COMMAND:jail(playerid, params[])
 
 COMMAND:unjail(playerid, params[])
 {
-	if (!IsPlayerMod(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		return 0;
 	}
 

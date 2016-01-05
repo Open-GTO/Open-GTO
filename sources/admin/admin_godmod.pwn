@@ -25,7 +25,7 @@ static
 
 COMMAND:godmod(playerid, params[])
 {
-	if (!IsPlayerRconAdmin(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		return 0;
 	}
 

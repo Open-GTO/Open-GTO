@@ -50,7 +50,7 @@ stock SendClientMessageToAdmins(senderid, text[])
 	
 	format(message, sizeof(message), lang_texts[12][28], ReturnPlayerName(senderid), senderid, text);
 	foreach (new adminid : Player) {
-		if (IsPlayerAdm(adminid)) {
+		if (IsPlayerHavePrivilege(adminid, PlayerPrivilegeAdmin)) {
 			SendClientMessage(adminid, COLOR_RED, message);
 			count++;
 		}
@@ -72,7 +72,7 @@ stock SendClientMessageToModers(senderid, text[])
 
 	format(message, sizeof(message), lang_texts[12][79], ReturnPlayerName(senderid), senderid, text);
 	foreach (new adminid : Player) {
-		if (IsPlayerMod(adminid)) {
+		if (IsPlayerHavePrivilege(adminid, PlayerPrivilegeModer)) {
 			SendClientMessage(adminid, COLOR_RED, message);
 			count++;
 		}
@@ -141,7 +141,7 @@ stock Admin_SendProtectReport(issuerid, text[], {Float, _}:...)
 	}
 
 	foreach (new adminid : Player) {
-		if (IsPlayerMod(adminid)) {
+		if (IsPlayerHavePrivilege(adminid, PlayerPrivilegeModer)) {
 			SendClientMessage(adminid, COLOR_RED, message);
 		}
 	}

@@ -57,7 +57,7 @@ public pl_click_SendReport(playerid, clickedid, listitem, inputtext[])
 	new admin_count = 0;
 
 	foreach (new id : Player) {
-		if (IsPlayerMod(id)) {
+		if (IsPlayerHavePrivilege(id, PlayerPrivilegeModer)) {
 			admin_count++;
 			SendClientMessage(id, COLOR_RED, string);
 		}

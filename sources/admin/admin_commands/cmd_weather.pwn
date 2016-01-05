@@ -15,7 +15,7 @@
 
 COMMAND:weather(playerid, params[])
 {
-	if (!IsPlayerMod(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		return 0;
 	}
 

@@ -27,7 +27,7 @@ stock KickPlayer(playerid, reason[] = "", showreason = 1)
 	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	if (IsPlayerRconAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		format(string, sizeof(string), _(ADMIN_COMMAND_KICK_IS_ADMIN), reason);
 		SendClientMessage(playerid, COLOR_YELLOW, string);
 		return 0;

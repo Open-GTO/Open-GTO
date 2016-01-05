@@ -232,11 +232,11 @@ stock player_OnLogin(playerid)
 	SendClientMessage(playerid, COLOR_WHITE, _(ACCOUNT_LOGIN_MESSAGE_2));
 	SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_MESSAGE_3));
 
-	if (IsPlayerRconAdmin(playerid)) {
+	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_ROOT));
-	} else if (IsPlayerAdm(playerid)) {
+	} else if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_ADMIN));
-	} else if (IsPlayerMod(playerid)) {
+	} else if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_MODER));
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	} else {
@@ -245,7 +245,7 @@ stock player_OnLogin(playerid)
 	}
 
 	foreach (new id : Player) {
-		if (IsPlayerRconAdmin(playerid)) {
+		if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 			continue;
 		}
 

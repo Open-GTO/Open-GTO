@@ -19,7 +19,7 @@ COMMAND:v(playerid, params[])
 
 COMMAND:vehicle(playerid, params[])
 {
-	if (!IsPlayerMod(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		return 0;
 	}
 
@@ -39,7 +39,7 @@ COMMAND:vehicle(playerid, params[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (strcmp(subcmd, "add", true) == 0) {
-		if (!IsPlayerAdm(playerid)) {
+		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
@@ -71,7 +71,7 @@ COMMAND:vehicle(playerid, params[])
 		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_ADD_MESSAGE), playername, playerid, vehicleid);
 		SendMessageToNearPlayers(string, 40.0, x, y, z);
 	} else if (strcmp(subcmd, "remove", true) == 0) {
-		if (!IsPlayerAdm(playerid)) {
+		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
@@ -102,7 +102,7 @@ COMMAND:vehicle(playerid, params[])
 		// destroy
 		DestroyVehicle(vehicleid);
 	} else if (strcmp(subcmd, "respawn", true) == 0) {
-		if (!IsPlayerMod(playerid)) {
+		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
@@ -142,7 +142,7 @@ COMMAND:vehicle(playerid, params[])
 			SetVehicleToRespawn(vehicleid);
 		}
 	} else if (strcmp(subcmd, "repair", true) == 0) {
-		if (!IsPlayerMod(playerid)) {
+		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
@@ -182,7 +182,7 @@ COMMAND:vehicle(playerid, params[])
 			RepairVehicle(vehicleid);
 		}
 	} else if (strcmp(subcmd, "info", true) == 0) {
-		if (!IsPlayerMod(playerid)) {
+		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
@@ -225,7 +225,7 @@ COMMAND:vehicle(playerid, params[])
 		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1), health, x, y, z, angle);
 		SendClientMessage(playerid, -1, string);
 	} else if (strcmp(subcmd, "health", true) == 0) {
-		if (!IsPlayerMod(playerid)) {
+		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}

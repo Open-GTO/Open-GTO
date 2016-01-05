@@ -37,7 +37,7 @@ stock admin_SetHideStatus(playerid, hidestatus) {
 
 COMMAND:ahideme(playerid, params[])
 {
-	if (!IsPlayerRconAdmin(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		return 0;
 	}
 	
@@ -48,7 +48,7 @@ COMMAND:ahideme(playerid, params[])
 
 COMMAND:ashoweme(playerid, params[])
 {
-	if (!IsPlayerRconAdmin(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		return 0;
 	}
 	

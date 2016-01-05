@@ -22,7 +22,7 @@ forward adm_spec_UpdateLabel(playerid);
 
 COMMAND:spec(playerid, params[])
 {
-	if (!IsPlayerMod(playerid)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		return 0;
 	}
 

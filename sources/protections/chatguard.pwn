@@ -565,7 +565,7 @@ stock pt_chat_OnPlayerDisconnect ( playerid, reason )
 
 stock pt_chat_OnPlayerText ( playerid, text[] )
 {
-	if (!IsEnabled || IsPlayerAdm(playerid)) {
+	if (!IsEnabled || IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
         return 1;
     }
     new msgTick = GetTickCount();

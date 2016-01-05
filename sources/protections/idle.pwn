@@ -65,7 +65,7 @@ pt_idle_PlayerTimer(playerid)
 		return 0;
 	}
 
-	if (IsGroundholdEnabled() && IsPlayerInAnyGround(playerid) && !IsPlayerRconAdmin(playerid)) {
+	if (IsGroundholdEnabled() && IsPlayerInAnyGround(playerid) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		new Float:pos[3];
 		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 
