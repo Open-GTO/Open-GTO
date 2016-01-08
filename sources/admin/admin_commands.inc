@@ -286,15 +286,16 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 	if (!strcmp(cmd, "/remcash", true))
 	{
 		new receiverid = strval(strcharsplit(text, idx, ' '));
-		if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid)))
-		{
+		if (!IsPlayerConnected(receiverid) || (IsPlayerRconAdmin(receiverid) && !IsPlayerRconAdmin(playerid))) {
 			return SendClientMessage(playerid, COLOUR_RED, lang_texts[12][2]);
 		}
 
-		ResetPlayerMoney(receiverid);
+		oSetPlayerMoney(playerid, 0);
+
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[12][58], oGetPlayerName(playerid));			//игроку
 		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
+
 		format(string, sizeof(string), lang_texts[12][59], oGetPlayerName(receiverid));
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 		return 1;
@@ -302,16 +303,18 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 	if (!strcmp(cmd, "/remcashall", true))
 	{
 		new string[MAX_STRING];
-		foreach (Player, id)
-		{
-			if (id == playerid || IsPlayerJailed(id) || IsPlayerRconAdmin(id))
-			{
+
+		foreach (new id : Player) {
+			if (IsPlayerRconAdmin(id)) {
 				continue;
 			}
-			ResetPlayerMoney(id);
+
+			oSetPlayerMoney(id, 0);
+
 			format(string, sizeof(string), lang_texts[12][58], oGetPlayerName(playerid));
 			SendClientMessage(id, COLOUR_XP_GOOD, string);
 		}
+
 		format(string, sizeof(string), lang_texts[12][78]);
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
 		return 1;
