@@ -578,7 +578,7 @@ ADMIN_COMMAND_CAMERA_SET_ERROR = {FFCC66}[Применение]: {FFFFFF}/c[amera] set <cX
 
 ADMIN_COMMAND_ARMOUR_HELP = {FFCC66}[Применение]: {FFFFFF}/armour <set/get/give> <id/ник/all> <количество/>
 ADMIN_COMMAND_ARMOUR_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
-ADMIN_COMMAND_ARMOUR_GET =  {FFCC66}* {FFFFFF}Броня игрока {FFCC66}%s(%d): {FFCC66}%0.2f
+ADMIN_COMMAND_ARMOUR_GET = {FFCC66}* {FFFFFF}Броня игрока {FFCC66}%s(%d): {FFCC66}%0.2f
 ADMIN_COMMAND_ARMOUR_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил броню всех игроков на {FFCC66}%.2f
 ADMIN_COMMAND_ARMOUR_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил броню {FFCC66}%s(%d) на {FFCC66}%.2f
 ADMIN_COMMAND_ARMOUR_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили броню у {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%.2f
@@ -588,7 +588,7 @@ ADMIN_COMMAND_ARMOUR_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили броню у {FFCC66}%s
 
 ADMIN_COMMAND_HEALTH_HELP = {FFCC66}[Применение]: {FFFFFF}/health <set/get/give> <id/ник/all> <количество/>
 ADMIN_COMMAND_HEALTH_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
-ADMIN_COMMAND_HEALTH_GET =  {FFCC66}* {FFFFFF}Здоровье игрока {FFCC66}%s(%d): {FFCC66}%0.2f
+ADMIN_COMMAND_HEALTH_GET = {FFCC66}* {FFFFFF}Здоровье игрока {FFCC66}%s(%d): {FFCC66}%0.2f
 ADMIN_COMMAND_HEALTH_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил здоровье всех игроков на {FFCC66}%.2f
 ADMIN_COMMAND_HEALTH_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил здоровье {FFCC66}%s(%d) на {FFCC66}%.2f
 ADMIN_COMMAND_HEALTH_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили здоровье у {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%.2f
@@ -598,7 +598,7 @@ ADMIN_COMMAND_HEALTH_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили здоровье у {FFCC66
 
 ADMIN_COMMAND_MONEY_HELP = {FFCC66}[Применение]: {FFFFFF}/money <set/get/give> <id/ник/all> <количество/>
 ADMIN_COMMAND_MONEY_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
-ADMIN_COMMAND_MONEY_GET =  {FFCC66}* {FFFFFF}Деньги игрока {FFCC66}%s(%d): {FFCC66}%d
+ADMIN_COMMAND_MONEY_GET = {FFCC66}* {FFFFFF}Деньги игрока {FFCC66}%s(%d): {FFCC66}%d
 ADMIN_COMMAND_MONEY_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил деньги всех игроков на {FFCC66}%d
 ADMIN_COMMAND_MONEY_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил вам деньги на {FFCC66}%d
 ADMIN_COMMAND_MONEY_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили деньги {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%d
@@ -608,7 +608,7 @@ ADMIN_COMMAND_MONEY_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили деньги {FFCC66}%s(%
 
 ADMIN_COMMAND_LEVEL_HELP = {FFCC66}[Применение]: {FFFFFF}/level <set/get/give> <id/ник/all> <количество/>
 ADMIN_COMMAND_LEVEL_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
-ADMIN_COMMAND_LEVEL_GET =  {FFCC66}* {FFFFFF}Уровень игрока {FFCC66}%s(%d): {FFCC66}%d
+ADMIN_COMMAND_LEVEL_GET = {FFCC66}* {FFFFFF}Уровень игрока {FFCC66}%s(%d): {FFCC66}%d
 ADMIN_COMMAND_LEVEL_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил уровень всех игроков на {FFCC66}%d
 ADMIN_COMMAND_LEVEL_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил вам уровень на {FFCC66}%d
 ADMIN_COMMAND_LEVEL_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили уровень {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%d
@@ -618,7 +618,7 @@ ADMIN_COMMAND_LEVEL_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили уровень у {FFCC66}%
 
 ADMIN_COMMAND_XP_HELP = {FFCC66}[Применение]: {FFFFFF}/xp <set/get/give> <id/ник/all> <количество/>
 ADMIN_COMMAND_XP_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
-ADMIN_COMMAND_XP_GET =  {FFCC66}* {FFFFFF}Опыт игрока {FFCC66}%s(%d): {FFCC66}%d
+ADMIN_COMMAND_XP_GET = {FFCC66}* {FFFFFF}Опыт игрока {FFCC66}%s(%d): {FFCC66}%d
 ADMIN_COMMAND_XP_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил опыт всех игроков на {FFCC66}%d
 ADMIN_COMMAND_XP_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил вам опыт на {FFCC66}%d
 ADMIN_COMMAND_XP_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили опыт {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%d
@@ -639,7 +639,7 @@ ADMIN_COMMAND_PREMIUM_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_PREMIUM_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}установил вам премиум статус до %02d.%02d.%04d
 ADMIN_COMMAND_PREMIUM_SET_SELF = {FFCC66}* {FFFFFF}Вы установили {FFCC66}%s(%d) {FFFFFF}премиум статус до %02d.%02d.%04d
 ADMIN_COMMAND_PREMIUM_GET = {FFCC66}* {FFFFFF}Дата окончания премиум статуса у {FFCC66}%s(%d){FFFFFF}: %02d.%02d.%04d
-ADMIN_COMMAND_PREMIUM_GET_NO_PREMIUM =  {FFCC66}* {FFFFFF}У {FFCC66}%s(%d){FFFFFF} нет премиум статуса
+ADMIN_COMMAND_PREMIUM_GET_NO_PREMIUM = {FFCC66}* {FFFFFF}У {FFCC66}%s(%d){FFFFFF} нет премиум статуса
 
 ADMIN_COMMAND_BAN_HELP = {FFCC66}[Применение]: {FFFFFF}/ban <id/ник/ip> <время(число[с/м/ч/д/н/г], 0 - навсегда)/> <причина/>
 ADMIN_COMMAND_BAN_EXAMPLE = {FFCC66}[Пример]: {FFFFFF}/ban 0 5д тест  -  забанит игрока с ID 0 на 5 дней
@@ -657,7 +657,7 @@ ADMIN_COMMAND_UNBAN_FAIL = Игрок '%s' не забанен.
 
 ADMIN_COMMAND_WEAPON_HELP = {FFCC66}[Применение]: {FFFFFF}/weapon <set/get/give> <id/ник/all> <количество/>
 ADMIN_COMMAND_WEAPON_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
-ADMIN_COMMAND_WEAPON_GET =  {FFCC66}* {FFFFFF}Оружие игрока {FFCC66}%s(%d){FFFFFF}:
+ADMIN_COMMAND_WEAPON_GET = {FFCC66}* {FFFFFF}Оружие игрока {FFCC66}%s(%d){FFFFFF}:
 ADMIN_COMMAND_WEAPON_GET_ITEM = {FFCC66}* {FFFFFF}Слот {FFCC66}%d{FFFFFF}, id: {FFCC66}%d{FFFFFF}, патронов: {FFCC66}%d
 ADMIN_COMMAND_WEAPON_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил оружие всех игроков на {FFCC66}%d (%d)
 ADMIN_COMMAND_WEAPON_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил вам оружие на {FFCC66}%d (%d)
@@ -669,7 +669,7 @@ ADMIN_COMMAND_WEAPON_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили оружие у {FFCC66}%
 ADMIN_COMMAND_SKILL_HELP = {FFCC66}[Применение]: {FFFFFF}/skill <set/get/give> <id/ник/all> <количество/>
 ADMIN_COMMAND_SKILL_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_SKILL_WEAPON_ERROR = {FF2211}[Ошибка]: {FFFFFF}У этого оружия нельзя изменить навык прокачки.
-ADMIN_COMMAND_SKILL_GET =  {FFCC66}* {FFFFFF}Навыки игрока {FFCC66}%s(%d){FFFFFF}:
+ADMIN_COMMAND_SKILL_GET = {FFCC66}* {FFFFFF}Навыки игрока {FFCC66}%s(%d){FFFFFF}:
 ADMIN_COMMAND_SKILL_GET_ITEM = {FFCC66}* {FFFFFF}Навык {FFCC66}%d{FFFFFF}, оружие {FFCC66}%s{FFFFFF}, уровень: {FFCC66}%d
 ADMIN_COMMAND_SKILL_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил навык оружия {FFCC66}%s {FFFFFF}всех игроков на {FFCC66}%d
 ADMIN_COMMAND_SKILL_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил вам навык оружия {FFCC66}%s {FFFFFF}на {FFCC66}%d
@@ -724,7 +724,7 @@ ADMIN_COMMAND_SYSTEM_SAY_MESSAGE = {FFCC66}* System: {FFFFFF}%s
 ADMIN_COMMAND_PRIVILEGE_HELP = {FFCC66}[Применение]: {FFFFFF}/priv[ilege] <set/get> <id/ник> <статус(игрок, модератор, администратор, ркон)/>
 ADMIN_COMMAND_PRIVILEGE_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}установил вам уровень привилегий: {FFCC66}%s
 ADMIN_COMMAND_PRIVILEGE_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили {FFCC66}%s(%d) {FFFFFF}уровень привилегий до {FFCC66}%s
-ADMIN_COMMAND_PRIVILEGE_GET =  {FFCC66}* {FFFFFF}Привилегии игрока {FFCC66}%s(%d){FFFFFF}: {FFCC66}%s
+ADMIN_COMMAND_PRIVILEGE_GET = {FFCC66}* {FFFFFF}Привилегии игрока {FFCC66}%s(%d){FFFFFF}: {FFCC66}%s
 
 ADMIN_COMMAND_SKIN_HELP = {FFCC66}[Применение]: {FFFFFF}/skin <set/get> <id/ник/all> <скин/>
 ADMIN_COMMAND_SKIN_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
