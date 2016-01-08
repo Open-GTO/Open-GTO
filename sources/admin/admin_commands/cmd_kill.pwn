@@ -45,7 +45,7 @@ COMMAND:kill(playerid, params[])
 
 	if (targetid == -1) {
 		foreach (new id : Player) {
-			SetPlayerHealth(id, 0.0)
+			SetPlayerHealth(id, 0.0);
 		}
 
 		format(string, sizeof(string), _(ADMIN_COMMAND_KILL_ALL), playername, playerid);
