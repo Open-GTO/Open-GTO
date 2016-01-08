@@ -19,34 +19,6 @@ static Text3D:spec_label[MAX_PLAYERS];
 
 forward adm_spec_UpdateLabel(playerid);
 
-
-COMMAND:spec(playerid, params[])
-{
-	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		if (Spectate_IsSpectating(playerid)) {
-			Spectate_Stop(playerid);
-		} else {
-			SendClientMessage(playerid, COLOR_RED, lang_texts[13][19]);
-		}
-		return 1;
-	}
-
-	new specid = strval(params);
-	if (!IsPlayerConnected(specid) || specid == playerid) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[13][20]);
-		return 1;
-	}
-
-	Spectate_Start(playerid, specid);
-	
-	SendClientMessage(playerid, COLOR_BLUE, lang_texts[13][21]);
-	return 1;
-}
-
 adm_spec_OnPlayerSpectate(playerid, specid, status)
 {
 	if (status == 0) {

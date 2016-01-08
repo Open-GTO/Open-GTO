@@ -733,6 +733,11 @@ ADMIN_COMMAND_SKIN_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFF
 ADMIN_COMMAND_SKIN_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваши скин на {FFCC66}%d
 ADMIN_COMMAND_SKIN_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили скин {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%d
 
+ADMIN_COMMAND_SPEC_HELP = {FFCC66}[Применение]: {FFFFFF}/spec[tate] <id/ник/off>
+ADMIN_COMMAND_SPEC_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Вы не можете следить за несуществующими игроками или за собой.
+ADMIN_COMMAND_SPEC_START = {FFCC66}* {FFFFFF}Вы начали слежку за игроком {FFCC66}%s(%d)
+ADMIN_COMMAND_SPEC_STOP = {FFCC66}* {FFFFFF}Слежка за игроком {FFCC66}%s(%d) {FFFFFF}остановлена.
+
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)
 PROTECTION_ARMOUR = взлом брони (%0.2f > %0.2f)
