@@ -104,6 +104,7 @@ stock RemovePlayerVehicle(playerid, slot)
 {
 	if (GetVehicleModel(PlayerVehicle[playerid][slot][pv_ID]) != 0) {
 		DestroyVehicle(PlayerVehicle[playerid][slot][pv_ID]);
+		PlayerVehicle[playerid][slot][pv_ID] = 0;
 	}
 	PlayerVehicle[playerid][slot][pv_ID] = 0;
 	PlayerVehicle[playerid][slot][pv_Model] = 0;
