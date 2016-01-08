@@ -451,32 +451,6 @@ COMMAND:getip(playerid, params[])
 	return 1;
 }
 
-
-COMMAND:boom(playerid, params[])
-{
-	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_WHITE, "Применение: /boom <тип[0-13]>");
-		return 1;
-	}
-
-	new idx;
-	new type = strval(strcharsplit(params, idx, ' '));
-
-	if (type < 0 || type > 13) {
-		SendClientMessage(playerid, COLOR_RED, "Применение: /boom <тип[0-13]>");
-		return 1;
-	}
-
-	new Float:pos_x, Float:pos_y, Float:pos_z;
-	GetPlayerPos(playerid, pos_x, pos_y, pos_z);
-	CreateExplosion(pos_x + 20, pos_y, pos_z + 2, type, 30);
-	return 1;
-}
-
 COMMAND:plist(playerid, params[])
 {
 	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {

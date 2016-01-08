@@ -186,6 +186,7 @@ Thanks:
 #include "admin/admin_commands/cmd_skin.pwn"
 #include "admin/admin_commands/cmd_spectate.pwn"
 #include "admin/admin_commands/cmd_kill.pwn"
+#include "admin/admin_commands/cmd_boom.pwn"
 #include "admin/admin_ban.pwn"
 #include "admin/admin_mute.pwn"
 #include "admin/admin_jail.pwn"
