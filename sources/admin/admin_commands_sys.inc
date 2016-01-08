@@ -20,7 +20,14 @@ stock AdminSys_OnPlayerCommandText(playerid, text[]) // process player commands
 
 	new cmd[20], idx;
 	cmd = strcharsplit(text, idx, ' ');
-	if (strcmp(cmd, "/sys", true)) return 0;
+	if (strcmp(cmd, "/sys", true)) {
+		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][36]);
+		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][37]);
+		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][38]);
+		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][39]);
+		SendClientMessage(playerid, COLOUR_YELLOW, lang_texts[13][40]);
+		return 1;
+	}
 	cmd = strcharsplit(text, idx, ' ');
 
 	if (!strcmp(cmd, "cmdlist", true))
