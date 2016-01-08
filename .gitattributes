@@ -1,0 +1,5 @@
+*.inc linguist-language=PAWN
+
+sources/* linguist-vendored
+scriptfiles/* linguist-vendored
+compiler/* linguist-vendored=false

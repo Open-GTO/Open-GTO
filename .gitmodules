@@ -1,0 +1,48 @@
+[submodule "sources/lib/sa-mp-fixes"]
+	path = sources/lib/sa-mp-fixes
+	url = https://github.com/ziggi/sa-mp-fixes.git
+[submodule "sources/lib/sa-mp-foreach"]
+	path = sources/lib/sa-mp-foreach
+	url = https://github.com/Kar2k/SAMP-foreach.git
+[submodule "sources/lib/textlist"]
+	path = sources/lib/textlist
+	url = https://github.com/Open-GTO/textlist.git
+[submodule "sources/lib/shootingrange"]
+	path = sources/lib/shootingrange
+	url = https://github.com/Open-GTO/shootingrange.git
+[submodule "sources/lib/zlang"]
+	path = sources/lib/zlang
+	url = https://github.com/Open-GTO/zlang.git
+[submodule "sources/lib/mdialog"]
+	path = sources/lib/mdialog
+	url = https://github.com/Open-GTO/mdialog.git
+[submodule "sources/lib/zvehcomp"]
+	path = sources/lib/zvehcomp
+	url = https://github.com/Open-GTO/zvehcomp.git
+[submodule "sources/lib/zvehpaintjob"]
+	path = sources/lib/zvehpaintjob
+	url = https://github.com/Open-GTO/zvehpaintjob.git
+[submodule "sources/lib/skinselect"]
+	path = sources/lib/skinselect
+	url = https://github.com/Open-GTO/skinselect.git
+[submodule "sources/lib/zvehgetcolor"]
+	path = sources/lib/zvehgetcolor
+	url = https://github.com/Open-GTO/zvehgetcolor.git
+[submodule "sources/lib/gpickup"]
+	path = sources/lib/gpickup
+	url = https://github.com/Open-GTO/gpickup.git
+[submodule "sources/lib/gtolib"]
+	path = sources/lib/gtolib
+	url = https://github.com/Open-GTO/gtolib.git
+[submodule "sources/lib/getspawninfo"]
+	path = sources/lib/getspawninfo
+	url = https://github.com/Open-GTO/getspawninfo.git
+[submodule "sources/lib/time_t"]
+	path = sources/lib/time_t
+	url = https://github.com/Open-GTO/time_t.git
+[submodule "sources/lib/getweather"]
+	path = sources/lib/getweather
+	url = https://github.com/Open-GTO/GetWeather.git
+[submodule "sources/lib/weaponskill"]
+	path = sources/lib/weaponskill
+	url = https://github.com/Open-GTO/weaponskill.git
