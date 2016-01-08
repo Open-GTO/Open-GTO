@@ -11,7 +11,7 @@ new ListResponseType[MAX_PLAYERS];
 
 stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
 {
-	if (playerid == clickedplayerid) return show_menu(playerid);
+	//if (playerid == clickedplayerid) return show_menu(playerid);
 	SetPlayerClickedPlayerid(playerid,clickedplayerid);
 	new listitems[256]; // не менять!
 	listitems = "Отправить денег\nЛичное сообщение\nЖалоба";
