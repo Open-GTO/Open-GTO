@@ -183,6 +183,7 @@ Thanks:
 #include "admin/admin_commands/cmd_xp.pwn"
 #include "admin/admin_commands/cmd_system.pwn"
 #include "admin/admin_commands/cmd_privilege.pwn"
+#include "admin/admin_commands/cmd_skin.pwn"
 #include "admin/admin_ban.pwn"
 #include "admin/admin_mute.pwn"
 #include "admin/admin_jail.pwn"

@@ -726,6 +726,13 @@ ADMIN_COMMAND_PRIVILEGE_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(
 ADMIN_COMMAND_PRIVILEGE_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили {FFCC66}%s(%d) {FFFFFF}уровень привилегий до {FFCC66}%s
 ADMIN_COMMAND_PRIVILEGE_GET =  {FFCC66}* {FFFFFF}Привилегии игрока {FFCC66}%s(%d){FFFFFF}: {FFCC66}%s
 
+ADMIN_COMMAND_SKIN_HELP = {FFCC66}[Применение]: {FFFFFF}/skin <set/get> <id/ник/all> <скин/>
+ADMIN_COMMAND_SKIN_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_SKIN_GET = {FFCC66}* {FFFFFF}Скин игрока {FFCC66}%s(%d): {FFCC66}%d
+ADMIN_COMMAND_SKIN_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил скин всех игроков на {FFCC66}%d
+ADMIN_COMMAND_SKIN_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваши скин на {FFCC66}%d
+ADMIN_COMMAND_SKIN_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили скин {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%d
+
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)
 PROTECTION_ARMOUR = взлом брони (%0.2f > %0.2f)
