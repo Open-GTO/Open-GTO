@@ -11,7 +11,7 @@
 #pragma library dm_dildo
 
 
-#include "deathmatch"
+
 
 static name[MAX_NAME] = "Dildo Farm Revenge"; // unique name of dm
 static frequency = 2; // frequency that dm runs

@@ -9,7 +9,7 @@
 #pragma library dm_air
 
 
-#include "deathmatch"
+
 
 static name[MAX_NAME] = "Base Jump"; // unique name of dm
 static frequency = 3; // frequency that dm runs

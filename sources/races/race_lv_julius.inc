@@ -11,7 +11,7 @@
 #pragma library race_lv_julius
 
 
-#include "race"
+
 
 static racename[MAX_NAME] = "LV Julius Thruway Race"; // unique name of race
 static racefrequency = 1	; // frequency that race runs

@@ -11,7 +11,7 @@
 #pragma library dm_usnavy
 
 
-#include "deathmatch"
+
 
 static name[MAX_NAME] = "The US Navy"; // unique name of dm
 static frequency = 1; // frequency that dm runs

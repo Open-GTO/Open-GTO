@@ -11,7 +11,7 @@
 #pragma library dm_minigunmadness
 
 
-#include "deathmatch"
+
 
 static name[MAX_NAME] = "Minigun Madness"; // unique name of dm
 static frequency = 1; // frequency that dm runs

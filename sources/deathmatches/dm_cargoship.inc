@@ -11,7 +11,7 @@
 #pragma library dm_cargoship
 
 
-#include "deathmatch"
+
 
 static name[MAX_NAME] = "Cargo Ship"; // unique name of dm
 static frequency = 1; // frequency that dm runs

@@ -11,7 +11,7 @@
 #pragma library race_countrycruise
 
 
-#include "race"
+
 
 static racename[MAX_NAME] = "Countryside Cruise"; // unique name of race
 static racefrequency = 4; // frequency that race runs

@@ -11,7 +11,7 @@
 #pragma library dm_poolday
 
 
-#include "deathmatch"
+
 
 static name[MAX_NAME] = "fy_poolday"; // unique name of dm
 static frequency = 2; // frequency that dm runs

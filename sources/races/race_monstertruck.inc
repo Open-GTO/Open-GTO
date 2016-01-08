@@ -11,7 +11,7 @@
 #pragma library race_monstertruck
 
 
-#include "race"
+
 
 static racename[MAX_NAME] = "Monstertruck Madness"; // unique name of race
 static racefrequency = 5; // frequency that race runs

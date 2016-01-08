@@ -11,7 +11,7 @@
 #pragma library race_sf_fuckinwood1
 
 
-#include "race"
+
 
 static racename[MAX_NAME] = "SF Fuck'in Wood Race"; // unique name of race
 static racefrequency = 3	; // frequency that race runs

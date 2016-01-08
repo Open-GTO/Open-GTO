@@ -12,7 +12,7 @@
 #pragma library race_roundwego
 
 
-#include "race"
+
 
 static racename[MAX_NAME] = "Airport Round We Go"; // unique name of race
 static racefrequency = 4; // frequency that race runs

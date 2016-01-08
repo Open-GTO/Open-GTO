@@ -11,7 +11,7 @@
 #pragma library dm_bluemountains
 
 
-#include "deathmatch"
+
 
 static name[MAX_NAME] = "Blue Mountains"; // unique name of dm
 static frequency = 3; // frequency that dm runs

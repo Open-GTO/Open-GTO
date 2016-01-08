@@ -11,8 +11,6 @@
 #pragma library admin_commands_sys
 
 
-#include "base"
-#include "player"
 
 new sys_weather = SYS_WEATHER_UPDATE;
 

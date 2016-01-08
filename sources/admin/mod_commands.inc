@@ -11,8 +11,6 @@
 #pragma library mod_commands
 
 
-#include "base"
-#include "player"
 
 stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 {

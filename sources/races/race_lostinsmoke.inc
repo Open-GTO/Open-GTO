@@ -11,7 +11,7 @@
 #pragma library race_lostinsmoke
 
 
-#include "race"
+
 
 static racename[MAX_NAME] = "Lost in Smoke"; // unique name of race
 static racefrequency = 4; // frequency that race runs

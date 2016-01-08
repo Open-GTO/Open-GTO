@@ -13,6 +13,8 @@
 #define _pvehicle_included
 #pragma library pvehicle
 
+forward Float:GetVehicleFuel(vehicleid);
+forward Float:SetVehicleFuel(vehicleid, Float:amount);
 
 #define VEHICLES_COMPONENTS 14
 

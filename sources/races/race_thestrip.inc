@@ -11,7 +11,7 @@
 #pragma library race_thestrip
 
 
-#include "race"
+
 
 static racename[MAX_NAME] = "Burnin Down The Strip"; // unique name of race
 static racefrequency = 1; // frequency that race runs

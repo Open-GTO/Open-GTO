@@ -11,7 +11,7 @@
 #pragma library race_riversiderun
 
 
-#include "race"
+
 
 static racename[MAX_NAME] = "Riverside Run"; // unique name of race
 static racefrequency = 4; // frequency that race runs

@@ -377,13 +377,11 @@ stock IsPlayerAtFuelStation(playerid)
 	return 0;
 }
 
-forward Float:GetVehicleFuel(vehicleid);
 public Float:GetVehicleFuel(vehicleid)
 {
 	return Fuel[vehicleid];
 }
 
-forward Float:SetVehicleFuel(vehicleid, Float:amount);
 public Float:SetVehicleFuel(vehicleid, Float:amount)
 {
 	if (amount == -1) {

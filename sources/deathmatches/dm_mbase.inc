@@ -9,7 +9,7 @@
 #pragma library dm_mbase
 
 
-#include "deathmatch"
+
 
 static name[MAX_NAME] = "Millitary Base"; // unique name of dm
 static frequency = 1; // frequency that dm runs

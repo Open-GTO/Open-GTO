@@ -11,7 +11,7 @@
 #pragma library race_ls_majestic1
 
 
-#include "race"
+
 
 static racename[MAX_NAME] = "LS-SF Majestic"; // unique name of race
 static racefrequency = 2	; // frequency that race runs

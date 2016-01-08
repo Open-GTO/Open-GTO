@@ -10,13 +10,6 @@
 #define _admin_commands_included
 #pragma library admin_commands
 
-#include "base"
-#include "utils\gtoutils"
-#include "player"
-#include "account"
-#include "race"
-#include "payday"
-
 new Float:PointsH[][CoordInfo] = {
 {2647.597656,-2003.409667, 13.382812},		//1 LL tune
 {1044.264282,-1048.066284, 31.700469},

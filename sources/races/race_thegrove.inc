@@ -11,7 +11,7 @@
 #pragma library race_thegrove
 
 
-#include "race"
+
 
 static racename[MAX_NAME] = "Tearin Up The Grove"; // unique name of race
 static racefrequency = 1; // frequency that race runs

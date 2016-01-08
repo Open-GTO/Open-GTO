@@ -11,7 +11,7 @@
 #pragma library race_ls_trailer1
 
 
-#include "race"
+
 
 static racename[MAX_NAME] = "LS-SF Trailers Racing"; // unique name of race
 static racefrequency = 4; // frequency that race runs

@@ -12,12 +12,6 @@
 #pragma library adm_commands
 
 
-#include "base"
-#include "utils\gtoutils"
-#include "player"
-#include "account"
-#include "race"
-
 stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 {
 	if (!IsPlayerAdm(playerid))

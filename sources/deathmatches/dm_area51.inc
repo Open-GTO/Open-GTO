@@ -9,7 +9,7 @@
 #pragma library dm_area51
 
 
-#include "deathmatch"
+
 
 static name[MAX_NAME] = "Area 51"; // unique name of dm
 static frequency = 1; // frequency that dm runs

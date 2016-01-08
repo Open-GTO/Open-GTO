@@ -11,12 +11,6 @@
 #pragma library admin_commands_race
 
 
-#include "base"
-#include "utils\gtoutils"
-#include "player"
-#include "account"
-#include "race"
-
 #define SetPlayerRaceEditID(%0,%1) SetPVarInt(%0, "race_edit_id",%1)
 #define GetPlayerRaceEditID(%0) GetPVarInt(%0, "race_edit_id")
 
