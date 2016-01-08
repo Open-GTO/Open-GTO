@@ -402,7 +402,7 @@ stock click_OnDialogResponse(playerid,dialogid,response,listitem,inputtext[])
 				set(string2,"навсегда");
 			format(string,sizeof(string),"SERVER: %s был арестован %s",oGetPlayerName(jailid),string2);
 			SendClientMessageToAll(COLOUR_WHITE,string);
-			GameTextForPlayer(playerid,"~w~ You has been ~r~Jailed~w~!",5000,4);
+			GameTextForPlayer(jailid,"~w~ You has been ~r~Jailed~w~!",5000,4);
 			JailPlayer(jailid,jailt);
 			SetPlayerJailed(jailid, GetPlayerJailed(jailid) + 1);
 			return 1;
