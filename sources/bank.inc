@@ -299,7 +299,7 @@ stock GetPlayerBankMoney(playerid)
 
 stock GivePlayerBankMoney(playerid, &amount)
 {
-	if (GetPlayerBankMoney(playerid) + amount > MAX_BANK) {
+	if (amount > MAX_BANK - GetPlayerBankMoney(playerid)) {
 		amount = MAX_BANK - GetPlayerBankMoney(playerid);
 	}
 	GivePVarInt(playerid, "BankMoney", amount);
