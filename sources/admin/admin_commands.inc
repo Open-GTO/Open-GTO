@@ -124,18 +124,23 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 	}
 	if (!strcmp(cmd, "/an", true))
 	{
-		new mtype = strval(strcharsplit(text, idx, ' '));
-		if (mtype < 0 || mtype == 2 || mtype > 9)
-		{
-			return 1;
-		}
 		new string[MAX_STRING];
-		set(string, text[idx+1]);
-		if (string[0] == '~')
-		{
+		string = strcharsplit(text, idx, ' ');
+
+		if (!IsNumeric(string)) {
+			SendClientMessage(playerid, COLOUR_WHITE, "РџСЂРёРјРµРЅРµРЅРёРµ: /an <С‚РёРї[1-6]> <СЃРѕРѕР±С‰РµРЅРёРµ>");
 			return 1;
 		}
-		GameTextForAll(string, 4999, mtype);
+
+		new mtype = strval(string);
+		if (mtype < 0 || mtype > 6) {
+			SendClientMessage(playerid, COLOUR_WHITE, "РџСЂРёРјРµРЅРµРЅРёРµ: /an <1-6> <СЃРѕРѕР±С‰РµРЅРёРµ>");
+			return 1;
+		}
+
+		set(string, text[idx+1]);
+
+		GameTextForAll(string, 5000, mtype);
 		return 1;
 	}
 	if (!strcmp(cmd, "/payday", true))
@@ -237,7 +242,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 			}
 			oResetPlayerWeapons(id);
 			DropAmmo(id);
-			format(string, sizeof(string), lang_texts[12][48], oGetPlayerName(playerid));	//игроку
+			format(string, sizeof(string), lang_texts[12][48], oGetPlayerName(playerid));	//РёРіСЂРѕРєСѓ
 			SendClientMessage(id, COLOUR_XP_GOOD, string);
 		}
 		format(string, sizeof(string), lang_texts[12][75]);
@@ -254,7 +259,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 				continue;
 			}
 			TogglePlayerControllable(id, 0);
-			format(string, sizeof(string), lang_texts[12][54] , oGetPlayerName(playerid));//игроку
+			format(string, sizeof(string), lang_texts[12][54] , oGetPlayerName(playerid));//РёРіСЂРѕРєСѓ
 			SendClientMessage(id, COLOUR_XP_GOOD, string);
 		}
 		format(string, sizeof(string), lang_texts[12][76]);
@@ -288,7 +293,7 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 
 		ResetPlayerMoney(receiverid);
 		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[12][58], oGetPlayerName(playerid));			//игроку
+		format(string, sizeof(string), lang_texts[12][58], oGetPlayerName(playerid));			//РёРіСЂРѕРєСѓ
 		SendClientMessage(receiverid, COLOUR_XP_GOOD, string);
 		format(string, sizeof(string), lang_texts[12][59], oGetPlayerName(receiverid));
 		SendClientMessage(playerid, COLOUR_XP_GOOD, string);
@@ -470,13 +475,13 @@ stock Admin_OnPlayerCommandText(playerid, text[]) // process player commands
 		{
 			SetPlayerGodmod(playerid, 0);
 			oSetPlayerHealth(playerid, GetMaxHealth(playerid));
-			SendClientMessage(playerid, COLOUR_WHITE, "Вы выключили режим бога, теперь вас можно убить.");
+			SendClientMessage(playerid, COLOUR_WHITE, "Р’С‹ РІС‹РєР»СЋС‡РёР»Рё СЂРµР¶РёРј Р±РѕРіР°, С‚РµРїРµСЂСЊ РІР°СЃ РјРѕР¶РЅРѕ СѓР±РёС‚СЊ.");
 		}
 		else
 		{
 			SetPlayerGodmod(playerid, 1);
 			oSetPlayerHealth(playerid, 100.0);
-			SendClientMessage(playerid, COLOUR_WHITE, "Вы включили режим бога, вас невозможно убить.");
+			SendClientMessage(playerid, COLOUR_WHITE, "Р’С‹ РІРєР»СЋС‡РёР»Рё СЂРµР¶РёРј Р±РѕРіР°, РІР°СЃ РЅРµРІРѕР·РјРѕР¶РЅРѕ СѓР±РёС‚СЊ.");
 		}
 		return 1;
 	}
