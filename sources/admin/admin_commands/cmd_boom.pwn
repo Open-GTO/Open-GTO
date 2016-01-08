@@ -34,6 +34,8 @@ COMMAND:boom(playerid, params[])
 		Float:pos_z,
 		Float:pos_a;
 
+	GetPlayerName(playerid, playername, sizeof(playername));
+
 	GetPlayerPos(playerid, pos_x, pos_y, pos_z);
 	GetPlayerFacingAngle(playerid, pos_a);
 
