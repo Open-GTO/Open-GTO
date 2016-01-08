@@ -232,25 +232,6 @@ stock CreatePSWDBString()
 	return wepstr;
 }
 
-stock SyncPlayerWeapons(playerid)
-{
-	new weapon[2];
-	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
-	{
-		GetPlayerWeaponData(playerid, i, weapon[0], weapon[1]);
-		if ( (weapon[0] == 0 || weapon[1] == 0) && PlayerWeapons[playerid][i][pwid] != 0 )
-		{
-			PlayerWeapons[playerid][i][pwid] = 0;
-			PlayerWeapons[playerid][i][pbullets] = 0;
-		}
-		if ( weapon[1] < PlayerWeapons[playerid][i][pbullets] && weapon[0] == PlayerWeapons[playerid][i][pwid] )
-		{
-			PlayerWeapons[playerid][i][pbullets] = weapon[1];
-		}
-	}
-	return 1;
-}
-
 stock GetPlayerWeaponSlotBullet(playerid, weapon_slot)
 {
 	return PlayerWeapons[playerid][weapon_slot][pbullets];

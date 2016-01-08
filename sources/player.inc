@@ -262,9 +262,6 @@ stock player_OnPlayerSpawn(playerid)
 
 stock player_OnPlayerDisconnect(playerid, reason)
 {
-	// sync
-	SyncPlayerWeapons(playerid);
-
 	// save
 	PlayerSave(playerid);
 	AccountSave(playerid);

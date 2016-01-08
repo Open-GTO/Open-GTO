@@ -373,7 +373,7 @@ stock weapons_ShowDialog_Buy(playerid, weaponid)
 	{
 		new max_bullets = oGetPlayerMoney(playerid) / GetWeaponCost(weaponid);
 		if (max_bullets > MAX_BULLETS) {
-			max_bullets = MAX_BULLETS
+			max_bullets = MAX_BULLETS;
 		}
 
 		format(string, sizeof(string),
