@@ -211,9 +211,9 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		}
 		format(string, sizeof(string), lang_texts[13][17], oGetPlayerName(jailid), string2);
 		SendClientMessageToAll(COLOUR_WHITE, string);
-		GameTextForPlayer(jailt, lang_texts[13][18], 5000, 4);
+		GameTextForPlayer(jailid, lang_texts[13][18], 5000, 4);
 		JailPlayer(jailid, jailt);
-		SetPlayerJailed(playerid, GetPlayerJailed(playerid) + 1);
+		SetPlayerJailed(jailid, GetPlayerJailed(jailid) + 1);
 		return 1;
 	}
 	if (!strcmp(cmd, "/unjail", true))
@@ -230,7 +230,7 @@ stock Mod_OnPlayerCommandText(playerid, text[]) // process player commands
 		}
 		new string[MAX_STRING];
 		format(string, sizeof(string), lang_texts[12][21], oGetPlayerName(playerid));
-		SendClientMessage(playerid, COLOUR_GREEN, string);
+		SendClientMessage(unjailid, COLOUR_GREEN, string);
 		UnJailPlayer(unjailid);
 		return 1;
 	}
