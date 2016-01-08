@@ -477,43 +477,6 @@ COMMAND:boom(playerid, params[])
 	return 1;
 }
 
-COMMAND:setskin(playerid, params[])
-{
-	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_WHITE, lang_texts[12][2]);
-		return 1;
-	}
-
-	new idx;
-	new receiverid = strval(strcharsplit(params, idx, ' '));
-	
-	if (!IsPlayerConnected(receiverid) || (IsPlayerHavePrivilege(receiverid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon))) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 1;
-	}
-
-	new skinid = strval(strcharsplit(params, idx, ' '));
-	if (!IsSkinValid(skinid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][41]);
-		return 1;
-	}
-
-	new oldskin = GetPlayerSkin(receiverid);
-	SetPlayerSkin(receiverid, skinid);
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][42], ReturnPlayerName(playerid), skinid);
-	SendClientMessage(receiverid, COLOR_XP_GOOD, string);
-
-	format(string, sizeof(string), lang_texts[12][43], ReturnPlayerName(receiverid), skinid, oldskin);
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
-	return 1;
-}
-
 COMMAND:plist(playerid, params[])
 {
 	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
