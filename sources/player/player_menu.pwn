@@ -85,7 +85,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				GetPlayerLevel(playerid),
 				GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1),
 				timestamp_to_format_date( Account_GetRegistrationTime(playerid) ),
-				Account_GetPlayedTimeString(playerid),
+				Account_ReturnPlayedTimeString( Account_GetPlayedTime(playerid) ),
 
 				gangname,
 				

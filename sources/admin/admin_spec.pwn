@@ -30,8 +30,10 @@ adm_spec_OnPlayerSpectate(playerid, specid, status)
 
 stock adm_spec_CreateLabel(playerid, specid)
 {
-	new string[MAX_LANG_VALUE_STRING * 5];
-	adm_spec_GetLabelString(playerid, specid, string);
+	new
+		string[MAX_LANG_VALUE_STRING * MAX_PLAYER_INFO_LINES];
+
+	GetPlayerInfoString(specid, string, sizeof(string), playerid);
 
 	spec_label[playerid] = CreateDynamic3DTextLabel(string, ADMIN_SPEC_LABEL_COLOR, 0.0, 0.0, 0.0, 20.0, .playerid = playerid, .attachedplayer = specid);
 }
@@ -48,51 +50,11 @@ public adm_spec_UpdateLabel(playerid)
 		return 0;
 	}
 
-	new string[MAX_LANG_VALUE_STRING * 5];
-	adm_spec_GetLabelString(playerid, Spectate_GetSpecID(playerid), string);
+	new
+		string[MAX_LANG_VALUE_STRING * MAX_PLAYER_INFO_LINES];
+
+	GetPlayerInfoString(Spectate_GetSpecID(playerid), string, sizeof(string), playerid);
 
 	UpdateDynamic3DTextLabelText(spec_label[playerid], ADMIN_SPEC_LABEL_COLOR, string);
 	return 1;
-}
-
-stock adm_spec_GetLabelString(playerid, specid, string[], len = sizeof(string))
-{
-	new Float:health;
-	GetPlayerHealth(specid, health);
-
-	new Float:armour;
-	GetPlayerArmour(specid, armour);
-
-	new ping = GetPlayerPing(specid);
-
-	new gang_string[MAX_NAME];
-	gang_string = ReturnPlayerGangName(specid);
-
-	new money = GetPlayerMoney(specid);
-	new level = GetPlayerLevel(specid);
-	new xp = GetPlayerXP(specid);
-	new xp_to_level = GetXPToLevel(level + 1);
-	new weapon_id = GetPlayerWeapon(specid);
-
-	new weapon_name[MAX_NAME];
-	GetWeaponName(weapon_id, weapon_name, sizeof(weapon_name));
-
-	new weapon_ammo = GetPlayerAmmo(specid);
-	new interior = GetPlayerInterior(specid);
-	new world = GetPlayerVirtualWorld(specid);
-
-	new Float:pos[4];
-	GetPlayerPos(specid, pos[0], pos[1], pos[2]);
-	GetPlayerFacingAngle(specid, pos[3]);
-
-	new Float:distance = GetPlayerDistanceFromPoint(playerid, pos[0], pos[1], pos[2]);
-
-	format(string, len, _m(ADMIN_SPEC_PLAYERINFO),
-			specid, health, armour, ping,
-			gang_string, money, level, xp, xp_to_level,
-			weapon_name, weapon_id, weapon_ammo,
-			interior, world,
-			distance,
-			pos[0], pos[1], pos[2], pos[3]
-		);
 }

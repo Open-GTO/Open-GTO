@@ -414,15 +414,25 @@ stock Account_GetPremiumTime(playerid)
 }
 
 /*
+	Account_ReturnPlayedTimeString
+*/
+
+stock Account_ReturnPlayedTimeString(played_seconds)
+{
+	new
+		string[MAX_LANG_VALUE_STRING];
+
+	Account_GetPlayedTimeString(played_seconds, string);
+
+	return string;
+}
+
+/*
 	Account_GetPlayedTimeString
 */
 
-stock Account_GetPlayedTimeString(playerid)
+stock Account_GetPlayedTimeString(played_seconds, string[], const size = sizeof(string))
 {
-	new
-		string[MAX_STRING],
-		played_seconds = Account_GetPlayedTime(playerid);
-
 	new
 		days = played_seconds / 60 / 60 / 24,
 		hours = (played_seconds / 60 / 60) % 24,
@@ -430,24 +440,22 @@ stock Account_GetPlayedTimeString(playerid)
 		seconds = played_seconds % 60;
 
 	if (days != 0) {
-		format(string, sizeof(string),
+		format(string, size,
 			_(ACCOUNT_PLAYED_TIME_DAY),
 			days, Declension_GetDays(days),
 			hours, Declension_GetHours(hours)
 		);
 	} else if (hours != 0) {
-		format(string, sizeof(string), 
+		format(string, size, 
 			_(ACCOUNT_PLAYED_TIME_HOUR),
 			hours, Declension_GetHours(hours)
 		);
 	}
 
-	format(string, sizeof(string),
+	format(string, size,
 		_(ACCOUNT_PLAYED_TIME_MINUTES),
 		string,
 		minutes, Declension_GetMinutes(minutes),
 		seconds, Declension_GetSeconds(seconds)
 	);
-
-	return string;
 }

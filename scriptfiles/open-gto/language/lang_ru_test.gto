@@ -528,18 +528,12 @@ DECLENSION_AMMO_3 = патронов
 ADMIN_GODMOD_ON_CONTENT = Godmod ~h~~g~ENABLED
 ADMIN_GODMOD_OFF_CONTENT = Godmod ~h~~r~DISABLED
 
-ADMIN_PLIST_HEADER = Список заткнутых и посаженых:
-ADMIN_PLIST_JAIL_REMAIN = %s(%d) [арест] осталось %d м.
-ADMIN_PLIST_JAIL_NOTIME = %s(%d) [арест] без времени.
-ADMIN_PLIST_MUTE_REMAIN = %s(%d) [кляп] осталось %d м.
-ADMIN_PLIST_NO_PLAYERS = На сервере нет "забытых" игроков.
-
-ADMIN_SPEC_PLAYERINFO_0 = id: %d, здоровье: %0.2f, броня: %0.2f, пинг: %d\n
-ADMIN_SPEC_PLAYERINFO_1 = банда: %s, деньги: $%d, уровень: %d, опыт: %d/%d\n
-ADMIN_SPEC_PLAYERINFO_2 = оружие: %s (%d), патроны: %d\n
-ADMIN_SPEC_PLAYERINFO_3 = интерьер: %d, мир: %d\n
-ADMIN_SPEC_PLAYERINFO_4 = расстояние: %0.2f\n
-ADMIN_SPEC_PLAYERINFO_5 = позиция: %0.4f, %0.4f, %0.4f, %0.4f
+PLAYER_INFO_0 = id: %d, здоровье: %0.2f, броня: %0.2f, пинг: %d\n
+PLAYER_INFO_1 = банда: %s, деньги: $%d, уровень: %d, опыт: %d/%d\n
+PLAYER_INFO_2 = оружие: %s (%d), патроны: %d\n
+PLAYER_INFO_3 = интерьер: %d, мир: %d\n
+PLAYER_INFO_4 = расстояние: %0.2f\n
+PLAYER_INFO_5 = позиция: %0.4f, %0.4f, %0.4f, %0.4f
 
 ADMIN_PROTECTION_REPORT = Игрок %s(%d) подозревается в читерстве. Сработала защита: 
 
@@ -749,6 +743,22 @@ ADMIN_COMMAND_BOOM_MAKE = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}бом
 
 ADMIN_COMMAND_CHAT_HELP = {FFCC66}[Применение]: {FFFFFF}/chat <clean>
 ADMIN_COMMAND_CHAT_CLEAN = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}очистил чат.
+
+ADMIN_COMMAND_GETINFO_HELP = {FFCC66}[Применение]: {FFFFFF}/getinfo <id/ник/all>
+ADMIN_COMMAND_GETINFO_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_GETINFO_PLAYER_PREFIX = {FFCC66}* {FFFFFF}
+ADMIN_COMMAND_GETINFO_PLAYER_HEADER = {FFCC66}* {FFFFFF}Информация о %s:
+ADMIN_COMMAND_GETINFO_PLAYER_IP = {FFCC66}* {FFFFFF}IP: %s
+ADMIN_COMMAND_GETINFO_PLAYER_CREATION = {FFCC66}* {FFFFFF}Зарегистрировался: %02d.%02d.%04d
+ADMIN_COMMAND_GETINFO_PLAYER_LOGIN = {FFCC66}* {FFFFFF}Последний вход: %02d.%02d.%04d
+ADMIN_COMMAND_GETINFO_PLAYER_PLAYED = {FFCC66}* {FFFFFF}Время в игре: %s
+ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM = {FFCC66}* {FFFFFF}Премиум статус до: %02d.%02d.%04d
+
+ADMIN_COMMAND_GETINFO_ALL_HEADER = {FFCC66}* {FFFFFF}Список заткнутых и посаженных:
+ADMIN_COMMAND_GETINFO_ALL_JAIL_REMAIN = {FFCC66}* {FFFFFF}Арестованный {FFCC66}%s(%d) {FFFFFF}осталось %d м.
+ADMIN_COMMAND_GETINFO_ALL_JAIL_NOTIME = {FFCC66}* {FFFFFF}Арестованный {FFCC66}%s(%d) {FFFFFF}без времени.
+ADMIN_COMMAND_GETINFO_ALL_MUTE_REMAIN = {FFCC66}* {FFFFFF}Заткнутый {FFCC66}%s(%d) {FFFFFF}осталось %d м.
+ADMIN_COMMAND_GETINFO_ALL_NOPLAYERS = {FFCC66}* {FFFFFF}На сервере нет заткнутых или посаженных игроков.
 
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)

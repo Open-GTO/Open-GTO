@@ -27,18 +27,31 @@ stock IsPlayerHavePremium(playerid)
 	return 1;
 }
 
-stock ReturnPlayerPremiumDateString(playerid)
+stock GetPremiumDateString(time, string[], const size = sizeof(string))
 {
 	new
-		time,
 		year,
 		month,
 		day;
 
-	time = Account_GetPremiumTime(playerid);
 	gmtime(time, year, month, day);
 
+	format(string, size, "%02d.%02d.%04d", day, month, year);
+}
+
+stock GetPlayerPremiumDateString(playerid, string[], const size = sizeof(string))
+{
+	new
+		time;
+
+	time = Account_GetPremiumTime(playerid);
+
+	GetPremiumDateString(time, string, size);
+}
+
+stock ReturnPlayerPremiumDateString(playerid)
+{
 	new string[11];
-	format(string, sizeof(string), "%02d.%02d.%04d", day, month, year);
+	GetPlayerPremiumDateString(playerid, string);
 	return string;
 }
