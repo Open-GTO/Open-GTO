@@ -747,6 +747,9 @@ ADMIN_COMMAND_KILL_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы убили {FFCC66}%s(%d)
 ADMIN_COMMAND_BOOM_HELP = {FFCC66}[Применение]: {FFFFFF}/boom <тип(0-13)>
 ADMIN_COMMAND_BOOM_MAKE = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}бомбанул.
 
+ADMIN_COMMAND_CHAT_HELP = {FFCC66}[Применение]: {FFFFFF}/chat <clean>
+ADMIN_COMMAND_CHAT_CLEAN = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}очистил чат.
+
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)
 PROTECTION_ARMOUR = взлом брони (%0.2f > %0.2f)

@@ -525,13 +525,3 @@ COMMAND:kick(playerid, params[])
 	}
 	return 1;
 }
-
-COMMAND:clearchat(playerid, params[])
-{
-	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
-		return 0;
-	}
-
-	Chat_ClearAll();
-	return 1;
-}
