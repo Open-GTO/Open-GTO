@@ -371,9 +371,14 @@ stock weapons_ShowDialog_Buy(playerid, weaponid)
 	}
 	else if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_IsFirearm] == 1)
 	{
+		new max_bullets = oGetPlayerMoney(playerid) / GetWeaponCost(weaponid);
+		if (max_bullets > MAX_BULLETS) {
+			max_bullets = MAX_BULLETS
+		}
+
 		format(string, sizeof(string),
-			"Оружие: %s\nЦена за 1 патрон: $%d\nВаших денег хватит на %d патрон\n\nВведите количество патрон:",
-			oGetWeaponName(weaponid), GetWeaponCost(weaponid), oGetPlayerMoney(playerid) / GetWeaponCost(weaponid)
+			"Оружие: %s\nЦена за 1 патрон: $%d\nВы можете купить %d патронов\n\nВведите количество патронов:",
+			oGetWeaponName(weaponid), GetWeaponCost(weaponid), max_bullets
 		);
 	}
 	return ShowPlayerDialog(playerid, weapons_Buy_DialogID, dialog_style,
