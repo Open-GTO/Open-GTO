@@ -729,14 +729,20 @@ ADMIN_COMMAND_PRIVILEGE_GET = {FFCC66}* {FFFFFF}Привилегии игрока {FFCC66}%s(%d)
 ADMIN_COMMAND_SKIN_HELP = {FFCC66}[Применение]: {FFFFFF}/skin <set/get> <id/ник/all> <скин/>
 ADMIN_COMMAND_SKIN_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_SKIN_GET = {FFCC66}* {FFFFFF}Скин игрока {FFCC66}%s(%d): {FFCC66}%d
-ADMIN_COMMAND_SKIN_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил скин всех игроков на {FFCC66}%d
-ADMIN_COMMAND_SKIN_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваши скин на {FFCC66}%d
+ADMIN_COMMAND_SKIN_SET_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}изменил скин всех игроков на {FFCC66}%d
+ADMIN_COMMAND_SKIN_SET_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}изменил ваши скин на {FFCC66}%d
 ADMIN_COMMAND_SKIN_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили скин {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%d
 
 ADMIN_COMMAND_SPEC_HELP = {FFCC66}[Применение]: {FFFFFF}/spec[tate] <id/ник/off>
 ADMIN_COMMAND_SPEC_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Вы не можете следить за несуществующими игроками или за собой.
 ADMIN_COMMAND_SPEC_START = {FFCC66}* {FFFFFF}Вы начали слежку за игроком {FFCC66}%s(%d)
 ADMIN_COMMAND_SPEC_STOP = {FFCC66}* {FFFFFF}Слежка за игроком {FFCC66}%s(%d) {FFFFFF}остановлена.
+
+ADMIN_COMMAND_KILL_HELP = {FFCC66}[Применение]: {FFFFFF}/kill <id/ник/all>
+ADMIN_COMMAND_KILL_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_KILL_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}убил всех игроков.
+ADMIN_COMMAND_KILL_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}убил игрока {FFCC66}%s(%d) {FFFFFF}всех игроков.
+ADMIN_COMMAND_KILL_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы убили {FFCC66}%s(%d)
 
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)
