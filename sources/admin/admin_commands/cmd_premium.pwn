@@ -65,6 +65,8 @@ COMMAND:premium(playerid, params[])
 			format(string, sizeof(string), _(ADMIN_COMMAND_PREMIUM_GET_NO_PREMIUM), targetname, targetid);
 			SendClientMessage(playerid, -1, string);
 		}
+	} else {
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_PREMIUM_HELP));
 	}
 
 	return 1;

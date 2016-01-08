@@ -116,6 +116,8 @@ COMMAND:system(playerid, params[])
 			Lang_OnGameModeInit();
 
 			__(ADMIN_COMMAND_SYSTEM_LANG_RELOAD, string);
+		} else {
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SYSTEM_LANG_HELP));
 		}
 
 		SendClientMessage(playerid, -1, string);
@@ -151,6 +153,8 @@ COMMAND:system(playerid, params[])
 
 				__(ADMIN_COMMAND_SYSTEM_TIME_TYPE_SERVER, string);
 			}
+		} else {
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SYSTEM_TIME_HELP));
 		}
 
 		SendClientMessage(playerid, -1, string);
@@ -165,6 +169,8 @@ COMMAND:system(playerid, params[])
 
 		format(string, sizeof(string), _(ADMIN_COMMAND_SYSTEM_GMX_MESSAGE), string);
 		SendClientMessageToAll(-1, _(ADMIN_COMMAND_SYSTEM_GMX_MESSAGE));
+	} else {
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SYSTEM_HELP_HELP));
 	}
 
 	return 1;

@@ -98,6 +98,8 @@ COMMAND:health(playerid, params[])
 			format(string, sizeof(string), _(ADMIN_COMMAND_HEALTH_GIVE_SELF), targetname, targetid, amount);
 			SendClientMessage(playerid, -1, string);
 		}
+	} else {
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_HEALTH_HELP));
 	}
 
 	return 1;

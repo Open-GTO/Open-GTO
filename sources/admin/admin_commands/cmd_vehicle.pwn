@@ -302,7 +302,11 @@ COMMAND:vehicle(playerid, params[])
 				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_SELF), vehicleid, amount);
 				SendClientMessage(playerid, -1, string);
 			}
+		} else {
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_VEHICLE_HEALTH_ERROR));
 		}
+	} else {
+		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_HELP));
 	}
 
 	return 1;

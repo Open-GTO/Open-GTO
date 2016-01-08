@@ -78,6 +78,8 @@ COMMAND:camera(playerid, params[])
 		SetPlayerCameraLookAt(playerid, lpos[0], lpos[1], lpos[2]);
 	} else if (strcmp(subcmd, "reset", true) == 0) {
 		SetCameraBehindPlayer(playerid);
+	} else {
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_CAMERA_HELP));
 	}
 
 	return 1;

@@ -81,6 +81,8 @@ COMMAND:skin(playerid, params[])
 
 		format(string, sizeof(string), _(ADMIN_COMMAND_SKIN_GET), targetname, targetid, skin);
 		SendClientMessage(playerid, -1, string);
+	} else {
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKIN_HELP));
 	}
 
 	return 1;

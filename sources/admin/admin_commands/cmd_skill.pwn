@@ -122,6 +122,8 @@ COMMAND:skill(playerid, params[])
 			format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_GIVE_SELF), targetname, targetid, skillname, amount);
 			SendClientMessage(playerid, -1, string);
 		}
+	} else {
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_HELP));
 	}
 
 	return 1;

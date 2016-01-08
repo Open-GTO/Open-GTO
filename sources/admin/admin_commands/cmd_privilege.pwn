@@ -57,6 +57,8 @@ COMMAND:privileje(playerid, params[])
 
 		format(string, sizeof(string), _(ADMIN_COMMAND_PRIVILEGE_GET), targetname, targetid, privileje_name);
 		SendClientMessage(playerid, -1, string);
+	} else {
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_PRIVILEGE_HELP));
 	}
 
 	return 1;

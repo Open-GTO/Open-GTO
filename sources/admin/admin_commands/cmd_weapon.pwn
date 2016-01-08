@@ -115,6 +115,8 @@ COMMAND:weapon(playerid, params[])
 			format(string, sizeof(string), _(ADMIN_COMMAND_WEAPON_GIVE_SELF), targetname, targetid, weaponid, amount);
 			SendClientMessage(playerid, -1, string);
 		}
+	} else {
+		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_WEAPON_HELP));
 	}
 
 	return 1;

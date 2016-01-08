@@ -98,6 +98,8 @@ COMMAND:armour(playerid, params[])
 			format(string, sizeof(string), _(ADMIN_COMMAND_ARMOUR_GIVE_SELF), targetname, targetid, amount);
 			SendClientMessage(playerid, -1, string);
 		}
+	} else {
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ARMOUR_HELP));
 	}
 
 	return 1;

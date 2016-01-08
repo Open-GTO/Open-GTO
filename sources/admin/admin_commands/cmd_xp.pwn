@@ -88,6 +88,8 @@ COMMAND:xp(playerid, params[])
 			format(string, sizeof(string), _(ADMIN_COMMAND_XP_GIVE_SELF), targetname, targetid, amount);
 			SendClientMessage(playerid, -1, string);
 		}
+	} else {
+		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_XP_HELP));
 	}
 
 	return 1;
