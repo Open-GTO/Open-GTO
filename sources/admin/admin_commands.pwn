@@ -59,52 +59,6 @@ COMMAND:about(playerid, params[])
 	return 1;
 }
 
-COMMAND:pinfo(playerid, params[])
-{
-	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
-		return 0;
-	}
-
-	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
-		return 1;
-	}
-
-	new idx = 0;
-	new receiverid = strval(strcharsplit(params, idx, ' '));
-
-	if (!IsPlayerConnected(receiverid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
-		return 1;
-	}
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][34], ReturnPlayerName(receiverid), receiverid);
-	SendClientMessage(playerid, COLOR_YELLOW, string);
-
-	GetPlayerPrivilegeName(playerid, string);
-	SendClientMessage(playerid, COLOR_LIGHTRED, string);
-
-	format(string, sizeof(string), lang_texts[12][35], GetPlayerLevel(receiverid), GetPlayerXP(receiverid));
-	SendClientMessage(playerid, COLOR_WHITE, string);
-
-	format(string, sizeof(string), lang_texts[12][36], GetPlayerMoney(receiverid), GetPlayerBankMoney(receiverid));
-	SendClientMessage(playerid, COLOR_WHITE, string);
-
-	format(string, sizeof(string), lang_texts[12][38], GetPlayerDeaths(receiverid), GetPlayerKills(receiverid));
-	SendClientMessage(playerid, COLOR_WHITE, string);
-
-	format(string, sizeof(string), lang_texts[12][71], player_GetJailCount(receiverid), player_GetMuteCount(receiverid));
-	SendClientMessage(playerid, COLOR_WHITE, string);
-
-	new player_ip[MAX_IP];
-	Player_GetIP(playerid, player_ip);
-
-	format(string, sizeof(string), lang_texts[12][72], GetPlayerPing(receiverid), player_ip);
-	SendClientMessage(playerid, COLOR_WHITE, string);
-	return 1;
-}
-
 COMMAND:teleset(playerid, params[])
 {
 	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
