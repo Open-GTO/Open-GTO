@@ -684,11 +684,6 @@ ADMIN_COMMAND_RCON_HELP_0 = {FFCC66}* {FFFFFF}У вас максимальные права. Вы может
 ADMIN_COMMAND_RCON_HELP_1 = {FFCC66}* {FFFFFF}присваивать игрокам права модератора или администратора. Управлять сервером и игровым режимом в полной
 ADMIN_COMMAND_RCON_HELP_2 = {FFCC66}* {FFFFFF}мере, предоставленной в Open-GTO.
 
-ADMIN_COMMAND_KICK_IS_ADMIN = Не кикнут, так как является администратором. Причина: %s
-ADMIN_COMMAND_KICK_KICKED_SELF = Вы были кикнуты. Причина: %s.
-ADMIN_COMMAND_KICK_KICKED = %s был кикнут. Причина: %s.
-ADMIN_COMMAND_KICK_NOREASON = не указана
-
 ADMIN_COMMAND_SYSTEM_HELP = {FFCC66}* System: {FFFFFF}Системные команды:
 ADMIN_COMMAND_SYSTEM_HELP_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] help
 
@@ -764,16 +759,26 @@ ADMIN_COMMAND_GETINFO_ALL_NOPLAYERS = {FFCC66}* {FFFFFF}На сервере нет заткнутых
 ADMIN_COMMAND_INTERIOR_HELP = {FFCC66}[Применение]: {FFFFFF}/int[erior] <set/get> <id/ник/all> <интерьер/>
 ADMIN_COMMAND_INTERIOR_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_INTERIOR_GET = {FFCC66}* {FFFFFF}Интерьер игрока {FFCC66}%s(%d): {FFCC66}%d
-ADMIN_COMMAND_INTERIOR_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил интерьер всех игроков до {FFCC66}%d
-ADMIN_COMMAND_INTERIOR_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваш интерьер на {FFCC66}%d
+ADMIN_COMMAND_INTERIOR_SET_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}изменил интерьер всех игроков до {FFCC66}%d
+ADMIN_COMMAND_INTERIOR_SET_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}изменил ваш интерьер на {FFCC66}%d
 ADMIN_COMMAND_INTERIOR_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили интерьер {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%d
 
 ADMIN_COMMAND_WORLD_HELP = {FFCC66}[Применение]: {FFFFFF}/world <set/get> <id/ник/all> <интерьер/>
 ADMIN_COMMAND_WORLD_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_WORLD_GET = {FFCC66}* {FFFFFF}Игровой мир игрока {FFCC66}%s(%d): {FFCC66}%d
-ADMIN_COMMAND_WORLD_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил игровой мир всех игроков до {FFCC66}%d
-ADMIN_COMMAND_WORLD_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваш игровой мир на {FFCC66}%d
+ADMIN_COMMAND_WORLD_SET_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}изменил игровой мир всех игроков до {FFCC66}%d
+ADMIN_COMMAND_WORLD_SET_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}изменил ваш игровой мир на {FFCC66}%d
 ADMIN_COMMAND_WORLD_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили игровой мир {FFCC66}%s(%d) {FFFFFF}на {FFCC66}%d
+
+ADMIN_COMMAND_KICK_HELP = {FFCC66}[Применение]: {FFFFFF}/kick <id/ник/all> <причина/>
+ADMIN_COMMAND_KICK_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_KICK_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}кикнул всех игроков
+ADMIN_COMMAND_KICK_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}кикнул {FFCC66}%s(%d)
+ADMIN_COMMAND_KICK_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы кикнули {FFCC66}%s(%d)
+ADMIN_COMMAND_KICK_IS_ADMIN = Не кикнут, так как является администратором. Причина: %s
+ADMIN_COMMAND_KICK_KICKED_SELF = Вы были кикнуты. Причина: %s.
+ADMIN_COMMAND_KICK_KICKED = %s был кикнут. Причина: %s.
+ADMIN_COMMAND_KICK_NOREASON = не указана
 
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)
