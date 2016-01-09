@@ -161,7 +161,7 @@ public adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][38], GetPlayerDeaths(clickedid), GetPlayerKills(clickedid));	//Kills, Deaths
 	SendClientMessage(playerid, COLOR_WHITE, string);
 
-	format(string, sizeof(string), lang_texts[12][71], player_GetJailCount(clickedid), player_GetMuteCount(clickedid));	//Jailed, Muted
+	format(string, sizeof(string), lang_texts[12][71], player_GetJailCount(clickedid), GetPlayerMutedCount(clickedid));	//Jailed, Muted
 	SendClientMessage(playerid, COLOR_WHITE, string);
 	
 	new player_ip[MAX_IP];

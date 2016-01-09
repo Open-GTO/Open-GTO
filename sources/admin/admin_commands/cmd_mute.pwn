@@ -23,7 +23,7 @@ COMMAND:mute(playerid, params[])
 		time,
 		reason[MAX_MUTE_REASON_LENGTH];
 
-	if (sscanf(params, "s[32]iS()[" #MAX_MUTE_REASON_LENGTH "]", subparams, time, reason)) {
+	if (sscanf(params, "s[32]k<ftime>S()[" #MAX_MUTE_REASON_LENGTH "]", subparams, time, reason)) {
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_MUTE_HELP));
 		return 1;
 	}

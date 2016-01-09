@@ -59,7 +59,7 @@ COMMAND:status(playerid, params[])
 	format(string, sizeof(string), _(COMMAND_STATUS_2), GetPlayerLevel(playerid), GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1), GetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
 	SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
 
-	format(string, sizeof(string), _(COMMAND_STATUS_3), GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid), player_GetJailCount(playerid), player_GetMuteCount(playerid));
+	format(string, sizeof(string), _(COMMAND_STATUS_3), GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid), player_GetJailCount(playerid), GetPlayerMutedCount(playerid));
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	new fstylename[MAX_STRING];
@@ -98,7 +98,7 @@ COMMAND:time(playerid, params[])
 	GameTextForPlayer(playerid, string, 2000, 1);
 
 	new jail_time = player_GetJailTime(playerid);
-	new mute_time = player_GetMuteTime(playerid);
+	new mute_time = GetPlayerMuteTime(playerid);
 
 	if (jail_time != -1 || mute_time != 0) {
 		SendClientMessage(playerid, COLOR_LIGHTRED, _(COMMAND_TIME_ABOUT));

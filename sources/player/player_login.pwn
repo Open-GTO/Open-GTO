@@ -79,8 +79,8 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "Kills", GetPlayerKills(playerid));
 	ini_setInteger(file_player, "Jailed", player_GetJailCount(playerid));
 	ini_setInteger(file_player, "JailTime", player_GetJailTime(playerid));
-	ini_setInteger(file_player, "Muted", player_GetMuteCount(playerid));
-	ini_setInteger(file_player, "MuteTime", player_GetMuteTime(playerid));
+	ini_setInteger(file_player, "Muted", GetPlayerMutedCount(playerid));
+	ini_setInteger(file_player, "MuteTime", GetPlayerMuteTime(playerid));
 	ini_setInteger(file_player, "Reports", player_GetReportCount(playerid));
 
 	for (new i = 0; i < fights_GetLastId(); i++) {
@@ -163,10 +163,10 @@ stock player_Login(playerid)
 		player_SetJailTime(playerid, buf);
 		
 		ini_getInteger(file_player, "Muted", buf);
-		player_SetMuteCount(playerid, buf);
+		SetPlayerMutedCount(playerid, buf);
 		
 		ini_getInteger(file_player, "MuteTime", buf);
-		player_SetMuteTime(playerid, buf);
+		SetPlayerMuteTime(playerid, buf);
 
 		ini_getInteger(file_player, "Reports", buf);
 		player_SetReportCount(playerid, buf);

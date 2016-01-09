@@ -12,15 +12,31 @@
 #define _pl_mute_included
 #pragma library pl_mute
 
+/*
+	Defines
+*/
+
 #if !defined MAX_MUTE_REASON_LENGTH
 	#define MAX_MUTE_REASON_LENGTH 64
 #endif
+
+/*
+	Vars
+*/
+
+static
+	gPlayerMutedCount[MAX_PLAYERS],
+	gPlayerMuteTime[MAX_PLAYERS];
+
+/*
+	For public
+*/
 
 stock pl_mute_OnPlayerText(playerid, text[])
 {
 	#pragma unused text
 
-	if (player_IsMuted(playerid)) {
+	if (IsPlayerMuted(playerid)) {
 		SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
 		return 0;
 	}
@@ -28,48 +44,62 @@ stock pl_mute_OnPlayerText(playerid, text[])
 	return 1;
 }
 
-stock MutePlayer(playerid, mutetime)
-{
-	player_SetMuteTime(playerid, gettime() + mutetime * 60);
-	player_SetMuteCount(playerid, player_GetMuteCount(playerid) + 1);
-	return 1;
-}
-
-stock UnMutePlayer(playerid)
-{
-	player_SetMuteTime(playerid, 0);
-	return 1;
-}
+/*
+	For timer
+*/
 
 stock MutePlayerTimer(playerid)
 {
-	new mutetime = player_GetMuteTime(playerid);
+	static
+		mutetime;
+
+	mutetime = GetPlayerMuteTime(playerid);
 
 	if (mutetime != 0 && gettime() >= mutetime) {
 		UnMutePlayer(playerid);
 
-		new string[MAX_STRING];
-		format(string, sizeof(string), lang_texts[13][54], ReturnPlayerName(playerid), playerid);
+		new string[MAX_LANG_VALUE_STRING];
+		GetPlayerName(playerid, string, sizeof(string));
+		format(string, sizeof(string), _(ADMIN_MUTE_UNMUTED), string, playerid);
 		SendClientMessageToAll(COLOR_YELLOW, string);
 	}
 }
 
-stock player_GetMuteCount(playerid) {
-	return GetPVarInt(playerid, "Muted");
+/*
+	Functions
+*/
+
+stock MutePlayer(playerid, mutetime)
+{
+	SetPlayerMuteTime(playerid, gettime() + mutetime);
+	AddPlayerMutedCount(playerid, 1);
 }
 
-stock player_SetMuteCount(playerid, jailed) {
-	SetPVarInt(playerid, "Muted", jailed);
+stock UnMutePlayer(playerid)
+{
+	SetPlayerMuteTime(playerid, 0);
 }
 
-stock player_GetMuteTime(playerid) {
-	return GetPVarInt(playerid, "MuteTime");
+stock GetPlayerMutedCount(playerid) {
+	return gPlayerMutedCount[playerid];
 }
 
-stock player_SetMuteTime(playerid, time) {
-	SetPVarInt(playerid, "MuteTime", time);
+stock SetPlayerMutedCount(playerid, amount) {
+	gPlayerMutedCount[playerid] = amount;
 }
 
-stock player_IsMuted(playerid) {
-	return GetPVarInt(playerid, "MuteTime") != 0 ? 1 : 0;
+stock AddPlayerMutedCount(playerid, amount = 1) {
+	gPlayerMutedCount[playerid] += amount;
+}
+
+stock GetPlayerMuteTime(playerid) {
+	return gPlayerMuteTime[playerid];
+}
+
+stock SetPlayerMuteTime(playerid, time) {
+	gPlayerMuteTime[playerid] = time;
+}
+
+stock IsPlayerMuted(playerid) {
+	return gPlayerMuteTime[playerid] != 0;
 }

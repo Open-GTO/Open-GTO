@@ -45,7 +45,7 @@ stock player_SaveConfig(file_config)
 
 stock player_OnPlayerSpawn(playerid)
 {
-	if (player_IsMuted(playerid)) {
+	if (IsPlayerMuted(playerid)) {
 		SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
 	}
 	

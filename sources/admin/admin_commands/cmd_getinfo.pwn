@@ -55,7 +55,7 @@ COMMAND:getinfo(playerid, params[])
 		SendClientMessage(playerid, -1, _(ADMIN_PLIST_HEADER));
 
 		foreach (targetid : Player) {
-			if (!player_IsJailed(targetid) && !player_IsMuted(playerid)) {
+			if (!player_IsJailed(targetid) && !IsPlayerMuted(playerid)) {
 				continue;
 			}
 
@@ -73,8 +73,8 @@ COMMAND:getinfo(playerid, params[])
 				}
 			}
 
-			if (player_IsMuted(playerid)) {
-				time = player_GetMuteTime(targetid);
+			if (IsPlayerMuted(playerid)) {
+				time = GetPlayerMuteTime(targetid);
 
 				format(string, sizeof(string), _(ADMIN_PLIST_MUTE_REMAIN),
 					targetname, targetid, (time - current_time) / 60 + 1);

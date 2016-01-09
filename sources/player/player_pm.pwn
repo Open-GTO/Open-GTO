@@ -15,7 +15,7 @@
 
 stock pl_pm_Send(senderid, receiveid, message[])
 {
-	if (player_IsMuted(senderid)) {
+	if (IsPlayerMuted(senderid)) {
 		SendClientMessage(senderid, COLOR_RED, _(MUTED_HELP_MESSAGE));
 		return 0;
 	}

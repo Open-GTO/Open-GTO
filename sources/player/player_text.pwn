@@ -29,7 +29,7 @@ stock pl_text_OnPlayerText(playerid, text[])
 				return 0;
 			}
 
-			if (player_IsMuted(playerid)) {
+			if (IsPlayerMuted(playerid)) {
 				SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
 				return 0;
 			}
@@ -71,7 +71,7 @@ stock pl_text_OnPlayerText(playerid, text[])
 			return 0;
 		}
 		case '$', ';': {
-			if (player_IsMuted(playerid)) {
+			if (IsPlayerMuted(playerid)) {
 				SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
 				return 0;
 			}

@@ -780,12 +780,14 @@ ADMIN_COMMAND_KICK_KICKED_SELF = Вы были кикнуты. Причина: %s.
 ADMIN_COMMAND_KICK_KICKED = %s был кикнут. Причина: %s.
 ADMIN_COMMAND_KICK_NOREASON = не указана
 
-ADMIN_COMMAND_MUTE_HELP = {FFCC66}[Применение]: {FFFFFF}/mute <id/ник/all> <время в минутах> <причина/>
+ADMIN_COMMAND_MUTE_HELP = {FFCC66}[Применение]: {FFFFFF}/mute <id/ник/all> <время(число[с/м/ч/д/н/г])> <причина/>
 ADMIN_COMMAND_MUTE_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_MUTE_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}заткнул всех игроков {FFFFFF}на %d %s.
 ADMIN_COMMAND_MUTE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}заткнул {FFCC66}%s(%d) {FFFFFF}на %d %s.
 ADMIN_COMMAND_MUTE_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы заткнули {FFCC66}%s(%d) {FFFFFF}на %d %s.
 ADMIN_COMMAND_MUTE_REASON = %s. Причина: %s
+
+ADMIN_MUTE_UNMUTED = {FFCC66}* {FFFFFF}Игрок {FFCC66}%s(%d) {FFFFFF}снова может говорить.
 
 ADMIN_COMMAND_UNMUTE_HELP = {FFCC66}[Применение]: {FFFFFF}/unmute <id/ник/all> <причина/>
 ADMIN_COMMAND_UNMUTE_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
