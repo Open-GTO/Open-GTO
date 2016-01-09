@@ -687,6 +687,7 @@ ADMIN_COMMAND_RCON_HELP_2 = {FFCC66}* {FFFFFF}мере, предоставленной в Open-GTO.
 ADMIN_COMMAND_KICK_IS_ADMIN = Не кикнут, так как является администратором. Причина: %s
 ADMIN_COMMAND_KICK_KICKED_SELF = Вы были кикнуты. Причина: %s.
 ADMIN_COMMAND_KICK_KICKED = %s был кикнут. Причина: %s.
+ADMIN_COMMAND_KICK_NOREASON = не указана
 
 ADMIN_COMMAND_SYSTEM_HELP = {FFCC66}* System: {FFFFFF}Системные команды:
 ADMIN_COMMAND_SYSTEM_HELP_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] help

@@ -12,6 +12,9 @@
 #define _pl_kick_included
 #pragma library pl_kick
 
+#if !defined MAX_KICK_REASON_LENGTH
+	#define MAX_KICK_REASON_LENGTH 64
+#endif
 
 stock KickPlayer(playerid, reason[] = "", showreason = 1)
 {
@@ -20,11 +23,13 @@ stock KickPlayer(playerid, reason[] = "", showreason = 1)
 	}
 
 	if (strlen(reason) == 0) {
-		set(reason, "None");
+		__(ADMIN_COMMAND_KICK_NOREASON, reason, MAX_KICK_REASON_LENGTH);
 	}
 
-	new string[MAX_STRING];
-	new playername[MAX_PLAYER_NAME+1];
+	new
+		string[MAX_STRING],
+		playername[MAX_PLAYER_NAME + 1];
+	
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
@@ -33,14 +38,15 @@ stock KickPlayer(playerid, reason[] = "", showreason = 1)
 		return 0;
 	}
 
-	if (showreason == 1) {
+	if (showreason) {
 		format(string, sizeof(string), _(ADMIN_COMMAND_KICK_KICKED_SELF), reason);
 		SendClientMessage(playerid, COLOR_RED, string);
+
 		format(string, sizeof(string), _(ADMIN_COMMAND_KICK_KICKED), playername, reason);
 		SendClientMessageToAll(COLOR_MISC, string);
 	}
 	
-	GameTextForPlayer(playerid, "~r~Connection Lost.", 1000, 5); //  send msg first
+	GameTextForPlayer(playerid, "~r~Connection Lost.", 1000, 5);
 	TogglePlayerControllable(playerid, 0);
 
 	SetTimerEx("PlayerKickFix", 100, 0, "d", playerid);

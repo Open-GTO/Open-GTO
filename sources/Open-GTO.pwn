@@ -193,6 +193,7 @@ Thanks:
 #include "admin/admin_commands/cmd_getinfo.pwn"
 #include "admin/admin_commands/cmd_interior.pwn"
 #include "admin/admin_commands/cmd_world.pwn"
+#include "admin/admin_commands/cmd_kick.pwn"
 #include "admin/admin_ban.pwn"
 #include "admin/admin_mute.pwn"
 #include "admin/admin_jail.pwn"
