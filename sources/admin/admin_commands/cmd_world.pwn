@@ -14,7 +14,7 @@
 
 COMMAND:world(playerid, params[])
 {
-	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		return 0;
 	}
 

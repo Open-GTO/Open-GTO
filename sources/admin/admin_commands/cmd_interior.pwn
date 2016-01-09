@@ -19,7 +19,7 @@ COMMAND:int(playerid, params[])
 
 COMMAND:interior(playerid, params[])
 {
-	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 		return 0;
 	}
 
