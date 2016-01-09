@@ -22,15 +22,6 @@ stock admin_LoadConfig(file_config)
 	adm_maptp_LoadConfig(file_config);
 }
 
-stock admin_OnPlayerText(playerid, text[])
-{
-	new mute_result = adm_mute_OnPlayerText(playerid, text);
-	if (mute_result == 0) {
-		SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
-	}
-	return mute_result;
-}
-
 stock admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
 	adm_maptp_OnPlayerClickMap(playerid, fX, fY, fZ);

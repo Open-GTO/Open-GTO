@@ -6,14 +6,17 @@
 */
 
 #if defined _core_declension_included
-  #endinput
+	#endinput
 #endif
 
 #define _core_declension_included
 #pragma library core_declension
 
+/*
+	Get functions
+*/
 
-stock Declension_ReturnWord(num, word_1[MAX_LANG_VALUE_STRING], word_2[MAX_LANG_VALUE_STRING], word_3[MAX_LANG_VALUE_STRING])
+stock Declension_GetWord(result[], const size = sizeof(result), num, word_1[MAX_LANG_VALUE_STRING], word_2[MAX_LANG_VALUE_STRING], word_3[MAX_LANG_VALUE_STRING])
 {
 	num %= 100;
 	
@@ -23,53 +26,96 @@ stock Declension_ReturnWord(num, word_1[MAX_LANG_VALUE_STRING], word_2[MAX_LANG_
 
 	switch (num) {
 		case 1: {
-			return word_1;
+			strmid(result, word_1, 0, strlen(word_1), size);
 		}
 		case 2..4: {
-			return word_2;
+			strmid(result, word_2, 0, strlen(word_2), size);
+		}
+		default: {
+			strmid(result, word_3, 0, strlen(word_3), size);
 		}
 	}
-	return word_3;
 }
 
-stock Declension_GetMonths(value)
+stock Declension_GetMonths(value, result[], const size = sizeof(result))
+{
+	Declension_GetWord(result, size, value, _(DECLENSION_MONTH_1), _(DECLENSION_MONTH_2), _(DECLENSION_MONTH_3))
+}
+
+stock Declension_GetDays(value, result[], const size = sizeof(result))
+{
+	Declension_GetWord(result, size, value, _(DECLENSION_DAY_1), _(DECLENSION_DAY_2), _(DECLENSION_DAY_3));
+}
+
+stock Declension_GetHours(value, result[], const size = sizeof(result))
+{
+	Declension_GetWord(result, size, value, _(DECLENSION_HOUR_1), _(DECLENSION_HOUR_2), _(DECLENSION_HOUR_3));
+}
+
+stock Declension_GetMinutes(value, result[], const size = sizeof(result))
+{
+	Declension_GetWord(result, size, value, _(DECLENSION_MINUTE_1), _(DECLENSION_MINUTE_2), _(DECLENSION_MINUTE_3));
+}
+
+stock Declension_GetSeconds(value, result[], const size = sizeof(result))
+{
+	Declension_GetWord(result, size, value, _(DECLENSION_SECOND_1), _(DECLENSION_SECOND_2), _(DECLENSION_SECOND_3));
+}
+
+stock Declension_GetAmmo(value, result[], const size = sizeof(result))
+{
+	Declension_GetWord(result, size, value, _(DECLENSION_AMMO_1), _(DECLENSION_AMMO_2), _(DECLENSION_AMMO_3));
+}
+
+/*
+	Return functions
+*/
+
+stock Declension_ReturnWord(num, word_1[MAX_LANG_VALUE_STRING], word_2[MAX_LANG_VALUE_STRING], word_3[MAX_LANG_VALUE_STRING])
 {
 	new result[MAX_LANG_VALUE_STRING];
-	result = Declension_ReturnWord(value, _(DECLENSION_MONTH_1), _(DECLENSION_MONTH_2), _(DECLENSION_MONTH_3))
+	Declension_GetWord(result, sizeof(result), num, word_1, word_2, word_3);
 	return result;
 }
 
-stock Declension_GetDays(value)
+stock Declension_ReturnMonths(value)
 {
 	new result[MAX_LANG_VALUE_STRING];
-	result = Declension_ReturnWord(value, _(DECLENSION_DAY_1), _(DECLENSION_DAY_2), _(DECLENSION_DAY_3));
+	Declension_GetMonths(value, result);
 	return result;
 }
 
-stock Declension_GetHours(value)
+stock Declension_ReturnDays(value)
 {
 	new result[MAX_LANG_VALUE_STRING];
-	result = Declension_ReturnWord(value, _(DECLENSION_HOUR_1), _(DECLENSION_HOUR_2), _(DECLENSION_HOUR_3));
+	Declension_GetDays(value, result);
 	return result;
 }
 
-stock Declension_GetMinutes(value)
+stock Declension_ReturnHours(value)
 {
 	new result[MAX_LANG_VALUE_STRING];
-	result = Declension_ReturnWord(value, _(DECLENSION_MINUTE_1), _(DECLENSION_MINUTE_2), _(DECLENSION_MINUTE_3));
+	Declension_GetHours(value, result);
 	return result;
 }
 
-stock Declension_GetSeconds(value)
+stock Declension_ReturnMinutes(value)
 {
 	new result[MAX_LANG_VALUE_STRING];
-	result = Declension_ReturnWord(value, _(DECLENSION_SECOND_1), _(DECLENSION_SECOND_2), _(DECLENSION_SECOND_3));
+	Declension_GetMinutes(value, result);
 	return result;
 }
 
-stock Declension_GetAmmo(value)
+stock Declension_ReturnSeconds(value)
 {
 	new result[MAX_LANG_VALUE_STRING];
-	result = Declension_ReturnWord(value, _(DECLENSION_AMMO_1), _(DECLENSION_AMMO_2), _(DECLENSION_AMMO_3));
+	Declension_GetSeconds(value, result);
+	return result;
+}
+
+stock Declension_ReturnAmmo(value)
+{
+	new result[MAX_LANG_VALUE_STRING];
+	Declension_GetAmmo(value, result);
 	return result;
 }

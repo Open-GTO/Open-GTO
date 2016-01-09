@@ -780,6 +780,20 @@ ADMIN_COMMAND_KICK_KICKED_SELF = Вы были кикнуты. Причина: %s.
 ADMIN_COMMAND_KICK_KICKED = %s был кикнут. Причина: %s.
 ADMIN_COMMAND_KICK_NOREASON = не указана
 
+ADMIN_COMMAND_MUTE_HELP = {FFCC66}[Применение]: {FFFFFF}/mute <id/ник/all> <время в минутах> <причина/>
+ADMIN_COMMAND_MUTE_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_MUTE_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}заткнул всех игроков {FFFFFF}на %d %s.
+ADMIN_COMMAND_MUTE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}заткнул {FFCC66}%s(%d) {FFFFFF}на %d %s.
+ADMIN_COMMAND_MUTE_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы заткнули {FFCC66}%s(%d) {FFFFFF}на %d %s.
+ADMIN_COMMAND_MUTE_REASON = %s. Причина: %s
+
+ADMIN_COMMAND_UNMUTE_HELP = {FFCC66}[Применение]: {FFFFFF}/unmute <id/ник/all> <причина/>
+ADMIN_COMMAND_UNMUTE_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_UNMUTE_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}снял затычку со всех игроков.
+ADMIN_COMMAND_UNMUTE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}снял затычку у {FFCC66}%s(%d){FFFFFF}.
+ADMIN_COMMAND_UNMUTE_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы снчли затычку {FFCC66}%s(%d){FFFFFF}.
+ADMIN_COMMAND_UNMUTE_REASON = %s. Причина: %s
+
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)
 PROTECTION_ARMOUR = взлом брони (%0.2f > %0.2f)

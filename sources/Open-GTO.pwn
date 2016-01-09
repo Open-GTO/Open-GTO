@@ -194,8 +194,9 @@ Thanks:
 #include "admin/admin_commands/cmd_interior.pwn"
 #include "admin/admin_commands/cmd_world.pwn"
 #include "admin/admin_commands/cmd_kick.pwn"
+#include "admin/admin_commands/cmd_mute.pwn"
+#include "admin/admin_commands/cmd_unmute.pwn"
 #include "admin/admin_ban.pwn"
-#include "admin/admin_mute.pwn"
 #include "admin/admin_jail.pwn"
 #include "admin/admin_spec.pwn"
 #include "admin/admin_godmod.pwn"
@@ -520,7 +521,7 @@ public OnPlayerText(playerid, text[])
 		return 0;
 	}
 
-	new adm_result = admin_OnPlayerText(playerid, text);
+	new adm_result = pl_mute_OnPlayerText(playerid, text);
 	if (adm_result == 0) {
 		return 0;
 	}

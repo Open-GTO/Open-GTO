@@ -442,20 +442,20 @@ stock Account_GetPlayedTimeString(played_seconds, string[], const size = sizeof(
 	if (days != 0) {
 		format(string, size,
 			_(ACCOUNT_PLAYED_TIME_DAY),
-			days, Declension_GetDays(days),
-			hours, Declension_GetHours(hours)
+			days, Declension_ReturnDays(days),
+			hours, Declension_ReturnHours(hours)
 		);
 	} else if (hours != 0) {
 		format(string, size, 
 			_(ACCOUNT_PLAYED_TIME_HOUR),
-			hours, Declension_GetHours(hours)
+			hours, Declension_ReturnHours(hours)
 		);
 	}
 
 	format(string, size,
 		_(ACCOUNT_PLAYED_TIME_MINUTES),
 		string,
-		minutes, Declension_GetMinutes(minutes),
-		seconds, Declension_GetSeconds(seconds)
+		minutes, Declension_ReturnMinutes(minutes),
+		seconds, Declension_ReturnSeconds(seconds)
 	);
 }

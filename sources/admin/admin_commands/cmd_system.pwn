@@ -62,7 +62,7 @@ COMMAND:system(playerid, params[])
 			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SYSTEM_WEATHER_DISABLED));
 		} else {
 			new string[MAX_LANG_VALUE_STRING];
-			format(string, sizeof(string), _(ADMIN_COMMAND_SYSTEM_WEATHER_ENABLED), time, Declension_GetMinutes(time));
+			format(string, sizeof(string), _(ADMIN_COMMAND_SYSTEM_WEATHER_ENABLED), time, Declension_ReturnMinutes(time));
 			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "groundhold", true) == 0) {

@@ -150,7 +150,7 @@ DialogCreate:ServiceWeaponBuy(playerid)
 
 		format(string, sizeof(string),
 			_(WEAPON_DIALOG_WEAPON),
-			ReturnWeaponName(weaponid), GetWeaponCost(weaponid), max_bullets, Declension_GetAmmo(max_bullets)
+			ReturnWeaponName(weaponid), GetWeaponCost(weaponid), max_bullets, Declension_ReturnAmmo(max_bullets)
 		);
 		strcat(string, _(WEAPON_DIALOG_INFORMATION_TEXT_AMMO));
 	}

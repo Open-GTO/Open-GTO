@@ -39,8 +39,8 @@ COMMAND:skydive(playerid, params[])
 
 		format(string, sizeof(string),
 			_(SKYDIVING_NEED_TIME),
-			minutes, Declension_GetMinutes(minutes),
-			seconds, Declension_GetSeconds(seconds)
+			minutes, Declension_ReturnMinutes(minutes),
+			seconds, Declension_ReturnSeconds(seconds)
 		);
 
 		SendClientMessage(playerid, COLOR_WHITE, string);
