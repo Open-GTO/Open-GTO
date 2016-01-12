@@ -17,8 +17,6 @@
  * Core settings
  */
 
-#pragma dynamic 13000
-
 #define MAX_STRING  128
 #define MAX_NAME    40
 #define MAX_IP      16
