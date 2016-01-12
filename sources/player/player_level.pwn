@@ -174,30 +174,55 @@ stock GetPlayerLevel(playerid)
 
 stock SetPlayerXP(playerid, amount)
 {
-	new level = GetPlayerLevel(playerid);
-	if (amount == 0) {
-		SetPVarInt(playerid, "XP", 0);
-		return;
-	}
-	
-	new xp_to_level = 0;
-	if (amount > 0 && level < GetMaxPlayerLevel()) {
+	new
+		level,
+		xp_to_level,
+		xp_set;
+
+	level = GetPlayerLevel(playerid);
+	xp_set = amount;
+
+	if (xp_set < 0) {
+		xp_to_level = GetXPToLevel(level);
+
+		while (xp_set <= xp_to_level && xp_set < 0) {
+			xp_set += xp_to_level;
+			level--;
+
+			if (level < MIN_LEVEL) {
+				break;
+			}
+
+			xp_to_level = GetXPToLevel(level);
+
+			SetPlayerLevel(playerid, level);
+		}
+		
+		if (level <= MIN_LEVEL) {
+			xp_set = 0;
+		}
+	} else {
 		xp_to_level = GetXPToLevel(level + 1);
-	} else if (amount > 0) {
-		return;
+
+		while (xp_set >= xp_to_level) {
+			xp_set -= xp_to_level;
+			level++;
+
+			if (level > GetMaxPlayerLevel()) {
+				break;
+			}
+
+			xp_to_level = GetXPToLevel(level + 1);
+
+			SetPlayerLevel(playerid, level);
+		}
+		
+		if (level >= GetMaxPlayerLevel()) {
+			xp_set = 0;
+		}
 	}
 
-	if (amount == xp_to_level) {
-		SetPlayerLevel(playerid, level + 1);
-	} else if (amount > xp_to_level) {
-		SetPlayerLevel(playerid, level + 1);
-		SetPlayerXP(playerid, amount - GetXPToLevel(level + 1));
-	} else if (amount < 0) {
-		SetPlayerLevel(playerid, level - 1);
-		SetPlayerXP(playerid, GetXPToLevel(level) + amount);
-	} else if (amount < xp_to_level) {
-		SetPVarInt(playerid, "XP", amount);
-	}
+	SetPVarInt(playerid, "XP", xp_set);
 }
 
 stock GetPlayerXP(playerid)

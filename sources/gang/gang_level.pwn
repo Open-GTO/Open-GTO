@@ -133,30 +133,55 @@ stock SetGangLevel(gangid, level)
 
 stock SetGangXP(gangid, amount)
 {
-	new level = GetGangLevel(gangid);
-	if (amount == 0) {
-		Gang_SetXP(gangid, 0);
-		return;
-	}
-	
-	new xp_to_level = 0;
-	if (amount > 0 && level < GetMaxGangLevel()) {
+	new
+		level,
+		xp_to_level,
+		xp_set;
+
+	level = GetGangLevel(gangid);
+	xp_set = amount;
+
+	if (xp_set < 0) {
+		xp_to_level = GetXPToGangLevel(level);
+
+		while (xp_set <= xp_to_level && xp_set < 0) {
+			xp_set += xp_to_level;
+			level--;
+
+			if (level < MIN_GANG_LEVEL) {
+				break;
+			}
+
+			xp_to_level = GetXPToGangLevel(level);
+
+			SetGangLevel(gangid, level);
+		}
+		
+		if (level <= MIN_GANG_LEVEL) {
+			xp_set = 0;
+		}
+	} else {
 		xp_to_level = GetXPToGangLevel(level + 1);
-	} else if (amount > 0) {
-		return;
+
+		while (xp_set >= xp_to_level) {
+			xp_set -= xp_to_level;
+			level++;
+
+			if (level > GetMaxGangLevel()) {
+				break;
+			}
+
+			xp_to_level = GetXPToGangLevel(level + 1);
+
+			SetGangLevel(gangid, level);
+		}
+		
+		if (level >= GetMaxPlayerLevel()) {
+			xp_set = 0;
+		}
 	}
 
-	if (amount == xp_to_level) {
-		SetGangLevel(gangid, level + 1);
-	} else if (amount > xp_to_level) {
-		SetGangLevel(gangid, level + 1);
-		SetGangXP(gangid, amount - GetXPToGangLevel(level + 1));
-	} else if (amount < 0) {
-		SetGangLevel(gangid, level - 1);
-		SetGangXP(gangid, GetXPToGangLevel(level) + amount);
-	} else if (amount < xp_to_level) {
-		Gang_SetXP(gangid, amount);
-	}
+	Gang_SetXP(gangid, xp_set);
 }
 
 stock GetGangXPToLevel(gangid, level)
