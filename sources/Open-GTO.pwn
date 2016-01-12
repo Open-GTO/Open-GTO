@@ -497,10 +497,12 @@ public OnPlayerCommandReceived(playerid, cmdtext[])
 
 public OnPlayerCommandPerformed(playerid, cmdtext[], success)
 {
+	Log_Player(_(PLAYER_COMMAND_LOG), ReturnPlayerName(playerid), playerid, cmdtext);
+
 	if (success) {
-		Log_Player(_(PLAYER_COMMAND_LOG), ReturnPlayerName(playerid), playerid, cmdtext);
 		return 1;
 	}
+
 	return 0;
 }
 
