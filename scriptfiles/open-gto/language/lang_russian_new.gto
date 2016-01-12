@@ -1000,7 +1000,7 @@ TUNING_TD_PAINTJOB = Paintjob ~g~$%d
 TUNING_TD_PAINTJOB_HEADER = Paintjob
 TUNING_TD_PAINTJOB_TEXT = Paintjob
 
-TUNING_PAINTJOB_DIALOG_HEADER = Поркасочная работа
+TUNING_PAINTJOB_DIALOG_HEADER = Покрасочная работа
 TUNING_PAINTJOB_NOT_SELECT = Сначала выберите окрасочную работу
 TUNING_PAINTJOB_NO_ENOUGH_MONEY = У вас недостаточно денег для покупки этой покрасочной работы
 

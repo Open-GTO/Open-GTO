@@ -45,7 +45,7 @@ stock lang_OnGameModeInit()
 stock Lang_OnGameModeInit()
 {
 	new lang_file[MAX_STRING];
-	format(lang_file, sizeof(lang_file), "%slang_ru_test%s", db_lang, DATA_FILES_FORMAT);
+	format(lang_file, sizeof(lang_file), "%slang_%s_new%s", db_lang, lang_use, DATA_FILES_FORMAT);
 	Lang_LoadText(lang_file);
 
 	Log_Game("SERVER: Lang module init(%s)", lang_file);
