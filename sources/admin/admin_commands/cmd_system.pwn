@@ -167,8 +167,8 @@ COMMAND:system(playerid, params[])
 			return 1;
 		}
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_SYSTEM_GMX_MESSAGE), string);
-		SendClientMessageToAll(-1, _(ADMIN_COMMAND_SYSTEM_GMX_MESSAGE));
+		format(string, sizeof(string), _(ADMIN_COMMAND_SYSTEM_SAY_MESSAGE), string);
+		SendClientMessageToAll(-1, string);
 	} else {
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SYSTEM_HELP_HELP));
 	}

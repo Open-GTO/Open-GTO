@@ -433,6 +433,8 @@ stock Account_ReturnPlayedTimeString(played_seconds)
 
 stock Account_GetPlayedTimeString(played_seconds, string[], const size = sizeof(string))
 {
+	string[0] = '\0';
+
 	new
 		days = played_seconds / 60 / 60 / 24,
 		hours = (played_seconds / 60 / 60) % 24,
