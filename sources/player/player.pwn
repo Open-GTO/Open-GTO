@@ -73,6 +73,9 @@ stock player_OnPlayerSpawn(playerid)
 
 stock player_OnPlayerDisconnect(playerid, reason)
 {
+	// update params
+	Account_SetPlayedTime(playerid, Account_GetCurrentPlayedTime(playerid));
+
 	// save
 	player_Save(playerid);
 	Account_Save(playerid);

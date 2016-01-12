@@ -104,6 +104,7 @@ COMMAND:getinfo(playerid, params[])
 			}
 		} else {
 			Account_GetData(targetid, account_info);
+			account_info[e_aPlayedSeconds] = Account_GetCurrentPlayedTime(playerid);
 
 			GetPlayerName(targetid, targetname, sizeof(targetname));
 		}

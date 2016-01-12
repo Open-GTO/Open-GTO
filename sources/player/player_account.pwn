@@ -396,7 +396,12 @@ stock Account_SetPlayedTime(playerid, seconds)
 
 stock Account_GetPlayedTime(playerid)
 {
-	return gAccount[playerid][e_aPlayedSeconds] + gettime() - Account_GetLoginTime(playerid);
+	return gAccount[playerid][e_aPlayedSeconds];
+}
+
+stock Account_GetCurrentPlayedTime(playerid)
+{
+	return Account_GetPlayedTime(playerid) + gettime() - Account_GetLoginTime(playerid);
 }
 
 /*
