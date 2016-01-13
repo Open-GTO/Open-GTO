@@ -26,6 +26,8 @@
  * System settings
  */
 
+#pragma dynamic 10000
+
 //#define FS_USING // если задефайнено, то компиляция будет в режиме совместимости с FS (fixes, api)
 
 #define MODE_NAME       "Open-GTO"

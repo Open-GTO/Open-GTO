@@ -15,14 +15,14 @@
 
 #define MAX_ANIM_LIB_NAME	16
 #define MAX_ANIM_NAME		24
-
+#define MAX_ANIMS_IN_LIB    295
 
 enum Anims_Info {
 	anim_Lib[MAX_ANIM_LIB_NAME],
 	anim_Name[MAX_ANIM_NAME],
 }
 
-new anim_lib_array[][MAX_ANIM_LIB_NAME] = {
+static anim_lib_array[][MAX_ANIM_LIB_NAME] = {
 	"AIRPORT", "Attractors", "BAR", "BASEBALL", "BD_FIRE", "BEACH", "benchpress",
 	"BF_injection", "BIKED", "BIKEH", "BIKELEAP", "BIKES", "BIKEV", "BIKE_DBZ",
 	"BLOWJOBZ", "BMX", "BOMBER", "BOX", "BSKTBALL", "BUDDY", "BUS", "CAMERA",
@@ -1902,7 +1902,8 @@ static anim_array[][Anims_Info] = {
 
 DialogCreate:AnimLib(playerid)
 {
-	new string[ MAX_ANIM_LIB_NAME * (sizeof(anim_lib_array) + 1) ];
+	new
+		string[MAX_ANIM_LIB_NAME * sizeof(anim_lib_array)];
 	
 	for (new i = 0; i < sizeof(anim_lib_array); i++) {
 		strcat(string, anim_lib_array[i], sizeof(string));
@@ -1927,7 +1928,8 @@ DialogResponse:AnimLib(playerid, response, listitem, inputtext[])
 
 DialogCreate:AnimMenu(playerid)
 {
-	new string[ MAX_ANIM_NAME * 512 ],
+	new
+		string[MAX_ANIM_NAME * MAX_ANIMS_IN_LIB],
 		lib[MAX_ANIM_LIB_NAME];
 	
 	GetPVarString(playerid, "anims_SelectedLib", lib, sizeof(lib));
