@@ -603,7 +603,7 @@ public OnPlayerText(playerid, text[])
 				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
 				return 0;
 			}
-			if (strlen(text[1]) < 2) return 1;
+			if (strlen(text[1]) < 2) return 0;
 			format(string, sizeof(string), "%s"CHAT_SHOW_ID" банде: {FFFFFF}%s", playername, playerid, text[1]);
 			SendGangMessage(GetPVarInt(playerid, "GangID"), string, COLOUR_GANG_CHAT);
 			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <GANG CHAT>: %s", playername, playerid, text[1]);
@@ -612,7 +612,7 @@ public OnPlayerText(playerid, text[])
 		}
 		case '@','"':
 		{
-			if (strlen(text[1]) < 2) return 1;
+			if (strlen(text[1]) < 2) return 0;
 			SendClientMessageToAdmins(playerid, text[1]);
 			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <ADMIN TALK>: %s", playername, playerid, text[1]);
 			WriteLog(ChatLog, string);
@@ -620,7 +620,7 @@ public OnPlayerText(playerid, text[])
 		}
 		case '#','№':
 		{
-			if (strlen(text[1]) < 2) return 1;
+			if (strlen(text[1]) < 2) return 0;
 			SendClientMessageToModers(playerid, text[1]);
 			format(string, sizeof(string), "Player: %s"CHAT_SHOW_ID": <MODERATOR TALK>: %s", playername, playerid, text[1]);
 			WriteLog(ChatLog, string);
@@ -628,7 +628,7 @@ public OnPlayerText(playerid, text[])
 		}
 		case '$',';':
 		{
-			if (strlen(text[1]) < 2) return 1;
+			if (strlen(text[1]) < 2) return 0;
 			if (GetPlayerMuteTime(playerid) > 0)
 			{
 				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
