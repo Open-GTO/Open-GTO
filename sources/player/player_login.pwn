@@ -212,9 +212,6 @@ stock player_Login(playerid)
 		ini_getString(file_player, "Weapons", s_buf);
 		sscanf(s_buf, "p</>a<i>[" #PLAYER_WEAPON_SLOTS "]", weapons);
 		SetPlayerWeaponsFromArray(playerid, weapons);
-		for (new i = 0; i < sizeof(weapons); i++) {
-			printf("weaponid[%d] = %d", i, weapons[i]);
-		}
 
 		ini_getString(file_player, "Bullets", s_buf);
 		sscanf(s_buf, "p</>a<i>[" #PLAYER_WEAPON_SLOTS "]", bullets);
