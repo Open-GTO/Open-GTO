@@ -812,6 +812,22 @@ ADMIN_COMMAND_UNJAIL_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF
 ADMIN_COMMAND_UNJAIL_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы выпустили из тюрьмы {FFCC66}%s(%d){FFFFFF}.
 ADMIN_COMMAND_UNJAIL_REASON = %s. Причина: {A5D6A7}%s
 
+ADMIN_COMMAND_FREEZE_HELP = {FFCC66}[Применение]: {FFFFFF}/freeze <id/ник/all> <время(число[с/м/ч/д/н/г])> <причина/>
+ADMIN_COMMAND_FREEZE_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_FREEZE_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}заморозил всех игроков {FFFFFF}на {A5D6A7}%d %s.
+ADMIN_COMMAND_FREEZE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}заморозил {FFCC66}%s(%d) {FFFFFF}на {A5D6A7}%d %s.
+ADMIN_COMMAND_FREEZE_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы заморозили {FFCC66}%s(%d) {FFFFFF}на {A5D6A7}%d %s.
+ADMIN_COMMAND_FREEZE_REASON = %s. Причина: {A5D6A7}%s
+
+ADMIN_FREEZE_UNFREEZEED = {FFCC66}* {FFFFFF}%s(%d) был автоматически разморожен.
+
+ADMIN_COMMAND_UNFREEZE_HELP = {FFCC66}[Применение]: {FFFFFF}/unfreeze <id/ник/all> <причина/>
+ADMIN_COMMAND_UNFREEZE_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_UNFREEZE_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}разморозил всех игроков.
+ADMIN_COMMAND_UNFREEZE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}разморозил {FFCC66}%s(%d){FFFFFF}.
+ADMIN_COMMAND_UNFREEZE_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы разморозили {FFCC66}%s(%d){FFFFFF}.
+ADMIN_COMMAND_UNFREEZE_REASON = %s. Причина: {A5D6A7}%s
+
 // protection
 PROTECTION_WEAPON_DAMAGE = взлом урона оружия (%0.4f != %0.4f)
 PROTECTION_ARMOUR = взлом брони (%0.2f > %0.2f)

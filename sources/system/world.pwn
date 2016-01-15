@@ -96,6 +96,7 @@ public FiveSecondTimer()
 		if (player_IsLogin(playerid)) {
 			MutePlayerTimer(playerid);
 			JailPlayerTimer(playerid);
+			FreezePlayerTimer(playerid);
 			CheckPlayerInvitedGangTime(playerid);
 		}
 	}
