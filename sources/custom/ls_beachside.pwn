@@ -213,7 +213,7 @@ Beachside_OnObjectMoved(objectid)
 		// Check if the object that moved was one of the elevator floor doors
 		if(objectid == Obj_FloorDoors[i][0])
 		{
-			GetObjectPos(Obj_FloorDoors[i][0], x, y, z);
+			GetDynamicObjectPos(Obj_FloorDoors[i][0], x, y, z);
 
 			// Some floor doors have shut, move the elevator to next floor in queue:
 			if (y < Y_DOOR_L_OPENED - 0.5)
@@ -233,7 +233,7 @@ Beachside_OnObjectMoved(objectid)
 		Elevator_OpenDoors();
 		Floor_OpenDoors(ElevatorFloor);
 
-		GetObjectPos(Obj_Elevator, x, y, z);
+		GetDynamicObjectPos(Obj_Elevator, x, y, z);
 		Label_Elevator	= CreateDynamic3DTextLabel("{CCCCCC}Нажмите '{FFFFFF}"KEY_NAME"{CCCCCC}' для использования лифта", 0xCCCCCCAA, X_ELEVATOR_POS + 1.6, Y_ELEVATOR_POS - 1.85, z - 0.4, 4.0, .testlos = 1);
 
 		ElevatorState 	= ELEVATOR_STATE_WAITING;
@@ -400,7 +400,7 @@ stock Elevator_Initialize()
 	}
 
 	// Open the car park floor doors and the elevator doors
-	// in SetTimer, because MoveObject does not work in OnGameModeInit
+	// in SetTimer, because MoveDynamicObject does not work in OnGameModeInit
 	SetTimer("Beachside_DelayOpen", 500, 0);
 
 	// Exit here
@@ -419,9 +419,9 @@ stock Elevator_OpenDoors()
 
 	new Float:x, Float:y, Float:z;
 
-	GetObjectPos(Obj_ElevatorDoors[0], x, y, z);
-	MoveObject(Obj_ElevatorDoors[0], X_DOOR_L_OPENED, Y_DOOR_L_OPENED, z, DOORS_SPEED);
-	MoveObject(Obj_ElevatorDoors[1], X_DOOR_R_OPENED, Y_DOOR_R_OPENED, z, DOORS_SPEED);
+	GetDynamicObjectPos(Obj_ElevatorDoors[0], x, y, z);
+	MoveDynamicObject(Obj_ElevatorDoors[0], X_DOOR_L_OPENED, Y_DOOR_L_OPENED, z, DOORS_SPEED);
+	MoveDynamicObject(Obj_ElevatorDoors[1], X_DOOR_R_OPENED, Y_DOOR_R_OPENED, z, DOORS_SPEED);
 
 	return 1;
 }
@@ -435,9 +435,9 @@ stock Elevator_CloseDoors()
 
 	new Float:x, Float:y, Float:z;
 
-	GetObjectPos(Obj_ElevatorDoors[0], x, y, z);
-	MoveObject(Obj_ElevatorDoors[0], X_ELEVATOR_POS, Y_ELEVATOR_POS, z, DOORS_SPEED);
-	MoveObject(Obj_ElevatorDoors[1], X_ELEVATOR_POS, Y_ELEVATOR_POS, z, DOORS_SPEED);
+	GetDynamicObjectPos(Obj_ElevatorDoors[0], x, y, z);
+	MoveDynamicObject(Obj_ElevatorDoors[0], X_ELEVATOR_POS, Y_ELEVATOR_POS, z, DOORS_SPEED);
+	MoveDynamicObject(Obj_ElevatorDoors[1], X_ELEVATOR_POS, Y_ELEVATOR_POS, z, DOORS_SPEED);
 
 	return 1;
 }
@@ -446,8 +446,8 @@ stock Floor_OpenDoors(floorid)
 {
 	// Opens the doors at the specified floor.
 
-	MoveObject(Obj_FloorDoors[floorid][0], X_FDOOR_L_OPENED, Y_FDOOR_L_OPENED, GetDoorsZCoordForFloor(floorid) + 0.05, DOORS_SPEED);
-	MoveObject(Obj_FloorDoors[floorid][1], X_FDOOR_R_OPENED, Y_FDOOR_R_OPENED, GetDoorsZCoordForFloor(floorid) + 0.05, DOORS_SPEED);
+	MoveDynamicObject(Obj_FloorDoors[floorid][0], X_FDOOR_L_OPENED, Y_FDOOR_L_OPENED, GetDoorsZCoordForFloor(floorid) + 0.05, DOORS_SPEED);
+	MoveDynamicObject(Obj_FloorDoors[floorid][1], X_FDOOR_R_OPENED, Y_FDOOR_R_OPENED, GetDoorsZCoordForFloor(floorid) + 0.05, DOORS_SPEED);
 	
 	PlaySoundForPlayersInRange(6401, 50.0, X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid) + 5.0);
 
@@ -458,8 +458,8 @@ stock Floor_CloseDoors(floorid)
 {
 	// Closes the doors at the specified floor.
 
-	MoveObject(Obj_FloorDoors[floorid][0], X_ELEVATOR_POS, Y_ELEVATOR_POS - 0.245, GetDoorsZCoordForFloor(floorid) + 0.05, DOORS_SPEED);
-	MoveObject(Obj_FloorDoors[floorid][1], X_ELEVATOR_POS, Y_ELEVATOR_POS - 0.245, GetDoorsZCoordForFloor(floorid) + 0.05, DOORS_SPEED);
+	MoveDynamicObject(Obj_FloorDoors[floorid][0], X_ELEVATOR_POS, Y_ELEVATOR_POS - 0.245, GetDoorsZCoordForFloor(floorid) + 0.05, DOORS_SPEED);
+	MoveDynamicObject(Obj_FloorDoors[floorid][1], X_ELEVATOR_POS, Y_ELEVATOR_POS - 0.245, GetDoorsZCoordForFloor(floorid) + 0.05, DOORS_SPEED);
 	
 	PlaySoundForPlayersInRange(6401, 50.0, X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid) + 5.0);
 
@@ -474,9 +474,9 @@ stock Elevator_MoveToFloor(floorid)
 	ElevatorFloor = floorid;
 
 	// Move the elevator slowly, to give time to clients to sync the object surfing. Then, boost it up:
-	MoveObject(Obj_Elevator, X_ELEVATOR_POS, Y_ELEVATOR_POS, GetElevatorZCoordForFloor(floorid), 0.25);
-	MoveObject(Obj_ElevatorDoors[0], X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid), 0.25);
-	MoveObject(Obj_ElevatorDoors[1], X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid), 0.25);
+	MoveDynamicObject(Obj_Elevator, X_ELEVATOR_POS, Y_ELEVATOR_POS, GetElevatorZCoordForFloor(floorid), 0.25);
+	MoveDynamicObject(Obj_ElevatorDoors[0], X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid), 0.25);
+	MoveDynamicObject(Obj_ElevatorDoors[1], X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid), 0.25);
 	DestroyDynamic3DTextLabel(Label_Elevator);
 
 	ElevatorBoostTimer = SetTimerEx("Elevator_Boost", 2000, 0, "i", floorid);
@@ -487,13 +487,13 @@ stock Elevator_MoveToFloor(floorid)
 public Elevator_Boost(floorid)
 {
 	// Increases the elevator's speed until it reaches 'floorid'
-	StopObject(Obj_Elevator);
-	StopObject(Obj_ElevatorDoors[0]);
-	StopObject(Obj_ElevatorDoors[1]);
+	StopDynamicObject(Obj_Elevator);
+	StopDynamicObject(Obj_ElevatorDoors[0]);
+	StopDynamicObject(Obj_ElevatorDoors[1]);
 	
-	MoveObject(Obj_Elevator, X_ELEVATOR_POS, Y_ELEVATOR_POS, GetElevatorZCoordForFloor(floorid), ELEVATOR_SPEED);
-	MoveObject(Obj_ElevatorDoors[0], X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid), ELEVATOR_SPEED);
-	MoveObject(Obj_ElevatorDoors[1], X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid), ELEVATOR_SPEED);
+	MoveDynamicObject(Obj_Elevator, X_ELEVATOR_POS, Y_ELEVATOR_POS, GetElevatorZCoordForFloor(floorid), ELEVATOR_SPEED);
+	MoveDynamicObject(Obj_ElevatorDoors[0], X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid), ELEVATOR_SPEED);
+	MoveDynamicObject(Obj_ElevatorDoors[1], X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid), ELEVATOR_SPEED);
 
 	return 1;
 }

@@ -48,7 +48,7 @@ Premium_OnPlayerPickUpPickup(playerid, pickupid)
 	}
 	
 	gate_IsOpening = true;
-	MoveObject(gate_ObjectID, 227.178, 2001.188, 10.742, 1.00);
+	MoveDynamicObject(gate_ObjectID, 227.178, 2001.188, 10.742, 1.00);
 	
 	SendClientMessageToBeside(playerid, 20, _(PREMIUM_GATES_IS_OPENING));
 	SetTimer("Premium_CloseGate", 60000, 0);
@@ -69,5 +69,5 @@ forward Premium_CloseGate();
 public Premium_CloseGate()
 {
 	gate_IsOpening = false;
-	MoveObject(gate_ObjectID, 227.178, 2001.188, 19.742, 1.00);
+	MoveDynamicObject(gate_ObjectID, 227.178, 2001.188, 19.742, 1.00);
 }
