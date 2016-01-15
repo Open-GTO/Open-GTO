@@ -72,7 +72,7 @@ stock Gang_Load(gangname[])
 	
 	gangid = Gang_GetID(gangname);
 	if (gangid != INVALID_GANG_ID) {
-		return INVALID_GANG_ID;
+		return gangid;
 	}
 
 	gangid = Gang_GetFreeSlot();
