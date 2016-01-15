@@ -176,7 +176,7 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 		difference = armour - damage;
 	}
 
-	if (difference >= 0.0) {
+	if (difference > 0.0) {
 		SetPlayerArmour(damagedid, armour - damage);
 	} else {
 		SetPlayerArmour(damagedid, 0.0);
