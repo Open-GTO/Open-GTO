@@ -409,6 +409,7 @@ DialogCreate:GangInviteAccept(playerid)
 		size;
 
 	__(GANG_INVITE_ACCEPT_LIST_HEADER, string);
+	strcat(string, "\n");
 
 	GetPlayerInvitedGangArrayID(playerid, invited_gangid, size);
 	GetPlayerInvitedGangArrayReTime(playerid, invited_times, size);
@@ -422,7 +423,7 @@ DialogCreate:GangInviteAccept(playerid)
 		strcat(string, "\n");
 	}
 
-	Dialog_Open(playerid, Dialog:GangInvite, DIALOG_STYLE_TABLIST_HEADERS,
+	Dialog_Open(playerid, Dialog:GangInviteAccept, DIALOG_STYLE_TABLIST_HEADERS,
 			_(GANG_INVITE_HEADER),
 			string,
 			_(GANG_MENU_BUTTON_ACCEPT), _(GANG_MENU_BUTTON_BACK)
@@ -460,7 +461,7 @@ DialogResponse:GangInviteAccept(playerid, response, listitem, inputtext[])
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
 				_(GANG_INVITE_HEADER),
 				string,
-				_(GANG_MENU_INVITE_BUTTON_BACK), _(GANG_MENU_INVITE_BUTTON_CANCEL)
+				_(GANG_MENU_BUTTON_BACK), _(GANG_MENU_BUTTON_CANCEL)
 			);
 		
 		format(string, sizeof(string), _(GANG_INVITE_PLAYER_IN), player_name);
@@ -472,7 +473,7 @@ DialogResponse:GangInviteAccept(playerid, response, listitem, inputtext[])
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
 				_(GANG_INVITE_HEADER),
 				string,
-				_(GANG_MENU_INVITE_BUTTON_BACK), _(GANG_MENU_INVITE_BUTTON_CANCEL)
+				_(GANG_MENU_BUTTON_BACK), _(GANG_MENU_BUTTON_CANCEL)
 			);
 	}
 
