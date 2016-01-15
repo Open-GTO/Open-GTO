@@ -163,12 +163,10 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 	GetPlayerHealth(damagedid, health);
 	GetPlayerArmour(damagedid, armour);
 
-	if (armour > 0.0) {
-		difference = armour - amount;
-	}
+	difference = armour - amount;
 
 	if (difference > 0.0) {
-		SetPlayerArmour(damagedid, armour - amount);
+		SetPlayerArmour(damagedid, difference);
 	} else {
 		SetPlayerArmour(damagedid, 0.0);
 		SetPlayerHealth(damagedid, health + difference);
