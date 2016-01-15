@@ -120,7 +120,7 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 				new
 					members[64 * MAX_GANG_SIZE];
 
-				GetGangMemberListArray(gangid, members);
+				GetGangMemberListString(gangid, members);
 
 				new
 					gang_money[16],
@@ -582,7 +582,7 @@ DialogCreate:GangKick(playerid)
 		members[64 * MAX_GANG_SIZE],
 		gangid = GetPlayerGangID(playerid);
 
-	GetGangMemberListArray(gangid, members);
+	GetGangMemberListString(gangid, members);
 
 	Dialog_Open(playerid, Dialog:GangKick, DIALOG_STYLE_LIST,
 			_(GANG_KICK_HEADER),
@@ -629,7 +629,7 @@ DialogCreate:GangRank(playerid)
 
 	gangid = GetPlayerGangID(playerid);
 
-	GetGangMemberListArray(gangid, members);
+	GetGangMemberListString(gangid, members);
 
 	Dialog_Open(playerid, Dialog:GangRank, DIALOG_STYLE_LIST,
 			_(GANG_RANK_HEADER),
@@ -871,10 +871,10 @@ static stock GetGangMemberID(gangid, listitem)
 }
 
 /*
-	GetGangMemberListArray
+	GetGangMemberListString
 */
 
-static stock GetGangMemberListArray(gangid, members[], const size = sizeof(members))
+static stock GetGangMemberListString(gangid, members[], const size = sizeof(members))
 {
 	new
 		account_data[e_Account_Info],
@@ -904,6 +904,7 @@ static stock GetGangMemberListArray(gangid, members[], const size = sizeof(membe
 				);
 
 			strcat(members, member_str, size);
+			strcat(members, "\n", size);
 		} else {
 			Account_LoadData(member_name, account_data);
 
@@ -916,6 +917,7 @@ static stock GetGangMemberListArray(gangid, members[], const size = sizeof(membe
 				);
 
 			strcat(members, member_str, size);
+			strcat(members, "\n", size);
 		}
 	}
 }
