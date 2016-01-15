@@ -770,7 +770,7 @@ public OnActorStreamIn(actorid, forplayerid)
 	return 1;
 }
 
-public OnObjectMoved(objectid)
+public OnDynamicObjectMoved(objectid)
 {
 	Beachside_OnObjectMoved(objectid);
 	return 1;
