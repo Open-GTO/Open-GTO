@@ -140,6 +140,23 @@ stock GetPlayerInvitedGangArrayTime(playerid, invited_times[], &size)
 	return size != 0;
 }
 
+stock GetPlayerInvitedGangArrayReTime(playerid, remaining_times[], &size)
+{
+	new
+		current_time;
+
+	size = 0;
+	current_time = gettime();
+
+	for (new i = 0; i < MAX_GANG_INVITES; i++) {
+		if (gPlayerInvitedGang[playerid][i][e_pigID] != INVALID_GANG_ID) {
+			remaining_times[size++] = current_time + MAX_GANG_INVITE_TIME - gPlayerInvitedGang[playerid][i][e_pigTime];
+		}
+	}
+
+	return size != 0;
+}
+
 stock CheckPlayerInvitedGangTime(playerid)
 {
 	new

@@ -411,7 +411,7 @@ DialogCreate:GangInviteAccept(playerid)
 	__(GANG_INVITE_ACCEPT_LIST_HEADER, string);
 
 	GetPlayerInvitedGangArrayID(playerid, invited_gangid, size);
-	GetPlayerInvitedGangArrayTime(playerid, invited_times, size);
+	GetPlayerInvitedGangArrayReTime(playerid, invited_times, size);
 
 	for (new i = 0; i < size; i++) {
 		Gang_GetName(invited_gangid[i], temp_str);
@@ -422,7 +422,7 @@ DialogCreate:GangInviteAccept(playerid)
 		strcat(string, "\n");
 	}
 
-	Dialog_Open(playerid, Dialog:GangInvite, DIALOG_STYLE_INPUT,
+	Dialog_Open(playerid, Dialog:GangInvite, DIALOG_STYLE_TABLIST_HEADERS,
 			_(GANG_INVITE_HEADER),
 			string,
 			_(GANG_MENU_BUTTON_ACCEPT), _(GANG_MENU_BUTTON_BACK)
