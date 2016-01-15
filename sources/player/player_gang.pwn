@@ -150,7 +150,7 @@ stock GetPlayerInvitedGangArrayReTime(playerid, remaining_times[], &size)
 
 	for (new i = 0; i < MAX_GANG_INVITES; i++) {
 		if (gPlayerInvitedGang[playerid][i][e_pigID] != INVALID_GANG_ID) {
-			remaining_times[size++] = current_time + MAX_GANG_INVITE_TIME - gPlayerInvitedGang[playerid][i][e_pigTime];
+			remaining_times[size++] = gPlayerInvitedGang[playerid][i][e_pigTime] + MAX_GANG_INVITE_TIME - current_time;
 		}
 	}
 
