@@ -137,6 +137,8 @@ weapon_OnGameModeInit()
 
 weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 {
+	#pragma unused weaponid
+
 	if (damagedid == INVALID_PLAYER_ID) {
 		return 1;
 	}
