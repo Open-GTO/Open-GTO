@@ -231,7 +231,6 @@
 #define VEHICLE_LIGHTS_OFF_TIME  7 // время(часов), когда фары транспорта будут автоматически выключаться
 
 #define VEHICLE_DAMAGE_ENABLE_TIRES // включает прокалывание шин у пустого транспорта
-//#define VEHICLE_DAMAGE_ENABLE_DAMAGE // включает урон у пустого транспорта
 
 // спидометр и бензин
 #define VEHICLE_FUEL_ENABLED     1

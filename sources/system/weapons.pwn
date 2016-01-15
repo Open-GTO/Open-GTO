@@ -17,7 +17,6 @@
 
 enum WeaponInfo {
 	Weapon_Name[MAX_NAME], // weapon name
-	Float:Weapon_Damage,
 	Weapon_Allowed, // is weapon allowed
 	Weapon_IsFirearm, // is weapon is firearm
 	Weapon_Cost, // cost per bullet
@@ -25,60 +24,57 @@ enum WeaponInfo {
 }
 
 new Weapons[][WeaponInfo] = {
-	{"Невооружен",                    1.0,   0, 0, 0,     0},
-	{"Кастет",                        1.0,   1, 0, 600,   4},
-	{"Клюшка для гольфа",             1.0,   0, 0, 600,   2},
-	{"Дубинка",                       1.0,   0, 0, 1000,  8},
-	{"Нож",                           1.0,   1, 0, 1000,  10},
-	{"Бейсбольная бита",              1.0,   1, 0, 1500,  7},
-	{"Лопата",                        1.0,   0, 0, 100,   0},
-	{"Кий",                           1.0,   1, 0, 100,   2},
-	{"Катана",                        1.0,   1, 0, 2000,  8},
-	{"Бензопила",                     1.0,   1, 0, 750,   9},
-	{"Пурпурный Dildo",               1.0,   0, 0, 500,   6},
-	{"Дилдо",                         1.0,   1, 0, 500,   5},
-	{"Вибратор",                      1.0,   0, 0, 700,   8},
-	{"Серебряный вибратор",           1.0,   0, 0, 500,   4},
-	{"Букет цветов",                  1.0,   1, 0, 100,   3},
-	{"Трость",                        1.0,   0, 0, 100,   1},
+	{"Невооружен",                    0, 0, 0,     0},
+	{"Кастет",                        1, 0, 600,   4},
+	{"Клюшка для гольфа",             0, 0, 600,   2},
+	{"Дубинка",                       0, 0, 1000,  8},
+	{"Нож",                           1, 0, 1000,  10},
+	{"Бейсбольная бита",              1, 0, 1500,  7},
+	{"Лопата",                        0, 0, 100,   0},
+	{"Кий",                           1, 0, 100,   2},
+	{"Катана",                        1, 0, 2000,  8},
+	{"Бензопила",                     1, 0, 750,   9},
+	{"Пурпурный Dildo",               0, 0, 500,   6},
+	{"Дилдо",                         1, 0, 500,   5},
+	{"Вибратор",                      0, 0, 700,   8},
+	{"Серебряный вибратор",           0, 0, 500,   4},
+	{"Букет цветов",                  1, 0, 100,   3},
+	{"Трость",                        0, 0, 100,   1},
 
-	{"Граната",                       82.5,  1, 1, 800,   27},
-	{"Газовый баллон",                0.0,   0, 1, 400,   5},
-	{"Коктейль молотова",             1.0,   0, 1, 550,   30},
-	{"Неизвестное",                   0.0,   0, 0, 10,    30},
-	{"Неизвестное",                   0.0,   0, 0, 10,    30},
-	{"Неизвестное",                   0.0,   0, 0, 10,    30},
-	{"Пистолет 9мм",                  8.25,  1, 1, 10,    0},
-	{"Пистолет 9мм с глушителем",     13.2,  1, 1, 10,    5},
-	{"Пустынный орёл",                46.2,  1, 1, 20,    10},
-	{"Дробовик",                      3.3,   1, 1, 15,    5},
-	{"Разрывной дробовик",            3.3,   1, 1, 25,    15},
-	{"Боевой дробовик",               4.95,  1, 1, 40,    10},
-	{"Узи",                           6.6,   1, 1, 30,    20},
-	{"MP5",                           8.25,  1, 1, 25,    20},
-	{"AK-47",                         9.9,   1, 1, 40,    23},
-	{"M4",                            9.9,   1, 1, 40,    23},
-	{"Tec-9",                         6.6,   1, 1, 30,    20},
-	{"Винтовка",                      24.75, 1, 1, 150,   22},
-	{"Снайперская винтовка",          41.25, 1, 1, 400,   26},
-	{"РПГ",                           82.5,  1, 1, 1000,  30},
-	{"Реактивная пусковая установка", 82.5,  0, 1, 1000,  29},
-	{"Огнемёт",                       1.0,   0, 1, 200,   28},
-	{"Ручной пулемёт(Миниган)",       46.2,  0, 1, 100,   30},
-	{"Заряженный рюкзак",             82.5,  0, 1, 500,   30},
-	{"Детонатор к рюкзаку",           0.0,   0, 0, 1,     30},
+	{"Граната",                       1, 1, 800,   27},
+	{"Газовый баллон",                0, 1, 400,   5},
+	{"Коктейль молотова",             0, 1, 550,   30},
+	{"Неизвестное",                   0, 0, 10,    30},
+	{"Неизвестное",                   0, 0, 10,    30},
+	{"Неизвестное",                   0, 0, 10,    30},
+	{"Пистолет 9мм",                  1, 1, 10,    0},
+	{"Пистолет 9мм с глушителем",     1, 1, 10,    5},
+	{"Пустынный орёл",                1, 1, 20,    10},
+	{"Дробовик",                      1, 1, 15,    5},
+	{"Разрывной дробовик",            1, 1, 25,    15},
+	{"Боевой дробовик",               1, 1, 40,    10},
+	{"Узи",                           1, 1, 30,    20},
+	{"MP5",                           1, 1, 25,    20},
+	{"AK-47",                         1, 1, 40,    23},
+	{"M4",                            1, 1, 40,    23},
+	{"Tec-9",                         1, 1, 30,    20},
+	{"Винтовка",                      1, 1, 150,   22},
+	{"Снайперская винтовка",          1, 1, 400,   26},
+	{"РПГ",                           1, 1, 1000,  30},
+	{"Реактивная пусковая установка", 0, 1, 1000,  29},
+	{"Огнемёт",                       0, 1, 200,   28},
+	{"Ручной пулемёт(Миниган)",       0, 1, 100,   30},
+	{"Заряженный рюкзак",             0, 1, 500,   30},
+	{"Детонатор к рюкзаку",           0, 0, 1,     30},
 
-	{"Баллончик с краской",           0.33,  0, 1, 40,    5},
-	{"Огнетушитель",                  0.33,  0, 1, 10,    5},
-	{"Фотокамера",                    0.0,   0, 1, 60,    5},
-	{"Очки ночного видения",          0.0,   0, 0, 10,    0},
-	{"Тепловые очки",                 0.0,   0, 0, 10,    0},
-	{"Парашют",                       0.0,   1, 0, 500,   1},
-	{"Броня",                         0.0,   1, 0, 200,   10}
+	{"Баллончик с краской",           0, 1, 40,    5},
+	{"Огнетушитель",                  0, 1, 10,    5},
+	{"Фотокамера",                    0, 1, 60,    5},
+	{"Очки ночного видения",          0, 0, 10,    0},
+	{"Тепловые очки",                 0, 0, 10,    0},
+	{"Парашют",                       1, 0, 500,   1},
+	{"Броня",                         1, 0, 200,   10}
 };
-
-forward Float:GetWeaponDamage(weaponid);
-
 
 weapon_LoadConfig(file_config)
 {
@@ -104,7 +100,6 @@ weapon_LoadAll()
 		file_weapons = ini_openFile(db_weaponname);
 
 		ini_getString(file_weapons, "Name", Weapons[i][Weapon_Name], MAX_NAME);
-		ini_getFloat(file_weapons, "Damage", Weapons[i][Weapon_Damage]);
 		ini_getInteger(file_weapons, "IsAllowed", Weapons[i][Weapon_Allowed]);
 		ini_getInteger(file_weapons, "Level", Weapons[i][Weapon_Level]);
 		ini_getInteger(file_weapons, "Price", Weapons[i][Weapon_Cost]);
@@ -124,7 +119,6 @@ weapon_SaveAll()
 		file_weapons = (!ini_fileExist(db_weaponname)) ? ini_createFile(db_weaponname) : ini_openFile(db_weaponname);
 
 		ini_setString(file_weapons, "Name", Weapons[i][Weapon_Name]);
-		ini_setFloat(file_weapons, "Damage", Weapons[i][Weapon_Damage]);
 		ini_setInteger(file_weapons, "IsAllowed", Weapons[i][Weapon_Allowed]);
 		ini_setInteger(file_weapons, "Level", Weapons[i][Weapon_Level]);
 		ini_setInteger(file_weapons, "Price", Weapons[i][Weapon_Cost]);
@@ -150,34 +144,29 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 	new
 		Float:health,
 		Float:armour,
-		Float:difference,
-		Float:damage = GetWeaponDamage(weaponid);
-
-	if (amount != damage) {
-		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_DAMAGE), amount, damage);
-	}
+		Float:difference;
 
 	if (IsPlayerGodmod(damagedid)) {
 		return 1;
 	}
 
 	if (GetPlayerState(playerid) == PLAYER_STATE_DRIVER) {
-		damage /= 2.0;
+		amount /= 2.0;
 	}
 
 	if (bodypart == BODY_PART_HEAD) {
-		damage *= 2.0;
+		amount *= 1.5;
 	}
 
 	GetPlayerHealth(damagedid, health);
 	GetPlayerArmour(damagedid, armour);
 
 	if (armour > 0.0) {
-		difference = armour - damage;
+		difference = armour - amount;
 	}
 
 	if (difference > 0.0) {
-		SetPlayerArmour(damagedid, armour - damage);
+		SetPlayerArmour(damagedid, armour - amount);
 	} else {
 		SetPlayerArmour(damagedid, 0.0);
 		SetPlayerHealth(damagedid, health + difference);
@@ -296,14 +285,6 @@ stock GetWeaponCost(weaponid)
 	}
 
 	return Weapons[weaponid][Weapon_Cost];
-}
-
-stock Float:GetWeaponDamage(weaponid)
-{
-	if (!IS_IN_RANGE(weaponid, 0, sizeof(Weapons))) {
-		return 0.0;
-	}
-	return Weapons[weaponid][Weapon_Damage];
 }
 
 stock IsWeapon(weaponid)

@@ -53,11 +53,5 @@ public Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, 
 	UpdateVehicleDamageStatus(hitid, panels, doors, lights, tires);
 #endif
 
-#if defined VEHICLE_DAMAGE_ENABLE_DAMAGE
-	// vehicle damage
-	new Float:v_health;
-	GetVehicleHealth(hitid, v_health);
-	SetVehicleHealth(hitid, v_health - GetWeaponDamage(weaponid));
-#endif
 	return 1;
 }
