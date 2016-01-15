@@ -129,8 +129,8 @@ public wdrop_DestroyPickup(wd_slot)
 {
 	weapons_dropped[wd_slot][wd_weaponid] = -1;
 	weapons_dropped[wd_slot][wd_bullets] = -1;
-	
-	DestroyPickup( weapons_dropped[wd_slot][wd_pickupid] );
+
+	DestroyDynamicPickup( weapons_dropped[wd_slot][wd_pickupid] );
 	weapons_dropped[wd_slot][wd_pickupid] = -1;
 	
 	KillTimer(weapons_dropped[wd_slot][wd_timer]);
