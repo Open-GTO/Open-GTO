@@ -20,7 +20,7 @@ static
 	bool:gate_IsOpening;
 
 
-stock Premium_OnGameModeInit()
+Premium_OnGameModeInit()
 {
 	CreateDynamicObject(3491, 227.074, 1973.099, 25.186, 0.0 ,0.0, -180.000);
 	CreateDynamicObject(6296, 247.430, 2001.323, 18.664, 0.0, 0.0, -90.000);
@@ -32,7 +32,7 @@ stock Premium_OnGameModeInit()
 	return 1;
 }
 
-stock Premium_OnPlayerPickUpPickup(playerid, pickupid)
+Premium_OnPlayerPickUpPickup(playerid, pickupid)
 {
 	if (pickupid != gate_PickupID_Enter && pickupid != gate_PickupID_Exit) {
 		return 0;
@@ -55,7 +55,7 @@ stock Premium_OnPlayerPickUpPickup(playerid, pickupid)
 	return 1;
 }
 
-stock Premium_OnPlayerStateChange(playerid,newstate,oldstate)
+Premium_OnPlayerStateChange(playerid,newstate,oldstate)
 {
 	#pragma unused newstate,oldstate
 	if (!IsPlayerHavePremium(playerid) && Premium_GetVehicleStatus( GetPlayerVehicleID(playerid) )) {

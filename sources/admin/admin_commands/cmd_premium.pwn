@@ -47,6 +47,11 @@ COMMAND:premium(playerid, params[])
 	if (strcmp(subcmd, "set", true) == 0) {
 		timestamp = mktime(year, month, day);
 
+		if (timestamp == -1) {
+			SendClientMessage(targetid, -1, _(ADMIN_COMMAND_PREMIUM_TIME_ERROR));
+			return 1;
+		}
+
 		Account_SetPremiumTime(targetid, timestamp);
 
 		format(string, sizeof(string), _(ADMIN_COMMAND_PREMIUM_SET_PLAYER), playername, playerid, day, month, year);

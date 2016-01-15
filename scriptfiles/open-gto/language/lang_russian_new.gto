@@ -630,6 +630,7 @@ ADMIN_COMMAND_WEATHER_CHANGED = {FFCC66}* {FFFFFF}Установлена новая погода {A5D6
 
 ADMIN_COMMAND_PREMIUM_HELP = {FFCC66}[Применение]: {FFFFFF}/premium <set/get> <id/ник> <время(ДД.ММ.ГГГГ)/>
 ADMIN_COMMAND_PREMIUM_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_PREMIUM_TIME_ERROR = {FF2211}[Ошибка]: {FFFFFF}Некорректное время (переполнение).
 ADMIN_COMMAND_PREMIUM_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}установил вам премиум статус до {A5D6A7}%02d.%02d.%04d
 ADMIN_COMMAND_PREMIUM_SET_SELF = {FFCC66}* {FFFFFF}Вы установили {FFCC66}%s(%d) {FFFFFF}премиум статус до {A5D6A7}%02d.%02d.%04d
 ADMIN_COMMAND_PREMIUM_GET = {FFCC66}* {FFFFFF}Дата окончания премиум статуса у {FFCC66}%s(%d){FFFFFF}: {A5D6A7}%02d.%02d.%04d
