@@ -94,7 +94,7 @@ static models_array[][vshop_Models_Info] = {
 			VEHSHOP_TYPE_AIR
 		},
 		{
-			487, 488, 511, 513, 476, 519, 553, 593
+			487, 488, 511, 513, 476, 519, 593
 		}
 	}
 };
