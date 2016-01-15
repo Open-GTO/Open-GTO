@@ -5,12 +5,12 @@
 
 */
 
-#if defined _protection_health_h_included
+#if defined _protection_teleport_h_included
 	#endinput
 #endif
 
-#define _protection_health_h_included
-#pragma library protection_health_h
+#define _protection_teleport_h_included
+#pragma library protection_teleport_h
 
 /*
 	SetPlayerPos
