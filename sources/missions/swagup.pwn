@@ -103,7 +103,7 @@ stock swagup_OnPlayerPickUpPickup(playerid, pickupid)
 		return 0;
 	}
 
-	DestroyPickup(g_pickup_id);
+	DestroyDynamicPickup(g_pickup_id);
 	
 	new
 		win_money = mission_CalculateMoney(playerid, mission_swagup),
