@@ -35,7 +35,7 @@ stock adm_spec_CreateLabel(playerid, specid)
 
 	GetPlayerInfoString(specid, string, sizeof(string), playerid);
 
-	spec_label[playerid] = CreateDynamic3DTextLabel(string, ADMIN_SPEC_LABEL_COLOR, 0.0, 0.0, 0.0, 20.0, .playerid = playerid, .attachedplayer = specid);
+	spec_label[playerid] = CreateDynamic3DTextLabel(string, ADMIN_SPEC_LABEL_COLOR, 0.0, 0.0, -1.5, 20.0, .playerid = playerid, .attachedplayer = specid);
 }
 
 stock adm_spec_DestroyLabel(playerid)
