@@ -1,16 +1,16 @@
 /*
 
-	About: admin godmod system
+	About: player godmod system
 	Author:	ziggi
 
 */
 
-#if defined _adm_godmod_included
+#if defined _pl_godmod_included
 	#endinput
 #endif
 
-#define _adm_godmod_included
-#pragma library adm_godmod
+#define _pl_godmod_included
+#pragma library pl_godmod
 
 /*
 	Vars
@@ -18,26 +18,6 @@
 
 static
 	gPlayerGodmodStatus[MAX_PLAYERS char];
-
-/*
-	Command
-*/
-
-COMMAND:godmod(playerid, params[])
-{
-	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		return 0;
-	}
-
-	if (IsPlayerGodmod(playerid)) {
-		SetPlayerGodmod(playerid, false);
-		Message_Alert(playerid, "", _(ADMIN_GODMOD_OFF_CONTENT));
-	} else {
-		SetPlayerGodmod(playerid, true);
-		Message_Alert(playerid, "", _(ADMIN_GODMOD_ON_CONTENT));
-	}
-	return 1;
-}
 
 /*
 	OnPlayerTakeDamage

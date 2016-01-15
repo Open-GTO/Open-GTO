@@ -157,6 +157,10 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_DAMAGE), amount, damage);
 	}
 
+	if (IsPlayerGodmod(damagedid)) {
+		return 1;
+	}
+
 	if (GetPlayerState(playerid) == PLAYER_STATE_DRIVER) {
 		damage /= 2.0;
 	}
@@ -178,6 +182,7 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 		SetPlayerArmour(damagedid, 0.0);
 		SetPlayerHealth(damagedid, health + difference);
 	}
+
 	return 1;
 }
 
