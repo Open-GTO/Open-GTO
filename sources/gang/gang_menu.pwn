@@ -640,6 +640,11 @@ DialogCreate:GangRank(playerid)
 
 DialogResponse:GangRank(playerid, response, listitem, inputtext[])
 {
+	if (!response) {
+		Dialog_Show(playerid, Dialog:GangMenu);
+		return;
+	}
+
 	new
 		working_memberid,
 		gangid;
@@ -680,6 +685,11 @@ DialogCreate:GangRankList(playerid)
 
 DialogResponse:GangRankList(playerid, response, listitem, inputtext[])
 {
+	if (!response) {
+		Dialog_Show(playerid, Dialog:GangRank);
+		return;
+	}
+
 	new
 		GangMemberRank:new_rank,
 		working_memberid,
