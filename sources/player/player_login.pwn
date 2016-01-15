@@ -77,8 +77,8 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "BankMoney", GetPlayerBankMoney(playerid));
 	ini_setInteger(file_player, "Deaths", GetPlayerDeaths(playerid));
 	ini_setInteger(file_player, "Kills", GetPlayerKills(playerid));
-	ini_setInteger(file_player, "Jailed", player_GetJailCount(playerid));
-	ini_setInteger(file_player, "JailTime", player_GetJailTime(playerid));
+	ini_setInteger(file_player, "Jailed", GetPlayerJailedCount(playerid));
+	ini_setInteger(file_player, "JailTime", GetPlayerJailTime(playerid));
 	ini_setInteger(file_player, "Muted", GetPlayerMutedCount(playerid));
 	ini_setInteger(file_player, "MuteTime", GetPlayerMuteTime(playerid));
 	ini_setInteger(file_player, "Reports", player_GetReportCount(playerid));
@@ -157,10 +157,10 @@ stock player_Login(playerid)
 		SetPlayerKills(playerid, buf);
 		
 		ini_getInteger(file_player, "Jailed", buf);
-		player_SetJailCount(playerid, buf);
+		SetPlayerJailedCount(playerid, buf);
 		
 		ini_getInteger(file_player, "JailTime", buf);
-		player_SetJailTime(playerid, buf);
+		SetPlayerJailTime(playerid, buf);
 		
 		ini_getInteger(file_player, "Muted", buf);
 		SetPlayerMutedCount(playerid, buf);

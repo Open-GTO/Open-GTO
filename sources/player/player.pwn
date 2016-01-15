@@ -49,8 +49,8 @@ stock player_OnPlayerSpawn(playerid)
 		SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
 	}
 	
-	if (player_IsJailed(playerid)) {
-		new jail_time = player_GetJailTime(playerid);
+	if (IsPlayerJailed(playerid)) {
+		new jail_time = GetPlayerJailTime(playerid);
 		JailPlayer(playerid, jail_time);
 	}
 
@@ -317,7 +317,7 @@ SkinSelectResponse:RegisterSkin(playerid, SS_Response:type, oldskin, newskin)
 stock player_SetDefaultData(playerid)
 {
 	SetPlayerMoney(playerid, PlayerStartMoney);
-	player_SetJailTime(playerid, -1);
+	SetPlayerJailTime(playerid, -1);
 	Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
 
 #if defined PLAYER_START_SKIN
@@ -350,8 +350,6 @@ stock player_Sync(playerid)
 	pt_health_Sync(playerid);
 	pt_armour_Sync(playerid);
 	pt_weapon_Check(playerid);
-
-	JailPlayerCheck(playerid);
 	return 1;
 }
 

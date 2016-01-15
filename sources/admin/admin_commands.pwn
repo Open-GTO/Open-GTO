@@ -211,7 +211,7 @@ COMMAND:telehereall(playerid, params[])
 			continue;
 		}
 
-		if (!player_IsJailed(id) && !IsPlayerHavePrivilege(id, PlayerPrivilegeRcon)) {
+		if (!IsPlayerJailed(id) && !IsPlayerHavePrivilege(id, PlayerPrivilegeRcon)) {
 			receiver_x = receiver_x + random(2) - random(4);
 			receiver_y = receiver_y + random(2) - random(4);	
 			SetPlayerPos(id, receiver_x, receiver_y, receiver_z);
@@ -335,7 +335,7 @@ COMMAND:paralyzeall(playerid, params[])
 	format(string, sizeof(string), lang_texts[12][54], ReturnPlayerName(playerid));
 
 	foreach (new id : Player) {
-		if (id == playerid || player_IsJailed(id) || player_IsAtQuest(id) || IsPlayerHavePrivilege(id, PlayerPrivilegeRcon)) {
+		if (id == playerid || IsPlayerJailed(id) || player_IsAtQuest(id) || IsPlayerHavePrivilege(id, PlayerPrivilegeRcon)) {
 			continue;
 		}
 
@@ -357,7 +357,7 @@ COMMAND:deparalyzeall(playerid, params[])
 	format(string, sizeof(string), lang_texts[12][54], ReturnPlayerName(playerid));
 
 	foreach (new id : Player) {
-		if (id == playerid || player_IsJailed(id) || player_IsAtQuest(id) || IsPlayerHavePrivilege(id, PlayerPrivilegeRcon)) {
+		if (id == playerid || IsPlayerJailed(id) || player_IsAtQuest(id) || IsPlayerHavePrivilege(id, PlayerPrivilegeRcon)) {
 			continue;
 		}
 

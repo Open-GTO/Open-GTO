@@ -92,7 +92,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				money_str, bank_money_str, total_money_str,
 				
 				GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid),
-				player_GetJailCount(playerid),
+				GetPlayerJailedCount(playerid),
 				GetPlayerMutedCount(playerid),
 				
 				fstylename,

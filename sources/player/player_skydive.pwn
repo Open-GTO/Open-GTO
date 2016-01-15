@@ -25,7 +25,7 @@ static
 
 COMMAND:skydive(playerid, params[])
 {
-	if (player_IsJailed(playerid) || GetPlayerInterior(playerid) != 0 || player_IsAtQuest(playerid)) {
+	if (IsPlayerJailed(playerid) || GetPlayerInterior(playerid) != 0 || player_IsAtQuest(playerid)) {
 		SendClientMessage(playerid, COLOR_WHITE, _(SKYDIVING_ERROR));
 		return 1;
 	}

@@ -55,15 +55,15 @@ COMMAND:getinfo(playerid, params[])
 		SendClientMessage(playerid, -1, _(ADMIN_PLIST_HEADER));
 
 		foreach (targetid : Player) {
-			if (!player_IsJailed(targetid) && !IsPlayerMuted(playerid)) {
+			if (!IsPlayerJailed(targetid) && !IsPlayerMuted(playerid)) {
 				continue;
 			}
 
 			GetPlayerName(targetid, targetname, sizeof(targetname));
 			count++;
 
-			if (player_IsJailed(targetid)) {
-				time = player_GetJailTime(targetid);
+			if (IsPlayerJailed(targetid)) {
+				time = GetPlayerJailTime(targetid);
 
 				if (time > 0) {
 					format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_ALL_JAIL_REMAIN),

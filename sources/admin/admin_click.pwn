@@ -121,7 +121,7 @@ public adm_click_UnJailPlayer(playerid, clickedid, listitem, inputtext[])
 		return 0;
 	}
 
-	if (!player_IsJailed(clickedid)) {
+	if (!IsPlayerJailed(clickedid)) {
 		SendClientMessage(playerid, COLOR_RED, lang_texts[13][22]);
 		return 0;
 	}
@@ -161,7 +161,7 @@ public adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
 	format(string, sizeof(string), lang_texts[12][38], GetPlayerDeaths(clickedid), GetPlayerKills(clickedid));	//Kills, Deaths
 	SendClientMessage(playerid, COLOR_WHITE, string);
 
-	format(string, sizeof(string), lang_texts[12][71], player_GetJailCount(clickedid), GetPlayerMutedCount(clickedid));	//Jailed, Muted
+	format(string, sizeof(string), lang_texts[12][71], GetPlayerJailedCount(clickedid), GetPlayerMutedCount(clickedid));	//Jailed, Muted
 	SendClientMessage(playerid, COLOR_WHITE, string);
 	
 	new player_ip[MAX_IP];
