@@ -12,7 +12,7 @@
 #define MAX_MAPFIX_OBJECTS	232
 
 //Uncomment to enable
-//#define USE_INCOGNITO_STREAMER
+#define USE_INCOGNITO_STREAMER
 
 new MapFixObjects[MAX_MAPFIX_OBJECTS];
 
@@ -35,26 +35,6 @@ public OnGameModeInit()
 #define OnGameModeInit mf_OnGameModeInit
 #if defined mf_OnGameModeInit
 	forward mf_OnGameModeInit();
-#endif
-
-public OnGameModeExit()
-{
-	printf("MapFix by Nexius v%s unloaded.\a", MAPFIX_VERSION);
-	#if defined mf_OnGameModeExit
-		return mf_OnGameModeExit();
-	#else
-		return 1;
-	#endif
-}
-
-#if defined _ALS_OnGameModeExit
-	#undef OnGameModeExit
-#else
-	#define _ALS_OnGameModeExit
-#endif
-#define OnGameModeExit mf_OnGameModeExit
-#if defined mf_OnGameModeExit
-	forward mf_OnGameModeExit();
 #endif
 
 CreateMapFixObjects()
