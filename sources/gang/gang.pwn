@@ -189,8 +189,6 @@ stock Gang_Save(gangid)
 		format(string, sizeof(string), "Member%d", memberid);
 		ini_setString(file, string, tmp_str);
 
-		GangMember_SetExists(gangid, memberid, false);
-
 		format(string, sizeof(string), "MemberRank%d", memberid);
 		ini_setInteger(file, string, _:GangMember_GetRank(gangid, memberid));
 	}
