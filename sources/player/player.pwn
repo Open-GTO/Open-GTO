@@ -26,10 +26,10 @@ stock player_LoadConfig(file_config)
 		bullets[START_PLAYER_WEAPON_SLOTS],
 		s_buf[MAX_STRING];
 
-	ini_getString(file_config, "Player_Start_Weapon", s_buf);
+	ini_getString(file_config, "Player_Start_Weapons", s_buf);
 	sscanf(s_buf, "p</>a<i>[" #START_PLAYER_WEAPON_SLOTS "]", weapons);
 
-	ini_getString(file_config, "Player_Start_Weapon", s_buf);
+	ini_getString(file_config, "Player_Start_Bullets", s_buf);
 	sscanf(s_buf, "p</>a<i>[" #START_PLAYER_WEAPON_SLOTS "]", bullets);
 
 	SetStartPlayerWeaponsFromArray(weapons);
@@ -40,7 +40,8 @@ stock player_SaveConfig(file_config)
 {
 	ini_setString(file_config, "Player_DB", db_player);
 	ini_setInteger(file_config, "Player_Start_Money", PlayerStartMoney);
-	ini_setString(file_config, "Player_Start_Weapon", CreatePlayerStartWeaponDBString());
+	ini_setString(file_config, "Player_Start_Weapons", CreatePlayerStartWeaponsString());
+	ini_setString(file_config, "Player_Start_Bullets", CreatePlayerStartBulletsString());
 }
 
 stock player_OnPlayerSpawn(playerid)

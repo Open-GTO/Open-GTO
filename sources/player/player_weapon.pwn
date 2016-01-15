@@ -215,14 +215,28 @@ stock SetPlayerBulletsFromArray(playerid, array[PLAYER_WEAPON_SLOTS])
 	}
 }
 
-stock CreatePlayerWeaponDBString(playerid)
+stock CreatePlayerWeaponsString(playerid)
 {
-	new wepstr[MAX_STRING];
-	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++)
-	{
-		format(wepstr, sizeof(wepstr), "%s%d/%d|", wepstr, PlayerWeapons[playerid][i][pwid], PlayerWeapons[playerid][i][pbullets]);
+	new
+		string[(3 + 1) * PLAYER_WEAPON_SLOTS + 1];
+
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
+		format(string, sizeof(string), "%s%d/", string, PlayerWeapons[playerid][i][pwid]);
 	}
-	return wepstr;
+
+	return string;
+}
+
+stock CreatePlayerBulletsString(playerid)
+{
+	new
+		string[(3 + 1) * PLAYER_WEAPON_SLOTS + 1];
+
+	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
+		format(string, sizeof(string), "%s%d/", string, PlayerWeapons[playerid][i][pbullets]);
+	}
+
+	return string;
 }
 
 stock SetStartPlayerWeaponsFromArray(array[START_PLAYER_WEAPON_SLOTS])
@@ -239,14 +253,28 @@ stock SetStartPlayerBulletsFromArray(array[START_PLAYER_WEAPON_SLOTS])
 	}
 }
 
-stock CreatePlayerStartWeaponDBString()
+stock CreatePlayerStartWeaponsString()
 {
-	new wepstr[MAX_STRING];
-	for (new i = 0; i < sizeof(PlayerStartWeapon); i++)
-	{
-		format(wepstr, sizeof(wepstr), "%s%d/%d|", wepstr, PlayerStartWeapon[i][pwid], PlayerStartWeapon[i][pbullets]);
+	new
+		string[(3 + 1) * sizeof(PlayerStartWeapon) + 1];
+
+	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
+		format(string, sizeof(string), "%s%d/", string, PlayerStartWeapon[i][pwid]);
 	}
-	return wepstr;
+
+	return string;
+}
+
+stock CreatePlayerStartBulletsString()
+{
+	new
+		string[(3 + 1) * sizeof(PlayerStartWeapon) + 1];
+
+	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
+		format(string, sizeof(string), "%s%d/", string, PlayerStartWeapon[i][pbullets]);
+	}
+
+	return string;
 }
 
 stock GetPlayerWeaponSlotAmmo(playerid, weapon_slot)

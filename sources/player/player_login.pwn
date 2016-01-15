@@ -101,7 +101,8 @@ stock player_SaveEx(playerid)
 	ini_setString(file_player, "Coords", string);
 
 	ini_setInteger(file_player, "Privilege", _:GetPlayerPrivilege(playerid));
-	ini_setString(file_player, "Weapons", CreatePlayerWeaponDBString(playerid));
+	ini_setString(file_player, "Weapons", CreatePlayerWeaponsString(playerid));
+	ini_setString(file_player, "Bullets", CreatePlayerBulletsString(playerid));
 	ini_setString(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
 	ini_setInteger(file_player, "SkinModel", GetPlayerSkin(playerid));
 	ini_setInteger(file_player, "Hide", admin_GetHideStatus(playerid));
@@ -211,6 +212,9 @@ stock player_Login(playerid)
 		ini_getString(file_player, "Weapons", s_buf);
 		sscanf(s_buf, "p</>a<i>[" #PLAYER_WEAPON_SLOTS "]", weapons);
 		SetPlayerWeaponsFromArray(playerid, weapons);
+		for (new i = 0; i < sizeof(weapons); i++) {
+			printf("weaponid[%d] = %d", i, weapons[i]);
+		}
 
 		ini_getString(file_player, "Bullets", s_buf);
 		sscanf(s_buf, "p</>a<i>[" #PLAYER_WEAPON_SLOTS "]", bullets);
