@@ -240,7 +240,7 @@ stock vshop_ChangeVehicles()
 		
 		format(string, sizeof(string), "{CCFF66}%s\n{CCCCCC}Цена: {FFFFFF}$%d\n{999999}Сядьте для покупки", ReturnVehicleModelName(model), GetVehicleModelCost(model));
 		Vehicle_array[i][vshop_Text3D] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
-			Vehicle_array[i][vshop_X], Vehicle_array[i][vshop_Y], Vehicle_array[i][vshop_Z], 20.0, 0,
+			Vehicle_array[i][vshop_X], Vehicle_array[i][vshop_Y], Vehicle_array[i][vshop_Z], 20.0,
 			.attachedvehicle = Vehicle_array[i][vshop_ID], .testlos = 1);
 	}
 }
