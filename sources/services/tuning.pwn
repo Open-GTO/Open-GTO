@@ -132,6 +132,11 @@ static gModCost[] = {
 	1000 // 15 - CARMODTYPE_PAINTJOB
 };
 
+static gIgnoredComponents[] = {
+	CARMODTYPE_VENT_LEFT,
+	CARMODTYPE_STEREO
+};
+
 Tuning_OnGameModeInit()
 {
 	BlockGarages();
@@ -218,7 +223,7 @@ TextListCreate:tuning_menu(playerid)
 		new type_name[MAX_COMPONENT_TYPE_NAME];
 
 		for (new i = 0; i < compatible_types_count; i++) {
-			if (compatible_types[i] == CARMODTYPE_VENT_LEFT) {
+			if (IsVehicleComponentTypeIgnored(compatible_types[i])) {
 				continue;
 			}
 
@@ -233,7 +238,7 @@ TextListCreate:tuning_menu(playerid)
 				}
 			}
 
-			format(items[list_offset + item_index], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_TYPE_FORMAT), type_name, GetModCost(i));
+			format(items[list_offset + item_index], TEXTLIST_MAX_ITEM_NAME, _(TUNING_TD_TYPE_FORMAT), type_name, GetModCost(compatible_types[i]));
 			item_index++;
 		}
 	}
@@ -300,6 +305,10 @@ TextListCreate:component_list(playerid)
 
 	for (new i = 0; i < components_size; i++) {
 		if (type == GetVehicleComponentType(components[i])) {
+			if (IsVehicleComponentTypeIgnored(type)) {
+				continue;
+			}
+
 			GetComponentName(components[i], items[item_index]);
 
 			if (type == CARMODTYPE_SIDESKIRT || type == CARMODTYPE_VENT_RIGHT) {
@@ -605,4 +614,15 @@ static stock Tuning_UpdateCamera(playerid, type)
 static stock GetModCost(type)
 {
 	return gModCost[type];
+}
+
+stock IsVehicleComponentTypeIgnored(type)
+{
+	for (new i = 0; i < sizeof(gIgnoredComponents); i++) {
+		if (gIgnoredComponents[i] == type) {
+			return 1;
+		}
+	}
+
+	return 0;
 }
