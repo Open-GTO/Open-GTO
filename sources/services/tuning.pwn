@@ -30,7 +30,7 @@ enum e_Camera_Info {
 	Float:e_cLook_Z,
 }
 
-static gCameraTypes[MAX_COMPONENT_TYPES][e_Camera_Info] = {
+static gCameraTypes[ZVEH_MAX_COMPONENT_TYPES][e_Camera_Info] = {
 	{620.783203, -76.324302, 999.124816, 615.468688, -74.422546, 998.337280}, // 0 - CARMODTYPE_SPOILER
 	{608.847595, -77.565200, 999.306823, 615.645690, -74.584510, 998.223815}, // 1 - CARMODTYPE_HOOD
 	{608.847595, -77.565200, 999.306823, 615.645690, -74.584510, 998.223815}, // 2 - CARMODTYPE_ROOF
@@ -86,8 +86,8 @@ enum e_Tuning_Info {
 	// component
 	e_tType,
 	e_tComponent,
-	e_tListTypes[MAX_COMPONENT_TYPES],
-	e_tListComponents[MAX_COMPONENTS],
+	e_tListTypes[ZVEH_MAX_COMPONENT_TYPES],
+	e_tListComponents[ZVEH_MAX_COMPONENTS],
 	e_tListCount,
 	e_tListOffset,
 	e_tPrevComponent,
@@ -199,10 +199,10 @@ Tuning_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 TextListCreate:tuning_menu(playerid)
 {
-	new compatible_types[MAX_COMPONENT_TYPES], compatible_types_count;
+	new compatible_types[ZVEH_MAX_COMPONENT_TYPES], compatible_types_count;
 	GetVehicleCompatibleTypes(gInfo[playerid][e_tModel], compatible_types, compatible_types_count);
 
-	new items[MAX_COMPONENT_TYPES + 2][TEXTLIST_MAX_ITEM_NAME];
+	new items[ZVEH_MAX_COMPONENT_TYPES + 2][TEXTLIST_MAX_ITEM_NAME];
 	
 	new list_offset;
 
@@ -220,7 +220,7 @@ TextListCreate:tuning_menu(playerid)
 	new placeid = gInfo[playerid][e_tPlaceID];
 
 	if (gTuningPlace[placeid][e_tpType] == TUNING_PLACE_TYPE_TUNING) {
-		new type_name[MAX_COMPONENT_TYPE_NAME];
+		new type_name[ZVEH_MAX_COMPONENT_TYPE_NAME];
 
 		for (new i = 0; i < compatible_types_count; i++) {
 			if (IsVehicleComponentTypeIgnored(compatible_types[i])) {
@@ -258,7 +258,7 @@ TextListResponse:tuning_menu(playerid, TextListType:response, itemid, itemvalue[
 
 		if (type_id >= 0) {
 			gInfo[playerid][e_tType] = gInfo[playerid][e_tListTypes][type_id];
-			gInfo[playerid][e_tComponent] = INVALID_COMPONENT_ID;
+			gInfo[playerid][e_tComponent] = ZVEH_INVALID_COMPONENT_ID;
 			gInfo[playerid][e_tPrevComponent] = GetVehicleComponentInSlot(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tType]);
 
 			Tuning_UpdateCamera(playerid, gInfo[playerid][e_tType]);
@@ -290,7 +290,7 @@ TextListCreate:component_list(playerid)
 	new type = gInfo[playerid][e_tType];
 
 	new
-		components[MAX_COMPONENTS],
+		components[ZVEH_MAX_COMPONENTS],
 		components_size;
 
 	new isok = GetVehicleCompatibleUpgrades(gInfo[playerid][e_tModel], components, components_size);
@@ -299,7 +299,7 @@ TextListCreate:component_list(playerid)
 	}
 
 	new
-		items[MAX_COMPONENTS][TEXTLIST_MAX_ITEM_NAME],
+		items[ZVEH_MAX_COMPONENTS][TEXTLIST_MAX_ITEM_NAME],
 		items_colors[TEXTLIST_MAX_ITEMS] = {0xFFFFFFFF, ...},
 		item_index;
 
@@ -354,7 +354,7 @@ TextListResponse:component_list(playerid, TextListType:response, itemid, itemval
 		AddVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
 		PlayerPlaySoundOnPlayer(playerid, 1083);
 	} else if (response == TextList_Button1) {
-		if (gInfo[playerid][e_tComponent] == INVALID_COMPONENT_ID) {
+		if (gInfo[playerid][e_tComponent] == ZVEH_INVALID_COMPONENT_ID) {
 			Dialog_Message(playerid, _(TUNING_DIALOG_HEADER), _(TUNING_NOT_COMPONENT_SELECT), _(TUNING_DIALOG_BUTTON_OK));
 		} else if (gInfo[playerid][e_tPrevComponent] != gInfo[playerid][e_tComponent]) {
 			if (!GivePlayerMoney(playerid, -GetModCost(gInfo[playerid][e_tType]))) {
