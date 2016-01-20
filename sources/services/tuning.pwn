@@ -229,7 +229,7 @@ TextListCreate:tuning_menu(playerid)
 
 			gInfo[playerid][e_tListTypes][item_index] = compatible_types[i];
 
-			GetComponentTypeName(compatible_types[i], type_name);
+			GetVehicleComponentTypeName(compatible_types[i], type_name);
 
 			if (compatible_types[i] == CARMODTYPE_VENT_RIGHT) {
 				new spacepos = strfind(type_name, " ");
@@ -309,7 +309,7 @@ TextListCreate:component_list(playerid)
 				continue;
 			}
 
-			GetComponentName(components[i], items[item_index]);
+			GetVehicleComponentName(components[i], items[item_index]);
 
 			if (type == CARMODTYPE_SIDESKIRT || type == CARMODTYPE_VENT_RIGHT) {
 				if (strfind(items[item_index], "Left ") != -1) {
@@ -332,7 +332,7 @@ TextListCreate:component_list(playerid)
 	gInfo[playerid][e_tListCount] = item_index;
 
 	new header[TEXTLIST_MAX_ITEM_NAME];
-	GetComponentTypeName(type, header);
+	GetVehicleComponentTypeName(type, header);
 
 	if (type == CARMODTYPE_VENT_RIGHT) {
 		new spacepos = strfind(header, " ");
