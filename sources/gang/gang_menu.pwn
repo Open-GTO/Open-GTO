@@ -787,7 +787,7 @@ DialogCreate:GangMotd(playerid)
 {
 	new
 		gangid = GetPlayerGangID(playerid),
-		string[MAX_LANG_STRING + MAX_GANG_MOTD];
+		string[MAX_LANG_VALUE_STRING];
 
 	Gang_GetMotd(gangid, string);
 
@@ -811,7 +811,7 @@ DialogResponse:GangMotd(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new string[MAX_LANG_STRING + MAX_GANG_MOTD];
+	new string[MAX_LANG_VALUE_STRING];
 
 	new len = strlen(inputtext);
 	if (len > MAX_GANG_MOTD) {

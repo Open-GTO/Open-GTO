@@ -249,7 +249,6 @@ public OnGameModeInit()
 {
 	// Initialize everything that needs it
 	cfg_LoadConfigs();
-	lang_OnGameModeInit();
 	Lang_OnGameModeInit();
 
 	Core_OnGameModeInit();

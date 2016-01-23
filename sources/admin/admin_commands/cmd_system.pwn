@@ -112,7 +112,6 @@ COMMAND:system(playerid, params[])
 
 			format(string, sizeof(string), _(ADMIN_COMMAND_SYSTEM_LANG_GET), langname);
 		} else if (strcmp(subsubcmd, "reload", true) == 0) {
-			lang_OnGameModeInit();
 			Lang_OnGameModeInit();
 
 			__(ADMIN_COMMAND_SYSTEM_LANG_RELOAD, string);

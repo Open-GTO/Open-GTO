@@ -1,0 +1,1018 @@
+// account
+ACCOUNT_DIALOG_LOGIN_HEAD = {CCCCCC}Login: {FFFFFF}%s
+ACCOUNT_DIALOG_LOGIN = {CCCCCC}This account is registered.\n\n{CCCCCC}Enter the password for {F4A460}input{CCCCCC} (attempts: {F4A460}%d{CCCCCC}):
+ACCOUNT_DIALOG_LOGIN_BUTTON = Log
+
+ACCOUNT_DIALOG_REGISTER_HEAD = {CCCCCC}Registration: {FFFFFF}%s
+ACCOUNT_DIALOG_REGISTER = {CCCCCC}This account is not registered.\n\n{CCCCCC}Enter the password for {F4A460}registration{CCCCCC}:
+ACCOUNT_DIALOG_REGISTER_BUTTON = Create
+
+ACCOUNT_DIALOG_INFORMATION_CAPTION = Open-GTO %s - %s
+ACCOUNT_DIALOG_INFORMATION_BUTTON = Clear
+ACCOUNT_DIALOG_INFORMATION_TEXT_0 = IN the mode of Open-GTO see all popular game modes: race, DM(from the English. Deathmatch), as well as the RPG elements.\n\n
+ACCOUNT_DIALOG_INFORMATION_TEXT_1 = IN races and dmah you can show your driving and shooting skills.\PI in case of victory ñ to gain a good reward.\n\n
+ACCOUNT_DIALOG_INFORMATION_TEXT_2 = Each player has the right to be a gang.\MF gang will be easier to level your character and survive.\n\n
+ACCOUNT_DIALOG_INFORMATION_TEXT_3 = Businesses ñ good way of earning, but in order to buy it, you will have to pay a tidy sum.\n\n
+ACCOUNT_DIALOG_INFORMATION_TEXT_4 = House ñ the place the appearance of your character after death.\MF houses you can rent the room in exchange for profit
+ACCOUNT_DIALOG_INFORMATION_TEXT_5 = to regain health after the next skirmish.\n\pcak in many RPG modes here are the levels
+ACCOUNT_DIALOG_INFORMATION_TEXT_6 = than level up ñ the more you can buy weapons,\bystree to restore health, 
+ACCOUNT_DIALOG_INFORMATION_TEXT_7 = to buy more than a good business or a house and much more.\n\n
+ACCOUNT_DIALOG_INFORMATION_TEXT_8 = to get a new level, you need to dial a certain amount of experience\n
+ACCOUNT_DIALOG_INFORMATION_TEXT_9 = He gains by killing hostile players, the wins and dmah, carrying out various missions. 
+
+ACCOUNT_LOGIN_FIRST = First log into your account!
+ACCOUNT_SUCCESS_LOGIN = You have successfully logged
+ACCOUNT_INCORRECT_PASSWORD = bad password
+ACCOUNT_AUTO_KICK = You will be automatically kicked.
+ACCOUNT_SUCCESS_REGISTER = Account created.
+
+ACCOUNT_LOGIN_MESSAGE_0 = Welcome to Open-GTO %s!
+ACCOUNT_LOGIN_MESSAGE_1 = {FFCC66}[Help]: {FFFFFF}/help, - help, /info - a brief description /commands - listcommands.
+ACCOUNT_LOGIN_MESSAGE_2 = {FFCC66}[Help]: {FFFFFF}All actions with the pickups, entrances, exits and the like occurs by pressing 'Y'.
+ACCOUNT_LOGIN_MESSAGE_3 = {FFCC66}[Help]: {FFFFFF}the input Box is called by pressing F6, or T '~'.
+ACCOUNT_LOGIN_ROOT = You have successfully logged in as main administrator. Type /about to know about their responsibilities.
+ACCOUNT_LOGIN_ADMIN = You have successfully logged in as an administrator. Type /about to know about their responsibilities.
+ACCOUNT_LOGIN_MODER = You have successfully logged in as a moderator. Type /about to know about their responsibilities.
+
+ACCOUNT_PLAYED_TIME_DAY = %d %s %d %s, 
+ACCOUNT_PLAYED_TIME_HOUR = %d %s, 
+ACCOUNT_PLAYED_TIME_MINUTES = %s%d %s %d %s
+
+// skydiving
+SKYDIVING_MSG = {FFCC66}[Server]: {FFFFFF}Fly! Do not forget to use a parachute!
+SKYDIVING_GAMETEXT = !!! SKY DIVING !!!
+SKYDIVING_MSG_TO_ALL = {FFCC66}[Server]: {FFFFFF}%s(%d) has Used the command /skydive and jumped with a parachute!
+SKYDIVING_ERROR = {FFCC66}[Server]: {FFFFFF}You are deprived of pleasure to conquer the sky.
+SKYDIVING_NEED_TIME = You recently used the command /skydive until the next use was %d %s %d %s.
+
+// player
+PLAYER_COMMAND_LOG = Player: %s(%d): %s
+PLAYER_CONNECT = {FFCC66}[Server]: {FFFFFF}%s(%d) entered the game.
+PLAYER_DISCONNECT = {FFCC66}[Server]: {FFFFFF}%s(%d) has left the game.
+MUTED_HELP_MESSAGE = {FF2211}[Error]: {FFFFFF}You are not allowed to write in the chat! Write to the administrators via @ about your problem.
+PLAYER_NICK_BAD_SYMBOLS = {FF2211}[Error]: {FFFFFF}Invalid character in the name of the player. Allowed characters: %s
+PLAYER_NICK_IS_IP = {FF2211}[Error]: {FFFFFF}Nick should not be an IP address!
+PLAYER_XP_MAX = You can't earn more experience!
+PLAYER_XP_GAMETEXT = ~g~%c~r~%d ~g~XP
+PLAYER_XP_GET = You received %d XP.
+PLAYER_XP_MISS = You have lost %d XP.
+PLAYER_LEVEL_UP = You dropped to %d level.
+PLAYER_LEVEL_DOWN = You have reached the %d level.
+PLAYER_LEVEL_NEW_WEAPON = Open new weapons:
+PLAYER_LEVEL_NEW_WEAPON_ITEM = Weapon: '%s'. Price: %d.
+PLAYER_PM_FOR = LS for %s(%d): %s
+PLAYER_PM_FROM = PM from %s(%d): %s
+PLAYER_PM_ADMIN = * Admin: PM from %s(%d) to %s(%d): %s
+PLAYER_PM_LOG = PM from %s(%d) to %s(%d): %s
+PLAYER_LOADING = {FFCC66}[Server]: {FFFFFF}Loading...
+
+// player click
+CLICK_REPORT_SELF = Complaint %s(%d): %s
+CLICK_REPORT_PLAYER = the complaint of the player %s(%d) on %s(%d): %s
+CLICK_REPORT_BY_MINUTE =  %d minutes
+CLICK_REPORT_MESSAGE = Complaint (%d/%d) on %s(%d) reason: %s
+CLICK_REPORT_SERVER = {FFCC66}[Server]: {FFFFFF}%s has arrested %s
+
+CLICK_SENDCASH_GIVE = You gave %s(%d) $%d of your own cash.
+CLICK_SENDCASH_GET = You have received $%d cash to %s(%d).
+CLICK_SENDCASH_NOT_VALID = Invalid amount
+
+// player menu
+PLAYER_MENU_VEHICLE_CAPTION = My ride
+PLAYER_MENU_VEHICLE_LIST = {CCCCCC}Move to itself\n{CCCCCC}to Sell{00AA00}$%d{CCCCCC}]\n{CCCCCC}to Remove the tuning
+PLAYER_MENU_VEHICLE_NO_VEHICLES = {CCCCCC}you HAVE no transport.
+PLAYER_MENU_VEHICLE_ERROR_INTERIOR = {CCCCCC}Move transport yourself to only outdoors.
+PLAYER_MENU_VEHICLE_SELLED = {CCCCCC}the Sale is completed.
+PLAYER_MENU_VEHICLE_TUNING_REMOVED = {CCCCCC}Tuning was successfully removed.
+PLAYER_MENU_VEHICLE_BUTTON_SELECT = Select
+PLAYER_MENU_VEHICLE_BUTTON_NEXT = Next
+PLAYER_MENU_VEHICLE_BUTTON_BACK = Back
+PLAYER_MENU_VEHICLE_BUTTON_CANCEL = Cancel
+
+PLAYER_MENU_SETTINGS_CAPTION = My settings
+PLAYER_MENU_SETTINGS_INFO = Name\t÷ÂÌ‡\n{CCCCCC}Save account\n{CCCCCC}to Change your username\t{00AA00}$%d\n{CCCCCC}to Change your password\t{00AA00}$%d
+PLAYER_MENU_SETTINGS_BUTTON_SELECT = Select
+PLAYER_MENU_SETTINGS_BUTTON_BACK = Back
+
+PLAYER_MENU_SETTINGS_SAVED = {CCCCCC}Your account has been successfully saved.
+PLAYER_MENU_SETTINGS_SAVED_CAPTION = Saving account
+PLAYER_MENU_SETTINGS_SAVED_BTN_BACK = Back
+PLAYER_MENU_SETTINGS_SAVED_BTN_CANCEL = Cancel
+
+PLAYER_MENU_SETTINGS_NAME_CAPTION = Change nick
+PLAYER_MENU_SETTINGS_NAME_INFO = {CCCCCC}Enter the nickname:
+PLAYER_MENU_SETTINGS_NAME_BUTTON_OK = OK
+PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK = Back
+PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL = Cancel
+PLAYER_MENU_SETTINGS_NAME_INCORRECT = {CCCCCC}Invalid characters in the username or like this login already online
+PLAYER_MENU_SETTINGS_NAME_ALLOWED_SYMB = {CCCCCC}Incorrect character in your player name.\razreshennye symbols: {BBBAE8}%s
+PLAYER_MENU_SETTINGS_NAME_CHANGED = {CCCCCC}You have successfully changed nick to '{BBBAE8}%s{CCCCCC}' to '{BBBAE8}%s{CCCCCC}'.
+PLAYER_MENU_SETTINGS_NAME_NO_MONEY = {CCCCCC}you HAVE no {00AA00}$%d{CCCCCC} to the name change.
+PLAYER_MENU_SETTINGS_NAME_LENGTH = {CCCCCC}nick Length must be greater than {BBBAE8}%d{CCCCCC} and less than {BBBAE8}%d{CCCCCC} characters.
+
+PLAYER_MENU_SETTINGS_PASSWORD_CAPTION = Change password
+PLAYER_MENU_SETTINGS_PASSWORD_INFO = {CCCCCC}Enter the desired password:
+PLAYER_MENU_SETTINGS_PASSWORD_BTN_OK = OK
+PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK = Back
+PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL = Cancel
+PLAYER_MENU_SETTINGS_PASSWORD_CHANGED = {CCCCCC}You have successfully changed the password.\push new password: {BBBAE8}%s
+PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY = {CCCCCC}you HAVE no {00AA00}$%d{CCCCCC} to change the account password.
+PLAYER_MENU_SETTINGS_PASSWORD_LENGTH = {CCCCCC}Valid length
+
+PLAYER_MENU_INFO_0 = Level: %d, experience: %d/%d\n\n
+PLAYER_MENU_INFO_1 = registration date: %s\n
+PLAYER_MENU_INFO_2 = in-game Time: %s\n\n
+PLAYER_MENU_INFO_3 = Banda: %s\n\n
+PLAYER_MENU_INFO_4 = Money: $%s money in the Bank: $%s. Total money: $%s\n\n
+PLAYER_MENU_INFO_5 = Murders: %d, deaths: %d (: %.2f)\n
+PLAYER_MENU_INFO_6 = Arrests: %d. Zamykani: %d\n\n
+PLAYER_MENU_INFO_7 = fighting Style: %s\n
+PLAYER_MENU_INFO_8 = Premium status: %s
+
+// command
+COMMAND_HELP_0 = /help - first aid /info - summary, /commands - lists all commands. 
+COMMAND_HELP_1 = /status - information about your character.
+COMMAND_HELP_2 = You can use the menu of the player, it is caused by pressing 'Y'.
+COMMAND_HELP_3 = For interaction with rotating icons (pickups), use pressing 'Y'.
+
+COMMAND_INFO_CAPTION = Information
+COMMAND_INFO_BUTTON_OK = Information
+
+COMMAND_COMMANDS_0 = {FF2211}command reference:
+COMMAND_COMMANDS_1 = {FFCC66}[Account]: {FFFFFF}/help, /info, /commands, /status
+COMMAND_COMMANDS_2 = {FFCC66}[Server]: {FFFFFF}/version, /time
+COMMAND_COMMANDS_3 = {FFCC66}[Gang]: {FFFFFF}! <message>
+COMMAND_COMMANDS_4 = {FFCC66}[Race]: {FFFFFF}/races, /race join <ID> /quit race
+COMMAND_COMMANDS_5 = {FFCC66}[Desmatch]: {FFFFFF}/dms /dm join <ID> /dm quit
+COMMAND_COMMANDS_6 = {FFCC66}[Animation]: {FFFFFF}/dance [1-4], /handsup, /piss, /smoke
+COMMAND_COMMANDS_7 = {FFCC66}[Talking]: {FFFFFF}/pm <ID> <message>, $ <message>, @ <message>, # <message>
+COMMAND_COMMANDS_8 = {FFCC66}[Transport]: {FFFFFF}/repair, /fill, /engine
+COMMAND_COMMANDS_9 = {FFCC66}[Different]: {FFFFFF}/skydive, /lottery
+
+COMMAND_VERSION_0 = the server is running:
+COMMAND_VERSION_1 = SA-MP: Open-GTO %s.
+COMMAND_VERSION_2 = Created by Iain Gilbert. Continued by Peter Steenbergen, Robin Kikkert, Asturel, Dmitry Frolov (FP).
+COMMAND_VERSION_3 = Continued by Open-GTO Team [ Current: ziggi | Previous: GhostTT, heufix, Elbi]
+
+COMMAND_TIME_ABOUT = {FF2211}Information abouttime:
+COMMAND_TIME_JAIL = {FFCC66}[Server]: {FFFFFF}Before the end of the arrest left %d min
+COMMAND_TIME_MUTE = {FFCC66}[Server]: {FFFFFF}Before the end of the Muta left %d min
+
+COMMAND_STATUS_0 = player Information:
+COMMAND_STATUS_1 = Banda: %s
+COMMAND_STATUS_2 = Level: %d, experience: %d/%d. Cash: $%d Bank: $%d. Total money: $%d 
+COMMAND_STATUS_3 = Murders: %d, deaths: %d (: %.2f). Arrests: %d. Zamykani: %d
+COMMAND_STATUS_FIGHTSTYLE = Used fighting style: %s
+COMMAND_STATUS_PREMIUM = you have premium status, available to: %s
+COMMAND_STATUS_NO_PREMIUM = you HAVE no premium status, to purchase, please contact the
+
+COMMAND_DANCE_ERROR = Use: /dance <1-4>. Controls - arrows + space or left shift.
+
+COMMAND_PM_USE = {FFCC66}[Usage]: {FFFFFF}/pm <ID> <message>
+COMMAND_PM_ERROR_ID = {FF2211}[Error]: {FFFFFF}/pm: invalid ID
+
+// privilege
+PRIVILEGE_PLAYER = player
+PRIVILEGE_MODER = moderator
+PRIVILEGE_ADMIN = administrator
+PRIVILEGE_RCON = rcon administrator
+
+// player spawn
+PLAYER_SPAWN_LIST_NEARLY_POINT = Nearest point\n
+PLAYER_SPAWN_LIST_GANG = %s[gang] %s\n
+PLAYER_SPAWN_DIALOG_HEADER = selection Menu spawn
+PLAYER_SPAWN_DIALOG_INFO = you no available spawners
+PLAYER_SPAWN_DIALOG_BUTTON_BACK = Back
+PLAYER_SPAWN_DIALOG_BUTTON_CANCEL = Cancel
+PLAYER_SPAWN_DIALOG_BUTTON_OK = OK
+PLAYER_SPAWN_HAS_CHANGED = spawn Place changed.
+PLAYER_SPAWN_GANG_HAS_CHANGED = spawn Place for you and the gang changed.
+
+// gang
+GANG_TEXT_NO_GANG = to write in the chat of the gang need it to be.
+GANG_TEXT_SHORT_MESSAGE = Too short message.
+GANG_TEXT_PATTERN = %s(%d) gang: {FFFFFF}%s
+GANG_LEVEL_INCREASE = Gang reached the %d level.
+GANG_LEVEL_DECREASE = Banda decreased to %d level.
+GANG_RANK_LEADER = leader
+GANG_RANK_HELPER = assistant
+GANG_RANK_PAYMASTER = Treasurer
+GANG_RANK_INVITER = recruiter
+GANG_RANK_SOLDIER = private
+GANG_RANK_HEADER = Change the title
+GANG_RANK_BUTTON = Edit
+GANG_RANK_CHANGED_MESSAGE = You successfully changed the title of the player.
+GANG_MENU_HEADER = Menu gang
+GANG_MENU_BUTTON_BACK = Back
+GANG_MENU_BUTTON_CANCEL = Cancel
+GANG_MENU_BUTTON_OK = OK
+GANG_MENU_BUTTON_ACCEPT = Accept
+GANG_MENU_INFO_MESSAGE_0 = {AFAFAF}Assassin: {CCCCCC}%d\n
+GANG_MENU_INFO_MESSAGE_1 = {AFAFAF}Money: {008800}$%s\n
+GANG_MENU_INFO_MESSAGE_2 = {AFAFAF}Points: {CCCCCC}%d\n
+GANG_MENU_INFO_MESSAGE_3 = {AFAFAF}Level: {CCCCCC}%d{AFAFAF}. Experience: {CCCCCC}%d/%d\n\n
+GANG_MENU_INFO_MESSAGE_4 = {AFAFAF}Online {CCCCCC}(%d/%d){AFAFAF}:\n%s
+GANG_MENU_PLAYER_LIST_ITEM_ON = {AFAFAF}%02d {33AA33}%s {AFAFAF}(%s, id: %d, level: %d)
+GANG_MENU_PLAYER_LIST_ITEM_OFF = {AFAFAF}%02d {AA3333}%s {AFAFAF} ('%s', last entry %s)
+GANG_MENU_LIST_INFO = Information about the band\n
+GANG_MENU_LIST_INFO_SELF = information about the gang\n
+GANG_MENU_LIST_CREATE = Create a gang [$%d]\n
+GANG_MENU_LIST_ACCEPT = to Accept an invitation\n
+GANG_MENU_LIST_EXIT = out of the gang\n
+GANG_MENU_LIST_INVITE = Invite player\n
+GANG_MENU_LIST_KICK = Kickplayer\n
+GANG_MENU_LIST_MOTD = Edit ad\n
+GANG_MENU_LIST_RANK = Change the title\n
+GANG_MENU_LIST_COLOR = Change color [$%d]\n
+GANG_MENU_INFO_HEADER_SELF = information about the gang
+GANG_MENU_INFO_HEADER = Information about gangs
+GANG_MENU_INFO_0 = Each player has the opportunity to create your gang or join another.\n
+GANG_MENU_INFO_1 = If You are in a gang, part of Your experience will be distributed among all members of the gang.\n
+GANG_MENU_INFO_2 = the Murder of a member of his gang will not give you a drop of experience.\n
+GANG_MENU_INFO_3 = All the achievement of this or that gang is written in Generaltable.\n
+GANG_INVITE_HEADER = Invitation to the gang
+GANG_INVITE_IS_FULL = IN the gang already the maximum number of players.
+GANG_INVITE_YOU_IN = You have joined '%s'.
+GANG_INVITE_PLAYER_IN = %s joined Your gang.
+GANG_INVITE_ERROR = Joining a gang is not executed. Make sure that the gang member online.
+GANG_INVITE_PLAYER_ERROR = Wrong name of the player or it is not registered.
+GANG_INVITE_ALREADY_IN_GANG = This player is already in a gang.
+GANG_INVITE_ALREADY_INVITED = This player is already invited to your gang.
+GANG_INVITE_INPUT = Enter ID or nickname of the player you want to invite:
+GANG_INVITE_LIST_IS_FULL = this player HAS the maximum number of invites, wait.
+GANG_INVITE_MESSAGE = %s invited you to join gang '%s'.
+GANG_INVITE_MESSAGE_SELF = You have invited %s to join gang '%s'.
+GANG_INVITE_NOT_INVITED = You don't get invited to one of the gangs
+GANG_INVITE_TIME_SPENT = Invitation to this gang overdue
+GANG_INVITE_ACCEPT_LIST_HEADER = Gang\tŒÒÚ‡ÎÓÒ¸
+GANG_INVITE_ACCEPT_LIST = %s\t%d seconds
+GANG_KICK_HEADER = Kick the player
+GANG_KICK_BUTTON = Kick
+GANG_KICK_PLAYER_KICKED = %s kicked out of the gang.
+GANG_COLOR_HEADER = gang colors
+GANG_COLOR_INCORRECT = Wrong color.
+GANG_COLOR_MONEY_ERROR = You don't have enough money, you need $%d.
+GANG_COLOR_SUCCESS = Color bands changed.
+GANG_MOTD_HEADER = Change in ad
+GANG_MOTD_MESSAGE = Enter new ad:
+GANG_MOTD_MESSAGE_OLD = Enter new ad, old: '%s':
+GANG_MOTD_REMOVED = Ad gangs removed.
+GANG_MOTD_LENGTH_ERROR = Length of ad must be less than %d characters.
+GANG_MOTD_CHANGED_MSG = Ad successfully modified.\ad nnew: '%s'
+GANG_MOTD_CHANGED = the head of the gang %s(%d) has set a new announcement: '%s'
+GANG_CREATE_HEADER = gang Creation
+GANG_CREATE_MONEY_ERROR = You need $%d to create a band.
+GANG_CREATE_NAME_NOT_INPUT = You have not entered a name
+GANG_CREATE_NAME_ERROR = Incorrect name of a gang.\Pima gang must be length %d to %d characters.
+GANG_CREATE_NAME_SYMBOLS_ERROR = Incorrect name of a gang.\razreshennye symbols: %s. Banned names: 'Unknown'.
+GANG_CREATE_ERROR = {FF2211}Error\n{FFFFFF}Gang not created, try another name for the gang.
+GANG_CREATE_SUCCESS = Gang successfully created.
+GANG_CREATE_NAME_MESSAGE = Enter the name of the gang:
+GANG_EXIT_HEADER = Exit gangs
+GANG_EXIT_INFO = You have successfully left the gang.
+GANG_EXIT_REMOVED = You have removed the gang '%s'!
+GANG_REMOVED = the leader of the gang %s(%d) has deleted the gang '%s'.
+GANG_EXIT_REMOVE_ERROR = Error. Something went wrong...
+GANG_REMOVE_HEADER = Remove gang?
+GANG_REMOVE_INFO_0 = If you leave the gang, the gang will be permanently deleted!\n
+GANG_REMOVE_INFO_1 = have You checked the Bank the gang for money?\n\NDO you really want to remove the gang?
+GANG_REMOVE_BUTTON = Delete
+GANG_MEMBER_LOGIN = gang Member '%s' entered.
+GANG_MEMBER_LOGOUT = gang Member '%s' was released.
+GANG_MEMBER_LOGIN_SELF = are You in the gang '%s'. Your on server: %d.
+GANG_MEMBER_LOGIN_MOTD = Ad gang: %s
+GANG_MEMBER_LOGIN_REMOVED = Banda '%s' was disbanded.
+GANG_GIVE_MEMBER_XP = You received %d experience from the members of the gang.
+GANG_KILL_TEAMMATE = %s killed her.
+
+// vehicles
+VEHICLE_INIT = SERVER: Vehicles module init
+VEHICLE_NOT_IN_CAR = You are not in the car.
+VEHICLE_TEXTDRAW_STRING = %d KM/H~n~%0.1 f L.~n~%0.0 f HP
+
+// Vehicle Fuel
+VEHICLE_FUEL_INIT = Vehicle Fuel System v2.7 initialized.
+VEHICLE_FUEL_EMPTY = the vehicle has no fuel. Tuck and slide (/engine).
+VEHICLE_FUEL_NOT_IN_VEHICLE = {FF2211}[Error]: {FFFFFF}You are not in a vehicle!
+VEHICLE_FUEL_NOT_ON_FUEL_ST = {FF2211}[Error]: {FFFFFF}You are not at the gas station!
+VEHICLE_FUEL_IS_FUELING_ERROR = {FF2211}[Error]: {FFFFFF}You already fill the car!
+VEHICLE_FUEL_WITHOUT_FUEL_ENGINE = {FF2211}[Error]: {FFFFFF}This vehicle doesn't use gasoline.
+VEHICLE_FUEL_FUEL_IS_FULL = {FF2211}[Error]: {FFFFFF}Your fuel tank is already full.
+VEHICLE_FUEL_AFTER_FUEL = {33CC33}[Filling]: {FFFFFF}Your vehicle has been refilled for $%d.
+VEHICLE_FUEL_TD_OPENED = ~G~Opened
+VEHICLE_FUEL_TD_CLOSED = ~R~Closed
+VEHICLE_FUEL_DIALOG_HEADER = Filling
+VEHICLE_FUEL_IS_FUELING = {33CC33}[Dressing]: {FFFFFF}Your vehicle is refuelled, wait.
+on password from {BBBAE8}%d{CCCCCC} to {BBBAE8}%d{CCCCCC} characters.
+VEHICLE_FUEL_ENTER_AREA_ALERT = Press ~k~~TOGGLE_SUBMISSIONS~ fill for your vehicle.
+VEHICLE_FUEL_IS_FUELING_ALERT = Your vehicle is filling, wait...
+VEHICLE_FUEL_AFTER_FUEL_ALERT = Your vehicle has been filled for $%d
+
+// vehicle access doors
+VEHICLE_DOORS_ACCESS_INVALID = available
+VEHICLE_DOORS_ACCESS_EVERYONE = open to all
+VEHICLE_DOORS_ACCESS_NOONE = closed for all
+VEHICLE_DOORS_ACCESS_GANG = open gang
+
+// vehicle menu
+VEHICLE_MENU_HEADER = Menu transport
+VEHICLE_MENU_BUTTON_OK = OK
+VEHICLE_MENU_BUTTON_CANCEL = Cancel
+VEHICLE_MENU_LIST_FLIP = Flip\n
+VEHICLE_MENU_LIST_FILL = Fill\n
+VEHICLE_MENU_LIST_RADIO = Radio\n
+VEHICLE_MENU_LIST_DOORS = %dveri {CCCCCC}[%s]\n
+VEHICLE_MENU_LIST_DISABLE_LIGHTS = {FF0000}Off headlights\n
+VEHICLE_MENU_LIST_ENABLE_LIGHTS = {00FF00}On headlights\n
+VEHICLE_MENU_LIST_DISABLE_ENGINE = {FF0000}Off the engine\n
+VEHICLE_MENU_LIST_ENABLE_ENGINE = {00FF00}On the engine\n
+VEHICLE_MENU_LIST_CLOSE_BONNET = {FF0000}Shut the hood\n
+VEHICLE_MENU_LIST_OPEN_BONNET = {00FF00}Open the hood\n
+VEHICLE_MENU_LIST_CLOSE_BOOT = {FF0000}to Close the trunk\n
+VEHICLE_MENU_LIST_OPEN_BOOT = {00FF00}Open the trunk\n
+VEHICLE_MENU_LIST_CLOSE_WINDOWS = {FF0000}Close window\n
+VEHICLE_MENU_LIST_OPEN_WINDOWS = {00FF00}Open Windows\n
+
+VEHICLE_MENU_DOORS_NOTOWNER = change the status of doors is available only for personal transport.
+
+// bank
+BANK_INIT = SERVER: Bank module init
+BANK_CAPTION = Bank
+BANK_START_INFO_0 = {CCCCCC}You can store money here and get the {00AA00}+%d%%{CCCCCC} ({00AA00}+%d%%{CCCCCC} for premium) 
+BANK_START_INFO_1 = \pekudei balance: {00AA00}$%s
+BANK_LIST_INFO = to Remove money\money polarity
+BANK_WITHDRAW_INFO = {CCCCCC}You took {00AA00}$%s\n{CCCCCC}Current balance: {00AA00}$%s
+BANK_DEPOSIT_INFO = {00AA00}$%s{CCCCCC} put on your account.\pakodi balance: {00AA00}$%s
+BANK_BUTTON_OK = OK
+BANK_BUTTON_BACK = Back
+BANK_BUTTON_CANCEL = Cancel
+BANK_BUTTON_WITHDRAW = to Remove
+BANK_BUTTON_DEPOSIT = Put
+BANK_BUTTON_OPERATIONS = Operations
+BANK_INCORRECT_VALUE = {CCCCCC}You didn't enter or entered the wrong amount of money.
+BANK_MAX_MONEY_ERROR = \n{CCCCCC}Your Bank account full!
+BANK_PROFIT_MESSAGE = To your Bank account was credited with {00AA00}$%s
+
+BANK_GANG_CAPTION = Bank gang
+BANK_GANG_LIST_1 = \poloziti money in the Bank gang
+BANK_GANG_LIST_2 = \PCnet money from the Bank gang
+BANK_GANG_WITHDRAW_MESSAGE = %s(%d) took {00AA00}$%d{FF8C00} from the Bank of the gang.
+BANK_GANG_WITHDRAW_INFO = {CCCCCC}You took {00AA00}$%d{CCCCCC} from the Bank of the gang.\pakodi balance: {00AA00}$%d
+BANK_GANG_WITHDRAW_MESSAGE_INFO = {CCCCCC}Enter the amount of money you want to withdraw from the Bank gang:
+BANK_GANG_DEPOSIT_MESSAGE = %s(%d) put it in the Bank gang {00AA00}$%d{FF8C00}.
+BANK_GANG_DEPOSIT_INFO = {00AA00}$%d{CCCCCC} expected in the Bank of the gang.\pakodi balance:{00AA00}$%d
+BANK_GANG_DEPOSIT_MESSAGE_INFO = {CCCCCC}Enter the amount of money you want to put in the Bank gang:
+BANK_GANG_INCORRECT_VALUE = {CCCCCC}You didn't enter or entered the wrong amount of money.
+
+PAYDAY_MESSAGE = {FFFF00}Salary: {00AA00}$%d{FFFF00}, {DD2211}+%d{FFFF00} XP
+PAYDAY_GAMETEXT = ~g~$%d~n~~r~%d ~y~XP
+
+// business
+BUSINESS_DIALOG_CAPTION = My businesses
+BUSINESS_DIALOG_BACK = Back
+BUSINESS_DIALOG_CANCEL = Cancel
+BUSINESS_DIALOG_NO_BUSINESS = {CCCCCC}you HAVE no business
+BUSINESS_DIALOG_LIST_ITEM_HEAD = Name\t“ÂÍÛ˘‡ˇ profit\n
+BUSINESS_DIALOG_LIST_ITEM =%s{CCCCCC}%s\t{00AA00}$%d\n
+
+BUSINESS_INIT = SERVER: Business module init
+BUSINESS_TEXT_LABEL = {66CCFF}%s\n{CCCCCC}Price: {FFFFFF}$%d\n{CCCCCC}Earnings: {FFFFFF}%d\n{CCCCCC}Minimum access level: {FFFFFF}%d
+BUSINESS_ERROR = Information not yet available. Please notify your administrator.
+BUSINESS_FOREIGN_BUSINESS = You can't buy someone else's business!
+BUSINESS_YOU_BUSINESS = It's already your business.
+BUSINESS_OUTBIDDING = Player %s has bought '%s'.
+BUSINESS_NO_MONEY = you do not have enough money to buy this business.
+BUSINESS_LEVEL_ERROR = {CCCCCC}You must be at least {00AA00}%d-th{CCCCCC} to buy this business.
+BUSINESS_NOT_YOU = You don't own the business.
+BUSINESS_DIALOG_HEAD = -- %s --
+BUSINESS_DIALOG_INFO_PLAYER_0 = {CCCCCC}Now belongs to: {00AA00}%s\n
+BUSINESS_DIALOG_INFO_PLAYER_1 = {CCCCCC}Price: {00AA00}$%d\n
+BUSINESS_DIALOG_INFO_PLAYER_2 = {CCCCCC}Minimum access level: {00AA00}%d\n
+BUSINESS_DIALOG_INFO_PLAYER_3 = {CCCCCC}Profit: {00AA00}%d\n
+BUSINESS_DIALOG_INFO_PLAYER_4 = {CCCCCC}business: {00AA00}%d
+BUSINESS_DIALOG_LIST_BUY = Buy
+BUSINESS_DIALOG_LIST_SELL = {CCCCCC}for Sell\n{CCCCCC}Take profit [available:{00AA00}$%d{CCCCCC}]
+BUSINESS_DIALOG_LIST_0 = {CCCCCC}to Sell\n
+BUSINESS_DIALOG_LIST_1 = {CCCCCC}Take profit [available: {00AA00}$%d{CCCCCC}]\n
+BUSINESS_DIALOG_LIST_2 = {CCCCCC}to Increase the level of [current: {00AA00}%d{CCCCCC}] [price: {00AA00}$%d{CCCCCC}]
+BUSINESS_DIALOG_BUTTON_OK = OK
+BUSINESS_DIALOG_BUTTON_CANCEL = Cancel
+BUSINESS_DIALOG_BUTTON_ACTION = Action
+BUSINESS_DIALOG_BUTTON_BACK = Back
+BUSINESS_DIALOG_BUTTON_SELL = Sell
+BUSINESS_DIALOG_INFO_SELF_0 = {CCCCCC}This is your business\n
+BUSINESS_DIALOG_INFO_SELF_1 = {CCCCCC}You can sell the business for {00AA00}$%d\n
+BUSINESS_DIALOG_INFO_SELF_2 = {CCCCCC}Now available {00AA00}$%d{CCCCCC} profit\n
+BUSINESS_DIALOG_INFO_SELF_3 = {CCCCCC}business: {00AA00}%d
+BUSINESS_DIALOG_INFO_FOREIGN_0 = {CCCCCC}Now belongs to no one\n
+BUSINESS_DIALOG_INFO_FOREIGN_1 = {CCCCCC}Cost {00AA00}$%d\n
+BUSINESS_DIALOG_INFO_FOREIGN_2 = {CCCCCC}Minimum access level: {00AA00}%d\n
+BUSINESS_DIALOG_INFO_FOREIGN_3 = {CCCCCC}Profit: {00AA00}%d
+BUSINESS_DIALOG_INFO_BUY_0 = {CCCCCC}You bought '{00AA00}%s{CCCCCC}'\n
+BUSINESS_DIALOG_INFO_BUY_1 = {CCCCCC}Available {00AA00}$%d{CCCCCC} profit.\n
+BUSINESS_DIALOG_INFO_SELL_0 = {CCCCCC}You sold '{00AA00}%s{CCCCCC}'\n
+BUSINESS_DIALOG_INFO_SELL_1 = {CCCCCC}You lost {00AA00}15%%{CCCCCC} money of the price\n
+BUSINESS_DIALOG_INFO_SELL_2 = still available {00AA00}$%d{CCCCCC} profit
+BUSINESS_TOOK_VAULT = You took all the profits.
+BUSINESS_NO_VAULT = so Far, this business has no profit.
+BUSINESS_UPGRADE_UP = {CCCCCC}from Now '{00AA00}%s{CCCCCC}' {00AA00}%d{CCCCCC} level.
+BUSINESS_UPGRADE_MAX = {CCCCCC}Business '{00AA00}%s{CCCCCC}' has a maximum level.
+BUSINESS_UPGRADE_NO_MONEY = {CCCCCC}You don't have enough money for a modification, you need {00AA00}$%d
+BUSINESS_MAX_COUNT = You can no longer have businesses.
+BUSINESS_COLLECT = To your Bank account has been transferred to profit with your business '%s', it was $%d.
+BUSINESS_TEXT_LABEL_INFO = %s\n{CCCCCC}business: {FFFFFF}%d\n{CCCCCC}Owned: {FFFFFF}%s
+BUSINESS_ACCEPT_HEADER = to Sell the business?
+BUSINESS_ACCEPT_INFO = do You want to sell this business?
+
+// housing
+HOUSING_INIT = SERVER Housing module init
+HOUSING_3DTEXT = {FFCC66}%s\n{CCCCCC}Price: {FFFFFF}$%d\n
+HOUSING_3DTEXT_OWNER = %s{CCCCCC}Buy {FFFFFF}%s\n
+HOUSING_3DTEXT_GANG = %s{CCCCCC}Gang: {FFFFFF}%s\n
+HOUSING_3DTEXT_RENT = %s{CCCCCC}Rented: {FFFFFF}%s
+HOUSING_DIALOG_INFO = {CCCCCC}Price: {00AA00}$%d\n{CCCCCC}Content: {00AA00}$%d\n{CCCCCC}Debt: {00AA00}$%d / $%d\n
+HOUSING_DIALOG_INFO_OWNER = {CCCCCC}Now belongs to: {00AA00}%s (%s)\n
+HOUSING_DIALOG_INFO_NO_OWNER = {CCCCCC}Now belongs to no one.\nYou can buy this house for {00AA00}$%d.\n{CCCCCC}Content: {00AA00}$%d
+HOUSING_DIALOG_HEADER = -- %s --
+HOUSING_DIALOG_LIST_SELL = Sell\n
+HOUSING_DIALOG_LIST_BUY = to Buy a house\n
+HOUSING_DIALOG_LIST_ENTER = to Enter the house\n
+HOUSING_DIALOG_LIST_RENT_STOP = Stop rent\n
+HOUSING_DIALOG_LIST_RENT_START = to Rent a room\n
+HOUSING_DIALOG_LIST_RENT_OFF = Off rent\n
+HOUSING_DIALOG_LIST_RENT_ON = Enable rent\n
+HOUSING_DIALOG_LIST_RENT_KICK = to Kick the tenant\n
+HOUSING_DIALOG_LIST_RENT_SET = Set the price of rent\n
+HOUSING_DIALOG_LIST_OPEN = Open house\n
+HOUSING_DIALOG_LIST_CLOSE = Close home\n
+HOUSING_DIALOG_LIST_UPGRADES = Improvements\n
+HOUSING_DIALOG_LIST_KEEP = to Pay for the house\n
+HOUSING_DIALOG_BUTTON_SELECT = Select
+HOUSING_DIALOG_BUTTON_CANCEL = Cancel
+HOUSING_DIALOG_BUTTON_ACTIONS = Action
+HOUSING_DIALOG_BUTTON_OK = OK
+HOUSING_DIALOG_BUTTON_BACK = Back
+HOUSING_DIALOG_BUTTON_SELL = Sell
+HOUSING_ERROR = Information about the house is not yet available. Please notify the administrator.
+HOUSING_SELL_NOT_OWNER = You don't own that house.
+HOUSING_SELL_HEADER = house for Sale
+HOUSING_SELL_SUCCESS = CCCCCC}You sold '{00AA00}%s{CCCCCC}'.\nYou lost {00AA00}15%%{CCCCCC} from value.
+HOUSING_SELL_ACCEPT_HEADER = to Sell the house?
+HOUSING_SELL_ACCEPT_INFO = do You want to sell this house?
+HOUSING_BUY_HEADER = buying a home
+HOUSING_BUY_NOT_IN_GANG = You must be a member of the gang to buy this house.
+HOUSING_BUY_NO_MONEY = you do not have enough money to buy this house.
+HOUSING_BUY_SUCCESS = {CCCCCC}You bought '{00AA00}%s{CCCCCC}'.
+HOUSING_BUY_IS_MY = It is already your home.
+HOUSING_BUY_HAVE_OWNER = This house is already owned by someone. You can't buy him a house.
+HOUSING_BUY_MAX_LIMIT = You can no longer have homes.
+HOUSING_RENT_HEADER = Setting rents
+HOUSING_RENT_CURRENT = %s rents this house.
+HOUSING_RENT_COST = {CCCCCC}rental Price of this house: {00AA00}$%d
+HOUSING_RENT_CURRENT_RENTER = {CCCCCC}IN this house for %s already rents a room.
+HOUSING_RENT_SUCCESS = You have successfully rented apartment in this house.
+HOUSING_RENT_NO_MONEY = you do not HAVE enough money to rent a room.
+HOUSING_RENT_LEAVE = You have successfully evicted from the house.
+HOUSING_RENT_DISABLED = IN this house you cannot rent a room.
+HOUSING_RENT_IN_GANG = You are in a gang, you can't rent an apartment.
+HOUSING_RENT_RENTER_KICK = You have successfully evicted the tenant!
+HOUSING_RENT_SET_HEADER = Setting rents
+HOUSING_RENT_SET_NEW = {CCCCCC}Your current price rent: {00AA00}$%d\n{CCCCCC}Enter new
+HOUSING_RENT_SET_SUCCESS = {CCCCCC}You set the price of {00AA00}$%d{CCCCCC} for rent
+HOUSING_RENT_SET_DISABLED = You prohibited the rental of your apartment
+HOUSING_RENT_SET_ENABLED = Now in your home, you can rent an apartment.
+HOUSING_RENT_SET_VALUE_ERROR = rental Price must be greater than zero.
+HOUSING_KEEP_HEADER = Pay content
+HOUSING_KEEP_SUCCESS = You repaid the debt for the house.
+HOUSING_KEEP_NO = you HAVE no debt on the house.
+HOUSING_KEEP_NO_MONEY = you don't have enough money!
+HOUSING_KEEP_NO_OWNER = You are not able to pay the debt for someone else's home.
+HOUSING_ENTER_HEADER = the Entrance to the house
+HOUSING_ENTER_CLOSED = You can't enter the house, he closed
+HOUSING_ENTER_IS_OPEN = the House is open
+HOUSING_ENTER_IS_CLOSE = the House is closed
+HOUSING_ENTER_EXIT_HELP = to leave the house, press 'Y'
+HOUSING_UPGRADE_HEADER = Improvement
+HOUSING_UPGRADE_LIST = Restore health\armor besplatna
+HOUSING_UPGRADE_NO_MONEY = {CCCCCC}not Enough money to buy this improve, you need {00AA00}$%d
+HOUSING_UPGRADE_SUCCESS = You have improved the house.
+HOUSING_UPGRADE_HEALTH = Improvement: Health
+HOUSING_UPGRADE_ARMOUR = Enhancement: Armor
+HOUSING_UPGRADE_PAUSE = You have recently used this module.
+HOUSING_KICKED = evicted from your home.
+
+// other
+NO_ADMINS = AT the moment the game has no admins, but this does not mean that they are not may be watching.
+
+// declension system
+DECLENSION_MONTH_1 = month
+DECLENSION_MONTH_2 = month
+DECLENSION_MONTH_3 = months
+DECLENSION_DAY_1 = day
+DECLENSION_DAY_2 = days
+DECLENSION_DAY_3 = days
+DECLENSION_HOUR_1 = h
+DECLENSION_HOUR_2 = hours
+DECLENSION_HOUR_3 = hours
+DECLENSION_MINUTE_1 = min
+DECLENSION_MINUTE_2 = minutes
+DECLENSION_MINUTE_3 = minutes
+DECLENSION_SECOND_1 = second
+DECLENSION_SECOND_2 = seconds
+DECLENSION_SECOND_3 = seconds
+DECLENSION_AMMO_1 = cartridge
+DECLENSION_AMMO_2 = cartridge
+DECLENSION_AMMO_3 = ammo
+
+// admin
+ADMIN_GODMOD_ON_CONTENT = Godmod ~h~~g~ENABLED
+ADMIN_GODMOD_OFF_CONTENT = Godmod ~h~~r~DISABLED
+
+PLAYER_INFO_0 = id: %d, health: %0.2 f, armour: %0.2 f, ping: %d\n
+PLAYER_INFO_1 = Banda: %s, money: $%d, level: %d, experience: %d/%d\n
+PLAYER_INFO_2 = weapon: %s (%d) ammo: %d\n
+PLAYER_INFO_3 = interior: %d world: %d\n
+PLAYER_INFO_4 = distance: %0.2 f\n
+PLAYER_INFO_5 = position: %0.4 f, %0.4 f, %0.4 f, %0.4 f
+
+ADMIN_PROTECTION_REPORT = Player %s(%d) is suspected of cheating. Protection tripped: 
+
+ADMIN_COMMAND_NOT_ALLOWED = No access to this command
+
+ADMIN_COMMAND_VEHICLE_HELP = {FFCC66}[Usage]: {FFFFFF}/v[ehicle] <add/remove/respawn/repair/health> <model/id/type/number/>
+ADMIN_COMMAND_VEHICLE_ADD_ERROR = {FFCC66}[Usage]: {FFFFFF}/v[ehicle] add <model>
+ADMIN_COMMAND_VEHICLE_ADD_MESSAGE = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}have created a transport {FFCC66}%d
+ADMIN_COMMAND_VEHICLE_REMOVE_ERROR = {FFCC66}[Usage]: {FFFFFF}/v[ehicle] remove <id/>
+ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has deleted transport {FFCC66}%d
+ADMIN_COMMAND_VEHICLE_REMOVE_MSG_SELF = {FFCC66}* {FFFFFF}You have removed the transport {FFCC66}%d
+ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR = {FFCC66}[Usage]: {FFFFFF}/v[ehicle] respawn <id/all/>
+ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}secpanel transport {FFCC66}%d
+ADMIN_COMMAND_VEHICLE_RESPAWN_MSG_SELF = {FFCC66}* {FFFFFF}You Zastavnyi transport {FFCC66}%d
+ADMIN_COMMAND_VEHICLE_RESPAWN_ALL_MSG = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}all vehicles secpanel
+ADMIN_COMMAND_VEHICLE_REPAIR_ERROR = {FFCC66}[Usage]: {FFFFFF}/v[ehicle] repair <id/all/>
+ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}fixed transport {FFCC66}%d
+ADMIN_COMMAND_VEHICLE_REPAIR_MSG_SELF = {FFCC66}* {FFFFFF}You have repaired the transport {FFCC66}%d
+ADMIN_COMMAND_VEHICLE_REPAIR_ALL_MSG = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has repaired all vehicles
+ADMIN_COMMAND_VEHICLE_INFO_ERROR = {FFCC66}[Usage]: {FFFFFF}/v[ehicle] info <id/>
+ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_0 = {FFCC66}* {FFFFFF}ID transport: {FFCC66}%d{FFFFFF} model: {FFCC66}%s {FFFFFF}(%d)
+ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1 = {FFCC66}* {FFFFFF}Health transport: {FFCC66}%0.2 f{FFFFFF}, coordinates: {FFCC66}%f, %f, %f, %f
+ADMIN_COMMAND_VEHICLE_HEALTH_ERROR = {FFCC66}[Usage]: {FFFFFF}/v[ehicle] health <set/get/give> <id/all> <amount/>
+ADMIN_COMMAND_VEHICLE_HEALTH_GET = {FFCC66}* {FFFFFF}Health transport {FFCC66}%d{FFFFFF}: {FFCC66}%0.2 f
+ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the health of the entire transport {FFCC66}%.2f
+ADMIN_COMMAND_VEHICLE_HEALTH_GIVE = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed health transport {FFCC66}%d {FFCC66}%.2f
+ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_SELF = {FFCC66}* {FFFFFF}You have changed health transport {FFCC66}%d {FFFFFF}on {FFCC66}%.2f
+ADMIN_COMMAND_VEHICLE_HEALTH_SET_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the health of the entire transport to {FFCC66}%.2f{FFFFFF}{FFFFFF}.
+ADMIN_COMMAND_VEHICLE_HEALTH_SET = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed health transport {FFCC66}%d {FFFFFF}to {FFCC66}%.2f
+ADMIN_COMMAND_VEHICLE_HEALTH_SET_SELF = {FFCC66}* {FFFFFF}You have changed health transport {FFCC66}%d {FFFFFF}to {FFCC66}%.2f
+
+ADMIN_COMMAND_CAMERA_HELP = {FFCC66}[Usage]: {FFFFFF}/c[amera]<get/set/reset>
+ADMIN_COMMAND_CAMERA_GET_MESSAGE_CPOS = {FFCC66}CameraPos: {FFFFFF}%f, %f, %f
+ADMIN_COMMAND_CAMERA_GET_MESSAGE_LPOS = {FFCC66}LookatPos: {FFFFFF}%f, %f, %f
+ADMIN_COMMAND_CAMERA_SET_ERROR = {FFCC66}[Usage]: {FFFFFF}/c[amera] set <cX> <cY> <cZ> <lX> <lY> <lZ>
+
+ADMIN_COMMAND_ARMOUR_HELP = {FFCC66}[Usage]: {FFFFFF}/armour <set/get/give> <id/nick/all> <amount/>
+ADMIN_COMMAND_ARMOUR_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_ARMOUR_GET = {FFCC66}* {FFFFFF}the player Armour {FFCC66}%s(%d) {FFCC66}%0.2 f
+ADMIN_COMMAND_ARMOUR_GIVE_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the armour of all players in {FFCC66}%.2f
+ADMIN_COMMAND_ARMOUR_GIVE_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed armor {FFCC66}%s(%d) {FFCC66}%.2f
+ADMIN_COMMAND_ARMOUR_GIVE_SELF = {FFCC66}* {FFFFFF}You have changed armor {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%.2f
+ADMIN_COMMAND_ARMOUR_SET_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the armor of all players to {FFCC66}%.2f
+ADMIN_COMMAND_ARMOUR_SET_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed armor {FFCC66}%s(%d) {FFFFFF}to{FFCC66}%.2f
+ADMIN_COMMAND_ARMOUR_SET_SELF = {FFCC66}* {FFFFFF}You have changed armor {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%.2f
+
+ADMIN_COMMAND_HEALTH_HELP = {FFCC66}[Usage]: {FFFFFF}/health <set/get/give> <id/nick/all> <amount/>
+ADMIN_COMMAND_HEALTH_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_HEALTH_GET = {FFCC66}* {FFFFFF}the player's Health {FFCC66}%s(%d) {FFCC66}%0.2 f
+ADMIN_COMMAND_HEALTH_GIVE_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the health of all players in {FFCC66}%.2f
+ADMIN_COMMAND_HEALTH_GIVE_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed health {FFCC66}%s(%d) {FFCC66}%.2f
+ADMIN_COMMAND_HEALTH_GIVE_SELF = {FFCC66}* {FFFFFF}You have changed the health of {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%.2f
+ADMIN_COMMAND_HEALTH_SET_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the health of all players to {FFCC66}%.2f
+ADMIN_COMMAND_HEALTH_SET_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed health {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%.2f
+ADMIN_COMMAND_HEALTH_SET_SELF = {FFCC66}* {FFFFFF}You have changed the health of {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%.2f
+
+ADMIN_COMMAND_MONEY_HELP = {FFCC66}[Usage]: {FFFFFF}/money <set/get/give> <id/nick/all> <amount/>
+ADMIN_COMMAND_MONEY_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_MONEY_GET = {FFCC66}* {FFFFFF}player Money {FFCC66}%s(%d) {FFCC66}%d
+ADMIN_COMMAND_MONEY_GIVE_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the money of all players on {FFCC66}%d
+ADMIN_COMMAND_MONEY_GIVE_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}changed on {FFCC66}%d
+ADMIN_COMMAND_MONEY_GIVE_SELF = {FFCC66}* {FFFFFF}You have changed money {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%d
+ADMIN_COMMAND_MONEY_SET_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed money of all players to {FFCC66}%d
+ADMIN_COMMAND_MONEY_SET_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}changed your money to {FFCC66}%d
+ADMIN_COMMAND_MONEY_SET_SELF = {FFCC66}* {FFFFFF}You have changed money {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%d
+
+ADMIN_COMMAND_LEVEL_HELP = {FFCC66}[Usage]: {FFFFFF}/level <set/get/give> <id/nick/all> <amount/>
+ADMIN_COMMAND_LEVEL_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_LEVEL_GET = {FFCC66}* {FFFFFF}the player {FFCC66}%s(%d) {FFCC66}%d
+ADMIN_COMMAND_LEVEL_GIVE_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the level of all players in {FFCC66}%d
+ADMIN_COMMAND_LEVEL_GIVE_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}you changed the level on {FFCC66}%d
+ADMIN_COMMAND_LEVEL_GIVE_SELF = {FFCC66}* {FFFFFF}You have changed the level {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%d
+ADMIN_COMMAND_LEVEL_SET_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the level of all players to {FFCC66}%d
+ADMIN_COMMAND_LEVEL_SET_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}changed your level to {FFCC66}%d
+ADMIN_COMMAND_LEVEL_SET_SELF = {FFCC66}* {FFFFFF}You have changed the level {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%d
+
+ADMIN_COMMAND_XP_HELP = {FFCC66}[Usage]: {FFFFFF}/xp <set/get/give> <id/nick/all> <amount/>
+ADMIN_COMMAND_XP_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_XP_GET = {FFCC66}* {FFFFFF}player Experience {FFCC66}%s(%d) {FFCC66}%d
+ADMIN_COMMAND_XP_GIVE_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the experience of all players on{FFCC66}%d
+ADMIN_COMMAND_XP_GIVE_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed to {FFCC66}%d
+ADMIN_COMMAND_XP_GIVE_SELF = {FFCC66}* {FFFFFF}You have changed the experience {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%d
+ADMIN_COMMAND_XP_SET_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the experience of all players by {FFCC66}%d
+ADMIN_COMMAND_XP_SET_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}changed your experience to {FFCC66}%d
+ADMIN_COMMAND_XP_SET_SELF = {FFCC66}* {FFFFFF}You have changed the experience {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%d
+
+ADMIN_COMMAND_SAY_HELP = {FFCC66}[Usage]: {FFFFFF}/say <text>
+ADMIN_COMMAND_SAY_TEXT = {FFCC66}the Administrator %s(%d): {FFFFFF}%s
+
+ADMIN_COMMAND_ANNOUNCE_HELP = {FFCC66}[Usage]: {FFFFFF}/announce <type(0-6)> <text>
+
+ADMIN_COMMAND_WEATHER_HELP = {FFCC66}[Usage]: {FFFFFF}/weather <weather id>
+ADMIN_COMMAND_WEATHER_CHANGED = {FFCC66}* {FFFFFF}has a new weather {FFCC66}%d {FFFFFF}previous: {FFCC66}%d
+
+ADMIN_COMMAND_PREMIUM_HELP = {FFCC66}[Usage]: {FFFFFF}/premium <set/get> <id/nick> <time(DD.MM.YYYY)/>
+ADMIN_COMMAND_PREMIUM_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_PREMIUM_SET_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has set you to premium status to %02d.%02d.%04d
+ADMIN_COMMAND_PREMIUM_SET_SELF = {FFCC66}* {FFFFFF}You have set {FFCC66}%s(%d) {FFFFFF}premium status to %02d.%02d.%04d
+ADMIN_COMMAND_PREMIUM_GET = {FFCC66}* {FFFFFF}end date premium status {FFCC66}%s(%d){FFFFFF}: %02d.%02d.%04d
+ADMIN_COMMAND_PREMIUM_GET_NO_PREMIUM = {FFCC66}* {FFFFFF} {FFCC66}%s(%d){FFFFFF} no premium status
+
+ADMIN_COMMAND_BAN_HELP = {FFCC66}[Usage]: {FFFFFF}/ban <id/nick/ip> <(the number[s/m/h/d/n/g], 0 is forever)/><reason/>
+ADMIN_COMMAND_BAN_EXAMPLE = {FFCC66}[Example]: {FFFFFF}/ban 0 test 5D - banned player with ID 0 for 5 days
+ADMIN_COMMAND_BAN_TIME_FOREVER = forever
+ADMIN_COMMAND_BAN_TIME_SECOND = %d seconds
+ADMIN_COMMAND_BAN_TIME_REMAIN = %s, until the unbanning left %d seconds
+ADMIN_COMMAND_BAN_SUCCESS = %s banned %s by administrator %s(%d) %s
+ADMIN_COMMAND_BAN_SUCCESS_REASON = %s "%s"
+ADMIN_COMMAND_BAN_PLAYER_MESSAGE = Admin %s banned you for %s %s "%s".
+ADMIN_COMMAND_BAN_UNBANED = Came the expiration of the ban, now you rabbanei!
+
+ADMIN_COMMAND_UNBAN_HELP = {FFCC66}[Usage]: {FFFFFF}/unban <id/nick/ip>
+ADMIN_COMMAND_UNBAN_SUCCESS = Player '%s' successfully rabbanan.
+ADMIN_COMMAND_UNBAN_FAIL = Player '%s' is not banned.
+
+ADMIN_COMMAND_WEAPON_HELP = {FFCC66}[Usage]: {FFFFFF}/weapon <set/get/give> <id/nick/all> <amount/>
+ADMIN_COMMAND_WEAPON_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_WEAPON_GET = {FFCC66}* {FFFFFF}the player's Weapons {FFCC66}%s(%d){FFFFFF}:
+ADMIN_COMMAND_WEAPON_GET_ITEM = {FFCC66}* {FFFFFF}Slot {FFCC66}%d{FFFFFF}, id: {FFCC66}%d{FFFFFF}, bullets: {FFCC66}%d
+ADMIN_COMMAND_WEAPON_GIVE_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the weapons of all players on {FFCC66}%d (%d)
+ADMIN_COMMAND_WEAPON_GIVE_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}you changed your weapon on {FFCC66}%d (%d)
+ADMIN_COMMAND_WEAPON_GIVE_SELF = {FFCC66}* {FFFFFF}You changed your weapon {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%d (%d)
+ADMIN_COMMAND_WEAPON_SET_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the weapons of all players to {FFCC66}%d (%d)
+ADMIN_COMMAND_WEAPON_SET_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}changed your weapons to {FFCC66}%d (%d)
+ADMIN_COMMAND_WEAPON_SET_SELF = {FFCC66}* {FFFFFF}You have changed the weapon I {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%d (%d)
+
+ADMIN_COMMAND_SKILL_HELP = {FFCC66}[Usage]: {FFFFFF}/skill <set/get/give> <id/nick/all> <amount/>
+ADMIN_COMMAND_SKILL_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_SKILL_WEAPON_ERROR = {FF2211}[Error]: {FFFFFF}this weapon, you cannot change the skill leveling.
+ADMIN_COMMAND_SKILL_GET = {FFCC66}* {FFFFFF}Skill {FFCC66}%s(%d){FFFFFF}:
+ADMIN_COMMAND_SKILL_GET_ITEM = {FFCC66}* {FFFFFF}Skill {FFCC66}%d{FFFFFF}, weapons {FFCC66}%s{FFFFFF} level:{FFCC66}%d
+ADMIN_COMMAND_SKILL_GIVE_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the skill weapons {FFCC66}%s {FFFFFF}all players {FFCC66}%d
+ADMIN_COMMAND_SKILL_GIVE_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}you changed weapon skill {FFCC66}%s {FFFFFF}on {FFCC66}%d
+ADMIN_COMMAND_SKILL_GIVE_SELF = {FFCC66}* {FFFFFF}You have changed {FFCC66}%s(%d) {FFFFFF}weapon skill {FFCC66}%s {FFFFFF}on {FFCC66}%d
+ADMIN_COMMAND_SKILL_SET_ALL = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}has changed the skill weapons {FFCC66}%s {FFFFFF}all players to {FFCC66}%d
+ADMIN_COMMAND_SKILL_SET_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}changed your weapon skill {FFCC66}%s {FFFFFF}to {FFCC66}%d
+ADMIN_COMMAND_SKILL_SET_SELF = {FFCC66}* {FFFFFF}You have changed {FFCC66}%s(%d) {FFFFFF}weapon skill {FFCC66}%s {FFFFFF}to {FFCC66}%d
+
+ADMIN_COMMAND_MODER_HELP_0 = {FFCC66}* {FFFFFF}the Main responsibility of a moderator is to keep order in the game world.
+ADMIN_COMMAND_MODER_HELP_1 = {FFCC66}* {FFFFFF}moderator has the right and duty to punish violators with jail or banned from chat.
+ADMIN_COMMAND_MODER_HELP_2 = {FFCC66}* {FFFFFF}All available the team can be seen on {FFCC66}/cmdlist
+
+ADMIN_COMMAND_ADMIN_HELP_0 = {FFCC66}* {FFFFFF}the Main responsibility of the administrator is to maintain order in the gaming world, and for the correct
+ADMIN_COMMAND_ADMIN_HELP_1 = {FFCC66}* {FFFFFF}the performance of their duties as moderators.
+ADMIN_COMMAND_ADMIN_HELP_2 = {FFCC66}* {FFFFFF}the Administrator has all rights of a moderator, plus more important function.
+
+ADMIN_COMMAND_RCON_HELP_0 = {FFCC66}* {FFFFFF}you Have maximum rights. You can use the commands moderators and administrators,
+ADMIN_COMMAND_RCON_HELP_1 = {FFCC66}* {FFFFFF}to set players moderator or administrator. To manage the server and game mode in full
+ADMIN_COMMAND_RCON_HELP_2 = {FFCC66}* {FFFFFF}as provided in the Open-GTO.
+
+ADMIN_COMMAND_SYSTEM_HELP = {FFCC66}* System: {FFFFFF}commands:
+ADMIN_COMMAND_SYSTEM_HELP_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] help
+
+ADMIN_COMMAND_SYSTEM_WEATHER_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] weather <time(in minutes, 0 to disable)>
+ADMIN_COMMAND_SYSTEM_WEATHER_DISABLED = {FFCC66}* System: {FFFFFF}the Automatic weather {AA0000}off
+ADMIN_COMMAND_SYSTEM_WEATHER_ENABLED = {FFCC66}* System: {FFFFFF}the Automatic weather {00AA00}enabled{FFFFFF} the changing times in %d %s.
+
+ADMIN_COMMAND_SYSTEM_TIME_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] time <set/real> <value>
+ADMIN_COMMAND_SYSTEM_TIME_SET = {FFCC66}* System: {FFFFFF}the server Time changed. Current time %d
+ADMIN_COMMAND_SYSTEM_TIME_TYPE_REAL = {FFCC66}* System: {FFFFFF}Type time is changed to real time
+ADMIN_COMMAND_SYSTEM_TIME_TYPE_SERVER = {FFCC66}* System: {FFFFFF}Type time changed, now is the time server
+
+ADMIN_COMMAND_SYSTEM_GMX_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] gmx
+ADMIN_COMMAND_SYSTEM_GMX_MESSAGE = {FFCC66}* System: {FFFFFF}the Server is rebooted by the administrator.
+
+ADMIN_COMMAND_SYSTEM_GROUNDHOLD_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] groundhold <1/0>
+ADMIN_COMMAND_SYSTEM_GROUNDHOLD_ON = {FFCC66}* System: {FFFFFF}the point of leveling were {00AA00}on
+ADMIN_COMMAND_SYSTEM_GROUNDHOLD_OFF = {FFCC66}* System: {FFFFFF}the point of leveling were {AA0000}off
+
+ADMIN_COMMAND_SYSTEM_LANG_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] lang <set/get/reload> <filename/>
+ADMIN_COMMAND_SYSTEM_LANG_SET = {FFCC66}* System: {FFFFFF}the server Language is changed to {FFCC66}%s
+ADMIN_COMMAND_SYSTEM_LANG_GET = {FFCC66}* System: {FFFFFF}the Current language of the server: {FFCC66}%s
+ADMIN_COMMAND_SYSTEM_LANG_RELOAD = {FFCC66}* System: {FFFFFF}the language of the server restart.
+
+ADMIN_COMMAND_SYSTEM_SAY_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] say <text>
+ADMIN_COMMAND_SYSTEM_SAY_MESSAGE = {FFCC66}* System: {FFFFFF}%s
+
+ADMIN_COMMAND_PRIVILEGE_HELP = {FFCC66}[Usage]: {FFFFFF}/priv[ilege] <set/get> <id/nick> <status(player, moderator, administrator, rcon)/>
+ADMIN_COMMAND_PRIVILEGE_SET_PLAYER = {FFCC66}* {FFFFFF}Administrator {FFCC66}%s(%d) {FFFFFF}you have set the privilege level:{FFCC66}%s
+ADMIN_COMMAND_PRIVILEGE_SET_SELF = {FFCC66}* {FFFFFF}You have changed {FFCC66}%s(%d) {FFFFFF}the privilege to {FFCC66}%s
+ADMIN_COMMAND_PRIVILEGE_GET = {FFCC66}* {FFFFFF}Privileges player {FFCC66}%s(%d){FFFFFF}: {FFCC66}%s
+
+ADMIN_COMMAND_SKIN_HELP = {FFCC66}[Usage]: {FFFFFF}/skin <set/get> <id/nick/all> <skin/>
+ADMIN_COMMAND_SKIN_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_SKIN_GET = {FFCC66}* {FFFFFF}player Skin {FFCC66}%s(%d) {FFCC66}%d
+ADMIN_COMMAND_SKIN_SET_ALL = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}has changed the skin of all players on{FFCC66}%d
+ADMIN_COMMAND_SKIN_SET_PLAYER = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}changed your skin to {FFCC66}%d
+ADMIN_COMMAND_SKIN_SET_SELF = {FFCC66}* {FFFFFF}You have changed the skin {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%d
+
+ADMIN_COMMAND_SPEC_HELP = {FFCC66}[Usage]: {FFFFFF}/spec[tate] <id/nick/off>
+ADMIN_COMMAND_SPEC_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}You can't monitor non-existent players or for themselves.
+ADMIN_COMMAND_SPEC_START = {FFCC66}* {FFFFFF}You've started shadowing player {FFCC66}%s(%d)
+ADMIN_COMMAND_SPEC_STOP = {FFCC66}* {FFFFFF}shadowing the player {FFCC66}%s(%d){FFFFFF}has been stopped.
+
+ADMIN_COMMAND_KILL_HELP = {FFCC66}[Usage]: {FFFFFF}/kill <id/nick/all>
+ADMIN_COMMAND_KILL_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_KILL_ALL = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}killed all the players.
+ADMIN_COMMAND_KILL_PLAYER = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}has killed the player {FFCC66}%s(%d) {FFFFFF}all players.
+ADMIN_COMMAND_KILL_PLAYER_SELF = {FFCC66}* {FFFFFF}You have killed {FFCC66}%s(%d)
+
+ADMIN_COMMAND_BOOM_HELP = {FFCC66}[Usage]: {FFFFFF}/boom <type(0-13)>
+ADMIN_COMMAND_BOOM_MAKE = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}maybe.
+
+ADMIN_COMMAND_CHAT_HELP = {FFCC66}[Usage]: {FFFFFF}/chat <clean>
+ADMIN_COMMAND_CHAT_CLEAN = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}cleared chat.
+
+ADMIN_COMMAND_GETINFO_HELP = {FFCC66}[Usage]: {FFFFFF}/getinfo <id/nick/all>
+ADMIN_COMMAND_GETINFO_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_GETINFO_PLAYER_PREFIX = {FFCC66}* {FFFFFF}
+ADMIN_COMMAND_GETINFO_PLAYER_HEADER = {FFCC66}* {FFFFFF}Information about %s:
+ADMIN_COMMAND_GETINFO_PLAYER_IP = {FFCC66}* {FFFFFF}IP: %s
+ADMIN_COMMAND_GETINFO_PLAYER_CREATION = {FFCC66}* {FFFFFF}Registered: %02d.%02d.%04d
+ADMIN_COMMAND_GETINFO_PLAYER_LOGIN = {FFCC66}* {FFFFFF}Last login: %02d.%02d.%04d
+ADMIN_COMMAND_GETINFO_PLAYER_PLAYED = {FFCC66}* {FFFFFF}game Time: %s
+ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM = {FFCC66}* {FFFFFF}Premium status to: %02d.%02d.%04d
+
+ADMIN_COMMAND_GETINFO_ALL_HEADER = {FFCC66}* {FFFFFF}a List of plugged and planted:
+ADMIN_COMMAND_GETINFO_ALL_JAIL_REMAIN = {FFCC66}* {FFFFFF}Arrested {FFCC66}%s(%d) {FFFFFF}has left %d M.
+ADMIN_COMMAND_GETINFO_ALL_JAIL_NOTIME = {FFCC66}* {FFFFFF}Arrested {FFCC66}%s(%d) {FFFFFF}no time.
+ADMIN_COMMAND_GETINFO_ALL_MUTE_REMAIN = {FFCC66}* {FFFFFF}Plugged {FFCC66}%s(%d) {FFFFFF}has left %d M.
+ADMIN_COMMAND_GETINFO_ALL_NOPLAYERS = {FFCC66}* {FFFFFF}the server is not plugged or seated players.
+
+ADMIN_COMMAND_INTERIOR_HELP = {FFCC66}[Usage]: {FFFFFF}/int[erior] <set/get> <id/nick/all> <interior/>
+ADMIN_COMMAND_INTERIOR_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_INTERIOR_GET = {FFCC66}* {FFFFFF}Interior player {FFCC66}%s(%d) {FFCC66}%d
+ADMIN_COMMAND_INTERIOR_SET_ALL = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}has changed the interior of all players to {FFCC66}%d
+ADMIN_COMMAND_INTERIOR_SET_PLAYER = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}has changed your interior to {FFCC66}%d
+ADMIN_COMMAND_INTERIOR_SET_SELF = {FFCC66}* {FFFFFF}You have changed the interior {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%d
+
+ADMIN_COMMAND_WORLD_HELP = {FFCC66}[Usage]: {FFFFFF}/world <set/get> <id/nick/all> <interior/>
+ADMIN_COMMAND_WORLD_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_WORLD_GET = {FFCC66}* {FFFFFF}player's {FFCC66}%s(%d) {FFCC66}%d
+ADMIN_COMMAND_WORLD_SET_ALL = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}has changed the gaming world all the players to {FFCC66}%d
+ADMIN_COMMAND_WORLD_SET_PLAYER = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}changed your game world on {FFCC66}%d
+ADMIN_COMMAND_WORLD_SET_SELF = {FFCC66}* {FFFFFF}You have changed the gaming world {FFCC66}%s(%d) {FFFFFF}to {FFCC66}%d
+
+ADMIN_COMMAND_KICK_HELP = {FFCC66}[Usage]: {FFFFFF}/kick <id/nick/all> <reason/>
+ADMIN_COMMAND_KICK_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_KICK_ALL = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}kickul all players
+ADMIN_COMMAND_KICK_PLAYER = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}kinul {FFCC66}%s(%d)
+ADMIN_COMMAND_KICK_PLAYER_SELF = {FFCC66}* {FFFFFF}You kiknuli {FFCC66}%s(%d)
+ADMIN_COMMAND_KICK_IS_ADMIN = Not kicked, as is the administrator. Reason: %s
+ADMIN_COMMAND_KICK_KICKED_SELF = You have been kicked. Reason: %s.
+ADMIN_COMMAND_KICK_KICKED = %s was kicked. Reason: %s.
+ADMIN_COMMAND_KICK_NOREASON = not specified
+
+ADMIN_COMMAND_MUTE_HELP = {FFCC66}[Usage]: {FFFFFF}/mute <id/nick/all> <(the number[s/m/h/d/n/g])> <reason/>
+ADMIN_COMMAND_MUTE_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_MUTE_ALL = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}shut all players {FFFFFF} %d %s.
+ADMIN_COMMAND_MUTE_PLAYER = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}shut {FFCC66}%s(%d) {FFFFFF} %d %s.
+ADMIN_COMMAND_MUTE_PLAYER_SELF = {FFCC66}* {FFFFFF}You stopped {FFCC66}%s(%d) {FFFFFF} %d %s.
+ADMIN_COMMAND_MUTE_REASON = %s. Reason: %s
+
+ADMIN_MUTE_UNMUTED = {FFCC66}* {FFFFFF}Player {FFCC66}%s(%d) {FFFFFF}again to speak.
+
+ADMIN_COMMAND_UNMUTE_HELP = {FFCC66}[Use]: {FFFFFF}/unmute <id/nick/all> <reason/>
+ADMIN_COMMAND_UNMUTE_TARGET_ERROR = {FF2211}[Error]: {FFFFFF}Player not found.
+ADMIN_COMMAND_UNMUTE_ALL = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}removed the gag from all players.
+ADMIN_COMMAND_UNMUTE_PLAYER = {FFCC66}* {FFFFFF}moderator {FFCC66}%s(%d) {FFFFFF}removed the gag from {FFCC66}%s(%d){FFFFFF}.
+ADMIN_COMMAND_UNMUTE_PLAYER_SELF = {FFCC66}* {FFFFFF}You sncli the plug {FFCC66}%s(%d){FFFFFF}.
+ADMIN_COMMAND_UNMUTE_REASON = %s. Reason: %s
+
+// protection
+PROTECTION_WEAPON_DAMAGE = hacking weapon damage (%0.4 f != %0.4 f)
+PROTECTION_ARMOUR = hacking armor (%0.2 f - > %0.2 f)
+PROTECTION_RCON = an attempt to login to rcon (ip: %s, password: %s)
+PROTECTION_TELEPORT = Teleport (%0.2 f - > %0.2 f)
+PROTECTION_WEAPON_WEAPON = weapon hacking (%d != %d)
+PROTECTION_WEAPON_AMMO = hacking the cartridge (%d: %d < %d)
+PROTECTION_WEAPON_NOP_ARMED = use NOP SetPlayerArmedWeapon (%d, %d)
+PROTECTION_SPECIAL_ACTION = hacking special action (%d != %d)
+PROTECTION_VEHICLE_TELEPORT = teleport transport (%0.4 f > %0.4 f)
+PROTECTION_WEAPON_FLOOD = flooding kill (%d, %d)
+PROTECTION_ANTIIDLE_INFO = You stand in place for %d minutes.
+PROTECTION_ANTIIDLE_LAST_WARN = If you do not start move in within 1 minute you will be kicked.
+PROTECTION_ANTIIDLE_KICK_REASON = Long on a simple place
+PROTECTION_ANTIHIGHTPING_KICK_REASON = more Ping %d
+PROTECTION_CHAT_NICK_WITH_IP_OR_DOMAIN = your nick spotted IP or domain is prohibited. Chat is closed.
+PROTECTION_CHAT_COMMAND_DETECTED = Try entering the command? Closely.
+PROTECTION_CHAT_CAPSLOCK_ON = Disable CAPS LOCK, man.
+PROTECTION_CHAT_IP_IS_FORBIDDEN = IP address you can not write.
+PROTECTION_CHAT_DOMAIN_IS_FORBIDDEN = Some domains and sites, you can not write.
+PROTECTION_CHAT_STOP_FLOOD = No flood!
+PROTECTION_CHAT_SIMILAR_MESSAGE = Similar messages you can not write. Think.
+
+// fight styles
+FIGHT_TEACHER_INIT = SERVER: Fightstyles module init
+FIGHT_TEACHER_STYLE_NORMAL = normal
+FIGHT_TEACHER_STYLE_BOX = Boxing
+FIGHT_TEACHER_STYLE_KUNGFU = kung fu
+FIGHT_TEACHER_STYLE_KNEEHEAD = knee-head
+
+FIGHT_TEACHER_DIALOG_BUTTON_OK = OK
+
+FIGHT_TEACHER_LEARN_MESSAGE = {CCCCCC}to Learn the fighting style {BBBAE8}%s{CCCCCC} for {00AA00}$%d
+FIGHT_TEACHER_LEARNED_MESSAGE_0 = {CCCCCC}You have mastered the style of fighting {BBBAE8}%s{CCCCCC} for: {00AA00}$%d{CCCCCC}.
+FIGHT_TEACHER_LEARNED_MESSAGE_1 = \izmeniti used the style in your menu.
+
+FIGHT_TEACHER_LOW_LEVEL = {CCCCCC}you HAVE too little.\minimalny level: {E6ACDD}%d
+FIGHT_TEACHER_NO_MONEY = {CCCCCC}You don't have enough money, you need {00AA00}$%d
+FIGHT_TEACHER_LEARNED = {CCCCCC}You've learned the style {BBBAE8}%s
+
+FIGHT_TEACHER_PLAYER_USED_STYLE = {CCCCCC}you are Now using the style {BBBAE8}%s
+FIGHT_TEACHER_PLAYER_CAPTION = fighting Style
+FIGHT_TEACHER_PLAYER_BUTTON1 = Back
+FIGHT_TEACHER_PLAYER_BUTTON2 = Output
+
+FIGHT_TEACHER_DIALOG_TEACHER_CAPTION = Coach - "%s"
+FIGHT_TEACHER_DIALOG_TEACHER_BUTTON1 = Learn
+FIGHT_TEACHER_DIALOG_TEACHER_BUTTON2 = Cancel
+
+// Trucker
+TRUCKER_INIT = SERVER: (missions)Trucker module init
+TRUCKER_PRODUCTS = products
+TRUCKER_FUEL = fuel
+TRUCKER_COAL = coal
+TRUCKER_TEXTDRAW_PRODUCTS = products
+TRUCKER_TEXTDRAW_FUEL = fuel
+TRUCKER_TEXTDRAW_COAL = coal
+TRUCKER_GET_TRAILER = {33CC33}[Manager]: {FFFFFF}Pick up the next trailer, you have %d seconds
+TRUCKER_MISSION_STARTED = {33CC33}[Manager]: {FFFFFF}the Contract is concluded. Get %s in %s coordinates in your GPS. You have %d min.
+TRUCKER_OBJECTIVE_STARTED = Deliver the %s to the ~r~%s
+TRUCKER_ALERT_HEADER = SA Delivery
+TRUCKER_ALERT_STARTED = Mission started.~n~You have only %d minutes.
+TRUCKER_ALERT_GET_TRAILER_S = Take the trailer.~n~You have only %d seconds.
+TRUCKER_ALERT_GET_TRAILER_M = Take the trailer.~n~You have only %d minutes.
+TRUCKER_ALERT_GET_BACK = Get back in the car!~n~You have only %d seconds.
+TRUCKER_OBJECTIVE_GET_TRAILER = Take the ~r~trailer
+TRUCKER_ALERT_ABORTED = Mission aborted
+TRUCKER_3D_TEXT = San Andreas Delivery
+TRUCKER_TRAILER_MISSING = {33CC33}[Manager]: {FFFFFF}where are the Goods?
+TRUCKER_TRAILER_FAKE = {33CC33}[Manager]: {FFFFFF}You got an empty trailer! Get a penalty and kick inass!
+TRUCKER_MISSION_COMPLETE = {33CC33}[Manager]: {FFFFFF}Thank you for the delivery! Here's your reward, now go to base. You have %d min.
+TRUCKER_MISSION_WAIT = {33CC33}[Manager]: {FFFFFF}no one, Yet nothing should come after %d seconds
+TRUCKER_MISSION_FAILED = {33CC33}[Manager]: {FFFFFF}You have failed in the task of delivery, and the contract lost money.
+TRUCKER_MISSION_FAILED_DESTROY = {33CC33}[Manager]: {FFFFFF}Your car is destroyed. You'll pay for it!
+TRUCKER_DIALOG_HEADER = Company of delivery of goods
+TRUCKER_MISSION_LEAVE = do You want to leave work? In this if you have to pay a penalty!
+TRUCKER_DIALOG_YES = Yes
+TRUCKER_DIALOG_NO = No
+TRUCKER_DIALOG_ACCEPT = Accept
+TRUCKER_DIALOG_DECLINE = Reject
+TRUCKER_DIALOG_INFORMATION_TEXT_0 = You sat in the tractor company for the delivery of goods. Fortunately, this company require employees to transport goods\n
+TRUCKER_DIALOG_INFORMATION_TEXT_1 = Solid salary, bonuses, full social. package. I agree-if you work for the company?\n
+TRUCKER_DIALOG_INFORMATION_TEXT_2 = the terms of the contract: in case of loss of the goods you pay the entire cost.
+TRUCKER_MISSION_FAILED_DESCRIPTION = {33CC33}[Manager]: {FFFFFF}You have failed in the task of delivery. The customer was not happy.
+TRUCKER_MISSION_FAILED_TRAILER = {33CC33}[Manager]: {FFFFFF}You don't have time to take the trailer.
+TRUCKER_MISSION_FAILED_DECLINE = {33CC33}[Manager]: {FFFFFF}You turned down the job.
+
+// Swagup
+SWAGUP_BAG_FOUND = Player %s(%d) found a hidden package! He received $%d and %d xp
+SWAGUP_BAG_CREATED = Attention! In the state missing a secret package to the finder waiting for a generous reward!
+
+// Premium
+PREMIUM_NEED_STATUS = to open the gate, you need premium status!
+PREMIUM_GATES_IS_OPENING = open the gates!
+PREMIUM_VEHICLE_ERROR = This transportation is available only for premium players!
+
+// Weapon
+WEAPON_INIT = SERVER: Weapon shop module init
+WEAPON_BAD_AMMO_COUNT = {CCCCCC}Incorrect number of rounds.
+WEAPON_NOT_IN_SHOP = {CCCCCC}You must be in the weapon shop, to be able to buy weapons.
+WEAPON_BAD_WEAPON = {CCCCCC}You can't buy this weapon: '{EEEEEE}%s{CCCCCC}'. Guns are banned or your level is too low.
+WEAPON_NOT_ENOUGH_MONEY = {CCCCCC}You need {00AA00}$%d{CCCCCC} to buy it.
+WEAPON_BUYED = {CCCCCC}You have bought {BBBAE8}%d{CCCCCC} bullets for{EEEEEE}%s{CCCCCC}' for {00AA00}$%d{CCCCCC}.
+WEAPON_BUYED_ONE = {CCCCCC}You bought '{EEEEEE}%s{CCCCCC}' for {00AA00}$%d{CCCCCC}.
+WEAPON_DIALOG_LIST_HEADER = Name\t÷ÂÌ‡\n
+WEAPON_DIALOG_LIST_ITEM = %s{EEEEEE}%s\t{00AA00}$%d\n
+WEAPON_DIALOG_HEADER = weapons Menu
+WEAPON_DIALOG_BUTTON_0 = Select
+WEAPON_DIALOG_BUTTON_1 = Output
+WEAPON_DIALOG_WEAPON_ONE = {CCCCCC}Weapons: {EEEEEE}%s\n{CCCCCC}Price: {00AA00}$%d
+WEAPON_DIALOG_WEAPON = {CCCCCC}Weapons: {EEEEEE}%s\n{CCCCCC}Price is for 1 cartridge: {00AA00}$%d\n{CCCCCC}You can buy {BBBAE8}%d{CCCCCC} %s
+WEAPON_DIALOG_WEAPON_BUY_HEADER = Buy weapons
+WEAPON_DIALOG_WEAPON_BUY_BUTTON_0 = Buy
+WEAPON_DIALOG_WEAPON_BUY_BUTTON_1 = Back
+WEAPON_MAX_AMMO_COUNT = {CCCCCC}you already HAVE the maximum number of rounds.
+WEAPON_DIALOG_INFORMATION_TEXT_AMMO = \n\n{CCCCCC}Enter number of rounds:
+
+// Weapon drop
+WEAPON_DROP_ERROR_SLOT_NOT_FOUND = ERROR: Drop Weapon: Not found a free slot in the array
+WEAPON_DROP_ERROR_LIMIT_IS_REACHED = ERROR: Drop Weapon: limit Exceeded pickups
+
+// Fastfood
+FASTFOOD_INIT = SERVER: (services)Fastfood module init
+FASTFOOD_DIALOG_LIST_HEADER = Name\t÷ÂÌ‡\tÕ‡Ò˚˘ÂÌËÂ\n
+FASTFOOD_DIALOG_LIST_ITEM = %s{EEEEEE}%s\t{00AA00}$%d\t{E6ACDD}%f 0.0\n
+FASTFOOD_DIALOG_HEADER = Menu buy food
+FASTFOOD_DIALOG_BUTTON_0 = to Eat
+FASTFOOD_DIALOG_BUTTON_1 = Cancel
+FASTFOOD_DIALOG_BUY_HEADER = Buy food
+FASTFOOD_NOT_ENOUGH_MONEY = You don't have enough money!
+FASTFOOD_DIALOG_BUTTON_OK = OK
+FASTFOOD_DIALOG_INFORMATION_TEXT = {CCCCCC}You eat {EEEEEE}%s{CCCCCC} for {00AA00}$%d{CCCCCC} and were filled with {E6ACDD}%f 0.0
+
+// Bar
+BAR_INIT = SERVER: (services)Bar module init
+BAR_DIALOG_LIST_HEADER = Name\t÷ÂÌ‡\tƒÛÏ‡Ì\tÕ‡Ò˚˘ÂÌËÂ\n
+BAR_DIALOG_LIST_ITEM = %s{EEEEEE}%s\t{00AA00}$%d\t{BBBAE8}%0.1 f%%\t{E6ACDD}%f 0.0\n
+BAR_DIALOG_HEADER = Bar
+BAR_DIALOG_BUTTON_0 = To take
+BAR_DIALOG_BUTTON_1 = Cancel
+BAR_NOT_ENOUGH_MONEY = {CCCCCC}You don't have enough money!
+BAR_DIALOG_BUTTON_OK = OK
+BAR_DIALOG_INFORMATION_TEXT = {CCCCCC}You have bought {EEEEEE}%s{CCCCCC} for {00AA00}$%d{CCCCCC}, the strength {BBBAE8}%0.1 f%%{CCCCCC} satiety {E6ACDD}%f 0.0
+
+// Skin Shop
+SKINSHOP_INIT = SERVER: (services)SkinShop module init
+SKINSHOP_NOT_ENOUGH_MONEY = {CCCCCC}You do not have enough money to buy! Need a {00AA00}$%d
+SKINSHOP_DIALOG_INFO_THANKS = {CCCCCC}Thank you for purchasing garments, get back to us.
+SKINSHOP_DIALOG_HEADER = Buy clothes
+SKINSHOP_DIALOG_INFO_BUY = {CCCCCC}to Buy these clothes?
+SKINSHOP_DIALOG_BUTTON_0 = Yes
+SKINSHOP_DIALOG_BUTTON_1 = No
+
+// fuel station
+FUEL_STATION_3DTEXT = gas station\n{33AA33}Press '{FFFFFF}2{33AA33}'
+
+// Lottery
+LOTTERY_NOT_STARTED = {F4511E}[Lottery]: {FFFFFF}Lottery hasn't started yet!
+LOTTERY_USE_COMMAND = {FFCC66}[Usage]: {FFFFFF}/lottery <number 1..100>
+LOTTERY_TICKET_VALUE_IS_BAD = {FFCC66}[Usage]: {FFFFFF}/lottery <number 1..100>
+LOTTERY_TICKET_BOUGHT_NOW = {F4511E}[Lottery]: {FFFFFF}You already bought a ticket!
+LOTTERY_TICKET_IS_BOUGHT = {F4511E}[Lottery]: {FFFFFF}This ticket is already bought!
+LOTTERY_TICKET_BOUGHT = {F4511E}[Lottery]: {FFFFFF}good Luck, have a ticket with number %d
+LOTTERY_TIME_TO_END = {F4511E}[Lottery]: {FFFFFF}To the end of the draw left %d seconds!
+LOTTERY_YOU_WINNER = {F4511E}[Lottery]: {FFFFFF}You won the lottery! Your prize is $%d
+LOTTERY_WINNER = {F4511E}[Lottery]: {FFFFFF}the Winner of the lottery was %s(%d), he has won $%d
+LOTTERY_NO_WINNER = {F4511E}[Lottery]: {FFFFFF}lottery nobody won the winning ticket - %d.
+LOTTERY_START_MESSAGE_0 = {F4511E}[Lottery]: {FFFFFF}the Beginning of the raffle, the winner receives $%d!
+LOTTERY_START_MESSAGE_1 = {F4511E}[Lottery]: {FFFFFF}Enter /lottery <number 1..100>, for the purchase of a ticket. Ticket price is $%d
+LOTTERY_START_MESSAGE_2 = {F4511E}[Lottery]: {FFFFFF}To the end of the draw left %d seconds!
+LOTTERY_NO_MONEY = {F4511E}[Lottery]: {FFFFFF}you don't Have enough money to buy a ticket, you need $%d.
+
+// Tuning
+TUNING_TD_HEADER = Tuning
+TUNING_TD_TYPE_FORMAT = %s ~g~$%d
+TUNING_TD_BUTTON_BUY = Buy
+TUNING_TD_BUTTON_BACK = Back
+TUNING_TD_BUTTON_EXIT = Exit
+
+TUNING_ALERT_HEADER = Tuning
+TUNING_ALERT_MESSAGE = Press ~k~~TOGGLE_SUBMISSIONS~ to enter
+TUNING_ALERT_ERROR_MESSAGE = Only for players with vehicles
+
+TUNING_DIALOG_HEADER = Tuning
+TUNING_DIALOG_BUTTON_OK = OK
+
+TUNING_NO_ENOUGH_MONEY = you do not HAVE enough money to buy this modification
+TUNING_NOT_COMPONENT_SELECT = First select the modification
+
+// Tuning color
+TUNING_TD_COLOR = Color ~g~$%d
+TUNING_TD_COLOR_HEADER = Color
+TUNING_TD_COLOR_COLOR1 = Color 1
+TUNING_TD_COLOR_COLOR2 = Color 2
+
+TUNING_COLOR_DIALOG_HEADER = Painting
+TUNING_COLOR_NO_ENOUGH_MONEY = you do not HAVE enough money to buy that color
+TUNING_COLOR_NOT_SELECT = First choose the color
+
+// Tuning paintjob
+TUNING_TD_PAINTJOB = Paintjob ~g~$%d
+TUNING_TD_PAINTJOB_HEADER = Paintjob
+TUNING_TD_PAINTJOB_TEXT = Paintjob
+
+TUNING_PAINTJOB_DIALOG_HEADER = Paintjob work
+TUNING_PAINTJOB_NOT_SELECT = First, select the paint work
+TUNING_PAINTJOB_NO_ENOUGH_MONEY = you do not HAVE enough money to buy this paint work
+
+// Groundhold
+GROUNDHOLD_INFO = %s. Hold this point for getting money and experience.
+GROUNDHOLD_BONUS = You will get $%d and %d XP for every five seconds of holding this point.
+GROUNDHOLD_ENEMY = Stranger in zone '%s'.
+GROUNDHOLD_HOLD = Hold your position.
+GROUNDHOLD_MISSING = Point '%s' lost.
+GROUNDHOLD_OBJECTIVE = Hold the point
+GROUNDHOLD_OBJECTIVE_BACK = Back to the point
+GROUNDHOLD_ALERT_HEADER = Ground Hold
+GROUNDHOLD_ALERT_ENEMY = Enemy in the point!
+GROUNDHOLD_ALERT_MISSING = Point lost
+GROUNDHOLD_ALERT_ENEMIES = Get the point!
