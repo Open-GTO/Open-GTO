@@ -1,4 +1,4 @@
-//MapFix by Nexius v2.3.3
+//MapFix by Nexius v2.3.4
 
 #if defined _mapfix_included
 	#endinput
@@ -7,9 +7,9 @@
 
 #include <a_samp>
 
-#define MAPFIX_VERSION		"2.3.3"
+#define MAPFIX_VERSION		"2.3.4"
 
-#define MAX_MAPFIX_OBJECTS	232
+#define MAX_MAPFIX_OBJECTS	235
 
 //Uncomment to enable
 #define USE_INCOGNITO_STREAMER
@@ -505,6 +505,16 @@ CreateMapFixObjects()
 	#endif
 	#if !defined DISABLE_MAPFIX_PLACE_68
 		MapFixObjects[231] = mf_CreateObject(8957, 2617.6, 1078.2, 9.5, 0.0, 90.0, 0.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_69
+		MapFixObjects[232] = mf_CreateObject(5020, 1838.5, 1285.5, 9.7, 0.0, 88.0, 0.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_70
+		MapFixObjects[233] = mf_CreateObject(4100, 1902.1, -1055.2, 24.11, 1.5, 0.0, 319.7);
+		mf_SetObjectMaterial(MapFixObjects[233], 0, 0, "none", "none", 0x00000000);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_71
+		MapFixObjects[234] = mf_CreateObject(3168, -640.5, 2717.2, 71.4, 0.0, 0.0, 42.0);
 	#endif
 	#undef mf_CreateObject
 	#undef mf_SetObjectMaterial
