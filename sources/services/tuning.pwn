@@ -12,10 +12,11 @@
 #define _tuning_included
 #pragma library tuning
 
-#define TUNING_VEHICLE_POS_X 615.5866
-#define TUNING_VEHICLE_POS_Y -74.4647
-#define TUNING_VEHICLE_POS_Z 997.7192
-#define TUNING_VEHICLE_POS_A 89.5622
+#define TUNING_VEHICLE_INTERIOR (2)
+#define TUNING_VEHICLE_POS_X (615.5866)
+#define TUNING_VEHICLE_POS_Y (-74.4647)
+#define TUNING_VEHICLE_POS_Z (997.7192)
+#define TUNING_VEHICLE_POS_A (89.5622)
 
 forward OnVehicleTuning(playerid, vehicleid, componentid);
 forward OnVehicleTuningPaintjob(playerid, vehicleid, paintjobid);
@@ -159,8 +160,11 @@ Tuning_OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 	for (new i = 0; i < sizeof(gTuningPlace); i++) {
 		if (areaid == gTuningPlace[i][e_tpDynamic]) {
 			if (IsPlayerInAnyVehicle(playerid)) {
+				if (GetPlayerVehicleSeat(playerid) == 0) {
+					Message_Alert(playerid, _(TUNING_ALERT_HEADER), _(TUNING_ALERT_MESSAGE));
+				}
+
 				gInfo[playerid][e_tPlaceID] = i;
-				Message_Alert(playerid, _(TUNING_ALERT_HEADER), _(TUNING_ALERT_MESSAGE));
 			} else {
 				Message_Alert(playerid, _(TUNING_ALERT_HEADER), _(TUNING_ALERT_ERROR_MESSAGE));
 			}
@@ -186,12 +190,19 @@ Tuning_OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 
 Tuning_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	if (!PRESSED(KEY_SUBMISSION)) {
-		return 0;
+	if (PRESSED(KEY_SUBMISSION)) {
+		if (GetPlayerVehicleSeat(playerid) == 0 && gInfo[playerid][e_tPlaceID] != -1) {
+			return Tuning_Start(playerid);
+		}
 	}
 
-	if (gInfo[playerid][e_tPlaceID] != -1) {
-		return Tuning_Start(playerid);
+	return 0;
+}
+
+Tuning_OnPlayerExitVehicle(playerid, vehicleid)
+{
+	if (IsPlayerInTuning(playerid) && GetPlayerVehicleSeat(playerid) != 0) {
+		return RemovePlayerFromTuningVehicle(playerid);
 	}
 
 	return 0;
@@ -531,32 +542,42 @@ TextListResponse:paintjob_select(playerid, TextListType:response, itemid, itemva
 
 stock Tuning_Start(playerid)
 {
-	gInfo[playerid][e_tVehicle] = GetPlayerVehicleID(playerid);
-	gInfo[playerid][e_tModel] = GetVehicleModel(gInfo[playerid][e_tVehicle]);
-
-	if (!IsValidVehicle(gInfo[playerid][e_tVehicle])) {
+	new vehicleid = GetPlayerVehicleID(playerid);
+	if (!IsValidVehicle(vehicleid)) {
 		return 0;
 	}
 
-	// vehicle
-	SetVehiclePos(gInfo[playerid][e_tVehicle], TUNING_VEHICLE_POS_X, TUNING_VEHICLE_POS_Y, TUNING_VEHICLE_POS_Z);
-	SetVehicleZAngle(gInfo[playerid][e_tVehicle], TUNING_VEHICLE_POS_A);
-	SetVehicleVirtualWorld(gInfo[playerid][e_tVehicle], playerid);
-	LinkVehicleToInterior(gInfo[playerid][e_tVehicle], 2);
+	gInfo[playerid][e_tModel] = GetVehicleModel(vehicleid);
 
-	RepairVehicle(gInfo[playerid][e_tVehicle]);
-	Vehicle_ToggleEngine(gInfo[playerid][e_tVehicle], 0);
+	// vehicle
+	SetVehiclePos(vehicleid, TUNING_VEHICLE_POS_X, TUNING_VEHICLE_POS_Y, TUNING_VEHICLE_POS_Z);
+	SetVehicleZAngle(vehicleid, TUNING_VEHICLE_POS_A);
+	SetVehicleVirtualWorld(vehicleid, playerid);
+	LinkVehicleToInterior(vehicleid, TUNING_VEHICLE_INTERIOR);
+
+	RepairVehicle(vehicleid);
+	Vehicle_ToggleEngine(vehicleid, 0);
 
 	// player
-	SetPlayerInterior(playerid, 2);
-	SetPlayerVirtualWorld(playerid, playerid);
+	new type = CARMODTYPE_HOOD;
+	gInfo[playerid][e_tCameraType] = type;
 
 	TogglePlayerControllable(playerid, 0);
 
-	new type = CARMODTYPE_HOOD;
-	gInfo[playerid][e_tCameraType] = type;
-	SetPlayerCameraPos(playerid, gCameraTypes[type][e_cPos_X], gCameraTypes[type][e_cPos_Y], gCameraTypes[type][e_cPos_Z]);
-	SetPlayerCameraLookAt(playerid, gCameraTypes[type][e_cLook_X], gCameraTypes[type][e_cLook_Y], gCameraTypes[type][e_cLook_Z]);
+	foreach (new id : Player) {
+		if (!IsPlayerInVehicle(id, vehicleid)) {
+			continue;
+		}
+
+		gInfo[id][e_tPlaceID] = gInfo[playerid][e_tPlaceID];
+		gInfo[id][e_tVehicle] = vehicleid;
+
+		SetPlayerInterior(id, TUNING_VEHICLE_INTERIOR);
+		SetPlayerVirtualWorld(id, playerid);
+
+		SetPlayerCameraPos(id, gCameraTypes[type][e_cPos_X], gCameraTypes[type][e_cPos_Y], gCameraTypes[type][e_cPos_Z]);
+		SetPlayerCameraLookAt(id, gCameraTypes[type][e_cLook_X], gCameraTypes[type][e_cLook_Y], gCameraTypes[type][e_cLook_Z]);
+	}
 
 	TextList_Show(playerid, TextList:tuning_menu);
 	return 1;
@@ -566,26 +587,57 @@ stock Tuning_Stop(playerid)
 {
 	// vehicle
 	new placeid = gInfo[playerid][e_tPlaceID];
-	gInfo[playerid][e_tPlaceID] = -1;
 
-	SetVehiclePos(gInfo[playerid][e_tVehicle], gTuningPlace[placeid][e_tpCoord_X], gTuningPlace[placeid][e_tpCoord_Y], gTuningPlace[placeid][e_tpCoord_Z]);
-	SetVehicleZAngle(gInfo[playerid][e_tVehicle], gTuningPlace[placeid][e_tpCoord_Angle]);
-	SetVehicleVirtualWorld(gInfo[playerid][e_tVehicle], 0);
-	LinkVehicleToInterior(gInfo[playerid][e_tVehicle], 0);
+	new vehicleid = gInfo[playerid][e_tVehicle];
+	SetVehiclePos(vehicleid, gTuningPlace[placeid][e_tpCoord_X], gTuningPlace[placeid][e_tpCoord_Y], gTuningPlace[placeid][e_tpCoord_Z]);
+	SetVehicleZAngle(vehicleid, gTuningPlace[placeid][e_tpCoord_Angle]);
+	SetVehicleVirtualWorld(vehicleid, 0);
+	LinkVehicleToInterior(vehicleid, 0);
 
-	Vehicle_ToggleEngine(gInfo[playerid][e_tVehicle], 1);
+	Vehicle_ToggleEngine(vehicleid, 1);
 
-	gInfo[playerid][e_tVehicle] = 0;
 	gInfo[playerid][e_tModel] = 0;
 
+	TogglePlayerControllable(playerid, 1);
+
 	// player
+	foreach (new id : Player) {
+		if (!IsPlayerInVehicle(id, vehicleid)) {
+			continue;
+		}
+
+		gInfo[id][e_tPlaceID] = -1;
+		gInfo[id][e_tVehicle] = 0;
+
+		SetPlayerVirtualWorld(id, 0);
+		SetPlayerInterior(id, 0);
+
+		SetCameraBehindPlayer(id);
+	}
+
+	TextList_Close(playerid);
+}
+
+static stock RemovePlayerFromTuningVehicle(playerid)
+{
+	new placeid = gInfo[playerid][e_tPlaceID];
+	if (placeid == -1) {
+		return 0;
+	}
+
+	gInfo[playerid][e_tPlaceID] = -1;
+	gInfo[playerid][e_tVehicle] = 0;
+
+	SetPlayerPos(playerid, gTuningPlace[placeid][e_tpCoord_X], gTuningPlace[placeid][e_tpCoord_Y], gTuningPlace[placeid][e_tpCoord_Z]);
+	SetPlayerFacingAngle(playerid, gTuningPlace[placeid][e_tpCoord_Angle]);
+
 	SetPlayerVirtualWorld(playerid, 0);
 	SetPlayerInterior(playerid, 0);
 
 	TogglePlayerControllable(playerid, 1);
 	SetCameraBehindPlayer(playerid);
 
-	TextList_Close(playerid);
+	return 1;
 }
 
 stock IsPlayerInTuning(playerid)
