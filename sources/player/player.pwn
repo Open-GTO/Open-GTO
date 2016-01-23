@@ -134,7 +134,7 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 	#pragma unused reason
 	UpdatePlayerSpawnInfo(playerid);
 
-	if (killerid == INVALID_PLAYER_ID) {
+	if (killerid == INVALID_PLAYER_ID || IsPlayersTeammates(playerid, killerid)) {
 		return;
 	}
 
@@ -170,8 +170,8 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 		xp_give_player = 0;
 	}
 
-	GivePlayerXP(killerid, xp_give_killer, 1);
-	GivePlayerXP(playerid, xp_give_player, 1);
+	GivePlayerXP(killerid, xp_give_killer);
+	GivePlayerXP(playerid, xp_give_player);
 }
 
 stock player_OnPlayerRequestClass(playerid, classid)
