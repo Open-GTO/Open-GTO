@@ -78,9 +78,8 @@
 #define ALLOWED_NICK_SYMBOLS        'a'..'z','A'..'Z','0'..'9','_','[',']','.','=','(',')'
 #define ALLOWED_NICK_SYMBOLS_STR    "'a'..'z','A'..'Z','0'..'9','_','[',']','.','=','(',')'"
 
-// стандартные иконки(by wups, модфицированно)
-#define MAPICON_PAY_SPRAY
-#define MAPICON_TUNE
+// иконки
+#define MAPICON_HOSPITAL
 
 #define MAX_PLAYER_LOGIN_ATTEMPT    3 // максимальное количество попыток входа
 

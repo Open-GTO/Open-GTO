@@ -48,13 +48,13 @@ static gCameraTypes[ZVEH_MAX_COMPONENT_TYPES][e_Camera_Info] = {
 	{608.847595, -77.565200, 999.306823, 615.645690, -74.584510, 998.223815}  // 13 - CARMODTYPE_VENT_LEFT
 };
 
-enum {
+enum TuningPlaceType {
 	TUNING_PLACE_TYPE_SPRAY,
 	TUNING_PLACE_TYPE_TUNING,
 }
 
 enum e_TuningPlace_Info {
-	e_tpType,
+	TuningPlaceType:e_tpType,
 	Float:e_tpCoord_X,
 	Float:e_tpCoord_Y,
 	Float:e_tpCoord_Z,
@@ -79,6 +79,11 @@ static gTuningPlace[][e_TuningPlace_Info] = {
 	{TUNING_PLACE_TYPE_TUNING, 2387.0520, 1039.0474, 10.5255, 178.4922},
 	{TUNING_PLACE_TYPE_TUNING, 1042.0083, -1030.0508, 31.7849, 181.7029},
 	{TUNING_PLACE_TYPE_SPRAY, 1025.0031, -1032.7598, 31.6556, 180.5595}
+};
+
+static gTuningIcon[TuningPlaceType] = {
+	63,
+	27
 };
 
 enum e_Tuning_Info {
@@ -143,8 +148,23 @@ Tuning_OnGameModeInit()
 	BlockGarages();
 
 	for (new i = 0; i < sizeof(gTuningPlace); i++) {
-		CreateDynamicPickup(19132, 1, gTuningPlace[i][e_tpCoord_X], gTuningPlace[i][e_tpCoord_Y], gTuningPlace[i][e_tpCoord_Z]);
-		gTuningPlace[i][e_tpDynamic] = CreateDynamicSphere(gTuningPlace[i][e_tpCoord_X], gTuningPlace[i][e_tpCoord_Y], gTuningPlace[i][e_tpCoord_Z], 5.0);
+		CreateDynamicMapIcon(
+			gTuningPlace[i][e_tpCoord_X],
+			gTuningPlace[i][e_tpCoord_Y],
+			gTuningPlace[i][e_tpCoord_Z],
+			gTuningIcon[ gTuningPlace[i][e_tpType] ], 0);
+
+		CreateDynamicPickup(
+			19132, 1,
+			gTuningPlace[i][e_tpCoord_X],
+			gTuningPlace[i][e_tpCoord_Y],
+			gTuningPlace[i][e_tpCoord_Z]);
+
+		gTuningPlace[i][e_tpDynamic] = CreateDynamicSphere(
+			gTuningPlace[i][e_tpCoord_X],
+			gTuningPlace[i][e_tpCoord_Y],
+			gTuningPlace[i][e_tpCoord_Z],
+			5.0);
 	}
 	return 1;
 }
@@ -201,6 +221,7 @@ Tuning_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 Tuning_OnPlayerExitVehicle(playerid, vehicleid)
 {
+	#pragma unused vehicleid
 	if (IsPlayerInTuning(playerid) && GetPlayerVehicleSeat(playerid) != 0) {
 		return RemovePlayerFromTuningVehicle(playerid);
 	}
