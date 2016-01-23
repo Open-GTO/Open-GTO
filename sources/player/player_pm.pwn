@@ -23,13 +23,13 @@ stock pl_pm_Send(senderid, receiveid, message[])
 	new string[MAX_STRING];
 
 	if (strlen(message) < MIN_SEND_SYMBOLS) {
-		format(string, sizeof(string), lang_texts[12][95], MIN_SEND_SYMBOLS);
+		format(string, sizeof(string), _(PLAYER_PM_MIN_SYMBOLS), MIN_SEND_SYMBOLS);
 		SendClientMessage(senderid, COLOR_PM, string);
 		return 0;
 	}
 	
 	if (strlen(message) > MAX_SEND_SYMBOLS) {
-		format(string, sizeof(string), lang_texts[12][92], MAX_SEND_SYMBOLS);
+		format(string, sizeof(string), _(PLAYER_PM_MAX_SYMBOLS), MAX_SEND_SYMBOLS);
 		SendClientMessage(senderid, COLOR_PM, string);
 		return 0;
 	}

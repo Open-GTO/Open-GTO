@@ -64,6 +64,10 @@ PLAYER_PM_FOR = ЛС для %s(%d): %s
 PLAYER_PM_FROM = ЛС от %s(%d): %s
 PLAYER_PM_ADMIN = * Админ: ЛС от %s(%d) к %s(%d): %s
 PLAYER_PM_LOG = PM from %s(%d) to %s(%d): %s
+PLAYER_PM_ADMIN_ENABLED = Показ личных сообщений включен
+PLAYER_PM_ADMIN_DISABLED = Показ личных сообщений выключен
+PLAYER_PM_MIN_SYMBOLS = Минимум %d символов!
+PLAYER_PM_MAX_SYMBOLS = Максимум %d символов!
 PLAYER_LOADING = {FFCC66}[Сервер]: {FFFFFF}Загрузка...
 
 // player click
@@ -537,6 +541,14 @@ PLAYER_INFO_5 = {FFFFFF}позиция: {A5D6A7}%0.4f, %0.4f, %0.4f, %0.4f
 
 ADMIN_PROTECTION_REPORT = Игрок %s(%d) подозревается в читерстве. Сработала защита: 
 
+ADMIN_CHAT_NO_ADMIN = {FF2211}[Ошибка]: {FFFFFF}Извините, но на сервере сейчас нет администраторов.
+ADMIN_CHAT_MESSAGE_TO_ADMIN = {A5D6A7}Сообщение администрации от %s(%d): {FFFFFF}%s
+ADMIN_CHAT_PLAYER_TO_ADMIN = {A5D6A7}Сообщение администрации: {FFFFFF}%s
+
+ADMIN_CHAT_NO_ADMIN = {FF2211}[Ошибка]: {FFFFFF}Извините, но на сервере сейчас нет модераторов.
+ADMIN_CHAT_MESSAGE_TO_MODER = {A5D6A7}Сообщение модерации от %s(%d): {FFFFFF}%s
+ADMIN_CHAT_PLAYER_TO_MODER = {A5D6A7}Сообщение модерации: {FFFFFF}%s
+
 ADMIN_COMMAND_NOT_ALLOWED = Нет доступа к этой команде
 
 ADMIN_COMMAND_VEHICLE_HELP = {FFCC66}[Применение]: {FFFFFF}/v[ehicle] <add/remove/respawn/repair/health> <модель/id/тип/количество/>
@@ -672,18 +684,6 @@ ADMIN_COMMAND_SKILL_GIVE_SELF = {FFCC66}* {FFFFFF}Вы изменили {FFCC66}%s(%d) {FF
 ADMIN_COMMAND_SKILL_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил навык оружия {FFCC66}%s {FFFFFF}всех игроков до {A5D6A7}%d
 ADMIN_COMMAND_SKILL_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваш навык оружия {FFCC66}%s {FFFFFF}до {A5D6A7}%d
 ADMIN_COMMAND_SKILL_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили {FFCC66}%s(%d) {FFFFFF}навык оружия {FFCC66}%s {FFFFFF}до {A5D6A7}%d
-
-ADMIN_COMMAND_MODER_HELP_0 = {FFCC66}* {FFFFFF}Основная обязанность модератора - следить за порядком в игровом мире.
-ADMIN_COMMAND_MODER_HELP_1 = {FFCC66}* {FFFFFF}Модератор имеет право и обязан наказывать нарушителей тюрьмой или запрещением общаться в чатах.
-ADMIN_COMMAND_MODER_HELP_2 = {FFCC66}* {FFFFFF}Все доступные команды можно увидеть по {FFCC66}/cmdlist
-
-ADMIN_COMMAND_ADMIN_HELP_0 = {FFCC66}* {FFFFFF}Основная обязанность администратора - следить за порядком в игровом мире, и за правильным
-ADMIN_COMMAND_ADMIN_HELP_1 = {FFCC66}* {FFFFFF}исполнением своих обязанностей модераторами.
-ADMIN_COMMAND_ADMIN_HELP_2 = {FFCC66}* {FFFFFF}Администратор имеет все права модератора, плюс более важные функции.
-
-ADMIN_COMMAND_RCON_HELP_0 = {FFCC66}* {FFFFFF}У вас максимальные права. Вы можете использовать команды управления модераторов и администраторов,
-ADMIN_COMMAND_RCON_HELP_1 = {FFCC66}* {FFFFFF}присваивать игрокам права модератора или администратора. Управлять сервером и игровым режимом в полной
-ADMIN_COMMAND_RCON_HELP_2 = {FFCC66}* {FFFFFF}мере, предоставленной в Open-GTO.
 
 ADMIN_COMMAND_SYSTEM_HELP = {FFCC66}* System: {FFFFFF}Системные команды:
 ADMIN_COMMAND_SYSTEM_HELP_HELP = {FFCC66}* System: {FFFFFF}/sys[tem] help
@@ -842,6 +842,38 @@ ADMIN_COMMAND_TELEPORT_HERE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) 
 
 ADMIN_COMMAND_TELEPORT_COORD_HELP = {FFCC66}[Применение]: {FFFFFF}/t[ele]p[ort] coord <x> <y> <z> <интерьер/> <мир/>
 ADMIN_COMMAND_TELEPORT_COORD_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}телепортировался на координаты {FFCC66}%0.2f, %0.2f, %0.2f, %0.2f, %d, %d{FFFFFF}.
+
+ADMIN_COMMAND_CMDLIST_DIALOG_HEADER = Список команд
+ADMIN_COMMAND_CMDLIST_DIALOG_BUTTON_OK = ОК
+ADMIN_COMMAND_CMDLIST_HEADER = {FFCC66}Список доступных команд:
+ADMIN_COMMAND_CMDLIST_MODER_0 = /about <dialog/>, /cmdlist <dialog/>\n
+ADMIN_COMMAND_CMDLIST_MODER_1 = /warn, /kick, /mute, /unmute, /jail, /unjail, /freeze, /unfreeze\n
+ADMIN_COMMAND_CMDLIST_MODER_2 = /t[ele]p[ort], /int[erior], /world\n
+ADMIN_COMMAND_CMDLIST_MODER_3 = /chat, /boom, /getinfo, /kill, /spec[tate], /skin\n
+
+ADMIN_COMMAND_CMDLIST_ADMIN_0 = /ban, /unban\n
+ADMIN_COMMAND_CMDLIST_ADMIN_1 = /health, /armour, /money, /weapon, /skill, /level, /xp\n
+ADMIN_COMMAND_CMDLIST_ADMIN_2 = /v[ehicle], /c[amera], /weather\n
+ADMIN_COMMAND_CMDLIST_ADMIN_3 = /say, /announce, /godmod, /premium\n
+
+ADMIN_COMMAND_CMDLIST_RCON_0 = /priv[ilege], /sys[tem]\n
+
+
+ADMIN_COMMAND_ABOUT_DIALOG_HEADER = Должностные обязанности
+ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK = ОК
+
+ADMIN_COMMAND_ABOUT_MODER_0 = {FFCC66}* {FFFFFF}Основная обязанность модератора - следить за порядком в игровом мире.\n
+ADMIN_COMMAND_ABOUT_MODER_1 = {FFCC66}* {FFFFFF}Модератор имеет право и обязан наказывать нарушителей тюрьмой или запрещением общаться в чатах.\n
+ADMIN_COMMAND_ABOUT_MODER_2 = {FFCC66}* {FFFFFF}Все доступные команды можно увидеть по {FFCC66}/cmdlist <dialog/>\n
+
+ADMIN_COMMAND_ABOUT_ADMIN_0 = {FFCC66}* {FFFFFF}Основная обязанность администратора - следить за порядком в игровом мире, и за правильным\n
+ADMIN_COMMAND_ABOUT_ADMIN_1 = {FFCC66}* {FFFFFF}исполнением своих обязанностей модераторами.\n
+ADMIN_COMMAND_ABOUT_ADMIN_2 = {FFCC66}* {FFFFFF}Администратор имеет все права модератора, плюс более важные функции.\n
+
+ADMIN_COMMAND_ABOUT_RCON_0 = {FFCC66}* {FFFFFF}У вас максимальные права. Вы можете использовать команды управления модераторов и администраторов,\n
+ADMIN_COMMAND_ABOUT_RCON_1 = {FFCC66}* {FFFFFF}присваивать игрокам права модератора или администратора. Управлять сервером и игровым режимом в полной\n
+ADMIN_COMMAND_ABOUT_RCON_2 = {FFCC66}* {FFFFFF}мере, предоставленной в Open-GTO.\n
+
 
 // protection
 PROTECTION_ARMOUR = взлом брони (%0.2f > %0.2f)

@@ -66,7 +66,6 @@ stock player_OnPlayerSpawn(playerid)
 	pl_fights_UpdatePlayerStyleUsed(playerid);
 	GivePlayerOwnedWeapon(playerid);
 	weapon_SetSkills(playerid);
-	PushHide(playerid);
 	pl_money_td_ShowTextDraw(playerid);
 	UpdatePlayerRandomSpawnID(playerid);
 	return 1;

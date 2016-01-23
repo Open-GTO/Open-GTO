@@ -21,10 +21,10 @@ COMMAND:showpm(playerid, params[])
 
 	if (GetPVarInt(playerid, "Admin_PMshowing") != 1) {
 		SetPVarInt(playerid, "Admin_PMshowing", 1);
-		SendClientMessage(playerid, COLOR_RED, lang_texts[13][28]);
+		SendClientMessage(playerid, COLOR_RED, _(PLAYER_PM_ADMIN_ENABLED));
 	} else {
 		SetPVarInt(playerid, "Admin_PMshowing", 0);
-		SendClientMessage(playerid, COLOR_RED, lang_texts[13][29]);
+		SendClientMessage(playerid, COLOR_RED, _(PLAYER_PM_ADMIN_DISABLED));
 	}
 	return 1;
 }

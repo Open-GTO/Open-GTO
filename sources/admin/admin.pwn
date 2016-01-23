@@ -36,44 +36,50 @@ stock admin_OnRconLoginAttempt(ip[], password[], success)
 
 stock SendClientMessageToAdmins(senderid, text[])
 {
-	new message[MAX_STRING],
-		count = 0;
+	new
+		message[MAX_LANG_VALUE_STRING],
+		count;
 	
-	format(message, sizeof(message), lang_texts[12][28], ReturnPlayerName(senderid), senderid, text);
+	GetPlayerName(senderid, message, sizeof(message));
+	format(message, sizeof(message), _(ADMIN_CHAT_MESSAGE_TO_ADMIN), message, senderid, text);
+
 	foreach (new adminid : Player) {
 		if (IsPlayerHavePrivilege(adminid, PlayerPrivilegeAdmin)) {
-			SendClientMessage(adminid, COLOR_RED, message);
+			SendClientMessage(adminid, -1, message);
 			count++;
 		}
 	}
 
 	if (count == 0) {
-		SendClientMessage(senderid, COLOR_RED, lang_texts[12][29]);
+		SendClientMessage(senderid, -1, _(ADMIN_CHAT_NO_ADMIN));
 	} else {
-		format(message, sizeof(message), lang_texts[12][30], text);
-		SendClientMessage(senderid, COLOR_GREEN, message);
+		format(message, sizeof(message), _(ADMIN_CHAT_PLAYER_TO_ADMIN), text);
+		SendClientMessage(senderid, -1, message);
 	}
 	return 0;
 }
 
 stock SendClientMessageToModers(senderid, text[])
 {
-	new message[MAX_STRING],
-		count = 0;
+	new
+		message[MAX_LANG_VALUE_STRING],
+		count;
 
-	format(message, sizeof(message), lang_texts[12][79], ReturnPlayerName(senderid), senderid, text);
+	GetPlayerName(senderid, message, sizeof(message));
+	format(message, sizeof(message), _(ADMIN_CHAT_MESSAGE_TO_MODER), message, senderid, text);
+
 	foreach (new adminid : Player) {
 		if (IsPlayerHavePrivilege(adminid, PlayerPrivilegeModer)) {
-			SendClientMessage(adminid, COLOR_RED, message);
+			SendClientMessage(adminid, -1, message);
 			count++;
 		}
 	}
 
 	if (count == 0) {
-		SendClientMessage(senderid, COLOR_RED, lang_texts[12][80]);
+		SendClientMessage(senderid, -1, _(ADMIN_CHAT_NO_MODER));
 	} else {
-		format(message, sizeof(message), lang_texts[12][81], text);
-		SendClientMessage(senderid, COLOR_GREEN, message);
+		format(message, sizeof(message), _(ADMIN_CHAT_PLAYER_TO_MODER), text);
+		SendClientMessage(senderid, -1, message);
 	}
 	return 0;
 }

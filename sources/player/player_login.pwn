@@ -105,7 +105,6 @@ stock player_SaveEx(playerid)
 	ini_setString(file_player, "Bullets", CreatePlayerBulletsString(playerid));
 	ini_setString(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
 	ini_setInteger(file_player, "SkinModel", GetPlayerSkin(playerid));
-	ini_setInteger(file_player, "Hide", admin_GetHideStatus(playerid));
 	ini_setInteger(file_player, "SpawnType", _:Player_GetSpawnType(playerid));
 	ini_setInteger(file_player, "SpawnHouseID", Player_GetSpawnHouseID(playerid));
 	
@@ -222,9 +221,6 @@ stock player_Login(playerid)
 		
 		ini_getInteger(file_player, "SkinModel", buf);
 		SetPlayerSkin(playerid, buf);
-		
-		ini_getInteger(file_player, "Hide", buf);
-		admin_SetHideStatus(playerid, buf);
 		
 		ini_getInteger(file_player, "SpawnType", buf);
 		Player_SetSpawnType(playerid, SpawnType:buf);

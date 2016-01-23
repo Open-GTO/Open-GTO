@@ -170,7 +170,6 @@ Thanks:
 #include "system/weather.pwn"
 
 // admin
-#include "admin/admin_commands.pwn"
 #include "admin/admin_commands/cmd_announce.pwn"
 #include "admin/admin_commands/cmd_armour.pwn"
 #include "admin/admin_commands/cmd_ban.pwn"
@@ -204,10 +203,11 @@ Thanks:
 #include "admin/admin_commands/cmd_unfreeze.pwn"
 #include "admin/admin_commands/cmd_godmod.pwn"
 #include "admin/admin_commands/cmd_teleport.pwn"
+#include "admin/admin_commands/cmd_about.pwn"
+#include "admin/admin_commands/cmd_cmdlist.pwn"
 #include "admin/admin_ban.pwn"
 #include "admin/admin_spec.pwn"
 #include "admin/admin_pm.pwn"
-#include "admin/admin_hide.pwn"
 #include "admin/admin_maptp.pwn"
 #include "admin/admin_click.pwn"
 #include "admin/admin_login.pwn"

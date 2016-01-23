@@ -99,6 +99,10 @@ COMMAND:weapon(playerid, params[])
 			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "give", true) == 0) {
+		if (amount == 0) {
+			amount = 100;
+		}
+
 		if (targetid == -1) {
 			foreach (new id : Player) {
 				GivePlayerWeapon(id, weaponid, amount);
