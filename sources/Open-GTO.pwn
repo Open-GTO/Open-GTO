@@ -295,8 +295,8 @@ public OnGameModeInit()
 	Prot_Teleport_OnGameModeInit();
 
 	// custom
-	#tryinclude "custom/mapicon"
-	#tryinclude "custom/objects"
+	#tryinclude "custom/mapicon.pwn"
+	#tryinclude "custom/objects.pwn"
 	Log_Game("SERVER: Custom mapicons, objects and pickups init");
 
 	Time_Sync();
