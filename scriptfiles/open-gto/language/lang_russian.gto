@@ -919,7 +919,7 @@ ADMIN_COMMAND_TELEPORT_HERE_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FF
 ADMIN_COMMAND_TELEPORT_HERE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}телепортировал {FFCC66}%s(%d){FFFFFF} к себе.
 
 ADMIN_COMMAND_TELEPORT_COORD_HELP = {FFCC66}[Применение]: {FFFFFF}/t[ele]p[ort] coord <x> <y> <z> <интерьер/> <мир/>
-ADMIN_COMMAND_TELEPORT_COORD_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}телепортировался на координаты {FFCC66}%0.2f, %0.2f, %0.2f, %0.2f, %d, %d{FFFFFF}.
+ADMIN_COMMAND_TELEPORT_COORD_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}телепортировался на координаты {FFCC66}%0.2f, %0.2f, %0.2f, %0.2f, %d, %d
 
 ADMIN_COMMAND_CMDLIST_DIALOG_HEADER = Список команд
 ADMIN_COMMAND_CMDLIST_DIALOG_BUTTON_OK = ОК
