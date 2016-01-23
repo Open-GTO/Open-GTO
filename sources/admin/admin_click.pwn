@@ -6,494 +6,626 @@
 
 */
 
-
-forward adm_click_KickPlayer(playerid, clickedid, listitem, inputtext[]);
-public adm_click_KickPlayer(playerid, clickedid, listitem, inputtext[])
+static stock ShowErrorDialog(playerid, error_msg[])
 {
-	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 0;
+	Dialog_MessageEx(playerid, Dialog:AdminErrorPlayerClick,
+	                 _(ADMIN_CLICK_MESSAGE_HEADER),
+	                 error_msg,
+	                 _(ADMIN_CLICK_MESSAGE_BUTTON_OK), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK));
+}
+
+DialogResponse:AdminErrorPlayerClick(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		Dialog_Show(playerid, Dialog:PlayerClick);
 	}
 
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
-		return 0;
-	}
-
-	new string[MAX_STRING],
-		kickedname[MAX_PLAYER_NAME + 1];
-
-	GetPlayerName(clickedid, kickedname, sizeof(kickedname));
-
-	format(string, sizeof(string), lang_texts[12][60], kickedname, clickedid, inputtext);
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
-
-	format(string, sizeof(string), lang_texts[12][61], kickedname, clickedid, ReturnPlayerName(playerid), inputtext);
-	SendClientMessageToAll(COLOR_WHITE, string);
-
-	KickPlayer(clickedid, inputtext);
 	return 1;
 }
 
-forward adm_click_MutePlayer(playerid, clickedid, listitem, inputtext[]);
-public adm_click_MutePlayer(playerid, clickedid, listitem, inputtext[])
+forward adm_click_KickPlayer(playerid, targetid, listitem, inputtext[]);
+public adm_click_KickPlayer(playerid, targetid, listitem, inputtext[])
 {
-	new mutetime = strval(inputtext);
-	if (mutetime < 1) {
-		SendClientMessage(playerid, COLOR_RED, "Неправильное время затыкания!");
+	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
 		return 0;
 	}
 
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, "Этот игрок отключился!");
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 
-	MutePlayer(clickedid, mutetime);
+	new
+		string[MAX_LANG_VALUE_STRING],
+		playername[MAX_PLAYER_NAME + 1],
+		targetname[MAX_PLAYER_NAME + 1];
 
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][24], ReturnPlayerName(playerid), mutetime);
-	SendClientMessage(clickedid, COLOR_RED, string);
+	GetPlayerName(playerid, playername, sizeof(playername));
+	GetPlayerName(targetid, targetname, sizeof(targetname));
 
-	format(string, sizeof(string), lang_texts[12][50], ReturnPlayerName(clickedid), mutetime);
-	SendClientMessageToAll(COLOR_WHITE, string);
+	format(string, sizeof(string), _(ADMIN_COMMAND_KICK_PLAYER), playername, playerid, targetname, targetid);
+	SendMessageToNearPlayerPlayers(string, 40.0, targetid);
 
-	Log_Game(lang_texts[13][7], ReturnPlayerName(clickedid), ReturnPlayerName(playerid), mutetime);
+	format(string, sizeof(string), _(ADMIN_COMMAND_KICK_PLAYER_SELF), targetname, targetid);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
+	KickPlayer(targetid, inputtext);
+
 	return 1;
 }
 
-forward adm_click_UnMutePlayer(playerid, clickedid, listitem, inputtext[]);
-public adm_click_UnMutePlayer(playerid, clickedid, listitem, inputtext[])
+forward adm_click_MutePlayer(playerid, targetid, listitem, inputtext[]);
+public adm_click_MutePlayer(playerid, targetid, listitem, inputtext[])
 {
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][26]);
-		return 1;
+	new
+		time;
+
+	if (sscanf(inputtext, "k<ftime>", time)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TIME_ERROR));
+		return 0;
 	}
 
-	UnMutePlayer(clickedid);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
+		return 0;
+	}
 
-	new string[MAX_STRING];
+	new
+		string[MAX_LANG_VALUE_STRING],
+		timeword[MAX_LANG_VALUE_STRING],
+		playername[MAX_PLAYER_NAME + 1],
+		targetname[MAX_PLAYER_NAME + 1];
 
-	format(string, sizeof(string), lang_texts[12][27], ReturnPlayerName(playerid));
-	SendClientMessage(clickedid, COLOR_GREEN, string);
+	Declension_GetMinutes(time, timeword);
+	GetPlayerName(playerid, playername, sizeof(playername));
+	GetPlayerName(targetid, targetname, sizeof(targetname));
 
-	format(string, sizeof(string), lang_texts[12][51], ReturnPlayerName(clickedid));
-	SendClientMessageToAll(COLOR_WHITE, string);
+	format(string, sizeof(string), _(ADMIN_COMMAND_MUTE_PLAYER), playername, playerid, targetname, targetid, time, timeword);
+	SendClientMessageToAll(-1, string);
 
-	Log_Game(lang_texts[13][14], ReturnPlayerName(clickedid), ReturnPlayerName(playerid));
+	format(string, sizeof(string), _(ADMIN_COMMAND_MUTE_PLAYER_SELF), targetname, targetid, time, timeword);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
+	MutePlayer(targetid, time);
+
 	return 1;
 }
 
-forward adm_click_JailPlayer(playerid, clickedid, listitem, inputtext[]);
-public adm_click_JailPlayer(playerid, clickedid, listitem, inputtext[])
+forward adm_click_UnMutePlayer(playerid, targetid, listitem, inputtext[]);
+public adm_click_UnMutePlayer(playerid, targetid, listitem, inputtext[])
 {
-	if (!IsPlayerConnected(clickedid) || (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon))) {
-		SendClientMessage(playerid,COLOR_RED,lang_texts[12][2]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
+		return 0;
+	}
+
+	new
+		string[MAX_LANG_VALUE_STRING],
+		playername[MAX_PLAYER_NAME + 1],
+		targetname[MAX_PLAYER_NAME + 1];
+
+	GetPlayerName(playerid, playername, sizeof(playername));
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_UNMUTE_PLAYER), playername, playerid, targetname, targetid);
+	SendClientMessageToAll(-1, string);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_UNMUTE_PLAYER_SELF), targetname, targetid);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
+	UnMutePlayer(targetid);
+
+	return 1;
+}
+
+forward adm_click_JailPlayer(playerid, targetid, listitem, inputtext[]);
+public adm_click_JailPlayer(playerid, targetid, listitem, inputtext[])
+{
+	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
+		return 0;
+	}
+
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 	
-	new jailt = strval(inputtext);
+	new
+		time;
 
-	JailPlayer(clickedid, jailt);
-	
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][18], ReturnPlayerName(playerid));
-	SendClientMessage(clickedid, COLOR_RED, string);
-	
-	if (1 <= jailt <= 4320) {
-		format(string, sizeof(string), "на %d минут", jailt);
-	} else {
-		set(string, "навсегда");
+	if (sscanf(inputtext, "k<ftime>", time)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TIME_ERROR));
+		return 0;
 	}
 
-	format(string, sizeof(string), "SERVER: %s был арестован %s", ReturnPlayerName(clickedid), string);
-	SendClientMessageToAll(COLOR_WHITE, string);
+	new
+		string[MAX_LANG_VALUE_STRING],
+		timeword[MAX_LANG_VALUE_STRING],
+		playername[MAX_PLAYER_NAME + 1],
+		targetname[MAX_PLAYER_NAME + 1];
 
-	GameTextForPlayer(playerid, "~w~ You has been ~r~Jailed~w~!", 5000, 4);
+	Declension_GetMinutes(time, timeword);
+	GetPlayerName(playerid, playername, sizeof(playername));
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_JAIL_PLAYER), playername, playerid, targetname, targetid, time, timeword);
+	SendClientMessageToAll(-1, string);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_JAIL_PLAYER_SELF), targetname, targetid, time, timeword);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
+	JailPlayer(targetid, time);
+
 	return 1;
 }
 
-forward adm_click_UnJailPlayer(playerid, clickedid, listitem, inputtext[]);
-public adm_click_UnJailPlayer(playerid, clickedid, listitem, inputtext[])
+forward adm_click_UnJailPlayer(playerid, targetid, listitem, inputtext[]);
+public adm_click_UnJailPlayer(playerid, targetid, listitem, inputtext[])
 {
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 
-	if (!IsPlayerJailed(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[13][22]);
+	if (!IsPlayerJailed(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_JAIL_BAD_TARGET));
 		return 0;
 	}
 
-	UnJailPlayer(clickedid);
-	
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][21], ReturnPlayerName(playerid));
-	SendClientMessage(clickedid, COLOR_GREEN, string);
+	new
+		string[MAX_LANG_VALUE_STRING],
+		playername[MAX_PLAYER_NAME + 1],
+		targetname[MAX_PLAYER_NAME + 1];
 
-	format(string, sizeof(string), lang_texts[13][53], ReturnPlayerName(playerid));
-	SendClientMessageToAll(COLOR_WHITE, string);
+	GetPlayerName(playerid, playername, sizeof(playername));
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_UNJAIL_PLAYER), playername, playerid, targetname, targetid);
+	SendClientMessageToAll(-1, string);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_UNJAIL_PLAYER_SELF), targetname, targetid);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
+	UnJailPlayer(targetid);
+
 	return 1;
 }
 
-forward adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[]);
-public adm_click_InfoPlayer(playerid, clickedid, listitem, inputtext[])
+forward adm_click_InfoPlayer(playerid, targetid, listitem, inputtext[]);
+public adm_click_InfoPlayer(playerid, targetid, listitem, inputtext[])
 {
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][34], ReturnPlayerName(clickedid), clickedid);
-	SendClientMessage(playerid, COLOR_YELLOW, string);
+	static
+		message[MAX_LANG_VALUE_STRING * 6 * MAX_PLAYER_INFO_LINES];
 
-	GetPlayerPrivilegeName(clickedid, string);
-	SendClientMessage(playerid,COLOR_LIGHTRED,string);
+	new
+		string[MAX_LANG_VALUE_STRING],
+		account_info[e_Account_Info],
+		player_info[MAX_PLAYER_INFO_LINES][MAX_LANG_VALUE_STRING],
+		targetname[MAX_PLAYER_NAME + 1],
+		year,
+		month,
+		day;
 
-	format(string, sizeof(string), lang_texts[12][35], GetPlayerLevel(clickedid), GetPlayerXP(clickedid));	//Level, XP
-	SendClientMessage(playerid, COLOR_WHITE, string);
+	Account_GetData(targetid, account_info);
+	GetPlayerInfoArray(targetid, player_info, sizeof(player_info[]), playerid);
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+	account_info[e_aPlayedSeconds] = Account_GetCurrentPlayedTime(playerid);
 
-	format(string, sizeof(string), lang_texts[12][36], GetPlayerMoney(clickedid), GetPlayerBankMoney(clickedid));	//Money, Bank
-	SendClientMessage(playerid, COLOR_WHITE, string);
+	format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_PLAYER_HEADER), targetname);
+	strcat(message, string);
 
-	format(string, sizeof(string), lang_texts[12][38], GetPlayerDeaths(clickedid), GetPlayerKills(clickedid));	//Kills, Deaths
-	SendClientMessage(playerid, COLOR_WHITE, string);
+	format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_PLAYER_IP), account_info[e_aIP]);
+	strcat(message, string);
 
-	format(string, sizeof(string), lang_texts[12][71], GetPlayerJailedCount(clickedid), GetPlayerMutedCount(clickedid));	//Jailed, Muted
-	SendClientMessage(playerid, COLOR_WHITE, string);
-	
-	new player_ip[MAX_IP];
-	Player_GetIP(playerid, player_ip);
-	format(string, sizeof(string), lang_texts[12][72], GetPlayerPing(clickedid), player_ip);
-	SendClientMessage(playerid, COLOR_WHITE, string);
+	gmtime(account_info[e_aCreationTime], year, month, day);
+	format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_PLAYER_CREATION), day, month, year);
+	strcat(message, string);
+
+	gmtime(account_info[e_aLoginTime], year, month, day);
+	format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_PLAYER_LOGIN), day, month, year);
+	strcat(message, string);
+
+	gmtime(account_info[e_aPremiumTime], year, month, day);
+	format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM), day, month, year);
+	strcat(message, string);
+
+	Account_GetPlayedTimeString(account_info[e_aPlayedSeconds], string);
+	format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_PLAYER_PLAYED), string);
+	strcat(message, string);
+
+	for (new i = 0; i < sizeof(player_info); i++) {
+		__(ADMIN_COMMAND_GETINFO_PLAYER_PREFIX, string);
+		strcat(string, player_info[i]);
+
+		strcat(message, string);
+	}
+
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), message, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
 	return 1;
 }
 
-forward adm_click_KillPlayer(playerid, clickedid, listitem, inputtext[]);
-public adm_click_KillPlayer(playerid, clickedid, listitem, inputtext[])
+forward adm_click_KillPlayer(playerid, targetid, listitem, inputtext[]);
+public adm_click_KillPlayer(playerid, targetid, listitem, inputtext[])
 {
-	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
+	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
 		return 0;
 	}
 
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 
-	SetPlayerHealth(clickedid, 0.0);
+	new
+		string[MAX_LANG_VALUE_STRING],
+		targetname[MAX_PLAYER_NAME + 1],
+		playername[MAX_PLAYER_NAME + 1];
 
-	new string[MAX_STRING];
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), lang_texts[12][62], ReturnPlayerName(clickedid), clickedid);
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
+	SetPlayerHealth(targetid, 0.0);
 
-	format(string, sizeof(string), lang_texts[12][63], ReturnPlayerName(playerid));
-	SendClientMessage(clickedid, COLOR_XP_GOOD, string);
+	format(string, sizeof(string), _(ADMIN_COMMAND_KILL_PLAYER), playername, playerid, targetname, targetid);
+	SendMessageToNearPlayerPlayers(string, 40.0, targetid);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_KILL_PLAYER_SELF), targetname, targetid);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
 	return 1;
 }
 
-forward adm_click_TeleportToPlayer(playerid, clickedid, listitem, inputtext[]);
-public adm_click_TeleportToPlayer(playerid, clickedid, listitem, inputtext[])
+forward adm_click_TeleportToPlayer(playerid, targetid, listitem, inputtext[]);
+public adm_click_TeleportToPlayer(playerid, targetid, listitem, inputtext[])
 {
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 
-	new Float:pos[4];
-	new vehicleid = GetPlayerVehicleID(playerid);
+	new
+		string[MAX_LANG_VALUE_STRING],
+		targetname[MAX_PLAYER_NAME + 1],
+		playername[MAX_PLAYER_NAME + 1];
 
-	if (vehicleid != 0) {
-		GetPlayerPos(clickedid, pos[0], pos[1], pos[2]);
-		GetPlayerFacingAngle(clickedid, pos[3]);
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+	GetPlayerName(playerid, playername, sizeof(playername));
 
-		SetVehiclePos(vehicleid, pos[0] + 3.01, pos[1] + 3.01, pos[2] + 1.0);
-		SetPlayerFacingAngle(playerid, pos[3]);
-	} else {
-		GetPlayerPos(clickedid, pos[0], pos[1], pos[2]);
-		GetPlayerFacingAngle(clickedid, pos[3]);
+	TeleportPlayerToPlayer(playerid, targetid);
 
-		pos[0] = pos[0] + random(2) - random(4);
-		pos[1] = pos[1] + random(2) - random(4);
+	format(string, sizeof(string), _(ADMIN_COMMAND_TELEPORT_TO_PLAYER), targetname, targetid, playername, playerid);
+	SendMessageToNearPlayerPlayers(string, 40.0, targetid);
 
-		SetPlayerPos(playerid, pos[0], pos[1], pos[2] + 1.0);
-		SetPlayerFacingAngle(playerid, pos[3]);
-	}
+	format(string, sizeof(string), _(ADMIN_COMMAND_TELEPORT_TO_SELF), targetname, targetid);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
 
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][66], ReturnPlayerName(clickedid), clickedid);
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
-forward adm_click_TeleportToMe(playerid, clickedid, listitem, inputtext[]);
-public adm_click_TeleportToMe(playerid, clickedid, listitem, inputtext[])
+forward adm_click_TeleportToMe(playerid, targetid, listitem, inputtext[]);
+public adm_click_TeleportToMe(playerid, targetid, listitem, inputtext[])
 {
-	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
+	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
 		return 0;
 	}
 
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 
-	new Float:pos[4];
-	new vehicleid = GetPlayerVehicleID(clickedid);
+	new
+		string[MAX_LANG_VALUE_STRING],
+		targetname[MAX_PLAYER_NAME + 1],
+		playername[MAX_PLAYER_NAME + 1];
 
-	if (vehicleid != 0) {
-		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-		GetPlayerFacingAngle(playerid, pos[3]);
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+	GetPlayerName(playerid, playername, sizeof(playername));
 
-		SetVehiclePos(vehicleid, pos[0] + 3.01, pos[1] + 3.01, pos[2] + 1.0);
-		SetPlayerFacingAngle(clickedid, pos[3]);
-	} else {
-		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-		GetPlayerFacingAngle(playerid, pos[3]);
+	TeleportPlayerToPlayer(targetid, playerid);
 
-		pos[0] = pos[0] + random(2) - random(4);
-		pos[1] = pos[1] + random(2) - random(4);
+	format(string, sizeof(string), _(ADMIN_COMMAND_TELEPORT_HERE_PLAYER), playername, playerid, targetname, targetid);
+	SendMessageToNearPlayerPlayers(string, 40.0, targetid);
 
-		SetPlayerPos(clickedid, pos[0], pos[1], pos[2] + 1.0);
-		SetPlayerFacingAngle(clickedid, pos[3]);
-	}
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][66], ReturnPlayerName(playerid), playerid);
-	SendClientMessage(clickedid, COLOR_XP_GOOD, string);
-
-	format(string, sizeof(string), lang_texts[12][67], ReturnPlayerName(clickedid), clickedid);
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
 	return 1;
 }
 
-forward adm_click_SetHealth(playerid, clickedid, listitem, inputtext[]);
-public adm_click_SetHealth(playerid, clickedid, listitem, inputtext[])
+forward adm_click_SetHealth(playerid, targetid, listitem, inputtext[]);
+public adm_click_SetHealth(playerid, targetid, listitem, inputtext[])
 {
-	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
+	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
 		return 0;
 	}
 
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 
-	new Float:health = floatstr(inputtext);
+	new
+		Float:amount;
 
-	if (health < 10.0 || health > 300.0) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][44]);
+	if (sscanf(inputtext, "f", amount)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_HEALTH_ERROR));
 		return 0;
 	}
 
-	SetPlayerHealth(clickedid, health);
+	new
+		string[MAX_LANG_VALUE_STRING],
+		targetname[MAX_PLAYER_NAME + 1],
+		playername[MAX_PLAYER_NAME + 1];
+
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	SetPlayerHealth(targetid, amount);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_HEALTH_SET_PLAYER), playername, playerid, targetname, targetid, amount);
+	SendMessageToNearPlayerPlayers(string, 40.0, playerid);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_HEALTH_SET_SELF), targetname, targetid, amount);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
 	return 1;
 }
 
-forward adm_click_SetArmour(playerid, clickedid, listitem, inputtext[]);
-public adm_click_SetArmour(playerid, clickedid, listitem, inputtext[])
+forward adm_click_SetArmour(playerid, targetid, listitem, inputtext[]);
+public adm_click_SetArmour(playerid, targetid, listitem, inputtext[])
 {
-	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
+	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
 		return 0;
 	}
 
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 
-	new Float:armour = floatstr(inputtext);
+	new
+		Float:amount;
 
-	if (armour < 0.0 || armour > 300.0) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][44]);
+	if (sscanf(inputtext, "f", amount)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_ARMOUR_ERROR));
 		return 0;
 	}
 
-	SetPlayerArmour(clickedid, armour);
+	new
+		string[MAX_LANG_VALUE_STRING],
+		targetname[MAX_PLAYER_NAME + 1],
+		playername[MAX_PLAYER_NAME + 1];
+
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	SetPlayerArmour(targetid, amount);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_ARMOUR_SET_PLAYER), playername, playerid, targetname, targetid, amount);
+	SendMessageToNearPlayerPlayers(string, 40.0, playerid);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_ARMOUR_SET_SELF), targetname, targetid, amount);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
 	return 1;
 }
 
-forward adm_click_SetLevel(playerid, clickedid, listitem, inputtext[]);
-public adm_click_SetLevel(playerid, clickedid, listitem, inputtext[])
+forward adm_click_SetLevel(playerid, targetid, listitem, inputtext[]);
+public adm_click_SetLevel(playerid, targetid, listitem, inputtext[])
 {
-	if (!IsPlayerConnected(clickedid) || (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon))) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
+	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
 		return 0;
 	}
 
-	new newlvl = strval(inputtext);
-	if (!IsValidPlayerLevel(newlvl)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][33]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 
-	new oldlvl = GetPlayerLevel(clickedid);
-	SetPlayerLevel(clickedid, newlvl);
+	new
+		amount,
+		string[MAX_LANG_VALUE_STRING],
+		targetname[MAX_PLAYER_NAME + 1],
+		playername[MAX_PLAYER_NAME + 1];
 
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][31], ReturnPlayerName(playerid), newlvl);
-	SendClientMessage(clickedid, COLOR_XP_GOOD, string);
+	amount = strval(inputtext);
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), lang_texts[12][32], ReturnPlayerName(clickedid), newlvl, oldlvl);
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
+	if (!IsValidPlayerLevel(amount)) {
+		Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), _(ADMIN_CLICK_LEVEL_ERROR), _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+		return 0;
+	}
+
+	SetPlayerLevel(targetid, amount);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_LEVEL_SET_PLAYER), playername, playerid, amount);
+	SendClientMessage(targetid, -1, string);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_LEVEL_SET_SELF), targetname, targetid, amount);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
 	return 1;
 }
 
-forward adm_click_GiveXP(playerid, clickedid, listitem, inputtext[]);
-public adm_click_GiveXP(playerid, clickedid, listitem, inputtext[])
+forward adm_click_GiveXP(playerid, targetid, listitem, inputtext[]);
+public adm_click_GiveXP(playerid, targetid, listitem, inputtext[])
 {
-	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
+	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
 		return 0;
 	}
 
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][3]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 
-	new xpamount = strval(inputtext);
-	if (xpamount == 0) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][4]);
-		return 0;
-	}
+	new
+		amount,
+		string[MAX_LANG_VALUE_STRING],
+		targetname[MAX_PLAYER_NAME + 1],
+		playername[MAX_PLAYER_NAME + 1];
 
-	GivePlayerXP(clickedid, xpamount, 1);
+	amount = strval(inputtext);
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+	GetPlayerName(playerid, playername, sizeof(playername));
 
-	new string[MAX_STRING];
-	if (xpamount > 0) {
-		format(string, sizeof(string), lang_texts[12][5], ReturnPlayerName(playerid), xpamount);
-		SendClientMessage(clickedid, COLOR_XP_GOOD, string);
+	GivePlayerXP(targetid, amount);
 
-		format(string, sizeof(string), lang_texts[12][6], ReturnPlayerName(clickedid), xpamount, GetPlayerXP(clickedid));
-		SendClientMessage(playerid, COLOR_XP_GOOD, string);
-	} else {
-		format(string, sizeof(string), lang_texts[12][7], ReturnPlayerName(playerid), xpamount);
-		SendClientMessage(clickedid, COLOR_XP_GOOD, string);
+	format(string, sizeof(string), _(ADMIN_COMMAND_XP_GIVE_PLAYER), playername, playerid, amount);
+	SendClientMessage(targetid, -1, string);
 
-		format(string, sizeof(string), lang_texts[12][8], ReturnPlayerName(clickedid), xpamount, GetPlayerXP(clickedid));
-		SendClientMessage(playerid, COLOR_XP_GOOD, string);
-	}
+	format(string, sizeof(string), _(ADMIN_COMMAND_XP_GIVE_SELF), targetname, targetid, amount);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
 	return 1;
 }
 
-forward adm_click_GiveMoney(playerid, clickedid, listitem, inputtext[]);
-public adm_click_GiveMoney(playerid, clickedid, listitem, inputtext[])
+forward adm_click_GiveMoney(playerid, targetid, listitem, inputtext[]);
+public adm_click_GiveMoney(playerid, targetid, listitem, inputtext[])
 {
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][2]);
-		return 0;
-	}
-	
-	new cashamount = strval(inputtext);
-	if (cashamount > 999999999 || cashamount < -999999999 || cashamount == 0) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][11]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
 		return 0;
 	}
 
-	GivePlayerMoney(clickedid, cashamount);
+	new
+		amount,
+		string[MAX_LANG_VALUE_STRING],
+		targetname[MAX_PLAYER_NAME + 1],
+		playername[MAX_PLAYER_NAME + 1];
 
-	new string[MAX_STRING];
-	if (cashamount > 0) {
-		format(string, sizeof(string), lang_texts[12][12], ReturnPlayerName(playerid), cashamount);
-		SendClientMessage(clickedid, COLOR_XP_GOOD, string);
+	amount = strval(inputtext);
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+	GetPlayerName(playerid, playername, sizeof(playername));
 
-		format(string, sizeof(string), lang_texts[12][13], ReturnPlayerName(clickedid), cashamount, GetPlayerMoney(clickedid));
-		SendClientMessage(playerid, COLOR_XP_GOOD, string);
-	} else {
-		format(string, sizeof(string), lang_texts[12][14], ReturnPlayerName(playerid), cashamount);
-		SendClientMessage(clickedid, COLOR_XP_GOOD, string);
+	GivePlayerMoney(targetid, amount);
 
-		format(string, sizeof(string), lang_texts[12][15], ReturnPlayerName(clickedid), cashamount, GetPlayerMoney(clickedid));
-		SendClientMessage(playerid, COLOR_XP_GOOD, string);
-	}
+	format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_GIVE_PLAYER), playername, playerid, amount);
+	SendClientMessage(targetid, -1, string);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_GIVE_SELF), targetname, targetid, amount);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
 	return 1;
 }
 
-forward adm_click_FreezePlayer(playerid, clickedid, listitem, inputtext[]);
-public adm_click_FreezePlayer(playerid, clickedid, listitem, inputtext[])
+forward adm_click_FreezePlayer(playerid, targetid, listitem, inputtext[]);
+public adm_click_FreezePlayer(playerid, targetid, listitem, inputtext[])
 {
-	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][9]);
+	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
 		return 0;
 	}
 
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][10]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 
-	TogglePlayerControllable(clickedid, 0);
+	new
+		time;
 
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][54], ReturnPlayerName(playerid));
-	SendClientMessage(clickedid, COLOR_XP_GOOD, string);
+	if (sscanf(inputtext, "k<ftime>", time)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TIME_ERROR));
+		return 0;
+	}
 
-	format(string, sizeof(string), lang_texts[12][55], ReturnPlayerName(clickedid));
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
+	new
+		string[MAX_LANG_VALUE_STRING],
+		timeword[MAX_LANG_VALUE_STRING],
+		targetname[MAX_PLAYER_NAME + 1],
+		playername[MAX_PLAYER_NAME + 1];
+
+	Declension_GetMinutes(time, timeword);
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_FREEZE_PLAYER), playername, playerid, targetname, targetid, time, timeword);
+	SendClientMessageToAll(-1, string);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_FREEZE_PLAYER_SELF), targetname, targetid, time, timeword);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
+	FreezePlayer(targetid, time);
+
 	return 1;
 }
 
-forward adm_click_UnFreezePlayer(playerid, clickedid, listitem, inputtext[]);
-public adm_click_UnFreezePlayer(playerid, clickedid, listitem, inputtext[])
+forward adm_click_UnFreezePlayer(playerid, targetid, listitem, inputtext[]);
+public adm_click_UnFreezePlayer(playerid, targetid, listitem, inputtext[])
 {
-	if (IsPlayerHavePrivilege(clickedid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][9]);
+	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
 		return 0;
 	}
 
-	if (!IsPlayerConnected(clickedid)) {
-		SendClientMessage(playerid, COLOR_RED, lang_texts[12][10]);
+	if (!IsPlayerConnected(targetid)) {
+		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
 		return 0;
 	}
 
-	TogglePlayerControllable(clickedid, 1);
+	new
+		string[MAX_LANG_VALUE_STRING],
+		targetname[MAX_PLAYER_NAME + 1],
+		playername[MAX_PLAYER_NAME + 1];
 
-	new string[MAX_STRING];
-	format(string, sizeof(string), lang_texts[12][56], ReturnPlayerName(playerid));
-	SendClientMessage(clickedid, COLOR_XP_GOOD, string);
+	GetPlayerName(targetid, targetname, sizeof(targetname));
+	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), lang_texts[12][57], ReturnPlayerName(clickedid));
-	SendClientMessage(playerid, COLOR_XP_GOOD, string);
+	format(string, sizeof(string), _(ADMIN_COMMAND_UNFREEZE_PLAYER), playername, playerid, targetname, targetid);
+	SendClientMessageToAll(-1, string);
+
+	format(string, sizeof(string), _(ADMIN_COMMAND_UNFREEZE_PLAYER_SELF), targetname, targetid);
+	Dialog_Message(playerid, _(ADMIN_CLICK_MESSAGE_HEADER), string, _(ADMIN_CLICK_MESSAGE_BUTTON_OK));
+
+	UnFreezePlayer(targetid);
+
 	return 1;
 }
 
-forward adm_click_GetNetStats(playerid, clickedid, listitem, inputtext[]);
-public adm_click_GetNetStats(playerid, clickedid, listitem, inputtext[])
+forward adm_click_GetNetStats(playerid, targetid, listitem, inputtext[]);
+public adm_click_GetNetStats(playerid, targetid, listitem, inputtext[])
 {
-	new player_ip_port[64 + 1];
-	NetStats_GetIpPort(playerid, player_ip_port, sizeof(player_ip_port) - 1);
+	new
+		message[MAX_LANG_MULTI_STRING],
+		ip_port[22];
 
-	new netstats_str[400 + 1];
-	format(netstats_str, sizeof(netstats_str), 
-		"IP и порт: %s\n\
-		Время на сервере (ms): %d\n\
-		Статус подключения: %d\n\
-		Потеря пакетов: %.2f%%\n\
-		Пакетов получено: %d\n\
-		Пакетов отправлено: %d\n\
-		Пакетов в секунду: %d",
-		player_ip_port,
-		NetStats_GetConnectedTime(playerid),
-		NetStats_ConnectionStatus(playerid),
-		NetStats_PacketLossPercent(playerid),
-		NetStats_MessagesReceived(playerid),
-		NetStats_MessagesSent(playerid),
-		NetStats_MessagesRecvPerSecond(playerid));
+	NetStats_GetIpPort(targetid, ip_port, sizeof(ip_port));
 
-	Dialog_Open(playerid, Dialog:PlayerClickNetStats, DIALOG_STYLE_MSGBOX, "Информация NetStats", netstats_str, "ОК", "Назад");
+	__m(ADMIN_COMMAND_NETSTATS, message);
+	format(message, sizeof(message), 
+	       message,
+	       ip_port,
+	       NetStats_GetConnectedTime(targetid),
+	       NetStats_ConnectionStatus(targetid),
+	       NetStats_PacketLossPercent(targetid),
+	       NetStats_MessagesReceived(targetid),
+	       NetStats_MessagesSent(targetid),
+	       NetStats_MessagesRecvPerSecond(targetid));
 
-	SetPVarInt(playerid,
-		"click_NetStats_TimerID",
-		SetTimerEx("adm_click_GetNetStats", 2000, 0, "dd", playerid, clickedid)
-	);
+	Dialog_Open(playerid, Dialog:PlayerClickNetStats, DIALOG_STYLE_MSGBOX,
+	            _(ADMIN_CLICK_MESSAGE_HEADER),
+	            message,
+	            _(ADMIN_CLICK_MESSAGE_BUTTON_OK), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK));
+
+	new
+		timerid;
+
+	timerid = SetTimerEx("adm_click_GetNetStats", 2000, 0, "dd", playerid, targetid);
+	SetPVarInt(playerid, "click_NetStats_TimerID", timerid);
 }
 
 DialogResponse:PlayerClickNetStats(playerid, response, listitem, inputtext[])
@@ -502,9 +634,10 @@ DialogResponse:PlayerClickNetStats(playerid, response, listitem, inputtext[])
 		Dialog_Show(playerid, Dialog:PlayerClick);
 	}
 	
-	new netstat_timer = GetPVarInt(playerid, "click_NetStats_TimerID");
-	if (netstat_timer != 0) {
-		KillTimer(netstat_timer);
+	new timerid = GetPVarInt(playerid, "click_NetStats_TimerID");
+	if (timerid != 0) {
+		KillTimer(timerid);
 	}
+
 	return 1;
 }

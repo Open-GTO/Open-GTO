@@ -549,6 +549,17 @@ ADMIN_CHAT_NO_ADMIN = {FF2211}[Ошибка]: {FFFFFF}Извините, но на сервере сейчас н
 ADMIN_CHAT_MESSAGE_TO_MODER = {A5D6A7}Сообщение модерации от %s(%d): {FFFFFF}%s
 ADMIN_CHAT_PLAYER_TO_MODER = {A5D6A7}Сообщение модерации: {FFFFFF}%s
 
+ADMIN_CLICK_PRIVILEGE_ERROR = {FF2211}[Ошибка]: {FFFFFF}Недостаточно привилегий.
+ADMIN_CLICK_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_CLICK_MESSAGE_HEADER = Меню администратора
+ADMIN_CLICK_MESSAGE_BUTTON_OK = ОК
+ADMIN_CLICK_MESSAGE_BUTTON_BACK = Назад
+ADMIN_CLICK_TIME_ERROR = Неправильное время, формат ввода: число[с/м/ч/д/н/г]
+ADMIN_CLICK_JAIL_BAD_TARGET = Этот игрок не в тюрьме
+ADMIN_CLICK_HEALTH_ERROR = Неправильное количество здоровья.
+ADMIN_CLICK_ARMOUR_ERROR = Неправильное количество брони.
+ADMIN_CLICK_LEVEL_ERROR = Неправильный уровень.
+
 ADMIN_COMMAND_NOT_ALLOWED = Нет доступа к этой команде
 
 ADMIN_COMMAND_VEHICLE_HELP = {FFCC66}[Применение]: {FFFFFF}/v[ehicle] <add/remove/respawn/repair/health> <модель/id/тип/количество/>
@@ -757,6 +768,16 @@ ADMIN_COMMAND_GETINFO_ALL_JAIL_NOTIME = {FFCC66}* {FFFFFF}Арестованный {FFCC66}%
 ADMIN_COMMAND_GETINFO_ALL_MUTE_REMAIN = {FFCC66}* {FFFFFF}Заткнутый {FFCC66}%s(%d) {FFFFFF}осталось %d м.
 ADMIN_COMMAND_GETINFO_ALL_NOPLAYERS = {FFCC66}* {FFFFFF}На сервере нет заткнутых или посаженных игроков.
 
+ADMIN_COMMAND_NETSTATS_HELP = {FFCC66}[Применение]: {FFFFFF}/netstats <id/ник>
+ADMIN_COMMAND_NETSTATS_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_NETSTATS_0 = {FFCC66}* {FFFFFF}IP и порт: %s\n
+ADMIN_COMMAND_NETSTATS_1 = {FFCC66}* {FFFFFF}Время на сервере (ms): %d\n
+ADMIN_COMMAND_NETSTATS_2 = {FFCC66}* {FFFFFF}Статус подключения: %d\n
+ADMIN_COMMAND_NETSTATS_3 = {FFCC66}* {FFFFFF}Потеря пакетов: %.2f%%\n
+ADMIN_COMMAND_NETSTATS_4 = {FFCC66}* {FFFFFF}Пакетов получено: %d\n
+ADMIN_COMMAND_NETSTATS_5 = {FFCC66}* {FFFFFF}Пакетов отправлено: %d\n
+ADMIN_COMMAND_NETSTATS_6 = {FFCC66}* {FFFFFF}Пакетов в секунду: %d
+
 ADMIN_COMMAND_INTERIOR_HELP = {FFCC66}[Применение]: {FFFFFF}/int[erior] <set/get> <id/ник/all> <интерьер/>
 ADMIN_COMMAND_INTERIOR_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_INTERIOR_GET = {FFCC66}* {FFFFFF}Интерьер игрока {FFCC66}%s(%d){FFFFFF}: {A5D6A7}%d
@@ -849,7 +870,7 @@ ADMIN_COMMAND_CMDLIST_HEADER = {FFCC66}Список доступных команд:
 ADMIN_COMMAND_CMDLIST_MODER_0 = /about <dialog/>, /cmdlist <dialog/>\n
 ADMIN_COMMAND_CMDLIST_MODER_1 = /warn, /kick, /mute, /unmute, /jail, /unjail, /freeze, /unfreeze\n
 ADMIN_COMMAND_CMDLIST_MODER_2 = /t[ele]p[ort], /int[erior], /world\n
-ADMIN_COMMAND_CMDLIST_MODER_3 = /chat, /boom, /getinfo, /kill, /spec[tate], /skin\n
+ADMIN_COMMAND_CMDLIST_MODER_3 = /chat, /boom, /getinfo, /netstats, /kill, /spec[tate], /skin\n
 
 ADMIN_COMMAND_CMDLIST_ADMIN_0 = /ban, /unban\n
 ADMIN_COMMAND_CMDLIST_ADMIN_1 = /health, /armour, /money, /weapon, /skill, /level, /xp\n

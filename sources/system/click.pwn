@@ -42,7 +42,7 @@ static click_dialogArray[][click_dialogArray_Info] = {
 	{DIALOG_STYLE_INPUT, "Изменить уровень", "Введите новый уровень", "Изменить", "Назад", PlayerPrivilegeAdmin, "adm_click_SetLevel"},
 	{DIALOG_STYLE_INPUT, "Дать опыт", "Введите количество опыта", "Дать", "Назад", PlayerPrivilegeAdmin, "adm_click_GiveXP"},
 	{DIALOG_STYLE_INPUT, "Дать денег", "Введите количество денег", "Дать", "Назад", PlayerPrivilegeAdmin, "adm_click_GiveMoney"},
-	{DIALOG_STYLE_NONE, "Заморозить", "", "", "", PlayerPrivilegeAdmin, "adm_click_FreezePlayer"},
+	{DIALOG_STYLE_INPUT, "Заморозить", "Введите время заморозки", "Заморозить", "Назад", PlayerPrivilegeAdmin, "adm_click_FreezePlayer"},
 	{DIALOG_STYLE_NONE, "Разморозить", "", "", "", PlayerPrivilegeAdmin, "adm_click_UnFreezePlayer"},
 	{DIALOG_STYLE_NONE, "Получить NetStats", "", "", "", PlayerPrivilegeAdmin, "adm_click_GetNetStats"}
 };
