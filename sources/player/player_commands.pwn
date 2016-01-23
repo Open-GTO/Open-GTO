@@ -117,3 +117,41 @@ COMMAND:time(playerid, params[])
 	PlayerPlaySound(playerid, 1085, 0, 0, 0);
 	return 1;
 }
+
+COMMAND:id(playerid, params[])
+{
+	#if !defined COMMAND_ID_MAX_MATCHES
+		#define COMMAND_ID_MAX_MATCHES 5
+	#endif
+
+	new
+		ids[COMMAND_ID_MAX_MATCHES];
+
+	if (sscanf(params, "?<MATCH_NAME_PARTIAL=1>u[" #COMMAND_ID_MAX_MATCHES "]", ids)) {
+		SendClientMessage(playerid, -1, _(COMMAND_ID_HELP));
+		return 1;
+	}
+
+	new
+		i,
+		playername[MAX_PLAYER_NAME],
+		string[MAX_LANG_VALUE_STRING];
+
+	for (i = 0; ids[i] != INVALID_PLAYER_ID; i++) {
+		if (ids[i] == cellmin) {
+			SendClientMessage(playerid, -1, _(COMMAND_ID_AND_MORE));
+			break;
+		}
+
+		GetPlayerName(ids[i], playername, sizeof(playername));
+
+		format(string, sizeof(string), _(COMMAND_ID_PLAYER), playername, ids);
+		SendClientMessage(playerid, -1, string);
+	}
+
+	if (i == 0) {
+		SendClientMessage(playerid, -1, _(COMMAND_ID_NO_ONE));
+	}
+
+	return 1;
+}

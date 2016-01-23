@@ -164,7 +164,7 @@ COMMAND_COMMANDS_5 = {FFCC66}[Десматчи]: {FFFFFF}/dms, /dm join <ID>, /dm quit
 COMMAND_COMMANDS_6 = {FFCC66}[Анимации]: {FFFFFF}/dance [1-4], /handsup, /piss, /smoke
 COMMAND_COMMANDS_7 = {FFCC66}[Разговор]: {FFFFFF}/pm <ID> <сообщение>, $ <сообщение>, @ <сообщение>, # <сообщение>
 COMMAND_COMMANDS_8 = {FFCC66}[Транспорт]: {FFFFFF}/repair, /fill, /engine
-COMMAND_COMMANDS_9 = {FFCC66}[Разное]: {FFFFFF}/skydive, /lottery
+COMMAND_COMMANDS_9 = {FFCC66}[Разное]: {FFFFFF}/skydive, /lottery, /id
 
 COMMAND_VERSION_0 = На сервере запущен:
 COMMAND_VERSION_1 = SA-MP: Open-GTO %s.
@@ -187,6 +187,11 @@ COMMAND_DANCE_ERROR = Применение: /dance <1-4>. Управление - стрелки, + пробел и
 
 COMMAND_PM_USE = {FFCC66}[Применение]: {FFFFFF}/pm <ID> <сообщение>
 COMMAND_PM_ERROR_ID = {FF2211}[Ошибка]: {FFFFFF}/pm: неверный ID
+
+COMMAND_ID_HELP = {FFCC66}[Применение]: {FFFFFF}/id <часть ника>
+COMMAND_ID_AND_MORE = {FFCC66}* {FFFFFF}и другие...
+COMMAND_ID_PLAYER = {FFCC66}* {FFFFFF}%s - %d
+COMMAND_ID_NO_ONE = {FFCC66}* {FFFFFF}Никто не найден
 
 // privilege
 PRIVILEGE_PLAYER = игрок
