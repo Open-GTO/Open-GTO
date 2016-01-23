@@ -829,6 +829,20 @@ ADMIN_COMMAND_UNFREEZE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFF
 ADMIN_COMMAND_UNFREEZE_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы разморозили {FFCC66}%s(%d){FFFFFF}.
 ADMIN_COMMAND_UNFREEZE_REASON = %s. Причина: {A5D6A7}%s
 
+
+ADMIN_COMMAND_TELEPORT_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+
+ADMIN_COMMAND_TELEPORT_TO_HELP = {FFCC66}[Применение]: {FFFFFF}/t[ele]p[ort] to <id/ник>
+ADMIN_COMMAND_TELEPORT_TO_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}телепортировался к {FFCC66}%s(%d){FFFFFF}.
+ADMIN_COMMAND_TELEPORT_TO_SELF = {FFCC66}* {FFFFFF}Вы телепортировались к {FFCC66}%s(%d){FFFFFF}.
+
+ADMIN_COMMAND_TELEPORT_HERE_HELP = {FFCC66}[Применение]: {FFFFFF}/t[ele]p[ort] here <id/ник/all>
+ADMIN_COMMAND_TELEPORT_HERE_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}телепортировал всех игроков к себе.
+ADMIN_COMMAND_TELEPORT_HERE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}телепортировал {FFCC66}%s(%d){FFFFFF} к себе.
+
+ADMIN_COMMAND_TELEPORT_COORD_HELP = {FFCC66}[Применение]: {FFFFFF}/t[ele]p[ort] coord <x> <y> <z> <интерьер/> <мир/>
+ADMIN_COMMAND_TELEPORT_COORD_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}телепортировался на координаты {FFCC66}%0.2f, %0.2f, %0.2f, %0.2f, %d, %d{FFFFFF}.
+
 // protection
 PROTECTION_ARMOUR = взлом брони (%0.2f > %0.2f)
 PROTECTION_RCON = попытка входа в rcon (ip: %s, пароль: %s)

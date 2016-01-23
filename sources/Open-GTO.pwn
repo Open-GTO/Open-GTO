@@ -203,6 +203,7 @@ Thanks:
 #include "admin/admin_commands/cmd_freeze.pwn"
 #include "admin/admin_commands/cmd_unfreeze.pwn"
 #include "admin/admin_commands/cmd_godmod.pwn"
+#include "admin/admin_commands/cmd_teleport.pwn"
 #include "admin/admin_ban.pwn"
 #include "admin/admin_spec.pwn"
 #include "admin/admin_pm.pwn"
