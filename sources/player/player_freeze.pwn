@@ -68,11 +68,15 @@ stock FreezePlayer(playerid, freezetime)
 	SetPlayerFreezePos(playerid, pos_x, pos_y, pos_z);
 
 	SetPlayerFreezeTime(playerid, gettime() + freezetime);
+
+	TogglePlayerControllable(playerid, 0);
 }
 
 stock UnFreezePlayer(playerid)
 {
 	SetPlayerFreezeTime(playerid, 0);
+
+	TogglePlayerControllable(playerid, 1);
 }
 
 stock GetPlayerFreezeTime(playerid) {
