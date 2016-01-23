@@ -1,25 +1,46 @@
 /*
 
-	Title: Click handler system
-	Created: 14.01.2014
+	About: click handler system
 	Author: ziggi
 
 */
 
-#define DIALOG_STYLE_NONE	-1
-#define MAX_DIALOG_CAPTION_SIZE	64
+/*
+	Defines
+*/
+
+#define DIALOG_STYLE_NONE -1
+#define MAX_CLICK_DIALOG_ITEMS          20
+#define MAX_CLICK_DIALOG_CAPTION_SIZE   64
+#define MAX_CLICK_DIALOG_INFO_SIZE      512
+#define MAX_CLICK_DIALOG_BUTTON_SIZE    16
+#define MAX_CLICK_DIALOG_FUNCTION_SIZE  16
+
+/*
+	Enums
+*/
 
 enum click_dialogArray_Info {
 	cda_style,
-	cda_caption[MAX_DIALOG_CAPTION_SIZE],
-	cda_info[512],
-	cda_button1[16],
-	cda_button2[16],
+	cda_caption[MAX_CLICK_DIALOG_CAPTION_SIZE],
+	cda_info[MAX_CLICK_DIALOG_INFO_SIZE],
+	cda_button1[MAX_CLICK_DIALOG_BUTTON_SIZE],
+	cda_button2[MAX_CLICK_DIALOG_BUTTON_SIZE],
 	PlayerPrivilege:cda_privilege,
-	cda_function[32],
+	cda_function[MAX_CLICK_DIALOG_FUNCTION_SIZE],
 }
 
-static click_dialogArray[][click_dialogArray_Info] = {
+/*
+	Vars
+*/
+
+static
+	gClickItemId,
+	gPlayerResponseType[MAX_PLAYERS],
+	gPlayerTargetID[MAX_PLAYERS],
+	gClickArray[MAX_CLICK_DIALOG_ITEMS][click_dialogArray_Info];
+/*
+static gClickArray[][click_dialogArray_Info] = {
 	// player
 	{DIALOG_STYLE_INPUT, "Отправить деньги", "Введите сумму $", "Отправить", "Назад", PlayerPrivilegePlayer, "pl_click_SendCash"},
 	{DIALOG_STYLE_INPUT, "Личное сообщение", "Введите сообщение", "Отправить", "Назад", PlayerPrivilegePlayer, "pl_click_SendMessage"},
@@ -45,15 +66,15 @@ static click_dialogArray[][click_dialogArray_Info] = {
 	{DIALOG_STYLE_INPUT, "Заморозить", "Введите время заморозки", "Заморозить", "Назад", PlayerPrivilegeAdmin, "adm_click_FreezePlayer"},
 	{DIALOG_STYLE_NONE, "Разморозить", "", "", "", PlayerPrivilegeAdmin, "adm_click_UnFreezePlayer"},
 	{DIALOG_STYLE_NONE, "Получить NetStats", "", "", "", PlayerPrivilegeAdmin, "adm_click_GetNetStats"}
-};
+};*/
 
 /*
 
-	Callback's
+	Callbacks
 
 */
 
-stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
+Click_OnPlayerClickPlayer(playerid, clickedplayerid)
 {
 	if (playerid == clickedplayerid) {
 		new player_state = GetPlayerState(playerid);
@@ -68,19 +89,25 @@ stock click_OnPlayerClickPlayer(playerid, clickedplayerid)
 		return 1;
 	}
 	
-	click_SetPlayerClickedID(playerid, clickedplayerid);
+	Click_SetPlayerClickedID(playerid, clickedplayerid);
 
 	Dialog_Show(playerid, Dialog:PlayerClick);
 	return 1;
 }
 
+/*
+
+	Dialogs
+
+*/
+
 DialogCreate:PlayerClick(playerid)
 {
-	new listitems[MAX_DIALOG_CAPTION_SIZE * sizeof(click_dialogArray)];
+	new listitems[MAX_CLICK_DIALOG_CAPTION_SIZE * sizeof(gClickArray)];
 
-	for (new i = 0; i < sizeof(click_dialogArray); i++) {
-		if (IsPlayerHavePrivilege(playerid, click_dialogArray[i][cda_privilege])) {
-			strcat(listitems, click_dialogArray[i][cda_caption]);
+	for (new i = 0; i < sizeof(gClickArray); i++) {
+		if (IsPlayerHavePrivilege(playerid, gClickArray[i][cda_privilege])) {
+			strcat(listitems, gClickArray[i][cda_caption]);
 			strcat(listitems, "\n");
 		}
 	}
@@ -94,12 +121,12 @@ DialogResponse:PlayerClick(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new id = click_GetIdByListitem(GetPlayerPrivilege(playerid), listitem);
+	new id = Click_GetIdByListitem(GetPlayerPrivilege(playerid), listitem);
 
-	if (click_dialogArray[id][cda_style] == -1) {
-		click_CallFunction(playerid, id, listitem, inputtext);
+	if (gClickArray[id][cda_style] == -1) {
+		Click_CallFunction(playerid, id, listitem, inputtext);
 	} else {
-		click_SetResponseID(playerid, id);
+		Click_SetResponseID(playerid, id);
 		Dialog_Show(playerid, Dialog:PlayerClickResponse);
 	}
 	return 1;
@@ -107,12 +134,12 @@ DialogResponse:PlayerClick(playerid, response, listitem, inputtext[])
 
 DialogCreate:PlayerClickResponse(playerid)
 {
-	new dialogid = click_GetResponseID(playerid);
+	new dialogid = Click_GetResponseID(playerid);
 
-	Dialog_Open(playerid, Dialog:PlayerClickResponse, click_dialogArray[dialogid][cda_style],
-		click_dialogArray[dialogid][cda_caption],
-		click_dialogArray[dialogid][cda_info],
-		click_dialogArray[dialogid][cda_button1], click_dialogArray[dialogid][cda_button2]
+	Dialog_Open(playerid, Dialog:PlayerClickResponse, gClickArray[dialogid][cda_style],
+		gClickArray[dialogid][cda_caption],
+		gClickArray[dialogid][cda_info],
+		gClickArray[dialogid][cda_button1], gClickArray[dialogid][cda_button2]
 	);
 }
 
@@ -123,32 +150,51 @@ DialogResponse:PlayerClickResponse(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new id = click_GetResponseID(playerid);
+	new id = Click_GetResponseID(playerid);
 
-	if (GetPlayerPrivilege(playerid) >= click_dialogArray[id][cda_privilege]) {
-		click_CallFunction(playerid, id, listitem, inputtext);
+	if (GetPlayerPrivilege(playerid) >= gClickArray[id][cda_privilege]) {
+		Click_CallFunction(playerid, id, listitem, inputtext);
 	}
 	return 1;
 }
 
 /*
 
-	Function's
+	Functions
 
 */
 
-stock click_CallFunction(playerid, dialogid, listitem, inputtext[])
+stock Click_AddItem(style, caption[], info[], button1[], button2[], PlayerPrivilege:privilege, function[])
 {
-	new clickedid = click_GetPlayerClickedID(playerid);
-	CallLocalFunction(click_dialogArray[dialogid][cda_function], "ddds", playerid, clickedid, listitem, inputtext);
+	new id = gClickItemId++;
+	if (id >= MAX_CLICK_DIALOG_ITEMS) {
+		Log_Debug("Error <click:Click_AddItem>: dialog items is reached (%d >= %d).", id, MAX_CLICK_DIALOG_ITEMS);
+		return -1;
+	}
+
+	gClickArray[id][cda_style] = style;
+	strmid(gClickArray[id][cda_caption], caption, 0, strlen(caption), MAX_CLICK_DIALOG_CAPTION_SIZE);
+	strmid(gClickArray[id][cda_info], info, 0, strlen(info), MAX_CLICK_DIALOG_INFO_SIZE);
+	strmid(gClickArray[id][cda_button1], button1, 0, strlen(button1), MAX_CLICK_DIALOG_BUTTON_SIZE);
+	strmid(gClickArray[id][cda_button2], button2, 0, strlen(button2), MAX_CLICK_DIALOG_BUTTON_SIZE);
+	gClickArray[id][cda_privilege] = privilege;
+	strmid(gClickArray[id][cda_function], function, 0, strlen(function), MAX_CLICK_DIALOG_FUNCTION_SIZE);
+
+	return id;
 }
 
-stock click_GetIdByListitem(PlayerPrivilege:privilege, listitem)
+static stock Click_CallFunction(playerid, dialogid, listitem, inputtext[])
+{
+	new clickedid = Click_GetPlayerClickedID(playerid);
+	CallLocalFunction(gClickArray[dialogid][cda_function], "ddds", playerid, clickedid, listitem, inputtext);
+}
+
+static stock Click_GetIdByListitem(PlayerPrivilege:privilege, listitem)
 {
 	new id = 0;
 
-	for (new i = 0; i < sizeof(click_dialogArray); i++) {
-		if (_:privilege >= _:click_dialogArray[i][cda_privilege]) {
+	for (new i = 0; i < sizeof(gClickArray); i++) {
+		if (_:privilege >= _:gClickArray[i][cda_privilege]) {
 			if (listitem == id) {
 				return id;
 			}
@@ -159,20 +205,20 @@ stock click_GetIdByListitem(PlayerPrivilege:privilege, listitem)
 	return -1;
 }
 
-stock click_SetResponseID(playerid, id) {
-	SetPVarInt(playerid, "click_ResponseType", id);
+static stock Click_SetResponseID(playerid, id) {
+	gPlayerResponseType[playerid] = id;
 }
 
-stock click_GetResponseID(playerid) {
-	return GetPVarInt(playerid, "click_ResponseType");
+static stock Click_GetResponseID(playerid) {
+	return gPlayerResponseType[playerid];
 }
 
-stock click_GetPlayerClickedID(playerid)
+static stock Click_SetPlayerClickedID(playerid, targetid)
 {
-	return GetPVarInt(playerid, "click_ClickedPlayerid");
+	gPlayerTargetID[playerid] = targetid;
 }
 
-stock click_SetPlayerClickedID(playerid, clickedid)
+static stock Click_GetPlayerClickedID(playerid)
 {
-	SetPVarInt(playerid, "click_ClickedPlayerid", clickedid);
+	return gPlayerTargetID[playerid];
 }

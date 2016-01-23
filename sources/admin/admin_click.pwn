@@ -1,10 +1,133 @@
 /*
 
-	Title: admin click system
-	Created: 14.01.2014
+	About: admin click system
 	Author: ziggi
 
 */
+
+AdminClick_OnGameModeInit()
+{
+	// moder
+	Click_AddItem(DIALOG_STYLE_INPUT,
+	              _(ADMIN_CLICK_KICK_DIALOG_HEADER),
+	              _(ADMIN_CLICK_KICK_DIALOG_MESSAGE),
+	              _(ADMIN_CLICK_KICK_DIALOG_BUTTON_KICK), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
+	              PlayerPrivilegeModer,
+	              "adm_click_KickPlayer");
+
+	Click_AddItem(DIALOG_STYLE_INPUT,
+	              _(ADMIN_CLICK_MUTE_DIALOG_HEADER),
+	              _(ADMIN_CLICK_MUTE_DIALOG_MESSAGE),
+	              _(ADMIN_CLICK_MUTE_DIALOG_BUTTON_MUTE), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
+	              PlayerPrivilegeModer,
+	              "adm_click_MutePlayer");
+
+	Click_AddItem(DIALOG_STYLE_NONE,
+	              _(ADMIN_CLICK_UNMUTE_DIALOG_HEADER),
+	              "",
+	              "", "",
+	              PlayerPrivilegeModer,
+	              "adm_click_UnMutePlayer");
+
+	Click_AddItem(DIALOG_STYLE_INPUT,
+	              _(ADMIN_CLICK_JAIL_DIALOG_HEADER),
+	              _(ADMIN_CLICK_JAIL_DIALOG_MESSAGE),
+	              _(ADMIN_CLICK_JAIL_DIALOG_BUTTON_JAIL), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
+	              PlayerPrivilegeModer,
+	              "adm_click_JailPlayer");
+
+	Click_AddItem(DIALOG_STYLE_NONE,
+	              _(ADMIN_CLICK_UNJAIL_DIALOG_HEADER),
+	              "",
+	              "", "",
+	              PlayerPrivilegeModer,
+	              "adm_click_UnJailPlayer");
+
+	// admin
+	Click_AddItem(DIALOG_STYLE_NONE,
+	              _(ADMIN_CLICK_INFO_DIALOG_HEADER),
+	              "",
+	              "", "",
+	              PlayerPrivilegeAdmin,
+	              "adm_click_InfoPlayer");
+
+	Click_AddItem(DIALOG_STYLE_NONE,
+	              _(ADMIN_CLICK_KILL_DIALOG_HEADER),
+	              "",
+	              "", "",
+	              PlayerPrivilegeAdmin,
+	              "adm_click_KillPlayer");
+
+	Click_AddItem(DIALOG_STYLE_NONE,
+	              _(ADMIN_CLICK_TELEPORT_TO_DIALOG_HEADER),
+	              "",
+	              "", "",
+	              PlayerPrivilegeAdmin,
+	              "adm_click_TeleportToPlayer");
+
+	Click_AddItem(DIALOG_STYLE_NONE,
+	              _(ADMIN_CLICK_TELEPORT_HERE_DIALOG_HEADER),
+	              "",
+	              "", "",
+	              PlayerPrivilegeAdmin,
+	              "adm_click_TeleportToMe");
+
+	Click_AddItem(DIALOG_STYLE_INPUT,
+	              _(ADMIN_CLICK_HEALTH_DIALOG_HEADER),
+	              _(ADMIN_CLICK_HEALTH_DIALOG_MESSAGE),
+	              _(ADMIN_CLICK_MESSAGE_BUTTON_CHANGE), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
+	              PlayerPrivilegeAdmin,
+	              "adm_click_SetHealth");
+
+	Click_AddItem(DIALOG_STYLE_INPUT,
+	              _(ADMIN_CLICK_ARMOUR_DIALOG_HEADER),
+	              _(ADMIN_CLICK_ARMOUR_DIALOG_MESSAGE),
+	              _(ADMIN_CLICK_MESSAGE_BUTTON_CHANGE), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
+	              PlayerPrivilegeAdmin,
+	              "adm_click_SetArmour");
+
+	Click_AddItem(DIALOG_STYLE_INPUT,
+	              _(ADMIN_CLICK_LEVEL_DIALOG_HEADER),
+	              _(ADMIN_CLICK_LEVEL_DIALOG_MESSAGE),
+	              _(ADMIN_CLICK_MESSAGE_BUTTON_CHANGE), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
+	               PlayerPrivilegeAdmin,
+	               "adm_click_SetLevel");
+
+	Click_AddItem(DIALOG_STYLE_INPUT,
+	              _(ADMIN_CLICK_XP_DIALOG_HEADER),
+	              _(ADMIN_CLICK_XP_DIALOG_MESSAGE),
+	              _(ADMIN_CLICK_MESSAGE_BUTTON_GIVE), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
+	              PlayerPrivilegeAdmin,
+	              "adm_click_GiveXP");
+
+	Click_AddItem(DIALOG_STYLE_INPUT,
+	              _(ADMIN_CLICK_MONEY_DIALOG_HEADER),
+	              _(ADMIN_CLICK_MONEY_DIALOG_MESSAGE),
+	              _(ADMIN_CLICK_MESSAGE_BUTTON_GIVE), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
+	              PlayerPrivilegeAdmin,
+	              "adm_click_GiveMoney");
+
+	Click_AddItem(DIALOG_STYLE_INPUT,
+	              _(ADMIN_CLICK_FREEZE_DIALOG_HEADER),
+	              _(ADMIN_CLICK_FREEZE_DIALOG_MESSAGE),
+	              _(ADMIN_CLICK_FREEZE_DIALOG_BUTTON), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
+	              PlayerPrivilegeAdmin,
+	              "adm_click_FreezePlayer");
+
+	Click_AddItem(DIALOG_STYLE_NONE,
+	              _(ADMIN_CLICK_UNFREEZE_DIALOG_HEADER),
+	              "",
+	              "", "",
+	              PlayerPrivilegeAdmin,
+	              "adm_click_UnFreezePlayer");
+
+	Click_AddItem(DIALOG_STYLE_NONE,
+	              _(ADMIN_CLICK_NETSTATS_DIALOG_HEADER),
+	              "",
+	              "", "",
+	              PlayerPrivilegeAdmin,
+	              "adm_click_GetNetStats");
+}
 
 static stock ShowErrorDialog(playerid, error_msg[])
 {

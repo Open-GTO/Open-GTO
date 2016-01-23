@@ -71,12 +71,25 @@ PLAYER_PM_MAX_SYMBOLS = Максимум %d символов!
 PLAYER_LOADING = {FFCC66}[Сервер]: {FFFFFF}Загрузка...
 
 // player click
+CLICK_PM_DIALOG_HEADER = Личное сообщение
+CLICK_PM_DIALOG_MESSAGE = Введите сообщение
+CLICK_PM_DIALOG_BUTTON_SEND = Отправить
+CLICK_PM_DIALOG_BUTTON_BACK = Назад
+
+CLICK_REPORT_DIALOG_HEADER = Жалоба на игрока
+CLICK_REPORT_DIALOG_MESSAGE = Введите текст жалобы:
+CLICK_REPORT_DIALOG_BUTTON_SEND = Отправить
+CLICK_REPORT_DIALOG_BUTTON_BACK = Назад
 CLICK_REPORT_SELF = Жалоба на %s(%d): %s
 CLICK_REPORT_PLAYER = Жалоба игрока %s(%d) на %s(%d): %s
 CLICK_REPORT_BY_MINUTE = на %d минут
 CLICK_REPORT_MESSAGE = Жалоба (%d/%d) на %s(%d), причина: %s
 CLICK_REPORT_SERVER = {FFCC66}[Сервер]: {FFFFFF}%s был арестован %s
 
+CLICK_SENDCASH_DIALOG_HEADER = Отправить деньги
+CLICK_SENDCASH_DIALOG_MESSAGE = Введите сумму:
+CLICK_SENDCASH_DIALOG_BUTTON_SEND = Введите сумму:
+CLICK_SENDCASH_DIALOG_BUTTON_BACK = Назад
 CLICK_SENDCASH_GIVE = Вы отдали %s(%d) $%d собственных наличных.
 CLICK_SENDCASH_GET = Вы получили $%d наличных от %s(%d).
 CLICK_SENDCASH_NOT_VALID = Неверная сумма
@@ -554,11 +567,55 @@ ADMIN_CLICK_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_CLICK_MESSAGE_HEADER = Меню администратора
 ADMIN_CLICK_MESSAGE_BUTTON_OK = ОК
 ADMIN_CLICK_MESSAGE_BUTTON_BACK = Назад
+ADMIN_CLICK_MESSAGE_BUTTON_CHANGE = Изменить
+ADMIN_CLICK_MESSAGE_BUTTON_GIVE = Дать
 ADMIN_CLICK_TIME_ERROR = Неправильное время, формат ввода: число[с/м/ч/д/н/г]
 ADMIN_CLICK_JAIL_BAD_TARGET = Этот игрок не в тюрьме
 ADMIN_CLICK_HEALTH_ERROR = Неправильное количество здоровья.
 ADMIN_CLICK_ARMOUR_ERROR = Неправильное количество брони.
 ADMIN_CLICK_LEVEL_ERROR = Неправильный уровень.
+
+ADMIN_CLICK_KICK_DIALOG_HEADER = Кикнуть
+ADMIN_CLICK_KICK_DIALOG_MESSAGE = Введите причину:
+ADMIN_CLICK_KICK_DIALOG_BUTTON_KICK = Кикнуть
+
+ADMIN_CLICK_MUTE_DIALOG_HEADER = Заглушить
+ADMIN_CLICK_MUTE_DIALOG_MESSAGE = Введите время, на которое нужно заткнуть игрока:
+ADMIN_CLICK_MUTE_DIALOG_BUTTON_MUTE = Заткнуть
+
+ADMIN_CLICK_UNMUTE_DIALOG_HEADER = Разгрушить
+
+ADMIN_CLICK_JAIL_DIALOG_HEADER = Посадить в тюрьму
+ADMIN_CLICK_JAIL_DIALOG_MESSAGE = Введите время заключения:
+ADMIN_CLICK_JAIL_DIALOG_BUTTON_JAIL = Посадить
+
+ADMIN_CLICK_UNJAIL_DIALOG_HEADER = Выпустить из тюрьмы
+ADMIN_CLICK_INFO_DIALOG_HEADER = Информация
+ADMIN_CLICK_KILL_DIALOG_HEADER = Убить
+ADMIN_CLICK_TELEPORT_TO_DIALOG_HEADER = Телепортироваться к игроку
+ADMIN_CLICK_TELEPORT_HERE_DIALOG_HEADER = Телепортировать к себе
+
+ADMIN_CLICK_HEALTH_DIALOG_HEADER = Изменить здоровье
+ADMIN_CLICK_HEALTH_DIALOG_MESSAGE = Введите значение:
+
+ADMIN_CLICK_ARMOUR_DIALOG_HEADER = Изменить броню
+ADMIN_CLICK_ARMOUR_DIALOG_MESSAGE = Введите значение:
+
+ADMIN_CLICK_LEVEL_DIALOG_HEADER = Изменить уровень
+ADMIN_CLICK_LEVEL_DIALOG_MESSAGE = Введите новый уровень:
+
+ADMIN_CLICK_XP_DIALOG_HEADER = Дать опыт
+ADMIN_CLICK_XP_DIALOG_MESSAGE = Введите количество опыта:
+
+ADMIN_CLICK_MONEY_DIALOG_HEADER = Дать денег
+ADMIN_CLICK_MONEY_DIALOG_MESSAGE = Введите количество денег:
+
+ADMIN_CLICK_FREEZE_DIALOG_HEADER = Заморозить
+ADMIN_CLICK_FREEZE_DIALOG_MESSAGE = Введите время заморозки:
+ADMIN_CLICK_FREEZE_DIALOG_BUTTON = Заморозить
+
+ADMIN_CLICK_UNFREEZE_DIALOG_HEADER = Разморозить
+ADMIN_CLICK_NETSTATS_DIALOG_HEADER = Получить NetStats
 
 ADMIN_COMMAND_NOT_ALLOWED = Нет доступа к этой команде
 

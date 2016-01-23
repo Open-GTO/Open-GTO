@@ -266,6 +266,8 @@ public OnGameModeInit()
 	pl_money_td_OnGameModeInit();
 	pl_level_OnGameModeInit();
 	widestrip_OnGameModeInit();
+	PlayerClick_OnGameModeInit();
+	AdminClick_OnGameModeInit();
 
 	// custom
 	Beachside_OnGameModeInit();
@@ -354,7 +356,7 @@ public OnPlayerDisconnect(playerid, reason)
 
 public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 {
-	click_OnPlayerClickPlayer(playerid, clickedplayerid);
+	Click_OnPlayerClickPlayer(playerid, clickedplayerid);
 	return 1;
 }
 

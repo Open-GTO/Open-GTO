@@ -6,6 +6,30 @@
 
 */
 
+PlayerClick_OnGameModeInit()
+{
+	Click_AddItem(DIALOG_STYLE_INPUT,
+	              _(CLICK_SENDCASH_DIALOG_HEADER),
+	              _(CLICK_SENDCASH_DIALOG_MESSAGE),
+	              _(CLICK_SENDCASH_DIALOG_BUTTON_SEND), _(CLICK_SENDCASH_DIALOG_BUTTON_BACK),
+	              PlayerPrivilegePlayer,
+	              "pl_click_SendCash");
+
+	Click_AddItem(DIALOG_STYLE_INPUT,
+	              _(CLICK_PM_DIALOG_HEADER),
+	              _(CLICK_PM_DIALOG_MESSAGE),
+	              _(CLICK_PM_DIALOG_BUTTON_SEND), _(CLICK_PM_DIALOG_BUTTON_BACK),
+	              PlayerPrivilegePlayer,
+	              "pl_click_SendMessage");
+
+	Click_AddItem(DIALOG_STYLE_INPUT,
+	              _(CLICK_REPORT_DIALOG_HEADER),
+	              _(CLICK_REPORT_DIALOG_MESSAGE),
+	              _(CLICK_REPORT_DIALOG_BUTTON_SEND), _(CLICK_REPORT_DIALOG_BUTTON_BACK),
+	              PlayerPrivilegePlayer,
+	              "pl_click_SendReport");
+}
+
 forward pl_click_SendCash(playerid, clickedid, listitem, inputtext[]);
 public pl_click_SendCash(playerid, clickedid, listitem, inputtext[])
 {
