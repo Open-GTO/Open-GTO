@@ -545,7 +545,7 @@ ADMIN_CHAT_NO_ADMIN = {FF2211}[Ошибка]: {FFFFFF}Извините, но на сервере сейчас н
 ADMIN_CHAT_MESSAGE_TO_ADMIN = {A5D6A7}Сообщение администрации от %s(%d): {FFFFFF}%s
 ADMIN_CHAT_PLAYER_TO_ADMIN = {A5D6A7}Сообщение администрации: {FFFFFF}%s
 
-ADMIN_CHAT_NO_ADMIN = {FF2211}[Ошибка]: {FFFFFF}Извините, но на сервере сейчас нет модераторов.
+ADMIN_CHAT_NO_MODER = {FF2211}[Ошибка]: {FFFFFF}Извините, но на сервере сейчас нет модераторов.
 ADMIN_CHAT_MESSAGE_TO_MODER = {A5D6A7}Сообщение модерации от %s(%d): {FFFFFF}%s
 ADMIN_CHAT_PLAYER_TO_MODER = {A5D6A7}Сообщение модерации: {FFFFFF}%s
 
