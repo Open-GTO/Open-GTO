@@ -191,7 +191,7 @@ public Vehicle_Fuel_FillTimer(playerid)
 forward Vehicle_Fuel_SpeedTimer();
 public Vehicle_Fuel_SpeedTimer()
 {
-	new vehicleid, speed_count, Float:max_fuel;
+	new vehicleid, Float:speed_count, Float:max_fuel;
 	
 	foreach (new playerid : Player) {
 		vehicleid = GetPlayerVehicleID(playerid);
@@ -215,7 +215,7 @@ public Vehicle_Fuel_SpeedTimer()
 		}
 		
 		speed_count = GetVehicleSpeed(vehicleid);
-		gFuel[vehicleid] -= float(speed_count + 1) / float(VEHICLE_FUEL_TARIF);
+		gFuel[vehicleid] -= (speed_count + 1.0) / float(VEHICLE_FUEL_TARIF);
 
 		Vehicle_UpdateTextdraw(playerid, speed_count, gFuel[vehicleid]);
 	}
