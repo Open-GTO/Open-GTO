@@ -83,7 +83,7 @@ COMMAND:getinfo(playerid, params[])
 
 				Declension_GetMinutes(time, timeword);
 
-				format(string, sizeof(string), _(ADMIN_PLIST_MUTE_REMAIN),
+				format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_ALL_MUTE_REMAIN),
 					targetname, targetid, time, timeword);
 			}
 
