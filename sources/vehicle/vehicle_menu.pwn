@@ -137,7 +137,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 				}
 			}
 			
-			if (GetVehicleFuel(vehicleid) >= float(GetMaxVehicleModelFuel(vehiclemodel))) {
+			if (GetVehicleFuel(vehicleid) >= GetVehicleModelMaxFuel(vehiclemodel)) {
 				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_FUEL_IS_FULL), "Назад", "Отмена");
 				return 1;
 			}

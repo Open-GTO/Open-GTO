@@ -46,3 +46,6 @@
 [submodule "sources/lib/weaponskill"]
 	path = sources/lib/weaponskill
 	url = https://github.com/Open-GTO/weaponskill.git
+[submodule "sources/lib/zvehinfo"]
+	path = sources/lib/zvehinfo
+	url = https://github.com/Open-GTO/zvehinfo.git

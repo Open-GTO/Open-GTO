@@ -23,10 +23,34 @@ public api_GivePlayerMoney(playerid, amount, showtext)
 	return GivePlayerMoney(playerid, amount, showtext);
 }
 
-forward api_GetMaxVehicleModelFuel(vehiclemodel);
-public api_GetMaxVehicleModelFuel(vehiclemodel)
+forward api_GetVehicleModelCost(model);
+public api_GetVehicleModelCost(model)
 {
-	return GetMaxVehicleModelFuel(vehiclemodel);
+	return GetVehicleModelCost(model);
+}
+
+forward api_GetVehicleModelMaxFuel(vehiclemodel);
+public api_GetVehicleModelMaxFuel(vehiclemodel)
+{
+	return GetVehicleModelMaxFuel(vehiclemodel);
+}
+
+forward api_GetVehicleFuel(vehicleid);
+public api_GetVehicleFuel(vehicleid)
+{
+	return GetVehicleFuel(vehicleid);
+}
+
+forward api_SetVehicleFuel(vehicleid, Float:amount);
+public api_SetVehicleFuel(vehicleid, Float:amount)
+{
+	return SetVehicleFuel(vehicleid, amount);
+}
+
+forward api_GiveVehicleFuel(vehicleid, Float:amount);
+public api_GiveVehicleFuel(vehicleid, Float:amount)
+{
+	return GiveVehicleFuel(vehicleid, amount);
 }
 
 forward api_SetPlayerHealth(playerid, Float:amount);

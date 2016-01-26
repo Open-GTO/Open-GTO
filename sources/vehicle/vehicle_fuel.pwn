@@ -92,8 +92,9 @@ Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate)
 	}
 	
 	new vehicleid = GetPlayerVehicleID(playerid);
-	
-	if (newstate == PLAYER_STATE_DRIVER && vehicleid != 0) {
+	new Float:max_fuel = GetVehicleModelMaxFuel( GetVehicleModel(vehicleid) );
+
+	if (newstate == PLAYER_STATE_DRIVER && vehicleid != 0 && max_fuel != 0.0) {
 		Vehicle_ShowTextdraw(playerid);
 
 		if (gFuel[vehicleid] <= 0.1 && !vshop_IsShopVehicle(vehicleid)) {
@@ -136,14 +137,14 @@ COMMAND:fill(playerid, params[])
 	
 	new vehiclemodel = GetVehicleModel(vehicleid);
 
-	new max_fuel = GetMaxVehicleModelFuel(vehiclemodel);
+	new Float:max_fuel = GetVehicleModelMaxFuel(vehiclemodel);
 
-	if (max_fuel == 0) {
+	if (max_fuel == 0.0) {
 		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_WITHOUT_FUEL_ENGINE));
 		return 1;
 	}
 	
-	if (gFuel[vehicleid] >= float(max_fuel)) {
+	if (gFuel[vehicleid] >= max_fuel) {
 		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_FUEL_IS_FULL));
 		return 1;
 	}
@@ -169,7 +170,7 @@ public Vehicle_Fuel_FillTimer(playerid)
 	
 	gFuel[vehicleid] += VEHICLE_FUEL_SPEED;
 
-	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || gFuel[vehicleid] >= float(GetMaxVehicleModelFuel(model))) {
+	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || gFuel[vehicleid] >= GetVehicleModelMaxFuel(model)) {
 		new fill_money = floatround( gFuel[vehicleid] - gOldFuel[vehicleid] ) * VEHICLE_FUEL_FILL_TARIF;
 		GivePlayerMoney(playerid, -fill_money);
 		
@@ -199,7 +200,7 @@ public Vehicle_Fuel_SpeedTimer()
 			continue;
 		}
 		
-		max_fuel = float(GetMaxVehicleModelFuel( GetVehicleModel(vehicleid) ));
+		max_fuel = GetVehicleModelMaxFuel( GetVehicleModel(vehicleid) );
 		if (max_fuel == 0.0) {
 			continue;
 		}
@@ -237,28 +238,28 @@ stock IsVehicleRefilling(vehicleid)
 	return gIsRefilling{vehicleid} != 0;
 }
 
-public Float:GetVehicleFuel(vehicleid)
+stock Float:GetVehicleFuel(vehicleid)
 {
 	return gFuel[vehicleid];
 }
 
-public Float:SetVehicleFuel(vehicleid, Float:amount)
+stock Float:SetVehicleFuel(vehicleid, Float:amount)
 {
-	new Float:max_fuel = float( GetMaxVehicleModelFuel( GetVehicleModel(vehicleid) ) );
+	new Float:max_fuel = GetVehicleModelMaxFuel( GetVehicleModel(vehicleid) );
 
-	if (amount == -1) {
-		amount = max_fuel / 2 + random(floatround( max_fuel / 2 ));
+	if (amount == -1.0) {
+		amount = max_fuel / 2.0 + float(random(floatround( max_fuel / 2 )));
 	} else if (amount > max_fuel) {
 		amount = max_fuel;
-	} else if (amount < 0) {
-		amount = 0;
+	} else if (amount < 0.0) {
+		amount = 0.0;
 	}
 	
 	gFuel[vehicleid] = amount;
 	return amount;
 }
 
-public Float:GiveVehicleFuel(vehicleid, Float:amount)
+stock Float:GiveVehicleFuel(vehicleid, Float:amount)
 {
 	return SetVehicleFuel(vehicleid, gFuel[vehicleid] + amount);
 }

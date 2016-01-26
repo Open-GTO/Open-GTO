@@ -167,7 +167,7 @@ Fuelstation_OnPlayerKeyStateCh(playerid, newkeys, oldkeys)
 		}
 	}
 
-	if (GetVehicleFuel(vehicleid) - 1.0 >= float(GetMaxVehicleModelFuel(vehiclemodel))) {
+	if (GetVehicleFuel(vehicleid) - 1.0 >= GetVehicleModelMaxFuel(vehiclemodel)) {
 		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_FUEL_IS_FULL));
 		return 1;
 	}

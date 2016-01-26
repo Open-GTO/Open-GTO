@@ -259,7 +259,7 @@ stock vshop_OneHourTimer()
 stock buyVehicle(playerid, vehicleid, color1, color2)
 {
 	new model = GetVehicleModel(vehicleid);
-	AddPlayerVehicle(playerid, model, color1, color2, float(GetMaxVehicleModelFuel(model)));
+	AddPlayerVehicle(playerid, model, color1, color2, GetVehicleModelMaxFuel(model));
 	return 1;
 }
 

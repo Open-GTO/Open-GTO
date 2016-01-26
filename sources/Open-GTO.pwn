@@ -57,6 +57,7 @@ Thanks:
 #include "protections/health.inc"
 #include "protections/specialaction.inc"
 #include "protections/teleport.inc"
+#include "vehicle/vehicle_info.inc"
 
 // lib
 #include "lib/streamer.inc"
@@ -81,6 +82,7 @@ Thanks:
 #include "lib/getspawninfo/getspawninfo.inc"
 #include "lib/getweather/getweather.inc"
 #include "lib/weaponskill/weaponskill.inc"
+#include "lib/zvehinfo/zvehinfo.inc"
 
 // core
 #include "core/api.pwn"
