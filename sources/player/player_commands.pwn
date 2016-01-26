@@ -44,6 +44,11 @@ COMMAND:commands(playerid, params[])
 	return 1;
 }
 
+COMMAND:stats(playerid, params[])
+{
+	return cmd_status(playerid, params);
+}
+
 COMMAND:status(playerid, params[])
 {
 	SendClientMessage(playerid, COLOR_GREEN, _(COMMAND_STATUS_0));

@@ -45,9 +45,9 @@ COMMAND:freeze(playerid, params[])
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
-	GetPlayerName(playerid, playername, sizeof(playername));
-	Declension_GetSeconds(time, timeword);
 	is_with_reason = strlen(reason) != 0;
+	Declension_GetWord(timeword, sizeof(timeword), time, _(DECLENSION_SECOND_4), _(DECLENSION_SECOND_2), _(DECLENSION_SECOND_3));
+	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (targetid == -1) {
 		format(string, sizeof(string), _(ADMIN_COMMAND_FREEZE_ALL), playername, playerid, time, timeword);

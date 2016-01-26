@@ -49,11 +49,6 @@ stock player_OnPlayerSpawn(playerid)
 	if (IsPlayerMuted(playerid)) {
 		SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
 	}
-	
-	if (IsPlayerJailed(playerid)) {
-		new jail_time = GetPlayerJailTime(playerid);
-		JailPlayer(playerid, jail_time);
-	}
 
 	UpdatePlayerLevelTextDraws(playerid);
 	UpdatePlayerWeaponTextDraws(playerid);

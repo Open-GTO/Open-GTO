@@ -75,7 +75,7 @@ stock JailPlayerTimer(playerid)
 
 		GetPlayerName(playerid, playername, sizeof(playername));
 		
-		format(string, sizeof(string), _(ADMIN_JAIL_UNJAILED), playername);
+		format(string, sizeof(string), _(ADMIN_JAIL_UNJAILED), playername, playerid);
 		SendClientMessageToAll(-1, string);
 	}
 	return 1;
@@ -117,14 +117,40 @@ stock UnJailPlayer(playerid)
 	return 1;
 }
 
+stock GetJailPos(&Float:x, &Float:y, &Float:z, &Float:angle, &interior)
+{
+	x = 265.1273;
+	y = 77.6823;
+	z = 1001.0391;
+	angle = -90.0;
+	interior = 6;
+}
+
 static stock SetPlayerPosToJail(playerid)
 {
-	SetPlayerPosEx(playerid, 265.1273, 77.6823, 1001.0391, -90.0, 6);
+	new
+		Float:x,
+		Float:y,
+		Float:z,
+		Float:angle,
+		interior;
+
+	GetJailPos(x, y, z, angle, interior);
+	SetPlayerPosEx(playerid, x, y, z, angle, interior);
 }
 
 static stock IsPlayerPosInJail(playerid)
 {
-	return IsPlayerInRangeOfPoint(playerid, 5, 265.1273, 77.6823, 1001.0391) && GetPlayerInterior(playerid) == 6;
+	new
+		Float:x,
+		Float:y,
+		Float:z,
+		Float:angle,
+		interior;
+
+	GetJailPos(x, y, z, angle, interior);
+
+	return IsPlayerInRangeOfPoint(playerid, 5, x, y, z) && GetPlayerInterior(playerid) == interior;
 }
 
 stock GetPlayerJailedCount(playerid) {

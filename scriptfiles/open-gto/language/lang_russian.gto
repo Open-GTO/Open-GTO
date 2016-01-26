@@ -542,6 +542,7 @@ DECLENSION_MINUTE_3 = минут
 DECLENSION_SECOND_1 = секунда
 DECLENSION_SECOND_2 = секунды
 DECLENSION_SECOND_3 = секунд
+DECLENSION_SECOND_4 = секунду
 DECLENSION_AMMO_1 = патрон
 DECLENSION_AMMO_2 = патрона
 DECLENSION_AMMO_3 = патронов
@@ -825,9 +826,9 @@ ADMIN_COMMAND_GETINFO_PLAYER_PLAYED = {FFCC66}* {FFFFFF}Время в игре: {A5D6A7}%s
 ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM = {FFCC66}* {FFFFFF}Премиум статус до: {A5D6A7}%02d.%02d.%04d
 
 ADMIN_COMMAND_GETINFO_ALL_HEADER = {FFCC66}* {FFFFFF}Список заткнутых и посаженных:
-ADMIN_COMMAND_GETINFO_ALL_JAIL_REMAIN = {FFCC66}* {FFFFFF}Арестованный {FFCC66}%s(%d) {FFFFFF}осталось %d м.
+ADMIN_COMMAND_GETINFO_ALL_JAIL_REMAIN = {FFCC66}* {FFFFFF}Арестованный {FFCC66}%s(%d) {FFFFFF}осталось %d %s.
 ADMIN_COMMAND_GETINFO_ALL_JAIL_NOTIME = {FFCC66}* {FFFFFF}Арестованный {FFCC66}%s(%d) {FFFFFF}без времени.
-ADMIN_COMMAND_GETINFO_ALL_MUTE_REMAIN = {FFCC66}* {FFFFFF}Заткнутый {FFCC66}%s(%d) {FFFFFF}осталось %d м.
+ADMIN_COMMAND_GETINFO_ALL_MUTE_REMAIN = {FFCC66}* {FFFFFF}Заткнутый {FFCC66}%s(%d) {FFFFFF}осталось %d %s.
 ADMIN_COMMAND_GETINFO_ALL_NOPLAYERS = {FFCC66}* {FFFFFF}На сервере нет заткнутых или посаженных игроков.
 
 ADMIN_COMMAND_NETSTATS_HELP = {FFCC66}[Применение]: {FFFFFF}/netstats <id/ник>
@@ -867,41 +868,41 @@ ADMIN_COMMAND_KICK_NOREASON = не указана
 ADMIN_COMMAND_MUTE_HELP = {FFCC66}[Применение]: {FFFFFF}/mute <id/ник/all> <время(число[с/м/ч/д/н/г])> <причина/>
 ADMIN_COMMAND_MUTE_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_MUTE_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}заткнул всех игроков {FFFFFF}на {A5D6A7}%d %s.
-ADMIN_COMMAND_MUTE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}заткнул {FFCC66}%s(%d) {FFFFFF}на {A5D6A7}%d %s.
-ADMIN_COMMAND_MUTE_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы заткнули {FFCC66}%s(%d) {FFFFFF}на {A5D6A7}%d %s.
-ADMIN_COMMAND_MUTE_REASON = %s. Причина: {A5D6A7}%s
+ADMIN_COMMAND_MUTE_PLAYER = {FFCC66}* {FFFFFF}Модератор %s(%d) заткнул {FFCC66}%s(%d) {FFFFFF}на %d %s.
+ADMIN_COMMAND_MUTE_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы заткнули {FFCC66}%s(%d) {FFFFFF}на {A5D6A7}%d %s{FFFFFF}.
+ADMIN_COMMAND_MUTE_REASON = %s Причина: {A5D6A7}%s
 
 ADMIN_MUTE_UNMUTED = {FFCC66}* {FFFFFF}Игрок {FFCC66}%s(%d) {FFFFFF}снова может говорить.
 
 ADMIN_COMMAND_UNMUTE_HELP = {FFCC66}[Применение]: {FFFFFF}/unmute <id/ник/all> <причина/>
 ADMIN_COMMAND_UNMUTE_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_UNMUTE_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}снял затычку со всех игроков.
-ADMIN_COMMAND_UNMUTE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}снял затычку у {FFCC66}%s(%d){FFFFFF}.
+ADMIN_COMMAND_UNMUTE_PLAYER = {FFCC66}* {FFFFFF}Модератор %s(%d) снял затычку у {FFCC66}%s(%d){FFFFFF}.
 ADMIN_COMMAND_UNMUTE_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы сняли затычку {FFCC66}%s(%d){FFFFFF}.
-ADMIN_COMMAND_UNMUTE_REASON = %s. Причина: {A5D6A7}%s
+ADMIN_COMMAND_UNMUTE_REASON = %s {FFFFFF}Причина: {A5D6A7}%s
 
 ADMIN_COMMAND_JAIL_HELP = {FFCC66}[Применение]: {FFFFFF}/jail <id/ник/all> <время(число[с/м/ч/д/н/г])> <причина/>
 ADMIN_COMMAND_JAIL_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_JAIL_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}посадил в тюрьму всех игроков {FFFFFF}на {A5D6A7}%d %s.
-ADMIN_COMMAND_JAIL_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}посадил в тюрьму {FFCC66}%s(%d) {FFFFFF}на {A5D6A7}%d %s.
-ADMIN_COMMAND_JAIL_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы посадили в тюрьму {FFCC66}%s(%d) {FFFFFF}на {A5D6A7}%d %s.
-ADMIN_COMMAND_JAIL_REASON = %s. Причина: {A5D6A7}%s
+ADMIN_COMMAND_JAIL_PLAYER = {FFCC66}* {FFFFFF}Модератор %s(%d) посадил в тюрьму {FFCC66}%s(%d) {FFFFFF}на %d %s.
+ADMIN_COMMAND_JAIL_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы посадили в тюрьму {FFCC66}%s(%d) {FFFFFF}на {A5D6A7}%d %s{FFFFFF}.
+ADMIN_COMMAND_JAIL_REASON = %s Причина: {A5D6A7}%s
 
 ADMIN_JAIL_UNJAILED = {FFCC66}* {FFFFFF}%s(%d) был автоматически выпущен из тюрьмы.
 
 ADMIN_COMMAND_UNJAIL_HELP = {FFCC66}[Применение]: {FFFFFF}/unjail <id/ник/all> <причина/>
 ADMIN_COMMAND_UNJAIL_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_UNJAIL_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}выпустил из тюрьмы всех игроков.
-ADMIN_COMMAND_UNJAIL_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}выпустил из тюрьмы {FFCC66}%s(%d){FFFFFF}.
+ADMIN_COMMAND_UNJAIL_PLAYER = {FFCC66}* {FFFFFF}Модератор %s(%d) выпустил из тюрьмы {FFCC66}%s(%d){FFFFFF}.
 ADMIN_COMMAND_UNJAIL_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы выпустили из тюрьмы {FFCC66}%s(%d){FFFFFF}.
-ADMIN_COMMAND_UNJAIL_REASON = %s. Причина: {A5D6A7}%s
+ADMIN_COMMAND_UNJAIL_REASON = %s {FFFFFF}Причина: {A5D6A7}%s
 
 ADMIN_COMMAND_FREEZE_HELP = {FFCC66}[Применение]: {FFFFFF}/freeze <id/ник/all> <время(число[с/м/ч/д/н/г])> <причина/>
 ADMIN_COMMAND_FREEZE_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_FREEZE_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}заморозил всех игроков {FFFFFF}на {A5D6A7}%d %s.
-ADMIN_COMMAND_FREEZE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}заморозил {FFCC66}%s(%d) {FFFFFF}на {A5D6A7}%d %s.
-ADMIN_COMMAND_FREEZE_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы заморозили {FFCC66}%s(%d) {FFFFFF}на {A5D6A7}%d %s.
-ADMIN_COMMAND_FREEZE_REASON = %s. Причина: {A5D6A7}%s
+ADMIN_COMMAND_FREEZE_PLAYER = {FFCC66}* {FFFFFF}Модератор %s(%d) заморозил {FFCC66}%s(%d) {FFFFFF}на %d %s.
+ADMIN_COMMAND_FREEZE_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы заморозили {FFCC66}%s(%d) {FFFFFF}на {A5D6A7}%d %s{FFFFFF}.
+ADMIN_COMMAND_FREEZE_REASON = %s Причина: {A5D6A7}%s
 
 ADMIN_FREEZE_UNFREEZEED = {FFCC66}* {FFFFFF}%s(%d) был автоматически разморожен.
 
@@ -910,7 +911,7 @@ ADMIN_COMMAND_UNFREEZE_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_UNFREEZE_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}разморозил всех игроков.
 ADMIN_COMMAND_UNFREEZE_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}разморозил {FFCC66}%s(%d){FFFFFF}.
 ADMIN_COMMAND_UNFREEZE_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы разморозили {FFCC66}%s(%d){FFFFFF}.
-ADMIN_COMMAND_UNFREEZE_REASON = %s. Причина: {A5D6A7}%s
+ADMIN_COMMAND_UNFREEZE_REASON = %s {FFFFFF}Причина: {A5D6A7}%s
 
 
 ADMIN_COMMAND_TELEPORT_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.

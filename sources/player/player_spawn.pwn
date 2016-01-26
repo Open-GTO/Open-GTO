@@ -241,6 +241,11 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &
 		return 1;
 	}
 
+	if (IsPlayerJailed(playerid)) {
+		GetJailPos(spos_x, spos_y, spos_z, spos_a, interior);
+		return 1;
+	}
+
 	if (Spectate_IsAfterSpec(playerid)) {
 		Spectate_GetPlayerPos(playerid, spos_x, spos_y, spos_z, spos_a, interior, world);
 		return 1;

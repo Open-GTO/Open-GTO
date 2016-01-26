@@ -48,11 +48,12 @@ COMMAND:getinfo(playerid, params[])
 		new
 			current_time,
 			time,
-			count;
+			count,
+			timeword[MAX_LANG_VALUE_STRING];
 
 		current_time = gettime();
 
-		SendClientMessage(playerid, -1, _(ADMIN_PLIST_HEADER));
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_GETINFO_ALL_HEADER));
 
 		foreach (targetid : Player) {
 			if (!IsPlayerJailed(targetid) && !IsPlayerMuted(playerid)) {
@@ -66,18 +67,24 @@ COMMAND:getinfo(playerid, params[])
 				time = GetPlayerJailTime(targetid);
 
 				if (time > 0) {
+					time = (time - current_time) / 60 + 1;
+
+					Declension_GetMinutes(time, timeword);
+					
 					format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_ALL_JAIL_REMAIN),
-						targetname, targetid, (time - current_time) / 60 + 1);
+						targetname, targetid, time, timeword);
 				} else {
 					format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_ALL_JAIL_NOTIME), targetname, targetid);
 				}
 			}
 
 			if (IsPlayerMuted(playerid)) {
-				time = GetPlayerMuteTime(targetid);
+				time = (GetPlayerMuteTime(targetid) - current_time) / 60 + 1;
+
+				Declension_GetMinutes(time, timeword);
 
 				format(string, sizeof(string), _(ADMIN_PLIST_MUTE_REMAIN),
-					targetname, targetid, (time - current_time) / 60 + 1);
+					targetname, targetid, time, timeword);
 			}
 
 			SendClientMessage(playerid, -1, string);
