@@ -42,7 +42,7 @@ stock cfg_LoadConfigs()
 	// player/
 	pl_level_LoadConfig(file_config);
 	wdrop_LoadConfig(file_config);
-	wskill_LoadConfig(file_config);
+	WSkill_LoadConfig(file_config);
 
 	Lottery_LoadConfig(file_config);
 
@@ -92,7 +92,7 @@ stock cfg_SaveConfigs()
 	// player/
 	pl_level_SaveConfig(file_config);
 	wdrop_SaveConfig(file_config);
-	wskill_SaveConfig(file_config);
+	WSkill_SaveConfig(file_config);
 
 	Lottery_SaveConfig(file_config);
 

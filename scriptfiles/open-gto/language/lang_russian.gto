@@ -736,7 +736,7 @@ ADMIN_COMMAND_UNBAN_HELP = {FFCC66}[Применение]: {FFFFFF}/unban <id/ник/ip>
 ADMIN_COMMAND_UNBAN_SUCCESS = Игрок '%s' успешно разбанен.
 ADMIN_COMMAND_UNBAN_FAIL = Игрок '%s' не забанен.
 
-ADMIN_COMMAND_WEAPON_HELP = {FFCC66}[Применение]: {FFFFFF}/weapon <set/get/give> <id/ник/all> <количество/>
+ADMIN_COMMAND_WEAPON_HELP = {FFCC66}[Применение]: {FFFFFF}/weapon <set/get/give> <id/ник/all> <id оружия> <количество/>
 ADMIN_COMMAND_WEAPON_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_WEAPON_GET = {FFCC66}* {FFFFFF}Оружие игрока {FFCC66}%s(%d){FFFFFF}:
 ADMIN_COMMAND_WEAPON_GET_ITEM = {FFCC66}* {FFFFFF}Слот {A5D6A7}%d{FFFFFF}, id: {A5D6A7}%d{FFFFFF}, патронов: {A5D6A7}%d
@@ -747,7 +747,7 @@ ADMIN_COMMAND_WEAPON_SET_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {F
 ADMIN_COMMAND_WEAPON_SET_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил ваш оружие до {A5D6A7}%d (%d)
 ADMIN_COMMAND_WEAPON_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили оружие у {FFCC66}%s(%d) {FFFFFF}до {A5D6A7}%d (%d)
 
-ADMIN_COMMAND_SKILL_HELP = {FFCC66}[Применение]: {FFFFFF}/skill <set/get/give> <id/ник/all> <количество/>
+ADMIN_COMMAND_SKILL_HELP = {FFCC66}[Применение]: {FFFFFF}/skill <set/get/give> <id/ник/all> <id оружия/> <количество/>
 ADMIN_COMMAND_SKILL_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_SKILL_WEAPON_ERROR = {FF2211}[Ошибка]: {FFFFFF}У этого оружия нельзя изменить навык прокачки.
 ADMIN_COMMAND_SKILL_GET = {FFCC66}* {FFFFFF}Навыки игрока {FFCC66}%s(%d){FFFFFF}:

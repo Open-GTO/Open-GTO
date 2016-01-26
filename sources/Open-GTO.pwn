@@ -42,7 +42,7 @@ Thanks:
 #include "core/unfixes.inc"
 
 // important lib
-#include "lib/sa-mp-fixes/fixes"
+#include "lib/sa-mp-fixes/fixes.inc"
 
 // header files
 #include "gang/gang.inc"
@@ -206,6 +206,7 @@ Thanks:
 #include "admin/admin_commands/cmd_about.pwn"
 #include "admin/admin_commands/cmd_cmdlist.pwn"
 #include "admin/admin_commands/cmd_netstats.pwn"
+#include "admin/admin_commands/cmd_skill.pwn"
 #include "admin/admin_ban.pwn"
 #include "admin/admin_spec.pwn"
 #include "admin/admin_pm.pwn"
@@ -347,7 +348,6 @@ public OnPlayerDisconnect(playerid, reason)
 	Trucker_OnPlayerDisconnect(playerid, reason);
 	pt_chat_OnPlayerDisconnect(playerid, reason);
 	Groundhold_OnPlayerDisconnect(playerid, reason);
-	pl_weapon_OnPlayerDisconnect(playerid, reason);
 	pl_money_td_OnPlayerDisconnect(playerid, reason);
 	pveh_OnPlayerDisconnect(playerid, reason);
 	Player_SetSpawned(playerid, 0);

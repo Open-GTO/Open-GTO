@@ -61,13 +61,7 @@ pl_weapon_OnPlayerPickUpPickup(playerid, pickupid)
 
 pl_weapon_OnPlayerConnect(playerid)
 {
-	wskill_OnPlayerConnect(playerid);
-	return 1;
-}
-
-pl_weapon_OnPlayerDisconnect(playerid, reason)
-{
-	wskill_OnPlayerDisconnect(playerid, reason);
+	WSkill_OnPlayerConnect(playerid);
 	return 1;
 }
 
@@ -75,8 +69,7 @@ pl_weapon_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused killerid
 	if (!IsWeapon(reason)) return 1;
-	wskill_OnPlayerDeath(playerid, killerid, reason);
-	wskill_HideTextDraw(playerid);
+	WSkill_OnPlayerDeath(playerid, killerid, reason);
 	
 	wdrop_OnPlayerDeath(playerid);
 	return 1;
@@ -84,7 +77,7 @@ pl_weapon_OnPlayerDeath(playerid, killerid, reason)
 
 pl_weapon_OnPlayerRequestClass(playerid, classid)
 {
-	wskill_OnPlayerRequestClass(playerid, classid);
+	WSkill_OnPlayerRequestClass(playerid, classid);
 	return 1;
 }
 

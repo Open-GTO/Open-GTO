@@ -60,7 +60,6 @@ stock player_OnPlayerSpawn(playerid)
 	SetPlayerMaxHealth(playerid);
 	pl_fights_UpdatePlayerStyleUsed(playerid);
 	GivePlayerOwnedWeapon(playerid);
-	weapon_SetSkills(playerid);
 	pl_money_td_ShowTextDraw(playerid);
 	UpdatePlayerRandomSpawnID(playerid);
 	return 1;
@@ -326,7 +325,7 @@ stock player_SetDefaultData(playerid)
 	pl_fights_SetPlayerStyleUsed(playerid, FIGHT_STYLE_NORMAL);
 
 	ResetPlayerWeapons(playerid);
-	weapon_ResetSkills(playerid);
+	ResetPlayerSkillLevel(playerid);
 
 	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
 		GivePlayerWeapon(playerid, PlayerStartWeapon[i][pwid], PlayerStartWeapon[i][pbullets], true);

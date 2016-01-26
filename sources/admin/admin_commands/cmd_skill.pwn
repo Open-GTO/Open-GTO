@@ -36,8 +36,8 @@ COMMAND:skill(playerid, params[])
 		weaponid,
 		amount;
 
-	if (sscanf(params, "s[5]s[32]k<weapon>I(0)", subcmd, subparams, weaponid, amount)) {
-		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_SKILL_HELP));
+	if (sscanf(params, "s[5]s[32]K<weapon>(-1)I(0)", subcmd, subparams, weaponid, amount)) {
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_HELP));
 		return 1;
 	}
 
@@ -52,11 +52,15 @@ COMMAND:skill(playerid, params[])
 	}
 
 	new
+		skillid = -1;
+
+	if (weaponid != -1) {
 		skillid = GetWeaponSkillID(weaponid);
 
-	if (skillid == -1) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_WEAPON_ERROR));
-		return 1;
+		if (skillid == -1) {
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_WEAPON_ERROR));
+			return 1;
+		}
 	}
 	
 	new
@@ -65,14 +69,28 @@ COMMAND:skill(playerid, params[])
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
-	GetWeaponSkillName(skillid, skillname);
 	GetPlayerName(playerid, playername, sizeof(playername));
+
+	if (skillid != -1) {
+		GetWeaponSkillName(skillid, skillname);
+	}
 
 	if (targetid != -1) {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 	}
 
 	if (strcmp(subcmd, "set", true) == 0) {
+		if (skillid == -1) {
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_WEAPON_ERROR));
+			return 1;
+		}
+
+		if (amount > MAX_WEAPON_SKILL_LEVEL) {
+			amount = MAX_WEAPON_SKILL_LEVEL;
+		} else if (amount < MIN_WEAPON_SKILL_LEVEL) {
+			amount = MIN_WEAPON_SKILL_LEVEL;
+		}
+
 		if (targetid == -1) {
 			foreach (new id : Player) {
 				SetPlayerSkillLevel(id, skillid, amount);
@@ -98,14 +116,33 @@ COMMAND:skill(playerid, params[])
 		format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_GET), targetname, targetid);
 		SendClientMessage(playerid, -1, string);
 
-		for (new skill = 0; skill < PLAYER_SKILL_SLOTS; skill++) {
-			GetPlayerSkillLevel(playerid, skill, amount);
-			GetWeaponSkillName(skill, string);
+		if (skillid == -1) {
+			for (new skill = 0; skill < PLAYER_SKILL_SLOTS; skill++) {
+				amount = GetPlayerSkillLevel(playerid, skill);
+				GetWeaponSkillName(skill, string);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_GET_ITEM), skill, string, amount);
+				format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_GET_ITEM), skill, string, amount);
+				SendClientMessage(playerid, -1, string);
+			}
+		} else {
+			amount = GetPlayerSkillLevel(playerid, skillid);
+			GetWeaponSkillName(skillid, string);
+
+			format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_GET_ITEM), skillid, string, amount);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "give", true) == 0) {
+		if (skillid == -1) {
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_WEAPON_ERROR));
+			return 1;
+		}
+
+		if (amount > MAX_WEAPON_SKILL_LEVEL) {
+			amount = MAX_WEAPON_SKILL_LEVEL;
+		} else if (amount < -MAX_WEAPON_SKILL_LEVEL) {
+			amount = -MAX_WEAPON_SKILL_LEVEL;
+		}
+
 		if (targetid == -1) {
 			foreach (new id : Player) {
 				GivePlayerSkillLevel(id, skillid, amount);
