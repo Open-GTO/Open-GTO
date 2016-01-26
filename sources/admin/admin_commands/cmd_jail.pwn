@@ -46,7 +46,7 @@ COMMAND:jail(playerid, params[])
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
-	Declension_GetMinutes(time, timeword);
+	Declension_GetSeconds(time, timeword);
 	is_with_reason = strlen(reason) != 0;
 
 	if (targetid == -1) {

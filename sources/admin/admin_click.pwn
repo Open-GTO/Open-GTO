@@ -200,7 +200,7 @@ public adm_click_MutePlayer(playerid, targetid, listitem, inputtext[])
 		playername[MAX_PLAYER_NAME + 1],
 		targetname[MAX_PLAYER_NAME + 1];
 
-	Declension_GetMinutes(time, timeword);
+	Declension_GetSeconds(time, timeword);
 	GetPlayerName(playerid, playername, sizeof(playername));
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
@@ -269,7 +269,7 @@ public adm_click_JailPlayer(playerid, targetid, listitem, inputtext[])
 		playername[MAX_PLAYER_NAME + 1],
 		targetname[MAX_PLAYER_NAME + 1];
 
-	Declension_GetMinutes(time, timeword);
+	Declension_GetSeconds(time, timeword);
 	GetPlayerName(playerid, playername, sizeof(playername));
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
@@ -672,7 +672,7 @@ public adm_click_FreezePlayer(playerid, targetid, listitem, inputtext[])
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
-	Declension_GetMinutes(time, timeword);
+	Declension_GetSeconds(time, timeword);
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 	GetPlayerName(playerid, playername, sizeof(playername));
 
