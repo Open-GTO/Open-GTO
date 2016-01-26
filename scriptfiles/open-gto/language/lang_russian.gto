@@ -310,7 +310,7 @@ GANG_KILL_TEAMMATE = %s убил своего.
 // vehicles
 VEHICLE_INIT = SERVER: Vehicles module init
 VEHICLE_NOT_IN_CAR = Вы не в машине.
-VEHICLE_TEXTDRAW_STRING = %d KM/H~n~%0.1f L.~n~%0.0f HP
+VEHICLE_TEXTDRAW_STRING = %0.0f KM/H~n~%0.1f L.~n~%0.0f HP
 
 // Vehicle Fuel
 VEHICLE_FUEL_INIT = Vehicle Fuel System v2.7 initialized.

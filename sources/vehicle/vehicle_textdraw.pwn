@@ -47,14 +47,14 @@ Vehicle_Textdraw_OnPlayerConn(playerid)
 	return 1;
 }
 
-stock Vehicle_UpdateTextdraw(playerid, speed = -1, Float:fuel = -1.0, Float:health = -1.0)
+stock Vehicle_UpdateTextdraw(playerid, Float:speed = -1.0, Float:fuel = -1.0, Float:health = -1.0)
 {
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid == 0) {
 		return 0;
 	}
 
-	if (speed == -1) {
+	if (speed == -1.0) {
 		speed = GetVehicleSpeed(vehicleid);
 	}
 
