@@ -324,6 +324,7 @@ stock player_SetDefaultData(playerid)
 
 	pl_fights_SetPlayerStyleUsed(playerid, FIGHT_STYLE_NORMAL);
 
+	ResetPlayerGangData(playerid);
 	ResetPlayerWeapons(playerid);
 	ResetPlayerSkillLevel(playerid);
 

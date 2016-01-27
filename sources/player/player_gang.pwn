@@ -170,6 +170,22 @@ stock CheckPlayerInvitedGangTime(playerid)
 }
 
 /*
+	ResetPlayerGangData
+*/
+
+stock ResetPlayerGangData(playerid)
+{
+	SetPlayerGangID(playerid, INVALID_GANG_ID);
+	SetPlayerGangName(playerid, "");
+	SetPlayerGangMemberID(playerid, INVALID_MEMBER_ID);
+	SetPlayerColor(playerid, GetPlayerGangColor(playerid));
+
+	if (Player_GetSpawnType(playerid) == SPAWN_TYPE_GANG) {
+		Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
+	}
+}
+
+/*
 	IsPlayersTeammates
 */
 

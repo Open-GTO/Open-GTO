@@ -337,14 +337,7 @@ stock Gang_MemberRemove(gangid, memberid)
 	GangMember_SetExists(gangid, memberid, false);
 	GangMember_SetRank(gangid, memberid, GangMemberSoldier);
 
-	SetPlayerGangID(playerid, INVALID_GANG_ID);
-	SetPlayerGangName(playerid, "");
-	SetPlayerGangMemberID(playerid, INVALID_MEMBER_ID);
-	SetPlayerColor(playerid, GetPlayerGangColor(playerid));
-
-	if (Player_GetSpawnType(playerid) == SPAWN_TYPE_GANG) {
-		Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
-	}
+	ResetPlayerGangData(playerid);
 
 	return 1;
 }
