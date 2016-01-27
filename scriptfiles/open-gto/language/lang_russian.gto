@@ -806,7 +806,7 @@ ADMIN_COMMAND_SPEC_STOP = {FFCC66}* {FFFFFF}Слежка за игроком {A5D6A7}%s(%d) {FF
 ADMIN_COMMAND_KILL_HELP = {FFCC66}[Применение]: {FFFFFF}/kill <id/ник/all>
 ADMIN_COMMAND_KILL_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
 ADMIN_COMMAND_KILL_ALL = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}убил всех игроков.
-ADMIN_COMMAND_KILL_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}убил игрока {A5D6A7}%s(%d) {FFFFFF}всех игроков.
+ADMIN_COMMAND_KILL_PLAYER = {FFCC66}* {FFFFFF}Модератор {FFCC66}%s(%d) {FFFFFF}убил игрока {A5D6A7}%s(%d){FFFFFF}.
 ADMIN_COMMAND_KILL_PLAYER_SELF = {FFCC66}* {FFFFFF}Вы убили {FFCC66}%s(%d)
 
 ADMIN_COMMAND_BOOM_HELP = {FFCC66}[Применение]: {FFFFFF}/boom <тип(0-13)>
