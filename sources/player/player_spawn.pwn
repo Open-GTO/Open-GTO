@@ -297,6 +297,7 @@ stock UpdatePlayerSpawnInfo(playerid)
 {
 	SaveDeathInfo(playerid);
 	Player_SetCoord(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
+	ResetPlayerRandomSpawnID(playerid);
 	
 	new interior, world, Float:spawn_pos[4];
 	GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
@@ -310,52 +311,71 @@ stock UpdatePlayerSpawnInfo(playerid)
 static stock GetPlayerSpawnID(playerid)
 {
 	new
-		index = Enterexit_GetPlayerIndex(playerid),
-		interior = GetDeathInterior(playerid),
-		world = GetDeathVirtualWorld(playerid);
+		index,
+		interior,
+		world,
+		Float:pos_x,
+		Float:pos_y,
+		Float:pos_z;
+
+	index = Enterexit_GetPlayerIndex(playerid);
+	interior = GetDeathInterior(playerid);
+	world = GetDeathVirtualWorld(playerid);
 
 	if (Enterexit_IsValidInfo(index, interior, world)) {
-		new Float:pos[3];
-		Enterexit_GetPos(index, pos[0], pos[1], pos[2]);
-		SetDeathPos(playerid, pos[0], pos[1], pos[2]);
-	} else if (world != 0 || interior != 0) {
-		return GetRandomSpawnID(playerid);
+		Enterexit_GetPos(index, pos_x, pos_y, pos_z);
+	} else if (interior == 0 && world == 0) {
+		GetDeathPos(playerid, pos_x, pos_y, pos_z);
+	}
+
+	if (pos_x == 0.0 && pos_y == 0.0 && pos_z == 0.0) {
+		return GetPlayerRandomSpawnID(playerid);
 	}
 	
-	return GetNearestSpawnID(playerid);
+	return GetNearestSpawnID(pos_x, pos_y, pos_z);
 }
 
-static stock GetRandomSpawnID(playerid)
+static stock GetPlayerRandomSpawnID(playerid)
 {
-	new id = GetPVarInt(playerid, "random_id");
+	new id = GetPVarInt(playerid, "random_spawn_id");
 	if (id != -1) {
+		Log_Debug("player_spawn:GetPlayerRandomSpawnID(%d): return stolen spawn id: %d.", playerid, id);
 		return id;
 	}
 
 	id = random( sizeof(gSpawns) + 1 );
-	SetPVarInt(playerid, "random_id", id);
+	SetPVarInt(playerid, "random_spawn_id", id);
 
+	Log_Debug("player_spawn:GetPlayerRandomSpawnID(%d): return random spawn id: %d.", playerid, id);
 	return id;
 }
 
-static stock GetNearestSpawnID(playerid)
+static stock GetNearestSpawnID(Float:x, Float:y, Float:z)
 {
 	new
 		Float:min_distance = 99999.0,
 		Float:curr_distance,
-		Float:pos[3],
 		id = 0;
 
-	GetDeathPos(playerid, pos[0], pos[1], pos[2]);
+#if debug > 0
+	static
+		tick;
+
+	tick = GetTickCount();
+#endif
 
 	for (new i = 0; i < sizeof(gSpawns); i++) {
-		curr_distance = GetDistanceBetweenPoints(pos[0], pos[1], pos[2], gSpawns[i][e_sPosX], gSpawns[i][e_sPosY], gSpawns[e_sPosZ][e_sPosZ]);
+		curr_distance = GetDistanceBetweenPoints(x, y, z, gSpawns[i][e_sPosX], gSpawns[i][e_sPosY], gSpawns[e_sPosZ][e_sPosZ]);
 		
 		if (min_distance > curr_distance) {
 			min_distance = curr_distance;
 			id = i;
 		}
 	}
+
+#if debug > 0
+	Log_Debug("player_spawn:GetNearestSpawnID(%f, %f, %f): nearest spawn id: %d, time taken: %d.", x, y, z, id, GetTickCount() - tick);
+#endif
 
 	return id;
 }
@@ -412,9 +432,9 @@ static stock GetDeathVirtualWorld(playerid)
 	Public functions
 */
 
-stock UpdatePlayerRandomSpawnID(playerid)
+stock ResetPlayerRandomSpawnID(playerid)
 {
-	SetPVarInt(playerid, "random_id", -1);
+	SetPVarInt(playerid, "random_spawn_id", -1);
 }
 
 stock Player_IsSpawned(playerid) {

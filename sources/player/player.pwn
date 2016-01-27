@@ -61,7 +61,6 @@ stock player_OnPlayerSpawn(playerid)
 	pl_fights_UpdatePlayerStyleUsed(playerid);
 	GivePlayerOwnedWeapon(playerid);
 	pl_money_td_ShowTextDraw(playerid);
-	UpdatePlayerRandomSpawnID(playerid);
 	return 1;
 }
 
@@ -324,6 +323,7 @@ stock player_SetDefaultData(playerid)
 
 	pl_fights_SetPlayerStyleUsed(playerid, FIGHT_STYLE_NORMAL);
 
+	ResetPlayerRandomSpawnID(playerid);
 	ResetPlayerGangData(playerid);
 	ResetPlayerWeapons(playerid);
 	ResetPlayerSkillLevel(playerid);
