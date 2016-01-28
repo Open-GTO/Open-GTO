@@ -134,6 +134,10 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 	AddPlayerDeaths(playerid);
 	AddPlayerKills(killerid);
 
+	if (IsPlayerJailed(playerid)) {
+		return;
+	}
+
 	new stolencash = (GetPlayerMoney(playerid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
 	if (stolencash > 0) {
 		GivePlayerMoney(playerid, -stolencash);
