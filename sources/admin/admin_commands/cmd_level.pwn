@@ -50,6 +50,12 @@ COMMAND:level(playerid, params[])
 	}
 
 	if (strcmp(subcmd, "set", true) == 0) {
+		if (!IsValidPlayerLevel(amount)) {
+			format(string, sizeof(string), _(ADMIN_COMMAND_LEVEL_LEVEL_ERROR), GetMinPlayerLevel(), GetMaxPlayerLevel());
+			SendClientMessageToAll(-1, string);
+			return 1;
+		}
+
 		if (targetid == -1) {
 			foreach (new id : Player) {
 				SetPlayerLevel(id, amount);

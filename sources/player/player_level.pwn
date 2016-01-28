@@ -130,7 +130,7 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 {
 	new old_level = GetPlayerLevel(playerid);
 
-	if (old_level == level) {
+	if (old_level == level || !IsValidPlayerLevel(level)) {
 		return 0;
 	}
 
@@ -265,6 +265,11 @@ stock GetPlayerXPToLevel(playerid, level)
 stock GetMaxPlayerLevel()
 {
 	return gMaxPlayerLevel;
+}
+
+stock GetMinPlayerLevel()
+{
+	return MIN_LEVEL;
 }
 
 stock IsValidPlayerLevel(level)

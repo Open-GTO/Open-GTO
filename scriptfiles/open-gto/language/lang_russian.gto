@@ -688,6 +688,7 @@ ADMIN_COMMAND_MONEY_SET_SELF = {FFCC66}* {FFFFFF}Вы изменили деньги {FFCC66}%s(%
 
 ADMIN_COMMAND_LEVEL_HELP = {FFCC66}[Применение]: {FFFFFF}/level <set/get/give> <id/ник/all> <количество/>
 ADMIN_COMMAND_LEVEL_TARGET_ERROR = {FF2211}[Ошибка]: {FFFFFF}Игрок не найден.
+ADMIN_COMMAND_LEVEL_LEVEL_ERROR = {FF2211}[Ошибка]: {FFFFFF}Некорректный уровень. Допустимый уровень: от %d до %d.
 ADMIN_COMMAND_LEVEL_GET = {FFCC66}* {FFFFFF}Уровень игрока {FFCC66}%s(%d){FFFFFF}: {A5D6A7}%d
 ADMIN_COMMAND_LEVEL_GIVE_ALL = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил уровень всех игроков на {A5D6A7}%d
 ADMIN_COMMAND_LEVEL_GIVE_PLAYER = {FFCC66}* {FFFFFF}Администратор {FFCC66}%s(%d) {FFFFFF}изменил вам уровень на {A5D6A7}%d
