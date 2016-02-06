@@ -12,7 +12,8 @@
 
 
 static
-	vehicle_respawn_time = VEHICLE_RESPAWN_TIME;
+	vehicle_respawn_time = VEHICLE_RESPAWN_TIME,
+	gPlayerPreviousVehicle[MAX_PLAYERS];
 
 enum e_Vehicle_Spawn {
 	e_vs_model,
@@ -1902,42 +1903,53 @@ Vehicle_OnPlayerStateChange(playerid, newstate, oldstate)
 	vh_radio_OnPlayerStateChange(playerid, newstate, oldstate);
 	Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate);
 
-#if defined OLD_ENGINE_DO
 	if (newstate == PLAYER_STATE_DRIVER) {
 		new vehicleid = GetPlayerVehicleID(playerid);
 
-		Vehicle_ToggleEngine(vehicleid, 1);
+		SetPlayerPreviousVehicleID(playerid, vehicleid);
+	#if defined OLD_ENGINE_DO
+		Vehicle_ToggleEngine(vehicleid, VEHICLE_PARAMS_ON);
 		
 		new hour = Time_GetCurrentHour();
 		if (hour > VEHICLE_LIGHTS_ON_TIME || hour < VEHICLE_LIGHTS_OFF_TIME) {
-			Vehicle_ToggleLight(vehicleid, 1);
+			Vehicle_ToggleLight(vehicleid, VEHICLE_PARAMS_ON);
+		} else {
+			Vehicle_ToggleLight(vehicleid, VEHICLE_PARAMS_OFF);
+		}
+	#endif
+	}
+
+#if defined OLD_ENGINE_DO
+	if (oldstate == PLAYER_STATE_DRIVER) {
+		new vehicleid = GetPlayerPreviousVehicleID(playerid);
+		if (vehicleid != INVALID_VEHICLE_ID) {
+			Vehicle_ToggleEngine(vehicleid, VEHICLE_PARAMS_OFF);
 		}
 	}
 #endif
 	return 1;
 }
 
-Vehicle_OnPlayerExitVehicle(playerid, vehicleid)
+Vehicle_OnPlayerConnect(playerid)
 {
-	#pragma unused playerid
-#if defined OLD_ENGINE_DO
-	Vehicle_ToggleEngine(vehicleid, 0);
-#else
-	#pragma unused vehicleid
-#endif
-	return 1;
+	SetPlayerPreviousVehicleID(playerid, INVALID_VEHICLE_ID);
 }
 
 COMMAND:engine(playerid, params[])
 {
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid == 0) {
-		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
+		SendClientMessage(playerid, -1, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
 		return 1;
 	}
-	
+
+	if (GetPlayerVehicleSeat(playerid) != 0) {
+		SendClientMessage(playerid, -1, _(VEHICLE_FUEL_NOT_DRIVER));
+		return 1;
+	}
+
 	if (GetVehicleFuel(vehicleid) <= 0.1) {
-		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_EMPTY));
+		SendClientMessage(playerid, -1, _(VEHICLE_FUEL_EMPTY));
 	} else {
 		Vehicle_ToggleEngine(vehicleid);
 	}
@@ -2003,4 +2015,14 @@ stock IsVehicleOccupied(vehicleid)
 		}
 	}
 	return 0;
+}
+
+stock GetPlayerPreviousVehicleID(playerid)
+{
+	return gPlayerPreviousVehicle[playerid];
+}
+
+stock SetPlayerPreviousVehicleID(playerid, vehicleid)
+{
+	gPlayerPreviousVehicle[playerid] = vehicleid;
 }

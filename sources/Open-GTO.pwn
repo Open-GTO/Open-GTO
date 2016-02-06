@@ -338,6 +338,7 @@ public OnPlayerConnect(playerid)
 	Spectate_OnPlayerConnect(playerid);
 	Beachside_OnPlayerConnect(playerid);
 	Tuning_OnPlayerConnect(playerid);
+	Vehicle_OnPlayerConnect(playerid);
 	return 1;
 }
 
@@ -630,7 +631,6 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 public OnPlayerExitVehicle(playerid, vehicleid)
 {
 	Tuning_OnPlayerExitVehicle(playerid, vehicleid);
-	Vehicle_OnPlayerExitVehicle(playerid, vehicleid);
 	pt_weapon_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
 }

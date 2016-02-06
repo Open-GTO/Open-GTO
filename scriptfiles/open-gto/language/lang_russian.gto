@@ -316,6 +316,7 @@ VEHICLE_TEXTDRAW_STRING = %0.0f KM/H~n~%0.1f L.~n~%0.0f HP
 VEHICLE_FUEL_INIT = Vehicle Fuel System v2.7 initialized.
 VEHICLE_FUEL_EMPTY = В транспортном средстве нет топлива. Заправьте его и заведите (/engine).
 VEHICLE_FUEL_NOT_IN_VEHICLE = {FF2211}[Ошибка]: {FFFFFF}Вы не в транспортном средстве!
+VEHICLE_FUEL_NOT_DRIVER = {FF2211}[Ошибка]: {FFFFFF}Вы не водитель!
 VEHICLE_FUEL_NOT_ON_FUEL_ST = {FF2211}[Ошибка]: {FFFFFF}Вы не на заправке!
 VEHICLE_FUEL_IS_FUELING_ERROR = {FF2211}[Ошибка]: {FFFFFF}Вы уже заправляете автомобиль!
 VEHICLE_FUEL_WITHOUT_FUEL_ENGINE = {FF2211}[Ошибка]: {FFFFFF}Это транспортное средство не использует бензин.
