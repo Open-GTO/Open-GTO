@@ -11,15 +11,25 @@
 #pragma library player
 
 /*
-	
+	Vars
 */
 
-new PlayerStartMoney = PLAYER_START_MONEY;
+static
+	gPlayerDeaths[MAX_PLAYERS],
+	gPlayerKills[MAX_PLAYERS],
+	gPlayerSkin[MAX_PLAYERS],
+	gPlayerTeam[MAX_PLAYERS],
+
+	gPlayerStartMoney = PLAYER_START_MONEY;
+
+/*
+	Config
+*/
 
 stock player_LoadConfig(file_config)
 {
 	ini_getString(file_config, "Player_DB", db_player);
-	ini_getInteger(file_config, "Player_Start_Money", PlayerStartMoney);
+	ini_getInteger(file_config, "Player_Start_Money", gPlayerStartMoney);
 	
 	new
 		weapons[START_PLAYER_WEAPON_SLOTS],
@@ -39,10 +49,14 @@ stock player_LoadConfig(file_config)
 stock player_SaveConfig(file_config)
 {
 	ini_setString(file_config, "Player_DB", db_player);
-	ini_setInteger(file_config, "Player_Start_Money", PlayerStartMoney);
+	ini_setInteger(file_config, "Player_Start_Money", gPlayerStartMoney);
 	ini_setString(file_config, "Player_Start_Weapons", CreatePlayerStartWeaponsString());
 	ini_setString(file_config, "Player_Start_Bullets", CreatePlayerStartBulletsString());
 }
+
+/*
+	For public
+*/
 
 stock player_OnPlayerSpawn(playerid)
 {
@@ -320,7 +334,7 @@ SkinSelectResponse:RegisterSkin(playerid, SS_Response:type, oldskin, newskin)
 
 stock player_SetDefaultData(playerid)
 {
-	SetPlayerMoney(playerid, PlayerStartMoney);
+	SetPlayerMoney(playerid, gPlayerStartMoney);
 	SetPlayerJailTime(playerid, -1);
 	Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
 
@@ -366,11 +380,6 @@ stock ReturnPlayerName(playerid)
 	return name;
 }
 
-static
-	gPlayerDeaths[MAX_PLAYERS],
-	gPlayerKills[MAX_PLAYERS],
-	gPlayerSkin[MAX_PLAYERS];
-
 /*
 	Kills
 */
@@ -408,8 +417,9 @@ stock AddPlayerDeaths(playerid, amount = 1) {
 */
 
 stock Float:GetPlayerKillDeathRatio(playerid) {
-	if (GetPlayerDeaths(playerid) != 0) {
-		return float(GetPlayerKills(playerid)) / float(GetPlayerDeaths(playerid));
+	new deaths = GetPlayerDeaths(playerid);
+	if (deaths != 0) {
+		return float(GetPlayerKills(playerid)) / float(deaths);
 	}
 
 	return 0.0;
@@ -435,19 +445,19 @@ stock REDEF_SetPlayerSkin(playerid, skinid)
 
 stock REDEF_GetPlayerTeam(playerid)
 {
-	if (!IS_IN_RANGE(playerid, 0, MAX_PLAYERS - 1) || !IsPlayerConnected(playerid)) {
+	if (!IsPlayerConnected(playerid)) {
 		return NO_TEAM;
 	}
 
-	return GetPVarInt(playerid, "team");
+	return gPlayerTeam[playerid];
 }
 
 stock REDEF_SetPlayerTeam(playerid, team)
 {
-	if (!IS_IN_RANGE(playerid, 0, MAX_PLAYERS - 1)) {
+	if (!IsPlayerConnected(playerid)) {
 		return 0;
 	}
 
-	SetPVarInt(playerid, "team", team);
+	gPlayerTeam[playerid] = team;
 	return 1;
 }

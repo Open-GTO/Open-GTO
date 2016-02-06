@@ -143,12 +143,11 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 		return 1;
 	}
 
-	new
-		Float:health,
-		Float:armour,
-		Float:difference;
-
 	if (IsPlayerGodmod(damagedid)) {
+		return 1;
+	}
+
+	if (GetPlayerTeam(playerid) == GetPlayerTeam(damagedid)) {
 		return 1;
 	}
 
@@ -159,6 +158,11 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 	if (bodypart == BODY_PART_HEAD) {
 		amount *= 1.5;
 	}
+
+	new
+		Float:health,
+		Float:armour,
+		Float:difference;
 
 	GetPlayerHealth(damagedid, health);
 	GetPlayerArmour(damagedid, armour);
@@ -177,8 +181,8 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 
 weapon_OnPlayerSpawn(playerid)
 {
-	if (GetPlayerTeam(playerid) != 0xFE) {
-		SetPlayerTeam(playerid, 0xFE);
+	if (ORIG_GetPlayerTeam(playerid) != 0xFE) {
+		ORIG_SetPlayerTeam(playerid, 0xFE);
 	}
 	return 1;
 }
