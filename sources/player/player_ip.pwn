@@ -10,7 +10,6 @@
 #endif
 
 #define _player_ip_included
-#pragma library player_ip
 
 /*
 	Vars

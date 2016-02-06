@@ -81,7 +81,7 @@
 // иконки
 #define MAPICON_HOSPITAL
 
-#define MAX_PLAYER_LOGIN_ATTEMPT    3 // максимальное количество попыток входа
+#define MAX_Player_Login_ATTEMPT    3 // максимальное количество попыток входа
 
 #define MIN_SEND_SYMBOLS  3 // минимальное кол-во отправл€емых символов в ѕћ
 #define MAX_SEND_SYMBOLS  100 // максимальное кол-во отправл€емых символов в ѕћ
@@ -220,7 +220,7 @@
  * Vehicle settings
  */
 
-#define PLAYER_Vehicle_INCREASE_LEVELS  0, 15, 24, 30 // уровни, при достижении которых увеличиваетс€ макс. транспорт игрока
+#define PLAYER_VEHICLE_INCREASE_LEVELS  0, 15, 24, 30 // уровни, при достижении которых увеличиваетс€ макс. транспорт игрока
 #define VEHSHOP_CAR_CHANGE_TIME  3 // количество часов, через которое транспорт в магазине мен€етс€
 #define VEHICLE_RESPAWN_TIME     600 // врем€ респавна транспорта в секундах (86400 - один день) 
 #define OLD_ENGINE_DO // сел в транспорт - завелось, вышел - заглох(если задефайнено)

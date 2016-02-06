@@ -1,7 +1,7 @@
 /*
 
-	Описание: система личного транспорта
-	Автор: ziggi
+	About: player vehicle system
+	Author: ziggi
 
 */
 
@@ -11,12 +11,11 @@
 #endif
 
 #define _pvehicle_included
-#pragma library pvehicle
 
 
 #define VEHICLE_COMPONENTS 14
 
-new vehicle_increase_levels[] = {PLAYER_Vehicle_INCREASE_LEVELS};
+new vehicle_increase_levels[] = {PLAYER_VEHICLE_INCREASE_LEVELS};
 
 #define MAX_PLAYER_VEHICLES    sizeof(vehicle_increase_levels)
 
@@ -29,9 +28,13 @@ enum pvInfo {
 	pv_Paintjob,
 	pv_Component[VEHICLE_COMPONENTS]
 }
-new PlayerVehicle[MAX_PLAYERS][MAX_PLAYER_VEHICLES][pvInfo];
+static PlayerVehicle[MAX_PLAYERS][MAX_PLAYER_VEHICLES][pvInfo];
 
-stock pveh_OnPlayerDisconnect(playerid, reason)
+/*
+	For publics
+*/
+
+PVehicle_OnPlayerDisconnect(playerid, reason)
 {
 	#pragma unused reason
 	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
@@ -40,7 +43,7 @@ stock pveh_OnPlayerDisconnect(playerid, reason)
 	return 1;
 }
 
-stock pveh_OnVehicleDeath(vehicleid, killerid)
+PVehicle_OnVehicleDeath(vehicleid, killerid)
 {
 	#pragma unused killerid
 	foreach (new playerid : Player) {
@@ -55,7 +58,7 @@ stock pveh_OnVehicleDeath(vehicleid, killerid)
 	return 1;
 }
 
-stock pveh_OnVehiclePaintjob(playerid, vehicleid, paintjobid)
+PVehicle_OnVehiclePaintjob(playerid, vehicleid, paintjobid)
 {
 	new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
 	if (slot == -1) {
@@ -65,7 +68,7 @@ stock pveh_OnVehiclePaintjob(playerid, vehicleid, paintjobid)
 	return 1;
 }
 
-stock pveh_OnVehicleRespray(playerid, vehicleid, color1, color2)
+PVehicle_OnVehicleRespray(playerid, vehicleid, color1, color2)
 {
 	new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
 	if (slot == -1) {
@@ -76,7 +79,7 @@ stock pveh_OnVehicleRespray(playerid, vehicleid, color1, color2)
 	return 1;
 }
 
-stock pveh_OnVehicleTuning(playerid, vehicleid, componentid)
+PVehicle_OnVehicleTuning(playerid, vehicleid, componentid)
 {
 	new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
 	if (slot == -1) {
@@ -85,6 +88,10 @@ stock pveh_OnVehicleTuning(playerid, vehicleid, componentid)
 	PlayerVehicle[playerid][slot][pv_Component][ GetVehicleComponentType(componentid) ] = componentid;
 	return 1;
 }
+
+/*
+	Functions
+*/
 
 stock AddPlayerVehicle(playerid, model, color1, color2, Float:fuel, access = VEHICLE_DOORS_ACCESS_EVERYONE,
                        paintjob = -1, component[VEHICLE_COMPONENTS] = {0, ...})
@@ -309,6 +316,5 @@ stock RemovePlayerVehicleComponents(playerid, slot)
 forward DestroyPlayerVehicle(vehicleid);
 public DestroyPlayerVehicle(vehicleid)
 {
-	DestroyVehicle(vehicleid);
-	return 1;
+	return DestroyVehicle(vehicleid);
 }

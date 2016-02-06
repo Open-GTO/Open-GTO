@@ -352,7 +352,7 @@ public adm_click_InfoPlayer(playerid, targetid, listitem, inputtext[])
 	strcat(message, string);
 
 	gmtime(account_info[e_aLoginTime], year, month, day);
-	format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_PLAYER_LOGIN), day, month, year);
+	format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_Player_Login), day, month, year);
 	strcat(message, string);
 
 	gmtime(account_info[e_aPremiumTime], year, month, day);

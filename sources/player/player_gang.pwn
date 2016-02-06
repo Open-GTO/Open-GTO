@@ -10,7 +10,6 @@
 #endif
 
 #define _player_gang_included
-#pragma library player_gang
 
 /*
 	Defines
@@ -180,8 +179,8 @@ stock ResetPlayerGangData(playerid)
 	SetPlayerGangMemberID(playerid, INVALID_MEMBER_ID);
 	SetPlayerColor(playerid, GetPlayerGangColor(playerid));
 
-	if (Player_GetSpawnType(playerid) == SPAWN_TYPE_GANG) {
-		Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
+	if (GetPlayerSpawnType(playerid) == SPAWN_TYPE_GANG) {
+		SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
 	}
 }
 

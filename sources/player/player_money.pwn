@@ -10,7 +10,6 @@
 #endif
 
 #define _pl_money_included
-#pragma library pl_money
 
 /*
 	Functions
@@ -19,7 +18,7 @@
 stock SetPlayerMoney(playerid, money)
 {
 	SetPVarInt(playerid, "Money", money);
-	pl_money_td_SetMoney(playerid, money);
+	SetPlayerMoneyTextDraw(playerid, money);
 }
 
 stock REDEF_GivePlayerMoney(playerid, money, showtext = 1)
@@ -40,7 +39,7 @@ stock REDEF_GivePlayerMoney(playerid, money, showtext = 1)
 	}
 
 	if (showtext == 1) {
-		pl_money_td_GiveMoney(playerid, money);
+		GivePlayerMoneyTextDraw(playerid, money);
 	}
 
 	SetPlayerMoney(playerid, player_money + money);

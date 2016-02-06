@@ -6,11 +6,10 @@
 */
 
 #if defined _teleport_menu_included
-  #endinput
+	#endinput
 #endif
 
 #define _teleport_menu_included
-#pragma library teleport_menu
 
 
 enum TeleportsInfo {

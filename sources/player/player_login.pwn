@@ -5,48 +5,53 @@
 
 */
 
-#if defined _pl_login_included
+#if defined _player_login_included
 	#endinput
 #endif
 
-#define _pl_login_included
-#pragma library pl_login
+#define _player_login_included
 
 
-stock player_Save(playerid)
+stock Player_Save(playerid)
 {
-	if (!player_IsLogin(playerid)) {
+	if (!IsPlayerLogin(playerid)) {
 		return 0;
 	}
 
-	if (Player_IsSpawned(playerid)) {
-		new Float:pos[4];
+	if (IsPlayerSpawned(playerid)) {
+		new
+			interior,
+			world,
+			Float:pos_x,
+			Float:pos_y,
+			Float:pos_z,
+			Float:pos_a;
 
-		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-		GetPlayerFacingAngle(playerid, pos[3]);
+		interior = GetPlayerInterior(playerid);
+		world = GetPlayerVirtualWorld(playerid);
 
-		new interior = GetPlayerInterior(playerid);
-		new world = GetPlayerVirtualWorld(playerid);
+		GetPlayerPos(playerid, pos_x, pos_y, pos_z);
+		GetPlayerFacingAngle(playerid, pos_a);
 
-		Player_SetCoord(playerid, pos[0], pos[1], pos[2], pos[3], interior, world);
+		SetPlayerSpawnCoords(playerid, pos_x, pos_y, pos_z, pos_a, interior, world);
 	}
 
 	// save
-	player_SaveEx(playerid);
-	Log_Game("player: %s(%d): player_saved successfully", ReturnPlayerName(playerid), playerid);
+	Player_SaveEx(playerid);
+	Log_Game("player: %s(%d): Player_Saved successfully", ReturnPlayerName(playerid), playerid);
 	return 1;
 }
 
-stock player_Create(playerid)
+stock Player_Create(playerid)
 {
-	player_SetDefaultData(playerid);
+	Player_SetDefaultData(playerid);
 
-	player_SaveEx(playerid);
-	Log_Game("player: %s(%d): player_created successfully", ReturnPlayerName(playerid), playerid);
+	Player_SaveEx(playerid);
+	Log_Game("player: %s(%d): Player_Created successfully", ReturnPlayerName(playerid), playerid);
 	return 1;
 }
 
-stock player_SaveEx(playerid)
+stock Player_SaveEx(playerid)
 {
 	new filename_player[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
@@ -81,23 +86,29 @@ stock player_SaveEx(playerid)
 	ini_setInteger(file_player, "JailTime", GetPlayerJailTime(playerid));
 	ini_setInteger(file_player, "Muted", GetPlayerMutedCount(playerid));
 	ini_setInteger(file_player, "MuteTime", GetPlayerMuteTime(playerid));
-	ini_setInteger(file_player, "Reports", player_GetReportCount(playerid));
+	ini_setInteger(file_player, "Reports", GetPlayerReportsCount(playerid));
 
-	for (new i = 0; i < fights_GetLastId(); i++) {
-		format(string, sizeof(string), "FightStyle_%d", fights_GetTeacherStyleID(i));
-		ini_setInteger(file_player, string, pl_fights_IsLearned(playerid, i));
+	for (new i = 0; i < GetFightTeacherLastID(); i++) {
+		format(string, sizeof(string), "FightStyle_%d", GetFightTeacherStyleID(i));
+		ini_setInteger(file_player, string, IsPlayerFightStyleLearned(playerid, i));
 	}
 
-	ini_setInteger(file_player, "FightStyleUsed", pl_fights_GetPlayerStyleUsed(playerid));
+	ini_setInteger(file_player, "FightStyleUsed", GetPlayerFightStyleUsed(playerid));
 	ini_setInteger(file_player, "InteriorIndex", Enterexit_GetPlayerIndex(playerid));
 
-	new interior, world, Float:pos[4];
-	Player_GetCoord(playerid, pos[0], pos[1], pos[2], pos[3], interior, world);
+	new
+		interior,
+		world,
+		Float:pos_x,
+		Float:pos_y,
+		Float:pos_z,
+		Float:pos_a;
+
+	GetPlayerSpawnCoords(playerid, pos_x, pos_y, pos_z, pos_a, interior, world);
 	ini_setInteger(file_player, "Interior", interior);
 	ini_setInteger(file_player, "World", world);
-
 	
-	format(string, sizeof(string), "%f,%f,%f,%f", pos[0], pos[1], pos[2], pos[3]);
+	format(string, sizeof(string), "%f,%f,%f,%f", pos_x, pos_y, pos_z, pos_a);
 	ini_setString(file_player, "Coords", string);
 
 	ini_setInteger(file_player, "Privilege", _:GetPlayerPrivilege(playerid));
@@ -105,8 +116,8 @@ stock player_SaveEx(playerid)
 	ini_setString(file_player, "Bullets", CreatePlayerBulletsString(playerid));
 	ini_setString(file_player, "WeaponsSkills", CreateWeaponSkillsDBString(playerid));
 	ini_setInteger(file_player, "SkinModel", GetPlayerSkin(playerid));
-	ini_setInteger(file_player, "SpawnType", _:Player_GetSpawnType(playerid));
-	ini_setInteger(file_player, "SpawnHouseID", Player_GetSpawnHouseID(playerid));
+	ini_setInteger(file_player, "SpawnType", _:GetPlayerSpawnType(playerid));
+	ini_setInteger(file_player, "SpawnHouseID", GetPlayerSpawnHouseID(playerid));
 	
 	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
 		format(string, sizeof(string), "Vehicle_%d", i);
@@ -120,13 +131,13 @@ stock player_SaveEx(playerid)
 	return 1;
 }
 
-stock player_Login(playerid)
+stock Player_Login(playerid)
 {
 	new filename_player[MAX_STRING];
 	format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, db_player, ReturnPlayerName(playerid));
 
 	if (!ini_fileExist(filename_player)) {
-		player_Create(playerid);
+		Player_Create(playerid);
 	} else {
 		new
 			buf,
@@ -169,16 +180,16 @@ stock player_Login(playerid)
 		SetPlayerMuteTime(playerid, buf);
 
 		ini_getInteger(file_player, "Reports", buf);
-		player_SetReportCount(playerid, buf);
+		SetPlayerReportsCount(playerid, buf);
 		
-		for (new i = 0; i < fights_GetLastId(); i++) {
-			format(s_buf, sizeof(s_buf), "FightStyle_%d", fights_GetTeacherStyleID(i));
+		for (new i = 0; i < GetFightTeacherLastID(); i++) {
+			format(s_buf, sizeof(s_buf), "FightStyle_%d", GetFightTeacherStyleID(i));
 			ini_getInteger(file_player, s_buf, buf);
-			pl_fights_SetLearned(playerid, i, buf);
+			SetPlayerFightStyleLearned(playerid, i, bool:buf);
 		}
 		
 		ini_getInteger(file_player, "FightStyleUsed", buf);
-		pl_fights_SetPlayerStyleUsed(playerid, buf);
+		SetPlayerFightStyleUsed(playerid, buf);
 
 		ini_getInteger(file_player, "InteriorIndex", buf);
 		Enterexit_SetPlayerIndex(playerid, buf);
@@ -194,7 +205,7 @@ stock player_Login(playerid)
 		ini_getString(file_player, "Coords", s_buf);
 		sscanf(s_buf, "p<,>a<f>[4]", coords);
 
-		Player_SetCoord(playerid, coords[0], coords[1], coords[2], coords[3], interior, world);
+		SetPlayerSpawnCoords(playerid, coords[0], coords[1], coords[2], coords[3], interior, world);
 		
 		// 
 		ini_getInteger(file_player, "Privilege", buf);
@@ -223,10 +234,10 @@ stock player_Login(playerid)
 		SetPlayerSkin(playerid, buf);
 		
 		ini_getInteger(file_player, "SpawnType", buf);
-		Player_SetSpawnType(playerid, SpawnType:buf);
+		SetPlayerSpawnType(playerid, SpawnType:buf);
 		
 		ini_getInteger(file_player, "SpawnHouseID", buf);
-		Player_SetSpawnHouseID(playerid, buf);
+		SetPlayerSpawnHouseID(playerid, buf);
 		
 		for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
 			format(s_buf, sizeof(s_buf), "Vehicle_%d", i);
@@ -248,15 +259,15 @@ stock player_Login(playerid)
 		ini_closeFile(file_player);
 	}
 
-	player_SetLogin(playerid, true);
-	player_OnLogin(playerid);
+	SetPlayerLoginStatus(playerid, true);
+	Player_OnLogin(playerid);
 	return 1;
 }
 
-stock player_IsLogin(playerid) {
+stock IsPlayerLogin(playerid) {
 	return GetPVarInt(playerid, "IsLogin");
 }
 
-stock player_SetLogin(playerid, bool:islogin) {
+stock SetPlayerLoginStatus(playerid, bool:islogin) {
 	SetPVarInt(playerid, "IsLogin", _:islogin);
 }

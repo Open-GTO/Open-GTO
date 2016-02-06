@@ -10,38 +10,52 @@
 #endif
 
 #define _pl_quest_included
-#pragma library pl_quest
 
+/*
+	Defines
+*/
 
 #define INVALID_QUEST_ID	-1
 
+/*
+	Vars
+*/
+
 static
-	QuestsCount = INVALID_QUEST_ID;
+	gPlayerQuestID[MAX_PLAYERS],
+	gQuestsCount = -1;
 
+/*
+	Quest functions
+*/
 
-stock quest_Register()
+stock RegisterQuest()
 {
-	if (QuestsCount >= MAX_QUESTS) {
+	if (gQuestsCount >= MAX_QUESTS) {
 		return INVALID_QUEST_ID;
 	}
 
-	return ++QuestsCount;
+	return ++gQuestsCount;
 }
 
-stock player_GetQuestID(playerid) {
-	return GetPVarInt(playerid, "player_QuestID");
+/*
+	Player functions
+*/
+
+stock GetPlayerQuestID(playerid) {
+	return gPlayerQuestID[playerid];
 }
 
-stock player_SetQuestID(playerid, questid) {
-	SetPVarInt(playerid, "player_QuestID", questid);
+stock SetPlayerQuestID(playerid, questid) {
+	gPlayerQuestID[playerid] = questid;
 }
 
-stock player_ResetQuest(playerid)
+stock ResetPlayerQuest(playerid)
 {
-	player_SetQuestID(playerid, INVALID_QUEST_ID);
+	SetPlayerQuestID(playerid, INVALID_QUEST_ID);
 }
 
-stock player_IsAtQuest(playerid)
+stock IsPlayerAtQuest(playerid)
 {
-	return player_GetQuestID(playerid) == INVALID_QUEST_ID ? 0 : 1;
+	return GetPlayerQuestID(playerid) != INVALID_QUEST_ID;
 }

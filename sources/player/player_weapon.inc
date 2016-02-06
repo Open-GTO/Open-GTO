@@ -11,7 +11,6 @@
 #endif
 
 #define _player_weapon_h_included
-#pragma library player_weapon_h
 
 /*
 	GivePlayerWeapon

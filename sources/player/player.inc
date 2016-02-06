@@ -10,7 +10,6 @@
 #endif
 
 #define _player_h_included
-#pragma library player_h
 
 
 forward Float:GetPlayerKillDeathRatio(playerid);

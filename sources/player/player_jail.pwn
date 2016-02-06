@@ -5,12 +5,11 @@
 
 */
 
-#if defined _pl_jail_included
+#if defined _player_jail_included
 	#endinput
 #endif
 
-#define _pl_jail_included
-#pragma library pl_jail
+#define _player_jail_included
 
 /*
 	Defines

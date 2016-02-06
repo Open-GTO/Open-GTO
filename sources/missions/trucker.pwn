@@ -297,7 +297,7 @@ stock Trucker_Start(playerid)
 		}
 	}
 
-	player_SetQuestID(playerid, mission_GetQuestID(mission_trucker));
+	SetPlayerQuestID(playerid, mission_GetQuestID(mission_trucker));
 	player_trucker[playerid][pt_MissionTimer] = SetTimerEx("Trucker_CancelMission", TRUCKER_MISSION_TIME * 1000, 0, "d", playerid);
 
 	new string[MAX_STRING];
@@ -558,7 +558,7 @@ stock Trucker_Stop(playerid)
 
 	player_trucker[playerid][pt_BackCarTime] = 0;
 
-	player_ResetQuest(playerid);
+	ResetPlayerQuest(playerid);
 
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid != 0 && IsVehicleIsRunner(vehicleid)) {

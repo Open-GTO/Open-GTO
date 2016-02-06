@@ -10,7 +10,6 @@
 #endif
 
 #define _pl_premium_included
-#pragma library pl_premium
 
 /*
 	Functions

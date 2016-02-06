@@ -10,19 +10,33 @@
 #endif
 
 #define _pl_report_included
-#pragma library pl_report
 
-stock pl_report_GetMaxCount()
+/*
+	Vars
+*/
+
+static
+	gPlayerReports[MAX_PLAYERS];
+
+/*
+	Report functions
+*/
+
+stock GetMaxReportCount()
 {
 	return (MIN_REPORTS_FOR_JAIL + GetPlayersCount() / 10);
 }
 
-stock player_SetReportCount(playerid, buf)
+/*
+	Player report functions
+*/
+
+stock SetPlayerReportsCount(playerid, count)
 {
-	SetPVarInt(playerid, "playerReports", buf);
+	gPlayerReports[playerid] = count;
 }
 
-stock player_GetReportCount(playerid)
+stock GetPlayerReportsCount(playerid)
 {
-	return GetPVarInt(playerid, "playerReports");
+	return gPlayerReports[playerid];
 }

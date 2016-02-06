@@ -5,12 +5,11 @@
 
 */
 
-#if defined _pl_godmod_included
+#if defined _player_godmod_included
 	#endinput
 #endif
 
-#define _pl_godmod_included
-#pragma library pl_godmod
+#define _player_godmod_included
 
 /*
 	Vars

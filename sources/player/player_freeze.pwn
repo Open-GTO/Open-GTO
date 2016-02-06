@@ -5,12 +5,11 @@
 
 */
 
-#if defined _pl_freeze_included
+#if defined _player_freeze_included
 	#endinput
 #endif
 
-#define _pl_freeze_included
-#pragma library pl_freeze
+#define _player_freeze_included
 
 /*
 	Defines

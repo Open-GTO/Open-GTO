@@ -5,7 +5,6 @@
 
 */
 
-
 #if defined _weapon_skill_included
 	#endinput
 #endif
@@ -18,18 +17,18 @@
 
 static
 	IsEnabled = WEAPON_SKILL_ENABLED,
-	PlayerText:weapon_TextDraw_Level[MAX_PLAYERS];
+	PlayerText:TD_SkillLevel[MAX_PLAYERS];
 
 /*
 	Config function
 */
 
-stock WSkill_LoadConfig(file_config)
+PWSkill_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "WeaponSkill_IsEnabled", IsEnabled);
 }
 
-stock WSkill_SaveConfig(file_config)
+PWSkill_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "WeaponSkill_IsEnabled", IsEnabled);
 }
@@ -38,20 +37,20 @@ stock WSkill_SaveConfig(file_config)
 	OnPlayerConnect
 */
 
-stock WSkill_OnPlayerConnect(playerid)
+PWSkill_OnPlayerConnect(playerid)
 {
 	if (!IsEnabled) {
 		return 0;
 	}
 
-	weapon_TextDraw_Level[playerid] = CreatePlayerTextDraw(playerid, 499.000000, 13.000000, "0/" #MAX_WEAPON_SKILL_LEVEL);
-	PlayerTextDrawBackgroundColor(playerid, weapon_TextDraw_Level[playerid], 255);
-	PlayerTextDrawFont(playerid, weapon_TextDraw_Level[playerid], 1);
-	PlayerTextDrawLetterSize(playerid, weapon_TextDraw_Level[playerid], 0.280000, 1.000000);
-	PlayerTextDrawColor(playerid, weapon_TextDraw_Level[playerid], -1);
-	PlayerTextDrawSetOutline(playerid, weapon_TextDraw_Level[playerid], 0);
-	PlayerTextDrawSetProportional(playerid, weapon_TextDraw_Level[playerid], 1);
-	PlayerTextDrawSetShadow(playerid, weapon_TextDraw_Level[playerid], 1);
+	TD_SkillLevel[playerid] = CreatePlayerTextDraw(playerid, 499.000000, 13.000000, "0/" #MAX_WEAPON_SKILL_LEVEL);
+	PlayerTextDrawBackgroundColor(playerid, TD_SkillLevel[playerid], 255);
+	PlayerTextDrawFont(playerid, TD_SkillLevel[playerid], 1);
+	PlayerTextDrawLetterSize(playerid, TD_SkillLevel[playerid], 0.280000, 1.000000);
+	PlayerTextDrawColor(playerid, TD_SkillLevel[playerid], -1);
+	PlayerTextDrawSetOutline(playerid, TD_SkillLevel[playerid], 0);
+	PlayerTextDrawSetProportional(playerid, TD_SkillLevel[playerid], 1);
+	PlayerTextDrawSetShadow(playerid, TD_SkillLevel[playerid], 1);
 
 	return 1;
 }
@@ -60,14 +59,14 @@ stock WSkill_OnPlayerConnect(playerid)
 	OnPlayerDeath
 */
 
-stock WSkill_OnPlayerDeath(playerid, killerid, reason)
+PWSkill_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused playerid
 	if (!IsEnabled) {
 		return 0;
 	}
 
-	PlayerTextDrawHide(playerid, weapon_TextDraw_Level[playerid]);
+	PlayerTextDrawHide(playerid, TD_SkillLevel[playerid]);
 
 	if (killerid == INVALID_PLAYER_ID) {
 		return 0;
@@ -91,14 +90,14 @@ stock WSkill_OnPlayerDeath(playerid, killerid, reason)
 	OnPlayerRequestClass
 */
 
-stock WSkill_OnPlayerRequestClass(playerid, classid)
+stock PWSkill_OnPlayerRequestClass(playerid, classid)
 {
 	#pragma unused classid
 	if (!IsEnabled) {
 		return 0;
 	}
 
-	PlayerTextDrawHide(playerid, weapon_TextDraw_Level[playerid]);
+	PlayerTextDrawHide(playerid, TD_SkillLevel[playerid]);
 	return 1;
 }
 
@@ -112,7 +111,7 @@ stock UpdatePlayerWeaponTextDraws(playerid)
 		return 0;
 	}
 	
-	if (!Player_IsSpawned(playerid)) {
+	if (!IsPlayerSpawned(playerid)) {
 		return 0;
 	}
 
@@ -125,10 +124,10 @@ stock UpdatePlayerWeaponTextDraws(playerid)
 	if (skillid != -1) {
 		format(string, sizeof(string), "%03d/" #MAX_WEAPON_SKILL_LEVEL, GetPlayerSkillLevel(playerid, skillid));
 		
-		PlayerTextDrawSetString(playerid, weapon_TextDraw_Level[playerid], string);
-		PlayerTextDrawShow(playerid, weapon_TextDraw_Level[playerid]);
+		PlayerTextDrawSetString(playerid, TD_SkillLevel[playerid], string);
+		PlayerTextDrawShow(playerid, TD_SkillLevel[playerid]);
 	} else {
-		PlayerTextDrawHide(playerid, weapon_TextDraw_Level[playerid]);
+		PlayerTextDrawHide(playerid, TD_SkillLevel[playerid]);
 	}
 
 	return 1;

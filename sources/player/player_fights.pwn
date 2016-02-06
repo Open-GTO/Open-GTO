@@ -10,10 +10,9 @@
 #endif
 
 #define _player_fights_included
-#pragma library player_fights
 
 static
-	bool:fights_LearnedBools[MAX_PLAYERS][MAX_FIGHTS];
+	bool:gPlayerLearnedStyles[MAX_PLAYERS][MAX_FIGHTS char];
 
 DialogCreate:PlayerFights(playerid)
 {
@@ -21,12 +20,12 @@ DialogCreate:PlayerFights(playerid)
 		temp[MAX_LANG_VALUE_STRING],
 		string[MAX_LANG_VALUE_STRING * MAX_FIGHTS];
 
-	for (new id = 0; id < fights_GetLastId(); id++) {
-		if (!pl_fights_IsLearned(playerid, id)) {
+	for (new id = 0; id < GetFightTeacherLastID(); id++) {
+		if (!IsPlayerFightStyleLearned(playerid, id)) {
 			continue;
 		}
 
-		fights_GetTeacherName(id, temp);
+		GetFightTeacherName(id, temp);
 
 		strcat(string, temp);
 		strcat(string, "\n");
@@ -46,10 +45,15 @@ DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
 		return 0;
 	}
 
-	new teacherid = listitem;
+	new
+		teacherid,
+		styleid,
+		string[MAX_LANG_VALUE_STRING];
+
+	teacherid = listitem;
 	
-	for (new id = 0; id < fights_GetLastId(); id++) {
-		if (!pl_fights_IsLearned(playerid, id)) {
+	for (new id = 0; id < GetFightTeacherLastID(); id++) {
+		if (!IsPlayerFightStyleLearned(playerid, id)) {
 			teacherid++;
 			continue;
 		}
@@ -59,43 +63,42 @@ DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
 		}
 	}
 
-	new styleid = fights_GetTeacherStyleID(teacherid);
+	styleid = GetFightTeacherStyleID(teacherid);
 
-	pl_fights_SetPlayerStyleUsed(playerid, styleid);
-
-	new string[MAX_STRING];
-	fights_GetTeacherName(teacherid, string);
+	SetPlayerFightStyleUsed(playerid, styleid);
+	GetFightTeacherName(teacherid, string);
 	
 	format(string, sizeof(string), _(FIGHT_TEACHER_PLAYER_USED_STYLE), string);
 	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, _(FIGHT_TEACHER_PLAYER_CAPTION), string, _(FIGHT_TEACHER_PLAYER_BUTTON1), _(FIGHT_TEACHER_PLAYER_BUTTON2));
 	return 1;
 }
 
-stock pl_fights_GetPlayerStyleUsed(playerid)
+stock GetPlayerFightStyleUsed(playerid)
 {
 	return GetPVarInt(playerid, "pl_fights_StyleUsed");
 }
 
-stock pl_fights_SetPlayerStyleUsed(playerid, styleid)
+stock SetPlayerFightStyleUsed(playerid, styleid)
 {
 	SetPVarInt(playerid, "pl_fights_StyleUsed", styleid);
 	SetPlayerFightingStyle(playerid, styleid);
 }
 
-stock pl_fights_UpdatePlayerStyleUsed(playerid)
+stock UpdatePlayerFightStyleUsed(playerid)
 {
-	SetPlayerFightingStyle(playerid, pl_fights_GetPlayerStyleUsed(playerid));
+	SetPlayerFightingStyle(playerid, GetPlayerFightStyleUsed(playerid));
 }
 
-stock pl_fights_IsLearned(playerid, teacherid)
+stock IsPlayerFightStyleLearned(playerid, teacherid)
 {
-	if (!fights_IsHaveTeacher(teacherid)) {
+	if (!IsHaveFightTeacher(teacherid)) {
 		return 1;
 	}
-	return fights_LearnedBools[playerid][teacherid];
+
+	return _:gPlayerLearnedStyles[playerid]{teacherid};
 }
 
-stock pl_fights_SetLearned(playerid, teacherid, status)
+stock SetPlayerFightStyleLearned(playerid, teacherid, bool:islearned)
 {
-	fights_LearnedBools[playerid][teacherid] = status == 0 ? false : true;
+	gPlayerLearnedStyles[playerid]{teacherid} = islearned;
 }

@@ -39,34 +39,6 @@ static
 	gPlayerResponseType[MAX_PLAYERS],
 	gPlayerTargetID[MAX_PLAYERS],
 	gClickArray[MAX_CLICK_DIALOG_ITEMS][click_dialogArray_Info];
-/*
-static gClickArray[][click_dialogArray_Info] = {
-	// player
-	{DIALOG_STYLE_INPUT, "Отправить деньги", "Введите сумму $", "Отправить", "Назад", PlayerPrivilegePlayer, "pl_click_SendCash"},
-	{DIALOG_STYLE_INPUT, "Личное сообщение", "Введите сообщение", "Отправить", "Назад", PlayerPrivilegePlayer, "pl_click_SendMessage"},
-	{DIALOG_STYLE_INPUT, "Жалоба на игрока", "Введите текст", "Отправить", "Назад", PlayerPrivilegePlayer, "pl_click_SendReport"},
-
-	// moder
-	{DIALOG_STYLE_INPUT, "Кикнуть", "Введите причину", "Кикнуть", "Назад", PlayerPrivilegeModer, "adm_click_KickPlayer"},
-	{DIALOG_STYLE_INPUT, "Заглушить", "Введите время, на которое нужно заткнуть игрока", "Заткнуть", "Назад", PlayerPrivilegeModer, "adm_click_MutePlayer"},
-	{DIALOG_STYLE_NONE, "Разглушить", "", "", "", PlayerPrivilegeModer, "adm_click_UnMutePlayer"},
-	{DIALOG_STYLE_INPUT, "Посадить в тюрьму", "Введите время заключения", "Посадить", "Назад", PlayerPrivilegeModer, "adm_click_JailPlayer"},
-	{DIALOG_STYLE_NONE, "Выпустить из тюрьмы", "", "", "", PlayerPrivilegeModer, "adm_click_UnJailPlayer"},
-
-	// admin
-	{DIALOG_STYLE_NONE, "Информация", "", "", "", PlayerPrivilegeAdmin, "adm_click_InfoPlayer"},
-	{DIALOG_STYLE_NONE, "Убить", "", "", "", PlayerPrivilegeAdmin, "adm_click_KillPlayer"},
-	{DIALOG_STYLE_NONE, "Телепортироваться к игроку", "", "", "", PlayerPrivilegeAdmin, "adm_click_TeleportToPlayer"},
-	{DIALOG_STYLE_NONE, "Телепортировать к себе", "", "", "", PlayerPrivilegeAdmin, "adm_click_TeleportToMe"},
-	{DIALOG_STYLE_INPUT, "Изменить здоровье", "Введите значение", "Изменить", "Назад", PlayerPrivilegeAdmin, "adm_click_SetHealth"},
-	{DIALOG_STYLE_INPUT, "Изменить броню", "Введите значение", "Изменить", "Назад", PlayerPrivilegeAdmin, "adm_click_SetArmour"},
-	{DIALOG_STYLE_INPUT, "Изменить уровень", "Введите новый уровень", "Изменить", "Назад", PlayerPrivilegeAdmin, "adm_click_SetLevel"},
-	{DIALOG_STYLE_INPUT, "Дать опыт", "Введите количество опыта", "Дать", "Назад", PlayerPrivilegeAdmin, "adm_click_GiveXP"},
-	{DIALOG_STYLE_INPUT, "Дать денег", "Введите количество денег", "Дать", "Назад", PlayerPrivilegeAdmin, "adm_click_GiveMoney"},
-	{DIALOG_STYLE_INPUT, "Заморозить", "Введите время заморозки", "Заморозить", "Назад", PlayerPrivilegeAdmin, "adm_click_FreezePlayer"},
-	{DIALOG_STYLE_NONE, "Разморозить", "", "", "", PlayerPrivilegeAdmin, "adm_click_UnFreezePlayer"},
-	{DIALOG_STYLE_NONE, "Получить NetStats", "", "", "", PlayerPrivilegeAdmin, "adm_click_GetNetStats"}
-};*/
 
 /*
 

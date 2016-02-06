@@ -439,7 +439,7 @@ stock bank_Profit()
 	new string[MAX_LANG_VALUE_STRING], amount;
 	
 	foreach (new playerid : Player) {
-		if (!player_IsLogin(playerid)) {
+		if (!IsPlayerLogin(playerid)) {
 			continue;
 		}
 

@@ -11,7 +11,6 @@
 #endif
 
 #define _weapon_included
-#pragma library weapon
 
 /*
 	Defines
@@ -45,43 +44,43 @@ new PlayerStartWeapon[START_PLAYER_WEAPON_SLOTS][PWeap] = {
 	OnGameModeInit
 */
 
-pl_weapon_OnGameModeInit()
+PWeapon_OnGameModeInit()
 {
-	wdrop_OnGameModeInit();
+	PWDrop_OnGameModeInit();
 	return 1;
 }
 
-pl_weapon_OnPlayerPickUpPickup(playerid, pickupid)
+PWeapon_OnPlayerPickUpPickup(playerid, pickupid)
 {
-	if (wdrop_OnPlayerPickUpPickup(playerid, pickupid)) {
+	if (PWDrop_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
 	}
 	return 0;
 }
 
-pl_weapon_OnPlayerConnect(playerid)
+PWeapon_OnPlayerConnect(playerid)
 {
-	WSkill_OnPlayerConnect(playerid);
+	PWSkill_OnPlayerConnect(playerid);
 	return 1;
 }
 
-pl_weapon_OnPlayerDeath(playerid, killerid, reason)
+PWeapon_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused killerid
 	if (!IsWeapon(reason)) return 1;
-	WSkill_OnPlayerDeath(playerid, killerid, reason);
+	PWSkill_OnPlayerDeath(playerid, killerid, reason);
 	
-	wdrop_OnPlayerDeath(playerid);
+	PWDrop_OnPlayerDeath(playerid);
 	return 1;
 }
 
-pl_weapon_OnPlayerRequestClass(playerid, classid)
+PWeapon_OnPlayerRequestClass(playerid, classid)
 {
-	WSkill_OnPlayerRequestClass(playerid, classid);
+	PWSkill_OnPlayerRequestClass(playerid, classid);
 	return 1;
 }
 
-pl_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
+PWeapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
 	#pragma unused hittype, hitid, fX, fY, fZ
 	

@@ -10,7 +10,6 @@
 #endif
 
 #define _pl_privilege_included
-#pragma library pl_privilege
 
 /*
 	Vars

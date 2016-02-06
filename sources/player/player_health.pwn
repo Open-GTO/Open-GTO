@@ -10,8 +10,6 @@
 #endif
 
 #define _player_health_included
-#pragma library player_health
-
 
 stock GetMaxHealth(playerid, &Float:health)
 {
@@ -30,7 +28,7 @@ stock SetPlayerMaxHealth(playerid)
 	return SetPlayerHealth(playerid, max_hp);
 }
 
-stock pl_health_Regeneration()
+stock RegenerationPlayerHealth()
 {
 	new
 		Float:health_current,
@@ -38,7 +36,7 @@ stock pl_health_Regeneration()
 		Float:health_new;
 
 	foreach (new playerid : Player) {
-		if (!Player_IsSpawned(playerid) || IsPlayerGodmod(playerid)) {
+		if (!IsPlayerSpawned(playerid) || IsPlayerGodmod(playerid)) {
 			continue;
 		}
 

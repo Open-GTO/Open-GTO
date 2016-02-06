@@ -3,12 +3,11 @@
 
 */
 
-#if defined _pl_level_included
+#if defined _player_level_included
 	#endinput
 #endif
 
-#define _pl_level_included
-#pragma library player_level
+#define _player_level_included
 
 
 #define MIN_LEVEL    1
@@ -20,17 +19,17 @@
 static
 	gMaxPlayerLevel = MAX_LEVEL;
 
-pl_level_LoadConfig(file_config)
+PLevel_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Player_Level_Max", gMaxPlayerLevel);
 }
 
-pl_level_SaveConfig(file_config)
+PLevel_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Player_Level_Max", gMaxPlayerLevel);
 }
 
-pl_level_OnGameModeInit()
+PLevel_OnGameModeInit()
 {
 	new
 		level = MIN_LEVEL - 1,

@@ -76,7 +76,7 @@ stock mission_SaveConfig(file_config)
 
 stock IsPlayerInMission(playerid, missionid)
 {
-	if (player_GetQuestID(playerid) == mission_questid[missionid]) {
+	if (GetPlayerQuestID(playerid) == mission_questid[missionid]) {
 		return 1;
 	}
 	return 0;
@@ -92,7 +92,7 @@ stock IsMissionEnabled(missionid)
 
 stock mission_Register(missionid)
 {
-	mission_questid[missionid] = quest_Register();
+	mission_questid[missionid] = RegisterQuest();
 
 	if (mission_questid[missionid] == INVALID_QUEST_ID) {
 		Log_Debug("Mission module: quests is over, increase MAX_QUESTS value.");

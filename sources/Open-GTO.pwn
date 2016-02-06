@@ -265,11 +265,11 @@ public OnGameModeInit()
 	Enterexit_OnGameModeInit();
 	weapon_OnGameModeInit();
 	Premium_OnGameModeInit();
-	pl_weapon_OnGameModeInit();
-	pl_money_td_OnGameModeInit();
-	pl_level_OnGameModeInit();
+	PWeapon_OnGameModeInit();
+	PMoney_TD_OnGameModeInit();
+	PLevel_OnGameModeInit();
 	widestrip_OnGameModeInit();
-	PlayerClick_OnGameModeInit();
+	Player_Click_OnGameModeInit();
 	AdminClick_OnGameModeInit();
 
 	// custom
@@ -288,7 +288,7 @@ public OnGameModeInit()
 	wshop_OnGameModeInit();
 	Fuelstation_OnGameModeInit();
 	bank_OnGameModeInit();
-	fights_OnGameModeInit();
+	Fight_OnGameModeInit();
 	Tuning_OnGameModeInit();
 	Lottery_OnGameModeInit();
 
@@ -329,10 +329,10 @@ public OnPlayerConnect(playerid)
 	if (IsPlayerNPC(playerid)) {
 		return 1;
 	}
-	player_OnPlayerConnect(playerid);
+	Player_OnPlayerConnect(playerid);
 	pt_chat_OnPlayerConnect(playerid);
-	pl_weapon_OnPlayerConnect(playerid);
-	pl_money_td_OnPlayerConnect(playerid);
+	PWeapon_OnPlayerConnect(playerid);
+	PMoney_TD_OnPlayerConnect(playerid);
 	Vehicle_Textdraw_OnPlayerConn(playerid);
 	Enterexit_OnPlayerConnect(playerid);
 	Spectate_OnPlayerConnect(playerid);
@@ -347,13 +347,13 @@ public OnPlayerDisconnect(playerid, reason)
 	if (playerid == INVALID_PLAYER_ID || IsPlayerNPC(playerid)) {
 		return 1;
 	}
-	player_OnPlayerDisconnect(playerid, reason);
+	Player_OnPlayerDisconnect(playerid, reason);
 	Trucker_OnPlayerDisconnect(playerid, reason);
 	pt_chat_OnPlayerDisconnect(playerid, reason);
 	Groundhold_OnPlayerDisconnect(playerid, reason);
-	pl_money_td_OnPlayerDisconnect(playerid, reason);
-	pveh_OnPlayerDisconnect(playerid, reason);
-	Player_SetSpawned(playerid, 0);
+	PMoney_TD_OnPlayerDisconnect(playerid, reason);
+	PVehicle_OnPlayerDisconnect(playerid, reason);
+	SetPlayerSpawned(playerid, 0);
 	return 1;
 }
 
@@ -365,7 +365,7 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 
 public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
-	if (pl_weapon_OnPlayerPickUpPickup(playerid, pickupid)) {
+	if (PWeapon_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
 	}
 	if (swagup_OnPlayerPickUpPickup(playerid, pickupid)) {
@@ -405,7 +405,7 @@ public OnPlayerEnterDynamicCP(playerid, checkpointid)
 	if (ss_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
 		return 1;
 	}
-	if (fights_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
+	if (Fight_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
 		return 1;
 	}
 	if (bank_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
@@ -434,7 +434,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 		return 1;
 	}
 
-	Player_SetSpawned(playerid, 0);
+	SetPlayerSpawned(playerid, 0);
 
 	if (killerid == INVALID_PLAYER_ID) {
 		Log_Game("player: %s(%d): has died > Reason: (%d)", ReturnPlayerName(playerid), playerid, reason);
@@ -444,7 +444,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 
 	SendDeathMessage(killerid, playerid, reason);
 	
-	player_OnPlayerDeath(playerid, killerid, reason);
+	Player_OnPlayerDeath(playerid, killerid, reason);
 	Trucker_OnPlayerDeath(playerid, killerid, reason);
 
 	PlayCrimeReportForPlayer(killerid, killerid, random(18)+3);
@@ -465,7 +465,7 @@ public OnPlayerSpawn(playerid)
 	SetPlayerPosToSpawn(playerid);
 
 	// spawn player
-	player_OnPlayerSpawn(playerid);
+	Player_OnPlayerSpawn(playerid);
 	weapon_OnPlayerSpawn(playerid);
 	Spectate_OnPlayerSpawn(playerid);
 
@@ -476,21 +476,21 @@ public OnPlayerSpawn(playerid)
 forward OnPlayerSpawned(playerid);
 public OnPlayerSpawned(playerid)
 {
-	Player_SetSpawned(playerid, 1);
+	SetPlayerSpawned(playerid, 1);
 	return 1;
 }
 
 public OnPlayerRequestClass(playerid, classid)
 {
-	Player_SetSpawned(playerid, 0);
-	player_OnPlayerRequestClass(playerid, classid);
-	pl_weapon_OnPlayerRequestClass(playerid, classid);
+	SetPlayerSpawned(playerid, 0);
+	Player_OnPlayerRequestClass(playerid, classid);
+	PWeapon_OnPlayerRequestClass(playerid, classid);
 	return 1;
 }
 
 public OnPlayerRequestSpawn(playerid)
 {
-	if (!player_IsLogin(playerid)) {
+	if (!IsPlayerLogin(playerid)) {
 		return 0;
 	}
 	return 1;
@@ -498,7 +498,7 @@ public OnPlayerRequestSpawn(playerid)
 
 public OnPlayerCommandReceived(playerid, cmdtext[])
 {
-	if (!player_IsLogin(playerid)) {
+	if (!IsPlayerLogin(playerid)) {
 		SendClientMessage(playerid, -1, _(ACCOUNT_LOGIN_FIRST));
 		return 0;
 	}
@@ -518,7 +518,7 @@ public OnPlayerCommandPerformed(playerid, cmdtext[], success)
 
 public OnPlayerText(playerid, text[])
 {
-	if (!player_IsLogin(playerid)) {
+	if (!IsPlayerLogin(playerid)) {
 		SendClientMessage(playerid, -1, _(ACCOUNT_LOGIN_FIRST));
 		return 0;
 	}
@@ -528,12 +528,12 @@ public OnPlayerText(playerid, text[])
 		return 0;
 	}
 	
-	new pl_result = pl_text_OnPlayerText(playerid, text);
+	new pl_result = Player_Text_OnPlayerText(playerid, text);
 	if (pl_result == 0) {
 		return 0;
 	}
 
-	new adm_result = pl_mute_OnPlayerText(playerid, text);
+	new adm_result = Player_Mute_OnPlayerText(playerid, text);
 	if (adm_result == 0) {
 		return 0;
 	}
@@ -681,7 +681,7 @@ public OnVehicleSpawn(vehicleid)
 public OnVehicleDeath(vehicleid, killerid)
 {
 	Trucker_OnVehicleDeath(vehicleid, killerid);
-	pveh_OnVehicleDeath(vehicleid, killerid);
+	PVehicle_OnVehicleDeath(vehicleid, killerid);
 	return 1;
 }
 
@@ -694,7 +694,7 @@ public OnRconLoginAttempt(ip[], password[], success)
 public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
 	admin_OnPlayerClickMap(playerid, fX, fY, fZ);
-	player_OnPlayerClickMap(playerid, fX, fY, fZ);
+	Player_OnPlayerClickMap(playerid, fX, fY, fZ);
 	return 1;
 }
 
@@ -711,7 +711,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
-	pl_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+	PWeapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
 	pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
 
 	if (hittype == BULLET_HIT_TYPE_VEHICLE) {
@@ -737,19 +737,19 @@ public OnVehicleMod(playerid, vehicleid, componentid)
 
 public OnVehicleTuningPaintjob(playerid, vehicleid, paintjobid)
 {
-	pveh_OnVehiclePaintjob(playerid, vehicleid, paintjobid);
+	PVehicle_OnVehiclePaintjob(playerid, vehicleid, paintjobid);
 	return 1;
 }
 
 public OnVehicleTuningRespray(playerid, vehicleid, color1, color2)
 {
-	pveh_OnVehicleRespray(playerid, vehicleid, color1, color2);
+	PVehicle_OnVehicleRespray(playerid, vehicleid, color1, color2);
 	return 1;
 }
 
 public OnVehicleTuning(playerid, vehicleid, componentid)
 {
-	pveh_OnVehicleTuning(playerid, vehicleid, componentid);
+	PVehicle_OnVehicleTuning(playerid, vehicleid, componentid);
 	return 1;
 }
 

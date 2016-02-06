@@ -10,7 +10,6 @@
 #endif
 
 #define _player_info_included
-#pragma library player_info
 
 /*
 	GetPlayerInfoString

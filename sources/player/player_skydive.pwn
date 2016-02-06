@@ -6,11 +6,10 @@
 */
 
 #if defined _player_skydive_included
-#endinput
+	#endinput
 #endif
 
 #define _player_skydive_included
-#pragma library player_skydive
 
 /*
 	Vars
@@ -25,7 +24,7 @@ static
 
 COMMAND:skydive(playerid, params[])
 {
-	if (IsPlayerJailed(playerid) || GetPlayerInterior(playerid) != 0 || player_IsAtQuest(playerid)) {
+	if (IsPlayerJailed(playerid) || GetPlayerInterior(playerid) != 0 || IsPlayerAtQuest(playerid)) {
 		SendClientMessage(playerid, COLOR_WHITE, _(SKYDIVING_ERROR));
 		return 1;
 	}

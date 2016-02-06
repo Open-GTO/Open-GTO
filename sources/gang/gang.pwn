@@ -242,7 +242,7 @@ stock Gang_Create(playerid, gangname[], gangcolour)
 	gGang[gangid][e_gXP] = 0;
 	gGang[gangid][e_gLevel] = 0;
 	gGang[gangid][e_gMoney] = 0;
-	gGang[gangid][e_gHouse] = Player_GetSpawnHouseID(playerid);
+	gGang[gangid][e_gHouse] = GetPlayerSpawnHouseID(playerid);
 
 	for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
 		GangMember_SetID(gangid, memberid, INVALID_PLAYER_ID);

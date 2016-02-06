@@ -6,12 +6,10 @@
 */
 
 #if defined _pl_vehicle_menu_included
-  #endinput
+	#endinput
 #endif
 
 #define _pl_vehicle_menu_included
-#pragma library pl_vehicle_menu
-
 
 DialogCreate:PlayerVehicleMenu(playerid)
 {
@@ -24,11 +22,14 @@ DialogCreate:PlayerVehicleMenu(playerid)
 		return 1;
 	}
 
-	new string[MAX_NAME * MAX_PLAYER_VEHICLES];
+	new
+		model_name[MAX_VEHICLE_NAME],
+		string[MAX_VEHICLE_NAME * (MAX_PLAYER_VEHICLES + 1) + 1];
 
 	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
 		if (IsValidPlayerVehicleSlot(playerid, i)) {
-			format(string, sizeof(string), "%s%s\n", string, ReturnVehicleModelName(PlayerVehicle[playerid][i][pv_Model]));
+			GetVehicleModelName(GetPlayerVehicleModelBySlot(playerid, i), model_name);
+			format(string, sizeof(string), "%s%s\n", string, model_name);
 		}
 	}
 

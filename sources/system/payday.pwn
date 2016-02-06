@@ -54,7 +54,7 @@ stock payday_Give()
 	new pay_money, pay_xp, string[MAX_LANG_VALUE_STRING];
 
 	foreach (new id : Player) {
-		if (!player_IsLogin(id)) {
+		if (!IsPlayerLogin(id)) {
 			continue;
 		}
 

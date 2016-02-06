@@ -10,7 +10,6 @@
 #endif
 
 #define _anims_included
-#pragma library anims
 
 
 #define MAX_ANIM_LIB_NAME	16

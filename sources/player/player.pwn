@@ -1,14 +1,15 @@
-//
-// Created:     05.09.06
-// Aurthor:    Iain Gilbert
-// Updated in 02.09.2011 by ZiGGi
+/*
+
+	Author: Iain Gilbert (05.09.06)
+	Contributor: ziggi
+
+*/
 
 #if defined _player_included
 	#endinput
 #endif
 
 #define _player_included
-#pragma library player
 
 /*
 	Vars
@@ -26,7 +27,7 @@ static
 	Config
 */
 
-stock player_LoadConfig(file_config)
+Player_LoadConfig(file_config)
 {
 	ini_getString(file_config, "Player_DB", db_player);
 	ini_getInteger(file_config, "Player_Start_Money", gPlayerStartMoney);
@@ -46,7 +47,7 @@ stock player_LoadConfig(file_config)
 	SetStartPlayerBulletsFromArray(bullets);
 }
 
-stock player_SaveConfig(file_config)
+Player_SaveConfig(file_config)
 {
 	ini_setString(file_config, "Player_DB", db_player);
 	ini_setInteger(file_config, "Player_Start_Money", gPlayerStartMoney);
@@ -58,7 +59,7 @@ stock player_SaveConfig(file_config)
 	For public
 */
 
-stock player_OnPlayerSpawn(playerid)
+Player_OnPlayerSpawn(playerid)
 {
 	if (IsPlayerMuted(playerid)) {
 		SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
@@ -72,23 +73,22 @@ stock player_OnPlayerSpawn(playerid)
 		SetPlayerSkin(playerid, GetPlayerSkin(playerid));
 	}
 	SetPlayerMaxHealth(playerid);
-	pl_fights_UpdatePlayerStyleUsed(playerid);
+	UpdatePlayerFightStyleUsed(playerid);
 	GivePlayerOwnedWeapon(playerid);
-	pl_money_td_ShowTextDraw(playerid);
+	ShowPlayerMoneyTextDraw(playerid);
 	return 1;
 }
 
-stock player_OnPlayerDisconnect(playerid, reason)
+Player_OnPlayerDisconnect(playerid, reason)
 {
 	// update params
 	Account_SetPlayedTime(playerid, Account_GetCurrentPlayedTime(playerid));
 
 	// save
-	player_Save(playerid);
+	Player_Save(playerid);
 	Account_Save(playerid);
 
-	StopAudioStreamForPlayer(playerid);
-
+	// message
 	new string[MAX_LANG_VALUE_STRING];
 	format(string, sizeof(string), _(PLAYER_DISCONNECT), ReturnPlayerName(playerid), playerid);
 	
@@ -106,6 +106,7 @@ stock player_OnPlayerDisconnect(playerid, reason)
 
 	SendClientMessageToAll(COLOR_GREY, string);
 
+	// gang logout
 	new gangid = GetPlayerGangID(playerid);
 
 	new is_ok = Gang_MemberLogout(playerid, gangid);
@@ -114,17 +115,21 @@ stock player_OnPlayerDisconnect(playerid, reason)
 		Gang_SendMessage(gangid, string, COLOR_GANG);
 	}
 
-	DisablePlayerRaceCheckpoint(playerid);
+	// other stuff
+	StopAudioStreamForPlayer(playerid);
 	SendDeathMessage(INVALID_PLAYER_ID, playerid, 201);
 }
 
-stock player_OnPlayerConnect(playerid)
+Player_OnPlayerConnect(playerid)
 {
+	// connect message
 	Chat_Clear(playerid);
 	SendClientMessage(playerid, COLOR_WHITE, _(PLAYER_LOADING));
 
+	// store ip
 	Player_UpdateIP(playerid);
 	
+	// check name
 	if (!NameCharCheck( ReturnPlayerName(playerid) )) {
 		new string[MAX_STRING];
 		format(string, sizeof(string), _(PLAYER_NICK_BAD_SYMBOLS), ALLOWED_NICK_SYMBOLS_STR);
@@ -132,13 +137,16 @@ stock player_OnPlayerConnect(playerid)
 		SendClientMessage(playerid, COLOR_RED, _(PLAYER_NICK_IS_IP));
 		KickPlayer(playerid, "Такой ник запрещён.");
 	}
+
+	// set color
 	SetPlayerColor(playerid, COLOR_PLAYER);
+	
+	// check ban
 	oBan_Check(playerid);
 }
 
-stock player_OnPlayerDeath(playerid, killerid, reason)
+Player_OnPlayerDeath(playerid, killerid, reason)
 {
-	#pragma unused reason
 	UpdatePlayerSpawnInfo(playerid);
 
 	if (killerid == INVALID_PLAYER_ID || IsPlayersTeammates(playerid, killerid)) {
@@ -169,7 +177,7 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 	}
 	
 	// weapon
-	pl_weapon_OnPlayerDeath(playerid, killerid, reason);
+	PWeapon_OnPlayerDeath(playerid, killerid, reason);
 
 	// give money
 	new stolencash = (GetPlayerMoney(playerid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
@@ -192,33 +200,39 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 	GivePlayerXP(playerid, xp_give_player);
 }
 
-stock player_OnPlayerRequestClass(playerid, classid)
+Player_OnPlayerRequestClass(playerid, classid)
 {
-	#pragma unused classid
-	pl_money_td_HideTextDraw(playerid);
+	HidePlayerMoneyTextDraw(playerid);
 
 	// spawn system
-	Player_Spawn_OnPlayerRequestC(playerid, classid);
+	PSpawn_OnPlayerRequestClass(playerid, classid);
 
 	// show login dialog
-	if (!player_IsLogin(playerid)) {
+	if (!IsPlayerLogin(playerid)) {
 		Account_ShowDialog(playerid);
 	}
 	return 1;
 }
 
-stock player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+Player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
-	pl_maptp_OnPlayerClickMap(playerid, fX, fY, fZ);
+	PMaptp_OnPlayerClickMap(playerid, fX, fY, fZ);
 	return 1;
 }
 
-stock player_OnLogin(playerid)
+stock Player_OnLogin(playerid)
 {
 	// spawn player
-	new interior, world, Float:spawn_pos[4];
-	GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
-	SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
+	new
+		interior,
+		world,
+		Float:spawn_pos_x,
+		Float:spawn_pos_y,
+		Float:spawn_pos_z,
+		Float:spawn_pos_a;
+
+	GetPlayerSpawnPos(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, interior, world);
+	SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, 0, 0, 0, 0, 0, 0);
 	TogglePlayerSpectating(playerid, 0);
 
 	// skin select
@@ -226,19 +240,23 @@ stock player_OnLogin(playerid)
 		#if defined PLAYER_START_SKIN
 			SetPlayerSkin(playerid, PLAYER_START_SKIN);
 		#else
-			new Float:camera_pos[3];
-			camera_pos[2] = spawn_pos[2] + 1.0;
+			new
+				Float:camera_pos_x,
+				Float:camera_pos_y,
+				Float:camera_pos_z;
 
-			GetCoordsBefore(spawn_pos[0], spawn_pos[1], spawn_pos[3], 2.0, camera_pos[0], camera_pos[1]);
-			SetPlayerCameraPos(playerid, camera_pos[0], camera_pos[1], camera_pos[2]);
-			SetPlayerCameraLookAt(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2] + 0.5);
+			camera_pos_z = spawn_pos_z + 1.0;
+
+			GetCoordsBefore(spawn_pos_x, spawn_pos_y, spawn_pos_a, 2.0, camera_pos_x, camera_pos_y);
+			SetPlayerCameraPos(playerid, camera_pos_x, camera_pos_y, camera_pos_z);
+			SetPlayerCameraLookAt(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z + 0.5);
 
 			SkinSelect_Start(playerid, SkinSelect:RegisterSkin);
 		#endif
 	}
 
 	// reset data
-	player_SetQuestID(playerid, INVALID_QUEST_ID);
+	SetPlayerQuestID(playerid, INVALID_QUEST_ID);
 
 	// send message
 	new
@@ -274,7 +292,7 @@ stock player_OnLogin(playerid)
 		SendClientMessage(id, COLOR_WHITE, string);
 	}
 
-	// admin
+	// set privilejes if player is rcon admin
 	if (IsPlayerAdmin(playerid)) {
 		SetPlayerPrivilege(playerid, PlayerPrivilegeAdmin);
 	}
@@ -332,11 +350,11 @@ SkinSelectResponse:RegisterSkin(playerid, SS_Response:type, oldskin, newskin)
 	}
 }
 
-stock player_SetDefaultData(playerid)
+stock Player_SetDefaultData(playerid)
 {
 	SetPlayerMoney(playerid, gPlayerStartMoney);
 	SetPlayerJailTime(playerid, -1);
-	Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
+	SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
 
 #if defined PLAYER_START_SKIN
 	SetPlayerSkin(playerid, PLAYER_START_SKIN);
@@ -346,22 +364,23 @@ stock player_SetDefaultData(playerid)
 
 	SetPlayerLevel(playerid, PLAYER_START_LEVEL, 0, 0);
 
-	pl_fights_SetPlayerStyleUsed(playerid, FIGHT_STYLE_NORMAL);
+	SetPlayerFightStyleUsed(playerid, FIGHT_STYLE_NORMAL);
 
 	ResetPlayerRandomSpawnID(playerid);
 	ResetPlayerGangData(playerid);
 	ResetPlayerWeapons(playerid);
 	ResetPlayerSkillLevel(playerid);
+	ResetPlayerQuest(playerid);
 
 	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
 		GivePlayerWeapon(playerid, PlayerStartWeapon[i][pwid], PlayerStartWeapon[i][pbullets], true);
 	}
 }
 
-stock player_Sync(playerid)
+stock Player_Sync(playerid)
 {
 	// если игрок мертв, то защиты не срабатывают
-	if (!Player_IsSpawned(playerid)) {
+	if (!IsPlayerSpawned(playerid)) {
 		return 0;
 	}
 	
@@ -373,9 +392,13 @@ stock player_Sync(playerid)
 	return 1;
 }
 
+/*
+	Name
+*/
+
 stock ReturnPlayerName(playerid)
 {
-	new name[MAX_PLAYER_NAME+1];
+	new name[MAX_PLAYER_NAME + 1];
 	GetPlayerName(playerid, name, sizeof(name));
 	return name;
 }

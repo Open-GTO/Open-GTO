@@ -10,10 +10,9 @@
 #endif
 
 #define _pl_text_included
-#pragma library pl_text
 
 
-stock pl_text_OnPlayerText(playerid, text[])
+stock Player_Text_OnPlayerText(playerid, text[])
 {
 	new
 		string[MAX_STRING],

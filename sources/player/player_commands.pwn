@@ -4,11 +4,10 @@
 //
 
 #if defined _commands_included
-#endinput
+	#endinput
 #endif
 
 #define _commands_included
-#pragma library commands
 
 /*
 	Commands
@@ -68,7 +67,7 @@ COMMAND:status(playerid, params[])
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	new fstylename[MAX_STRING];
-	fights_GetStyleName(pl_fights_GetPlayerStyleUsed(playerid), fstylename);
+	GetFightStyleName(GetPlayerFightStyleUsed(playerid), fstylename);
 
 	format(string, sizeof(string), _(COMMAND_STATUS_FIGHTSTYLE), fstylename);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);

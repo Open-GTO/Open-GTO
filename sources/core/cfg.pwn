@@ -30,7 +30,7 @@ stock cfg_LoadConfigs()
 	mission_LoadConfig(file_config);
 	payday_LoadConfig(file_config);
 	Account_LoadConfig(file_config);
-	player_LoadConfig(file_config);
+	Player_LoadConfig(file_config);
 	Vehicle_LoadConfig(file_config);
 	Vehicle_Fuel_LoadConfig(file_config);
 	weapon_LoadConfig(file_config);
@@ -40,9 +40,9 @@ stock cfg_LoadConfigs()
 	admin_LoadConfig(file_config);
 
 	// player/
-	pl_level_LoadConfig(file_config);
-	wdrop_LoadConfig(file_config);
-	WSkill_LoadConfig(file_config);
+	PLevel_LoadConfig(file_config);
+	PWDrop_LoadConfig(file_config);
+	PWSkill_LoadConfig(file_config);
 
 	Lottery_LoadConfig(file_config);
 
@@ -80,7 +80,7 @@ stock cfg_SaveConfigs()
 	mission_SaveConfig(file_config);
 	payday_SaveConfig(file_config);
 	Account_SaveConfig(file_config);
-	player_SaveConfig(file_config);
+	Player_SaveConfig(file_config);
 	Vehicle_Fuel_SaveConfig(file_config);
 	Vehicle_SaveConfig(file_config);
 	weapon_SaveConfig(file_config);
@@ -90,9 +90,9 @@ stock cfg_SaveConfigs()
 	admin_SaveConfig(file_config);
 
 	// player/
-	pl_level_SaveConfig(file_config);
-	wdrop_SaveConfig(file_config);
-	WSkill_SaveConfig(file_config);
+	PLevel_SaveConfig(file_config);
+	PWDrop_SaveConfig(file_config);
+	PWSkill_SaveConfig(file_config);
 
 	Lottery_SaveConfig(file_config);
 

@@ -30,7 +30,7 @@ public WorldSave(necessarily) // save all
 	new starttime = GetTickCount();
 
 	foreach (new id : Player) {
-		player_Save(id);
+		Player_Save(id);
 		Account_Save(id);
 	}
 
@@ -53,7 +53,7 @@ forward OneSecTimer();
 public OneSecTimer()
 {
 	foreach (new playerid : Player) {
-		player_Sync(playerid);
+		Player_Sync(playerid);
 		UpdatePlayerWeaponTextDraws(playerid);
 		adm_spec_UpdateLabel(playerid);
 	}
@@ -65,7 +65,7 @@ forward OneMinuteTimer();
 public OneMinuteTimer()
 {
 	foreach (new playerid : Player) {
-		if (player_IsLogin(playerid)) {
+		if (IsPlayerLogin(playerid)) {
 			pt_idle_PlayerTimer(playerid);
 			Gang_GiveMemberXP(playerid);
 		}
@@ -93,7 +93,7 @@ forward FiveSecondTimer();
 public FiveSecondTimer()
 {
 	foreach (new playerid : Player) {
-		if (player_IsLogin(playerid)) {
+		if (IsPlayerLogin(playerid)) {
 			MutePlayerTimer(playerid);
 			JailPlayerTimer(playerid);
 			FreezePlayerTimer(playerid);
@@ -102,7 +102,7 @@ public FiveSecondTimer()
 	}
 
 	Groundhold_CheckAll();
-	pl_health_Regeneration();
+	RegenerationPlayerHealth();
 	business_Update3DTextLabelText();
 	housing_Update3DTextLabelText();
 	payday_Check();

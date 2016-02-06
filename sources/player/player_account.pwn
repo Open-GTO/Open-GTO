@@ -11,7 +11,6 @@
 #endif
 
 #define _pl_account_included
-#pragma library pl_account
 
 /*
 	Vars
@@ -42,7 +41,7 @@ stock Account_SaveConfig(file_config)
 
 stock Account_Save(playerid)
 {
-	if (!player_IsLogin(playerid)) {
+	if (!IsPlayerLogin(playerid)) {
 		return 0;
 	}
 
@@ -82,10 +81,10 @@ stock Account_Register(playerid, password[])
 
 	// create account and player
 	Account_SaveData(playername, gAccount[playerid]);
-	player_Create(playerid);
+	Player_Create(playerid);
 
 	// login
-	player_Login(playerid);
+	Player_Login(playerid);
 
 	SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_SUCCESS_REGISTER));
 	Log_Game("create_account: success %s(%d)", playername, playerid);
@@ -113,7 +112,7 @@ stock Account_Login(playerid, password[])
 #endif
 
 	if (strcmp(password, result[e_aPassword], false)) {
-		Log_Game("player_login: failed: incorrect password by %s(%d)", playername, playerid);
+		Log_Game("Player_Login: failed: incorrect password by %s(%d)", playername, playerid);
 		
 		AddLoginAttempt(playerid);
 
@@ -135,7 +134,7 @@ stock Account_Login(playerid, password[])
 	ResetLoginAttempt(playerid);
 
 	// login player
-	player_Login(playerid);
+	Player_Login(playerid);
 
 	return 1;
 }
@@ -358,7 +357,7 @@ static stock ResetLoginAttempt(playerid)
 
 static stock GetLoginAttemptCount(playerid)
 {
-	return MAX_PLAYER_LOGIN_ATTEMPT - gLoginAttempt{playerid};
+	return MAX_Player_Login_ATTEMPT - gLoginAttempt{playerid};
 }
 
 static stock AddLoginAttempt(playerid, value = 1)
@@ -368,7 +367,7 @@ static stock AddLoginAttempt(playerid, value = 1)
 
 static stock IsLoginAttemptsEnded(playerid)
 {
-	return gLoginAttempt{playerid} >= MAX_PLAYER_LOGIN_ATTEMPT;
+	return gLoginAttempt{playerid} >= MAX_Player_Login_ATTEMPT;
 }
 
 /*

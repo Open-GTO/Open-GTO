@@ -10,10 +10,8 @@
 #endif
 
 #define _pl_pm_included
-#pragma library pl_pm
 
-
-stock pl_pm_Send(senderid, receiveid, message[])
+stock SendPlayerPrivateMessage(senderid, receiveid, message[])
 {
 	if (IsPlayerMuted(senderid)) {
 		SendClientMessage(senderid, COLOR_RED, _(MUTED_HELP_MESSAGE));
@@ -72,6 +70,6 @@ COMMAND:pm(playerid, params[])
 		return 1;
 	}
 	
-	pl_pm_Send(playerid, id, params);
+	SendPlayerPrivateMessage(playerid, id, params);
 	return 1;
 }

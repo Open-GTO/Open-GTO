@@ -6,11 +6,10 @@
 */
 
 #if defined _player_menu_included
-  #endinput
+	#endinput
 #endif
 
 #define _player_menu_included
-#pragma library player_menu
 
 /*
 	PMenu_OnPlayerKeyStateChange
@@ -63,7 +62,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			}
 
 			new fstylename[MAX_STRING];
-			fights_GetStyleName(pl_fights_GetPlayerStyleUsed(playerid), fstylename);
+			GetFightStyleName(GetPlayerFightStyleUsed(playerid), fstylename);
 			
 			new gangname[MAX_NAME];
 			gangname = ReturnPlayerGangName(playerid);

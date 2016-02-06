@@ -5,12 +5,11 @@
 
 */
 
-#if defined _pl_kick_included
+#if defined _player_kick_included
 	#endinput
 #endif
 
-#define _pl_kick_included
-#pragma library pl_kick
+#define _player_kick_included
 
 #if !defined MAX_KICK_REASON_LENGTH
 	#define MAX_KICK_REASON_LENGTH 64

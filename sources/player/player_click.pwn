@@ -1,37 +1,42 @@
 /*
 
-	Title: player click system
-	Created: 14.01.2014
+	About: player click system
 	Author: ziggi
 
 */
 
-PlayerClick_OnGameModeInit()
+#if defined _player_click_included
+	#endinput
+#endif
+
+#define _player_click_included
+
+Player_Click_OnGameModeInit()
 {
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(CLICK_SENDCASH_DIALOG_HEADER),
 	              _(CLICK_SENDCASH_DIALOG_MESSAGE),
 	              _(CLICK_SENDCASH_DIALOG_BUTTON_SEND), _(CLICK_SENDCASH_DIALOG_BUTTON_BACK),
 	              PlayerPrivilegePlayer,
-	              "pl_click_SendCash");
+	              "Player_Click_SendCash");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(CLICK_PM_DIALOG_HEADER),
 	              _(CLICK_PM_DIALOG_MESSAGE),
 	              _(CLICK_PM_DIALOG_BUTTON_SEND), _(CLICK_PM_DIALOG_BUTTON_BACK),
 	              PlayerPrivilegePlayer,
-	              "pl_click_SendMessage");
+	              "Player_Click_SendMessage");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(CLICK_REPORT_DIALOG_HEADER),
 	              _(CLICK_REPORT_DIALOG_MESSAGE),
 	              _(CLICK_REPORT_DIALOG_BUTTON_SEND), _(CLICK_REPORT_DIALOG_BUTTON_BACK),
 	              PlayerPrivilegePlayer,
-	              "pl_click_SendReport");
+	              "Player_Click_SendReport");
 }
 
-forward pl_click_SendCash(playerid, clickedid, listitem, inputtext[]);
-public pl_click_SendCash(playerid, clickedid, listitem, inputtext[])
+forward Player_Click_SendCash(playerid, clickedid, listitem, inputtext[]);
+public Player_Click_SendCash(playerid, clickedid, listitem, inputtext[])
 {
 	new giveplayer[MAX_PLAYER_NAME + 1],
 		sendername[MAX_PLAYER_NAME + 1],
@@ -57,14 +62,14 @@ public pl_click_SendCash(playerid, clickedid, listitem, inputtext[])
 	return 1;
 }
 
-forward pl_click_SendMessage(playerid, clickedid, listitem, inputtext[]);
-public pl_click_SendMessage(playerid, clickedid, listitem, inputtext[])
+forward Player_Click_SendMessage(playerid, clickedid, listitem, inputtext[]);
+public Player_Click_SendMessage(playerid, clickedid, listitem, inputtext[])
 {
-	return pl_pm_Send(playerid, clickedid, inputtext);
+	return SendPlayerPrivateMessage(playerid, clickedid, inputtext);
 }
 
-forward pl_click_SendReport(playerid, clickedid, listitem, inputtext[]);
-public pl_click_SendReport(playerid, clickedid, listitem, inputtext[])
+forward Player_Click_SendReport(playerid, clickedid, listitem, inputtext[]);
+public Player_Click_SendReport(playerid, clickedid, listitem, inputtext[])
 {
 	new sendername[MAX_PLAYER_NAME + 1],
 		abusename[MAX_PLAYER_NAME + 1],
@@ -88,10 +93,10 @@ public pl_click_SendReport(playerid, clickedid, listitem, inputtext[])
 	}
 
 	if (admin_count == 0) {
-		new reports = player_GetReportCount(playerid) + 1;
-		player_SetReportCount(clickedid, reports);
+		new reports = GetPlayerReportsCount(playerid) + 1;
+		SetPlayerReportsCount(clickedid, reports);
 
-		new reports_max = pl_report_GetMaxCount();
+		new reports_max = GetMaxReportCount();
 
 		format(string, sizeof(string), _(CLICK_REPORT_MESSAGE), reports, reports_max, abusename, clickedid, inputtext);
 		SendClientMessageToAll(COLOR_WHITE, string);
@@ -99,7 +104,7 @@ public pl_click_SendReport(playerid, clickedid, listitem, inputtext[])
 		if (reports >= reports_max) {
 			new jail_time = 0;
 			JailPlayer(clickedid, jail_time);
-			player_SetReportCount(clickedid, 0);
+			SetPlayerReportsCount(clickedid, 0);
 
 			format(string, sizeof(string), _(CLICK_REPORT_BY_MINUTE), jail_time);
 			format(string, sizeof(string), _(CLICK_REPORT_SERVER), ReturnPlayerName(clickedid), string);

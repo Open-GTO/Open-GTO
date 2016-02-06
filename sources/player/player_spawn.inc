@@ -10,10 +10,8 @@
 #endif
 
 #define _player_spawn_h_included
-#pragma library player_spawn_h
 
-
-forward SpawnType:Player_GetSpawnType(playerid);
+forward SpawnType:GetPlayerSpawnType(playerid);
 
 enum SpawnType {
 	SPAWN_TYPE_NONE,

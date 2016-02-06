@@ -6,11 +6,10 @@
 */
 
 #if defined _settings_menu_included
-  #endinput
+	#endinput
 #endif
 
 #define _settings_menu_included
-#pragma library settings_menu
 
 
 DialogCreate:PlayerSettingsMenu(playerid)
@@ -34,7 +33,7 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 	switch (listitem) {
 		// сохранить аккаунт
 		case 0: {
-			player_Save(playerid);
+			Player_Save(playerid);
 			Account_Save(playerid);
 			Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 				_(PLAYER_MENU_SETTINGS_SAVED_CAPTION),
@@ -161,7 +160,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	housing_RenameOwner(old_name, new_name);
 	business_RenameOwner(old_name, new_name);
 	
-	player_Save(playerid);
+	Player_Save(playerid);
 	Account_Save(playerid);
 	
 	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_account, old_name);

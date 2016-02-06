@@ -1,20 +1,19 @@
 /*
 	
-	Описание: выпадение пикапов с оружием после смерти
-	Автор: ZiGGi
+	About: drop weapon pickups after the death
+	Author: ziggi
 
 */
-
 
 #if defined _weapon_drop_included
 	#endinput
 #endif
 
 #define _weapon_drop_included
-#pragma library weapon_drop
 
-
-static IsEnabled = WEAPON_DROP_ENABLED;
+/*
+	Enums
+*/
 
 enum wd_Info {
 	wd_weaponid,
@@ -22,58 +21,76 @@ enum wd_Info {
 	wd_pickupid,
 	wd_timer,
 }
-static weapons_dropped[MAX_DROPPED_WEAPONS][wd_Info];
 
-stock wdrop_LoadConfig(file_config)
+/*
+	Vars
+*/
+
+static
+	IsEnabled = WEAPON_DROP_ENABLED,
+	gDroppedWeapons[MAX_DROPPED_WEAPONS][wd_Info];
+
+/*
+	Config
+*/
+
+PWDrop_LoadConfig(file_config)
 {
 	ini_getInteger(file_config, "Weapon_Drop_IsEnabled", IsEnabled);
 }
 
-stock wdrop_SaveConfig(file_config)
+PWDrop_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Weapon_Drop_IsEnabled", IsEnabled);
 }
 
-stock wdrop_OnGameModeInit()
+/*
+	For public
+*/
+
+PWDrop_OnGameModeInit()
 {
 	if (!IsEnabled) {
 		return 0;
 	}
 
 	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++) {
-		weapons_dropped[wd_slot][wd_weaponid] = -1;
-		weapons_dropped[wd_slot][wd_bullets] = -1;
-		weapons_dropped[wd_slot][wd_pickupid] = -1;
-		weapons_dropped[wd_slot][wd_timer] = -1;
+		gDroppedWeapons[wd_slot][wd_weaponid] = -1;
+		gDroppedWeapons[wd_slot][wd_bullets] = -1;
+		gDroppedWeapons[wd_slot][wd_pickupid] = -1;
+		gDroppedWeapons[wd_slot][wd_timer] = -1;
 	}
 	return 1;
 }
 
-stock wdrop_OnPlayerPickUpPickup(playerid, pickupid)
+PWDrop_OnPlayerPickUpPickup(playerid, pickupid)
 {
 	if (!IsEnabled) {
 		return 0;
 	}
 
 	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)  {
-		if (pickupid == weapons_dropped[wd_slot][wd_pickupid]) {
-			GivePlayerWeapon(playerid, weapons_dropped[wd_slot][wd_weaponid], weapons_dropped[wd_slot][wd_bullets]);
-			wdrop_DestroyPickup(wd_slot);
+		if (pickupid == gDroppedWeapons[wd_slot][wd_pickupid]) {
+			GivePlayerWeapon(playerid, gDroppedWeapons[wd_slot][wd_weaponid], gDroppedWeapons[wd_slot][wd_bullets]);
+			DestroyWeaponDropPickup(wd_slot);
 			return 1;
 		}
 	}
 	return 0;
 }
 
-stock wdrop_OnPlayerDeath(playerid)
+PWDrop_OnPlayerDeath(playerid)
 {
 	if (!IsEnabled) {
 		return 0;
 	}
 
 	// drop pickups
-	new weapon[PWeap],
-		Float:pos[3],
+	new
+		weapon[PWeap],
+		Float:pos_x,
+		Float:pos_y,
+		Float:pos_z,
 		pickupmodel,
 		wd_slot;
 
@@ -86,55 +103,60 @@ stock wdrop_OnPlayerDeath(playerid)
 			continue;
 		}
 		
-		wd_slot = wdrop_FindFreeSlot();
+		wd_slot = FindFreeWeaponDropSlot();
 		if (wd_slot == -1) {
 			Log_Game(_(WEAPON_DROP_ERROR_SLOT_NOT_FOUND));
 			return 1;
 		}
 
-		GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
+		GetPlayerPos(playerid, pos_x, pos_y, pos_z);
 
-		weapons_dropped[wd_slot][wd_pickupid] = CreateDynamicPickup(pickupmodel, 1, pos[0] + (random(5) - random(5)) / 2, pos[1] + (random(5) - random(5)) / 2, pos[2], -1);
-		if (weapons_dropped[wd_slot][wd_pickupid] == -1) {
+		gDroppedWeapons[wd_slot][wd_pickupid] = CreateDynamicPickup(pickupmodel, 1, pos_x + (random(5) - random(5)) / 2, pos_y + (random(5) - random(5)) / 2, pos_z, -1);
+		if (gDroppedWeapons[wd_slot][wd_pickupid] == -1) {
 			Log_Game(_(WEAPON_DROP_ERROR_LIMIT_IS_REACHED));
 			return 1;
 		}
 
-		weapons_dropped[wd_slot][wd_weaponid] = weapon[pwid];
-		weapons_dropped[wd_slot][wd_bullets] = weapon[pbullets] / 100 * WEAPON_DROP_BULL;
+		gDroppedWeapons[wd_slot][wd_weaponid] = weapon[pwid];
+		gDroppedWeapons[wd_slot][wd_bullets] = weapon[pbullets] / 100 * WEAPON_DROP_BULL;
 
-		PlayerWeapons[playerid][slot][pbullets] -= weapons_dropped[wd_slot][wd_bullets];
+		PlayerWeapons[playerid][slot][pbullets] -= gDroppedWeapons[wd_slot][wd_bullets];
 
 		// запустим таймер асинхронно, чтобы пикапы удалялись постепенно
-		weapons_dropped[wd_slot][wd_timer] = SetTimerEx("wdrop_DestroyPickup", (WEAPON_DROP_TIME * 1000) + slot * 300, 0, "d", wd_slot);
+		gDroppedWeapons[wd_slot][wd_timer] = SetTimerEx("DestroyWeaponDropPickup", (WEAPON_DROP_TIME * 1000) + slot * 300, 0, "d", wd_slot);
 	}
 	return 1;
 }
 
-stock wdrop_FindFreeSlot()
+/*
+	Functions
+*/
+
+static stock FindFreeWeaponDropSlot()
 {
 	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++) {
-		if (weapons_dropped[wd_slot][wd_weaponid] == -1
-			&& weapons_dropped[wd_slot][wd_bullets] == -1
-			&& weapons_dropped[wd_slot][wd_pickupid] == -1
-			&& weapons_dropped[wd_slot][wd_timer] == -1) {
+		if (gDroppedWeapons[wd_slot][wd_weaponid] == -1
+			&& gDroppedWeapons[wd_slot][wd_bullets] == -1
+			&& gDroppedWeapons[wd_slot][wd_pickupid] == -1
+			&& gDroppedWeapons[wd_slot][wd_timer] == -1) {
 			return wd_slot;
 		}
 	}
+
 	return -1;
 }
 
-forward wdrop_DestroyPickup(wd_slot);
-public wdrop_DestroyPickup(wd_slot)
+forward DestroyWeaponDropPickup(wd_slot);
+public DestroyWeaponDropPickup(wd_slot)
 {
-	weapons_dropped[wd_slot][wd_weaponid] = -1;
-	weapons_dropped[wd_slot][wd_bullets] = -1;
+	gDroppedWeapons[wd_slot][wd_weaponid] = -1;
+	gDroppedWeapons[wd_slot][wd_bullets] = -1;
 
-	DestroyDynamicPickup( weapons_dropped[wd_slot][wd_pickupid] );
-	weapons_dropped[wd_slot][wd_pickupid] = -1;
+	DestroyDynamicPickup( gDroppedWeapons[wd_slot][wd_pickupid] );
+	gDroppedWeapons[wd_slot][wd_pickupid] = -1;
 	
-	KillTimer(weapons_dropped[wd_slot][wd_timer]);
-	weapons_dropped[wd_slot][wd_timer] = -1;
+	KillTimer(gDroppedWeapons[wd_slot][wd_timer]);
+	gDroppedWeapons[wd_slot][wd_timer] = -1;
 	return 1;
 }
 

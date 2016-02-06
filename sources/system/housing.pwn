@@ -814,7 +814,7 @@ stock house_Buy(playerid)
 		Houses[id][Houses_Buyout] = 0;
 		// если игрок купил свой первый дом, то ставим спавн к нему
 		if (pl_houses == 0) {
-			Player_SetSpawnHouseID(playerid, id);
+			SetPlayerSpawnHouseID(playerid, id);
 		}
 		Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, house_icon[id], E_STREAMER_TYPE, 32);
 		format(temp, sizeof(temp), _(HOUSING_BUY_SUCCESS), Houses[id][Houses_Name]);
@@ -847,8 +847,8 @@ stock house_Sell(playerid)
 			Gang_SetHouseID(gangid, -1);
 		}
 
-		if (Player_GetSpawnHouseID(playerid) == id) {
-			Player_SetSpawnType(playerid, SPAWN_TYPE_NONE);
+		if (GetPlayerSpawnHouseID(playerid) == id) {
+			SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
 		}
 
 		new temp[MAX_STRING];

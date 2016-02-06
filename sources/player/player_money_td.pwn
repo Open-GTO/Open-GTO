@@ -10,8 +10,6 @@
 #endif
 
 #define _pl_money_td_included
-#pragma library pl_money_td
-
 
 static
 	give_timer[MAX_PLAYERS],
@@ -23,7 +21,7 @@ static
 	PlayerText:td_money_plus[MAX_PLAYERS];
 
 
-stock pl_money_td_OnGameModeInit()
+PMoney_TD_OnGameModeInit()
 {
 	td_border = TextDrawCreate(622.705993, 78.500000, "border");
 	TextDrawLetterSize(td_border, 0.000000, 3.060781);
@@ -50,7 +48,7 @@ stock pl_money_td_OnGameModeInit()
 	return 1;
 }
 
-stock pl_money_td_OnPlayerConnect(playerid)
+PMoney_TD_OnPlayerConnect(playerid)
 {
 	td_money[playerid] = CreatePlayerTextDraw(playerid, 615.0, 82.0, " ");
 	PlayerTextDrawLetterSize(playerid, td_money[playerid], 0.44, 2.16);
@@ -74,17 +72,17 @@ stock pl_money_td_OnPlayerConnect(playerid)
 	return 1;
 }
 
-stock pl_money_td_OnPlayerDisconnect(playerid, reason)
+PMoney_TD_OnPlayerDisconnect(playerid, reason)
 {
 	#pragma unused reason
-	pl_money_td_HideTextDraw(playerid);
+	HidePlayerMoneyTextDraw(playerid);
 
 	PlayerTextDrawDestroy(playerid, td_money[playerid]);
 	PlayerTextDrawDestroy(playerid, td_money_plus[playerid]);
 	return 1;
 }
 
-stock pl_money_td_ShowTextDraw(playerid)
+stock ShowPlayerMoneyTextDraw(playerid)
 {
 	TextDrawShowForPlayer(playerid, td_border);
 	TextDrawShowForPlayer(playerid, td_background);
@@ -92,7 +90,7 @@ stock pl_money_td_ShowTextDraw(playerid)
 	PlayerTextDrawShow(playerid, td_money[playerid]);
 }
 
-stock pl_money_td_HideTextDraw(playerid)
+stock HidePlayerMoneyTextDraw(playerid)
 {
 	TextDrawHideForPlayer(playerid, td_border);
 	TextDrawHideForPlayer(playerid, td_background);
@@ -100,7 +98,7 @@ stock pl_money_td_HideTextDraw(playerid)
 	PlayerTextDrawHide(playerid, td_money[playerid]);
 }
 
-stock pl_money_td_SetMoney(playerid, value)
+stock SetPlayerMoneyTextDraw(playerid, value)
 {
 	new string[16];
 
@@ -113,7 +111,7 @@ stock pl_money_td_SetMoney(playerid, value)
 	PlayerTextDrawSetString(playerid, td_money[playerid], string);
 }
 
-stock pl_money_td_GiveMoney(playerid, value)
+stock GivePlayerMoneyTextDraw(playerid, value)
 {
 	if (value == 0) {
 		return;
@@ -133,11 +131,11 @@ stock pl_money_td_GiveMoney(playerid, value)
 		KillTimer(give_timer[playerid]);
 	}
 
-	give_timer[playerid] = SetTimerEx("pl_money_td_GiveMoneyHide", 3000, 0, "i", playerid);
+	give_timer[playerid] = SetTimerEx("GivePlayerMoneyTextDrawHide", 3000, 0, "i", playerid);
 }
 
-forward pl_money_td_GiveMoneyHide(playerid);
-public pl_money_td_GiveMoneyHide(playerid)
+forward GivePlayerMoneyTextDrawHide(playerid);
+public GivePlayerMoneyTextDrawHide(playerid)
 {
 	PlayerTextDrawHide(playerid, td_money_plus[playerid]);
 	give_timer[playerid] = 0;

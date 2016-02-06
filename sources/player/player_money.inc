@@ -10,7 +10,6 @@
 #endif
 
 #define _player_money_h_included
-#pragma library player_money_h
 
 /*
 	GivePlayerMoney

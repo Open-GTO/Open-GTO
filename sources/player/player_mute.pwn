@@ -10,7 +10,6 @@
 #endif
 
 #define _pl_mute_included
-#pragma library pl_mute
 
 /*
 	Defines
@@ -32,7 +31,7 @@ static
 	For public
 */
 
-stock pl_mute_OnPlayerText(playerid, text[])
+stock Player_Mute_OnPlayerText(playerid, text[])
 {
 	#pragma unused text
 

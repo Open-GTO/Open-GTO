@@ -85,7 +85,7 @@ COMMAND:system(playerid, params[])
 		SendClientMessageToAll(-1, _(ADMIN_COMMAND_SYSTEM_GMX_MESSAGE));
 
 		foreach (new id : Player) {
-			player_Save(id);
+			Player_Save(id);
 			Account_Save(id);
 		}
 

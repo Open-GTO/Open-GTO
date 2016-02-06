@@ -135,7 +135,7 @@ Prot_Teleport_Sync(playerid)
 		return 0;
 	}
 
-	if (!Player_IsSpawned(playerid)) {
+	if (!IsPlayerSpawned(playerid)) {
 		return 0;
 	}
 

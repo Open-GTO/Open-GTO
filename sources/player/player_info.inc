@@ -10,7 +10,6 @@
 #endif
 
 #define _player_info_h_included
-#pragma library player_info_h
 
 /*
 	Defines

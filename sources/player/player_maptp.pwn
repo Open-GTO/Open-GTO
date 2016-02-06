@@ -10,9 +10,8 @@
 #endif
 
 #define _pl_maptp_included
-#pragma library pl_maptp
 
-stock pl_maptp_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+stock PMaptp_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
 	if (!IsAllowPlayerTeleport(playerid)) {
 		return 0;

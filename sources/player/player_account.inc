@@ -10,7 +10,6 @@
 #endif
 
 #define _player_account_h_included
-#pragma library player_account_h
 
 
 enum e_Account_Info {
