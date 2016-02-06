@@ -137,27 +137,34 @@ stock player_OnPlayerDeath(playerid, killerid, reason)
 	if (IsPlayerJailed(playerid)) {
 		return;
 	}
-
-	new stolencash = (GetPlayerMoney(playerid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
-	if (stolencash > 0) {
-		GivePlayerMoney(playerid, -stolencash);
-		GivePlayerMoney(killerid, stolencash);
-	}
 	
+	// gang kill
 	new killer_gang_id = GetPlayerGangID(killerid);
 	if (killer_gang_id != INVALID_GANG_ID) {
 		if (Gang_PlayerKill(killer_gang_id, killerid, playerid) == 1) {
-			new string[MAX_STRING];
+			new string[MAX_LANG_VALUE_STRING];
+			
 			GetPlayerName(killerid, string, sizeof(string));
 			format(string, sizeof(string), _(GANG_KILL_TEAMMATE), string);
+
 			Gang_SendMessage(killer_gang_id, string, COLOR_GANG);
 			return;
 		}
 
 		GiveGangXP(killer_gang_id, (GetGangLevel(killer_gang_id) + 1) * 20);
 	}
+	
+	// weapon
+	pl_weapon_OnPlayerDeath(playerid, killerid, reason);
 
-	// Give XP
+	// give money
+	new stolencash = (GetPlayerMoney(playerid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
+	if (stolencash > 0) {
+		GivePlayerMoney(playerid, -stolencash);
+		GivePlayerMoney(killerid, stolencash);
+	}
+
+	// give xp
 	new xp_give_player = -GetPlayerXP(playerid) / 100 * PLAYER_XP_DEATH_MINUS_PROC;
 	new xp_give_killer = (pow(GetPlayerLevel(playerid) * 4, 2) / (GetPlayerLevel(killerid) + 10) + 20) * PLAYER_XP_KILL_TARIF;
 
