@@ -171,6 +171,11 @@ Thanks:
 #include "system/enterexit.pwn"
 #include "system/weather.pwn"
 
+// competition
+#include "competition/competition.pwn"
+#include "competition/competition_type.pwn"
+#include "competition/competition_menu.pwn"
+
 // admin
 #include "admin/admin_commands/cmd_announce.pwn"
 #include "admin/admin_commands/cmd_armour.pwn"

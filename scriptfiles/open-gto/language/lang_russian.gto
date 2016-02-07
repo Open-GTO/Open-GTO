@@ -34,10 +34,6 @@ ACCOUNT_LOGIN_ROOT = Вы успешно вошли как главный администратор. Введите /about,
 ACCOUNT_LOGIN_ADMIN = Вы успешно вошли как администратор. Введите /about, чтобы узнать о своих обязанностях.
 ACCOUNT_LOGIN_MODER = Вы успешно вошли как модератор. Введите /about, чтобы узнать о своих обязанностях.
 
-ACCOUNT_PLAYED_TIME_DAY = %d %s, %d %s, 
-ACCOUNT_PLAYED_TIME_HOUR = %d %s, 
-ACCOUNT_PLAYED_TIME_MINUTES = %s%d %s, %d %s
-
 // skydiving
 SKYDIVING_MSG = {FFCC66}[Сервер]: {FFFFFF}Летим! Не забудьте воспользоваться парашютом!
 SKYDIVING_GAMETEXT = !!! SKY DIVING !!!
@@ -547,6 +543,11 @@ DECLENSION_SECOND_4 = секунду
 DECLENSION_AMMO_1 = патрон
 DECLENSION_AMMO_2 = патрона
 DECLENSION_AMMO_3 = патронов
+
+// time
+TIME_DAY = %d %s, %d %s, 
+TIME_HOUR = %d %s, 
+TIME_MINUTES = %s%d %s, %d %s
 
 // admin
 ADMIN_GODMOD_ON_CONTENT = Godmod ~h~~g~ENABLED
@@ -1180,3 +1181,13 @@ GROUNDHOLD_ALERT_HEADER = Ground Hold
 GROUNDHOLD_ALERT_ENEMY = Enemy in the point!
 GROUNDHOLD_ALERT_MISSING = Point lost
 GROUNDHOLD_ALERT_ENEMIES = Get the point!
+
+// Competition
+COMPETITION_MENU_HEADER = Соревнования
+COMPETITION_MENU_SELECT = Выбрать
+COMPETITION_MENU_BACK = Назад
+COMPETITION_MENU_LIST_HEADER = Название\tТип\tСтатус\n
+COMPETITION_MENU_LIST_START = {00BB00}Запустить соревнование\n
+COMPETITION_MENU_LIST_ITEM = {BBBBBB}%s\t{%s}%s\t%s\n
+COMPETITION_MENU_STATUS_ENTER = {00BB00}До начала: %s
+COMPETITION_MENU_STATUS_STARTED = {BB0000}Прошло: %s

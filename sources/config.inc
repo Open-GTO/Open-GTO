@@ -10,8 +10,8 @@
 #endif
 
 #define _config_included
-#pragma library config
 
+#define OPEN_GTO
 
 /*
  * Core settings

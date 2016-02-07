@@ -30,6 +30,7 @@ DialogCreate:PlayerMenu(playerid)
 	Dialog_Open(playerid, Dialog:PlayerMenu, DIALOG_STYLE_LIST,
 		"Меню игрока",
 		"Информация о персонаже\n\
+		Соревнования\n\
 		Банда\n\
 		Стиль борьбы\n\
 		Анимации\n\
@@ -70,6 +71,9 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				strmid(gangname, "нет", 0, 3);
 			}
 
+			new played_time[MAX_LANG_VALUE_STRING];
+			GetTimeStringFromSeconds(Account_GetCurrentPlayedTime(playerid), played_time);
+
 			new money_str[16], bank_money_str[16], total_money_str[16];
 			InsertSpacesInInt(GetPlayerMoney(playerid), money_str);
 			InsertSpacesInInt(GetPlayerBankMoney(playerid), bank_money_str);
@@ -84,7 +88,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				GetPlayerLevel(playerid),
 				GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1),
 				timestamp_to_format_date( Account_GetRegistrationTime(playerid) ),
-				Account_ReturnPlayedTimeString( Account_GetCurrentPlayedTime(playerid) ),
+				played_time,
 
 				gangname,
 				
@@ -101,23 +105,28 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Информация о персонаже", string, "Назад", "Выход");
 			return 1;
 		}
-		// банда
+		// competition
 		case 1: {
+			Dialog_Show(playerid, Dialog:CompetitionMenu);
+			return 1;
+		}
+		// банда
+		case 2: {
 			Dialog_Show(playerid, Dialog:GangMenu);
 			return 1;
 		}
 		// стиль борьбы
-		case 2: {
+		case 3: {
 			Dialog_Show(playerid, Dialog:PlayerFights);
 			return 1;
 		}
 		// анимации
-		case 3: {
+		case 4: {
 			Dialog_Show(playerid, Dialog:AnimLib);
 			return 1;
 		}
 		// телепорты
-		case 4: {
+		case 5: {
 			if (GetPVarInt(playerid, "teleports_Pause") == 1) {
 				Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Меню телепортов", "Вы недавно телепортировались, ждите...", "Назад", "Выход");
 				return 0;
@@ -126,28 +135,28 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 		// выбросить оружие
-		case 5: {
+		case 6: {
 			ResetPlayerWeapons(playerid);
 			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Выбросить оружие", "Вы добровольно избавились от всего оружия.", "Назад", "Выход");
 			return 1;
 		}
 		// место спавна
-		case 6: {
+		case 7: {
 			Dialog_Show(playerid, Dialog:PlayerSpawnMenu);
 			return 1;
 		}
 		// мои бизнесы
-		case 7: {
+		case 8: {
 			Dialog_Show(playerid, Dialog:BusinessPlayerOwned);
 			return 1;
 		}
 		// мой транспорт
-		case 8: {
+		case 9: {
 			Dialog_Show(playerid, Dialog:PlayerVehicleMenu);
 			return 1;
 		}
 		// администрация онлайн
-		case 9: {
+		case 10: {
 			new idsa = 0,
 				idsm = 0,
 				admins[(MAX_PLAYER_NAME + 1 + 5) * 10],
@@ -180,12 +189,12 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 		// настройки
-		case 10: {
+		case 11: {
 			Dialog_Show(playerid, Dialog:PlayerSettingsMenu);
 			return 1;
 		}
 		// версия
-		case 11: {
+		case 12: {
 			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
 				"Информация о версии",
 				"{AFE7FF}На сервере запущен:\n\

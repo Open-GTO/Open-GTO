@@ -359,7 +359,7 @@ public adm_click_InfoPlayer(playerid, targetid, listitem, inputtext[])
 	format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM), day, month, year);
 	strcat(message, string);
 
-	Account_GetPlayedTimeString(account_info[e_aPlayedSeconds], string);
+	GetTimeStringFromSeconds(account_info[e_aPlayedSeconds], string);
 	format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_PLAYER_PLAYED), string);
 	strcat(message, string);
 

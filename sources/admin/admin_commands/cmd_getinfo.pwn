@@ -134,7 +134,7 @@ COMMAND:getinfo(playerid, params[])
 		format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM), day, month, year);
 		SendClientMessage(playerid, -1, string);
 
-		Account_GetPlayedTimeString(account_info[e_aPlayedSeconds], string);
+		GetTimeStringFromSeconds(account_info[e_aPlayedSeconds], string);
 		format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_PLAYER_PLAYED), string);
 		SendClientMessage(playerid, -1, string);
 
