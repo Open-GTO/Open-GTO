@@ -81,7 +81,7 @@
 // иконки
 #define MAPICON_HOSPITAL
 
-#define MAX_Player_Login_ATTEMPT    3 // максимальное количество попыток входа
+#define MAX_PLAYER_LOGIN_ATTEMPT    3 // максимальное количество попыток входа
 
 #define MIN_SEND_SYMBOLS  3 // минимальное кол-во отправляемых символов в ПМ
 #define MAX_SEND_SYMBOLS  100 // максимальное кол-во отправляемых символов в ПМ

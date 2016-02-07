@@ -12,6 +12,7 @@
 #define _player_fights_included
 
 static
+	gPlayerStyleUsed[MAX_PLAYERS char],
 	bool:gPlayerLearnedStyles[MAX_PLAYERS][MAX_FIGHTS char];
 
 DialogCreate:PlayerFights(playerid)
@@ -75,12 +76,12 @@ DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
 
 stock GetPlayerFightStyleUsed(playerid)
 {
-	return GetPVarInt(playerid, "pl_fights_StyleUsed");
+	return gPlayerStyleUsed{playerid};
 }
 
 stock SetPlayerFightStyleUsed(playerid, styleid)
 {
-	SetPVarInt(playerid, "pl_fights_StyleUsed", styleid);
+	gPlayerStyleUsed{playerid} = styleid;
 	SetPlayerFightingStyle(playerid, styleid);
 }
 
@@ -100,5 +101,10 @@ stock IsPlayerFightStyleLearned(playerid, teacherid)
 
 stock SetPlayerFightStyleLearned(playerid, teacherid, bool:islearned)
 {
+	if (!IsHaveFightTeacher(teacherid)) {
+		return 0;
+	}
+
 	gPlayerLearnedStyles[playerid]{teacherid} = islearned;
+	return 1;
 }

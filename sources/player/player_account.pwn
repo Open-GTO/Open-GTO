@@ -357,7 +357,7 @@ static stock ResetLoginAttempt(playerid)
 
 static stock GetLoginAttemptCount(playerid)
 {
-	return MAX_Player_Login_ATTEMPT - gLoginAttempt{playerid};
+	return MAX_PLAYER_LOGIN_ATTEMPT - gLoginAttempt{playerid};
 }
 
 static stock AddLoginAttempt(playerid, value = 1)
@@ -367,7 +367,7 @@ static stock AddLoginAttempt(playerid, value = 1)
 
 static stock IsLoginAttemptsEnded(playerid)
 {
-	return gLoginAttempt{playerid} >= MAX_Player_Login_ATTEMPT;
+	return gLoginAttempt{playerid} >= MAX_PLAYER_LOGIN_ATTEMPT;
 }
 
 /*

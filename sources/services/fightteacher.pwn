@@ -10,12 +10,11 @@
 #endif
 
 #define _fightteacher_included
-#pragma library fightteacher
 
-enum e_fInfo {
+enum e_Fight_Info {
 	e_fStyleLevel,
 	e_fStyleID,
-	e_fStyleName[MAX_NAME],
+	e_fStyleName[MAX_LANG_VALUE_STRING],
 	bool:e_fHaveTeacher,
 	e_fCost,
 	Float:e_fCoord_X,
@@ -24,8 +23,9 @@ enum e_fInfo {
 	e_fCheckpoint
 };
 
-static fights_array[MAX_FIGHTS][e_fInfo];
-static fStyleLastID = 0;
+static
+	gFightStyle[MAX_FIGHTS][e_Fight_Info],
+	gFightStyleLastID;
 
 Fight_OnGameModeInit()
 {
@@ -41,7 +41,7 @@ Fight_OnGameModeInit()
 Fight_OnPlayerEnterCheckpoint(playerid, cp)
 {
 	new
-		string[MAX_STRING],
+		string[MAX_LANG_VALUE_STRING],
 		caption[MAX_LANG_VALUE_STRING],
 		teacherid = GetFightTeacherIdByCheckpoint(cp);
 
@@ -73,7 +73,7 @@ Fight_OnPlayerEnterCheckpoint(playerid, cp)
 DialogCreate:ServiceFights(playerid)
 {
 	new
-		string[MAX_STRING],
+		string[MAX_LANG_VALUE_STRING],
 		caption[MAX_LANG_VALUE_STRING],
 		teacherid = GetPlayerFightTeacherID(playerid);
 	
@@ -91,9 +91,9 @@ DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
 	}
 
 	new
-		string[MAX_STRING],
+		string[MAX_LANG_VALUE_STRING],
 		caption[MAX_LANG_VALUE_STRING],
-		teachername[MAX_NAME],
+		teachername[MAX_LANG_VALUE_STRING],
 		teacherid = GetPlayerFightTeacherID(playerid),
 		cost = GetFightTeacherCost(teacherid);
 
@@ -119,22 +119,23 @@ stock AddFightStyle(minlvl, styleid, stylename[], bool:haveteacher, cost = 0, Fl
 {
 	new id = GetFightTeacherLastID();
 	if (id >= MAX_FIGHTS) {
+		Log_Debug("Error <fightteacher:AddFightStyle>: free slot not found (%d).", id);
 		return -1;
 	}
 
 	SetFightTeacherLastID(id + 1);
 
-	fights_array[id][e_fStyleLevel] = minlvl;
-	fights_array[id][e_fStyleID] = styleid;
-	strmid(fights_array[id][e_fStyleName], stylename, 0, strlen(stylename), MAX_NAME);
-	fights_array[id][e_fHaveTeacher] = haveteacher;
-	fights_array[id][e_fCost] = cost;
-	fights_array[id][e_fCoord_X] = pos_x;
-	fights_array[id][e_fCoord_Y] = pos_y;
-	fights_array[id][e_fCoord_Z] = pos_z;
+	gFightStyle[id][e_fStyleLevel] = minlvl;
+	gFightStyle[id][e_fStyleID] = styleid;
+	strmid(gFightStyle[id][e_fStyleName], stylename, 0, strlen(stylename), MAX_LANG_VALUE_STRING);
+	gFightStyle[id][e_fHaveTeacher] = haveteacher;
+	gFightStyle[id][e_fCost] = cost;
+	gFightStyle[id][e_fCoord_X] = pos_x;
+	gFightStyle[id][e_fCoord_Y] = pos_y;
+	gFightStyle[id][e_fCoord_Z] = pos_z;
 
 	if (haveteacher) {
-		fights_array[id][e_fCheckpoint] = CreateDynamicCP(pos_x, pos_y, pos_z, 1.5, .streamdistance = 20.0);
+		gFightStyle[id][e_fCheckpoint] = CreateDynamicCP(pos_x, pos_y, pos_z, 1.5, .streamdistance = 20.0);
 	}
 	return id;
 }
@@ -152,7 +153,7 @@ stock GetPlayerFightTeacherID(playerid)
 stock GetFightTeacherIdByCheckpoint(cpid)
 {
 	for (new id = 0; id < GetFightTeacherLastID(); id++) {
-		if (fights_array[id][e_fHaveTeacher] && fights_array[id][e_fCheckpoint] == cpid) {
+		if (gFightStyle[id][e_fHaveTeacher] && gFightStyle[id][e_fCheckpoint] == cpid) {
 			return id;
 		}
 	}
@@ -164,7 +165,7 @@ stock GetFightTeacherStyleID(teacherid)
 	if (teacherid < 0 || teacherid >= GetFightTeacherLastID()) {
 		return -1;
 	}
-	return fights_array[teacherid][e_fStyleID];
+	return gFightStyle[teacherid][e_fStyleID];
 }
 
 stock GetFightTeacherLevel(teacherid)
@@ -172,15 +173,15 @@ stock GetFightTeacherLevel(teacherid)
 	if (teacherid < 0 || teacherid >= GetFightTeacherLastID()) {
 		return -1;
 	}
-	return fights_array[teacherid][e_fStyleLevel];
+	return gFightStyle[teacherid][e_fStyleLevel];
 }
 
-stock GetFightTeacherName(teacherid, fstylename[])
+stock GetFightTeacherName(teacherid, fstylename[], const size = sizeof(fstylename))
 {
 	if (teacherid < 0 || teacherid >= GetFightTeacherLastID()) {
 		return 0;
 	}
-	strmid(fstylename, fights_array[teacherid][e_fStyleName], 0, strlen(fights_array[teacherid][e_fStyleName]), MAX_NAME);
+	strmid(fstylename, gFightStyle[teacherid][e_fStyleName], 0, strlen(gFightStyle[teacherid][e_fStyleName]), size);
 	return 1;
 }
 
@@ -189,7 +190,7 @@ stock GetFightTeacherCost(teacherid)
 	if (teacherid < 0 || teacherid >= GetFightTeacherLastID()) {
 		return -1;
 	}
-	return fights_array[teacherid][e_fCost];
+	return gFightStyle[teacherid][e_fCost];
 }
 
 stock IsHaveFightTeacher(teacherid)
@@ -197,14 +198,14 @@ stock IsHaveFightTeacher(teacherid)
 	if (teacherid < 0 || teacherid >= GetFightTeacherLastID()) {
 		return 0;
 	}
-	return fights_array[teacherid][e_fHaveTeacher];
+	return gFightStyle[teacherid][e_fHaveTeacher];
 }
 
-stock GetFightStyleName(styleid, fstylename[])
+stock GetFightStyleName(styleid, fstylename[], const size = sizeof(fstylename))
 {
 	new teacherid = -1;
 	for (new id = 0; id < GetFightTeacherLastID(); id++) {
-		if (fights_array[id][e_fStyleID] == styleid) {
+		if (gFightStyle[id][e_fStyleID] == styleid) {
 			teacherid = id;
 			break;
 		}
@@ -214,16 +215,16 @@ stock GetFightStyleName(styleid, fstylename[])
 		return 0;
 	}
 
-	strmid(fstylename, fights_array[teacherid][e_fStyleName], 0, strlen(fights_array[teacherid][e_fStyleName]), MAX_NAME);
+	strmid(fstylename, gFightStyle[teacherid][e_fStyleName], 0, strlen(gFightStyle[teacherid][e_fStyleName]), size);
 	return 1;
 }
 
 stock GetFightTeacherLastID()
 {
-	return fStyleLastID;
+	return gFightStyleLastID;
 }
 
 stock SetFightTeacherLastID(value)
 {
-	fStyleLastID = value;
+	gFightStyleLastID = value;
 }
