@@ -148,7 +148,7 @@ DialogCreate:PlayerSpawnMenu(playerid)
 	new gangid = GetPlayerGangID(playerid);
 	new gang_houseid = -1;
 
-	if (gangid != 0) {
+	if (gangid != INVALID_GANG_ID) {
 		gang_houseid = Gang_GetHouseID(gangid);
 		if (gang_houseid != -1) {
 			count++;
@@ -204,7 +204,7 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 	}
 	
 	new count = 1;
-	if (gangid != 0 && Gang_GetHouseID(gangid) != -1) {
+	if (gangid != INVALID_GANG_ID && Gang_GetHouseID(gangid) != -1) {
 		count++;
 	}
 
