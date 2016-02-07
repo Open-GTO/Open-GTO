@@ -35,9 +35,14 @@ stock weather_Update()
 
 stock weather_SetRandom()
 {
-	new weatherid = weather_array[random( sizeof(weather_array) )];
+	new weatherid = weather_GetRadom();
 	SetWeather(weatherid);
 	Log_Game("SERVER: Weather set to %d", weatherid);
+}
+
+stock weather_GetRadom()
+{
+	return weather_array[random( sizeof(weather_array) )];
 }
 
 stock weather_GetTime()
