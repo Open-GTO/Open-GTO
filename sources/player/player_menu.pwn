@@ -64,10 +64,10 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			new fstylename[MAX_STRING];
 			GetFightStyleName(GetPlayerFightStyleUsed(playerid), fstylename);
 			
-			new gangname[MAX_NAME];
-			gangname = ReturnPlayerGangName(playerid);
+			new gangname[MAX_GANG_NAME];
+			GetPlayerGangName(playerid, gangname);
 			if (strlen(gangname) == 0) {
-				gangname = "нет";
+				strmid(gangname, "нет", 0, 3);
 			}
 
 			new money_str[16], bank_money_str[16], total_money_str[16];
@@ -75,7 +75,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			InsertSpacesInInt(GetPlayerBankMoney(playerid), bank_money_str);
 			InsertSpacesInInt(GetPlayerTotalMoney(playerid), total_money_str);
 
-			new string[1024];
+			new string[MAX_LANG_MULTI_STRING];
 			__m(PLAYER_MENU_INFO, string);
 
 			format(string, sizeof(string),
