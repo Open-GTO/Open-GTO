@@ -112,9 +112,16 @@ PSpawn_OnPlayerRequestClass(playerid, classid)
 	if (IsPlayerLogin(playerid)) {
 		TogglePlayerSpectating(playerid, 1);
 
-		new interior, world, Float:spawn_pos[4];
-		GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
-		SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
+		new
+			interior,
+			world,
+			Float:spawn_pos_x,
+			Float:spawn_pos_y,
+			Float:spawn_pos_z,
+			Float:spawn_pos_a;
+
+		GetPlayerSpawnPos(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, interior, world);
+		SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, 0, 0, 0, 0, 0, 0);
 
 		TogglePlayerSpectating(playerid, 0);
 		return 0;
@@ -262,8 +269,15 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &
 			house_GetPickupPos(house_id, spos_x, spos_y, spos_z);
 		}
 	} else if (spawn_type == SPAWN_TYPE_GANG) {
-		new gangid = GetPlayerGangID(playerid);
-		new gang_houseid = Gang_GetHouseID(gangid);
+		new
+			gangid,
+			gang_houseid = -1;
+
+		gangid = GetPlayerGangID(playerid);
+
+		if (gangid == INVALID_GANG_ID) {
+			gang_houseid = Gang_GetHouseID(gangid)
+		}
 
 		if (gangid == INVALID_GANG_ID || gang_houseid == -1) {
 			SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
@@ -305,9 +319,16 @@ stock UpdatePlayerSpawnInfo(playerid)
 	SetPlayerSpawnCoords(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
 	ResetPlayerRandomSpawnID(playerid);
 	
-	new interior, world, Float:spawn_pos[4];
-	GetPlayerSpawnPos(playerid, spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], interior, world);
-	SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos[0], spawn_pos[1], spawn_pos[2], spawn_pos[3], 0, 0, 0, 0, 0, 0);
+	new
+		interior,
+		world,
+		Float:spawn_pos_x,
+		Float:spawn_pos_y,
+		Float:spawn_pos_z,
+		Float:spawn_pos_a;
+
+	GetPlayerSpawnPos(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, interior, world);
+	SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, 0, 0, 0, 0, 0, 0);
 }
 
 /*
