@@ -276,7 +276,7 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &
 		gangid = GetPlayerGangID(playerid);
 
 		if (gangid == INVALID_GANG_ID) {
-			gang_houseid = Gang_GetHouseID(gangid)
+			gang_houseid = Gang_GetHouseID(gangid);
 		}
 
 		if (gangid == INVALID_GANG_ID || gang_houseid == -1) {
