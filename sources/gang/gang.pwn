@@ -374,6 +374,11 @@ stock Gang_MemberLogin(playerid, gangid, memberid = INVALID_MEMBER_ID)
 		}
 	}
 
+	if (memberid >= MAX_GANG_SIZE) {
+		Log_Debug("Error <gang:Gang_MemberLogin>: gang member slot not found (%d >= %d).", memberid, MAX_GANG_SIZE);
+		return 0;
+	}
+
 	GangMember_SetID(gangid, memberid, playerid);
 	GangMember_SetActiveStatus(gangid, memberid, true);
 
