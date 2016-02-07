@@ -162,7 +162,7 @@ stock GetFightTeacherIdByCheckpoint(cpid)
 
 stock GetFightTeacherStyleID(teacherid)
 {
-	if (teacherid < 0 || teacherid >= GetFightTeacherLastID()) {
+	if (!IsTeacherValid(teacherid)) {
 		return -1;
 	}
 	return gFightStyle[teacherid][e_fStyleID];
@@ -170,7 +170,7 @@ stock GetFightTeacherStyleID(teacherid)
 
 stock GetFightTeacherLevel(teacherid)
 {
-	if (teacherid < 0 || teacherid >= GetFightTeacherLastID()) {
+	if (!IsTeacherValid(teacherid)) {
 		return -1;
 	}
 	return gFightStyle[teacherid][e_fStyleLevel];
@@ -178,7 +178,7 @@ stock GetFightTeacherLevel(teacherid)
 
 stock GetFightTeacherName(teacherid, fstylename[], const size = sizeof(fstylename))
 {
-	if (teacherid < 0 || teacherid >= GetFightTeacherLastID()) {
+	if (!IsTeacherValid(teacherid)) {
 		return 0;
 	}
 	strmid(fstylename, gFightStyle[teacherid][e_fStyleName], 0, strlen(gFightStyle[teacherid][e_fStyleName]), size);
@@ -187,7 +187,7 @@ stock GetFightTeacherName(teacherid, fstylename[], const size = sizeof(fstylenam
 
 stock GetFightTeacherCost(teacherid)
 {
-	if (teacherid < 0 || teacherid >= GetFightTeacherLastID()) {
+	if (!IsTeacherValid(teacherid)) {
 		return -1;
 	}
 	return gFightStyle[teacherid][e_fCost];
@@ -195,7 +195,7 @@ stock GetFightTeacherCost(teacherid)
 
 stock IsHaveFightTeacher(teacherid)
 {
-	if (teacherid < 0 || teacherid >= GetFightTeacherLastID()) {
+	if (!IsTeacherValid(teacherid)) {
 		return 0;
 	}
 	return gFightStyle[teacherid][e_fHaveTeacher];
@@ -227,4 +227,9 @@ stock GetFightTeacherLastID()
 stock SetFightTeacherLastID(value)
 {
 	gFightStyleLastID = value;
+}
+
+stock IsTeacherValid(teacherid)
+{
+	return (0 <= teacherid < GetFightTeacherLastID());
 }

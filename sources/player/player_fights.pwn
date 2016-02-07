@@ -101,7 +101,7 @@ stock IsPlayerFightStyleLearned(playerid, teacherid)
 
 stock SetPlayerFightStyleLearned(playerid, teacherid, bool:islearned)
 {
-	if (!IsHaveFightTeacher(teacherid)) {
+	if (!IsTeacherValid(teacherid)) {
 		return 0;
 	}
 
