@@ -272,7 +272,7 @@ stock Gang_Remove(gangid)
 	format(string, sizeof(string), "%s%s" DATA_FILES_FORMAT, gGangDB, string);
 
 	if (!ini_fileExist(string)) {
-		Log_Debug("Error <gang:Gang_Create>: gang file already exists (%s).", string);
+		Log_Debug("Error <gang:Gang_Remove>: gang file not exists (%s).", string);
 		return 0;
 	}
 
@@ -316,7 +316,6 @@ stock Gang_MemberJoin(gangid, playerid, GangMemberRank:rank = GangMemberSoldier)
 	new player_name[MAX_PLAYER_NAME + 1];
 	GetPlayerName(playerid, player_name, sizeof(player_name));
 
-	GangMember_SetID(gangid, memberid, playerid);
 	GangMember_SetName(gangid, memberid, player_name);
 	GangMember_SetExists(gangid, memberid, true);
 	GangMember_SetRank(gangid, memberid, rank);
@@ -336,6 +335,7 @@ stock Gang_MemberRemove(gangid, memberid)
 	GangMember_SetName(gangid, memberid, "");
 	GangMember_SetExists(gangid, memberid, false);
 	GangMember_SetRank(gangid, memberid, GangMemberSoldier);
+	GangMember_SetActiveStatus(gangid, memberid, false);
 
 	ResetPlayerGangData(playerid);
 
