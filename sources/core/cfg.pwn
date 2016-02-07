@@ -38,6 +38,7 @@ stock cfg_LoadConfigs()
 	business_LoadConfig(file_config);
 	houses_LoadConfig(file_config);
 	admin_LoadConfig(file_config);
+	Weather_LoadConfig(file_config);
 
 	// player/
 	PLevel_LoadConfig(file_config);
@@ -88,6 +89,7 @@ stock cfg_SaveConfigs()
 	business_SaveConfig(file_config);
 	houses_SaveConfig(file_config);
 	admin_SaveConfig(file_config);
+	Weather_SaveConfig(file_config);
 
 	// player/
 	PLevel_SaveConfig(file_config);

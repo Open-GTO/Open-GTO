@@ -76,7 +76,7 @@ stock Competition_Add(name[], type = -1, time = -1, weather = -1, world_time = -
 	}
 
 	if (weather == -1) {
-		weather = weather_GetRadom();
+		weather = Weather_GetRadom();
 	}
 
 	if (world_time == -1) {

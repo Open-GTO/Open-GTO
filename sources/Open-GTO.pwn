@@ -308,7 +308,7 @@ public OnGameModeInit()
 	Log_Game("SERVER: Custom mapicons, objects and pickups init");
 
 	Time_Sync();
-	weather_SetRandom();
+	Weather_SetRandom();
 	SetTimer("OneSecTimer", 1000, 1); // 1 second
 	SetTimer("FiveSecondTimer", 5000, 1); // 5 second
 	SetTimer("OneMinuteTimer", 60000, 1); // 1 minute

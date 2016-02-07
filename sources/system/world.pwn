@@ -70,7 +70,7 @@ public OneMinuteTimer()
 			Gang_GiveMemberXP(playerid);
 		}
 	}
-	weather_Update();
+
 	Time_Sync();
 	TurnAround();
 }
@@ -107,4 +107,5 @@ public FiveSecondTimer()
 	housing_Update3DTextLabelText();
 	payday_Check();
 	vshop_SetVehiclesToRespawn();
+	Weather_Update();
 }

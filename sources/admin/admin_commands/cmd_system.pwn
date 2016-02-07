@@ -56,7 +56,7 @@ COMMAND:system(playerid, params[])
 			return 1;
 		}
 
-		weather_SetTime(time);
+		Weather_SetTime(time);
 
 		if (time == 0) {
 			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SYSTEM_WEATHER_DISABLED));
