@@ -180,14 +180,6 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 	return 1;
 }
 
-weapon_OnPlayerSpawn(playerid)
-{
-	if (ORIG_GetPlayerTeam(playerid) != 0xFE) {
-		ORIG_SetPlayerTeam(playerid, 0xFE);
-	}
-	return 1;
-}
-
 weapon_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	#pragma unused oldstate

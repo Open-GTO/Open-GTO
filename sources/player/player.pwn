@@ -19,7 +19,6 @@ static
 	gPlayerDeaths[MAX_PLAYERS],
 	gPlayerKills[MAX_PLAYERS],
 	gPlayerSkin[MAX_PLAYERS],
-	gPlayerTeam[MAX_PLAYERS char] = {NO_TEAM | NO_TEAM << 8 | NO_TEAM << 16 | NO_TEAM << 24, ...},
 
 	gPlayerStartMoney = PLAYER_START_MONEY;
 
@@ -460,27 +459,4 @@ stock REDEF_SetPlayerSkin(playerid, skinid)
 {
 	gPlayerSkin[playerid] = skinid;
 	return ORIG_SetPlayerSkin(playerid, skinid);
-}
-
-/*
-	Team
-*/
-
-stock REDEF_GetPlayerTeam(playerid)
-{
-	if (!IsPlayerConnected(playerid)) {
-		return NO_TEAM;
-	}
-
-	return gPlayerTeam{playerid};
-}
-
-stock REDEF_SetPlayerTeam(playerid, team)
-{
-	if (!IsPlayerConnected(playerid)) {
-		return 0;
-	}
-
-	gPlayerTeam{playerid} = team;
-	return 1;
 }

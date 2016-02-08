@@ -53,6 +53,7 @@ Thanks:
 #include "player/player_money.inc"
 #include "player/player_privilege.inc"
 #include "player/player_info.inc"
+#include "player/player_team.inc"
 #include "protections/armour.inc"
 #include "protections/health.inc"
 #include "protections/specialaction.inc"
@@ -151,6 +152,7 @@ Thanks:
 #include "player/player_gang.pwn"
 #include "player/player_skydive.pwn"
 #include "player/player_godmod.pwn"
+#include "player/player_team.pwn"
 #include "player/message/message_alert.pwn"
 #include "player/message/message_objective.pwn"
 #include "player/player.pwn"
@@ -471,7 +473,6 @@ public OnPlayerSpawn(playerid)
 
 	// spawn player
 	Player_OnPlayerSpawn(playerid);
-	weapon_OnPlayerSpawn(playerid);
 	Spectate_OnPlayerSpawn(playerid);
 
 	SetTimerEx("OnPlayerSpawned", 1000, 0, "d", playerid);
