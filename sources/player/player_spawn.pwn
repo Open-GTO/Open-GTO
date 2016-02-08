@@ -370,7 +370,7 @@ static stock GetPlayerRandomSpawnID(playerid)
 		return id;
 	}
 
-	id = random( sizeof(gSpawns) + 1 );
+	id = random( sizeof(gSpawns) );
 	SetPVarInt(playerid, "random_spawn_id", id);
 
 	Log_Debug("player_spawn:GetPlayerRandomSpawnID(%d): return random spawn id: %d.", playerid, id);
