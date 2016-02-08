@@ -147,7 +147,8 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 		return 1;
 	}
 
-	if (GetPlayerTeam(playerid) == GetPlayerTeam(damagedid)) {
+	new team = GetPlayerTeam(playerid);
+	if (team != NO_TEAM && team == GetPlayerTeam(damagedid)) {
 		return 1;
 	}
 
