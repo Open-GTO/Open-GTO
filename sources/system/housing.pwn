@@ -947,13 +947,23 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		SetPlayerToHouseID(playerid, id);
 		if (IsPlayerInRangeOfPoint(playerid, 3, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.5))
 		{
-			new head[MAX_STRING], string[512];
+			new
+				head[MAX_LANG_VALUE_STRING],
+				string[MAX_LANG_VALUE_STRING * 2],
+				rent_string[MAX_LANG_VALUE_STRING];
+
 			format(head, sizeof(head), _(HOUSING_DIALOG_HEADER), Houses[id][Houses_Name]);
 			
 			new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
 			
 			if (strcmp(Houses[id][Houses_Owner], "Unknown", true) && strcmp(Houses[id][Houses_Gang], "Unknown", true))
 			{
+				if (!strcmp(Houses[id][Houses_RentName], "Unknown", true)) {
+					format(rent_string, sizeof(rent_string), _(HOUSING_RENT_COST), Houses[id][Houses_RentCost]);
+				} else {
+					format(rent_string, sizeof(rent_string), _(HOUSING_RENT_CURRENT), Houses[id][Houses_RentName]);
+				}
+
 				if (strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true))
 				{
 					__(HOUSING_DIALOG_INFO_OWNER, string);
@@ -961,23 +971,13 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 					format(string, sizeof(string),
 						string,
-						price, Houses[id][Houses_UpKeep], Houses[id][Houses_UpKeepLeft], house_GetUpKeepMax(id), Houses[id][Houses_Gang], Houses[id][Houses_Owner]
+						Houses[id][Houses_Owner], Houses[id][Houses_Gang], price, Houses[id][Houses_UpKeep],
+						Houses[id][Houses_UpKeepLeft], house_GetUpKeepMax(id)
 					);
 					
-					new buf[MAX_STRING];
-					if (Houses[id][Houses_Rentabil] == 1)
-					{
-						if (!strcmp(Houses[id][Houses_RentName], "Unknown", true))
-						{
-							format(buf, sizeof(buf), _(HOUSING_RENT_COST), Houses[id][Houses_RentCost]);
-						}
-						else
-						{
-							format(buf, sizeof(buf), _(HOUSING_RENT_CURRENT), Houses[id][Houses_RentName]);
-						}
+					if (Houses[id][Houses_Rentabil] == 1) {
+						strcat(string, rent_string, sizeof(string));
 					}
-					
-					strcat(string, buf, sizeof(string));
 
 					Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX, head, string, _(HOUSING_DIALOG_BUTTON_ACTIONS), _(HOUSING_DIALOG_BUTTON_CANCEL));
 					return 1;
@@ -985,14 +985,7 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				else
 				{
 					format(string, sizeof(string), _(HOUSING_DIALOG_INFO), price, Houses[id][Houses_UpKeep], Houses[id][Houses_UpKeepLeft], house_GetUpKeepMax(id));
-					
-					new buf[MAX_STRING];
-					if (!strcmp(Houses[id][Houses_RentName], "Unknown", true))
-						format(buf, sizeof(buf), _(HOUSING_RENT_COST), Houses[id][Houses_RentCost]);
-					else
-						format(buf, sizeof(buf), _(HOUSING_RENT_CURRENT), Houses[id][Houses_RentName]);
-					
-					strcat(string, buf, sizeof(string));
+					strcat(string, rent_string, sizeof(string));
 
 					Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX, head, string, _(HOUSING_DIALOG_BUTTON_ACTIONS), _(HOUSING_DIALOG_BUTTON_CANCEL));
 					return 1;
