@@ -327,6 +327,8 @@ public adm_click_InfoPlayer(playerid, targetid, listitem, inputtext[])
 	static
 		message[MAX_LANG_VALUE_STRING * 6 * MAX_PLAYER_INFO_LINES];
 
+	message[0] = '\0';
+
 	new
 		string[MAX_LANG_VALUE_STRING],
 		account_info[e_Account_Info],
@@ -352,7 +354,7 @@ public adm_click_InfoPlayer(playerid, targetid, listitem, inputtext[])
 	strcat(message, string);
 
 	gmtime(account_info[e_aLoginTime], year, month, day);
-	format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_Player_Login), day, month, year);
+	format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_PLAYER_LOGIN), day, month, year);
 	strcat(message, string);
 
 	gmtime(account_info[e_aPremiumTime], year, month, day);
