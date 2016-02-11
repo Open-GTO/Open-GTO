@@ -498,11 +498,20 @@ stock Gang_SendMessage(gangid, message[], color = COLOR_GANG)
 
 stock Gang_SetHouseID(gangid, houseid)
 {
+	if (gangid < 0 || gangid >= sizeof(gGang)) {
+		return 0;
+	}
+
 	gGang[gangid][e_gHouse] = houseid;
+	return 1;
 }
 
 stock Gang_GetHouseID(gangid)
 {
+	if (gangid < 0 || gangid >= sizeof(gGang)) {
+		return -1;
+	}
+
 	return gGang[gangid][e_gHouse];
 }
 

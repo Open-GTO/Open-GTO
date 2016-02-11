@@ -226,7 +226,7 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 
 			// если игрок, сменивший спавн - лидер банды, то устанавливаем домом банды этот дом
 			if (GangMember_IsPlayerHaveRank(playerid, GangMemberLeader)) {
-				Gang_SetHouseID(GetPlayerGangID(playerid), i);
+				Gang_SetHouseID(gangid, i);
 				Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_GANG_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
 			} else {
 				Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
@@ -271,13 +271,10 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &
 	} else if (spawn_type == SPAWN_TYPE_GANG) {
 		new
 			gangid,
-			gang_houseid = -1;
+			gang_houseid;
 
 		gangid = GetPlayerGangID(playerid);
-
-		if (gangid == INVALID_GANG_ID) {
-			gang_houseid = Gang_GetHouseID(gangid);
-		}
+		gang_houseid = Gang_GetHouseID(gangid);
 
 		if (gangid == INVALID_GANG_ID || gang_houseid == -1) {
 			SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
