@@ -17,16 +17,7 @@ stock PMaptp_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 		return 0;
 	}
 
-	new vehicleid = GetPlayerVehicleID(playerid);
-	if (vehicleid != 0) {
-		SetVehiclePos(vehicleid, fX, fY, fZ);
-		LinkVehicleToInterior(vehicleid, 0);
-		SetVehicleVirtualWorld(vehicleid, 0);
-	} else {
-		SetPlayerPos(playerid, fX, fY, fZ);
-		SetPlayerInterior(playerid, 0);
-		SetPlayerVirtualWorld(playerid, 0);
-	}
+	TeleportPlayerToPos(playerid, fX, fY, fZ, 0.0);
 	return 1;
 }
 
