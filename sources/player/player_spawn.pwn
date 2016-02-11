@@ -392,7 +392,7 @@ static stock GetNearestSpawnID(Float:x, Float:y, Float:z)
 #endif
 
 	for (new i = 0; i < sizeof(gSpawns); i++) {
-		curr_distance = GetDistanceBetweenPoints(x, y, z, gSpawns[i][e_sPosX], gSpawns[i][e_sPosY], gSpawns[e_sPosZ][e_sPosZ]);
+		curr_distance = GetDistanceBetweenPoints(x, y, z, gSpawns[i][e_sPosX], gSpawns[i][e_sPosY], gSpawns[i][e_sPosZ]);
 		
 		if (min_distance > curr_distance) {
 			min_distance = curr_distance;
