@@ -14,7 +14,7 @@
 #define MAX_CLICK_DIALOG_CAPTION_SIZE   64
 #define MAX_CLICK_DIALOG_INFO_SIZE      512
 #define MAX_CLICK_DIALOG_BUTTON_SIZE    16
-#define MAX_CLICK_DIALOG_FUNCTION_SIZE  16
+#define MAX_CLICK_DIALOG_FUNCTION_SIZE  32
 
 /*
 	Enums
@@ -124,7 +124,7 @@ DialogResponse:PlayerClickResponse(playerid, response, listitem, inputtext[])
 
 	new id = Click_GetResponseID(playerid);
 
-	if (GetPlayerPrivilege(playerid) >= gClickArray[id][cda_privilege]) {
+	if (IsPlayerHavePrivilege(playerid, gClickArray[id][cda_privilege])) {
 		Click_CallFunction(playerid, id, listitem, inputtext);
 	}
 	return 1;
