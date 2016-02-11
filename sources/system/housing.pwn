@@ -303,7 +303,7 @@ stock housing_OnGameModeInit()
 	houses_LoadAll();
 	
 	new
-		string[MAX_STRING * 2],
+		string[MAX_LANG_VALUE_STRING * 4],
 		icon_type;
 
 	for (new id = 0; id < sizeof(Houses); id++)
@@ -1020,7 +1020,7 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 stock housing_Update3DTextLabelText()
 {
-	new string[MAX_STRING * 2];
+	new string[MAX_LANG_VALUE_STRING * 4];
 	for (new id = 0; id < sizeof(Houses); id++)
 	{
 		housing_GetTextLabelString(id, string);
@@ -1029,7 +1029,7 @@ stock housing_Update3DTextLabelText()
 	return 1;
 }
 
-stock housing_GetTextLabelString(houseid, string[MAX_STRING * 2])
+stock housing_GetTextLabelString(houseid, string[MAX_LANG_VALUE_STRING * 4])
 {
 	format(string, sizeof(string), _(HOUSING_3DTEXT), Houses[houseid][Houses_Name], Houses[houseid][Houses_Cost]);
 	if (strcmp(Houses[houseid][Houses_Owner], "Unknown", false)) {

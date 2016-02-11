@@ -142,7 +142,7 @@ stock business_OnGameModeInit()
 {
 	business_LoadAll();
 	new
-		string[MAX_STRING * 2],
+		string[MAX_LANG_VALUE_STRING * 2],
 		icon_type;
 	
 	for (new id = 0; id < sizeof(Businesses); id++)
@@ -596,7 +596,7 @@ stock business_GetUpgradeCost(id)
 
 stock business_Update3DTextLabelText()
 {
-	new string[MAX_STRING * 2];
+	new string[MAX_LANG_VALUE_STRING * 2];
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{
 		business_GetTextLabelString(id, string);
@@ -605,7 +605,7 @@ stock business_Update3DTextLabelText()
 	return 1;
 }
 
-stock business_GetTextLabelString(id, string[MAX_STRING * 2])
+stock business_GetTextLabelString(id, string[MAX_LANG_VALUE_STRING * 2])
 {
 	format(string, sizeof(string), _(BUSINESS_TEXT_LABEL), Businesses[id][Business_Name], Businesses[id][Business_Cost], Businesses[id][Business_Value], Businesses[id][Business_Level]);
 	if (strcmp(Businesses[id][Business_Owner], "Unknown", false)) {
