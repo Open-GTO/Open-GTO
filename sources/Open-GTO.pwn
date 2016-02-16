@@ -369,7 +369,10 @@ public OnPlayerDisconnect(playerid, reason)
 
 public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 {
-	Click_OnPlayerClickPlayer(playerid, clickedplayerid);
+	if (source == CLICK_SOURCE_SCOREBOARD) {
+		Click_OnPlayerClickPlayer(playerid, clickedplayerid);
+	}
+
 	return 1;
 }
 
