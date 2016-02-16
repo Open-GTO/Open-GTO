@@ -67,10 +67,65 @@ DialogCreate:CompetitionMenu(playerid)
 
 DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 {
-	if (response) {
+	if (!response) {
 		Dialog_Show(playerid, Dialog:PlayerMenu);
+		return 1;
 	}
 
+	// if start item
+	if (listitem == 0) {
+		Disalog_Show(playerid, Dialog:CompetitionStartMenu);
+		return 1;
+	}
+
+	new
+		string[MAX_LANG_MULTI_STRING],
+		cid,
+		cname[MAX_COMPETITION_NAME],
+		ctype,
+		ctime,
+		ctype_name[MAX_COMPETITION_TYPE_NAME],
+		ctype_color_code[7];
+
+	cid = listitem - 1;
+	Competition_GetName(cid, cname);
+	ctype = Competition_GetType(cid);
+	ctime = Competition_GetTime(cid);
+	CompetitionType_GetName(ctype, ctype_name);
+	CompetitionType_GetColorCode(ctype, ctype_color_code);
+
+	format(string, sizeof(string), _(COMPETITION_JOIN_MENU_MSG), cname, ctype_color_code, ctype_name),
+
+	Dialog_Open(playerid, Dialog:CompetitionJoinMenu, DIALOG_STYLE_MSGBOX,
+			cname,
+			string,
+			_(COMPETITION_MENU_JOIN), _(COMPETITION_MENU_BACK)
+		);
+	return 1;
+}
+
+DialogResponse:CompetitionJoinMenu(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		Dialog_Show(playerid, Dialog:CompetitionMenu);
+		return 1;
+	}
+
+	// join to competition
+
+	return 1;
+}
+
+DialogCreate:CompetitionStartMenu(playerid)
+{
+	return 1;
+}
+
+DialogResponse:CompetitionStartMenu(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		Dialog_Show(playerid, Dialog:CompetitionMenu);
+	}
 
 	return 1;
 }

@@ -33,12 +33,10 @@
 	Enums
 */
 
-enum e_Competition_Param_Info {
+enum e_Competition_Current_Info {
 	e_cpName[MAX_COMPETITION_NAME],
 	e_cpType,
 	e_cpTime,
-	
-	e_cpWeather,
 	e_cpWorldTime,
 	e_cpVirtualWorld,
 }
@@ -48,7 +46,7 @@ enum e_Competition_Param_Info {
 */
 
 static
-	gCompetitionCurrent[MAX_COMPETITION_CURRENT][e_Competition_Param_Info];
+	gCompetitionCurrent[MAX_COMPETITION_CURRENT][e_Competition_Current_Info];
 
 new
 	Iterator:CurrentCompetition<MAX_COMPETITION_CURRENT>;
@@ -57,7 +55,7 @@ new
 	Competition Add
 */
 
-stock Competition_Add(name[], type = -1, time = -1, weather = -1, world_time = -1, virtual_world = -1)
+stock Competition_Add(name[], type = -1, time = -1, virtual_world = -1)
 {
 	new cid = Competition_GetFreeSlot();
 	if (cid == INVALID_COMPETITION_ID) {
@@ -75,14 +73,6 @@ stock Competition_Add(name[], type = -1, time = -1, weather = -1, world_time = -
 		time = COMPETITION_DEFAULT_WAIT_TIME;
 	}
 
-	if (weather == -1) {
-		weather = Weather_GetRadom();
-	}
-
-	if (world_time == -1) {
-		world_time = mathrandom(0, 23);
-	}
-
 	if (virtual_world == -1) {
 		virtual_world = COMPETITION_VIRTUAL_WORLD_PADDING + cid;
 	}
@@ -90,8 +80,6 @@ stock Competition_Add(name[], type = -1, time = -1, weather = -1, world_time = -
 	Competition_SetName(cid, name);	
 	Competition_SetType(cid, type);
 	Competition_SetTime(cid, time);
-	Competition_SetWeather(cid, weather);
-	Competition_SetWorldTime(cid, world_time);
 	Competition_SetVirtualWorld(cid, virtual_world);
 
 	return cid;
@@ -148,34 +136,6 @@ stock Competition_GetTime(cid)
 stock Competition_SetTime(cid, time)
 {
 	gCompetitionCurrent[cid][e_cpTime] = time;
-}
-
-/*
-	Competition Weather
-*/
-
-stock Competition_GetWeather(cid)
-{
-	return gCompetitionCurrent[cid][e_cpWeather];
-}
-
-stock Competition_SetWeather(cid, weather)
-{
-	gCompetitionCurrent[cid][e_cpWeather] = weather;
-}
-
-/*
-	Competition World Time
-*/
-
-stock Competition_GetWorldTime(cid)
-{
-	return gCompetitionCurrent[cid][e_cpWorldTime];
-}
-
-stock Competition_SetWorldTime(cid, world_time)
-{
-	gCompetitionCurrent[cid][e_cpWorldTime] = world_time;
 }
 
 /*
