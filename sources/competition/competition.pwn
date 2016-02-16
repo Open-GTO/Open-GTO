@@ -97,6 +97,17 @@ stock Competition_Add(name[], type = -1, time = -1, weather = -1, world_time = -
 	return cid;
 }
 
+stock Competition_Remove(cid)
+{
+	if (!Competition_IsActive(cid)) {
+		return 0;
+	}
+
+	Competition_SetActiveStatus(cid, false);
+
+	return 1;
+}
+
 /*
 	Competition Name
 */
