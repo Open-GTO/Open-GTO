@@ -84,7 +84,7 @@ stock JailPlayerTimer(playerid)
 	Functions
 */
 
-stock JailPlayer(playerid, &jail_time)
+stock JailPlayer(playerid, &jail_time = 0)
 {
 	if (jail_time == 0) {
 		jail_time = (GetPlayerJailedCount(playerid) + 1) * 5;

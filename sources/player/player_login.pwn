@@ -87,6 +87,7 @@ stock Player_SaveEx(playerid)
 	ini_setInteger(file_player, "Muted", GetPlayerMutedCount(playerid));
 	ini_setInteger(file_player, "MuteTime", GetPlayerMuteTime(playerid));
 	ini_setInteger(file_player, "Reports", GetPlayerReportsCount(playerid));
+	ini_setInteger(file_player, "Warns", GetPlayerWarnsCount(playerid));
 
 	for (new i = 0; i < GetFightTeacherLastID(); i++) {
 		format(string, sizeof(string), "FightStyle_%d", GetFightTeacherStyleID(i));
@@ -181,6 +182,9 @@ stock Player_Login(playerid)
 
 		ini_getInteger(file_player, "Reports", buf);
 		SetPlayerReportsCount(playerid, buf);
+
+		ini_getInteger(file_player, "Warns", buf);
+		SetPlayerWarnsCount(playerid, buf);
 		
 		for (new i = 0; i < GetFightTeacherLastID(); i++) {
 			format(s_buf, sizeof(s_buf), "FightStyle_%d", GetFightTeacherStyleID(i));
