@@ -207,7 +207,7 @@ stock Gang_SaveAll()
 		Gang_Save(gangid);
 
 		if (Gang_GetOnlineCount(gangid) == 0) {
-			Gang_Unload(gangid);
+			Iter_SafeRemove(LoadedGangs, gangid, gangid);
 		}
 	}
 }
