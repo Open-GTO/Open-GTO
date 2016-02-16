@@ -96,7 +96,7 @@ public Player_Click_SendReport(playerid, clickedid, listitem, inputtext[])
 		new reports = GetPlayerReportsCount(playerid) + 1;
 		SetPlayerReportsCount(clickedid, reports);
 
-		new reports_max = GetMaxReportCount();
+		new reports_max = GetMaxReportsCount();
 
 		format(string, sizeof(string), _(CLICK_REPORT_MESSAGE), reports, reports_max, abusename, clickedid, inputtext);
 		SendClientMessageToAll(COLOR_WHITE, string);

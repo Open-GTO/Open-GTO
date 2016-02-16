@@ -22,7 +22,7 @@ static
 	Report functions
 */
 
-stock GetMaxReportCount()
+stock GetMaxReportsCount()
 {
 	return (MIN_REPORTS_FOR_JAIL + GetPlayersCount() / 10);
 }
