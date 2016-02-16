@@ -215,9 +215,11 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				\n\
 				{00C0DD}Благодарность: {AFE7FF}\n\
 							\tMX_Master - mxINI, Chat-Guard.\n\
-							\twups - Default map icons.\n\
-							\tY_Less - foreach, fixes.\n\
-							\tZeeX - zcmd.\n\
+							\tY_Less - foreach, fixes, sscanf2.\n\
+							\tZeeX - zcmd, crashdetect, Pawn Compiler.\n\
+							\tIncognito - Streamer.\n\
+							\tD0erfler - mSelection.\n\
+							\tNexius - MapFix.\n\
 				\n\
 				",
 				"Назад", "Выход"

@@ -4,7 +4,7 @@ Project Name:
 
 Web site:
 	http://open-gto.ru/
-	https://github.com/ziggi/Open-GTO
+	https://github.com/Open-GTO
 
 Date started:
 	Open-GTO:
@@ -17,22 +17,23 @@ SA-MP version:
 
 Developers:
 	Open-GTO:
-		0.6.4 – current		ziggi
-		0.6.0 – 0.6.4		GhostTT, heufix, Elbi, ziggi
+		0.6.4 – current     ziggi
+		0.6.0 – 0.6.4       GhostTT, heufix, Elbi, ziggi
 
 	GTO:
-		0.5.9 – 0.6.0		SCALOLaz
-		0.5.8 – 0.5.9		Robin Kikkert (dejavu), Lajos Pacsek (Asturel)
-		0.5.7 – 0.5.8		Peter Steenbergen (j1nx)
-		0.0.0 – 0.5.7		Iain Gilbert
+		0.5.9 – 0.6.0       SCALOLaz
+		0.5.8 – 0.5.9       Robin Kikkert (dejavu), Lajos Pacsek (Asturel)
+		0.5.7 – 0.5.8       Peter Steenbergen (j1nx)
+		0.0.0 – 0.5.7       Iain Gilbert
 
 Thanks:
-	MX_Master - mxINI, Chat-Guard.
-	wups - Default map icons.
-	Y_Less - foreach, fixes.
-	ZeeX - zcmd.
 	Dmitry Borisoff (Beginner) - Russian translation.
-
+	MX_Master - mxINI, Chat-Guard.
+	Y_Less - foreach, fixes, sscanf2.
+	ZeeX - zcmd, crashdetect, Pawn Compiler.
+	Incognito - Streamer.
+	D0erfler - mSelection.
+	Nexius - MapFix.
 */
 
 #include <a_samp>

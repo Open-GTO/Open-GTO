@@ -164,8 +164,8 @@ COMMAND_COMMANDS_9 = {FFCC66}[Разное]: {FFFFFF}/skydive, /lottery, /id
 
 COMMAND_VERSION_0 = На сервере запущен:
 COMMAND_VERSION_1 = SA-MP: Open-GTO %s.
-COMMAND_VERSION_2 = Created by Iain Gilbert. Continued by Peter Steenbergen, Robin Kikkert, Asturel, Dmitry Frolov (FP).
-COMMAND_VERSION_3 = Continued by Open-GTO Team [ Current: ziggi | Previous: GhostTT, heufix, Elbi]
+COMMAND_VERSION_2 = Создатель GTO: Iain Gilbert. Продолжили Peter Steenbergen, Robin Kikkert, Asturel, Dmitry Frolov (FP).
+COMMAND_VERSION_3 = Продолжила команда Open-GTO. Текущие разработчики: ziggi, предыдущие: GhostTT, heufix, Elbi.
 
 COMMAND_TIME_ABOUT = {FF2211}Информация о времени:
 COMMAND_TIME_JAIL = {FFCC66}[Сервер]: {FFFFFF}До окончания ареста осталось %d мин
