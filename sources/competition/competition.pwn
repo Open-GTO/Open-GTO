@@ -37,6 +37,24 @@ enum CompetitionJoinStatus {
 	CompetitionJoinStatusGang,
 }
 
+enum CompetitionMarkerStatus {
+	CompetitionMarkerStatusNone,
+	CompetitionMarkerStatusAll,
+	CompetitionMarkerStatusTeam,
+}
+
+enum CompetitionNametagStatus {
+	CompetitionNametagStatusNone,
+	CompetitionNametagStatusAll,
+	CompetitionNametagStatusTeam,
+}
+
+enum CompetitionCollisionStatus {
+	CompetitionCollisionStatusNone,
+	CompetitionCollisionStatusAll,
+	CompetitionCollisionStatusTeam,
+}
+
 enum CompetitionParams {
 	// general
 	COMPETITION_PLAYERID,
@@ -45,13 +63,18 @@ enum CompetitionParams {
 	COMPETITION_TIME,
 	COMPETITION_VIRTUAL_WORLD,
 	COMPETITION_JOIN_STATUS, // CompetitionJoinStatus
+	COMPETITION_MARKER_STATUS, // CompetitionMarkerStatus
+	COMPETITION_NAMETAG_STATUS, // CompetitionNametagStatus
 	COMPETITION_WEATHER,
 	COMPETITION_WORLD_TIME,
+	COMPETITION_LEVEL_MIN,
+	COMPETITION_LEVEL_MAX,
 
 	// race
+	COMPETITION_COLLISION_STATUS, // CompetitionCollisionStatus
 
 	// deathmath
-
+	bool:COMPETITION_FRIENDLY_FIRE,
 }
 
 /*
