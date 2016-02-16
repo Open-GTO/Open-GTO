@@ -43,13 +43,13 @@ static
 	CompetitionType_Add
 */
 
-stock CompetitionType_Add(type_params[CompetitionParams])
+stock CompetitionType_Add(ctype_params[CompetitionParams])
 {
 	new
 		ctype = CompetitionType_GetFreeSlot();
 
 	if (ctype != INVALID_COMPETITION_TYPE_ID) {
-		gParam[ctype] = type_params;
+		gParam[ctype] = ctype_params;
 	}
 
 	return ctype;
@@ -75,17 +75,17 @@ stock CompetitionType_Remove(ctype)
 	Active status
 */
 
-stock CompetitionType_IsActive(type)
+stock CompetitionType_IsActive(ctype)
 {
-	return Iter_Contains(CompetitionTypeIterator, type);
+	return Iter_Contains(CompetitionTypeIterator, ctype);
 }
 
-stock CompetitionType_SetActiveStatus(type, bool:status)
+stock CompetitionType_SetActiveStatus(ctype, bool:status)
 {
 	if (status) {
-		Iter_Add(CompetitionTypeIterator, type);
+		Iter_Add(CompetitionTypeIterator, ctype);
 	} else {
-		Iter_Remove(CompetitionTypeIterator, type);
+		Iter_Remove(CompetitionTypeIterator, ctype);
 	}
 }
 

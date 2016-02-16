@@ -38,6 +38,7 @@ enum CompetitionJoinStatus {
 }
 
 enum CompetitionParams {
+	// general
 	COMPETITION_PLAYERID,
 	COMPETITION_NAME[COMPETITION_MAX_STRING],
 	COMPETITION_TYPE,
@@ -46,6 +47,11 @@ enum CompetitionParams {
 	COMPETITION_JOIN_STATUS, // CompetitionJoinStatus
 	COMPETITION_WEATHER,
 	COMPETITION_WORLD_TIME,
+
+	// race
+
+	// deathmath
+
 }
 
 /*
@@ -56,7 +62,33 @@ static
 	gParam[MAX_COMPETITION][CompetitionParams];
 
 new
+	Iterator:CompetitionPlayerIter[MAX_COMPETITION]<MAX_PLAYERS>,
 	Iterator:CompetitionIterator<MAX_COMPETITION>;
+
+/*
+	OnGameModeInit
+*/
+
+public OnGameModeInit()
+{
+	Iter_Init(CompetitionPlayerIter);
+
+	#if defined Competition_OnGameModeInit
+		return Competition_OnGameModeInit();
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
+ 
+#define OnGameModeInit Competition_OnGameModeInit
+#if defined Competition_OnGameModeInit
+	forward Competition_OnGameModeInit();
+#endif
 
 /*
 	Competition Add
@@ -133,7 +165,7 @@ stock Competition_IsPlayerCanJoin(cid, playerid)
 		CompetitionJoinStatus:cjoin_status;
 
 	cplayerid = Competition_GetParamInt(cid, COMPETITION_PLAYERID);
-	cjoin_status = CompetitionJoinStatus:Competition_GetParamInt(cid, COMPETITION_TYPE);
+	cjoin_status = CompetitionJoinStatus:Competition_GetParamInt(cid, COMPETITION_JOIN_STATUS);
 
 	if (cjoin_status == CompetitionJoinStatusAll) {
 		return 1;
@@ -144,6 +176,29 @@ stock Competition_IsPlayerCanJoin(cid, playerid)
 	}
 
 	return 0;
+}
+
+/*
+	Player on competition functions
+*/
+
+stock Competition_IsPlayerActive(cid, playerid)
+{
+	return Iter_Contains(CompetitionPlayerIter[cid], playerid);
+}
+
+stock Competition_SetPlayerActive(cid, playerid, bool:status)
+{
+	if (status) {
+		Iter_Add(CompetitionPlayerIter[cid], playerid);
+	} else {
+		Iter_Remove(CompetitionPlayerIter[cid], playerid);
+	}
+}
+
+stock Competition_GetPlayersCount(cid)
+{
+	return Iter_Count(CompetitionPlayerIter[cid]);
 }
 
 /*
