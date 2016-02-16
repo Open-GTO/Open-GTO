@@ -130,15 +130,20 @@ static gColors[MAX_COLOR_COUNT][e_Colors_Info] = {
 	Public functions
 */
 
+stock GetColorEmbeddingCode(color, code[], const size = sizeof(code))
+{
+	format(code, size, "%06x", color >>> 8);
+}
+
 stock Color_GetEmbeddingCode(id, code[], size = sizeof(code))
 {
-	format(code, size, "%06x", gColors[id][e_cCode] >>> 8);
+	GetColorEmbeddingCode(gColors[id][e_cCode], code, size);
 }
 
 stock Color_ReturnEmbeddingCode(id)
 {
-	new code[8];
-	format(code, sizeof(code), "%06x", gColors[id][e_cCode] >>> 8);
+	new code[7];
+	GetColorEmbeddingCode(gColors[id][e_cCode], code);
 	return code;
 }
 

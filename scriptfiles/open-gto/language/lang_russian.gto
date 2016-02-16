@@ -1207,4 +1207,4 @@ COMPETITION_MENU_LIST_START = {00BB00}Запустить соревнование\n
 COMPETITION_MENU_LIST_ITEM = {BBBBBB}%s\t{%s}%s\t%s\n
 COMPETITION_MENU_STATUS_ENTER = {00BB00}До начала: %s
 COMPETITION_MENU_STATUS_STARTED = {BB0000}Прошло: %s
-COMPETITION_JOIN_MENU_MSG = {AAAAAA}Название: %s\n{%s}Тип: %s\n{AAAAAA}\nДо начала: %d
+COMPETITION_JOIN_MENU_MSG = {AAAAAA}Название: {FFFFFF}%s\nТип: {%s}%s\n{AAAAAA}\n%s

@@ -12,13 +12,20 @@
 #define _competition_menu_included
 
 /*
+	Vars
+*/
+
+static
+	gPlayerJoinCompetitionID[MAX_PLAYERS];
+
+/*
 	CompetitionMenu
 */
 
 DialogCreate:CompetitionMenu(playerid)
 {
 	new
-		string[MAX_LANG_VALUE_STRING * (2 + MAX_COMPETITION_CURRENT) + 1],
+		string[MAX_LANG_VALUE_STRING * (2 + MAX_COMPETITION) + 1],
 		temp[MAX_LANG_VALUE_STRING];
 
 	__(COMPETITION_MENU_LIST_HEADER, temp);
@@ -28,33 +35,32 @@ DialogCreate:CompetitionMenu(playerid)
 	strcat(string, temp);
 
 	new
-		type_name[MAX_LANG_VALUE_STRING],
-		type_color[7],
-		competition_name[MAX_LANG_VALUE_STRING],
-		competition_time,
-		competition_time_string[MAX_LANG_VALUE_STRING],
-		competition_status[MAX_LANG_VALUE_STRING];
+		cname[COMPETITION_MAX_STRING],
+		ctime,
+		cstatus[MAX_LANG_VALUE_STRING],
+		ctype,
+		ctype_name[COMPETITION_MAX_STRING],
+		ctype_color,
+		ctype_color_code[7];
 
-	foreach (new cid : CurrentCompetition) {
-		CompetitionType_GetName(Competition_GetType(cid), type_name);
-		CompetitionType_GetColorCode(Competition_GetType(cid), type_color);
-		Competition_GetName(cid, competition_name);
-		competition_time = Competition_GetTime(cid);
+	foreach (new cid : CompetitionIterator) {
+		Competition_GetParamString(ctype, COMPETITION_NAME, cname);
+		ctime = Competition_GetParamInt(cid, COMPETITION_TIME);
+		ctype = Competition_GetParamInt(cid, COMPETITION_TYPE);
+		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
+		ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
+		GetColorEmbeddingCode(ctype_color, ctype_color_code);
 
-		if (competition_time > 0) {
-			__(COMPETITION_MENU_STATUS_ENTER, competition_status);
-			GetTimeStringFromSeconds(competition_time, competition_time_string);
-
-			format(competition_status, sizeof(competition_status), competition_status, competition_time_string);
+		if (ctime > 0) {
+			GetTimeStringFromSeconds(ctime, cstatus);
+			format(cstatus, sizeof(cstatus), _(COMPETITION_MENU_STATUS_ENTER), cstatus);
 		} else {
-			__(COMPETITION_MENU_STATUS_STARTED, competition_status);
-			GetTimeStringFromSeconds(-competition_time, competition_time_string);
-
-			format(competition_status, sizeof(competition_status), competition_status, competition_time_string);
+			GetTimeStringFromSeconds(-ctime, cstatus);
+			format(cstatus, sizeof(cstatus), _(COMPETITION_MENU_STATUS_STARTED), cstatus);
 		}
 
 		__(COMPETITION_MENU_LIST_ITEM, temp);
-		format(temp, sizeof(temp), temp, competition_name, type_color, type_name, competition_status);
+		format(temp, sizeof(temp), temp, cname, ctype_color, ctype_name, cstatus);
 		strcat(string, temp);
 	}
 
@@ -74,39 +80,70 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 
 	// if start item
 	if (listitem == 0) {
-		Disalog_Show(playerid, Dialog:CompetitionStartMenu);
+		Dialog_Show(playerid, Dialog:CompetitionStartMenu);
 		return 1;
 	}
 
+	// if join item
 	new
 		string[MAX_LANG_MULTI_STRING],
 		cid,
-		cname[MAX_COMPETITION_NAME],
-		ctype,
+		cname[COMPETITION_MAX_STRING],
 		ctime,
-		ctype_name[MAX_COMPETITION_TYPE_NAME],
+		cstatus[MAX_LANG_VALUE_STRING],
+		ctype,
+		ctype_name[COMPETITION_MAX_STRING],
+		ctype_color,
 		ctype_color_code[7];
 
-	cid = listitem - 1;
-	Competition_GetName(cid, cname);
-	ctype = Competition_GetType(cid);
-	ctime = Competition_GetTime(cid);
-	CompetitionType_GetName(ctype, ctype_name);
-	CompetitionType_GetColorCode(ctype, ctype_color_code);
+	cid = GetCompetitionIdByListitem(listitem, 1);
+	if (cid == INVALID_COMPETITION_ID) {
+		Log_Debug("Error <DialogResponse:CompetitionMenu>: unable to get competition id by listitem.");
+		return 0;
+	}
 
-	format(string, sizeof(string), _(COMPETITION_JOIN_MENU_MSG), cname, ctype_color_code, ctype_name),
+	Competition_GetParamString(ctype, COMPETITION_NAME, cname);
+	ctime = Competition_GetParamInt(cid, COMPETITION_TIME);
+	ctype = Competition_GetParamInt(cid, COMPETITION_TYPE);
+	CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
+	ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
+	GetColorEmbeddingCode(ctype_color, ctype_color_code);
 
-	Dialog_Open(playerid, Dialog:CompetitionJoinMenu, DIALOG_STYLE_MSGBOX,
-			cname,
-			string,
-			_(COMPETITION_MENU_JOIN), _(COMPETITION_MENU_BACK)
-		);
+	if (ctime > 0) {
+		GetTimeStringFromSeconds(ctime, cstatus);
+		format(cstatus, sizeof(cstatus), _(COMPETITION_MENU_STATUS_ENTER), cstatus);
+	} else {
+		GetTimeStringFromSeconds(-ctime, cstatus);
+		format(cstatus, sizeof(cstatus), _(COMPETITION_MENU_STATUS_STARTED), cstatus);
+	}
+
+	format(string, sizeof(string), _(COMPETITION_JOIN_MENU_MSG), cname, ctype_color_code, ctype_name, cstatus);
+
+	if (Competition_IsPlayerCanJoin(cid, playerid)) {
+		SetJoinCompetitionId(playerid, INVALID_COMPETITION_ID);
+
+		Dialog_Open(playerid, Dialog:CompetitionJoinMenu, DIALOG_STYLE_MSGBOX,
+				cname,
+				string,
+				_(COMPETITION_MENU_JOIN), _(COMPETITION_MENU_BACK)
+			);
+	} else {
+		SetJoinCompetitionId(playerid, cid);
+
+		Dialog_Open(playerid, Dialog:CompetitionJoinMenu, DIALOG_STYLE_MSGBOX,
+				cname,
+				string,
+				_(COMPETITION_MENU_BACK), ""
+			);
+	}
 	return 1;
 }
 
 DialogResponse:CompetitionJoinMenu(playerid, response, listitem, inputtext[])
 {
-	if (!response) {
+	new cid = GetJoinCompetitionId(playerid);
+
+	if (!response || !Competition_IsPlayerCanJoin(cid, playerid)) {
 		Dialog_Show(playerid, Dialog:CompetitionMenu);
 		return 1;
 	}
@@ -128,4 +165,41 @@ DialogResponse:CompetitionStartMenu(playerid, response, listitem, inputtext[])
 	}
 
 	return 1;
+}
+
+/*
+	JoinCompetition ID
+*/
+
+static stock SetJoinCompetitionId(playerid, cid)
+{
+	gPlayerJoinCompetitionID[playerid] = cid;
+}
+
+static stock GetJoinCompetitionId(playerid)
+{
+	return gPlayerJoinCompetitionID[playerid];
+}
+
+/*
+	Get competition id by listitem
+*/
+
+static stock GetCompetitionIdByListitem(listitem, offset)
+{
+	new
+		cid,
+		index;
+
+	index += offset;
+
+	foreach (cid : CompetitionIterator) {
+		if (index == listitem) {
+			return cid;
+		}
+
+		index++;
+	}
+
+	return INVALID_COMPETITION_ID;
 }
