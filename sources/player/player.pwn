@@ -362,7 +362,7 @@ stock Player_SetDefaultData(playerid)
 #endif
 
 	SetPlayerLevel(playerid, PLAYER_START_LEVEL, 0, 0);
-
+	SetPlayerPrivilege(playerid, PlayerPrivilegePlayer)
 	SetPlayerFightStyleUsed(playerid, FIGHT_STYLE_NORMAL);
 
 	ResetPlayerRandomSpawnID(playerid);
