@@ -5,7 +5,7 @@
 */
 
 // caryeres icon
-	CreateDynamicMapIcon(777.150329, 834.015563, 6.862725, 11, 0);
+	CreateDynamicMapIcon(683.6586, 835.9413, -42.9609, 11, 0);
 
 #if defined MAPICON_HOSPITAL
 	CreateDynamicMapIcon(2029.6674, -1401.6702, 17.2519, 22, 0);
