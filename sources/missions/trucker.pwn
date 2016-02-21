@@ -169,9 +169,9 @@ stock Trucker_OnGameModeInit()
 	}
 
 	// иконки
-	CreateDynamicMapIcon(253.0453, 1372.3413, 11.1734, 51, 0);
-	CreateDynamicMapIcon(-117.0570, -325.0306, 2.0109, 51, 0);
-	CreateDynamicMapIcon(512.6126, 792.6769, -20.8209, 51, 0);
+	CreateDynamicMapIcon(246.8379, 1410.5923, 23.3703, 51, 0);
+	CreateDynamicMapIcon(-49.7828, -269.3626, 6.6332, 51, 0);
+	CreateDynamicMapIcon(816.5801, 857.0634, 12.7891, 51, 0);
 	
 	Log_Game(_(TRUCKER_INIT));
 	return 1;
