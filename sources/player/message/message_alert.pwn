@@ -21,7 +21,7 @@
 #define ALERT_POS_Y     286.5
 #define ALERT_WIDTH     144
 
-#define MAX_CACHE_ALERT 3
+#define MAX_CACHE_ALERT 6
 
 
 /*
