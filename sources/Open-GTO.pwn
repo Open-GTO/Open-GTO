@@ -474,9 +474,6 @@ public OnPlayerSpawn(playerid)
 	// protections
 	Prot_Teleport_OnPlayerSpawn(playerid);
 
-	// ставим позицию
-	SetPlayerPosToSpawn(playerid);
-
 	// spawn player
 	Player_OnPlayerSpawn(playerid);
 	Spectate_OnPlayerSpawn(playerid);

@@ -110,20 +110,7 @@ PSpawn_OnPlayerRequestClass(playerid, classid)
 {
 	#pragma unused classid
 	if (IsPlayerLogin(playerid)) {
-		TogglePlayerSpectating(playerid, 1);
-
-		new
-			interior,
-			world,
-			Float:spawn_pos_x,
-			Float:spawn_pos_y,
-			Float:spawn_pos_z,
-			Float:spawn_pos_a;
-
-		GetPlayerSpawnPos(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, interior, world);
-		SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, 0, 0, 0, 0, 0, 0);
-
-		TogglePlayerSpectating(playerid, 0);
+		SpawnPlayer(playerid);
 		return 0;
 	}
 
@@ -291,22 +278,6 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &
 		spos_a = gSpawns[spawnid][e_sAngle];
 	}
 
-	return 1;
-}
-
-stock SetPlayerPosToSpawn(playerid)
-{
-	new
-		interior,
-		world,
-		Float:spawn_pos_x,
-		Float:spawn_pos_y,
-		Float:spawn_pos_z,
-		Float:spawn_pos_a;
-
-	GetPlayerSpawnPos(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, interior, world);
-
-	SetPlayerPosEx(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, interior, world);
 	return 1;
 }
 
