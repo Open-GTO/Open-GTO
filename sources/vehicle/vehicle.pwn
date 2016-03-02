@@ -1868,7 +1868,7 @@ Vehicle_OnGameModeInit()
 		i,
 		vehicleid;
 
-	while (i++ < sizeof(gVehicleSpawns)) {
+	while (i++ < sizeof(gVehicleSpawns) - 1) {
 		if (gVehicleSpawns[i][e_vs_model] == 0) {
 			continue;
 		}
@@ -1897,7 +1897,7 @@ Vehicle_OnInteriorCreated(id, type, world)
 		i,
 		vehicleid;
 
-	while (i++ < sizeof(gVehicleInteriorSpawns)) {
+	while (i++ < sizeof(gVehicleInteriorSpawns) - 1) {
 		if (gVehicleInteriorSpawns[i][e_vis_type] != type) {
 			continue;
 		}
