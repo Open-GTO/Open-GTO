@@ -10,7 +10,6 @@
 #endif
 
 #define _vehicle_fuel_included
-#pragma library vehicle_fuel
 
 /*
 	Forwards
@@ -54,12 +53,6 @@ Vehicle_Fuel_OnGameModeInit()
 {
 	if (!IsEnabled) {
 		return 0;
-	}
-
-	for (new i = 1; i <= MAX_VEHICLES; i++) {
-		if (IsValidVehicle(i)) {
-			SetVehicleFuel(i, -1);
-		}
 	}
 
 	SetTimer("Vehicle_Fuel_SpeedTimer", 300, 1);
@@ -257,6 +250,11 @@ stock Float:SetVehicleFuel(vehicleid, Float:amount)
 	
 	gFuel[vehicleid] = amount;
 	return amount;
+}
+
+stock SetVehicleMaxFuel(vehicleid)
+{
+	gFuel[vehicleid] = GetVehicleModelMaxFuel( GetVehicleModel(vehicleid) );
 }
 
 stock Float:GiveVehicleFuel(vehicleid, Float:amount)

@@ -100,6 +100,18 @@ Thanks:
 #include "core/spectate.pwn"
 #include "core/zones.pwn"
 
+// system
+#include "system/weapons.pwn"
+#include "system/world.pwn"
+#include "system/housing.pwn"
+#include "system/business.pwn"
+#include "system/payday.pwn"
+#include "system/groundhold.pwn"
+#include "system/premium.pwn"
+#include "system/click.pwn"
+#include "system/enterexit.pwn"
+#include "system/weather.pwn"
+
 // vehicle
 #include "vehicle/vehicle_fuel.pwn"
 #include "vehicle/vehicle.pwn"
@@ -162,18 +174,6 @@ Thanks:
 // custom
 #include "custom/ls_beachside.pwn"
 #include "custom/pickups.pwn"
-
-// system
-#include "system/weapons.pwn"
-#include "system/world.pwn"
-#include "system/housing.pwn"
-#include "system/business.pwn"
-#include "system/payday.pwn"
-#include "system/groundhold.pwn"
-#include "system/premium.pwn"
-#include "system/click.pwn"
-#include "system/enterexit.pwn"
-#include "system/weather.pwn"
 
 // competition
 #include "competition/competition.pwn"

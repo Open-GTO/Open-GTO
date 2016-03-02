@@ -6,12 +6,10 @@
 */
 
 #if defined _vehicle_premium_included
-  #endinput
+	#endinput
 #endif
 
 #define _vehicle_premium_included
-#pragma library vehicle_premium
-
 
 enum e_Premium_Vehicle {
 	e_iModel,
@@ -37,12 +35,13 @@ stock Premium_VehiclesLoad()
 {
 	for (new i = 0; i < sizeof(Vehicle_array); i++) {
 		vehicle_ids[i] = AddStaticVehicleEx(
-			Vehicle_array[i][e_iModel],
-			Vehicle_array[i][e_fX], Vehicle_array[i][e_fY], Vehicle_array[i][e_fZ],
-			Vehicle_array[i][e_fA],
-			Vehicle_array[i][e_iColor_1], Vehicle_array[i][e_iColor_2],
-			GetVehicleRespawnTime()
-		);
+				Vehicle_array[i][e_iModel],
+				Vehicle_array[i][e_fX], Vehicle_array[i][e_fY], Vehicle_array[i][e_fZ],
+				Vehicle_array[i][e_fA],
+				Vehicle_array[i][e_iColor_1], Vehicle_array[i][e_iColor_2],
+				GetVehicleRespawnTime()
+			);
+		SetVehicleMaxFuel(vehicle_ids[i]);
 	}
 }
 
