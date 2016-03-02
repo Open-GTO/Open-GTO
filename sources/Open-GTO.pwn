@@ -147,6 +147,7 @@ Thanks:
 #include "player/player_mute.pwn"
 #include "player/player_ip.pwn"
 #include "player/player_info.pwn"
+#include "player/player_info_td.pwn"
 #include "player/player_jail.pwn"
 #include "player/player_freeze.pwn"
 #include "player/player_report.pwn"
