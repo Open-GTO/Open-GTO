@@ -310,7 +310,7 @@ public OnGameModeInit()
 	// custom
 	#tryinclude "custom/mapicon.pwn"
 	#tryinclude "custom/objects.pwn"
-	Log_Game("SERVER: Custom mapicons, objects and pickups init");
+	Log_Game("SERVER: Custom mapicons and objects init");
 
 	Time_Sync();
 	Weather_SetRandom();
@@ -339,6 +339,11 @@ public OnPlayerConnect(playerid)
 	if (IsPlayerNPC(playerid)) {
 		return 1;
 	}
+	
+	// remove objects
+	#tryinclude "custom/removeobjects.pwn"
+	
+	// main action
 	Player_OnPlayerConnect(playerid);
 	pt_chat_OnPlayerConnect(playerid);
 	PWeapon_OnPlayerConnect(playerid);
