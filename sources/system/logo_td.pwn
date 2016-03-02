@@ -11,8 +11,16 @@
 
 #define _logo_td_included
 
+/*
+	Vars
+*/
+
 static
 	Text:TD_Logo;
+
+/*
+	OnGameModeInit
+*/
 
 public OnGameModeInit()
 {
@@ -44,23 +52,27 @@ public OnGameModeInit()
 	forward Logo_OnGameModeInit();
 #endif
 
-public OnPlayerConnect(playerid)
+/*
+	OnPlayerSpawn
+*/
+
+public OnPlayerSpawn(playerid)
 {
 	TextDrawShowForPlayer(playerid, TD_Logo);
 
-	#if defined Logo_OnPlayerConnect
-		return Logo_OnPlayerConnect(playerid);
+	#if defined Logo_OnPlayerSpawn
+		return Logo_OnPlayerSpawn(playerid);
 	#else
 		return 1;
 	#endif
 }
-#if defined _ALS_OnPlayerConnect
-	#undef OnPlayerConnect
+#if defined _ALS_OnPlayerSpawn
+	#undef OnPlayerSpawn
 #else
-	#define _ALS_OnPlayerConnect
+	#define _ALS_OnPlayerSpawn
 #endif
  
-#define OnPlayerConnect Logo_OnPlayerConnect
-#if defined Logo_OnPlayerConnect
-	forward Logo_OnPlayerConnect(playerid);
+#define OnPlayerSpawn Logo_OnPlayerSpawn
+#if defined Logo_OnPlayerSpawn
+	forward Logo_OnPlayerSpawn(playerid);
 #endif
