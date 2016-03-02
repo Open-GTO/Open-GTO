@@ -199,7 +199,7 @@ new Houses[][HouseInfo] = {
 {"[LV-Motel]Motel Room 38", 200000, "Unknown", "Unknown", 120, 0, 0, 5, 0, 0, 0, "Unknown", 50000, 0, 0, 2206.3157, 691.5402, 11.4609, 239.2819, 1114.1991, 1080.9922},
 {"[LS]Gun House", 500000, "Unknown", "Unknown", 120, 0, 0, 8, 0, 0, 0, "Unknown", 50000, 0, 0, 2807.804931, -1176.960815, 25.384168, 2807.620117, -1171.900024, 1025.570312},
 {"[LV]Suburban House", 500000, "Unknown", "Unknown", 120, 0, 0, 8, 0, 0, 0, "Unknown", 50000, 0, 0, -911.748300, 2686.420900, 42.370300, 2807.620117, -1171.900024, 1025.570312}
-};};
+};
 #define SetPlayerToHouseID(%0,%1) SetPVarInt(%0, "HausID",%1)
 #define GetPlayerToHouseID(%0) GetPVarInt(%0, "HausID")
 new
