@@ -111,6 +111,7 @@ Thanks:
 #include "system/click.pwn"
 #include "system/enterexit.pwn"
 #include "system/weather.pwn"
+#include "system/logo_td.pwn"
 
 // vehicle
 #include "vehicle/vehicle_fuel.pwn"
