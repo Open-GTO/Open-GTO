@@ -223,14 +223,12 @@ stock Player_OnLogin(playerid)
 {
 	// spawn player
 	new
-		interior,
-		world,
 		Float:spawn_pos_x,
 		Float:spawn_pos_y,
 		Float:spawn_pos_z,
 		Float:spawn_pos_a;
 
-	GetPlayerSpawnPos(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, interior, world);
+	GetPlayerSpawnPos(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a);
 	SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, 0, 0, 0, 0, 0, 0);
 	TogglePlayerSpectating(playerid, 0);
 

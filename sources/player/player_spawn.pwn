@@ -226,7 +226,7 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-stock GetPlayerSpawnPos(playerid, &Float:spos_x, &Float:spos_y, &Float:spos_z, &Float:spos_a, &interior, &world)
+stock GetPlayerSpawnPos(playerid, &Float:spos_x = 0.0, &Float:spos_y = 0.0, &Float:spos_z = 0.0, &Float:spos_a = 0.0, &interior = 0, &world = 0)
 {
 	GetPlayerSpawnCoords(playerid, spos_x, spos_y, spos_z, spos_a, interior, world);
 
@@ -288,14 +288,12 @@ stock UpdatePlayerSpawnInfo(playerid)
 	ResetPlayerRandomSpawnID(playerid);
 	
 	new
-		interior,
-		world,
 		Float:spawn_pos_x,
 		Float:spawn_pos_y,
 		Float:spawn_pos_z,
 		Float:spawn_pos_a;
 
-	GetPlayerSpawnPos(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, interior, world);
+	GetPlayerSpawnPos(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a);
 	SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, 0, 0, 0, 0, 0, 0);
 }
 

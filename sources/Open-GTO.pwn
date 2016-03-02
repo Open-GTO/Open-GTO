@@ -474,6 +474,16 @@ public OnPlayerSpawn(playerid)
 	// protections
 	Prot_Teleport_OnPlayerSpawn(playerid);
 
+	// set interior and virtual world
+	new
+		interior,
+		world;
+
+	GetPlayerSpawnPos(playerid, .interior = interior, .world = world);
+
+	SetPlayerInterior(playerid, interior);
+	SetPlayerVirtualWorld(playerid, world);
+
 	// spawn player
 	Player_OnPlayerSpawn(playerid);
 	Spectate_OnPlayerSpawn(playerid);
