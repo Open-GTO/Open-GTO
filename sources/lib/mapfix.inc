@@ -1,4 +1,4 @@
-//MapFix by Nexius v2.3.4
+//MapFix by Nexius v2.3.5
 
 #if defined _mapfix_included
 	#endinput
@@ -7,9 +7,9 @@
 
 #include <a_samp>
 
-#define MAPFIX_VERSION		"2.3.4"
+#define MAPFIX_VERSION		"2.3.5"
 
-#define MAX_MAPFIX_OBJECTS	235
+#define MAX_MAPFIX_OBJECTS	253
 
 //Uncomment to enable
 #define USE_INCOGNITO_STREAMER
@@ -515,6 +515,26 @@ CreateMapFixObjects()
 	#endif
 	#if !defined DISABLE_MAPFIX_PLACE_71
 		MapFixObjects[234] = mf_CreateObject(3168, -640.5, 2717.2, 71.4, 0.0, 0.0, 42.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_72 //By Jimmi
+		MapFixObjects[235] = mf_CreateObject(19866, 2417.3059, 2387.3217, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[236] = mf_CreateObject(19866, 2417.0258, 2387.3217, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[237] = mf_CreateObject(19866, 2417.3059, 2382.3217, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[238] = mf_CreateObject(19866, 2417.0258, 2382.3217, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[239] = mf_CreateObject(19866, 2417.3051, 2377.301, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[240] = mf_CreateObject(19866, 2417.031, 2377.3283, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[241] = mf_CreateObject(19866, 2417.3059, 2372.321, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[242] = mf_CreateObject(19866, 2417.031, 2372.3283, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[243] = mf_CreateObject(19866, 2417.3059, 2367.321, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[244] = mf_CreateObject(19866, 2417.031, 2367.3283, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[245] = mf_CreateObject(19866, 2417.3059, 2363.1809, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[246] = mf_CreateObject(19866, 2417.0258, 2363.1809, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[247] = mf_CreateObject(19866, 2417.0258, 2359.301, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[248] = mf_CreateObject(19866, 2417.3059, 2359.3007, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[249] = mf_CreateObject(19866, 2417.3059, 2397.062, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[250] = mf_CreateObject(19866, 2417.3059, 2400.7619, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[251] = mf_CreateObject(19866, 2417.0258, 2397.0617, 9.8151, 0.0, 0.0, 0.0);
+		MapFixObjects[252] = mf_CreateObject(19866, 2417.0258, 2400.7817, 9.8151, 0.0, 0.0, 0.0);
 	#endif
 	#undef mf_CreateObject
 	#undef mf_SetObjectMaterial
