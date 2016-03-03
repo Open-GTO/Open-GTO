@@ -24,9 +24,11 @@ enum BusinessInfo {
 	Float:Coord_Y,
 	Float:Coord_Z
 }
+
 new Businesses[][BusinessInfo] = {
 	//NAME, COST, VALUE, LEVEL, OWNER, BUYOUT, upgrade, icon, x, y, z
 	{"Alhambra", 500000, 2000, 10, "Unknown", 0, 0, 1, 0, 502.6747, -11.6962, 1000.6796},
+	{"Atrium", 500000, 3000, 5, "Unknown", 0, 0, 1, 0, 1729.1752, -1669.0836, 22.6151},
 	{"Avispa Country Club", 1500000, 9500, 10, "Unknown", 0, 0, 1, 1, -2720.3601, -318.1620, 7.8438},
 	{"Bandits Stadium", 500000, 2000, 5, "Unknown", 0, 0, 1, 1, 1477.7498, 2248.6311, 11.0234},
 	{"Below the Belt Gym", 150000, 1500, 5, "Unknown", 0, 0, 1, 0, 773.9650, -72.9702, 1000.6484},
@@ -47,6 +49,7 @@ new Businesses[][BusinessInfo] = {
 	{"Ganton Gym", 125000, 1000, 1, "Unknown", 0, 0, 1, 0, 760.6678, 5.4534, 1000.7083},
 	{"Greenglass College", 500000, 5000, 5, "Unknown", 0, 0, 1, 1, 1045.7098, 1014.6323, 11.0000},
 	{"Hemlock Tattoo", 50000, 500, 1, "Unknown", 0, 0, 1, 0, -201.6768, -8.6403, 1002.2734},
+	{"Hippy Shopper", 500000, 3000, 5, "Unknown", 0, 0, 1, 1, -2590.0884, 59.8131, 4.3359},
 	{"Inside Track", 300000, 2800, 5, "Unknown", 0, 0, 1, 0, 823.2686, 3.0071, 1004.1797},
 	{"Jefferson Motel", 300000, 2400, 5, "Unknown", 0, 0, 1, 0, 2222.0686, -1150.7019, 1025.7969},
 	{"Jizzy's Pleasure Domes", 375000, 3000, 5, "Unknown", 0, 0, 1, 0, -2652.5295, 1410.2631, 906.2734},
