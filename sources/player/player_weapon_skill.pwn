@@ -61,7 +61,6 @@ PWSkill_OnPlayerConnect(playerid)
 
 PWSkill_OnPlayerDeath(playerid, killerid, reason)
 {
-	#pragma unused playerid
 	if (!IsEnabled) {
 		return 0;
 	}

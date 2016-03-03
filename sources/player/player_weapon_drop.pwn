@@ -79,9 +79,15 @@ PWDrop_OnPlayerPickUpPickup(playerid, pickupid)
 	return 0;
 }
 
-PWDrop_OnPlayerDeath(playerid)
+PWDrop_OnPlayerDeath(playerid, killerid, reason)
 {
+	#pragma unused killerid
+
 	if (!IsEnabled) {
+		return 0;
+	}
+
+	if (!IsWeapon(reason)) {
 		return 0;
 	}
 

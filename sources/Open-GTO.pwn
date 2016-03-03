@@ -60,6 +60,7 @@ Thanks:
 #include "protections/specialaction.inc"
 #include "protections/teleport.inc"
 #include "vehicle/vehicle_info.inc"
+#include "player/textdraw/textdraw_health.inc"
 
 // lib
 #include "lib/streamer.inc"
@@ -147,7 +148,6 @@ Thanks:
 #include "player/player_mute.pwn"
 #include "player/player_ip.pwn"
 #include "player/player_info.pwn"
-#include "player/player_info_td.pwn"
 #include "player/player_jail.pwn"
 #include "player/player_freeze.pwn"
 #include "player/player_report.pwn"
@@ -171,6 +171,9 @@ Thanks:
 #include "player/player_warn.pwn"
 #include "player/message/message_alert.pwn"
 #include "player/message/message_objective.pwn"
+#include "player/textdraw/textdraw_info.pwn"
+#include "player/textdraw/textdraw_health.pwn"
+//#include "player/textdraw/textdraw_armour.pwn"
 #include "player/player.pwn"
 
 // custom
@@ -277,7 +280,7 @@ public OnGameModeInit()
 	Enterexit_OnGameModeInit();
 	weapon_OnGameModeInit();
 	Premium_OnGameModeInit();
-	PWeapon_OnGameModeInit();
+	PWDrop_OnGameModeInit();
 	PMoney_TD_OnGameModeInit();
 	PLevel_OnGameModeInit();
 	widestrip_OnGameModeInit();
@@ -348,7 +351,7 @@ public OnPlayerConnect(playerid)
 	// main action
 	Player_OnPlayerConnect(playerid);
 	pt_chat_OnPlayerConnect(playerid);
-	PWeapon_OnPlayerConnect(playerid);
+	PWSkill_OnPlayerConnect(playerid);
 	PMoney_TD_OnPlayerConnect(playerid);
 	Vehicle_Textdraw_OnPlayerConn(playerid);
 	Enterexit_OnPlayerConnect(playerid);
@@ -385,7 +388,7 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 
 public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
-	if (PWeapon_OnPlayerPickUpPickup(playerid, pickupid)) {
+	if (PWDrop_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
 	}
 	if (swagup_OnPlayerPickUpPickup(playerid, pickupid)) {
@@ -465,6 +468,8 @@ public OnPlayerDeath(playerid, killerid, reason)
 	SendDeathMessage(killerid, playerid, reason);
 	
 	Player_OnPlayerDeath(playerid, killerid, reason);
+	PWSkill_OnPlayerDeath(playerid, killerid, reason);
+	PWDrop_OnPlayerDeath(playerid, killerid, reason);
 	Trucker_OnPlayerDeath(playerid, killerid, reason);
 
 	PlayCrimeReportForPlayer(killerid, killerid, random(18)+3);
@@ -510,7 +515,8 @@ public OnPlayerRequestClass(playerid, classid)
 {
 	SetPlayerSpawned(playerid, 0);
 	Player_OnPlayerRequestClass(playerid, classid);
-	PWeapon_OnPlayerRequestClass(playerid, classid);
+	PSpawn_OnPlayerRequestClass(playerid, classid);
+	PWSkill_OnPlayerRequestClass(playerid, classid);
 	return 1;
 }
 
@@ -720,7 +726,7 @@ public OnRconLoginAttempt(ip[], password[], success)
 public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
 	admin_OnPlayerClickMap(playerid, fX, fY, fZ);
-	Player_OnPlayerClickMap(playerid, fX, fY, fZ);
+	PMaptp_OnPlayerClickMap(playerid, fX, fY, fZ);
 	return 1;
 }
 

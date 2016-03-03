@@ -44,42 +44,6 @@ new PlayerStartWeapon[START_PLAYER_WEAPON_SLOTS][PWeap] = {
 	OnGameModeInit
 */
 
-PWeapon_OnGameModeInit()
-{
-	PWDrop_OnGameModeInit();
-	return 1;
-}
-
-PWeapon_OnPlayerPickUpPickup(playerid, pickupid)
-{
-	if (PWDrop_OnPlayerPickUpPickup(playerid, pickupid)) {
-		return 1;
-	}
-	return 0;
-}
-
-PWeapon_OnPlayerConnect(playerid)
-{
-	PWSkill_OnPlayerConnect(playerid);
-	return 1;
-}
-
-PWeapon_OnPlayerDeath(playerid, killerid, reason)
-{
-	#pragma unused killerid
-	if (!IsWeapon(reason)) return 1;
-	PWSkill_OnPlayerDeath(playerid, killerid, reason);
-	
-	PWDrop_OnPlayerDeath(playerid);
-	return 1;
-}
-
-PWeapon_OnPlayerRequestClass(playerid, classid)
-{
-	PWSkill_OnPlayerRequestClass(playerid, classid);
-	return 1;
-}
-
 PWeapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
 	#pragma unused hittype, hitid, fX, fY, fZ

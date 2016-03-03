@@ -146,6 +146,7 @@ Player_OnPlayerConnect(playerid)
 
 Player_OnPlayerDeath(playerid, killerid, reason)
 {
+	#pragma unused reason
 	UpdatePlayerSpawnInfo(playerid);
 
 	if (killerid == INVALID_PLAYER_ID || IsPlayersTeammates(playerid, killerid)) {
@@ -174,9 +175,6 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 
 		GiveGangXP(killer_gang_id, (GetGangLevel(killer_gang_id) + 1) * 20);
 	}
-	
-	// weapon
-	PWeapon_OnPlayerDeath(playerid, killerid, reason);
 
 	// give money
 	new stolencash = (GetPlayerMoney(playerid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;
@@ -201,21 +199,13 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 
 Player_OnPlayerRequestClass(playerid, classid)
 {
+	#pragma unused classid
 	HidePlayerMoneyTextDraw(playerid);
-
-	// spawn system
-	PSpawn_OnPlayerRequestClass(playerid, classid);
 
 	// show login dialog
 	if (!IsPlayerLogin(playerid)) {
 		Account_ShowDialog(playerid);
 	}
-	return 1;
-}
-
-Player_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
-{
-	PMaptp_OnPlayerClickMap(playerid, fX, fY, fZ);
 	return 1;
 }
 
