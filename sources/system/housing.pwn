@@ -886,7 +886,7 @@ stock house_Keep(playerid)
 
 stock SetPlayerPosToHouse(playerid, i)
 {
-	SetPlayerPosEx(playerid, Houses[i][Houses_PickupX], Houses[i][Houses_PickupY], Houses[i][Houses_PickupZ]+0.5, 0, 0, 0);
+	SetPlayerPosEx(playerid, Houses[i][Houses_PickupX], Houses[i][Houses_PickupY], Houses[i][Houses_PickupZ], 0, 0, 0);
 }
 
 stock house_GetPickupPos(houseid, &Float:house_x, &Float:house_y, &Float:house_z)
