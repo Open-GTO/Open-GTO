@@ -75,16 +75,14 @@ public OnPlayerSpawn(playerid)
 
 stock PlayerInfo_CreateTextDraw(playerid)
 {
-	TD_PlayerInfo[playerid] = CreatePlayerTextDraw(playerid, 4.202724, 432.083435, "_");
-	PlayerTextDrawLetterSize(playerid, TD_PlayerInfo[playerid], 0.203689, 1.232500);
+	TD_PlayerInfo[playerid] = CreatePlayerTextDraw(playerid, 4.0, 433.0, "_");
+	PlayerTextDrawLetterSize(playerid, TD_PlayerInfo[playerid], 0.2, 1.0);
 	PlayerTextDrawAlignment(playerid, TD_PlayerInfo[playerid], 1);
 	PlayerTextDrawColor(playerid, TD_PlayerInfo[playerid], 0xFFCC66AA);
-	PlayerTextDrawSetShadow(playerid, TD_PlayerInfo[playerid], 1);
-	PlayerTextDrawSetOutline(playerid, TD_PlayerInfo[playerid], 0);
-	PlayerTextDrawBackgroundColor(playerid, TD_PlayerInfo[playerid], 255);
+	PlayerTextDrawSetOutline(playerid, TD_PlayerInfo[playerid], 1);
+	PlayerTextDrawBackgroundColor(playerid, TD_PlayerInfo[playerid], 0x00000044);
 	PlayerTextDrawFont(playerid, TD_PlayerInfo[playerid], 1);
 	PlayerTextDrawSetProportional(playerid, TD_PlayerInfo[playerid], 1);
-	PlayerTextDrawSetShadow(playerid, TD_PlayerInfo[playerid], 1);
 }
 
 stock PlayerInfo_DestroyTextDraw(playerid)
@@ -104,12 +102,15 @@ stock PlayerInfo_HideTextDraw(playerid)
 
 stock PlayerInfo_UpdateString(playerid)
 {
+	static const
+		string_mask[] = "%s ~g~(%d)";
+
 	new
 		playername[MAX_PLAYER_NAME + 1],
-		string[sizeof(playername) + 5 + 1];
+		string[sizeof(string_mask) + (-2 + sizeof(playername)) + (-2 + 3)];
 	
 	GetPlayerName(playerid, playername, sizeof(playername));
-	format(string, sizeof(string), "%s (%d)", playername, playerid);
+	format(string, sizeof(string), string_mask, playername, playerid);
 
 	PlayerTextDrawSetString(playerid, TD_PlayerInfo[playerid], string);
 }
