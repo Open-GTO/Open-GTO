@@ -33,7 +33,6 @@ public OnGameModeInit()
 	TextDrawBackgroundColor(TD_Logo, 91);
 	TextDrawFont(TD_Logo, 1);
 	TextDrawSetProportional(TD_Logo, 1);
-	TextDrawSetShadow(TD_Logo, 1);
 
 	#if defined Logo_OnGameModeInit
 		return Logo_OnGameModeInit();
