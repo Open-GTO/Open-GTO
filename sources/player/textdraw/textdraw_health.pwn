@@ -49,7 +49,7 @@ public OnPlayerConnect(playerid)
 
 public OnPlayerSpawn(playerid)
 {
-	PlayerHealth_ShowTextDraw(playerid);
+	PlayerHealth_UpdateString(playerid);
 
 	#if defined PlayerHealth_OnPlayerSpawn
 		return PlayerHealth_OnPlayerSpawn(playerid);
@@ -74,7 +74,12 @@ public OnPlayerSpawn(playerid)
 
 public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 {
-	PlayerHealth_UpdateString(playerid);
+	new
+		Float:health;
+
+	GetPlayerHealth(playerid, health);
+
+	PlayerHealth_UpdateString(playerid, health - amount);
 
 	#if defined PlayerHealth_OnPlayerTakeDamage
 		return PlayerHealth_OnPlayerTakeDamage(playerid, issuerid, amount, weaponid, bodypart);
@@ -94,38 +99,13 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 #endif
 
 /*
-	OnPlayerDeath
-*/
-
-public OnPlayerDeath(playerid, killerid, reason)
-{
-	PlayerHealth_HideTextDraw(playerid);
-
-	#if defined PlayerHealth_OnPlayerDeath
-		return PlayerHealth_OnPlayerDeath(playerid, killerid, reason);
-	#else
-		return 1;
-	#endif
-}
-#if defined _ALS_OnPlayerDeath
-	#undef OnPlayerDeath
-#else
-	#define _ALS_OnPlayerDeath
-#endif
- 
-#define OnPlayerDeath PlayerHealth_OnPlayerDeath
-#if defined PlayerHealth_OnPlayerDeath
-	forward PlayerHealth_OnPlayerDeath(playerid, killerid, reason);
-#endif
-
-/*
 	Functions
 */
 
 stock PlayerHealth_CreateTextDraw(playerid)
 {
-	TD_PlayerHealth[playerid] = CreatePlayerTextDraw(playerid, 577.000000, 67.000000, "_");
-	PlayerTextDrawLetterSize(playerid, TD_PlayerHealth[playerid], 0.340000, 0.799998);
+	TD_PlayerHealth[playerid] = CreatePlayerTextDraw(playerid, 577.0, 67.0, "_");
+	PlayerTextDrawLetterSize(playerid, TD_PlayerHealth[playerid], 0.34, 0.8);
 	PlayerTextDrawAlignment(playerid, TD_PlayerHealth[playerid], 2);
 	PlayerTextDrawColor(playerid, TD_PlayerHealth[playerid], 0xFFFFFFFF);
 	PlayerTextDrawSetOutline(playerid, TD_PlayerHealth[playerid], 1);
@@ -156,6 +136,12 @@ stock PlayerHealth_UpdateString(playerid, Float:health = -1.0)
 	
 	if (health == -1.0) {
 		GetPlayerHealth(playerid, health);
+	}
+
+	if (health <= 0.0) {
+		PlayerHealth_HideTextDraw(playerid);
+	} else {
+		PlayerHealth_ShowTextDraw(playerid);
 	}
 	
 	format(string, sizeof(string), "%.0f", health);

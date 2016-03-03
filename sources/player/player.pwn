@@ -148,6 +148,7 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 {
 	#pragma unused reason
 	UpdatePlayerSpawnInfo(playerid);
+	SetPlayerArmour(playerid, 0.0);
 
 	if (killerid == INVALID_PLAYER_ID || IsPlayersTeammates(playerid, killerid)) {
 		return;

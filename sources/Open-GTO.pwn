@@ -61,6 +61,7 @@ Thanks:
 #include "protections/teleport.inc"
 #include "vehicle/vehicle_info.inc"
 #include "player/textdraw/textdraw_health.inc"
+#include "player/textdraw/textdraw_armour.inc"
 
 // lib
 #include "lib/streamer.inc"
@@ -173,7 +174,7 @@ Thanks:
 #include "player/message/message_objective.pwn"
 #include "player/textdraw/textdraw_info.pwn"
 #include "player/textdraw/textdraw_health.pwn"
-//#include "player/textdraw/textdraw_armour.pwn"
+#include "player/textdraw/textdraw_armour.pwn"
 #include "player/player.pwn"
 
 // custom
