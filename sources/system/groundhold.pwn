@@ -9,7 +9,6 @@
 #endif
 
 #define _groundhold_included
-#pragma library groundhold
 
 
 #define INVALID_GROUNDHOLD_ID -1
@@ -125,6 +124,10 @@ Groundhold_OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA areaid)
 		return 0;
 	}
 
+	if (pHoldTime[playerid] != 0 && pGroundID[playerid] != INVALID_GROUNDHOLD_ID) {
+		Groundhold_RemovePlayer(pGroundID[playerid], playerid);
+	}
+
 	pIsHold[playerid] = true;
 
 	if (pHoldTime[playerid] == 0 && pGroundID[playerid] != ghid) {
@@ -225,19 +228,7 @@ stock Groundhold_Check(ghid)
 
 			// remove player from ground
 			if (pHoldTime[playerid] < 1) {
-				// message
-				new string[MAX_STRING];
-
-				format(string, sizeof(string), _(GROUNDHOLD_MISSING), gGroundholds[ghid][e_ghName]);
-				SendClientMessage(playerid, COLOR_RED, string);
-
-				Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_ALERT_MISSING));
-				Message_ObjectiveHide(playerid);
-
-				// clean
-				pHoldTime[playerid] = 0;
-				pGroundID[playerid] = INVALID_GROUNDHOLD_ID;
-				Iter_SafeRemove(PlayerOnGround[ghid], playerid, playerid);
+				Groundhold_RemovePlayer(ghid, playerid, playerid);
 			}
 		} else {
 			// check enemies on the ground
@@ -268,6 +259,23 @@ stock Groundhold_CheckAll()
 		Groundhold_Check(ghid);
 	}
 	return 1;
+}
+
+stock Groundhold_RemovePlayer(ghid, playerid, &return_playerid = INVALID_PLAYER_ID)
+{
+	// message
+	new string[MAX_LANG_VALUE_STRING];
+
+	format(string, sizeof(string), _(GROUNDHOLD_MISSING), gGroundholds[ghid][e_ghName]);
+	SendClientMessage(playerid, COLOR_RED, string);
+
+	Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_ALERT_MISSING));
+	Message_ObjectiveHide(playerid);
+
+	// clean
+	pHoldTime[playerid] = 0;
+	pGroundID[playerid] = INVALID_GROUNDHOLD_ID;
+	Iter_SafeRemove(PlayerOnGround[ghid], playerid, return_playerid);
 }
 
 stock IsGroundholdEnabled()
