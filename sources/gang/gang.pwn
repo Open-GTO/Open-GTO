@@ -1,5 +1,5 @@
 /*
-	
+
 	About: gang system
 	Author: ziggi
 
@@ -69,7 +69,7 @@ stock Gang_SaveConfig(file_config)
 stock Gang_Load(gangname[])
 {
 	new gangid;
-	
+
 	gangid = Gang_GetID(gangname);
 	if (gangid != INVALID_GANG_ID) {
 		return gangid;
@@ -109,7 +109,7 @@ stock Gang_Load(gangname[])
 
 	for (new memberid = 0; memberid < MAX_GANG_SIZE; memberid++) {
 		GangMember_SetID(gangid, memberid, INVALID_PLAYER_ID);
-		
+
 		format(string, sizeof(string), "Member%d", memberid);
 		ini_getString(file, string, tmp_str, MAX_PLAYER_NAME + 1);
 		GangMember_SetName(gangid, memberid, tmp_str);
@@ -138,14 +138,13 @@ stock Gang_Load(gangname[])
 stock Gang_Unload(gangid)
 {
 	Gang_Save(gangid);
-	
+
 	foreach (new memberid : LoadedGangMembers[gangid]) {
 		GangMember_SetID(gangid, memberid, INVALID_PLAYER_ID);
-
-		Iter_SafeRemove(LoadedGangMembers[gangid], memberid, memberid);
+		GangMember_SetActiveStatus(gangid, memberid, false, true, memberid);
 	}
 
-	Iter_Remove(LoadedGangs, gangid);
+	Gang_SetActiveStatus(gangid, false);
 }
 
 /*
@@ -207,7 +206,7 @@ stock Gang_SaveAll()
 		Gang_Save(gangid);
 
 		if (Gang_GetOnlineCount(gangid) == 0) {
-			Iter_SafeRemove(LoadedGangs, gangid, gangid);
+			Gang_SetActiveStatus(gangid, false, true, gangid);
 		}
 	}
 }
@@ -218,7 +217,7 @@ stock Gang_SaveAll()
 
 stock Gang_Create(playerid, gangname[], gangcolour)
 {
-	new 
+	new
 		string[MAX_STRING];
 
 	format(string, sizeof(string), "%s%s" DATA_FILES_FORMAT, gGangDB, gangname);
@@ -265,7 +264,7 @@ stock Gang_Create(playerid, gangname[], gangcolour)
 
 stock Gang_Remove(gangid)
 {
-	new 
+	new
 		string[MAX_STRING];
 
 	Gang_GetName(gangid, string);
@@ -330,7 +329,7 @@ stock Gang_MemberJoin(gangid, playerid, GangMemberRank:rank = GangMemberSoldier)
 stock Gang_MemberRemove(gangid, memberid)
 {
 	new playerid = GangMember_GetID(gangid, memberid);
-	
+
 	GangMember_SetID(gangid, memberid, INVALID_PLAYER_ID);
 	GangMember_SetName(gangid, memberid, "");
 	GangMember_SetExists(gangid, memberid, false);
@@ -423,11 +422,11 @@ stock Gang_GiveMemberXP(playerid)
 	if (xp_amount == 0) {
 		return;
 	}
-	
+
 	gPlayerGiveXP[playerid] = 0;
-	
+
 	GivePlayerXP(playerid, xp_amount, 0);
-	
+
 	new string[MAX_STRING];
 	format(string, sizeof(string), _(GANG_GIVE_MEMBER_XP), xp_amount);
 	SendClientMessage(playerid, COLOR_XP_GOOD, string);
@@ -440,15 +439,15 @@ stock Gang_GiveXpFromPlayer(giverid, xpamount)
 	if (gangid == INVALID_GANG_ID) {
 		return 0;
 	}
-	
+
 	new amount = xpamount / 4;
-	
+
 	gGang[gangid][e_gScore] += amount;
 
 	new
 		giveamount = amount / Gang_GetOnlineCount(gangid),
 		playerid;
-	
+
 	foreach (new memberid : LoadedGangMembers[gangid]) {
 		playerid = GangMember_GetID(gangid, memberid);
 
@@ -473,7 +472,7 @@ stock Gang_PlayerKill(gangid, killerid, victimid)
 	if (GetPlayerGangID(killerid) == GetPlayerGangID(victimid)) {
 		return 1;
 	}
-	
+
 	if (victimid != INVALID_PLAYER_ID) {
 		gGang[gangid][e_gKills]++;
 	}
@@ -537,7 +536,7 @@ stock Gang_GetExistsCount(gangid)
 			count++;
 		}
 	}
-	
+
 	return count;
 }
 
@@ -723,12 +722,16 @@ stock Gang_IsActive(gangid)
 	return Iter_Contains(LoadedGangs, gangid);
 }
 
-stock Gang_SetActiveStatus(gangid, bool:status)
+stock Gang_SetActiveStatus(gangid, bool:status, bool:safe = false, &next_value = 0)
 {
 	if (status) {
 		Iter_Add(LoadedGangs, gangid);
 	} else {
-		Iter_Remove(LoadedGangs, gangid);
+		if (safe) {
+			Iter_SafeRemove(LoadedGangs, gangid, next_value);
+		} else {
+			Iter_Remove(LoadedGangs, gangid);
+		}
 	}
 }
 

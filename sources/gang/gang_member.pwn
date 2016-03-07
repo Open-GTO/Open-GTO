@@ -1,5 +1,5 @@
 /*
-	
+
 	About: gang member
 	Author: ziggi
 
@@ -91,12 +91,16 @@ stock GangMember_IsActive(gangid, memberid)
 	return Iter_Contains(LoadedGangMembers[gangid], memberid);
 }
 
-stock GangMember_SetActiveStatus(gangid, memberid, bool:status)
+stock GangMember_SetActiveStatus(gangid, memberid, bool:status, bool:safe = false, &next_value = 0)
 {
 	if (status) {
 		Iter_Add(LoadedGangMembers[gangid], memberid);
 	} else {
-		Iter_Remove(LoadedGangMembers[gangid], memberid);
+		if (safe) {
+			Iter_SafeRemove(LoadedGangMembers[gangid], memberid, next_value);
+		} else {
+			Iter_Remove(LoadedGangMembers[gangid], memberid);
+		}
 	}
 }
 
