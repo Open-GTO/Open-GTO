@@ -12,9 +12,8 @@
 #endif
 
 #define _weaponshop_included
-#pragma library weaponshop
 
-#define MAX_WSHOP_ACTORS 10
+#define MAX_WSHOP_ACTORS 11
 
 enum weapon_Shop_Info {
 	wshop_type,
