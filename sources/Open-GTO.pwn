@@ -175,6 +175,7 @@ Thanks:
 #include "player/textdraw/textdraw_info.pwn"
 #include "player/textdraw/textdraw_health.pwn"
 #include "player/textdraw/textdraw_armour.pwn"
+#include "player/textdraw/textdraw_level.pwn"
 #include "player/player.pwn"
 
 // custom

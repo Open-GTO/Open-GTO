@@ -64,7 +64,7 @@ Player_OnPlayerSpawn(playerid)
 		SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
 	}
 
-	UpdatePlayerLevelTextDraws(playerid);
+	PlayerLevelTD_ShowTextDraw(playerid);
 	UpdatePlayerWeaponTextDraws(playerid);
 
 	SetPlayerColor(playerid, GetPlayerGangColor(playerid));

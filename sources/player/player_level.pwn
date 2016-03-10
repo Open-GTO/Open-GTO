@@ -104,25 +104,7 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 	}
 
 	SetPlayerXP(playerid, GetPlayerXP(playerid) + xpamount);
-	UpdatePlayerLevelTextDraws(playerid);
 	return 1;
-}
-
-stock UpdatePlayerLevelTextDraws(playerid)
-{
-	#pragma unused playerid
-	/*new level = GetPlayerLevel(playerid);
-
-	pl_textdraw_SetLevel(playerid, level);
-
-	if (level >= GetMaxPlayerLevel()) {
-		pl_textdraw_SetXp(playerid, -1);
-	} else {
-		new Float:current_xp = GetPlayerXP(playerid);
-		new Float:max_current_xp = GetXPToLevel(level + 1);
-
-		pl_textdraw_SetXp(playerid, floatround(current_xp / max_current_xp * 100));
-	}*/
 }
 
 stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
@@ -134,9 +116,9 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 	}
 
 	SetPVarInt(playerid, "Level", level);
-	SetPVarInt(playerid, "XP", 0);
 	SetPlayerScore(playerid, level);
-	
+	SetPlayerXP(playerid, 0);
+
 	if (regenhp == 1 && old_level < level) {
 		SetPlayerMaxHealth(playerid);
 	}
@@ -158,6 +140,7 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 
 		Log_Game("player: %s(%d): changed his level from %d to %d", ReturnPlayerName(playerid), playerid, old_level, level);
 	}
+
 	return 1;
 }
 
@@ -175,10 +158,12 @@ stock SetPlayerXP(playerid, amount)
 {
 	new
 		level,
+		level_max,
 		xp_to_level,
 		xp_set;
 
 	level = GetPlayerLevel(playerid);
+	level_max = GetMaxPlayerLevel();
 	xp_set = amount;
 
 	if (xp_set < 0) {
@@ -200,14 +185,14 @@ stock SetPlayerXP(playerid, amount)
 		if (level <= MIN_LEVEL) {
 			xp_set = 0;
 		}
-	} else {
+	} else if (xp_set > 0) {
 		xp_to_level = GetXPToLevel(level + 1);
 
 		while (xp_set >= xp_to_level) {
 			xp_set -= xp_to_level;
 			level++;
 
-			if (level > GetMaxPlayerLevel()) {
+			if (level > level_max) {
 				break;
 			}
 
@@ -216,12 +201,14 @@ stock SetPlayerXP(playerid, amount)
 			SetPlayerLevel(playerid, level);
 		}
 		
-		if (level >= GetMaxPlayerLevel()) {
+		if (level >= level_max) {
 			xp_set = 0;
 		}
 	}
 
 	SetPVarInt(playerid, "XP", xp_set);
+	PlayerLevelTD_UpdateLevelString(playerid, level);
+	PlayerLevelTD_UpdateXPString(playerid, xp_set, GetXPToLevel(level + 1), level >= level_max);
 }
 
 stock GetPlayerXP(playerid)
