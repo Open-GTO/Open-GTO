@@ -2,7 +2,7 @@
 
 	About: vehicle textdraw
 	Author: ziggi
-	
+
 */
 
 #if defined _vehicle_textdraw_included
@@ -10,8 +10,11 @@
 #endif
 
 #define _vehicle_textdraw_included
-#pragma library vehicle_textdraw
 
+static const
+	Float:TD_PosX = 570.0,
+	Float:TD_PosY = 392.0,
+	Float:TD_Width = 65.0;
 
 static
 	Text:TD_Background,
@@ -19,30 +22,22 @@ static
 
 Vehicle_Textdraw_OnGameModeInit()
 {
-	TD_Background = TextDrawCreate(610.0, 368.0, "-");
-	TextDrawLetterSize(TD_Background, 0.0, 5.9);
-	TextDrawTextSize(TD_Background, 527.0, 0.0);
-	TextDrawAlignment(TD_Background, 1);
-	TextDrawColor(TD_Background, 0);
+	TD_Background = TextDrawCreate(TD_PosX, TD_PosY, "_");
+	TextDrawTextSize(TD_Background, TD_PosX + TD_Width, 0.0);
+	TextDrawLetterSize(TD_Background, 0.0, 5.5);
 	TextDrawUseBox(TD_Background, true);
-	TextDrawBoxColor(TD_Background, 100);
-	TextDrawSetShadow(TD_Background, -5);
-	TextDrawSetOutline(TD_Background, 0);
-	TextDrawFont(TD_Background, 0);
+	TextDrawBoxColor(TD_Background, 0x00000055);
 	return 1;
 }
 
 Vehicle_Textdraw_OnPlayerConn(playerid)
 {
-	TD_Text[playerid] = CreatePlayerTextDraw(playerid, 535.529479, 370.416564, "0 KM/H~n~0.0 L.~n~1000 HP");
-	PlayerTextDrawLetterSize(playerid, TD_Text[playerid], 0.336627, 1.728331);
-	PlayerTextDrawTextSize(playerid, TD_Text[playerid], 700.058609, 700.000061);
+	TD_Text[playerid] = CreatePlayerTextDraw(playerid, TD_PosX + 1.0, TD_PosY, "_");
+	PlayerTextDrawLetterSize(playerid, TD_Text[playerid], 0.3, 1.8);
 	PlayerTextDrawAlignment(playerid, TD_Text[playerid], 1);
-	PlayerTextDrawColor(playerid, TD_Text[playerid], -156);
+	PlayerTextDrawColor(playerid, TD_Text[playerid], 0xFFFFFF64);
 	PlayerTextDrawSetShadow(playerid, TD_Text[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, TD_Text[playerid], 0);
-	PlayerTextDrawBackgroundColor(playerid, TD_Text[playerid], 51);
-	PlayerTextDrawFont(playerid, TD_Text[playerid], VEHICLE_FUEL_TD_FONT);
+	PlayerTextDrawFont(playerid, TD_Text[playerid], 2);
 	PlayerTextDrawSetProportional(playerid, TD_Text[playerid], 1);
 	return 1;
 }

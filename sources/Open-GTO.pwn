@@ -328,7 +328,7 @@ public OnGameModeInit()
 	SetTimer("OneHourTimer", 3600000, 1); // 1 hour
 	SetTimerEx("WorldSave", WORLD_SAVE_TIME, 1, "d", 0);
 	Log_Game("SERVER: Timers started");
-	
+
 	WorldSave(0);
 	Log_Game("SERVER: " GAMEMODE_TEXT " initialization complete.");
 	return 1;
@@ -346,10 +346,10 @@ public OnPlayerConnect(playerid)
 	if (IsPlayerNPC(playerid)) {
 		return 1;
 	}
-	
+
 	// remove objects
 	#tryinclude "custom/removeobjects.pwn"
-	
+
 	// main action
 	Player_OnPlayerConnect(playerid);
 	pt_chat_OnPlayerConnect(playerid);
@@ -468,7 +468,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	}
 
 	SendDeathMessage(killerid, playerid, reason);
-	
+
 	Player_OnPlayerDeath(playerid, killerid, reason);
 	PWSkill_OnPlayerDeath(playerid, killerid, reason);
 	PWDrop_OnPlayerDeath(playerid, killerid, reason);
@@ -561,7 +561,7 @@ public OnPlayerText(playerid, text[])
 	if (pt_result == 0) {
 		return 0;
 	}
-	
+
 	new pl_result = Player_Text_OnPlayerText(playerid, text);
 	if (pl_result == 0) {
 		return 0;

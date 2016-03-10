@@ -15,10 +15,10 @@ ACCOUNT_DIALOG_INFORMATION_TEXT_2 = Каждый игрок имеет право создать банду.\nВ б
 ACCOUNT_DIALOG_INFORMATION_TEXT_3 = Бизнесы – хороший способ заработка, но чтобы его купить, придётся выложить кругленькую сумму.\n\n
 ACCOUNT_DIALOG_INFORMATION_TEXT_4 = Дом – место появления вашего персонажа после смерти.\nВ домах можно сдавать комнату, получая за это прибыль
 ACCOUNT_DIALOG_INFORMATION_TEXT_5 = и восстановить здоровье, после очередной перестрелки.\n\nКак и во многих RPG режимах здесь присутствуют уровни,
-ACCOUNT_DIALOG_INFORMATION_TEXT_6 = чем уровень выше – тем больше вы можете купить видов оружия,\nбыстрее восстановить здоровье, 
+ACCOUNT_DIALOG_INFORMATION_TEXT_6 = чем уровень выше – тем больше вы можете купить видов оружия,\nбыстрее восстановить здоровье,
 ACCOUNT_DIALOG_INFORMATION_TEXT_7 = купить более хороший бизнес или дом и многое другое.\n\n
 ACCOUNT_DIALOG_INFORMATION_TEXT_8 = Чтобы получить новый уровень, нужно набрать определённое количество опыта\n
-ACCOUNT_DIALOG_INFORMATION_TEXT_9 = Он набирается при убийстве враждебных игроков, победах в гонках и дмах, выполнении различных миссий. 
+ACCOUNT_DIALOG_INFORMATION_TEXT_9 = Он набирается при убийстве враждебных игроков, победах в гонках и дмах, выполнении различных миссий.
 
 ACCOUNT_LOGIN_FIRST = Сначала войдите в аккаунт!
 ACCOUNT_SUCCESS_LOGIN = Вы успешно вошли
@@ -145,7 +145,7 @@ PLAYER_MENU_INFO_7 = Стиль борьбы: %s\n
 PLAYER_MENU_INFO_8 = Премиум статус: %s
 
 // command
-COMMAND_HELP_0 = /help - первая помощь, /info - краткое описание, /commands - список всех команд. 
+COMMAND_HELP_0 = /help - первая помощь, /info - краткое описание, /commands - список всех команд.
 COMMAND_HELP_1 = /status - информация о вашем герое.
 COMMAND_HELP_2 = Вы можете использовать меню игрока, оно вызывается клавишей 'Y'.
 COMMAND_HELP_3 = Для взаимодействия с вращающимися значками (пикапами), пользуйтесь клавишей 'Y'.
@@ -175,7 +175,7 @@ COMMAND_TIME_MUTE = {FFCC66}[Сервер]: {FFFFFF}До окончания мута осталось %d мин
 
 COMMAND_STATUS_0 = Информация об игроке:
 COMMAND_STATUS_1 = Банда: %s
-COMMAND_STATUS_2 = Уровень: %d, опыт: %d/%d. Наличные: $%d, в банке: $%d. Всего денег: $%d 
+COMMAND_STATUS_2 = Уровень: %d, опыт: %d/%d. Наличные: $%d, в банке: $%d. Всего денег: $%d
 COMMAND_STATUS_3 = Убийств: %d, смертей: %d (У/С: %.2f). Арестов: %d. Затыканий: %d
 COMMAND_STATUS_FIGHTSTYLE = Используемый стиль борьбы: %s
 COMMAND_STATUS_PREMIUM = У вас есть премиум статус, доступен до: %s
@@ -547,8 +547,8 @@ DECLENSION_AMMO_2 = патрона
 DECLENSION_AMMO_3 = патронов
 
 // time
-TIME_DAY = %d %s, %d %s, 
-TIME_HOUR = %d %s, 
+TIME_DAY = %d %s, %d %s,
+TIME_HOUR = %d %s,
 TIME_MINUTES = %s%d %s, %d %s
 
 // admin
@@ -562,7 +562,7 @@ PLAYER_INFO_3 = {FFFFFF}интерьер: {A5D6A7}%d{FFFFFF}, мир: {A5D6A7}%d\n
 PLAYER_INFO_4 = {FFFFFF}расстояние: {A5D6A7}%0.2f\n
 PLAYER_INFO_5 = {FFFFFF}позиция: {A5D6A7}%0.4f, %0.4f, %0.4f, %0.4f
 
-ADMIN_PROTECTION_REPORT = Игрок %s(%d) подозревается в читерстве. Сработала защита: 
+ADMIN_PROTECTION_REPORT = Игрок %s(%d) подозревается в читерстве. Сработала защита:
 
 ADMIN_CHAT_NO_ADMIN = {FF2211}[Ошибка]: {FFFFFF}Извините, но на сервере сейчас нет администраторов.
 ADMIN_CHAT_MESSAGE_TO_ADMIN = {A5D6A7}Сообщение администрации от %s(%d): {FFFFFF}%s

@@ -1,5 +1,5 @@
 /*
-	
+
 	About: defines and default settings
 	Author: ziggi
 
@@ -222,7 +222,7 @@
 
 #define PLAYER_VEHICLE_INCREASE_LEVELS  0, 15, 24, 30 // уровни, при достижении которых увеличивается макс. транспорт игрока
 #define VEHSHOP_CAR_CHANGE_TIME  3 // количество часов, через которое транспорт в магазине меняется
-#define VEHICLE_RESPAWN_TIME     600 // время респавна транспорта в секундах (86400 - один день) 
+#define VEHICLE_RESPAWN_TIME     600 // время респавна транспорта в секундах (86400 - один день)
 #define OLD_ENGINE_DO // сел в транспорт - завелось, вышел - заглох(если задефайнено)
 
 // поставьте в VEHICLE_LIGHTS_ON_TIME и VEHICLE_LIGHTS_OFF_TIME значения 0, если хотите, чтобы фары включались в любое время
@@ -233,7 +233,6 @@
 
 // спидометр и бензин
 #define VEHICLE_FUEL_ENABLED     1
-#define VEHICLE_FUEL_TD_FONT     2 // используемый id шрифта в текстдраве
 #define VEHICLE_FUEL_SPEED       2 // количество бензина, заправляемого за 1 секунду
 #define VEHICLE_FUEL_FILL_TARIF  10 // цена одного литра бензина, в долларах
 #define VEHICLE_FUEL_TARIF       20000
