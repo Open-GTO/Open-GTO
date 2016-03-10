@@ -24,13 +24,13 @@ static
 
 public OnGameModeInit()
 {
-	TD_Logo = TextDrawCreate(546.5, 4.5, MODE_NAME);
+	TD_Logo = TextDrawCreate(635.0, 1.0, MODE_NAME);
 	TextDrawLetterSize(TD_Logo, 0.36, 1.8);
-	TextDrawAlignment(TD_Logo, 1);
-	TextDrawColor(TD_Logo, -932506625);
+	TextDrawAlignment(TD_Logo, 3);
+	TextDrawColor(TD_Logo, 0xFFFFFF88);
 	TextDrawSetShadow(TD_Logo, 1);
 	TextDrawSetOutline(TD_Logo, 0);
-	TextDrawBackgroundColor(TD_Logo, 91);
+	TextDrawBackgroundColor(TD_Logo, 0x0000005B);
 	TextDrawFont(TD_Logo, 1);
 	TextDrawSetProportional(TD_Logo, 1);
 
@@ -45,7 +45,7 @@ public OnGameModeInit()
 #else
 	#define _ALS_OnGameModeInit
 #endif
- 
+
 #define OnGameModeInit Logo_OnGameModeInit
 #if defined Logo_OnGameModeInit
 	forward Logo_OnGameModeInit();
@@ -70,7 +70,7 @@ public OnPlayerSpawn(playerid)
 #else
 	#define _ALS_OnPlayerSpawn
 #endif
- 
+
 #define OnPlayerSpawn Logo_OnPlayerSpawn
 #if defined Logo_OnPlayerSpawn
 	forward Logo_OnPlayerSpawn(playerid);
