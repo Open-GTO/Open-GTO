@@ -24,10 +24,10 @@ static
 
 public OnPlayerConnect(playerid)
 {
-	PlayerHealth_CreateTextDraw(playerid);
+	PlayerHealthTD_CreateTextDraw(playerid);
 
-	#if defined PlayerHealth_OnPlayerConnect
-		return PlayerHealth_OnPlayerConnect(playerid);
+	#if defined PlayerHealthTD_OnPlayerConnect
+		return PlayerHealthTD_OnPlayerConnect(playerid);
 	#else
 		return 1;
 	#endif
@@ -38,9 +38,9 @@ public OnPlayerConnect(playerid)
 	#define _ALS_OnPlayerConnect
 #endif
  
-#define OnPlayerConnect PlayerHealth_OnPlayerConnect
-#if defined PlayerHealth_OnPlayerConnect
-	forward PlayerHealth_OnPlayerConnect(playerid);
+#define OnPlayerConnect PlayerHealthTD_OnPlayerConnect
+#if defined PlayerHealthTD_OnPlayerConnect
+	forward PlayerHealthTD_OnPlayerConnect(playerid);
 #endif
 
 /*
@@ -49,10 +49,10 @@ public OnPlayerConnect(playerid)
 
 public OnPlayerSpawn(playerid)
 {
-	PlayerHealth_UpdateString(playerid);
+	PlayerHealthTD_UpdateString(playerid);
 
-	#if defined PlayerHealth_OnPlayerSpawn
-		return PlayerHealth_OnPlayerSpawn(playerid);
+	#if defined PlayerHealthTD_OnPlayerSpawn
+		return PlayerHealthTD_OnPlayerSpawn(playerid);
 	#else
 		return 1;
 	#endif
@@ -63,9 +63,9 @@ public OnPlayerSpawn(playerid)
 	#define _ALS_OnPlayerSpawn
 #endif
  
-#define OnPlayerSpawn PlayerHealth_OnPlayerSpawn
-#if defined PlayerHealth_OnPlayerSpawn
-	forward PlayerHealth_OnPlayerSpawn(playerid);
+#define OnPlayerSpawn PlayerHealthTD_OnPlayerSpawn
+#if defined PlayerHealthTD_OnPlayerSpawn
+	forward PlayerHealthTD_OnPlayerSpawn(playerid);
 #endif
 
 /*
@@ -79,10 +79,10 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 
 	GetPlayerHealth(playerid, health);
 
-	PlayerHealth_UpdateString(playerid, health - amount);
+	PlayerHealthTD_UpdateString(playerid, health - amount);
 
-	#if defined PlayerHealth_OnPlayerTakeDamage
-		return PlayerHealth_OnPlayerTakeDamage(playerid, issuerid, amount, weaponid, bodypart);
+	#if defined PlayerHealthTD_OnPlayerTakeDmg
+		return PlayerHealthTD_OnPlayerTakeDmg(playerid, issuerid, amount, weaponid, bodypart);
 	#else
 		return 1;
 	#endif
@@ -93,16 +93,16 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 	#define _ALS_OnPlayerTakeDamage
 #endif
  
-#define OnPlayerTakeDamage PlayerHealth_OnPlayerTakeDamage
-#if defined PlayerHealth_OnPlayerTakeDamage
-	forward PlayerHealth_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart);
+#define OnPlayerTakeDamage PlayerHealthTD_OnPlayerTakeDmg
+#if defined PlayerHealthTD_OnPlayerTakeDmg
+	forward PlayerHealthTD_OnPlayerTakeDmg(playerid, issuerid, Float:amount, weaponid, bodypart);
 #endif
 
 /*
 	Functions
 */
 
-stock PlayerHealth_CreateTextDraw(playerid)
+stock PlayerHealthTD_CreateTextDraw(playerid)
 {
 	TD_PlayerHealth[playerid] = CreatePlayerTextDraw(playerid, 577.0, 67.0, "_");
 	PlayerTextDrawLetterSize(playerid, TD_PlayerHealth[playerid], 0.34, 0.8);
@@ -114,22 +114,22 @@ stock PlayerHealth_CreateTextDraw(playerid)
 	PlayerTextDrawSetProportional(playerid, TD_PlayerHealth[playerid], 1);
 }
 
-stock PlayerHealth_DestroyTextDraw(playerid)
+stock PlayerHealthTD_DestroyTextDraw(playerid)
 {
 	PlayerTextDrawDestroy(playerid, TD_PlayerHealth[playerid]);
 }
 
-stock PlayerHealth_ShowTextDraw(playerid)
+stock PlayerHealthTD_ShowTextDraw(playerid)
 {
 	PlayerTextDrawShow(playerid, TD_PlayerHealth[playerid]);
 }
 
-stock PlayerHealth_HideTextDraw(playerid)
+stock PlayerHealthTD_HideTextDraw(playerid)
 {
 	PlayerTextDrawHide(playerid, TD_PlayerHealth[playerid]);
 }
 
-stock PlayerHealth_UpdateString(playerid, Float:health = -1.0)
+stock PlayerHealthTD_UpdateString(playerid, Float:health = -1.0)
 {
 	new
 		string[4];
@@ -139,9 +139,9 @@ stock PlayerHealth_UpdateString(playerid, Float:health = -1.0)
 	}
 
 	if (health <= 0.0) {
-		PlayerHealth_HideTextDraw(playerid);
+		PlayerHealthTD_HideTextDraw(playerid);
 	} else {
-		PlayerHealth_ShowTextDraw(playerid);
+		PlayerHealthTD_ShowTextDraw(playerid);
 	}
 	
 	format(string, sizeof(string), "%.0f", health);

@@ -15,9 +15,9 @@
 	SetPlayerArmour
 */
 
-stock PlayerArmour_SetPlayerArmour(playerid, Float:armour)
+stock PlayerArmourTD_SetPlayerArmour(playerid, Float:armour)
 {
-	PlayerArmour_UpdateString(playerid, armour);
+	PlayerArmourTD_UpdateString(playerid, armour);
 	return SetPlayerArmour(playerid, armour);
 }
 #if defined _ALS_SetPlayerArmour
@@ -26,4 +26,4 @@ stock PlayerArmour_SetPlayerArmour(playerid, Float:armour)
 	#define _ALS_SetPlayerArmour
 #endif
  
-#define SetPlayerArmour PlayerArmour_SetPlayerArmour
+#define SetPlayerArmour PlayerArmourTD_SetPlayerArmour

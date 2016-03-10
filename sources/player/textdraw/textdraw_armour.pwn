@@ -24,10 +24,10 @@ static
 
 public OnPlayerConnect(playerid)
 {
-	PlayerArmour_CreateTextDraw(playerid);
+	PlayerArmourTD_CreateTextDraw(playerid);
 
-	#if defined PlayerArmour_OnPlayerConnect
-		return PlayerArmour_OnPlayerConnect(playerid);
+	#if defined PlayerArmourTD_OnPlayerConnect
+		return PlayerArmourTD_OnPlayerConnect(playerid);
 	#else
 		return 1;
 	#endif
@@ -38,9 +38,9 @@ public OnPlayerConnect(playerid)
 	#define _ALS_OnPlayerConnect
 #endif
  
-#define OnPlayerConnect PlayerArmour_OnPlayerConnect
-#if defined PlayerArmour_OnPlayerConnect
-	forward PlayerArmour_OnPlayerConnect(playerid);
+#define OnPlayerConnect PlayerArmourTD_OnPlayerConnect
+#if defined PlayerArmourTD_OnPlayerConnect
+	forward PlayerArmourTD_OnPlayerConnect(playerid);
 #endif
 
 /*
@@ -49,10 +49,10 @@ public OnPlayerConnect(playerid)
 
 public OnPlayerSpawn(playerid)
 {
-	PlayerArmour_UpdateString(playerid);
+	PlayerArmourTD_UpdateString(playerid);
 
-	#if defined PlayerArmour_OnPlayerSpawn
-		return PlayerArmour_OnPlayerSpawn(playerid);
+	#if defined PlayerArmourTD_OnPlayerSpawn
+		return PlayerArmourTD_OnPlayerSpawn(playerid);
 	#else
 		return 1;
 	#endif
@@ -63,9 +63,9 @@ public OnPlayerSpawn(playerid)
 	#define _ALS_OnPlayerSpawn
 #endif
  
-#define OnPlayerSpawn PlayerArmour_OnPlayerSpawn
-#if defined PlayerArmour_OnPlayerSpawn
-	forward PlayerArmour_OnPlayerSpawn(playerid);
+#define OnPlayerSpawn PlayerArmourTD_OnPlayerSpawn
+#if defined PlayerArmourTD_OnPlayerSpawn
+	forward PlayerArmourTD_OnPlayerSpawn(playerid);
 #endif
 
 /*
@@ -83,10 +83,10 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 		armour -= amount;
 	}
 	
-	PlayerArmour_UpdateString(playerid, armour);
+	PlayerArmourTD_UpdateString(playerid, armour);
 
-	#if defined PlayerArmour_OnPlayerTakeDamage
-		return PlayerArmour_OnPlayerTakeDamage(playerid, issuerid, amount, weaponid, bodypart);
+	#if defined PlayerArmourTD_OnPlayerTakeDmg
+		return PlayerArmourTD_OnPlayerTakeDmg(playerid, issuerid, amount, weaponid, bodypart);
 	#else
 		return 1;
 	#endif
@@ -97,16 +97,16 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 	#define _ALS_OnPlayerTakeDamage
 #endif
  
-#define OnPlayerTakeDamage PlayerArmour_OnPlayerTakeDamage
-#if defined PlayerArmour_OnPlayerTakeDamage
-	forward PlayerArmour_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart);
+#define OnPlayerTakeDamage PlayerArmourTD_OnPlayerTakeDmg
+#if defined PlayerArmourTD_OnPlayerTakeDmg
+	forward PlayerArmourTD_OnPlayerTakeDmg(playerid, issuerid, Float:amount, weaponid, bodypart);
 #endif
 
 /*
 	Functions
 */
 
-stock PlayerArmour_CreateTextDraw(playerid)
+stock PlayerArmourTD_CreateTextDraw(playerid)
 {
 	TD_PlayerArmour[playerid] = CreatePlayerTextDraw(playerid, 577.0, 45.0, "_");
 	PlayerTextDrawLetterSize(playerid, TD_PlayerArmour[playerid], 0.34, 0.8);
@@ -118,22 +118,22 @@ stock PlayerArmour_CreateTextDraw(playerid)
 	PlayerTextDrawSetProportional(playerid, TD_PlayerArmour[playerid], 1);
 }
 
-stock PlayerArmour_DestroyTextDraw(playerid)
+stock PlayerArmourTD_DestroyTextDraw(playerid)
 {
 	PlayerTextDrawDestroy(playerid, TD_PlayerArmour[playerid]);
 }
 
-stock PlayerArmour_ShowTextDraw(playerid)
+stock PlayerArmourTD_ShowTextDraw(playerid)
 {
 	PlayerTextDrawShow(playerid, TD_PlayerArmour[playerid]);
 }
 
-stock PlayerArmour_HideTextDraw(playerid)
+stock PlayerArmourTD_HideTextDraw(playerid)
 {
 	PlayerTextDrawHide(playerid, TD_PlayerArmour[playerid]);
 }
 
-stock PlayerArmour_UpdateString(playerid, Float:armour = -1.0)
+stock PlayerArmourTD_UpdateString(playerid, Float:armour = -1.0)
 {
 	new
 		string[4];
@@ -143,9 +143,9 @@ stock PlayerArmour_UpdateString(playerid, Float:armour = -1.0)
 	}
 
 	if (armour <= 0.0) {
-		PlayerArmour_HideTextDraw(playerid);
+		PlayerArmourTD_HideTextDraw(playerid);
 	} else {
-		PlayerArmour_ShowTextDraw(playerid);
+		PlayerArmourTD_ShowTextDraw(playerid);
 	}
 	
 	format(string, sizeof(string), "%.0f", armour);

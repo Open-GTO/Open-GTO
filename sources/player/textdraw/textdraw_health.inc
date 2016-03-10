@@ -15,9 +15,9 @@
 	SetPlayerHealth
 */
 
-stock PlayerHealth_SetPlayerHealth(playerid, Float:health)
+stock PlayerHealthTD_SetPlayerHealth(playerid, Float:health)
 {
-	PlayerHealth_UpdateString(playerid, health);
+	PlayerHealthTD_UpdateString(playerid, health);
 	return SetPlayerHealth(playerid, health);
 }
 #if defined _ALS_SetPlayerHealth
@@ -26,4 +26,4 @@ stock PlayerHealth_SetPlayerHealth(playerid, Float:health)
 	#define _ALS_SetPlayerHealth
 #endif
  
-#define SetPlayerHealth PlayerHealth_SetPlayerHealth
+#define SetPlayerHealth PlayerHealthTD_SetPlayerHealth

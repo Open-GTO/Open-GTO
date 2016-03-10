@@ -24,11 +24,11 @@ static
 
 public OnPlayerConnect(playerid)
 {
-	PlayerInfo_CreateTextDraw(playerid);
-	PlayerInfo_UpdateString(playerid);
+	PlayerInfoTD_CreateTextDraw(playerid);
+	PlayerInfoTD_UpdateString(playerid);
 
-	#if defined PlayerInfo_OnPlayerConnect
-		return PlayerInfo_OnPlayerConnect(playerid);
+	#if defined PlayerInfoTD_OnPlayerConnect
+		return PlayerInfoTD_OnPlayerConnect(playerid);
 	#else
 		return 1;
 	#endif
@@ -39,9 +39,9 @@ public OnPlayerConnect(playerid)
 	#define _ALS_OnPlayerConnect
 #endif
  
-#define OnPlayerConnect PlayerInfo_OnPlayerConnect
-#if defined PlayerInfo_OnPlayerConnect
-	forward PlayerInfo_OnPlayerConnect(playerid);
+#define OnPlayerConnect PlayerInfoTD_OnPlayerConnect
+#if defined PlayerInfoTD_OnPlayerConnect
+	forward PlayerInfoTD_OnPlayerConnect(playerid);
 #endif
 
 /*
@@ -50,10 +50,10 @@ public OnPlayerConnect(playerid)
 
 public OnPlayerSpawn(playerid)
 {
-	PlayerInfo_ShowTextDraw(playerid);
+	PlayerInfoTD_ShowTextDraw(playerid);
 
-	#if defined PlayerInfo_OnPlayerSpawn
-		return PlayerInfo_OnPlayerSpawn(playerid);
+	#if defined PlayerInfoTD_OnPlayerSpawn
+		return PlayerInfoTD_OnPlayerSpawn(playerid);
 	#else
 		return 1;
 	#endif
@@ -64,16 +64,16 @@ public OnPlayerSpawn(playerid)
 	#define _ALS_OnPlayerSpawn
 #endif
  
-#define OnPlayerSpawn PlayerInfo_OnPlayerSpawn
-#if defined PlayerInfo_OnPlayerSpawn
-	forward PlayerInfo_OnPlayerSpawn(playerid);
+#define OnPlayerSpawn PlayerInfoTD_OnPlayerSpawn
+#if defined PlayerInfoTD_OnPlayerSpawn
+	forward PlayerInfoTD_OnPlayerSpawn(playerid);
 #endif
 
 /*
 	Functions
 */
 
-stock PlayerInfo_CreateTextDraw(playerid)
+stock PlayerInfoTD_CreateTextDraw(playerid)
 {
 	TD_PlayerInfo[playerid] = CreatePlayerTextDraw(playerid, 4.0, 433.0, "_");
 	PlayerTextDrawLetterSize(playerid, TD_PlayerInfo[playerid], 0.2, 1.0);
@@ -85,22 +85,22 @@ stock PlayerInfo_CreateTextDraw(playerid)
 	PlayerTextDrawSetProportional(playerid, TD_PlayerInfo[playerid], 1);
 }
 
-stock PlayerInfo_DestroyTextDraw(playerid)
+stock PlayerInfoTD_DestroyTextDraw(playerid)
 {
 	PlayerTextDrawDestroy(playerid, TD_PlayerInfo[playerid]);
 }
 
-stock PlayerInfo_ShowTextDraw(playerid)
+stock PlayerInfoTD_ShowTextDraw(playerid)
 {
 	PlayerTextDrawShow(playerid, TD_PlayerInfo[playerid]);
 }
 
-stock PlayerInfo_HideTextDraw(playerid)
+stock PlayerInfoTD_HideTextDraw(playerid)
 {
 	PlayerTextDrawHide(playerid, TD_PlayerInfo[playerid]);
 }
 
-stock PlayerInfo_UpdateString(playerid)
+stock PlayerInfoTD_UpdateString(playerid)
 {
 	static const
 		string_mask[] = "%s ~g~(%d)";
