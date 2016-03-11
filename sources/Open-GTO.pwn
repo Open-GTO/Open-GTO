@@ -490,11 +490,18 @@ public OnPlayerSpawn(playerid)
 
 	// set interior and virtual world
 	new
+		Float:pos_x,
+		Float:pos_y,
+		Float:pos_z,
+		Float:pos_a,
 		interior,
 		world;
 
-	GetPlayerSpawnPos(playerid, .interior = interior, .world = world);
+	GetPlayerSpawnPos(playerid, pos_x, pos_y, pos_z, pos_a, interior, world);
 
+	// we need to set position for avoid small player fall after spawn
+	SetPlayerPos(playerid, pos_x, pos_y, pos_z);
+	SetPlayerFacingAngle(playerid, pos_a);
 	SetPlayerInterior(playerid, interior);
 	SetPlayerVirtualWorld(playerid, world);
 
