@@ -547,8 +547,8 @@ DECLENSION_AMMO_2 = патрона
 DECLENSION_AMMO_3 = патронов
 
 // time
-TIME_DAY = %d %s, %d %s,
-TIME_HOUR = %d %s,
+TIME_DAY = %d %s, %d %s, 
+TIME_HOUR = %d %s, 
 TIME_MINUTES = %s%d %s, %d %s
 
 // admin
