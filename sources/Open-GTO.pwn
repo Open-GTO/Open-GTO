@@ -80,7 +80,7 @@ Thanks:
 #include "lib/zvehgetcolor/zvehgetcolor.inc"
 #include "lib/mdialog/mdialog.inc"
 #include "lib/skinselect/skinselect.inc"
-#include "lib/GarageBlock.inc"
+#include "lib/garageblock/garage_block.inc"
 #include "lib/gpickup/gpickup.inc"
 #include "lib/gtolib/gtolib.inc"
 #include "lib/getspawninfo/getspawninfo.inc"
