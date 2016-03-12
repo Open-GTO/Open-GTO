@@ -1,5 +1,5 @@
 /*
-	
+
 	Author: ziggi
 	About: api for using Open-GTO functions in FS
 
@@ -59,10 +59,12 @@ public api_SetPlayerHealth(playerid, Float:amount)
 	return SetPlayerHealth(playerid, amount);
 }
 
-forward api_GetMaxHealth(playerid, &Float:amount);
-public api_GetMaxHealth(playerid, &Float:amount)
+forward api_GetMaxHealth(playerid);
+public api_GetMaxHealth(playerid)
 {
+	new Float:amount;
 	GetMaxHealth(playerid, amount);
+	return _:amount;
 }
 
 forward api_GivePlayerXP(playerid, xpamount, showtext, showtd);
