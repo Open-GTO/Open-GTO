@@ -27,7 +27,7 @@ CompetitionDM_OnGameModeInit()
 		ctype_params[CompetitionTypeParams];
 
 	__(COMPETITION_TYPE_DM_NAME, ctype_params[COMPETITION_TYPE_NAME]);
-	ctype_params[COMPETITION_TYPE_COLOR] = 0xF44336FF;
+	ctype_params[COMPETITION_TYPE_COLOR] = COLOR_RED_500;
 
 	ctype = CompetitionType_Add(ctype_params);
 	CompetitionType_SetActiveStatus(ctype, true);

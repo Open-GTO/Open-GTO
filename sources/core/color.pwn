@@ -1,5 +1,5 @@
 /*
-	
+
 	About: color functions
 	Author: ziggi
 
@@ -43,6 +43,12 @@
 #define COLOR_DM_BAD 0xFF0066FF
 #define COLOR_PM 0xFFCC22FF
 #define WARN_MS_COLOR 0xFF5050FF
+
+// material colors (https://www.google.com/design/spec/style/color.html#color-color-palette)
+#define COLOR_BLUEGREY_200 0xB0BEC5FF
+#define COLOR_TEAL_400 0x26A69AFF
+#define COLOR_RED_500 0xF44336FF
+#define COLOR_BLUE_500 0x2196F3FF
 
 // vehicle compatible colors
 #define COLOR_BLACK 0x000000FF

@@ -198,7 +198,7 @@ DialogCreate:CompetitionStartMenu(playerid)
 
 	if (ctype == INVALID_COMPETITION_TYPE_ID) {
 		__(COMPETITION_START_PARAM_RANDOM, ctype_name);
-		GetColorEmbeddingCode(0xB0BEC5FF, ctype_color_code);
+		GetColorEmbeddingCode(COLOR_BLUEGREY_200, ctype_color_code);
 	} else {
 		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
 		ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
@@ -219,10 +219,10 @@ DialogCreate:CompetitionStartMenu(playerid)
 
 	if (cweather == INVALID_WEATHER_ID) {
 		__(COMPETITION_START_PARAM_RANDOM, cweather_string);
-		cweather_color = 0xB0BEC5FF;
+		cweather_color = COLOR_BLUEGREY_200;
 	} else {
 		Weather_GetName(cweather, cweather_string);
-		cweather_color = 0x26A69AFF;
+		cweather_color = COLOR_TEAL_400;
 	}
 	GetColorEmbeddingCode(cweather_color, cweather_color_code);
 	format(temp, sizeof(temp), _(COMPETITION_START_PARAM_WEATHER), cweather_color_code, cweather_string);
