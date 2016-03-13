@@ -172,14 +172,13 @@ stock Trucker_OnGameModeInit()
 	CreateDynamicMapIcon(246.8379, 1410.5923, 23.3703, 51, 0);
 	CreateDynamicMapIcon(-49.7828, -269.3626, 6.6332, 51, 0);
 	CreateDynamicMapIcon(816.5801, 857.0634, 12.7891, 51, 0);
-	
+
 	Log_Game(_(TRUCKER_INIT));
 	return 1;
 }
 
 stock Trucker_OnPlayerStateChange(playerid, newstate, oldstate)
 {
-	#pragma unused newstate, oldstate
 	if (!IsMissionEnabled(mission_trucker)) {
 		return 1;
 	}
@@ -189,10 +188,7 @@ stock Trucker_OnPlayerStateChange(playerid, newstate, oldstate)
 			if (!IsPlayerInMission(playerid, mission_trucker)) {
 				if (player_trucker[playerid][pt_PauseTime] > gettime()) {
 					RemovePlayerFromVehicle(playerid);
-
-					new string[MAX_STRING];
-					format(string, sizeof(string), _(TRUCKER_MISSION_WAIT), player_trucker[playerid][pt_PauseTime] - gettime());
-					SendClientMessage(playerid, COLOR_RED, string);
+					Trucker_ShowPauseMessage(playerid);
 				} else {
 					Dialog_Show(playerid, Dialog:TruckerMenu);
 				}
@@ -233,7 +229,7 @@ stock Trucker_Start(playerid)
 	new
 		vehicleid = GetPlayerVehicleID(playerid),
 		TrailerType:trailer_type = GetTrailerType(vehicleid);
-	
+
 	if (trailer_type == TRAILER_TYPE_UNKNOWN) {
 		new string[MAX_LANG_VALUE_STRING];
 
@@ -242,7 +238,7 @@ stock Trucker_Start(playerid)
 
 		format(string, sizeof(string), _(TRUCKER_ALERT_GET_TRAILER_S), TRUCKER_TIME_GET_TRAILER);
 		Message_Alert(playerid, _(TRUCKER_ALERT_HEADER), string);
-		
+
 		Message_Objective(playerid, _(TRUCKER_OBJECTIVE_GET_TRAILER), -1);
 
 		player_trucker[playerid][pt_TrailerCheck_Time] = gettime();
@@ -281,7 +277,7 @@ stock Trucker_Start(playerid)
 		type_name[MAX_LANG_VALUE_STRING];
 
 	Zone_GetNameByCoords(gDestination[dest_id][e_dPosX], gDestination[dest_id][e_dPosY], gDestination[dest_id][e_dPosZ], zone);
-	
+
 	switch (trailer_type) {
 		case TRAILER_TYPE_PRODUCT: {
 			__(TRUCKER_PRODUCTS, type_name);
@@ -336,7 +332,7 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 	if (cp != player_checkpoint[playerid]) {
 		return 0;
 	}
-	
+
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (IsPlayerInMission(playerid, mission_trucker) && IsVehicleIsRunner(vehicleid)) {
 		new trailerid = GetVehicleTrailer(vehicleid);
@@ -344,11 +340,11 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 			SendClientMessage(playerid, COLOR_WHITE, _(TRUCKER_TRAILER_MISSING));
 			return 1;
 		}
-		
+
 		if (!IsMissionTrailer(trailerid)) {
 			Trucker_Stop(playerid);
 			GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker));
-			
+
 			new Float:health;
 			GetPlayerHealth(playerid, health);
 			SetPlayerHealth(playerid, health - 10);
@@ -356,7 +352,7 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 			SendClientMessage(playerid, COLOR_WHITE, _(TRUCKER_TRAILER_FAKE));
 			return 1;
 		}
-		
+
 		Trucker_Stop(playerid);
 		KillTimer(player_trucker[playerid][pt_MissionTimer]);
 		GivePlayerMoney(playerid, mission_CalculateMoney(playerid, mission_trucker));
@@ -394,10 +390,7 @@ DialogResponse:TruckerMenu(playerid, response, listitem, inputtext[])
 
 	if (player_trucker[playerid][pt_PauseTime] > gettime()) {
 		RemovePlayerFromVehicle(playerid);
-		
-		new string[MAX_STRING];
-		format(string, sizeof(string), _(TRUCKER_MISSION_WAIT), player_trucker[playerid][pt_PauseTime] - gettime());
-		SendClientMessage(playerid, COLOR_RED, string);
+		Trucker_ShowPauseMessage(playerid);
 	} else {
 		Trucker_Start(playerid);
 	}
@@ -522,12 +515,12 @@ public Trucker_Trailer_Check(playerid, vehicleid)
 		Message_ObjectiveHide(playerid);
 		return 0;
 	}
-	
+
 	new trailerid = GetVehicleTrailer(vehicleid);
 	if (trailerid == 0 || !IsMissionTrailer(trailerid)) {
 		return 0;
 	}
-	
+
 	KillTimer(player_trucker[playerid][pt_TrailerCheck_Timer]);
 	Trucker_Start(playerid);
 	return 1;
@@ -540,7 +533,7 @@ public Trucker_CancelMission(playerid)
 		Trucker_Stop(playerid);
 		GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker));
 		SendClientMessage(playerid, COLOR_RED, _(TRUCKER_MISSION_FAILED_DESCRIPTION));
-		
+
 		new vehicleid = GetPlayerVehicleID(playerid);
 		if (vehicleid != 0 && IsVehicleIsRunner(vehicleid)) {
 			SetVehicleToRespawn(vehicleid);
@@ -580,10 +573,22 @@ stock Trucker_Stop(playerid)
 		RemovePlayerFromVehicle(playerid);
 		SetVehicleToRespawn(vehicleid);
 
-		new string[MAX_STRING];
-		format(string, sizeof(string), _(TRUCKER_MISSION_WAIT), player_trucker[playerid][pt_PauseTime] - gettime());
-		SendClientMessage(playerid, COLOR_RED, string);
+		Trucker_ShowPauseMessage(playerid);
 	}
+}
+
+static stock Trucker_ShowPauseMessage(playerid)
+{
+	new
+		string[MAX_LANG_VALUE_STRING],
+		seconds,
+		timeword[MAX_LANG_VALUE_STRING];
+
+	seconds = player_trucker[playerid][pt_PauseTime] - gettime();
+	Declension_GetWord(timeword, sizeof(timeword), seconds, _(DECLENSION_SECOND_4), _(DECLENSION_SECOND_2), _(DECLENSION_SECOND_3));
+
+	format(string, sizeof(string), _(TRUCKER_MISSION_WAIT), seconds, timeword);
+	SendClientMessage(playerid, -1, string);
 }
 
 static stock IsVehicleIsRunner(vehicleid)
