@@ -110,6 +110,11 @@ stock CompetitionType_GetCount()
 	return Iter_Count(CompetitionTypeIterator);
 }
 
+stock CompetitionType_GetRandom()
+{
+	return Iter_Random(CompetitionTypeIterator);
+}
+
 /*
 	Integer params
 */

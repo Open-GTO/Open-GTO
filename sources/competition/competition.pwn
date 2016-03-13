@@ -58,8 +58,8 @@ enum CompetitionCollisionStatus {
 enum CompetitionParams {
 	// general
 	COMPETITION_PLAYERID,
-	COMPETITION_NAME[COMPETITION_MAX_STRING],
 	COMPETITION_TYPE,
+	COMPETITION_MAP,
 	COMPETITION_TIME,
 	COMPETITION_VIRTUAL_WORLD,
 	COMPETITION_JOIN_STATUS, // CompetitionJoinStatus
@@ -126,6 +126,7 @@ stock Competition_Add(cparams[CompetitionParams])
 
 	Competition_SetActiveStatus(cid, true);
 	gParam[cid] = cparams;
+	gParam[cid][COMPETITION_VIRTUAL_WORLD] = cid + COMPETITION_VIRTUAL_WORLD_PADDING;
 
 	return cid;
 }

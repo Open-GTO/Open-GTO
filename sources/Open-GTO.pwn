@@ -185,6 +185,7 @@ Thanks:
 // competition
 #include "competition/competition.pwn"
 #include "competition/competition_type.pwn"
+#include "competition/competition_map.pwn"
 #include "competition/competition_menu.pwn"
 #include "competition/competition_type/ctype_race.pwn"
 #include "competition/competition_type/ctype_deathmatch.pwn"
