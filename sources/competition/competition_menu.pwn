@@ -17,7 +17,8 @@
 
 static
 	gPlayerStartParams[MAX_PLAYERS][CompetitionParams],
-	gPlayerJoinCompetitionID[MAX_PLAYERS];
+	gPlayerJoinCompetitionID[MAX_PLAYERS],
+	gAvailableWeather[] = {0, 1, 4, 8, 9, 19, 20};
 
 /*
 	OnPlayerConnect
@@ -26,7 +27,7 @@ static
 public OnPlayerConnect(playerid)
 {
 	gPlayerStartParams[playerid][COMPETITION_TYPE] = INVALID_COMPETITION_TYPE_ID;
-	gPlayerStartParams[playerid][COMPETITION_WEATHER] = -1;
+	gPlayerStartParams[playerid][COMPETITION_WEATHER] = INVALID_WEATHER_ID;
 
 	#if defined CompMenu_OnPlayerConnect
 		return CompMenu_OnPlayerConnect(playerid);
@@ -196,8 +197,8 @@ DialogCreate:CompetitionStartMenu(playerid)
 	ctype = gPlayerStartParams[playerid][COMPETITION_TYPE];
 
 	if (ctype == INVALID_COMPETITION_TYPE_ID) {
-		__(COMPETITION_START_PARAM_RANDOM_0, ctype_name);
-		GetColorEmbeddingCode(0x7575757FF, ctype_color_code);
+		__(COMPETITION_START_PARAM_RANDOM, ctype_name);
+		GetColorEmbeddingCode(0xB0BEC5FF, ctype_color_code);
 	} else {
 		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
 		ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
@@ -210,20 +211,25 @@ DialogCreate:CompetitionStartMenu(playerid)
 	// weather
 	new
 		cweather,
-		cweather_string[MAX_WEATHER_NAME];
+		cweather_string[MAX_WEATHER_NAME],
+		cweather_color,
+		cweather_color_code[7];
 
 	cweather = gPlayerStartParams[playerid][COMPETITION_WEATHER];
 
-	if (cweather == -1) {
-		__(COMPETITION_START_PARAM_RANDOM_1, cweather_string);
+	if (cweather == INVALID_WEATHER_ID) {
+		__(COMPETITION_START_PARAM_RANDOM, cweather_string);
+		cweather_color = 0xB0BEC5FF;
 	} else {
 		Weather_GetName(cweather, cweather_string);
+		cweather_color = 0x26A69AFF;
 	}
-	format(temp, sizeof(temp), _(COMPETITION_START_PARAM_WEATHER), cweather_string);
+	GetColorEmbeddingCode(cweather_color, cweather_color_code);
+	format(temp, sizeof(temp), _(COMPETITION_START_PARAM_WEATHER), cweather_color_code, cweather_string);
 	strcat(string, temp);
 
 	// open dialog
-	Dialog_Open(playerid, Dialog:CompetitionStartMenu, DIALOG_STYLE_LIST,
+	Dialog_Open(playerid, Dialog:CompetitionStartMenu, DIALOG_STYLE_TABLIST,
 			_(COMPETITION_MENU_HEADER),
 			string,
 			_(COMPETITION_MENU_SELECT), _(COMPETITION_MENU_BACK)
@@ -260,6 +266,9 @@ DialogCreate:CompetitionStartTypeMenu(playerid)
 		ctype_color,
 		ctype_color_code[7];
 
+	__(COMPETITION_START_PARAM_RANDOM, string);
+	strcat(string, "\n");
+
 	foreach (new ctype : CompetitionTypeIterator) {
 		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
 		ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
@@ -283,7 +292,50 @@ DialogResponse:CompetitionStartTypeMenu(playerid, response, listitem, inputtext[
 		return 1;
 	}
 
-	gPlayerStartParams[playerid][COMPETITION_TYPE] = GetCompetitionTypeByListitem(listitem);
+	if (listitem == 0) {
+		gPlayerStartParams[playerid][COMPETITION_TYPE] = INVALID_COMPETITION_TYPE_ID;
+	} else {
+		gPlayerStartParams[playerid][COMPETITION_TYPE] = GetCompetitionTypeByListitem(listitem, 1);
+	}
+
+	Dialog_Show(playerid, Dialog:CompetitionStartMenu);
+	return 1;
+}
+
+DialogCreate:CompetitionStartWeatherMenu(playerid)
+{
+	new
+		string[MAX_LANG_VALUE_STRING * sizeof(gAvailableWeather) + 1],
+		cweather_name[MAX_WEATHER_NAME];
+
+	__(COMPETITION_START_PARAM_RANDOM, string);
+	strcat(string, "\n");
+
+	for (new i = 0; i < sizeof(gAvailableWeather); i++) {
+		Weather_GetName(gAvailableWeather[i], cweather_name);
+		strcat(string, cweather_name);
+		strcat(string, "\n");
+	}
+
+	Dialog_Open(playerid, Dialog:CompetitionStartWeatherMenu, DIALOG_STYLE_LIST,
+			_(COMPETITION_START_TYPE_HEADER),
+			string,
+			_(COMPETITION_MENU_SELECT), _(COMPETITION_MENU_BACK)
+		);
+}
+
+DialogResponse:CompetitionStartWeatherMenu(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		Dialog_Show(playerid, Dialog:CompetitionStartMenu);
+		return 1;
+	}
+
+	if (listitem == 0) {
+		gPlayerStartParams[playerid][COMPETITION_WEATHER] = INVALID_WEATHER_ID;
+	} else {
+		gPlayerStartParams[playerid][COMPETITION_WEATHER] = GetCompetitionWeatherByListitem(listitem, 1);
+	}
 
 	Dialog_Show(playerid, Dialog:CompetitionStartMenu);
 	return 1;
@@ -347,4 +399,27 @@ static stock GetCompetitionTypeByListitem(listitem, offset = 0)
 	}
 
 	return INVALID_COMPETITION_TYPE_ID;
+}
+
+/*
+	Get competition weather by listitem
+*/
+
+static stock GetCompetitionWeatherByListitem(listitem, offset = 0)
+{
+	new
+		i,
+		index;
+
+	index += offset;
+
+	for (i = 0; i < sizeof(gAvailableWeather); i++) {
+		if (index == listitem) {
+			return gAvailableWeather[i];
+		}
+
+		index++;
+	}
+
+	return INVALID_WEATHER_ID;
 }

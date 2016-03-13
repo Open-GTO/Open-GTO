@@ -17,6 +17,7 @@
 
 #define MAX_WEATHER 21
 #define MAX_WEATHER_NAME MAX_LANG_VALUE_STRING
+#define INVALID_WEATHER_ID -1
 
 /*
 	Vars
