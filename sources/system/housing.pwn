@@ -153,11 +153,11 @@ new Houses[][HouseInfo] = {
 {"[LV]st.Rockshore West 23", 120000, "Unknown", "Unknown", 100, 0, 0, 15, 0, 0, 0, "Unknown", 50000, 0, 0, 2339.733, 1621.617, 11.015, 328.9125, 1482.2545, 1084.4375},
 {"[LV]st.Old Strip Bar 37", 46000, "Unknown", "Unknown", 130, 0, 0, 15, 0, 0, 0, "Unknown", 50000, 0, 0, 2360.096, 2378.085, 11.015, 374.5086, 1417.2700, 1081.3281},
 {"[LV]st.Marihuana 50", 110000, "Unknown", "Unknown", 150, 0, 0, 4, 0, 0, 0, "Unknown", 50000, 0, 0, 2609.640, 2392.888, 18.015, 306.1966, 307.8190, 1003.3047},
-{"[LV-Elite]st.Million 12", 3700000, "Unknown", "Unknown", 800, 0, 0, 9, 0, 0, 0, "Unknown", 50000, 0, 0, 2535.262, 998.084, 13.467, 260.9170, 1242.6680, 1084.2578},
-{"[LV-Elite]st.Million 32", 1000000, "Unknown", "Unknown", 750, 0, 0, 10, 0, 0, 0, "Unknown", 50000, 0, 0, 1493.112, 720.433, 11.015, 20.7300, 1341.7350, 1084.3750},
-{"[LV-Elite]st.Million 17", 2000000, "Unknown", "Unknown", 790, 0, 0, 4, 0, 0, 0, "Unknown", 50000, 0, 0, 2557.671, 1561.958, 11.015, 221.6921, 1149.8457, 1082.6094},
-{"[LV-Elite]st.Million 43", 1500000, "Unknown", "Unknown", 800, 0, 0, 12, 0, 0, 0, "Unknown", 50000, 0, 0, 2483.931, 1528.259, 11.193, 2324.6213, -1143.9209, 1050.4922},
-{"[LV-Elite]st.Million 22", 2000000, "Unknown", "Unknown", 750, 0, 0, 1, 0, 0, 0, "Unknown", 50000, 0, 0, 2581.533, 1061.976, 11.469, 247.5086, 304.9248, 999.1484},
+{"[LV-Elite]st.Million 12", 3700000, "Unknown", "Unknown", 800, 0, 0, 9, 0, 0, 0, "Unknown", 50000, 0, 0, 2535.3997, 997.8736, 14.2725, 6.5801, 1242.6680, 1084.2578},
+{"[LV-Elite]st.Million 32", 1000000, "Unknown", "Unknown", 750, 0, 0, 10, 0, 0, 0, "Unknown", 50000, 0, 0, 1492.8861, 720.1134, 10.8279, 181.3983, 1341.7350, 1084.3750},
+{"[LV-Elite]st.Million 17", 2000000, "Unknown", "Unknown", 790, 0, 0, 4, 0, 0, 0, "Unknown", 50000, 0, 0, 2557.671, 1561.958, 10.815, 221.6921, 1149.8457, 1082.6094},
+{"[LV-Elite]st.Million 43", 1500000, "Unknown", "Unknown", 800, 0, 0, 12, 0, 0, 0, "Unknown", 50000, 0, 0, 2483.931, 1528.259, 11.093, 2324.6213, -1143.9209, 1050.4922},
+{"[LV-Elite]st.Million 22", 2000000, "Unknown", "Unknown", 750, 0, 0, 1, 0, 0, 0, "Unknown", 50000, 0, 0, 2581.533, 1061.976, 11.269, 247.5086, 304.9248, 999.1484},
 {"[LV-Motel]Motel Room 2", 50000, "Unknown", "Unknown", 50, 0, 0, 3, 0, 0, 0, "Unknown", 50000, 0, 0, 1784.483, 2866.863, 14.260, 289.9850, 307.3130, 999.1484},
 {"[LV-Motel]Motel Room 5", 50000, "Unknown", "Unknown", 50, 0, 0, 5, 0, 0, 0, "Unknown", 50000, 0, 0, 1740.401, 2861.605, 14.260, 319.4555, 312.5038, 999.1484},
 {"[LV-Motel]Motel Room 21", 50000, "Unknown", "Unknown", 50, 0, 0, 2, 0, 0, 0, "Unknown", 50000, 0, 0, 1737.867, 2802.571, 14.168, 2451.1558, -1685.9690, 1013.5078},
@@ -292,7 +292,7 @@ stock SaveHous(housid)
 stock housing_OnGameModeInit()
 {
 	houses_LoadAll();
-	
+
 	new
 		string[MAX_LANG_VALUE_STRING * 4],
 		icon_type;
@@ -308,12 +308,12 @@ stock housing_OnGameModeInit()
 			icon_type = 31;
 		}
 		house_icon[id] = CreateDynamicMapIcon(Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ], icon_type, 0);
-		
+
 		housing_GetTextLabelString(id, string);
 		House3DTextLabel[id] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
 			Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ] + 0.6,
 			HouseDistanceOfShowLabel, .testlos = 1);
-		
+
 		Houses[id][Houses_VirtualWorld] = id + 1;
 	}
 	Log_Game(_(HOUSING_INIT));
@@ -366,12 +366,12 @@ DialogCreate:HouseMenu(playerid)
 	new id = GetPlayerToHouseID(playerid);
 	new string[512], playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
-	
+
 	new head[MAX_STRING];
 	format(head, sizeof(head), _(HOUSING_DIALOG_HEADER), Houses[id][Houses_Name]);
-	
+
 	new isowner = !strcmp(Houses[id][Houses_Owner], playername, true);
-	
+
 	if (isowner)
 	{
 		strcat(string, _(HOUSING_DIALOG_LIST_SELL), sizeof(string));
@@ -380,9 +380,9 @@ DialogCreate:HouseMenu(playerid)
 	{
 		strcat(string, _(HOUSING_DIALOG_LIST_BUY), sizeof(string));
 	}
-	
+
 	strcat(string, _(HOUSING_DIALOG_LIST_ENTER), sizeof(string));
-	
+
 	if (!isowner)
 	{
 		if (!strcmp(Houses[id][Houses_RentName], playername, true))
@@ -412,11 +412,11 @@ DialogCreate:HouseMenu(playerid)
 			strcat(string, _(HOUSING_DIALOG_LIST_RENT_KICK), sizeof(string));
 		}
 	}
-	
+
 	if (isowner)
 	{
 		strcat(string, _(HOUSING_DIALOG_LIST_RENT_SET), sizeof(string));
-		
+
 		if (Houses[id][Houses_Lock] == 1)
 		{
 			strcat(string, _(HOUSING_DIALOG_LIST_OPEN), sizeof(string));
@@ -425,9 +425,9 @@ DialogCreate:HouseMenu(playerid)
 		{
 			strcat(string, _(HOUSING_DIALOG_LIST_CLOSE), sizeof(string));
 		}
-			
+
 		strcat(string, _(HOUSING_DIALOG_LIST_UPGRADES), sizeof(string));
-		
+
 		strcat(string, _(HOUSING_DIALOG_LIST_KEEP), sizeof(string));
 	}
 
@@ -553,13 +553,13 @@ DialogResponse:HouseSetRent(playerid, response, listitem, inputtext[])
 		Dialog_Show(playerid, Dialog:HouseMenu);
 		return 1;
 	}
-	
+
 	new rentcost = strval(inputtext);
 	if (rentcost < 1) {
 		Dialog_Message(playerid, _(HOUSING_RENT_SET_HEADER), _(HOUSING_RENT_SET_VALUE_ERROR), _(HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
-	
+
 	Houses[ GetPlayerToHouseID(playerid) ][Houses_RentCost] = rentcost;
 
 	new string[MAX_STRING];
@@ -610,7 +610,7 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 				}
 
 				SetPlayerMaxHealth(playerid);
-				
+
 				SetPVarInt(playerid, "house_HealUpgrade_Used", 1);
 				SetTimerEx("house_HealUpgrade_Used", HOUSE_UPGRADE_USE_TIME * 1000, false, "d", playerid);
 				return 1;
@@ -621,7 +621,7 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 				format(string, sizeof(string), _(HOUSING_UPGRADE_NO_MONEY), HOUSE_UPGRADE_HEALTH_COST);
 				return Dialog_Message(playerid, _(HOUSING_UPGRADE_HEALTH), string, _(HOUSING_DIALOG_BUTTON_OK));
 			}
-			
+
 			Houses[id][Houses_HealUpgrade] = 1;
 			GivePlayerMoney(playerid,-HOUSE_UPGRADE_HEALTH_COST);
 
@@ -665,19 +665,19 @@ stock RentRoom(playerid)
 	{
 		return 1;
 	}
-	
+
 	if (Houses[id][Houses_Rentabil] == 0)
 	{
 		Dialog_Message(playerid, _(HOUSING_RENT_HEADER), _(HOUSING_RENT_DISABLED), _(HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
-	
+
 	if (strlen(ReturnPlayerGangName(playerid)) > 0)
 	{
 		Dialog_Message(playerid, _(HOUSING_RENT_HEADER), _(HOUSING_RENT_IN_GANG), _(HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
-	
+
 	if (!strcmp(Houses[id][Houses_RentName], "Unknown", true))
 	{
 		if (GetPlayerMoney(playerid) < Houses[id][Houses_RentCost])
@@ -687,7 +687,7 @@ stock RentRoom(playerid)
 		}
 		set(Houses[id][Houses_RentName], ReturnPlayerName(playerid));
 		GivePlayerMoney(playerid, -Houses[id][Houses_RentCost]);
-		
+
 		// перечислим деньги в банк владельцу
 		new owner_id = -1;
 		foreach (Player, pid) {
@@ -707,7 +707,7 @@ stock RentRoom(playerid)
 			ini_setInteger(file_player, "BankMoney", bank_money + Houses[id][Houses_RentCost]);
 			ini_closeFile(file_player);
 		}
-		
+
 		format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_houses, Houses[id][Houses_Name]);
 		new file_housing = ini_openFile(string);
 		ini_setInteger(file_housing, "Rentabil", 1);
@@ -726,7 +726,7 @@ stock RentRoom(playerid)
 stock DeleteRenter(playerid)
 {
 	new id = GetPlayerToHouseID(playerid);
-	if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true)) 
+	if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true))
 	{
 		Dialog_Message(playerid, _(HOUSING_RENT_HEADER), _(HOUSING_RENT_RENTER_KICK), _(HOUSING_DIALOG_BUTTON_OK));
 		foreach (Player, i)
@@ -748,7 +748,7 @@ stock DeleteRenter(playerid)
 	return 1;
 }
 
-stock house_Buy(playerid) 
+stock house_Buy(playerid)
 {
 	new playername[MAX_PLAYER_NAME+1], pl_houses=0;
 	GetPlayerName(playerid, playername, sizeof(playername));
@@ -768,7 +768,7 @@ stock house_Buy(playerid)
 		Dialog_Message(playerid, _(HOUSING_BUY_HEADER), _(HOUSING_ERROR), _(HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
-	
+
 	if (GetPlayerGangID(playerid) == INVALID_GANG_ID) {
 		Dialog_Message(playerid, _(HOUSING_BUY_HEADER), _(HOUSING_BUY_NOT_IN_GANG), _(HOUSING_DIALOG_BUTTON_OK));
 		return 1;
@@ -815,7 +815,7 @@ stock house_Buy(playerid)
 	return 1;
 }
 
-stock house_Sell(playerid) 
+stock house_Sell(playerid)
 {
 	house_Keep(playerid);
 
@@ -851,7 +851,7 @@ stock house_Sell(playerid)
 	return 1;
 }
 
-stock house_Keep(playerid) 
+stock house_Keep(playerid)
 {
 	new id = GetPlayerToHouseID(playerid);
 	if (id <= -1)
@@ -859,13 +859,13 @@ stock house_Keep(playerid)
 		Dialog_Message(playerid, _(HOUSING_KEEP_HEADER), _(HOUSING_ERROR), _(HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
-	
+
 	if (strcmp(Houses[id][Houses_Gang], ReturnPlayerGangName(playerid), true))
 	{
 		Dialog_Message(playerid, _(HOUSING_KEEP_HEADER), _(HOUSING_KEEP_NO_OWNER), _(HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
-	
+
 	if (GetPlayerMoney(playerid) < Houses[id][Houses_UpKeepLeft])
 	{
 		Dialog_Message(playerid, _(HOUSING_KEEP_HEADER), _(HOUSING_KEEP_NO_MONEY), _(HOUSING_DIALOG_BUTTON_OK));
@@ -909,12 +909,12 @@ stock HouseKeepUp()
 		if (!strcmp(Houses[id][Houses_Owner], "Unknown", true)) {
 			continue;
 		}
-		
+
 		Account_LoadData(Houses[id][Houses_Owner], result);
 
 		if (IsDateExpired(result[e_aPremiumTime])) {
 			Houses[id][Houses_UpKeepLeft] += Houses[id][Houses_UpKeep];
-			
+
 			if (Houses[id][Houses_UpKeepLeft] >= house_GetUpKeepMax(id)) {
 				house_Free(id);
 			}
@@ -944,9 +944,9 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				rent_string[MAX_LANG_VALUE_STRING];
 
 			format(head, sizeof(head), _(HOUSING_DIALOG_HEADER), Houses[id][Houses_Name]);
-			
+
 			new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
-			
+
 			if (strcmp(Houses[id][Houses_Owner], "Unknown", true) && strcmp(Houses[id][Houses_Gang], "Unknown", true))
 			{
 				if (!strcmp(Houses[id][Houses_RentName], "Unknown", true)) {
@@ -965,7 +965,7 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 						Houses[id][Houses_Owner], Houses[id][Houses_Gang], price, Houses[id][Houses_UpKeep],
 						Houses[id][Houses_UpKeepLeft], house_GetUpKeepMax(id)
 					);
-					
+
 					if (Houses[id][Houses_Rentabil] == 1) {
 						strcat(string, rent_string, sizeof(string));
 					}
