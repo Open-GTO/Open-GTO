@@ -1868,7 +1868,7 @@ Vehicle_OnGameModeInit()
 		i,
 		vehicleid;
 
-	while (i++ < sizeof(gVehicleSpawns) - 1) {
+	do {
 		if (gVehicleSpawns[i][e_vs_model] == 0) {
 			continue;
 		}
@@ -1881,7 +1881,7 @@ Vehicle_OnGameModeInit()
 				GetVehicleRespawnTime()
 			);
 		SetVehicleFuel(vehicleid, -1);
-	}
+	} while (++i < sizeof(gVehicleSpawns));
 
 	Vehicle_Fuel_OnGameModeInit();
 
@@ -1897,7 +1897,7 @@ Vehicle_OnInteriorCreated(id, type, world)
 		i,
 		vehicleid;
 
-	while (i++ < sizeof(gVehicleInteriorSpawns) - 1) {
+	do {
 		if (gVehicleInteriorSpawns[i][e_vis_type] != type) {
 			continue;
 		}
@@ -1912,7 +1912,7 @@ Vehicle_OnInteriorCreated(id, type, world)
 		LinkVehicleToInterior(vehicleid, gVehicleInteriorSpawns[i][e_vis_interior]);
 		SetVehicleVirtualWorld(vehicleid, world);
 		SetVehicleMaxFuel(vehicleid);
-	}
+	} while (++i < sizeof(gVehicleInteriorSpawns));
 }
 
 Vehicle_OnPlayerStateChange(playerid, newstate, oldstate)
@@ -1926,7 +1926,7 @@ Vehicle_OnPlayerStateChange(playerid, newstate, oldstate)
 		SetPlayerPreviousVehicleID(playerid, vehicleid);
 	#if defined OLD_ENGINE_DO
 		Vehicle_ToggleEngine(vehicleid, VEHICLE_PARAMS_ON);
-		
+
 		new hour = Time_GetCurrentHour();
 		if (hour > VEHICLE_LIGHTS_ON_TIME || hour < VEHICLE_LIGHTS_OFF_TIME) {
 			Vehicle_ToggleLight(vehicleid, VEHICLE_PARAMS_ON);
