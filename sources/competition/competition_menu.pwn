@@ -1,5 +1,5 @@
 /*
-	
+
 	About: competition menu
 	Author: ziggi
 
@@ -16,7 +16,34 @@
 */
 
 static
+	gPlayerStartParams[MAX_PLAYERS][CompetitionParams],
 	gPlayerJoinCompetitionID[MAX_PLAYERS];
+
+/*
+	OnPlayerConnect
+*/
+
+public OnPlayerConnect(playerid)
+{
+	gPlayerStartParams[playerid][COMPETITION_TYPE] = INVALID_COMPETITION_TYPE_ID;
+	gPlayerStartParams[playerid][COMPETITION_WEATHER] = -1;
+
+	#if defined CompMenu_OnPlayerConnect
+		return CompMenu_OnPlayerConnect(playerid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
+
+#define OnPlayerConnect CompMenu_OnPlayerConnect
+#if defined CompMenu_OnPlayerConnect
+	forward CompMenu_OnPlayerConnect(playerid);
+#endif
 
 /*
 	CompetitionMenu
@@ -155,6 +182,52 @@ DialogResponse:CompetitionJoinMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:CompetitionStartMenu(playerid)
 {
+	new
+		string[MAX_LANG_VALUE_STRING * 10 + 1],
+		temp[MAX_LANG_VALUE_STRING];
+
+	// type
+	new
+		ctype,
+		ctype_name[MAX_COMPETITION_TYPE_NAME],
+		ctype_color,
+		ctype_color_code[7];
+
+	ctype = gPlayerStartParams[playerid][COMPETITION_TYPE];
+
+	if (ctype == INVALID_COMPETITION_TYPE_ID) {
+		__(COMPETITION_START_PARAM_RANDOM_0, ctype_name);
+		GetColorEmbeddingCode(0x7575757FF, ctype_color_code);
+	} else {
+		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
+		ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
+
+		GetColorEmbeddingCode(ctype_color, ctype_color_code);
+	}
+	format(temp, sizeof(temp), _(COMPETITION_START_PARAM_TYPE), ctype_color_code, ctype_name);
+	strcat(string, temp);
+
+	// weather
+	new
+		cweather,
+		cweather_string[MAX_WEATHER_NAME];
+
+	cweather = gPlayerStartParams[playerid][COMPETITION_WEATHER];
+
+	if (cweather == -1) {
+		__(COMPETITION_START_PARAM_RANDOM_1, cweather_string);
+	} else {
+		Weather_GetName(cweather, cweather_string);
+	}
+	format(temp, sizeof(temp), _(COMPETITION_START_PARAM_WEATHER), cweather_string);
+	strcat(string, temp);
+
+	// open dialog
+	Dialog_Open(playerid, Dialog:CompetitionStartMenu, DIALOG_STYLE_LIST,
+			_(COMPETITION_MENU_HEADER),
+			string,
+			_(COMPETITION_MENU_SELECT), _(COMPETITION_MENU_BACK)
+		);
 	return 1;
 }
 
@@ -162,8 +235,57 @@ DialogResponse:CompetitionStartMenu(playerid, response, listitem, inputtext[])
 {
 	if (!response) {
 		Dialog_Show(playerid, Dialog:CompetitionMenu);
+		return 1;
 	}
 
+	switch (listitem) {
+		// type
+		case 0: {
+			Dialog_Show(playerid, Dialog:CompetitionStartTypeMenu);
+		}
+		// weather
+		case 1: {
+			Dialog_Show(playerid, Dialog:CompetitionStartWeatherMenu);
+		}
+	}
+
+	return 1;
+}
+
+DialogCreate:CompetitionStartTypeMenu(playerid)
+{
+	new
+		string[MAX_LANG_VALUE_STRING * MAX_COMPETITION_TYPE_NAME + 1],
+		ctype_name[MAX_COMPETITION_TYPE_NAME],
+		ctype_color,
+		ctype_color_code[7];
+
+	foreach (new ctype : CompetitionTypeIterator) {
+		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
+		ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
+
+		GetColorEmbeddingCode(ctype_color, ctype_color_code);
+
+		format(string, sizeof(string), "%s{%s}%s\n", string, ctype_color_code, ctype_name);
+	}
+
+	Dialog_Open(playerid, Dialog:CompetitionStartTypeMenu, DIALOG_STYLE_LIST,
+			_(COMPETITION_START_TYPE_HEADER),
+			string,
+			_(COMPETITION_MENU_SELECT), _(COMPETITION_MENU_BACK)
+		);
+}
+
+DialogResponse:CompetitionStartTypeMenu(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		Dialog_Show(playerid, Dialog:CompetitionStartMenu);
+		return 1;
+	}
+
+	gPlayerStartParams[playerid][COMPETITION_TYPE] = GetCompetitionTypeByListitem(listitem);
+
+	Dialog_Show(playerid, Dialog:CompetitionStartMenu);
 	return 1;
 }
 
@@ -185,7 +307,7 @@ static stock GetJoinCompetitionId(playerid)
 	Get competition id by listitem
 */
 
-static stock GetCompetitionIdByListitem(listitem, offset)
+static stock GetCompetitionIdByListitem(listitem, offset = 0)
 {
 	new
 		cid,
@@ -202,4 +324,27 @@ static stock GetCompetitionIdByListitem(listitem, offset)
 	}
 
 	return INVALID_COMPETITION_ID;
+}
+
+/*
+	Get competition type by listitem
+*/
+
+static stock GetCompetitionTypeByListitem(listitem, offset = 0)
+{
+	new
+		ctype,
+		index;
+
+	index += offset;
+
+	foreach (ctype : CompetitionTypeIterator) {
+		if (index == listitem) {
+			return ctype;
+		}
+
+		index++;
+	}
+
+	return INVALID_COMPETITION_TYPE_ID;
 }

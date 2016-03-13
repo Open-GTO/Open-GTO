@@ -1,5 +1,5 @@
 /*
-	
+
 	About: competition type system
 	Author: ziggi
 
@@ -36,14 +36,16 @@ enum CompetitionTypeParams {
 */
 
 static
-	gParam[MAX_COMPETITION_TYPES][CompetitionTypeParams],
+	gParam[MAX_COMPETITION_TYPES][CompetitionTypeParams];
+
+new
 	Iterator:CompetitionTypeIterator<MAX_COMPETITION_TYPES>;
 
 /*
 	CompetitionType_Add
 */
 
-stock CompetitionType_Add(ctype_params[CompetitionParams])
+stock CompetitionType_Add(ctype_params[CompetitionTypeParams])
 {
 	new
 		ctype = CompetitionType_GetFreeSlot();
@@ -142,10 +144,10 @@ stock Float:CompetitionType_GetParamFloat(ctype, CompetitionTypeParams:param)
 
 stock CompetitionType_SetParamString(ctype, CompetitionTypeParams:param, value[])
 {
-	strmid(gParam[ctype][param], value, 0, strlen(value), COMPETITION_MAX_STRING);
+	strcpy(gParam[ctype][param], value, COMPETITION_MAX_STRING);
 }
 
 stock CompetitionType_GetParamString(ctype, CompetitionTypeParams:param, value[], size = sizeof(value))
 {
-	strmid(value, gParam[ctype][param], 0, strlen(gParam[ctype][param]), size);
+	strcpy(value, gParam[ctype][param], size);
 }

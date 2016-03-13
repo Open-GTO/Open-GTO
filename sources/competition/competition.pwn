@@ -1,5 +1,5 @@
 /*
-	
+
 	About: competition system
 	Author: ziggi
 
@@ -107,7 +107,7 @@ public OnGameModeInit()
 #else
 	#define _ALS_OnGameModeInit
 #endif
- 
+
 #define OnGameModeInit Competition_OnGameModeInit
 #if defined Competition_OnGameModeInit
 	forward Competition_OnGameModeInit();
@@ -258,10 +258,10 @@ stock Float:Competition_GetParamFloat(cid, CompetitionParams:param)
 
 stock Competition_SetParamString(cid, CompetitionParams:param, value[])
 {
-	strmid(gParam[cid][param], value, 0, strlen(value), COMPETITION_MAX_STRING);
+	strcpy(gParam[cid][param], value, COMPETITION_MAX_STRING);
 }
 
 stock Competition_GetParamString(cid, CompetitionParams:param, value[], size = sizeof(value))
 {
-	strmid(value, gParam[cid][param], 0, strlen(gParam[cid][param]), size);
+	strcpy(value, gParam[cid][param], size);
 }

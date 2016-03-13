@@ -186,6 +186,8 @@ Thanks:
 #include "competition/competition.pwn"
 #include "competition/competition_type.pwn"
 #include "competition/competition_menu.pwn"
+#include "competition/competition_type/ctype_race.pwn"
+#include "competition/competition_type/ctype_deathmatch.pwn"
 
 // admin
 #include "admin/admin_commands/cmd_announce.pwn"
@@ -288,6 +290,7 @@ public OnGameModeInit()
 	widestrip_OnGameModeInit();
 	Player_Click_OnGameModeInit();
 	AdminClick_OnGameModeInit();
+	Weather_OnGameModeInit();
 
 	// custom
 	Beachside_OnGameModeInit();
@@ -308,6 +311,10 @@ public OnGameModeInit()
 	Fight_OnGameModeInit();
 	Tuning_OnGameModeInit();
 	Lottery_OnGameModeInit();
+
+	// competition
+	CompetitionRace_OnGameModeInit();
+	CompetitionDM_OnGameModeInit();
 
 	// protection
 	pt_idle_OnGameModeInit();
