@@ -114,7 +114,7 @@ COMMAND:teleport(playerid, params[])
 		}
 	} else if (strcmp(subcmd, "coord", true) == 0) {
 		if (sscanf(subparams, "p<,>fffI(0)I(0)", t_pos_x, t_pos_y, t_pos_z, t_interior, t_world)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_TELEPORT_HELP));
+			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_TELEPORT_COORD_HELP));
 			return 1;
 		}
 
@@ -124,7 +124,7 @@ COMMAND:teleport(playerid, params[])
 		       playername, playerid, t_pos_x, t_pos_y, t_pos_z, p_pos_a, t_interior, t_world);
 		SendMessageToNearPlayerPlayers(string, 40.0, playerid);
 	} else {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_TELEPORT_HELP));
+		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_TELEPORT_COORD_HELP));
 	}
 
 	return 1;
