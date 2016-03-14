@@ -4,11 +4,10 @@
 */
 
 #if defined _housing_included
-#endinput
+	#endinput
 #endif
 
 #define _housing_included
-#pragma library housing
 
 enum HouseInfo {
 	Houses_Name[MAX_NAME],// house name
@@ -37,7 +36,8 @@ enum HouseInfo {
 
 new Houses[][HouseInfo] = {
 //NAME, COST, OWNER, GANG, UpKeep, UpKeepLeft, BUYOUT, интерьер, Car, Lock, Rentabil, RentName, Rent Cost, Heal upgrade, eX, eY, eZ, pX, pY, pZ
-//NAME, COST, OWNER, GANG, UpKeep, UpKeepLeft, BUYOUT, интерьер, Car, Lock, Rentabil, RentName, Rent Cost, Heal upgrade, eX, eY, eZ, pX, pY, pZ
+{"[LS]Johnson House", 1000000, "Unknown", "Unknown", 500, 0, 0, 3, 0, 0, 0, "Unknown", 100000, 0, 0, 2495.3965, -1691.1396, 14.7656, 2496.0391, -1692.2878, 1014.7422},
+{"[LS]OG Loc's House", 100000, "Unknown", "Unknown", 50, 0, 0, 3, 0, 0, 0, "Unknown", 100000, 0, 0, 2486.4683, -1644.4818, 14.0772, 513.9193, -7.3523, 1001.5653},
 {"[LV]Caligula Mansion", 850000, "Unknown", "Unknown", 500, 0, 0, 3, 0, 0, 0, "Unknown", 50000, 0, 0, 300.2951, -1154.5029, 81.3909, 289.9850, 307.3130, 999.1484},
 {"[LS]Willowfield", 17000, "Unknown", "Unknown", 50, 0, 0, 5, 0, 0, 0, "Unknown", 50000, 0, 0, 2486.8389, -1997.4480, 13.8343, 319.4555, 312.5038, 999.1484},
 {"[LS]Jefferson", 30000, "Unknown", "Unknown", 50, 0, 0, 1, 0, 0, 0, "Unknown", 50000, 0, 0, 2108.2073, -1280.1827, 25.6875, 2535.0583, -1674.4338, 1015.4986},
@@ -66,7 +66,6 @@ new Houses[][HouseInfo] = {
 {"[LV]The Clowns Pocket", 99000, "Unknown", "Unknown", 20, 0, 0, 15, 0, 0, 0, "Unknown", 50000, 0, 0, 2223.1616, 1840.9108, 10.8203, 328.9125, 1482.2545, 1084.4375},
 {"[LV]Old Venturas Strip", 46000, "Unknown", "Unknown", 30, 0, 0, 15, 0, 0, 0, "Unknown", 50000, 0, 0, 2371.1787, 2169.1052, 10.8257, 384.0571, 1471.7700, 1080.1875},
 {"[LV]Creek", 110000, "Unknown", "Unknown", 50, 0, 0, 15, 0, 0, 0, "Unknown", 50000, 0, 0, 2820.9004, 2140.8269, 14.6615, 374.5086, 1417.2700, 1081.3281},
-{"[LS]st.Manhatan 12", 850000, "Unknown", "Unknown", 100, 0, 0, 4, 0, 0, 0, "Unknown", 50000, 0, 0, 2487.073, -1646.585, 14.065, 306.1966, 307.8190, 1003.3047},
 {"[LS]st.Jarry 55", 17000, "Unknown", "Unknown", 150, 0, 0, 10, 0, 0, 0, "Unknown", 50000, 0, 0, 2396.199, -1647.489, 13.532, 20.7300, 1341.7350, 1084.3750},
 {"[LS]st.Carson 2", 30000, "Unknown", "Unknown", 150, 0, 0, 4, 0, 0, 0, "Unknown", 50000, 0, 0, 2328.642, -1681.613, 14.800, 221.6921, 1149.8457, 1082.6094},
 {"[LS]st.Mulholland 21", 190000, "Unknown", "Unknown", 250, 0, 0, 12, 0, 0, 0, "Unknown", 50000, 0, 0, 2067.023, -1700.507, 14.143, 2324.6213, -1143.9209, 1050.4922},
@@ -193,7 +192,6 @@ new Houses[][HouseInfo] = {
 {"[BR]House Pycucat", 290000, "Unknown", "Unknown", 120, 0, 0, 4, 0, 0, 0, "Unknown", 50000, 0, 0, -2389.537, 2410.905, 8.072, 221.6921, 1149.8457, 1082.6094},
 {"[BR]House SAS", 260000, "Unknown", "Unknown", 120, 0, 0, 12, 0, 0, 0, "Unknown", 50000, 0, 0, -2634.079, 2403.307, 10.475, 2324.6213, -1143.9209, 1050.4922},
 {"[BR]House WayV", 200000, "Unknown", "Unknown", 120, 0, 0, 1, 0, 0, 0, "Unknown", 50000, 0, 0, -2524.967, 2239.568, 4.600, 247.5086, 304.9248, 999.1484},
-{"[LS-Elite]Big House", 20000000, "Unknown", "Unknown", 120, 0, 0, 1, 0, 0, 0, "Unknown", 50000, 0, 0, 1122.7229, -2037.1871, 69.8942, 247.5086, 304.9248, 999.1484},
 {"[LV]st.Blueberry 37", 200000, "Unknown", "Unknown", 120, 0, 0, 5, 0, 0, 0, "Unknown", 50000, 0, 0, 559.1950, -1076.3453, 72.9220, 247.5086, 304.9248, 999.1484},
 {"[LS]Four Dragons Mansion", 200000, "Unknown", "Unknown", 120, 0, 0, 1, 0, 0, 0, "Unknown", 50000, 0, 0, -2627.3208, 2283.4939, 8.3123, 247.5086, 304.9248, 999.1484},
 {"[LV-Motel]Motel Room 38", 200000, "Unknown", "Unknown", 120, 0, 0, 5, 0, 0, 0, "Unknown", 50000, 0, 0, 2206.3157, 691.5402, 11.4609, 239.2819, 1114.1991, 1080.9922},
