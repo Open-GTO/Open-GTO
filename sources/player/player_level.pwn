@@ -94,7 +94,7 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 	} else {
 		if (showtd == 1) {
 			format(string, sizeof(string), _(PLAYER_XP_GAMETEXT), '-', -xpamount);
-			GameTextForPlayer(playerid, string, texttime, 3);	
+			GameTextForPlayer(playerid, string, texttime, 3);
 		}
 
 		if (showtext == 1) {
@@ -117,7 +117,11 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 
 	SetPVarInt(playerid, "Level", level);
 	SetPlayerScore(playerid, level);
-	SetPlayerXP(playerid, 0);
+	SetPVarInt(playerid, "XP", 0);
+
+	// update text draws
+	PlayerLevelTD_UpdateLevelString(playerid, level);
+	PlayerLevelTD_UpdateXPString(playerid, 0, GetXPToLevel(level + 1), level >= GetMaxPlayerLevel());
 
 	if (regenhp == 1 && old_level < level) {
 		SetPlayerMaxHealth(playerid);
@@ -125,13 +129,13 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 
 	if (notify == 1) {
 		new string[MAX_STRING];
-		
+
 		PlayerPlaySoundOnPlayer(playerid, 1057);
 
 		if (old_level < level) {
 			format(string, sizeof(string), _(PLAYER_LEVEL_UP), level);
 			SendClientMessage(playerid, COLOR_XP_GOOD, string);
-			
+
 			ShowWeaponsOnLevel(playerid, level, old_level);
 		} else {
 			format(string, sizeof(string), _(PLAYER_LEVEL_DOWN), level);
@@ -181,7 +185,7 @@ stock SetPlayerXP(playerid, amount)
 
 			SetPlayerLevel(playerid, level);
 		}
-		
+
 		if (level <= MIN_LEVEL) {
 			xp_set = 0;
 		}
@@ -200,7 +204,7 @@ stock SetPlayerXP(playerid, amount)
 
 			SetPlayerLevel(playerid, level);
 		}
-		
+
 		if (level >= level_max) {
 			xp_set = 0;
 		}
