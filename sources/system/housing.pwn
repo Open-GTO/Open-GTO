@@ -204,7 +204,7 @@ new
 	house_icon[ sizeof(Houses) ],
 	Text3D:House3DTextLabel[ sizeof(Houses) ],
 	Float:HouseDistanceOfShowLabel = 20.0,
-	HouseUpKeepRatio = 2800;
+	HouseUpKeepRatio = 1000;
 
 stock houses_LoadConfig(file_config)
 {
@@ -1098,7 +1098,7 @@ stock house_GetUpKeep(id)
 
 stock house_GetUpKeepMax(id)
 {
-	return Houses[id][Houses_UpKeep] * 2800;
+	return Houses[id][Houses_UpKeep] * HouseUpKeepRatio;
 }
 
 stock house_GetCount()
