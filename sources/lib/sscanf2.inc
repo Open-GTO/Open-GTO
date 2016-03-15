@@ -33,7 +33,7 @@
 	#error Please include <a_npc> or <a_samp> first.
 #endif
 
-#define SSCANF:%0(%1) sscanf_%0(%1);public sscanf_%0(%1)
+#define SSCANF:%0(%1) forward sscanf_%0(%1);public sscanf_%0(%1)
 
 #if defined sscanf
 	#error sscanf (possibly the PAWN version) already defined.
@@ -141,10 +141,10 @@ static stock
 	{
 	    new
      		name[MAX_PLAYER_NAME];
-	
+
 		SSCANF_Init(GetMaxPlayers(), INVALID_PLAYER_ID, MAX_PLAYER_NAME);
 		SSCANF_gInit = true;
-		
+
 		// Check if there are any players that aren't initialized.
 		for (new i = 0; i < MAX_PLAYERS; i ++)
 		{
@@ -154,7 +154,7 @@ static stock
 		        SSCANF_Join(i, name, IsPlayerNPC(i));
 		    }
 		}
-		
+
 		#if defined SSCANF_OnFilterScriptInit
 			SSCANF_OnFilterScriptInit();
 		#endif
@@ -185,10 +185,10 @@ static stock
 		{
 		    new
 		        name[MAX_PLAYER_NAME];
-		
+
 			SSCANF_Init(GetMaxPlayers(), INVALID_PLAYER_ID, MAX_PLAYER_NAME);
 			SSCANF_gInit = true;
-			
+
 			// Check if there are any players that aren't initialized.
 			for (new i = 0; i < MAX_PLAYERS; i ++)
 			{
