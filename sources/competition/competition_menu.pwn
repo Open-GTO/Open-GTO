@@ -128,6 +128,8 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 	new
 		string[MAX_LANG_MULTI_STRING],
 		cid,
+		cplayer_id,
+		cplayer_name[MAX_PLAYER_NAME + 1],
 		cmap,
 		cmap_name[COMPETITION_MAX_STRING],
 		ctime,
@@ -143,6 +145,8 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 		return 0;
 	}
 
+	cplayer_id = Competition_GetParamInt(cid, COMPETITION_PLAYERID);
+	GetPlayerName(cplayer_id, cplayer_name, sizeof(cplayer_name));
 	cmap = Competition_GetParamInt(cid, COMPETITION_MAP);
 	CompetitionMap_GetParamString(cmap, COMPETITION_MAP_NAME, cmap_name);
 	ctime = Competition_GetParamInt(cid, COMPETITION_TIME);
@@ -159,7 +163,7 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 		format(cstatus, sizeof(cstatus), _(COMPETITION_MENU_STATUS_STARTED), cstatus);
 	}
 
-	format(string, sizeof(string), _(COMPETITION_JOIN_MENU_MSG), cmap_name, ctype_color_code, ctype_name, cstatus);
+	format(string, sizeof(string), _(COMPETITION_JOIN_MENU_MSG), cmap_name, ctype_color_code, ctype_name, cplayer_name, cplayer_id, cstatus);
 
 	if (Competition_IsPlayerCanJoin(cid, playerid)) {
 		SetJoinCompetitionId(playerid, cid);
