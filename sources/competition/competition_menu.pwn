@@ -120,7 +120,15 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 
 	// if start item
 	if (listitem == 0) {
-		Dialog_Show(playerid, Dialog:CompetitionStartMenu);
+		if (Competition_GetFreeSlot() == INVALID_COMPETITION_ID) {
+			Dialog_MessageEx(playerid, Dialog:CompetitionReturnMenu,
+					_(COMPETITION_MENU_HEADER),
+					_(COMPETITION_MENU_NO_FREE_SLOT),
+					_(COMPETITION_MENU_BACK), _(COMPETITION_MENU_CANCEL)
+				);
+		} else {
+			Dialog_Show(playerid, Dialog:CompetitionStartMenu);
+		}
 		return 1;
 	}
 
@@ -473,6 +481,18 @@ DialogResponse:CompetitionStartWeatherMenu(playerid, response, listitem, inputte
 	}
 
 	Dialog_Show(playerid, Dialog:CompetitionStartMenu);
+	return 1;
+}
+
+/*
+	CompetitionReturnMenu
+*/
+
+DialogResponse:CompetitionReturnMenu(playerid, response, listitem, inputtext[])
+{
+	if (response) {
+		Dialog_Show(playerid, Dialog:CompetitionMenu);
+	}
 	return 1;
 }
 
