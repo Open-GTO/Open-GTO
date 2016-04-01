@@ -19,6 +19,10 @@
 	#define COMPETITION_DEFAULT_TIME 60
 #endif
 
+#if !defined COMPETITION_TIMER_INTERVAL
+	#define COMPETITION_TIMER_INTERVAL 1000
+#endif
+
 #if !defined MAX_COMPETITION
 	#define MAX_COMPETITION 15
 #endif
@@ -57,6 +61,7 @@ enum CompetitionCollisionStatus {
 
 enum CompetitionParams {
 	// general
+	bool:COMPETITION_STARTED,
 	COMPETITION_PLAYERID,
 	COMPETITION_TYPE,
 	COMPETITION_MAP,
@@ -82,6 +87,7 @@ enum CompetitionParams {
 */
 
 static
+	gTimeStamp,
 	gParam[MAX_COMPETITION][CompetitionParams];
 
 new
@@ -95,6 +101,9 @@ new
 public OnGameModeInit()
 {
 	Iter_Init(CompetitionPlayerIter);
+
+	gTimeStamp = gettime();
+	SetTimer("Competition_Timer", COMPETITION_TIMER_INTERVAL, 1);
 
 	#if defined Competition_OnGameModeInit
 		return Competition_OnGameModeInit();
@@ -112,6 +121,84 @@ public OnGameModeInit()
 #if defined Competition_OnGameModeInit
 	forward Competition_OnGameModeInit();
 #endif
+
+/*
+	OnPlayerDisconnect
+*/
+
+public OnPlayerDisconnect(playerid, reason)
+{
+	new
+		cid,
+		ctype;
+
+	foreach (cid : CompetitionIterator) {
+		if (!Competition_IsPlayerActive(cid, playerid)) {
+			continue;
+		}
+
+		ctype = Competition_GetParamInt(cid, COMPETITION_TYPE);
+
+		Competition_SetPlayerActive(cid, playerid, false);
+		CompetitionType_OnLeave(ctype, cid, playerid);
+	}
+
+	#if defined Competition_OnPlayerDisconnect
+		return Competition_OnPlayerDisconnect(playerid, reason);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerDisconnect
+	#undef OnPlayerDisconnect
+#else
+	#define _ALS_OnPlayerDisconnect
+#endif
+
+#define OnPlayerDisconnect Competition_OnPlayerDisconnect
+#if defined Competition_OnPlayerDisconnect
+	forward Competition_OnPlayerDisconnect(playerid, reason);
+#endif
+
+/*
+	Competition_Timer
+*/
+
+forward Competition_Timer();
+public Competition_Timer()
+{
+	new
+		current_time,
+		seconds_gone;
+
+	current_time = gettime();
+	seconds_gone = current_time - gTimeStamp;
+
+	if (seconds_gone <= 0) {
+		return;
+	}
+
+	new
+		cid,
+		ctype,
+		ctime;
+
+	foreach (cid : CompetitionIterator) {
+		ctime = Competition_GetParamInt(cid, COMPETITION_TIME);
+		ctime -= seconds_gone;
+		Competition_SetParamInt(cid, COMPETITION_TIME, ctime);
+
+		// start competition
+		if (ctime <= 0 && !Competition_GetParamInt(cid, COMPETITION_STARTED)) {
+			ctype = Competition_GetParamInt(cid, COMPETITION_TYPE);
+
+			Competition_SetParamInt(cid, COMPETITION_STARTED, true);
+			CompetitionType_OnStart(ctype, cid);
+		}
+	}
+
+	gTimeStamp = current_time;
+}
 
 /*
 	Competition Add

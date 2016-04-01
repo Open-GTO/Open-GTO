@@ -19,6 +19,10 @@
 	#define MAX_COMPETITION_TYPE_NAME 32
 #endif
 
+#if !defined MAX_FUNCTION_NAME
+	#define MAX_FUNCTION_NAME 32
+#endif
+
 #define MAX_COMPETITION_TYPES 5
 #define INVALID_COMPETITION_TYPE_ID -1
 
@@ -29,6 +33,10 @@
 enum CompetitionTypeParams {
 	COMPETITION_TYPE_NAME[MAX_COMPETITION_TYPE_NAME],
 	COMPETITION_TYPE_COLOR,
+	COMPETITION_TYPE_ADD_CALLBACK[MAX_FUNCTION_NAME],
+	COMPETITION_TYPE_JOIN_CALLBACK[MAX_FUNCTION_NAME],
+	COMPETITION_TYPE_LEAVE_CALLBACK[MAX_FUNCTION_NAME],
+	COMPETITION_TYPE_START_CALLBACK[MAX_FUNCTION_NAME],
 }
 
 /*
@@ -71,6 +79,50 @@ stock CompetitionType_Remove(ctype)
 	CompetitionType_SetName(ctype, "");
 
 	return 1;
+}
+
+/*
+	CompetitionType_OnAdd
+*/
+
+CompetitionType_OnAdd(ctype, cid, playerid)
+{
+	new callback[MAX_FUNCTION_NAME];
+	CompetitionType_GetParamString(ctype, COMPETITION_TYPE_ADD_CALLBACK, callback);
+	CallLocalFunction(callback, "ii", cid, playerid);
+}
+
+/*
+	CompetitionType_OnJoin
+*/
+
+CompetitionType_OnJoin(ctype, cid, playerid)
+{
+	new callback[MAX_FUNCTION_NAME];
+	CompetitionType_GetParamString(ctype, COMPETITION_TYPE_JOIN_CALLBACK, callback);
+	CallLocalFunction(callback, "ii", cid, playerid);
+}
+
+/*
+	CompetitionType_OnLeave
+*/
+
+CompetitionType_OnLeave(ctype, cid, playerid)
+{
+	new callback[MAX_FUNCTION_NAME];
+	CompetitionType_GetParamString(ctype, COMPETITION_TYPE_LEAVE_CALLBACK, callback);
+	CallLocalFunction(callback, "ii", cid, playerid);
+}
+
+/*
+	CompetitionType_OnStart
+*/
+
+CompetitionType_OnStart(ctype, cid)
+{
+	new callback[MAX_FUNCTION_NAME];
+	CompetitionType_GetParamString(ctype, COMPETITION_TYPE_START_CALLBACK, callback);
+	CallLocalFunction(callback, "i", cid);
 }
 
 /*

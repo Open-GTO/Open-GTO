@@ -29,7 +29,7 @@ public OnPlayerConnect(playerid)
 	gPlayerStartParams[playerid][COMPETITION_PLAYERID] = playerid;
 	gPlayerStartParams[playerid][COMPETITION_TYPE] = INVALID_COMPETITION_TYPE_ID;
 	gPlayerStartParams[playerid][COMPETITION_MAP] = INVALID_COMPETITION_MAP_ID;
-	gPlayerStartParams[playerid][COMPETITION_TIME] = 60;
+	gPlayerStartParams[playerid][COMPETITION_TIME] = COMPETITION_DEFAULT_TIME;
 	gPlayerStartParams[playerid][COMPETITION_JOIN_STATUS] = _:CompetitionJoinStatusAll;
 	gPlayerStartParams[playerid][COMPETITION_MARKER_STATUS] = _:CompetitionMarkerStatusAll;
 	gPlayerStartParams[playerid][COMPETITION_NAMETAG_STATUS] = _:CompetitionNametagStatusAll;
@@ -203,6 +203,7 @@ DialogResponse:CompetitionJoinMenu(playerid, response, listitem, inputtext[])
 	}
 
 	// join to competition
+	CompetitionType_OnJoin(Competition_GetParamInt(cid, COMPETITION_TYPE), cid, playerid);
 
 	return 1;
 }
@@ -318,7 +319,8 @@ DialogResponse:CompetitionStartMenu(playerid, response, listitem, inputtext[])
 			}
 
 			// start
-			Competition_Add(start_params);
+			new cid = Competition_Add(start_params);
+			CompetitionType_OnAdd(start_params[COMPETITION_TYPE], cid, playerid);
 		}
 		// type
 		case 1: {
