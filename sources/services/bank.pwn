@@ -13,7 +13,7 @@
 #pragma library bank
 
 
-#define MAX_BANK_ACTORS 14
+#define MAX_BANK_ACTORS 15
 
 static
 	ProfitCount = BANK_PROFIT,
