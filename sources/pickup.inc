@@ -1,24 +1,40 @@
 /*
-	Author:	ZiGGi
-	Date:	15.07.2010
+	Author:	ziggi
 */
 
 #if defined _pickup_fix_included
-  #endinput
+	#endinput
 #endif
 
 #define _pickup_fix_included
-#pragma library pickup_fix
 
+/*
+	Vars
+*/
 
-new pickup_model[MAX_PICKUPS];
+static
+	gPickupModel[MAX_PICKUPS];
 
-stock oCreatePickup(model, type, Float:coord_X, Float:coord_Y, Float:coord_Z, Virtualworld = 0)
+/*
+	Functions
+*/
+
+stock GetPickupModel(pickupid)
 {
-	new id = CreatePickup(model, type, coord_X, coord_Y, coord_Z, Virtualworld);
-	pickup_model[id] = model;
-	return id;
+	return gPickupModel[pickupid];
 }
 
-#define GetPickupModel(%0) pickup_model[%0]
-#define CreatePickup oCreatePickup
+stock GTO_CreatePickup(model, type, Float:coord_x, Float:coord_y, Float:coord_z, virtualworld = 0)
+{
+	new id = CreatePickup(model, type, Float:coord_x, Float:coord_y, Float:coord_z, virtualworld);
+	gPickupModel[id] = model;
+	return id;
+
+}
+#if defined _ALS_CreatePickup
+	#undef CreatePickup
+#else
+	#define _ALS_CreatePickup
+#endif
+
+#define CreatePickup GTO_CreatePickup
