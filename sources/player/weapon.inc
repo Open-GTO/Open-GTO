@@ -60,7 +60,7 @@ stock weapon_OnPlayerDeath(playerid, killerid, reason)
 	if (!IsWeapon(reason)) return 1;
 	wskill_OnPlayerDeath(playerid, killerid, reason);
 	wskill_HideTextDraw(playerid);
-	
+
 	wdrop_OnPlayerDeath(playerid);
 	return 1;
 }
@@ -113,24 +113,26 @@ stock GivePlayerOwnedWeapon(playerid,weaponid,ammo)
 			{
 				PlayerWeapons[playerid][slot][pbullets] = ammo;
 			}
-			PlayerWeapons[playerid][slot][pwid] = weaponid;
 		}
 		else
 		{
-			PlayerWeapons[playerid][slot][pwid] = weaponid;
 			PlayerWeapons[playerid][slot][pbullets] = 1;
 		}
-		oGivePlayerWeapon(playerid,weaponid,ammo);
+
+		PlayerWeapons[playerid][slot][pwid] = weaponid;
+
+		oGivePlayerWeapon(playerid, weaponid, 1);
+		SetPlayerAmmo(playerid, weaponid, PlayerWeapons[playerid][slot][pbullets]);
 	}
 }
 
 stock GivePlayerOwnedWeaponEx(playerid, weaponid, ammo)
 {
 	new slot = GetWeaponSlot(weaponid);
-	
+
 	PlayerWeapons[playerid][slot][pwid] = weaponid;
 	PlayerWeapons[playerid][slot][pbullets] += ammo;
-	
+
 	oGivePlayerWeapon(playerid, weaponid, ammo);
 }
 //
