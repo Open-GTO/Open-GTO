@@ -1,5 +1,5 @@
 /*
-	
+
 	Описание: дефайны и настройки по умолчанию
 	Автор: ziggi
 
@@ -15,7 +15,7 @@
 #pragma tabsize 0
 #pragma dynamic 13000
 
-#define VERSION					"v1.1.7" // версия мода
+#define VERSION					"v1.1.8" // версия мода
 #define GTO_FILES_FORMAT		".gto" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
 #define GTO_FILES_FOLDER		"Open-GTO/" // папка, где хранятся файлы Open-GTO, в scriptfiles/
 
@@ -150,7 +150,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 //
 
 // транспорт
-#define CARS_RESPAWN_TIME	600 // время респавна транспорта в секундах (86400 - один день) 
+#define CARS_RESPAWN_TIME	600 // время респавна транспорта в секундах (86400 - один день)
 #define OLD_ENGINE_DO // сел в транспорт - завелось, вышел - заглох(если задефайнено)
 
 // поставьте в VEHICLE_LIGHTS_ON_TIME и VEHICLE_LIGHTS_OFF_TIME значения 0, если хотите, чтобы фары включались в любое время
@@ -198,7 +198,7 @@ new ENCRYPTION_KEY[] = "_C)2^K¬RPXjwE8b\\p{Df+=Q3(O*vgu9ZH[!1\"Le0->?/hSF<'xVzm]
 	#define TRUCKER_RUNNER_MISSION_TIME		300 // время перерыва между миссиями, в секундах
 	#define TRUCKER_CAR_SPAWN_TIME			300
 	//
-	
+
 //
 // при смерти
 #define PLAYER_XP_DEATH_MINUS_PROC		3 // сколько процентов XP убирается от уже имеющегося опыта
