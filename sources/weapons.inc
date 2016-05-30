@@ -53,11 +53,11 @@ new Weapons[][WeaponInfo] = {
 	{16, "Граната" 				, 1, 1, 800,   43},
 	{17, "Газовый Баллон" 		, 1, 1, 400,   5},
 	{18, "Коктейль Молотова" 	, 1, 1, 550,   35},
-		 
+
 	{19, "Неизвестное" 			, 0, 0, 10,    25},
 	{20, "Неизвестное" 			, 0, 0, 10,    25},
 	{21, "Неизвестное" 			, 0, 0, 10,    25},
-		 
+
 	{22, "Пистолет" 			, 1, 1, 10,    0},
 	{23, "Пистолет с глушителем", 1, 1, 10,    10},
 	{24, "Пустынный Орел" 		, 1, 1, 20,    12},
@@ -75,10 +75,10 @@ new Weapons[][WeaponInfo] = {
 	{36, "Реактивная Пусковая установка", 0, 1, 1000, 52},
 	{37, "Огнемет" 				, 1, 1, 200,   28},
 	{38, "Ручной Пулемет(Миниган)", 0, 1, 100, 60},
-		 
+
 	{39, "Заряженный Рюкзак" 	, 0, 1, 500,   62},
 	{40, "Детонатор к Рюкзаку" 	, 0, 0, 1,     62},
-		 
+
 	{41, "Баллончик с краской" 	, 1, 1, 40,    5},
 	{42, "Огнетушитель" 		, 1, 1, 10,    5},
 	{43, "Фотокамера" 			, 1, 1, 60,    24},
@@ -96,7 +96,7 @@ stock WeaponLoadAll()
 		ini_Get(file_weapons_cfg, "Weapon_DB", WeaponDB);
 		ini_Close(file_weapons_cfg);
 	}
-	
+
 	new file_weapons, weapondbname[MAX_STRING];
 	for (new i = 0; i < sizeof(Weapons); i++)
 	{
@@ -120,7 +120,7 @@ stock WeaponSaveAll()
 	new file_weapons_cfg = (!ini_Exist(ConfigDB)) ? ini_Create(ConfigDB) : ini_Open(ConfigDB);
 	ini_Set(file_weapons_cfg, "Weapon_DB", WeaponDB);
 	ini_Close(file_weapons_cfg);
-	
+
 	new file_weapons, weapondbname[MAX_STRING];
 	for (new i = 0; i < sizeof(Weapons); i++)
 	{
@@ -168,7 +168,7 @@ stock oGetWeaponName(weaponid)
 {
 	new name[MAX_NAME],
 		lookupid = GetWeaponLookupID(weaponid);
-	
+
 	if (lookupid == -1)
 	{
 		return name;
@@ -258,17 +258,27 @@ stock BuyWeapon(playerid, weaponid, bullets)
 		return 0;
 	}
 	if (weaponid > 0 && weaponid < 47) {
-		new current_bullets = GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid));
-		if (current_bullets >= MAX_BULLETS) {
+		new
+			weapon_slot = GetWeaponSlot(weaponid),
+			current_weapon = GetPlayerWeaponSlotID(playerid, weapon_slot),
+			current_bullets = GetPlayerWeaponSlotBullet(playerid, weapon_slot);
+
+		if (current_bullets >= MAX_BULLETS && weaponid == current_weapon) {
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[16][1]);
 			return 0;
 		}
-		if (current_bullets + bullets > MAX_BULLETS) {
+
+		if (current_bullets + bullets > MAX_BULLETS && weaponid == current_weapon) {
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[16][1]);
-			bullets = MAX_BULLETS - GetPlayerWeaponSlotBullet(playerid, GetWeaponSlot(weaponid));
+			bullets = MAX_BULLETS - current_bullets;
 			if (bullets < 1) {
 				return 0;
 			}
+		}
+
+		if (bullets > MAX_BULLETS) {
+			SendClientMessage(playerid, COLOUR_RED, lang_texts[16][1]);
+			bullets = MAX_BULLETS;
 		}
 	}
 	if (IsPlayerAtAmmunation(playerid) == -1) {
@@ -412,7 +422,7 @@ stock ShowWeaponsOnLevel(playerid, newlevel, oldlevel)
 {
 	new string[MAX_STRING],
 		wepfound = 0;
-	
+
 	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++)
 	{
 		new lookupid = GetWeaponLookupID(weaponid);

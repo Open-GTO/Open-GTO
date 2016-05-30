@@ -238,3 +238,8 @@ stock GetPlayerWeaponSlotBullet(playerid, weapon_slot)
 {
 	return PlayerWeapons[playerid][weapon_slot][pbullets];
 }
+
+stock GetPlayerWeaponSlotID(playerid, weapon_slot)
+{
+	return PlayerWeapons[playerid][weapon_slot][pwid];
+}
