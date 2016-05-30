@@ -381,9 +381,19 @@ stock weapons_ShowDialog_Buy(playerid, weaponid)
 	}
 	else if (Weapons[ GetWeaponLookupID(weaponid) ][Weapon_IsFirearm] == 1)
 	{
-		new max_bullets = oGetPlayerMoney(playerid) / GetWeaponCost(weaponid);
-		if (max_bullets > MAX_BULLETS) {
-			max_bullets = MAX_BULLETS;
+		new
+			weapon_slot = GetWeaponSlot(weaponid),
+			max_bullets = oGetPlayerMoney(playerid) / GetWeaponCost(weaponid);
+
+		if (weaponid == GetPlayerWeaponSlotID(playerid, weapon_slot)) {
+			new current_bullets = GetPlayerWeaponSlotBullet(playerid, weapon_slot);
+			if (max_bullets + current_bullets > MAX_BULLETS) {
+				max_bullets = MAX_BULLETS - current_bullets;
+			}
+		} else {
+			if (max_bullets > MAX_BULLETS) {
+				max_bullets = MAX_BULLETS;
+			}
 		}
 
 		format(string, sizeof(string),

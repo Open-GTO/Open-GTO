@@ -17,7 +17,7 @@ Developers:
 		0.5.8 Ц 0.5.9		Robin Kikkert (dejavu), Lajos Pacsek (Asturel)
 		0.5.7 Ц 0.5.8		Peter Steenbergen (j1nx)
 		0.0.0 Ц 0.5.7		Iain Gilbert
-	
+
 	Translated to russian by Dmitry Borisoff (Beginner)
 
 */
@@ -217,7 +217,7 @@ public OnGameModeInit()
 	SetTimerEx("WorldSave", WORLD_SAVE_TIME, 1, "d", 0);
 	GameMSG("SERVER: Timers started");
 	SpawnWorld();
-	
+
 	WorldSave(0);
 	new hour, minute;
 	gettime(hour, minute);
@@ -284,7 +284,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		case user_menu_DialogID, user_menu_Return_DialogID,
 			vehicle_menu_DialogID, spawnselect_menu_DialogID, vehicle_color_menu_DialogID, vehicle_radio_menu_DialogID,
 			settings_menu_DialogID, changenick_menu_DialogID, changepass_menu_DialogID,
-			teleport_menu_DialogID, 
+			teleport_menu_DialogID,
 			gang_menu_DialogID, gang_create_menu_DialogID, gang_invite_menu_DialogID, gang_color_menu_DialogID,
 			gang_motd_menu_DialogID, gang_kick_menu_DialogID, gang_exit_accept_menu_DialogID,
 			pveh_select_DialogID, pveh_do_DialogID:
@@ -371,9 +371,9 @@ public OnPlayerDeath(playerid, killerid, reason)
 		GameMSG("player: %s(%d): has killed player %s(%d)> Reason: (%d)", oGetPlayerName(killerid), killerid, oGetPlayerName(playerid), playerid, reason);
 
 	SendDeathMessage(killerid, playerid, reason);
-	
+
 	if (killerid == INVALID_PLAYER_ID) return 1;
-	
+
 	if (IsPlayerInAnyDM(playerid))
 	{
 		deathmatch_OnPlayerDeath(playerid, killerid);
@@ -394,7 +394,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 public OnPlayerSpawn(playerid)
 {
 	if (IsPlayerNPC(playerid)) return 1;
-	
+
 	anims_OnPlayerSpawn(playerid);
 	// после использовани€ TogglePlayerSpectating
 	if (GetPVarInt(playerid, "spec_after_off") == 1)
@@ -402,12 +402,12 @@ public OnPlayerSpawn(playerid)
 		DeletePVar(playerid, "spec_after_off");
 		return 1;
 	}
-	
+
 	// spawn player
 	SetPlayerSkin(playerid, GetPlayerSkinModel(playerid));
 	UpdatePlayerLevelTextDraws(playerid);
 	UpdatePlayerWeaponTextDraws(playerid);
-	
+
 	if (GetPlayerMuteTime(playerid) != 0)
 	{
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
@@ -473,28 +473,28 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	command_register(cmdtext, "/piss", 5, commands);
 	command_register(cmdtext, "/smoke", 6, commands);
 	command_register(cmdtext, "/pm", 3, commands);
-	
+
 	// Lottery
 	command_register(cmdtext, "/lottery", 8, lottery);
-	
+
 	// QuidemSys
 	command_register(cmdtext, "/fill", 5, quidemsys);
 	command_register(cmdtext, "/engine", 7, quidemsys);
-	
+
 	// vehicles
 	command_register(cmdtext, "/vmenu", 6, vehicles);
-	
+
 	// gangs
 	command_register(cmdtext, "/g", 2, gang);
 	command_register(cmdtext, "/gang", 5, gang);
-	
+
 	// race
 	command_register(cmdtext, "/races", 6, race);
 	command_registerNR(cmdtext, "/race", 5, race);
-	
+
 	// admin race
 	command_registerNR(cmdtext, "/race", 5, AdminRace);
-	
+
 	// rcon admins
 	command_registerNR(cmdtext, "/cmdlist", 8, Admin);
 	command_registerNR(cmdtext, "/about", 6, Admin);
@@ -526,13 +526,13 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	command_register(cmdtext, "/deathmatches", 13, dm);
 	command_register(cmdtext, "/dms", 4, dm);
 	command_registerNR(cmdtext, "/dm", 3, dm);
-	
+
 	// admin dm
 	command_registerNR(cmdtext, "/dm", 3, AdminDM);
-	
+
 	// admin sys
 	command_register(cmdtext, "/sys", 4, AdminSys);
-	
+
 	// admins
 	command_registerNR(cmdtext, "/cmdlist", 8, Adm);
 	command_registerNR(cmdtext, "/about", 6, Adm);
@@ -557,7 +557,7 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	command_register(cmdtext, "/getip", 6, Adm);
 	command_register(cmdtext, "/ban", 4, Adm);
 	command_register(cmdtext, "/unban", 6, Adm);
-	
+
 	// moderators
 	command_registerNR(cmdtext, "/cmdlist", 8, Mod);
 	command_registerNR(cmdtext, "/about", 6, Mod);
@@ -592,7 +592,7 @@ public OnPlayerText(playerid, text[])
 
 	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
-	
+
 	new string[MAX_STRING];
 	switch (text[0])
 	{
@@ -713,9 +713,9 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 		if (GetPlayerVehicleSeat(playerid) == 0)
 		{
 			new vehicleid = GetPlayerVehicleID(playerid);
-			
+
 			vehicle_Engine(vehicleid, VEHICLE_PARAMS_ON);
-			
+
 			new hour;
 			gettime(hour);
 			if (hour > VEHICLE_LIGHTS_ON_TIME || hour < VEHICLE_LIGHTS_OFF_TIME)
