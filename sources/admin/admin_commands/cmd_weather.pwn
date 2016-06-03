@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_weather_included
-#pragma library admin_cmd_weather
 
 
 COMMAND:weather(playerid, params[])

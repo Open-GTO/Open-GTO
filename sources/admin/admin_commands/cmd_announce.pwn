@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_announce_included
-#pragma library admin_cmd_announce
 
 /*
 	Defines

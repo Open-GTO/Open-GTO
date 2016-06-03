@@ -1,5 +1,5 @@
 /*
-	
+
 	About: high ping protection
 	Author:	ziggi
 
@@ -10,7 +10,6 @@
 #endif
 
 #define _antihighping_included
-#pragma library antihighping
 
 
 /*

@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_vehicle_included
-#pragma library admin_cmd_vehicle
 
 COMMAND:v(playerid, params[])
 {
@@ -35,7 +34,7 @@ COMMAND:vehicle(playerid, params[])
 	new
 		string[MAX_LANG_VALUE_STRING],
 		playername[MAX_PLAYER_NAME + 1];
-	
+
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (strcmp(subcmd, "add", true) == 0) {

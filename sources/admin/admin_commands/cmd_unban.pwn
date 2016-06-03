@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_unban_included
-#pragma library admin_cmd_unban
 
 /*
 	Defines
@@ -33,7 +32,7 @@ COMMAND:unban(playerid, params[])
 	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
-	
+
 	new
 		target[MAX_BAN_TARGET_LENGTH];
 
@@ -41,16 +40,16 @@ COMMAND:unban(playerid, params[])
 		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_UNBAN_HELP));
 		return 1;
 	}
-	
+
 	new
 		string[MAX_LANG_VALUE_STRING],
 		filename[MAX_STRING];
 
 	format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, db_ban, target);
-	
+
 	if (ini_fileExist(filename)) {
 		ini_fileRemove(filename);
-		
+
 		format(string, sizeof(string), _(ADMIN_COMMAND_UNBAN_SUCCESS), target);
 	} else {
 		format(string, sizeof(string), _(ADMIN_COMMAND_UNBAN_FAIL), target);

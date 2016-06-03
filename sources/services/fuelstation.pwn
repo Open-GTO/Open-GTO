@@ -8,7 +8,6 @@
 #endif
 
 #define _fuelstation_included
-#pragma library fuelstation
 
 /*
 	Defines
@@ -64,12 +63,12 @@ Fuelstation_OnGameModeInit()
 	if (!IsVehicleFuelEnabled()) {
 		return 0;
 	}
-	
+
 	for (new i = 0; i < sizeof(gFuelstation); i++) {
 		if (gFuelstation[i][e_fsShowIcon]) {
 			CreateDynamicMapIcon(gFuelstation[i][e_fsPosX], gFuelstation[i][e_fsPosY], gFuelstation[i][e_fsPosZ], 55, 0);
 		}
-		
+
 		CreateDynamicPickup(1650, 23, gFuelstation[i][e_fsPosX], gFuelstation[i][e_fsPosY], gFuelstation[i][e_fsPosZ]);
 		CreateDynamic3DTextLabel(
 				_(FUEL_STATION_3DTEXT), 0xFFFFFFFF,

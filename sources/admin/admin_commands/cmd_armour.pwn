@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_armour_included
-#pragma library admin_cmd_armour
 
 COMMAND:armour(playerid, params[])
 {

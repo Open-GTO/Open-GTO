@@ -10,7 +10,6 @@
 #endif
 
 #define _protection_armour_h_included
-#pragma library protection_armour_h
 
 /*
 	SetPlayerArmour
@@ -27,7 +26,7 @@ stock ORIG_SetPlayerArmour(playerid, Float:armour)
 #else
 	#define _ALS_SetPlayerArmour
 #endif
- 
+
 #define SetPlayerArmour REDEF_SetPlayerArmour
 
 /*
@@ -45,5 +44,5 @@ stock ORIG_GetPlayerArmour(playerid, &Float:armour)
 #else
 	#define _ALS_GetPlayerArmour
 #endif
- 
+
 #define GetPlayerArmour REDEF_GetPlayerArmour

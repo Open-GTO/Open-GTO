@@ -11,7 +11,6 @@
 #endif
 
 #define _vehshop_included
-#pragma library vehshop
 
 
 #define VSHOP_MAX_MODELS	100
@@ -139,23 +138,23 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 		Dialog_Message(playerid, "Магазин транспорта", "У вас максимальное количество транспорта", "ОК");
 		return 0;
 	}
-	
+
 	new
 		vehicleid = GetPlayerVehicleID(playerid),
 		color1, color2;
-	
+
 	GetVehicleColor(vehicleid, color1, color2);
 
 	new cost = GetVehicleModelCost( GetVehicleModel(vehicleid) );
-	
+
 	if (GetPlayerMoney(playerid) < cost) {
 		Dialog_Message(playerid, "Магазин транспорта", "У вас недостаточно денег", "ОК");
 		return 0;
 	}
-	
+
 	GivePlayerMoney(playerid, -cost);
 	buyVehicle(playerid, vehicleid, color1, color2);
-	
+
 	Dialog_Message(playerid, "Магазин транспорта", "\
 		Вы успешно купили это транспортное средство.\n\
 		Чтобы вызвать купленный транспорт, зайдите в меню пользователя и выберите его.",
@@ -204,7 +203,7 @@ stock vshop_ChangeVehicles()
 				}
 
 				models_list[type][ models_list_pos[type] ] = models_array[j][vshop_Model][k];
-				models_list_pos[type]++;	
+				models_list_pos[type]++;
 			}
 		}
 	}
@@ -225,7 +224,7 @@ stock vshop_ChangeVehicles()
 			// удаляем транспорт
 			DestroyVehicle(Vehicle_array[i][vshop_ID]);
 			Vehicle_array[i][vshop_ID] = 0;
-			
+
 			DestroyDynamic3DTextLabel(Vehicle_array[i][vshop_Text3D]);
 		}
 
@@ -237,7 +236,7 @@ stock vshop_ChangeVehicles()
 			-1, -1, 0
 		);
 		SetVehicleFuel(Vehicle_array[i][vshop_ID], 0);
-		
+
 		format(string, sizeof(string), "{CCFF66}%s\n{CCCCCC}Цена: {FFFFFF}$%d\n{999999}Сядьте для покупки", ReturnVehicleModelName(model), GetVehicleModelCost(model));
 		Vehicle_array[i][vshop_Text3D] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
 			Vehicle_array[i][vshop_X], Vehicle_array[i][vshop_Y], Vehicle_array[i][vshop_Z], 20.0,
@@ -249,7 +248,7 @@ stock vshop_OneHourTimer()
 {
 	static hours;
 	hours++;
-	
+
 	if (hours >= VEHSHOP_CAR_CHANGE_TIME) {
 		hours = 0;
 		vshop_ChangeVehicles();

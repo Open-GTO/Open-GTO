@@ -1,5 +1,5 @@
 /*
-	
+
 	About: gang header
 	Author: ziggi
 
@@ -10,7 +10,6 @@
 #endif
 
 #define _gang_header_included
-#pragma library gang_header
 
 /*
 	Defines

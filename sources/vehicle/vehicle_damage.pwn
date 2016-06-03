@@ -2,7 +2,7 @@
 
 	About: vehicle damage
 	Author: ziggi
-	
+
 */
 
 #if defined _vehicle_damage_included
@@ -10,7 +10,6 @@
 #endif
 
 #define _vehicle_damage_included
-#pragma library vehicle_damage
 
 forward Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ);
 public Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
@@ -31,7 +30,7 @@ public Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, 
 		panels, doors, lights, tires;
 
 	veh_model = GetVehicleModel(hitid);
-	
+
 	GetVehicleModelInfo(veh_model, VEHICLE_MODEL_INFO_SIZE, v_wide, v_long, v_height);
 	GetVehicleModelInfo(veh_model, VEHICLE_MODEL_INFO_WHEELSFRONT, v_front_wheel_x, v_front_wheel_y, v_front_wheel_z);
 	GetVehicleModelInfo(veh_model, VEHICLE_MODEL_INFO_WHEELSREAR, v_rear_wheel_x, v_rear_wheel_y, v_rear_wheel_z);

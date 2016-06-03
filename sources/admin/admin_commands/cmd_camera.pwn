@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_camera_included
-#pragma library admin_cmd_camera
 
 COMMAND:c(playerid, params[])
 {

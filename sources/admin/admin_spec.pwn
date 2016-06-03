@@ -10,7 +10,6 @@
 #endif
 
 #define _adm_spec_included
-#pragma library adm_spec
 
 
 #define ADMIN_SPEC_LABEL_COLOR 0x20B2AAFF

@@ -9,7 +9,6 @@
 #endif
 
 #define _trucker_included
-#pragma library trucker
 
 forward TrailerType:GetTrailerType(vehicleid);
 

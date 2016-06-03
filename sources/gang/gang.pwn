@@ -10,7 +10,6 @@
 #endif
 
 #define _gang_included
-#pragma library gang
 
 /*
 	Enums

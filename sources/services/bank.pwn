@@ -10,7 +10,6 @@
 #endif
 
 #define _bank_included
-#pragma library bank
 
 
 #define MAX_BANK_ACTORS 15

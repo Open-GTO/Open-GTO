@@ -10,7 +10,6 @@
 #endif
 
 #define _teleport_included
-#pragma library teleport
 
 /*
 	Vars
@@ -67,7 +66,7 @@ stock Prot_Teleport_OnPlayerSpawn(playerid)
 		Float:si_y;
 
 	GetSpawnInfo(playerid, _, _, si_x, si_y, _, _, _, _, _, _, _, _);
-	
+
 	gPrevPos[playerid][0] = si_x;
 	gPrevPos[playerid][1] = si_y;
 
@@ -158,7 +157,7 @@ Prot_Teleport_Sync(playerid)
 		Float:distance_old;
 
 	GetPlayerPos(playerid, pos_x, pos_y, pos_z);
-	
+
 	distance_prev = GetDistanceBetweenPoints(gPrevPos[playerid][0], gPrevPos[playerid][1], 0.0, pos_x, pos_y, 0.0);
 	distance_old = GetDistanceBetweenPoints(gOldPos[playerid][0], gOldPos[playerid][1], 0.0, pos_x, pos_y, 0.0);
 

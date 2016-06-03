@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_skin_included
-#pragma library admin_cmd_skin
 
 COMMAND:skin(playerid, params[])
 {

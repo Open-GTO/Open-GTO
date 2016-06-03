@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_godmod_included
-#pragma library admin_cmd_godmod
 
 COMMAND:godmod(playerid, params[])
 {

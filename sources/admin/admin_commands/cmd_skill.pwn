@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_skill_included
-#pragma library admin_cmd_skill
 
 /*
 	Defines
@@ -62,7 +61,7 @@ COMMAND:skill(playerid, params[])
 			return 1;
 		}
 	}
-	
+
 	new
 		skillname[32],
 		string[MAX_LANG_VALUE_STRING],

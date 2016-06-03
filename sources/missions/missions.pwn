@@ -10,7 +10,6 @@
 #endif
 
 #define _missions_included
-#pragma library missions
 
 
 enum {
@@ -38,16 +37,16 @@ stock mission_LoadConfig(file_config)
 	for (new id = 0; id < sizeof(mission_array); id++) {
 		format(string, sizeof(string), "%s_Enabled", mission_array[id][mission_name]);
 		ini_getInteger(file_config, string, mission_array[id][mission_enabled]);
-		
+
 		format(string, sizeof(string), "%s_Try_Count", mission_array[id][mission_name]);
 		ini_getInteger(file_config, string, mission_array[id][mission_trycount]);
-		
+
 		format(string, sizeof(string), "%s_Money_Rate", mission_array[id][mission_name]);
 		ini_getInteger(file_config, string, mission_array[id][mission_money]);
-		
+
 		format(string, sizeof(string), "%s_XP_Rate", mission_array[id][mission_name]);
 		ini_getInteger(file_config, string, mission_array[id][mission_xp]);
-		
+
 		format(string, sizeof(string), "%s_PauseTime", mission_array[id][mission_name]);
 		ini_getInteger(file_config, string, mission_array[id][mission_pausetime]);
 	}
@@ -62,13 +61,13 @@ stock mission_SaveConfig(file_config)
 
 		format(string, sizeof(string), "%s_Try_Count", mission_array[id][mission_name]);
 		ini_setInteger(file_config, string, mission_array[id][mission_trycount]);
-		
+
 		format(string, sizeof(string), "%s_Money_Rate", mission_array[id][mission_name]);
 		ini_setInteger(file_config, string, mission_array[id][mission_money]);
-		
+
 		format(string, sizeof(string), "%s_XP_Rate", mission_array[id][mission_name]);
 		ini_setInteger(file_config, string, mission_array[id][mission_xp]);
-		
+
 		format(string, sizeof(string), "%s_PauseTime", mission_array[id][mission_name]);
 		ini_setInteger(file_config, string, mission_array[id][mission_pausetime]);
 	}

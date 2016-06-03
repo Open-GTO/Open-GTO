@@ -10,7 +10,6 @@
 #endif
 
 #define _adm_pm_included
-#pragma library adm_pm
 
 
 COMMAND:showpm(playerid, params[])

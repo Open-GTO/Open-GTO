@@ -10,7 +10,6 @@
 #endif
 
 #define _protection_health_h_included
-#pragma library protection_health_h
 
 /*
 	SetPlayerHealth
@@ -27,7 +26,7 @@ stock ORIG_SetPlayerHealth(playerid, Float:health)
 #else
 	#define _ALS_SetPlayerHealth
 #endif
- 
+
 #define SetPlayerHealth REDEF_SetPlayerHealth
 
 /*
@@ -45,5 +44,5 @@ stock ORIG_GetPlayerHealth(playerid, &Float:health)
 #else
 	#define _ALS_GetPlayerHealth
 #endif
- 
+
 #define GetPlayerHealth REDEF_GetPlayerHealth

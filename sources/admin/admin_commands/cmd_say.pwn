@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_say_included
-#pragma library admin_cmd_say
 
 COMMAND:say(playerid, params[])
 {

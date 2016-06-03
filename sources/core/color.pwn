@@ -10,7 +10,6 @@
 #endif
 
 #define _color_included
-#pragma library color
 
 
 /*

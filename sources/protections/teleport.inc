@@ -10,7 +10,6 @@
 #endif
 
 #define _protection_teleport_h_included
-#pragma library protection_teleport_h
 
 /*
 	SetPlayerPos
@@ -27,7 +26,7 @@ stock ORIG_SetPlayerPos(playerid, Float:x, Float:y, Float:z)
 #else
 	#define _ALS_SetPlayerPos
 #endif
- 
+
 #define SetPlayerPos REDEF_SetPlayerPos
 
 /*
@@ -45,5 +44,5 @@ stock ORIG_SetVehiclePos(vehicleid, Float:x, Float:y, Float:z)
 #else
 	#define _ALS_SetVehiclePos
 #endif
- 
+
 #define SetVehiclePos REDEF_SetVehiclePos

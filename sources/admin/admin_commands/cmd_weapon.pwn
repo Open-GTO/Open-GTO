@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_weapon_included
-#pragma library admin_cmd_weapon
 
 /*
 	Defines

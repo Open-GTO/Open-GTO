@@ -1,5 +1,5 @@
 /*
-	
+
 	About: vehicle teleport protection
 	Author:	ziggi
 
@@ -10,7 +10,6 @@
 #endif
 
 #define _vehicleteleport_included
-#pragma library vehicleteleport
 
 
 /*

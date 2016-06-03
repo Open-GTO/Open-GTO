@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_chat_included
-#pragma library admin_cmd_chat
 
 COMMAND:chat(playerid, params[])
 {

@@ -10,7 +10,6 @@
 #endif
 
 #define _rconhack_included
-#pragma library rconhack
 
 
 /*

@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_getinfo_included
-#pragma library admin_cmd_getinfo
 
 COMMAND:getinfo(playerid, params[])
 {
@@ -70,7 +69,7 @@ COMMAND:getinfo(playerid, params[])
 					time = (time - current_time) / 60 + 1;
 
 					Declension_GetMinutes(time, timeword);
-					
+
 					format(string, sizeof(string), _(ADMIN_COMMAND_GETINFO_ALL_JAIL_REMAIN),
 						targetname, targetid, time, timeword);
 				} else {

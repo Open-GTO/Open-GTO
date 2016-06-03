@@ -9,14 +9,13 @@
 #endif
 
 #define _world_included
-#pragma library world
 
 
 forward WorldSave(necessarily);
 public WorldSave(necessarily) // save all
 {
 	static emptyServerSaved = 0;
-	
+
 	if (GetPlayersCount() == 0 && necessarily != 1) {
 		if (emptyServerSaved == 0) {
 			emptyServerSaved = 1;
@@ -26,7 +25,7 @@ public WorldSave(necessarily) // save all
 	} else {
 		emptyServerSaved = 0;
 	}
-	
+
 	new starttime = GetTickCount();
 
 	foreach (new id : Player) {
@@ -42,7 +41,7 @@ public WorldSave(necessarily) // save all
 	houses_SaveAll();
 	Gang_SaveAll();
 	Groundhold_SaveAll();
-	
+
 	Log_Game("World save complete! Time taken: %d milliseconds.", (GetTickCount() - starttime));
 	return 1;
 }

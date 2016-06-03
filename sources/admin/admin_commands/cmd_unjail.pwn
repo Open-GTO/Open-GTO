@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_unjail_included
-#pragma library admin_cmd_unjail
 
 COMMAND:unjail(playerid, params[])
 {

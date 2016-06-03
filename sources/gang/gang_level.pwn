@@ -10,7 +10,6 @@
 #endif
 
 #define _gang_level_included
-#pragma library gang_level
 
 /*
 	Defines
@@ -156,7 +155,7 @@ stock SetGangXP(gangid, amount)
 
 			SetGangLevel(gangid, level);
 		}
-		
+
 		if (level <= MIN_GANG_LEVEL) {
 			xp_set = 0;
 		}
@@ -175,7 +174,7 @@ stock SetGangXP(gangid, amount)
 
 			SetGangLevel(gangid, level);
 		}
-		
+
 		if (level >= GetMaxPlayerLevel()) {
 			xp_set = 0;
 		}

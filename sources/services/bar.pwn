@@ -8,7 +8,6 @@
 #endif
 
 #define _bar_included
-#pragma library bar
 
 #define MAX_BAR_ACTORS 12
 
@@ -228,6 +227,6 @@ stock bar_GetActorFreeSlot()
 	if (slot >= sizeof(bar_actors)) {
 		return -1;
 	}
-	
+
 	return slot++;
 }

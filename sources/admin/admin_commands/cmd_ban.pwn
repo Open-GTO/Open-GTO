@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_ban_included
-#pragma library admin_cmd_ban
 
 /*
 	Defines
@@ -33,7 +32,7 @@ COMMAND:ban(playerid, params[])
 	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
 		return 0;
 	}
-	
+
 	new
 		target[MAX_BAN_TARGET_LENGTH],
 		time,

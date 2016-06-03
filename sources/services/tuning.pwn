@@ -10,7 +10,6 @@
 #endif
 
 #define _tuning_included
-#pragma library tuning
 
 #define TUNING_VEHICLE_INTERIOR (2)
 #define TUNING_VEHICLE_POS_X (615.5866)
@@ -235,7 +234,7 @@ TextListCreate:tuning_menu(playerid)
 	GetVehicleCompatibleTypes(gInfo[playerid][e_tModel], compatible_types, compatible_types_count);
 
 	new items[ZVEH_MAX_COMPONENT_TYPES + 2][TEXTLIST_MAX_ITEM_NAME];
-	
+
 	new list_offset;
 
 	// add color

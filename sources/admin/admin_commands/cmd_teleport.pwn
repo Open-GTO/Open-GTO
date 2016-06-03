@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_teleport_included
-#pragma library admin_cmd_teleport
 
 COMMAND:tp(playerid, params[])
 {

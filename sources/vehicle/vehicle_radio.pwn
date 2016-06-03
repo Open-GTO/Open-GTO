@@ -2,7 +2,7 @@
 
 	About: vehicle radio
 	Author: ziggi
-	
+
 */
 
 #if defined _vehicle_radio_included
@@ -10,7 +10,6 @@
 #endif
 
 #define _vehicle_radio_included
-#pragma library vehicle_radio
 
 
 enum VehicleRadioInfo {
@@ -56,7 +55,7 @@ DialogCreate:VehicleRadio(playerid)
 		strcat(string, vehicle_radio[i][vehradio_Name], sizeof(string));
 		strcat(string, "\n", sizeof(string));
 	}
-	
+
 	Dialog_Open(playerid, Dialog:VehicleRadio, DIALOG_STYLE_LIST, "Радио", string, "Выбрать", "Назад");
 }
 
@@ -66,9 +65,9 @@ DialogResponse:VehicleRadio(playerid, response, listitem, inputtext[])
 		Dialog_Show(playerid, Dialog:VehicleMenu);
 		return 1;
 	}
-	
+
 	new vehicleid = GetPlayerVehicleID(playerid);
-	
+
 	if (listitem == 0) {
 		DisableVehicleRadio(vehicleid);
 	} else {
@@ -80,7 +79,7 @@ DialogResponse:VehicleRadio(playerid, response, listitem, inputtext[])
 stock DisableVehicleRadio(vehicleid)
 {
 	vehicle_RadioStatus[vehicleid] = -1;
-	
+
 	foreach (new playerid : Player) {
 		if (vehicleid == GetPlayerVehicleID(playerid)) {
 			StopAudioStreamForPlayer(playerid);
@@ -96,7 +95,7 @@ stock SetVehicleRadio(vehicleid, radioid)
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), "* Текущая радиостанция: %s", vehicle_radio[radioid][vehradio_Name]);
-	
+
 	foreach (new playerid : Player) {
 		if (vehicleid == GetPlayerVehicleID(playerid)) {
 			PlayAudioStreamForPlayer(playerid, vehicle_radio[radioid][vehradio_URL]);

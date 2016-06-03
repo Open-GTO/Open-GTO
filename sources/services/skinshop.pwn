@@ -12,7 +12,6 @@
 #endif
 
 #define _skinshop_included
-#pragma library skinshop
 
 enum SkinShop_Info {
 	Float:ss_x,
@@ -96,7 +95,7 @@ DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])
 
 	SkinSelect_Stop(playerid);
 	SkinShop_Exit(playerid, shopid);
-	
+
 	SetPlayerSkin(playerid, skinid);
 	GivePlayerMoney(playerid, -SKINS_COST);
 

@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_kick_included
-#pragma library admin_cmd_kick
 
 COMMAND:kick(playerid, params[])
 {

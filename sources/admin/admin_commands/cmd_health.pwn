@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_health_included
-#pragma library admin_cmd_health
 
 COMMAND:health(playerid, params[])
 {

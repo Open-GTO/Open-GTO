@@ -10,7 +10,6 @@
 #endif
 
 #define _message_objective_included
-#pragma library message_objective
 
 
 /*
@@ -60,7 +59,7 @@ public OnPlayerConnect(playerid)
 #else
 	#define _ALS_OnPlayerConnect
 #endif
- 
+
 #define OnPlayerConnect ObjectiveMsg_OnPlayerConnect
 #if defined ObjectiveMsg_OnPlayerConnect
 	forward ObjectiveMsg_OnPlayerConnect(playerid);

@@ -9,7 +9,6 @@
 #endif
 
 #define _admin_included
-#pragma library admin
 
 
 stock admin_SaveConfig(file_config)
@@ -39,7 +38,7 @@ stock SendClientMessageToAdmins(senderid, text[])
 	new
 		message[MAX_LANG_VALUE_STRING],
 		count;
-	
+
 	GetPlayerName(senderid, message, sizeof(message));
 	format(message, sizeof(message), _(ADMIN_CHAT_MESSAGE_TO_ADMIN), message, senderid, text);
 

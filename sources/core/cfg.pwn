@@ -1,5 +1,5 @@
 /*
-	
+
 	About: save/load config system
 	Author: ziggi
 
@@ -10,7 +10,6 @@
 #endif
 
 #define _cfg_included
-#pragma library cfg
 
 
 stock cfg_LoadConfigs()
@@ -18,7 +17,7 @@ stock cfg_LoadConfigs()
 	if (!ini_fileExist(db_config)) {
 		return 0;
 	}
-	
+
 	new file_config = ini_openFile(db_config);
 
 	Lang_LoadConfig(file_config);
@@ -71,7 +70,7 @@ stock cfg_SaveConfigs()
 	} else {
 		file_config = ini_createFile(db_config);
 	}
-	
+
 	Lang_SaveConfig(file_config);
 	Log_SaveConfig(file_config);
 	Time_SaveConfig(file_config);

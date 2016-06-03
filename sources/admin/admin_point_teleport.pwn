@@ -9,5 +9,4 @@
 #endif
 
 #define _adm_point_teleport_included
-#pragma library adm_point_teleport
 

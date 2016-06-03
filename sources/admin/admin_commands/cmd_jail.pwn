@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_jail_included
-#pragma library admin_cmd_jail
 
 COMMAND:jail(playerid, params[])
 {

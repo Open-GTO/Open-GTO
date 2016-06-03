@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_world_included
-#pragma library admin_cmd_world
 
 COMMAND:world(playerid, params[])
 {

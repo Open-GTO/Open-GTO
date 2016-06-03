@@ -10,7 +10,6 @@
 #endif
 
 #define _adm_login_included
-#pragma library adm_login
 
 
 stock adm_login_OnRconLoginAttempt(ip[], password[], success)

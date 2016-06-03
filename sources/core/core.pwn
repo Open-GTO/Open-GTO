@@ -1,5 +1,5 @@
 /*
-	
+
 	About: gto_core functions
 	Author: ziggi
 
@@ -10,7 +10,6 @@
 #endif
 
 #define _gto_core_included
-#pragma library gto_core
 
 
 /*
@@ -27,6 +26,6 @@ Core_OnGameModeInit()
 	ShowNameTags(1);
 	ManualVehicleEngineAndLights();
 	EnableStuntBonusForAll(0);
-	
+
 	Log_Game("SERVER: Core module init");
 }

@@ -10,7 +10,6 @@
 #endif
 
 #define _pl_alert_included
-#pragma library pl_alert
 
 
 /*

@@ -10,7 +10,6 @@
 #endif
 
 #define _core_time_included
-#pragma library core_time
 
 
 static

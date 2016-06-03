@@ -10,7 +10,6 @@
 #endif
 
 #define _db_included
-#pragma library db
 
 
 new db_config[] = DATA_FILES_FOLDER "config/base-cfg"DATA_FILES_FORMAT;

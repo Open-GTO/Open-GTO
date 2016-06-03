@@ -10,7 +10,6 @@
 #endif
 
 #define _special_action_h_included
-#pragma library special_action_h
 
 /*
 	SetPlayerSpecialAction
@@ -27,7 +26,7 @@ stock ORIG_SetPlayerSpecialAction(playerid, actionid)
 #else
 	#define _ALS_SetPlayerSpecialAction
 #endif
- 
+
 #define SetPlayerSpecialAction REDEF_SetPlayerSpecialAction
 
 /*
@@ -45,5 +44,5 @@ stock ORIG_GetPlayerSpecialAction(playerid)
 #else
 	#define _ALS_GetPlayerSpecialAction
 #endif
- 
+
 #define GetPlayerSpecialAction REDEF_GetPlayerSpecialAction

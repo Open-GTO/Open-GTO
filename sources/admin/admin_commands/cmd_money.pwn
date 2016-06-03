@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_money_included
-#pragma library admin_cmd_money
 
 COMMAND:money(playerid, params[])
 {

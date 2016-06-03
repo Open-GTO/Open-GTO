@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_spectate_included
-#pragma library admin_cmd_spectate
 
 COMMAND:spec(playerid, params[])
 {

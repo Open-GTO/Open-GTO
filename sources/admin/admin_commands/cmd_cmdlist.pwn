@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_cmdlist_included
-#pragma library admin_cmd_cmdlist
 
 COMMAND:cmdlist(playerid, params[])
 {

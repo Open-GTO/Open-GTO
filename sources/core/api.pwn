@@ -15,8 +15,6 @@
 	#endinput
 #endif
 
-#pragma library api
-
 forward api_GivePlayerMoney(playerid, amount, showtext);
 public api_GivePlayerMoney(playerid, amount, showtext)
 {

@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_premium_included
-#pragma library admin_cmd_premium
 
 COMMAND:premium(playerid, params[])
 {

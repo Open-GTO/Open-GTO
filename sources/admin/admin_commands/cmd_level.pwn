@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_level_included
-#pragma library admin_cmd_level
 
 COMMAND:level(playerid, params[])
 {

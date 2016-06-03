@@ -10,7 +10,6 @@
 #endif
 
 #define _weapons_included
-#pragma library weapons
 
 
 #define MAX_BULLETS				9000
@@ -90,7 +89,7 @@ weapon_LoadAll()
 {
 	new file_weapons,
 		db_weaponname[MAX_STRING];
-	
+
 	for (new i = 0; i < sizeof(Weapons); i++) {
 		format(db_weaponname, sizeof(db_weaponname), "%sid_%d"DATA_FILES_FORMAT, db_weapon, i);
 		if (!ini_fileExist(db_weaponname)) {
@@ -298,7 +297,7 @@ stock ShowWeaponsOnLevel(playerid, newlevel, oldlevel)
 	new
 		string[MAX_STRING],
 		wepfound = 0;
-	
+
 	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++) {
 		if (Weapons[weaponid][Weapon_Allowed] == 0) {
 			continue;

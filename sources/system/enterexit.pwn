@@ -10,7 +10,6 @@
 #endif
 
 #define _enterexit_included
-#pragma library enterexit
 
 
 enum e_ee_Player_Info {

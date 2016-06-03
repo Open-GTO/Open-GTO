@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_kill_included
-#pragma library admin_cmd_kill
 
 COMMAND:kill(playerid, params[])
 {

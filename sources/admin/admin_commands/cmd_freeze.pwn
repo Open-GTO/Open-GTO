@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_freeze_included
-#pragma library admin_cmd_freeze
 
 COMMAND:freeze(playerid, params[])
 {

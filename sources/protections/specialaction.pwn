@@ -1,5 +1,5 @@
 /*
-	
+
 	About: special action protection
 	Author:	ziggi
 
@@ -10,7 +10,6 @@
 #endif
 
 #define _specialaction_included
-#pragma library specialaction
 
 /*
 	Vars

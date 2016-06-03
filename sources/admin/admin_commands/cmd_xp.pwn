@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_xp_included
-#pragma library admin_cmd_xp
 
 COMMAND:xp(playerid, params[])
 {

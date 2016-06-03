@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_mute_included
-#pragma library admin_cmd_mute
 
 COMMAND:mute(playerid, params[])
 {

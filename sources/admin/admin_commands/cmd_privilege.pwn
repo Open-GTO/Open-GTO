@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_privileje_included
-#pragma library admin_cmd_privileje
 
 COMMAND:priv(playerid, params[])
 {
@@ -73,7 +72,7 @@ SSCANF:privilege(string[])
 
 	if (strcmp(string, "p", true, 1) == 0 || strcmp(string, privilge_name, true, 1) == 0) {
 		return _:PlayerPrivilegePlayer;
-	} 
+	}
 
 	__(PRIVILEGE_MODER, privilge_name);
 

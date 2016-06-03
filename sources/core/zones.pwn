@@ -8,7 +8,6 @@
 #endif
 
 #define _zones_included
-#pragma library zones
 
 
 // Zones

@@ -8,7 +8,6 @@
 #endif
 
 #define _fastfood_included
-#pragma library fastfood
 
 #define MAX_FASTFOOD_ACTORS 37
 

@@ -10,7 +10,6 @@
 #endif
 
 #define _antiidle_included
-#pragma library antiidle
 
 
 /*
@@ -71,7 +70,7 @@ pt_idle_PlayerTimer(playerid)
 
 		if (pos[0] == gIdlePos[playerid][0] && pos[1] == gIdlePos[playerid][1] && pos[2] == gIdlePos[playerid][2]) {
 			gIdleTime[playerid]++;
-			
+
 			if (gIdleTime[playerid] > MaxTime - 1) {
 				new string[MAX_LANG_VALUE_STRING];
 				format(string, sizeof(string), _(PROTECTION_ANTIIDLE_INFO), MaxTime - 1);

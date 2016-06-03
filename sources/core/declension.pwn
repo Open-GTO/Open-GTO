@@ -10,7 +10,6 @@
 #endif
 
 #define _core_declension_included
-#pragma library core_declension
 
 /*
 	Get functions
@@ -19,7 +18,7 @@
 stock Declension_GetWord(result[], const size = sizeof(result), num, word_1[MAX_LANG_VALUE_STRING], word_2[MAX_LANG_VALUE_STRING], word_3[MAX_LANG_VALUE_STRING])
 {
 	num %= 100;
-	
+
 	if (num > 19) {
 		num %= 10;
 	}

@@ -10,7 +10,6 @@
 #endif
 
 #define _adm_maptp_included
-#pragma library adm_maptp
 
 
 static

@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_unfreeze_included
-#pragma library admin_cmd_unfreeze
 
 COMMAND:unfreeze(playerid, params[])
 {

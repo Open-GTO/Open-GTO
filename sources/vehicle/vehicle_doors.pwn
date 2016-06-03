@@ -18,7 +18,6 @@
 #endif
 
 #define _vehicle_doors_access_included
-#pragma library vehicle_doors_access
 
 /*
 	Defines
@@ -65,7 +64,7 @@ public OnVehicleStreamIn(vehicleid, forplayerid)
 #else
 	#define _ALS_OnVehicleStreamIn
 #endif
- 
+
 #define OnVehicleStreamIn vda_OnVehicleStreamIn
 #if defined vda_OnVehicleStreamIn
 	forward vda_OnVehicleStreamIn(vehicleid, forplayerid);
@@ -84,7 +83,7 @@ stock vda_SetVehicleParamsForPlayer(vehicleid, playerid, objective, doorslocked)
 #else
 	#define _ALS_SetVehicleParamsForPlayer
 #endif
- 
+
 #define SetVehicleParamsForPlayer vda_SetVehicleParamsForPlayer
 
 /*

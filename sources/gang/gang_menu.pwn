@@ -10,7 +10,6 @@
 #endif
 
 #define _gang_menu_included
-#pragma library gang_menu
 
 /*
 	Dialogs

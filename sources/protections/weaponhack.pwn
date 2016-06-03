@@ -10,7 +10,6 @@
 #endif
 
 #define _weaponhack_included
-#pragma library weaponhack
 
 
 /*
@@ -63,7 +62,7 @@ pt_weapon_OnPlayerExitVehicle(playerid, vehicleid)
 pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
 	#pragma unused hittype, hitid, fX, fY, fZ
-	
+
 	new playerstate = GetPlayerState(playerid);
 	if (playerstate == PLAYER_STATE_PASSENGER) {
 		switch (weaponid) {
@@ -112,7 +111,7 @@ pt_weapon_Check(playerid)
 	if (PlayerWeapons[playerid][slotid][pwid] != weaponid) {
 		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_WEAPON), PlayerWeapons[playerid][slotid][pwid], weaponid);
 	}
-	
+
 	// ammo
 	if (PlayerWeapons[playerid][slotid][pbullets] < ammo) {
 		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_AMMO), weaponid, PlayerWeapons[playerid][slotid][pbullets], ammo);

@@ -1,11 +1,11 @@
 /*
-	
+
 	Created:	06.09.06
 	Aurthor:    Iain Gilbert
-	
+
 	Modified:	ziggi
 	Date:		07.07.2011
-	
+
 */
 
 #if defined _payday_included
@@ -13,7 +13,6 @@
 #endif
 
 #define _payday_included
-#pragma library payday
 
 
 static
@@ -63,13 +62,13 @@ stock payday_Give()
 			pay_money = money_base + (money_base * GetPlayerLevel(id) * GetPlayerLevel(id));
 			GivePlayerMoney(id, pay_money);
 		}
-		
+
 		pay_xp = 0;
 		if (GetPlayerLevel(id) < GetMaxPlayerLevel()) {
 			pay_xp = xp_base + (xp_base * GetPlayerLevel(id));
 			GivePlayerXP(id, pay_xp , 0, 0);
 		}
-			
+
 		format(string, sizeof(string), _(PAYDAY_MESSAGE), pay_money, pay_xp);
 		SendClientMessage(id, COLOR_MONEY_GOOD, string);
 

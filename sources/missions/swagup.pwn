@@ -11,7 +11,6 @@
 #endif
 
 #define _swagup_included
-#pragma library swagup
 
 
 static
@@ -104,18 +103,18 @@ stock swagup_OnPlayerPickUpPickup(playerid, pickupid)
 	}
 
 	DestroyDynamicPickup(g_pickup_id);
-	
+
 	new
 		win_money = mission_CalculateMoney(playerid, mission_swagup),
 		win_xp = mission_CalculateXP(playerid, mission_swagup);
-	
+
 	GivePlayerMoney(playerid, win_money);
 	GivePlayerXP(playerid, win_xp, 1);
-	
+
 	new string[MAX_STRING];
 	format(string, sizeof(string), _(SWAGUP_BAG_FOUND), ReturnPlayerName(playerid), playerid, win_money, win_xp);
 	SendClientMessageToAll(COLOR_RED, string);
-	
+
 	SetTimer("swagup_SpawnPickup", mission_GetPauseTime(mission_swagup), 0);
 	return 1;
 }

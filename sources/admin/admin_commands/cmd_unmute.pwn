@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_unmute_included
-#pragma library admin_cmd_unmute
 
 COMMAND:unmute(playerid, params[])
 {

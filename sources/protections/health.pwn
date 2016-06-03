@@ -10,7 +10,6 @@
 #endif
 
 #define _pthealth_included
-#pragma library pthealth
 
 /*
 	Vars

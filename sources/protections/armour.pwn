@@ -10,7 +10,6 @@
 #endif
 
 #define _ptarmour_included
-#pragma library ptarmour
 
 /*
 	Vars
@@ -67,7 +66,7 @@ pt_armour_Sync(playerid)
 
 	new Float:clientarmour;
 	ORIG_GetPlayerArmour(playerid, clientarmour);
-	
+
 	new Float:serverarmour;
 	GetPlayerArmour(playerid, serverarmour);
 

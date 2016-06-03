@@ -10,7 +10,6 @@
 #endif
 
 #define _widestrip_included
-#pragma library widestrip
 
 
 static

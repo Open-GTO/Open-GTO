@@ -10,7 +10,6 @@
 #endif
 
 #define _gang_member_included
-#pragma library gang_member
 
 /*
 	Defines

@@ -11,7 +11,6 @@
 #endif
 
 #define _lottery_included
-#pragma library lottery
 
 /*
 	Defines
@@ -117,7 +116,7 @@ COMMAND:lottery(playerid, params[])
 		SendClientMessage(playerid, COLOR_PM, _(LOTTERY_USE_COMMAND));
 		return 1;
 	}
-		
+
 	new is_have_money = GivePlayerMoney(playerid, -TicketCost);
 	if (!is_have_money) {
 		new string[MAX_STRING];
@@ -203,7 +202,7 @@ stock Lottery_StartTimer()
 		winner_id,
 		win_value,
 		error;
-	
+
 	error = GetLotteryWinner(winner_id, win_value);
 
 	if (error < 0) {
@@ -211,10 +210,10 @@ stock Lottery_StartTimer()
 		SendClientMessageToAll(COLOR_GREEN, string);
 	} else {
 		GivePlayerMoney(winner_id, WinMoney);
-		
+
 		format(string, sizeof(string), _(LOTTERY_YOU_WINNER), WinMoney);
 		SendClientMessage(winner_id, COLOR_GREEN, string);
-		
+
 		format(string, sizeof(string), _(LOTTERY_WINNER), ReturnPlayerName(winner_id), winner_id, WinMoney);
 		SendClientMessageToAll(COLOR_GREEN, string);
 	}
@@ -232,7 +231,7 @@ static stock SetLotteryStatus(LotteryStatus:status)
 {
 	gStatus = status;
 	LastSecondCount = gettime();
-	
+
 	if (status == LotteryStart) {
 		gPlayerTicket = NULL_gPlayerTicket;
 		gBusyTicket = NULL_gBusyTicket;

@@ -10,7 +10,6 @@
 #endif
 
 #define _admin_cmd_about_included
-#pragma library admin_cmd_about
 
 COMMAND:about(playerid, params[])
 {
