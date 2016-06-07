@@ -113,7 +113,7 @@ stock show_Vehicle_Menu(playerid)
 
 stock show_ChangeColor_Menu(playerid)
 {
-	new string[32 * sizeof(colors_Array)];
+	new string[9 * (sizeof(colors_Array) + MAX_NAME)];
 	for (new i = 0; i < sizeof(colors_Array); i++)
 	{
 		format(string, sizeof(string), "%s{%06x}%s\n", string, colors_Array[i][color_code] >>> 8, colors_Array[i][color_name]);
