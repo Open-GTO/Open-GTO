@@ -324,7 +324,7 @@ stock show_Gang_Menu(playerid)
 
 stock show_GangCreate_Menu(playerid, step)
 {
-	new string[512];
+	new string[12 * (sizeof(colors_Array) + MAX_NAME)];
 	SetPVarInt(playerid, "usermenu_Gang_Step", step);
 	switch (step)
 	{
