@@ -161,3 +161,23 @@ COMMAND:id(playerid, params[])
 
 	return 1;
 }
+
+COMMAND:pm(playerid, params[])
+{
+	if (isnull(params)) {
+		SendClientMessage(playerid, COLOR_PM, _(COMMAND_PM_HELP));
+		return 1;
+	}
+
+	new
+		receiveid = INVALID_PLAYER_ID,
+		message[MAX_SEND_SYMBOLS];
+
+	if (sscanf(params, "us[" #MAX_SEND_SYMBOLS "]", receiveid, message) || receiveid == INVALID_PLAYER_ID) {
+		SendClientMessage(playerid, -1, _(COMMAND_PM_ERROR));
+		return 1;
+	}
+	
+	SendPlayerPrivateMessage(playerid, receiveid, message);
+	return 1;
+}

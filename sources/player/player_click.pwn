@@ -11,39 +11,40 @@
 
 #define _player_click_included
 
-Player_Click_OnGameModeInit()
+PlayerClick_OnGameModeInit()
 {
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(CLICK_SENDCASH_DIALOG_HEADER),
 	              _(CLICK_SENDCASH_DIALOG_MESSAGE),
 	              _(CLICK_SENDCASH_DIALOG_BUTTON_SEND), _(CLICK_SENDCASH_DIALOG_BUTTON_BACK),
 	              PlayerPrivilegePlayer,
-	              "Player_Click_SendCash");
+	              "PlayerClick_SendCash");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(CLICK_PM_DIALOG_HEADER),
 	              _(CLICK_PM_DIALOG_MESSAGE),
 	              _(CLICK_PM_DIALOG_BUTTON_SEND), _(CLICK_PM_DIALOG_BUTTON_BACK),
 	              PlayerPrivilegePlayer,
-	              "Player_Click_SendMessage");
+	              "PlayerClick_SendMessage");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(CLICK_REPORT_DIALOG_HEADER),
 	              _(CLICK_REPORT_DIALOG_MESSAGE),
 	              _(CLICK_REPORT_DIALOG_BUTTON_SEND), _(CLICK_REPORT_DIALOG_BUTTON_BACK),
 	              PlayerPrivilegePlayer,
-	              "Player_Click_SendReport");
+	              "PlayerClick_SendReport");
 }
 
-forward Player_Click_SendCash(playerid, clickedid, listitem, inputtext[]);
-public Player_Click_SendCash(playerid, clickedid, listitem, inputtext[])
+forward PlayerClick_SendCash(playerid, clickedid, listitem, inputtext[]);
+public PlayerClick_SendCash(playerid, clickedid, listitem, inputtext[])
 {
-	new giveplayer[MAX_PLAYER_NAME + 1],
+	new
+		clickedname[MAX_PLAYER_NAME + 1],
 		sendername[MAX_PLAYER_NAME + 1],
 		string[MAX_STRING],
 		money = strval(inputtext);
 
-	GetPlayerName(clickedid, giveplayer, sizeof(giveplayer));
+	GetPlayerName(clickedid, clickedname, sizeof(clickedname));
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 
 	if (GetPlayerMoney(playerid) < money || !IsNumeric(inputtext) || money < 0) {
@@ -54,7 +55,7 @@ public Player_Click_SendCash(playerid, clickedid, listitem, inputtext[])
 	GivePlayerMoney(playerid, -money);
 	GivePlayerMoney(clickedid, money);
 
-	format(string, sizeof(string), _(CLICK_SENDCASH_GIVE), giveplayer, clickedid, money);
+	format(string, sizeof(string), _(CLICK_SENDCASH_GIVE), clickedname, clickedid, money);
 	SendClientMessage(playerid, COLOR_MONEY_GOOD, string);
 
 	format(string, sizeof(string), _(CLICK_SENDCASH_GET), money, sendername, playerid);
@@ -62,26 +63,27 @@ public Player_Click_SendCash(playerid, clickedid, listitem, inputtext[])
 	return 1;
 }
 
-forward Player_Click_SendMessage(playerid, clickedid, listitem, inputtext[]);
-public Player_Click_SendMessage(playerid, clickedid, listitem, inputtext[])
+forward PlayerClick_SendMessage(playerid, clickedid, listitem, inputtext[]);
+public PlayerClick_SendMessage(playerid, clickedid, listitem, inputtext[])
 {
 	return SendPlayerPrivateMessage(playerid, clickedid, inputtext);
 }
 
-forward Player_Click_SendReport(playerid, clickedid, listitem, inputtext[]);
-public Player_Click_SendReport(playerid, clickedid, listitem, inputtext[])
+forward PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[]);
+public PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[])
 {
-	new sendername[MAX_PLAYER_NAME + 1],
-		abusename[MAX_PLAYER_NAME + 1],
+	new
+		clickedname[MAX_PLAYER_NAME + 1],
+		sendername[MAX_PLAYER_NAME + 1],
 		string[MAX_STRING];
 
-	GetPlayerName(clickedid, abusename, sizeof(abusename));
+	GetPlayerName(clickedid, clickedname, sizeof(clickedname));
 
-	format(string, sizeof(string), _(CLICK_REPORT_SELF), abusename, clickedid, inputtext);
+	format(string, sizeof(string), _(CLICK_REPORT_SELF), clickedname, clickedid, inputtext);
 	SendClientMessage(playerid, COLOR_RED, string);
 
 	GetPlayerName(playerid, sendername, sizeof(sendername));
-	format(string, sizeof(string), _(CLICK_REPORT_PLAYER), sendername, playerid, abusename, clickedid, inputtext);
+	format(string, sizeof(string), _(CLICK_REPORT_PLAYER), sendername, playerid, clickedname, clickedid, inputtext);
 	
 	new admin_count = 0;
 
@@ -98,7 +100,7 @@ public Player_Click_SendReport(playerid, clickedid, listitem, inputtext[])
 
 		new reports_max = GetMaxReportsCount();
 
-		format(string, sizeof(string), _(CLICK_REPORT_MESSAGE), reports, reports_max, abusename, clickedid, inputtext);
+		format(string, sizeof(string), _(CLICK_REPORT_MESSAGE), reports, reports_max, clickedname, clickedid, inputtext);
 		SendClientMessageToAll(COLOR_WHITE, string);
 
 		if (reports >= reports_max) {

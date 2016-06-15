@@ -54,7 +54,7 @@ public OneSecTimer()
 	foreach (new playerid : Player) {
 		Player_Sync(playerid);
 		UpdatePlayerWeaponTextDraws(playerid);
-		adm_spec_UpdateLabel(playerid);
+		AdminSpectate_UpdateLabel(playerid);
 	}
 
 	Lottery_WaitTimer();

@@ -11,25 +11,25 @@
 #define _admin_included
 
 
-stock admin_SaveConfig(file_config)
+stock Admin_SaveConfig(file_config)
 {
-	adm_maptp_SaveConfig(file_config);
+	AdminMapTP_SaveConfig(file_config);
 }
 
-stock admin_LoadConfig(file_config)
+stock Admin_LoadConfig(file_config)
 {
-	adm_maptp_LoadConfig(file_config);
+	AdminMapTP_LoadConfig(file_config);
 }
 
-stock admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+stock Admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
-	adm_maptp_OnPlayerClickMap(playerid, fX, fY, fZ);
+	AdminMapTP_OnPlayerClickMap(playerid, fX, fY, fZ);
 	return 1;
 }
 
-stock admin_OnRconLoginAttempt(ip[], password[], success)
+stock Admin_OnRconLoginAttempt(ip[], password[], success)
 {
-	adm_login_OnRconLoginAttempt(ip, password, success);
+	AdminLogin_OnRconLoginAttempt(ip, password, success);
 	return 1;
 }
 

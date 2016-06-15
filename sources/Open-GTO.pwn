@@ -146,6 +146,7 @@ Thanks:
 #include "player/player_spawn.pwn"
 #include "player/player_login.pwn"
 #include "player/player_pm.pwn"
+#include "player/player_pm_spy.pwn"
 #include "player/player_mute.pwn"
 #include "player/player_ip.pwn"
 #include "player/player_info.pwn"
@@ -230,10 +231,10 @@ Thanks:
 #include "admin/admin_commands/cmd_netstats.pwn"
 #include "admin/admin_commands/cmd_skill.pwn"
 #include "admin/admin_commands/cmd_warn.pwn"
+#include "admin/admin_commands/cmd_pmspy.pwn"
 #include "admin/admin_ban.pwn"
-#include "admin/admin_spec.pwn"
-#include "admin/admin_pm.pwn"
-#include "admin/admin_maptp.pwn"
+#include "admin/admin_spectate.pwn"
+#include "admin/admin_map_tp.pwn"
 #include "admin/admin_click.pwn"
 #include "admin/admin_login.pwn"
 #include "admin/admin.pwn"
@@ -289,7 +290,7 @@ public OnGameModeInit()
 	PWDrop_OnGameModeInit();
 	PMoney_TD_OnGameModeInit();
 	PLevel_OnGameModeInit();
-	Player_Click_OnGameModeInit();
+	PlayerClick_OnGameModeInit();
 	AdminClick_OnGameModeInit();
 	Weather_OnGameModeInit();
 
@@ -736,13 +737,13 @@ public OnVehicleDeath(vehicleid, killerid)
 
 public OnRconLoginAttempt(ip[], password[], success)
 {
-	admin_OnRconLoginAttempt(ip, password, success);
+	Admin_OnRconLoginAttempt(ip, password, success);
 	return 1;
 }
 
 public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
-	admin_OnPlayerClickMap(playerid, fX, fY, fZ);
+	Admin_OnPlayerClickMap(playerid, fX, fY, fZ);
 	PMaptp_OnPlayerClickMap(playerid, fX, fY, fZ);
 	return 1;
 }
@@ -832,7 +833,7 @@ public OnDynamicObjectMoved(objectid)
 
 public OnPlayerSpectate(playerid, specid, status)
 {
-	adm_spec_OnPlayerSpectate(playerid, specid, status);
+	AdminSpectate_OnPlayerSpectate(playerid, specid, status);
 	return 1;
 }
 

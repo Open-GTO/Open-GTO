@@ -395,15 +395,18 @@ stock ReturnPlayerName(playerid)
 	Kills
 */
 
-stock GetPlayerKills(playerid) {
+stock GetPlayerKills(playerid)
+{
 	return gPlayerKills[playerid];
 }
 
-stock SetPlayerKills(playerid, amount) {
+stock SetPlayerKills(playerid, amount)
+{
 	gPlayerKills[playerid] = amount;
 }
 
-stock AddPlayerKills(playerid, amount = 1) {
+stock AddPlayerKills(playerid, amount = 1)
+{
 	gPlayerKills[playerid] += amount;
 }
 
@@ -411,15 +414,18 @@ stock AddPlayerKills(playerid, amount = 1) {
 	Deaths
 */
 
-stock GetPlayerDeaths(playerid) {
+stock GetPlayerDeaths(playerid)
+{
 	return gPlayerDeaths[playerid];
 }
 
-stock SetPlayerDeaths(playerid, amount) {
+stock SetPlayerDeaths(playerid, amount)
+{
 	gPlayerDeaths[playerid] = amount;
 }
 
-stock AddPlayerDeaths(playerid, amount = 1) {
+stock AddPlayerDeaths(playerid, amount = 1)
+{
 	gPlayerDeaths[playerid] += amount;
 }
 
@@ -427,7 +433,8 @@ stock AddPlayerDeaths(playerid, amount = 1) {
 	Kills-Deaths ratio
 */
 
-stock Float:GetPlayerKillDeathRatio(playerid) {
+stock Float:GetPlayerKillDeathRatio(playerid)
+{
 	new deaths = GetPlayerDeaths(playerid);
 	if (deaths != 0) {
 		return float(GetPlayerKills(playerid)) / float(deaths);

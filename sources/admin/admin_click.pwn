@@ -13,35 +13,35 @@ AdminClick_OnGameModeInit()
 	              _(ADMIN_CLICK_KICK_DIALOG_MESSAGE),
 	              _(ADMIN_CLICK_KICK_DIALOG_BUTTON_KICK), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
 	              PlayerPrivilegeModer,
-	              "adm_click_KickPlayer");
+	              "AdminClick_KickPlayer");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(ADMIN_CLICK_MUTE_DIALOG_HEADER),
 	              _(ADMIN_CLICK_MUTE_DIALOG_MESSAGE),
 	              _(ADMIN_CLICK_MUTE_DIALOG_BUTTON_MUTE), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
 	              PlayerPrivilegeModer,
-	              "adm_click_MutePlayer");
+	              "AdminClick_MutePlayer");
 
 	Click_AddItem(DIALOG_STYLE_NONE,
 	              _(ADMIN_CLICK_UNMUTE_DIALOG_HEADER),
 	              "",
 	              "", "",
 	              PlayerPrivilegeModer,
-	              "adm_click_UnMutePlayer");
+	              "AdminClick_UnMutePlayer");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(ADMIN_CLICK_JAIL_DIALOG_HEADER),
 	              _(ADMIN_CLICK_JAIL_DIALOG_MESSAGE),
 	              _(ADMIN_CLICK_JAIL_DIALOG_BUTTON_JAIL), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
 	              PlayerPrivilegeModer,
-	              "adm_click_JailPlayer");
+	              "AdminClick_JailPlayer");
 
 	Click_AddItem(DIALOG_STYLE_NONE,
 	              _(ADMIN_CLICK_UNJAIL_DIALOG_HEADER),
 	              "",
 	              "", "",
 	              PlayerPrivilegeModer,
-	              "adm_click_UnJailPlayer");
+	              "AdminClick_UnJailPlayer");
 
 	// admin
 	Click_AddItem(DIALOG_STYLE_NONE,
@@ -49,84 +49,84 @@ AdminClick_OnGameModeInit()
 	              "",
 	              "", "",
 	              PlayerPrivilegeAdmin,
-	              "adm_click_InfoPlayer");
+	              "AdminClick_InfoPlayer");
 
 	Click_AddItem(DIALOG_STYLE_NONE,
 	              _(ADMIN_CLICK_KILL_DIALOG_HEADER),
 	              "",
 	              "", "",
 	              PlayerPrivilegeAdmin,
-	              "adm_click_KillPlayer");
+	              "AdminClick_KillPlayer");
 
 	Click_AddItem(DIALOG_STYLE_NONE,
 	              _(ADMIN_CLICK_TELEPORT_TO_DIALOG_HEADER),
 	              "",
 	              "", "",
 	              PlayerPrivilegeAdmin,
-	              "adm_click_TeleportToPlayer");
+	              "AdminClick_TeleportToPlayer");
 
 	Click_AddItem(DIALOG_STYLE_NONE,
 	              _(ADMIN_CLICK_TELEPORT_HERE_DIALOG_HEADER),
 	              "",
 	              "", "",
 	              PlayerPrivilegeAdmin,
-	              "adm_click_TeleportToMe");
+	              "AdminClick_TeleportToMe");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(ADMIN_CLICK_HEALTH_DIALOG_HEADER),
 	              _(ADMIN_CLICK_HEALTH_DIALOG_MESSAGE),
 	              _(ADMIN_CLICK_MESSAGE_BUTTON_CHANGE), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
 	              PlayerPrivilegeAdmin,
-	              "adm_click_SetHealth");
+	              "AdminClick_SetHealth");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(ADMIN_CLICK_ARMOUR_DIALOG_HEADER),
 	              _(ADMIN_CLICK_ARMOUR_DIALOG_MESSAGE),
 	              _(ADMIN_CLICK_MESSAGE_BUTTON_CHANGE), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
 	              PlayerPrivilegeAdmin,
-	              "adm_click_SetArmour");
+	              "AdminClick_SetArmour");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(ADMIN_CLICK_LEVEL_DIALOG_HEADER),
 	              _(ADMIN_CLICK_LEVEL_DIALOG_MESSAGE),
 	              _(ADMIN_CLICK_MESSAGE_BUTTON_CHANGE), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
 	               PlayerPrivilegeAdmin,
-	               "adm_click_SetLevel");
+	               "AdminClick_SetLevel");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(ADMIN_CLICK_XP_DIALOG_HEADER),
 	              _(ADMIN_CLICK_XP_DIALOG_MESSAGE),
 	              _(ADMIN_CLICK_MESSAGE_BUTTON_GIVE), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
 	              PlayerPrivilegeAdmin,
-	              "adm_click_GiveXP");
+	              "AdminClick_GiveXP");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(ADMIN_CLICK_MONEY_DIALOG_HEADER),
 	              _(ADMIN_CLICK_MONEY_DIALOG_MESSAGE),
 	              _(ADMIN_CLICK_MESSAGE_BUTTON_GIVE), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
 	              PlayerPrivilegeAdmin,
-	              "adm_click_GiveMoney");
+	              "AdminClick_GiveMoney");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              _(ADMIN_CLICK_FREEZE_DIALOG_HEADER),
 	              _(ADMIN_CLICK_FREEZE_DIALOG_MESSAGE),
 	              _(ADMIN_CLICK_FREEZE_DIALOG_BUTTON), _(ADMIN_CLICK_MESSAGE_BUTTON_BACK),
 	              PlayerPrivilegeAdmin,
-	              "adm_click_FreezePlayer");
+	              "AdminClick_FreezePlayer");
 
 	Click_AddItem(DIALOG_STYLE_NONE,
 	              _(ADMIN_CLICK_UNFREEZE_DIALOG_HEADER),
 	              "",
 	              "", "",
 	              PlayerPrivilegeAdmin,
-	              "adm_click_UnFreezePlayer");
+	              "AdminClick_UnFreezePlayer");
 
 	Click_AddItem(DIALOG_STYLE_NONE,
 	              _(ADMIN_CLICK_NETSTATS_DIALOG_HEADER),
 	              "",
 	              "", "",
 	              PlayerPrivilegeAdmin,
-	              "adm_click_GetNetStats");
+	              "AdminClick_GetNetStats");
 }
 
 static stock ShowErrorDialog(playerid, error_msg[])
@@ -146,8 +146,8 @@ DialogResponse:AdminErrorPlayerClick(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_KickPlayer(playerid, targetid, listitem, inputtext[]);
-public adm_click_KickPlayer(playerid, targetid, listitem, inputtext[])
+forward AdminClick_KickPlayer(playerid, targetid, listitem, inputtext[]);
+public AdminClick_KickPlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
@@ -178,8 +178,8 @@ public adm_click_KickPlayer(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_MutePlayer(playerid, targetid, listitem, inputtext[]);
-public adm_click_MutePlayer(playerid, targetid, listitem, inputtext[])
+forward AdminClick_MutePlayer(playerid, targetid, listitem, inputtext[]);
+public AdminClick_MutePlayer(playerid, targetid, listitem, inputtext[])
 {
 	new
 		time;
@@ -215,8 +215,8 @@ public adm_click_MutePlayer(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_UnMutePlayer(playerid, targetid, listitem, inputtext[]);
-public adm_click_UnMutePlayer(playerid, targetid, listitem, inputtext[])
+forward AdminClick_UnMutePlayer(playerid, targetid, listitem, inputtext[]);
+public AdminClick_UnMutePlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(targetid)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
@@ -242,8 +242,8 @@ public adm_click_UnMutePlayer(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_JailPlayer(playerid, targetid, listitem, inputtext[]);
-public adm_click_JailPlayer(playerid, targetid, listitem, inputtext[])
+forward AdminClick_JailPlayer(playerid, targetid, listitem, inputtext[]);
+public AdminClick_JailPlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
@@ -284,8 +284,8 @@ public adm_click_JailPlayer(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_UnJailPlayer(playerid, targetid, listitem, inputtext[]);
-public adm_click_UnJailPlayer(playerid, targetid, listitem, inputtext[])
+forward AdminClick_UnJailPlayer(playerid, targetid, listitem, inputtext[]);
+public AdminClick_UnJailPlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(targetid)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
@@ -316,8 +316,8 @@ public adm_click_UnJailPlayer(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_InfoPlayer(playerid, targetid, listitem, inputtext[]);
-public adm_click_InfoPlayer(playerid, targetid, listitem, inputtext[])
+forward AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[]);
+public AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(targetid)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
@@ -377,8 +377,8 @@ public adm_click_InfoPlayer(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_KillPlayer(playerid, targetid, listitem, inputtext[]);
-public adm_click_KillPlayer(playerid, targetid, listitem, inputtext[])
+forward AdminClick_KillPlayer(playerid, targetid, listitem, inputtext[]);
+public AdminClick_KillPlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
@@ -409,8 +409,8 @@ public adm_click_KillPlayer(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_TeleportToPlayer(playerid, targetid, listitem, inputtext[]);
-public adm_click_TeleportToPlayer(playerid, targetid, listitem, inputtext[])
+forward AdminClick_TeleportToPlayer(playerid, targetid, listitem, inputtext[]);
+public AdminClick_TeleportToPlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(targetid)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_TARGET_ERROR));
@@ -436,8 +436,8 @@ public adm_click_TeleportToPlayer(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_TeleportToMe(playerid, targetid, listitem, inputtext[]);
-public adm_click_TeleportToMe(playerid, targetid, listitem, inputtext[])
+forward AdminClick_TeleportToMe(playerid, targetid, listitem, inputtext[]);
+public AdminClick_TeleportToMe(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
@@ -465,8 +465,8 @@ public adm_click_TeleportToMe(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_SetHealth(playerid, targetid, listitem, inputtext[]);
-public adm_click_SetHealth(playerid, targetid, listitem, inputtext[])
+forward AdminClick_SetHealth(playerid, targetid, listitem, inputtext[]);
+public AdminClick_SetHealth(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
@@ -505,8 +505,8 @@ public adm_click_SetHealth(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_SetArmour(playerid, targetid, listitem, inputtext[]);
-public adm_click_SetArmour(playerid, targetid, listitem, inputtext[])
+forward AdminClick_SetArmour(playerid, targetid, listitem, inputtext[]);
+public AdminClick_SetArmour(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
@@ -545,8 +545,8 @@ public adm_click_SetArmour(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_SetLevel(playerid, targetid, listitem, inputtext[]);
-public adm_click_SetLevel(playerid, targetid, listitem, inputtext[])
+forward AdminClick_SetLevel(playerid, targetid, listitem, inputtext[]);
+public AdminClick_SetLevel(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
@@ -584,8 +584,8 @@ public adm_click_SetLevel(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_GiveXP(playerid, targetid, listitem, inputtext[]);
-public adm_click_GiveXP(playerid, targetid, listitem, inputtext[])
+forward AdminClick_GiveXP(playerid, targetid, listitem, inputtext[]);
+public AdminClick_GiveXP(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
@@ -618,8 +618,8 @@ public adm_click_GiveXP(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_GiveMoney(playerid, targetid, listitem, inputtext[]);
-public adm_click_GiveMoney(playerid, targetid, listitem, inputtext[])
+forward AdminClick_GiveMoney(playerid, targetid, listitem, inputtext[]);
+public AdminClick_GiveMoney(playerid, targetid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(targetid)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
@@ -647,8 +647,8 @@ public adm_click_GiveMoney(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_FreezePlayer(playerid, targetid, listitem, inputtext[]);
-public adm_click_FreezePlayer(playerid, targetid, listitem, inputtext[])
+forward AdminClick_FreezePlayer(playerid, targetid, listitem, inputtext[]);
+public AdminClick_FreezePlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
@@ -689,8 +689,8 @@ public adm_click_FreezePlayer(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_UnFreezePlayer(playerid, targetid, listitem, inputtext[]);
-public adm_click_UnFreezePlayer(playerid, targetid, listitem, inputtext[])
+forward AdminClick_UnFreezePlayer(playerid, targetid, listitem, inputtext[]);
+public AdminClick_UnFreezePlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		ShowErrorDialog(playerid, _(ADMIN_CLICK_PRIVILEGE_ERROR));
@@ -721,8 +721,8 @@ public adm_click_UnFreezePlayer(playerid, targetid, listitem, inputtext[])
 	return 1;
 }
 
-forward adm_click_GetNetStats(playerid, targetid, listitem, inputtext[]);
-public adm_click_GetNetStats(playerid, targetid, listitem, inputtext[])
+forward AdminClick_GetNetStats(playerid, targetid, listitem, inputtext[]);
+public AdminClick_GetNetStats(playerid, targetid, listitem, inputtext[])
 {
 	new
 		message[MAX_LANG_MULTI_STRING],
@@ -749,7 +749,7 @@ public adm_click_GetNetStats(playerid, targetid, listitem, inputtext[])
 	new
 		timerid;
 
-	timerid = SetTimerEx("adm_click_GetNetStats", 2000, 0, "dd", playerid, targetid);
+	timerid = SetTimerEx("AdminClick_GetNetStats", 2000, 0, "dd", playerid, targetid);
 	SetPVarInt(playerid, "click_NetStats_TimerID", timerid);
 }
 

@@ -2011,9 +2011,3 @@ COMMAND:piss(playerid, params[])
 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_PISSING);
 	return 1;
 }
-
-COMMAND:smoke(playerid, params[])
-{
-	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_SMOKE_CIGGY);
-	return 1;
-}

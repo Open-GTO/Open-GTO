@@ -49,9 +49,9 @@ COMMAND:skydive(playerid, params[])
 	GivePlayerWeapon(playerid, 46, 1);
 	PlayerPlaySound(playerid, 1057, 0, 0, 0);
 
-	new Float:playerx, Float:playery, Float:playerz;
-	GetPlayerPos(playerid, playerx, playery, playerz);
-	SetPlayerPos(playerid, playerx, playery, playerz + 1200);
+	new Float:pos_x, Float:pos_y, Float:pos_z;
+	GetPlayerPos(playerid, pos_x, pos_y, pos_z);
+	SetPlayerPos(playerid, pos_x, pos_y, pos_z + 1200);
 	
 	SetPlayerSkydiveTime(playerid, gettime() + SKYDIVE_TIME);
 
@@ -67,10 +67,12 @@ COMMAND:skydive(playerid, params[])
 	Functions
 */
 
-stock GetPlayerSkydiveTime(playerid) {
+stock GetPlayerSkydiveTime(playerid)
+{
 	return gPlayerPauseTime[playerid];
 }
 
-stock SetPlayerSkydiveTime(playerid, time) {
+stock SetPlayerSkydiveTime(playerid, time)
+{
 	gPlayerPauseTime[playerid] = time;
 }

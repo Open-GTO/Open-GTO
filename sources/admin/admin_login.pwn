@@ -5,14 +5,14 @@
 
 */
 
-#if defined _adm_login_included
+#if defined _admin_login_included
 	#endinput
 #endif
 
-#define _adm_login_included
+#define _admin_login_included
 
 
-stock adm_login_OnRconLoginAttempt(ip[], password[], success)
+stock AdminLogin_OnRconLoginAttempt(ip[], password[], success)
 {
 	switch (success) {
 		case 0: {

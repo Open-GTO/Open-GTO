@@ -5,11 +5,11 @@
 
 */
 
-#if defined _adm_ban_included
+#if defined _admin_ban_included
 	#endinput
 #endif
 
-#define _adm_ban_included
+#define _admin_ban_included
 
 
 stock oBan_Check(playerid)
