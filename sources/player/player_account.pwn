@@ -63,7 +63,7 @@ stock Account_Register(playerid, password[])
 {
 	// set default data
 #if defined PASSWORD_ENCRYPT_ENABLED
-	GenerateRandomString(gAccount[playerid][e_aPasswordSalt], PASSWORD_SALT_LENGTH);
+	GenerateRandomString(gAccount[playerid][e_aPasswordSalt], PASSWORD_SALT_LENGTH, PASSWORD_SALT_LENGTH + 1);
 
 	SHA256_PassHash(password, gAccount[playerid][e_aPasswordSalt], gAccount[playerid][e_aPassword], PASSWORD_HASH_LENGTH);
 #else
