@@ -165,6 +165,7 @@ Thanks:
 #include "player/player_text.pwn"
 #include "player/player_money.pwn"
 #include "player/player_money_td.pwn"
+#include "player/player_bank.pwn"
 #include "player/player_gang.pwn"
 #include "player/player_skydive.pwn"
 #include "player/player_godmod.pwn"

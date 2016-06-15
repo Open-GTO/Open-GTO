@@ -12,12 +12,19 @@
 #define _pl_money_included
 
 /*
+	Vars
+*/
+
+static
+	gPlayerMoney[MAX_PLAYERS];
+
+/*
 	Functions
 */
 
 stock SetPlayerMoney(playerid, money)
 {
-	SetPVarInt(playerid, "Money", money);
+	gPlayerMoney[playerid] = money;
 	SetPlayerMoneyTextDraw(playerid, money);
 }
 
@@ -43,12 +50,7 @@ stock REDEF_GivePlayerMoney(playerid, money)
 	return 1;
 }
 
-stock GetPlayerTotalMoney(playerid)
-{
-	return GetPVarInt(playerid, "Money") + GetPVarInt(playerid, "BankMoney");
-}
-
 stock REDEF_GetPlayerMoney(playerid)
 {
-	return GetPVarInt(playerid, "Money");
+	return gPlayerMoney[playerid];
 }

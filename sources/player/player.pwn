@@ -449,3 +449,12 @@ stock REDEF_SetPlayerSkin(playerid, skinid)
 	gPlayerSkin[playerid] = skinid;
 	return ORIG_SetPlayerSkin(playerid, skinid);
 }
+
+/*
+	Money
+*/
+
+stock GetPlayerTotalMoney(playerid)
+{
+	return GetPlayerMoney(playerid) + GetPlayerBankMoney(playerid);
+}

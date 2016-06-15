@@ -456,28 +456,6 @@ stock bank_Profit()
 	return 1;
 }
 
-
-stock GetPlayerBankMoney(playerid)
-{
-	return GetPVarInt(playerid, "BankMoney");
-}
-
-stock GivePlayerBankMoney(playerid, &amount)
-{
-	if (amount > MaxBankMoney - GetPlayerBankMoney(playerid)) {
-		amount = MaxBankMoney - GetPlayerBankMoney(playerid);
-	}
-	GivePVarInt(playerid, "BankMoney", amount);
-}
-
-stock TakePlayerBankMoney(playerid, &amount)
-{
-	if (GetPlayerBankMoney(playerid) - amount < 0) {
-		amount = GetPlayerBankMoney(playerid);
-	}
-	GivePVarInt(playerid, "BankMoney", -amount);
-}
-
 stock bank_GetMaxMoney()
 {
 	return MaxBankMoney;
