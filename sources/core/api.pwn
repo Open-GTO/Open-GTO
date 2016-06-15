@@ -15,10 +15,10 @@
 	#endinput
 #endif
 
-forward api_GivePlayerMoney(playerid, amount, showtext);
-public api_GivePlayerMoney(playerid, amount, showtext)
+forward api_GivePlayerMoney(playerid, amount);
+public api_GivePlayerMoney(playerid, amount)
 {
-	return GivePlayerMoney(playerid, amount, showtext);
+	return GivePlayerMoney(playerid, amount);
 }
 
 forward api_GetVehicleModelCost(model);

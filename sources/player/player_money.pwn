@@ -21,7 +21,7 @@ stock SetPlayerMoney(playerid, money)
 	SetPlayerMoneyTextDraw(playerid, money);
 }
 
-stock REDEF_GivePlayerMoney(playerid, money, showtext = 1)
+stock REDEF_GivePlayerMoney(playerid, money)
 {
 	if (money == 0) {
 		return 1;
@@ -38,10 +38,7 @@ stock REDEF_GivePlayerMoney(playerid, money, showtext = 1)
 		Log_Game("player: %s(%d): is on max money", ReturnPlayerName(playerid), playerid);
 	}
 
-	if (showtext == 1) {
-		GivePlayerMoneyTextDraw(playerid, money);
-	}
-
+	GivePlayerMoneyTextDraw(playerid, money);
 	SetPlayerMoney(playerid, player_money + money);
 	return 1;
 }
