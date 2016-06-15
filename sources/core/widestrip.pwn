@@ -28,12 +28,14 @@ public OnGameModeInit()
 	gTopStrip = TextDrawCreate(640.125000, 1.500000, "strip");
 	TextDrawLetterSize(gTopStrip, 0.000000, 4.868515);
 	TextDrawTextSize(gTopStrip, -1.375000, 0.000000);
+	TextDrawAlignment(gTopStrip, 3);
 	TextDrawUseBox(gTopStrip, true);
 	TextDrawBoxColor(gTopStrip, 255);
 
 	gBottomStrip = TextDrawCreate(641.375000, 401.083312, "strip");
 	TextDrawLetterSize(gBottomStrip, 0.000000, 4.998147);
 	TextDrawTextSize(gBottomStrip, -1.375000, 0.000000);
+	TextDrawAlignment(gBottomStrip, 3);
 	TextDrawUseBox(gBottomStrip, true);
 	TextDrawBoxColor(gBottomStrip, 255);
 
