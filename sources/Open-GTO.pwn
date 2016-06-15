@@ -382,6 +382,7 @@ public OnPlayerDisconnect(playerid, reason)
 	Trucker_OnPlayerDisconnect(playerid, reason);
 	pt_chat_OnPlayerDisconnect(playerid, reason);
 	Groundhold_OnPlayerDisconnect(playerid, reason);
+	PlayerMoneyTD_OnPlayerDisconn(playerid, reason);
 	PVehicle_OnPlayerDisconnect(playerid, reason);
 	SetPlayerSpawned(playerid, 0);
 	return 1;
