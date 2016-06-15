@@ -165,7 +165,6 @@ Thanks:
 #include "player/player_maptp.pwn"
 #include "player/player_text.pwn"
 #include "player/player_money.pwn"
-#include "player/player_money_td.pwn"
 #include "player/player_bank.pwn"
 #include "player/player_gang.pwn"
 #include "player/player_skydive.pwn"
@@ -178,6 +177,7 @@ Thanks:
 #include "player/textdraw/textdraw_health.pwn"
 #include "player/textdraw/textdraw_armour.pwn"
 #include "player/textdraw/textdraw_level.pwn"
+#include "player/textdraw/textdraw_money.pwn"
 #include "player/player.pwn"
 
 // custom
@@ -288,7 +288,7 @@ public OnGameModeInit()
 	weapon_OnGameModeInit();
 	Premium_OnGameModeInit();
 	PWDrop_OnGameModeInit();
-	PMoney_TD_OnGameModeInit();
+	PlayerMoneyTD_OnGameModeInit();
 	PLevel_OnGameModeInit();
 	PlayerClick_OnGameModeInit();
 	AdminClick_OnGameModeInit();
@@ -363,7 +363,7 @@ public OnPlayerConnect(playerid)
 	Player_OnPlayerConnect(playerid);
 	pt_chat_OnPlayerConnect(playerid);
 	PWSkill_OnPlayerConnect(playerid);
-	PMoney_TD_OnPlayerConnect(playerid);
+	PlayerMoneyTD_OnPlayerConnect(playerid);
 	Vehicle_Textdraw_OnPlayerConn(playerid);
 	Enterexit_OnPlayerConnect(playerid);
 	Spectate_OnPlayerConnect(playerid);
@@ -382,7 +382,6 @@ public OnPlayerDisconnect(playerid, reason)
 	Trucker_OnPlayerDisconnect(playerid, reason);
 	pt_chat_OnPlayerDisconnect(playerid, reason);
 	Groundhold_OnPlayerDisconnect(playerid, reason);
-	PMoney_TD_OnPlayerDisconnect(playerid, reason);
 	PVehicle_OnPlayerDisconnect(playerid, reason);
 	SetPlayerSpawned(playerid, 0);
 	return 1;

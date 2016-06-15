@@ -25,7 +25,7 @@ static
 stock SetPlayerMoney(playerid, money)
 {
 	gPlayerMoney[playerid] = money;
-	SetPlayerMoneyTextDraw(playerid, money);
+	PlayerMoneyTD_UpdateString(playerid, money);
 }
 
 stock REDEF_GivePlayerMoney(playerid, money)
@@ -45,7 +45,7 @@ stock REDEF_GivePlayerMoney(playerid, money)
 		Log_Game("player: %s(%d): is on max money", ReturnPlayerName(playerid), playerid);
 	}
 
-	GivePlayerMoneyTextDraw(playerid, money);
+	PlayerMoneyTD_Give(playerid, money);
 	SetPlayerMoney(playerid, player_money + money);
 	return 1;
 }

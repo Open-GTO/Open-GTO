@@ -74,7 +74,7 @@ Player_OnPlayerSpawn(playerid)
 	SetPlayerMaxHealth(playerid);
 	UpdatePlayerFightStyleUsed(playerid);
 	GivePlayerOwnedWeapon(playerid);
-	ShowPlayerMoneyTextDraw(playerid);
+	PlayerMoneyTD_Show(playerid);
 	return 1;
 }
 
@@ -201,7 +201,7 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 Player_OnPlayerRequestClass(playerid, classid)
 {
 	#pragma unused classid
-	HidePlayerMoneyTextDraw(playerid);
+	PlayerMoneyTD_Hide(playerid);
 
 	// show login dialog
 	if (!IsPlayerLogin(playerid)) {
