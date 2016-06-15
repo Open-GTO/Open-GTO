@@ -44,8 +44,8 @@ static bank_place[][e_Bank_Info] = {
 };
 
 static
-	gProfitCount = Bank_AddProfit,
-	gProfitCountPremium = Bank_AddProfit_PREMIUM,
+	gProfitCount = BANK_PROFIT,
+	gProfitCountPremium = BANK_PROFIT_PREMIUM,
 	gMaxBankMoney = MAX_BANK_MONEY,
 	bank_actors[MAX_BANK_ACTORS];
 
@@ -63,7 +63,7 @@ stock Bank_LoadConfig(file_config)
 stock Bank_SaveConfig(file_config)
 {
 	ini_setInteger(file_config, "Bank_AddProfitCount", gProfitCount);
-	ini_setInteger(file_config, "Bank_AddProfitCountPremium", ProfitCountPremium);
+	ini_setInteger(file_config, "Bank_AddProfitCountPremium", gProfitCountPremium);
 	ini_setInteger(file_config, "Bank_MaxBankMoney", gMaxBankMoney);
 }
 

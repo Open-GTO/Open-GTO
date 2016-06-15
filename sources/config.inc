@@ -180,8 +180,8 @@
 #define GROUNDHOLD_HOLD_TIME  2 // скорость потери точки при выходе из зоны
 
 // bank
-#define Bank_AddProfit      2 // процент начисления прибыли за хранение в банке
-#define Bank_AddProfit_PREMIUM  (Bank_AddProfit * 2) // процент начисления прибыли за хранение в банке для игроков с премиум
+#define BANK_PROFIT      2 // процент начисления прибыли за хранение в банке
+#define BANK_PROFIT_PREMIUM  (BANK_PROFIT * 2) // процент начисления прибыли за хранение в банке для игроков с премиум
 #define MAX_BANK_MONEY   1000000000 // максимальное количество денег, которых можно хранить в банке
 
 // payday
