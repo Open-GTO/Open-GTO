@@ -15,6 +15,7 @@
 
 COMMAND:help(playerid, params[])
 {
+	SendClientMessage(playerid, -1, _(COMMAND_HELP_HEADER));
 	SendClientMessage(playerid, -1, _(COMMAND_HELP_0));
 	SendClientMessage(playerid, -1, _(COMMAND_HELP_1));
 	SendClientMessage(playerid, -1, _(COMMAND_HELP_2));
@@ -83,12 +84,13 @@ COMMAND:status(playerid, params[])
 
 COMMAND:version(playerid, params[])
 {
-	SendClientMessage(playerid, COLOR_MISC, _(COMMAND_VERSION_0));
-	new string[MAX_STRING];
+	SendClientMessage(playerid, -1, _(COMMAND_VERSION_0));
+	new string[MAX_LANG_VALUE_STRING];
 	format(string, sizeof(string), _(COMMAND_VERSION_1), VERSION_STRING);
-	SendClientMessage(playerid, COLOR_GREEN, string);
-	SendClientMessage(playerid, COLOR_MISC, _(COMMAND_VERSION_2));
-	SendClientMessage(playerid, COLOR_MISC, _(COMMAND_VERSION_3));
+	SendClientMessage(playerid, -1, string);
+	SendClientMessage(playerid, -1, _(COMMAND_VERSION_2));
+	SendClientMessage(playerid, -1, _(COMMAND_VERSION_3));
+	SendClientMessage(playerid, -1, _(COMMAND_VERSION_4));
 	return 1;
 }
 
@@ -96,7 +98,7 @@ COMMAND:time(playerid, params[])
 {
 	new string[MAX_STRING],
 		minute;
-	
+
 	gettime(_, minute);
 	format(string, sizeof(string), "%02d:%02d", Time_GetCurrentHour(), minute);
 	GameTextForPlayer(playerid, string, 2000, 1);
@@ -117,7 +119,7 @@ COMMAND:time(playerid, params[])
 		format(string, sizeof(string), _(COMMAND_TIME_MUTE), (mute_time - gettime()) / 60 + 1);
 		SendClientMessage(playerid, COLOR_LIGHTRED, string);
 	}
-	
+
 	PlayerPlaySound(playerid, 1085, 0, 0, 0);
 	return 1;
 }
