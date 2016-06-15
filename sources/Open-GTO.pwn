@@ -288,7 +288,6 @@ public OnGameModeInit()
 	PWDrop_OnGameModeInit();
 	PMoney_TD_OnGameModeInit();
 	PLevel_OnGameModeInit();
-	widestrip_OnGameModeInit();
 	Player_Click_OnGameModeInit();
 	AdminClick_OnGameModeInit();
 	Weather_OnGameModeInit();

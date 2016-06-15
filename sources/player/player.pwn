@@ -30,7 +30,7 @@ Player_LoadConfig(file_config)
 {
 	ini_getString(file_config, "Player_DB", db_player);
 	ini_getInteger(file_config, "Player_Start_Money", gPlayerStartMoney);
-	
+
 	new
 		weapons[START_PLAYER_WEAPON_SLOTS],
 		bullets[START_PLAYER_WEAPON_SLOTS],
@@ -90,7 +90,7 @@ Player_OnPlayerDisconnect(playerid, reason)
 	// message
 	new string[MAX_LANG_VALUE_STRING];
 	format(string, sizeof(string), _(PLAYER_DISCONNECT), ReturnPlayerName(playerid), playerid);
-	
+
 	switch (reason) {
 		case 0: {
 			strcat(string, " (вылетел)", sizeof(string));
@@ -127,7 +127,7 @@ Player_OnPlayerConnect(playerid)
 
 	// store ip
 	Player_UpdateIP(playerid);
-	
+
 	// check name
 	if (!NameCharCheck( ReturnPlayerName(playerid) )) {
 		new string[MAX_STRING];
@@ -139,7 +139,7 @@ Player_OnPlayerConnect(playerid)
 
 	// set color
 	SetPlayerColor(playerid, COLOR_PLAYER);
-	
+
 	// check ban
 	oBan_Check(playerid);
 }
@@ -160,13 +160,13 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 	if (IsPlayerJailed(playerid)) {
 		return;
 	}
-	
+
 	// gang kill
 	new killer_gang_id = GetPlayerGangID(killerid);
 	if (killer_gang_id != INVALID_GANG_ID) {
 		if (Gang_PlayerKill(killer_gang_id, killerid, playerid) == 1) {
 			new string[MAX_LANG_VALUE_STRING];
-			
+
 			GetPlayerName(killerid, string, sizeof(string));
 			format(string, sizeof(string), _(GANG_KILL_TEAMMATE), string);
 
@@ -321,7 +321,7 @@ stock Player_OnLogin(playerid)
 	}
 
 	// hide widstrip
-	widestrip_Hide(playerid);
+	Widestrip_HideForPlayer(playerid);
 
 	Log_Game("player: %s(%d): logged in successfully.", playername, playerid);
 }
@@ -371,7 +371,7 @@ stock Player_Sync(playerid)
 	if (!IsPlayerSpawned(playerid)) {
 		return 0;
 	}
-	
+
 	pt_ping_Check(playerid);
 	pt_spac_Check(playerid);
 	pt_health_Sync(playerid);

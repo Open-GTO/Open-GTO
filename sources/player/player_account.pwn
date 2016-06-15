@@ -47,7 +47,7 @@ stock Account_Save(playerid)
 
 	new
 		playername[MAX_PLAYER_NAME + 1];
-	
+
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	Account_SaveData(playername, gAccount[playerid]);
@@ -75,7 +75,7 @@ stock Account_Register(playerid, password[])
 	Account_SetPlayedTime(playerid, 0);
 	Account_SetAfterRegistration(playerid, true);
 	Account_UpdateIP(playerid);
-	
+
 	new playername[MAX_PLAYER_NAME + 1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 
@@ -100,7 +100,7 @@ stock Account_Login(playerid, password[])
 	new
 		result[e_Account_Info],
 		playername[MAX_PLAYER_NAME + 1];
-	
+
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	// get data
@@ -113,7 +113,7 @@ stock Account_Login(playerid, password[])
 
 	if (strcmp(password, result[e_aPassword], false)) {
 		Log_Game("Player_Login: failed: incorrect password by %s(%d)", playername, playerid);
-		
+
 		AddLoginAttempt(playerid);
 
 		if (IsLoginAttemptsEnded(playerid)) {
@@ -285,7 +285,7 @@ stock Account_ShowDialog(playerid)
 {
 	new filename_account[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
-	
+
 	GetPlayerName(playerid, playername, sizeof(playername));
 	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, playername);
 
@@ -295,7 +295,7 @@ stock Account_ShowDialog(playerid)
 		Dialog_Show(playerid, Dialog:AccountInformation);
 	}
 
-	widestrip_Show(playerid);
+	Widestrip_ShowForPlayer(playerid);
 	return 1;
 }
 
