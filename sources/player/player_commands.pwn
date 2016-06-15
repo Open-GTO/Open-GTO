@@ -153,8 +153,8 @@ COMMAND:id(playerid, params[])
 
 		insert_pos = strfind(string, params, true);
 		if (insert_pos != -1) {
-			strins(string, _(COMMAND_ID_COLOR_HIGHLIGHT), insert_pos);
 			strins(string, _(COMMAND_ID_COLOR_NORMAL), strlen(params) + insert_pos);
+			strins(string, _(COMMAND_ID_COLOR_HIGHLIGHT), insert_pos);
 		}
 
 		format(string, sizeof(string), _(COMMAND_ID_PLAYER), string, ids[i]);
