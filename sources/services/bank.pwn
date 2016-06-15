@@ -1,9 +1,9 @@
-//
-// Created:     17.09.06
-// Aurthor:    Iain Gilbert
-//
-// Modified by ZiGGi
-//
+/*
+
+	About: bank system
+	Author: ziggi
+
+*/
 
 #if defined _bank_included
 	#endinput
@@ -11,17 +11,17 @@
 
 #define _bank_included
 
+/*
+	Defines
+*/
 
 #define MAX_BANK_ACTORS 15
 
-static
-	ProfitCount = BANK_PROFIT,
-	ProfitCountPremium = BANK_PROFIT_PREMIUM,
-	MaxBankMoney = MAX_BANK_MONEY,
+/*
+	Enums
+*/
 
-	bank_actors[MAX_BANK_ACTORS];
-
-enum Bank_Info {
+enum e_Bank_Info {
 	bank_type,
 	Float:bank_x,
 	Float:bank_y,
@@ -34,26 +34,44 @@ enum Bank_Info {
 	bank_checkpoint,
 }
 
-static bank_place[][Bank_Info] = {
+/*
+	Vars
+*/
+
+static bank_place[][e_Bank_Info] = {
 	{ENTEREXIT_TYPE_24ON7_3, -22.9578, -54.8951, 1003.5469, 187, -27.4657, -91.6320, 1003.5469, 1.9766}, // LV 24/7 bank
-	{ENTEREXIT_TYPE_24ON7,     -27.0310, -89.5228, 1003.5469, 187, -22.9353, -57.3491, 1003.5469, 0.0967} // 24/7 bank
+	{ENTEREXIT_TYPE_24ON7,   -27.0310, -89.5228, 1003.5469, 187, -22.9353, -57.3491, 1003.5469, 0.0967} // 24/7 bank
 };
 
-stock bank_LoadConfig(file_config)
+static
+	gProfitCount = Bank_AddProfit,
+	gProfitCountPremium = Bank_AddProfit_PREMIUM,
+	gMaxBankMoney = MAX_BANK_MONEY,
+	bank_actors[MAX_BANK_ACTORS];
+
+/*
+	Config functions
+*/
+
+stock Bank_LoadConfig(file_config)
 {
-	ini_getInteger(file_config, "Bank_ProfitCount", ProfitCount);
-	ini_getInteger(file_config, "Bank_ProfitCount_VIP", ProfitCountPremium);
-	ini_getInteger(file_config, "Bank_MaxBankMoney", MaxBankMoney);
+	ini_getInteger(file_config, "Bank_AddProfitCount", gProfitCount);
+	ini_getInteger(file_config, "Bank_AddProfitCountPremium", gProfitCountPremium);
+	ini_getInteger(file_config, "Bank_MaxBankMoney", gMaxBankMoney);
 }
 
-stock bank_SaveConfig(file_config)
+stock Bank_SaveConfig(file_config)
 {
-	ini_setInteger(file_config, "Bank_ProfitCount", ProfitCount);
-	ini_setInteger(file_config, "Bank_ProfitCount_VIP", ProfitCountPremium);
-	ini_setInteger(file_config, "Bank_MaxBankMoney", MaxBankMoney);
+	ini_setInteger(file_config, "Bank_AddProfitCount", gProfitCount);
+	ini_setInteger(file_config, "Bank_AddProfitCountPremium", ProfitCountPremium);
+	ini_setInteger(file_config, "Bank_MaxBankMoney", gMaxBankMoney);
 }
 
-bank_OnGameModeInit()
+/*
+	Callbacks
+*/
+
+Bank_OnGameModeInit()
 {
 	for (new bankid = 0; bankid < sizeof(bank_place); bankid++) {
 		bank_place[bankid][bank_checkpoint] = CreateDynamicCP(bank_place[bankid][bank_x], bank_place[bankid][bank_y], bank_place[bankid][bank_z], 1.5, .streamdistance = 20.0);
@@ -62,14 +80,14 @@ bank_OnGameModeInit()
 	return 1;
 }
 
-bank_OnInteriorCreated(id, type, world)
+Bank_OnInteriorCreated(id, type, world)
 {
 	#pragma unused id
 	new slot;
 
 	for (new i = 0; i < sizeof(bank_place); i++) {
 		if (bank_place[i][bank_type] == type) {
-			slot = bank_GetActorFreeSlot();
+			slot = Bank_GetActorFreeSlot();
 			if (slot == -1) {
 				Log_Debug("bank.inc: Free slot not found. Increase MAX_BANK_ACTORS value.");
 				break;
@@ -84,7 +102,7 @@ bank_OnInteriorCreated(id, type, world)
 	}
 }
 
-bank_OnActorStreamIn(actorid, forplayerid)
+Bank_OnActorStreamIn(actorid, forplayerid)
 {
 	for (new id = 0; id < sizeof(bank_actors); id++) {
 		if (actorid == bank_actors[id]) {
@@ -96,7 +114,7 @@ bank_OnActorStreamIn(actorid, forplayerid)
 	return 0;
 }
 
-bank_OnPlayerEnterCheckpoint(playerid, cp)
+Bank_OnPlayerEnterCheckpoint(playerid, cp)
 {
 	for (new id = 0; id < sizeof(bank_place); id++) {
 		if (cp == bank_place[id][bank_checkpoint]) {
@@ -108,12 +126,16 @@ bank_OnPlayerEnterCheckpoint(playerid, cp)
 	return 0;
 }
 
+/*
+	Dialogs
+*/
+
 DialogCreate:BankStart(playerid)
 {
 	new string[MAX_LANG_MULTI_STRING];
 
 	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
-	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountPremium, string);
+	format(string, sizeof(string), _m(BANK_START_INFO), gProfitCount, gProfitCountPremium, string);
 
 	Dialog_Open(playerid, Dialog:BankStart, DIALOG_STYLE_MSGBOX,
 		_(BANK_CAPTION),
@@ -187,7 +209,7 @@ DialogCreate:BankWithdraw(playerid)
 	new string[MAX_LANG_MULTI_STRING];
 
 	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
-	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountPremium, string);
+	format(string, sizeof(string), _m(BANK_START_INFO), gProfitCount, gProfitCountPremium, string);
 
 	Dialog_Open(playerid, Dialog:BankWithdraw, DIALOG_STYLE_INPUT,
 		_(BANK_CAPTION),
@@ -213,12 +235,14 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	if (amount > GetPlayerBankMoney(playerid)) {
-		amount = GetPlayerBankMoney(playerid);
+	new current_money = GetPlayerBankMoney(playerid);
+	if (amount > current_money) {
+		amount = current_money;
 	}
 
-	if (amount > MAX_MONEY - GetPlayerMoney(playerid)) {
-		amount = MAX_MONEY - GetPlayerMoney(playerid);
+	new max_amount = MAX_MONEY - GetPlayerMoney(playerid);
+	if (amount > max_amount) {
+		amount = max_amount;
 	}
 
 	TakePlayerBankMoney(playerid, amount);
@@ -230,6 +254,7 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 
 	InsertSpacesInInt(amount, amount_string);
 	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
+
 	format(string, sizeof(string), _(BANK_WITHDRAW_INFO), amount_string, string);
 
 	Dialog_Message(playerid, _(BANK_CAPTION), string, _(BANK_BUTTON_OK));
@@ -251,7 +276,7 @@ DialogCreate:BankDeposit(playerid)
 	new string[MAX_LANG_MULTI_STRING];
 
 	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
-	format(string, sizeof(string), _m(BANK_START_INFO), ProfitCount, ProfitCountPremium, string);
+	format(string, sizeof(string), _m(BANK_START_INFO), gProfitCount, gProfitCountPremium, string);
 
 	Dialog_Open(playerid, Dialog:BankDeposit, DIALOG_STYLE_INPUT,
 		_(BANK_CAPTION),
@@ -277,12 +302,14 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	if (amount > GetPlayerMoney(playerid)) {
-		amount = GetPlayerMoney(playerid);
+	new current_money = GetPlayerMoney(playerid);
+	if (amount > current_money) {
+		amount = current_money;
 	}
 
-	if (amount > MaxBankMoney - GetPlayerBankMoney(playerid)) {
-		amount = MaxBankMoney - GetPlayerBankMoney(playerid);
+	new max_amount = gMaxBankMoney - GetPlayerBankMoney(playerid);
+	if (amount > max_amount) {
+		amount = max_amount;
 	}
 
 	GivePlayerBankMoney(playerid, amount);
@@ -297,7 +324,7 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 
 	format(string, sizeof(string), _(BANK_DEPOSIT_INFO), amount_string, string);
 
-	if (GetPlayerBankMoney(playerid) == MaxBankMoney) {
+	if (GetPlayerBankMoney(playerid) == gMaxBankMoney) {
 		strcat(string, _(BANK_MAX_MONEY_ERROR), sizeof(string));
 	}
 
@@ -340,7 +367,8 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	if (GetPlayerMoney(playerid) < amount) {
+	new gangid = GetPlayerGangID(playerid);
+	if (amount > Gang_GetMoney(gangid)) {
 		Dialog_MessageEx(playerid, Dialog:GangBankReturnWithdraw,
 			_(BANK_GANG_CAPTION),
 			_(BANK_GANG_INCORRECT_VALUE),
@@ -349,16 +377,20 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new gangid = GetPlayerGangID(playerid);
-
-	Gang_TakeMoney(gangid, amount);
+	amount = Gang_TakeMoney(gangid, amount);
 	GivePlayerMoney(playerid, amount);
 
-	new string[MAX_LANG_VALUE_STRING];
-	format(string, sizeof(string), _(BANK_GANG_WITHDRAW_INFO), amount, Gang_GetMoney(gangid));
+	new
+		amount_string[16],
+		string[MAX_LANG_VALUE_STRING];
+
+	InsertSpacesInInt(amount, amount_string);
+	InsertSpacesInInt(Gang_GetMoney(gangid), string);
+
+	format(string, sizeof(string), _(BANK_GANG_WITHDRAW_INFO), amount_string, string);
 	Dialog_Message(playerid, _(BANK_GANG_CAPTION), string, _(BANK_BUTTON_OK));
 
-	format(string, sizeof(string), _(BANK_GANG_WITHDRAW_MESSAGE), ReturnPlayerName(playerid), playerid, amount);
+	format(string, sizeof(string), _(BANK_GANG_WITHDRAW_MESSAGE), ReturnPlayerName(playerid), playerid, amount_string);
 	Gang_SendMessage(gangid, string, COLOR_GANG);
 	return 1;
 }
@@ -397,8 +429,7 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new gangid = GetPlayerGangID(playerid);
-	if (GetPlayerMoney(playerid) < amount) {
+	if (amount > GetPlayerMoney(playerid)) {
 		Dialog_MessageEx(playerid, Dialog:GangBankReturnDeposit,
 			_(BANK_GANG_CAPTION),
 			_(BANK_GANG_INCORRECT_VALUE),
@@ -407,33 +438,41 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	if (GetPlayerMoney(playerid) > MAX_MONEY - amount) {
-		amount = MAX_MONEY - GetPlayerMoney(playerid);
-	}
+	new gangid = GetPlayerGangID(playerid);
 
-	Gang_GiveMoney(gangid, amount);
+	amount = Gang_GiveMoney(gangid, amount);
 	GivePlayerMoney(playerid, -amount);
 
-	new string[MAX_LANG_VALUE_STRING];
-	format(string, sizeof(string), _(BANK_GANG_DEPOSIT_INFO), amount, Gang_GetMoney(gangid));
+	new
+		amount_string[16],
+		string[MAX_LANG_VALUE_STRING];
+
+	InsertSpacesInInt(amount, amount_string);
+	InsertSpacesInInt(Gang_GetMoney(gangid), string);
+
+	format(string, sizeof(string), _(BANK_GANG_DEPOSIT_INFO), amount_string, string);
 	Dialog_Message(playerid, _(BANK_GANG_CAPTION), string, _(BANK_BUTTON_OK));
 
-	format(string, sizeof(string), _(BANK_GANG_DEPOSIT_MESSAGE), ReturnPlayerName(playerid), playerid, amount);
+	format(string, sizeof(string), _(BANK_GANG_DEPOSIT_MESSAGE), ReturnPlayerName(playerid), playerid, amount_string);
 	Gang_SendMessage(gangid, string, COLOR_GANG);
 	return 1;
 }
 
+/*
+	Functions
+*/
+
 stock IsPlayerAtBank(playerid)
 {
 	for (new bankid = 0; bankid < sizeof(bank_place); bankid++) {
-		if (IsPlayerInRangeOfPoint(playerid, 2, bank_place[bankid][bank_x], bank_place[bankid][bank_y], bank_place[bankid][bank_z])) {
+		if (IsPlayerInRangeOfPoint(playerid, 2.0, bank_place[bankid][bank_x], bank_place[bankid][bank_y], bank_place[bankid][bank_z])) {
 			return 1;
 		}
 	}
 	return 0;
 }
 
-stock bank_Profit()
+stock Bank_AddProfit()
 {
 	new string[MAX_LANG_VALUE_STRING], amount;
 
@@ -442,26 +481,28 @@ stock bank_Profit()
 			continue;
 		}
 
+		amount = GetPlayerBankMoney(playerid) / 100;
+
 		if (IsPlayerHavePremium(playerid)) {
-			amount = (GetPlayerBankMoney(playerid) / 100) * ProfitCountPremium;
+			amount *= gProfitCountPremium;
 		} else {
-			amount = (GetPlayerBankMoney(playerid) / 100) * ProfitCount;
+			amount *= gProfitCount;
 		}
 
 		GivePlayerBankMoney(playerid, amount);
 
-		format(string, sizeof(string), _(BANK_PROFIT_MESSAGE), amount);
+		format(string, sizeof(string), _(BANK_ADDPROFIT_MESSAGE), amount);
 		SendClientMessage(playerid, COLOR_MONEY_GOOD, string);
 	}
 	return 1;
 }
 
-stock bank_GetMaxMoney()
+stock Bank_GetMaxMoney()
 {
-	return MaxBankMoney;
+	return gMaxBankMoney;
 }
 
-stock bank_GetActorFreeSlot()
+stock Bank_GetActorFreeSlot()
 {
 	static slot;
 

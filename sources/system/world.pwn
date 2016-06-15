@@ -77,7 +77,7 @@ public OneMinuteTimer()
 forward OneHourTimer();
 public OneHourTimer()
 {
-	bank_Profit();
+	Bank_AddProfit();
 	CheckBusinessOwners();
 	vshop_OneHourTimer();
 }

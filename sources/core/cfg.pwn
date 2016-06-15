@@ -33,7 +33,7 @@ stock cfg_LoadConfigs()
 	Vehicle_LoadConfig(file_config);
 	Vehicle_Fuel_LoadConfig(file_config);
 	weapon_LoadConfig(file_config);
-	bank_LoadConfig(file_config);
+	Bank_LoadConfig(file_config);
 	business_LoadConfig(file_config);
 	houses_LoadConfig(file_config);
 	admin_LoadConfig(file_config);
@@ -84,7 +84,7 @@ stock cfg_SaveConfigs()
 	Vehicle_Fuel_SaveConfig(file_config);
 	Vehicle_SaveConfig(file_config);
 	weapon_SaveConfig(file_config);
-	bank_SaveConfig(file_config);
+	Bank_SaveConfig(file_config);
 	business_SaveConfig(file_config);
 	houses_SaveConfig(file_config);
 	admin_SaveConfig(file_config);

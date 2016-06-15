@@ -313,7 +313,7 @@ Enterexit_OnInteriorCreated(id, type, world)
 {
 	fastfood_OnInteriorCreated(id, type, world);
 	bar_OnInteriorCreated(id, type, world);
-	bank_OnInteriorCreated(id, type, world);
+	Bank_OnInteriorCreated(id, type, world);
 	wshop_OnInteriorCreated(id, type, world);
 	Vehicle_OnInteriorCreated(id, type, world);
 	return 1;

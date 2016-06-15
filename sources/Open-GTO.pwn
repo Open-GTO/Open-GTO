@@ -308,7 +308,7 @@ public OnGameModeInit()
 	vshop_OnGameModeInit();
 	wshop_OnGameModeInit();
 	Fuelstation_OnGameModeInit();
-	bank_OnGameModeInit();
+	Bank_OnGameModeInit();
 	Fight_OnGameModeInit();
 	Tuning_OnGameModeInit();
 	Lottery_OnGameModeInit();
@@ -441,7 +441,7 @@ public OnPlayerEnterDynamicCP(playerid, checkpointid)
 	if (Fight_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
 		return 1;
 	}
-	if (bank_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
+	if (Bank_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
 		return 1;
 	}
 	return 1;
@@ -815,7 +815,7 @@ public OnActorStreamIn(actorid, forplayerid)
 	if (fastfood_OnActorStreamIn(actorid, forplayerid)) {
 		return 1;
 	}
-	if (bank_OnActorStreamIn(actorid, forplayerid)) {
+	if (Bank_OnActorStreamIn(actorid, forplayerid)) {
 		return 1;
 	}
 	if (wshop_OnActorStreamIn(actorid, forplayerid)) {

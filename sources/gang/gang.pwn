@@ -623,22 +623,24 @@ stock Gang_GetColorCost()
 	Money
 */
 
-stock Gang_GiveMoney(gangid, &amount)
+stock Gang_GiveMoney(gangid, amount)
 {
-	if (gGang[gangid][e_gMoney] + amount > MAX_GANG_BANK) {
+	if (amount > MAX_GANG_BANK - gGang[gangid][e_gMoney]) {
 		amount = MAX_GANG_BANK - gGang[gangid][e_gMoney];
 	}
 
 	gGang[gangid][e_gMoney] += amount;
+	return amount;
 }
 
-stock Gang_TakeMoney(gangid, &amount)
+stock Gang_TakeMoney(gangid, amount)
 {
-	if (gGang[gangid][e_gMoney] - amount < 0) {
+	if (amount > gGang[gangid][e_gMoney]) {
 		amount = gGang[gangid][e_gMoney];
 	}
 
 	gGang[gangid][e_gMoney] -= amount;
+	return amount;
 }
 
 stock Gang_GetMoney(gangid)
