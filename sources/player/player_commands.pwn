@@ -140,7 +140,7 @@ COMMAND:id(playerid, params[])
 
 	new
 		i,
-		playername[MAX_PLAYER_NAME],
+		insert_pos,
 		string[MAX_LANG_VALUE_STRING];
 
 	for (i = 0; ids[i] != INVALID_PLAYER_ID; i++) {
@@ -149,9 +149,15 @@ COMMAND:id(playerid, params[])
 			break;
 		}
 
-		GetPlayerName(ids[i], playername, sizeof(playername));
+		GetPlayerName(ids[i], string, sizeof(string));
 
-		format(string, sizeof(string), _(COMMAND_ID_PLAYER), playername, ids);
+		insert_pos = strfind(string, params, true);
+		if (insert_pos != -1) {
+			strins(string, _(COMMAND_ID_COLOR_HIGHLIGHT), insert_pos);
+			strins(string, _(COMMAND_ID_COLOR_NORMAL), strlen(params) + insert_pos);
+		}
+
+		format(string, sizeof(string), _(COMMAND_ID_PLAYER), string, ids[i]);
 		SendClientMessage(playerid, -1, string);
 	}
 
