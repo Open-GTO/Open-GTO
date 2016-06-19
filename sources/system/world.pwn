@@ -53,7 +53,7 @@ public OneSecTimer()
 {
 	foreach (new playerid : Player) {
 		Player_Sync(playerid);
-		UpdatePlayerWeaponTextDraws(playerid);
+		PlayerWSkillTD_UpdateString(playerid);
 		AdminSpectate_UpdateLabel(playerid);
 	}
 

@@ -55,13 +55,14 @@ Thanks:
 #include "player/player_privilege.inc"
 #include "player/player_info.inc"
 #include "player/player_team.inc"
+#include "player/player_interface.inc"
+#include "player/interface/interface_health.inc"
+#include "player/interface/interface_armour.inc"
 #include "protections/armour.inc"
 #include "protections/health.inc"
 #include "protections/specialaction.inc"
 #include "protections/teleport.inc"
 #include "vehicle/vehicle_info.inc"
-#include "player/textdraw/textdraw_health.inc"
-#include "player/textdraw/textdraw_armour.inc"
 
 // lib
 #include "lib/streamer.inc"
@@ -150,6 +151,7 @@ Thanks:
 #include "player/player_mute.pwn"
 #include "player/player_ip.pwn"
 #include "player/player_info.pwn"
+#include "player/player_interface.pwn"
 #include "player/player_jail.pwn"
 #include "player/player_freeze.pwn"
 #include "player/player_report.pwn"
@@ -173,11 +175,12 @@ Thanks:
 #include "player/player_warn.pwn"
 #include "player/message/message_alert.pwn"
 #include "player/message/message_objective.pwn"
-#include "player/textdraw/textdraw_info.pwn"
-#include "player/textdraw/textdraw_health.pwn"
-#include "player/textdraw/textdraw_armour.pwn"
-#include "player/textdraw/textdraw_level.pwn"
-#include "player/textdraw/textdraw_money.pwn"
+#include "player/interface/interface_info.pwn"
+#include "player/interface/interface_health.pwn"
+#include "player/interface/interface_armour.pwn"
+#include "player/interface/interface_level.pwn"
+#include "player/interface/interface_money.pwn"
+#include "player/interface/interface_wskill.pwn"
 #include "player/player.pwn"
 
 // custom
@@ -288,7 +291,6 @@ public OnGameModeInit()
 	weapon_OnGameModeInit();
 	Premium_OnGameModeInit();
 	PWDrop_OnGameModeInit();
-	PlayerMoneyTD_OnGameModeInit();
 	PLevel_OnGameModeInit();
 	PlayerClick_OnGameModeInit();
 	AdminClick_OnGameModeInit();
@@ -362,7 +364,6 @@ public OnPlayerConnect(playerid)
 	// main action
 	Player_OnPlayerConnect(playerid);
 	pt_chat_OnPlayerConnect(playerid);
-	PWSkill_OnPlayerConnect(playerid);
 	PlayerMoneyTD_OnPlayerConnect(playerid);
 	Vehicle_Textdraw_OnPlayerConn(playerid);
 	Enterexit_OnPlayerConnect(playerid);
@@ -534,7 +535,6 @@ public OnPlayerRequestClass(playerid, classid)
 	SetPlayerSpawned(playerid, 0);
 	Player_OnPlayerRequestClass(playerid, classid);
 	PSpawn_OnPlayerRequestClass(playerid, classid);
-	PWSkill_OnPlayerRequestClass(playerid, classid);
 	return 1;
 }
 

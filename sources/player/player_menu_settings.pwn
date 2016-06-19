@@ -2,7 +2,7 @@
 
 	About: settings user menu
 	Author: ziggi
-	
+
 */
 
 #if defined _settings_menu_included
@@ -14,8 +14,11 @@
 
 DialogCreate:PlayerSettingsMenu(playerid)
 {
-	new string[MAX_LANG_VALUE_STRING];
-	format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_INFO), CHANGE_NICK_COST, CHANGE_PASS_COST);
+	static
+		string[MAX_LANG_MULTI_STRING];
+
+	format(string, sizeof(string), _m(PLAYER_MENU_SETTINGS_INFO), CHANGE_NICK_COST, CHANGE_PASS_COST);
+
 	Dialog_Open(playerid, Dialog:PlayerSettingsMenu, DIALOG_STYLE_TABLIST_HEADERS,
 		_(PLAYER_MENU_SETTINGS_CAPTION),
 		string,
@@ -29,7 +32,7 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 		Dialog_Show(playerid, Dialog:PlayerMenu);
 		return 1;
 	}
-	
+
 	switch (listitem) {
 		// сохранить аккаунт
 		case 0: {
@@ -72,6 +75,19 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 			}
 			return 1;
 		}
+		// интерфейс
+		case 3: {
+			Dialog_Show(playerid, Dialog:SettingsInterfaceMenu);
+			return 1;
+		}
+	}
+	return 1;
+}
+
+DialogResponse:SettingsReturnMenu(playerid, response, listitem, inputtext[])
+{
+	if (response) {
+		Dialog_Show(playerid, Dialog:PlayerSettingsMenu);
 	}
 	return 1;
 }
@@ -91,7 +107,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		Dialog_Show(playerid, Dialog:PlayerSettingsMenu);
 		return 1;
 	}
-	
+
 	new string[MAX_STRING];
 	if (GetPlayerMoney(playerid) < CHANGE_NICK_COST) {
 		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_NO_MONEY), CHANGE_NICK_COST);
@@ -107,10 +123,10 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		new_name[MAX_PLAYER_NAME+1],
 		old_name[MAX_PLAYER_NAME+1],
 		length = strlen(inputtext);
-	
+
 	GetPlayerName(playerid, old_name, sizeof(old_name));
 	strmid(new_name, inputtext, 0, length);
-	
+
 	if (length < MIN_NAME_LEN || length > MAX_NAME_LEN) {
 		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_LENGTH), MIN_NAME_LEN, MAX_NAME_LEN);
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
@@ -120,7 +136,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		);
 		return 1;
 	}
-	
+
 	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_account, new_name);
 	// если файл есть, то выходим сразу-же
 	if (ini_fileExist(string)) {
@@ -151,18 +167,18 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		);
 		return 1;
 	}
-	
+
 	new gangid = GetPlayerGangID(playerid);
 	if (gangid != INVALID_GANG_ID) {
 		GangMember_SetName(gangid, GetPlayerGangMemberID(playerid), new_name);
 	}
-	
+
 	housing_RenameOwner(old_name, new_name);
 	business_RenameOwner(old_name, new_name);
-	
+
 	Player_Save(playerid);
 	Account_Save(playerid);
-	
+
 	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_account, old_name);
 	if (ini_fileExist(string)) {
 		ini_fileRemove(string);
@@ -172,9 +188,9 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	if (ini_fileExist(string)) {
 		ini_fileRemove(string);
 	}
-	
+
 	GivePlayerMoney(playerid, -CHANGE_NICK_COST);
-	
+
 	format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_CHANGED), old_name, new_name);
 	Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 		_(PLAYER_MENU_SETTINGS_NAME_CAPTION),
@@ -199,7 +215,7 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 		Dialog_Show(playerid, Dialog:PlayerSettingsMenu);
 		return 1;
 	}
-	
+
 	new string[MAX_STRING];
 	if (GetPlayerMoney(playerid) < CHANGE_PASS_COST) {
 		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY), CHANGE_PASS_COST);
@@ -245,10 +261,54 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-DialogResponse:SettingsReturnMenu(playerid, response, listitem, inputtext[])
+DialogCreate:SettingsInterfaceMenu(playerid)
 {
-	if (response) {
-		Dialog_Show(playerid, Dialog:PlayerSettingsMenu);
+	static
+		lang_index,
+		temp[MAX_LANG_VALUE_STRING],
+		string[MAX_LANG_MULTI_STRING];
+
+	__(PLAYER_MENU_SETTINGS_INTERFACE_HEAD, string);
+
+	lang_index = 0;
+
+	for (new pinterface; pinterface < sizeof(gPlayerInterface[]); pinterface++) {
+		format(temp, sizeof(temp), "PLAYER_MENU_SETTINGS_INTERFACE_INFO_%d", lang_index);
+
+		if (GetPlayerInterfaceParam(playerid, PlayerInterface:pinterface, PIP_Visible)) {
+			format(temp, sizeof(temp), Lang_ReturnText(temp), _(PLAYER_MENU_SETTINGS_INTERFACE_ON));
+		} else {
+			format(temp, sizeof(temp), Lang_ReturnText(temp), _(PLAYER_MENU_SETTINGS_INTERFACE_OFF));
+		}
+
+		strcat(string, temp);
+		lang_index++;
 	}
+
+	Dialog_Open(playerid, Dialog:SettingsInterfaceMenu, DIALOG_STYLE_TABLIST_HEADERS,
+		_(PLAYER_MENU_SETTINGS_INTERFACE_CAPTION),
+		string,
+		_(PLAYER_MENU_SETTINGS_BUTTON_SELECT), _(PLAYER_MENU_SETTINGS_BUTTON_BACK)
+	);
+	return 1;
+}
+
+DialogResponse:SettingsInterfaceMenu(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		Dialog_Show(playerid, Dialog:PlayerSettingsMenu);
+		return 1;
+	}
+
+	new
+		bool:pinterface_visible,
+		PlayerInterface:pinterface;
+
+	pinterface = PlayerInterface:listitem;
+	pinterface_visible = bool:GetPlayerInterfaceParam(playerid, pinterface, PIP_Visible);
+
+	SetPlayerInterfaceParam(playerid, pinterface, PIP_Visible, !pinterface_visible);
+
+	Dialog_Show(playerid, Dialog:SettingsInterfaceMenu);
 	return 1;
 }

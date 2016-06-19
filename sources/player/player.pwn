@@ -65,7 +65,7 @@ Player_OnPlayerSpawn(playerid)
 	}
 
 	PlayerLevelTD_ShowTextDraw(playerid);
-	UpdatePlayerWeaponTextDraws(playerid);
+	PlayerWSkillTD_UpdateString(playerid);
 
 	SetPlayerColor(playerid, GetPlayerGangColor(playerid));
 	if (!Account_IsAfterRegistration(playerid)) {
@@ -362,6 +362,10 @@ stock Player_SetDefaultData(playerid)
 
 	for (new i = 0; i < sizeof(PlayerStartWeapon); i++) {
 		GivePlayerWeapon(playerid, PlayerStartWeapon[i][pwid], PlayerStartWeapon[i][pbullets], true);
+	}
+
+	for (new pinterface; pinterface < sizeof(gPlayerInterface[]); pinterface++) {
+		SetPlayerInterfaceParam(playerid, PlayerInterface:pinterface, PIP_Visible, true);
 	}
 }
 

@@ -128,6 +128,8 @@ stock Player_SaveEx(playerid)
 	ini_setInteger(file_player, "Trucker_TryCount", Trucker_GetPlayerTryCount(playerid));
 	ini_setInteger(file_player, "Trucker_PauseTime", Trucker_GetPlayerPauseTime(playerid));
 
+	ini_setInteger(file_player, "Interface_Visible", EncodePlayerInterfaceData(playerid, PIP_Visible));
+
 	ini_closeFile(file_player);
 	return 1;
 }
@@ -259,7 +261,10 @@ stock Player_Login(playerid)
 
 		ini_getInteger(file_player, "Trucker_PauseTime", buf);
 		Trucker_SetPlayerPauseTime(playerid, buf);
-		
+
+		ini_getInteger(file_player, "Interface_Visible", buf);
+		DecodePlayerInterfaceData(playerid, PIP_Visible, buf);
+
 		ini_closeFile(file_player);
 	}
 

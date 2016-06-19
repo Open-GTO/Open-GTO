@@ -1,15 +1,15 @@
 /*
 
-	About: player health text draw header
+	About: player health interface header
 	Author:	ziggi
 
 */
 
-#if defined _player_health_td_h_included
+#if defined _player_health_int_h_included
 	#endinput
 #endif
 
-#define _player_health_td_h_included
+#define _player_health_int_h_included
 
 /*
 	SetPlayerHealth

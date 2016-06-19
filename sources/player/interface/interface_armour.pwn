@@ -1,22 +1,15 @@
 /*
 
-	About: player armour text draw system
+	About: player armour interface system
 	Author:	ziggi
 
 */
 
-#if defined _player_armour_td_included
+#if defined _player_armour_int_included
 	#endinput
 #endif
 
-#define _player_armour_td_included
-
-/*
-	Vars
-*/
-
-static
-	PlayerText:TD_PlayerArmour[MAX_PLAYERS];
+#define _player_armour_int_included
 
 /*
 	OnPlayerConnect
@@ -103,38 +96,82 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 #endif
 
 /*
+	OnPlayerInterfaceChanged
+*/
+
+public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue)
+{
+	if (componentid == PlayerInterface:PI_Armour && paramid == PlayerInterfaceParams:PIP_Visible) {
+		if (newvalue) {
+			PlayerArmourTD_UpdateString(playerid);
+		} else {
+			PlayerArmourTD_HideTextDraw(playerid);
+		}
+	}
+	
+	#if defined PlayerArmourTD_OnPlayerIntChng
+		return PlayerArmourTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerInterfaceChanged
+	#undef OnPlayerInterfaceChanged
+#else
+	#define _ALS_OnPlayerInterfaceChanged
+#endif
+
+#define OnPlayerInterfaceChanged PlayerArmourTD_OnPlayerIntChng
+#if defined PlayerArmourTD_OnPlayerIntChng
+	forward PlayerArmourTD_OnPlayerIntChng(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue);
+#endif
+
+/*
 	Functions
 */
 
 stock PlayerArmourTD_CreateTextDraw(playerid)
 {
-	TD_PlayerArmour[playerid] = CreatePlayerTextDraw(playerid, 577.0, 45.0, "_");
-	PlayerTextDrawLetterSize(playerid, TD_PlayerArmour[playerid], 0.34, 0.8);
-	PlayerTextDrawAlignment(playerid, TD_PlayerArmour[playerid], 2);
-	PlayerTextDrawColor(playerid, TD_PlayerArmour[playerid], 0xFFFFFFFF);
-	PlayerTextDrawSetOutline(playerid, TD_PlayerArmour[playerid], 1);
-	PlayerTextDrawBackgroundColor(playerid, TD_PlayerArmour[playerid], 255);
-	PlayerTextDrawFont(playerid, TD_PlayerArmour[playerid], 1);
-	PlayerTextDrawSetProportional(playerid, TD_PlayerArmour[playerid], 1);
+	new
+		PlayerText:td_temp;
+
+	td_temp = CreatePlayerTextDraw(playerid, 577.0, 45.0, "_");
+	PlayerTextDrawLetterSize(playerid, td_temp, 0.34, 0.8);
+	PlayerTextDrawAlignment(playerid, td_temp, 2);
+	PlayerTextDrawColor(playerid, td_temp, 0xFFFFFFFF);
+	PlayerTextDrawSetOutline(playerid, td_temp, 1);
+	PlayerTextDrawBackgroundColor(playerid, td_temp, 255);
+	PlayerTextDrawFont(playerid, td_temp, 1);
+	PlayerTextDrawSetProportional(playerid, td_temp, 1);
+
+	SetPlayerInterfaceParam(playerid, PI_Armour, PIP_TextDraw, td_temp);
 }
 
 stock PlayerArmourTD_DestroyTextDraw(playerid)
 {
-	PlayerTextDrawDestroy(playerid, TD_PlayerArmour[playerid]);
+	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Armour, PIP_TextDraw));
 }
 
 stock PlayerArmourTD_ShowTextDraw(playerid)
 {
-	PlayerTextDrawShow(playerid, TD_PlayerArmour[playerid]);
+	if (!GetPlayerInterfaceParam(playerid, PI_Armour, PIP_Visible)) {
+		return;
+	}
+
+	PlayerTextDrawShow(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Armour, PIP_TextDraw));
 }
 
 stock PlayerArmourTD_HideTextDraw(playerid)
 {
-	PlayerTextDrawHide(playerid, TD_PlayerArmour[playerid]);
+	PlayerTextDrawHide(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Armour, PIP_TextDraw));
 }
 
 stock PlayerArmourTD_UpdateString(playerid, Float:armour = -1.0)
 {
+	if (!GetPlayerInterfaceParam(playerid, PI_Armour, PIP_Visible)) {
+		return;
+	}
+
 	new
 		string[4];
 	
@@ -150,5 +187,5 @@ stock PlayerArmourTD_UpdateString(playerid, Float:armour = -1.0)
 	
 	format(string, sizeof(string), "%.0f", armour);
 
-	PlayerTextDrawSetString(playerid, TD_PlayerArmour[playerid], string);
+	PlayerTextDrawSetString(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Armour, PIP_TextDraw), string);
 }
