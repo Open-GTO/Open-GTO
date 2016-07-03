@@ -249,9 +249,16 @@ stock wshop_Buy(playerid, weaponid, bullets)
 	GivePlayerMoney(playerid, -purchasecost);
 
 	switch (weaponid) {
-		case 47: SetPlayerArmour(playerid, 100.0);
-		case 37: GivePlayerWeapon(playerid, weaponid, bullets * 10, true); // fix for flamethrower
-		default: GivePlayerWeapon(playerid, weaponid, bullets, true);
+		case WEAPON_ARMOUR: {
+			SetPlayerArmour(playerid, 100.0);
+		}
+		case WEAPON_FLAMETHROWER: {
+			// fix for flamethrower
+			GivePlayerWeapon(playerid, weaponid, bullets * 10, true);
+		}
+		default: {
+			GivePlayerWeapon(playerid, weaponid, bullets, true);
+		}
 	}
 
 	if (!IsWeaponHandToHand(weaponid)) {

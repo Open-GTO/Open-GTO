@@ -19,6 +19,8 @@
 #define MAX_WEAPON_NAME 32
 #define MAX_WEAPON_AMMO 9000
 
+#define WEAPON_ARMOUR   19
+
 /*
 	Enums
 */
@@ -57,7 +59,7 @@ static gWeapons[MAX_WEAPONS][e_Weapon_Info] = {
 	{!"Grenade",           true,  true,  800,   27},
 	{!"Tear Gas",          false, true,  400,   5},
 	{!"Molotov Cocktail",  false, true,  550,   30},
-	{!"Unknown",           false, false, 10,    30},
+	{!"Armour",            true,  false, 200,   10}, // 19 (WEAPON_ARMOUR) added
 	{!"Unknown",           false, false, 10,    30},
 	{!"Unknown",           false, false, 10,    30},
 	{!"9mm",               true,  true,  10,    0},
