@@ -112,22 +112,30 @@ Weapon_Load()
 {
 	new
 		file_handler,
+		temp,
+		temp_str[MAX_WEAPON_NAME],
 		weapon_config[MAX_STRING];
 
-	for (new i = 0; i < sizeof(gWeapons); i++) {
+	for (new i = 0; i < MAX_WEAPONS; i++) {
 		format(weapon_config, sizeof(weapon_config), "%sid_%d"DATA_FILES_FORMAT, db_weapon, i);
 
 		file_handler = ini_openFile(weapon_config);
 
 		if (file_handler < 0) {
-			Log_Debug("Error <Weapon_Load>: unable to open ini file.");
 			continue;
 		}
 
-		ini_getString(file_handler, "Name", gWeapons[i][e_wName], MAX_WEAPON_NAME);
-		ini_getInteger(file_handler, "IsAllowed", gWeapons[i][e_wIsAllowed]);
-		ini_getInteger(file_handler, "Cost", gWeapons[i][e_wCost]);
-		ini_getInteger(file_handler, "Level", gWeapons[i][e_wLevel]);
+		ini_getString(file_handler, "Name", temp_str);
+		SetWeaponName(i, temp_str);
+
+		ini_getInteger(file_handler, "IsAllowed", temp);
+		SetWeaponAllowedStatus(i, bool:temp);
+
+		ini_getInteger(file_handler, "Cost", temp);
+		SetWeaponCost(i, temp);
+
+		ini_getInteger(file_handler, "Level", temp);
+		SetWeaponLevel(i, temp);
 
 		ini_closeFile(file_handler);
 	}
@@ -142,9 +150,10 @@ Weapon_Save()
 {
 	new
 		file_handler,
+		temp_str[MAX_WEAPON_NAME],
 		weapon_config[MAX_STRING];
 
-	for (new i = 0; i < sizeof(gWeapons); i++) {
+	for (new i = 0; i < MAX_WEAPONS; i++) {
 		format(weapon_config, sizeof(weapon_config), "%sid_%d"DATA_FILES_FORMAT, db_weapon, i);
 
 		file_handler = ini_createFile(weapon_config);
@@ -158,10 +167,11 @@ Weapon_Save()
 			continue;
 		}
 
-		ini_setString(file_handler, "Name", gWeapons[i][e_wName]);
-		ini_setInteger(file_handler, "IsAllowed", gWeapons[i][e_wIsAllowed]);
-		ini_setInteger(file_handler, "Cost", gWeapons[i][e_wCost]);
-		ini_setInteger(file_handler, "Level", gWeapons[i][e_wLevel]);
+		GetWeaponName(i, temp_str, MAX_WEAPON_NAME);
+		ini_setString(file_handler, "Name", temp_str);
+		ini_setInteger(file_handler, "IsAllowed", _:IsWeaponAllowed(i));
+		ini_setInteger(file_handler, "Cost", GetWeaponCost(i));
+		ini_setInteger(file_handler, "Level", GetWeaponLevel(i));
 
 		ini_closeFile(file_handler);
 	}
@@ -276,7 +286,58 @@ Weapon_OnPlayerStateChange(playerid, newstate, oldstate)
 }
 
 /*
-	Functions
+	Weapon max ammo
+*/
+
+stock GetWeaponMaxAmmo(weaponid)
+{
+	if (!IsValidWeapon(weaponid)) {
+		return 0;
+	}
+
+	if (IsWeaponHandToHand(weaponid)) {
+		return 1;
+	}
+
+	return MAX_WEAPON_AMMO;
+}
+
+/*
+	Weapon allowed for player
+*/
+
+stock IsPlayerAllowedWeapon(playerid, weaponid)
+{
+	if (!IsValidWeapon(weaponid)) {
+		return 0;
+	}
+
+	if (!IsWeaponAllowed(weaponid) || GetWeaponLevel(weaponid) > GetPlayerLevel(playerid)) {
+		return 0;
+	}
+
+	return 1;
+}
+
+/*
+	Weapon firearm status
+*/
+
+stock IsWeaponHandToHand(weaponid)
+{
+	if (!IsValidWeapon(weaponid)) {
+		return 0;
+	}
+
+	if (gWeapons[weaponid][e_wIsFirearm]) {
+		return 0;
+	}
+
+	return 1;
+}
+
+/*
+	Weapon name
 */
 
 stock ReturnWeaponName(weaponid)
@@ -309,40 +370,19 @@ stock REDEF_GetWeaponName(weaponid, weapon[], len)
 	return 1;
 }
 
-stock IsValidWeapon(weaponid)
-{
-	if (0 <= weaponid < sizeof(gWeapons)) {
-		return 1;
-	}
-
-	return 0;
-}
-
-stock GetWeaponMaxAmmo(weaponid)
+stock SetWeaponName(weaponid, name[])
 {
 	if (!IsValidWeapon(weaponid)) {
 		return 0;
 	}
 
-	if (IsWeaponHandToHand(weaponid)) {
-		return 1;
-	}
-
-	return MAX_WEAPON_AMMO;
+	return
+		strpack(gWeapons[weaponid][e_wName], name, MAX_WEAPON_NAME);
 }
 
-stock IsPlayerAllowedWeapon(playerid, weaponid)
-{
-	if (!IsValidWeapon(weaponid)) {
-		return 0;
-	}
-
-	if (!IsWeaponAllowed(weaponid) || GetWeaponLevel(weaponid) > GetPlayerLevel(playerid)) {
-		return 0;
-	}
-
-	return 1;
-}
+/*
+	Weapon allowed status
+*/
 
 stock IsWeaponAllowed(weaponid)
 {
@@ -357,18 +397,19 @@ stock IsWeaponAllowed(weaponid)
 	return 1;
 }
 
-stock IsWeaponHandToHand(weaponid)
+stock SetWeaponAllowedStatus(weaponid, bool:status)
 {
 	if (!IsValidWeapon(weaponid)) {
 		return 0;
 	}
 
-	if (gWeapons[weaponid][e_wIsFirearm]) {
-		return 0;
-	}
-
+	gWeapons[weaponid][e_wIsAllowed] = status;
 	return 1;
 }
+
+/*
+	Weapon cost
+*/
 
 stock GetWeaponCost(weaponid)
 {
@@ -379,6 +420,20 @@ stock GetWeaponCost(weaponid)
 	return gWeapons[weaponid][e_wCost];
 }
 
+stock SetWeaponCost(weaponid, cost)
+{
+	if (!IsValidWeapon(weaponid)) {
+		return 0;
+	}
+
+	gWeapons[weaponid][e_wCost] = cost;
+	return 1;
+}
+
+/*
+	Weapon level
+*/
+
 stock GetWeaponLevel(weaponid)
 {
 	if (!IsValidWeapon(weaponid)) {
@@ -386,4 +441,27 @@ stock GetWeaponLevel(weaponid)
 	}
 
 	return gWeapons[weaponid][e_wLevel];
+}
+
+stock SetWeaponLevel(weaponid, level)
+{
+	if (!IsValidWeapon(weaponid)) {
+		return 0;
+	}
+
+	gWeapons[weaponid][e_wLevel] = level;
+	return 1;
+}
+
+/*
+	Weapon validation
+*/
+
+stock IsValidWeapon(weaponid)
+{
+	if (0 <= weaponid < MAX_WEAPONS) {
+		return 1;
+	}
+
+	return 0;
 }
