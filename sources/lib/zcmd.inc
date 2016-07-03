@@ -4,25 +4,32 @@
  *   @Version:     0.3.1          *
  *   @Released:    31/10/2009     *
  *                                *
+ *   @Modified by: ziggi          *
+ *   @Released:    03/06/2016     *
+ *                                *
  **********************************/
 
 #if defined _zcmd_included
 	#endinput
-#endif	
+#endif
 #define _zcmd_included
 
-#define MAX_FUNC_NAME (32)
+#define MAX_FUNC_NAME        (32)
+#define MAX_FUNC_NAME_PREFIX (4)
 
 #define COMMAND:%1(%2)          \
 			forward cmd_%1(%2); \
-			public cmd_%1(%2)		
-			
+			public cmd_%1(%2)
+
 #define CMD:%1(%2) \
 			COMMAND:%1(%2)
 
+#define cmd:%1(%2) \
+			COMMAND:%1(%2)
+
 #define command(%1,%2,%3) \
-			COMMAND:%1(%2, %3)      
-      
+			COMMAND:%1(%2, %3)
+
 #define cmd(%1,%2,%3) \
 			COMMAND:%1(%2, %3)
 
@@ -32,8 +39,8 @@
 #endif
 
 
-forward OnPlayerCommandReceived(playerid, cmdtext[]); 
-forward OnPlayerCommandPerformed(playerid, cmdtext[], success); 
+forward OnPlayerCommandReceived(playerid, cmdtext[]);
+forward OnPlayerCommandPerformed(playerid, cmdtext[], success);
 
 
 static
@@ -46,13 +53,13 @@ public OnFilterScriptInit()
 {
 	zcmd_g_HasOPCS = funcidx("OnPlayerCommandReceived") != -1;
 	zcmd_g_HasOPCE = funcidx("OnPlayerCommandPerformed") != -1;
-    return CallLocalFunction("zcmd_OnFilterScriptInit", "");
+	return CallLocalFunction("zcmd_OnFilterScriptInit", "");
 }
 
 #if defined _ALS_OnFilterScriptInit
-    #undef OnFilterScriptInit
+	#undef OnFilterScriptInit
 #else
-    #define _ALS_OnFilterScriptInit
+	#define _ALS_OnFilterScriptInit
 #endif
 #define OnFilterScriptInit zcmd_OnFilterScriptInit
 forward zcmd_OnFilterScriptInit();
@@ -63,17 +70,16 @@ public OnGameModeInit()
 {
 	zcmd_g_HasOPCS = funcidx("OnPlayerCommandReceived") != -1;
 	zcmd_g_HasOPCE = funcidx("OnPlayerCommandPerformed") != -1;
-	if (funcidx("zcmd_OnGameModeInit") != -1)
-	{
+	if (funcidx("zcmd_OnGameModeInit") != -1) {
 		return CallLocalFunction("zcmd_OnGameModeInit", "");
-	}	
+	}
 	return 1;
 }
 
 #if defined _ALS_OnGameModeInit
-    #undef OnGameModeInit
+	#undef OnGameModeInit
 #else
-    #define _ALS_OnGameModeInit
+	#define _ALS_OnGameModeInit
 #endif
 #define OnGameModeInit zcmd_OnGameModeInit
 forward zcmd_OnGameModeInit();
@@ -82,38 +88,40 @@ forward zcmd_OnGameModeInit();
 
 public OnPlayerCommandText(playerid, cmdtext[])
 {
-    if (zcmd_g_HasOPCS && !CallLocalFunction("OnPlayerCommandReceived", "is", playerid, cmdtext))
-    {
-        return 1;
-    }
-    new
-        pos,
-        funcname[MAX_FUNC_NAME];
-    while (cmdtext[++pos] > ' ') 
-	{
-		funcname[pos-1] = tolower(cmdtext[pos]); 
+	if (zcmd_g_HasOPCS && !CallLocalFunction("OnPlayerCommandReceived", "is", playerid, cmdtext)) {
+		return 1;
 	}
-	format(funcname, sizeof(funcname), "cmd_%s", funcname);
-    while (cmdtext[pos] == ' ') pos++;
-	if (!cmdtext[pos])
-	{
-		if (zcmd_g_HasOPCE)
-		{
+
+	new
+		pos,
+		funcname[MAX_FUNC_NAME] = "cmd_";
+
+	while (cmdtext[++pos] > ' ' && pos < MAX_FUNC_NAME - MAX_FUNC_NAME_PREFIX) {
+		funcname[MAX_FUNC_NAME_PREFIX + pos - 1] = tolower(cmdtext[pos]);
+	}
+
+	while (cmdtext[pos] == ' ') {
+		pos++;
+	}
+
+	if (!cmdtext[pos]) {
+		if (zcmd_g_HasOPCE) {
 			return CallLocalFunction("OnPlayerCommandPerformed", "isi", playerid, cmdtext, CallLocalFunction(funcname, "is", playerid, "\1"));
 		}
-		return CallLocalFunction(funcname, "is", playerid, "\1");	
+		return CallLocalFunction(funcname, "is", playerid, "\1");
 	}
-	if (zcmd_g_HasOPCE)
-	{
+
+	if (zcmd_g_HasOPCE) {
 		return CallLocalFunction("OnPlayerCommandPerformed", "isi", playerid, cmdtext, CallLocalFunction(funcname, "is", playerid, cmdtext[pos]));
 	}
+
 	return CallLocalFunction(funcname, "is", playerid, cmdtext[pos]);
 }
 
 #if defined _ALS_OnPlayerCommandText
-    #undef OnPlayerCommandText
+	#undef OnPlayerCommandText
 #else
-    #define _ALS_OnPlayerCommandText
+	#define _ALS_OnPlayerCommandText
 #endif
 #define OnPlayerCommandText zcmd_OnPlayerCommandText
 forward zcmd_OnPlayerCommandText(playerid, cmdtext[]);
