@@ -136,7 +136,7 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 			format(string, sizeof(string), _(PLAYER_LEVEL_UP), level);
 			SendClientMessage(playerid, COLOR_XP_GOOD, string);
 
-			ShowWeaponsOnLevel(playerid, level, old_level);
+			ShowPlayerWeaponsOnLevel(playerid, level, old_level);
 		} else {
 			format(string, sizeof(string), _(PLAYER_LEVEL_DOWN), level);
 			SendClientMessage(playerid, COLOR_XP_BAD, string);

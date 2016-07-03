@@ -97,10 +97,10 @@ wshop_OnPlayerEnterCheckpoint(playerid, cp)
 // select weapon from list
 DialogCreate:ServiceWeapon(playerid)
 {
-	new string[ (sizeof(Weapons) + 1) * (MAX_NAME + 12 + 4) ];
+	new string[ (MAX_WEAPONS + 1) * (MAX_WEAPON_NAME + 12 + 4) ];
 	string = _(WEAPON_DIALOG_LIST_HEADER);
 
-	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++) {
+	for (new weaponid = 1; weaponid < MAX_WEAPONS; weaponid++) {
 		if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
 			continue;
 		}
@@ -227,7 +227,7 @@ stock wshop_Buy(playerid, weaponid, bullets)
 	new
 		max_ammo = GetWeaponMaxAmmo(weaponid),
 		current_bullets = GetPlayerWeaponAmmo(playerid, weaponid);
-	
+
 	if (current_bullets >= max_ammo) {
 		wshop_Message(playerid, _(WEAPON_MAX_AMMO_COUNT));
 		return 0;
@@ -268,7 +268,7 @@ stock wshop_Buy(playerid, weaponid, bullets)
 stock wshop_GetSelectedWeaponID(playerid, listitem)
 {
 	new k = 0;
-	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++) {
+	for (new weaponid = 1; weaponid < MAX_WEAPONS; weaponid++) {
 		if (IsPlayerAllowedWeapon(playerid, weaponid)) {
 			k++;
 
@@ -297,6 +297,6 @@ stock wshop_GetActorFreeSlot()
 	if (slot >= sizeof(wshop_actors)) {
 		return -1;
 	}
-	
+
 	return slot++;
 }

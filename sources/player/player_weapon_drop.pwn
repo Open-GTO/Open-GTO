@@ -1,5 +1,5 @@
 /*
-	
+
 	About: drop weapon pickups after the death
 	Author: ziggi
 
@@ -87,7 +87,7 @@ PWDrop_OnPlayerDeath(playerid, killerid, reason)
 		return 0;
 	}
 
-	if (!IsWeapon(reason)) {
+	if (!IsValidWeapon(reason)) {
 		return 0;
 	}
 
@@ -108,7 +108,7 @@ PWDrop_OnPlayerDeath(playerid, killerid, reason)
 		if (pickupmodel == -1) {
 			continue;
 		}
-		
+
 		wd_slot = FindFreeWeaponDropSlot();
 		if (wd_slot == -1) {
 			Log_Game(_(WEAPON_DROP_ERROR_SLOT_NOT_FOUND));
@@ -160,7 +160,7 @@ public DestroyWeaponDropPickup(wd_slot)
 
 	DestroyDynamicPickup( gDroppedWeapons[wd_slot][wd_pickupid] );
 	gDroppedWeapons[wd_slot][wd_pickupid] = -1;
-	
+
 	KillTimer(gDroppedWeapons[wd_slot][wd_timer]);
 	gDroppedWeapons[wd_slot][wd_timer] = -1;
 	return 1;
@@ -168,7 +168,7 @@ public DestroyWeaponDropPickup(wd_slot)
 
 stock GetWeaponPickupModel(weaponid)
 {
-	if (!IsWeapon(weaponid)) {
+	if (!IsValidWeapon(weaponid)) {
 		return -1;
 	}
 

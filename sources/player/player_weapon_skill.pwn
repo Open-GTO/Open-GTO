@@ -48,7 +48,7 @@ PWSkill_OnPlayerDeath(playerid, killerid, reason)
 		return 0;
 	}
 
-	if (!IsWeapon(reason)) {
+	if (!IsValidWeapon(reason)) {
 		return 0;
 	}
 

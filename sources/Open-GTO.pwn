@@ -47,6 +47,7 @@ Thanks:
 
 // header files
 #include "gang/gang.inc"
+#include "system/weapons.inc"
 #include "player/player.inc"
 #include "player/player_account.inc"
 #include "player/player_spawn.inc"
@@ -288,7 +289,7 @@ public OnGameModeInit()
 	business_OnGameModeInit();
 	housing_OnGameModeInit();
 	Enterexit_OnGameModeInit();
-	weapon_OnGameModeInit();
+	Weapon_OnGameModeInit();
 	Premium_OnGameModeInit();
 	PWDrop_OnGameModeInit();
 	PLevel_OnGameModeInit();
@@ -664,7 +665,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	Vehicle_OnPlayerStateChange(playerid, newstate, oldstate);
 	Trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 	Spectate_OnPlayerStateChange(playerid, newstate, oldstate);
-	weapon_OnPlayerStateChange(playerid, newstate, oldstate);
+	Weapon_OnPlayerStateChange(playerid, newstate, oldstate);
 	Fuelstation_OnPlayerStateChange(playerid, newstate, oldstate);
 
 	if (newstate == PLAYER_STATE_DRIVER) {
@@ -750,7 +751,7 @@ public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 
 public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 {
-	weapon_OnPlayerGiveDamage(playerid, damagedid, amount, weaponid, bodypart);
+	Weapon_OnPlayerGiveDamage(playerid, damagedid, amount, weaponid, bodypart);
 	return 1;
 }
 

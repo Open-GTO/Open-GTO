@@ -385,6 +385,33 @@ stock Player_Sync(playerid)
 }
 
 /*
+	Weapon
+*/
+
+stock ShowPlayerWeaponsOnLevel(playerid, newlevel, oldlevel)
+{
+	new
+		string[MAX_LANG_VALUE_STRING],
+		bool:is_found;
+
+	for (new weaponid = 1; weaponid < MAX_WEAPONS; weaponid++) {
+		if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
+			continue;
+		}
+
+		if (oldlevel < GetWeaponLevel(weaponid) <= newlevel) {
+			if (!is_found) {
+				SendClientMessage(playerid, COLOR_GREEN, _(PLAYER_LEVEL_NEW_WEAPON));
+				is_found = true;
+			}
+			format(string, sizeof(string), _(PLAYER_LEVEL_NEW_WEAPON_ITEM), ReturnWeaponName(weaponid), GetWeaponCost(weaponid));
+			SendClientMessage(playerid, COLOR_MISC, string);
+		}
+	}
+	return 1;
+}
+
+/*
 	Name
 */
 

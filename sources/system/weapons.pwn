@@ -1,9 +1,9 @@
 /*
-	Created: 05.09.06
-	Aurthor: Iain Gilbert
-	Modified by ziggi
-*/
 
+	About: weapons system
+	Author: ziggi
+
+*/
 
 #if defined _weapons_included
 	#endinput
@@ -11,130 +11,177 @@
 
 #define _weapons_included
 
+/*
+	Defines
+*/
 
-#define MAX_BULLETS				9000
+#define MAX_WEAPONS     47
+#define MAX_WEAPON_NAME 32
+#define MAX_WEAPON_AMMO 9000
 
-enum WeaponInfo {
-	Weapon_Name[MAX_NAME], // weapon name
-	Weapon_Allowed, // is weapon allowed
-	Weapon_IsFirearm, // is weapon is firearm
-	Weapon_Cost, // cost per bullet
-	Weapon_Level // player level required to buy this weapon
+/*
+	Enums
+*/
+
+enum e_Weapon_Info {
+	e_wName[MAX_WEAPON_NAME char],
+	bool:e_wIsAllowed,
+	bool:e_wIsFirearm,
+	e_wCost,
+	e_wLevel,
 }
 
-new Weapons[][WeaponInfo] = {
-	{"Невооружен",                    0, 0, 0,     0},
-	{"Кастет",                        1, 0, 600,   4},
-	{"Клюшка для гольфа",             0, 0, 600,   2},
-	{"Дубинка",                       0, 0, 1000,  8},
-	{"Нож",                           1, 0, 1000,  10},
-	{"Бейсбольная бита",              1, 0, 1500,  7},
-	{"Лопата",                        0, 0, 100,   0},
-	{"Кий",                           1, 0, 100,   2},
-	{"Катана",                        1, 0, 2000,  8},
-	{"Бензопила",                     1, 0, 750,   9},
-	{"Пурпурный Dildo",               0, 0, 500,   6},
-	{"Дилдо",                         1, 0, 500,   5},
-	{"Вибратор",                      0, 0, 700,   8},
-	{"Серебряный вибратор",           0, 0, 500,   4},
-	{"Букет цветов",                  1, 0, 100,   3},
-	{"Трость",                        0, 0, 100,   1},
+/*
+	Vars
+*/
 
-	{"Граната",                       1, 1, 800,   27},
-	{"Газовый баллон",                0, 1, 400,   5},
-	{"Коктейль молотова",             0, 1, 550,   30},
-	{"Неизвестное",                   0, 0, 10,    30},
-	{"Неизвестное",                   0, 0, 10,    30},
-	{"Неизвестное",                   0, 0, 10,    30},
-	{"Пистолет 9мм",                  1, 1, 10,    0},
-	{"Пистолет 9мм с глушителем",     1, 1, 10,    5},
-	{"Пустынный орёл",                1, 1, 20,    10},
-	{"Дробовик",                      1, 1, 15,    5},
-	{"Разрывной дробовик",            1, 1, 25,    15},
-	{"Боевой дробовик",               1, 1, 40,    10},
-	{"Узи",                           1, 1, 30,    20},
-	{"MP5",                           1, 1, 25,    20},
-	{"AK-47",                         1, 1, 40,    23},
-	{"M4",                            1, 1, 40,    23},
-	{"Tec-9",                         1, 1, 30,    20},
-	{"Винтовка",                      1, 1, 150,   22},
-	{"Снайперская винтовка",          1, 1, 400,   26},
-	{"РПГ",                           1, 1, 1000,  30},
-	{"Реактивная пусковая установка", 0, 1, 1000,  29},
-	{"Огнемёт",                       0, 1, 200,   28},
-	{"Ручной пулемёт(Миниган)",       0, 1, 100,   30},
-	{"Заряженный рюкзак",             0, 1, 500,   30},
-	{"Детонатор к рюкзаку",           0, 0, 1,     30},
-
-	{"Баллончик с краской",           0, 1, 40,    5},
-	{"Огнетушитель",                  0, 1, 10,    5},
-	{"Фотокамера",                    0, 1, 60,    5},
-	{"Очки ночного видения",          0, 0, 10,    0},
-	{"Тепловые очки",                 0, 0, 10,    0},
-	{"Парашют",                       1, 0, 500,   1},
-	{"Броня",                         1, 0, 200,   10}
+static gWeapons[MAX_WEAPONS][e_Weapon_Info] = {
+	// hand to hand
+	{!"Unarmed",           false, false, 0,     0},
+	{!"Brass Knuckles",    true,  false, 600,   4},
+	{!"Golf Club",         false, false, 600,   2},
+	{!"Nightstick",        false, false, 1000,  8},
+	{!"Knife",             true,  false, 1000,  10},
+	{!"Baseball Bat",      true,  false, 1500,  7},
+	{!"Shovel",            false, false, 100,   0},
+	{!"Pool Cue",          true,  false, 100,   2},
+	{!"Katana",            true,  false, 2000,  8},
+	{!"Chainsaw",          true,  false, 750,   9},
+	{!"Purple Dildo",      false, false, 500,   6},
+	{!"Dildo",             true,  false, 500,   5},
+	{!"Vibrator",          false, false, 700,   8},
+	{!"Silver Vibrator",   false, false, 500,   4},
+	{!"Flowers",           true,  false, 100,   3},
+	{!"Cane",              false, false, 100,   1},
+	// firearm
+	{!"Grenade",           true,  true,  800,   27},
+	{!"Tear Gas",          false, true,  400,   5},
+	{!"Molotov Cocktail",  false, true,  550,   30},
+	{!"Unknown",           false, false, 10,    30},
+	{!"Unknown",           false, false, 10,    30},
+	{!"Unknown",           false, false, 10,    30},
+	{!"9mm",               true,  true,  10,    0},
+	{!"Silenced 9mm	",     true,  true,  10,    5},
+	{!"Desert Eagle",      true,  true,  20,    10},
+	{!"Shotgun",           true,  true,  15,    5},
+	{!"Sawnoff Shotgun",   true,  true,  25,    15},
+	{!"Combat Shotgun",    true,  true,  40,    10},
+	{!"Micro SMG/Uzi",     true,  true,  30,    20},
+	{!"MP5",               true,  true,  25,    20},
+	{!"AK-47",             true,  true,  40,    23},
+	{!"M4",                true,  true,  40,    23},
+	{!"Tec-9",             true,  true,  30,    20},
+	{!"Country Rifle",     true,  true,  150,   22},
+	{!"Sniper Rifle",      true,  true,  400,   26},
+	{!"RPG",               true,  true,  1000,  30},
+	{!"HS Rocket",         false, true,  1000,  29},
+	{!"Flamethrower",      false, true,  200,   28},
+	{!"Minigun",           false, true,  100,   30},
+	{!"Satchel Charge",    false, true,  500,   30},
+	{!"Detonator",         false, false, 1,     30},
+	// other
+	{!"Spraycan",          false, true,  40,    5},
+	{!"Fire Extinguisher", false, true,  10,    5},
+	{!"Camera",            false, true,  60,    5},
+	{!"Night Vis Goggles", false, false, 10,    0},
+	{!"Thermal Goggles",   false, false, 10,    0},
+	{!"Parachute",         true,  false, 500,   1}
 };
 
-weapon_LoadConfig(file_config)
+/*
+	Config
+*/
+
+Weapon_LoadConfig(file_config)
 {
 	ini_getString(file_config, "Weapon_DB", db_weapon);
 }
 
-weapon_SaveConfig(file_config)
+Weapon_SaveConfig(file_config)
 {
 	ini_setString(file_config, "Weapon_DB", db_weapon);
 }
 
-weapon_LoadAll()
-{
-	new file_weapons,
-		db_weaponname[MAX_STRING];
+/*
+	Weapon_Load
+*/
 
-	for (new i = 0; i < sizeof(Weapons); i++) {
-		format(db_weaponname, sizeof(db_weaponname), "%sid_%d"DATA_FILES_FORMAT, db_weapon, i);
-		if (!ini_fileExist(db_weaponname)) {
+Weapon_Load()
+{
+	new
+		file_handler,
+		weapon_config[MAX_STRING];
+
+	for (new i = 0; i < sizeof(gWeapons); i++) {
+		format(weapon_config, sizeof(weapon_config), "%sid_%d"DATA_FILES_FORMAT, db_weapon, i);
+
+		file_handler = ini_openFile(weapon_config);
+
+		if (file_handler < 0) {
+			Log_Debug("Error <Weapon_Load>: unable to open ini file.");
 			continue;
 		}
 
-		file_weapons = ini_openFile(db_weaponname);
+		ini_getString(file_handler, "Name", gWeapons[i][e_wName], MAX_WEAPON_NAME);
+		ini_getInteger(file_handler, "IsAllowed", gWeapons[i][e_wIsAllowed]);
+		ini_getInteger(file_handler, "Cost", gWeapons[i][e_wCost]);
+		ini_getInteger(file_handler, "Level", gWeapons[i][e_wLevel]);
 
-		ini_getString(file_weapons, "Name", Weapons[i][Weapon_Name], MAX_NAME);
-		ini_getInteger(file_weapons, "IsAllowed", Weapons[i][Weapon_Allowed]);
-		ini_getInteger(file_weapons, "Level", Weapons[i][Weapon_Level]);
-		ini_getInteger(file_weapons, "Price", Weapons[i][Weapon_Cost]);
-
-		ini_closeFile(file_weapons);
+		ini_closeFile(file_handler);
 	}
 	return 1;
 }
 
-weapon_SaveAll()
+/*
+	Weapon_Save
+*/
+
+Weapon_Save()
 {
-	new file_weapons,
-		db_weaponname[MAX_STRING];
+	new
+		file_handler,
+		weapon_config[MAX_STRING];
 
-	for (new i = 0; i < sizeof(Weapons); i++) {
-		format(db_weaponname, sizeof(db_weaponname), "%sid_%d"DATA_FILES_FORMAT, db_weapon, i);
-		file_weapons = (!ini_fileExist(db_weaponname)) ? ini_createFile(db_weaponname) : ini_openFile(db_weaponname);
+	for (new i = 0; i < sizeof(gWeapons); i++) {
+		format(weapon_config, sizeof(weapon_config), "%sid_%d"DATA_FILES_FORMAT, db_weapon, i);
 
-		ini_setString(file_weapons, "Name", Weapons[i][Weapon_Name]);
-		ini_setInteger(file_weapons, "IsAllowed", Weapons[i][Weapon_Allowed]);
-		ini_setInteger(file_weapons, "Level", Weapons[i][Weapon_Level]);
-		ini_setInteger(file_weapons, "Price", Weapons[i][Weapon_Cost]);
+		file_handler = ini_createFile(weapon_config);
 
-		ini_closeFile(file_weapons);
+		if (file_handler < 0) {
+			file_handler = ini_openFile(weapon_config);
+		}
+
+		if (file_handler < 0) {
+			Log_Debug("Error <Weapon_Save>: unable to open or create ini file.");
+			continue;
+		}
+
+		ini_setString(file_handler, "Name", gWeapons[i][e_wName]);
+		ini_setInteger(file_handler, "IsAllowed", gWeapons[i][e_wIsAllowed]);
+		ini_setInteger(file_handler, "Cost", gWeapons[i][e_wCost]);
+		ini_setInteger(file_handler, "Level", gWeapons[i][e_wLevel]);
+
+		ini_closeFile(file_handler);
 	}
-	return 1;
 }
 
-weapon_OnGameModeInit()
+/*
+	Weapon_OnGameModeInit
+*/
+
+Weapon_OnGameModeInit()
 {
-	weapon_LoadAll();
+	Weapon_Load();
 	EnableVehicleFriendlyFire();
+
 	Log_Game("SERVER: Weapon module init");
 }
 
-weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
+/*
+	Weapon_OnPlayerGiveDamage
+*/
+
+Weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 {
 	#pragma unused weaponid
 
@@ -179,7 +226,11 @@ weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 	return 1;
 }
 
-weapon_OnPlayerStateChange(playerid, newstate, oldstate)
+/*
+	Weapon_OnPlayerStateChange
+*/
+
+Weapon_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	#pragma unused oldstate
 	new
@@ -222,39 +273,82 @@ weapon_OnPlayerStateChange(playerid, newstate, oldstate)
 	return 1;
 }
 
+/*
+	Functions
+*/
+
 stock ReturnWeaponName(weaponid)
 {
-	new name[MAX_NAME];
-	name = "Unknown";
+	new
+		name[MAX_WEAPON_NAME];
 
-	if (!IS_IN_RANGE(weaponid, 0, sizeof(Weapons))) {
-		return name;
-	}
+	GetWeaponName(weaponid, name, sizeof(name));
 
-	strmid(name, Weapons[weaponid][Weapon_Name], 0, strlen(Weapons[weaponid][Weapon_Name]));
 	return name;
 }
 
-stock GetWeaponMaxAmmo(weaponid)
+stock REDEF_GetWeaponName(weaponid, weapon[], len)
 {
-	if (!IS_IN_RANGE(weaponid, 0, sizeof(Weapons))) {
+	if (!IsValidWeapon(weaponid)) {
 		return 0;
 	}
 
-	if (Weapons[weaponid][Weapon_IsFirearm] == 1) {
-		return MAX_BULLETS;
+	new
+		is_exists,
+		string[MAX_WEAPON_NAME];
+
+	format(string, sizeof(string), "WEAPON_NAME_%d", weaponid);
+	is_exists = Lang_GetText(string, weapon, len);
+
+	if (!is_exists) {
+		strunpack(weapon, gWeapons[weaponid][e_wName], len);
 	}
 
 	return 1;
 }
 
-stock IsPlayerAllowedWeapon(playerid, weaponid)
+stock IsValidWeapon(weaponid)
 {
-	if (!IS_IN_RANGE(weaponid, 0, sizeof(Weapons))) {
+	if (0 <= weaponid < sizeof(gWeapons)) {
+		return 1;
+	}
+
+	return 0;
+}
+
+stock GetWeaponMaxAmmo(weaponid)
+{
+	if (!IsValidWeapon(weaponid)) {
 		return 0;
 	}
 
-	if (Weapons[weaponid][Weapon_Allowed] == 0 || Weapons[weaponid][Weapon_Level] > GetPlayerLevel(playerid)) {
+	if (IsWeaponHandToHand(weaponid)) {
+		return 1;
+	}
+
+	return MAX_WEAPON_AMMO;
+}
+
+stock IsPlayerAllowedWeapon(playerid, weaponid)
+{
+	if (!IsValidWeapon(weaponid)) {
+		return 0;
+	}
+
+	if (!IsWeaponAllowed(weaponid) || GetWeaponLevel(weaponid) > GetPlayerLevel(playerid)) {
+		return 0;
+	}
+
+	return 1;
+}
+
+stock IsWeaponAllowed(weaponid)
+{
+	if (!IsValidWeapon(weaponid)) {
+		return 0;
+	}
+
+	if (!gWeapons[weaponid][e_wIsAllowed]) {
 		return 0;
 	}
 
@@ -263,54 +357,31 @@ stock IsPlayerAllowedWeapon(playerid, weaponid)
 
 stock IsWeaponHandToHand(weaponid)
 {
-	if (!IS_IN_RANGE(weaponid, 0, sizeof(Weapons))) {
+	if (!IsValidWeapon(weaponid)) {
 		return 0;
 	}
 
-	if (Weapons[weaponid][Weapon_IsFirearm] == 0) {
-		return 1;
+	if (gWeapons[weaponid][e_wIsFirearm]) {
+		return 0;
 	}
 
-	return 0;
+	return 1;
 }
 
 stock GetWeaponCost(weaponid)
 {
-	if (!IS_IN_RANGE(weaponid, 0, sizeof(Weapons))) {
+	if (!IsValidWeapon(weaponid)) {
 		return 0;
 	}
 
-	return Weapons[weaponid][Weapon_Cost];
+	return gWeapons[weaponid][e_wCost];
 }
 
-stock IsWeapon(weaponid)
+stock GetWeaponLevel(weaponid)
 {
-	if (IS_IN_RANGE(weaponid, 0, 46)) {
-		return 1;
+	if (!IsValidWeapon(weaponid)) {
+		return 0;
 	}
-	return 0;
-}
 
-// показывает доступное оружие на уровне
-stock ShowWeaponsOnLevel(playerid, newlevel, oldlevel)
-{
-	new
-		string[MAX_STRING],
-		wepfound = 0;
-
-	for (new weaponid = 1; weaponid < sizeof(Weapons); weaponid++) {
-		if (Weapons[weaponid][Weapon_Allowed] == 0) {
-			continue;
-		}
-
-		if (Weapons[weaponid][Weapon_Level] > oldlevel && Weapons[weaponid][Weapon_Level] <= newlevel) {
-			if (wepfound == 0) {
-				SendClientMessage(playerid, COLOR_GREEN, _(PLAYER_LEVEL_NEW_WEAPON));
-				wepfound = 1;
-			}
-			format(string, sizeof(string), _(PLAYER_LEVEL_NEW_WEAPON_ITEM), ReturnWeaponName(weaponid), GetWeaponCost(weaponid));
-			SendClientMessage(playerid, COLOR_MISC, string);
-		}
-	}
-	return 1;
+	return gWeapons[weaponid][e_wLevel];
 }

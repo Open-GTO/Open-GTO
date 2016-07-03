@@ -36,7 +36,7 @@ public WorldSave(necessarily) // save all
 	cfg_SaveConfigs();
 
 	// other
-	weapon_SaveAll();
+	Weapon_Save();
 	business_SaveAll();
 	houses_SaveAll();
 	Gang_SaveAll();
