@@ -24,9 +24,6 @@
 #define CMD:%1(%2) \
 			COMMAND:%1(%2)
 
-#define cmd:%1(%2) \
-			COMMAND:%1(%2)
-
 #define command(%1,%2,%3) \
 			COMMAND:%1(%2, %3)
 
