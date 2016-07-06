@@ -56,10 +56,13 @@ COMMAND:status(playerid, params[])
 	new string[MAX_STRING];
 
 	GetPlayerPrivilegeName(playerid, string);
+	format(string, sizeof(string), _(COMMAND_STATUS_PRIVILEGE), string);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
-	format(string, sizeof(string), _(COMMAND_STATUS_1), ReturnPlayerGangName(playerid));
-	SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
+	if (IsPlayerInGang(playerid)) {
+		format(string, sizeof(string), _(COMMAND_STATUS_1), ReturnPlayerGangName(playerid));
+		SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
+	}
 
 	format(string, sizeof(string), _(COMMAND_STATUS_2), GetPlayerLevel(playerid), GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1), GetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
 	SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
@@ -183,7 +186,7 @@ COMMAND:pm(playerid, params[])
 		SendClientMessage(playerid, -1, _(COMMAND_PM_ERROR));
 		return 1;
 	}
-	
+
 	SendPlayerPrivateMessage(playerid, receiveid, message);
 	return 1;
 }
