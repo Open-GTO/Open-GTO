@@ -232,7 +232,7 @@ stock Gang_Create(playerid, gangname[], gangcolour)
 		return INVALID_GANG_ID;
 	}
 
-	strmid(gGang[gangid][e_gName], gangname, 0, strlen(gangname), MAX_GANG_NAME);
+	strcpy(gGang[gangid][e_gName], gangname, MAX_GANG_NAME);
 	gGang[gangid][e_gMotd][0] = '\0';
 	gGang[gangid][e_gColor] = gangcolour;
 	gGang[gangid][e_gKills] = 0;
@@ -672,7 +672,7 @@ stock Gang_GetColor(gangid)
 
 stock Gang_GetName(gangid, name[], const size = sizeof(name))
 {
-	strmid(name, gGang[gangid][e_gName], 0, strlen(gGang[gangid][e_gName]), size);
+	strcpy(name, gGang[gangid][e_gName], size);
 }
 
 stock Gang_ReturnName(gangid)
@@ -686,12 +686,12 @@ stock Gang_ReturnName(gangid)
 
 stock Gang_GetMotd(gangid, text[], const size = sizeof(text))
 {
-	strmid(text, gGang[gangid][e_gMotd], 0, strlen(gGang[gangid][e_gMotd]), size);
+	strcpy(text, gGang[gangid][e_gMotd], size);
 }
 
 stock Gang_SetMotd(gangid, text[])
 {
-	strmid(gGang[gangid][e_gMotd], text, 0, strlen(text), MAX_GANG_MOTD);
+	strcpy(gGang[gangid][e_gMotd], text, MAX_GANG_MOTD);
 }
 
 stock Gang_ReturnMotd(gangid)

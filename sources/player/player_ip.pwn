@@ -24,7 +24,7 @@ static
 
 stock Player_GetIP(playerid, ip[], const size = sizeof(ip))
 {
-	strmid(ip, gPlayerIP[playerid], 0, strlen(gPlayerIP[playerid]), size);
+	strcpy(ip, gPlayerIP[playerid], size);
 }
 
 stock Player_UpdateIP(playerid)

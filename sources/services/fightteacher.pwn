@@ -76,11 +76,11 @@ DialogCreate:ServiceFights(playerid)
 		string[MAX_LANG_VALUE_STRING],
 		caption[MAX_LANG_VALUE_STRING],
 		teacherid = GetPlayerFightTeacherID(playerid);
-	
+
 	GetFightTeacherName(teacherid, string);
 	format(caption, sizeof(caption), _(FIGHT_TEACHER_DIALOG_TEACHER_CAPTION), string);
 	format(string, sizeof(string), _(FIGHT_TEACHER_LEARN_MESSAGE), string, GetFightTeacherCost(teacherid));
-	
+
 	Dialog_Open(playerid, Dialog:ServiceFights, DIALOG_STYLE_MSGBOX, caption, string, _(FIGHT_TEACHER_DIALOG_TEACHER_BUTTON1), _(FIGHT_TEACHER_DIALOG_TEACHER_BUTTON2));
 }
 
@@ -127,7 +127,7 @@ stock AddFightStyle(minlvl, styleid, stylename[], bool:haveteacher, cost = 0, Fl
 
 	gFightStyle[id][e_fStyleLevel] = minlvl;
 	gFightStyle[id][e_fStyleID] = styleid;
-	strmid(gFightStyle[id][e_fStyleName], stylename, 0, strlen(stylename), MAX_LANG_VALUE_STRING);
+	strcpy(gFightStyle[id][e_fStyleName], stylename, MAX_LANG_VALUE_STRING);
 	gFightStyle[id][e_fHaveTeacher] = haveteacher;
 	gFightStyle[id][e_fCost] = cost;
 	gFightStyle[id][e_fCoord_X] = pos_x;
@@ -181,7 +181,7 @@ stock GetFightTeacherName(teacherid, fstylename[], const size = sizeof(fstylenam
 	if (!IsTeacherValid(teacherid)) {
 		return 0;
 	}
-	strmid(fstylename, gFightStyle[teacherid][e_fStyleName], 0, strlen(gFightStyle[teacherid][e_fStyleName]), size);
+	strcpy(fstylename, gFightStyle[teacherid][e_fStyleName], size);
 	return 1;
 }
 
@@ -210,12 +210,12 @@ stock GetFightStyleName(styleid, fstylename[], const size = sizeof(fstylename))
 			break;
 		}
 	}
-	
+
 	if (teacherid == -1) {
 		return 0;
 	}
 
-	strmid(fstylename, gFightStyle[teacherid][e_fStyleName], 0, strlen(gFightStyle[teacherid][e_fStyleName]), size);
+	strcpy(fstylename, gFightStyle[teacherid][e_fStyleName], size);
 	return 1;
 }
 

@@ -25,13 +25,13 @@ stock Declension_GetWord(result[], const size = sizeof(result), num, word_1[MAX_
 
 	switch (num) {
 		case 1: {
-			strmid(result, word_1, 0, strlen(word_1), size);
+			strcpy(result, word_1, size);
 		}
 		case 2..4: {
-			strmid(result, word_2, 0, strlen(word_2), size);
+			strcpy(result, word_2, size);
 		}
 		default: {
-			strmid(result, word_3, 0, strlen(word_3), size);
+			strcpy(result, word_3, size);
 		}
 	}
 }

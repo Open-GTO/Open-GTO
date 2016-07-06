@@ -67,7 +67,7 @@ stock Account_Register(playerid, password[])
 
 	SHA256_PassHash(password, gAccount[playerid][e_aPasswordSalt], gAccount[playerid][e_aPassword], PASSWORD_HASH_LENGTH);
 #else
-	strmid(gAccount[playerid][e_aPassword], password, 0, strlen(password), MAX_PASS_LEN);
+	strcpy(gAccount[playerid][e_aPassword], password, MAX_PASS_LEN);
 #endif
 
 	Account_SetRegistrationTime(playerid, gettime());

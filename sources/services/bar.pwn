@@ -101,7 +101,7 @@ bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	if ( PRESSED ( KEY_FIRE ) ) {
 		if (GetPVarInt(playerid, "bar_Drinking") == 1 && GetPVarInt(playerid, "bar_Gulping") == 0) {
-			GivePVarInt(playerid, "bar_Gulps", 1);
+			SetPVarInt(playerid, "bar_Gulps", GetPVarInt(playerid, "bar_Gulps") + 1);
 			SetPVarInt(playerid, "bar_Gulping", 1);
 			SetTimerEx("bar_Gulp", 2000, 0, "d", playerid);
 			return 1;

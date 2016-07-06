@@ -12,8 +12,8 @@
 enum HouseInfo {
 	Houses_Name[MAX_NAME],// house name
 	Houses_Cost,			// cost
-	Houses_Owner[MAX_NAME],	// owner
-	Houses_Gang[MAX_NAME],  // gang
+	Houses_Owner[MAX_PLAYER_NAME + 1],	// owner
+	Houses_Gang[MAX_GANG_NAME],  // gang
 	Houses_UpKeep,			// keep up
 	Houses_UpKeepLeft,		// keep up left
 	Houses_Buyout,			// Buyout price
@@ -21,7 +21,7 @@ enum HouseInfo {
 	Houses_Car,				// Car
 	Houses_Lock,			// Locked home or not
 	Houses_Rentabil,		// Аренда офф/он
-	Houses_RentName[MAX_NAME],	// Name of Renter
+	Houses_RentName[MAX_PLAYER_NAME + 1],	// Name of Renter
 	Houses_RentCost,		// Цена аренды
 	Houses_HealUpgrade,		// Heal Upgrade
 	Houses_ArmourUpgrade,	// Armour Upgrade
@@ -230,8 +230,8 @@ stock houses_LoadAll()
 		file_housing = ini_openFile(db_housesname);
 		ini_getString(file_housing, "Name", Houses[i][Houses_Name], MAX_NAME);
 		ini_getInteger(file_housing, "Cost", Houses[i][Houses_Cost]);
-		ini_getString(file_housing, "Owner", Houses[i][Houses_Owner], MAX_NAME);
-		ini_getString(file_housing, "Gang", Houses[i][Houses_Gang], MAX_NAME);
+		ini_getString(file_housing, "Owner", Houses[i][Houses_Owner], MAX_PLAYER_NAME);
+		ini_getString(file_housing, "Gang", Houses[i][Houses_Gang], MAX_GANG_NAME);
 		ini_getInteger(file_housing, "UpKeep", Houses[i][Houses_UpKeep]);
 		ini_getInteger(file_housing, "UpKeepLeft", Houses[i][Houses_UpKeepLeft]);
 		ini_getInteger(file_housing, "Buyout", Houses[i][Houses_Buyout]);
@@ -239,7 +239,7 @@ stock houses_LoadAll()
 		ini_getInteger(file_housing, "Car", Houses[i][Houses_Car]);
 		ini_getInteger(file_housing, "Lock", Houses[i][Houses_Lock]);
 		ini_getInteger(file_housing, "Rentabil", Houses[i][Houses_Rentabil]);
-		ini_getString(file_housing, "RentName", Houses[i][Houses_RentName], MAX_NAME);
+		ini_getString(file_housing, "RentName", Houses[i][Houses_RentName], MAX_PLAYER_NAME);
 		ini_getInteger(file_housing, "RentCost", Houses[i][Houses_RentCost]);
 		ini_getInteger(file_housing, "HealUpgrade", Houses[i][Houses_HealUpgrade]);
 		ini_getInteger(file_housing, "ArmourUpgrade", Houses[i][Houses_ArmourUpgrade]);
@@ -683,12 +683,12 @@ stock RentRoom(playerid)
 			Dialog_Message(playerid, _(HOUSING_RENT_HEADER), _(HOUSING_RENT_NO_MONEY), _(HOUSING_DIALOG_BUTTON_OK));
 			return 1;
 		}
-		set(Houses[id][Houses_RentName], ReturnPlayerName(playerid));
+		GetPlayerName(playerid, Houses[id][Houses_RentName], MAX_PLAYER_NAME + 1);
 		GivePlayerMoney(playerid, -Houses[id][Houses_RentCost]);
 
 		// перечислим деньги в банк владельцу
 		new owner_id = -1;
-		foreach (Player, pid) {
+		foreach (new pid : Player) {
 			if ( !strcmp(Houses[id][Houses_Owner], ReturnPlayerName(pid)) ) {
 				owner_id = pid;
 				break;
@@ -741,7 +741,7 @@ stock DeleteRenter(playerid)
 	}
 	if (id > -1)
 	{
-		set(Houses[id][Houses_RentName], "Unknown");
+		strcpy(Houses[id][Houses_RentName], "Unknown", MAX_PLAYER_NAME);
 	}
 	return 1;
 }
@@ -798,8 +798,8 @@ stock house_Buy(playerid)
 		}
 	#endif
 		GivePlayerMoney(playerid, -price);
-		set(Houses[id][Houses_Owner], playername);
-		set(Houses[id][Houses_Gang], ReturnPlayerGangName(playerid));
+		strcpy(Houses[id][Houses_Owner], playername, MAX_PLAYER_NAME);
+		GetPlayerGangName(playerid, Houses[id][Houses_Gang], MAX_GANG_NAME);
 		Houses[id][Houses_Buyout] = 0;
 		// если игрок купил свой первый дом, то ставим спавн к нему
 		if (pl_houses == 0) {
@@ -1032,7 +1032,7 @@ stock housing_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+
 	{
 		if (!strcmp(Houses[i][Houses_Owner], old_name, true))
 		{
-			set(Houses[i][Houses_Owner], new_name);
+			strcpy(Houses[i][Houses_Owner], new_name, MAX_PLAYER_NAME);
 			return 1;
 		}
 	}
@@ -1041,8 +1041,8 @@ stock housing_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+
 
 stock house_Free(houseid)
 {
-	set(Houses[houseid][Houses_Owner], "Unknown");
-	set(Houses[houseid][Houses_Gang], "Unknown");
+	strcpy(Houses[houseid][Houses_Owner], "Unknown", MAX_PLAYER_NAME);
+	strcpy(Houses[houseid][Houses_Gang], "Unknown", MAX_GANG_NAME);
 	Houses[houseid][Houses_Buyout] = 0;
 	Houses[houseid][Houses_Lock] = 0;
 	Houses[houseid][Houses_UpKeepLeft] = 0;
@@ -1067,22 +1067,22 @@ stock IsPlayerHouse(playerid, houseid) {
 
 stock house_GetName(id)
 {
-	new name[MAX_NAME];
-	set(name, Houses[id][Houses_Name]);
+	new name[MAX_GANG_NAME];
+	strcpy(name, Houses[id][Houses_Name]);
 	return name;
 }
 
 stock house_GetOwner(id)
 {
-	new name[MAX_NAME];
-	set(name, Houses[id][Houses_Owner]);
+	new name[MAX_PLAYER_NAME];
+	strcpy(name, Houses[id][Houses_Owner]);
 	return name;
 }
 
 stock house_GetRenter(id)
 {
-	new name[MAX_NAME];
-	set(name, Houses[id][Houses_RentName]);
+	new name[MAX_PLAYER_NAME];
+	strcpy(name, Houses[id][Houses_RentName]);
 	return name;
 }
 

@@ -2,7 +2,7 @@
 
 	Created: 07.04.2011
 	Author: ziggi
-	
+
 */
 
 #if defined _player_menu_included
@@ -59,16 +59,16 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			if (IsPlayerHavePremium(playerid)) {
 				format(premium_status, sizeof(premium_status), "до %s", ReturnPlayerPremiumDateString(playerid));
 			} else {
-				set(premium_status, "нет");
+				strcpy(premium_status, "нет");
 			}
 
 			new fstylename[MAX_STRING];
 			GetFightStyleName(GetPlayerFightStyleUsed(playerid), fstylename);
-			
+
 			new gangname[MAX_GANG_NAME];
 			GetPlayerGangName(playerid, gangname);
 			if (strlen(gangname) == 0) {
-				strmid(gangname, "нет", 0, 3);
+				strcpy(gangname, "нет");
 			}
 
 			new played_time[MAX_LANG_VALUE_STRING];
@@ -91,13 +91,13 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				played_time,
 
 				gangname,
-				
+
 				money_str, bank_money_str, total_money_str,
-				
+
 				GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid),
 				GetPlayerJailedCount(playerid),
 				GetPlayerMutedCount(playerid),
-				
+
 				fstylename,
 				premium_status
 			);
@@ -161,7 +161,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				idsm = 0,
 				admins[(MAX_PLAYER_NAME + 1 + 5) * 10],
 				moders[(MAX_PLAYER_NAME + 1 + 5) * 10];
-			
+
 			foreach (new id : Player) {
 				if (IsPlayerHavePrivilege(id, PlayerPrivilegeAdmin)) {
 					format(admins, sizeof(admins), "%s%s(%d)\n", admins, ReturnPlayerName(id), id);

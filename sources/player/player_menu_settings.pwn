@@ -125,7 +125,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		length = strlen(inputtext);
 
 	GetPlayerName(playerid, old_name, sizeof(old_name));
-	strmid(new_name, inputtext, 0, length);
+	strcpy(new_name, inputtext, length);
 
 	if (length < MIN_NAME_LEN || length > MAX_NAME_LEN) {
 		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_NAME_LENGTH), MIN_NAME_LEN, MAX_NAME_LEN);
@@ -231,7 +231,7 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 		password[MAX_PASS_LEN],
 		length = strlen(inputtext);
 
-	strmid(password, inputtext, 0, length);
+	strcpy(password, inputtext, length);
 
 	if (length < MIN_PASS_LEN || length > MAX_PASS_LEN) {
 		format(string, sizeof(string), _(PLAYER_MENU_SETTINGS_PASSWORD_LENGTH), MIN_PASS_LEN, MAX_PASS_LEN);

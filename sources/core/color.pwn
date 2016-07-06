@@ -164,13 +164,13 @@ stock Color_GetVehicleCode(id)
 
 stock Color_GetName(id, name[], size = sizeof(name))
 {
-	strmid(name, gColors[id][e_cName], 0, strlen(gColors[id][e_cName]), size);
+	strcpy(name, gColors[id][e_cName], size);
 }
 
 stock Color_ReturnName(id)
 {
 	new name[MAX_COLOR_NAME];
-	strmid(name, gColors[id][e_cName], 0, strlen(gColors[id][e_cName]));
+	Color_GetName(id, name);
 	return name;
 }
 

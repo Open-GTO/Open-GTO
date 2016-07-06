@@ -14,7 +14,7 @@ enum BusinessInfo {
 	Business_Cost,
 	Business_Value,
 	Business_Level, // minumum level
-	Business_Owner[MAX_NAME],
+	Business_Owner[MAX_PLAYER_NAME + 1],
 	Business_Buyout, // Buyout price
 	Business_Vault,
 	Business_Upgrade,
@@ -115,7 +115,7 @@ stock business_LoadAll()
 		ini_getInteger(file_business, "Cost", Businesses[i][Business_Cost]);
 		ini_getInteger(file_business, "Value", Businesses[i][Business_Value]);
 		ini_getInteger(file_business, "Level", Businesses[i][Business_Level]);
-		ini_getString(file_business, "Owner", Businesses[i][Business_Owner], MAX_NAME);
+		ini_getString(file_business, "Owner", Businesses[i][Business_Owner], MAX_PLAYER_NAME);
 		ini_getInteger(file_business, "Buyout", Businesses[i][Business_Buyout]);
 		ini_getInteger(file_business, "Vault", Businesses[i][Business_Vault]);
 		ini_getInteger(file_business, "Upgrade", Businesses[i][Business_Upgrade]);
@@ -494,7 +494,7 @@ stock bis_Buy(playerid)
 	#endif
 		GivePlayerMoney(playerid, -price);
 
-		set(Businesses[id][Business_Owner], playername);
+		strcpy(Businesses[id][Business_Owner], playername, MAX_PLAYER_NAME);
 		Businesses[id][Business_Buyout] = 0;
 
 		new string[MAX_STRING];
@@ -527,7 +527,7 @@ stock bis_Sell(playerid)
 		new price = ((Businesses[id][Business_Cost] + Businesses[id][Business_Buyout]) * 85) / 100;
 		GivePlayerMoney(playerid, price);
 
-		set(Businesses[id][Business_Owner], "Unknown");
+		strcpy(Businesses[id][Business_Owner], "Unknown", MAX_PLAYER_NAME);
 
 		Businesses[id][Business_Buyout] = 0;
 		Businesses[id][Business_Upgrade] = 1;
@@ -634,7 +634,7 @@ stock business_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME
 	{
 		if (!strcmp(Businesses[i][Business_Owner], old_name, true))
 		{
-			set(Businesses[i][Business_Owner], new_name);
+			strcpy(Businesses[i][Business_Owner], new_name, MAX_PLAYER_NAME);
 			return 1;
 		}
 	}
@@ -658,7 +658,7 @@ stock CheckBusinessOwners()
 					Businesses[i][Business_Owner], BUSINESS_UNLOGIN_SELL_DAYS
 				);
 
-			set(Businesses[i][Business_Owner], "Unknown");
+			strcpy(Businesses[i][Business_Owner], "Unknown");
 			Businesses[i][Business_Buyout] = 0;
 			Businesses[i][Business_Upgrade] = 1;
 		}

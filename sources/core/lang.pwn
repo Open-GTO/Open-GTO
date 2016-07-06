@@ -1,8 +1,8 @@
 /*
-	
+
 	About: lang load system
 	Author: ziggi
-	
+
 */
 
 #if defined _lang_included
@@ -64,11 +64,11 @@ stock Lang_OnGameModeInit()
 
 stock Lang_GetLang(lang[], const size = sizeof(lang))
 {
-	strmid(lang, gCurrentLanguage, 0, strlen(gCurrentLanguage), size);
+	strcpy(lang, gCurrentLanguage, size);
 }
 
 stock Lang_SetLang(langname[])
 {
-	strmid(gCurrentLanguage, langname, 0, strlen(langname));
+	strcpy(gCurrentLanguage, langname);
 	Lang_OnGameModeInit();
 }

@@ -400,7 +400,7 @@ stock Zone_GetNameByCoords(Float:x, Float:y, Float:z, name[], size = sizeof(name
 
 	for (new zoneid = 0; zoneid < sizeof(zones); zoneid++) {
 		if (Zone_IsCoordsInZone(x, y, z, zoneid)) {
-			strmid(name, zones[zoneid][zone_name], 0, strlen(zones[zoneid][zone_name]), size);
+			strcpy(name, zones[zoneid][zone_name], size);
 			break;
 		}
 	}

@@ -60,7 +60,7 @@ Click_OnPlayerClickPlayer(playerid, clickedplayerid)
 		}
 		return 1;
 	}
-	
+
 	Click_SetPlayerClickedID(playerid, clickedplayerid);
 
 	Dialog_Show(playerid, Dialog:PlayerClick);
@@ -145,12 +145,12 @@ stock Click_AddItem(style, caption[], info[], button1[], button2[], PlayerPrivil
 	}
 
 	gClickArray[id][cda_style] = style;
-	strmid(gClickArray[id][cda_caption], caption, 0, strlen(caption), MAX_CLICK_DIALOG_CAPTION_SIZE);
-	strmid(gClickArray[id][cda_info], info, 0, strlen(info), MAX_CLICK_DIALOG_INFO_SIZE);
-	strmid(gClickArray[id][cda_button1], button1, 0, strlen(button1), MAX_CLICK_DIALOG_BUTTON_SIZE);
-	strmid(gClickArray[id][cda_button2], button2, 0, strlen(button2), MAX_CLICK_DIALOG_BUTTON_SIZE);
+	strcpy(gClickArray[id][cda_caption], caption, MAX_CLICK_DIALOG_CAPTION_SIZE);
+	strcpy(gClickArray[id][cda_info], info, MAX_CLICK_DIALOG_INFO_SIZE);
+	strcpy(gClickArray[id][cda_button1], button1, MAX_CLICK_DIALOG_BUTTON_SIZE);
+	strcpy(gClickArray[id][cda_button2], button2, MAX_CLICK_DIALOG_BUTTON_SIZE);
 	gClickArray[id][cda_privilege] = privilege;
-	strmid(gClickArray[id][cda_function], function, 0, strlen(function), MAX_CLICK_DIALOG_FUNCTION_SIZE);
+	strcpy(gClickArray[id][cda_function], function, MAX_CLICK_DIALOG_FUNCTION_SIZE);
 
 	return id;
 }

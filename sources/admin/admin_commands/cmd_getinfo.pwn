@@ -100,7 +100,7 @@ COMMAND:getinfo(playerid, params[])
 			day;
 
 		if (targetid == -2) {
-			strmid(targetname, subparams, 0, strlen(subparams));
+			strcpy(targetname, subparams);
 
 			new is_load = Account_LoadData(targetname, account_info);
 

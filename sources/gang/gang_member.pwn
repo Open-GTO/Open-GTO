@@ -114,12 +114,12 @@ stock GangMember_GetFreeSlot(gangid)
 
 stock GangMember_SetName(gangid, memberid, name[])
 {
-	strmid(gMember[gangid][memberid][e_gmName], name, 0, strlen(name), MAX_PLAYER_NAME);
+	strcpy(gMember[gangid][memberid][e_gmName], name, MAX_PLAYER_NAME);
 }
 
 stock GangMember_GetName(gangid, memberid, name[], const size = sizeof(name))
 {
-	strmid(name, gMember[gangid][memberid][e_gmName], 0, strlen(gMember[gangid][memberid][e_gmName]), size);
+	strcpy(name, gMember[gangid][memberid][e_gmName], size);
 }
 
 /*
@@ -187,10 +187,10 @@ stock GangMember_GetRankName(gangid, memberid, name[], const size = sizeof(name)
 
 stock GangRankMember_GetName(GangMemberRank:rank, name[], const size = sizeof(name))
 {
-	strmid(name, gRank[rank], 0, strlen(gRank[rank]), size);
+	strcpy(name, gRank[rank], size);
 }
 
 stock GangRankMember_SetName(GangMemberRank:rank, name[])
 {
-	strmid(gRank[rank], name, 0, strlen(name), MAX_GANG_RANK_NAME);
+	strcpy(gRank[rank], name, MAX_GANG_RANK_NAME);
 }

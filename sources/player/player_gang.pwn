@@ -1,5 +1,5 @@
 /*
-	
+
 	About: player gang
 	Author: ziggi
 
@@ -38,7 +38,7 @@ enum e_Player_Invited_Gang_Info {
 
 static
 	gPlayerGangID[MAX_PLAYERS],
-	gPlayerGangName[MAX_PLAYERS][MAX_NAME],
+	gPlayerGangName[MAX_PLAYERS][MAX_GANG_NAME],
 	gPlayerInvitedGang[MAX_PLAYERS][MAX_GANG_INVITES][e_Player_Invited_Gang_Info],
 	gPlayerGangMemberID[MAX_PLAYERS char];
 
@@ -47,7 +47,7 @@ static
 */
 
 stock IsPlayerInvitedInAnyGang(playerid)
-{ 
+{
 	for (new i = 0; i < MAX_GANG_INVITES; i++) {
 		if (gPlayerInvitedGang[playerid][i][e_pigID] != INVALID_GANG_ID) {
 			return 1;
@@ -210,7 +210,7 @@ stock IsPlayersTeammates(...)
 
 stock GetPlayerGangName(playerid, name[], const size = sizeof(name))
 {
-	strmid(name, gPlayerGangName[playerid], 0, strlen(gPlayerGangName[playerid]), size);
+	strcpy(name, gPlayerGangName[playerid], size);
 }
 
 stock ReturnPlayerGangName(playerid)
@@ -220,7 +220,7 @@ stock ReturnPlayerGangName(playerid)
 
 stock SetPlayerGangName(playerid, name[])
 {
-	strmid(gPlayerGangName[playerid], name, 0, strlen(name), MAX_NAME);
+	strcpy(gPlayerGangName[playerid], name, MAX_GANG_NAME);
 }
 
 /*

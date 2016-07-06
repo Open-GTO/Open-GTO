@@ -139,8 +139,8 @@ stock Message_Alert(playerid, header[], content[], time = 4000, hcolor = -596352
 	}
 
 	messages[playerid][id][e_aIsBusy] = true;
-	strmid(messages[playerid][id][e_aHeader], header, 0, strlen(header), MAX_LANG_VALUE_STRING);
-	strmid(messages[playerid][id][e_aContent], content, 0, strlen(content), MAX_LANG_VALUE_STRING);
+	strcpy(messages[playerid][id][e_aHeader], header, MAX_LANG_VALUE_STRING);
+	strcpy(messages[playerid][id][e_aContent], content, MAX_LANG_VALUE_STRING);
 	messages[playerid][id][e_aTime] = time;
 	messages[playerid][id][e_aColor] = hcolor;
 
