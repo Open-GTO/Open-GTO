@@ -12,7 +12,6 @@
 #define _config_included
 #pragma library config
 
-#pragma tabsize 0
 #pragma dynamic 13000
 
 #define VERSION					"v1.1.8" // версия мода
