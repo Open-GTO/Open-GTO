@@ -30,7 +30,7 @@ public OnPlayerConnect(playerid)
 #else
 	#define _ALS_OnPlayerConnect
 #endif
- 
+
 #define OnPlayerConnect PlayerHealthTD_OnPlayerConnect
 #if defined PlayerHealthTD_OnPlayerConnect
 	forward PlayerHealthTD_OnPlayerConnect(playerid);
@@ -55,7 +55,7 @@ public OnPlayerSpawn(playerid)
 #else
 	#define _ALS_OnPlayerSpawn
 #endif
- 
+
 #define OnPlayerSpawn PlayerHealthTD_OnPlayerSpawn
 #if defined PlayerHealthTD_OnPlayerSpawn
 	forward PlayerHealthTD_OnPlayerSpawn(playerid);
@@ -85,7 +85,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 #else
 	#define _ALS_OnPlayerTakeDamage
 #endif
- 
+
 #define OnPlayerTakeDamage PlayerHealthTD_OnPlayerTakeDmg
 #if defined PlayerHealthTD_OnPlayerTakeDmg
 	forward PlayerHealthTD_OnPlayerTakeDmg(playerid, issuerid, Float:amount, weaponid, bodypart);
@@ -104,7 +104,7 @@ public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInt
 			PlayerHealthTD_HideTextDraw(playerid);
 		}
 	}
-	
+
 	#if defined PlayerHealthTD_OnPlayerIntChng
 		return PlayerHealthTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
 	#else
@@ -170,7 +170,7 @@ stock PlayerHealthTD_UpdateString(playerid, Float:health = -1.0)
 
 	new
 		string[4];
-	
+
 	if (health == -1.0) {
 		GetPlayerHealth(playerid, health);
 	}
@@ -180,8 +180,12 @@ stock PlayerHealthTD_UpdateString(playerid, Float:health = -1.0)
 	} else {
 		PlayerHealthTD_ShowTextDraw(playerid);
 	}
-	
-	format(string, sizeof(string), "%.0f", health);
+
+	if (IsPlayerGodmod(playerid)) {
+		__(ADMIN_GODMOD_INTERFACE_TEXT, string);
+	} else {
+		format(string, sizeof(string), "%.0f", health);
+	}
 
 	PlayerTextDrawSetString(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Health, PIP_TextDraw), string);
 }

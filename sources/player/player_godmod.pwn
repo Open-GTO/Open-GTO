@@ -39,7 +39,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 #else
 	#define _ALS_OnPlayerTakeDamage
 #endif
- 
+
 #define OnPlayerTakeDamage Player_OnPlayerTakeDamage
 #if defined Player_OnPlayerTakeDamage
 	forward Player_OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart);
@@ -58,10 +58,11 @@ stock IsPlayerGodmod(playerid) {
 */
 
 stock SetPlayerGodmod(playerid, bool:isgodmod) {
+	gPlayerGodmodStatus{playerid} = _:isgodmod;
+
 	if (isgodmod) {
 		SetPlayerHealth(playerid, Float:0x7F800000);
 	} else {
 		SetPlayerMaxHealth(playerid);
 	}
-	gPlayerGodmodStatus{playerid} = _:isgodmod;
 }
