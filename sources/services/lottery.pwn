@@ -21,7 +21,7 @@
 #endif
 
 #if !defined MAX_LOTTERY_TICKET
-	#define MAX_LOTTERY_TICKET 100
+	#define MAX_LOTTERY_TICKET (MAX_PLAYERS * 2)
 #endif
 
 #define INVALID_TICKET_ID -1
@@ -31,11 +31,12 @@
 */
 
 enum {
-	LOTTERY_ERROR_NO = 0,
-	LOTTERY_ERROR_TICKET_VALUE_BAD = -1,
-	LOTTERY_ERROR_TICKET_HAVE = -2,
-	LOTTERY_ERROR_TICKET_BOUGHT = -3,
-	LOTTERY_ERROR_NO_WINNER = -4,
+	LOTTERY_ERROR_NO,
+	LOTTERY_ERROR_NO_MONEY,
+	LOTTERY_ERROR_TICKET_VALUE_BAD,
+	LOTTERY_ERROR_TICKET_HAVE,
+	LOTTERY_ERROR_TICKET_BOUGHT,
+	LOTTERY_ERROR_NO_WINNER,
 }
 
 enum LotteryStatus {
@@ -57,6 +58,7 @@ static
 	LastSecondCount,
 
 	LotteryStatus:gStatus,
+	gMaxValue,
 	gBusyTicket[1 + MAX_LOTTERY_TICKET],
 	gPlayerTicket[MAX_PLAYERS];
 
@@ -110,40 +112,36 @@ COMMAND:lottery(playerid, params[])
 		return 1;
 	}
 
-	new value;
+	new
+		string[MAX_LANG_VALUE_STRING],
+		value;
 
 	if (sscanf(params, "i", value)) {
-		SendClientMessage(playerid, COLOR_PM, _(LOTTERY_USE_COMMAND));
-		return 1;
-	}
-
-	new is_have_money = GivePlayerMoney(playerid, -TicketCost);
-	if (!is_have_money) {
-		new string[MAX_STRING];
-		format(string, sizeof(string), _(LOTTERY_NO_MONEY), TicketCost);
+		format(string, sizeof(string), _(LOTTERY_USE_COMMAND), GetLotteryMaxValue(), TicketCost);
 		SendClientMessage(playerid, COLOR_PM, string);
 		return 1;
 	}
 
 	new error = GivePlayerLotteryTicket(playerid, value);
-	if (error < 0) {
-		switch (error) {
-			case LOTTERY_ERROR_TICKET_VALUE_BAD: {
-				SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_VALUE_IS_BAD));
-			}
-			case LOTTERY_ERROR_TICKET_HAVE: {
-				SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_BOUGHT_NOW));
-			}
-			case LOTTERY_ERROR_TICKET_BOUGHT: {
-				SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_IS_BOUGHT));
-			}
+	switch (error) {
+		case LOTTERY_ERROR_NO: {
+			format(string, sizeof(string), _(LOTTERY_TICKET_BOUGHT), value);
+			SendClientMessage(playerid, COLOR_GREEN, string);
 		}
-		return 1;
+		case LOTTERY_ERROR_NO_MONEY: {
+			format(string, sizeof(string), _(LOTTERY_NO_MONEY), TicketCost);
+			SendClientMessage(playerid, COLOR_PM, string);
+		}
+		case LOTTERY_ERROR_TICKET_VALUE_BAD: {
+			SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_VALUE_IS_BAD));
+		}
+		case LOTTERY_ERROR_TICKET_HAVE: {
+			SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_BOUGHT_NOW));
+		}
+		case LOTTERY_ERROR_TICKET_BOUGHT: {
+			SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_IS_BOUGHT));
+		}
 	}
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), _(LOTTERY_TICKET_BOUGHT), value);
-	SendClientMessage(playerid, COLOR_GREEN, string);
 
 	return 1;
 }
@@ -159,22 +157,25 @@ stock Lottery_WaitTimer()
 	}
 
 	if (IsLotteryHaveStatus(LotteryStart)) {
-		return
-			Lottery_StartTimer();
+		return Lottery_StartTimer();
 	}
 
 	if (GetLotterySecondGone() < DelayWaitSecondCount) {
 		return 0;
 	}
 
+	if (GetPlayersCount() < 2) {
+		return 0;
+	}
+
 	SetLotteryStatus(LotteryStart);
 
-	new string[MAX_STRING];
+	new string[MAX_LANG_VALUE_STRING];
 
 	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_0), WinMoney);
 	SendClientMessageToAll(COLOR_GREEN, string);
 
-	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_1), TicketCost);
+	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_1), GetLotteryMaxValue(), TicketCost);
 	SendClientMessageToAll(COLOR_GREEN, string);
 
 	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_2), DelayStartSecondCount);
@@ -204,18 +205,20 @@ stock Lottery_StartTimer()
 		error;
 
 	error = GetLotteryWinner(winner_id, win_value);
+	switch (error) {
+		case LOTTERY_ERROR_NO: {
+			GivePlayerMoney(winner_id, WinMoney);
 
-	if (error < 0) {
-		format(string, sizeof(string), _(LOTTERY_NO_WINNER), win_value);
-		SendClientMessageToAll(COLOR_GREEN, string);
-	} else {
-		GivePlayerMoney(winner_id, WinMoney);
+			format(string, sizeof(string), _(LOTTERY_YOU_WINNER), WinMoney);
+			SendClientMessage(winner_id, COLOR_GREEN, string);
 
-		format(string, sizeof(string), _(LOTTERY_YOU_WINNER), WinMoney);
-		SendClientMessage(winner_id, COLOR_GREEN, string);
-
-		format(string, sizeof(string), _(LOTTERY_WINNER), ReturnPlayerName(winner_id), winner_id, WinMoney);
-		SendClientMessageToAll(COLOR_GREEN, string);
+			format(string, sizeof(string), _(LOTTERY_WINNER), ReturnPlayerName(winner_id), winner_id, WinMoney);
+			SendClientMessageToAll(COLOR_GREEN, string);
+		}
+		case LOTTERY_ERROR_NO_WINNER: {
+			format(string, sizeof(string), _(LOTTERY_NO_WINNER), win_value);
+			SendClientMessageToAll(COLOR_GREEN, string);
+		}
 	}
 
 	SetLotteryStatus(LotteryWait);
@@ -233,6 +236,8 @@ static stock SetLotteryStatus(LotteryStatus:status)
 	LastSecondCount = gettime();
 
 	if (status == LotteryStart) {
+		SetLotteryMaxValue(GetPlayersCount() * 2);
+
 		gPlayerTicket = NULL_gPlayerTicket;
 		gBusyTicket = NULL_gBusyTicket;
 	}
@@ -258,7 +263,11 @@ static stock GetLotterySecondGone()
 
 static stock GivePlayerLotteryTicket(playerid, value)
 {
-	if (value < MIN_LOTTERY_TICKET || value > MAX_LOTTERY_TICKET) {
+	if (GetPlayerMoney(playerid) < TicketCost) {
+		return LOTTERY_ERROR_NO_MONEY;
+	}
+
+	if (value < MIN_LOTTERY_TICKET || value > GetLotteryMaxValue()) {
 		return LOTTERY_ERROR_TICKET_VALUE_BAD;
 	}
 
@@ -272,13 +281,14 @@ static stock GivePlayerLotteryTicket(playerid, value)
 
 	gPlayerTicket[playerid] = value;
 	gBusyTicket[value] = playerid;
+	GivePlayerMoney(playerid, -TicketCost);
 
 	return LOTTERY_ERROR_NO;
 }
 
 static stock GetLotteryWinner(&playerid, &value)
 {
-	value = mathrandom(MIN_LOTTERY_TICKET, MAX_LOTTERY_TICKET);
+	value = mathrandom(MIN_LOTTERY_TICKET, GetLotteryMaxValue());
 	playerid = gBusyTicket[value];
 
 	if (playerid == INVALID_PLAYER_ID) {
@@ -286,4 +296,20 @@ static stock GetLotteryWinner(&playerid, &value)
 	}
 
 	return LOTTERY_ERROR_NO;
+}
+
+static stock SetLotteryMaxValue(value)
+{
+	if (value <= MIN_LOTTERY_TICKET) {
+		gMaxValue = MIN_LOTTERY_TICKET * 2;
+	} else if (value > MAX_LOTTERY_TICKET) {
+		gMaxValue = MAX_LOTTERY_TICKET;
+	} else {
+		gMaxValue = value;
+	}
+}
+
+static stock GetLotteryMaxValue()
+{
+	return gMaxValue;
 }
