@@ -171,20 +171,20 @@ stock PlayerHealthTD_UpdateString(playerid, Float:health = -1.0)
 	new
 		string[4];
 
-	if (health == -1.0) {
-		GetPlayerHealth(playerid, health);
+	if (IsPlayerGodmod(playerid)) {
+		__(ADMIN_GODMOD_INTERFACE_TEXT, string);
+	} else {
+		if (health == -1.0) {
+			GetPlayerHealth(playerid, health);
+		}
+
+		format(string, sizeof(string), "%.0f", health);
 	}
 
 	if (health <= 0.0) {
 		PlayerHealthTD_HideTextDraw(playerid);
 	} else {
 		PlayerHealthTD_ShowTextDraw(playerid);
-	}
-
-	if (IsPlayerGodmod(playerid)) {
-		__(ADMIN_GODMOD_INTERFACE_TEXT, string);
-	} else {
-		format(string, sizeof(string), "%.0f", health);
 	}
 
 	PlayerTextDrawSetString(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Health, PIP_TextDraw), string);
