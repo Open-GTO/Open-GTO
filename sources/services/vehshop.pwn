@@ -1,10 +1,9 @@
 /*
 
-	Описание: магазин транспорта
-	Автор: ziggi
+	About: vehicle shop
+	Author: ziggi
 
 */
-
 
 #if defined _vehshop_included
 	#endinput
@@ -12,28 +11,29 @@
 
 #define _vehshop_included
 
-
-#define VSHOP_MAX_MODELS	100
+#define VEHSHOP_MAX_MODELS 100
 
 enum {
 	VEHSHOP_TYPE_CAR,
 	VEHSHOP_TYPE_AIR,
 }
-static types_array[] = {
+
+static gTypes[] = {
 	VEHSHOP_TYPE_CAR,
 	VEHSHOP_TYPE_AIR
 };
 
-enum vshop_Info {
-	vshop_Type,
-	Float:vshop_X,
-	Float:vshop_Y,
-	Float:vshop_Z,
-	Float:vshop_A,
-	vshop_ID,
-	Text3D:vshop_Text3D,
+enum e_VehShop_Info {
+	e_vsType,
+	Float:e_vsPosX,
+	Float:e_vsPosY,
+	Float:e_vsPosZ,
+	Float:e_vsAngle,
+	e_vsID,
+	Text3D:e_vsText3D,
 }
-static Vehicle_array[][vshop_Info] = {
+
+static gPositions[][e_VehShop_Info] = {
 	// wang cars
 	{VEHSHOP_TYPE_CAR, -1948.7234, 269.2943, 35.2865, 124.3050},
 	{VEHSHOP_TYPE_CAR, -1950.4930, 259.6267, 35.3084, 53.4259},
@@ -73,11 +73,12 @@ static Vehicle_array[][vshop_Info] = {
 	{VEHSHOP_TYPE_AIR,  92.1114, 2537.8579, 16.6858, 178.6351}
 };
 
-enum vshop_Models_Info {
-	vshop_Type,
-	vshop_Model[VSHOP_MAX_MODELS],
+enum e_e_vsModels_Info {
+	e_vsType,
+	e_vsModel[VEHSHOP_MAX_MODELS],
 }
-static models_array[][vshop_Models_Info] = {
+
+static gModels[][e_e_vsModels_Info] = {
 	{
 		{
 			VEHSHOP_TYPE_CAR
@@ -98,32 +99,50 @@ static models_array[][vshop_Models_Info] = {
 	}
 };
 
-stock vshop_OnGameModeInit()
+VehShop_OnGameModeInit()
 {
-	vshop_ChangeVehicles();
+	VehShop_ChangeVehicles();
 	return 1;
 }
 
-stock vshop_OnPlayerStateChange(playerid, newstate, oldstate)
+VehShop_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	#pragma unused newstate, oldstate
-	if (vshop_IsShopVehicle( GetPlayerVehicleID(playerid) )) {
-		Dialog_Show(playerid, Dialog:VehicleBuy);
+	if (VehShop_IsShopVehicle( GetPlayerVehicleID(playerid) )) {
+		if (GetPlayerVehicleCount(playerid) >= GetPlayerVehicleMaximumCount(playerid)) {
+			RemovePlayerFromVehicle(playerid);
+			Dialog_Message(playerid, _(VEHSHOP_DIALOG_HEADER), _(VEHSHOP_DIALOG_HAVE_MAXIMUM), _(VEHSHOP_DIALOG_BUTTON_OK));
+		} else {
+			Dialog_Show(playerid, Dialog:VehicleBuy);
+		}
+	}
+	return 1;
+}
+
+VehShop_OnVehicleSpawn(vehicleid)
+{
+	if (VehShop_IsShopVehicle(vehicleid)) {
+		SetVehicleFuel(vehicleid, 0);
 	}
 	return 1;
 }
 
 DialogCreate:VehicleBuy(playerid)
 {
-	new model = GetVehicleModel(GetPlayerVehicleID(playerid));
-	new string[MAX_STRING];
+	new
+		model,
+		string[MAX_LANG_VALUE_STRING];
 
-	format(string, sizeof(string),
-		"Вы хотите купить транспорт '%s' за $%d?",
-		ReturnVehicleModelName(model), GetVehicleModelCost(model)
+	model = GetVehicleModel(GetPlayerVehicleID(playerid));
+
+	InsertSpacesInInt(GetVehicleModelCost(model), string);
+	format(string, sizeof(string), _(VEHSHOP_DIALOG_INFO), ReturnVehicleModelName(model), string);
+
+	Dialog_Open(playerid, Dialog:VehicleBuy, DIALOG_STYLE_MSGBOX,
+		_(VEHSHOP_DIALOG_HEADER),
+		string,
+		_(VEHSHOP_DIALOG_BUTTON_BUY), _(VEHSHOP_DIALOG_BUTTON_EXIT)
 	);
-
-	Dialog_Open(playerid, Dialog:VehicleBuy, DIALOG_STYLE_MSGBOX, "Магазин транспорта", string, "Купить", "Выйти");
 }
 
 DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
@@ -135,137 +154,136 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 	}
 
 	if (GetPlayerVehicleCount(playerid) >= GetPlayerVehicleMaximumCount(playerid)) {
-		Dialog_Message(playerid, "Магазин транспорта", "У вас максимальное количество транспорта", "ОК");
+		Dialog_Message(playerid, _(VEHSHOP_DIALOG_HEADER), _(VEHSHOP_DIALOG_HAVE_MAXIMUM), _(VEHSHOP_DIALOG_BUTTON_OK));
 		return 0;
 	}
 
 	new
-		vehicleid = GetPlayerVehicleID(playerid),
-		color1, color2;
+		vehicleid,
+		color1,
+		color2,
+		cost;
+
+	vehicleid = GetPlayerVehicleID(playerid);
 
 	GetVehicleColor(vehicleid, color1, color2);
 
-	new cost = GetVehicleModelCost( GetVehicleModel(vehicleid) );
+	cost = GetVehicleModelCost( GetVehicleModel(vehicleid) );
 
 	if (GetPlayerMoney(playerid) < cost) {
-		Dialog_Message(playerid, "Магазин транспорта", "У вас недостаточно денег", "ОК");
+		Dialog_Message(playerid, _(VEHSHOP_DIALOG_HEADER), _(VEHSHOP_DIALOG_NO_MONEY), _(VEHSHOP_DIALOG_BUTTON_OK));
 		return 0;
 	}
 
 	GivePlayerMoney(playerid, -cost);
-	buyVehicle(playerid, vehicleid, color1, color2);
+	VehShop_BuyVehicle(playerid, vehicleid, color1, color2);
 
-	Dialog_Message(playerid, "Магазин транспорта", "\
-		Вы успешно купили это транспортное средство.\n\
-		Чтобы вызвать купленный транспорт, зайдите в меню пользователя и выберите его.",
-		"ОК"
-	);
+	Dialog_Message(playerid, _(VEHSHOP_DIALOG_HEADER), _m(VEHSHOP_DIALOG_INFO_SUCCESS), _(VEHSHOP_DIALOG_BUTTON_OK));
 	return 1;
 }
 
-stock vshop_OnVehicleSpawn(vehicleid)
+stock VehShop_SetVehiclesToRespawn()
 {
-	if (vshop_IsShopVehicle(vehicleid)) {
-		SetVehicleFuel(vehicleid, 0);
-	}
-	return 1;
-}
+	new
+		Float:dist;
 
-stock vshop_SetVehiclesToRespawn()
-{
-	for (new i = 0; i < sizeof(Vehicle_array); i++) {
-		new Float:dist = GetVehicleDistanceFromPoint(Vehicle_array[i][vshop_ID], Vehicle_array[i][vshop_X], Vehicle_array[i][vshop_Y], Vehicle_array[i][vshop_Z]);
+	for (new i = 0; i < sizeof(gPositions); i++) {
+		dist = GetVehicleDistanceFromPoint(gPositions[i][e_vsID], gPositions[i][e_vsPosX], gPositions[i][e_vsPosY], gPositions[i][e_vsPosZ]);
 		if (dist >= 4.0) {
-			SetVehicleToRespawn(Vehicle_array[i][vshop_ID]);
+			SetVehicleToRespawn(gPositions[i][e_vsID]);
 		}
 	}
 }
 
-stock vshop_ChangeVehicles()
+stock VehShop_ChangeVehicles()
 {
 	new
 		type,
-		models_list[ sizeof(types_array) ][VSHOP_MAX_MODELS],
-		models_list_pos[ sizeof(types_array) ] = {0, ...};
+		models_list[ sizeof(gTypes) ][VEHSHOP_MAX_MODELS],
+		models_list_pos[ sizeof(gTypes) ];
 
-	for (new i = 0; i < sizeof(types_array); i++) {
-		type = types_array[i];
+	for (new i = 0; i < sizeof(gTypes); i++) {
+		type = gTypes[i];
 		models_list_pos[type] = 0;
 
-		for (new j = 0; j < sizeof(models_array); j++) {
-			if (type != models_array[j][vshop_Type]) {
+		for (new j = 0; j < sizeof(gModels); j++) {
+			if (type != gModels[j][e_vsType]) {
 				continue;
 			}
 
-			for (new k = 0; k < VSHOP_MAX_MODELS; k++) {
-				if (models_array[j][vshop_Model][k] == 0) {
+			for (new k = 0; k < VEHSHOP_MAX_MODELS; k++) {
+				if (gModels[j][e_vsModel][k] == 0) {
 					continue;
 				}
 
-				models_list[type][ models_list_pos[type] ] = models_array[j][vshop_Model][k];
+				models_list[type][ models_list_pos[type] ] = gModels[j][e_vsModel][k];
 				models_list_pos[type]++;
 			}
 		}
 	}
 
 	new
-		string[MAX_STRING],
+		string[MAX_LANG_VALUE_STRING],
 		model;
 
-	for (new i = 0; i < sizeof(Vehicle_array); i++) {
-		if (Vehicle_array[i][vshop_ID] != 0) {
+	for (new i = 0; i < sizeof(gPositions); i++) {
+		if (gPositions[i][e_vsID] != 0) {
 			// если кто-то есть в транспорте
 			foreach (new playerid : Player) {
-				if (Vehicle_array[i][vshop_ID] == GetPlayerVehicleID(playerid)) {
+				if (gPositions[i][e_vsID] == GetPlayerVehicleID(playerid)) {
 					Dialog_Close(playerid);
 					RemovePlayerFromVehicle(playerid);
 				}
 			}
 			// удаляем транспорт
-			DestroyVehicle(Vehicle_array[i][vshop_ID]);
-			Vehicle_array[i][vshop_ID] = 0;
+			DestroyVehicle(gPositions[i][e_vsID]);
+			gPositions[i][e_vsID] = 0;
 
-			DestroyDynamic3DTextLabel(Vehicle_array[i][vshop_Text3D]);
+			DestroyDynamic3DTextLabel(gPositions[i][e_vsText3D]);
 		}
 
-		type = Vehicle_array[i][vshop_Type];
+		type = gPositions[i][e_vsType];
 		model = models_list[type][ random(models_list_pos[type]) ];
 
-		Vehicle_array[i][vshop_ID] = CreateVehicle(model,
-			Vehicle_array[i][vshop_X], Vehicle_array[i][vshop_Y], Vehicle_array[i][vshop_Z], Vehicle_array[i][vshop_A],
+		gPositions[i][e_vsID] = CreateVehicle(model,
+			gPositions[i][e_vsPosX],
+			gPositions[i][e_vsPosY],
+			gPositions[i][e_vsPosZ],
+			gPositions[i][e_vsAngle],
 			-1, -1, 0
 		);
-		SetVehicleFuel(Vehicle_array[i][vshop_ID], 0);
+		SetVehicleFuel(gPositions[i][e_vsID], 0);
 
-		format(string, sizeof(string), "{CCFF66}%s\n{CCCCCC}Цена: {FFFFFF}$%d\n{999999}Сядьте для покупки", ReturnVehicleModelName(model), GetVehicleModelCost(model));
-		Vehicle_array[i][vshop_Text3D] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
-			Vehicle_array[i][vshop_X], Vehicle_array[i][vshop_Y], Vehicle_array[i][vshop_Z], 20.0,
-			.attachedvehicle = Vehicle_array[i][vshop_ID], .testlos = 1);
+		InsertSpacesInInt(GetVehicleModelCost(model), string);
+		format(string, sizeof(string), _(VEHSHOP_3DTEXT), ReturnVehicleModelName(model), string);
+		gPositions[i][e_vsText3D] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
+			gPositions[i][e_vsPosX], gPositions[i][e_vsPosY], gPositions[i][e_vsPosZ], 20.0,
+			.attachedvehicle = gPositions[i][e_vsID], .testlos = 1);
 	}
 }
 
-stock vshop_OneHourTimer()
+stock VehShop_OneHourTimer()
 {
 	static hours;
 	hours++;
 
 	if (hours >= VEHSHOP_CAR_CHANGE_TIME) {
 		hours = 0;
-		vshop_ChangeVehicles();
+		VehShop_ChangeVehicles();
 	}
 }
 
-stock buyVehicle(playerid, vehicleid, color1, color2)
+stock VehShop_BuyVehicle(playerid, vehicleid, color1, color2)
 {
 	new model = GetVehicleModel(vehicleid);
 	AddPlayerVehicle(playerid, model, color1, color2, GetVehicleModelMaxFuel(model));
 	return 1;
 }
 
-stock vshop_IsShopVehicle(vehicleid)
+stock VehShop_IsShopVehicle(vehicleid)
 {
-	for (new i = 0; i < sizeof(Vehicle_array); i++) {
-		if (Vehicle_array[i][vshop_ID] == vehicleid) {
+	for (new i = 0; i < sizeof(gPositions); i++) {
+		if (gPositions[i][e_vsID] == vehicleid) {
 			return 1;
 		}
 	}

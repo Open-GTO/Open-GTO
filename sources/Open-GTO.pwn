@@ -309,7 +309,7 @@ public OnGameModeInit()
 	fastfood_OnGameModeInit();
 	bar_OnGameModeInit();
 	sshop_OnGameModeInit();
-	vshop_OnGameModeInit();
+	VehShop_OnGameModeInit();
 	wshop_OnGameModeInit();
 	Fuelstation_OnGameModeInit();
 	Bank_OnGameModeInit();
@@ -673,7 +673,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	}
 
 	if (newstate == PLAYER_STATE_DRIVER || newstate == PLAYER_STATE_PASSENGER) {
-		vshop_OnPlayerStateChange(playerid, newstate, oldstate);
+		VehShop_OnPlayerStateChange(playerid, newstate, oldstate);
 	}
 	return 1;
 }
@@ -725,7 +725,7 @@ public OnVehicleStreamOut(vehicleid, forplayerid)
 public OnVehicleSpawn(vehicleid)
 {
 	Vehicle_Fuel_OnVehicleSpawn(vehicleid);
-	vshop_OnVehicleSpawn(vehicleid);
+	VehShop_OnVehicleSpawn(vehicleid);
 	return 1;
 }
 

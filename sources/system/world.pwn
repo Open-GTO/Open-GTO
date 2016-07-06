@@ -79,7 +79,7 @@ public OneHourTimer()
 {
 	Bank_AddProfit();
 	CheckBusinessOwners();
-	vshop_OneHourTimer();
+	VehShop_OneHourTimer();
 }
 
 forward TenMinuteTimer();
@@ -105,6 +105,6 @@ public FiveSecondTimer()
 	business_Update3DTextLabelText();
 	housing_Update3DTextLabelText();
 	payday_Check();
-	vshop_SetVehiclesToRespawn();
+	VehShop_SetVehiclesToRespawn();
 	Weather_Update();
 }
