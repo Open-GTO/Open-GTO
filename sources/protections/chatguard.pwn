@@ -574,14 +574,14 @@ stock pt_chat_OnPlayerText ( playerid, text[] )
     // проверка ника игрока на содержание любого IP/домена
     if ( playerHasForbiddenName(playerid) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, _(PROTECTION_CHAT_NICK_WITH_IP_OR_DOMAIN) );
+        SendClientMessage( playerid, WARN_MS_COLOR, _(playerid, PROTECTION_CHAT_NICK_WITH_IP_OR_DOMAIN) );
         return 0;
     }
 
     // сообщения чата, похожие на попытку ввода команды чата - отображаться не будут
     if ( incorrectCmdAttempt(text) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, _(PROTECTION_CHAT_COMMAND_DETECTED) );
+        SendClientMessage( playerid, WARN_MS_COLOR, _(playerid, PROTECTION_CHAT_COMMAND_DETECTED) );
         return 0;
     }
 
@@ -599,21 +599,21 @@ stock pt_chat_OnPlayerText ( playerid, text[] )
     // нельзя писать соообщения, содержащие много букв в верхнем регистре
     if ( tooManyUpperChars(text) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, _(PROTECTION_CHAT_CAPSLOCK_ON) );
+        SendClientMessage( playerid, WARN_MS_COLOR, _(playerid, PROTECTION_CHAT_CAPSLOCK_ON) );
         return 0;
     }
 
     // нельзя писать сообщения, содержащие IP адреса
     if ( containsAnyIP(text) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, _(PROTECTION_CHAT_IP_IS_FORBIDDEN) );
+        SendClientMessage( playerid, WARN_MS_COLOR, _(playerid, PROTECTION_CHAT_IP_IS_FORBIDDEN) );
         return 0;
     }
 
     // нельзя писать сообщения, содержащие запрещенные доменные имена
     if ( containsDomainName(text) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, _(PROTECTION_CHAT_DOMAIN_IS_FORBIDDEN) );
+        SendClientMessage( playerid, WARN_MS_COLOR, _(playerid, PROTECTION_CHAT_DOMAIN_IS_FORBIDDEN) );
         return 0;
     }
 
@@ -622,14 +622,14 @@ stock pt_chat_OnPlayerText ( playerid, text[] )
     // нельзя быстро написать неск сообщений подряд
     if ( tooManyMessagesForShortTime( playerid, msgTick ) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, _(PROTECTION_CHAT_STOP_FLOOD) );
+        SendClientMessage( playerid, WARN_MS_COLOR, _(playerid, PROTECTION_CHAT_STOP_FLOOD) );
         return 0;
     }
 
     // нельзя писать похожие сообщения подряд
     if ( sameTextAsLastBefore( playerid, text ) )
     {
-        SendClientMessage( playerid, WARN_MS_COLOR, _(PROTECTION_CHAT_SIMILAR_MESSAGE) );
+        SendClientMessage( playerid, WARN_MS_COLOR, _(playerid, PROTECTION_CHAT_SIMILAR_MESSAGE) );
         return 0;
     }
 

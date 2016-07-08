@@ -73,13 +73,13 @@ pt_idle_PlayerTimer(playerid)
 
 			if (gIdleTime[playerid] > MaxTime - 1) {
 				new string[MAX_LANG_VALUE_STRING];
-				format(string, sizeof(string), _(PROTECTION_ANTIIDLE_INFO), MaxTime - 1);
+				format(string, sizeof(string), _(playerid, PROTECTION_ANTIIDLE_INFO), MaxTime - 1);
 				SendClientMessage(playerid, COLOR_RED, string);
-				SendClientMessage(playerid, COLOR_RED, _(PROTECTION_ANTIIDLE_LAST_WARN));
+				SendClientMessage(playerid, COLOR_RED, _(playerid, PROTECTION_ANTIIDLE_LAST_WARN));
 			}
 			if (gIdleTime[playerid] > MaxTime) {
 				gIdleTime[playerid] = 0;
-				KickPlayer(playerid, _(PROTECTION_ANTIIDLE_KICK_REASON));
+				KickPlayer(playerid, _(playerid, PROTECTION_ANTIIDLE_KICK_REASON));
 			}
 		} else {
 			gIdleTime[playerid] = 0;

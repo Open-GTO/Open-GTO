@@ -56,7 +56,7 @@ Vehicle_Fuel_OnGameModeInit()
 	}
 
 	SetTimer("Vehicle_Fuel_SpeedTimer", 300, 1);
-	Log_Game(_(VEHICLE_FUEL_INIT));
+	Log_Game(_d(VEHICLE_FUEL_INIT));
 	return 1;
 }
 
@@ -91,7 +91,7 @@ Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate)
 		Vehicle_ShowTextdraw(playerid);
 
 		if (gFuel[vehicleid] <= 0.1 && !VehShop_IsShopVehicle(vehicleid)) {
-			SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_EMPTY));
+			SendClientMessage(playerid, COLOR_YELLOW, _(playerid, VEHICLE_FUEL_EMPTY));
 		}
 
 		Vehicle_ToggleEngine(vehicleid);
@@ -114,17 +114,17 @@ COMMAND:fill(playerid, params[])
 
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid == 0) {
-		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_IN_VEHICLE));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, VEHICLE_FUEL_NOT_IN_VEHICLE));
 		return 1;
 	}
 
 	if (!IsPlayerAtFuelStation(playerid)) {
-		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_NOT_ON_FUEL_ST));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, VEHICLE_FUEL_NOT_ON_FUEL_ST));
 		return 1;
 	}
 
 	if (IsVehicleRefilling(vehicleid)) {
-		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_IS_FUELING_ERROR));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, VEHICLE_FUEL_IS_FUELING_ERROR));
 		return 1;
 	}
 
@@ -133,16 +133,16 @@ COMMAND:fill(playerid, params[])
 	new Float:max_fuel = GetVehicleModelMaxFuel(vehiclemodel);
 
 	if (max_fuel == 0.0) {
-		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_WITHOUT_FUEL_ENGINE));
+		SendClientMessage(playerid, COLOR_YELLOW, _(playerid, VEHICLE_FUEL_WITHOUT_FUEL_ENGINE));
 		return 1;
 	}
 
 	if (gFuel[vehicleid] >= max_fuel) {
-		SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_FUEL_IS_FULL));
+		SendClientMessage(playerid, COLOR_YELLOW, _(playerid, VEHICLE_FUEL_FUEL_IS_FULL));
 		return 1;
 	}
 
-	SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_IS_FUELING));
+	SendClientMessage(playerid, COLOR_YELLOW, _(playerid, VEHICLE_FUEL_IS_FUELING));
 	FillVehicle(vehicleid, playerid);
 	return 1;
 }

@@ -24,4 +24,5 @@ enum e_Account_Info {
 	e_aCreationTime,
 	e_aPlayedSeconds,
 	e_aPremiumTime,
+	e_aLanguage[MAX_LANG_NAME],
 }

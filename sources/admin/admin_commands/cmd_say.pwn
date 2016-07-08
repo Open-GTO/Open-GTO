@@ -22,12 +22,12 @@ COMMAND:say(playerid, params[])
 		string[MAX_LANG_VALUE_STRING];
 
 	if (strlen(params) == 0) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SAY_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SAY_HELP));
 		return 1;
 	}
 
 	GetPlayerName(playerid, playername, sizeof(playername));
-	format(string, sizeof(string), _(ADMIN_COMMAND_SAY_TEXT), playername, playerid, params);
+	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SAY_TEXT), playername, playerid, params);
 
 	SendClientMessageToAll(COLOR_BLUE, string);
 	return 1;

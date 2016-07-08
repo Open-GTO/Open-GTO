@@ -62,7 +62,7 @@ stock Vehicle_UpdateTextdraw(playerid, Float:speed = -1.0, Float:fuel = -1.0, Fl
 	}
 
 	new string[MAX_LANG_VAR_STRING];
-	format(string, sizeof(string), _(VEHICLE_TEXTDRAW_STRING), speed, fuel, health);
+	format(string, sizeof(string), _(playerid, VEHICLE_TEXTDRAW_STRING), speed, fuel, health);
 	PlayerTextDrawSetString(playerid, TD_Text[playerid], string);
 	return 1;
 }

@@ -23,7 +23,7 @@ COMMAND:skin(playerid, params[])
 		skin;
 
 	if (sscanf(params, "s[4]s[32]I(-1)", subcmd, subparams, skin)) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKIN_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKIN_HELP));
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:skin(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKIN_TARGET_ERROR));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKIN_TARGET_ERROR));
 		return 1;
 	}
 
@@ -50,7 +50,7 @@ COMMAND:skin(playerid, params[])
 
 	if (strcmp(subcmd, "set", true) == 0) {
 		if (skin == -1) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKIN_HELP));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKIN_HELP));
 			return 1;
 		}
 
@@ -59,29 +59,29 @@ COMMAND:skin(playerid, params[])
 				SetPlayerSkin(id, skin);
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_SKIN_SET_ALL), playername, playerid, skin);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKIN_SET_ALL), playername, playerid, skin);
 			SendClientMessageToAll(-1, string);
 		} else {
 			SetPlayerSkin(targetid, skin);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_SKIN_SET_PLAYER), playername, playerid, skin);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKIN_SET_PLAYER), playername, playerid, skin);
 			SendClientMessage(targetid, -1, string);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_SKIN_SET_SELF), targetname, targetid, skin);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKIN_SET_SELF), targetname, targetid, skin);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKIN_TARGET_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKIN_TARGET_ERROR));
 			return 1;
 		}
 
 		skin = GetPlayerSkin(targetid);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_SKIN_GET), targetname, targetid, skin);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKIN_GET), targetname, targetid, skin);
 		SendClientMessage(playerid, -1, string);
 	} else {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKIN_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKIN_HELP));
 	}
 
 	return 1;

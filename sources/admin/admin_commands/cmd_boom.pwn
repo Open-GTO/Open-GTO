@@ -21,7 +21,7 @@ COMMAND:boom(playerid, params[])
 		type;
 
 	if (sscanf(params, "i", type) || 13 < type < 0) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_BOOM_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_BOOM_HELP));
 		return 1;
 	}
 
@@ -42,7 +42,7 @@ COMMAND:boom(playerid, params[])
 
 	CreateExplosion(pos_x, pos_y, pos_z + 2, type, 30.0);
 
-	format(string, sizeof(string), _(ADMIN_COMMAND_BOOM_MAKE), playername, playerid);
+	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_BOOM_MAKE), playername, playerid);
 	SendMessageToNearPlayerPlayers(string, 40.0, playerid);
 	return 1;
 }

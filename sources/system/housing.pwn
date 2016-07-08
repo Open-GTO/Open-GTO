@@ -202,9 +202,12 @@ new Houses[][HouseInfo] = {
 #define GetPlayerToHouseID(%0) GetPVarInt(%0, "HausID")
 new
 	house_icon[ sizeof(Houses) ],
-	Text3D:House3DTextLabel[ sizeof(Houses) ],
 	Float:HouseDistanceOfShowLabel = 20.0,
 	HouseUpKeepRatio = 1000;
+
+static
+	Text3D:gLabelID[ sizeof(Houses) ][MAX_PLAYERS],
+	gLabelString[ sizeof(Houses) ][Lang][MAX_LANG_VALUE_STRING];
 
 stock houses_LoadConfig(file_config)
 {
@@ -287,16 +290,14 @@ stock SaveHous(housid)
 	return 1;
 }
 
-stock housing_OnGameModeInit()
+housing_OnGameModeInit()
 {
 	houses_LoadAll();
 
 	new
-		string[MAX_LANG_VALUE_STRING * 4],
 		icon_type;
 
-	for (new id = 0; id < sizeof(Houses); id++)
-	{
+	for (new id = 0; id < sizeof(Houses); id++) {
 		CreateDynamicPickup(1273, 1, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]);
 		CreateDynamicPickup(1559, 1, Houses[id][Houses_EnterX], Houses[id][Houses_EnterY], Houses[id][Houses_EnterZ] + 0.2, id + 1);
 
@@ -307,14 +308,24 @@ stock housing_OnGameModeInit()
 		}
 		house_icon[id] = CreateDynamicMapIcon(Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ], icon_type, 0);
 
-		housing_GetTextLabelString(id, string);
-		House3DTextLabel[id] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
-			Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ] + 0.6,
-			HouseDistanceOfShowLabel, .testlos = 1);
-
 		Houses[id][Houses_VirtualWorld] = id + 1;
 	}
-	Log_Game(_(HOUSING_INIT));
+	Log_Game(_d(HOUSING_INIT));
+}
+
+housing_OnPlayerConnect(playerid)
+{
+	for (new id = 0; id < sizeof(Houses); id++) {
+		housing_CreatePlayerLabel(playerid, id);
+	}
+}
+
+housing_OnPlayerDisconnect(playerid, reason)
+{
+	#pragma unused reason
+	for (new id = 0; id < sizeof(Houses); id++) {
+		housing_DestroyPlayerLabel(playerid, id);
+	}
 }
 
 stock IsPlayerAtHouse(playerid)
@@ -366,30 +377,30 @@ DialogCreate:HouseMenu(playerid)
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	new head[MAX_STRING];
-	format(head, sizeof(head), _(HOUSING_DIALOG_HEADER), Houses[id][Houses_Name]);
+	format(head, sizeof(head), _(playerid, HOUSING_DIALOG_HEADER), Houses[id][Houses_Name]);
 
 	new isowner = !strcmp(Houses[id][Houses_Owner], playername, true);
 
 	if (isowner)
 	{
-		strcat(string, _(HOUSING_DIALOG_LIST_SELL), sizeof(string));
+		strcat(string, _(playerid, HOUSING_DIALOG_LIST_SELL), sizeof(string));
 	}
 	else
 	{
-		strcat(string, _(HOUSING_DIALOG_LIST_BUY), sizeof(string));
+		strcat(string, _(playerid, HOUSING_DIALOG_LIST_BUY), sizeof(string));
 	}
 
-	strcat(string, _(HOUSING_DIALOG_LIST_ENTER), sizeof(string));
+	strcat(string, _(playerid, HOUSING_DIALOG_LIST_ENTER), sizeof(string));
 
 	if (!isowner)
 	{
 		if (!strcmp(Houses[id][Houses_RentName], playername, true))
 		{
-			strcat(string, _(HOUSING_DIALOG_LIST_RENT_STOP), sizeof(string));
+			strcat(string, _(playerid, HOUSING_DIALOG_LIST_RENT_STOP), sizeof(string));
 		}
 		else
 		{
-			strcat(string, _(HOUSING_DIALOG_LIST_RENT_START), sizeof(string));
+			strcat(string, _(playerid, HOUSING_DIALOG_LIST_RENT_START), sizeof(string));
 		}
 	}
 	else
@@ -398,38 +409,38 @@ DialogCreate:HouseMenu(playerid)
 		{
 			if (Houses[id][Houses_Rentabil] == 1)
 			{
-				strcat(string, _(HOUSING_DIALOG_LIST_RENT_OFF), sizeof(string));
+				strcat(string, _(playerid, HOUSING_DIALOG_LIST_RENT_OFF), sizeof(string));
 			}
 			else
 			{
-				strcat(string, _(HOUSING_DIALOG_LIST_RENT_ON), sizeof(string));
+				strcat(string, _(playerid, HOUSING_DIALOG_LIST_RENT_ON), sizeof(string));
 			}
 		}
 		else
 		{
-			strcat(string, _(HOUSING_DIALOG_LIST_RENT_KICK), sizeof(string));
+			strcat(string, _(playerid, HOUSING_DIALOG_LIST_RENT_KICK), sizeof(string));
 		}
 	}
 
 	if (isowner)
 	{
-		strcat(string, _(HOUSING_DIALOG_LIST_RENT_SET), sizeof(string));
+		strcat(string, _(playerid, HOUSING_DIALOG_LIST_RENT_SET), sizeof(string));
 
 		if (Houses[id][Houses_Lock] == 1)
 		{
-			strcat(string, _(HOUSING_DIALOG_LIST_OPEN), sizeof(string));
+			strcat(string, _(playerid, HOUSING_DIALOG_LIST_OPEN), sizeof(string));
 		}
 		else
 		{
-			strcat(string, _(HOUSING_DIALOG_LIST_CLOSE), sizeof(string));
+			strcat(string, _(playerid, HOUSING_DIALOG_LIST_CLOSE), sizeof(string));
 		}
 
-		strcat(string, _(HOUSING_DIALOG_LIST_UPGRADES), sizeof(string));
+		strcat(string, _(playerid, HOUSING_DIALOG_LIST_UPGRADES), sizeof(string));
 
-		strcat(string, _(HOUSING_DIALOG_LIST_KEEP), sizeof(string));
+		strcat(string, _(playerid, HOUSING_DIALOG_LIST_KEEP), sizeof(string));
 	}
 
-	Dialog_Open(playerid, Dialog:HouseMenu, DIALOG_STYLE_LIST, head, string, _(HOUSING_DIALOG_BUTTON_SELECT), _(HOUSING_DIALOG_BUTTON_CANCEL));
+	Dialog_Open(playerid, Dialog:HouseMenu, DIALOG_STYLE_LIST, head, string, _(playerid, HOUSING_DIALOG_BUTTON_SELECT), _(playerid, HOUSING_DIALOG_BUTTON_CANCEL));
 	return 1;
 }
 
@@ -462,11 +473,11 @@ DialogResponse:HouseMenu(playerid, response, listitem, inputtext[])
 		{
 			if (Houses[id][Houses_Lock] == 1)
 			{
-				Dialog_Message(playerid, _(HOUSING_ENTER_HEADER), _(HOUSING_ENTER_CLOSED), _(HOUSING_DIALOG_BUTTON_OK));
+				Dialog_Message(playerid, _(playerid, HOUSING_ENTER_HEADER), _(playerid, HOUSING_ENTER_CLOSED), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 				return 1;
 			}
 			SetPlayerPosEx(playerid, Houses[id][Houses_EnterX], Houses[id][Houses_EnterY], Houses[id][Houses_EnterZ], 0, Houses[id][Houses_Interior], Houses[id][Houses_VirtualWorld]);
-			SendClientMessage(playerid, COLOR_GREEN, _(HOUSING_ENTER_EXIT_HELP));
+			SendClientMessage(playerid, COLOR_GREEN, _(playerid, HOUSING_ENTER_EXIT_HELP));
 			return 1;
 		}
 		case 2:
@@ -489,12 +500,12 @@ DialogResponse:HouseMenu(playerid, response, listitem, inputtext[])
 					if (Houses[id][Houses_Rentabil] == 1)
 					{
 						Houses[id][Houses_Rentabil] = 0;
-						Dialog_Message(playerid, _(HOUSING_RENT_HEADER), _(HOUSING_RENT_SET_DISABLED), _(HOUSING_DIALOG_BUTTON_OK));
+						Dialog_Message(playerid, _(playerid, HOUSING_RENT_HEADER), _(playerid, HOUSING_RENT_SET_DISABLED), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 					}
 					else
 					{
 						Houses[id][Houses_Rentabil] = 1;
-						Dialog_Message(playerid, _(HOUSING_RENT_HEADER), _(HOUSING_RENT_SET_ENABLED), _(HOUSING_DIALOG_BUTTON_OK));
+						Dialog_Message(playerid, _(playerid, HOUSING_RENT_HEADER), _(playerid, HOUSING_RENT_SET_ENABLED), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 					}
 				}
 				else
@@ -507,7 +518,7 @@ DialogResponse:HouseMenu(playerid, response, listitem, inputtext[])
 		case 3:
 		{
 			new string[MAX_STRING];
-			format(string, sizeof(string), _(HOUSING_RENT_SET_NEW), Houses[id][Houses_RentCost]);
+			format(string, sizeof(string), _(playerid, HOUSING_RENT_SET_NEW), Houses[id][Houses_RentCost]);
 			Dialog_Show(playerid, Dialog:HouseSetRent);
 			return 1;
 		}
@@ -516,12 +527,12 @@ DialogResponse:HouseMenu(playerid, response, listitem, inputtext[])
 			if (Houses[id][Houses_Lock] == 1)
 			{
 				Houses[id][Houses_Lock] = 0;
-				Dialog_Message(playerid, _(HOUSING_ENTER_HEADER), _(HOUSING_ENTER_IS_OPEN), _(HOUSING_DIALOG_BUTTON_OK));
+				Dialog_Message(playerid, _(playerid, HOUSING_ENTER_HEADER), _(playerid, HOUSING_ENTER_IS_OPEN), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 			}
 			else
 			{
 				Houses[id][Houses_Lock] = 1;
-				Dialog_Message(playerid, _(HOUSING_ENTER_HEADER), _(HOUSING_ENTER_IS_CLOSE), _(HOUSING_DIALOG_BUTTON_OK));
+				Dialog_Message(playerid, _(playerid, HOUSING_ENTER_HEADER), _(playerid, HOUSING_ENTER_IS_CLOSE), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 			}
 			return 1;
 		}
@@ -541,8 +552,8 @@ DialogResponse:HouseMenu(playerid, response, listitem, inputtext[])
 DialogCreate:HouseSetRent(playerid)
 {
 	new string[MAX_STRING];
-	format(string, sizeof(string), _(HOUSING_RENT_SET_NEW), Houses[ GetPlayerToHouseID(playerid) ][Houses_RentCost]);
-	Dialog_Open(playerid, Dialog:HouseSetRent, DIALOG_STYLE_INPUT, _(HOUSING_RENT_SET_HEADER), string, _(HOUSING_DIALOG_BUTTON_SELECT), _(HOUSING_DIALOG_BUTTON_BACK));
+	format(string, sizeof(string), _(playerid, HOUSING_RENT_SET_NEW), Houses[ GetPlayerToHouseID(playerid) ][Houses_RentCost]);
+	Dialog_Open(playerid, Dialog:HouseSetRent, DIALOG_STYLE_INPUT, _(playerid, HOUSING_RENT_SET_HEADER), string, _(playerid, HOUSING_DIALOG_BUTTON_SELECT), _(playerid, HOUSING_DIALOG_BUTTON_BACK));
 }
 
 DialogResponse:HouseSetRent(playerid, response, listitem, inputtext[])
@@ -554,24 +565,24 @@ DialogResponse:HouseSetRent(playerid, response, listitem, inputtext[])
 
 	new rentcost = strval(inputtext);
 	if (rentcost < 1) {
-		Dialog_Message(playerid, _(HOUSING_RENT_SET_HEADER), _(HOUSING_RENT_SET_VALUE_ERROR), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_RENT_SET_HEADER), _(playerid, HOUSING_RENT_SET_VALUE_ERROR), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
 	Houses[ GetPlayerToHouseID(playerid) ][Houses_RentCost] = rentcost;
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), _(HOUSING_RENT_SET_SUCCESS), rentcost);
-	Dialog_Message(playerid, _(HOUSING_RENT_SET_HEADER), string, _(HOUSING_DIALOG_BUTTON_OK));
+	format(string, sizeof(string), _(playerid, HOUSING_RENT_SET_SUCCESS), rentcost);
+	Dialog_Message(playerid, _(playerid, HOUSING_RENT_SET_HEADER), string, _(playerid, HOUSING_DIALOG_BUTTON_OK));
 	return 1;
 }
 
 DialogCreate:HouseSellAccept(playerid)
 {
 	Dialog_Open(playerid, Dialog:HouseSellAccept, DIALOG_STYLE_MSGBOX,
-			_(HOUSING_SELL_ACCEPT_HEADER),
-			_(HOUSING_SELL_ACCEPT_INFO),
-			_(HOUSING_DIALOG_BUTTON_SELL), _(HOUSING_DIALOG_BUTTON_BACK)
+			_(playerid, HOUSING_SELL_ACCEPT_HEADER),
+			_(playerid, HOUSING_SELL_ACCEPT_INFO),
+			_(playerid, HOUSING_DIALOG_BUTTON_SELL), _(playerid, HOUSING_DIALOG_BUTTON_BACK)
 		);
 }
 
@@ -588,7 +599,7 @@ DialogResponse:HouseSellAccept(playerid, response, listitem, inputtext[])
 
 DialogCreate:HouseUpgrades(playerid)
 {
-	Dialog_Open(playerid, Dialog:HouseUpgrades, DIALOG_STYLE_LIST, _(HOUSING_UPGRADE_HEADER), _(HOUSING_UPGRADE_LIST), _(HOUSING_DIALOG_BUTTON_SELECT), _(HOUSING_DIALOG_BUTTON_BACK));
+	Dialog_Open(playerid, Dialog:HouseUpgrades, DIALOG_STYLE_LIST, _(playerid, HOUSING_UPGRADE_HEADER), _(playerid, HOUSING_UPGRADE_LIST), _(playerid, HOUSING_DIALOG_BUTTON_SELECT), _(playerid, HOUSING_DIALOG_BUTTON_BACK));
 }
 
 DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
@@ -603,7 +614,7 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 		case 0: {
 			if (Houses[id][Houses_HealUpgrade] == 1) {
 				if (GetPVarInt(playerid, "house_HealUpgrade_Used") == 1) {
-					Dialog_Message(playerid, _(HOUSING_UPGRADE_HEADER), _(HOUSING_UPGRADE_PAUSE), _(HOUSING_DIALOG_BUTTON_OK));
+					Dialog_Message(playerid, _(playerid, HOUSING_UPGRADE_HEADER), _(playerid, HOUSING_UPGRADE_PAUSE), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 					return 1;
 				}
 
@@ -616,20 +627,20 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 
 			if (GetPlayerMoney(playerid) < HOUSE_UPGRADE_HEALTH_COST) {
 				new string[MAX_STRING];
-				format(string, sizeof(string), _(HOUSING_UPGRADE_NO_MONEY), HOUSE_UPGRADE_HEALTH_COST);
-				return Dialog_Message(playerid, _(HOUSING_UPGRADE_HEALTH), string, _(HOUSING_DIALOG_BUTTON_OK));
+				format(string, sizeof(string), _(playerid, HOUSING_UPGRADE_NO_MONEY), HOUSE_UPGRADE_HEALTH_COST);
+				return Dialog_Message(playerid, _(playerid, HOUSING_UPGRADE_HEALTH), string, _(playerid, HOUSING_DIALOG_BUTTON_OK));
 			}
 
 			Houses[id][Houses_HealUpgrade] = 1;
 			GivePlayerMoney(playerid,-HOUSE_UPGRADE_HEALTH_COST);
 
-			Dialog_Message(playerid, _(HOUSING_UPGRADE_HEADER), _(HOUSING_UPGRADE_SUCCESS), _(HOUSING_DIALOG_BUTTON_OK));
+			Dialog_Message(playerid, _(playerid, HOUSING_UPGRADE_HEADER), _(playerid, HOUSING_UPGRADE_SUCCESS), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 			return 1;
 		}
 		case 1: {
 			if (Houses[id][Houses_ArmourUpgrade] == 1) {
 				if (GetPVarInt(playerid, "house_ArmourUpgrade_Used") == 1) {
-					Dialog_Message(playerid, _(HOUSING_UPGRADE_HEADER), _(HOUSING_UPGRADE_PAUSE), _(HOUSING_DIALOG_BUTTON_OK));
+					Dialog_Message(playerid, _(playerid, HOUSING_UPGRADE_HEADER), _(playerid, HOUSING_UPGRADE_PAUSE), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 					return 1;
 				}
 
@@ -642,14 +653,14 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 
 			if (GetPlayerMoney(playerid) < HOUSE_UPGRADE_ARMOUR_COST) {
 				new string[MAX_STRING];
-				format(string, sizeof(string), _(HOUSING_UPGRADE_NO_MONEY), HOUSE_UPGRADE_ARMOUR_COST);
-				return Dialog_Message(playerid, _(HOUSING_UPGRADE_ARMOUR), string, _(HOUSING_DIALOG_BUTTON_OK));
+				format(string, sizeof(string), _(playerid, HOUSING_UPGRADE_NO_MONEY), HOUSE_UPGRADE_ARMOUR_COST);
+				return Dialog_Message(playerid, _(playerid, HOUSING_UPGRADE_ARMOUR), string, _(playerid, HOUSING_DIALOG_BUTTON_OK));
 			}
 
 			Houses[id][Houses_ArmourUpgrade] = 1;
 			GivePlayerMoney(playerid,-HOUSE_UPGRADE_ARMOUR_COST);
 
-			Dialog_Message(playerid, _(HOUSING_UPGRADE_HEADER), _(HOUSING_UPGRADE_SUCCESS), _(HOUSING_DIALOG_BUTTON_OK));
+			Dialog_Message(playerid, _(playerid, HOUSING_UPGRADE_HEADER), _(playerid, HOUSING_UPGRADE_SUCCESS), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 			return 1;
 		}
 	}
@@ -666,13 +677,13 @@ stock RentRoom(playerid)
 
 	if (Houses[id][Houses_Rentabil] == 0)
 	{
-		Dialog_Message(playerid, _(HOUSING_RENT_HEADER), _(HOUSING_RENT_DISABLED), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_RENT_HEADER), _(playerid, HOUSING_RENT_DISABLED), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
 	if (strlen(ReturnPlayerGangName(playerid)) > 0)
 	{
-		Dialog_Message(playerid, _(HOUSING_RENT_HEADER), _(HOUSING_RENT_IN_GANG), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_RENT_HEADER), _(playerid, HOUSING_RENT_IN_GANG), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
@@ -680,7 +691,7 @@ stock RentRoom(playerid)
 	{
 		if (GetPlayerMoney(playerid) < Houses[id][Houses_RentCost])
 		{
-			Dialog_Message(playerid, _(HOUSING_RENT_HEADER), _(HOUSING_RENT_NO_MONEY), _(HOUSING_DIALOG_BUTTON_OK));
+			Dialog_Message(playerid, _(playerid, HOUSING_RENT_HEADER), _(playerid, HOUSING_RENT_NO_MONEY), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 			return 1;
 		}
 		GetPlayerName(playerid, Houses[id][Houses_RentName], MAX_PLAYER_NAME + 1);
@@ -705,18 +716,19 @@ stock RentRoom(playerid)
 			ini_setInteger(file_player, "BankMoney", bank_money + Houses[id][Houses_RentCost]);
 			ini_closeFile(file_player);
 		}
+		housing_UpdateLabel(id);
 
 		format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_houses, Houses[id][Houses_Name]);
 		new file_housing = ini_openFile(string);
 		ini_setInteger(file_housing, "Rentabil", 1);
 		ini_setString(file_housing, "RentName", ReturnPlayerName(playerid));
 		ini_closeFile(file_housing);
-		Dialog_Message(playerid, _(HOUSING_RENT_HEADER), _(HOUSING_RENT_SUCCESS), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_RENT_HEADER), _(playerid, HOUSING_RENT_SUCCESS), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 	}
 	else
 	{
-		format(string, sizeof(string), _(HOUSING_RENT_CURRENT_RENTER), Houses[id][Houses_RentName]);
-		Dialog_Message(playerid, _(HOUSING_RENT_HEADER), string, _(HOUSING_DIALOG_BUTTON_OK));
+		format(string, sizeof(string), _(playerid, HOUSING_RENT_CURRENT_RENTER), Houses[id][Houses_RentName]);
+		Dialog_Message(playerid, _(playerid, HOUSING_RENT_HEADER), string, _(playerid, HOUSING_DIALOG_BUTTON_OK));
 	}
 	return 1;
 }
@@ -726,23 +738,24 @@ stock DeleteRenter(playerid)
 	new id = GetPlayerToHouseID(playerid);
 	if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true))
 	{
-		Dialog_Message(playerid, _(HOUSING_RENT_HEADER), _(HOUSING_RENT_RENTER_KICK), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_RENT_HEADER), _(playerid, HOUSING_RENT_RENTER_KICK), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		foreach (Player, i)
 		{
 			if (!strcmp(Houses[id][Houses_RentName], ReturnPlayerName(i), true))
 			{
-				SendClientMessage(i, COLOR_LIGHTRED, _(HOUSING_KICKED));
+				SendClientMessage(i, COLOR_LIGHTRED, _(playerid, HOUSING_KICKED));
 			}
 		}
 	}
 	else if (!strcmp(Houses[id][Houses_RentName], ReturnPlayerName(playerid), true))
 	{
-		Dialog_Message(playerid, _(HOUSING_RENT_HEADER), _(HOUSING_RENT_LEAVE), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_RENT_HEADER), _(playerid, HOUSING_RENT_LEAVE), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 	}
 	if (id > -1)
 	{
 		strcpy(Houses[id][Houses_RentName], "Unknown", MAX_PLAYER_NAME);
 	}
+	housing_UpdateLabel(id);
 	return 1;
 }
 
@@ -755,7 +768,7 @@ stock house_Buy(playerid)
 		if (!strcmp(Houses[i][Houses_Owner], playername, true)) {
 			pl_houses++;
 			if (pl_houses >= MAX_PLAYER_HOUSES) {
-				Dialog_Message(playerid, _(HOUSING_BUY_HEADER), _(HOUSING_BUY_MAX_LIMIT), _(HOUSING_DIALOG_BUTTON_OK));
+				Dialog_Message(playerid, _(playerid, HOUSING_BUY_HEADER), _(playerid, HOUSING_BUY_MAX_LIMIT), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 				return 1;
 			}
 		}
@@ -763,34 +776,34 @@ stock house_Buy(playerid)
 	new temp[MAX_STRING];
 	new id = GetPlayerToHouseID(playerid);
 	if (id <= -1) {
-		Dialog_Message(playerid, _(HOUSING_BUY_HEADER), _(HOUSING_ERROR), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_BUY_HEADER), _(playerid, HOUSING_ERROR), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
 	if (GetPlayerGangID(playerid) == INVALID_GANG_ID) {
-		Dialog_Message(playerid, _(HOUSING_BUY_HEADER), _(HOUSING_BUY_NOT_IN_GANG), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_BUY_HEADER), _(playerid, HOUSING_BUY_NOT_IN_GANG), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
 	new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
 	if (GetPlayerMoney(playerid) < price) {
-		Dialog_Message(playerid, _(HOUSING_BUY_HEADER), _(HOUSING_BUY_NO_MONEY), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_BUY_HEADER), _(playerid, HOUSING_BUY_NO_MONEY), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
 	if (!strcmp(Houses[id][Houses_Owner], playername, true)) {
-		Dialog_Message(playerid, _(HOUSING_BUY_HEADER), _(HOUSING_BUY_IS_MY), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_BUY_HEADER), _(playerid, HOUSING_BUY_IS_MY), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 	}
 #if !defined BUY_ALL_HOUSES
 	else if (strcmp(Houses[id][Houses_Owner], "Unknown", true)) {
-		Dialog_Message(playerid, _(HOUSING_BUY_HEADER), _(HOUSING_BUY_HAVE_OWNER), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_BUY_HEADER), _(playerid, HOUSING_BUY_HAVE_OWNER), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 	}
 #endif
 	else {
 	#if defined BUY_ALL_HOUSES
 		foreach (new ownerid : Player) {
 			if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(ownerid), true)) {
-				format(temp, sizeof(temp), _(HOUSING_RENT_SET_HEADER), ReturnPlayerName(playerid), Houses[id][Houses_Name]);
+				format(temp, sizeof(temp), _(playerid, HOUSING_RENT_SET_HEADER), ReturnPlayerName(playerid), Houses[id][Houses_Name]);
 				SendClientMessage(ownerid, COLOR_RED, temp);
 				GivePlayerMoney(ownerid, price);
 				break;
@@ -806,8 +819,9 @@ stock house_Buy(playerid)
 			SetPlayerSpawnHouseID(playerid, id);
 		}
 		Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, house_icon[id], E_STREAMER_TYPE, 32);
-		format(temp, sizeof(temp), _(HOUSING_BUY_SUCCESS), Houses[id][Houses_Name]);
-		Dialog_Message(playerid, _(HOUSING_BUY_HEADER), temp, _(HOUSING_DIALOG_BUTTON_OK));
+		housing_UpdateLabel(id);
+		format(temp, sizeof(temp), _(playerid, HOUSING_BUY_SUCCESS), Houses[id][Houses_Name]);
+		Dialog_Message(playerid, _(playerid, HOUSING_BUY_HEADER), temp, _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		Log_Game("player: %s(%d): bought the '%s' (house)", playername, playerid, Houses[id][Houses_Name]);
 	}
 	return 1;
@@ -819,12 +833,12 @@ stock house_Sell(playerid)
 
 	new id = GetPlayerToHouseID(playerid);
 	if (id <= -1) {
-		Dialog_Message(playerid, _(HOUSING_SELL_HEADER), _(HOUSING_ERROR), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_SELL_HEADER), _(playerid, HOUSING_ERROR), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
 	if (strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true)) {
-		Dialog_Message(playerid, _(HOUSING_SELL_HEADER), _(HOUSING_SELL_NOT_OWNER), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_SELL_HEADER), _(playerid, HOUSING_SELL_NOT_OWNER), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 	} else {
 		new price = ((Houses[id][Houses_Cost] + Houses[id][Houses_Buyout]) * 85) / 100;
 		GivePlayerMoney(playerid, price);
@@ -841,8 +855,8 @@ stock house_Sell(playerid)
 		}
 
 		new temp[MAX_STRING];
-		format(temp, sizeof(temp), _(HOUSING_SELL_SUCCESS), Houses[id][Houses_Name]);
-		Dialog_Message(playerid, _(HOUSING_SELL_HEADER), temp, _(HOUSING_DIALOG_BUTTON_OK));
+		format(temp, sizeof(temp), _(playerid, HOUSING_SELL_SUCCESS), Houses[id][Houses_Name]);
+		Dialog_Message(playerid, _(playerid, HOUSING_SELL_HEADER), temp, _(playerid, HOUSING_DIALOG_BUTTON_OK));
 
 		Log_Game("player: %s(%d): sold the '%s' (house)", ReturnPlayerName(playerid), playerid, Houses[id][Houses_Name]);
 	}
@@ -854,30 +868,30 @@ stock house_Keep(playerid)
 	new id = GetPlayerToHouseID(playerid);
 	if (id <= -1)
 	{
-		Dialog_Message(playerid, _(HOUSING_KEEP_HEADER), _(HOUSING_ERROR), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_KEEP_HEADER), _(playerid, HOUSING_ERROR), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
 	if (strcmp(Houses[id][Houses_Gang], ReturnPlayerGangName(playerid), true))
 	{
-		Dialog_Message(playerid, _(HOUSING_KEEP_HEADER), _(HOUSING_KEEP_NO_OWNER), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_KEEP_HEADER), _(playerid, HOUSING_KEEP_NO_OWNER), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
 	if (GetPlayerMoney(playerid) < Houses[id][Houses_UpKeepLeft])
 	{
-		Dialog_Message(playerid, _(HOUSING_KEEP_HEADER), _(HOUSING_KEEP_NO_MONEY), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_KEEP_HEADER), _(playerid, HOUSING_KEEP_NO_MONEY), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
 	if (Houses[id][Houses_UpKeepLeft] <= 0)
 	{
-		Dialog_Message(playerid, _(HOUSING_KEEP_HEADER), _(HOUSING_KEEP_NO), _(HOUSING_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, HOUSING_KEEP_HEADER), _(playerid, HOUSING_KEEP_NO), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
 	GivePlayerMoney(playerid, -Houses[id][Houses_UpKeepLeft]);
-	Dialog_Message(playerid, _(HOUSING_KEEP_HEADER), _(HOUSING_KEEP_SUCCESS), _(HOUSING_DIALOG_BUTTON_OK));
+	Dialog_Message(playerid, _(playerid, HOUSING_KEEP_HEADER), _(playerid, HOUSING_KEEP_SUCCESS), _(playerid, HOUSING_DIALOG_BUTTON_OK));
 	Houses[id][Houses_UpKeepLeft] = 0;
 	return 1;
 }
@@ -941,22 +955,22 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				string[MAX_LANG_VALUE_STRING * 2],
 				rent_string[MAX_LANG_VALUE_STRING];
 
-			format(head, sizeof(head), _(HOUSING_DIALOG_HEADER), Houses[id][Houses_Name]);
+			format(head, sizeof(head), _(playerid, HOUSING_DIALOG_HEADER), Houses[id][Houses_Name]);
 
 			new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
 
 			if (strcmp(Houses[id][Houses_Owner], "Unknown", true) && strcmp(Houses[id][Houses_Gang], "Unknown", true))
 			{
 				if (!strcmp(Houses[id][Houses_RentName], "Unknown", true)) {
-					format(rent_string, sizeof(rent_string), _(HOUSING_RENT_COST), Houses[id][Houses_RentCost]);
+					format(rent_string, sizeof(rent_string), _(playerid, HOUSING_RENT_COST), Houses[id][Houses_RentCost]);
 				} else {
-					format(rent_string, sizeof(rent_string), _(HOUSING_RENT_CURRENT), Houses[id][Houses_RentName]);
+					format(rent_string, sizeof(rent_string), _(playerid, HOUSING_RENT_CURRENT), Houses[id][Houses_RentName]);
 				}
 
 				if (strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true))
 				{
-					__(HOUSING_DIALOG_INFO_OWNER, string);
-					strcat(string, _(HOUSING_DIALOG_INFO));
+					__(playerid, HOUSING_DIALOG_INFO_OWNER, string);
+					strcat(string, _(playerid, HOUSING_DIALOG_INFO));
 
 					format(string, sizeof(string),
 						string,
@@ -968,23 +982,23 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 						strcat(string, rent_string, sizeof(string));
 					}
 
-					Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX, head, string, _(HOUSING_DIALOG_BUTTON_ACTIONS), _(HOUSING_DIALOG_BUTTON_CANCEL));
+					Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX, head, string, _(playerid, HOUSING_DIALOG_BUTTON_ACTIONS), _(playerid, HOUSING_DIALOG_BUTTON_CANCEL));
 					return 1;
 				}
 				else
 				{
-					format(string, sizeof(string), _(HOUSING_DIALOG_INFO), price, Houses[id][Houses_UpKeep], Houses[id][Houses_UpKeepLeft], house_GetUpKeepMax(id));
+					format(string, sizeof(string), _(playerid, HOUSING_DIALOG_INFO), price, Houses[id][Houses_UpKeep], Houses[id][Houses_UpKeepLeft], house_GetUpKeepMax(id));
 					strcat(string, rent_string, sizeof(string));
 
-					Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX, head, string, _(HOUSING_DIALOG_BUTTON_ACTIONS), _(HOUSING_DIALOG_BUTTON_CANCEL));
+					Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX, head, string, _(playerid, HOUSING_DIALOG_BUTTON_ACTIONS), _(playerid, HOUSING_DIALOG_BUTTON_CANCEL));
 					return 1;
 				}
 			}
 			else
 			{
-				format(string, sizeof(string), _(HOUSING_DIALOG_INFO_NO_OWNER), Houses[id][Houses_Cost], Houses[id][Houses_UpKeep]);
+				format(string, sizeof(string), _(playerid, HOUSING_DIALOG_INFO_NO_OWNER), Houses[id][Houses_Cost], Houses[id][Houses_UpKeep]);
 
-				Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX, head, string, _(HOUSING_DIALOG_BUTTON_ACTIONS), _(HOUSING_DIALOG_BUTTON_CANCEL));
+				Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX, head, string, _(playerid, HOUSING_DIALOG_BUTTON_ACTIONS), _(playerid, HOUSING_DIALOG_BUTTON_CANCEL));
 				return 1;
 			}
 		}
@@ -1000,30 +1014,78 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	return 1;
 }
 
-stock housing_Update3DTextLabelText()
+static stock housing_UpdateLabelString(id)
 {
-	new string[MAX_LANG_VALUE_STRING * 4];
-	for (new id = 0; id < sizeof(Houses); id++)
-	{
-		housing_GetTextLabelString(id, string);
-		UpdateDynamic3DTextLabelText(House3DTextLabel[id], COLOR_WHITE, string);
+
+	new
+		lang_count,
+		Lang:lang,
+		langid;
+
+	lang_count = Lang_GetCount();
+
+	for ( ; _:lang < lang_count; _:lang++) {
+		langid = Lang_GetID(lang);
+
+		format(gLabelString[id][lang], sizeof(gLabelString[][]),
+			_l(langid, HOUSING_3DTEXT),
+			Houses[id][Houses_Name],
+			Houses[id][Houses_Cost]
+		);
+
+		if (strcmp(Houses[id][Houses_Owner], "Unknown", false)) {
+			format(gLabelString[id][lang], sizeof(gLabelString[][]),
+				_l(langid, HOUSING_3DTEXT_OWNER),
+				gLabelString[id][lang],
+				Houses[id][Houses_Owner]
+			);
+		}
+
+		if (strcmp(Houses[id][Houses_Gang], "Unknown", false)) {
+			format(gLabelString[id][lang], sizeof(gLabelString[][]),
+				_l(langid, HOUSING_3DTEXT_GANG),
+				gLabelString[id][lang],
+				Houses[id][Houses_Gang]
+			);
+		}
+
+		if (strcmp(Houses[id][Houses_RentName], "Unknown", false)) {
+			format(gLabelString[id][lang], sizeof(gLabelString[][]),
+				_l(langid, HOUSING_3DTEXT_RENT),
+				gLabelString[id][lang],
+				Houses[id][Houses_RentName]
+			);
+		}
 	}
-	return 1;
 }
 
-stock housing_GetTextLabelString(houseid, string[MAX_LANG_VALUE_STRING * 4])
+static stock housing_DestroyPlayerLabel(playerid, id)
 {
-	format(string, sizeof(string), _(HOUSING_3DTEXT), Houses[houseid][Houses_Name], Houses[houseid][Houses_Cost]);
-	if (strcmp(Houses[houseid][Houses_Owner], "Unknown", false)) {
-		format(string, sizeof(string), _(HOUSING_3DTEXT_OWNER), string, Houses[houseid][Houses_Owner]);
+	DestroyDynamic3DTextLabel(gLabelID[id][playerid]);
+	gLabelID[id][playerid] = Text3D:INVALID_3DTEXT_ID;
+}
+
+static stock housing_CreatePlayerLabel(playerid, id)
+{
+	new Lang:lang = Lang_GetPlayerLangType(playerid);
+	gLabelID[id][playerid] = CreateDynamic3DTextLabel(gLabelString[id][lang], COLOR_WHITE,
+		Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ] + 0.6,
+		HouseDistanceOfShowLabel, .testlos = 1, .playerid = playerid);
+}
+
+stock housing_UpdatePlayerLabel(playerid, id)
+{
+	new Lang:lang = Lang_GetPlayerLangType(playerid);
+	UpdateDynamic3DTextLabelText(gLabelID[id][playerid], COLOR_WHITE, gLabelString[id][lang]);
+}
+
+stock housing_UpdateLabel(id)
+{
+	housing_UpdateLabelString(id);
+
+	foreach (new playerid : Player) {
+		housing_UpdatePlayerLabel(playerid, id);
 	}
-	if (strcmp(Houses[houseid][Houses_Gang], "Unknown", false)) {
-		format(string, sizeof(string), _(HOUSING_3DTEXT_GANG), string, Houses[houseid][Houses_Gang]);
-	}
-	if (strcmp(Houses[houseid][Houses_RentName], "Unknown", false)) {
-		format(string, sizeof(string), _(HOUSING_3DTEXT_RENT), string, Houses[houseid][Houses_RentName]);
-	}
-	return 1;
 }
 
 stock housing_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+1])
@@ -1033,6 +1095,7 @@ stock housing_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+
 		if (!strcmp(Houses[i][Houses_Owner], old_name, true))
 		{
 			strcpy(Houses[i][Houses_Owner], new_name, MAX_PLAYER_NAME);
+			housing_UpdateLabel(i);
 			return 1;
 		}
 	}
@@ -1048,6 +1111,7 @@ stock house_Free(houseid)
 	Houses[houseid][Houses_UpKeepLeft] = 0;
 
 	Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, house_icon[houseid], E_STREAMER_TYPE, 31);
+	housing_UpdateLabel(houseid);
 }
 
 stock IsPlayerHouse(playerid, houseid) {
@@ -1067,7 +1131,7 @@ stock IsPlayerHouse(playerid, houseid) {
 
 stock house_GetName(id)
 {
-	new name[MAX_GANG_NAME];
+	new name[MAX_NAME];
 	strcpy(name, Houses[id][Houses_Name]);
 	return name;
 }

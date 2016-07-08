@@ -26,7 +26,7 @@ COMMAND:spectate(playerid, params[])
 		subparams[32];
 
 	if (sscanf(params, "s[32]", subparams)) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SPEC_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SPEC_HELP));
 		return 1;
 	}
 
@@ -36,7 +36,7 @@ COMMAND:spectate(playerid, params[])
 	if (strcmp(subparams, "off", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID || targetid == playerid) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SPEC_TARGET_ERROR));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SPEC_TARGET_ERROR));
 		return 1;
 	}
 
@@ -46,7 +46,7 @@ COMMAND:spectate(playerid, params[])
 
 	if (targetid == -1) {
 		if (!Spectate_IsSpectating(playerid)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SPEC_HELP));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SPEC_HELP));
 			return 1;
 		}
 
@@ -55,14 +55,14 @@ COMMAND:spectate(playerid, params[])
 
 		Spectate_Stop(playerid);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_SPEC_STOP), targetname, targetid);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SPEC_STOP), targetname, targetid);
 		SendClientMessage(playerid, -1, string);
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
 		Spectate_Start(playerid, targetid);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_SPEC_START), targetname, targetid);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SPEC_START), targetname, targetid);
 		SendClientMessage(playerid, -1, string);
 	}
 

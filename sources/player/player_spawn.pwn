@@ -134,10 +134,10 @@ DialogCreate:PlayerSpawnMenu(playerid)
 		string[ MAX_NAME * (MAX_PLAYER_HOUSES + 2) ],
 		count = 0,
 		playername[MAX_PLAYER_NAME + 1];
-	
+
 	GetPlayerName(playerid, playername, sizeof(playername));
-	
-	__(PLAYER_SPAWN_LIST_NEARLY_POINT, string);
+
+	__(playerid, PLAYER_SPAWN_LIST_NEARLY_POINT, string);
 
 	new gangid = GetPlayerGangID(playerid);
 	new gang_houseid = -1;
@@ -146,7 +146,7 @@ DialogCreate:PlayerSpawnMenu(playerid)
 		gang_houseid = Gang_GetHouseID(gangid);
 		if (gang_houseid != -1) {
 			count++;
-			format(string, sizeof(string), _(PLAYER_SPAWN_LIST_GANG), string, house_GetName(gang_houseid));
+			format(string, sizeof(string), _(playerid, PLAYER_SPAWN_LIST_GANG), string, house_GetName(gang_houseid));
 		}
 	}
 
@@ -160,16 +160,16 @@ DialogCreate:PlayerSpawnMenu(playerid)
 
 	if (count < 1) {
 		Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
-			_(PLAYER_SPAWN_DIALOG_HEADER),
-			_(PLAYER_SPAWN_DIALOG_INFO),
-			_(PLAYER_SPAWN_DIALOG_BUTTON_BACK), _(PLAYER_SPAWN_DIALOG_BUTTON_BACK));
+			_(playerid, PLAYER_SPAWN_DIALOG_HEADER),
+			_(playerid, PLAYER_SPAWN_DIALOG_INFO),
+			_(playerid, PLAYER_SPAWN_DIALOG_BUTTON_BACK), _(playerid, PLAYER_SPAWN_DIALOG_BUTTON_BACK));
 		return 1;
 	}
 
 	Dialog_Open(playerid, Dialog:PlayerSpawnMenu, DIALOG_STYLE_LIST,
-		_(PLAYER_SPAWN_DIALOG_HEADER),
+		_(playerid, PLAYER_SPAWN_DIALOG_HEADER),
 		string,
-		_(PLAYER_SPAWN_DIALOG_BUTTON_OK), _(PLAYER_SPAWN_DIALOG_BUTTON_BACK)
+		_(playerid, PLAYER_SPAWN_DIALOG_BUTTON_OK), _(playerid, PLAYER_SPAWN_DIALOG_BUTTON_BACK)
 	);
 	return 1;
 }
@@ -183,20 +183,20 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 
 	new playername[MAX_PLAYER_NAME + 1];
 	GetPlayerName(playerid, playername, sizeof(playername));
-	
+
 	if (listitem == 0) {
 		SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
-		Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, PLAYER_SPAWN_DIALOG_HEADER), _(playerid, PLAYER_SPAWN_HAS_CHANGED), _(playerid, PLAYER_SPAWN_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
 	new gangid = GetPlayerGangID(playerid);
 	if (listitem == 1 && gangid != INVALID_GANG_ID && Gang_GetHouseID(gangid) != -1) {
 		SetPlayerSpawnType(playerid, SPAWN_TYPE_GANG);
-		Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, PLAYER_SPAWN_DIALOG_HEADER), _(playerid, PLAYER_SPAWN_HAS_CHANGED), _(playerid, PLAYER_SPAWN_DIALOG_BUTTON_OK));
 		return 1;
 	}
-	
+
 	new count = 1;
 	if (gangid != INVALID_GANG_ID && Gang_GetHouseID(gangid) != -1) {
 		count++;
@@ -214,9 +214,9 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 			// если игрок, сменивший спавн - лидер банды, то устанавливаем домом банды этот дом
 			if (GangMember_IsPlayerHaveRank(playerid, GangMemberLeader)) {
 				Gang_SetHouseID(gangid, i);
-				Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_GANG_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
+				Dialog_Message(playerid, _(playerid, PLAYER_SPAWN_DIALOG_HEADER), _(playerid, PLAYER_SPAWN_GANG_HAS_CHANGED), _(playerid, PLAYER_SPAWN_DIALOG_BUTTON_OK));
 			} else {
-				Dialog_Message(playerid, _(PLAYER_SPAWN_DIALOG_HEADER), _(PLAYER_SPAWN_HAS_CHANGED), _(PLAYER_SPAWN_DIALOG_BUTTON_OK));
+				Dialog_Message(playerid, _(playerid, PLAYER_SPAWN_DIALOG_HEADER), _(playerid, PLAYER_SPAWN_HAS_CHANGED), _(playerid, PLAYER_SPAWN_DIALOG_BUTTON_OK));
 			}
 			return 1;
 		}
@@ -251,7 +251,7 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x = 0.0, &Float:spos_y = 0.0, &Flo
 		if (house_id >= 0 && !IsPlayerHouse(playerid, house_id) && !IsPlayerRenter(playerid, house_id)) {
 			SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
 			SetPlayerSpawnHouseID(playerid, -1);
-			SendClientMessage(playerid, COLOR_RED, _(HOUSING_KICKED));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, HOUSING_KICKED));
 		} else {
 			house_GetPickupPos(house_id, spos_x, spos_y, spos_z);
 		}
@@ -286,7 +286,7 @@ stock UpdatePlayerSpawnInfo(playerid)
 	SaveDeathInfo(playerid);
 	SetPlayerSpawnCoords(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
 	ResetPlayerRandomSpawnID(playerid);
-	
+
 	new
 		Float:spawn_pos_x,
 		Float:spawn_pos_y,
@@ -324,7 +324,7 @@ static stock GetPlayerSpawnID(playerid)
 	if (pos_x == 0.0 && pos_y == 0.0 && pos_z == 0.0) {
 		return GetPlayerRandomSpawnID(playerid);
 	}
-	
+
 	return GetNearestSpawnID(pos_x, pos_y, pos_z);
 }
 
@@ -359,7 +359,7 @@ static stock GetNearestSpawnID(Float:x, Float:y, Float:z)
 
 	for (new i = 0; i < sizeof(gSpawns); i++) {
 		curr_distance = GetDistanceBetweenPoints(x, y, z, gSpawns[i][e_sPosX], gSpawns[i][e_sPosY], gSpawns[i][e_sPosZ]);
-		
+
 		if (min_distance > curr_distance) {
 			min_distance = curr_distance;
 			id = i;

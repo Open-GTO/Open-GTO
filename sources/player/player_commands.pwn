@@ -15,32 +15,32 @@
 
 COMMAND:help(playerid, params[])
 {
-	SendClientMessage(playerid, -1, _(COMMAND_HELP_HEADER));
-	SendClientMessage(playerid, -1, _(COMMAND_HELP_0));
-	SendClientMessage(playerid, -1, _(COMMAND_HELP_1));
-	SendClientMessage(playerid, -1, _(COMMAND_HELP_2));
-	SendClientMessage(playerid, -1, _(COMMAND_HELP_3));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_HELP_HEADER));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_HELP_0));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_HELP_1));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_HELP_2));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_HELP_3));
 	return 1;
 }
 
 COMMAND:info(playerid, params[])
 {
-	Dialog_Message(playerid, _(COMMAND_INFO_CAPTION), _m(ACCOUNT_DIALOG_INFORMATION_TEXT), _(COMMAND_INFO_BUTTON_OK));
+	Dialog_Message(playerid, _(playerid, COMMAND_INFO_CAPTION), _m(playerid, ACCOUNT_DIALOG_INFORMATION_TEXT), _(playerid, COMMAND_INFO_BUTTON_OK));
 	return 1;
 }
 
 COMMAND:commands(playerid, params[])
 {
-	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_0));
-	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_1));
-	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_2));
-	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_3));
-	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_4));
-	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_5));
-	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_6));
-	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_7));
-	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_8));
-	SendClientMessage(playerid, -1, _(COMMAND_COMMANDS_9));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_0));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_1));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_2));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_3));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_4));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_5));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_6));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_7));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_8));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_9));
 	return 1;
 }
 
@@ -51,35 +51,35 @@ COMMAND:stats(playerid, params[])
 
 COMMAND:status(playerid, params[])
 {
-	SendClientMessage(playerid, COLOR_GREEN, _(COMMAND_STATUS_0));
+	SendClientMessage(playerid, COLOR_GREEN, _(playerid, COMMAND_STATUS_0));
 
 	new string[MAX_STRING];
 
-	GetPlayerPrivilegeName(playerid, string);
-	format(string, sizeof(string), _(COMMAND_STATUS_PRIVILEGE), string);
+	GetPrivilegeName(Lang_GetPlayerLanguage(playerid), GetPlayerPrivilege(playerid), string);
+	format(string, sizeof(string), _(playerid, COMMAND_STATUS_PRIVILEGE), string);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	if (IsPlayerInGang(playerid)) {
-		format(string, sizeof(string), _(COMMAND_STATUS_1), ReturnPlayerGangName(playerid));
+		format(string, sizeof(string), _(playerid, COMMAND_STATUS_1), ReturnPlayerGangName(playerid));
 		SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
 	}
 
-	format(string, sizeof(string), _(COMMAND_STATUS_2), GetPlayerLevel(playerid), GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1), GetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
+	format(string, sizeof(string), _(playerid, COMMAND_STATUS_2), GetPlayerLevel(playerid), GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1), GetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
 	SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
 
-	format(string, sizeof(string), _(COMMAND_STATUS_3), GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid), GetPlayerJailedCount(playerid), GetPlayerMutedCount(playerid));
+	format(string, sizeof(string), _(playerid, COMMAND_STATUS_3), GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid), GetPlayerJailedCount(playerid), GetPlayerMutedCount(playerid));
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	new fstylename[MAX_STRING];
-	GetFightStyleName(GetPlayerFightStyleUsed(playerid), fstylename);
+	GetFightStyleName(GetPlayerFightStyleUsed(playerid), Lang_GetPlayerLangType(playerid), fstylename);
 
-	format(string, sizeof(string), _(COMMAND_STATUS_FIGHTSTYLE), fstylename);
+	format(string, sizeof(string), _(playerid, COMMAND_STATUS_FIGHTSTYLE), fstylename);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 
 	if (IsPlayerHavePremium(playerid)) {
-		format(string, sizeof(string), _(COMMAND_STATUS_PREMIUM), ReturnPlayerPremiumDateString(playerid));
+		format(string, sizeof(string), _(playerid, COMMAND_STATUS_PREMIUM), ReturnPlayerPremiumDateString(playerid));
 	} else {
-		format(string, sizeof(string), _(COMMAND_STATUS_NO_PREMIUM));
+		format(string, sizeof(string), _(playerid, COMMAND_STATUS_NO_PREMIUM));
 	}
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 	return 1;
@@ -87,13 +87,13 @@ COMMAND:status(playerid, params[])
 
 COMMAND:version(playerid, params[])
 {
-	SendClientMessage(playerid, -1, _(COMMAND_VERSION_0));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_VERSION_0));
 	new string[MAX_LANG_VALUE_STRING];
-	format(string, sizeof(string), _(COMMAND_VERSION_1), VERSION_STRING);
+	format(string, sizeof(string), _(playerid, COMMAND_VERSION_1), VERSION_STRING);
 	SendClientMessage(playerid, -1, string);
-	SendClientMessage(playerid, -1, _(COMMAND_VERSION_2));
-	SendClientMessage(playerid, -1, _(COMMAND_VERSION_3));
-	SendClientMessage(playerid, -1, _(COMMAND_VERSION_4));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_VERSION_2));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_VERSION_3));
+	SendClientMessage(playerid, -1, _(playerid, COMMAND_VERSION_4));
 	return 1;
 }
 
@@ -110,16 +110,16 @@ COMMAND:time(playerid, params[])
 	new mute_time = GetPlayerMuteTime(playerid);
 
 	if (jail_time != -1 || mute_time != 0) {
-		SendClientMessage(playerid, COLOR_LIGHTRED, _(COMMAND_TIME_ABOUT));
+		SendClientMessage(playerid, COLOR_LIGHTRED, _(playerid, COMMAND_TIME_ABOUT));
 	}
 
 	if (jail_time != -1) {
-		format(string, sizeof(string), _(COMMAND_TIME_JAIL), (jail_time - gettime()) / 60 + 1);
+		format(string, sizeof(string), _(playerid, COMMAND_TIME_JAIL), (jail_time - gettime()) / 60 + 1);
 		SendClientMessage(playerid, COLOR_LIGHTRED, string);
 	}
 
 	if (mute_time != 0) {
-		format(string, sizeof(string), _(COMMAND_TIME_MUTE), (mute_time - gettime()) / 60 + 1);
+		format(string, sizeof(string), _(playerid, COMMAND_TIME_MUTE), (mute_time - gettime()) / 60 + 1);
 		SendClientMessage(playerid, COLOR_LIGHTRED, string);
 	}
 
@@ -137,7 +137,7 @@ COMMAND:id(playerid, params[])
 		ids[COMMAND_ID_MAX_MATCHES];
 
 	if (sscanf(params, "?<MATCH_NAME_PARTIAL=1>u[" #COMMAND_ID_MAX_MATCHES "]", ids)) {
-		SendClientMessage(playerid, -1, _(COMMAND_ID_HELP));
+		SendClientMessage(playerid, -1, _(playerid, COMMAND_ID_HELP));
 		return 1;
 	}
 
@@ -148,7 +148,7 @@ COMMAND:id(playerid, params[])
 
 	for (i = 0; ids[i] != INVALID_PLAYER_ID; i++) {
 		if (ids[i] == cellmin) {
-			SendClientMessage(playerid, -1, _(COMMAND_ID_AND_MORE));
+			SendClientMessage(playerid, -1, _(playerid, COMMAND_ID_AND_MORE));
 			break;
 		}
 
@@ -156,16 +156,16 @@ COMMAND:id(playerid, params[])
 
 		insert_pos = strfind(string, params, true);
 		if (insert_pos != -1) {
-			strins(string, _(COMMAND_ID_COLOR_NORMAL), strlen(params) + insert_pos);
-			strins(string, _(COMMAND_ID_COLOR_HIGHLIGHT), insert_pos);
+			strins(string, _(playerid, COMMAND_ID_COLOR_NORMAL), strlen(params) + insert_pos);
+			strins(string, _(playerid, COMMAND_ID_COLOR_HIGHLIGHT), insert_pos);
 		}
 
-		format(string, sizeof(string), _(COMMAND_ID_PLAYER), string, ids[i]);
+		format(string, sizeof(string), _(playerid, COMMAND_ID_PLAYER), string, ids[i]);
 		SendClientMessage(playerid, -1, string);
 	}
 
 	if (i == 0) {
-		SendClientMessage(playerid, -1, _(COMMAND_ID_NO_ONE));
+		SendClientMessage(playerid, -1, _(playerid, COMMAND_ID_NO_ONE));
 	}
 
 	return 1;
@@ -174,7 +174,7 @@ COMMAND:id(playerid, params[])
 COMMAND:pm(playerid, params[])
 {
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_PM, _(COMMAND_PM_HELP));
+		SendClientMessage(playerid, COLOR_PM, _(playerid, COMMAND_PM_HELP));
 		return 1;
 	}
 
@@ -183,7 +183,7 @@ COMMAND:pm(playerid, params[])
 		message[MAX_SEND_SYMBOLS];
 
 	if (sscanf(params, "us[" #MAX_SEND_SYMBOLS "]", receiveid, message) || receiveid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(COMMAND_PM_ERROR));
+		SendClientMessage(playerid, -1, _(playerid, COMMAND_PM_ERROR));
 		return 1;
 	}
 

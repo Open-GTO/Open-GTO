@@ -23,7 +23,7 @@ COMMAND:world(playerid, params[])
 		world;
 
 	if (sscanf(params, "s[5]s[32]I(0)", subcmd, subparams, world)) {
-		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_WORLD_HELP));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_WORLD_HELP));
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:world(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_WORLD_TARGET_ERROR));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_WORLD_TARGET_ERROR));
 		return 1;
 	}
 
@@ -54,29 +54,29 @@ COMMAND:world(playerid, params[])
 				SetPlayerVirtualWorld(id, world);
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_WORLD_SET_ALL), playername, playerid, world);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WORLD_SET_ALL), playername, playerid, world);
 			SendClientMessageToAll(-1, string);
 		} else {
 			SetPlayerVirtualWorld(targetid, world);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_WORLD_SET_PLAYER), playername, playerid, world);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WORLD_SET_PLAYER), playername, playerid, world);
 			SendClientMessage(targetid, -1, string);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_WORLD_SET_SELF), targetname, targetid, world);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WORLD_SET_SELF), targetname, targetid, world);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_WORLD_TARGET_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_WORLD_TARGET_ERROR));
 			return 1;
 		}
 
 		world = GetPlayerVirtualWorld(targetid);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_WORLD_GET), targetname, targetid, world);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WORLD_GET), targetname, targetid, world);
 		SendClientMessage(playerid, -1, string);
 	} else {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_WORLD_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_WORLD_HELP));
 	}
 
 	return 1;

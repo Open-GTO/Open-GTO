@@ -26,7 +26,7 @@ CompetitionRace_OnGameModeInit()
 		ctype,
 		ctype_params[CompetitionTypeParams];
 
-	__(COMPETITION_TYPE_RACE_NAME, ctype_params[COMPETITION_TYPE_NAME]);
+	__d(COMPETITION_TYPE_RACE_NAME, ctype_params[COMPETITION_TYPE_NAME]); // TODO
 	ctype_params[COMPETITION_TYPE_COLOR] = COLOR_BLUE_500;
 
 	ctype = CompetitionType_Add(ctype_params);

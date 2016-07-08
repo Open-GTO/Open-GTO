@@ -113,7 +113,6 @@ Weapon_Load()
 	new
 		file_handler,
 		temp,
-		temp_str[MAX_WEAPON_NAME],
 		weapon_config[MAX_STRING];
 
 	for (new i = 0; i < MAX_WEAPONS; i++) {
@@ -124,9 +123,6 @@ Weapon_Load()
 		if (file_handler < 0) {
 			continue;
 		}
-
-		ini_getString(file_handler, "Name", temp_str);
-		SetWeaponName(i, temp_str);
 
 		ini_getInteger(file_handler, "IsAllowed", temp);
 		SetWeaponAllowedStatus(i, bool:temp);
@@ -150,7 +146,6 @@ Weapon_Save()
 {
 	new
 		file_handler,
-		temp_str[MAX_WEAPON_NAME],
 		weapon_config[MAX_STRING];
 
 	for (new i = 0; i < MAX_WEAPONS; i++) {
@@ -167,8 +162,6 @@ Weapon_Save()
 			continue;
 		}
 
-		GetWeaponName(i, temp_str, MAX_WEAPON_NAME);
-		ini_setString(file_handler, "Name", temp_str);
 		ini_setInteger(file_handler, "IsAllowed", _:IsWeaponAllowed(i));
 		ini_setInteger(file_handler, "Cost", GetWeaponCost(i));
 		ini_setInteger(file_handler, "Level", GetWeaponLevel(i));
@@ -340,17 +333,14 @@ stock IsWeaponHandToHand(weaponid)
 	Weapon name
 */
 
-stock ReturnWeaponName(weaponid)
+stock ReturnPlayerWeaponName(playerid, weaponid)
 {
-	new
-		name[MAX_WEAPON_NAME];
-
-	GetWeaponName(weaponid, name, sizeof(name));
-
+	new name[MAX_WEAPON_NAME];
+	GetPlayerWeaponName(playerid, weaponid, name, sizeof(name));
 	return name;
 }
 
-stock REDEF_GetWeaponName(weaponid, weapon[], len)
+stock GetPlayerWeaponName(playerid, weaponid, weapon[], len)
 {
 	if (!IsValidWeapon(weaponid)) {
 		return 0;
@@ -361,23 +351,13 @@ stock REDEF_GetWeaponName(weaponid, weapon[], len)
 		string[MAX_WEAPON_NAME];
 
 	format(string, sizeof(string), "WEAPON_NAME_%d", weaponid);
-	is_exists = Lang_GetText(string, weapon, len);
+	is_exists = Lang_GetPlayerText(playerid, string, weapon, len);
 
 	if (!is_exists) {
 		strunpack(weapon, gWeapons[weaponid][e_wName], len);
 	}
 
 	return 1;
-}
-
-stock SetWeaponName(weaponid, name[])
-{
-	if (!IsValidWeapon(weaponid)) {
-		return 0;
-	}
-
-	return
-		strpack(gWeapons[weaponid][e_wName], name, MAX_WEAPON_NAME);
 }
 
 /*

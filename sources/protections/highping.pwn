@@ -50,7 +50,7 @@ pt_ping_Check(playerid)
 
 	if (GetPlayerPing(playerid) > MaxPing) {
 		new string[MAX_STRING];
-		format(string, sizeof(string), _(PROTECTION_ANTIHIGHTPING_KICK_REASON), MaxPing);
+		format(string, sizeof(string), _(playerid, PROTECTION_ANTIHIGHTPING_KICK_REASON), MaxPing);
 		KickPlayer(playerid, string);
 	}
 	return 1;

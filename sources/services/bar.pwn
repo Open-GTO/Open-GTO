@@ -59,7 +59,7 @@ bar_OnGameModeInit()
 	for (new id = 0; id < sizeof(bar_place); id++) {
 		bar_place[id][bar_checkpoint] = CreateDynamicCP(bar_place[id][bar_x], bar_place[id][bar_y], bar_place[id][bar_z], 1.5, .streamdistance = 20.0);
 	}
-	Log_Game(_(BAR_INIT));
+	Log_Game(_d(BAR_INIT));
 	return 1;
 }
 
@@ -154,16 +154,16 @@ public bar_Gulp(playerid)
 DialogCreate:ServiceBar(playerid)
 {
 	new string[MAX_STRING * (sizeof(drinks_data) + 1)];
-	string = _(BAR_DIALOG_LIST_HEADER);
+	string = _(playerid, BAR_DIALOG_LIST_HEADER);
 
 	for (new i = 0; i < sizeof(drinks_data); i++) {
 		format(string, sizeof(string),
-			_(BAR_DIALOG_LIST_ITEM),
+			_(playerid, BAR_DIALOG_LIST_ITEM),
 			string, drinks_data[i][Name], drinks_data[i][Cost], drinks_data[i][Alcohol], drinks_data[i][Hp]
 		);
 	}
 
-	Dialog_Open(playerid, Dialog:ServiceBar, DIALOG_STYLE_TABLIST_HEADERS, _(BAR_DIALOG_HEADER), string, _(BAR_DIALOG_BUTTON_0), _(BAR_DIALOG_BUTTON_1));
+	Dialog_Open(playerid, Dialog:ServiceBar, DIALOG_STYLE_TABLIST_HEADERS, _(playerid, BAR_DIALOG_HEADER), string, _(playerid, BAR_DIALOG_BUTTON_0), _(playerid, BAR_DIALOG_BUTTON_1));
 }
 
 DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
@@ -173,7 +173,7 @@ DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
 	}
 
 	if (GetPlayerMoney(playerid) < drinks_data[listitem][Cost]) {
-		Dialog_Message(playerid, _(BAR_DIALOG_HEADER), _(BAR_NOT_ENOUGH_MONEY), _(BAR_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, BAR_DIALOG_HEADER), _(playerid, BAR_NOT_ENOUGH_MONEY), _(playerid, BAR_DIALOG_BUTTON_OK));
 		return 1;
 	}
 
@@ -184,10 +184,10 @@ DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string),
-		_(BAR_DIALOG_INFORMATION_TEXT),
+		_(playerid, BAR_DIALOG_INFORMATION_TEXT),
 		drinks_data[listitem][Name], drinks_data[listitem][Cost], drinks_data[listitem][Alcohol], drinks_data[listitem][Hp]
 	);
-	Dialog_Message(playerid, _(BAR_DIALOG_HEADER), string, _(BAR_DIALOG_BUTTON_OK));
+	Dialog_Message(playerid, _(playerid, BAR_DIALOG_HEADER), string, _(playerid, BAR_DIALOG_BUTTON_OK));
 	return 1;
 }
 

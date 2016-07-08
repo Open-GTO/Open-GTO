@@ -67,7 +67,7 @@ pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float
 	if (playerstate == PLAYER_STATE_PASSENGER) {
 		switch (weaponid) {
 			case WEAPON_DRIVEBY_DISABLED: {
-				Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_NOP_ARMED), playerstate, weaponid);
+				Admin_SendProtectReport(playerid, _(playerid, PROTECTION_WEAPON_NOP_ARMED), playerstate, weaponid);
 			}
 		}
 	}
@@ -77,7 +77,7 @@ pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float
 pt_weapon_OnPlayerDeath(playerid, killerid, reason)
 {
 	if (playerid == killerid) {
-		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_FLOOD), playerid, reason);
+		Admin_SendProtectReport(playerid, _(playerid, PROTECTION_WEAPON_FLOOD), playerid, reason);
 		return 0;
 	}
 	return 1;
@@ -109,12 +109,12 @@ pt_weapon_Check(playerid)
 
 	// weapon
 	if (PlayerWeapons[playerid][slotid][pwid] != weaponid) {
-		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_WEAPON), PlayerWeapons[playerid][slotid][pwid], weaponid);
+		Admin_SendProtectReport(playerid, _(playerid, PROTECTION_WEAPON_WEAPON), PlayerWeapons[playerid][slotid][pwid], weaponid);
 	}
 
 	// ammo
 	if (PlayerWeapons[playerid][slotid][pbullets] < ammo) {
-		Admin_SendProtectReport(playerid, _(PROTECTION_WEAPON_AMMO), weaponid, PlayerWeapons[playerid][slotid][pbullets], ammo);
+		Admin_SendProtectReport(playerid, _(playerid, PROTECTION_WEAPON_AMMO), weaponid, PlayerWeapons[playerid][slotid][pbullets], ammo);
 	}
 	return 1;
 }

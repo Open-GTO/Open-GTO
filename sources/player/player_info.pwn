@@ -62,7 +62,7 @@ stock GetPlayerInfoArray(playerid, string[MAX_PLAYER_INFO_LINES][], const size_s
 	xp = GetPlayerXP(playerid);
 	xp_to_level = GetXPToLevel(level + 1);
 	weapon_id = GetPlayerWeapon(playerid);
-	GetWeaponName(weapon_id, weapon_name, sizeof(weapon_name));
+	GetPlayerWeaponName(playerid, weapon_id, weapon_name, sizeof(weapon_name));
 	weapon_ammo = GetPlayerAmmo(playerid);
 	interior = GetPlayerInterior(playerid);
 	world = GetPlayerVirtualWorld(playerid);
@@ -73,10 +73,10 @@ stock GetPlayerInfoArray(playerid, string[MAX_PLAYER_INFO_LINES][], const size_s
 		distance = GetPlayerDistanceFromPoint(requestorid, pos_x, pos_y, pos_z);
 	}
 
-	format(string[0], size_string, _(PLAYER_INFO_0), playerid, health, armour, ping);
-	format(string[1], size_string, _(PLAYER_INFO_1), gang_string, money, level, xp, xp_to_level);
-	format(string[2], size_string, _(PLAYER_INFO_2), weapon_name, weapon_id, weapon_ammo);
-	format(string[3], size_string, _(PLAYER_INFO_3), interior, world);
-	format(string[4], size_string, _(PLAYER_INFO_4), distance);
-	format(string[5], size_string, _(PLAYER_INFO_5), pos_x, pos_y, pos_z, pos_a);
+	format(string[0], size_string, _(playerid, PLAYER_INFO_0), playerid, health, armour, ping);
+	format(string[1], size_string, _(playerid, PLAYER_INFO_1), gang_string, money, level, xp, xp_to_level);
+	format(string[2], size_string, _(playerid, PLAYER_INFO_2), weapon_name, weapon_id, weapon_ammo);
+	format(string[3], size_string, _(playerid, PLAYER_INFO_3), interior, world);
+	format(string[4], size_string, _(playerid, PLAYER_INFO_4), distance);
+	format(string[5], size_string, _(playerid, PLAYER_INFO_5), pos_x, pos_y, pos_z, pos_a);
 }

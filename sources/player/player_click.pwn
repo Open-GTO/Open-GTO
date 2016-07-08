@@ -14,23 +14,26 @@
 PlayerClick_OnGameModeInit()
 {
 	Click_AddItem(DIALOG_STYLE_INPUT,
-	              _(CLICK_SENDCASH_DIALOG_HEADER),
-	              _(CLICK_SENDCASH_DIALOG_MESSAGE),
-	              _(CLICK_SENDCASH_DIALOG_BUTTON_SEND), _(CLICK_SENDCASH_DIALOG_BUTTON_BACK),
+	              "CLICK_SENDCASH_DIALOG_HEADER",
+	              "CLICK_SENDCASH_DIALOG_MESSAGE",
+	              "CLICK_SENDCASH_DIALOG_BUTTON_SEND",
+	              "CLICK_SENDCASH_DIALOG_BUTTON_BACK",
 	              PlayerPrivilegePlayer,
 	              "PlayerClick_SendCash");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
-	              _(CLICK_PM_DIALOG_HEADER),
-	              _(CLICK_PM_DIALOG_MESSAGE),
-	              _(CLICK_PM_DIALOG_BUTTON_SEND), _(CLICK_PM_DIALOG_BUTTON_BACK),
+	              "CLICK_PM_DIALOG_HEADER",
+	              "CLICK_PM_DIALOG_MESSAGE",
+	              "CLICK_PM_DIALOG_BUTTON_SEND",
+	              "CLICK_PM_DIALOG_BUTTON_BACK",
 	              PlayerPrivilegePlayer,
 	              "PlayerClick_SendMessage");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
-	              _(CLICK_REPORT_DIALOG_HEADER),
-	              _(CLICK_REPORT_DIALOG_MESSAGE),
-	              _(CLICK_REPORT_DIALOG_BUTTON_SEND), _(CLICK_REPORT_DIALOG_BUTTON_BACK),
+	              "CLICK_REPORT_DIALOG_HEADER",
+	              "CLICK_REPORT_DIALOG_MESSAGE",
+	              "CLICK_REPORT_DIALOG_BUTTON_SEND",
+	              "CLICK_REPORT_DIALOG_BUTTON_BACK",
 	              PlayerPrivilegePlayer,
 	              "PlayerClick_SendReport");
 }
@@ -48,17 +51,17 @@ public PlayerClick_SendCash(playerid, clickedid, listitem, inputtext[])
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 
 	if (GetPlayerMoney(playerid) < money || !IsNumeric(inputtext) || money < 0) {
-		SendClientMessage(playerid, COLOR_RED, _(CLICK_SENDCASH_NOT_VALID));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, CLICK_SENDCASH_NOT_VALID));
 		return 0;
 	}
 
 	GivePlayerMoney(playerid, -money);
 	GivePlayerMoney(clickedid, money);
 
-	format(string, sizeof(string), _(CLICK_SENDCASH_GIVE), clickedname, clickedid, money);
+	format(string, sizeof(string), _(playerid, CLICK_SENDCASH_GIVE), clickedname, clickedid, money);
 	SendClientMessage(playerid, COLOR_MONEY_GOOD, string);
 
-	format(string, sizeof(string), _(CLICK_SENDCASH_GET), money, sendername, playerid);
+	format(string, sizeof(string), _(playerid, CLICK_SENDCASH_GET), money, sendername, playerid);
 	SendClientMessage(clickedid, COLOR_MONEY_GOOD, string);
 	return 1;
 }
@@ -79,12 +82,12 @@ public PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[])
 
 	GetPlayerName(clickedid, clickedname, sizeof(clickedname));
 
-	format(string, sizeof(string), _(CLICK_REPORT_SELF), clickedname, clickedid, inputtext);
+	format(string, sizeof(string), _(playerid, CLICK_REPORT_SELF), clickedname, clickedid, inputtext);
 	SendClientMessage(playerid, COLOR_RED, string);
 
 	GetPlayerName(playerid, sendername, sizeof(sendername));
-	format(string, sizeof(string), _(CLICK_REPORT_PLAYER), sendername, playerid, clickedname, clickedid, inputtext);
-	
+	format(string, sizeof(string), _(playerid, CLICK_REPORT_PLAYER), sendername, playerid, clickedname, clickedid, inputtext);
+
 	new admin_count = 0;
 
 	foreach (new id : Player) {
@@ -100,7 +103,7 @@ public PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[])
 
 		new reports_max = GetMaxReportsCount();
 
-		format(string, sizeof(string), _(CLICK_REPORT_MESSAGE), reports, reports_max, clickedname, clickedid, inputtext);
+		format(string, sizeof(string), _(playerid, CLICK_REPORT_MESSAGE), reports, reports_max, clickedname, clickedid, inputtext);
 		SendClientMessageToAll(COLOR_WHITE, string);
 
 		if (reports >= reports_max) {
@@ -108,8 +111,8 @@ public PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[])
 			JailPlayer(clickedid, jail_time);
 			SetPlayerReportsCount(clickedid, 0);
 
-			format(string, sizeof(string), _(CLICK_REPORT_BY_MINUTE), jail_time);
-			format(string, sizeof(string), _(CLICK_REPORT_SERVER), ReturnPlayerName(clickedid), string);
+			format(string, sizeof(string), _(playerid, CLICK_REPORT_BY_MINUTE), jail_time);
+			format(string, sizeof(string), _(playerid, CLICK_REPORT_SERVER), ReturnPlayerName(clickedid), string);
 			SendClientMessageToAll(COLOR_WHITE, string);
 		}
 	}

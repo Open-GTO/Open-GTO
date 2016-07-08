@@ -135,15 +135,15 @@ Groundhold_OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA areaid)
 	if (pHoldTime[playerid] == 0 && pGroundID[playerid] != ghid) {
 		pGroundID[playerid] = ghid;
 		Iter_Add(PlayerOnGround[ghid], playerid);
-		
+
 		// message
 		new string[MAX_LANG_VALUE_STRING];
 
-		format(string, sizeof(string), _(GROUNDHOLD_INFO), gGroundholds[ghid][e_ghName]);
+		format(string, sizeof(string), _(playerid, GROUNDHOLD_INFO), gGroundholds[ghid][e_ghName]);
 		SendClientMessage(playerid, COLOR_GREEN, string);
-		
+
 		format(string, sizeof(string),
-			_(GROUNDHOLD_BONUS),
+			_(playerid, GROUNDHOLD_BONUS),
 			gGroundholds[ghid][e_ghMoney] * gGroundholds[ghid][e_ghMulti],
 			gGroundholds[ghid][e_ghXP] * gGroundholds[ghid][e_ghMulti]
 		);
@@ -153,15 +153,15 @@ Groundhold_OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA areaid)
 	// check enemy
 	if (UpdateEnemiesStatus(ghid, playerid)) {
 		foreach (new i : PlayerOnGround[ghid]) {
-			Message_Alert(i, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_ALERT_ENEMIES));
-			Message_Objective(i, _(GROUNDHOLD_ALERT_ENEMIES), -1);
+			Message_Alert(i, _(playerid, GROUNDHOLD_ALERT_HEADER), _(playerid, GROUNDHOLD_ALERT_ENEMIES));
+			Message_Objective(i, _(playerid, GROUNDHOLD_ALERT_ENEMIES), -1);
 		}
 	}
 
 	// message
 	if (!IsGroundWithEnemies(ghid)) {
-		Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_OBJECTIVE));
-		Message_Objective(playerid, _(GROUNDHOLD_OBJECTIVE), -1);
+		Message_Alert(playerid, _(playerid, GROUNDHOLD_ALERT_HEADER), _(playerid, GROUNDHOLD_OBJECTIVE));
+		Message_Objective(playerid, _(playerid, GROUNDHOLD_OBJECTIVE), -1);
 	}
 
 	return 1;
@@ -180,9 +180,9 @@ Groundhold_OnPlayerLeaveDynArea(playerid, STREAMER_TAG_AREA areaid)
 
 	pIsHold[playerid] = false;
 
-	SendClientMessage(playerid, COLOR_RED, _(GROUNDHOLD_HOLD));
-	Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_OBJECTIVE_BACK));
-	Message_Objective(playerid, _(GROUNDHOLD_OBJECTIVE_BACK), -1);
+	SendClientMessage(playerid, COLOR_RED, _(playerid, GROUNDHOLD_HOLD));
+	Message_Alert(playerid, _(playerid, GROUNDHOLD_ALERT_HEADER), _(playerid, GROUNDHOLD_OBJECTIVE_BACK));
+	Message_Objective(playerid, _(playerid, GROUNDHOLD_OBJECTIVE_BACK), -1);
 
 	// check enemy
 	UpdateEnemiesStatus(ghid, playerid);
@@ -268,10 +268,10 @@ stock Groundhold_RemovePlayer(ghid, playerid, &return_playerid = INVALID_PLAYER_
 	// message
 	new string[MAX_LANG_VALUE_STRING];
 
-	format(string, sizeof(string), _(GROUNDHOLD_MISSING), gGroundholds[ghid][e_ghName]);
+	format(string, sizeof(string), _(playerid, GROUNDHOLD_MISSING), gGroundholds[ghid][e_ghName]);
 	SendClientMessage(playerid, COLOR_RED, string);
 
-	Message_Alert(playerid, _(GROUNDHOLD_ALERT_HEADER), _(GROUNDHOLD_ALERT_MISSING));
+	Message_Alert(playerid, _(playerid, GROUNDHOLD_ALERT_HEADER), _(playerid, GROUNDHOLD_ALERT_MISSING));
 	Message_ObjectiveHide(playerid);
 
 	// clean

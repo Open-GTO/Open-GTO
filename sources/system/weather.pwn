@@ -27,7 +27,7 @@ static
 	LastTickCount,
 	gWeatherTime = SYS_WEATHER_UPDATE,
 	gWeather[] = {0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 17, 18},
-	gWeatherName[MAX_WEATHER][MAX_WEATHER_NAME char];
+	gWeatherName[MAX_WEATHER][Lang][MAX_WEATHER_NAME char];
 
 /*
 	Config
@@ -49,27 +49,37 @@ Weather_SaveConfig(file_config)
 
 Weather_OnGameModeInit()
 {
-	Weather_SetName(0, _(WEATHER_EXTRASUNNY_LA));
-	Weather_SetName(1, _(WEATHER_SUNNY_LA));
-	Weather_SetName(2, _(WEATHER_EXTRASUNNY_SMOG_LA));
-	Weather_SetName(3, _(WEATHER_SUNNY_SMOG_LA));
-	Weather_SetName(4, _(WEATHER_CLOUDY_LA));
-	Weather_SetName(5, _(WEATHER_SUNNY_SF));
-	Weather_SetName(6, _(WEATHER_EXTRASUNNY_SF));
-	Weather_SetName(7, _(WEATHER_CLOUDY_SF));
-	Weather_SetName(8, _(WEATHER_RAINY_SF));
-	Weather_SetName(9, _(WEATHER_FOGGY_SF));
-	Weather_SetName(10, _(WEATHER_SUNNY_VEGAS));
-	Weather_SetName(11, _(WEATHER_EXTRASUNNY_VEGAS));
-	Weather_SetName(12, _(WEATHER_CLOUDY_VEGAS));
-	Weather_SetName(13, _(WEATHER_EXTRASUNNY_COUNTRYSIDE));
-	Weather_SetName(14, _(WEATHER_SUNNY_COUNTRYSIDE));
-	Weather_SetName(15, _(WEATHER_CLOUDY_COUNTRYSIDE));
-	Weather_SetName(16, _(WEATHER_RAINY_COUNTRYSIDE));
-	Weather_SetName(17, _(WEATHER_EXTRASUNNY_DESERT));
-	Weather_SetName(18, _(WEATHER_SUNNY_DESERT));
-	Weather_SetName(19, _(WEATHER_SANDSTORM_DESERT));
-	Weather_SetName(20, _(WEATHER_UNDERWATER));
+	new
+		Lang:lang,
+		lang_count,
+		langid;
+
+	lang_count = Lang_GetCount();
+
+	for ( ; _:lang < lang_count; _:lang++) {
+		langid = Lang_GetID(lang);
+		Weather_SetName(0, lang, _l(langid, WEATHER_EXTRASUNNY_LA));
+		Weather_SetName(1, lang, _l(langid, WEATHER_SUNNY_LA));
+		Weather_SetName(2, lang, _l(langid, WEATHER_EXTRASUNNY_SMOG_LA));
+		Weather_SetName(3, lang, _l(langid, WEATHER_SUNNY_SMOG_LA));
+		Weather_SetName(4, lang, _l(langid, WEATHER_CLOUDY_LA));
+		Weather_SetName(5, lang, _l(langid, WEATHER_SUNNY_SF));
+		Weather_SetName(6, lang, _l(langid, WEATHER_EXTRASUNNY_SF));
+		Weather_SetName(7, lang, _l(langid, WEATHER_CLOUDY_SF));
+		Weather_SetName(8, lang, _l(langid, WEATHER_RAINY_SF));
+		Weather_SetName(9, lang, _l(langid, WEATHER_FOGGY_SF));
+		Weather_SetName(10, lang, _l(langid, WEATHER_SUNNY_VEGAS));
+		Weather_SetName(11, lang, _l(langid, WEATHER_EXTRASUNNY_VEGAS));
+		Weather_SetName(12, lang, _l(langid, WEATHER_CLOUDY_VEGAS));
+		Weather_SetName(13, lang, _l(langid, WEATHER_EXTRASUNNY_COUNTRYSIDE));
+		Weather_SetName(14, lang, _l(langid, WEATHER_SUNNY_COUNTRYSIDE));
+		Weather_SetName(15, lang, _l(langid, WEATHER_CLOUDY_COUNTRYSIDE));
+		Weather_SetName(16, lang, _l(langid, WEATHER_RAINY_COUNTRYSIDE));
+		Weather_SetName(17, lang, _l(langid, WEATHER_EXTRASUNNY_DESERT));
+		Weather_SetName(18, lang, _l(langid, WEATHER_SUNNY_DESERT));
+		Weather_SetName(19, lang, _l(langid, WEATHER_SANDSTORM_DESERT));
+		Weather_SetName(20, lang, _l(langid, WEATHER_UNDERWATER));
+	}
 }
 
 /*
@@ -130,18 +140,18 @@ stock Weather_SetTime(time)
 	Name functions
 */
 
-stock Weather_GetName(weatherid, name[], const size = sizeof(name))
+stock Weather_GetName(weatherid, Lang:lang, name[], const size = sizeof(name))
 {
 	if (MAX_WEATHER <= weatherid < 0) {
 		return 0;
 	}
-	return strunpack(name, gWeatherName[weatherid], size);
+	return strunpack(name, gWeatherName[weatherid][lang], size);
 }
 
-stock Weather_SetName(weatherid, name[])
+stock Weather_SetName(weatherid, Lang:lang, name[])
 {
 	if (MAX_WEATHER <= weatherid < 0) {
 		return 0;
 	}
-	return strpack(gWeatherName[weatherid], name, MAX_WEATHER_NAME);
+	return strpack(gWeatherName[weatherid][lang], name, MAX_WEATHER_NAME);
 }

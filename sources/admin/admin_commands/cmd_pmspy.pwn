@@ -19,10 +19,10 @@ COMMAND:pmspy(playerid, params[])
 
 	if (!IsPrivateMessageSpyActive(playerid)) {
 		SetPrivateMessageSpyStatus(playerid, true);
-		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_PMSPY_ENABLED));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_PMSPY_ENABLED));
 	} else {
 		SetPrivateMessageSpyStatus(playerid, false);
-		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_PMSPY_DISABLED));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_PMSPY_DISABLED));
 	}
 	return 1;
 }

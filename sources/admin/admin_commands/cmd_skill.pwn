@@ -36,7 +36,7 @@ COMMAND:skill(playerid, params[])
 		amount;
 
 	if (sscanf(params, "s[5]s[32]K<weapon>(-1)I(0)", subcmd, subparams, weaponid, amount)) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_HELP));
 		return 1;
 	}
 
@@ -46,7 +46,7 @@ COMMAND:skill(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_TARGET_ERROR));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_TARGET_ERROR));
 		return 1;
 	}
 
@@ -57,7 +57,7 @@ COMMAND:skill(playerid, params[])
 		skillid = GetWeaponSkillID(weaponid);
 
 		if (skillid == -1) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_WEAPON_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_WEAPON_ERROR));
 			return 1;
 		}
 	}
@@ -80,7 +80,7 @@ COMMAND:skill(playerid, params[])
 
 	if (strcmp(subcmd, "set", true) == 0) {
 		if (skillid == -1) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_WEAPON_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_WEAPON_ERROR));
 			return 1;
 		}
 
@@ -95,24 +95,24 @@ COMMAND:skill(playerid, params[])
 				SetPlayerSkillLevel(id, skillid, amount);
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_SET_ALL), playername, playerid, skillname, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_SET_ALL), playername, playerid, skillname, amount);
 			SendClientMessageToAll(-1, string);
 		} else {
 			SetPlayerSkillLevel(targetid, skillid, amount);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_SET_PLAYER), playername, playerid, skillname, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_SET_PLAYER), playername, playerid, skillname, amount);
 			SendClientMessage(targetid, -1, string);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_SET_SELF), targetname, targetid, skillname, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_SET_SELF), targetname, targetid, skillname, amount);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_TARGET_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_TARGET_ERROR));
 			return 1;
 		}
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_GET), targetname, targetid);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_GET), targetname, targetid);
 		SendClientMessage(playerid, -1, string);
 
 		if (skillid == -1) {
@@ -120,19 +120,19 @@ COMMAND:skill(playerid, params[])
 				amount = GetPlayerSkillLevel(playerid, skill);
 				GetWeaponSkillName(skill, string);
 
-				format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_GET_ITEM), skill, string, amount);
+				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_GET_ITEM), skill, string, amount);
 				SendClientMessage(playerid, -1, string);
 			}
 		} else {
 			amount = GetPlayerSkillLevel(playerid, skillid);
 			GetWeaponSkillName(skillid, string);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_GET_ITEM), skillid, string, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_GET_ITEM), skillid, string, amount);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		if (skillid == -1) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_WEAPON_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_WEAPON_ERROR));
 			return 1;
 		}
 
@@ -147,19 +147,19 @@ COMMAND:skill(playerid, params[])
 				GivePlayerSkillLevel(id, skillid, amount);
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_GIVE_ALL), playername, playerid, skillname, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_GIVE_ALL), playername, playerid, skillname, amount);
 			SendClientMessageToAll(-1, string);
 		} else {
 			GivePlayerSkillLevel(targetid, skillid, amount);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_GIVE_PLAYER), playername, playerid, skillname, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_GIVE_PLAYER), playername, playerid, skillname, amount);
 			SendClientMessage(targetid, -1, string);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_SKILL_GIVE_SELF), targetname, targetid, skillname, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_GIVE_SELF), targetname, targetid, skillname, amount);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_SKILL_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_HELP));
 	}
 
 	return 1;

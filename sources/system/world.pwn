@@ -102,8 +102,6 @@ public FiveSecondTimer()
 
 	Groundhold_CheckAll();
 	RegenerationPlayerHealth();
-	business_Update3DTextLabelText();
-	housing_Update3DTextLabelText();
 	payday_Check();
 	VehShop_SetVehiclesToRespawn();
 	Weather_Update();

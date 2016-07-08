@@ -21,7 +21,7 @@ COMMAND:kill(playerid, params[])
 		subparams[32];
 
 	if (sscanf(params, "s[32]", subparams)) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_KILL_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_KILL_HELP));
 		return 1;
 	}
 
@@ -31,7 +31,7 @@ COMMAND:kill(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_KILL_TARGET_ERROR));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_KILL_TARGET_ERROR));
 		return 1;
 	}
 
@@ -47,17 +47,17 @@ COMMAND:kill(playerid, params[])
 			SetPlayerHealth(id, 0.0);
 		}
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_KILL_ALL), playername, playerid);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KILL_ALL), playername, playerid);
 		SendClientMessageToAll(-1, string);
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
 		SetPlayerHealth(targetid, 0.0);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_KILL_PLAYER), playername, playerid, targetname, targetid);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KILL_PLAYER), playername, playerid, targetname, targetid);
 		SendMessageToNearPlayerPlayers(string, 40.0, targetid);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_KILL_PLAYER_SELF), targetname, targetid);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KILL_PLAYER_SELF), targetname, targetid);
 		SendClientMessage(playerid, -1, string);
 	}
 

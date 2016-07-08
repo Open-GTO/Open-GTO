@@ -42,14 +42,14 @@ Premium_OnPlayerPickUpPickup(playerid, pickupid)
 	}
 
 	if (!IsPlayerHavePremium(playerid)) {
-		SendClientMessage(playerid, COLOR_RED, _(PREMIUM_NEED_STATUS));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, PREMIUM_NEED_STATUS));
 		return 1;
 	}
 
 	gate_IsOpening = true;
 	MoveDynamicObject(gate_ObjectID, 227.178, 2001.188, 10.742, 1.00);
 
-	SendClientMessageToBeside(playerid, 20, _(PREMIUM_GATES_IS_OPENING));
+	SendClientMessageToBeside(playerid, 20, _(playerid, PREMIUM_GATES_IS_OPENING));
 	SetTimer("Premium_CloseGate", 60000, 0);
 	return 1;
 }
@@ -59,7 +59,7 @@ Premium_OnPlayerStateChange(playerid,newstate,oldstate)
 	#pragma unused newstate,oldstate
 	if (!IsPlayerHavePremium(playerid) && Premium_GetVehicleStatus( GetPlayerVehicleID(playerid) )) {
 		RemovePlayerFromVehicle(playerid);
-		SendClientMessage(playerid, COLOR_RED, _(PREMIUM_VEHICLE_ERROR));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, PREMIUM_VEHICLE_ERROR));
 	}
 	return 1;
 }

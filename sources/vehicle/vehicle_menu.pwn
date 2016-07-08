@@ -29,7 +29,7 @@ VMenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 COMMAND:vmenu(playerid, params[])
 {
 	if (!IsPlayerInAnyVehicle(playerid)) {
-		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_NOT_IN_CAR));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, VEHICLE_NOT_IN_CAR));
 		return 0;
 	}
 
@@ -44,39 +44,39 @@ DialogCreate:VehicleMenu(playerid)
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 
 	new string[MAX_LANG_VALUE_STRING * 8];
-	strcat(string, _(VEHICLE_MENU_LIST_FLIP), sizeof(string));
-	strcat(string, _(VEHICLE_MENU_LIST_FILL), sizeof(string));
-	strcat(string, _(VEHICLE_MENU_LIST_RADIO), sizeof(string));
+	strcat(string, _(playerid, VEHICLE_MENU_LIST_FLIP), sizeof(string));
+	strcat(string, _(playerid, VEHICLE_MENU_LIST_FILL), sizeof(string));
+	strcat(string, _(playerid, VEHICLE_MENU_LIST_RADIO), sizeof(string));
 
 	// двери
-	format(string, sizeof(string), _(VEHICLE_MENU_LIST_DOORS), string, ReturnVehicleDoorsAccessName(vehicleid));
+	format(string, sizeof(string), _(playerid, VEHICLE_MENU_LIST_DOORS), string, ReturnVehicleDoorsAccessName(Lang_GetPlayerLanguage(playerid), vehicleid));
 
 	// фары
 	if (lights == VEHICLE_PARAMS_ON) {
-		strcat(string, _(VEHICLE_MENU_LIST_DISABLE_LIGHTS), sizeof(string));
+		strcat(string, _(playerid, VEHICLE_MENU_LIST_DISABLE_LIGHTS), sizeof(string));
 	} else {
-		strcat(string, _(VEHICLE_MENU_LIST_ENABLE_LIGHTS), sizeof(string));
+		strcat(string, _(playerid, VEHICLE_MENU_LIST_ENABLE_LIGHTS), sizeof(string));
 	}
 
 	// двигатель
 	if (engine == VEHICLE_PARAMS_ON) {
-		strcat(string, _(VEHICLE_MENU_LIST_DISABLE_ENGINE), sizeof(string));
+		strcat(string, _(playerid, VEHICLE_MENU_LIST_DISABLE_ENGINE), sizeof(string));
 	} else {
-		strcat(string, _(VEHICLE_MENU_LIST_ENABLE_ENGINE), sizeof(string));
+		strcat(string, _(playerid, VEHICLE_MENU_LIST_ENABLE_ENGINE), sizeof(string));
 	}
 
 	// капот
 	if (bonnet == VEHICLE_PARAMS_ON) {
-		strcat(string, _(VEHICLE_MENU_LIST_CLOSE_BONNET), sizeof(string));
+		strcat(string, _(playerid, VEHICLE_MENU_LIST_CLOSE_BONNET), sizeof(string));
 	} else {
-		strcat(string, _(VEHICLE_MENU_LIST_OPEN_BONNET), sizeof(string));
+		strcat(string, _(playerid, VEHICLE_MENU_LIST_OPEN_BONNET), sizeof(string));
 	}
 
 	// багажник
 	if (boot == VEHICLE_PARAMS_ON) {
-		strcat(string, _(VEHICLE_MENU_LIST_CLOSE_BOOT), sizeof(string));
+		strcat(string, _(playerid, VEHICLE_MENU_LIST_CLOSE_BOOT), sizeof(string));
 	} else {
-		strcat(string, _(VEHICLE_MENU_LIST_OPEN_BOOT), sizeof(string));
+		strcat(string, _(playerid, VEHICLE_MENU_LIST_OPEN_BOOT), sizeof(string));
 	}
 
 	// окна
@@ -84,12 +84,12 @@ DialogCreate:VehicleMenu(playerid)
 	GetVehicleParamsCarWindows(vehicleid, window_state, window_state, window_state, window_state);
 
 	if (window_state == VEHICLE_WINDOW_OPENED) {
-		strcat(string, _(VEHICLE_MENU_LIST_CLOSE_WINDOWS), sizeof(string));
+		strcat(string, _(playerid, VEHICLE_MENU_LIST_CLOSE_WINDOWS), sizeof(string));
 	} else {
-		strcat(string, _(VEHICLE_MENU_LIST_OPEN_WINDOWS), sizeof(string));
+		strcat(string, _(playerid, VEHICLE_MENU_LIST_OPEN_WINDOWS), sizeof(string));
 	}
 
-	Dialog_Open(playerid, Dialog:VehicleMenu, DIALOG_STYLE_LIST, _(VEHICLE_MENU_HEADER), string, _(VEHICLE_MENU_BUTTON_OK), _(VEHICLE_MENU_BUTTON_CANCEL));
+	Dialog_Open(playerid, Dialog:VehicleMenu, DIALOG_STYLE_LIST, _(playerid, VEHICLE_MENU_HEADER), string, _(playerid, VEHICLE_MENU_BUTTON_OK), _(playerid, VEHICLE_MENU_BUTTON_CANCEL));
 }
 
 DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
@@ -114,34 +114,34 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 		// заправить
 		case 1: {
 			if (vehicleid == 0) {
-				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_NOT_IN_VEHICLE), "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(playerid, VEHICLE_FUEL_DIALOG_HEADER), _(playerid, VEHICLE_FUEL_NOT_IN_VEHICLE), "Назад", "Отмена");
 				return 1;
 			}
 
 			if (!IsPlayerAtFuelStation(playerid)) {
-				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_NOT_ON_FUEL_ST), "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(playerid, VEHICLE_FUEL_DIALOG_HEADER), _(playerid, VEHICLE_FUEL_NOT_ON_FUEL_ST), "Назад", "Отмена");
 				return 1;
 			}
 
 			if (IsVehicleRefilling(vehicleid)) {
-				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_IS_FUELING_ERROR), "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(playerid, VEHICLE_FUEL_DIALOG_HEADER), _(playerid, VEHICLE_FUEL_IS_FUELING_ERROR), "Назад", "Отмена");
 				return 1;
 			}
 
 			new vehiclemodel = GetVehicleModel(vehicleid);
 			switch (vehiclemodel) {
 				case 481, 509, 510: {
-					Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_WITHOUT_FUEL_ENGINE), "Назад", "Отмена");
+					Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(playerid, VEHICLE_FUEL_DIALOG_HEADER), _(playerid, VEHICLE_FUEL_WITHOUT_FUEL_ENGINE), "Назад", "Отмена");
 					return 1;
 				}
 			}
 
 			if (GetVehicleFuel(vehicleid) >= GetVehicleModelMaxFuel(vehiclemodel)) {
-				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(VEHICLE_FUEL_DIALOG_HEADER), _(VEHICLE_FUEL_FUEL_IS_FULL), "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(playerid, VEHICLE_FUEL_DIALOG_HEADER), _(playerid, VEHICLE_FUEL_FUEL_IS_FULL), "Назад", "Отмена");
 				return 1;
 			}
 
-			SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_IS_FUELING));
+			SendClientMessage(playerid, COLOR_YELLOW, _(playerid, VEHICLE_FUEL_IS_FUELING));
 			FillVehicle(vehicleid, playerid);
 			return 1;
 		}
@@ -154,7 +154,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 		case 3: {
 			new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
 			if (slot == -1) {
-				Dialog_Message(playerid, _(VEHICLE_MENU_HEADER), _(VEHICLE_MENU_DOORS_NOTOWNER), _(VEHICLE_MENU_BUTTON_OK));
+				Dialog_Message(playerid, _(playerid, VEHICLE_MENU_HEADER), _(playerid, VEHICLE_MENU_DOORS_NOTOWNER), _(playerid, VEHICLE_MENU_BUTTON_OK));
 			} else {
 				ChangePlayerVehicleDoorsAccess(vehicleid, playerid, slot);
 				Dialog_Show(playerid, Dialog:VehicleMenu);

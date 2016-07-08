@@ -36,34 +36,34 @@ stock Declension_GetWord(result[], const size = sizeof(result), num, word_1[MAX_
 	}
 }
 
-stock Declension_GetMonths(value, result[], const size = sizeof(result))
+stock Declension_GetMonths(playerid, value, result[], const size = sizeof(result))
 {
-	Declension_GetWord(result, size, value, _(DECLENSION_MONTH_1), _(DECLENSION_MONTH_2), _(DECLENSION_MONTH_3))
+	Declension_GetWord(result, size, value, _(playerid, DECLENSION_MONTH_1), _(playerid, DECLENSION_MONTH_2), _(playerid, DECLENSION_MONTH_3))
 }
 
-stock Declension_GetDays(value, result[], const size = sizeof(result))
+stock Declension_GetDays(playerid, value, result[], const size = sizeof(result))
 {
-	Declension_GetWord(result, size, value, _(DECLENSION_DAY_1), _(DECLENSION_DAY_2), _(DECLENSION_DAY_3));
+	Declension_GetWord(result, size, value, _(playerid, DECLENSION_DAY_1), _(playerid, DECLENSION_DAY_2), _(playerid, DECLENSION_DAY_3));
 }
 
-stock Declension_GetHours(value, result[], const size = sizeof(result))
+stock Declension_GetHours(playerid, value, result[], const size = sizeof(result))
 {
-	Declension_GetWord(result, size, value, _(DECLENSION_HOUR_1), _(DECLENSION_HOUR_2), _(DECLENSION_HOUR_3));
+	Declension_GetWord(result, size, value, _(playerid, DECLENSION_HOUR_1), _(playerid, DECLENSION_HOUR_2), _(playerid, DECLENSION_HOUR_3));
 }
 
-stock Declension_GetMinutes(value, result[], const size = sizeof(result))
+stock Declension_GetMinutes(playerid, value, result[], const size = sizeof(result))
 {
-	Declension_GetWord(result, size, value, _(DECLENSION_MINUTE_1), _(DECLENSION_MINUTE_2), _(DECLENSION_MINUTE_3));
+	Declension_GetWord(result, size, value, _(playerid, DECLENSION_MINUTE_1), _(playerid, DECLENSION_MINUTE_2), _(playerid, DECLENSION_MINUTE_3));
 }
 
-stock Declension_GetSeconds(value, result[], const size = sizeof(result))
+stock Declension_GetSeconds(playerid, value, result[], const size = sizeof(result))
 {
-	Declension_GetWord(result, size, value, _(DECLENSION_SECOND_1), _(DECLENSION_SECOND_2), _(DECLENSION_SECOND_3));
+	Declension_GetWord(result, size, value, _(playerid, DECLENSION_SECOND_1), _(playerid, DECLENSION_SECOND_2), _(playerid, DECLENSION_SECOND_3));
 }
 
-stock Declension_GetAmmo(value, result[], const size = sizeof(result))
+stock Declension_GetAmmo(playerid, value, result[], const size = sizeof(result))
 {
-	Declension_GetWord(result, size, value, _(DECLENSION_AMMO_1), _(DECLENSION_AMMO_2), _(DECLENSION_AMMO_3));
+	Declension_GetWord(result, size, value, _(playerid, DECLENSION_AMMO_1), _(playerid, DECLENSION_AMMO_2), _(playerid, DECLENSION_AMMO_3));
 }
 
 /*
@@ -77,44 +77,44 @@ stock Declension_ReturnWord(num, word_1[MAX_LANG_VALUE_STRING], word_2[MAX_LANG_
 	return result;
 }
 
-stock Declension_ReturnMonths(value)
+stock Declension_ReturnMonths(playerid, value)
 {
 	new result[MAX_LANG_VALUE_STRING];
-	Declension_GetMonths(value, result);
+	Declension_GetMonths(playerid, value, result);
 	return result;
 }
 
-stock Declension_ReturnDays(value)
+stock Declension_ReturnDays(playerid, value)
 {
 	new result[MAX_LANG_VALUE_STRING];
-	Declension_GetDays(value, result);
+	Declension_GetDays(playerid, value, result);
 	return result;
 }
 
-stock Declension_ReturnHours(value)
+stock Declension_ReturnHours(playerid, value)
 {
 	new result[MAX_LANG_VALUE_STRING];
-	Declension_GetHours(value, result);
+	Declension_GetHours(playerid, value, result);
 	return result;
 }
 
-stock Declension_ReturnMinutes(value)
+stock Declension_ReturnMinutes(playerid, value)
 {
 	new result[MAX_LANG_VALUE_STRING];
-	Declension_GetMinutes(value, result);
+	Declension_GetMinutes(playerid, value, result);
 	return result;
 }
 
-stock Declension_ReturnSeconds(value)
+stock Declension_ReturnSeconds(playerid, value)
 {
 	new result[MAX_LANG_VALUE_STRING];
-	Declension_GetSeconds(value, result);
+	Declension_GetSeconds(playerid, value, result);
 	return result;
 }
 
-stock Declension_ReturnAmmo(value)
+stock Declension_ReturnAmmo(playerid, value)
 {
 	new result[MAX_LANG_VALUE_STRING];
-	Declension_GetAmmo(value, result);
+	Declension_GetAmmo(playerid, value, result);
 	return result;
 }

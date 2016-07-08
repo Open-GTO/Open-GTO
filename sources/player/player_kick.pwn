@@ -22,29 +22,29 @@ stock KickPlayer(playerid, reason[] = "", showreason = 1)
 	}
 
 	if (strlen(reason) == 0) {
-		__(ADMIN_COMMAND_KICK_NOREASON, reason, MAX_KICK_REASON_LENGTH);
+		__(playerid, ADMIN_COMMAND_KICK_NOREASON, reason, MAX_KICK_REASON_LENGTH);
 	}
 
 	new
 		string[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
-	
+
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		format(string, sizeof(string), _(ADMIN_COMMAND_KICK_IS_ADMIN), reason);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_IS_ADMIN), reason);
 		SendClientMessage(playerid, COLOR_YELLOW, string);
 		return 0;
 	}
 
 	if (showreason) {
-		format(string, sizeof(string), _(ADMIN_COMMAND_KICK_KICKED_SELF), reason);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_KICKED_SELF), reason);
 		SendClientMessage(playerid, COLOR_RED, string);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_KICK_KICKED), playername, reason);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_KICKED), playername, reason);
 		SendClientMessageToAll(COLOR_MISC, string);
 	}
-	
+
 	GameTextForPlayer(playerid, "~r~Connection Lost.", 1000, 5);
 	TogglePlayerControllable(playerid, 0);
 

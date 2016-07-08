@@ -47,7 +47,7 @@ stock FreezePlayerTimer(playerid)
 
 		new string[MAX_LANG_VALUE_STRING];
 		GetPlayerName(playerid, string, sizeof(string));
-		format(string, sizeof(string), _(ADMIN_FREEZE_UNFREEZED), string, playerid);
+		format(string, sizeof(string), _(playerid, ADMIN_FREEZE_UNFREEZED), string, playerid);
 		SendClientMessageToAll(-1, string);
 	}
 }

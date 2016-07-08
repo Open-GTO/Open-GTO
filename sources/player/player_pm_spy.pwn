@@ -62,7 +62,7 @@ stock SendPrivateMessageToSpies(senderid, receiveid, message[])
 			continue;
 		}
 
-		format(string, sizeof(string), _(PLAYER_PMSPY_MESSAGE),
+		format(string, sizeof(string), _(i, PLAYER_PMSPY_MESSAGE),
 		       sendername, senderid,
 		       receivename, receiveid,
 		       message);

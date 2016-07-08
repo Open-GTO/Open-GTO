@@ -40,7 +40,7 @@ stock sshop_OnGameModeInit()
 		SkinShops[id][ss_checkpoint] = CreateDynamicCP(SkinShops[id][ss_x], SkinShops[id][ss_y], SkinShops[id][ss_z], 1.5, .streamdistance = 20.0);
 	}
 
-	Log_Game(_(SKINSHOP_INIT));
+	Log_Game(_d(SKINSHOP_INIT));
 	return 1;
 }
 
@@ -70,7 +70,7 @@ SkinSelectResponse:SkinShop(playerid, SS_Response:type, oldskin, newskin)
 	} else if (type == SS_Response:SS_Response_Select) {
 		if (GetPlayerMoney(playerid) < SKINS_COST) {
 			new string[MAX_STRING];
-			format(string, sizeof(string), _(SKINSHOP_NOT_ENOUGH_MONEY), SKINS_COST);
+			format(string, sizeof(string), _(playerid, SKINSHOP_NOT_ENOUGH_MONEY), SKINS_COST);
 			SendClientMessage(playerid, 0, string);
 		} else {
 			Dialog_Show(playerid, Dialog:ServiceSkin);
@@ -80,7 +80,7 @@ SkinSelectResponse:SkinShop(playerid, SS_Response:type, oldskin, newskin)
 
 DialogCreate:ServiceSkin(playerid)
 {
-	Dialog_Open(playerid, Dialog:ServiceSkin, DIALOG_STYLE_MSGBOX, _(SKINSHOP_DIALOG_HEADER), _(SKINSHOP_DIALOG_INFO_BUY), _(SKINSHOP_DIALOG_BUTTON_0), _(SKINSHOP_DIALOG_BUTTON_1));
+	Dialog_Open(playerid, Dialog:ServiceSkin, DIALOG_STYLE_MSGBOX, _(playerid, SKINSHOP_DIALOG_HEADER), _(playerid, SKINSHOP_DIALOG_INFO_BUY), _(playerid, SKINSHOP_DIALOG_BUTTON_0), _(playerid, SKINSHOP_DIALOG_BUTTON_1));
 }
 
 DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])
@@ -99,7 +99,7 @@ DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])
 	SetPlayerSkin(playerid, skinid);
 	GivePlayerMoney(playerid, -SKINS_COST);
 
-	SendClientMessage(playerid, 0, _(SKINSHOP_DIALOG_INFO_THANKS));
+	SendClientMessage(playerid, 0, _(playerid, SKINSHOP_DIALOG_INFO_THANKS));
 	return 1;
 }
 

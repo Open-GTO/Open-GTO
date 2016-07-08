@@ -67,10 +67,10 @@ DialogCreate:CompetitionMenu(playerid)
 		string[MAX_LANG_VALUE_STRING * (2 + MAX_COMPETITION) + 1],
 		temp[MAX_LANG_VALUE_STRING];
 
-	__(COMPETITION_MENU_LIST_HEADER, temp);
+	__(playerid, COMPETITION_MENU_LIST_HEADER, temp);
 	strcat(string, temp);
 
-	__(COMPETITION_MENU_LIST_START, temp);
+	__(playerid, COMPETITION_MENU_LIST_START, temp);
 	strcat(string, temp);
 
 	new
@@ -93,21 +93,21 @@ DialogCreate:CompetitionMenu(playerid)
 		GetColorEmbeddingCode(ctype_color, ctype_color_code);
 
 		if (ctime > 0) {
-			GetTimeStringFromSeconds(ctime, cstatus);
-			format(cstatus, sizeof(cstatus), _(COMPETITION_MENU_STATUS_ENTER), cstatus);
+			GetTimeStringFromSeconds(playerid, ctime, cstatus);
+			format(cstatus, sizeof(cstatus), _(playerid, COMPETITION_MENU_STATUS_ENTER), cstatus);
 		} else {
-			GetTimeStringFromSeconds(-ctime, cstatus);
-			format(cstatus, sizeof(cstatus), _(COMPETITION_MENU_STATUS_STARTED), cstatus);
+			GetTimeStringFromSeconds(playerid, -ctime, cstatus);
+			format(cstatus, sizeof(cstatus), _(playerid, COMPETITION_MENU_STATUS_STARTED), cstatus);
 		}
 
-		format(temp, sizeof(temp), _(COMPETITION_MENU_LIST_ITEM), cmap_name, ctype_color_code, ctype_name, cstatus);
+		format(temp, sizeof(temp), _(playerid, COMPETITION_MENU_LIST_ITEM), cmap_name, ctype_color_code, ctype_name, cstatus);
 		strcat(string, temp);
 	}
 
 	Dialog_Open(playerid, Dialog:CompetitionMenu, DIALOG_STYLE_TABLIST_HEADERS,
-			_(COMPETITION_MENU_HEADER),
+			_(playerid, COMPETITION_MENU_HEADER),
 			string,
-			_(COMPETITION_MENU_SELECT), _(COMPETITION_MENU_BACK)
+			_(playerid, COMPETITION_MENU_SELECT), _(playerid, COMPETITION_MENU_BACK)
 		);
 }
 
@@ -122,9 +122,9 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 	if (listitem == 0) {
 		if (Competition_GetFreeSlot() == INVALID_COMPETITION_ID) {
 			Dialog_MessageEx(playerid, Dialog:CompetitionReturnMenu,
-					_(COMPETITION_MENU_HEADER),
-					_(COMPETITION_MENU_NO_FREE_SLOT),
-					_(COMPETITION_MENU_BACK), _(COMPETITION_MENU_CANCEL)
+					_(playerid, COMPETITION_MENU_HEADER),
+					_(playerid, COMPETITION_MENU_NO_FREE_SLOT),
+					_(playerid, COMPETITION_MENU_BACK), _(playerid, COMPETITION_MENU_CANCEL)
 				);
 		} else {
 			Dialog_Show(playerid, Dialog:CompetitionStartMenu);
@@ -164,14 +164,14 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 	GetColorEmbeddingCode(ctype_color, ctype_color_code);
 
 	if (ctime > 0) {
-		GetTimeStringFromSeconds(ctime, cstatus);
-		format(cstatus, sizeof(cstatus), _(COMPETITION_MENU_STATUS_ENTER), cstatus);
+		GetTimeStringFromSeconds(playerid, ctime, cstatus);
+		format(cstatus, sizeof(cstatus), _(playerid, COMPETITION_MENU_STATUS_ENTER), cstatus);
 	} else {
-		GetTimeStringFromSeconds(-ctime, cstatus);
-		format(cstatus, sizeof(cstatus), _(COMPETITION_MENU_STATUS_STARTED), cstatus);
+		GetTimeStringFromSeconds(playerid, -ctime, cstatus);
+		format(cstatus, sizeof(cstatus), _(playerid, COMPETITION_MENU_STATUS_STARTED), cstatus);
 	}
 
-	format(string, sizeof(string), _(COMPETITION_JOIN_MENU_MSG), cmap_name, ctype_color_code, ctype_name, cplayer_name, cplayer_id, cstatus);
+	format(string, sizeof(string), _(playerid, COMPETITION_JOIN_MENU_MSG), cmap_name, ctype_color_code, ctype_name, cplayer_name, cplayer_id, cstatus);
 
 	if (Competition_IsPlayerCanJoin(cid, playerid)) {
 		SetJoinCompetitionId(playerid, cid);
@@ -179,7 +179,7 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 		Dialog_Open(playerid, Dialog:CompetitionJoinMenu, DIALOG_STYLE_MSGBOX,
 				cmap_name,
 				string,
-				_(COMPETITION_MENU_JOIN), _(COMPETITION_MENU_BACK)
+				_(playerid, COMPETITION_MENU_JOIN), _(playerid, COMPETITION_MENU_BACK)
 			);
 	} else {
 		SetJoinCompetitionId(playerid, INVALID_COMPETITION_ID);
@@ -187,7 +187,7 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 		Dialog_Open(playerid, Dialog:CompetitionJoinMenu, DIALOG_STYLE_MSGBOX,
 				cmap_name,
 				string,
-				_(COMPETITION_MENU_BACK), ""
+				_(playerid, COMPETITION_MENU_BACK), ""
 			);
 	}
 	return 1;
@@ -215,7 +215,7 @@ DialogCreate:CompetitionStartMenu(playerid)
 		temp[MAX_LANG_VALUE_STRING];
 
 	// start
-	__(COMPETITION_START_START, string);
+	__(playerid, COMPETITION_START_START, string);
 
 	// type
 	new
@@ -227,7 +227,7 @@ DialogCreate:CompetitionStartMenu(playerid)
 	ctype = gPlayerStartParams[playerid][COMPETITION_TYPE];
 
 	if (ctype == INVALID_COMPETITION_TYPE_ID) {
-		__(COMPETITION_START_PARAM_RANDOM, ctype_name);
+		__(playerid, COMPETITION_START_PARAM_RANDOM, ctype_name);
 		GetColorEmbeddingCode(COLOR_BLUEGREY_200, ctype_color_code);
 	} else {
 		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
@@ -235,7 +235,7 @@ DialogCreate:CompetitionStartMenu(playerid)
 
 		GetColorEmbeddingCode(ctype_color, ctype_color_code);
 	}
-	format(temp, sizeof(temp), _(COMPETITION_START_PARAM_TYPE), ctype_color_code, ctype_name);
+	format(temp, sizeof(temp), _(playerid, COMPETITION_START_PARAM_TYPE), ctype_color_code, ctype_name);
 	strcat(string, temp);
 
 	// map
@@ -248,14 +248,14 @@ DialogCreate:CompetitionStartMenu(playerid)
 	cmap = gPlayerStartParams[playerid][COMPETITION_MAP];
 
 	if (cmap == INVALID_COMPETITION_MAP_ID) {
-		__(COMPETITION_START_PARAM_RANDOM, cmap_name);
+		__(playerid, COMPETITION_START_PARAM_RANDOM, cmap_name);
 		cmap_color = COLOR_BLUEGREY_200;
 	} else {
 		CompetitionMap_GetParamString(cmap, COMPETITION_MAP_NAME, cmap_name);
 		cmap_color = COLOR_TEAL_400;
 	}
 	GetColorEmbeddingCode(cmap_color, cmap_color_code);
-	format(temp, sizeof(temp), _(COMPETITION_START_PARAM_MAP), cmap_color_code, cmap_name);
+	format(temp, sizeof(temp), _(playerid, COMPETITION_START_PARAM_MAP), cmap_color_code, cmap_name);
 	strcat(string, temp);
 
 	// weather
@@ -268,21 +268,21 @@ DialogCreate:CompetitionStartMenu(playerid)
 	cweather = gPlayerStartParams[playerid][COMPETITION_WEATHER];
 
 	if (cweather == INVALID_WEATHER_ID) {
-		__(COMPETITION_START_PARAM_RANDOM, cweather_string);
+		__(playerid, COMPETITION_START_PARAM_RANDOM, cweather_string);
 		cweather_color = COLOR_BLUEGREY_200;
 	} else {
-		Weather_GetName(cweather, cweather_string);
+		Weather_GetName(cweather, Lang_GetPlayerLangType(playerid), cweather_string);
 		cweather_color = COLOR_TEAL_400;
 	}
 	GetColorEmbeddingCode(cweather_color, cweather_color_code);
-	format(temp, sizeof(temp), _(COMPETITION_START_PARAM_WEATHER), cweather_color_code, cweather_string);
+	format(temp, sizeof(temp), _(playerid, COMPETITION_START_PARAM_WEATHER), cweather_color_code, cweather_string);
 	strcat(string, temp);
 
 	// open dialog
 	Dialog_Open(playerid, Dialog:CompetitionStartMenu, DIALOG_STYLE_TABLIST,
-			_(COMPETITION_MENU_HEADER),
+			_(playerid, COMPETITION_MENU_HEADER),
 			string,
-			_(COMPETITION_MENU_SELECT), _(COMPETITION_MENU_BACK)
+			_(playerid, COMPETITION_MENU_SELECT), _(playerid, COMPETITION_MENU_BACK)
 		);
 	return 1;
 }
@@ -350,7 +350,7 @@ DialogCreate:CompetitionStartTypeMenu(playerid)
 		ctype_color,
 		ctype_color_code[7];
 
-	format(string, sizeof(string), "{B0BEC5}%s\n", _(COMPETITION_START_PARAM_RANDOM));
+	format(string, sizeof(string), "{B0BEC5}%s\n", _(playerid, COMPETITION_START_PARAM_RANDOM));
 
 	foreach (ctype : CompetitionTypeIterator) {
 		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
@@ -362,9 +362,9 @@ DialogCreate:CompetitionStartTypeMenu(playerid)
 	}
 
 	Dialog_Open(playerid, Dialog:CompetitionStartTypeMenu, DIALOG_STYLE_LIST,
-			_(COMPETITION_START_TYPE_HEADER),
+			_(playerid, COMPETITION_START_TYPE_HEADER),
 			string,
-			_(COMPETITION_MENU_SELECT), _(COMPETITION_MENU_BACK)
+			_(playerid, COMPETITION_MENU_SELECT), _(playerid, COMPETITION_MENU_BACK)
 		);
 }
 
@@ -405,7 +405,7 @@ DialogCreate:CompetitionStartMapMenu(playerid)
 		cmap_type,
 		cmap_name[MAX_COMPETITION_MAP_NAME];
 
-	format(string, sizeof(string), "{B0BEC5}%s\n", _(COMPETITION_START_PARAM_RANDOM));
+	format(string, sizeof(string), "{B0BEC5}%s\n", _(playerid, COMPETITION_START_PARAM_RANDOM));
 
 	ctype = gPlayerStartParams[playerid][COMPETITION_TYPE];
 
@@ -425,9 +425,9 @@ DialogCreate:CompetitionStartMapMenu(playerid)
 	}
 
 	Dialog_Open(playerid, Dialog:CompetitionStartMapMenu, DIALOG_STYLE_LIST,
-			_(COMPETITION_START_TYPE_HEADER),
+			_(playerid, COMPETITION_START_TYPE_HEADER),
 			string,
-			_(COMPETITION_MENU_SELECT), _(COMPETITION_MENU_BACK)
+			_(playerid, COMPETITION_MENU_SELECT), _(playerid, COMPETITION_MENU_BACK)
 		);
 }
 
@@ -454,18 +454,18 @@ DialogCreate:CompetitionStartWeatherMenu(playerid)
 		string[MAX_LANG_VALUE_STRING * sizeof(gAvailableWeather) + 1],
 		cweather_name[MAX_WEATHER_NAME];
 
-	format(string, sizeof(string), "{B0BEC5}%s\n", _(COMPETITION_START_PARAM_RANDOM));
+	format(string, sizeof(string), "{B0BEC5}%s\n", _(playerid, COMPETITION_START_PARAM_RANDOM));
 
 	for (new i = 0; i < sizeof(gAvailableWeather); i++) {
-		Weather_GetName(gAvailableWeather[i], cweather_name);
+		Weather_GetName(gAvailableWeather[i], Lang_GetPlayerLangType(playerid), cweather_name);
 		strcat(string, cweather_name);
 		strcat(string, "\n");
 	}
 
 	Dialog_Open(playerid, Dialog:CompetitionStartWeatherMenu, DIALOG_STYLE_LIST,
-			_(COMPETITION_START_TYPE_HEADER),
+			_(playerid, COMPETITION_START_TYPE_HEADER),
 			string,
-			_(COMPETITION_MENU_SELECT), _(COMPETITION_MENU_BACK)
+			_(playerid, COMPETITION_MENU_SELECT), _(playerid, COMPETITION_MENU_BACK)
 		);
 }
 

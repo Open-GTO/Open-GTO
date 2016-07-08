@@ -27,7 +27,7 @@ COMMAND:vehicle(playerid, params[])
 		subparams[64];
 
 	if (sscanf(params, "s[32]S()[64]", subcmd, subparams)) {
-		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_HELP));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_VEHICLE_HELP));
 		return 1;
 	}
 
@@ -39,14 +39,14 @@ COMMAND:vehicle(playerid, params[])
 
 	if (strcmp(subcmd, "add", true) == 0) {
 		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
-			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
 
 		new modelid;
 
 		if (sscanf(subparams, "k<vehicle>", modelid) || modelid == -1) {
-			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_ADD_ERROR));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_VEHICLE_ADD_ERROR));
 			return 1;
 		}
 
@@ -67,18 +67,18 @@ COMMAND:vehicle(playerid, params[])
 		PutPlayerInVehicle(playerid, vehicleid, 0);
 
 		// message
-		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_ADD_MESSAGE), playername, playerid, vehicleid);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_ADD_MESSAGE), playername, playerid, vehicleid);
 		SendMessageToNearPlayers(string, 40.0, x, y, z);
 	} else if (strcmp(subcmd, "remove", true) == 0) {
 		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
-			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
 
 		new vehicleid;
 
 		if (sscanf(subparams, "I(0)", vehicleid)) {
-			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_REMOVE_ERROR));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_VEHICLE_REMOVE_ERROR));
 			return 1;
 		}
 
@@ -87,22 +87,22 @@ COMMAND:vehicle(playerid, params[])
 		}
 
 		if (!IsValidVehicle(vehicleid)) {
-			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_REMOVE_ERROR));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_VEHICLE_REMOVE_ERROR));
 			return 1;
 		}
 
 		// message
-		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE), playername, playerid, vehicleid);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE), playername, playerid, vehicleid);
 		SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REMOVE_MSG_SELF), vehicleid);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_REMOVE_MSG_SELF), vehicleid);
 		SendClientMessage(playerid, -1, string);
 
 		// destroy
 		DestroyVehicle(vehicleid);
 	} else if (strcmp(subcmd, "respawn", true) == 0) {
 		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
-			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
 
@@ -111,13 +111,13 @@ COMMAND:vehicle(playerid, params[])
 				SetVehicleToRespawn(vehid);
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_ALL_MSG), playername, playerid);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_RESPAWN_ALL_MSG), playername, playerid);
 			SendClientMessageToAll(-1, string);
 		} else {
 			new vehicleid;
 
 			if (sscanf(subparams, "I(0)", vehicleid)) {
-				SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR));
+				SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR));
 				return 1;
 			}
 
@@ -126,15 +126,15 @@ COMMAND:vehicle(playerid, params[])
 			}
 
 			if (!IsValidVehicle(vehicleid)) {
-				SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR));
+				SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_VEHICLE_RESPAWN_ERROR));
 				return 1;
 			}
 
 			// message
-			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE), playername, playerid, vehicleid);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE), playername, playerid, vehicleid);
 			SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_RESPAWN_MSG_SELF), vehicleid);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_RESPAWN_MSG_SELF), vehicleid);
 			SendClientMessage(playerid, -1, string);
 
 			// respawn
@@ -142,7 +142,7 @@ COMMAND:vehicle(playerid, params[])
 		}
 	} else if (strcmp(subcmd, "repair", true) == 0) {
 		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
-			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
 
@@ -151,13 +151,13 @@ COMMAND:vehicle(playerid, params[])
 				RepairVehicle(vehid);
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REPAIR_ALL_MSG), playername, playerid);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_REPAIR_ALL_MSG), playername, playerid);
 			SendClientMessageToAll(-1, string);
 		} else {
 			new vehicleid;
 
 			if (sscanf(subparams, "I(0)", vehicleid)) {
-				SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_REPAIR_ERROR));
+				SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_VEHICLE_REPAIR_ERROR));
 				return 1;
 			}
 
@@ -166,15 +166,15 @@ COMMAND:vehicle(playerid, params[])
 			}
 
 			if (!IsValidVehicle(vehicleid)) {
-				SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_REPAIR_ERROR));
+				SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_VEHICLE_REPAIR_ERROR));
 				return 1;
 			}
 
 			// message
-			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE), playername, playerid, vehicleid);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE), playername, playerid, vehicleid);
 			SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_REPAIR_MSG_SELF), vehicleid);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_REPAIR_MSG_SELF), vehicleid);
 			SendClientMessage(playerid, -1, string);
 
 			// respawn
@@ -182,14 +182,14 @@ COMMAND:vehicle(playerid, params[])
 		}
 	} else if (strcmp(subcmd, "info", true) == 0) {
 		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
-			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
 
 		new vehicleid;
 
 		if (sscanf(subparams, "I(0)", vehicleid)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_VEHICLE_INFO_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_VEHICLE_INFO_ERROR));
 			return 1;
 		}
 
@@ -198,7 +198,7 @@ COMMAND:vehicle(playerid, params[])
 		}
 
 		if (!IsValidVehicle(vehicleid)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_VEHICLE_INFO_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_VEHICLE_INFO_ERROR));
 			return 1;
 		}
 
@@ -218,14 +218,14 @@ COMMAND:vehicle(playerid, params[])
 		GetVehicleModelName(vehicleid, name);
 
 		// print
-		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_0), vehicleid, name, model);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_0), vehicleid, name, model);
 		SendClientMessage(playerid, -1, string);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1), health, x, y, z, angle);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1), health, x, y, z, angle);
 		SendClientMessage(playerid, -1, string);
 	} else if (strcmp(subcmd, "health", true) == 0) {
 		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
-			SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_NOT_ALLOWED));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_NOT_ALLOWED));
 			return 1;
 		}
 
@@ -235,7 +235,7 @@ COMMAND:vehicle(playerid, params[])
 			Float:amount;
 
 		if (sscanf(subparams, "s[5]S()[5]F(1000.0)", action, target, amount)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_VEHICLE_HEALTH_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_ERROR));
 			return 1;
 		}
 
@@ -252,7 +252,7 @@ COMMAND:vehicle(playerid, params[])
 		}
 
 		if (vehicleid != 0 && !IsValidVehicle(vehicleid)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_VEHICLE_HEALTH_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_ERROR));
 			return 1;
 		}
 
@@ -263,21 +263,21 @@ COMMAND:vehicle(playerid, params[])
 					SetVehicleHealth(vehid, amount);
 				}
 
-				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_SET_ALL), playername, playerid, amount);
+				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_SET_ALL), playername, playerid, amount);
 				SendClientMessageToAll(-1, string);
 			} else {
 				SetVehicleHealth(vehicleid, amount);
 
-				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_SET), playername, playerid, vehicleid, amount);
+				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_SET), playername, playerid, vehicleid, amount);
 				SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
-				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_SET_SELF), vehicleid, amount);
+				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_SET_SELF), vehicleid, amount);
 				SendClientMessage(playerid, -1, string);
 			}
 		} else if (strcmp(action, "get", true) == 0) {
 			GetVehicleHealth(vehicleid, amount);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_GET), vehicleid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_GET), vehicleid, amount);
 			SendClientMessage(playerid, -1, string);
 		} else if (strcmp(action, "give", true) == 0) {
 			new
@@ -289,23 +289,23 @@ COMMAND:vehicle(playerid, params[])
 					SetVehicleHealth(vehid, current_health + amount);
 				}
 
-				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_ALL), playername, playerid, amount);
+				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_ALL), playername, playerid, amount);
 				SendClientMessageToAll(-1, string);
 			} else {
 				GetVehicleHealth(vehicleid, current_health);
 				SetVehicleHealth(vehicleid, current_health + amount);
 
-				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_GIVE), playername, playerid, vehicleid, amount);
+				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_GIVE), playername, playerid, vehicleid, amount);
 				SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
-				format(string, sizeof(string), _(ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_SELF), vehicleid, amount);
+				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_SELF), vehicleid, amount);
 				SendClientMessage(playerid, -1, string);
 			}
 		} else {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_VEHICLE_HEALTH_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_ERROR));
 		}
 	} else {
-		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_VEHICLE_HELP));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_VEHICLE_HELP));
 	}
 
 	return 1;

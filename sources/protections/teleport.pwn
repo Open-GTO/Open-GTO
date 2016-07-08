@@ -168,7 +168,7 @@ Prot_Teleport_Sync(playerid)
 	new Float:max_distance = IsPlayerInAnyVehicle(playerid) ? MaxInVehicleDistance : MaxDistance;
 
 	if (distance_prev > max_distance && distance_old > max_distance) {
-		Admin_SendProtectReport(playerid, _(PROTECTION_TELEPORT), distance_old, max_distance);
+		Admin_SendProtectReport(playerid, _(playerid, PROTECTION_TELEPORT), distance_old, max_distance);
 	}
 
 	return 1;

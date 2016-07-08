@@ -108,7 +108,7 @@ COMMAND:lottery(playerid, params[])
 	}
 
 	if (!IsLotteryHaveStatus(LotteryStart)) {
-		SendClientMessage(playerid, COLOR_PM, _(LOTTERY_NOT_STARTED));
+		SendClientMessage(playerid, COLOR_PM, _(playerid, LOTTERY_NOT_STARTED));
 		return 1;
 	}
 
@@ -117,7 +117,7 @@ COMMAND:lottery(playerid, params[])
 		value;
 
 	if (sscanf(params, "i", value)) {
-		format(string, sizeof(string), _(LOTTERY_USE_COMMAND), GetLotteryMaxValue(), TicketCost);
+		format(string, sizeof(string), _(playerid, LOTTERY_USE_COMMAND), GetLotteryMaxValue(), TicketCost);
 		SendClientMessage(playerid, COLOR_PM, string);
 		return 1;
 	}
@@ -125,21 +125,21 @@ COMMAND:lottery(playerid, params[])
 	new error = GivePlayerLotteryTicket(playerid, value);
 	switch (error) {
 		case LOTTERY_ERROR_NO: {
-			format(string, sizeof(string), _(LOTTERY_TICKET_BOUGHT), value);
+			format(string, sizeof(string), _(playerid, LOTTERY_TICKET_BOUGHT), value);
 			SendClientMessage(playerid, COLOR_GREEN, string);
 		}
 		case LOTTERY_ERROR_NO_MONEY: {
-			format(string, sizeof(string), _(LOTTERY_NO_MONEY), TicketCost);
+			format(string, sizeof(string), _(playerid, LOTTERY_NO_MONEY), TicketCost);
 			SendClientMessage(playerid, COLOR_PM, string);
 		}
 		case LOTTERY_ERROR_TICKET_VALUE_BAD: {
-			SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_VALUE_IS_BAD));
+			SendClientMessage(playerid, COLOR_PM, _(playerid, LOTTERY_TICKET_VALUE_IS_BAD));
 		}
 		case LOTTERY_ERROR_TICKET_HAVE: {
-			SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_BOUGHT_NOW));
+			SendClientMessage(playerid, COLOR_PM, _(playerid, LOTTERY_TICKET_BOUGHT_NOW));
 		}
 		case LOTTERY_ERROR_TICKET_BOUGHT: {
-			SendClientMessage(playerid, COLOR_PM, _(LOTTERY_TICKET_IS_BOUGHT));
+			SendClientMessage(playerid, COLOR_PM, _(playerid, LOTTERY_TICKET_IS_BOUGHT));
 		}
 	}
 
@@ -170,16 +170,24 @@ stock Lottery_WaitTimer()
 
 	SetLotteryStatus(LotteryStart);
 
-	new string[MAX_LANG_VALUE_STRING];
+	new
+		string[MAX_LANG_VALUE_STRING],
+		playerid;
 
-	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_0), WinMoney);
-	SendClientMessageToAll(COLOR_GREEN, string);
+	foreach (playerid : Player) {
+		format(string, sizeof(string), _(playerid, LOTTERY_START_MESSAGE_0), WinMoney);
+		SendClientMessage(playerid, COLOR_GREEN, string);
+	}
 
-	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_1), GetLotteryMaxValue(), TicketCost);
-	SendClientMessageToAll(COLOR_GREEN, string);
+	foreach (playerid : Player) {
+		format(string, sizeof(string), _(playerid, LOTTERY_START_MESSAGE_1), GetLotteryMaxValue(), TicketCost);
+		SendClientMessage(playerid, COLOR_GREEN, string);
+	}
 
-	format(string, sizeof(string), _(LOTTERY_START_MESSAGE_2), DelayStartSecondCount);
-	SendClientMessageToAll(COLOR_GREEN, string);
+	foreach (playerid : Player) {
+		format(string, sizeof(string), _(playerid, LOTTERY_START_MESSAGE_2), DelayStartSecondCount);
+		SendClientMessage(playerid, COLOR_GREEN, string);
+	}
 
 	return 1;
 }
@@ -192,15 +200,17 @@ stock Lottery_StartTimer()
 
 	if (sec_to_end > 0) {
 		if (sec_to_end % 20 == 0 || sec_to_end == 10) {
-			format(string, sizeof(string), _(LOTTERY_TIME_TO_END), sec_to_end);
-			SendClientMessageToAll(COLOR_GREEN, string);
+			foreach (new playerid : Player) {
+				format(string, sizeof(string), _(playerid, LOTTERY_TIME_TO_END), sec_to_end);
+				SendClientMessage(playerid, COLOR_GREEN, string);
+			}
 		}
-
 		return 0;
 	}
 
 	new
 		winner_id,
+		winner_name[MAX_PLAYER_NAME + 1],
 		win_value,
 		error;
 
@@ -209,20 +219,25 @@ stock Lottery_StartTimer()
 		case LOTTERY_ERROR_NO: {
 			GivePlayerMoney(winner_id, WinMoney);
 
-			format(string, sizeof(string), _(LOTTERY_YOU_WINNER), WinMoney);
+			format(string, sizeof(string), _(winner_id, LOTTERY_YOU_WINNER), WinMoney);
 			SendClientMessage(winner_id, COLOR_GREEN, string);
 
-			format(string, sizeof(string), _(LOTTERY_WINNER), ReturnPlayerName(winner_id), winner_id, WinMoney);
-			SendClientMessageToAll(COLOR_GREEN, string);
+			GetPlayerName(winner_id, winner_name, sizeof(winner_name));
+
+			foreach (new playerid : Player) {
+				format(string, sizeof(string), _(playerid, LOTTERY_WINNER), winner_name, winner_id, WinMoney);
+				SendClientMessage(playerid, COLOR_GREEN, string);
+			}
 		}
 		case LOTTERY_ERROR_NO_WINNER: {
-			format(string, sizeof(string), _(LOTTERY_NO_WINNER), win_value);
-			SendClientMessageToAll(COLOR_GREEN, string);
+			foreach (new playerid : Player) {
+				format(string, sizeof(string), _(playerid, LOTTERY_NO_WINNER), win_value);
+				SendClientMessage(playerid, COLOR_GREEN, string);
+			}
 		}
 	}
 
 	SetLotteryStatus(LotteryWait);
-
 	return 1;
 }
 

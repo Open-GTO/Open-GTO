@@ -23,7 +23,7 @@ COMMAND:jail(playerid, params[])
 		reason[MAX_JAIL_REASON_LENGTH];
 
 	if (sscanf(params, "s[32]k<ftime>S()[" #MAX_JAIL_REASON_LENGTH "]", subparams, time, reason)) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_JAIL_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_JAIL_HELP));
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:jail(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_JAIL_TARGET_ERROR));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_JAIL_TARGET_ERROR));
 		return 1;
 	}
 
@@ -45,13 +45,13 @@ COMMAND:jail(playerid, params[])
 		playername[MAX_PLAYER_NAME + 1];
 
 	is_with_reason = strlen(reason) != 0;
-	Declension_GetWord(timeword, sizeof(timeword), time, _(DECLENSION_SECOND_4), _(DECLENSION_SECOND_2), _(DECLENSION_SECOND_3));
+	Declension_GetWord(timeword, sizeof(timeword), time, _(playerid, DECLENSION_SECOND_4), _(playerid, DECLENSION_SECOND_2), _(playerid, DECLENSION_SECOND_3));
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (targetid == -1) {
-		format(string, sizeof(string), _(ADMIN_COMMAND_JAIL_ALL), playername, playerid, time, timeword);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_ALL), playername, playerid, time, timeword);
 		if (is_with_reason) {
-			format(string, sizeof(string), _(ADMIN_COMMAND_JAIL_REASON), string, reason);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_REASON), string, reason);
 		}
 		SendClientMessageToAll(-1, string);
 
@@ -61,15 +61,15 @@ COMMAND:jail(playerid, params[])
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_JAIL_PLAYER), playername, playerid, targetname, targetid, time, timeword);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_PLAYER), playername, playerid, targetname, targetid, time, timeword);
 		if (is_with_reason) {
-			format(string, sizeof(string), _(ADMIN_COMMAND_JAIL_REASON), string, reason);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_REASON), string, reason);
 		}
 		SendClientMessageToAll(-1, string);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_JAIL_PLAYER_SELF), targetname, targetid, time, timeword);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_PLAYER_SELF), targetname, targetid, time, timeword);
 		if (is_with_reason) {
-			format(string, sizeof(string), _(ADMIN_COMMAND_JAIL_REASON), string, reason);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_REASON), string, reason);
 		}
 		SendClientMessage(playerid, -1, string);
 

@@ -1,5 +1,5 @@
 /*
-	
+
 	About: skydive command
 	Author: ziggi
 
@@ -25,7 +25,7 @@ static
 COMMAND:skydive(playerid, params[])
 {
 	if (IsPlayerJailed(playerid) || GetPlayerInterior(playerid) != 0 || IsPlayerAtQuest(playerid)) {
-		SendClientMessage(playerid, COLOR_WHITE, _(SKYDIVING_ERROR));
+		SendClientMessage(playerid, COLOR_WHITE, _(playerid, SKYDIVING_ERROR));
 		return 1;
 	}
 
@@ -37,9 +37,9 @@ COMMAND:skydive(playerid, params[])
 			seconds = time_sky % 60;
 
 		format(string, sizeof(string),
-			_(SKYDIVING_NEED_TIME),
-			minutes, Declension_ReturnMinutes(minutes),
-			seconds, Declension_ReturnSeconds(seconds)
+			_(playerid, SKYDIVING_NEED_TIME),
+			minutes, Declension_ReturnMinutes(playerid, minutes),
+			seconds, Declension_ReturnSeconds(playerid, seconds)
 		);
 
 		SendClientMessage(playerid, COLOR_WHITE, string);
@@ -52,13 +52,13 @@ COMMAND:skydive(playerid, params[])
 	new Float:pos_x, Float:pos_y, Float:pos_z;
 	GetPlayerPos(playerid, pos_x, pos_y, pos_z);
 	SetPlayerPos(playerid, pos_x, pos_y, pos_z + 1200);
-	
+
 	SetPlayerSkydiveTime(playerid, gettime() + SKYDIVE_TIME);
 
-	SendClientMessage(playerid, COLOR_WHITE, _(SKYDIVING_MSG));
-	GameTextForPlayer(playerid, _(SKYDIVING_GAMETEXT), 4000, 5);
-	
-	format(string, sizeof(string), _(SKYDIVING_MSG_TO_ALL), ReturnPlayerName(playerid), playerid);
+	SendClientMessage(playerid, COLOR_WHITE, _(playerid, SKYDIVING_MSG));
+	GameTextForPlayer(playerid, _(playerid, SKYDIVING_GAMETEXT), 4000, 5);
+
+	format(string, sizeof(string), _(playerid, SKYDIVING_MSG_TO_ALL), ReturnPlayerName(playerid), playerid);
 	SendClientMessageToAll(COLOR_GREY, string);
 	return 1;
 }

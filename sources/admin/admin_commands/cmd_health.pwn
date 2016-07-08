@@ -23,7 +23,7 @@ COMMAND:health(playerid, params[])
 		Float:amount;
 
 	if (sscanf(params, "s[5]s[32]F(100.0)", subcmd, subparams, amount)) {
-		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_HEALTH_HELP));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_HEALTH_HELP));
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:health(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_HEALTH_TARGET_ERROR));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_HEALTH_TARGET_ERROR));
 		return 1;
 	}
 
@@ -54,26 +54,26 @@ COMMAND:health(playerid, params[])
 				SetPlayerHealth(id, amount);
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_HEALTH_SET_ALL), playername, playerid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_SET_ALL), playername, playerid, amount);
 			SendClientMessageToAll(-1, string);
 		} else {
 			SetPlayerHealth(targetid, amount);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_HEALTH_SET_PLAYER), playername, playerid, targetname, targetid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_SET_PLAYER), playername, playerid, targetname, targetid, amount);
 			SendMessageToNearPlayerPlayers(string, 40.0, playerid);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_HEALTH_SET_SELF), targetname, targetid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_SET_SELF), targetname, targetid, amount);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_HEALTH_TARGET_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_HEALTH_TARGET_ERROR));
 			return 1;
 		}
 
 		GetPlayerHealth(targetid, amount);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_HEALTH_GET), targetname, targetid, amount);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_GET), targetname, targetid, amount);
 		SendClientMessage(playerid, -1, string);
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		new
@@ -85,20 +85,20 @@ COMMAND:health(playerid, params[])
 				SetPlayerHealth(id, current_health + amount);
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_HEALTH_GIVE_ALL), playername, playerid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_GIVE_ALL), playername, playerid, amount);
 			SendClientMessageToAll(-1, string);
 		} else {
 			GetPlayerHealth(targetid, current_health);
 			SetPlayerHealth(targetid, current_health + amount);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_HEALTH_GIVE_PLAYER), playername, playerid, targetname, targetid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_GIVE_PLAYER), playername, playerid, targetname, targetid, amount);
 			SendMessageToNearPlayerPlayers(string, 40.0, playerid);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_HEALTH_GIVE_SELF), targetname, targetid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_GIVE_SELF), targetname, targetid, amount);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_HEALTH_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_HEALTH_HELP));
 	}
 
 	return 1;

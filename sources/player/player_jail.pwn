@@ -60,7 +60,7 @@ stock JailPlayerTimer(playerid)
 	}
 
 	new jail_time = GetPlayerJailTime(playerid);
-	
+
 	if (jail_time == -1) {
 		return 0;
 	}
@@ -73,8 +73,8 @@ stock JailPlayerTimer(playerid)
 			playername[MAX_PLAYER_NAME + 1];
 
 		GetPlayerName(playerid, playername, sizeof(playername));
-		
-		format(string, sizeof(string), _(ADMIN_JAIL_UNJAILED), playername, playerid);
+
+		format(string, sizeof(string), _(playerid, ADMIN_JAIL_UNJAILED), playername, playerid);
 		SendClientMessageToAll(-1, string);
 	}
 	return 1;
@@ -92,7 +92,7 @@ stock JailPlayer(playerid, &jail_time = 0)
 
 	SetPlayerJailTime(playerid, gettime() + jail_time);
 	SetPlayerJailedCount(playerid, GetPlayerJailedCount(playerid) + 1);
-	
+
 	SetPlayerPosToJail(playerid);
 	SetPlayerArmour(playerid, 0);
 	PlayerPlaySound(playerid, 1082, 265.1273, 77.6823, 1001.0391);

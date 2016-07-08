@@ -44,7 +44,7 @@ enum e_Gang_Member_Info {
 
 static
 	gMember[MAX_GANG][MAX_GANG_SIZE][e_Gang_Member_Info],
-	gRank[GangMemberRank][MAX_GANG_RANK_NAME];
+	gRankName[GangMemberRank][Lang][MAX_GANG_RANK_NAME];
 
 new
 	Iterator:LoadedGangMembers[MAX_GANGS]<MAX_GANG_SIZE>;
@@ -59,11 +59,21 @@ GangMember_OnGameModeInit()
 	Iter_Init(LoadedGangMembers);
 
 	// init rank names
-	GangRankMember_SetName(GangMemberLeader, _(GANG_RANK_LEADER));
-	GangRankMember_SetName(GangMemberHelper, _(GANG_RANK_HELPER));
-	GangRankMember_SetName(GangMemberPaymaster, _(GANG_RANK_PAYMASTER));
-	GangRankMember_SetName(GangMemberInviter, _(GANG_RANK_INVITER));
-	GangRankMember_SetName(GangMemberSoldier, _(GANG_RANK_SOLDIER));
+	new
+		Lang:lang,
+		lang_count,
+		langid;
+
+	lang_count = Lang_GetCount();
+
+	for ( ; _:lang < lang_count; _:lang++) {
+		langid = Lang_GetID(lang);
+		GangRankMember_SetName(GangMemberLeader, lang, _l(langid, GANG_RANK_LEADER));
+		GangRankMember_SetName(GangMemberHelper, lang, _l(langid, GANG_RANK_HELPER));
+		GangRankMember_SetName(GangMemberPaymaster, lang, _l(langid, GANG_RANK_PAYMASTER));
+		GangRankMember_SetName(GangMemberInviter, lang, _l(langid, GANG_RANK_INVITER));
+		GangRankMember_SetName(GangMemberSoldier, lang, _l(langid, GANG_RANK_SOLDIER));
+	}
 	return 1;
 }
 
@@ -176,21 +186,21 @@ stock GangMember_IsPlayerHaveRank(playerid, GangMemberRank:rank)
 	return GangMember_IsHaveRank(gangid, memberid, rank);
 }
 
-stock GangMember_GetRankName(gangid, memberid, name[], const size = sizeof(name))
+stock GangMember_GetRankName(gangid, memberid, Lang:lang, name[], const size = sizeof(name))
 {
-	GangRankMember_GetName(GangMember_GetRank(gangid, memberid), name, size);
+	GangRankMember_GetName(GangMember_GetRank(gangid, memberid), lang, name, size);
 }
 
 /*
 	Gang Rank Member
 */
 
-stock GangRankMember_GetName(GangMemberRank:rank, name[], const size = sizeof(name))
+stock GangRankMember_GetName(GangMemberRank:rank, Lang:lang, name[], const size = sizeof(name))
 {
-	strcpy(name, gRank[rank], size);
+	strcpy(name, gRankName[rank][lang], size);
 }
 
-stock GangRankMember_SetName(GangMemberRank:rank, name[])
+stock GangRankMember_SetName(GangMemberRank:rank, Lang:lang, name[])
 {
-	strcpy(gRank[rank], name, MAX_GANG_RANK_NAME);
+	strcpy(gRankName[rank][lang], name, MAX_GANG_RANK_NAME);
 }

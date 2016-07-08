@@ -17,19 +17,19 @@ stock Player_Text_OnPlayerText(playerid, text[])
 	new
 		string[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
-	
+
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	switch (text[0]) {
 		case '!': {
 			new gangid = GetPlayerGangID(playerid);
 			if (gangid == INVALID_GANG_ID) {
-				SendClientMessage(playerid, COLOR_RED, _(GANG_TEXT_NO_GANG));
+				SendClientMessage(playerid, COLOR_RED, _(playerid, GANG_TEXT_NO_GANG));
 				return 0;
 			}
 
 			if (IsPlayerMuted(playerid)) {
-				SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
+				SendClientMessage(playerid, COLOR_RED, _(playerid, MUTED_HELP_MESSAGE));
 				return 0;
 			}
 
@@ -39,11 +39,11 @@ stock Player_Text_OnPlayerText(playerid, text[])
 			}
 
 			if (strlen(text[start_pos]) < 2) {
-				SendClientMessage(playerid, COLOR_RED, _(GANG_TEXT_SHORT_MESSAGE));
+				SendClientMessage(playerid, COLOR_RED, _(playerid, GANG_TEXT_SHORT_MESSAGE));
 				return 0;
 			}
 
-			format(string, sizeof(string), _(GANG_TEXT_PATTERN), playername, playerid, text[start_pos]);
+			format(string, sizeof(string), _(playerid, GANG_TEXT_PATTERN), playername, playerid, text[start_pos]);
 			Gang_SendMessage(gangid, string, COLOR_GANG_CHAT);
 
 			Log_Player("Player: %s(%d): <GANG CHAT>: %s", playername, playerid, text[start_pos]);
@@ -71,7 +71,7 @@ stock Player_Text_OnPlayerText(playerid, text[])
 		}
 		case '$', ';': {
 			if (IsPlayerMuted(playerid)) {
-				SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
+				SendClientMessage(playerid, COLOR_RED, _(playerid, MUTED_HELP_MESSAGE));
 				return 0;
 			}
 
@@ -93,7 +93,7 @@ stock SendClientMessageToBeside(playerid, dist, text[])
 	new string[MAX_STRING],
 		Float:pos[3],
 		color = GetPlayerColor(playerid);
-	
+
 	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
 	format(string, sizeof(string), "$ %s(%d) говорит: {FFFFFF}%s", ReturnPlayerName(playerid), playerid, text);
 

@@ -63,7 +63,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			}
 
 			new fstylename[MAX_STRING];
-			GetFightStyleName(GetPlayerFightStyleUsed(playerid), fstylename);
+			GetFightStyleName(GetPlayerFightStyleUsed(playerid), Lang_GetPlayerLangType(playerid), fstylename);
 
 			new gangname[MAX_GANG_NAME];
 			GetPlayerGangName(playerid, gangname);
@@ -72,7 +72,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			}
 
 			new played_time[MAX_LANG_VALUE_STRING];
-			GetTimeStringFromSeconds(Account_GetCurrentPlayedTime(playerid), played_time);
+			GetTimeStringFromSeconds(playerid, Account_GetCurrentPlayedTime(playerid), played_time);
 
 			new money_str[16], bank_money_str[16], total_money_str[16];
 			InsertSpacesInInt(GetPlayerMoney(playerid), money_str);
@@ -80,7 +80,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			InsertSpacesInInt(GetPlayerTotalMoney(playerid), total_money_str);
 
 			new string[MAX_LANG_MULTI_STRING];
-			__m(PLAYER_MENU_INFO, string);
+			__m(playerid, PLAYER_MENU_INFO, string);
 
 			format(string, sizeof(string),
 				string,
@@ -174,7 +174,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 
 			new string[(MAX_PLAYER_NAME + 1 + 5) * 20 + 64];
 			if (idsa == 0 && idsm == 0) {
-				format(string, sizeof(string), _(NO_ADMINS));
+				format(string, sizeof(string), _(playerid, NO_ADMINS));
 			} else {
 				if (idsa != 0) {
 					format(string, sizeof(string), "Администрация:\n%s\n", admins);

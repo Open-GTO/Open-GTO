@@ -44,7 +44,7 @@ wshop_OnGameModeInit()
 	for (new id = 0; id < sizeof(wshop_place); id++) {
 		wshop_place[id][wshop_checkpoint] = CreateDynamicCP(wshop_place[id][wshop_x], wshop_place[id][wshop_y], wshop_place[id][wshop_z], 1.5, .streamdistance = 20.0);
 	}
-	Log_Game(_(WEAPON_INIT));
+	Log_Game(_d(WEAPON_INIT));
 	return 1;
 }
 
@@ -98,16 +98,16 @@ wshop_OnPlayerEnterCheckpoint(playerid, cp)
 DialogCreate:ServiceWeapon(playerid)
 {
 	new string[ (MAX_WEAPONS + 1) * (MAX_WEAPON_NAME + 12 + 4) ];
-	string = _(WEAPON_DIALOG_LIST_HEADER);
+	string = _(playerid, WEAPON_DIALOG_LIST_HEADER);
 
 	for (new weaponid = 1; weaponid < MAX_WEAPONS; weaponid++) {
 		if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
 			continue;
 		}
-		format(string, sizeof(string), _(WEAPON_DIALOG_LIST_ITEM), string, ReturnWeaponName(weaponid), GetWeaponCost(weaponid));
+		format(string, sizeof(string), _(playerid, WEAPON_DIALOG_LIST_ITEM), string, ReturnPlayerWeaponName(playerid, weaponid), GetWeaponCost(weaponid));
 	}
 
-	Dialog_Open(playerid, Dialog:ServiceWeapon, DIALOG_STYLE_TABLIST_HEADERS, _(WEAPON_DIALOG_HEADER), string, _(WEAPON_DIALOG_BUTTON_0), _(WEAPON_DIALOG_BUTTON_1));
+	Dialog_Open(playerid, Dialog:ServiceWeapon, DIALOG_STYLE_TABLIST_HEADERS, _(playerid, WEAPON_DIALOG_HEADER), string, _(playerid, WEAPON_DIALOG_BUTTON_0), _(playerid, WEAPON_DIALOG_BUTTON_1));
 }
 
 DialogResponse:ServiceWeapon(playerid, response, listitem, inputtext[])
@@ -136,7 +136,7 @@ DialogCreate:ServiceWeaponBuy(playerid)
 	}
 
 	if (max_ammo == 1) {
-		format(string, sizeof(string), _(WEAPON_DIALOG_WEAPON_ONE), ReturnWeaponName(weaponid), GetWeaponCost(weaponid));
+		format(string, sizeof(string), _(playerid, WEAPON_DIALOG_WEAPON_ONE), ReturnPlayerWeaponName(playerid, weaponid), GetWeaponCost(weaponid));
 		dialog_style = DIALOG_STYLE_MSGBOX;
 	} else {
 		new
@@ -148,13 +148,16 @@ DialogCreate:ServiceWeaponBuy(playerid)
 		}
 
 		format(string, sizeof(string),
-			_(WEAPON_DIALOG_WEAPON),
-			ReturnWeaponName(weaponid), GetWeaponCost(weaponid), max_bullets, Declension_ReturnAmmo(max_bullets)
+			_(playerid, WEAPON_DIALOG_WEAPON),
+			ReturnPlayerWeaponName(playerid, weaponid),
+			GetWeaponCost(weaponid),
+			max_bullets,
+			Declension_ReturnAmmo(playerid, max_bullets)
 		);
-		strcat(string, _(WEAPON_DIALOG_INFORMATION_TEXT_AMMO));
+		strcat(string, _(playerid, WEAPON_DIALOG_INFORMATION_TEXT_AMMO));
 	}
 
-	Dialog_Open(playerid, Dialog:ServiceWeaponBuy, dialog_style, _(WEAPON_DIALOG_WEAPON_BUY_HEADER), string, _(WEAPON_DIALOG_WEAPON_BUY_BUTTON_0), _(WEAPON_DIALOG_WEAPON_BUY_BUTTON_1));
+	Dialog_Open(playerid, Dialog:ServiceWeaponBuy, dialog_style, _(playerid, WEAPON_DIALOG_WEAPON_BUY_HEADER), string, _(playerid, WEAPON_DIALOG_WEAPON_BUY_BUTTON_0), _(playerid, WEAPON_DIALOG_WEAPON_BUY_BUTTON_1));
 }
 
 DialogResponse:ServiceWeaponBuy(playerid, response, listitem, inputtext[])
@@ -181,9 +184,9 @@ DialogResponse:ServiceWeaponBuy(playerid, response, listitem, inputtext[])
 stock wshop_Message(playerid, info[], bool:is_buy_menu = true)
 {
 	if (is_buy_menu) {
-		Dialog_MessageEx(playerid, Dialog:WShopReturnBuyMenu, _(WEAPON_DIALOG_WEAPON_BUY_HEADER), info, _(WEAPON_DIALOG_WEAPON_BUY_BUTTON_1), _(WEAPON_DIALOG_BUTTON_1));
+		Dialog_MessageEx(playerid, Dialog:WShopReturnBuyMenu, _(playerid, WEAPON_DIALOG_WEAPON_BUY_HEADER), info, _(playerid, WEAPON_DIALOG_WEAPON_BUY_BUTTON_1), _(playerid, WEAPON_DIALOG_BUTTON_1));
 	} else {
-		Dialog_MessageEx(playerid, Dialog:WShopReturnMainMenu, _(WEAPON_DIALOG_WEAPON_BUY_HEADER), info, _(WEAPON_DIALOG_WEAPON_BUY_BUTTON_1), _(WEAPON_DIALOG_BUTTON_1));
+		Dialog_MessageEx(playerid, Dialog:WShopReturnMainMenu, _(playerid, WEAPON_DIALOG_WEAPON_BUY_HEADER), info, _(playerid, WEAPON_DIALOG_WEAPON_BUY_BUTTON_1), _(playerid, WEAPON_DIALOG_BUTTON_1));
 	}
 	return 1;
 }
@@ -207,20 +210,20 @@ DialogResponse:WShopReturnMainMenu(playerid, response, listitem, inputtext[])
 stock wshop_Buy(playerid, weaponid, bullets)
 {
 	if (!IsPlayerAtWeaponShop(playerid)) {
-		wshop_Message(playerid, _(WEAPON_NOT_IN_SHOP));
+		wshop_Message(playerid, _(playerid, WEAPON_NOT_IN_SHOP));
 		return 0;
 	}
 
 	new string[MAX_STRING];
 
 	if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
-		format(string, sizeof(string), _(WEAPON_BAD_WEAPON), ReturnWeaponName(weaponid));
+		format(string, sizeof(string), _(playerid, WEAPON_BAD_WEAPON), ReturnPlayerWeaponName(playerid, weaponid));
 		wshop_Message(playerid, string, false);
 		return 0;
 	}
 
 	if (bullets < 1) {
-		wshop_Message(playerid, _(WEAPON_BAD_AMMO_COUNT));
+		wshop_Message(playerid, _(playerid, WEAPON_BAD_AMMO_COUNT));
 		return 0;
 	}
 
@@ -229,19 +232,19 @@ stock wshop_Buy(playerid, weaponid, bullets)
 		current_bullets = GetPlayerWeaponAmmo(playerid, weaponid);
 
 	if (current_bullets >= max_ammo) {
-		wshop_Message(playerid, _(WEAPON_MAX_AMMO_COUNT));
+		wshop_Message(playerid, _(playerid, WEAPON_MAX_AMMO_COUNT));
 		return 0;
 	}
 
 	if (current_bullets + bullets > max_ammo) {
-		wshop_Message(playerid, _(WEAPON_BAD_AMMO_COUNT));
+		wshop_Message(playerid, _(playerid, WEAPON_BAD_AMMO_COUNT));
 		return 0;
 	}
 
 	new purchasecost = GetWeaponCost(weaponid) * bullets;
 
 	if (GetPlayerMoney(playerid) < purchasecost) {
-		format(string, sizeof(string), _(WEAPON_NOT_ENOUGH_MONEY), purchasecost);
+		format(string, sizeof(string), _(playerid, WEAPON_NOT_ENOUGH_MONEY), purchasecost);
 		wshop_Message(playerid, string, !IsWeaponHandToHand(weaponid));
 		return 0;
 	}
@@ -262,9 +265,9 @@ stock wshop_Buy(playerid, weaponid, bullets)
 	}
 
 	if (!IsWeaponHandToHand(weaponid)) {
-		format(string, sizeof(string), _(WEAPON_BUYED), bullets, ReturnWeaponName(weaponid), purchasecost);
+		format(string, sizeof(string), _(playerid, WEAPON_BUYED), bullets, ReturnPlayerWeaponName(playerid, weaponid), purchasecost);
 	} else {
-		format(string, sizeof(string), _(WEAPON_BUYED_ONE), ReturnWeaponName(weaponid), purchasecost);
+		format(string, sizeof(string), _(playerid, WEAPON_BUYED_ONE), ReturnPlayerWeaponName(playerid, weaponid), purchasecost);
 	}
 
 	wshop_Message(playerid, string, false);

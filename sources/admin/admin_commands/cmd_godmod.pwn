@@ -19,10 +19,10 @@ COMMAND:godmod(playerid, params[])
 
 	if (IsPlayerGodmod(playerid)) {
 		SetPlayerGodmod(playerid, false);
-		Message_Alert(playerid, "", _(ADMIN_GODMOD_OFF_CONTENT));
+		Message_Alert(playerid, "", _(playerid, ADMIN_GODMOD_OFF_CONTENT));
 	} else {
 		SetPlayerGodmod(playerid, true);
-		Message_Alert(playerid, "", _(ADMIN_GODMOD_ON_CONTENT));
+		Message_Alert(playerid, "", _(playerid, ADMIN_GODMOD_ON_CONTENT));
 	}
 
 	return 1;

@@ -36,7 +36,7 @@ stock Player_Mute_OnPlayerText(playerid, text[])
 	#pragma unused text
 
 	if (IsPlayerMuted(playerid)) {
-		SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, MUTED_HELP_MESSAGE));
 		return 0;
 	}
 
@@ -59,7 +59,7 @@ stock MutePlayerTimer(playerid)
 
 		new string[MAX_LANG_VALUE_STRING];
 		GetPlayerName(playerid, string, sizeof(string));
-		format(string, sizeof(string), _(ADMIN_MUTE_UNMUTED), string, playerid);
+		format(string, sizeof(string), _(playerid, ADMIN_MUTE_UNMUTED), string, playerid);
 		SendClientMessageToAll(COLOR_YELLOW, string);
 	}
 }

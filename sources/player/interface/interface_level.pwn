@@ -46,7 +46,7 @@ public OnGameModeInit()
 #else
 	#define _ALS_OnGameModeInit
 #endif
- 
+
 #define OnGameModeInit PlayerLevelTD_OnGameModeInit
 #if defined PlayerLevelTD_OnGameModeInit
 	forward PlayerLevelTD_OnGameModeInit();
@@ -71,7 +71,7 @@ public OnPlayerConnect(playerid)
 #else
 	#define _ALS_OnPlayerConnect
 #endif
- 
+
 #define OnPlayerConnect PlayerLevelTD_OnPlayerConnect
 #if defined PlayerLevelTD_OnPlayerConnect
 	forward PlayerLevelTD_OnPlayerConnect(playerid);
@@ -122,7 +122,7 @@ public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInt
 			}
 		}
 	}
-	
+
 	#if defined PlayerLevelTD_OnPlayerIntChng
 		return PlayerLevelTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
 	#else
@@ -231,7 +231,7 @@ stock PlayerLevelTD_UpdateLevelString(playerid, level)
 	static
 		string[MAX_LANG_VALUE_STRING];
 
-	format(string, sizeof(string), _(PLAYER_LEVEL_TEXTDRAW_LEVEL), level);
+	format(string, sizeof(string), _(playerid, PLAYER_LEVEL_TEXTDRAW_LEVEL), level);
 	PlayerTextDrawSetString(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelLevel, PIP_TextDraw), string);
 }
 
@@ -246,7 +246,7 @@ stock PlayerLevelTD_UpdateXPString(playerid, xp, xp_max, is_max = false)
 		static
 			string[MAX_LANG_VALUE_STRING];
 
-		format(string, sizeof(string), _(PLAYER_LEVEL_TEXTDRAW_XP), xp, xp_max);
+		format(string, sizeof(string), _(playerid, PLAYER_LEVEL_TEXTDRAW_XP), xp, xp_max);
 		PlayerTextDrawSetString(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelXP, PIP_TextDraw), string);
 	}
 

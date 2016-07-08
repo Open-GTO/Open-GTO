@@ -1882,7 +1882,7 @@ static anim_array[][Anims_Info] = {
 	{"WEAPONS", "SHP_Tray_In"},
 	{"WEAPONS", "SHP_Tray_Out"},
 	{"WEAPONS", "SHP_Tray_Pose"},
-	
+
 	{"WUZI", "CS_Dead_Guy"},
 	{"WUZI", "CS_Plyr_pt1"},
 	{"WUZI", "CS_Plyr_pt2"},
@@ -1903,12 +1903,12 @@ DialogCreate:AnimLib(playerid)
 {
 	new
 		string[MAX_ANIM_LIB_NAME * sizeof(anim_lib_array)];
-	
+
 	for (new i = 0; i < sizeof(anim_lib_array); i++) {
 		strcat(string, anim_lib_array[i], sizeof(string));
 		strcat(string, "\n", sizeof(string));
 	}
-	
+
 	Dialog_Open(playerid, Dialog:AnimLib, DIALOG_STYLE_LIST, "Меню анимаций", string, "ОК", "Назад");
 }
 
@@ -1918,9 +1918,9 @@ DialogResponse:AnimLib(playerid, response, listitem, inputtext[])
 		Dialog_Show(playerid, Dialog:PlayerMenu);
 		return 0;
 	}
-	
+
 	SetPVarString(playerid, "anims_SelectedLib", anim_lib_array[listitem]);
-	
+
 	Dialog_Show(playerid, Dialog:AnimMenu);
 	return 1;
 }
@@ -1930,9 +1930,9 @@ DialogCreate:AnimMenu(playerid)
 	new
 		string[MAX_ANIM_NAME * MAX_ANIMS_IN_LIB],
 		lib[MAX_ANIM_LIB_NAME];
-	
+
 	GetPVarString(playerid, "anims_SelectedLib", lib, sizeof(lib));
-	
+
 	for (new i = 0, founded = 0; i < sizeof(anim_array); i++) {
 		if (!strcmp(lib, anim_array[i][anim_Lib], true)) {
 			strcat(string, anim_array[i][anim_Name], sizeof(string));
@@ -1942,10 +1942,10 @@ DialogCreate:AnimMenu(playerid)
 			break;
 		}
 	}
-	
+
 	new head_msg[MAX_ANIM_LIB_NAME + 32];
 	format(head_msg, sizeof(head_msg), "Меню анимаций - %s", lib);
-	
+
 	Dialog_Open(playerid, Dialog:AnimMenu, DIALOG_STYLE_LIST, head_msg, string, "ОК", "Назад");
 	return 1;
 }
@@ -1956,11 +1956,11 @@ DialogResponse:AnimMenu(playerid, response, listitem, inputtext[])
 		Dialog_Show(playerid, Dialog:AnimLib);
 		return 0;
 	}
-	
+
 	new lib[MAX_ANIM_LIB_NAME];
 	GetPVarString(playerid, "anims_SelectedLib", lib, sizeof(lib));
 	DeletePVar(playerid, "anims_SelectedLib");
-	
+
 	new anim_id;
 	for (new i = 0; i < sizeof(anim_array); i++) {
 		if (!strcmp(lib, anim_array[i][anim_Lib], true)) {
@@ -1968,7 +1968,7 @@ DialogResponse:AnimMenu(playerid, response, listitem, inputtext[])
 			break;
 		}
 	}
-	
+
 	ApplyAnimation(playerid, lib, anim_array[anim_id][anim_Name], 4.1, 0, 1, 1, 0, 0, 1);
 	return 1;
 }
@@ -1976,7 +1976,7 @@ DialogResponse:AnimMenu(playerid, response, listitem, inputtext[])
 COMMAND:dance(playerid, params[])
 {
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, _(COMMAND_DANCE_ERROR));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, COMMAND_DANCE_ERROR));
 		return 1;
 	}
 
@@ -1994,7 +1994,7 @@ COMMAND:dance(playerid, params[])
 			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DANCE4);
 		}
 		default: {
-			SendClientMessage(playerid, COLOR_RED, _(COMMAND_DANCE_ERROR));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, COMMAND_DANCE_ERROR));
 		}
 	}
 	return 1;

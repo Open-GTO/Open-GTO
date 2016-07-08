@@ -114,14 +114,25 @@ stock SetGangLevel(gangid, level)
 	Gang_SetLevel(gangid, level);
 	Gang_SetXP(gangid, 0);
 
-	new string[MAX_STRING];
+	new
+		string[MAX_STRING],
+		playerid,
+		color;
+
+	color = Gang_GetColor(gangid);
 
 	if (old_level < level) {
-		format(string, sizeof(string), _(GANG_LEVEL_INCREASE), level);
-		Gang_SendMessage(gangid, string, Gang_GetColor(gangid));
+		foreach (new memberid : LoadedGangMembers[gangid]) {
+			playerid = GangMember_GetID(gangid, memberid);
+			format(string, sizeof(string), _(playerid, GANG_LEVEL_INCREASE), level);
+			SendClientMessage(playerid, color, string);
+		}
 	} else {
-		format(string, sizeof(string), _(GANG_LEVEL_DECREASE), level);
-		Gang_SendMessage(gangid, string, Gang_GetColor(gangid));
+		foreach (new memberid : LoadedGangMembers[gangid]) {
+			playerid = GangMember_GetID(gangid, memberid);
+			format(string, sizeof(string), _(playerid, GANG_LEVEL_DECREASE), level);
+			SendClientMessage(playerid, color, string);
+		}
 	}
 
 	Gang_GetName(gangid, string);

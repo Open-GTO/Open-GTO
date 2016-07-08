@@ -46,8 +46,8 @@ Thanks:
 #include "lib/sa-mp-fixes/fixes.inc"
 
 // header files
+#include "core/lang.inc"
 #include "gang/gang.inc"
-#include "system/weapons.inc"
 #include "player/player.inc"
 #include "player/player_account.inc"
 #include "player/player_spawn.inc"
@@ -76,6 +76,7 @@ Thanks:
 #include "lib/mapfix.inc"
 #include "lib/textlist/textlist.inc"
 #include "lib/shootingrange/shootingrange.inc"
+#include "lib/gvar.inc"
 #include "lib/zlang/zlang.inc"
 #include "lib/zvehcomp/zvehcomp.inc"
 #include "lib/zvehpaintjob/zvehpaintjob.inc"
@@ -364,6 +365,7 @@ public OnPlayerConnect(playerid)
 
 	// main action
 	Player_OnPlayerConnect(playerid);
+	Trucker_OnPlayerConnect(playerid);
 	pt_chat_OnPlayerConnect(playerid);
 	PlayerMoneyTD_OnPlayerConnect(playerid);
 	Vehicle_Textdraw_OnPlayerConn(playerid);
@@ -372,6 +374,10 @@ public OnPlayerConnect(playerid)
 	Beachside_OnPlayerConnect(playerid);
 	Tuning_OnPlayerConnect(playerid);
 	Vehicle_OnPlayerConnect(playerid);
+	VehShop_OnPlayerConnect(playerid);
+	housing_OnPlayerConnect(playerid);
+	business_OnPlayerConnect(playerid);
+	Fuelstation_OnPlayerConnect(playerid);
 	return 1;
 }
 
@@ -386,6 +392,10 @@ public OnPlayerDisconnect(playerid, reason)
 	Groundhold_OnPlayerDisconnect(playerid, reason);
 	PlayerMoneyTD_OnPlayerDisconn(playerid, reason);
 	PVehicle_OnPlayerDisconnect(playerid, reason);
+	VehShop_OnPlayerDisconnect(playerid, reason);
+	housing_OnPlayerDisconnect(playerid, reason);
+	business_OnPlayerDisconnect(playerid, reason);
+	Fuelstation_OnPlayerDisconnect(playerid, reason);
 	SetPlayerSpawned(playerid, 0);
 	return 1;
 }
@@ -550,16 +560,16 @@ public OnPlayerRequestSpawn(playerid)
 public OnPlayerCommandReceived(playerid, cmdtext[])
 {
 	if (!IsPlayerLogin(playerid)) {
-		SendClientMessage(playerid, -1, _(ACCOUNT_LOGIN_FIRST));
+		SendClientMessage(playerid, -1, _(playerid, ACCOUNT_LOGIN_FIRST));
 		return 0;
 	}
+
+	Log_Player(_(playerid, PLAYER_COMMAND_LOG), ReturnPlayerName(playerid), playerid, cmdtext);
 	return 1;
 }
 
 public OnPlayerCommandPerformed(playerid, cmdtext[], success)
 {
-	Log_Player(_(PLAYER_COMMAND_LOG), ReturnPlayerName(playerid), playerid, cmdtext);
-
 	if (success) {
 		return 1;
 	}
@@ -570,7 +580,7 @@ public OnPlayerCommandPerformed(playerid, cmdtext[], success)
 public OnPlayerText(playerid, text[])
 {
 	if (!IsPlayerLogin(playerid)) {
-		SendClientMessage(playerid, -1, _(ACCOUNT_LOGIN_FIRST));
+		SendClientMessage(playerid, -1, _(playerid, ACCOUNT_LOGIN_FIRST));
 		return 0;
 	}
 

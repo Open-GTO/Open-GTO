@@ -73,7 +73,7 @@ pt_armour_Sync(playerid)
 	if (clientarmour < serverarmour) {
 		SetPVarFloat(playerid, "Armour", clientarmour);
 	} else if (clientarmour > serverarmour) {
-		Admin_SendProtectReport(playerid, _(PROTECTION_ARMOUR), clientarmour, serverarmour);
+		Admin_SendProtectReport(playerid, _(playerid, PROTECTION_ARMOUR), clientarmour, serverarmour);
 		SetPlayerArmour(playerid, serverarmour);
 	} else if (clientarmour < 0) {
 		SetPlayerArmour(playerid, 0);

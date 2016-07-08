@@ -22,14 +22,14 @@ COMMAND:weather(playerid, params[])
 		weatherid;
 
 	if (sscanf(params, "i", weatherid)) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_WEATHER_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_WEATHER_HELP));
 		return 1;
 	}
 
 	new
 		string[MAX_LANG_VALUE_STRING];
 
-	format(string, sizeof(string), _(ADMIN_COMMAND_WEATHER_CHANGED), weatherid, GetWeather());
+	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WEATHER_CHANGED), weatherid, GetWeather());
 	SetWeather(weatherid);
 	return 1;
 }

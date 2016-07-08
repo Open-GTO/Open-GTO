@@ -51,7 +51,6 @@ stock Account_Save(playerid)
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	Account_SaveData(playername, gAccount[playerid]);
-
 	return 1;
 }
 
@@ -86,7 +85,7 @@ stock Account_Register(playerid, password[])
 	// login
 	Player_Login(playerid);
 
-	SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_SUCCESS_REGISTER));
+	SendClientMessage(playerid, COLOR_GREEN, _(playerid, ACCOUNT_SUCCESS_REGISTER));
 	Log_Game("create_account: success %s(%d)", playername, playerid);
 	return 1;
 }
@@ -117,8 +116,8 @@ stock Account_Login(playerid, password[])
 		AddLoginAttempt(playerid);
 
 		if (IsLoginAttemptsEnded(playerid)) {
-			SendClientMessage(playerid, COLOR_RED, _(ACCOUNT_AUTO_KICK));
-			KickPlayer(playerid, _(ACCOUNT_INCORRECT_PASSWORD));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, ACCOUNT_AUTO_KICK));
+			KickPlayer(playerid, _(playerid, ACCOUNT_INCORRECT_PASSWORD));
 		} else {
 			Dialog_Show(playerid, Dialog:AccountLogin);
 		}
@@ -149,7 +148,7 @@ stock Account_SaveData(account_name[], data[e_Account_Info])
 		file_account,
 		filename_account[MAX_STRING];
 
-	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, account_name);
+	format(filename_account, sizeof(filename_account), "%s%s" DATA_FILES_FORMAT, db_account, account_name);
 
 	if (ini_fileExist(filename_account)) {
 		file_account = ini_openFile(filename_account);
@@ -171,6 +170,7 @@ stock Account_SaveData(account_name[], data[e_Account_Info])
 	ini_setInteger(file_account, "Login_Timestamp", data[e_aLoginTime]);
 	ini_setInteger(file_account, "Played_Seconds", data[e_aPlayedSeconds]);
 	ini_setInteger(file_account, "Premium_Timestamp", data[e_aPremiumTime]);
+	ini_setString(file_account, "Language", data[e_aLanguage]);
 
 	ini_closeFile(file_account);
 	return 1;
@@ -189,7 +189,6 @@ stock Account_LoadData(account_name[], result[e_Account_Info])
 	format(filename_account, sizeof(filename_account), "%s%s"DATA_FILES_FORMAT, db_account, account_name);
 
 	file_account = ini_openFile(filename_account);
-
 	if (file_account < 0) {
 		Log_Debug("Error <account:Account_LoadData>: account '%s' has not been opened (error code: %d).", account_name, file_account);
 		return 0;
@@ -206,6 +205,7 @@ stock Account_LoadData(account_name[], result[e_Account_Info])
 	ini_getInteger(file_account, "Login_Timestamp", result[e_aLoginTime]);
 	ini_getInteger(file_account, "Played_Seconds", result[e_aPlayedSeconds]);
 	ini_getInteger(file_account, "Premium_Timestamp", result[e_aPremiumTime]);
+	ini_getString(file_account, "Language", result[e_aLanguage], MAX_LANG_NAME);
 
 	ini_closeFile(file_account);
 	return 1;
@@ -223,9 +223,9 @@ DialogCreate:AccountRegister(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(caption, sizeof(caption), _(ACCOUNT_DIALOG_REGISTER_HEAD), playername);
+	format(caption, sizeof(caption), _(playerid, ACCOUNT_DIALOG_REGISTER_HEAD), playername);
 
-	Dialog_Open(playerid, Dialog:AccountRegister, DIALOG_STYLE_INPUT, caption, _(ACCOUNT_DIALOG_REGISTER), _(ACCOUNT_DIALOG_REGISTER_BUTTON), "");
+	Dialog_Open(playerid, Dialog:AccountRegister, DIALOG_STYLE_INPUT, caption, _(playerid, ACCOUNT_DIALOG_REGISTER), _(playerid, ACCOUNT_DIALOG_REGISTER_BUTTON), "");
 }
 
 DialogResponse:AccountRegister(playerid, response, listitem, inputtext[])
@@ -248,10 +248,10 @@ DialogCreate:AccountLogin(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), _(ACCOUNT_DIALOG_LOGIN), GetLoginAttemptCount(playerid));
-	format(caption, sizeof(caption), _(ACCOUNT_DIALOG_LOGIN_HEAD), playername);
+	format(string, sizeof(string), _(playerid, ACCOUNT_DIALOG_LOGIN), GetLoginAttemptCount(playerid));
+	format(caption, sizeof(caption), _(playerid, ACCOUNT_DIALOG_LOGIN_HEAD), playername);
 
-	Dialog_Open(playerid, Dialog:AccountLogin, DIALOG_STYLE_PASSWORD, caption, string, _(ACCOUNT_DIALOG_LOGIN_BUTTON), "");
+	Dialog_Open(playerid, Dialog:AccountLogin, DIALOG_STYLE_PASSWORD, caption, string, _(playerid, ACCOUNT_DIALOG_LOGIN_BUTTON), "");
 }
 
 DialogResponse:AccountLogin(playerid, response, listitem, inputtext[])
@@ -267,12 +267,12 @@ DialogResponse:AccountLogin(playerid, response, listitem, inputtext[])
 DialogCreate:AccountInformation(playerid)
 {
 	new caption[MAX_LANG_VALUE_STRING];
-	format(caption, sizeof(caption), _(ACCOUNT_DIALOG_INFORMATION_CAPTION), VERSION_STRING, VERSION_NAME);
+	format(caption, sizeof(caption), _(playerid, ACCOUNT_DIALOG_INFORMATION_CAPTION), VERSION_STRING, VERSION_NAME);
 
 	Dialog_Open(playerid, Dialog:AccountInformation, DIALOG_STYLE_MSGBOX,
 		caption,
-		_m(ACCOUNT_DIALOG_INFORMATION_TEXT),
-		_(ACCOUNT_DIALOG_INFORMATION_BUTTON), ""
+		_m(playerid, ACCOUNT_DIALOG_INFORMATION_TEXT),
+		_(playerid, ACCOUNT_DIALOG_INFORMATION_BUTTON), ""
 	);
 }
 
@@ -281,9 +281,52 @@ DialogResponse:AccountInformation(playerid, response, listitem, inputtext[])
 	Dialog_Show(playerid, Dialog:AccountRegister);
 }
 
+DialogCreate:AccountLanguage(playerid)
+{
+	new
+		Lang:lang,
+		lang_count,
+		lang_name[MAX_LANG_NAME],
+		string[MAX_LANG_VALUE_STRING * sizeof(gLangSize)];
+
+	lang_count = Lang_GetCount();
+
+	for ( ; _:lang < lang_count; _:lang++) {
+		Lang_GetTypeName(lang, lang_name);
+		format(string, sizeof(string), "%s%c%s\n", string, toupper(lang_name[0]), lang_name[1]);
+	}
+
+	Dialog_Open(playerid, Dialog:AccountLanguage, DIALOG_STYLE_LIST,
+		"Language",
+		string,
+		"OK", ""
+	);
+}
+
+DialogResponse:AccountLanguage(playerid, response, listitem, inputtext[])
+{
+	new
+		i,
+		Lang:lang,
+		lang_count;
+
+	lang_count = Lang_GetCount();
+
+	for ( ; _:lang < lang_count; _:lang++) {
+		if (i == listitem) {
+			Account_SetLanguageByType(playerid, lang);
+		}
+
+		i++;
+	}
+
+	Dialog_Show(playerid, Dialog:AccountInformation);
+}
+
 stock Account_ShowDialog(playerid)
 {
-	new filename_account[MAX_STRING],
+	new
+		filename_account[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
@@ -292,7 +335,7 @@ stock Account_ShowDialog(playerid)
 	if (ini_fileExist(filename_account)) {
 		Dialog_Show(playerid, Dialog:AccountLogin);
 	} else {
-		Dialog_Show(playerid, Dialog:AccountInformation);
+		Dialog_Show(playerid, Dialog:AccountLanguage);
 	}
 
 	Widestrip_ShowForPlayer(playerid);
@@ -415,4 +458,62 @@ stock Account_SetPremiumTime(playerid, seconds)
 stock Account_GetPremiumTime(playerid)
 {
 	return gAccount[playerid][e_aPremiumTime];
+}
+
+/*
+	Language
+*/
+
+stock Account_LoadLanguage(playerid, playername[] = "", const size = sizeof(playername))
+{
+	new
+		language[MAX_LANG_NAME],
+		file_account,
+		filename_account[MAX_STRING];
+
+	if (isnull(playername)) {
+		GetPlayerName(playerid, playername, size);
+	}
+
+	format(filename_account, sizeof(filename_account), "%s%s" DATA_FILES_FORMAT, db_account, playername);
+
+	file_account = ini_openFile(filename_account);
+	if (file_account < 0) {
+		Log_Debug("Error <account:Account_LoadLanguage>: account '%s' has not been opened (error code: %d).", playername, file_account);
+		return 0;
+	}
+
+	ini_getString(file_account, "Language", language);
+	ini_closeFile(file_account);
+
+	Account_SetLanguage(playerid, language);
+	return 1;
+}
+
+stock Account_SetLanguage(playerid, language[])
+{
+	Lang_SetPlayerLanguage(playerid, Lang_GetIDFromName(language));
+	strcpy(gAccount[playerid][e_aLanguage], language, MAX_LANG_NAME);
+}
+
+stock Account_SetLanguageByType(playerid, Lang:lang)
+{
+	Lang_SetPlayerLanguage(playerid, Lang_GetID(lang));
+	Lang_GetTypeName(lang, gAccount[playerid][e_aLanguage], MAX_LANG_NAME);
+}
+
+stock Account_SetLanguageByID(playerid, langid)
+{
+	Lang_SetPlayerLanguage(playerid, langid);
+	Lang_GetTypeName(Lang_GetType(langid), gAccount[playerid][e_aLanguage], MAX_LANG_NAME);
+}
+
+stock Account_GetLanguageName(playerid, language[], const size = sizeof(language))
+{
+	return strcpy(language, gAccount[playerid][e_aLanguage], size);
+}
+
+stock Account_GetLanguageID(playerid)
+{
+	return Lang_GetPlayerLanguage(playerid);
 }

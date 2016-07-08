@@ -51,7 +51,7 @@ pt_rcon_OnRconLoginAttempt(ip[], password[], success)
 		Player_GetIP(playerid, player_ip);
 
 		if (!strcmp(ip, player_ip, false)) {
-			Admin_SendProtectReport(playerid, _(PROTECTION_RCON), player_ip, password);
+			Admin_SendProtectReport(playerid, _(playerid, PROTECTION_RCON), player_ip, password);
 			return 1;
 		}
 	}

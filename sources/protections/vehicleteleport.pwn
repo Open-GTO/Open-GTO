@@ -51,7 +51,7 @@ pt_vehtp_OnUnoccupiedVehicleU(vehicleid, playerid, passenger_seat, Float:new_x, 
 	new Float:dist = GetDistanceBetweenPoints(pos[0], pos[1], pos[2], new_x, new_y, new_z);
 	if (dist > MaxDistance) {
 		SetVehiclePos(vehicleid, pos[0], pos[1], pos[2]);
-		Admin_SendProtectReport(playerid, _(PROTECTION_VEHICLE_TELEPORT), dist, MaxDistance);
+		Admin_SendProtectReport(playerid, _(playerid, PROTECTION_VEHICLE_TELEPORT), dist, MaxDistance);
 		return 0;
 	}
 

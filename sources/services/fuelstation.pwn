@@ -52,7 +52,8 @@ static gFuelstation[][e_Fuelstation_Info] = {
 };
 
 static
-	gPlayerStationID[MAX_PLAYERS] = {INVALID_FUELSTATION_ID, ...};
+	gPlayerStationID[MAX_PLAYERS] = {INVALID_FUELSTATION_ID, ...},
+	Text3D:gLabelID[ sizeof(gFuelstation) ][MAX_PLAYERS];
 
 /*
 	Functions
@@ -70,14 +71,24 @@ Fuelstation_OnGameModeInit()
 		}
 
 		CreateDynamicPickup(1650, 23, gFuelstation[i][e_fsPosX], gFuelstation[i][e_fsPosY], gFuelstation[i][e_fsPosZ]);
-		CreateDynamic3DTextLabel(
-				_(FUEL_STATION_3DTEXT), 0xFFFFFFFF,
-				gFuelstation[i][e_fsPosX], gFuelstation[i][e_fsPosY], gFuelstation[i][e_fsPosZ], 20.0,
-				.testlos = 1
-			);
 		gFuelstation[i][e_fsAreaID] = CreateDynamicSphere(gFuelstation[i][e_fsPosX], gFuelstation[i][e_fsPosY], gFuelstation[i][e_fsPosZ], 10.0);
 	}
 	return 1;
+}
+
+Fuelstation_OnPlayerConnect(playerid)
+{
+	for (new id = 0; id < sizeof(gFuelstation); id++) {
+		Fuelstation_CreatePlayerLabel(playerid, id);
+	}
+}
+
+Fuelstation_OnPlayerDisconnect(playerid, reason)
+{
+	#pragma unused reason
+	for (new id = 0; id < sizeof(gFuelstation); id++) {
+		Fuelstation_DestroyPlayerLabel(playerid, id);
+	}
 }
 
 Fuelstation_OnPlayerStateChange(playerid, newstate, oldstate)
@@ -88,7 +99,7 @@ Fuelstation_OnPlayerStateChange(playerid, newstate, oldstate)
 	}
 
 	if (gPlayerStationID[playerid] != INVALID_FUELSTATION_ID) {
-		Message_Alert(playerid, "", _(VEHICLE_FUEL_ENTER_AREA_ALERT), 2000);
+		Message_Alert(playerid, "", _(playerid, VEHICLE_FUEL_ENTER_AREA_ALERT), 2000);
 	}
 
 	return 1;
@@ -112,7 +123,7 @@ Fuelstation_OnPlayerEnterDyArea(playerid, STREAMER_TAG_AREA areaid)
 	gPlayerStationID[playerid] = stid;
 
 	if (IsPlayerInAnyVehicle(playerid)) {
-		Message_Alert(playerid, "", _(VEHICLE_FUEL_ENTER_AREA_ALERT), 2000);
+		Message_Alert(playerid, "", _(playerid, VEHICLE_FUEL_ENTER_AREA_ALERT), 2000);
 	}
 
 	return 1;
@@ -158,26 +169,26 @@ Fuelstation_OnPlayerKeyStateCh(playerid, newkeys, oldkeys)
 	}
 
 	if (IsVehicleRefilling(vehicleid)) {
-		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_IS_FUELING_ERROR));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, VEHICLE_FUEL_IS_FUELING_ERROR));
 		return 1;
 	}
 
 	new vehiclemodel = GetVehicleModel(vehicleid);
 	switch (vehiclemodel) {
 		case 481, 509, 510: {
-			SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_WITHOUT_FUEL_ENGINE));
+			SendClientMessage(playerid, COLOR_RED, _(playerid, VEHICLE_FUEL_WITHOUT_FUEL_ENGINE));
 			return 1;
 		}
 	}
 
 	if (GetVehicleFuel(vehicleid) - 1.0 >= GetVehicleModelMaxFuel(vehiclemodel)) {
-		SendClientMessage(playerid, COLOR_RED, _(VEHICLE_FUEL_FUEL_IS_FULL));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, VEHICLE_FUEL_FUEL_IS_FULL));
 		return 1;
 	}
 
 	FillVehicle(vehicleid, playerid);
-	SendClientMessage(playerid, COLOR_YELLOW, _(VEHICLE_FUEL_IS_FUELING));
-	Message_Alert(playerid, "", _(VEHICLE_FUEL_IS_FUELING_ALERT), 2000);
+	SendClientMessage(playerid, COLOR_YELLOW, _(playerid, VEHICLE_FUEL_IS_FUELING));
+	Message_Alert(playerid, "", _(playerid, VEHICLE_FUEL_IS_FUELING_ALERT), 2000);
 	return 1;
 }
 
@@ -186,10 +197,10 @@ stock Fuelstation_OnVehicleFilled(vehicleid, playerid, money)
 	#pragma unused vehicleid
 	new string[MAX_LANG_VALUE_STRING];
 
-	format(string, sizeof(string), _(VEHICLE_FUEL_AFTER_FUEL), money);
+	format(string, sizeof(string), _(playerid, VEHICLE_FUEL_AFTER_FUEL), money);
 	SendClientMessage(playerid, COLOR_YELLOW, string);
 
-	format(string, sizeof(string), _(VEHICLE_FUEL_AFTER_FUEL_ALERT), money);
+	format(string, sizeof(string), _(playerid, VEHICLE_FUEL_AFTER_FUEL_ALERT), money);
 	Message_Alert(playerid, "", string);
 
 	return 1;
@@ -198,4 +209,18 @@ stock Fuelstation_OnVehicleFilled(vehicleid, playerid, money)
 stock IsPlayerAtFuelStation(playerid)
 {
 	return gPlayerStationID[playerid] != INVALID_FUELSTATION_ID;
+}
+
+static stock Fuelstation_DestroyPlayerLabel(playerid, id)
+{
+	DestroyDynamic3DTextLabel(gLabelID[id][playerid]);
+	gLabelID[id][playerid] = Text3D:INVALID_3DTEXT_ID;
+}
+
+static stock Fuelstation_CreatePlayerLabel(playerid, id)
+{
+	new langid = Lang_GetPlayerLanguage(playerid);
+	gLabelID[id][playerid] = CreateDynamic3DTextLabel(_l(langid, FUEL_STATION_3DTEXT), 0xFFFFFFFF,
+		gFuelstation[id][e_fsPosX], gFuelstation[id][e_fsPosY], gFuelstation[id][e_fsPosZ], 20.0,
+		.testlos = 1, .playerid = playerid);
 }

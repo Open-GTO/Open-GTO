@@ -47,23 +47,23 @@ stock oBan_Check(playerid)
 		string[MAX_STRING];
 
 	if (duration_time == 0) {
-		__(ADMIN_COMMAND_BAN_TIME_FOREVER, string);
+		__(playerid, ADMIN_COMMAND_BAN_TIME_FOREVER, string);
 		unban_time = 1;
 	} else {
-		format(string, sizeof(string), _(ADMIN_COMMAND_BAN_TIME_SECOND), duration_time);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_BAN_TIME_SECOND), duration_time);
 		if (unban_time > 0) {
-			format(string, sizeof(string), _(ADMIN_COMMAND_BAN_TIME_REMAIN), string, unban_time);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_BAN_TIME_REMAIN), string, unban_time);
 		}
 	}
 
-	format(string, sizeof(string), _(ADMIN_COMMAND_BAN_PLAYER_MESSAGE), admin, timestamp_to_format_date(ban_time), string, reason);
+	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_BAN_PLAYER_MESSAGE), admin, timestamp_to_format_date(ban_time), string, reason);
 	SendClientMessage(playerid, COLOR_RED, string);
 
 	if (unban_time > 0) {
 		KickPlayer(playerid, "ban check", 0);
 	} else {
 		ini_fileRemove(filename);
-		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_BAN_UNBANED));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_BAN_UNBANED));
 	}
 	return 1;
 }
@@ -94,19 +94,28 @@ stock oBan(user[], reason[], adminid, time_second=0)
 	ini_setString(file_ban_db, "Reason", reason);
 	ini_closeFile(file_ban_db);
 
-	new string[MAX_STRING];
-	if (time_second == 0) {
-		__(ADMIN_COMMAND_BAN_TIME_FOREVER, string);
-	} else {
-		format(string, sizeof(string), _(ADMIN_COMMAND_BAN_TIME_SECOND), time_second);
-	}
+	new
+		admin_name[MAX_PLAYER_NAME + 1],
+		format_date[20],
+		string[MAX_LANG_VALUE_STRING];
 
-	format(string, sizeof(string), _(ADMIN_COMMAND_BAN_SUCCESS), user, timestamp_to_format_date(timestamp), ReturnPlayerName(adminid), adminid, string);
+	GetPlayerName(adminid, admin_name, sizeof(admin_name));
+	strcpy(format_date, timestamp_to_format_date(timestamp));
 
-	if (strlen(reason) > 0) {
-		format(string, sizeof(string), _(ADMIN_COMMAND_BAN_SUCCESS_REASON), string, reason);
+	foreach (new playerid : Player) {
+		if (time_second == 0) {
+			__(playerid, ADMIN_COMMAND_BAN_TIME_FOREVER, string);
+		} else {
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_BAN_TIME_SECOND), time_second);
+		}
+
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_BAN_SUCCESS), user, format_date, admin_name, adminid, string);
+
+		if (strlen(reason) > 0) {
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_BAN_SUCCESS_REASON), string, reason);
+		}
+		SendClientMessage(playerid, COLOR_RED, string);
 	}
-	SendClientMessageToAll(COLOR_RED, string);
 
 	if (IsIpAddress(user)) {
 		new player_ip[MAX_IP];

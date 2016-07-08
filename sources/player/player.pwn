@@ -61,7 +61,7 @@ Player_SaveConfig(file_config)
 Player_OnPlayerSpawn(playerid)
 {
 	if (IsPlayerMuted(playerid)) {
-		SendClientMessage(playerid, COLOR_RED, _(MUTED_HELP_MESSAGE));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, MUTED_HELP_MESSAGE));
 	}
 
 	PlayerLevelTD_ShowTextDraw(playerid);
@@ -89,7 +89,7 @@ Player_OnPlayerDisconnect(playerid, reason)
 
 	// message
 	new string[MAX_LANG_VALUE_STRING];
-	format(string, sizeof(string), _(PLAYER_DISCONNECT), ReturnPlayerName(playerid), playerid);
+	format(string, sizeof(string), _(playerid, PLAYER_DISCONNECT), ReturnPlayerName(playerid), playerid);
 
 	switch (reason) {
 		case 0: {
@@ -110,7 +110,7 @@ Player_OnPlayerDisconnect(playerid, reason)
 
 	new is_ok = Gang_MemberLogout(playerid, gangid);
 	if (is_ok) {
-		format(string, sizeof(string), _(GANG_MEMBER_LOGOUT), ReturnPlayerName(playerid));
+		format(string, sizeof(string), _(playerid, GANG_MEMBER_LOGOUT), ReturnPlayerName(playerid));
 		Gang_SendMessage(gangid, string, COLOR_GANG);
 	}
 
@@ -121,19 +121,27 @@ Player_OnPlayerDisconnect(playerid, reason)
 
 Player_OnPlayerConnect(playerid)
 {
+	new
+		playername[MAX_PLAYER_NAME + 1];
+
+	GetPlayerName(playerid, playername, sizeof(playername));
+
+	// load language
+	Account_LoadLanguage(playerid, playername);
+
 	// connect message
 	Chat_Clear(playerid);
-	SendClientMessage(playerid, COLOR_WHITE, _(PLAYER_LOADING));
+	SendClientMessage(playerid, COLOR_WHITE, _(playerid, PLAYER_LOADING));
 
 	// store ip
 	Player_UpdateIP(playerid);
 
 	// check name
-	if (!NameCharCheck( ReturnPlayerName(playerid) )) {
-		new string[MAX_STRING];
-		format(string, sizeof(string), _(PLAYER_NICK_BAD_SYMBOLS), ALLOWED_NICK_SYMBOLS_STR);
+	if (!NameCharCheck(playername)) {
+		new string[MAX_LANG_VALUE_STRING];
+		format(string, sizeof(string), _(playerid, PLAYER_NICK_BAD_SYMBOLS), ALLOWED_NICK_SYMBOLS_STR);
 		SendClientMessage(playerid, COLOR_RED, string);
-		SendClientMessage(playerid, COLOR_RED, _(PLAYER_NICK_IS_IP));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, PLAYER_NICK_IS_IP));
 		KickPlayer(playerid, "Такой ник запрещён.");
 	}
 
@@ -168,7 +176,7 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 			new string[MAX_LANG_VALUE_STRING];
 
 			GetPlayerName(killerid, string, sizeof(string));
-			format(string, sizeof(string), _(GANG_KILL_TEAMMATE), string);
+			format(string, sizeof(string), _(playerid, GANG_KILL_TEAMMATE), string);
 
 			Gang_SendMessage(killer_gang_id, string, COLOR_GANG);
 			return;
@@ -253,21 +261,21 @@ stock Player_OnLogin(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), _(ACCOUNT_LOGIN_MESSAGE_0), VERSION_STRING);
+	format(string, sizeof(string), _(playerid, ACCOUNT_LOGIN_MESSAGE_0), VERSION_STRING);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
-	SendClientMessage(playerid, COLOR_WHITE, _(ACCOUNT_LOGIN_MESSAGE_1));
-	SendClientMessage(playerid, COLOR_WHITE, _(ACCOUNT_LOGIN_MESSAGE_2));
-	SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_MESSAGE_3));
+	SendClientMessage(playerid, COLOR_WHITE, _(playerid, ACCOUNT_LOGIN_MESSAGE_1));
+	SendClientMessage(playerid, COLOR_WHITE, _(playerid, ACCOUNT_LOGIN_MESSAGE_2));
+	SendClientMessage(playerid, COLOR_GREEN, _(playerid, ACCOUNT_LOGIN_MESSAGE_3));
 
 	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_ROOT));
+		SendClientMessage(playerid, COLOR_GREEN, _(playerid, ACCOUNT_LOGIN_ROOT));
 	} else if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
-		SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_ADMIN));
+		SendClientMessage(playerid, COLOR_GREEN, _(playerid, ACCOUNT_LOGIN_ADMIN));
 	} else if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
-		SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_LOGIN_MODER));
+		SendClientMessage(playerid, COLOR_GREEN, _(playerid, ACCOUNT_LOGIN_MODER));
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	} else {
-		SendClientMessage(playerid, COLOR_GREEN, _(ACCOUNT_SUCCESS_LOGIN));
+		SendClientMessage(playerid, COLOR_GREEN, _(playerid, ACCOUNT_SUCCESS_LOGIN));
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	}
 
@@ -276,7 +284,7 @@ stock Player_OnLogin(playerid)
 			continue;
 		}
 
-		format(string, sizeof(string), _(PLAYER_CONNECT), playername, playerid);
+		format(string, sizeof(string), _(playerid, PLAYER_CONNECT), playername, playerid);
 		SendClientMessage(id, COLOR_WHITE, string);
 	}
 
@@ -298,22 +306,22 @@ stock Player_OnLogin(playerid)
 		if (gangid == INVALID_GANG_ID) {
 			SetPlayerGangName(playerid, "");
 
-			format(string, sizeof(string), _(GANG_MEMBER_LOGIN_REMOVED), gangname);
+			format(string, sizeof(string), _(playerid, GANG_MEMBER_LOGIN_REMOVED), gangname);
 			SendClientMessage(playerid, COLOR_ORANGE, string);
 		} else {
 			new is_ok = Gang_MemberLogin(playerid, gangid);
 
 			if (is_ok) {
-				format(string, sizeof(string), _(GANG_MEMBER_LOGIN), playername);
+				format(string, sizeof(string), _(playerid, GANG_MEMBER_LOGIN), playername);
 				Gang_SendMessage(gangid, string, COLOR_GANG);
 
-				format(string, sizeof(string), _(GANG_MEMBER_LOGIN_SELF), gangname, Gang_GetOnlineCount(gangid) - 1);
+				format(string, sizeof(string), _(playerid, GANG_MEMBER_LOGIN_SELF), gangname, Gang_GetOnlineCount(gangid) - 1);
 				SendClientMessage(playerid, COLOR_GANG, string);
 
 				Gang_GetMotd(gangid, string);
 
 				if (strlen(string) > 0) {
-					format(string, sizeof(string), _(GANG_MEMBER_LOGIN_MOTD), string);
+					format(string, sizeof(string), _(playerid, GANG_MEMBER_LOGIN_MOTD), string);
 					SendClientMessage(playerid, COLOR_GANG, string);
 				}
 			}
@@ -401,10 +409,10 @@ stock ShowPlayerWeaponsOnLevel(playerid, newlevel, oldlevel)
 
 		if (oldlevel < GetWeaponLevel(weaponid) <= newlevel) {
 			if (!is_found) {
-				SendClientMessage(playerid, COLOR_GREEN, _(PLAYER_LEVEL_NEW_WEAPON));
+				SendClientMessage(playerid, COLOR_GREEN, _(playerid, PLAYER_LEVEL_NEW_WEAPON));
 				is_found = true;
 			}
-			format(string, sizeof(string), _(PLAYER_LEVEL_NEW_WEAPON_ITEM), ReturnWeaponName(weaponid), GetWeaponCost(weaponid));
+			format(string, sizeof(string), _(playerid, PLAYER_LEVEL_NEW_WEAPON_ITEM), ReturnPlayerWeaponName(playerid, weaponid), GetWeaponCost(weaponid));
 			SendClientMessage(playerid, COLOR_MISC, string);
 		}
 	}

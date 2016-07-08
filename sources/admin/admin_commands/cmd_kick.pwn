@@ -22,7 +22,7 @@ COMMAND:kick(playerid, params[])
 		reason[MAX_KICK_REASON_LENGTH];
 
 	if (sscanf(params, "s[32]S()[" #MAX_KICK_REASON_LENGTH "]", subparams, reason)) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_KICK_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_KICK_HELP));
 		return 1;
 	}
 
@@ -32,7 +32,7 @@ COMMAND:kick(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_KICK_TARGET_ERROR));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_KICK_TARGET_ERROR));
 		return 1;
 	}
 
@@ -44,7 +44,7 @@ COMMAND:kick(playerid, params[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (targetid == -1) {
-		format(string, sizeof(string), _(ADMIN_COMMAND_KICK_ALL), playername, playerid);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_ALL), playername, playerid);
 		SendClientMessageToAll(-1, string);
 
 		foreach (new id : Player) {
@@ -53,10 +53,10 @@ COMMAND:kick(playerid, params[])
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_KICK_PLAYER), playername, playerid, targetname, targetid);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_PLAYER), playername, playerid, targetname, targetid);
 		SendMessageToNearPlayerPlayers(string, 40.0, targetid);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_KICK_PLAYER_SELF), targetname, targetid);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_PLAYER_SELF), targetname, targetid);
 		SendClientMessage(playerid, -1, string);
 
 		KickPlayer(targetid, reason);

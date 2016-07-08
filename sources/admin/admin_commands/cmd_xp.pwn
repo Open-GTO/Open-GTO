@@ -23,7 +23,7 @@ COMMAND:xp(playerid, params[])
 		amount;
 
 	if (sscanf(params, "s[5]s[32]I(1)", subcmd, subparams, amount)) {
-		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_XP_HELP));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_XP_HELP));
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:xp(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_XP_TARGET_ERROR));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_XP_TARGET_ERROR));
 		return 1;
 	}
 
@@ -54,21 +54,21 @@ COMMAND:xp(playerid, params[])
 				SetPlayerXP(id, amount);
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_XP_SET_ALL), playername, playerid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_SET_ALL), playername, playerid, amount);
 			SendClientMessageToAll(-1, string);
 		} else {
 			SetPlayerXP(targetid, amount);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_XP_SET_PLAYER), playername, playerid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_SET_PLAYER), playername, playerid, amount);
 			SendClientMessage(targetid, -1, string);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_XP_SET_SELF), targetname, targetid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_SET_SELF), targetname, targetid, amount);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		amount = GetPlayerXP(targetid);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_XP_GET), targetname, targetid, amount);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_GET), targetname, targetid, amount);
 		SendClientMessage(playerid, -1, string);
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		if (targetid == -1) {
@@ -76,19 +76,19 @@ COMMAND:xp(playerid, params[])
 				GivePlayerXP(id, amount);
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_XP_GIVE_ALL), playername, playerid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_GIVE_ALL), playername, playerid, amount);
 			SendClientMessageToAll(-1, string);
 		} else {
 			GivePlayerXP(targetid, amount);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_XP_GIVE_PLAYER), playername, playerid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_GIVE_PLAYER), playername, playerid, amount);
 			SendClientMessage(targetid, -1, string);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_XP_GIVE_SELF), targetname, targetid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_GIVE_SELF), targetname, targetid, amount);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else {
-		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_XP_HELP));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_XP_HELP));
 	}
 
 	return 1;

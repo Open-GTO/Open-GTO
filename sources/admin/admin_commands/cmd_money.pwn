@@ -23,7 +23,7 @@ COMMAND:money(playerid, params[])
 		amount;
 
 	if (sscanf(params, "s[5]s[32]I(0)", subcmd, subparams, amount)) {
-		SendClientMessage(playerid, COLOR_RED, _(ADMIN_COMMAND_MONEY_HELP));
+		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_MONEY_HELP));
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:money(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_MONEY_TARGET_ERROR));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_MONEY_TARGET_ERROR));
 		return 1;
 	}
 
@@ -54,26 +54,26 @@ COMMAND:money(playerid, params[])
 				SetPlayerMoney(id, amount);
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_SET_ALL), playername, playerid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MONEY_SET_ALL), playername, playerid, amount);
 			SendClientMessageToAll(-1, string);
 		} else {
 			SetPlayerMoney(targetid, amount);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_SET_PLAYER), playername, playerid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MONEY_SET_PLAYER), playername, playerid, amount);
 			SendClientMessage(targetid, -1, string);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_SET_SELF), targetname, targetid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MONEY_SET_SELF), targetname, targetid, amount);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_MONEY_TARGET_ERROR));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_MONEY_TARGET_ERROR));
 			return 1;
 		}
 
 		amount = GetPlayerMoney(targetid);
 
-		format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_GET), targetname, targetid, amount);
+		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MONEY_GET), targetname, targetid, amount);
 		SendClientMessage(playerid, -1, string);
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		if (targetid == -1) {
@@ -81,19 +81,19 @@ COMMAND:money(playerid, params[])
 				GivePlayerMoney(id, amount);
 			}
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_GIVE_ALL), playername, playerid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MONEY_GIVE_ALL), playername, playerid, amount);
 			SendClientMessageToAll(-1, string);
 		} else {
 			GivePlayerMoney(targetid, amount);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_GIVE_PLAYER), playername, playerid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MONEY_GIVE_PLAYER), playername, playerid, amount);
 			SendClientMessage(targetid, -1, string);
 
-			format(string, sizeof(string), _(ADMIN_COMMAND_MONEY_GIVE_SELF), targetname, targetid, amount);
+			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MONEY_GIVE_SELF), targetname, targetid, amount);
 			SendClientMessage(playerid, -1, string);
 		}
 	} else {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_MONEY_HELP));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_MONEY_HELP));
 	}
 
 	return 1;

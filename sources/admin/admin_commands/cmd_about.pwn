@@ -29,31 +29,31 @@ COMMAND:about(playerid, params[])
 			string[MAX_LANG_MULTI_STRING * 3],
 			temp[MAX_LANG_MULTI_STRING];
 
-		__m(ADMIN_COMMAND_ABOUT_MODER, string);
+		__m(playerid, ADMIN_COMMAND_ABOUT_MODER, string);
 
-		__m(ADMIN_COMMAND_ABOUT_ADMIN, temp);
+		__m(playerid, ADMIN_COMMAND_ABOUT_ADMIN, temp);
 		strcat(string, temp);
 
-		__m(ADMIN_COMMAND_ABOUT_RCON, temp);
+		__m(playerid, ADMIN_COMMAND_ABOUT_RCON, temp);
 		strcat(string, temp);
 
-		Dialog_Message(playerid, _(ADMIN_COMMAND_ABOUT_DIALOG_HEADER), string, _(ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, ADMIN_COMMAND_ABOUT_DIALOG_HEADER), string, _(playerid, ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK));
 
 	} else {
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ABOUT_MODER_0));
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ABOUT_MODER_1));
-		SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ABOUT_MODER_2));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_ABOUT_MODER_0));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_ABOUT_MODER_1));
+		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_ABOUT_MODER_2));
 
 		if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ABOUT_ADMIN_0));
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ABOUT_ADMIN_1));
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ABOUT_ADMIN_2));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_ABOUT_ADMIN_0));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_ABOUT_ADMIN_1));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_ABOUT_ADMIN_2));
 		}
 
 		if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ABOUT_RCON_0));
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ABOUT_RCON_1));
-			SendClientMessage(playerid, -1, _(ADMIN_COMMAND_ABOUT_RCON_2));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_ABOUT_RCON_0));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_ABOUT_RCON_1));
+			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_ABOUT_RCON_2));
 		}
 	}
 

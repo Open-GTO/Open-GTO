@@ -30,7 +30,6 @@ enum e_VehShop_Info {
 	Float:e_vsPosZ,
 	Float:e_vsAngle,
 	e_vsID,
-	Text3D:e_vsText3D,
 }
 
 static gPositions[][e_VehShop_Info] = {
@@ -73,6 +72,10 @@ static gPositions[][e_VehShop_Info] = {
 	{VEHSHOP_TYPE_AIR,  92.1114, 2537.8579, 16.6858, 178.6351}
 };
 
+static
+	Text3D:gLabelID[ sizeof(gPositions) ][MAX_PLAYERS],
+	gLabelString[ sizeof(gPositions) ][Lang][MAX_LANG_VALUE_STRING];
+
 enum e_e_vsModels_Info {
 	e_vsType,
 	e_vsModel[VEHSHOP_MAX_MODELS],
@@ -111,7 +114,7 @@ VehShop_OnPlayerStateChange(playerid, newstate, oldstate)
 	if (VehShop_IsShopVehicle( GetPlayerVehicleID(playerid) )) {
 		if (GetPlayerVehicleCount(playerid) >= GetPlayerVehicleMaximumCount(playerid)) {
 			RemovePlayerFromVehicle(playerid);
-			Dialog_Message(playerid, _(VEHSHOP_DIALOG_HEADER), _(VEHSHOP_DIALOG_HAVE_MAXIMUM), _(VEHSHOP_DIALOG_BUTTON_OK));
+			Dialog_Message(playerid, _(playerid, VEHSHOP_DIALOG_HEADER), _(playerid, VEHSHOP_DIALOG_HAVE_MAXIMUM), _(playerid, VEHSHOP_DIALOG_BUTTON_OK));
 		} else {
 			Dialog_Show(playerid, Dialog:VehicleBuy);
 		}
@@ -127,6 +130,29 @@ VehShop_OnVehicleSpawn(vehicleid)
 	return 1;
 }
 
+VehShop_OnPlayerConnect(playerid)
+{
+	for (new i = 0; i < sizeof(gPositions); i++) {
+		if (gPositions[i][e_vsID] == 0) {
+			continue;
+		}
+		VehShop_CreatePlayerLabel(playerid, i);
+	}
+	return 1;
+}
+
+VehShop_OnPlayerDisconnect(playerid, reason)
+{
+	#pragma unused reason
+	for (new i = 0; i < sizeof(gPositions); i++) {
+		if (gPositions[i][e_vsID] == 0) {
+			continue;
+		}
+		VehShop_DestroyPlayerLabel(playerid, i);
+	}
+	return 1;
+}
+
 DialogCreate:VehicleBuy(playerid)
 {
 	new
@@ -136,12 +162,12 @@ DialogCreate:VehicleBuy(playerid)
 	model = GetVehicleModel(GetPlayerVehicleID(playerid));
 
 	InsertSpacesInInt(GetVehicleModelCost(model), string);
-	format(string, sizeof(string), _(VEHSHOP_DIALOG_INFO), ReturnVehicleModelName(model), string);
+	format(string, sizeof(string), _(playerid, VEHSHOP_DIALOG_INFO), ReturnVehicleModelName(model), string);
 
 	Dialog_Open(playerid, Dialog:VehicleBuy, DIALOG_STYLE_MSGBOX,
-		_(VEHSHOP_DIALOG_HEADER),
+		_(playerid, VEHSHOP_DIALOG_HEADER),
 		string,
-		_(VEHSHOP_DIALOG_BUTTON_BUY), _(VEHSHOP_DIALOG_BUTTON_EXIT)
+		_(playerid, VEHSHOP_DIALOG_BUTTON_BUY), _(playerid, VEHSHOP_DIALOG_BUTTON_EXIT)
 	);
 }
 
@@ -154,7 +180,7 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 	}
 
 	if (GetPlayerVehicleCount(playerid) >= GetPlayerVehicleMaximumCount(playerid)) {
-		Dialog_Message(playerid, _(VEHSHOP_DIALOG_HEADER), _(VEHSHOP_DIALOG_HAVE_MAXIMUM), _(VEHSHOP_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, VEHSHOP_DIALOG_HEADER), _(playerid, VEHSHOP_DIALOG_HAVE_MAXIMUM), _(playerid, VEHSHOP_DIALOG_BUTTON_OK));
 		return 0;
 	}
 
@@ -171,14 +197,14 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 	cost = GetVehicleModelCost( GetVehicleModel(vehicleid) );
 
 	if (GetPlayerMoney(playerid) < cost) {
-		Dialog_Message(playerid, _(VEHSHOP_DIALOG_HEADER), _(VEHSHOP_DIALOG_NO_MONEY), _(VEHSHOP_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, _(playerid, VEHSHOP_DIALOG_HEADER), _(playerid, VEHSHOP_DIALOG_NO_MONEY), _(playerid, VEHSHOP_DIALOG_BUTTON_OK));
 		return 0;
 	}
 
 	GivePlayerMoney(playerid, -cost);
 	VehShop_BuyVehicle(playerid, vehicleid, color1, color2);
 
-	Dialog_Message(playerid, _(VEHSHOP_DIALOG_HEADER), _m(VEHSHOP_DIALOG_INFO_SUCCESS), _(VEHSHOP_DIALOG_BUTTON_OK));
+	Dialog_Message(playerid, _(playerid, VEHSHOP_DIALOG_HEADER), _m(playerid, VEHSHOP_DIALOG_INFO_SUCCESS), _(playerid, VEHSHOP_DIALOG_BUTTON_OK));
 	return 1;
 }
 
@@ -223,7 +249,6 @@ stock VehShop_ChangeVehicles()
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
 		model;
 
 	for (new i = 0; i < sizeof(gPositions); i++) {
@@ -239,7 +264,9 @@ stock VehShop_ChangeVehicles()
 			DestroyVehicle(gPositions[i][e_vsID]);
 			gPositions[i][e_vsID] = 0;
 
-			DestroyDynamic3DTextLabel(gPositions[i][e_vsText3D]);
+			foreach (new playerid : Player) {
+				VehShop_DestroyPlayerLabel(playerid, i);
+			}
 		}
 
 		type = gPositions[i][e_vsType];
@@ -254,12 +281,50 @@ stock VehShop_ChangeVehicles()
 		);
 		SetVehicleFuel(gPositions[i][e_vsID], 0);
 
-		InsertSpacesInInt(GetVehicleModelCost(model), string);
-		format(string, sizeof(string), _(VEHSHOP_3DTEXT), ReturnVehicleModelName(model), string);
-		gPositions[i][e_vsText3D] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
-			gPositions[i][e_vsPosX], gPositions[i][e_vsPosY], gPositions[i][e_vsPosZ], 20.0,
-			.attachedvehicle = gPositions[i][e_vsID], .testlos = 1);
+		VehShop_UpdateLabelString(i);
+
+		foreach (new playerid : Player) {
+			VehShop_CreatePlayerLabel(playerid, i);
+		}
 	}
+}
+
+static stock VehShop_UpdateLabelString(pos_id)
+{
+	new
+		model,
+		vehicle_name[MAX_VEHICLE_NAME],
+		cost_str[64];
+
+	model = GetVehicleModel(gPositions[pos_id][e_vsID]);
+	GetVehicleModelName(model, vehicle_name);
+	InsertSpacesInInt(GetVehicleModelCost(model), cost_str);
+
+	new
+		lang_count,
+		Lang:lang,
+		langid;
+
+	lang_count = Lang_GetCount();
+
+	for ( ; _:lang < lang_count; _:lang++) {
+		langid = Lang_GetID(lang);
+		format(gLabelString[pos_id][lang], sizeof(gLabelString[][]), _l(langid, VEHSHOP_3DTEXT), vehicle_name, cost_str);
+	}
+}
+
+static stock VehShop_DestroyPlayerLabel(playerid, pos_id)
+{
+	DestroyDynamic3DTextLabel(gLabelID[pos_id][playerid]);
+	gLabelID[pos_id][playerid] = Text3D:INVALID_3DTEXT_ID;
+}
+
+static stock VehShop_CreatePlayerLabel(playerid, pos_id)
+{
+	new Lang:lang = Lang_GetPlayerLangType(playerid);
+	gLabelID[pos_id][playerid] = CreateDynamic3DTextLabel(gLabelString[pos_id][lang], COLOR_WHITE,
+		gPositions[pos_id][e_vsPosX], gPositions[pos_id][e_vsPosY], gPositions[pos_id][e_vsPosZ], 20.0,
+		.attachedvehicle = gPositions[pos_id][e_vsID], .testlos = 1, .playerid = playerid);
 }
 
 stock VehShop_OneHourTimer()
