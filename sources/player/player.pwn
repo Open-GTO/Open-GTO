@@ -81,6 +81,7 @@ Player_OnPlayerSpawn(playerid)
 Player_OnPlayerDisconnect(playerid, reason)
 {
 	// update params
+	Account_SetAfterRegistration(playerid, false);
 	Account_SetPlayedTime(playerid, Account_GetCurrentPlayedTime(playerid));
 
 	// save
