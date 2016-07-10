@@ -42,8 +42,6 @@
 #define DATA_FILES_FORMAT       ".ini" // расширение(.txt для операционных систем на базе GNU/Linux не рекомендуется)
 #define DATA_FILES_FOLDER       "open-gto/" // каталог в scriptfiles/, где хранятся файлы Open-GTO
 
-#define LANGUAGE_USE            "russian" // используемый язык
-
 #define USE_PLAYER_PED_ANIMS
 #define USED_PLAYER_MARKERS     PLAYER_MARKERS_MODE_GLOBAL
 
