@@ -20,7 +20,7 @@
          MX_Master
 
     ВЕРСИЯ
-        0.5 от 20.09.2010
+        0.5.1 от 10.07.2016 (основано на 0.5 от 20.09.2010)
 
 
     ДОСТУПНЫЕ ИНСТРУМЕНТЫ
@@ -83,7 +83,10 @@
 
 
 
-
+#if defined _mxINI_included
+    #endinput
+#endif
+#define _mxINI_included
 
 
 
@@ -213,19 +216,13 @@ stock ini_createFile ( szFilePath[], szDefaultContent[] = "" )
 
     // если размер пути неправильный
     if ( nFileNameSize <= 0 || nFileNameSize >= INI_MAX_FILENAME_SIZE )
-	{
-		DebugMSG("Error: mxINI: ini_createFile: INI_WRONG_PATH_SIZE: '%s'", szFilePath);
         return INI_WRONG_PATH_SIZE; // вернем код ошибки
-	}
     // ------------
 
 
     // ------------
     if ( fexist( szFilePath ) ) // если файл уже существует
-	{
-		DebugMSG("Error: mxINI: ini_createFile: INI_FILE_ALREADY_EXIST 0: '%s'", szFilePath);
         return INI_FILE_ALREADY_EXIST; // вернем код ошибки - файл уже существует
-	}
 
     for ( new slot = 0; slot < INI_MAX_OPENED_FILES; slot++ ) // перебор всех слотов ОЗУ
         if // если уже есть такой открытый файл
@@ -233,10 +230,7 @@ stock ini_createFile ( szFilePath[], szDefaultContent[] = "" )
                 _ini_nSlotUsed[slot] != 0
             &&  strcmp( szFilePath, _ini_szFilePath[slot], false ) == 0
         )
-		{
-			DebugMSG("Error: mxINI: ini_createFile: INI_FILE_ALREADY_EXIST 1: '%s'", szFilePath);
             return INI_FILE_ALREADY_EXIST; // вернем код ошибки - файл уже существует
-		}
     // ------------
 
 
@@ -246,10 +240,7 @@ stock ini_createFile ( szFilePath[], szDefaultContent[] = "" )
 
     // если размер неправильный
     if ( nFileSize < 0 || nFileSize >= INI_MAX_FILE_SIZE )
-	{
-		DebugMSG("Error: mxINI: ini_createFile: INI_TOO_LARGE_FILE: '%s'", szFilePath);
         return INI_TOO_LARGE_FILE; // вернем код ошибки
-	}
     // ------------
 
 
@@ -309,12 +300,7 @@ stock ini_createFile ( szFilePath[], szDefaultContent[] = "" )
     //
     //  если свободный слот в памяти не найден
     //
-    
-	DebugMSG(lang_texts[19][61]);
-	for (new i = 0; i < INI_MAX_OPENED_FILES; i++)
-	{
-		DebugMSG("       mxINI: _ini_szFilePath[%d] = %s", i, _ini_szFilePath[i]);
-	}
+
     return INI_NO_FREE_SLOT; // вернем код ошибки
     // ------------
 }
@@ -348,18 +334,12 @@ stock ini_openFile ( szFilePath[] )
 
     // если размер пути неправильный
     if ( nFileNameSize <= 0 || nFileNameSize >= INI_MAX_FILENAME_SIZE )
-	{
-		DebugMSG("Error: mxINI: ini_openFile: INI_WRONG_PATH_SIZE: '%s'", szFilePath);
         return INI_WRONG_PATH_SIZE; // вернем код ошибки
-	}
     // ------------
 
 
     if ( ! fexist( szFilePath ) ) // если файл не найден
-	{
-		DebugMSG("Error: mxINI: ini_openFile: INI_FILE_NOT_FOUND: '%s'", szFilePath);
         return INI_FILE_NOT_FOUND; // вернем код ошибки
-	}
 
 
     // ------------
@@ -378,10 +358,7 @@ stock ini_openFile ( szFilePath[] )
     new File: pFile = fopen( szFilePath, io_read ); // пытаемся открыть файл для чтения
 
     if ( ! pFile ) // если файл не открылся
-	{
-		DebugMSG("Error: mxINI: ini_openFile: INI_READ_ERROR: '%s'", szFilePath);
         return INI_READ_ERROR; // вернем код ошибки
-	}
     // ------------
 
 
@@ -391,7 +368,6 @@ stock ini_openFile ( szFilePath[] )
     if ( nFileSize >= INI_MAX_FILE_SIZE ) // если размер файла слишком большой
     {
         fclose(pFile); // закроем файл
-		DebugMSG("Error: mxINI: ini_openFile: INI_TOO_LARGE_FILE: '%s'", szFilePath);
         return INI_TOO_LARGE_FILE; // вернем код ошибки
     }
     // ------------
@@ -419,16 +395,21 @@ stock ini_openFile ( szFilePath[] )
             // ------------
             // скопируем в ОЗУ весь файл,
             // запомнив все позиции INI_DELIMITER и их кол-во
-            for ( new i = 0, symbol; i < nFileSize && i < INI_MAX_FILE_SIZE; i++ )
+            for ( new i = 0, symbol, nextstr = 1; i < nFileSize && i < INI_MAX_FILE_SIZE; i++ )
             {
                 symbol = fgetchar( pFile, 0, false ); // читаем из файла следующий символ
 
+                if ( symbol == INI_STRING_DELIMITER ) // если начинается новая строка
+                    nextstr = 1;
+
                 if (
-                        symbol == INI_DELIMITER // если символ это INI_DELIMITER
+                        nextstr // если обрабатывается следующая строка
+                    &&  symbol == INI_DELIMITER // если символ это INI_DELIMITER
                     &&  _ini_nKeysCount[slot] < INI_MAX_KEYS_IN_FILE // и лимит ключей еще не исчерпан
                 ) {
                     _ini_nDelimPos[slot][ _ini_nKeysCount[slot] ] = i; // добавим еще одну позицию INI_DELIMITER
                     _ini_nKeysCount[slot]++; // увеличим кол-во найденных ключей
+                    nextstr = 0; // сбрасываем информацию о новой строке
                 }
 
                 _ini_szFileContent[slot]{i} = symbol;
@@ -463,11 +444,6 @@ stock ini_openFile ( szFilePath[] )
     // ------------
     fclose(pFile); // закроем файл
 
-	DebugMSG(lang_texts[19][61]);
-	for (new i = 0; i < INI_MAX_OPENED_FILES; i++)
-	{
-		DebugMSG("       mxINI: _ini_szFilePath[%d] = %s", i, _ini_szFilePath[i]);
-	}
     return INI_NO_FREE_SLOT; // вернем код ошибки
     // ------------
 }
@@ -503,10 +479,7 @@ stock ini_closeFile ( nFilePointer )
             new File: pFile = fopen( _ini_szFilePath[nFilePointer], io_write ); // пытаемся открыть файл для записи
 
             if ( ! pFile ) // если файл не открылся
-			{
-				DebugMSG("Error: mxINI: ini_closeFile: INI_WRITE_ERROR: '%s'", _ini_szFilePath[nFilePointer]);
                 return INI_WRITE_ERROR; // вернем код ошибки
-			}
 
             // запишем контент файла из ОЗУ на диск
             for ( new i = 0;  i < _ini_nFileSize[nFilePointer];  i++ )
@@ -519,8 +492,7 @@ stock ini_closeFile ( nFilePointer )
 
         return INI_OK; // вернуть код об успешном выполнении функции
     }
-	
-	DebugMSG("Error: mxINI: ini_closeFile: INI_WRONG_SLOT: '%s'", _ini_szFilePath[nFilePointer]);
+
     return INI_WRONG_SLOT; // вернуть код: неверный указатель на открытый файл
 }
 
@@ -572,28 +544,19 @@ stock ini_getString ( nFilePointer, szKeyName[], szReturnValue[], nSizeOfReturn 
         ||  nFilePointer >= INI_MAX_OPENED_FILES
         ||  _ini_nSlotUsed[nFilePointer] != 1
     )
-	{
-		DebugMSG("Error: mxINI: ini_getString: INI_WRONG_SLOT: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_WRONG_SLOT; // вернуть код: неверный указатель на открытый файл
-	}
     // ----------------
 
 
     if ( nSizeOfReturn <= 0 ) // если по какой-то причине размер возвращаемого значения указан/рассчитан как 0
-	{
-		DebugMSG("Error: mxINI: ini_getString: INI_WRONG_RETURN_SIZE: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_WRONG_RETURN_SIZE;
-	}
-	
+
 
     // ----------------
     new nKeyLen = strlen(szKeyName); // узнаем длину имени указанного ключа
 
     if ( nKeyLen <= 0 ) // если указан пустой ключ
-	{
-		DebugMSG("Error: mxINI: ini_getString: INI_KEY_NOT_FOUND 0: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_KEY_NOT_FOUND;
-	}
     // ----------------
 
 
@@ -709,7 +672,6 @@ stock ini_getString ( nFilePointer, szKeyName[], szReturnValue[], nSizeOfReturn 
 
 
     // ----------------
-	DebugMSG("Error: mxINI: ini_getString: INI_KEY_NOT_FOUND 1: '%s'", _ini_szFilePath[nFilePointer]);
     return INI_KEY_NOT_FOUND;
     // ----------------
 }
@@ -749,10 +711,7 @@ stock ini_getInteger ( nFilePointer, szKeyName[], & nReturnValue )
         ||  nFilePointer >= INI_MAX_OPENED_FILES
         ||  _ini_nSlotUsed[nFilePointer] != 1
     )
-	{
-		DebugMSG("Error: mxINI: ini_getInteger: INI_WRONG_SLOT: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_WRONG_SLOT; // вернуть код: неверный указатель на открытый файл
-	}
     // ----------------
 
 
@@ -760,10 +719,7 @@ stock ini_getInteger ( nFilePointer, szKeyName[], & nReturnValue )
     new nKeyLen = strlen(szKeyName); // узнаем длину имени указанного ключа
 
     if ( nKeyLen <= 0 ) // если указан пустой ключ
-	{
-		DebugMSG("Error: mxINI: ini_getInteger: INI_KEY_NOT_FOUND 0: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_KEY_NOT_FOUND;
-	}
     // ----------------
 
 
@@ -883,7 +839,6 @@ stock ini_getInteger ( nFilePointer, szKeyName[], & nReturnValue )
 
 
     // ----------------
-	DebugMSG("Error: mxINI: ini_getInteger: INI_KEY_NOT_FOUND 1: '%s'", _ini_szFilePath[nFilePointer]);
     return INI_KEY_NOT_FOUND;
     // ----------------
 }
@@ -923,10 +878,7 @@ stock ini_getFloat ( nFilePointer, szKeyName[], & Float: fReturnValue )
         ||  nFilePointer >= INI_MAX_OPENED_FILES
         ||  _ini_nSlotUsed[nFilePointer] != 1
     )
-	{
-		DebugMSG("Error: mxINI: ini_getFloat: INI_WRONG_SLOT: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_WRONG_SLOT; // вернуть код: неверный указатель на открытый файл
-	}
     // ----------------
 
 
@@ -934,10 +886,7 @@ stock ini_getFloat ( nFilePointer, szKeyName[], & Float: fReturnValue )
     new nKeyLen = strlen(szKeyName); // узнаем длину имени указанного ключа
 
     if ( nKeyLen <= 0 ) // если указан пустой ключ
-	{
-		DebugMSG("Error: mxINI: ini_getFloat: INI_KEY_NOT_FOUND 0: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_KEY_NOT_FOUND;
-	}
     // ----------------
 
 
@@ -1057,7 +1006,6 @@ stock ini_getFloat ( nFilePointer, szKeyName[], & Float: fReturnValue )
 
 
     // ----------------
-	DebugMSG("Error: mxINI: ini_getFloat: INI_KEY_NOT_FOUND 1: '%s'", _ini_szFilePath[nFilePointer]);
     return INI_KEY_NOT_FOUND;
     // ----------------
 }
@@ -1105,10 +1053,7 @@ stock ini_setString ( nFilePointer, szKeyName[], szKeyValue[] )
         ||  nFilePointer >= INI_MAX_OPENED_FILES
         ||  _ini_nSlotUsed[nFilePointer] != 1
     )
-	{
-		DebugMSG("Error: mxINI: ini_setString: INI_WRONG_SLOT: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_WRONG_SLOT; // вернуть код: неверный указатель на открытый файл
-	}
     // ----------------
 
 
@@ -1116,10 +1061,7 @@ stock ini_setString ( nFilePointer, szKeyName[], szKeyValue[] )
     new nKeyLen = strlen(szKeyName); // узнаем длину имени указанного ключа
 
     if ( nKeyLen <= 0 ) // если указан пустой ключ
-	{
-		DebugMSG("Error: mxINI: ini_setString: INI_KEY_NOT_FOUND 0: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_KEY_NOT_FOUND;
-	}
     // ----------------
 
 
@@ -1210,10 +1152,7 @@ stock ini_setString ( nFilePointer, szKeyName[], szKeyValue[] )
 
             // если будущий размер файла превышает лимит
             if ( ( curFilePos + nValueLen ) >= INI_MAX_FILE_SIZE )
-			{
-				DebugMSG("Error: mxINI: ini_setString: INI_TOO_LARGE_FILE: '%s'", _ini_szFilePath[nFilePointer]);
                 return INI_TOO_LARGE_FILE; // вернем код ошибки о переполнении файла
-			}
             // ----------------
 
 
@@ -1238,10 +1177,7 @@ stock ini_setString ( nFilePointer, szKeyName[], szKeyValue[] )
 
 
             if ( _ini_nFileBusy[nFilePointer] != 0 ) // если прямо сейчас файл изменяется другой функцией
-			{
-				DebugMSG("Error: mxINI: ini_setString: INI_WRITE_ERROR 1: '%s'", _ini_szFilePath[nFilePointer]);
                 return INI_WRITE_ERROR; // вернем код ошибки при записи в файл
-			}
 
 
             // ----------------
@@ -1310,19 +1246,13 @@ stock ini_setString ( nFilePointer, szKeyName[], szKeyValue[] )
 
     // если будущий размер файла превышает лимит
     if ( ( _ini_nFileSize[nFilePointer] + 5 + nKeyLen + nValueLen ) >= INI_MAX_FILE_SIZE )
-	{
-		DebugMSG("Error: mxINI: ini_setString: INI_TOO_LARGE_FILE 1: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_TOO_LARGE_FILE; // вернем код ошибки о переполнении файла
-	}
     // ----------------
 
 
     // ----------------
     if ( _ini_nFileBusy[nFilePointer] != 0 ) // если прямо сейчас файл изменяется другой функцией
-	{
-		DebugMSG("Error: mxINI: ini_setString: INI_WRITE_ERROR: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_WRITE_ERROR; // вернем код ошибки при записи в файл
-	}
 
     _ini_nFileBusy[nFilePointer] = 1; // флаг: файл изменяется = 1
     // ----------------
@@ -1409,10 +1339,7 @@ stock ini_setInteger ( nFilePointer, szKeyName[], nKeyValue )
         ||  nFilePointer >= INI_MAX_OPENED_FILES
         ||  _ini_nSlotUsed[nFilePointer] != 1
     )
-	{
-		DebugMSG("Error: mxINI: ini_setInteger: INI_WRONG_SLOT: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_WRONG_SLOT; // вернуть код: неверный указатель на открытый файл
-	}
     // ----------------
 
 
@@ -1420,10 +1347,7 @@ stock ini_setInteger ( nFilePointer, szKeyName[], nKeyValue )
     new nKeyLen = strlen(szKeyName); // узнаем длину имени указанного ключа
 
     if ( nKeyLen <= 0 ) // если указан пустой ключ
-	{
-		DebugMSG("Error: mxINI: ini_setInteger: INI_KEY_NOT_FOUND: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_KEY_NOT_FOUND;
-	}
     // ----------------
 
 
@@ -1545,10 +1469,7 @@ stock ini_setInteger ( nFilePointer, szKeyName[], nKeyValue )
 
 
             if ( _ini_nFileBusy[nFilePointer] != 0 ) // если прямо сейчас файл изменяется другой функцией
-			{
-				DebugMSG("Error: mxINI: ini_setInteger: INI_WRITE_ERROR: '%s'", _ini_szFilePath[nFilePointer]);
                 return INI_WRITE_ERROR; // вернем код ошибки при записи в файл
-			}
 
 
             // ----------------
@@ -1623,20 +1544,14 @@ stock ini_setInteger ( nFilePointer, szKeyName[], nKeyValue )
 
     // если будущий размер файла превышает лимит
     if ( ( _ini_nFileSize[nFilePointer] + 5 + nKeyLen + nValueLen ) >= INI_MAX_FILE_SIZE )
-	{
-		DebugMSG("Error: mxINI: ini_setInteger: INI_TOO_LARGE_FILE: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_TOO_LARGE_FILE; // вернем код ошибки о переполнении файла
-	}
     // ----------------
 
 
     // ----------------
     if ( _ini_nFileBusy[nFilePointer] != 0 ) // если прямо сейчас файл изменяется другой функцией
-	{
-		DebugMSG("Error: mxINI: ini_setInteger: INI_WRITE_ERROR: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_WRITE_ERROR; // вернем код ошибки при записи в файл
-	}
-	
+
     _ini_nFileBusy[nFilePointer] = 1; // флаг: файл изменяется = 1
     // ----------------
 
@@ -1722,10 +1637,7 @@ stock ini_setFloat ( nFilePointer, szKeyName[], Float: fKeyValue )
         ||  nFilePointer >= INI_MAX_OPENED_FILES
         ||  _ini_nSlotUsed[nFilePointer] != 1
     )
-	{
-		DebugMSG("Error: mxINI: ini_setFloat: INI_WRONG_SLOT: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_WRONG_SLOT; // вернуть код: неверный указатель на открытый файл
-	}
     // ----------------
 
 
@@ -1733,10 +1645,7 @@ stock ini_setFloat ( nFilePointer, szKeyName[], Float: fKeyValue )
     new nKeyLen = strlen(szKeyName); // узнаем длину имени указанного ключа
 
     if ( nKeyLen <= 0 ) // если указан пустой ключ
-	{
-		DebugMSG("Error: mxINI: ini_setFloat: INI_KEY_NOT_FOUND: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_KEY_NOT_FOUND;
-	}
     // ----------------
 
 
@@ -1833,10 +1742,7 @@ stock ini_setFloat ( nFilePointer, szKeyName[], Float: fKeyValue )
 
             // если будущий размер файла превышает лимит
             if ( ( curFilePos + nValueLen ) >= INI_MAX_FILE_SIZE )
-			{
-				DebugMSG("Error: mxINI: ini_setFloat: INI_TOO_LARGE_FILE: '%s'", _ini_szFilePath[nFilePointer]);
                 return INI_TOO_LARGE_FILE; // вернем код ошибки о переполнении файла
-			}
             // ----------------
 
 
@@ -1861,10 +1767,7 @@ stock ini_setFloat ( nFilePointer, szKeyName[], Float: fKeyValue )
 
 
             if ( _ini_nFileBusy[nFilePointer] != 0 ) // если прямо сейчас файл изменяется другой функцией
-			{
-				DebugMSG("Error: mxINI: ini_setFloat: INI_WRITE_ERROR: '%s'", _ini_szFilePath[nFilePointer]);
                 return INI_WRITE_ERROR; // вернем код ошибки при записи в файл
-			}
 
 
             // ----------------
@@ -1939,19 +1842,13 @@ stock ini_setFloat ( nFilePointer, szKeyName[], Float: fKeyValue )
 
     // если будущий размер файла превышает лимит
     if ( ( _ini_nFileSize[nFilePointer] + 5 + nKeyLen + nValueLen ) >= INI_MAX_FILE_SIZE )
-	{
-		DebugMSG("Error: mxINI: ini_setFloat: INI_TOO_LARGE_FILE: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_TOO_LARGE_FILE; // вернем код ошибки о переполнении файла
-	}
     // ----------------
 
 
     // ----------------
     if ( _ini_nFileBusy[nFilePointer] != 0 ) // если прямо сейчас файл изменяется другой функцией
-	{
-		DebugMSG("Error: mxINI: ini_setFloat: INI_WRITE_ERROR: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_WRITE_ERROR; // вернем код ошибки при записи в файл
-	}
 
     _ini_nFileBusy[nFilePointer] = 1; // флаг: файл изменяется = 1
     // ----------------
@@ -2035,10 +1932,7 @@ stock ini_removeKey ( nFilePointer, szKeyName[] )
         ||  nFilePointer >= INI_MAX_OPENED_FILES
         ||  _ini_nSlotUsed[nFilePointer] != 1
     )
-	{
-		DebugMSG("Error: mxINI: ini_removeKey: INI_WRONG_SLOT: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_WRONG_SLOT; // вернуть код: неверный указатель на открытый файл
-	}
     // ----------------
 
 
@@ -2046,10 +1940,7 @@ stock ini_removeKey ( nFilePointer, szKeyName[] )
     new nKeyLen = strlen(szKeyName); // узнаем длину имени указанного ключа
 
     if ( nKeyLen <= 0 ) // если указан пустой ключ
-	{
-		DebugMSG("Error: mxINI: ini_removeKey: INI_KEY_NOT_FOUND 0: '%s'", _ini_szFilePath[nFilePointer]);
         return INI_KEY_NOT_FOUND;
-	}
     // ----------------
 
 
@@ -2158,10 +2049,7 @@ stock ini_removeKey ( nFilePointer, szKeyName[] )
 
 
             if ( _ini_nFileBusy[nFilePointer] != 0 ) // если прямо сейчас файл изменяется другой функцией
-			{
-				DebugMSG("Error: mxINI: ini_removeKey: INI_WRITE_ERROR: '%s'", _ini_szFilePath[nFilePointer]);
                 return INI_WRITE_ERROR; // вернем код ошибки при записи в файл
-			}
 
 
             // ----------------
@@ -2195,7 +2083,6 @@ stock ini_removeKey ( nFilePointer, szKeyName[] )
     //
 
     // ----------------
-	DebugMSG("Error: mxINI: ini_removeKey: INI_KEY_NOT_FOUND 1: '%s'", _ini_szFilePath[nFilePointer]);
     return INI_KEY_NOT_FOUND;
     // ----------------
 }
