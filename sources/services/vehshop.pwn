@@ -114,7 +114,7 @@ VehShop_OnPlayerStateChange(playerid, newstate, oldstate)
 	if (VehShop_IsShopVehicle( GetPlayerVehicleID(playerid) )) {
 		if (GetPlayerVehicleCount(playerid) >= GetPlayerVehicleMaximumCount(playerid)) {
 			RemovePlayerFromVehicle(playerid);
-			Dialog_Message(playerid, _(playerid, VEHSHOP_DIALOG_HEADER), _(playerid, VEHSHOP_DIALOG_HAVE_MAXIMUM), _(playerid, VEHSHOP_DIALOG_BUTTON_OK));
+			Dialog_Show(playerid, Dialog:VehicleHaveMax);
 		} else {
 			Dialog_Show(playerid, Dialog:VehicleBuy);
 		}
@@ -180,7 +180,7 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 	}
 
 	if (GetPlayerVehicleCount(playerid) >= GetPlayerVehicleMaximumCount(playerid)) {
-		Dialog_Message(playerid, _(playerid, VEHSHOP_DIALOG_HEADER), _(playerid, VEHSHOP_DIALOG_HAVE_MAXIMUM), _(playerid, VEHSHOP_DIALOG_BUTTON_OK));
+		Dialog_Show(playerid, Dialog:VehicleHaveMax);
 		return 0;
 	}
 
@@ -206,6 +206,22 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 
 	Dialog_Message(playerid, _(playerid, VEHSHOP_DIALOG_HEADER), _m(playerid, VEHSHOP_DIALOG_INFO_SUCCESS), _(playerid, VEHSHOP_DIALOG_BUTTON_OK));
 	return 1;
+}
+
+DialogCreate:VehicleHaveMax(playerid)
+{
+	new
+		string[MAX_LANG_VALUE_STRING * 2],
+		level;
+
+	__(playerid, VEHSHOP_DIALOG_HAVE_MAXIMUM, string);
+	level = GetPlayerVehicleNearestLevel(playerid);
+
+	if (level != -1) {
+		format(string, sizeof(string), _(playerid, VEHSHOP_DIALOG_NEW_VEHICLE), string, level);
+	}
+
+	Dialog_Message(playerid, _(playerid, VEHSHOP_DIALOG_HEADER), string, _(playerid, VEHSHOP_DIALOG_BUTTON_OK));
 }
 
 stock VehShop_SetVehiclesToRespawn()

@@ -145,7 +145,7 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 		SetVehicleZAngle(vehicleid, pveh_A);
 		return vehicleid;
 	}
-	
+
 	// если не создан, то создаём
 	vehicleid = CreateVehicle(
 		PlayerVehicle[playerid][slot][pv_Model],
@@ -153,20 +153,20 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 		PlayerVehicle[playerid][slot][pv_Color][0], PlayerVehicle[playerid][slot][pv_Color][1],
 		GetVehicleRespawnTime()
 	);
-	
+
 	PlayerVehicle[playerid][slot][pv_ID] = vehicleid;
-	
+
 	SetVehicleFuel(vehicleid, PlayerVehicle[playerid][slot][pv_Fuel]);
 	SetPlayerVehicleDoorsAccess(vehicleid, playerid, PlayerVehicle[playerid][slot][pv_Access], slot);
-	
+
 	if (PlayerVehicle[playerid][slot][pv_Paintjob] != -1) {
 		ChangeVehiclePaintjob(vehicleid, PlayerVehicle[playerid][slot][pv_Paintjob]);
 	}
-	
+
 	for (new i = 0; i < VEHICLE_COMPONENTS; i++) {
 		AddVehicleComponent(vehicleid, PlayerVehicle[playerid][slot][pv_Component][i]);
 	}
-	
+
 	return vehicleid;
 }
 
@@ -317,4 +317,15 @@ forward DestroyPlayerVehicle(vehicleid);
 public DestroyPlayerVehicle(vehicleid)
 {
 	return DestroyVehicle(vehicleid);
+}
+
+stock GetPlayerVehicleNearestLevel(playerid)
+{
+	new level = GetPlayerLevel(playerid);
+	for (new i = 0; i < sizeof(vehicle_increase_levels); i++) {
+		if (vehicle_increase_levels[i] > level) {
+			return vehicle_increase_levels[i];
+		}
+	}
+	return -1;
 }
