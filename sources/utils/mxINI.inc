@@ -20,7 +20,7 @@
          MX_Master
 
     ВЕРСИЯ
-        0.5.1 от 10.07.2016 (основано на 0.5 от 20.09.2010)
+        0.5.2 от 10.07.2016 (основано на 0.5 от 20.09.2010)
 
 
     ДОСТУПНЫЕ ИНСТРУМЕНТЫ
@@ -256,7 +256,7 @@ stock ini_createFile ( szFilePath[], szDefaultContent[] = "" )
         {
             // ------------
             _ini_nSlotUsed[slot]        = 1; // застолбим найденное место
-            _ini_nFileChanged[slot]     = 1; // файл не был изменен
+            _ini_nFileChanged[slot]     = 0; // файл не был изменен
             _ini_nFileSize[slot]        = nFileSize; // скопируем размер файла в слот
             _ini_nKeysCount[slot]       = 0; // кол-во ключей выставим 0
             // ------------
