@@ -49,11 +49,14 @@ COMMAND:mute(playerid, params[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (targetid == -1) {
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MUTE_ALL), playername, playerid, time, timeword);
-		if (is_with_reason) {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MUTE_REASON), string, reason);
+		foreach (new id : Player) {
+			format(string, sizeof(string), _(id, ADMIN_COMMAND_MUTE_ALL), playername, playerid, time, timeword);
+			if (is_with_reason) {
+				format(string, sizeof(string), _(id, ADMIN_COMMAND_MUTE_REASON), string, reason);
+			}
+
+			SendClientMessage(id, -1, string);
 		}
-		SendClientMessageToAll(-1, string);
 
 		foreach (targetid : Player) {
 			MutePlayer(targetid, time);
@@ -61,11 +64,14 @@ COMMAND:mute(playerid, params[])
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MUTE_PLAYER), playername, playerid, targetname, targetid, time, timeword);
-		if (is_with_reason) {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MUTE_REASON), string, reason);
+		foreach (new id : Player) {
+			format(string, sizeof(string), _(id, ADMIN_COMMAND_MUTE_PLAYER), playername, playerid, targetname, targetid, time, timeword);
+			if (is_with_reason) {
+				format(string, sizeof(string), _(id, ADMIN_COMMAND_MUTE_REASON), string, reason);
+			}
+
+			SendClientMessage(id, -1, string);
 		}
-		SendClientMessageToAll(-1, string);
 
 		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MUTE_PLAYER_SELF), targetname, targetid, time, timeword);
 		if (is_with_reason) {
