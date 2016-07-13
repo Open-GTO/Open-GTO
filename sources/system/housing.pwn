@@ -1016,15 +1016,10 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 static stock housing_UpdateLabelString(id)
 {
-
 	new
-		lang_count,
-		Lang:lang,
 		langid;
 
-	lang_count = Lang_GetCount();
-
-	for ( ; _:lang < lang_count; _:lang++) {
+	foreach (new Lang:lang : LangIterator) {
 		langid = Lang_GetID(lang);
 
 		format(gLabelString[id][lang], sizeof(gLabelString[][]),

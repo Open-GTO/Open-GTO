@@ -321,17 +321,14 @@ DialogResponse:SettingsInterfaceMenu(playerid, response, listitem, inputtext[])
 DialogCreate:SettingsLanguageMenu(playerid)
 {
 	new
-		Lang:lang,
-		lang_count,
 		langid,
 		lang_name[MAX_LANG_NAME],
 		player_langid,
 		string[MAX_LANG_VALUE_STRING * sizeof(gLangSize)];
 
-	lang_count = Lang_GetCount();
 	player_langid = Lang_GetPlayerLanguage(playerid);
 
-	for ( ; _:lang < lang_count; _:lang++) {
+	foreach (new Lang:lang : LangIterator) {
 		langid = Lang_GetID(lang);
 
 		Lang_GetTypeName(lang, lang_name);
@@ -360,13 +357,9 @@ DialogResponse:SettingsLanguageMenu(playerid, response, listitem, inputtext[])
 	}
 
 	new
-		i,
-		Lang:lang,
-		lang_count;
+		i;
 
-	lang_count = Lang_GetCount();
-
-	for ( ; _:lang < lang_count; _:lang++) {
+	foreach (new Lang:lang : LangIterator) {
 		if (i == listitem) {
 			Account_SetLanguageByType(playerid, lang);
 		}

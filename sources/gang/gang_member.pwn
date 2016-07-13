@@ -60,13 +60,9 @@ GangMember_OnGameModeInit()
 
 	// init rank names
 	new
-		Lang:lang,
-		lang_count,
 		langid;
 
-	lang_count = Lang_GetCount();
-
-	for ( ; _:lang < lang_count; _:lang++) {
+	foreach (new Lang:lang : LangIterator) {
 		langid = Lang_GetID(lang);
 		GangRankMember_SetName(GangMemberLeader, lang, _l(langid, GANG_RANK_LEADER));
 		GangRankMember_SetName(GangMemberHelper, lang, _l(langid, GANG_RANK_HELPER));

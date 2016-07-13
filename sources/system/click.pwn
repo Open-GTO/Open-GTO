@@ -161,13 +161,9 @@ stock Click_AddItem(style, var_caption[], var_info[], var_button1[], var_button2
 	gClickArray[id][cda_style] = style;
 
 	new
-		lang_count,
-		Lang:lang,
 		langid;
 
-	lang_count = Lang_GetCount();
-
-	for ( ; _:lang < lang_count; _:lang++) {
+	foreach (new Lang:lang : LangIterator) {
 		langid = Lang_GetID(lang);
 
 		Lang_GetText(langid, var_caption, gClickTextArray[id][lang][cda_caption], MAX_CLICK_DIALOG_CAPTION_SIZE);
@@ -178,7 +174,6 @@ stock Click_AddItem(style, var_caption[], var_info[], var_button1[], var_button2
 
 	gClickArray[id][cda_privilege] = privilege;
 	strcpy(gClickArray[id][cda_function], function, MAX_CLICK_DIALOG_FUNCTION_SIZE);
-
 	return id;
 }
 

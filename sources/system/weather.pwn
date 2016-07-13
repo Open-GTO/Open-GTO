@@ -50,13 +50,9 @@ Weather_SaveConfig(file_config)
 Weather_OnGameModeInit()
 {
 	new
-		Lang:lang,
-		lang_count,
 		langid;
 
-	lang_count = Lang_GetCount();
-
-	for ( ; _:lang < lang_count; _:lang++) {
+	foreach (new Lang:lang : LangIterator) {
 		langid = Lang_GetID(lang);
 		Weather_SetName(0, lang, _l(langid, WEATHER_EXTRASUNNY_LA));
 		Weather_SetName(1, lang, _l(langid, WEATHER_SUNNY_LA));

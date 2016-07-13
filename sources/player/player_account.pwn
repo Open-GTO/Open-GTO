@@ -284,14 +284,10 @@ DialogResponse:AccountInformation(playerid, response, listitem, inputtext[])
 DialogCreate:AccountLanguage(playerid)
 {
 	new
-		Lang:lang,
-		lang_count,
 		lang_name[MAX_LANG_NAME],
 		string[MAX_LANG_VALUE_STRING * sizeof(gLangSize)];
 
-	lang_count = Lang_GetCount();
-
-	for ( ; _:lang < lang_count; _:lang++) {
+	foreach (new Lang:lang : LangIterator) {
 		Lang_GetTypeName(lang, lang_name);
 		format(string, sizeof(string), "%s%c%s\n", string, toupper(lang_name[0]), lang_name[1]);
 	}
@@ -306,13 +302,9 @@ DialogCreate:AccountLanguage(playerid)
 DialogResponse:AccountLanguage(playerid, response, listitem, inputtext[])
 {
 	new
-		i,
-		Lang:lang,
-		lang_count;
+		i;
 
-	lang_count = Lang_GetCount();
-
-	for ( ; _:lang < lang_count; _:lang++) {
+	foreach (new Lang:lang : LangIterator) {
 		if (i == listitem) {
 			Account_SetLanguageByType(playerid, lang);
 		}

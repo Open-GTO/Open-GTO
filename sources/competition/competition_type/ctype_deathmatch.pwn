@@ -24,12 +24,16 @@ CompetitionDM_OnGameModeInit()
 {
 	new
 		ctype,
-		ctype_params[CompetitionTypeParams];
+		ctype_params[CompetitionTypeParams],
+		ctype_name[Lang][MAX_COMPETITION_TYPE_NAME];
 
-	__d(COMPETITION_TYPE_DM_NAME, ctype_params[COMPETITION_TYPE_NAME]); // TODO
+	foreach (new Lang:lang : LangIterator) {
+		__l(Lang_GetID(lang), COMPETITION_TYPE_DM_NAME, ctype_name[lang], MAX_COMPETITION_TYPE_NAME);
+	}
+
 	ctype_params[COMPETITION_TYPE_COLOR] = COLOR_RED_500;
 
-	ctype = CompetitionType_Add(ctype_params);
+	ctype = CompetitionType_Add(ctype_name, ctype_params);
 	CompetitionType_SetActiveStatus(ctype, true);
 	CompetitionType_SetParamString(ctype, COMPETITION_TYPE_ADD_CALLBACK, "CompetitionDM_OnAdd");
 	CompetitionType_SetParamString(ctype, COMPETITION_TYPE_JOIN_CALLBACK, "CompetitionDM_OnJoin");

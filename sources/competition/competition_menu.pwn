@@ -88,7 +88,7 @@ DialogCreate:CompetitionMenu(playerid)
 		CompetitionMap_GetParamString(cmap, COMPETITION_MAP_NAME, cmap_name);
 		ctime = Competition_GetParamInt(cid, COMPETITION_TIME);
 		ctype = Competition_GetParamInt(cid, COMPETITION_TYPE);
-		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
+		CompetitionType_GetName(ctype, Lang_GetPlayerLangType(playerid), ctype_name);
 		ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
 		GetColorEmbeddingCode(ctype_color, ctype_color_code);
 
@@ -159,7 +159,7 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 	CompetitionMap_GetParamString(cmap, COMPETITION_MAP_NAME, cmap_name);
 	ctime = Competition_GetParamInt(cid, COMPETITION_TIME);
 	ctype = Competition_GetParamInt(cid, COMPETITION_TYPE);
-	CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
+	CompetitionType_GetName(ctype, Lang_GetPlayerLangType(playerid), ctype_name);
 	ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
 	GetColorEmbeddingCode(ctype_color, ctype_color_code);
 
@@ -230,7 +230,7 @@ DialogCreate:CompetitionStartMenu(playerid)
 		__(playerid, COMPETITION_START_PARAM_RANDOM, ctype_name);
 		GetColorEmbeddingCode(COLOR_BLUEGREY_200, ctype_color_code);
 	} else {
-		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
+		CompetitionType_GetName(ctype, Lang_GetPlayerLangType(playerid), ctype_name);
 		ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
 
 		GetColorEmbeddingCode(ctype_color, ctype_color_code);
@@ -353,7 +353,7 @@ DialogCreate:CompetitionStartTypeMenu(playerid)
 	format(string, sizeof(string), "{B0BEC5}%s\n", _(playerid, COMPETITION_START_PARAM_RANDOM));
 
 	foreach (ctype : CompetitionTypeIterator) {
-		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME, ctype_name);
+		CompetitionType_GetName(ctype, Lang_GetPlayerLangType(playerid), ctype_name);
 		ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
 
 		GetColorEmbeddingCode(ctype_color, ctype_color_code);

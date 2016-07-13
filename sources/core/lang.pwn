@@ -22,6 +22,12 @@ static
 	},
 	gLang[Lang];
 
+const
+	LANG_COUNT = sizeof(gLang);
+
+new
+	Iterator:LangIterator<LANG_COUNT>;
+
 /*
 	OnGameModeInit
 */
@@ -31,9 +37,10 @@ Lang_OnGameModeInit()
 	new
 		lang_file[ZLANG_MAX_FILENAME_PATH];
 
-	for (new Lang:lang; _:lang < sizeof(gLang); _:lang++) {
+	for (new Lang:lang; _:lang < LANG_COUNT; _:lang++) {
 		format(lang_file, sizeof(lang_file), "%slang_%s" DATA_FILES_FORMAT, db_lang, gLangName[lang]);
 		gLang[lang] = Lang_LoadText(lang_file);
+		Iter_Add(LangIterator, gLang[lang]);
 		Log_Game("SERVER: Language loaded (%s)", gLangName[lang]);
 	}
 
@@ -59,12 +66,11 @@ Lang_OnGameModeInit()
 stock Lang_Reload()
 {
 	new
-		Lang:lang,
 		langid,
 		load_status,
 		lang_file[ZLANG_MAX_FILENAME_PATH];
 
-	for ( ; _:lang < sizeof(gLang); _:lang++) {
+	foreach (new Lang:lang : LangIterator) {
 		langid = Lang_GetID(lang);
 
 		format(lang_file, sizeof(lang_file), "%slang_%s" DATA_FILES_FORMAT, db_lang, gLangName[lang]);
@@ -83,9 +89,9 @@ stock Lang_Reload()
 
 stock Lang:Lang_GetType(langid)
 {
-	for (new i; i < sizeof(gLang); i++) {
-		if (gLang[Lang:i] == langid) {
-			return Lang:i;
+	foreach (new Lang:lang : LangIterator) {
+		if (gLang[lang] == langid) {
+			return lang;
 		}
 	}
 	return LangEN;
@@ -103,7 +109,7 @@ stock Lang_GetID(Lang:type)
 
 stock Lang_GetIDFromName(name[])
 {
-	for (new Lang:lang; _:lang < sizeof(gLangName); _:lang++) {
+	foreach (new Lang:lang : LangIterator) {
 		if (strcmp(gLangName[lang], name, true) == 0) {
 			return Lang_GetID(lang);
 		}
@@ -113,7 +119,7 @@ stock Lang_GetIDFromName(name[])
 
 stock Lang_GetCount()
 {
-	return sizeof(gLang);
+	return LANG_COUNT;
 }
 
 stock Lang_GetTypeName(Lang:type, name[], const size = sizeof(name))

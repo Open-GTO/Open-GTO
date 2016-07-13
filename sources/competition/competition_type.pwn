@@ -31,7 +31,6 @@
 */
 
 enum CompetitionTypeParams {
-	COMPETITION_TYPE_NAME[MAX_COMPETITION_TYPE_NAME],
 	COMPETITION_TYPE_COLOR,
 	COMPETITION_TYPE_ADD_CALLBACK[MAX_FUNCTION_NAME],
 	COMPETITION_TYPE_JOIN_CALLBACK[MAX_FUNCTION_NAME],
@@ -44,7 +43,8 @@ enum CompetitionTypeParams {
 */
 
 static
-	gParam[MAX_COMPETITION_TYPES][CompetitionTypeParams];
+	gParam[MAX_COMPETITION_TYPES][CompetitionTypeParams],
+	gParamName[MAX_COMPETITION_TYPES][Lang][MAX_COMPETITION_TYPE_NAME];
 
 new
 	Iterator:CompetitionTypeIterator<MAX_COMPETITION_TYPES>;
@@ -53,13 +53,17 @@ new
 	CompetitionType_Add
 */
 
-stock CompetitionType_Add(ctype_params[CompetitionTypeParams])
+stock CompetitionType_Add(ctype_name[Lang][MAX_COMPETITION_TYPE_NAME], ctype_params[CompetitionTypeParams])
 {
 	new
 		ctype = CompetitionType_GetFreeSlot();
 
 	if (ctype != INVALID_COMPETITION_TYPE_ID) {
 		gParam[ctype] = ctype_params;
+
+		foreach (new Lang:lang : LangIterator) {
+			CompetitionType_SetName(ctype, lang, ctype_name[lang]);
+		}
 	}
 
 	return ctype;
@@ -207,4 +211,18 @@ stock CompetitionType_SetParamString(ctype, CompetitionTypeParams:param, value[]
 stock CompetitionType_GetParamString(ctype, CompetitionTypeParams:param, value[], size = sizeof(value))
 {
 	strcpy(value, gParam[ctype][param], size);
+}
+
+/*
+	Type name
+*/
+
+stock CompetitionType_SetName(ctype, Lang:lang, value[])
+{
+	strcpy(gParamName[ctype][lang], value, COMPETITION_MAX_STRING);
+}
+
+stock CompetitionType_GetName(ctype, Lang:lang, value[], size = sizeof(value))
+{
+	strcpy(value, gParamName[ctype][lang], size);
 }

@@ -317,13 +317,9 @@ static stock VehShop_UpdateLabelString(pos_id)
 	InsertSpacesInInt(GetVehicleModelCost(model), cost_str);
 
 	new
-		lang_count,
-		Lang:lang,
 		langid;
 
-	lang_count = Lang_GetCount();
-
-	for ( ; _:lang < lang_count; _:lang++) {
+	foreach (new Lang:lang : LangIterator) {
 		langid = Lang_GetID(lang);
 		format(gLabelString[pos_id][lang], sizeof(gLabelString[][]), _l(langid, VEHSHOP_3DTEXT), vehicle_name, cost_str);
 	}

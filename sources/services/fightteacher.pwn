@@ -126,13 +126,9 @@ stock AddFightStyle(minlvl, styleid, varname[], bool:haveteacher, cost = 0, Floa
 	SetFightTeacherLastID(id + 1);
 
 	new
-		lang_count,
-		Lang:lang,
 		langid;
 
-	lang_count = Lang_GetCount();
-
-	for ( ; _:lang < lang_count; _:lang++) {
+	foreach (new Lang:lang : LangIterator) {
 		langid = Lang_GetID(lang);
 
 		strcpy(gFightStyleName[id][lang], Lang_ReturnText(langid, varname), MAX_LANG_VALUE_STRING);
