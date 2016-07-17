@@ -125,7 +125,7 @@ public swagup_SpawnPickup()
 	new swid = random( sizeof(swagup_Coords) );
 	g_pickup_id = CreateDynamicPickup(410, 3, swagup_Coords[swid][Coord_X], swagup_Coords[swid][Coord_Y], swagup_Coords[swid][Coord_Z], -1);
 	foreach (new playerid : Player) {
-		SendClientMessage(playerid, COLOR_RED, _(playerid, SWAGUP_BAG_CREATED));
+		Lang_SendText(playerid, $SWAGUP_BAG_CREATED);
 	}
 	return 1;
 }

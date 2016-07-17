@@ -29,7 +29,7 @@ COMMAND:privileje(playerid, params[])
 
 	if (sscanf(params, "s[4]uK<privilege>(player)", subcmd, targetid, _:privileje)
 		|| targetid == INVALID_PLAYER_ID || _:privileje == -1) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_PRIVILEGE_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_PRIVILEGE_HELP);
 		return 1;
 	}
 
@@ -58,7 +58,7 @@ COMMAND:privileje(playerid, params[])
 		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_PRIVILEGE_GET), targetname, targetid, privileje_name);
 		SendClientMessage(playerid, -1, string);
 	} else {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_PRIVILEGE_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_PRIVILEGE_HELP);
 	}
 
 	return 1;

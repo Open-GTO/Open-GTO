@@ -61,7 +61,7 @@ Player_SaveConfig(file_config)
 Player_OnPlayerSpawn(playerid)
 {
 	if (IsPlayerMuted(playerid)) {
-		SendClientMessage(playerid, COLOR_RED, _(playerid, MUTED_HELP_MESSAGE));
+		Lang_SendText(playerid, $MUTED_HELP_MESSAGE);
 	}
 
 	PlayerLevelTD_ShowTextDraw(playerid);
@@ -132,7 +132,7 @@ Player_OnPlayerConnect(playerid)
 
 	// connect message
 	Chat_Clear(playerid);
-	SendClientMessage(playerid, COLOR_WHITE, _(playerid, PLAYER_LOADING));
+	Lang_SendText(playerid, $PLAYER_LOADING);
 
 	// store ip
 	Player_UpdateIP(playerid);
@@ -142,7 +142,7 @@ Player_OnPlayerConnect(playerid)
 		new string[MAX_LANG_VALUE_STRING];
 		format(string, sizeof(string), _(playerid, PLAYER_NICK_BAD_SYMBOLS), ALLOWED_NICK_SYMBOLS_STR);
 		SendClientMessage(playerid, COLOR_RED, string);
-		SendClientMessage(playerid, COLOR_RED, _(playerid, PLAYER_NICK_IS_IP));
+		Lang_SendText(playerid, $PLAYER_NICK_IS_IP);
 		KickPlayer(playerid, "Такой ник запрещён.");
 	}
 
@@ -264,19 +264,19 @@ stock Player_OnLogin(playerid)
 
 	format(string, sizeof(string), _(playerid, ACCOUNT_LOGIN_MESSAGE_0), VERSION_STRING);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
-	SendClientMessage(playerid, COLOR_WHITE, _(playerid, ACCOUNT_LOGIN_MESSAGE_1));
-	SendClientMessage(playerid, COLOR_WHITE, _(playerid, ACCOUNT_LOGIN_MESSAGE_2));
-	SendClientMessage(playerid, COLOR_GREEN, _(playerid, ACCOUNT_LOGIN_MESSAGE_3));
+	Lang_SendText(playerid, $ACCOUNT_LOGIN_MESSAGE_1);
+	Lang_SendText(playerid, $ACCOUNT_LOGIN_MESSAGE_2);
+	Lang_SendText(playerid, $ACCOUNT_LOGIN_MESSAGE_3);
 
 	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		SendClientMessage(playerid, COLOR_GREEN, _(playerid, ACCOUNT_LOGIN_ROOT));
+		Lang_SendText(playerid, $ACCOUNT_LOGIN_ROOT);
 	} else if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
-		SendClientMessage(playerid, COLOR_GREEN, _(playerid, ACCOUNT_LOGIN_ADMIN));
+		Lang_SendText(playerid, $ACCOUNT_LOGIN_ADMIN);
 	} else if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
-		SendClientMessage(playerid, COLOR_GREEN, _(playerid, ACCOUNT_LOGIN_MODER));
+		Lang_SendText(playerid, $ACCOUNT_LOGIN_MODER);
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	} else {
-		SendClientMessage(playerid, COLOR_GREEN, _(playerid, ACCOUNT_SUCCESS_LOGIN));
+		Lang_SendText(playerid, $ACCOUNT_SUCCESS_LOGIN);
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	}
 
@@ -410,7 +410,7 @@ stock ShowPlayerWeaponsOnLevel(playerid, newlevel, oldlevel)
 
 		if (oldlevel < GetWeaponLevel(weaponid) <= newlevel) {
 			if (!is_found) {
-				SendClientMessage(playerid, COLOR_GREEN, _(playerid, PLAYER_LEVEL_NEW_WEAPON));
+				Lang_SendText(playerid, $PLAYER_LEVEL_NEW_WEAPON);
 				is_found = true;
 			}
 			format(string, sizeof(string), _(playerid, PLAYER_LEVEL_NEW_WEAPON_ITEM), ReturnPlayerWeaponName(playerid, weaponid), GetWeaponCost(weaponid));

@@ -1976,7 +1976,7 @@ DialogResponse:AnimMenu(playerid, response, listitem, inputtext[])
 COMMAND:dance(playerid, params[])
 {
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_RED, _(playerid, COMMAND_DANCE_ERROR));
+		Lang_SendText(playerid, $COMMAND_DANCE_ERROR);
 		return 1;
 	}
 
@@ -1994,7 +1994,7 @@ COMMAND:dance(playerid, params[])
 			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DANCE4);
 		}
 		default: {
-			SendClientMessage(playerid, COLOR_RED, _(playerid, COMMAND_DANCE_ERROR));
+			Lang_SendText(playerid, $COMMAND_DANCE_ERROR);
 		}
 	}
 	return 1;

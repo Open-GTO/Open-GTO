@@ -35,14 +35,14 @@ COMMAND:system(playerid, params[])
 		subparams[32];
 
 	if (sscanf(params, "s[20]S()[32]", subcmd, subparams) || strcmp(subcmd, "help", true) == 0) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_HELP));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_HELP_HELP));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_GMX_HELP));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_WEATHER_HELP));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_GROUNDHOLD_HELP));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_TIME_HELP));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_LANG_HELP));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_SAY_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_HELP);
+		Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_HELP_HELP);
+		Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_GMX_HELP);
+		Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_WEATHER_HELP);
+		Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_GROUNDHOLD_HELP);
+		Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_TIME_HELP);
+		Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_LANG_HELP);
+		Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_SAY_HELP);
 		return 1;
 	}
 
@@ -51,14 +51,14 @@ COMMAND:system(playerid, params[])
 			time;
 
 		if (sscanf(subparams, "i", time) || time < 0) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_WEATHER_HELP));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_WEATHER_HELP);
 			return 1;
 		}
 
 		Weather_SetTime(time);
 
 		if (time == 0) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_WEATHER_DISABLED));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_WEATHER_DISABLED);
 		} else {
 			new string[MAX_LANG_VALUE_STRING];
 			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SYSTEM_WEATHER_ENABLED), time, Declension_ReturnMinutes(playerid, time));
@@ -69,16 +69,16 @@ COMMAND:system(playerid, params[])
 			bool:enable;
 
 		if (sscanf(subparams, "i", enable)) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_GROUNDHOLD_HELP));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_GROUNDHOLD_HELP);
 			return 1;
 		}
 
 		ToggleGroundholdStatus(enable);
 
 		if (enable) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_GROUNDHOLD_ON));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_GROUNDHOLD_ON);
 		} else {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_GROUNDHOLD_OFF));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_GROUNDHOLD_OFF);
 		}
 	} else if (strcmp(subcmd, "gmx", true) == 0) {
 		SendClientMessageToAll(-1, _(playerid, ADMIN_COMMAND_SYSTEM_GMX_MESSAGE));
@@ -95,7 +95,7 @@ COMMAND:system(playerid, params[])
 			langname[MAX_LANG_NAME];
 
 		if (sscanf(subparams, "s[8]S()[" #MAX_LANG_FILE_NAME "]", subsubcmd, langname)) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_LANG_HELP));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_LANG_HELP);
 			return 1;
 		}
 
@@ -107,7 +107,7 @@ COMMAND:system(playerid, params[])
 
 			__(playerid, ADMIN_COMMAND_SYSTEM_LANG_RELOAD, string);
 		} else {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_LANG_HELP));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_LANG_HELP);
 		}
 
 		SendClientMessage(playerid, -1, string);
@@ -117,7 +117,7 @@ COMMAND:system(playerid, params[])
 			value;
 
 		if (sscanf(subparams, "s[5]I(-1)", subsubcmd, value)) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_TIME_HELP));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_TIME_HELP);
 			return 1;
 		}
 
@@ -130,7 +130,7 @@ COMMAND:system(playerid, params[])
 			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SYSTEM_TIME_SET), value);
 		} else if (strcmp(subsubcmd, "real", true) == 0) {
 			if (value == -1) {
-				SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_TIME_HELP));
+				Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_TIME_HELP);
 				return 1;
 			}
 
@@ -144,7 +144,7 @@ COMMAND:system(playerid, params[])
 				__(playerid, ADMIN_COMMAND_SYSTEM_TIME_TYPE_SERVER, string);
 			}
 		} else {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_TIME_HELP));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_TIME_HELP);
 		}
 
 		SendClientMessage(playerid, -1, string);
@@ -153,14 +153,14 @@ COMMAND:system(playerid, params[])
 			string[MAX_SAY_MESSAGE_SIZE];
 
 		if (sscanf(params, "{s[20]}s[" #MAX_SAY_MESSAGE_SIZE "]", string)) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_SAY_HELP));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_SAY_HELP);
 			return 1;
 		}
 
 		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SYSTEM_SAY_MESSAGE), string);
 		SendClientMessageToAll(-1, string);
 	} else {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SYSTEM_HELP_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_HELP_HELP);
 	}
 
 	return 1;

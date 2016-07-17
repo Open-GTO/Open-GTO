@@ -29,7 +29,7 @@ VMenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 COMMAND:vmenu(playerid, params[])
 {
 	if (!IsPlayerInAnyVehicle(playerid)) {
-		SendClientMessage(playerid, COLOR_RED, _(playerid, VEHICLE_NOT_IN_CAR));
+		Lang_SendText(playerid, $VEHICLE_NOT_IN_CAR);
 		return 0;
 	}
 
@@ -43,51 +43,65 @@ DialogCreate:VehicleMenu(playerid)
 	new engine, lights, alarm, doors, bonnet, boot, objective;
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 
-	new string[MAX_LANG_VALUE_STRING * 8];
-	strcat(string, _(playerid, VEHICLE_MENU_LIST_FLIP), sizeof(string));
-	strcat(string, _(playerid, VEHICLE_MENU_LIST_FILL), sizeof(string));
-	strcat(string, _(playerid, VEHICLE_MENU_LIST_RADIO), sizeof(string));
+	new
+		temp[MAX_LANG_VALUE_STRING],
+		string[MAX_LANG_VALUE_STRING * 8];
+
+	Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_FLIP", temp);
+	strcat(string, temp, sizeof(string));
+
+	Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_FILL", temp);
+	strcat(string, _temp, sizeof(string));
+
+	Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_RADIO", temp);
+	strcat(string, temp, sizeof(string));
 
 	// двери
-	format(string, sizeof(string), _(playerid, VEHICLE_MENU_LIST_DOORS), string, ReturnVehicleDoorsAccessName(Lang_GetPlayerLanguage(playerid), vehicleid));
+	Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_DOORS", temp);
+	format(string, sizeof(string), temp, string, ReturnVehicleDoorsAccessName(Lang_GetPlayerLanguage(playerid), vehicleid));
 
 	// фары
 	if (lights == VEHICLE_PARAMS_ON) {
-		strcat(string, _(playerid, VEHICLE_MENU_LIST_DISABLE_LIGHTS), sizeof(string));
+		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_DISABLE_LIGHTS", temp);
 	} else {
-		strcat(string, _(playerid, VEHICLE_MENU_LIST_ENABLE_LIGHTS), sizeof(string));
+		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_ENABLE_LIGHTS", temp);
 	}
+	strcat(string, temp, sizeof(string));
 
 	// двигатель
 	if (engine == VEHICLE_PARAMS_ON) {
-		strcat(string, _(playerid, VEHICLE_MENU_LIST_DISABLE_ENGINE), sizeof(string));
+		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_DISABLE_ENGINE", temp);
 	} else {
-		strcat(string, _(playerid, VEHICLE_MENU_LIST_ENABLE_ENGINE), sizeof(string));
+		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_ENABLE_ENGINE", temp);
 	}
+	strcat(string, temp, sizeof(string));
 
 	// капот
 	if (bonnet == VEHICLE_PARAMS_ON) {
-		strcat(string, _(playerid, VEHICLE_MENU_LIST_CLOSE_BONNET), sizeof(string));
+		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_CLOSE_BONNET", temp);
 	} else {
-		strcat(string, _(playerid, VEHICLE_MENU_LIST_OPEN_BONNET), sizeof(string));
+		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_OPEN_BONNET", temp);
 	}
+	strcat(string, temp, sizeof(string));
 
 	// багажник
 	if (boot == VEHICLE_PARAMS_ON) {
-		strcat(string, _(playerid, VEHICLE_MENU_LIST_CLOSE_BOOT), sizeof(string));
+		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_CLOSE_BOOT", temp);
 	} else {
-		strcat(string, _(playerid, VEHICLE_MENU_LIST_OPEN_BOOT), sizeof(string));
+		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_OPEN_BOOT", temp);
 	}
+	strcat(string, temp, sizeof(string));
 
 	// окна
 	new window_state;
 	GetVehicleParamsCarWindows(vehicleid, window_state, window_state, window_state, window_state);
 
 	if (window_state == VEHICLE_WINDOW_OPENED) {
-		strcat(string, _(playerid, VEHICLE_MENU_LIST_CLOSE_WINDOWS), sizeof(string));
+		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_CLOSE_WINDOWS", temp);
 	} else {
-		strcat(string, _(playerid, VEHICLE_MENU_LIST_OPEN_WINDOWS), sizeof(string));
+		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_OPEN_WINDOWS", temp);
 	}
+	strcat(string, temp, sizeof(string));
 
 	Dialog_Open(playerid, Dialog:VehicleMenu, DIALOG_STYLE_LIST, _(playerid, VEHICLE_MENU_HEADER), string, _(playerid, VEHICLE_MENU_BUTTON_OK), _(playerid, VEHICLE_MENU_BUTTON_CANCEL));
 }
@@ -141,7 +155,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 				return 1;
 			}
 
-			SendClientMessage(playerid, COLOR_YELLOW, _(playerid, VEHICLE_FUEL_IS_FUELING));
+			Lang_SendText(playerid, $VEHICLE_FUEL_IS_FUELING);
 			FillVehicle(vehicleid, playerid);
 			return 1;
 		}

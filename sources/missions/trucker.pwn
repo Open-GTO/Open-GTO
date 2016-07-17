@@ -334,7 +334,7 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 	if (IsPlayerInMission(playerid, mission_trucker) && IsVehicleIsRunner(vehicleid)) {
 		new trailerid = GetVehicleTrailer(vehicleid);
 		if (trailerid == 0) {
-			SendClientMessage(playerid, COLOR_WHITE, _(playerid, TRUCKER_TRAILER_MISSING));
+			Lang_SendText(playerid, $TRUCKER_TRAILER_MISSING);
 			return 1;
 		}
 
@@ -346,7 +346,7 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 			GetPlayerHealth(playerid, health);
 			SetPlayerHealth(playerid, health - 10);
 
-			SendClientMessage(playerid, COLOR_WHITE, _(playerid, TRUCKER_TRAILER_FAKE));
+			Lang_SendText(playerid, $TRUCKER_TRAILER_FAKE);
 			return 1;
 		}
 
@@ -465,7 +465,7 @@ Trucker_OnPlayerDeath(playerid, killerid, reason)
 	}
 	Trucker_Stop(playerid);
 	GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker));
-	SendClientMessage(playerid, COLOR_RED, _(playerid, TRUCKER_MISSION_FAILED));
+	Lang_SendText(playerid, $TRUCKER_MISSION_FAILED);
 	return 1;
 }
 
@@ -478,10 +478,10 @@ Trucker_OnVehicleDeath(vehicleid, killerid)
 		if (IsPlayerInMission(killerid, mission_trucker)) {
 			Trucker_Stop(killerid);
 			GivePlayerMoney(killerid, -mission_CalculateMoney(killerid, mission_trucker));
-			SendClientMessage(killerid, COLOR_RED, _(killerid, TRUCKER_MISSION_FAILED_DESTROY));
+			Lang_SendText(killerid, $TRUCKER_MISSION_FAILED_DESTROY);
 		} else {
 			if (player_trucker[killerid][pt_TrailerCheck_Timer] != 0) {
-				SendClientMessage(killerid, COLOR_RED, _(killerid, TRUCKER_MISSION_FAILED_DECLINE));
+				Lang_SendText(killerid, $TRUCKER_MISSION_FAILED_DECLINE);
 				Message_Alert(killerid, _(killerid, TRUCKER_ALERT_HEADER), _(killerid, TRUCKER_ALERT_ABORTED));
 
 				KillTimer(player_trucker[killerid][pt_TrailerCheck_Timer]);
@@ -496,7 +496,7 @@ forward Trucker_Trailer_Check(playerid, vehicleid);
 public Trucker_Trailer_Check(playerid, vehicleid)
 {
 	if (GetPlayerVehicleID(playerid) == 0) {
-		SendClientMessage(playerid, COLOR_RED, _(playerid, TRUCKER_MISSION_FAILED_DECLINE));
+		Lang_SendText(playerid, $TRUCKER_MISSION_FAILED_DECLINE);
 		Message_Alert(playerid, _(playerid, TRUCKER_ALERT_HEADER), _(playerid, TRUCKER_ALERT_ABORTED));
 
 		Message_ObjectiveHide(playerid);
@@ -526,7 +526,7 @@ public Trucker_Trailer_Check(playerid, vehicleid)
 		SetVehicleToRespawn(vehicleid);
 		player_trucker[playerid][pt_TrailerCheck_Time] = 0;
 		KillTimer(player_trucker[playerid][pt_TrailerCheck_Timer]);
-		SendClientMessage(playerid, COLOR_RED, _(playerid, TRUCKER_MISSION_FAILED_TRAILER));
+		Lang_SendText(playerid, $TRUCKER_MISSION_FAILED_TRAILER);
 		Message_Alert(playerid, _(playerid, TRUCKER_ALERT_HEADER), _(playerid, TRUCKER_ALERT_ABORTED));
 		Message_ObjectiveHide(playerid);
 		return 0;
@@ -548,7 +548,7 @@ public Trucker_CancelMission(playerid)
 	if (IsPlayerInMission(playerid, mission_trucker)) {
 		Trucker_Stop(playerid);
 		GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker));
-		SendClientMessage(playerid, COLOR_RED, _(playerid, TRUCKER_MISSION_FAILED_DESCRIPTION));
+		Lang_SendText(playerid, $TRUCKER_MISSION_FAILED_DESCRIPTION);
 
 		new vehicleid = GetPlayerVehicleID(playerid);
 		if (vehicleid != 0 && IsVehicleIsRunner(vehicleid)) {

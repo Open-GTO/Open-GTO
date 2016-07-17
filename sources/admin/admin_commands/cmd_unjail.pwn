@@ -22,7 +22,7 @@ COMMAND:unjail(playerid, params[])
 		reason[MAX_JAIL_REASON_LENGTH];
 
 	if (sscanf(params, "s[32]S()[" #MAX_JAIL_REASON_LENGTH "]", subparams, reason)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_UNJAIL_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_UNJAIL_HELP);
 		return 1;
 	}
 
@@ -32,7 +32,7 @@ COMMAND:unjail(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_UNJAIL_TARGET_ERROR));
+		Lang_SendText(playerid, $ADMIN_COMMAND_UNJAIL_TARGET_ERROR);
 		return 1;
 	}
 

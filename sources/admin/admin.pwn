@@ -37,24 +37,21 @@ stock SendClientMessageToAdmins(senderid, text[])
 {
 	new
 		sender_name[MAX_PLAYER_NAME + 1],
-		message[MAX_LANG_VALUE_STRING],
 		count;
 
 	GetPlayerName(senderid, sender_name, sizeof(sender_name));
 
 	foreach (new adminid : Player) {
 		if (IsPlayerHavePrivilege(adminid, PlayerPrivilegeAdmin)) {
-			format(message, sizeof(message), _(adminid, ADMIN_CHAT_MESSAGE_TO_ADMIN), sender_name, senderid, text);
-			SendClientMessage(adminid, -1, message);
+			Lang_SendText(adminid, $ACCOUNT_LOGIN_FIRST, sender_name, senderid, text);
 			count++;
 		}
 	}
 
 	if (count == 0) {
-		SendClientMessage(senderid, -1, _(senderid, ADMIN_CHAT_NO_ADMIN));
+		Lang_SendText(senderid, $ADMIN_CHAT_NO_ADMIN);
 	} else {
-		format(message, sizeof(message), _(senderid, ADMIN_CHAT_PLAYER_TO_ADMIN), text);
-		SendClientMessage(senderid, -1, message);
+		Lang_SendText(senderid, $ADMIN_CHAT_PLAYER_TO_ADMIN, text);
 	}
 	return 0;
 }
@@ -63,24 +60,21 @@ stock SendClientMessageToModers(senderid, text[])
 {
 	new
 		sender_name[MAX_PLAYER_NAME + 1],
-		message[MAX_LANG_VALUE_STRING],
 		count;
 
 	GetPlayerName(senderid, sender_name, sizeof(sender_name));
 
 	foreach (new adminid : Player) {
 		if (IsPlayerHavePrivilege(adminid, PlayerPrivilegeModer)) {
-			format(message, sizeof(message), _(adminid, ADMIN_CHAT_MESSAGE_TO_MODER), sender_name, senderid, text);
-			SendClientMessage(adminid, -1, message);
+			Lang_SendText(adminid, $ADMIN_CHAT_MESSAGE_TO_MODER, sender_name, senderid, text);
 			count++;
 		}
 	}
 
 	if (count == 0) {
-		SendClientMessage(senderid, -1, _(senderid, ADMIN_CHAT_NO_MODER));
+		Lang_SendText(senderid, $ADMIN_CHAT_NO_MODER);
 	} else {
-		format(message, sizeof(message), _(senderid, ADMIN_CHAT_PLAYER_TO_MODER), text);
-		SendClientMessage(senderid, -1, message);
+		Lang_SendText(senderid, $ADMIN_CHAT_PLAYER_TO_MODER, text);
 	}
 	return 0;
 }
@@ -134,11 +128,10 @@ stock Admin_SendProtectReport(issuerid, text[], {Float, _}:...)
 				continue;
 			}
 
-			format(message, sizeof(message), _(adminid, ADMIN_PROTECTION_REPORT), playername, issuerid, fstring);
-			SendClientMessage(adminid, COLOR_RED, message);
+			Lang_SendText(adminid, $ADMIN_PROTECTION_REPORT, playername, issuerid, fstring)
 		}
 
-		format(message, sizeof(message), _d(ADMIN_PROTECTION_REPORT), playername, issuerid, fstring);
+		Log_Player($ADMIN_PROTECTION_REPORT, playername, issuerid, fstring);
 	}
 	else
 	{
@@ -147,12 +140,9 @@ stock Admin_SendProtectReport(issuerid, text[], {Float, _}:...)
 				continue;
 			}
 
-			format(message, sizeof(message), _(adminid, ADMIN_PROTECTION_REPORT), playername, issuerid, text);
-			SendClientMessage(adminid, COLOR_RED, message);
+			Lang_SendText(adminid, $ADMIN_PROTECTION_REPORT, playername, issuerid, text)
 		}
 
-		format(message, sizeof(message), _d(ADMIN_PROTECTION_REPORT), playername, issuerid, text);
+		Log_Player($ADMIN_PROTECTION_REPORT, playername, issuerid, text);
 	}
-
-	Log_Player(message);
 }

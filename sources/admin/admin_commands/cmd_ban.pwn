@@ -39,8 +39,8 @@ COMMAND:ban(playerid, params[])
 		reason[MAX_BAN_REASON_LENGTH];
 
 	if (sscanf(params, "s[" #MAX_BAN_TARGET_LENGTH "]K<ftime>(0)S()[" #MAX_BAN_REASON_LENGTH "]", target, time, reason)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_BAN_HELP));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_BAN_EXAMPLE));
+		Lang_SendText(playerid, $ADMIN_COMMAND_BAN_HELP);
+		Lang_SendText(playerid, $ADMIN_COMMAND_BAN_EXAMPLE);
 		return 1;
 	}
 

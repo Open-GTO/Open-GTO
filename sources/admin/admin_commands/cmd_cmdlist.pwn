@@ -39,22 +39,22 @@ COMMAND:cmdlist(playerid, params[])
 
 		Dialog_Message(playerid, _(playerid, ADMIN_COMMAND_CMDLIST_DIALOG_HEADER), string, _(playerid, ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK));
 	} else {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_CMDLIST_HEADER));
+		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_HEADER);
 
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_CMDLIST_MODER_0));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_CMDLIST_MODER_1));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_CMDLIST_MODER_2));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_CMDLIST_MODER_3));
+		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_0);
+		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_1);
+		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_2);
+		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_3);
 
 		if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_CMDLIST_ADMIN_0));
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_CMDLIST_ADMIN_1));
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_CMDLIST_ADMIN_2));
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_CMDLIST_ADMIN_3));
+			Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_ADMIN_0);
+			Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_ADMIN_1);
+			Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_ADMIN_2);
+			Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_ADMIN_3);
 		}
 
 		if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_CMDLIST_RCON_0));
+			Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_RCON_0);
 		}
 	}
 

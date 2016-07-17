@@ -22,7 +22,7 @@ COMMAND:say(playerid, params[])
 		string[MAX_LANG_VALUE_STRING];
 
 	if (strlen(params) == 0) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SAY_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_SAY_HELP);
 		return 1;
 	}
 

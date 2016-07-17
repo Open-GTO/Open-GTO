@@ -24,7 +24,7 @@ COMMAND:warn(playerid, params[])
 		reason[MAX_WARN_REASON_LENGTH];
 
 	if (sscanf(params, "s[5]s[32]I(1)S()[" #MAX_WARN_REASON_LENGTH "]", subcmd, subparams, amount, reason)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_WARN_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_WARN_HELP);
 		return 1;
 	}
 
@@ -34,7 +34,7 @@ COMMAND:warn(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_WARN_TARGET_ERROR));
+		Lang_SendText(playerid, $ADMIN_COMMAND_WARN_TARGET_ERROR);
 		return 1;
 	}
 
@@ -72,7 +72,7 @@ COMMAND:warn(playerid, params[])
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_WARN_TARGET_ERROR));
+			Lang_SendText(playerid, $ADMIN_COMMAND_WARN_TARGET_ERROR);
 			return 1;
 		}
 
@@ -103,7 +103,7 @@ COMMAND:warn(playerid, params[])
 			SendClientMessage(playerid, -1, string);
 		}
 	} else {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_WARN_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_WARN_HELP);
 	}
 
 	return 1;

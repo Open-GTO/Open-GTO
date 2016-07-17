@@ -37,7 +37,7 @@ COMMAND:unban(playerid, params[])
 		target[MAX_BAN_TARGET_LENGTH];
 
 	if (sscanf(params, "s[" #MAX_BAN_TARGET_LENGTH "]", target)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_UNBAN_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_UNBAN_HELP);
 		return 1;
 	}
 

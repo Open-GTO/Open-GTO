@@ -21,7 +21,7 @@ COMMAND:boom(playerid, params[])
 		type;
 
 	if (sscanf(params, "i", type) || 13 < type < 0) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_BOOM_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_BOOM_HELP);
 		return 1;
 	}
 

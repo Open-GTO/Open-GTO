@@ -51,7 +51,7 @@ public PlayerClick_SendCash(playerid, clickedid, listitem, inputtext[])
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 
 	if (GetPlayerMoney(playerid) < money || !IsNumeric(inputtext) || money < 0) {
-		SendClientMessage(playerid, COLOR_RED, _(playerid, CLICK_SENDCASH_NOT_VALID));
+		Lang_SendText(playerid, $CLICK_SENDCASH_NOT_VALID);
 		return 0;
 	}
 

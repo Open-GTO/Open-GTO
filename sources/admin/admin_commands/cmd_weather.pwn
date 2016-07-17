@@ -22,7 +22,7 @@ COMMAND:weather(playerid, params[])
 		weatherid;
 
 	if (sscanf(params, "i", weatherid)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_WEATHER_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_WEATHER_HELP);
 		return 1;
 	}
 

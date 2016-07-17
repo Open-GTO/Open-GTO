@@ -28,7 +28,7 @@ COMMAND:interior(playerid, params[])
 		interior;
 
 	if (sscanf(params, "s[5]s[32]I(0)", subcmd, subparams, interior)) {
-		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_INTERIOR_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_HELP);
 		return 1;
 	}
 
@@ -38,7 +38,7 @@ COMMAND:interior(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_INTERIOR_TARGET_ERROR));
+		Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_TARGET_ERROR);
 		return 1;
 	}
 
@@ -72,7 +72,7 @@ COMMAND:interior(playerid, params[])
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_INTERIOR_TARGET_ERROR));
+			Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_TARGET_ERROR);
 			return 1;
 		}
 
@@ -81,7 +81,7 @@ COMMAND:interior(playerid, params[])
 		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_INTERIOR_GET), targetname, targetid, interior);
 		SendClientMessage(playerid, -1, string);
 	} else {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_INTERIOR_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_HELP);
 	}
 
 	return 1;

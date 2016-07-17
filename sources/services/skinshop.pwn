@@ -99,7 +99,7 @@ DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])
 	SetPlayerSkin(playerid, skinid);
 	GivePlayerMoney(playerid, -SKINS_COST);
 
-	SendClientMessage(playerid, 0, _(playerid, SKINSHOP_DIALOG_INFO_THANKS));
+	Lang_SendText(playerid, $SKINSHOP_DIALOG_INFO_THANKS);
 	return 1;
 }
 

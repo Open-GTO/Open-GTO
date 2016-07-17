@@ -180,7 +180,7 @@ Groundhold_OnPlayerLeaveDynArea(playerid, STREAMER_TAG_AREA areaid)
 
 	pIsHold[playerid] = false;
 
-	SendClientMessage(playerid, COLOR_RED, _(playerid, GROUNDHOLD_HOLD));
+	Lang_SendText(playerid, $GROUNDHOLD_HOLD);
 	Message_Alert(playerid, _(playerid, GROUNDHOLD_ALERT_HEADER), _(playerid, GROUNDHOLD_OBJECTIVE_BACK));
 	Message_Objective(playerid, _(playerid, GROUNDHOLD_OBJECTIVE_BACK), -1);
 

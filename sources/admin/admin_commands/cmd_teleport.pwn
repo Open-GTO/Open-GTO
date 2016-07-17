@@ -27,9 +27,9 @@ COMMAND:teleport(playerid, params[])
 		subparams[64];
 
 	if (sscanf(params, "s[7]s[64]", subcmd, subparams)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_TELEPORT_TO_HELP));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_TELEPORT_HERE_HELP));
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_TELEPORT_COORD_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_TELEPORT_TO_HELP);
+		Lang_SendText(playerid, $ADMIN_COMMAND_TELEPORT_HERE_HELP);
+		Lang_SendText(playerid, $ADMIN_COMMAND_TELEPORT_COORD_HELP);
 		return 1;
 	}
 
@@ -39,7 +39,7 @@ COMMAND:teleport(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_TELEPORT_TARGET_ERROR));
+		Lang_SendText(playerid, $ADMIN_COMMAND_TELEPORT_TARGET_ERROR);
 		return 1;
 	}
 
@@ -78,7 +78,7 @@ COMMAND:teleport(playerid, params[])
 
 	if (strcmp(subcmd, "to", true) == 0) {
 		if (targetid == INVALID_PLAYER_ID || targetid == -1) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_TELEPORT_TARGET_ERROR));
+			Lang_SendText(playerid, $ADMIN_COMMAND_TELEPORT_TARGET_ERROR);
 			return 1;
 		}
 
@@ -92,7 +92,7 @@ COMMAND:teleport(playerid, params[])
 		SendClientMessage(playerid, -1, string);
 	} else if (strcmp(subcmd, "here", true) == 0) {
 		if (targetid == INVALID_PLAYER_ID) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_TELEPORT_TARGET_ERROR));
+			Lang_SendText(playerid, $ADMIN_COMMAND_TELEPORT_TARGET_ERROR);
 			return 1;
 		}
 
@@ -113,7 +113,7 @@ COMMAND:teleport(playerid, params[])
 		}
 	} else if (strcmp(subcmd, "coord", true) == 0) {
 		if (sscanf(subparams, "p<,>fffI(0)I(0)", t_pos_x, t_pos_y, t_pos_z, t_interior, t_world)) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_TELEPORT_COORD_HELP));
+			Lang_SendText(playerid, $ADMIN_COMMAND_TELEPORT_COORD_HELP);
 			return 1;
 		}
 
@@ -123,7 +123,7 @@ COMMAND:teleport(playerid, params[])
 		       playername, playerid, t_pos_x, t_pos_y, t_pos_z, p_pos_a, t_interior, t_world);
 		SendMessageToNearPlayerPlayers(string, 40.0, playerid);
 	} else {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_TELEPORT_COORD_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_TELEPORT_COORD_HELP);
 	}
 
 	return 1;

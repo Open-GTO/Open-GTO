@@ -36,7 +36,7 @@ COMMAND:skill(playerid, params[])
 		amount;
 
 	if (sscanf(params, "s[5]s[32]K<weapon>(-1)I(0)", subcmd, subparams, weaponid, amount)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_HELP);
 		return 1;
 	}
 
@@ -46,7 +46,7 @@ COMMAND:skill(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_TARGET_ERROR));
+		Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_TARGET_ERROR);
 		return 1;
 	}
 
@@ -57,7 +57,7 @@ COMMAND:skill(playerid, params[])
 		skillid = GetWeaponSkillID(weaponid);
 
 		if (skillid == -1) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_WEAPON_ERROR));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_WEAPON_ERROR);
 			return 1;
 		}
 	}
@@ -80,7 +80,7 @@ COMMAND:skill(playerid, params[])
 
 	if (strcmp(subcmd, "set", true) == 0) {
 		if (skillid == -1) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_WEAPON_ERROR));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_WEAPON_ERROR);
 			return 1;
 		}
 
@@ -108,7 +108,7 @@ COMMAND:skill(playerid, params[])
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_TARGET_ERROR));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_TARGET_ERROR);
 			return 1;
 		}
 
@@ -132,7 +132,7 @@ COMMAND:skill(playerid, params[])
 		}
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		if (skillid == -1) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_WEAPON_ERROR));
+			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_WEAPON_ERROR);
 			return 1;
 		}
 
@@ -159,7 +159,7 @@ COMMAND:skill(playerid, params[])
 			SendClientMessage(playerid, -1, string);
 		}
 	} else {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_SKILL_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_HELP);
 	}
 
 	return 1;

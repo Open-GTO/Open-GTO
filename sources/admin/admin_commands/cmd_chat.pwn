@@ -21,7 +21,7 @@ COMMAND:chat(playerid, params[])
 		subparams[32];
 
 	if (sscanf(params, "s[32]", subparams)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_CHAT_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_CHAT_HELP);
 		return 1;
 	}
 
@@ -37,7 +37,7 @@ COMMAND:chat(playerid, params[])
 		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_CHAT_CLEAN), playername, playerid);
 		SendClientMessageToAll(-1, string);
 	} else {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_CHAT_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_CHAT_HELP);
 	}
 
 	return 1;

@@ -23,7 +23,7 @@ COMMAND:xp(playerid, params[])
 		amount;
 
 	if (sscanf(params, "s[5]s[32]I(1)", subcmd, subparams, amount)) {
-		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_XP_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_XP_HELP);
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:xp(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_XP_TARGET_ERROR));
+		Lang_SendText(playerid, $ADMIN_COMMAND_XP_TARGET_ERROR);
 		return 1;
 	}
 
@@ -88,7 +88,7 @@ COMMAND:xp(playerid, params[])
 			SendClientMessage(playerid, -1, string);
 		}
 	} else {
-		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_XP_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_XP_HELP);
 	}
 
 	return 1;

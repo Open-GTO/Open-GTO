@@ -25,7 +25,7 @@ static
 COMMAND:skydive(playerid, params[])
 {
 	if (IsPlayerJailed(playerid) || GetPlayerInterior(playerid) != 0 || IsPlayerAtQuest(playerid)) {
-		SendClientMessage(playerid, COLOR_WHITE, _(playerid, SKYDIVING_ERROR));
+		Lang_SendText(playerid, $SKYDIVING_ERROR);
 		return 1;
 	}
 
@@ -55,7 +55,7 @@ COMMAND:skydive(playerid, params[])
 
 	SetPlayerSkydiveTime(playerid, gettime() + SKYDIVE_TIME);
 
-	SendClientMessage(playerid, COLOR_WHITE, _(playerid, SKYDIVING_MSG));
+	Lang_SendText(playerid, $SKYDIVING_MSG);
 	GameTextForPlayer(playerid, _(playerid, SKYDIVING_GAMETEXT), 4000, 5);
 
 	format(string, sizeof(string), _(playerid, SKYDIVING_MSG_TO_ALL), ReturnPlayerName(playerid), playerid);

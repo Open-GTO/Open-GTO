@@ -1957,17 +1957,17 @@ COMMAND:engine(playerid, params[])
 {
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid == 0) {
-		SendClientMessage(playerid, -1, _(playerid, VEHICLE_FUEL_NOT_IN_VEHICLE));
+		Lang_SendText(playerid, $VEHICLE_FUEL_NOT_IN_VEHICLE);
 		return 1;
 	}
 
 	if (GetPlayerVehicleSeat(playerid) != 0) {
-		SendClientMessage(playerid, -1, _(playerid, VEHICLE_FUEL_NOT_DRIVER));
+		Lang_SendText(playerid, $VEHICLE_FUEL_NOT_DRIVER);
 		return 1;
 	}
 
 	if (GetVehicleFuel(vehicleid) <= 0.1) {
-		SendClientMessage(playerid, -1, _(playerid, VEHICLE_FUEL_EMPTY));
+		Lang_SendText(playerid, $VEHICLE_FUEL_EMPTY);
 	} else {
 		Vehicle_ToggleEngine(vehicleid);
 	}

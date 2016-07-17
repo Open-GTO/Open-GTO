@@ -161,14 +161,15 @@ public AdminClick_KickPlayer(playerid, targetid, listitem, inputtext[])
 
 	new
 		string[MAX_LANG_VALUE_STRING],
+		players[MAX_PLAYERS],
 		playername[MAX_PLAYER_NAME + 1],
 		targetname[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_PLAYER), playername, playerid, targetname, targetid);
-	SendMessageToNearPlayerPlayers(string, 40.0, targetid);
+	GetPlayerNearPlayers(targetid, 40.0, players);
+	Lang_SendTextToPlayers(players, $ADMIN_COMMAND_KICK_PLAYER, playername, playerid, targetname, targetid);
 
 	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_PLAYER_SELF), targetname, targetid);
 	Dialog_Message(playerid, _(playerid, ADMIN_CLICK_MESSAGE_HEADER), string, _(playerid, ADMIN_CLICK_MESSAGE_BUTTON_OK));

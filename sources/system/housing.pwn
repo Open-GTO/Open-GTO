@@ -477,7 +477,7 @@ DialogResponse:HouseMenu(playerid, response, listitem, inputtext[])
 				return 1;
 			}
 			SetPlayerPosEx(playerid, Houses[id][Houses_EnterX], Houses[id][Houses_EnterY], Houses[id][Houses_EnterZ], 0, Houses[id][Houses_Interior], Houses[id][Houses_VirtualWorld]);
-			SendClientMessage(playerid, COLOR_GREEN, _(playerid, HOUSING_ENTER_EXIT_HELP));
+			Lang_SendText(playerid, $HOUSING_ENTER_EXIT_HELP);
 			return 1;
 		}
 		case 2:
@@ -743,7 +743,7 @@ stock DeleteRenter(playerid)
 		{
 			if (!strcmp(Houses[id][Houses_RentName], ReturnPlayerName(i), true))
 			{
-				SendClientMessage(i, COLOR_LIGHTRED, _(playerid, HOUSING_KICKED));
+				Lang_SendText(i, $HOUSING_KICKED);
 			}
 		}
 	}

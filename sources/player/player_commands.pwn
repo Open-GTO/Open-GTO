@@ -15,11 +15,11 @@
 
 COMMAND:help(playerid, params[])
 {
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_HELP_HEADER));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_HELP_0));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_HELP_1));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_HELP_2));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_HELP_3));
+	Lang_SendText(playerid, $COMMAND_HELP_HEADER);
+	Lang_SendText(playerid, $COMMAND_HELP_0);
+	Lang_SendText(playerid, $COMMAND_HELP_1);
+	Lang_SendText(playerid, $COMMAND_HELP_2);
+	Lang_SendText(playerid, $COMMAND_HELP_3);
 	return 1;
 }
 
@@ -31,16 +31,16 @@ COMMAND:info(playerid, params[])
 
 COMMAND:commands(playerid, params[])
 {
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_0));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_1));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_2));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_3));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_4));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_5));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_6));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_7));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_8));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_COMMANDS_9));
+	Lang_SendText(playerid, $COMMAND_COMMANDS_0);
+	Lang_SendText(playerid, $COMMAND_COMMANDS_1);
+	Lang_SendText(playerid, $COMMAND_COMMANDS_2);
+	Lang_SendText(playerid, $COMMAND_COMMANDS_3);
+	Lang_SendText(playerid, $COMMAND_COMMANDS_4);
+	Lang_SendText(playerid, $COMMAND_COMMANDS_5);
+	Lang_SendText(playerid, $COMMAND_COMMANDS_6);
+	Lang_SendText(playerid, $COMMAND_COMMANDS_7);
+	Lang_SendText(playerid, $COMMAND_COMMANDS_8);
+	Lang_SendText(playerid, $COMMAND_COMMANDS_9);
 	return 1;
 }
 
@@ -51,7 +51,7 @@ COMMAND:stats(playerid, params[])
 
 COMMAND:status(playerid, params[])
 {
-	SendClientMessage(playerid, COLOR_GREEN, _(playerid, COMMAND_STATUS_0));
+	Lang_SendText(playerid, $COMMAND_STATUS_0);
 
 	new string[MAX_STRING];
 
@@ -87,13 +87,13 @@ COMMAND:status(playerid, params[])
 
 COMMAND:version(playerid, params[])
 {
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_VERSION_0));
+	Lang_SendText(playerid, $COMMAND_VERSION_0);
 	new string[MAX_LANG_VALUE_STRING];
 	format(string, sizeof(string), _(playerid, COMMAND_VERSION_1), VERSION_STRING);
 	SendClientMessage(playerid, -1, string);
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_VERSION_2));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_VERSION_3));
-	SendClientMessage(playerid, -1, _(playerid, COMMAND_VERSION_4));
+	Lang_SendText(playerid, $COMMAND_VERSION_2);
+	Lang_SendText(playerid, $COMMAND_VERSION_3);
+	Lang_SendText(playerid, $COMMAND_VERSION_4);
 	return 1;
 }
 
@@ -110,7 +110,7 @@ COMMAND:time(playerid, params[])
 	new mute_time = GetPlayerMuteTime(playerid);
 
 	if (jail_time != -1 || mute_time != 0) {
-		SendClientMessage(playerid, COLOR_LIGHTRED, _(playerid, COMMAND_TIME_ABOUT));
+		Lang_SendText(playerid, $COMMAND_TIME_ABOUT);
 	}
 
 	if (jail_time != -1) {
@@ -137,7 +137,7 @@ COMMAND:id(playerid, params[])
 		ids[COMMAND_ID_MAX_MATCHES];
 
 	if (sscanf(params, "?<MATCH_NAME_PARTIAL=1>u[" #COMMAND_ID_MAX_MATCHES "]", ids)) {
-		SendClientMessage(playerid, -1, _(playerid, COMMAND_ID_HELP));
+		Lang_SendText(playerid, $COMMAND_ID_HELP);
 		return 1;
 	}
 
@@ -148,7 +148,7 @@ COMMAND:id(playerid, params[])
 
 	for (i = 0; ids[i] != INVALID_PLAYER_ID; i++) {
 		if (ids[i] == cellmin) {
-			SendClientMessage(playerid, -1, _(playerid, COMMAND_ID_AND_MORE));
+			Lang_SendText(playerid, $COMMAND_ID_AND_MORE);
 			break;
 		}
 
@@ -165,7 +165,7 @@ COMMAND:id(playerid, params[])
 	}
 
 	if (i == 0) {
-		SendClientMessage(playerid, -1, _(playerid, COMMAND_ID_NO_ONE));
+		Lang_SendText(playerid, $COMMAND_ID_NO_ONE);
 	}
 
 	return 1;
@@ -174,7 +174,7 @@ COMMAND:id(playerid, params[])
 COMMAND:pm(playerid, params[])
 {
 	if (isnull(params)) {
-		SendClientMessage(playerid, COLOR_PM, _(playerid, COMMAND_PM_HELP));
+		Lang_SendText(playerid, $COMMAND_PM_HELP);
 		return 1;
 	}
 
@@ -183,7 +183,7 @@ COMMAND:pm(playerid, params[])
 		message[MAX_SEND_SYMBOLS];
 
 	if (sscanf(params, "us[" #MAX_SEND_SYMBOLS "]", receiveid, message) || receiveid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(playerid, COMMAND_PM_ERROR));
+		Lang_SendText(playerid, $COMMAND_PM_ERROR);
 		return 1;
 	}
 

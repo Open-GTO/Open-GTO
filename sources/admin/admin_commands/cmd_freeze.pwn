@@ -23,7 +23,7 @@ COMMAND:freeze(playerid, params[])
 		reason[MAX_FREEZE_REASON_LENGTH];
 
 	if (sscanf(params, "s[32]k<ftime>S()[" #MAX_FREEZE_REASON_LENGTH "]", subparams, time, reason)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_FREEZE_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_FREEZE_HELP);
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:freeze(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_FREEZE_TARGET_ERROR));
+		Lang_SendText(playerid, $ADMIN_COMMAND_FREEZE_TARGET_ERROR);
 		return 1;
 	}
 

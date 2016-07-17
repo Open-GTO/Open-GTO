@@ -70,7 +70,7 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 	} else {
 		new maxxp = GetPlayerXPToLevel(playerid, GetMaxPlayerLevel());
 		if (xpamount >= maxxp) {
-			SendClientMessage(playerid, COLOR_RED, _(playerid, PLAYER_XP_MAX));
+			Lang_SendText(playerid, $PLAYER_XP_MAX);
 			xpamount = maxxp;
 		}
 	}

@@ -21,12 +21,12 @@ COMMAND:netstats(playerid, params[])
 		targetid;
 
 	if (sscanf(params, "u", targetid)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_GETINFO_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_HELP);
 		return 1;
 	}
 
 	if (targetid == -1) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_GETINFO_TARGET_ERROR));
+		Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_TARGET_ERROR);
 		return 1;
 	}
 

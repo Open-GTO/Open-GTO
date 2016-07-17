@@ -25,12 +25,12 @@ COMMAND:premium(playerid, params[])
 		year;
 
 	if (sscanf(params, "s[5]up<.>I(0)I(0)I(0)", subcmd, targetid, day, month, year)) {
-		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_PREMIUM_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_HELP);
 		return 1;
 	}
 
 	if (targetid == INVALID_PLAYER_ID) {
-		SendClientMessage(playerid, COLOR_RED, _(playerid, ADMIN_COMMAND_PREMIUM_TARGET_ERROR));
+		Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_TARGET_ERROR);
 		return 1;
 	}
 
@@ -47,7 +47,7 @@ COMMAND:premium(playerid, params[])
 		timestamp = mktime(year, month, day);
 
 		if (timestamp == -1) {
-			SendClientMessage(targetid, -1, _(playerid, ADMIN_COMMAND_PREMIUM_TIME_ERROR));
+			Lang_SendText(targetid, $ADMIN_COMMAND_PREMIUM_TIME_ERROR);
 			return 1;
 		}
 
@@ -70,7 +70,7 @@ COMMAND:premium(playerid, params[])
 			SendClientMessage(playerid, -1, string);
 		}
 	} else {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_PREMIUM_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_HELP);
 	}
 
 	return 1;

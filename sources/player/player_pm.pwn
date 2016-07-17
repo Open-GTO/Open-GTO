@@ -14,7 +14,7 @@
 stock SendPlayerPrivateMessage(senderid, receiveid, message[])
 {
 	if (IsPlayerMuted(senderid)) {
-		SendClientMessage(senderid, COLOR_RED, _(senderid, MUTED_HELP_MESSAGE));
+		Lang_SendText(senderid, $MUTED_HELP_MESSAGE);
 		return 0;
 	}
 

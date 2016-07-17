@@ -355,7 +355,7 @@ DialogResponse:GangCreateColor(playerid, response, listitem, inputtext[])
 
 	if (gangid != INVALID_GANG_ID) {
 		GivePlayerMoney(playerid, -Gang_GetCreateCost());
-		SendClientMessage(playerid, COLOR_GREEN, _(playerid, GANG_CREATE_SUCCESS));
+		Lang_SendText(playerid, $GANG_CREATE_SUCCESS);
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
 				_(playerid, GANG_CREATE_HEADER),
 				_(playerid, GANG_CREATE_SUCCESS),

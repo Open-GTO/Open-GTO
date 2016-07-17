@@ -36,7 +36,7 @@ stock Player_Mute_OnPlayerText(playerid, text[])
 	#pragma unused text
 
 	if (IsPlayerMuted(playerid)) {
-		SendClientMessage(playerid, COLOR_RED, _(playerid, MUTED_HELP_MESSAGE));
+		Lang_SendText(playerid, $MUTED_HELP_MESSAGE);
 		return 0;
 	}
 

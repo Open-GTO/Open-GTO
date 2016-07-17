@@ -108,7 +108,7 @@ COMMAND:lottery(playerid, params[])
 	}
 
 	if (!IsLotteryHaveStatus(LotteryStart)) {
-		SendClientMessage(playerid, COLOR_PM, _(playerid, LOTTERY_NOT_STARTED));
+		Lang_SendText(playerid, $LOTTERY_NOT_STARTED);
 		return 1;
 	}
 
@@ -133,13 +133,13 @@ COMMAND:lottery(playerid, params[])
 			SendClientMessage(playerid, COLOR_PM, string);
 		}
 		case LOTTERY_ERROR_TICKET_VALUE_BAD: {
-			SendClientMessage(playerid, COLOR_PM, _(playerid, LOTTERY_TICKET_VALUE_IS_BAD));
+			Lang_SendText(playerid, $LOTTERY_TICKET_VALUE_IS_BAD);
 		}
 		case LOTTERY_ERROR_TICKET_HAVE: {
-			SendClientMessage(playerid, COLOR_PM, _(playerid, LOTTERY_TICKET_BOUGHT_NOW));
+			Lang_SendText(playerid, $LOTTERY_TICKET_BOUGHT_NOW);
 		}
 		case LOTTERY_ERROR_TICKET_BOUGHT: {
-			SendClientMessage(playerid, COLOR_PM, _(playerid, LOTTERY_TICKET_IS_BOUGHT));
+			Lang_SendText(playerid, $LOTTERY_TICKET_IS_BOUGHT);
 		}
 	}
 

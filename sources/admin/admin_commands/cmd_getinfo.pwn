@@ -21,7 +21,7 @@ COMMAND:getinfo(playerid, params[])
 		subparams[32];
 
 	if (sscanf(params, "s[32]", subparams)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_GETINFO_HELP));
+		Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_HELP);
 		return 1;
 	}
 
@@ -31,7 +31,7 @@ COMMAND:getinfo(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid)) {
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_GETINFO_TARGET_ERROR));
+		Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_TARGET_ERROR);
 		return 1;
 	}
 
@@ -52,7 +52,7 @@ COMMAND:getinfo(playerid, params[])
 
 		current_time = gettime();
 
-		SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_GETINFO_ALL_HEADER));
+		Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_ALL_HEADER);
 
 		foreach (targetid : Player) {
 			if (!IsPlayerJailed(targetid) && !IsPlayerMuted(playerid)) {
@@ -90,7 +90,7 @@ COMMAND:getinfo(playerid, params[])
 		}
 
 		if (count == 0) {
-			SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_GETINFO_ALL_NOPLAYERS));
+			Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_ALL_NOPLAYERS);
 		}
 	} else {
 		new
@@ -105,7 +105,7 @@ COMMAND:getinfo(playerid, params[])
 			new is_load = Account_LoadData(targetname, account_info);
 
 			if (!is_load) {
-				SendClientMessage(playerid, -1, _(playerid, ADMIN_COMMAND_GETINFO_TARGET_ERROR));
+				Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_TARGET_ERROR);
 				return 1;
 			}
 		} else {
