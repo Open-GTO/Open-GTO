@@ -45,9 +45,9 @@ stock FreezePlayerTimer(playerid)
 	if (freezetime != 0 && gettime() >= freezetime) {
 		UnMutePlayer(playerid);
 
-		new string[MAX_LANG_VALUE_STRING];
-		GetPlayerName(playerid, string, sizeof(string));
-		Lang_SendTextToAll($ADMIN_FREEZE_UNFREEZED, string, playerid);
+		new playername[MAX_PLAYER_NAME + 1];
+		GetPlayerName(playerid, playername, sizeof(playername));
+		Lang_SendTextToAll($ADMIN_FREEZE_UNFREEZED, playername, playerid);
 	}
 }
 

@@ -35,7 +35,7 @@ new
 Lang_OnGameModeInit()
 {
 	new
-		lang_file[ZLANG_MAX_FILENAME_PATH];
+		lang_file[256];
 
 	for (new Lang:lang; _:lang < LANG_COUNT; _:lang++) {
 		format(lang_file, sizeof(lang_file), "%slang_%s" DATA_FILES_FORMAT, db_lang, gLangName[lang]);
@@ -68,7 +68,7 @@ stock Lang_Reload()
 	new
 		langid,
 		load_status,
-		lang_file[ZLANG_MAX_FILENAME_PATH];
+		lang_file[256];
 
 	foreach (new Lang:lang : LangIterator) {
 		langid = Lang_GetID(lang);
