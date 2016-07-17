@@ -56,10 +56,9 @@ COMMAND:skydive(playerid, params[])
 	SetPlayerSkydiveTime(playerid, gettime() + SKYDIVE_TIME);
 
 	Lang_SendText(playerid, $SKYDIVING_MSG);
-	GameTextForPlayer(playerid, _(playerid, SKYDIVING_GAMETEXT), 4000, 5);
+	Lang_GameText(playerid, 4000, 5, $SKYDIVING_GAMETEXT);
 
-	format(string, sizeof(string), _(playerid, SKYDIVING_MSG_TO_ALL), ReturnPlayerName(playerid), playerid);
-	SendClientMessageToAll(COLOR_GREY, string);
+	Lang_SendTextToAll($SKYDIVING_MSG_TO_ALL, ReturnPlayerName(playerid, playerid));
 	return 1;
 }
 

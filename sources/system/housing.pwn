@@ -803,8 +803,7 @@ stock house_Buy(playerid)
 	#if defined BUY_ALL_HOUSES
 		foreach (new ownerid : Player) {
 			if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(ownerid), true)) {
-				format(temp, sizeof(temp), _(playerid, HOUSING_RENT_SET_HEADER), ReturnPlayerName(playerid), Houses[id][Houses_Name]);
-				SendClientMessage(ownerid, COLOR_RED, temp);
+				Lang_SendText(ownerid, $HOUSING_RENT_SET_HEADER, ReturnPlayerName(playerid), Houses[id][Houses_Name]);
 				GivePlayerMoney(ownerid, price);
 				break;
 			}

@@ -54,16 +54,14 @@ COMMAND:health(playerid, params[])
 				SetPlayerHealth(id, amount);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_SET_ALL), playername, playerid, amount);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_HEALTH_SET_ALL, playername, playerid, amount);
 		} else {
 			SetPlayerHealth(targetid, amount);
 
 			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_SET_PLAYER), playername, playerid, targetname, targetid, amount);
 			SendMessageToNearPlayerPlayers(string, 40.0, playerid);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_SET_SELF), targetname, targetid, amount);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(playerid, $ADMIN_COMMAND_HEALTH_SET_SELF, targetname, targetid, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
@@ -73,8 +71,7 @@ COMMAND:health(playerid, params[])
 
 		GetPlayerHealth(targetid, amount);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_GET), targetname, targetid, amount);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_HEALTH_GET, targetname, targetid, amount);
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		new
 			Float:current_health;
@@ -85,8 +82,7 @@ COMMAND:health(playerid, params[])
 				SetPlayerHealth(id, current_health + amount);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_GIVE_ALL), playername, playerid, amount);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_HEALTH_GIVE_ALL, playername, playerid, amount);
 		} else {
 			GetPlayerHealth(targetid, current_health);
 			SetPlayerHealth(targetid, current_health + amount);
@@ -94,8 +90,7 @@ COMMAND:health(playerid, params[])
 			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_GIVE_PLAYER), playername, playerid, targetname, targetid, amount);
 			SendMessageToNearPlayerPlayers(string, 40.0, playerid);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_GIVE_SELF), targetname, targetid, amount);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(playerid, $ADMIN_COMMAND_HEALTH_GIVE_SELF, targetname, targetid, amount);
 		}
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_HEALTH_HELP);

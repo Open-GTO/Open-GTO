@@ -72,9 +72,7 @@ pt_idle_PlayerTimer(playerid)
 			gIdleTime[playerid]++;
 
 			if (gIdleTime[playerid] > MaxTime - 1) {
-				new string[MAX_LANG_VALUE_STRING];
-				format(string, sizeof(string), _(playerid, PROTECTION_ANTIIDLE_INFO), MaxTime - 1);
-				SendClientMessage(playerid, COLOR_RED, string);
+				Lang_SendText(playerid, $PROTECTION_ANTIIDLE_INFO, MaxTime - 1);
 				Lang_SendText(playerid, $PROTECTION_ANTIIDLE_LAST_WARN);
 			}
 			if (gIdleTime[playerid] > MaxTime) {

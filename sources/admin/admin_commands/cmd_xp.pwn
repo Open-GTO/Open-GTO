@@ -54,38 +54,29 @@ COMMAND:xp(playerid, params[])
 				SetPlayerXP(id, amount);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_SET_ALL), playername, playerid, amount);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_XP_SET_ALL, playername, playerid, amount);
 		} else {
 			SetPlayerXP(targetid, amount);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_SET_PLAYER), playername, playerid, amount);
-			SendClientMessage(targetid, -1, string);
-
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_SET_SELF), targetname, targetid, amount);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(targetid, $ADMIN_COMMAND_XP_SET_PLAYER, playername, playerid, amount);
+			Lang_SendText(playerid, $ADMIN_COMMAND_XP_SET_SELF, targetname, targetid, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		amount = GetPlayerXP(targetid);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_GET), targetname, targetid, amount);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_XP_GET, targetname, targetid, amount);
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		if (targetid == -1) {
 			foreach (new id : Player) {
 				GivePlayerXP(id, amount);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_GIVE_ALL), playername, playerid, amount);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_XP_GIVE_ALL, playername, playerid, amount);
 		} else {
 			GivePlayerXP(targetid, amount);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_GIVE_PLAYER), playername, playerid, amount);
-			SendClientMessage(targetid, -1, string);
-
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_GIVE_SELF), targetname, targetid, amount);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(targetid, $ADMIN_COMMAND_XP_GIVE_PLAYER, playername, playerid, amount);
+			Lang_SendText(playerid, $ADMIN_COMMAND_XP_GIVE_SELF, targetname, targetid, amount);
 		}
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_XP_HELP);

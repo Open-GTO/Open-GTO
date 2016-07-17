@@ -44,8 +44,7 @@ COMMAND:kick(playerid, params[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (targetid == -1) {
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_ALL), playername, playerid);
-		SendClientMessageToAll(-1, string);
+		Lang_SendTextToAll($ADMIN_COMMAND_KICK_ALL, playername, playerid);
 
 		foreach (new id : Player) {
 			KickPlayer(id, reason);
@@ -56,8 +55,7 @@ COMMAND:kick(playerid, params[])
 		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_PLAYER), playername, playerid, targetname, targetid);
 		SendMessageToNearPlayerPlayers(string, 40.0, targetid);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_PLAYER_SELF), targetname, targetid);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_KICK_PLAYER_SELF, targetname, targetid);
 
 		KickPlayer(targetid, reason);
 	}

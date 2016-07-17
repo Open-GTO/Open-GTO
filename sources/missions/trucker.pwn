@@ -230,8 +230,7 @@ stock Trucker_Start(playerid)
 	if (trailer_type == TRAILER_TYPE_UNKNOWN) {
 		new string[MAX_LANG_VALUE_STRING];
 
-		format(string, sizeof(string), _(playerid, TRUCKER_GET_TRAILER), TRUCKER_TIME_GET_TRAILER);
-		SendClientMessage(playerid, COLOR_YELLOW, string);
+		Lang_SendText(playerid, $TRUCKER_GET_TRAILER, TRUCKER_TIME_GET_TRAILER);
 
 		format(string, sizeof(string), _(playerid, TRUCKER_ALERT_GET_TRAILER_S), TRUCKER_TIME_GET_TRAILER);
 		Message_Alert(playerid, _(playerid, TRUCKER_ALERT_HEADER), string);
@@ -295,8 +294,7 @@ stock Trucker_Start(playerid)
 
 	new string[MAX_STRING];
 
-	format(string, sizeof(string), _(playerid, TRUCKER_MISSION_STARTED), type_name, zone, TRUCKER_MISSION_TIME / 60);
-	SendClientMessage(playerid, COLOR_YELLOW, string);
+	Lang_SendText(playerid, $TRUCKER_MISSION_STARTED, type_name, zone, TRUCKER_MISSION_TIME / 60);
 
 	format(string, sizeof(string), _(playerid, TRUCKER_ALERT_STARTED), TRUCKER_MISSION_TIME / 60);
 	Message_Alert(playerid, _(playerid, TRUCKER_ALERT_HEADER), string);
@@ -358,8 +356,7 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 		if (player_trucker[playerid][pt_TryCount] > 0) {
 			new string[MAX_STRING];
 
-			format(string, sizeof(string), _(playerid, TRUCKER_MISSION_COMPLETE), TRUCKER_MISSION_TIME / 60);
-			SendClientMessage(playerid, COLOR_YELLOW, string);
+			Lang_SendText(playerid, $TRUCKER_MISSION_COMPLETE, TRUCKER_MISSION_TIME / 60);
 
 			format(string, sizeof(string), _(playerid, TRUCKER_ALERT_GET_TRAILER_M), TRUCKER_MISSION_TIME / 60);
 			Message_Alert(playerid, _(playerid, TRUCKER_ALERT_HEADER), string);
@@ -603,8 +600,7 @@ static stock Trucker_ShowPauseMessage(playerid)
 	seconds = player_trucker[playerid][pt_PauseTime] - gettime();
 	Declension_GetWord(timeword, sizeof(timeword), seconds, _(playerid, DECLENSION_SECOND_4), _(playerid, DECLENSION_SECOND_2), _(playerid, DECLENSION_SECOND_3));
 
-	format(string, sizeof(string), _(playerid, TRUCKER_MISSION_WAIT), seconds, timeword);
-	SendClientMessage(playerid, -1, string);
+	Lang_SendText(playerid, $TRUCKER_MISSION_WAIT, seconds, timeword);
 }
 
 static stock DestroyPlayerLinerunnerLabel(playerid, id)

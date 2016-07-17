@@ -88,8 +88,7 @@ COMMAND:teleport(playerid, params[])
 		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_TELEPORT_TO_PLAYER), targetname, targetid, playername, playerid);
 		SendMessageToNearPlayerPlayers(string, 40.0, targetid);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_TELEPORT_TO_SELF), targetname, targetid);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_TELEPORT_TO_SELF, targetname, targetid);
 	} else if (strcmp(subcmd, "here", true) == 0) {
 		if (targetid == INVALID_PLAYER_ID) {
 			Lang_SendText(playerid, $ADMIN_COMMAND_TELEPORT_TARGET_ERROR);
@@ -102,8 +101,7 @@ COMMAND:teleport(playerid, params[])
 				                    p_pos_a, p_interior, p_world, false);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_TELEPORT_HERE_ALL), playername, playerid);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_TELEPORT_HERE_ALL, playername, playerid);
 		} else {
 			TeleportPlayerToPos(targetid, p_pos_x + random(2) - random(4), p_pos_y + random(2) - random(4), p_pos_z,
 			                    p_pos_a, p_interior, p_world);

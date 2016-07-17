@@ -197,8 +197,7 @@ stock Fuelstation_OnVehicleFilled(vehicleid, playerid, money)
 	#pragma unused vehicleid
 	new string[MAX_LANG_VALUE_STRING];
 
-	format(string, sizeof(string), _(playerid, VEHICLE_FUEL_AFTER_FUEL), money);
-	SendClientMessage(playerid, COLOR_YELLOW, string);
+	Lang_SendText(playerid, $VEHICLE_FUEL_AFTER_FUEL, money);
 
 	format(string, sizeof(string), _(playerid, VEHICLE_FUEL_AFTER_FUEL_ALERT), money);
 	Message_Alert(playerid, "", string);

@@ -55,8 +55,7 @@ COMMAND:armour(playerid, params[])
 				SetPlayerArmour(id, amount);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_ARMOUR_SET_ALL), playername, playerid, amount);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_ARMOUR_SET_ALL, playername, playerid, amount);
 		} else {
 			SetPlayerArmour(targetid, amount);
 

@@ -47,8 +47,7 @@ COMMAND:kill(playerid, params[])
 			SetPlayerHealth(id, 0.0);
 		}
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KILL_ALL), playername, playerid);
-		SendClientMessageToAll(-1, string);
+		Lang_SendTextToAll($ADMIN_COMMAND_KILL_ALL, playername, playerid);
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
@@ -57,8 +56,7 @@ COMMAND:kill(playerid, params[])
 		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KILL_PLAYER), playername, playerid, targetname, targetid);
 		SendMessageToNearPlayerPlayers(string, 40.0, targetid);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KILL_PLAYER_SELF), targetname, targetid);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_KILL_PLAYER_SELF, targetname, targetid);
 	}
 
 	return 1;

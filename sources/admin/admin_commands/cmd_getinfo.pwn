@@ -70,10 +70,11 @@ COMMAND:getinfo(playerid, params[])
 
 					Declension_GetMinutes(playerid, time, timeword);
 
-					format(string, sizeof(string), _(playerid, ADMIN_COMMAND_GETINFO_ALL_JAIL_REMAIN),
-						targetname, targetid, time, timeword);
+					Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_ALL_JAIL_REMAIN,
+					              targetname, targetid, time, timeword);
 				} else {
-					format(string, sizeof(string), _(playerid, ADMIN_COMMAND_GETINFO_ALL_JAIL_NOTIME), targetname, targetid);
+					Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_ALL_JAIL_NOTIME,
+					              targetname, targetid);
 				}
 			}
 
@@ -82,11 +83,9 @@ COMMAND:getinfo(playerid, params[])
 
 				Declension_GetMinutes(playerid, time, timeword);
 
-				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_GETINFO_ALL_MUTE_REMAIN),
-					targetname, targetid, time, timeword);
+				Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_ALL_MUTE_REMAIN,
+				              targetname, targetid, time, timeword);
 			}
-
-			SendClientMessage(playerid, -1, string);
 		}
 
 		if (count == 0) {
@@ -115,27 +114,20 @@ COMMAND:getinfo(playerid, params[])
 			GetPlayerName(targetid, targetname, sizeof(targetname));
 		}
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_GETINFO_PLAYER_HEADER), targetname);
-		SendClientMessage(playerid, -1, string);
-
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_GETINFO_PLAYER_IP), account_info[e_aIP]);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_PLAYER_HEADER, targetname);
+		Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_PLAYER_IP, account_info[e_aIP]);
 
 		gmtime(account_info[e_aCreationTime], year, month, day);
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_GETINFO_PLAYER_CREATION), day, month, year);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_PLAYER_CREATION, day, month, year);
 
 		gmtime(account_info[e_aLoginTime], year, month, day);
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_GETINFO_Player_Login), day, month, year);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_PLAYER_LOGIN, day, month, year);
 
 		gmtime(account_info[e_aPremiumTime], year, month, day);
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM), day, month, year);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM, day, month, year);
 
 		GetTimeStringFromSeconds(playerid, account_info[e_aPlayedSeconds], string);
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_GETINFO_PLAYER_PLAYED), string);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_PLAYER_PLAYED, string);
 
 		if (targetid != -2) {
 			new
@@ -144,10 +136,7 @@ COMMAND:getinfo(playerid, params[])
 			GetPlayerInfoArray(targetid, info, sizeof(info[]), playerid);
 
 			for (new i = 0; i < sizeof(info); i++) {
-				__(playerid, ADMIN_COMMAND_GETINFO_PLAYER_PREFIX, string);
-				strcat(string, info[i]);
-
-				SendClientMessage(playerid, -1, string);
+				Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_PLAYER_PREFIX, info[i]);
 			}
 		}
 	}

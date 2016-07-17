@@ -18,8 +18,7 @@ COMMAND:say(playerid, params[])
 	}
 
 	new
-		playername[MAX_PLAYER_NAME + 1],
-		string[MAX_LANG_VALUE_STRING];
+		playername[MAX_PLAYER_NAME + 1];
 
 	if (strlen(params) == 0) {
 		Lang_SendText(playerid, $ADMIN_COMMAND_SAY_HELP);
@@ -27,8 +26,6 @@ COMMAND:say(playerid, params[])
 	}
 
 	GetPlayerName(playerid, playername, sizeof(playername));
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SAY_TEXT), playername, playerid, params);
-
-	SendClientMessageToAll(COLOR_BLUE, string);
+	Lang_SendTextToAll($ADMIN_COMMAND_SAY_TEXT, playername, playerid, params);
 	return 1;
 }

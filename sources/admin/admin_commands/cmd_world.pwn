@@ -54,16 +54,12 @@ COMMAND:world(playerid, params[])
 				SetPlayerVirtualWorld(id, world);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WORLD_SET_ALL), playername, playerid, world);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_WORLD_SET_ALL, playername, playerid, world);
 		} else {
 			SetPlayerVirtualWorld(targetid, world);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WORLD_SET_PLAYER), playername, playerid, world);
-			SendClientMessage(targetid, -1, string);
-
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WORLD_SET_SELF), targetname, targetid, world);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(targetid, $ADMIN_COMMAND_WORLD_SET_PLAYER, playername, playerid, world);
+			Lang_SendText(playerid, $ADMIN_COMMAND_WORLD_SET_SELF, targetname, targetid, world);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
@@ -73,8 +69,7 @@ COMMAND:world(playerid, params[])
 
 		world = GetPlayerVirtualWorld(targetid);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WORLD_GET), targetname, targetid, world);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_WORLD_GET, targetname, targetid, world);
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_WORLD_HELP);
 	}

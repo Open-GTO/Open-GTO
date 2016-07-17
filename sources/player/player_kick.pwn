@@ -32,17 +32,14 @@ stock KickPlayer(playerid, reason[] = "", showreason = 1)
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_IS_ADMIN), reason);
-		SendClientMessage(playerid, COLOR_YELLOW, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_KICK_IS_ADMIN, reason);
 		return 0;
 	}
 
 	if (showreason) {
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_KICKED_SELF), reason);
-		SendClientMessage(playerid, COLOR_RED, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_KICK_KICKED_SELF, reason);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_KICKED), playername, reason);
-		SendClientMessageToAll(COLOR_MISC, string);
+		Lang_SendTextToAll($ADMIN_COMMAND_KICK_KICKED, playername, reason);
 	}
 
 	GameTextForPlayer(playerid, "~r~Connection Lost.", 1000, 5);

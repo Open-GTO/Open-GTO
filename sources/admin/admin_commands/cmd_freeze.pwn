@@ -49,11 +49,11 @@ COMMAND:freeze(playerid, params[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (targetid == -1) {
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_FREEZE_ALL), playername, playerid, time, timeword);
 		if (is_with_reason) {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_FREEZE_REASON), string, reason);
+			Lang_SendTextToAll($ADMIN_COMMAND_FREEZE_ALL_REASON, playername, playerid, time, timeword, reason);
+		} else {
+			Lang_SendTextToAll($ADMIN_COMMAND_FREEZE_ALL, playername, playerid, time, timeword);
 		}
-		SendClientMessageToAll(-1, string);
 
 		foreach (targetid : Player) {
 			FreezePlayer(targetid, time);
@@ -61,17 +61,13 @@ COMMAND:freeze(playerid, params[])
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_FREEZE_PLAYER), playername, playerid, targetname, targetid, time, timeword);
 		if (is_with_reason) {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_FREEZE_REASON), string, reason);
+			Lang_SendTextToAll($ADMIN_COMMAND_FREEZE_PLAYER_REASON, playername, playerid, targetname, targetid, time, timeword, reason);
+			Lang_SendText(playerid, $ADMIN_COMMAND_FREEZE_PLAYER_SELF_REASON, targetname, targetid, time, timeword, reason);
+		} else {
+			Lang_SendTextToAll($ADMIN_COMMAND_FREEZE_PLAYER, playername, playerid, targetname, targetid, time, timeword);
+			Lang_SendText(playerid, $ADMIN_COMMAND_FREEZE_PLAYER_SELF, targetname, targetid, time, timeword);
 		}
-		SendClientMessageToAll(-1, string);
-
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_FREEZE_PLAYER_SELF), targetname, targetid, time, timeword);
-		if (is_with_reason) {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_FREEZE_REASON), string, reason);
-		}
-		SendClientMessage(playerid, -1, string);
 
 		FreezePlayer(targetid, time);
 	}

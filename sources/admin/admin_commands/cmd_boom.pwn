@@ -27,6 +27,7 @@ COMMAND:boom(playerid, params[])
 
 	new
 		string[MAX_LANG_VALUE_STRING],
+		players[MAX_PLAYERS],
 		playername[MAX_PLAYER_NAME + 1],
 		Float:pos_x,
 		Float:pos_y,
@@ -42,7 +43,7 @@ COMMAND:boom(playerid, params[])
 
 	CreateExplosion(pos_x, pos_y, pos_z + 2, type, 30.0);
 
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_BOOM_MAKE), playername, playerid);
-	SendMessageToNearPlayerPlayers(string, 40.0, playerid);
+	GetNearPlayers(pos_x, pos_y, pos_z, 40.0, playerid, players);
+	Lang_SendTextToPlayers(players, $ADMIN_COMMAND_BOOM_MAKE, playername, playerid);
 	return 1;
 }

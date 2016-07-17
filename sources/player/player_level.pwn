@@ -83,23 +83,19 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 
 	if (xpamount > 0) {
 		if (showtd == 1) {
-			format(string, sizeof(string), _(playerid, PLAYER_XP_GAMETEXT), '+', xpamount);
-			GameTextForPlayer(playerid, string, texttime, 3);
+			Lang_GameText(playerid, texttime, 3, $PLAYER_XP_GAMETEXT, '+', xpamount);
 		}
 
 		if (showtext == 1) {
-			format(string, sizeof(string), _(playerid, PLAYER_XP_GET), xpamount);
-			SendClientMessage(playerid, COLOR_XP_GOOD, string);
+			Lang_SendText(playerid, $PLAYER_XP_GET, xpamount);
 		}
 	} else {
 		if (showtd == 1) {
-			format(string, sizeof(string), _(playerid, PLAYER_XP_GAMETEXT), '-', -xpamount);
-			GameTextForPlayer(playerid, string, texttime, 3);
+			Lang_GameText(playerid, texttime, 3, $PLAYER_XP_GAMETEXT, '-', -xpamount);
 		}
 
 		if (showtext == 1) {
-			format(string, sizeof(string), _(playerid, PLAYER_XP_MISS), -xpamount);
-			SendClientMessage(playerid, COLOR_XP_BAD, string);
+			Lang_SendText(playerid, $PLAYER_XP_MISS, -xpamount);
 		}
 	}
 
@@ -133,13 +129,11 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 		PlayerPlaySoundOnPlayer(playerid, 1057);
 
 		if (old_level < level) {
-			format(string, sizeof(string), _(playerid, PLAYER_LEVEL_UP), level);
-			SendClientMessage(playerid, COLOR_XP_GOOD, string);
+			Lang_SendText(playerid, $PLAYER_LEVEL_UP, level);
 
 			ShowPlayerWeaponsOnLevel(playerid, level, old_level);
 		} else {
-			format(string, sizeof(string), _(playerid, PLAYER_LEVEL_DOWN), level);
-			SendClientMessage(playerid, COLOR_XP_BAD, string);
+			Lang_SendText(playerid, $PLAYER_LEVEL_DOWN, level);
 		}
 
 		Log_Game("player: %s(%d): changed his level from %d to %d", ReturnPlayerName(playerid), playerid, old_level, level);

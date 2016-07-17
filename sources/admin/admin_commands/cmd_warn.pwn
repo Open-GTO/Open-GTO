@@ -59,16 +59,12 @@ COMMAND:warn(playerid, params[])
 				SetPlayerWarnsCount(id, amount);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WARN_SET_ALL), playername, playerid, amount, reason);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_WARN_SET_ALL, playername, playerid, amount, reason);
 		} else {
 			SetPlayerWarnsCount(targetid, amount);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WARN_SET_PLAYER), playername, playerid, amount, reason);
-			SendClientMessage(targetid, -1, string);
-
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WARN_SET_SELF), targetname, targetid, amount, reason);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(targetid, $ADMIN_COMMAND_WARN_SET_PLAYER, playername, playerid, amount, reason);
+			Lang_SendText(playerid, $ADMIN_COMMAND_WARN_SET_SELF, targetname, targetid, amount, reason);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
@@ -78,8 +74,7 @@ COMMAND:warn(playerid, params[])
 
 		amount = GetPlayerWarnsCount(targetid);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WARN_GET), targetname, targetid, amount);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_WARN_GET, targetname, targetid, amount);
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		new
 			warnword[MAX_LANG_VALUE_STRING];
@@ -91,16 +86,12 @@ COMMAND:warn(playerid, params[])
 				GivePlayerWarn(id, amount);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WARN_GIVE_ALL), playername, playerid, amount, warnword, reason);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_WARN_GIVE_ALL, playername, playerid, amount, warnword, reason);
 		} else {
 			GivePlayerWarn(targetid, amount);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WARN_GIVE_PLAYER), playername, playerid, amount, warnword, reason);
-			SendClientMessage(targetid, -1, string);
-
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WARN_GIVE_SELF), targetname, targetid, amount, warnword, reason);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(targetid, $ADMIN_COMMAND_WARN_GIVE_PLAYER, playername, playerid, amount, warnword, reason);
+			Lang_SendText(playerid, $ADMIN_COMMAND_WARN_GIVE_SELF, targetname, targetid, amount, warnword, reason);
 		}
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_WARN_HELP);

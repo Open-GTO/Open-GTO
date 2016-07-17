@@ -40,7 +40,6 @@ COMMAND:cmdlist(playerid, params[])
 		Dialog_Message(playerid, _(playerid, ADMIN_COMMAND_CMDLIST_DIALOG_HEADER), string, _(playerid, ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK));
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_HEADER);
-
 		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_0);
 		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_1);
 		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_2);

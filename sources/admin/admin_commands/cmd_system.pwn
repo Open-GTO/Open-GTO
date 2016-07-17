@@ -60,9 +60,7 @@ COMMAND:system(playerid, params[])
 		if (time == 0) {
 			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_WEATHER_DISABLED);
 		} else {
-			new string[MAX_LANG_VALUE_STRING];
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SYSTEM_WEATHER_ENABLED), time, Declension_ReturnMinutes(playerid, time));
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_WEATHER_ENABLED, time, Declension_ReturnMinutes(playerid, time));
 		}
 	} else if (strcmp(subcmd, "groundhold", true) == 0) {
 		new
@@ -81,7 +79,7 @@ COMMAND:system(playerid, params[])
 			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_GROUNDHOLD_OFF);
 		}
 	} else if (strcmp(subcmd, "gmx", true) == 0) {
-		SendClientMessageToAll(-1, _(playerid, ADMIN_COMMAND_SYSTEM_GMX_MESSAGE));
+		Lang_SendTextToAll($ADMIN_COMMAND_SYSTEM_GMX_MESSAGE);
 
 		foreach (new id : Player) {
 			Player_Save(id);
@@ -99,18 +97,12 @@ COMMAND:system(playerid, params[])
 			return 1;
 		}
 
-		new
-			string[MAX_LANG_VALUE_STRING];
-
 		if (strcmp(subsubcmd, "reload", true) == 0) {
 			Lang_Reload();
-
-			__(playerid, ADMIN_COMMAND_SYSTEM_LANG_RELOAD, string);
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_LANG_RELOAD);
 		} else {
 			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_LANG_HELP);
 		}
-
-		SendClientMessage(playerid, -1, string);
 	} else if (strcmp(subcmd, "time", true) == 0) {
 		new
 			subsubcmd[5],
@@ -121,13 +113,9 @@ COMMAND:system(playerid, params[])
 			return 1;
 		}
 
-		new
-			string[MAX_LANG_VALUE_STRING];
-
 		if (strcmp(subsubcmd, "set", true) == 0) {
 			Time_SetCurrentHour(value);
-
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SYSTEM_TIME_SET), value);
+			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_TIME_SET, value);
 		} else if (strcmp(subsubcmd, "real", true) == 0) {
 			if (value == -1) {
 				Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_TIME_HELP);
@@ -136,18 +124,14 @@ COMMAND:system(playerid, params[])
 
 			if (value == 0) {
 				Time_SetRealStatus(true);
-
-				__(playerid, ADMIN_COMMAND_SYSTEM_TIME_TYPE_REAL, string);
+				Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_TIME_TYPE_REAL);
 			} else {
 				Time_SetRealStatus(false);
-
-				__(playerid, ADMIN_COMMAND_SYSTEM_TIME_TYPE_SERVER, string);
+				Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_TIME_TYPE_SERVER);
 			}
 		} else {
 			Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_TIME_HELP);
 		}
-
-		SendClientMessage(playerid, -1, string);
 	} else if (strcmp(subcmd, "say", true) == 0) {
 		new
 			string[MAX_SAY_MESSAGE_SIZE];
@@ -157,8 +141,7 @@ COMMAND:system(playerid, params[])
 			return 1;
 		}
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SYSTEM_SAY_MESSAGE), string);
-		SendClientMessageToAll(-1, string);
+		Lang_SendTextToAll($ADMIN_COMMAND_SYSTEM_SAY_MESSAGE, string);
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_SYSTEM_HELP_HELP);
 	}

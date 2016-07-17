@@ -205,8 +205,7 @@ public AdminClick_MutePlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MUTE_PLAYER), playername, playerid, targetname, targetid, time, timeword);
-	SendClientMessageToAll(-1, string);
+	Lang_SendTextToAll($ADMIN_COMMAND_MUTE_PLAYER, playername, playerid, targetname, targetid, time, timeword);
 
 	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MUTE_PLAYER_SELF), targetname, targetid, time, timeword);
 	Dialog_Message(playerid, _(playerid, ADMIN_CLICK_MESSAGE_HEADER), string, _(playerid, ADMIN_CLICK_MESSAGE_BUTTON_OK));
@@ -232,8 +231,7 @@ public AdminClick_UnMutePlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNMUTE_PLAYER), playername, playerid, targetname, targetid);
-	SendClientMessageToAll(-1, string);
+	Lang_SendTextToAll($ADMIN_COMMAND_UNMUTE_PLAYER, playername, playerid, targetname, targetid);
 
 	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNMUTE_PLAYER_SELF), targetname, targetid);
 	Dialog_Message(playerid, _(playerid, ADMIN_CLICK_MESSAGE_HEADER), string, _(playerid, ADMIN_CLICK_MESSAGE_BUTTON_OK));
@@ -274,8 +272,7 @@ public AdminClick_JailPlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_PLAYER), playername, playerid, targetname, targetid, time, timeword);
-	SendClientMessageToAll(-1, string);
+	Lang_SendTextToAll($ADMIN_COMMAND_JAIL_PLAYER, playername, playerid, targetname, targetid, time, timeword);
 
 	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_PLAYER_SELF), targetname, targetid, time, timeword);
 	Dialog_Message(playerid, _(playerid, ADMIN_CLICK_MESSAGE_HEADER), string, _(playerid, ADMIN_CLICK_MESSAGE_BUTTON_OK));
@@ -306,8 +303,7 @@ public AdminClick_UnJailPlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNJAIL_PLAYER), playername, playerid, targetname, targetid);
-	SendClientMessageToAll(-1, string);
+	Lang_SendTextToAll($ADMIN_COMMAND_UNJAIL_PLAYER, playername, playerid, targetname, targetid);
 
 	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNJAIL_PLAYER_SELF), targetname, targetid);
 	Dialog_Message(playerid, _(playerid, ADMIN_CLICK_MESSAGE_HEADER), string, _(playerid, ADMIN_CLICK_MESSAGE_BUTTON_OK));
@@ -576,8 +572,7 @@ public AdminClick_SetLevel(playerid, targetid, listitem, inputtext[])
 
 	SetPlayerLevel(targetid, amount);
 
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_LEVEL_SET_PLAYER), playername, playerid, amount);
-	SendClientMessage(targetid, -1, string);
+	Lang_SendText(targetid, $ADMIN_COMMAND_LEVEL_SET_PLAYER, playername, playerid, amount);
 
 	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_LEVEL_SET_SELF), targetname, targetid, amount);
 	Dialog_Message(playerid, _(playerid, ADMIN_CLICK_MESSAGE_HEADER), string, _(playerid, ADMIN_CLICK_MESSAGE_BUTTON_OK));
@@ -610,8 +605,7 @@ public AdminClick_GiveXP(playerid, targetid, listitem, inputtext[])
 
 	GivePlayerXP(targetid, amount);
 
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_GIVE_PLAYER), playername, playerid, amount);
-	SendClientMessage(targetid, -1, string);
+	Lang_SendText(targetid, $ADMIN_COMMAND_XP_GIVE_PLAYER, playername, playerid, amount);
 
 	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_XP_GIVE_SELF), targetname, targetid, amount);
 	Dialog_Message(playerid, _(playerid, ADMIN_CLICK_MESSAGE_HEADER), string, _(playerid, ADMIN_CLICK_MESSAGE_BUTTON_OK));
@@ -639,8 +633,7 @@ public AdminClick_GiveMoney(playerid, targetid, listitem, inputtext[])
 
 	GivePlayerMoney(targetid, amount);
 
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MONEY_GIVE_PLAYER), playername, playerid, amount);
-	SendClientMessage(targetid, -1, string);
+	Lang_SendText(targetid, $ADMIN_COMMAND_MONEY_GIVE_PLAYER, playername, playerid, amount);
 
 	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_MONEY_GIVE_SELF), targetname, targetid, amount);
 	Dialog_Message(playerid, _(playerid, ADMIN_CLICK_MESSAGE_HEADER), string, _(playerid, ADMIN_CLICK_MESSAGE_BUTTON_OK));
@@ -679,8 +672,7 @@ public AdminClick_FreezePlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_FREEZE_PLAYER), playername, playerid, targetname, targetid, time, timeword);
-	SendClientMessageToAll(-1, string);
+	Lang_SendTextToAll($ADMIN_COMMAND_FREEZE_PLAYER, playername, playerid, targetname, targetid, time, timeword);
 
 	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_FREEZE_PLAYER_SELF), targetname, targetid, time, timeword);
 	Dialog_Message(playerid, _(playerid, ADMIN_CLICK_MESSAGE_HEADER), string, _(playerid, ADMIN_CLICK_MESSAGE_BUTTON_OK));
@@ -711,8 +703,7 @@ public AdminClick_UnFreezePlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNFREEZE_PLAYER), playername, playerid, targetname, targetid);
-	SendClientMessageToAll(-1, string);
+	Lang_SendTextToAll($ADMIN_COMMAND_UNFREEZE_PLAYER, playername, playerid, targetname, targetid);
 
 	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNFREEZE_PLAYER_SELF), targetname, targetid);
 	Dialog_Message(playerid, _(playerid, ADMIN_CLICK_MESSAGE_HEADER), string, _(playerid, ADMIN_CLICK_MESSAGE_BUTTON_OK));

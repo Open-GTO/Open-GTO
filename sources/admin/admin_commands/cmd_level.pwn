@@ -50,8 +50,7 @@ COMMAND:level(playerid, params[])
 
 	if (strcmp(subcmd, "set", true) == 0) {
 		if (!IsValidPlayerLevel(amount)) {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_LEVEL_LEVEL_ERROR), GetMinPlayerLevel(), GetMaxPlayerLevel());
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($GetMinPlayerLevel(, GetMaxPlayerLevel());
 			return 1;
 		}
 
@@ -60,16 +59,13 @@ COMMAND:level(playerid, params[])
 				SetPlayerLevel(id, amount);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_LEVEL_SET_ALL), playername, playerid, amount);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_LEVEL_SET_ALL, playername, playerid, amount);
 		} else {
 			SetPlayerLevel(targetid, amount);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_LEVEL_SET_PLAYER), playername, playerid, amount);
-			SendClientMessage(targetid, -1, string);
+			Lang_SendText(targetid, $ADMIN_COMMAND_LEVEL_SET_PLAYER, playername, playerid, amount);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_LEVEL_SET_SELF), targetname, targetid, amount);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(playerid, $ADMIN_COMMAND_LEVEL_SET_SELF, targetname, targetid, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
@@ -79,24 +75,19 @@ COMMAND:level(playerid, params[])
 
 		amount = GetPlayerLevel(targetid);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_LEVEL_GET), targetname, targetid, amount);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_LEVEL_GET, targetname, targetid, amount);
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		if (targetid == -1) {
 			foreach (new id : Player) {
 				GivePlayerLevel(id, amount);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_LEVEL_GIVE_ALL), playername, playerid, amount);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_LEVEL_GIVE_ALL, playername, playerid, amount);
 		} else {
 			GivePlayerLevel(targetid, amount);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_LEVEL_GIVE_PLAYER), playername, playerid, amount);
-			SendClientMessage(targetid, -1, string);
-
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_LEVEL_GIVE_SELF), targetname, targetid, amount);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(targetid, $ADMIN_COMMAND_LEVEL_GIVE_PLAYER, playername, playerid, amount);
+			Lang_SendText(playerid, $ADMIN_COMMAND_LEVEL_GIVE_SELF, targetname, targetid, amount);
 		}
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_LEVEL_HELP);

@@ -95,8 +95,7 @@ COMMAND:vehicle(playerid, params[])
 		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE), playername, playerid, vehicleid);
 		SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_REMOVE_MSG_SELF), vehicleid);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_VEHICLE_REMOVE_MSG_SELF, vehicleid);
 
 		// destroy
 		DestroyVehicle(vehicleid);
@@ -111,8 +110,7 @@ COMMAND:vehicle(playerid, params[])
 				SetVehicleToRespawn(vehid);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_RESPAWN_ALL_MSG), playername, playerid);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_VEHICLE_RESPAWN_ALL_MSG, playername, playerid);
 		} else {
 			new vehicleid;
 
@@ -134,8 +132,7 @@ COMMAND:vehicle(playerid, params[])
 			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE), playername, playerid, vehicleid);
 			SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_RESPAWN_MSG_SELF), vehicleid);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(playerid, $ADMIN_COMMAND_VEHICLE_RESPAWN_MSG_SELF, vehicleid);
 
 			// respawn
 			SetVehicleToRespawn(vehicleid);
@@ -151,8 +148,7 @@ COMMAND:vehicle(playerid, params[])
 				RepairVehicle(vehid);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_REPAIR_ALL_MSG), playername, playerid);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_VEHICLE_REPAIR_ALL_MSG, playername, playerid);
 		} else {
 			new vehicleid;
 
@@ -174,8 +170,7 @@ COMMAND:vehicle(playerid, params[])
 			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE), playername, playerid, vehicleid);
 			SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_REPAIR_MSG_SELF), vehicleid);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(playerid, $ADMIN_COMMAND_VEHICLE_REPAIR_MSG_SELF, vehicleid);
 
 			// respawn
 			RepairVehicle(vehicleid);
@@ -218,11 +213,8 @@ COMMAND:vehicle(playerid, params[])
 		GetVehicleModelName(vehicleid, name);
 
 		// print
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_0), vehicleid, name, model);
-		SendClientMessage(playerid, -1, string);
-
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1), health, x, y, z, angle);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_0, vehicleid, name, model);
+		Lang_SendText(playerid, $ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1, health, x, y, z, angle);
 	} else if (strcmp(subcmd, "health", true) == 0) {
 		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 			Lang_SendText(playerid, $ADMIN_COMMAND_NOT_ALLOWED);
@@ -263,22 +255,19 @@ COMMAND:vehicle(playerid, params[])
 					SetVehicleHealth(vehid, amount);
 				}
 
-				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_SET_ALL), playername, playerid, amount);
-				SendClientMessageToAll(-1, string);
+				Lang_SendTextToAll($ADMIN_COMMAND_VEHICLE_HEALTH_SET_ALL, playername, playerid, amount);
 			} else {
 				SetVehicleHealth(vehicleid, amount);
 
 				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_SET), playername, playerid, vehicleid, amount);
 				SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
-				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_SET_SELF), vehicleid, amount);
-				SendClientMessage(playerid, -1, string);
+				Lang_SendText(playerid, $ADMIN_COMMAND_VEHICLE_HEALTH_SET_SELF, vehicleid, amount);
 			}
 		} else if (strcmp(action, "get", true) == 0) {
 			GetVehicleHealth(vehicleid, amount);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_GET), vehicleid, amount);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(playerid, $ADMIN_COMMAND_VEHICLE_HEALTH_GET, vehicleid, amount);
 		} else if (strcmp(action, "give", true) == 0) {
 			new
 				Float:current_health;
@@ -289,8 +278,7 @@ COMMAND:vehicle(playerid, params[])
 					SetVehicleHealth(vehid, current_health + amount);
 				}
 
-				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_ALL), playername, playerid, amount);
-				SendClientMessageToAll(-1, string);
+				Lang_SendTextToAll($ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_ALL, playername, playerid, amount);
 			} else {
 				GetVehicleHealth(vehicleid, current_health);
 				SetVehicleHealth(vehicleid, current_health + amount);
@@ -298,8 +286,7 @@ COMMAND:vehicle(playerid, params[])
 				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_GIVE), playername, playerid, vehicleid, amount);
 				SendMessageToNearVehiclePlayers(string, 40.0, vehicleid);
 
-				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_SELF), vehicleid, amount);
-				SendClientMessage(playerid, -1, string);
+				Lang_SendText(playerid, $ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_SELF, vehicleid, amount);
 			}
 		} else {
 			Lang_SendText(playerid, $ADMIN_COMMAND_VEHICLE_HEALTH_ERROR);

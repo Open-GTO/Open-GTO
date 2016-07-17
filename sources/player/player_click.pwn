@@ -58,11 +58,8 @@ public PlayerClick_SendCash(playerid, clickedid, listitem, inputtext[])
 	GivePlayerMoney(playerid, -money);
 	GivePlayerMoney(clickedid, money);
 
-	format(string, sizeof(string), _(playerid, CLICK_SENDCASH_GIVE), clickedname, clickedid, money);
-	SendClientMessage(playerid, COLOR_MONEY_GOOD, string);
-
-	format(string, sizeof(string), _(playerid, CLICK_SENDCASH_GET), money, sendername, playerid);
-	SendClientMessage(clickedid, COLOR_MONEY_GOOD, string);
+	Lang_SendText(playerid, $CLICK_SENDCASH_GIVE, clickedname, clickedid, money);
+	Lang_SendText(clickedid, $CLICK_SENDCASH_GET, money, sendername, playerid);
 	return 1;
 }
 
@@ -82,8 +79,7 @@ public PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[])
 
 	GetPlayerName(clickedid, clickedname, sizeof(clickedname));
 
-	format(string, sizeof(string), _(playerid, CLICK_REPORT_SELF), clickedname, clickedid, inputtext);
-	SendClientMessage(playerid, COLOR_RED, string);
+	Lang_SendText(playerid, $CLICK_REPORT_SELF, clickedname, clickedid, inputtext);
 
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 	format(string, sizeof(string), _(playerid, CLICK_REPORT_PLAYER), sendername, playerid, clickedname, clickedid, inputtext);
@@ -103,8 +99,7 @@ public PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[])
 
 		new reports_max = GetMaxReportsCount();
 
-		format(string, sizeof(string), _(playerid, CLICK_REPORT_MESSAGE), reports, reports_max, clickedname, clickedid, inputtext);
-		SendClientMessageToAll(COLOR_WHITE, string);
+		Lang_SendTextToAll($CLICK_REPORT_MESSAGE, reports, reports_max, clickedname, clickedid, inputtext);
 
 		if (reports >= reports_max) {
 			new jail_time = 0;
@@ -112,8 +107,7 @@ public PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[])
 			SetPlayerReportsCount(clickedid, 0);
 
 			format(string, sizeof(string), _(playerid, CLICK_REPORT_BY_MINUTE), jail_time);
-			format(string, sizeof(string), _(playerid, CLICK_REPORT_SERVER), ReturnPlayerName(clickedid), string);
-			SendClientMessageToAll(COLOR_WHITE, string);
+			Lang_SendTextToAll($ReturnPlayerName(clickedid, string);
 		}
 	}
 	return 1;

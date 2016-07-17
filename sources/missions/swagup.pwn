@@ -112,8 +112,7 @@ stock swagup_OnPlayerPickUpPickup(playerid, pickupid)
 	GivePlayerXP(playerid, win_xp, 1);
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), _(playerid, SWAGUP_BAG_FOUND), ReturnPlayerName(playerid), playerid, win_money, win_xp);
-	SendClientMessageToAll(COLOR_RED, string);
+	Lang_SendTextToAll($ReturnPlayerName(playerid, playerid, win_money, win_xp);
 
 	SetTimer("swagup_SpawnPickup", mission_GetPauseTime(mission_swagup), 0);
 	return 1;

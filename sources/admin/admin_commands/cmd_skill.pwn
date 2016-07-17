@@ -95,16 +95,12 @@ COMMAND:skill(playerid, params[])
 				SetPlayerSkillLevel(id, skillid, amount);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_SET_ALL), playername, playerid, skillname, amount);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_SKILL_SET_ALL, playername, playerid, skillname, amount);
 		} else {
 			SetPlayerSkillLevel(targetid, skillid, amount);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_SET_PLAYER), playername, playerid, skillname, amount);
-			SendClientMessage(targetid, -1, string);
-
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_SET_SELF), targetname, targetid, skillname, amount);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(targetid, $ADMIN_COMMAND_SKILL_SET_PLAYER, playername, playerid, skillname, amount);
+			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_SET_SELF, targetname, targetid, skillname, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
@@ -112,23 +108,20 @@ COMMAND:skill(playerid, params[])
 			return 1;
 		}
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_GET), targetname, targetid);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_GET, targetname, targetid);
 
 		if (skillid == -1) {
 			for (new skill = 0; skill < PLAYER_SKILL_SLOTS; skill++) {
 				amount = GetPlayerSkillLevel(playerid, skill);
 				GetWeaponSkillName(skill, string);
 
-				format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_GET_ITEM), skill, string, amount);
-				SendClientMessage(playerid, -1, string);
+				Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_GET_ITEM, skill, string, amount);
 			}
 		} else {
 			amount = GetPlayerSkillLevel(playerid, skillid);
 			GetWeaponSkillName(skillid, string);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_GET_ITEM), skillid, string, amount);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_GET_ITEM, skillid, string, amount);
 		}
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		if (skillid == -1) {
@@ -147,16 +140,12 @@ COMMAND:skill(playerid, params[])
 				GivePlayerSkillLevel(id, skillid, amount);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_GIVE_ALL), playername, playerid, skillname, amount);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_SKILL_GIVE_ALL, playername, playerid, skillname, amount);
 		} else {
 			GivePlayerSkillLevel(targetid, skillid, amount);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_GIVE_PLAYER), playername, playerid, skillname, amount);
-			SendClientMessage(targetid, -1, string);
-
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKILL_GIVE_SELF), targetname, targetid, skillname, amount);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(targetid, $ADMIN_COMMAND_SKILL_GIVE_PLAYER, playername, playerid, skillname, amount);
+			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_GIVE_SELF, targetname, targetid, skillname, amount);
 		}
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_HELP);

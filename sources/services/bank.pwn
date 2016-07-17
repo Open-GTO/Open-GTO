@@ -206,10 +206,11 @@ DialogResponse:BankReturnWithdrawMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:BankWithdraw(playerid)
 {
-	new string[MAX_LANG_MULTI_STRING];
+	new
+		string[MAX_LANG_VALUE_STRING * 2];
 
 	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
-	format(string, sizeof(string), _m(playerid, BANK_START_INFO), gProfitCount, gProfitCountPremium, string);
+	Lang_GetPlayerText(playerid, $BANK_START_INFO, string, sizeof(string), gProfitCount, gProfitCountPremium, string);
 
 	Dialog_Open(playerid, Dialog:BankWithdraw, DIALOG_STYLE_INPUT,
 		_(playerid, BANK_CAPTION),
@@ -491,8 +492,7 @@ stock Bank_AddProfit()
 
 		GivePlayerBankMoney(playerid, amount);
 
-		format(string, sizeof(string), _(playerid, BANK_ADDPROFIT_MESSAGE), amount);
-		SendClientMessage(playerid, COLOR_MONEY_GOOD, string);
+		Lang_SendText(playerid, $BANK_ADDPROFIT_MESSAGE, amount);
 	}
 	return 1;
 }

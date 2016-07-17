@@ -29,13 +29,11 @@ COMMAND:chat(playerid, params[])
 		Chat_ClearAll();
 
 		new
-			string[MAX_LANG_VALUE_STRING],
 			playername[MAX_PLAYER_NAME + 1];
 
 		GetPlayerName(playerid, playername, sizeof(playername));
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_CHAT_CLEAN), playername, playerid);
-		SendClientMessageToAll(-1, string);
+		Lang_SendTextToAll($ADMIN_COMMAND_CHAT_CLEAN, playername, playerid);
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_CHAT_HELP);
 	}

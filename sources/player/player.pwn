@@ -140,8 +140,7 @@ Player_OnPlayerConnect(playerid)
 	// check name
 	if (!NameCharCheck(playername)) {
 		new string[MAX_LANG_VALUE_STRING];
-		format(string, sizeof(string), _(playerid, PLAYER_NICK_BAD_SYMBOLS), ALLOWED_NICK_SYMBOLS_STR);
-		SendClientMessage(playerid, COLOR_RED, string);
+		Lang_SendText(playerid, $PLAYER_NICK_BAD_SYMBOLS, ALLOWED_NICK_SYMBOLS_STR);
 		Lang_SendText(playerid, $PLAYER_NICK_IS_IP);
 		KickPlayer(playerid, "Такой ник запрещён.");
 	}
@@ -262,8 +261,7 @@ stock Player_OnLogin(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	format(string, sizeof(string), _(playerid, ACCOUNT_LOGIN_MESSAGE_0), VERSION_STRING);
-	SendClientMessage(playerid, COLOR_LIGHTRED, string);
+	Lang_SendText(playerid, $ACCOUNT_LOGIN_MESSAGE_0, VERSION_STRING);
 	Lang_SendText(playerid, $ACCOUNT_LOGIN_MESSAGE_1);
 	Lang_SendText(playerid, $ACCOUNT_LOGIN_MESSAGE_2);
 	Lang_SendText(playerid, $ACCOUNT_LOGIN_MESSAGE_3);
@@ -285,8 +283,7 @@ stock Player_OnLogin(playerid)
 			continue;
 		}
 
-		format(string, sizeof(string), _(playerid, PLAYER_CONNECT), playername, playerid);
-		SendClientMessage(id, COLOR_WHITE, string);
+		Lang_SendText(id, $PLAYER_CONNECT, playername, playerid);
 	}
 
 	// set privilejes if player is rcon admin
@@ -307,8 +304,7 @@ stock Player_OnLogin(playerid)
 		if (gangid == INVALID_GANG_ID) {
 			SetPlayerGangName(playerid, "");
 
-			format(string, sizeof(string), _(playerid, GANG_MEMBER_LOGIN_REMOVED), gangname);
-			SendClientMessage(playerid, COLOR_ORANGE, string);
+			Lang_SendText(playerid, $GANG_MEMBER_LOGIN_REMOVED, gangname);
 		} else {
 			new is_ok = Gang_MemberLogin(playerid, gangid);
 
@@ -316,14 +312,12 @@ stock Player_OnLogin(playerid)
 				format(string, sizeof(string), _(playerid, GANG_MEMBER_LOGIN), playername);
 				Gang_SendMessage(gangid, string, COLOR_GANG);
 
-				format(string, sizeof(string), _(playerid, GANG_MEMBER_LOGIN_SELF), gangname, Gang_GetOnlineCount(gangid) - 1);
-				SendClientMessage(playerid, COLOR_GANG, string);
+				Lang_SendText(playerid, $GANG_MEMBER_LOGIN_SELF, gangname, Gang_GetOnlineCount(gangid) - 1);
 
 				Gang_GetMotd(gangid, string);
 
 				if (strlen(string) > 0) {
-					format(string, sizeof(string), _(playerid, GANG_MEMBER_LOGIN_MOTD), string);
-					SendClientMessage(playerid, COLOR_GANG, string);
+					Lang_SendText(playerid, $GANG_MEMBER_LOGIN_MOTD, string);
 				}
 			}
 		}
@@ -413,8 +407,10 @@ stock ShowPlayerWeaponsOnLevel(playerid, newlevel, oldlevel)
 				Lang_SendText(playerid, $PLAYER_LEVEL_NEW_WEAPON);
 				is_found = true;
 			}
-			format(string, sizeof(string), _(playerid, PLAYER_LEVEL_NEW_WEAPON_ITEM), ReturnPlayerWeaponName(playerid, weaponid), GetWeaponCost(weaponid));
-			SendClientMessage(playerid, COLOR_MISC, string);
+
+			Lang_SendText(playerid, $PLAYER_LEVEL_NEW_WEAPON_ITEM,
+			              ReturnPlayerWeaponName(playerid, weaponid),
+ 			              GetWeaponCost(weaponid));
 		}
 	}
 	return 1;

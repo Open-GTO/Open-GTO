@@ -41,11 +41,9 @@ stock SetPlayerWarnsCount(playerid, count)
 	if (gPlayerWarns[playerid] >= MAX_PLAYER_WARNS) {
 		JailPlayer(playerid);
 
-		new string[MAX_LANG_VALUE_STRING];
-		GetPlayerName(playerid, string, sizeof(string));
-		format(string, sizeof(string), _(playerid, ADMIN_WARN_JAILED), string, playerid);
-
-		SendClientMessageToAll(-1, string);
+		new playername[MAX_PLAYER_NAME + 1];
+		GetPlayerName(playerid, playername, sizeof(playername));
+		Lang_SendTextToAll($ADMIN_WARN_JAILED, playername, playerid);
 	}
 }
 

@@ -28,7 +28,8 @@ COMMAND:privileje(playerid, params[])
 		PlayerPrivilege:privileje;
 
 	if (sscanf(params, "s[4]uK<privilege>(player)", subcmd, targetid, _:privileje)
-		|| targetid == INVALID_PLAYER_ID || _:privileje == -1) {
+	    || targetid == INVALID_PLAYER_ID
+	    || _:privileje == -1) {
 		Lang_SendText(playerid, $ADMIN_COMMAND_PRIVILEGE_HELP);
 		return 1;
 	}
@@ -46,17 +47,14 @@ COMMAND:privileje(playerid, params[])
 		SetPlayerPrivilege(targetid, privileje);
 
 		GetPrivilegeName(Lang_GetPlayerLanguage(targetid), privileje, privileje_name);
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_PRIVILEGE_SET_PLAYER), playername, playerid, privileje_name);
-		SendClientMessage(targetid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_PRIVILEGE_SET_PLAYER, playername, playerid, privileje_name);
 
 		GetPrivilegeName(Lang_GetPlayerLanguage(playerid), privileje, privileje_name);
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_PRIVILEGE_SET_SELF), targetname, targetid, privileje_name);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_PRIVILEGE_SET_SELF, targetname, targetid, privileje_name);
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		GetPrivilegeName(Lang_GetPlayerLanguage(playerid), GetPlayerPrivilege(targetid), privileje_name);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_PRIVILEGE_GET), targetname, targetid, privileje_name);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_PRIVILEGE_GET, targetname, targetid, privileje_name);
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_PRIVILEGE_HELP);
 	}
@@ -69,25 +67,25 @@ SSCANF:privilege(string[])
 	new
 		privilge_name[MAX_LANG_VALUE_STRING];
 
-	__d(PRIVILEGE_PLAYER, privilge_name);
+	Lang_GetDefaultText("PRIVILEGE_PLAYER", privileje_name);
 
 	if (strcmp(string, "p", true, 1) == 0 || strcmp(string, privilge_name, true, 1) == 0) {
 		return _:PlayerPrivilegePlayer;
 	}
 
-	__d(PRIVILEGE_MODER, privilge_name);
+	Lang_GetDefaultText("PRIVILEGE_MODER", privileje_name);
 
 	if (strcmp(string, "m", true, 1) == 0 || strcmp(string, privilge_name, true, 1) == 0) {
 		return _:PlayerPrivilegeModer;
 	}
 
-	__d(PRIVILEGE_ADMIN, privilge_name);
+	Lang_GetDefaultText("PRIVILEGE_ADMIN", privileje_name);
 
 	if (strcmp(string, "a", true, 1) == 0 || strcmp(string, privilge_name, true, 1) == 0) {
 		return _:PlayerPrivilegeAdmin;
 	}
 
-	__d(PRIVILEGE_RCON, privilge_name);
+	Lang_GetDefaultText("PRIVILEGE_RCON", privileje_name);
 
 	if (strcmp(string, "r", true, 1) == 0 || strcmp(string, privilge_name, true, 1) == 0) {
 		return _:PlayerPrivilegeRcon;

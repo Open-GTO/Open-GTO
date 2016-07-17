@@ -242,8 +242,7 @@ stock TurnAround()
 				new amount = Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade];
 				GivePlayerBankMoney(playerid, amount);
 				new string[MAX_STRING];
-				format(string, sizeof(string), _(playerid, BUSINESS_COLLECT), Businesses[id][Business_Name], amount);
-				SendClientMessage(playerid, COLOR_RED, string);
+				Lang_SendText(playerid, $BUSINESS_COLLECT, Businesses[id][Business_Name], amount);
 				Businesses[id][Business_Vault] = 0;
 			}
 		}
@@ -501,8 +500,7 @@ stock bis_Buy(playerid)
 			if (!strcmp(Businesses[id][Business_Owner], ReturnPlayerName(ownerid), true))
 			{
 				new temp[MAX_STRING];
-				format(temp, sizeof(temp), _(playerid, BUSINESS_OUTBIDDING), playername, Businesses[id][Business_Name]);
-				SendClientMessage(ownerid, COLOR_RED, temp);
+				Lang_SendText(ownerid, $BUSINESS_OUTBIDDING, playername, Businesses[id][Business_Name]);
 				GivePlayerMoney(ownerid, price);
 				break;
 			}

@@ -59,16 +59,13 @@ COMMAND:skin(playerid, params[])
 				SetPlayerSkin(id, skin);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKIN_SET_ALL), playername, playerid, skin);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_SKIN_SET_ALL, playername, playerid, skin);
 		} else {
 			SetPlayerSkin(targetid, skin);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKIN_SET_PLAYER), playername, playerid, skin);
-			SendClientMessage(targetid, -1, string);
+			Lang_SendText(targetid, $ADMIN_COMMAND_SKIN_SET_PLAYER, playername, playerid, skin);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKIN_SET_SELF), targetname, targetid, skin);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(playerid, $ADMIN_COMMAND_SKIN_SET_SELF, targetname, targetid, skin);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
@@ -78,8 +75,7 @@ COMMAND:skin(playerid, params[])
 
 		skin = GetPlayerSkin(targetid);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SKIN_GET), targetname, targetid, skin);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_SKIN_GET, targetname, targetid, skin);
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_SKIN_HELP);
 	}

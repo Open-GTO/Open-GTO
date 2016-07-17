@@ -139,8 +139,7 @@ Groundhold_OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA areaid)
 		// message
 		new string[MAX_LANG_VALUE_STRING];
 
-		format(string, sizeof(string), _(playerid, GROUNDHOLD_INFO), gGroundholds[ghid][e_ghName]);
-		SendClientMessage(playerid, COLOR_GREEN, string);
+		Lang_SendText(playerid, $GROUNDHOLD_INFO, gGroundholds[ghid][e_ghName]);
 
 		format(string, sizeof(string),
 			_(playerid, GROUNDHOLD_BONUS),
@@ -268,8 +267,7 @@ stock Groundhold_RemovePlayer(ghid, playerid, &return_playerid = INVALID_PLAYER_
 	// message
 	new string[MAX_LANG_VALUE_STRING];
 
-	format(string, sizeof(string), _(playerid, GROUNDHOLD_MISSING), gGroundholds[ghid][e_ghName]);
-	SendClientMessage(playerid, COLOR_RED, string);
+	Lang_SendText(playerid, $GROUNDHOLD_MISSING, gGroundholds[ghid][e_ghName]);
 
 	Message_Alert(playerid, _(playerid, GROUNDHOLD_ALERT_HEADER), _(playerid, GROUNDHOLD_ALERT_MISSING));
 	Message_ObjectiveHide(playerid);

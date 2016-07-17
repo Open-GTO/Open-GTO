@@ -55,15 +55,13 @@ COMMAND:spectate(playerid, params[])
 
 		Spectate_Stop(playerid);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SPEC_STOP), targetname, targetid);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_SPEC_STOP, targetname, targetid);
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
 		Spectate_Start(playerid, targetid);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_SPEC_START), targetname, targetid);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_SPEC_START, targetname, targetid);
 	}
 
 	return 1;

@@ -559,8 +559,7 @@ DialogResponse:GangInvite(playerid, response, listitem, inputtext[])
 	GetPlayerName(inviteid, invite_name, sizeof(invite_name));
 	Gang_GetName(gangid, gang_name);
 
-	format(string, sizeof(string), _(playerid, GANG_INVITE_MESSAGE), player_name, gang_name);
-	SendClientMessage(inviteid, COLOR_GANG, string);
+	Lang_SendText(inviteid, $GANG_INVITE_MESSAGE, player_name, gang_name);
 
 	format(string, sizeof(string), _(playerid, GANG_INVITE_MESSAGE_SELF), invite_name, gang_name);
 	Dialog_MessageEx(playerid, Dialog:GangReturnMenu,

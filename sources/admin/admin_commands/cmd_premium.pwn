@@ -53,21 +53,16 @@ COMMAND:premium(playerid, params[])
 
 		Account_SetPremiumTime(targetid, timestamp);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_PREMIUM_SET_PLAYER), playername, playerid, day, month, year);
-		SendClientMessage(targetid, -1, string);
-
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_PREMIUM_SET_SELF), targetname, targetid, day, month, year);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(targetid, $ADMIN_COMMAND_PREMIUM_SET_PLAYER, playername, playerid, day, month, year);
+		Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_SET_SELF, targetname, targetid, day, month, year);
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (IsPlayerHavePremium(targetid)) {
 			timestamp = Account_GetPremiumTime(targetid);
 			gmtime(timestamp, year, month, day);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_PREMIUM_GET), targetname, targetid, day, month, year);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_GET, targetname, targetid, day, month, year);
 		} else {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_PREMIUM_GET_NO_PREMIUM), targetname, targetid);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_GET_NO_PREMIUM, targetname, targetid);
 		}
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_HELP);

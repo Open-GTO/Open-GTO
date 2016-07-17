@@ -59,16 +59,12 @@ COMMAND:interior(playerid, params[])
 				SetPlayerInterior(id, interior);
 			}
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_INTERIOR_SET_ALL), playername, playerid, interior);
-			SendClientMessageToAll(-1, string);
+			Lang_SendTextToAll($ADMIN_COMMAND_INTERIOR_SET_ALL, playername, playerid, interior);
 		} else {
 			SetPlayerInterior(targetid, interior);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_INTERIOR_SET_PLAYER), playername, playerid, interior);
-			SendClientMessage(targetid, -1, string);
-
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_INTERIOR_SET_SELF), targetname, targetid, interior);
-			SendClientMessage(playerid, -1, string);
+			Lang_SendText(targetid, $ADMIN_COMMAND_INTERIOR_SET_PLAYER, playername, playerid, interior);
+			Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_SET_SELF, targetname, targetid, interior);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
@@ -78,8 +74,7 @@ COMMAND:interior(playerid, params[])
 
 		interior = GetPlayerInterior(targetid);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_INTERIOR_GET), targetname, targetid, interior);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_GET, targetname, targetid, interior);
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_HELP);
 	}
