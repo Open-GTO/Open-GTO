@@ -3,7 +3,7 @@
 	url = https://github.com/ziggi/sa-mp-fixes.git
 [submodule "sources/lib/sa-mp-foreach"]
 	path = sources/lib/sa-mp-foreach
-	url = https://github.com/Kar2k/SAMP-foreach.git
+	url = https://github.com/Open-GTO/SAMP-foreach.git
 [submodule "sources/lib/textlist"]
 	path = sources/lib/textlist
 	url = https://github.com/Open-GTO/textlist.git
