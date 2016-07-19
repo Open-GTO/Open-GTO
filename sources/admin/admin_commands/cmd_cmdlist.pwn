@@ -29,12 +29,12 @@ COMMAND:cmdlist(playerid, params[])
 			string[MAX_LANG_MULTI_STRING * 3],
 			temp[MAX_LANG_MULTI_STRING];
 
-		__m(playerid, ADMIN_COMMAND_CMDLIST_MODER, string);
+		Lang_GetPlayerText(playerid, $ADMIN_COMMAND_CMDLIST_MODER, string);
 
-		__m(playerid, ADMIN_COMMAND_CMDLIST_ADMIN, temp);
+		Lang_GetPlayerText(playerid, $ADMIN_COMMAND_CMDLIST_ADMIN, temp);
 		strcat(string, temp);
 
-		__m(playerid, ADMIN_COMMAND_CMDLIST_RCON, temp);
+		Lang_GetPlayerText(playerid, $ADMIN_COMMAND_CMDLIST_RCON, temp);
 		strcat(string, temp);
 
 		Dialog_Message(playerid, _(playerid, ADMIN_COMMAND_CMDLIST_DIALOG_HEADER), string, _(playerid, ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK));
