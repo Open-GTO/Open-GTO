@@ -69,8 +69,8 @@ stock payday_Give()
 			GivePlayerXP(id, pay_xp , 0, 0);
 		}
 
-		Lang_SendText(id, $PAYDAY_MESSAGE, pay_money, pay_xp);
-		Lang_GameText(id, 2000, 5, $PAYDAY_GAMETEXT, pay_money, pay_xp);
+		Lang_SendText(id, "PAYDAY_MESSAGE", pay_money, pay_xp);
+		Lang_GameText(id, 2000, 5, "PAYDAY_GAMETEXT", pay_money, pay_xp);
 
 		PlayerPlaySound(id, 1190, 0.0, 0.0, 0.0);
 		PlayerPlaySound(id, 1101, 0.0, 0.0, 0.0);

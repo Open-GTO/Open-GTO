@@ -14,7 +14,7 @@
 stock SendPlayerPrivateMessage(senderid, receiveid, message[])
 {
 	if (IsPlayerMuted(senderid)) {
-		Lang_SendText(senderid, $MUTED_HELP_MESSAGE);
+		Lang_SendText(senderid, "MUTED_HELP_MESSAGE");
 		return 0;
 	}
 
@@ -23,7 +23,7 @@ stock SendPlayerPrivateMessage(senderid, receiveid, message[])
 		length = strlen(message);
 
 	if (length < MIN_SEND_SYMBOLS || length > MAX_SEND_SYMBOLS) {
-		Lang_SendText(senderid, $PLAYER_PM_LENGTH_ERROR, MIN_SEND_SYMBOLS, MAX_SEND_SYMBOLS);
+		Lang_SendText(senderid, "PLAYER_PM_LENGTH_ERROR", MIN_SEND_SYMBOLS, MAX_SEND_SYMBOLS);
 		return 0;
 	}
 
@@ -36,8 +36,8 @@ stock SendPlayerPrivateMessage(senderid, receiveid, message[])
 	GetPlayerName(receiveid, receivename, sizeof(receivename));
 	GetPlayerName(senderid, sendername, sizeof(sendername));
 
-	Lang_SendText(senderid, $PLAYER_PM_FOR, receivename, receiveid, message);
-	Lang_SendText(receiveid, $PLAYER_PM_FROM, sendername, senderid, message);
+	Lang_SendText(senderid, "PLAYER_PM_FOR", receivename, receiveid, message);
+	Lang_SendText(receiveid, "PLAYER_PM_FROM", sendername, senderid, message);
 
 	Log_Player(_d(PLAYER_PM_LOG), sendername, senderid, receivename, receiveid, message);
 	return 1;

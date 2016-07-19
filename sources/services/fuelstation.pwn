@@ -169,25 +169,25 @@ Fuelstation_OnPlayerKeyStateCh(playerid, newkeys, oldkeys)
 	}
 
 	if (IsVehicleRefilling(vehicleid)) {
-		Lang_SendText(playerid, $VEHICLE_FUEL_IS_FUELING_ERROR);
+		Lang_SendText(playerid, "VEHICLE_FUEL_IS_FUELING_ERROR");
 		return 1;
 	}
 
 	new vehiclemodel = GetVehicleModel(vehicleid);
 	switch (vehiclemodel) {
 		case 481, 509, 510: {
-			Lang_SendText(playerid, $VEHICLE_FUEL_WITHOUT_FUEL_ENGINE);
+			Lang_SendText(playerid, "VEHICLE_FUEL_WITHOUT_FUEL_ENGINE");
 			return 1;
 		}
 	}
 
 	if (GetVehicleFuel(vehicleid) - 1.0 >= GetVehicleModelMaxFuel(vehiclemodel)) {
-		Lang_SendText(playerid, $VEHICLE_FUEL_FUEL_IS_FULL);
+		Lang_SendText(playerid, "VEHICLE_FUEL_FUEL_IS_FULL");
 		return 1;
 	}
 
 	FillVehicle(vehicleid, playerid);
-	Lang_SendText(playerid, $VEHICLE_FUEL_IS_FUELING);
+	Lang_SendText(playerid, "VEHICLE_FUEL_IS_FUELING");
 	Message_Alert(playerid, "", _(playerid, VEHICLE_FUEL_IS_FUELING_ALERT), 2000);
 	return 1;
 }
@@ -197,7 +197,7 @@ stock Fuelstation_OnVehicleFilled(vehicleid, playerid, money)
 	#pragma unused vehicleid
 	new string[MAX_LANG_VALUE_STRING];
 
-	Lang_SendText(playerid, $VEHICLE_FUEL_AFTER_FUEL, money);
+	Lang_SendText(playerid, "VEHICLE_FUEL_AFTER_FUEL", money);
 
 	format(string, sizeof(string), _(playerid, VEHICLE_FUEL_AFTER_FUEL_ALERT), money);
 	Message_Alert(playerid, "", string);

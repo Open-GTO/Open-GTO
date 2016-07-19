@@ -23,7 +23,7 @@ COMMAND:mute(playerid, params[])
 		reason[MAX_MUTE_REASON_LENGTH];
 
 	if (sscanf(params, "s[32]k<ftime>S()[" #MAX_MUTE_REASON_LENGTH "]", subparams, time, reason)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_MUTE_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_MUTE_HELP");
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:mute(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_MUTE_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_MUTE_TARGET_ERROR");
 		return 1;
 	}
 

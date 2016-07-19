@@ -55,13 +55,13 @@ stock oBan_Check(playerid)
 		}
 	}
 
-	Lang_SendText(playerid, $ADMIN_COMMAND_BAN_PLAYER_MESSAGE, admin, timestamp_to_format_date(ban_time), string, reason);
+	Lang_SendText(playerid, "ADMIN_COMMAND_BAN_PLAYER_MESSAGE", admin, timestamp_to_format_date(ban_time), string, reason);
 
 	if (unban_time > 0) {
 		KickPlayer(playerid, "ban check", 0);
 	} else {
 		ini_fileRemove(filename);
-		Lang_SendText(playerid, $ADMIN_COMMAND_BAN_UNBANED);
+		Lang_SendText(playerid, "ADMIN_COMMAND_BAN_UNBANED");
 	}
 	return 1;
 }

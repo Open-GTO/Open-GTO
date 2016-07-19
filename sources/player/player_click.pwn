@@ -51,15 +51,15 @@ public PlayerClick_SendCash(playerid, clickedid, listitem, inputtext[])
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 
 	if (GetPlayerMoney(playerid) < money || !IsNumeric(inputtext) || money < 0) {
-		Lang_SendText(playerid, $CLICK_SENDCASH_NOT_VALID);
+		Lang_SendText(playerid, "CLICK_SENDCASH_NOT_VALID");
 		return 0;
 	}
 
 	GivePlayerMoney(playerid, -money);
 	GivePlayerMoney(clickedid, money);
 
-	Lang_SendText(playerid, $CLICK_SENDCASH_GIVE, clickedname, clickedid, money);
-	Lang_SendText(clickedid, $CLICK_SENDCASH_GET, money, sendername, playerid);
+	Lang_SendText(playerid, "CLICK_SENDCASH_GIVE", clickedname, clickedid, money);
+	Lang_SendText(clickedid, "CLICK_SENDCASH_GET", money, sendername, playerid);
 	return 1;
 }
 
@@ -79,7 +79,7 @@ public PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[])
 
 	GetPlayerName(clickedid, clickedname, sizeof(clickedname));
 
-	Lang_SendText(playerid, $CLICK_REPORT_SELF, clickedname, clickedid, inputtext);
+	Lang_SendText(playerid, "CLICK_REPORT_SELF", clickedname, clickedid, inputtext);
 
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 	format(string, sizeof(string), _(playerid, CLICK_REPORT_PLAYER), sendername, playerid, clickedname, clickedid, inputtext);
@@ -99,7 +99,7 @@ public PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[])
 
 		new reports_max = GetMaxReportsCount();
 
-		Lang_SendTextToAll($CLICK_REPORT_MESSAGE, reports, reports_max, clickedname, clickedid, inputtext);
+		Lang_SendTextToAll("CLICK_REPORT_MESSAGE", reports, reports_max, clickedname, clickedid, inputtext);
 
 		if (reports >= reports_max) {
 			new jail_time = 0;

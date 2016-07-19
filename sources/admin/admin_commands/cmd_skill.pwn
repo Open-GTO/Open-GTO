@@ -36,7 +36,7 @@ COMMAND:skill(playerid, params[])
 		amount;
 
 	if (sscanf(params, "s[5]s[32]K<weapon>(-1)I(0)", subcmd, subparams, weaponid, amount)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_HELP");
 		return 1;
 	}
 
@@ -46,7 +46,7 @@ COMMAND:skill(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_TARGET_ERROR");
 		return 1;
 	}
 
@@ -57,7 +57,7 @@ COMMAND:skill(playerid, params[])
 		skillid = GetWeaponSkillID(weaponid);
 
 		if (skillid == -1) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_WEAPON_ERROR);
+			Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_WEAPON_ERROR");
 			return 1;
 		}
 	}
@@ -80,7 +80,7 @@ COMMAND:skill(playerid, params[])
 
 	if (strcmp(subcmd, "set", true) == 0) {
 		if (skillid == -1) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_WEAPON_ERROR);
+			Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_WEAPON_ERROR");
 			return 1;
 		}
 
@@ -95,37 +95,37 @@ COMMAND:skill(playerid, params[])
 				SetPlayerSkillLevel(id, skillid, amount);
 			}
 
-			Lang_SendTextToAll($ADMIN_COMMAND_SKILL_SET_ALL, playername, playerid, skillname, amount);
+			Lang_SendTextToAll("ADMIN_COMMAND_SKILL_SET_ALL", playername, playerid, skillname, amount);
 		} else {
 			SetPlayerSkillLevel(targetid, skillid, amount);
 
-			Lang_SendText(targetid, $ADMIN_COMMAND_SKILL_SET_PLAYER, playername, playerid, skillname, amount);
-			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_SET_SELF, targetname, targetid, skillname, amount);
+			Lang_SendText(targetid, "ADMIN_COMMAND_SKILL_SET_PLAYER", playername, playerid, skillname, amount);
+			Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_SET_SELF", targetname, targetid, skillname, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_TARGET_ERROR);
+			Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_TARGET_ERROR");
 			return 1;
 		}
 
-		Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_GET, targetname, targetid);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_GET", targetname, targetid);
 
 		if (skillid == -1) {
 			for (new skill = 0; skill < PLAYER_SKILL_SLOTS; skill++) {
 				amount = GetPlayerSkillLevel(playerid, skill);
 				GetWeaponSkillName(skill, string);
 
-				Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_GET_ITEM, skill, string, amount);
+				Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_GET_ITEM", skill, string, amount);
 			}
 		} else {
 			amount = GetPlayerSkillLevel(playerid, skillid);
 			GetWeaponSkillName(skillid, string);
 
-			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_GET_ITEM, skillid, string, amount);
+			Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_GET_ITEM", skillid, string, amount);
 		}
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		if (skillid == -1) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_WEAPON_ERROR);
+			Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_WEAPON_ERROR");
 			return 1;
 		}
 
@@ -140,15 +140,15 @@ COMMAND:skill(playerid, params[])
 				GivePlayerSkillLevel(id, skillid, amount);
 			}
 
-			Lang_SendTextToAll($ADMIN_COMMAND_SKILL_GIVE_ALL, playername, playerid, skillname, amount);
+			Lang_SendTextToAll("ADMIN_COMMAND_SKILL_GIVE_ALL", playername, playerid, skillname, amount);
 		} else {
 			GivePlayerSkillLevel(targetid, skillid, amount);
 
-			Lang_SendText(targetid, $ADMIN_COMMAND_SKILL_GIVE_PLAYER, playername, playerid, skillname, amount);
-			Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_GIVE_SELF, targetname, targetid, skillname, amount);
+			Lang_SendText(targetid, "ADMIN_COMMAND_SKILL_GIVE_PLAYER", playername, playerid, skillname, amount);
+			Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_GIVE_SELF", targetname, targetid, skillname, amount);
 		}
 	} else {
-		Lang_SendText(playerid, $ADMIN_COMMAND_SKILL_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_HELP");
 	}
 
 	return 1;

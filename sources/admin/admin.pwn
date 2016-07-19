@@ -43,15 +43,15 @@ stock SendClientMessageToAdmins(senderid, text[])
 
 	foreach (new adminid : Player) {
 		if (IsPlayerHavePrivilege(adminid, PlayerPrivilegeAdmin)) {
-			Lang_SendText(adminid, $ACCOUNT_LOGIN_FIRST, sender_name, senderid, text);
+			Lang_SendText(adminid, "ACCOUNT_LOGIN_FIRST", sender_name, senderid, text);
 			count++;
 		}
 	}
 
 	if (count == 0) {
-		Lang_SendText(senderid, $ADMIN_CHAT_NO_ADMIN);
+		Lang_SendText(senderid, "ADMIN_CHAT_NO_ADMIN");
 	} else {
-		Lang_SendText(senderid, $ADMIN_CHAT_PLAYER_TO_ADMIN, text);
+		Lang_SendText(senderid, "ADMIN_CHAT_PLAYER_TO_ADMIN", text);
 	}
 	return 0;
 }
@@ -66,15 +66,15 @@ stock SendClientMessageToModers(senderid, text[])
 
 	foreach (new adminid : Player) {
 		if (IsPlayerHavePrivilege(adminid, PlayerPrivilegeModer)) {
-			Lang_SendText(adminid, $ADMIN_CHAT_MESSAGE_TO_MODER, sender_name, senderid, text);
+			Lang_SendText(adminid, "ADMIN_CHAT_MESSAGE_TO_MODER", sender_name, senderid, text);
 			count++;
 		}
 	}
 
 	if (count == 0) {
-		Lang_SendText(senderid, $ADMIN_CHAT_NO_MODER);
+		Lang_SendText(senderid, "ADMIN_CHAT_NO_MODER");
 	} else {
-		Lang_SendText(senderid, $ADMIN_CHAT_PLAYER_TO_MODER, text);
+		Lang_SendText(senderid, "ADMIN_CHAT_PLAYER_TO_MODER", text);
 	}
 	return 0;
 }
@@ -128,7 +128,7 @@ stock Admin_SendProtectReport(issuerid, text[], {Float, _}:...)
 				continue;
 			}
 
-			Lang_SendText(adminid, $ADMIN_PROTECTION_REPORT, playername, issuerid, fstring);
+			Lang_SendText(adminid, "ADMIN_PROTECTION_REPORT", playername, issuerid, fstring);
 		}
 
 		Log_Player($ADMIN_PROTECTION_REPORT, playername, issuerid, fstring);
@@ -140,7 +140,7 @@ stock Admin_SendProtectReport(issuerid, text[], {Float, _}:...)
 				continue;
 			}
 
-			Lang_SendText(adminid, $ADMIN_PROTECTION_REPORT, playername, issuerid, text);
+			Lang_SendText(adminid, "ADMIN_PROTECTION_REPORT", playername, issuerid, text);
 		}
 
 		Log_Player($ADMIN_PROTECTION_REPORT, playername, issuerid, text);

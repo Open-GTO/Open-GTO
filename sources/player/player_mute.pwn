@@ -36,7 +36,7 @@ stock Player_Mute_OnPlayerText(playerid, text[])
 	#pragma unused text
 
 	if (IsPlayerMuted(playerid)) {
-		Lang_SendText(playerid, $MUTED_HELP_MESSAGE);
+		Lang_SendText(playerid, "MUTED_HELP_MESSAGE");
 		return 0;
 	}
 
@@ -59,7 +59,7 @@ stock MutePlayerTimer(playerid)
 
 		new string[MAX_LANG_VALUE_STRING];
 		GetPlayerName(playerid, string, sizeof(string));
-		Lang_SendTextToAll($ADMIN_MUTE_UNMUTED, string, playerid);
+		Lang_SendTextToAll("ADMIN_MUTE_UNMUTED", string, playerid);
 	}
 }
 

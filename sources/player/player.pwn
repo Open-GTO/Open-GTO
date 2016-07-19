@@ -61,7 +61,7 @@ Player_SaveConfig(file_config)
 Player_OnPlayerSpawn(playerid)
 {
 	if (IsPlayerMuted(playerid)) {
-		Lang_SendText(playerid, $MUTED_HELP_MESSAGE);
+		Lang_SendText(playerid, "MUTED_HELP_MESSAGE");
 	}
 
 	PlayerLevelTD_ShowTextDraw(playerid);
@@ -132,7 +132,7 @@ Player_OnPlayerConnect(playerid)
 
 	// connect message
 	Chat_Clear(playerid);
-	Lang_SendText(playerid, $PLAYER_LOADING);
+	Lang_SendText(playerid, "PLAYER_LOADING");
 
 	// store ip
 	Player_UpdateIP(playerid);
@@ -140,8 +140,8 @@ Player_OnPlayerConnect(playerid)
 	// check name
 	if (!NameCharCheck(playername)) {
 		new string[MAX_LANG_VALUE_STRING];
-		Lang_SendText(playerid, $PLAYER_NICK_BAD_SYMBOLS, ALLOWED_NICK_SYMBOLS_STR);
-		Lang_SendText(playerid, $PLAYER_NICK_IS_IP);
+		Lang_SendText(playerid, "PLAYER_NICK_BAD_SYMBOLS", ALLOWED_NICK_SYMBOLS_STR);
+		Lang_SendText(playerid, "PLAYER_NICK_IS_IP");
 		KickPlayer(playerid, "Такой ник запрещён.");
 	}
 
@@ -267,14 +267,14 @@ stock Player_OnLogin(playerid)
 	Lang_SendText(playerid, $ACCOUNT_LOGIN_MESSAGE_3);
 
 	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		Lang_SendText(playerid, $ACCOUNT_LOGIN_ROOT);
+		Lang_SendText(playerid, "ACCOUNT_LOGIN_ROOT");
 	} else if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
-		Lang_SendText(playerid, $ACCOUNT_LOGIN_ADMIN);
+		Lang_SendText(playerid, "ACCOUNT_LOGIN_ADMIN");
 	} else if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
-		Lang_SendText(playerid, $ACCOUNT_LOGIN_MODER);
+		Lang_SendText(playerid, "ACCOUNT_LOGIN_MODER");
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	} else {
-		Lang_SendText(playerid, $ACCOUNT_SUCCESS_LOGIN);
+		Lang_SendText(playerid, "ACCOUNT_SUCCESS_LOGIN");
 		SendDeathMessage(INVALID_PLAYER_ID, playerid, 200);
 	}
 
@@ -283,7 +283,7 @@ stock Player_OnLogin(playerid)
 			continue;
 		}
 
-		Lang_SendText(id, $PLAYER_CONNECT, playername, playerid);
+		Lang_SendText(id, "PLAYER_CONNECT", playername, playerid);
 	}
 
 	// set privilejes if player is rcon admin
@@ -304,7 +304,7 @@ stock Player_OnLogin(playerid)
 		if (gangid == INVALID_GANG_ID) {
 			SetPlayerGangName(playerid, "");
 
-			Lang_SendText(playerid, $GANG_MEMBER_LOGIN_REMOVED, gangname);
+			Lang_SendText(playerid, "GANG_MEMBER_LOGIN_REMOVED", gangname);
 		} else {
 			new is_ok = Gang_MemberLogin(playerid, gangid);
 
@@ -312,12 +312,12 @@ stock Player_OnLogin(playerid)
 				format(string, sizeof(string), _(playerid, GANG_MEMBER_LOGIN), playername);
 				Gang_SendMessage(gangid, string, COLOR_GANG);
 
-				Lang_SendText(playerid, $GANG_MEMBER_LOGIN_SELF, gangname, Gang_GetOnlineCount(gangid) - 1);
+				Lang_SendText(playerid, "GANG_MEMBER_LOGIN_SELF", gangname, Gang_GetOnlineCount(gangid) - 1);
 
 				Gang_GetMotd(gangid, string);
 
 				if (strlen(string) > 0) {
-					Lang_SendText(playerid, $GANG_MEMBER_LOGIN_MOTD, string);
+					Lang_SendText(playerid, "GANG_MEMBER_LOGIN_MOTD", string);
 				}
 			}
 		}
@@ -404,7 +404,7 @@ stock ShowPlayerWeaponsOnLevel(playerid, newlevel, oldlevel)
 
 		if (oldlevel < GetWeaponLevel(weaponid) <= newlevel) {
 			if (!is_found) {
-				Lang_SendText(playerid, $PLAYER_LEVEL_NEW_WEAPON);
+				Lang_SendText(playerid, "PLAYER_LEVEL_NEW_WEAPON");
 				is_found = true;
 			}
 

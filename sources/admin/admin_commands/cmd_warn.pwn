@@ -24,7 +24,7 @@ COMMAND:warn(playerid, params[])
 		reason[MAX_WARN_REASON_LENGTH];
 
 	if (sscanf(params, "s[5]s[32]I(1)S()[" #MAX_WARN_REASON_LENGTH "]", subcmd, subparams, amount, reason)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_WARN_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_WARN_HELP");
 		return 1;
 	}
 
@@ -34,7 +34,7 @@ COMMAND:warn(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_WARN_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_WARN_TARGET_ERROR");
 		return 1;
 	}
 
@@ -59,22 +59,22 @@ COMMAND:warn(playerid, params[])
 				SetPlayerWarnsCount(id, amount);
 			}
 
-			Lang_SendTextToAll($ADMIN_COMMAND_WARN_SET_ALL, playername, playerid, amount, reason);
+			Lang_SendTextToAll("ADMIN_COMMAND_WARN_SET_ALL", playername, playerid, amount, reason);
 		} else {
 			SetPlayerWarnsCount(targetid, amount);
 
-			Lang_SendText(targetid, $ADMIN_COMMAND_WARN_SET_PLAYER, playername, playerid, amount, reason);
-			Lang_SendText(playerid, $ADMIN_COMMAND_WARN_SET_SELF, targetname, targetid, amount, reason);
+			Lang_SendText(targetid, "ADMIN_COMMAND_WARN_SET_PLAYER", playername, playerid, amount, reason);
+			Lang_SendText(playerid, "ADMIN_COMMAND_WARN_SET_SELF", targetname, targetid, amount, reason);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_WARN_TARGET_ERROR);
+			Lang_SendText(playerid, "ADMIN_COMMAND_WARN_TARGET_ERROR");
 			return 1;
 		}
 
 		amount = GetPlayerWarnsCount(targetid);
 
-		Lang_SendText(playerid, $ADMIN_COMMAND_WARN_GET, targetname, targetid, amount);
+		Lang_SendText(playerid, "ADMIN_COMMAND_WARN_GET", targetname, targetid, amount);
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		new
 			warnword[MAX_LANG_VALUE_STRING];
@@ -86,15 +86,15 @@ COMMAND:warn(playerid, params[])
 				GivePlayerWarn(id, amount);
 			}
 
-			Lang_SendTextToAll($ADMIN_COMMAND_WARN_GIVE_ALL, playername, playerid, amount, warnword, reason);
+			Lang_SendTextToAll("ADMIN_COMMAND_WARN_GIVE_ALL", playername, playerid, amount, warnword, reason);
 		} else {
 			GivePlayerWarn(targetid, amount);
 
-			Lang_SendText(targetid, $ADMIN_COMMAND_WARN_GIVE_PLAYER, playername, playerid, amount, warnword, reason);
-			Lang_SendText(playerid, $ADMIN_COMMAND_WARN_GIVE_SELF, targetname, targetid, amount, warnword, reason);
+			Lang_SendText(targetid, "ADMIN_COMMAND_WARN_GIVE_PLAYER", playername, playerid, amount, warnword, reason);
+			Lang_SendText(playerid, "ADMIN_COMMAND_WARN_GIVE_SELF", targetname, targetid, amount, warnword, reason);
 		}
 	} else {
-		Lang_SendText(playerid, $ADMIN_COMMAND_WARN_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_WARN_HELP");
 	}
 
 	return 1;

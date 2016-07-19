@@ -91,7 +91,7 @@ Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate)
 		Vehicle_ShowTextdraw(playerid);
 
 		if (gFuel[vehicleid] <= 0.1 && !VehShop_IsShopVehicle(vehicleid)) {
-			Lang_SendText(playerid, $VEHICLE_FUEL_EMPTY);
+			Lang_SendText(playerid, "VEHICLE_FUEL_EMPTY");
 		}
 
 		Vehicle_ToggleEngine(vehicleid);
@@ -114,17 +114,17 @@ COMMAND:fill(playerid, params[])
 
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid == 0) {
-		Lang_SendText(playerid, $VEHICLE_FUEL_NOT_IN_VEHICLE);
+		Lang_SendText(playerid, "VEHICLE_FUEL_NOT_IN_VEHICLE");
 		return 1;
 	}
 
 	if (!IsPlayerAtFuelStation(playerid)) {
-		Lang_SendText(playerid, $VEHICLE_FUEL_NOT_ON_FUEL_ST);
+		Lang_SendText(playerid, "VEHICLE_FUEL_NOT_ON_FUEL_ST");
 		return 1;
 	}
 
 	if (IsVehicleRefilling(vehicleid)) {
-		Lang_SendText(playerid, $VEHICLE_FUEL_IS_FUELING_ERROR);
+		Lang_SendText(playerid, "VEHICLE_FUEL_IS_FUELING_ERROR");
 		return 1;
 	}
 
@@ -133,16 +133,16 @@ COMMAND:fill(playerid, params[])
 	new Float:max_fuel = GetVehicleModelMaxFuel(vehiclemodel);
 
 	if (max_fuel == 0.0) {
-		Lang_SendText(playerid, $VEHICLE_FUEL_WITHOUT_FUEL_ENGINE);
+		Lang_SendText(playerid, "VEHICLE_FUEL_WITHOUT_FUEL_ENGINE");
 		return 1;
 	}
 
 	if (gFuel[vehicleid] >= max_fuel) {
-		Lang_SendText(playerid, $VEHICLE_FUEL_FUEL_IS_FULL);
+		Lang_SendText(playerid, "VEHICLE_FUEL_FUEL_IS_FULL");
 		return 1;
 	}
 
-	Lang_SendText(playerid, $VEHICLE_FUEL_IS_FUELING);
+	Lang_SendText(playerid, "VEHICLE_FUEL_IS_FUELING");
 	FillVehicle(vehicleid, playerid);
 	return 1;
 }

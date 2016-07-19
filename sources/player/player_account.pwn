@@ -85,7 +85,7 @@ stock Account_Register(playerid, password[])
 	// login
 	Player_Login(playerid);
 
-	Lang_SendText(playerid, $ACCOUNT_SUCCESS_REGISTER);
+	Lang_SendText(playerid, "ACCOUNT_SUCCESS_REGISTER");
 	Log_Game("create_account: success %s(%d)", playername, playerid);
 	return 1;
 }
@@ -116,7 +116,7 @@ stock Account_Login(playerid, password[])
 		AddLoginAttempt(playerid);
 
 		if (IsLoginAttemptsEnded(playerid)) {
-			Lang_SendText(playerid, $ACCOUNT_AUTO_KICK);
+			Lang_SendText(playerid, "ACCOUNT_AUTO_KICK");
 			KickPlayer(playerid, _(playerid, ACCOUNT_INCORRECT_PASSWORD));
 		} else {
 			Dialog_Show(playerid, Dialog:AccountLogin);

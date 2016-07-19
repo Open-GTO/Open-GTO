@@ -28,7 +28,7 @@ COMMAND:interior(playerid, params[])
 		interior;
 
 	if (sscanf(params, "s[5]s[32]I(0)", subcmd, subparams, interior)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_INTERIOR_HELP");
 		return 1;
 	}
 
@@ -38,7 +38,7 @@ COMMAND:interior(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_INTERIOR_TARGET_ERROR");
 		return 1;
 	}
 
@@ -59,24 +59,24 @@ COMMAND:interior(playerid, params[])
 				SetPlayerInterior(id, interior);
 			}
 
-			Lang_SendTextToAll($ADMIN_COMMAND_INTERIOR_SET_ALL, playername, playerid, interior);
+			Lang_SendTextToAll("ADMIN_COMMAND_INTERIOR_SET_ALL", playername, playerid, interior);
 		} else {
 			SetPlayerInterior(targetid, interior);
 
-			Lang_SendText(targetid, $ADMIN_COMMAND_INTERIOR_SET_PLAYER, playername, playerid, interior);
-			Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_SET_SELF, targetname, targetid, interior);
+			Lang_SendText(targetid, "ADMIN_COMMAND_INTERIOR_SET_PLAYER", playername, playerid, interior);
+			Lang_SendText(playerid, "ADMIN_COMMAND_INTERIOR_SET_SELF", targetname, targetid, interior);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_TARGET_ERROR);
+			Lang_SendText(playerid, "ADMIN_COMMAND_INTERIOR_TARGET_ERROR");
 			return 1;
 		}
 
 		interior = GetPlayerInterior(targetid);
 
-		Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_GET, targetname, targetid, interior);
+		Lang_SendText(playerid, "ADMIN_COMMAND_INTERIOR_GET", targetname, targetid, interior);
 	} else {
-		Lang_SendText(playerid, $ADMIN_COMMAND_INTERIOR_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_INTERIOR_HELP");
 	}
 
 	return 1;

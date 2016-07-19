@@ -560,7 +560,7 @@ public OnPlayerRequestSpawn(playerid)
 public OnPlayerCommandReceived(playerid, cmdtext[])
 {
 	if (!IsPlayerLogin(playerid)) {
-		Lang_SendText(playerid, $ACCOUNT_LOGIN_FIRST);
+		Lang_SendText(playerid, "ACCOUNT_LOGIN_FIRST");
 		return 0;
 	}
 
@@ -580,7 +580,7 @@ public OnPlayerCommandPerformed(playerid, cmdtext[], success)
 public OnPlayerText(playerid, text[])
 {
 	if (!IsPlayerLogin(playerid)) {
-		Lang_SendText(playerid, $ACCOUNT_LOGIN_FIRST);
+		Lang_SendText(playerid, "ACCOUNT_LOGIN_FIRST");
 		return 0;
 	}
 

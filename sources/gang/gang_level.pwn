@@ -124,12 +124,12 @@ stock SetGangLevel(gangid, level)
 	if (old_level < level) {
 		foreach (new memberid : LoadedGangMembers[gangid]) {
 			playerid = GangMember_GetID(gangid, memberid);
-			Lang_SendText(playerid, $GANG_LEVEL_INCREASE, level);
+			Lang_SendText(playerid, "GANG_LEVEL_INCREASE", level);
 		}
 	} else {
 		foreach (new memberid : LoadedGangMembers[gangid]) {
 			playerid = GangMember_GetID(gangid, memberid);
-			Lang_SendText(playerid, $GANG_LEVEL_DECREASE, level);
+			Lang_SendText(playerid, "GANG_LEVEL_DECREASE", level);
 		}
 	}
 

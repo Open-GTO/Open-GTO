@@ -29,7 +29,7 @@ VMenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 COMMAND:vmenu(playerid, params[])
 {
 	if (!IsPlayerInAnyVehicle(playerid)) {
-		Lang_SendText(playerid, $VEHICLE_NOT_IN_CAR);
+		Lang_SendText(playerid, "VEHICLE_NOT_IN_CAR");
 		return 0;
 	}
 
@@ -155,7 +155,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 				return 1;
 			}
 
-			Lang_SendText(playerid, $VEHICLE_FUEL_IS_FUELING);
+			Lang_SendText(playerid, "VEHICLE_FUEL_IS_FUELING");
 			FillVehicle(vehicleid, playerid);
 			return 1;
 		}

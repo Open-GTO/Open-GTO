@@ -427,7 +427,7 @@ stock Gang_GiveMemberXP(playerid)
 	GivePlayerXP(playerid, xp_amount, 0);
 
 	new string[MAX_STRING];
-	Lang_SendText(playerid, $GANG_GIVE_MEMBER_XP, xp_amount);
+	Lang_SendText(playerid, "GANG_GIVE_MEMBER_XP", xp_amount);
 }
 
 

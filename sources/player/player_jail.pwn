@@ -74,7 +74,7 @@ stock JailPlayerTimer(playerid)
 
 		GetPlayerName(playerid, playername, sizeof(playername));
 
-		Lang_SendTextToAll($ADMIN_JAIL_UNJAILED, playername, playerid);
+		Lang_SendTextToAll("ADMIN_JAIL_UNJAILED", playername, playerid);
 	}
 	return 1;
 }

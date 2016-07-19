@@ -23,7 +23,7 @@ COMMAND:freeze(playerid, params[])
 		reason[MAX_FREEZE_REASON_LENGTH];
 
 	if (sscanf(params, "s[32]k<ftime>S()[" #MAX_FREEZE_REASON_LENGTH "]", subparams, time, reason)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_FREEZE_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_FREEZE_HELP");
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:freeze(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_FREEZE_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_FREEZE_TARGET_ERROR");
 		return 1;
 	}
 
@@ -50,9 +50,9 @@ COMMAND:freeze(playerid, params[])
 
 	if (targetid == -1) {
 		if (is_with_reason) {
-			Lang_SendTextToAll($ADMIN_COMMAND_FREEZE_ALL_REASON, playername, playerid, time, timeword, reason);
+			Lang_SendTextToAll("ADMIN_COMMAND_FREEZE_ALL_REASON", playername, playerid, time, timeword, reason);
 		} else {
-			Lang_SendTextToAll($ADMIN_COMMAND_FREEZE_ALL, playername, playerid, time, timeword);
+			Lang_SendTextToAll("ADMIN_COMMAND_FREEZE_ALL", playername, playerid, time, timeword);
 		}
 
 		foreach (targetid : Player) {
@@ -62,11 +62,11 @@ COMMAND:freeze(playerid, params[])
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
 		if (is_with_reason) {
-			Lang_SendTextToAll($ADMIN_COMMAND_FREEZE_PLAYER_REASON, playername, playerid, targetname, targetid, time, timeword, reason);
-			Lang_SendText(playerid, $ADMIN_COMMAND_FREEZE_PLAYER_SELF_REASON, targetname, targetid, time, timeword, reason);
+			Lang_SendTextToAll("ADMIN_COMMAND_FREEZE_PLAYER_REASON", playername, playerid, targetname, targetid, time, timeword, reason);
+			Lang_SendText(playerid, "ADMIN_COMMAND_FREEZE_PLAYER_SELF_REASON", targetname, targetid, time, timeword, reason);
 		} else {
-			Lang_SendTextToAll($ADMIN_COMMAND_FREEZE_PLAYER, playername, playerid, targetname, targetid, time, timeword);
-			Lang_SendText(playerid, $ADMIN_COMMAND_FREEZE_PLAYER_SELF, targetname, targetid, time, timeword);
+			Lang_SendTextToAll("ADMIN_COMMAND_FREEZE_PLAYER", playername, playerid, targetname, targetid, time, timeword);
+			Lang_SendText(playerid, "ADMIN_COMMAND_FREEZE_PLAYER_SELF", targetname, targetid, time, timeword);
 		}
 
 		FreezePlayer(targetid, time);

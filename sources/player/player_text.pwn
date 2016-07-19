@@ -24,12 +24,12 @@ stock Player_Text_OnPlayerText(playerid, text[])
 		case '!': {
 			new gangid = GetPlayerGangID(playerid);
 			if (gangid == INVALID_GANG_ID) {
-				Lang_SendText(playerid, $GANG_TEXT_NO_GANG);
+				Lang_SendText(playerid, "GANG_TEXT_NO_GANG");
 				return 0;
 			}
 
 			if (IsPlayerMuted(playerid)) {
-				Lang_SendText(playerid, $MUTED_HELP_MESSAGE);
+				Lang_SendText(playerid, "MUTED_HELP_MESSAGE");
 				return 0;
 			}
 
@@ -39,7 +39,7 @@ stock Player_Text_OnPlayerText(playerid, text[])
 			}
 
 			if (strlen(text[start_pos]) < 2) {
-				Lang_SendText(playerid, $GANG_TEXT_SHORT_MESSAGE);
+				Lang_SendText(playerid, "GANG_TEXT_SHORT_MESSAGE");
 				return 0;
 			}
 
@@ -71,7 +71,7 @@ stock Player_Text_OnPlayerText(playerid, text[])
 		}
 		case '$', ';': {
 			if (IsPlayerMuted(playerid)) {
-				Lang_SendText(playerid, $MUTED_HELP_MESSAGE);
+				Lang_SendText(playerid, "MUTED_HELP_MESSAGE");
 				return 0;
 			}
 

@@ -23,7 +23,7 @@ COMMAND:world(playerid, params[])
 		world;
 
 	if (sscanf(params, "s[5]s[32]I(0)", subcmd, subparams, world)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_WORLD_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_WORLD_HELP");
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:world(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_WORLD_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_WORLD_TARGET_ERROR");
 		return 1;
 	}
 
@@ -54,24 +54,24 @@ COMMAND:world(playerid, params[])
 				SetPlayerVirtualWorld(id, world);
 			}
 
-			Lang_SendTextToAll($ADMIN_COMMAND_WORLD_SET_ALL, playername, playerid, world);
+			Lang_SendTextToAll("ADMIN_COMMAND_WORLD_SET_ALL", playername, playerid, world);
 		} else {
 			SetPlayerVirtualWorld(targetid, world);
 
-			Lang_SendText(targetid, $ADMIN_COMMAND_WORLD_SET_PLAYER, playername, playerid, world);
-			Lang_SendText(playerid, $ADMIN_COMMAND_WORLD_SET_SELF, targetname, targetid, world);
+			Lang_SendText(targetid, "ADMIN_COMMAND_WORLD_SET_PLAYER", playername, playerid, world);
+			Lang_SendText(playerid, "ADMIN_COMMAND_WORLD_SET_SELF", targetname, targetid, world);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_WORLD_TARGET_ERROR);
+			Lang_SendText(playerid, "ADMIN_COMMAND_WORLD_TARGET_ERROR");
 			return 1;
 		}
 
 		world = GetPlayerVirtualWorld(targetid);
 
-		Lang_SendText(playerid, $ADMIN_COMMAND_WORLD_GET, targetname, targetid, world);
+		Lang_SendText(playerid, "ADMIN_COMMAND_WORLD_GET", targetname, targetid, world);
 	} else {
-		Lang_SendText(playerid, $ADMIN_COMMAND_WORLD_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_WORLD_HELP");
 	}
 
 	return 1;

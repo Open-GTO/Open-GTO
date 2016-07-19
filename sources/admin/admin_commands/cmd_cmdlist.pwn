@@ -29,17 +29,24 @@ COMMAND:cmdlist(playerid, params[])
 			string[MAX_LANG_MULTI_STRING * 3],
 			temp[MAX_LANG_MULTI_STRING];
 
-		Lang_GetPlayerText(playerid, $ADMIN_COMMAND_CMDLIST_MODER, string);
+		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_CMDLIST_MODER", string);
 
-		Lang_GetPlayerText(playerid, $ADMIN_COMMAND_CMDLIST_ADMIN, temp);
-		strcat(string, temp);
+		if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
+			Lang_GetPlayerText(playerid, "ADMIN_COMMAND_CMDLIST_ADMIN", temp);
+			strcat(string, temp);
+		}
 
-		Lang_GetPlayerText(playerid, $ADMIN_COMMAND_CMDLIST_RCON, temp);
-		strcat(string, temp);
+		if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
+			Lang_GetPlayerText(playerid, "ADMIN_COMMAND_CMDLIST_RCON", temp);
+			strcat(string, temp);
+		}
 
-		Dialog_Message(playerid, _(playerid, ADMIN_COMMAND_CMDLIST_DIALOG_HEADER), string, _(playerid, ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK));
+		Dialog_Message2(playerid,
+			"ADMIN_COMMAND_CMDLIST_DIALOG_HEADER",
+			string,
+			"ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK");
 	} else {
-		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_HEADER);
+		Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_HEADER");
 		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_0);
 		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_1);
 		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_2);

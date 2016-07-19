@@ -23,7 +23,7 @@ COMMAND:armour(playerid, params[])
 		Float:amount;
 
 	if (sscanf(params, "s[5]s[32]F(100.0)", subcmd, subparams, amount)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_ARMOUR_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_ARMOUR_HELP");
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:armour(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_ARMOUR_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_ARMOUR_TARGET_ERROR");
 		return 1;
 	}
 
@@ -55,24 +55,24 @@ COMMAND:armour(playerid, params[])
 				SetPlayerArmour(id, amount);
 			}
 
-			Lang_SendTextToAll($ADMIN_COMMAND_ARMOUR_SET_ALL, playername, playerid, amount);
+			Lang_SendTextToAll("ADMIN_COMMAND_ARMOUR_SET_ALL", playername, playerid, amount);
 		} else {
 			SetPlayerArmour(targetid, amount);
 
 			GetPlayerNearPlayers(targetid, 40.0, players);
-			Lang_SendTextToPlayers(players, $ADMIN_COMMAND_ARMOUR_SET_PLAYER, playername, playerid, targetname, targetid, amount);
+			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_ARMOUR_SET_PLAYER", playername, playerid, targetname, targetid, amount);
 
-			Lang_SendText(playerid, $ADMIN_COMMAND_ARMOUR_SET_SELF, targetname, targetid, amount);
+			Lang_SendText(playerid, "ADMIN_COMMAND_ARMOUR_SET_SELF", targetname, targetid, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_ARMOUR_TARGET_ERROR);
+			Lang_SendText(playerid, "ADMIN_COMMAND_ARMOUR_TARGET_ERROR");
 			return 1;
 		}
 
 		GetPlayerArmour(targetid, amount);
 
-		Lang_SendText(playerid, $ADMIN_COMMAND_ARMOUR_GET, targetname, targetid, amount);
+		Lang_SendText(playerid, "ADMIN_COMMAND_ARMOUR_GET", targetname, targetid, amount);
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		new
 			Float:current_armour;
@@ -83,18 +83,18 @@ COMMAND:armour(playerid, params[])
 				SetPlayerArmour(id, current_armour + amount);
 			}
 
-			Lang_SendTextToAll($ADMIN_COMMAND_ARMOUR_GIVE_ALL, playername, playerid, amount);
+			Lang_SendTextToAll("ADMIN_COMMAND_ARMOUR_GIVE_ALL", playername, playerid, amount);
 		} else {
 			GetPlayerArmour(targetid, current_armour);
 			SetPlayerArmour(targetid, current_armour + amount);
 
 			GetPlayerNearPlayers(targetid, 40.0, players);
-			Lang_SendTextToPlayers(players, $ADMIN_COMMAND_ARMOUR_GIVE_PLAYER, playername, playerid, targetname, targetid, amount);
+			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_ARMOUR_GIVE_PLAYER", playername, playerid, targetname, targetid, amount);
 
-			Lang_SendText(playerid, $ADMIN_COMMAND_ARMOUR_GIVE_SELF, targetname, targetid, amount);
+			Lang_SendText(playerid, "ADMIN_COMMAND_ARMOUR_GIVE_SELF", targetname, targetid, amount);
 		}
 	} else {
-		Lang_SendText(playerid, $ADMIN_COMMAND_ARMOUR_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_ARMOUR_HELP");
 	}
 
 	return 1;

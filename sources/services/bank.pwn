@@ -210,7 +210,7 @@ DialogCreate:BankWithdraw(playerid)
 		string[MAX_LANG_VALUE_STRING * 2];
 
 	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
-	Lang_GetPlayerText(playerid, $BANK_START_INFO, string, sizeof(string), gProfitCount, gProfitCountPremium, string);
+	Lang_GetPlayerText(playerid, "BANK_START_INFO", string, sizeof(string), gProfitCount, gProfitCountPremium, string);
 
 	Dialog_Open(playerid, Dialog:BankWithdraw, DIALOG_STYLE_INPUT,
 		_(playerid, BANK_CAPTION),
@@ -492,7 +492,7 @@ stock Bank_AddProfit()
 
 		GivePlayerBankMoney(playerid, amount);
 
-		Lang_SendText(playerid, $BANK_ADDPROFIT_MESSAGE, amount);
+		Lang_SendText(playerid, "BANK_ADDPROFIT_MESSAGE", amount);
 	}
 	return 1;
 }

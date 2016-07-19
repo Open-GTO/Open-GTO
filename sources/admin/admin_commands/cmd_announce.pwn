@@ -38,12 +38,12 @@ COMMAND:announce(playerid, params[])
 		text[ANNOUNCE_MAX_LENGTH];
 
 	if (sscanf(params, "is[" #ANNOUNCE_MAX_LENGTH "]", type, text)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_ANNOUNCE_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_ANNOUNCE_HELP");
 		return 1;
 	}
 
 	if (!IS_IN_RANGE(type, 0, 6)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_ANNOUNCE_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_ANNOUNCE_HELP");
 		return 1;
 	}
 

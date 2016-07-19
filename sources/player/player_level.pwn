@@ -70,7 +70,7 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 	} else {
 		new maxxp = GetPlayerXPToLevel(playerid, GetMaxPlayerLevel());
 		if (xpamount >= maxxp) {
-			Lang_SendText(playerid, $PLAYER_XP_MAX);
+			Lang_SendText(playerid, "PLAYER_XP_MAX");
 			xpamount = maxxp;
 		}
 	}
@@ -83,19 +83,19 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 
 	if (xpamount > 0) {
 		if (showtd == 1) {
-			Lang_GameText(playerid, texttime, 3, $PLAYER_XP_GAMETEXT, '+', xpamount);
+			Lang_GameText(playerid, texttime, 3, "PLAYER_XP_GAMETEXT", '+', xpamount);
 		}
 
 		if (showtext == 1) {
-			Lang_SendText(playerid, $PLAYER_XP_GET, xpamount);
+			Lang_SendText(playerid, "PLAYER_XP_GET", xpamount);
 		}
 	} else {
 		if (showtd == 1) {
-			Lang_GameText(playerid, texttime, 3, $PLAYER_XP_GAMETEXT, '-', -xpamount);
+			Lang_GameText(playerid, texttime, 3, "PLAYER_XP_GAMETEXT", '-', -xpamount);
 		}
 
 		if (showtext == 1) {
-			Lang_SendText(playerid, $PLAYER_XP_MISS, -xpamount);
+			Lang_SendText(playerid, "PLAYER_XP_MISS", -xpamount);
 		}
 	}
 
@@ -129,11 +129,11 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 		PlayerPlaySoundOnPlayer(playerid, 1057);
 
 		if (old_level < level) {
-			Lang_SendText(playerid, $PLAYER_LEVEL_UP, level);
+			Lang_SendText(playerid, "PLAYER_LEVEL_UP", level);
 
 			ShowPlayerWeaponsOnLevel(playerid, level, old_level);
 		} else {
-			Lang_SendText(playerid, $PLAYER_LEVEL_DOWN, level);
+			Lang_SendText(playerid, "PLAYER_LEVEL_DOWN", level);
 		}
 
 		Log_Game("player: %s(%d): changed his level from %d to %d", ReturnPlayerName(playerid), playerid, old_level, level);

@@ -23,7 +23,7 @@ COMMAND:skin(playerid, params[])
 		skin;
 
 	if (sscanf(params, "s[4]s[32]I(-1)", subcmd, subparams, skin)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_SKIN_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SKIN_HELP");
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ COMMAND:skin(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_SKIN_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SKIN_TARGET_ERROR");
 		return 1;
 	}
 
@@ -50,7 +50,7 @@ COMMAND:skin(playerid, params[])
 
 	if (strcmp(subcmd, "set", true) == 0) {
 		if (skin == -1) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_SKIN_HELP);
+			Lang_SendText(playerid, "ADMIN_COMMAND_SKIN_HELP");
 			return 1;
 		}
 
@@ -59,25 +59,25 @@ COMMAND:skin(playerid, params[])
 				SetPlayerSkin(id, skin);
 			}
 
-			Lang_SendTextToAll($ADMIN_COMMAND_SKIN_SET_ALL, playername, playerid, skin);
+			Lang_SendTextToAll("ADMIN_COMMAND_SKIN_SET_ALL", playername, playerid, skin);
 		} else {
 			SetPlayerSkin(targetid, skin);
 
-			Lang_SendText(targetid, $ADMIN_COMMAND_SKIN_SET_PLAYER, playername, playerid, skin);
+			Lang_SendText(targetid, "ADMIN_COMMAND_SKIN_SET_PLAYER", playername, playerid, skin);
 
-			Lang_SendText(playerid, $ADMIN_COMMAND_SKIN_SET_SELF, targetname, targetid, skin);
+			Lang_SendText(playerid, "ADMIN_COMMAND_SKIN_SET_SELF", targetname, targetid, skin);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_SKIN_TARGET_ERROR);
+			Lang_SendText(playerid, "ADMIN_COMMAND_SKIN_TARGET_ERROR");
 			return 1;
 		}
 
 		skin = GetPlayerSkin(targetid);
 
-		Lang_SendText(playerid, $ADMIN_COMMAND_SKIN_GET, targetname, targetid, skin);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SKIN_GET", targetname, targetid, skin);
 	} else {
-		Lang_SendText(playerid, $ADMIN_COMMAND_SKIN_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SKIN_HELP");
 	}
 
 	return 1;

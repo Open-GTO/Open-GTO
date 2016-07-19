@@ -21,7 +21,7 @@ COMMAND:kill(playerid, params[])
 		subparams[32];
 
 	if (sscanf(params, "s[32]", subparams)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_KILL_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_KILL_HELP");
 		return 1;
 	}
 
@@ -31,7 +31,7 @@ COMMAND:kill(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_KILL_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_KILL_TARGET_ERROR");
 		return 1;
 	}
 
@@ -47,7 +47,7 @@ COMMAND:kill(playerid, params[])
 			SetPlayerHealth(id, 0.0);
 		}
 
-		Lang_SendTextToAll($ADMIN_COMMAND_KILL_ALL, playername, playerid);
+		Lang_SendTextToAll("ADMIN_COMMAND_KILL_ALL", playername, playerid);
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
@@ -56,7 +56,7 @@ COMMAND:kill(playerid, params[])
 		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KILL_PLAYER), playername, playerid, targetname, targetid);
 		SendMessageToNearPlayerPlayers(string, 40.0, targetid);
 
-		Lang_SendText(playerid, $ADMIN_COMMAND_KILL_PLAYER_SELF, targetname, targetid);
+		Lang_SendText(playerid, "ADMIN_COMMAND_KILL_PLAYER_SELF", targetname, targetid);
 	}
 
 	return 1;

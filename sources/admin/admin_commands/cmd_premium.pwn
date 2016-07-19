@@ -25,12 +25,12 @@ COMMAND:premium(playerid, params[])
 		year;
 
 	if (sscanf(params, "s[5]up<.>I(0)I(0)I(0)", subcmd, targetid, day, month, year)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_PREMIUM_HELP");
 		return 1;
 	}
 
 	if (targetid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_PREMIUM_TARGET_ERROR");
 		return 1;
 	}
 
@@ -47,25 +47,25 @@ COMMAND:premium(playerid, params[])
 		timestamp = mktime(year, month, day);
 
 		if (timestamp == -1) {
-			Lang_SendText(targetid, $ADMIN_COMMAND_PREMIUM_TIME_ERROR);
+			Lang_SendText(targetid, "ADMIN_COMMAND_PREMIUM_TIME_ERROR");
 			return 1;
 		}
 
 		Account_SetPremiumTime(targetid, timestamp);
 
-		Lang_SendText(targetid, $ADMIN_COMMAND_PREMIUM_SET_PLAYER, playername, playerid, day, month, year);
-		Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_SET_SELF, targetname, targetid, day, month, year);
+		Lang_SendText(targetid, "ADMIN_COMMAND_PREMIUM_SET_PLAYER", playername, playerid, day, month, year);
+		Lang_SendText(playerid, "ADMIN_COMMAND_PREMIUM_SET_SELF", targetname, targetid, day, month, year);
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (IsPlayerHavePremium(targetid)) {
 			timestamp = Account_GetPremiumTime(targetid);
 			gmtime(timestamp, year, month, day);
 
-			Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_GET, targetname, targetid, day, month, year);
+			Lang_SendText(playerid, "ADMIN_COMMAND_PREMIUM_GET", targetname, targetid, day, month, year);
 		} else {
-			Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_GET_NO_PREMIUM, targetname, targetid);
+			Lang_SendText(playerid, "ADMIN_COMMAND_PREMIUM_GET_NO_PREMIUM", targetname, targetid);
 		}
 	} else {
-		Lang_SendText(playerid, $ADMIN_COMMAND_PREMIUM_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_PREMIUM_HELP");
 	}
 
 	return 1;

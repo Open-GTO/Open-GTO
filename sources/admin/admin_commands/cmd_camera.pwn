@@ -27,7 +27,7 @@ COMMAND:camera(playerid, params[])
 		subparams[64];
 
 	if (sscanf(params, "s[32]S()[64]", subcmd, subparams)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_CAMERA_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_CAMERA_HELP");
 		return 1;
 	}
 
@@ -51,11 +51,11 @@ COMMAND:camera(playerid, params[])
 		lpos[2] = cpos[2] + floatmul(vpos[2], scale);
 
 		// message
-		Lang_SendText(playerid, $ADMIN_COMMAND_CAMERA_GET_MESSAGE_CPOS, cpos[0], cpos[1], cpos[2]);
-		Lang_SendText(playerid, $ADMIN_COMMAND_CAMERA_GET_MESSAGE_LPOS, lpos[0], lpos[1], lpos[2]);
+		Lang_SendText(playerid, "ADMIN_COMMAND_CAMERA_GET_MESSAGE_CPOS", cpos[0], cpos[1], cpos[2]);
+		Lang_SendText(playerid, "ADMIN_COMMAND_CAMERA_GET_MESSAGE_LPOS", lpos[0], lpos[1], lpos[2]);
 	} else if (strcmp(subcmd, "set", true) == 0) {
 		if (strlen(subparams) == 0) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_CAMERA_SET_ERROR);
+			Lang_SendText(playerid, "ADMIN_COMMAND_CAMERA_SET_ERROR");
 			return 1;
 		}
 
@@ -64,7 +64,7 @@ COMMAND:camera(playerid, params[])
 			Float:lpos[3];
 
 		if (sscanf(subparams, "p<,>a<f>[3]a<f>[3]", cpos, lpos)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_CAMERA_SET_ERROR);
+			Lang_SendText(playerid, "ADMIN_COMMAND_CAMERA_SET_ERROR");
 			return 1;
 		}
 
@@ -73,7 +73,7 @@ COMMAND:camera(playerid, params[])
 	} else if (strcmp(subcmd, "reset", true) == 0) {
 		SetCameraBehindPlayer(playerid);
 	} else {
-		Lang_SendText(playerid, $ADMIN_COMMAND_CAMERA_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_CAMERA_HELP");
 	}
 
 	return 1;

@@ -36,7 +36,7 @@ COMMAND:weapon(playerid, params[])
 		amount;
 
 	if (sscanf(params, "s[5]s[32]k<weapon>I(0)", subcmd, subparams, weaponid, amount)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_WEAPON_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_HELP");
 		return 1;
 	}
 
@@ -46,7 +46,7 @@ COMMAND:weapon(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_WEAPON_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_TARGET_ERROR");
 		return 1;
 	}
 
@@ -67,20 +67,20 @@ COMMAND:weapon(playerid, params[])
 				SetPlayerWeapon(id, weaponid, amount);
 			}
 
-			Lang_SendTextToAll($ADMIN_COMMAND_WEAPON_SET_ALL, playername, playerid, weaponid, amount);
+			Lang_SendTextToAll("ADMIN_COMMAND_WEAPON_SET_ALL", playername, playerid, weaponid, amount);
 		} else {
 			SetPlayerWeapon(targetid, weaponid, amount);
 
-			Lang_SendText(targetid, $ADMIN_COMMAND_WEAPON_SET_PLAYER, playername, playerid, weaponid, amount);
-			Lang_SendText(playerid, $ADMIN_COMMAND_WEAPON_SET_SELF, targetname, targetid, weaponid, amount);
+			Lang_SendText(targetid, "ADMIN_COMMAND_WEAPON_SET_PLAYER", playername, playerid, weaponid, amount);
+			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_SET_SELF", targetname, targetid, weaponid, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_WEAPON_TARGET_ERROR);
+			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_TARGET_ERROR");
 			return 1;
 		}
 
-		Lang_SendText(playerid, $ADMIN_COMMAND_WEAPON_GET, targetname, targetid);
+		Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_GET", targetname, targetid);
 
 		for (new slot = 0; slot < PLAYER_WEAPON_SLOTS; slot++) {
 			GetPlayerWeaponData(playerid, slot, weaponid, amount);
@@ -89,7 +89,7 @@ COMMAND:weapon(playerid, params[])
 				continue;
 			}
 
-			Lang_SendText(playerid, $ADMIN_COMMAND_WEAPON_GET_ITEM, slot, weaponid, amount);
+			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_GET_ITEM", slot, weaponid, amount);
 		}
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		if (amount == 0) {
@@ -101,15 +101,15 @@ COMMAND:weapon(playerid, params[])
 				GivePlayerWeapon(id, weaponid, amount);
 			}
 
-			Lang_SendTextToAll($ADMIN_COMMAND_WEAPON_GIVE_ALL, playername, playerid, weaponid, amount);
+			Lang_SendTextToAll("ADMIN_COMMAND_WEAPON_GIVE_ALL", playername, playerid, weaponid, amount);
 		} else {
 			GivePlayerWeapon(targetid, weaponid, amount);
 
-			Lang_SendText(targetid, $ADMIN_COMMAND_WEAPON_GIVE_PLAYER, playername, playerid, weaponid, amount);
-			Lang_SendText(playerid, $ADMIN_COMMAND_WEAPON_GIVE_SELF, targetname, targetid, weaponid, amount);
+			Lang_SendText(targetid, "ADMIN_COMMAND_WEAPON_GIVE_PLAYER", playername, playerid, weaponid, amount);
+			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_GIVE_SELF", targetname, targetid, weaponid, amount);
 		}
 	} else {
-		Lang_SendText(playerid, $ADMIN_COMMAND_WEAPON_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_HELP");
 	}
 
 	return 1;

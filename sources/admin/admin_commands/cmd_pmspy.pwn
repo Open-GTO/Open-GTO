@@ -19,10 +19,10 @@ COMMAND:pmspy(playerid, params[])
 
 	if (!IsPrivateMessageSpyActive(playerid)) {
 		SetPrivateMessageSpyStatus(playerid, true);
-		Lang_SendText(playerid, $ADMIN_COMMAND_PMSPY_ENABLED);
+		Lang_SendText(playerid, "ADMIN_COMMAND_PMSPY_ENABLED");
 	} else {
 		SetPrivateMessageSpyStatus(playerid, false);
-		Lang_SendText(playerid, $ADMIN_COMMAND_PMSPY_DISABLED);
+		Lang_SendText(playerid, "ADMIN_COMMAND_PMSPY_DISABLED");
 	}
 	return 1;
 }

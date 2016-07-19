@@ -15,7 +15,7 @@
 
 COMMAND:help(playerid, params[])
 {
-	Lang_SendText(playerid, $COMMAND_HELP_HEADER);
+	Lang_SendText(playerid, "COMMAND_HELP_HEADER");
 	Lang_SendText(playerid, $COMMAND_HELP_0);
 	Lang_SendText(playerid, $COMMAND_HELP_1);
 	Lang_SendText(playerid, $COMMAND_HELP_2);
@@ -110,7 +110,7 @@ COMMAND:time(playerid, params[])
 	new mute_time = GetPlayerMuteTime(playerid);
 
 	if (jail_time != -1 || mute_time != 0) {
-		Lang_SendText(playerid, $COMMAND_TIME_ABOUT);
+		Lang_SendText(playerid, "COMMAND_TIME_ABOUT");
 	}
 
 	if (jail_time != -1) {
@@ -137,7 +137,7 @@ COMMAND:id(playerid, params[])
 		ids[COMMAND_ID_MAX_MATCHES];
 
 	if (sscanf(params, "?<MATCH_NAME_PARTIAL=1>u[" #COMMAND_ID_MAX_MATCHES "]", ids)) {
-		Lang_SendText(playerid, $COMMAND_ID_HELP);
+		Lang_SendText(playerid, "COMMAND_ID_HELP");
 		return 1;
 	}
 
@@ -148,7 +148,7 @@ COMMAND:id(playerid, params[])
 
 	for (i = 0; ids[i] != INVALID_PLAYER_ID; i++) {
 		if (ids[i] == cellmin) {
-			Lang_SendText(playerid, $COMMAND_ID_AND_MORE);
+			Lang_SendText(playerid, "COMMAND_ID_AND_MORE");
 			break;
 		}
 
@@ -165,7 +165,7 @@ COMMAND:id(playerid, params[])
 	}
 
 	if (i == 0) {
-		Lang_SendText(playerid, $COMMAND_ID_NO_ONE);
+		Lang_SendText(playerid, "COMMAND_ID_NO_ONE");
 	}
 
 	return 1;
@@ -174,7 +174,7 @@ COMMAND:id(playerid, params[])
 COMMAND:pm(playerid, params[])
 {
 	if (isnull(params)) {
-		Lang_SendText(playerid, $COMMAND_PM_HELP);
+		Lang_SendText(playerid, "COMMAND_PM_HELP");
 		return 1;
 	}
 
@@ -183,7 +183,7 @@ COMMAND:pm(playerid, params[])
 		message[MAX_SEND_SYMBOLS];
 
 	if (sscanf(params, "us[" #MAX_SEND_SYMBOLS "]", receiveid, message) || receiveid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $COMMAND_PM_ERROR);
+		Lang_SendText(playerid, "COMMAND_PM_ERROR");
 		return 1;
 	}
 

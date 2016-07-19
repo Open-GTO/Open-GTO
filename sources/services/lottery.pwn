@@ -108,7 +108,7 @@ COMMAND:lottery(playerid, params[])
 	}
 
 	if (!IsLotteryHaveStatus(LotteryStart)) {
-		Lang_SendText(playerid, $LOTTERY_NOT_STARTED);
+		Lang_SendText(playerid, "LOTTERY_NOT_STARTED");
 		return 1;
 	}
 
@@ -117,26 +117,26 @@ COMMAND:lottery(playerid, params[])
 		value;
 
 	if (sscanf(params, "i", value)) {
-		Lang_SendText(playerid, $LOTTERY_USE_COMMAND, GetLotteryMaxValue(), TicketCost);
+		Lang_SendText(playerid, "LOTTERY_USE_COMMAND", GetLotteryMaxValue(), TicketCost);
 		return 1;
 	}
 
 	new error = GivePlayerLotteryTicket(playerid, value);
 	switch (error) {
 		case LOTTERY_ERROR_NO: {
-			Lang_SendText(playerid, $LOTTERY_TICKET_BOUGHT, value);
+			Lang_SendText(playerid, "LOTTERY_TICKET_BOUGHT", value);
 		}
 		case LOTTERY_ERROR_NO_MONEY: {
-			Lang_SendText(playerid, $LOTTERY_NO_MONEY, TicketCost);
+			Lang_SendText(playerid, "LOTTERY_NO_MONEY", TicketCost);
 		}
 		case LOTTERY_ERROR_TICKET_VALUE_BAD: {
-			Lang_SendText(playerid, $LOTTERY_TICKET_VALUE_IS_BAD);
+			Lang_SendText(playerid, "LOTTERY_TICKET_VALUE_IS_BAD");
 		}
 		case LOTTERY_ERROR_TICKET_HAVE: {
-			Lang_SendText(playerid, $LOTTERY_TICKET_BOUGHT_NOW);
+			Lang_SendText(playerid, "LOTTERY_TICKET_BOUGHT_NOW");
 		}
 		case LOTTERY_ERROR_TICKET_BOUGHT: {
-			Lang_SendText(playerid, $LOTTERY_TICKET_IS_BOUGHT);
+			Lang_SendText(playerid, "LOTTERY_TICKET_IS_BOUGHT");
 		}
 	}
 
@@ -195,7 +195,7 @@ stock Lottery_StartTimer()
 	if (sec_to_end > 0) {
 		if (sec_to_end % 20 == 0 || sec_to_end == 10) {
 			foreach (new playerid : Player) {
-				Lang_SendText(playerid, $LOTTERY_TIME_TO_END, sec_to_end);
+				Lang_SendText(playerid, "LOTTERY_TIME_TO_END", sec_to_end);
 			}
 		}
 		return 0;
@@ -217,12 +217,12 @@ stock Lottery_StartTimer()
 			GetPlayerName(winner_id, winner_name, sizeof(winner_name));
 
 			foreach (new playerid : Player) {
-				Lang_SendText(playerid, $LOTTERY_WINNER, winner_name, winner_id, WinMoney);
+				Lang_SendText(playerid, "LOTTERY_WINNER", winner_name, winner_id, WinMoney);
 			}
 		}
 		case LOTTERY_ERROR_NO_WINNER: {
 			foreach (new playerid : Player) {
-				Lang_SendText(playerid, $LOTTERY_NO_WINNER, win_value);
+				Lang_SendText(playerid, "LOTTERY_NO_WINNER", win_value);
 			}
 		}
 	}

@@ -21,7 +21,7 @@ COMMAND:boom(playerid, params[])
 		type;
 
 	if (sscanf(params, "i", type) || 13 < type < 0) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_BOOM_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_BOOM_HELP");
 		return 1;
 	}
 
@@ -44,6 +44,6 @@ COMMAND:boom(playerid, params[])
 	CreateExplosion(pos_x, pos_y, pos_z + 2, type, 30.0);
 
 	GetNearPlayers(pos_x, pos_y, pos_z, 40.0, playerid, players);
-	Lang_SendTextToPlayers(players, $ADMIN_COMMAND_BOOM_MAKE, playername, playerid);
+	Lang_SendTextToPlayers(players, "ADMIN_COMMAND_BOOM_MAKE", playername, playerid);
 	return 1;
 }

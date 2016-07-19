@@ -21,11 +21,11 @@ COMMAND:say(playerid, params[])
 		playername[MAX_PLAYER_NAME + 1];
 
 	if (strlen(params) == 0) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_SAY_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SAY_HELP");
 		return 1;
 	}
 
 	GetPlayerName(playerid, playername, sizeof(playername));
-	Lang_SendTextToAll($ADMIN_COMMAND_SAY_TEXT, playername, playerid, params);
+	Lang_SendTextToAll("ADMIN_COMMAND_SAY_TEXT", playername, playerid, params);
 	return 1;
 }

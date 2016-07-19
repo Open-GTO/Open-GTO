@@ -22,7 +22,7 @@ COMMAND:unmute(playerid, params[])
 		reason[MAX_MUTE_REASON_LENGTH];
 
 	if (sscanf(params, "s[32]S()[" #MAX_MUTE_REASON_LENGTH "]", subparams, reason)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_UNMUTE_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_UNMUTE_HELP");
 		return 1;
 	}
 
@@ -32,7 +32,7 @@ COMMAND:unmute(playerid, params[])
 	if (strcmp(subparams, "all", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_UNMUTE_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_UNMUTE_TARGET_ERROR");
 		return 1;
 	}
 

@@ -242,7 +242,7 @@ stock TurnAround()
 				new amount = Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade];
 				GivePlayerBankMoney(playerid, amount);
 				new string[MAX_STRING];
-				Lang_SendText(playerid, $BUSINESS_COLLECT, Businesses[id][Business_Name], amount);
+				Lang_SendText(playerid, "BUSINESS_COLLECT", Businesses[id][Business_Name], amount);
 				Businesses[id][Business_Vault] = 0;
 			}
 		}
@@ -396,7 +396,7 @@ business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	new id = GetBusinessID(playerid);
 	if (id <= -1)
 	{
-		return Lang_SendText(playerid, $BUSINESS_ERROR);
+		return Lang_SendText(playerid, "BUSINESS_ERROR");
 	}
 
 	SetPlayerToBusinessID(playerid, id);
@@ -457,14 +457,14 @@ stock bis_Buy(playerid)
 			pl_business++;
 			if (pl_business >= MAX_PLAYER_BUSINESS)
 			{
-				return Lang_SendText(playerid, $BUSINESS_MAX_COUNT);
+				return Lang_SendText(playerid, "BUSINESS_MAX_COUNT");
 			}
 		}
 	}
 	new id = GetPlayerToBusinessID(playerid);
 	if (id <= -1)
 	{
-		return Lang_SendText(playerid, $BUSINESS_ERROR);
+		return Lang_SendText(playerid, "BUSINESS_ERROR");
 	}
 	new head[MAX_STRING];
 	format(head, sizeof(head), _(playerid, BUSINESS_DIALOG_HEAD), Businesses[id][Business_Name]);
@@ -489,7 +489,7 @@ stock bis_Buy(playerid)
 #if !defined BUY_ALL_BUSINESS
 	else if (strcmp(Businesses[id][Business_Owner], "Unknown", true))
 	{
-		Lang_SendText(playerid, $BUSINESS_FOREIGN_BUSINESS);
+		Lang_SendText(playerid, "BUSINESS_FOREIGN_BUSINESS");
 	}
 #endif
 	else
@@ -500,7 +500,7 @@ stock bis_Buy(playerid)
 			if (!strcmp(Businesses[id][Business_Owner], ReturnPlayerName(ownerid), true))
 			{
 				new temp[MAX_STRING];
-				Lang_SendText(ownerid, $BUSINESS_OUTBIDDING, playername, Businesses[id][Business_Name]);
+				Lang_SendText(ownerid, "BUSINESS_OUTBIDDING", playername, Businesses[id][Business_Name]);
 				GivePlayerMoney(ownerid, price);
 				break;
 			}
@@ -530,7 +530,7 @@ stock bis_Sell(playerid)
 	new id = GetPlayerToBusinessID(playerid);
 	if (id <= -1)
 	{
-		return Lang_SendText(playerid, $BUSINESS_ERROR);
+		return Lang_SendText(playerid, "BUSINESS_ERROR");
 	}
 	new head[MAX_LANG_VALUE_STRING];
 	format(head, sizeof(head), _(playerid, BUSINESS_DIALOG_HEAD), Businesses[id][Business_Name]);
@@ -567,7 +567,7 @@ stock bis_Collect(playerid)
 	new id = GetPlayerToBusinessID(playerid);
 	if (id <= -1)
 	{
-		return Lang_SendText(playerid, $BUSINESS_ERROR);
+		return Lang_SendText(playerid, "BUSINESS_ERROR");
 	}
 	new head[MAX_STRING];
 	format(head, sizeof(head), _(playerid, BUSINESS_DIALOG_HEAD), Businesses[id][Business_Name]);

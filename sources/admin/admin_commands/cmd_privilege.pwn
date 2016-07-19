@@ -30,7 +30,7 @@ COMMAND:privileje(playerid, params[])
 	if (sscanf(params, "s[4]uK<privilege>(player)", subcmd, targetid, _:privileje)
 	    || targetid == INVALID_PLAYER_ID
 	    || _:privileje == -1) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_PRIVILEGE_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_PRIVILEGE_HELP");
 		return 1;
 	}
 
@@ -47,16 +47,16 @@ COMMAND:privileje(playerid, params[])
 		SetPlayerPrivilege(targetid, privileje);
 
 		GetPrivilegeName(Lang_GetPlayerLanguage(targetid), privileje, privileje_name);
-		Lang_SendText(playerid, $ADMIN_COMMAND_PRIVILEGE_SET_PLAYER, playername, playerid, privileje_name);
+		Lang_SendText(playerid, "ADMIN_COMMAND_PRIVILEGE_SET_PLAYER", playername, playerid, privileje_name);
 
 		GetPrivilegeName(Lang_GetPlayerLanguage(playerid), privileje, privileje_name);
-		Lang_SendText(playerid, $ADMIN_COMMAND_PRIVILEGE_SET_SELF, targetname, targetid, privileje_name);
+		Lang_SendText(playerid, "ADMIN_COMMAND_PRIVILEGE_SET_SELF", targetname, targetid, privileje_name);
 	} else if (strcmp(subcmd, "get", true) == 0) {
 		GetPrivilegeName(Lang_GetPlayerLanguage(playerid), GetPlayerPrivilege(targetid), privileje_name);
 
-		Lang_SendText(playerid, $ADMIN_COMMAND_PRIVILEGE_GET, targetname, targetid, privileje_name);
+		Lang_SendText(playerid, "ADMIN_COMMAND_PRIVILEGE_GET", targetname, targetid, privileje_name);
 	} else {
-		Lang_SendText(playerid, $ADMIN_COMMAND_PRIVILEGE_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_PRIVILEGE_HELP");
 	}
 
 	return 1;

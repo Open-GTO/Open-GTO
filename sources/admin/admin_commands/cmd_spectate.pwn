@@ -26,7 +26,7 @@ COMMAND:spectate(playerid, params[])
 		subparams[32];
 
 	if (sscanf(params, "s[32]", subparams)) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_SPEC_HELP);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SPEC_HELP");
 		return 1;
 	}
 
@@ -36,7 +36,7 @@ COMMAND:spectate(playerid, params[])
 	if (strcmp(subparams, "off", true) == 0) {
 		targetid = -1;
 	} else if (sscanf(subparams, "u", targetid) || targetid == INVALID_PLAYER_ID || targetid == playerid) {
-		Lang_SendText(playerid, $ADMIN_COMMAND_SPEC_TARGET_ERROR);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SPEC_TARGET_ERROR");
 		return 1;
 	}
 
@@ -46,7 +46,7 @@ COMMAND:spectate(playerid, params[])
 
 	if (targetid == -1) {
 		if (!Spectate_IsSpectating(playerid)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_SPEC_HELP);
+			Lang_SendText(playerid, "ADMIN_COMMAND_SPEC_HELP");
 			return 1;
 		}
 
@@ -55,13 +55,13 @@ COMMAND:spectate(playerid, params[])
 
 		Spectate_Stop(playerid);
 
-		Lang_SendText(playerid, $ADMIN_COMMAND_SPEC_STOP, targetname, targetid);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SPEC_STOP", targetname, targetid);
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
 		Spectate_Start(playerid, targetid);
 
-		Lang_SendText(playerid, $ADMIN_COMMAND_SPEC_START, targetname, targetid);
+		Lang_SendText(playerid, "ADMIN_COMMAND_SPEC_START", targetname, targetid);
 	}
 
 	return 1;
