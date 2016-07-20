@@ -98,7 +98,7 @@ COMMAND:system(playerid, params[])
 		}
 
 		if (strcmp(subsubcmd, "reload", true) == 0) {
-			Lang_Reload();
+			Lang_ReloadAll();
 			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_RELOAD");
 		} else {
 			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_HELP");

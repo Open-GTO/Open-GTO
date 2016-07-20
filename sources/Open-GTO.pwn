@@ -45,26 +45,6 @@ Thanks:
 // important lib
 #include "lib/sa-mp-fixes/fixes.inc"
 
-// header files
-#include "core/lang.inc"
-#include "gang/gang.inc"
-#include "player/player.inc"
-#include "player/player_account.inc"
-#include "player/player_spawn.inc"
-#include "player/player_weapon.inc"
-#include "player/player_money.inc"
-#include "player/player_privilege.inc"
-#include "player/player_info.inc"
-#include "player/player_team.inc"
-#include "player/player_interface.inc"
-#include "player/interface/interface_health.inc"
-#include "player/interface/interface_armour.inc"
-#include "protections/armour.inc"
-#include "protections/health.inc"
-#include "protections/specialaction.inc"
-#include "protections/teleport.inc"
-#include "vehicle/vehicle_info.inc"
-
 // lib
 #include "lib/streamer.inc"
 #include "lib/sa-mp-foreach/foreach.inc"
@@ -90,6 +70,26 @@ Thanks:
 #include "lib/getweather/getweather.inc"
 #include "lib/weaponskill/weaponskill.inc"
 #include "lib/zvehinfo/zvehinfo.inc"
+
+// header files
+#include "core/lang.inc"
+#include "gang/gang.inc"
+#include "player/player.inc"
+#include "player/player_account.inc"
+#include "player/player_spawn.inc"
+#include "player/player_weapon.inc"
+#include "player/player_money.inc"
+#include "player/player_privilege.inc"
+#include "player/player_info.inc"
+#include "player/player_team.inc"
+#include "player/player_interface.inc"
+#include "player/interface/interface_health.inc"
+#include "player/interface/interface_armour.inc"
+#include "protections/armour.inc"
+#include "protections/health.inc"
+#include "protections/specialaction.inc"
+#include "protections/teleport.inc"
+#include "vehicle/vehicle_info.inc"
 
 // core
 #include "core/api.pwn"

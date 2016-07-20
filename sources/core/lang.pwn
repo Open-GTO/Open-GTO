@@ -16,17 +16,16 @@
 */
 
 static
-	gLangName[Lang][MAX_LANG_NAME] = {
-		"english",
-		"russian"
-	},
 	gLang[Lang];
 
-const
-	LANG_COUNT = sizeof(gLang);
-
 new
-	Iterator:LangIterator<LANG_COUNT>;
+	Iterator:LangIterator<sizeof(gLang)>;
+
+/*
+	Forwards
+*/
+
+forward Lang:_Lang_Load(code[], name[]);
 
 /*
 	OnGameModeInit
@@ -34,52 +33,23 @@ new
 
 Lang_OnGameModeInit()
 {
-	new
-		lang_file[256];
+	gLang[LangEN] = _Lang_Load("en", "English");
+	gLang[LangRU] = _Lang_Load("ru", "Russian");
 
-	for (new Lang:lang; _:lang < LANG_COUNT; _:lang++) {
-		format(lang_file, sizeof(lang_file), "%slang_%s" DATA_FILES_FORMAT, db_lang, gLangName[lang]);
-		gLang[lang] = Lang_LoadText(lang_file);
-		Iter_Add(LangIterator, gLang[lang]);
-		Log_Game("SERVER: Language loaded (%s)", gLangName[lang]);
-	}
+	Lang_SetDefaultLang(gLang[LangEN]);
 
-	Lang_SetDefaultLanguage(gLang[Lang:0]);
-
-	new
-		temp[MAX_LANG_NAME],
-		rcon_command[(MAX_LANG_NAME + 1) * sizeof(gLangName)] = "language ";
-
-	for (new i = 0; i < sizeof(gLangName); i++) {
-		format(temp, sizeof(temp), "%c%s", toupper(gLangName[Lang:i][0]), gLangName[Lang:i][1]);
-		strcat(rcon_command, temp);
-
-		if (i < sizeof(gLangName) - 1) {
-			strcat(rcon_command, "/");
-		}
-	}
+	new rcon_command[9 + (MAX_LANG_CODE + 1) * sizeof(gLang) + 1] = "language ";
+	strcat(rcon_command, Lang_GetCodes(.isuppercase = true));
 	SendRconCommand(rcon_command);
 
 	Log_Game("SERVER: Lang module init");
 }
 
-stock Lang_Reload()
+stock Lang_ReloadAll()
 {
-	new
-		langid,
-		load_status,
-		lang_file[256];
-
 	foreach (new Lang:lang : LangIterator) {
-		langid = Lang_GetID(lang);
-
-		format(lang_file, sizeof(lang_file), "%slang_%s" DATA_FILES_FORMAT, db_lang, gLangName[lang]);
-		load_status = Lang_ReloadText(lang_file, langid, true);
-		if (load_status) {
-			Log_Game("SERVER: Language reloaded (%s)", gLangName[lang]);
-		} else {
-			Log_Game("SERVER: Language NOT reloaded (%s)", gLangName[lang]);
-		}
+		Lang_Reload(lang);
+		Log_Game("SERVER: Language reloaded (%s)", Lang_GetName(lang));
 	}
 }
 
@@ -87,42 +57,22 @@ stock Lang_Reload()
 	Lang functions
 */
 
-stock Lang:Lang_GetType(langid)
+static stock Lang:_Lang_Load(code[], name[])
 {
-	foreach (new Lang:lang : LangIterator) {
-		if (gLang[lang] == langid) {
-			return lang;
-		}
+	new
+		Lang:lang,
+		filename[MAX_LANG_FILENAME];
+
+	lang = Lang_Add(code, name);
+	Iter_Add(LangIterator, _:lang);
+
+	for (new i = 0; name[i] != '\0'; i++) {
+		filename[i] = tolower(name[i]);
 	}
-	return LangEN;
-}
+	format(filename, sizeof(filename), "%slang_%s" DATA_FILES_FORMAT, db_lang, filename);
 
-stock Lang:Lang_GetPlayerLangType(playerid)
-{
-	return Lang_GetType(Lang_GetPlayerLanguage(playerid));
-}
+	Lang_LoadFile(lang, filename);
 
-stock Lang_GetID(Lang:type)
-{
-	return gLang[type];
-}
-
-stock Lang_GetIDFromName(name[])
-{
-	foreach (new Lang:lang : LangIterator) {
-		if (strcmp(gLangName[lang], name, true) == 0) {
-			return Lang_GetID(lang);
-		}
-	}
-	return INVALID_LANG_ID;
-}
-
-stock Lang_GetCount()
-{
-	return LANG_COUNT;
-}
-
-stock Lang_GetTypeName(Lang:type, name[], const size = sizeof(name))
-{
-	return strcpy(name, gLangName[type], size);
+	Log_Game("SERVER: %s language loaded (id: %d, code: %s)", name, _:lang, code);
+	return lang;
 }

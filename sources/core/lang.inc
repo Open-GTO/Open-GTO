@@ -12,25 +12,10 @@
 #define _lang_h_included
 
 /*
-	Defines
-*/
-
-#define MAX_LANG_NAME 16
-
-/*
 	Enums
 */
 
 enum Lang {
-	LangEN,
-	LangRU,
+	Lang:LangEN,
+	Lang:LangRU,
 }
-
-/*
-	Vars
-*/
-
-// for get size in arrays
-new
-	gLangSize[Lang];
-#pragma unused gLangSize
