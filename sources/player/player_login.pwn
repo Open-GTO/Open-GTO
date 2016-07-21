@@ -38,7 +38,7 @@ stock Player_Save(playerid)
 
 	// save
 	Player_SaveEx(playerid);
-	Log_Game("player: %s(%d): Player_Saved successfully", ReturnPlayerName(playerid), playerid);
+	Log_Game("LOG_PLAYER_SAVED", ReturnPlayerName(playerid), playerid);
 	return 1;
 }
 
@@ -47,7 +47,7 @@ stock Player_Create(playerid)
 	Player_SetDefaultData(playerid);
 
 	Player_SaveEx(playerid);
-	Log_Game("player: %s(%d): Player_Created successfully", ReturnPlayerName(playerid), playerid);
+	Log_Game("LOG_PLAYER_CREATED", ReturnPlayerName(playerid), playerid);
 	return 1;
 }
 

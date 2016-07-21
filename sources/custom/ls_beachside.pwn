@@ -185,7 +185,7 @@ Beachside_OnGameModeInit()
 	Elevator_Initialize();
 
 	// Exit here
-	Log_Game("SERVER: LS BeachSide Building Elevator init");
+	Log_Game("LOG_LS_BEACHSIDE_INIT");
 	return 1;
 }
 

@@ -91,7 +91,7 @@ Groundhold_OnGameModeInit()
 
 	ToggleGroundholdStatus(true);
 
-	Log_Game("SERVER: Groundhold module init");
+	Log_Game("LOG_GROUNDHOLD_INIT");
 	return 1;
 }
 

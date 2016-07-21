@@ -1886,7 +1886,7 @@ Vehicle_OnGameModeInit()
 
 	Vehicle_Fuel_OnGameModeInit();
 
-	Log_Game(_d(VEHICLE_INIT));
+	Log_Game("LOG_VEHICLE_INIT");
 	return 1;
 }
 

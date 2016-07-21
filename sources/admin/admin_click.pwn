@@ -202,7 +202,7 @@ public AdminClick_MutePlayer(playerid, targetid, listitem, inputtext[])
 		playername[MAX_PLAYER_NAME + 1],
 		targetname[MAX_PLAYER_NAME + 1];
 
-	Declension_GetWord(timeword, sizeof(timeword), time, _(playerid, DECLENSION_SECOND_4), _(playerid, DECLENSION_SECOND_2), _(playerid, DECLENSION_SECOND_3));
+	Declension_GetSeconds2(playerid, time, timeword);
 	GetPlayerName(playerid, playername, sizeof(playername));
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
@@ -269,7 +269,7 @@ public AdminClick_JailPlayer(playerid, targetid, listitem, inputtext[])
 		playername[MAX_PLAYER_NAME + 1],
 		targetname[MAX_PLAYER_NAME + 1];
 
-	Declension_GetWord(timeword, sizeof(timeword), time, _(playerid, DECLENSION_SECOND_4), _(playerid, DECLENSION_SECOND_2), _(playerid, DECLENSION_SECOND_3));
+	Declension_GetSeconds2(playerid, time, timeword);
 	GetPlayerName(playerid, playername, sizeof(playername));
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
@@ -676,7 +676,7 @@ public AdminClick_FreezePlayer(playerid, targetid, listitem, inputtext[])
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
-	Declension_GetWord(timeword, sizeof(timeword), time, _(playerid, DECLENSION_SECOND_4), _(playerid, DECLENSION_SECOND_2), _(playerid, DECLENSION_SECOND_3));
+	Declension_GetSeconds2(playerid, time, timeword);
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 	GetPlayerName(playerid, playername, sizeof(playername));
 

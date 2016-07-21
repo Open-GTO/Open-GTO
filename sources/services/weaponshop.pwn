@@ -44,7 +44,7 @@ wshop_OnGameModeInit()
 	for (new id = 0; id < sizeof(wshop_place); id++) {
 		wshop_place[id][wshop_checkpoint] = CreateDynamicCP(wshop_place[id][wshop_x], wshop_place[id][wshop_y], wshop_place[id][wshop_z], 1.5, .streamdistance = 20.0);
 	}
-	Log_Game(_d(WEAPON_INIT));
+	Log_Game("LOG_WEAPON_SHOP_INIT");
 	return 1;
 }
 

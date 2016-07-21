@@ -59,7 +59,7 @@ bar_OnGameModeInit()
 	for (new id = 0; id < sizeof(bar_place); id++) {
 		bar_place[id][bar_checkpoint] = CreateDynamicCP(bar_place[id][bar_x], bar_place[id][bar_y], bar_place[id][bar_z], 1.5, .streamdistance = 20.0);
 	}
-	Log_Game(_d(BAR_INIT));
+	Log_Game("LOG_BAR_INIT");
 	return 1;
 }
 

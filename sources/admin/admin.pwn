@@ -131,7 +131,7 @@ stock Admin_SendProtectReport(issuerid, text[], {Float, _}:...)
 			Lang_SendText(adminid, "ADMIN_PROTECTION_REPORT", playername, issuerid, fstring);
 		}
 
-		Log_Player($ADMIN_PROTECTION_REPORT, playername, issuerid, fstring);
+		Log_Player("ADMIN_PROTECTION_REPORT", playername, issuerid, fstring);
 	}
 	else
 	{
@@ -143,6 +143,6 @@ stock Admin_SendProtectReport(issuerid, text[], {Float, _}:...)
 			Lang_SendText(adminid, "ADMIN_PROTECTION_REPORT", playername, issuerid, text);
 		}
 
-		Log_Player($ADMIN_PROTECTION_REPORT, playername, issuerid, text);
+		Log_Player("ADMIN_PROTECTION_REPORT", playername, issuerid, text);
 	}
 }

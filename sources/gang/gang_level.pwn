@@ -134,8 +134,7 @@ stock SetGangLevel(gangid, level)
 	}
 
 	Gang_GetName(gangid, string);
-	Log_Game("gang: %s(%d): changed his level from %d to %d", string, gangid, old_level, level);
-
+	Log_Game("LOG_GANG_LEVEL_SET", string, gangid, old_level, level);
 	return 1;
 }
 

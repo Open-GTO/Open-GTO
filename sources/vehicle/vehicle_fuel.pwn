@@ -56,7 +56,7 @@ Vehicle_Fuel_OnGameModeInit()
 	}
 
 	SetTimer("Vehicle_Fuel_SpeedTimer", 300, 1);
-	Log_Game(_d(VEHICLE_FUEL_INIT));
+	Log_Game("LOG_VEHICLE_FUEL_INIT");
 	return 1;
 }
 

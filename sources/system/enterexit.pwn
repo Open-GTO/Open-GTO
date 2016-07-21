@@ -305,7 +305,7 @@ Enterexit_OnGameModeInit()
 		Enterexit_OnInteriorCreated(i, type, world);
 	}
 
-	Log_Game("SERVER: Interior module init");
+	Log_Game("LOG_INTERIOR_INIT");
 	return 1;
 }
 

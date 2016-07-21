@@ -79,7 +79,7 @@ COMMAND:warn(playerid, params[])
 		new
 			warnword[MAX_LANG_VALUE_STRING];
 
-		Declension_GetWord(warnword, sizeof(warnword), amount, _(playerid, ADMIN_WARN_DECLENSION_1), _(playerid, ADMIN_WARN_DECLENSION_2), _(playerid, ADMIN_WARN_DECLENSION_2));
+		Declension_GetAdminWarn(playerid, amount, warnword);
 
 		if (targetid == -1) {
 			foreach (new id : Player) {

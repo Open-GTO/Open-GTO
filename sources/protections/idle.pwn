@@ -49,7 +49,7 @@ pt_idle_OnGameModeInit()
 		return 0;
 	}
 
-	Log_Game("SERVER: (protections)AntiIdle module init");
+	Log_Game("LOG_PROTECTION_ANTIIDLE_INIT");
 	return 1;
 }
 

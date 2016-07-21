@@ -179,7 +179,7 @@ Weapon_OnGameModeInit()
 	Weapon_Load();
 	EnableVehicleFriendlyFire();
 
-	Log_Game("SERVER: Weapon module init");
+	Log_Game("LOG_WEAPON_INIT");
 }
 
 /*

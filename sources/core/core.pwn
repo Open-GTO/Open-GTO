@@ -27,5 +27,5 @@ Core_OnGameModeInit()
 	ManualVehicleEngineAndLights();
 	EnableStuntBonusForAll(0);
 
-	Log_Game("SERVER: Core module init");
+	Log_Game("LOG_CORE_INIT");
 }

@@ -92,7 +92,7 @@ stock swagup_OnGameModeInit()
 
 	swagup_SpawnPickup();
 
-	Log_Game("SERVER: Swagup module init");
+	Log_Game("LOG_SWAGUP_INIT");
 	return 1;
 }
 

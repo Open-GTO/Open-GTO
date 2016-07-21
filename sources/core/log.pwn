@@ -71,173 +71,62 @@ stock Log_Write(log, string[])
 	return 1;
 }
 
-
-#define BYTES_PER_CELL			4
-
-stock Log_Game(fstring[], {Float, _}:...)
+stock Log_Game(var[], va_args<>)
 {
 	if (!isGameLogEnabled) {
 		return 0;
 	}
 
-	static const STATIC_ARGS = 1;
-	new n = (numargs() - STATIC_ARGS) * BYTES_PER_CELL;
-	if (n)
-	{
-		new message[144], arg_start, arg_end;
-		#emit CONST.alt			fstring
-		#emit LCTRL				5
-		#emit ADD
-		#emit STOR.S.pri		arg_start
+	static
+		text[MAX_LANG_VALUE_STRING],
+		success;
 
-		#emit LOAD.S.alt		n
-		#emit ADD
-		#emit STOR.S.pri		arg_end
-		do
-		{
-			#emit LOAD.I
-			#emit PUSH.pri
-			arg_end -= BYTES_PER_CELL;
-			#emit LOAD.S.pri	arg_end
-		}
-		while(arg_end > arg_start);
+	success = Lang_GetText(Lang_GetDefaultLang(), var, text);
+	va_format(text, sizeof(text), text, va_start<1>);
 
-		#emit PUSH.S			fstring
-		#emit PUSH.C			144
-		#emit PUSH.ADR			message
-
-		n += BYTES_PER_CELL * 3;
-		#emit PUSH.S			n
-		#emit SYSREQ.C			format
-
-		n += BYTES_PER_CELL;
-		#emit LCTRL				4
-		#emit LOAD.S.alt		n
-		#emit ADD
-		#emit SCTRL				4
-	#if defined LOG_PRINTING
-		printf(message);
-	#endif
-		Log_Write(GameLog, message);
-	}
-	else
-	{
-	#if defined LOG_PRINTING
-		printf(fstring);
-	#endif
-		Log_Write(GameLog, fstring);
-	}
-	return 1;
+#if defined LOG_PRINTING
+	printf(text);
+#endif
+	Log_Write(GameLog, text);
+	return success;
 }
 
-stock Log_Debug(fstring[], {Float, _}:...)
+stock Log_Debug(var[], va_args<>)
 {
 	if (!isDebugLogEnabled) {
 		return 0;
 	}
 
-	static const STATIC_ARGS = 1;
-	new n = (numargs() - STATIC_ARGS) * BYTES_PER_CELL;
-	if (n)
-	{
-		new message[144], arg_start, arg_end;
-		#emit CONST.alt			fstring
-		#emit LCTRL				5
-		#emit ADD
-		#emit STOR.S.pri		arg_start
+	static
+		text[MAX_LANG_VALUE_STRING],
+		success;
 
-		#emit LOAD.S.alt		n
-		#emit ADD
-		#emit STOR.S.pri		arg_end
-		do
-		{
-			#emit LOAD.I
-			#emit PUSH.pri
-			arg_end -= BYTES_PER_CELL;
-			#emit LOAD.S.pri	arg_end
-		}
-		while(arg_end > arg_start);
+	success = Lang_GetText(Lang_GetDefaultLang(), var, text);
+	va_format(text, sizeof(text), text, va_start<1>);
 
-		#emit PUSH.S			fstring
-		#emit PUSH.C			144
-		#emit PUSH.ADR			message
-
-		n += BYTES_PER_CELL * 3;
-		#emit PUSH.S			n
-		#emit SYSREQ.C			format
-
-		n += BYTES_PER_CELL;
-		#emit LCTRL				4
-		#emit LOAD.S.alt		n
-		#emit ADD
-		#emit SCTRL				4
-	#if defined LOG_PRINTING
-		printf(message);
-	#endif
-		Log_Write(DebugLog, message);
-	}
-	else
-	{
-	#if defined LOG_PRINTING
-		printf(fstring);
-	#endif
-		Log_Write(DebugLog, fstring);
-	}
-	return 1;
+#if defined LOG_PRINTING
+	printf(text);
+#endif
+	Log_Write(DebugLog, text);
+	return success;
 }
 
-stock Log_Player(fstring[], {Float, _}:...)
+stock Log_Player(var[], va_args<>)
 {
 	if (!isPlayerLogEnabled) {
 		return 0;
 	}
 
-	static const STATIC_ARGS = 1;
-	new n = (numargs() - STATIC_ARGS) * BYTES_PER_CELL;
-	if (n)
-	{
-		new message[144], arg_start, arg_end;
-		#emit CONST.alt			fstring
-		#emit LCTRL				5
-		#emit ADD
-		#emit STOR.S.pri		arg_start
+	static
+		text[MAX_LANG_VALUE_STRING],
+		success;
 
-		#emit LOAD.S.alt		n
-		#emit ADD
-		#emit STOR.S.pri		arg_end
-		do
-		{
-			#emit LOAD.I
-			#emit PUSH.pri
-			arg_end -= BYTES_PER_CELL;
-			#emit LOAD.S.pri	arg_end
-		}
-		while(arg_end > arg_start);
+	success = Lang_GetText(Lang_GetDefaultLang(), var, text);
+	va_format(text, sizeof(text), text, va_start<1>);
 
-		#emit PUSH.S			fstring
-		#emit PUSH.C			144
-		#emit PUSH.ADR			message
-
-		n += BYTES_PER_CELL * 3;
-		#emit PUSH.S			n
-		#emit SYSREQ.C			format
-
-		n += BYTES_PER_CELL;
-		#emit LCTRL				4
-		#emit LOAD.S.alt		n
-		#emit ADD
-		#emit SCTRL				4
-	#if defined LOG_PRINTING
-		printf(message);
-	#endif
-		Log_Write(PlayerLog, message);
-	}
-	else
-	{
-	#if defined LOG_PRINTING
-		printf(fstring);
-	#endif
-		Log_Write(PlayerLog, fstring);
-	}
-	return 1;
+#if defined LOG_PRINTING
+	printf(text);
+#endif
+	Log_Write(PlayerLog, text);
+	return success;
 }

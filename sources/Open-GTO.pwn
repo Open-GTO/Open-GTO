@@ -330,7 +330,7 @@ public OnGameModeInit()
 	// custom
 	#tryinclude "custom/mapicon.pwn"
 	#tryinclude "custom/objects.pwn"
-	Log_Game("SERVER: Custom mapicons and objects init");
+	Log_Game("LOG_CUSTOM_INIT");
 
 	Time_Sync();
 	Weather_SetRandom();
@@ -340,17 +340,17 @@ public OnGameModeInit()
 	SetTimer("TenMinuteTimer", 600000, 1); // 10 minute
 	SetTimer("OneHourTimer", 3600000, 1); // 1 hour
 	SetTimerEx("WorldSave", WORLD_SAVE_TIME, 1, "d", 0);
-	Log_Game("SERVER: Timers started");
+	Log_Game("LOG_TIMERS_INIT");
 
 	WorldSave(0);
-	Log_Game("SERVER: " GAMEMODE_TEXT " initialization complete.");
+	Log_Game("LOG_GAMEMODE_INIT", GAMEMODE_TEXT);
 	return 1;
 }
 
 public OnGameModeExit()
 {
 	WorldSave(1);
-	Log_Game("SERVER: " GAMEMODE_TEXT " turned off.");
+	Log_Game("LOG_GAMEMODE_EXIT", GAMEMODE_TEXT);
 	return 1;
 }
 
@@ -483,9 +483,9 @@ public OnPlayerDeath(playerid, killerid, reason)
 	SetPlayerSpawned(playerid, 0);
 
 	if (killerid == INVALID_PLAYER_ID) {
-		Log_Game("player: %s(%d): has died > Reason: (%d)", ReturnPlayerName(playerid), playerid, reason);
+		Log_Game("LOG_PLAYER_DIED", ReturnPlayerName(playerid), playerid, reason);
 	} else {
-		Log_Game("player: %s(%d): has killed player %s(%d)> Reason: (%d)", ReturnPlayerName(killerid), killerid, ReturnPlayerName(playerid), playerid, reason);
+		Log_Game("LOG_PLAYER_KILLED", ReturnPlayerName(killerid), killerid, ReturnPlayerName(playerid), playerid, reason);
 	}
 
 	SendDeathMessage(killerid, playerid, reason);
@@ -564,7 +564,7 @@ public OnPlayerCommandReceived(playerid, cmdtext[])
 		return 0;
 	}
 
-	Log_Player(_(playerid, PLAYER_COMMAND_LOG), ReturnPlayerName(playerid), playerid, cmdtext);
+	Log_Player("LOG_PLAYER_COMMAND", ReturnPlayerName(playerid), playerid, cmdtext);
 	return 1;
 }
 

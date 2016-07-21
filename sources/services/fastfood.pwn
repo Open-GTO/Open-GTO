@@ -54,7 +54,7 @@ stock fastfood_OnGameModeInit()
 		fastfood_place[id][ff_checkpoint_id] = CreateDynamicCP(fastfood_place[id][ff_x], fastfood_place[id][ff_y], fastfood_place[id][ff_z], 1.5, .streamdistance = 20.0);
 	}
 
-	Log_Game(_d(FASTFOOD_INIT));
+	Log_Game("LOG_FASTFOOD_INIT");
 	return 1;
 }
 

@@ -310,7 +310,7 @@ housing_OnGameModeInit()
 
 		Houses[id][Houses_VirtualWorld] = id + 1;
 	}
-	Log_Game(_d(HOUSING_INIT));
+	Log_Game("LOG_HOUSING_INIT");
 }
 
 housing_OnPlayerConnect(playerid)
@@ -821,7 +821,7 @@ stock house_Buy(playerid)
 		housing_UpdateLabel(id);
 		format(temp, sizeof(temp), _(playerid, HOUSING_BUY_SUCCESS), Houses[id][Houses_Name]);
 		Dialog_Message(playerid, _(playerid, HOUSING_BUY_HEADER), temp, _(playerid, HOUSING_DIALOG_BUTTON_OK));
-		Log_Game("player: %s(%d): bought the '%s' (house)", playername, playerid, Houses[id][Houses_Name]);
+		Log_Game("LOG_HOUSING_PLAYER_BOUGHT", playername, playerid, Houses[id][Houses_Name]);
 	}
 	return 1;
 }
@@ -857,7 +857,7 @@ stock house_Sell(playerid)
 		format(temp, sizeof(temp), _(playerid, HOUSING_SELL_SUCCESS), Houses[id][Houses_Name]);
 		Dialog_Message(playerid, _(playerid, HOUSING_SELL_HEADER), temp, _(playerid, HOUSING_DIALOG_BUTTON_OK));
 
-		Log_Game("player: %s(%d): sold the '%s' (house)", ReturnPlayerName(playerid), playerid, Houses[id][Houses_Name]);
+		Log_Game("LOG_HOUSING_PLAYER_SOLD", ReturnPlayerName(playerid), playerid, Houses[id][Houses_Name]);
 	}
 	return 1;
 }

@@ -136,7 +136,7 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 			Lang_SendText(playerid, "PLAYER_LEVEL_DOWN", level);
 		}
 
-		Log_Game("player: %s(%d): changed his level from %d to %d", ReturnPlayerName(playerid), playerid, old_level, level);
+		Log_Game("LOG_PLAYER_LEVEL_SET", ReturnPlayerName(playerid), playerid, old_level, level);
 	}
 
 	return 1;

@@ -170,7 +170,7 @@ Trucker_OnGameModeInit()
 	CreateDynamicMapIcon(-49.7828, -269.3626, 6.6332, 51, 0);
 	CreateDynamicMapIcon(816.5801, 857.0634, 12.7891, 51, 0);
 
-	Log_Game(_d(TRUCKER_INIT));
+	Log_Game("LOG_TRUCKER_INIT");
 	return 1;
 }
 
@@ -598,7 +598,7 @@ static stock Trucker_ShowPauseMessage(playerid)
 		timeword[MAX_LANG_VALUE_STRING];
 
 	seconds = player_trucker[playerid][pt_PauseTime] - gettime();
-	Declension_GetWord(timeword, sizeof(timeword), seconds, _(playerid, DECLENSION_SECOND_4), _(playerid, DECLENSION_SECOND_2), _(playerid, DECLENSION_SECOND_3));
+	Declension_GetSeconds2(playerid, seconds, timeword);
 
 	Lang_SendText(playerid, "TRUCKER_MISSION_WAIT", seconds, timeword);
 }
