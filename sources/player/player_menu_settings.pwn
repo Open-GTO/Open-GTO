@@ -19,11 +19,7 @@ DialogCreate:PlayerSettingsMenu(playerid)
 
 	format(string, sizeof(string), _m(playerid, PLAYER_MENU_SETTINGS_INFO), CHANGE_NICK_COST, CHANGE_PASS_COST);
 
-	Dialog_Open(playerid, Dialog:PlayerSettingsMenu, DIALOG_STYLE_TABLIST_HEADERS,
-		_(playerid, PLAYER_MENU_SETTINGS_CAPTION),
-		string,
-		_(playerid, PLAYER_MENU_SETTINGS_BUTTON_SELECT), _(playerid, PLAYER_MENU_SETTINGS_BUTTON_BACK)
-	);
+	Dialog_Open(playerid, Dialog:PlayerSettingsMenu, DIALOG_STYLE_TABLIST_HEADERS, "PLAYER_MENU_SETTINGS_CAPTION", string, "PLAYER_MENU_SETTINGS_BUTTON_SELECT", "PLAYER_MENU_SETTINGS_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
@@ -43,11 +39,7 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 		case 1: {
 			Player_Save(playerid);
 			Account_Save(playerid);
-			Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-				_(playerid, PLAYER_MENU_SETTINGS_SAVED_CAPTION),
-				_(playerid, PLAYER_MENU_SETTINGS_SAVED),
-				_(playerid, PLAYER_MENU_SETTINGS_SAVED_BTN_BACK), _(playerid, PLAYER_MENU_SETTINGS_SAVED_BTN_CANCEL)
-			);
+			Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "PLAYER_MENU_SETTINGS_SAVED_CAPTION", "PLAYER_MENU_SETTINGS_SAVED", "PLAYER_MENU_SETTINGS_SAVED_BTN_BACK", "PLAYER_MENU_SETTINGS_SAVED_BTN_CANCEL");
 			return 1;
 		}
 		// изменить ник
@@ -55,11 +47,7 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 			if (GetPlayerMoney(playerid) < CHANGE_NICK_COST) {
 				new string[MAX_STRING];
 				format(string, sizeof(string), _(playerid, PLAYER_MENU_SETTINGS_NAME_NO_MONEY), CHANGE_NICK_COST);
-				Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-					_(playerid, PLAYER_MENU_SETTINGS_NAME_CAPTION),
-					string,
-					_(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK), _(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL)
-				);
+				Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "PLAYER_MENU_SETTINGS_NAME_CAPTION", string, "PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK", "PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
 			} else {
 				Dialog_Show(playerid, Dialog:PlayerChangeNickMenu);
 			}
@@ -70,11 +58,7 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 			if (GetPlayerMoney(playerid) < CHANGE_PASS_COST) {
 				new string[MAX_STRING];
 				format(string, sizeof(string), _(playerid, PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY), CHANGE_PASS_COST);
-				Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-					_(playerid, PLAYER_MENU_SETTINGS_PASSWORD_CAPTION),
-					string,
-					_(playerid, PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK), _(playerid, PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL)
-				);
+				Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "PLAYER_MENU_SETTINGS_PASSWORD_CAPTION", string, "PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK", "PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL", MDIALOG_NOTVAR_INFO);
 			} else {
 				Dialog_Show(playerid, Dialog:PlayerChangePassMenu);
 			}
@@ -99,11 +83,7 @@ DialogResponse:SettingsReturnMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:PlayerChangeNickMenu(playerid)
 {
-	Dialog_Open(playerid, Dialog:PlayerChangeNickMenu, DIALOG_STYLE_INPUT,
-		_(playerid, PLAYER_MENU_SETTINGS_NAME_CAPTION),
-		_(playerid, PLAYER_MENU_SETTINGS_NAME_INFO),
-		_(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_OK), _(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK)
-	);
+	Dialog_Open(playerid, Dialog:PlayerChangeNickMenu, DIALOG_STYLE_INPUT, "PLAYER_MENU_SETTINGS_NAME_CAPTION", "PLAYER_MENU_SETTINGS_NAME_INFO", "PLAYER_MENU_SETTINGS_NAME_BUTTON_OK", "PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK");
 }
 
 DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
@@ -116,11 +96,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	new string[MAX_STRING];
 	if (GetPlayerMoney(playerid) < CHANGE_NICK_COST) {
 		format(string, sizeof(string), _(playerid, PLAYER_MENU_SETTINGS_NAME_NO_MONEY), CHANGE_NICK_COST);
-		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-			_(playerid, PLAYER_MENU_SETTINGS_NAME_CAPTION),
-			string,
-			_(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK), _(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL)
-		);
+		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "PLAYER_MENU_SETTINGS_NAME_CAPTION", string, "PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK", "PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
 		return 1;
 	}
 
@@ -134,42 +110,26 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 
 	if (length < MIN_NAME_LEN || length > MAX_NAME_LEN) {
 		format(string, sizeof(string), _(playerid, PLAYER_MENU_SETTINGS_NAME_LENGTH), MIN_NAME_LEN, MAX_NAME_LEN);
-		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-			_(playerid, PLAYER_MENU_SETTINGS_NAME_CAPTION),
-			string,
-			_(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK), _(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL)
-		);
+		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "PLAYER_MENU_SETTINGS_NAME_CAPTION", string, "PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK", "PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
 		return 1;
 	}
 
 	format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_account, new_name);
 	// если файл есть, то выходим сразу-же
 	if (ini_fileExist(string)) {
-		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-			_(playerid, PLAYER_MENU_SETTINGS_NAME_CAPTION),
-			_(playerid, PLAYER_MENU_SETTINGS_NAME_INCORRECT),
-			_(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK), _(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL)
-		);
+		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "PLAYER_MENU_SETTINGS_NAME_CAPTION", "PLAYER_MENU_SETTINGS_NAME_INCORRECT", "PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK", "PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL");
 		return 1;
 	}
 	// проверим ник
 	if (!NameCharCheck(new_name)) {
 		format(string, sizeof(string), _(playerid, PLAYER_MENU_SETTINGS_NAME_ALLOWED_SYMB), ALLOWED_NICK_SYMBOLS_STR);
-		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-			_(playerid, PLAYER_MENU_SETTINGS_NAME_CAPTION),
-			string,
-			_(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK), _(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL)
-		);
+		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "PLAYER_MENU_SETTINGS_NAME_CAPTION", string, "PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK", "PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
 		return 1;
 	}
 	// переименовываем
 	if (SetPlayerName(playerid, new_name) != 1) {
 		format(string, sizeof(string), _(playerid, PLAYER_MENU_SETTINGS_NAME_ALLOWED_SYMB), ALLOWED_NICK_SYMBOLS_STR);
-		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-			_(playerid, PLAYER_MENU_SETTINGS_NAME_CAPTION),
-			string,
-			_(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK), _(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL)
-		);
+		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "PLAYER_MENU_SETTINGS_NAME_CAPTION", string, "PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK", "PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
 		return 1;
 	}
 
@@ -197,21 +157,13 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	GivePlayerMoney(playerid, -CHANGE_NICK_COST);
 
 	format(string, sizeof(string), _(playerid, PLAYER_MENU_SETTINGS_NAME_CHANGED), old_name, new_name);
-	Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-		_(playerid, PLAYER_MENU_SETTINGS_NAME_CAPTION),
-		string,
-		_(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK), _(playerid, PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL)
-	);
+	Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "PLAYER_MENU_SETTINGS_NAME_CAPTION", string, "PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK", "PLAYER_MENU_SETTINGS_NAME_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
 	return 1;
 }
 
 DialogCreate:PlayerChangePassMenu(playerid)
 {
-	Dialog_Open(playerid, Dialog:PlayerChangePassMenu, DIALOG_STYLE_INPUT,
-		_(playerid, PLAYER_MENU_SETTINGS_PASSWORD_CAPTION),
-		_(playerid, PLAYER_MENU_SETTINGS_PASSWORD_INFO),
-		_(playerid, PLAYER_MENU_SETTINGS_PASSWORD_BTN_OK), _(playerid, PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK)
-	);
+	Dialog_Open(playerid, Dialog:PlayerChangePassMenu, DIALOG_STYLE_INPUT, "PLAYER_MENU_SETTINGS_PASSWORD_CAPTION", "PLAYER_MENU_SETTINGS_PASSWORD_INFO", "PLAYER_MENU_SETTINGS_PASSWORD_BTN_OK", "PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK");
 }
 
 DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
@@ -224,11 +176,7 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 	new string[MAX_STRING];
 	if (GetPlayerMoney(playerid) < CHANGE_PASS_COST) {
 		format(string, sizeof(string), _(playerid, PLAYER_MENU_SETTINGS_PASSWORD_NO_MONEY), CHANGE_PASS_COST);
-		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-			_(playerid, PLAYER_MENU_SETTINGS_PASSWORD_CAPTION),
-			string,
-			_(playerid, PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK), _(playerid, PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL)
-		);
+		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "PLAYER_MENU_SETTINGS_PASSWORD_CAPTION", string, "PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK", "PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL", MDIALOG_NOTVAR_INFO);
 		return 1;
 	}
 
@@ -240,20 +188,12 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 
 	if (length < MIN_PASS_LEN || length > MAX_PASS_LEN) {
 		format(string, sizeof(string), _(playerid, PLAYER_MENU_SETTINGS_PASSWORD_LENGTH), MIN_PASS_LEN, MAX_PASS_LEN);
-		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-			_(playerid, PLAYER_MENU_SETTINGS_PASSWORD_CAPTION),
-			string,
-			_(playerid, PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK), _(playerid, PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL)
-		);
+		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "PLAYER_MENU_SETTINGS_PASSWORD_CAPTION", string, "PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK", "PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL", MDIALOG_NOTVAR_INFO);
 		return 1;
 	}
 
 	format(string, sizeof(string), _(playerid, PLAYER_MENU_SETTINGS_PASSWORD_CHANGED), password);
-	Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-		_(playerid, PLAYER_MENU_SETTINGS_PASSWORD_CAPTION),
-		string,
-		_(playerid, PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK), _(playerid, PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL)
-	);
+	Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu, "PLAYER_MENU_SETTINGS_PASSWORD_CAPTION", string, "PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK", "PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL", MDIALOG_NOTVAR_INFO);
 
 #if defined USE_PASSWORD_ENCRYPT
 	SetPVarString(playerid, "Password", encrypt(password));
@@ -290,11 +230,7 @@ DialogCreate:SettingsInterfaceMenu(playerid)
 		lang_index++;
 	}
 
-	Dialog_Open(playerid, Dialog:SettingsInterfaceMenu, DIALOG_STYLE_TABLIST_HEADERS,
-		_(playerid, PLAYER_MENU_SETTINGS_INTERFACE_CAPTION),
-		string,
-		_(playerid, PLAYER_MENU_SETTINGS_BUTTON_SELECT), _(playerid, PLAYER_MENU_SETTINGS_BUTTON_BACK)
-	);
+	Dialog_Open(playerid, Dialog:SettingsInterfaceMenu, DIALOG_STYLE_TABLIST_HEADERS, "PLAYER_MENU_SETTINGS_INTERFACE_CAPTION", string, "PLAYER_MENU_SETTINGS_BUTTON_SELECT", "PLAYER_MENU_SETTINGS_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
 	return 1;
 }
 
@@ -341,11 +277,7 @@ DialogCreate:SettingsLanguageMenu(playerid)
 		}
 	}
 
-	Dialog_Open(playerid, Dialog:SettingsLanguageMenu, DIALOG_STYLE_TABLIST,
-		_(playerid, PLAYER_MENU_SETTINGS_LANGUAGE_CAPTION),
-		string,
-		_(playerid, PLAYER_MENU_SETTINGS_BUTTON_SELECT), _(playerid, PLAYER_MENU_SETTINGS_BUTTON_BACK)
-	);
+	Dialog_Open(playerid, Dialog:SettingsLanguageMenu, DIALOG_STYLE_TABLIST, "PLAYER_MENU_SETTINGS_LANGUAGE_CAPTION", string, "PLAYER_MENU_SETTINGS_BUTTON_SELECT", "PLAYER_MENU_SETTINGS_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
 	return 1;
 }
 

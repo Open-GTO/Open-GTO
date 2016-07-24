@@ -14,11 +14,7 @@
 DialogCreate:PlayerVehicleMenu(playerid)
 {
 	if (GetPlayerVehicleCount(playerid) == 0) {
-		Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
-			_(playerid, PLAYER_MENU_VEHICLE_CAPTION),
-			_(playerid, PLAYER_MENU_VEHICLE_NO_VEHICLES),
-			_(playerid, PLAYER_MENU_VEHICLE_BUTTON_BACK), _(playerid, PLAYER_MENU_VEHICLE_BUTTON_CANCEL)
-		);
+		Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu, "PLAYER_MENU_VEHICLE_CAPTION", "PLAYER_MENU_VEHICLE_NO_VEHICLES", "PLAYER_MENU_VEHICLE_BUTTON_BACK", "PLAYER_MENU_VEHICLE_BUTTON_CANCEL");
 		return 1;
 	}
 
@@ -33,11 +29,7 @@ DialogCreate:PlayerVehicleMenu(playerid)
 		}
 	}
 
-	Dialog_Open(playerid, Dialog:PlayerVehicleMenu, DIALOG_STYLE_LIST,
-		_(playerid, PLAYER_MENU_VEHICLE_CAPTION),
-		string,
-		_(playerid, PLAYER_MENU_VEHICLE_BUTTON_NEXT), _(playerid, PLAYER_MENU_VEHICLE_BUTTON_BACK)
-	);
+	Dialog_Open(playerid, Dialog:PlayerVehicleMenu, DIALOG_STYLE_LIST, "PLAYER_MENU_VEHICLE_CAPTION", string, "PLAYER_MENU_VEHICLE_BUTTON_NEXT", "PLAYER_MENU_VEHICLE_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
 	return 1;
 }
 
@@ -72,11 +64,7 @@ DialogCreate:PlayerVehicleList(playerid)
 	new string[MAX_LANG_VALUE_STRING * 3];
 	format(string, sizeof(string), _(playerid, PLAYER_MENU_VEHICLE_LIST), GetPlayerVehicleCostBySlot(playerid, veh_slot) / 2);
 
-	Dialog_Open(playerid, Dialog:PlayerVehicleList, DIALOG_STYLE_LIST,
-		_(playerid, PLAYER_MENU_VEHICLE_CAPTION),
-		string,
-		_(playerid, PLAYER_MENU_VEHICLE_BUTTON_SELECT), _(playerid, PLAYER_MENU_VEHICLE_BUTTON_BACK)
-	);
+	Dialog_Open(playerid, Dialog:PlayerVehicleList, DIALOG_STYLE_LIST, "PLAYER_MENU_VEHICLE_CAPTION", string, "PLAYER_MENU_VEHICLE_BUTTON_SELECT", "PLAYER_MENU_VEHICLE_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:PlayerVehicleList(playerid, response, listitem, inputtext[])
@@ -90,11 +78,7 @@ DialogResponse:PlayerVehicleList(playerid, response, listitem, inputtext[])
 		// переместить к себе
 		case 0: {
 			if (GetPlayerInterior(playerid) != 0) {
-				Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu,
-					_(playerid, PLAYER_MENU_VEHICLE_CAPTION),
-					_(playerid, PLAYER_MENU_VEHICLE_ERROR_INTERIOR),
-					_(playerid, PLAYER_MENU_VEHICLE_BUTTON_BACK), _(playerid, PLAYER_MENU_VEHICLE_BUTTON_CANCEL)
-				);
+				Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu, "PLAYER_MENU_VEHICLE_CAPTION", "PLAYER_MENU_VEHICLE_ERROR_INTERIOR", "PLAYER_MENU_VEHICLE_BUTTON_BACK", "PLAYER_MENU_VEHICLE_BUTTON_CANCEL");
 				return 0;
 			}
 
@@ -114,22 +98,14 @@ DialogResponse:PlayerVehicleList(playerid, response, listitem, inputtext[])
 			GivePlayerMoney(playerid, GetPlayerVehicleCostBySlot(playerid, slot) / 2);
 			RemovePlayerVehicle(playerid, slot);
 
-			Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu,
-				_(playerid, PLAYER_MENU_VEHICLE_CAPTION),
-				_(playerid, PLAYER_MENU_VEHICLE_SELLED),
-				_(playerid, PLAYER_MENU_VEHICLE_BUTTON_BACK), _(playerid, PLAYER_MENU_VEHICLE_BUTTON_CANCEL)
-			);
+			Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu, "PLAYER_MENU_VEHICLE_CAPTION", "PLAYER_MENU_VEHICLE_SELLED", "PLAYER_MENU_VEHICLE_BUTTON_BACK", "PLAYER_MENU_VEHICLE_BUTTON_CANCEL");
 			return 1;
 		}
 		// снять тюнинг
 		case 2: {
 			RemovePlayerVehicleComponents(playerid, pl_veh_menu_GetVehicleSlot(playerid));
 
-			Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu,
-				_(playerid, PLAYER_MENU_VEHICLE_CAPTION),
-				_(playerid, PLAYER_MENU_VEHICLE_TUNING_REMOVED),
-				_(playerid, PLAYER_MENU_VEHICLE_BUTTON_BACK), _(playerid, PLAYER_MENU_VEHICLE_BUTTON_CANCEL)
-			);
+			Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu, "PLAYER_MENU_VEHICLE_CAPTION", "PLAYER_MENU_VEHICLE_TUNING_REMOVED", "PLAYER_MENU_VEHICLE_BUTTON_BACK", "PLAYER_MENU_VEHICLE_BUTTON_CANCEL");
 			return 1;
 		}
 	}

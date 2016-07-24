@@ -164,11 +164,7 @@ DialogCreate:VehicleBuy(playerid)
 	InsertSpacesInInt(GetVehicleModelCost(model), string);
 	format(string, sizeof(string), _(playerid, VEHSHOP_DIALOG_INFO), ReturnVehicleModelName(model), string);
 
-	Dialog_Open(playerid, Dialog:VehicleBuy, DIALOG_STYLE_MSGBOX,
-		_(playerid, VEHSHOP_DIALOG_HEADER),
-		string,
-		_(playerid, VEHSHOP_DIALOG_BUTTON_BUY), _(playerid, VEHSHOP_DIALOG_BUTTON_EXIT)
-	);
+	Dialog_Open(playerid, Dialog:VehicleBuy, DIALOG_STYLE_MSGBOX, "VEHSHOP_DIALOG_HEADER", string, "VEHSHOP_DIALOG_BUTTON_BUY", "VEHSHOP_DIALOG_BUTTON_EXIT", MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
@@ -197,7 +193,7 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 	cost = GetVehicleModelCost( GetVehicleModel(vehicleid) );
 
 	if (GetPlayerMoney(playerid) < cost) {
-		Dialog_Message(playerid, _(playerid, VEHSHOP_DIALOG_HEADER), _(playerid, VEHSHOP_DIALOG_NO_MONEY), _(playerid, VEHSHOP_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, "VEHSHOP_DIALOG_HEADER", "VEHSHOP_DIALOG_NO_MONEY", "VEHSHOP_DIALOG_BUTTON_OK");
 		return 0;
 	}
 
@@ -221,7 +217,7 @@ DialogCreate:VehicleHaveMax(playerid)
 		format(string, sizeof(string), _(playerid, VEHSHOP_DIALOG_NEW_VEHICLE), string, level);
 	}
 
-	Dialog_Message(playerid, _(playerid, VEHSHOP_DIALOG_HEADER), string, _(playerid, VEHSHOP_DIALOG_BUTTON_OK));
+	Dialog_Message(playerid, "VEHSHOP_DIALOG_HEADER", string, "VEHSHOP_DIALOG_BUTTON_OK", MDIALOG_NOTVAR_INFO);
 }
 
 stock VehShop_SetVehiclesToRespawn()

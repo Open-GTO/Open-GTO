@@ -281,10 +281,7 @@ DialogCreate:BusinessMenu(playerid)
 		strcat(string, _(playerid, BUSINESS_DIALOG_LIST_BUY), sizeof(string));
 	}
 
-	Dialog_Open(playerid, Dialog:BusinessMenu, DIALOG_STYLE_LIST,
-		head,
-		string,
-		_(playerid, BUSINESS_DIALOG_BUTTON_OK), _(playerid, BUSINESS_DIALOG_BUTTON_CANCEL));
+	Dialog_Open(playerid, Dialog:BusinessMenu, DIALOG_STYLE_LIST, head, string, "BUSINESS_DIALOG_BUTTON_OK", "BUSINESS_DIALOG_BUTTON_CANCEL", MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:BusinessMenu(playerid, response, listitem, inputtext[])
@@ -319,7 +316,7 @@ DialogResponse:BusinessMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:BusinessSellAccept(playerid)
 {
-	Dialog_Open(playerid, Dialog:BusinessSellAccept, DIALOG_STYLE_MSGBOX, _(playerid, BUSINESS_ACCEPT_HEADER), _(playerid, BUSINESS_ACCEPT_INFO), _(playerid, BUSINESS_DIALOG_BUTTON_SELL), _(playerid, BUSINESS_DIALOG_BUTTON_BACK));
+	Dialog_Open(playerid, Dialog:BusinessSellAccept, DIALOG_STYLE_MSGBOX, "BUSINESS_ACCEPT_HEADER", "BUSINESS_ACCEPT_INFO", "BUSINESS_DIALOG_BUTTON_SELL", "BUSINESS_DIALOG_BUTTON_BACK");
 }
 
 DialogResponse:BusinessSellAccept(playerid, response, listitem, inputtext[])
@@ -367,19 +364,11 @@ DialogCreate:BusinessPlayerOwned(playerid)
 	}
 
 	if (count < 1) {
-		Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
-			_(playerid, BUSINESS_DIALOG_CAPTION),
-			_(playerid, BUSINESS_DIALOG_NO_BUSINESS),
-			_(playerid, BUSINESS_DIALOG_BACK), _(playerid, BUSINESS_DIALOG_CANCEL)
-		);
+		Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "BUSINESS_DIALOG_CAPTION", "BUSINESS_DIALOG_NO_BUSINESS", "BUSINESS_DIALOG_BACK", "BUSINESS_DIALOG_CANCEL");
 		return 1;
 	}
 
-	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_TABLIST_HEADERS,
-		_(playerid, BUSINESS_DIALOG_CAPTION),
-		string,
-		_(playerid, BUSINESS_DIALOG_BACK), _(playerid, BUSINESS_DIALOG_CANCEL)
-	);
+	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_TABLIST_HEADERS, "BUSINESS_DIALOG_CAPTION", string, "BUSINESS_DIALOG_BACK", "BUSINESS_DIALOG_CANCEL", MDIALOG_NOTVAR_INFO);
 	return 1;
 }
 
@@ -413,7 +402,7 @@ business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			Businesses[id][Business_Upgrade]
 		);
 
-		Dialog_Open(playerid, Dialog:BusinessInfo, DIALOG_STYLE_MSGBOX, head, string, _(playerid, BUSINESS_DIALOG_BUTTON_ACTION), _(playerid, BUSINESS_DIALOG_BUTTON_BACK));
+		Dialog_Open(playerid, Dialog:BusinessInfo, DIALOG_STYLE_MSGBOX, head, string, "BUSINESS_DIALOG_BUTTON_ACTION", "BUSINESS_DIALOG_BUTTON_BACK", MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_INFO);
 	}
 	else
 	{
@@ -427,7 +416,7 @@ business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				Businesses[id][Business_Upgrade]
 			);
 
-			Dialog_Open(playerid, Dialog:BusinessInfo, DIALOG_STYLE_MSGBOX, head, string, _(playerid, BUSINESS_DIALOG_BUTTON_ACTION), _(playerid, BUSINESS_DIALOG_BUTTON_BACK));
+			Dialog_Open(playerid, Dialog:BusinessInfo, DIALOG_STYLE_MSGBOX, head, string, "BUSINESS_DIALOG_BUTTON_ACTION", "BUSINESS_DIALOG_BUTTON_BACK", MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_INFO);
 		}
 		else
 		{
@@ -440,7 +429,7 @@ business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				Businesses[id][Business_Upgrade]
 			);
 
-			Dialog_Open(playerid, Dialog:BusinessInfo, DIALOG_STYLE_MSGBOX, head, string, _(playerid, BUSINESS_DIALOG_BUTTON_ACTION), _(playerid, BUSINESS_DIALOG_BUTTON_BACK));
+			Dialog_Open(playerid, Dialog:BusinessInfo, DIALOG_STYLE_MSGBOX, head, string, "BUSINESS_DIALOG_BUTTON_ACTION", "BUSINESS_DIALOG_BUTTON_BACK", MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_INFO);
 		}
 	}
 	return 1;
@@ -478,13 +467,13 @@ stock bis_Buy(playerid)
 	new price = Businesses[id][Business_Cost] + Businesses[id][Business_Buyout];
 	if (GetPlayerMoney(playerid) < price)
 	{
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(playerid, BUSINESS_NO_MONEY), _(playerid, BUSINESS_DIALOG_BUTTON_BACK), _(playerid, BUSINESS_DIALOG_BUTTON_CANCEL));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, "BUSINESS_NO_MONEY", "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL", MDIALOG_NOTVAR_CAPTION);
 		return 1;
 	}
 
 	if (!strcmp(Businesses[id][Business_Owner], playername, true))
 	{
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(playerid, BUSINESS_YOU_BUSINESS), _(playerid, BUSINESS_DIALOG_BUTTON_BACK), _(playerid, BUSINESS_DIALOG_BUTTON_CANCEL));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, "BUSINESS_YOU_BUSINESS", "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL", MDIALOG_NOTVAR_CAPTION);
 	}
 #if !defined BUY_ALL_BUSINESS
 	else if (strcmp(Businesses[id][Business_Owner], "Unknown", true))
@@ -536,7 +525,7 @@ stock bis_Sell(playerid)
 	format(head, sizeof(head), _(playerid, BUSINESS_DIALOG_HEAD), Businesses[id][Business_Name]);
 	if (strcmp(Businesses[id][Business_Owner], ReturnPlayerName(playerid), true))
 	{
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(playerid, BUSINESS_NOT_YOU), _(playerid, BUSINESS_DIALOG_BUTTON_BACK), _(playerid, BUSINESS_DIALOG_BUTTON_CANCEL));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, "BUSINESS_NOT_YOU", "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL", MDIALOG_NOTVAR_CAPTION);
 	}
 	else
 	{
@@ -573,7 +562,7 @@ stock bis_Collect(playerid)
 	format(head, sizeof(head), _(playerid, BUSINESS_DIALOG_HEAD), Businesses[id][Business_Name]);
 	if (strcmp(Businesses[id][Business_Owner], ReturnPlayerName(playerid), true))
 	{
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(playerid, BUSINESS_NOT_YOU), _(playerid, BUSINESS_DIALOG_BUTTON_BACK), _(playerid, BUSINESS_DIALOG_BUTTON_CANCEL));
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, "BUSINESS_NOT_YOU", "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL", MDIALOG_NOTVAR_CAPTION);
 	}
 	else
 	{
@@ -582,11 +571,11 @@ stock bis_Collect(playerid)
 			GivePlayerMoney(playerid, Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade]);
 			Businesses[id][Business_Vault] = 0;
 
-			Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(playerid, BUSINESS_TOOK_VAULT), _(playerid, BUSINESS_DIALOG_BUTTON_BACK), _(playerid, BUSINESS_DIALOG_BUTTON_CANCEL));
+			Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, "BUSINESS_TOOK_VAULT", "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL", MDIALOG_NOTVAR_CAPTION);
 		}
 		else
 		{
-			Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, _(playerid, BUSINESS_NO_VAULT), _(playerid, BUSINESS_DIALOG_BUTTON_BACK), _(playerid, BUSINESS_DIALOG_BUTTON_CANCEL));
+			Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, "BUSINESS_NO_VAULT", "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL", MDIALOG_NOTVAR_CAPTION);
 		}
 	}
 	return 1;

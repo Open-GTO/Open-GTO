@@ -103,7 +103,7 @@ DialogCreate:VehicleMenu(playerid)
 	}
 	strcat(string, temp, sizeof(string));
 
-	Dialog_Open(playerid, Dialog:VehicleMenu, DIALOG_STYLE_LIST, _(playerid, VEHICLE_MENU_HEADER), string, _(playerid, VEHICLE_MENU_BUTTON_OK), _(playerid, VEHICLE_MENU_BUTTON_CANCEL));
+	Dialog_Open(playerid, Dialog:VehicleMenu, DIALOG_STYLE_LIST, "VEHICLE_MENU_HEADER", string, "VEHICLE_MENU_BUTTON_OK", "VEHICLE_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
@@ -168,7 +168,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 		case 3: {
 			new slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
 			if (slot == -1) {
-				Dialog_Message(playerid, _(playerid, VEHICLE_MENU_HEADER), _(playerid, VEHICLE_MENU_DOORS_NOTOWNER), _(playerid, VEHICLE_MENU_BUTTON_OK));
+				Dialog_Message(playerid, "VEHICLE_MENU_HEADER", "VEHICLE_MENU_DOORS_NOTOWNER", "VEHICLE_MENU_BUTTON_OK");
 			} else {
 				ChangePlayerVehicleDoorsAccess(vehicleid, playerid, slot);
 				Dialog_Show(playerid, Dialog:VehicleMenu);

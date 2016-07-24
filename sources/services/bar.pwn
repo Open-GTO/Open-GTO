@@ -173,7 +173,7 @@ DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
 	}
 
 	if (GetPlayerMoney(playerid) < drinks_data[listitem][Cost]) {
-		Dialog_Message(playerid, _(playerid, BAR_DIALOG_HEADER), _(playerid, BAR_NOT_ENOUGH_MONEY), _(playerid, BAR_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, "BAR_DIALOG_HEADER", "BAR_NOT_ENOUGH_MONEY", "BAR_DIALOG_BUTTON_OK");
 		return 1;
 	}
 
@@ -187,7 +187,7 @@ DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
 		_(playerid, BAR_DIALOG_INFORMATION_TEXT),
 		drinks_data[listitem][Name], drinks_data[listitem][Cost], drinks_data[listitem][Alcohol], drinks_data[listitem][Hp]
 	);
-	Dialog_Message(playerid, _(playerid, BAR_DIALOG_HEADER), string, _(playerid, BAR_DIALOG_BUTTON_OK));
+	Dialog_Message(playerid, "BAR_DIALOG_HEADER", string, "BAR_DIALOG_BUTTON_OK", MDIALOG_NOTVAR_INFO);
 	return 1;
 }
 

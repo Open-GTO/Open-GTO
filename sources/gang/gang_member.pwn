@@ -43,8 +43,14 @@ enum e_Gang_Member_Info {
 */
 
 static
-	gMember[MAX_GANG][MAX_GANG_SIZE][e_Gang_Member_Info],
-	gRankName[GangMemberRank][Lang][MAX_GANG_RANK_NAME];
+	gRankVarName[GangMemberRank][MAX_GANG_RANK_NAME] = {
+		"GANG_RANK_LEADER",
+		"GANG_RANK_HELPER",
+		"GANG_RANK_PAYMASTER",
+		"GANG_RANK_INVITER",
+		"GANG_RANK_SOLDIER"
+	},
+	gMember[MAX_GANG][MAX_GANG_SIZE][e_Gang_Member_Info];
 
 new
 	Iterator:LoadedGangMembers[MAX_GANGS]<MAX_GANG_SIZE>;
@@ -57,19 +63,6 @@ new
 GangMember_OnGameModeInit()
 {
 	Iter_Init(LoadedGangMembers);
-
-	// init rank names
-	new
-		langid;
-
-	foreach (new Lang:lang : LangIterator) {
-		langid = Lang_GetID(lang);
-		GangRankMember_SetName(GangMemberLeader, lang, _l(langid, GANG_RANK_LEADER));
-		GangRankMember_SetName(GangMemberHelper, lang, _l(langid, GANG_RANK_HELPER));
-		GangRankMember_SetName(GangMemberPaymaster, lang, _l(langid, GANG_RANK_PAYMASTER));
-		GangRankMember_SetName(GangMemberInviter, lang, _l(langid, GANG_RANK_INVITER));
-		GangRankMember_SetName(GangMemberSoldier, lang, _l(langid, GANG_RANK_SOLDIER));
-	}
 	return 1;
 }
 
@@ -184,19 +177,12 @@ stock GangMember_IsPlayerHaveRank(playerid, GangMemberRank:rank)
 
 stock GangMember_GetRankName(gangid, memberid, Lang:lang, name[], const size = sizeof(name))
 {
-	GangRankMember_GetName(GangMember_GetRank(gangid, memberid), lang, name, size);
-}
+	new
+		GangMemberRank:rank,
+		var_name[MAX_GANG_NAME];
 
-/*
-	Gang Rank Member
-*/
+	rank = GangMember_GetRank(gangid, memberid);
 
-stock GangRankMember_GetName(GangMemberRank:rank, Lang:lang, name[], const size = sizeof(name))
-{
-	strcpy(name, gRankName[rank][lang], size);
-}
-
-stock GangRankMember_SetName(GangMemberRank:rank, Lang:lang, name[])
-{
-	strcpy(gRankName[rank][lang], name, MAX_GANG_RANK_NAME);
+	GangRankMember_GetVarName(gRankVarName[rank], var_name);
+	Lang_GetText(lang, var_name, name, size);
 }

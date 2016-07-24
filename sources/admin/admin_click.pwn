@@ -369,7 +369,11 @@ public AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[])
 		strcat(message, string);
 	}
 
-	Dialog_Message2(playerid, "ADMIN_CLICK_MESSAGE_HEADER", message, "ADMIN_CLICK_MESSAGE_BUTTON_OK");
+	Dialog_Message(playerid,
+		"ADMIN_CLICK_MESSAGE_HEADER",
+		message,
+		"ADMIN_CLICK_MESSAGE_BUTTON_OK",
+		MDIALOG_NOTVAR_INFO);
 	return 1;
 }
 
@@ -733,6 +737,7 @@ public AdminClick_GetNetStats(playerid, targetid, listitem, inputtext[])
 	            "ADMIN_CLICK_MESSAGE_HEADER",
 	            "ADMIN_COMMAND_NETSTATS",
 	            "ADMIN_CLICK_MESSAGE_BUTTON_OK", "ADMIN_CLICK_MESSAGE_BUTTON_BACK",
+	            MDIALOG_NOTVAR_NONE,
 	            ip_port,
 	            NetStats_GetConnectedTime(targetid),
 	            NetStats_ConnectionStatus(targetid),

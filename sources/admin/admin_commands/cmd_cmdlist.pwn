@@ -41,10 +41,11 @@ COMMAND:cmdlist(playerid, params[])
 			strcat(string, temp);
 		}
 
-		Dialog_Message2(playerid,
+		Dialog_Message(playerid,
 			"ADMIN_COMMAND_CMDLIST_DIALOG_HEADER",
 			string,
-			"ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK");
+			"ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK",
+			MDIALOG_NOTVAR_INFO);
 	} else {
 		Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_HEADER");
 		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_0);

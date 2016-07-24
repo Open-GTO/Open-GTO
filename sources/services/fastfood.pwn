@@ -126,7 +126,7 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 	}
 
 	if (GetPlayerMoney(playerid) < food_data[listitem][food_cost]) {
-		Dialog_Message(playerid, _(playerid, FASTFOOD_DIALOG_BUY_HEADER), _(playerid, FASTFOOD_NOT_ENOUGH_MONEY), _(playerid, FASTFOOD_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, "FASTFOOD_DIALOG_BUY_HEADER", "FASTFOOD_NOT_ENOUGH_MONEY", "FASTFOOD_DIALOG_BUTTON_OK");
 		return 1;
 	}
 
@@ -147,7 +147,7 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 
 	new string[MAX_STRING];
 	format(string, sizeof(string), _(playerid, FASTFOOD_DIALOG_INFORMATION_TEXT), food_data[listitem][food_name], food_data[listitem][food_cost], food_data[listitem][food_hp]);
-	Dialog_Message(playerid, _(playerid, FASTFOOD_DIALOG_BUY_HEADER), string, _(playerid, FASTFOOD_DIALOG_BUTTON_OK));
+	Dialog_Message(playerid, "FASTFOOD_DIALOG_BUY_HEADER", string, "FASTFOOD_DIALOG_BUTTON_OK", MDIALOG_NOTVAR_INFO);
 	return 1;
 }
 

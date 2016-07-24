@@ -37,7 +37,7 @@ COMMAND:about(playerid, params[])
 		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_ABOUT_RCON", temp);
 		strcat(string, temp);
 
-		Dialog_Message(playerid, _(playerid, ADMIN_COMMAND_ABOUT_DIALOG_HEADER), string, _(playerid, ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid, "ADMIN_COMMAND_ABOUT_DIALOG_HEADER", string, "ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK", MDIALOG_NOTVAR_INFO);
 
 	} else {
 		Lang_SendText(playerid, $ADMIN_COMMAND_ABOUT_MODER_0);
