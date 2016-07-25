@@ -2,7 +2,7 @@
 // Created:		05.09.06
 // Aurthor:		Iain Gilbert
 //
-// Updated:		28.04.2011 
+// Updated:		28.04.2011
 // Scripters:	GhostTT & ZiGGi
 
 #if defined _account_included
@@ -70,13 +70,17 @@ stock account_OnGameModeInit()
 
 stock AccountRegister(playerid, password[])
 {
+#if defined USE_PASSWORD_ENCRYPT
 	SetPVarString(playerid, "Password", encrypt(password));
+#else
+	SetPVarString(playerid, "Password", password);
+#endif
 	new temp[MAX_STRING], day, month, year, seconds, minutes, hours;
 	gettime(hours, minutes, seconds);
 	getdate(year, month, day);
 	format(temp, sizeof(temp), "%02d.%02d.%d, %02d:%02d", day, month, year, hours, minutes);
 	SetPVarString(playerid, "Creation_Date", temp);
-	
+
 	account_save_db_ini(playerid);
 	CreatePlayer(playerid);
 	SendClientMessage(playerid, COLOUR_GREEN, lang_texts[1][12]);
@@ -145,7 +149,7 @@ stock account_login_db_ini(playerid, password[])
 		ini_Close(file_account);
 		GameMSG("player_login: failed: incorrect password by %s(%d)", playername, playerid);
 		SendClientMessage(playerid, COLOUR_RED, lang_texts[1][6]);
-		
+
 		GivePVarInt(playerid, "Player_Login_Attempt", 1);
 		if (GetPVarInt(playerid, "Player_Login_Attempt") >= MAX_PLAYER_LOGIN_ATTEMPT) {
 			SendClientMessage(playerid, COLOUR_RED, lang_texts[1][7]);
@@ -156,16 +160,16 @@ stock account_login_db_ini(playerid, password[])
 		return 0;
 	}
 	SetPVarString(playerid, "Password", password);
-	
+
 	ini_Get(file_account, "Creation_Date", temp);
 	SetPVarString(playerid, "Creation_Date", temp);
-	
+
 	new day, month, year, seconds, minutes, hours;
 	gettime(hours, minutes, seconds);
 	getdate(year, month, day);
 	format(temp, sizeof(temp), "%02d.%02d.%d, %02d:%02d", day, month, year, hours, minutes);
 	ini_Set(file_account, "Last_Login", temp);
-	
+
 	ini_Close(file_account);
 	return 1;
 }
