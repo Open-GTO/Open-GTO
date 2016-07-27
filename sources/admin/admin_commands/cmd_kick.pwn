@@ -37,7 +37,7 @@ COMMAND:kick(playerid, params[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
+		players[MAX_PLAYERS],
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
@@ -52,8 +52,8 @@ COMMAND:kick(playerid, params[])
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KICK_PLAYER), playername, playerid, targetname, targetid);
-		SendMessageToNearPlayerPlayers(string, 40.0, targetid);
+		GetPlayerNearPlayers(targetid, 40.0, players);
+		Lang_SendTextToPlayers(players, "ADMIN_COMMAND_KICK_PLAYER", playername, playerid, targetname, targetid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_KICK_PLAYER_SELF", targetname, targetid);
 

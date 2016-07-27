@@ -19,7 +19,6 @@ stock SendPlayerPrivateMessage(senderid, receiveid, message[])
 	}
 
 	new
-		string[MAX_STRING],
 		length = strlen(message);
 
 	if (length < MIN_SEND_SYMBOLS || length > MAX_SEND_SYMBOLS) {

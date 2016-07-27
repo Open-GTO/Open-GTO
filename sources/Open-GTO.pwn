@@ -296,7 +296,6 @@ public OnGameModeInit()
 	PLevel_OnGameModeInit();
 	PlayerClick_OnGameModeInit();
 	AdminClick_OnGameModeInit();
-	Weather_OnGameModeInit();
 
 	// custom
 	Beachside_OnGameModeInit();

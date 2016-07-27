@@ -26,7 +26,6 @@ COMMAND:boom(playerid, params[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
 		players[MAX_PLAYERS],
 		playername[MAX_PLAYER_NAME + 1],
 		Float:pos_x,
@@ -35,7 +34,6 @@ COMMAND:boom(playerid, params[])
 		Float:pos_a;
 
 	GetPlayerName(playerid, playername, sizeof(playername));
-
 	GetPlayerPos(playerid, pos_x, pos_y, pos_z);
 	GetPlayerFacingAngle(playerid, pos_a);
 
@@ -43,7 +41,7 @@ COMMAND:boom(playerid, params[])
 
 	CreateExplosion(pos_x, pos_y, pos_z + 2, type, 30.0);
 
-	GetNearPlayers(pos_x, pos_y, pos_z, 40.0, playerid, players);
+	GetNearPlayers(pos_x, pos_y, pos_z, 40.0, players);
 	Lang_SendTextToPlayers(players, "ADMIN_COMMAND_BOOM_MAKE", playername, playerid);
 	return 1;
 }

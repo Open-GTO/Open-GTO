@@ -36,7 +36,7 @@ COMMAND:kill(playerid, params[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
+		players[MAX_PLAYERS],
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
@@ -53,8 +53,8 @@ COMMAND:kill(playerid, params[])
 
 		SetPlayerHealth(targetid, 0.0);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_KILL_PLAYER), playername, playerid, targetname, targetid);
-		SendMessageToNearPlayerPlayers(string, 40.0, targetid);
+		GetPlayerNearPlayers(targetid, 40.0, players);
+		Lang_SendTextToPlayers(players, "ADMIN_COMMAND_KILL_PLAYER", playername, playerid, targetname, targetid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_KILL_PLAYER_SELF", targetname, targetid);
 	}

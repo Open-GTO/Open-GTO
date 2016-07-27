@@ -79,7 +79,7 @@ stock Player_Text_OnPlayerText(playerid, text[])
 				return 0;
 			}
 
-			SendClientMessageToBeside(playerid, 10, text[1]);
+			PlayerText_Say(playerid, 10.0, text[1]);
 
 			Log_Player("Player: %s(%d): <SAY>: %s", playername, playerid, text[1]);
 			return 0;
@@ -88,19 +88,16 @@ stock Player_Text_OnPlayerText(playerid, text[])
 	return 1;
 }
 
-stock SendClientMessageToBeside(playerid, dist, text[])
+stock PlayerText_Say(playerid, Float:dist, text[])
 {
-	new string[MAX_STRING],
-		Float:pos[3],
+	new
+		players[MAX_PLAYERS],
 		color = GetPlayerColor(playerid);
 
-	GetPlayerPos(playerid, pos[0], pos[1], pos[2]);
-	format(string, sizeof(string), "$ %s(%d) говорит: {FFFFFF}%s", ReturnPlayerName(playerid), playerid, text);
-
-	foreach (new i : Player) {
-		if (IsPlayerInRangeOfPoint(i, dist, pos[0], pos[1], pos[2])) {
-			SendClientMessage(i, color, string);
-		}
-	}
-	return;
+	GetPlayerNearPlayers(playerid, dist, players);
+	Lang_SendTextToPlayers(players, "PLAYER_TEXT_SAY",
+	                       Color_ReturnPlayerEmbeddingCode(playerid),
+	                       ReturnPlayerName(playerid),
+	                       playerid,
+	                       text);
 }

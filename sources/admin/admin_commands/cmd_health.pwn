@@ -38,7 +38,7 @@ COMMAND:health(playerid, params[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
+		players[MAX_PLAYERS],
 		playername[MAX_PLAYER_NAME + 1],
 		targetname[MAX_PLAYER_NAME + 1];
 
@@ -58,8 +58,8 @@ COMMAND:health(playerid, params[])
 		} else {
 			SetPlayerHealth(targetid, amount);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_SET_PLAYER), playername, playerid, targetname, targetid, amount);
-			SendMessageToNearPlayerPlayers(string, 40.0, playerid);
+			GetPlayerNearPlayers(playerid, 40.0, players);
+			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_HEALTH_SET_PLAYER", playername, playerid, targetname, targetid, amount);
 
 			Lang_SendText(playerid, "ADMIN_COMMAND_HEALTH_SET_SELF", targetname, targetid, amount);
 		}
@@ -87,8 +87,8 @@ COMMAND:health(playerid, params[])
 			GetPlayerHealth(targetid, current_health);
 			SetPlayerHealth(targetid, current_health + amount);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_HEALTH_GIVE_PLAYER), playername, playerid, targetname, targetid, amount);
-			SendMessageToNearPlayerPlayers(string, 40.0, playerid);
+			GetPlayerNearPlayers(playerid, 40.0, players);
+			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_HEALTH_GIVE_PLAYER", playername, playerid, targetname, targetid, amount);
 
 			Lang_SendText(playerid, "ADMIN_COMMAND_HEALTH_GIVE_SELF", targetname, targetid, amount);
 		}

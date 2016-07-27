@@ -114,13 +114,11 @@ COMMAND:time(playerid, params[])
 	}
 
 	if (jail_time != -1) {
-		format(string, sizeof(string), _(playerid, COMMAND_TIME_JAIL), (jail_time - gettime()) / 60 + 1);
-		SendClientMessage(playerid, COLOR_LIGHTRED, string);
+		Lang_SendText(playerid, "COMMAND_TIME_JAIL", (jail_time - gettime()) / 60 + 1);
 	}
 
 	if (mute_time != 0) {
-		format(string, sizeof(string), _(playerid, COMMAND_TIME_MUTE), (mute_time - gettime()) / 60 + 1);
-		SendClientMessage(playerid, COLOR_LIGHTRED, string);
+		Lang_SendText(playerid, "COMMAND_TIME_MUTE", (mute_time - gettime()) / 60 + 1);
 	}
 
 	PlayerPlaySound(playerid, 1085, 0, 0, 0);
@@ -144,7 +142,8 @@ COMMAND:id(playerid, params[])
 	new
 		i,
 		insert_pos,
-		string[MAX_LANG_VALUE_STRING];
+		string[MAX_LANG_VALUE_STRING],
+		temp[MAX_LANG_VALUE_STRING];
 
 	for (i = 0; ids[i] != INVALID_PLAYER_ID; i++) {
 		if (ids[i] == cellmin) {
@@ -156,12 +155,14 @@ COMMAND:id(playerid, params[])
 
 		insert_pos = strfind(string, params, true);
 		if (insert_pos != -1) {
-			strins(string, _(playerid, COMMAND_ID_COLOR_NORMAL), strlen(params) + insert_pos);
-			strins(string, _(playerid, COMMAND_ID_COLOR_HIGHLIGHT), insert_pos);
+			Lang_GetPlayerText(playerid, "COMMAND_ID_COLOR_NORMAL", temp);
+			strins(string, temp, strlen(params) + insert_pos);
+
+			Lang_GetPlayerText(playerid, "COMMAND_ID_COLOR_HIGHLIGHT", temp);
+			strins(string, temp, insert_pos);
 		}
 
-		format(string, sizeof(string), _(playerid, COMMAND_ID_PLAYER), string, ids[i]);
-		SendClientMessage(playerid, -1, string);
+		Lang_SendText(playerid, "COMMAND_ID_PLAYER", string, ids[i]);
 	}
 
 	if (i == 0) {

@@ -352,8 +352,12 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 	InsertSpacesInInt(amount, amount_string);
 	InsertSpacesInInt(Gang_GetMoney(gangid), string);
 
-	format(string, sizeof(string), _(playerid, BANK_GANG_WITHDRAW_INFO), amount_string, string);
-	Dialog_Message(playerid, "BANK_GANG_CAPTION", string, "BANK_BUTTON_OK", MDIALOG_NOTVAR_INFO);
+	Dialog_Message(playerid,
+	               "BANK_GANG_CAPTION",
+	               "BANK_GANG_WITHDRAW_INFO",
+	               "BANK_BUTTON_OK",
+	               MDIALOG_NOTVAR_INFO,
+	               amount_string, string);
 
 	format(string, sizeof(string), _(playerid, BANK_GANG_WITHDRAW_MESSAGE), ReturnPlayerName(playerid), playerid, amount_string);
 	Gang_SendMessage(gangid, string, COLOR_GANG);
@@ -403,8 +407,12 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 	InsertSpacesInInt(amount, amount_string);
 	InsertSpacesInInt(Gang_GetMoney(gangid), string);
 
-	format(string, sizeof(string), _(playerid, BANK_GANG_DEPOSIT_INFO), amount_string, string);
-	Dialog_Message(playerid, "BANK_GANG_CAPTION", string, "BANK_BUTTON_OK", MDIALOG_NOTVAR_INFO);
+	Dialog_Message(playerid,
+	               "BANK_GANG_CAPTION",
+	               "BANK_GANG_DEPOSIT_INFO",
+	               "BANK_BUTTON_OK",
+	               MDIALOG_NOTVAR_INFO,
+	               amount_string, string);
 
 	format(string, sizeof(string), _(playerid, BANK_GANG_DEPOSIT_MESSAGE), ReturnPlayerName(playerid), playerid, amount_string);
 	Gang_SendMessage(gangid, string, COLOR_GANG);
@@ -427,7 +435,8 @@ stock IsPlayerAtBank(playerid)
 
 stock Bank_AddProfit()
 {
-	new string[MAX_LANG_VALUE_STRING], amount;
+	new
+		amount;
 
 	foreach (new playerid : Player) {
 		if (!IsPlayerLogin(playerid)) {

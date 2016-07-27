@@ -21,15 +21,12 @@ COMMAND:weather(playerid, params[])
 	new
 		weatherid;
 
-	if (sscanf(params, "i", weatherid)) {
+	if (sscanf(params, "k<weather>", weatherid)) {
 		Lang_SendText(playerid, "ADMIN_COMMAND_WEATHER_HELP");
 		return 1;
 	}
 
-	new
-		string[MAX_LANG_VALUE_STRING];
-
-	format(string, sizeof(string), _(playerid, ADMIN_COMMAND_WEATHER_CHANGED), weatherid, GetWeather());
+	Lang_SendText(playerid, "ADMIN_COMMAND_WEATHER_CHANGED", weatherid, GetWeather());
 	SetWeather(weatherid);
 	return 1;
 }

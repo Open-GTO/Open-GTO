@@ -97,17 +97,25 @@ wshop_OnPlayerEnterCheckpoint(playerid, cp)
 // select weapon from list
 DialogCreate:ServiceWeapon(playerid)
 {
-	new string[ (MAX_WEAPONS + 1) * (MAX_WEAPON_NAME + 12 + 4) ];
-	string = _(playerid, WEAPON_DIALOG_LIST_HEADER);
+	new
+		Lang:lang;
+		string[ (MAX_WEAPONS + 1) * (MAX_WEAPON_NAME + 12 + 4) ];
+
+	lang = Lang_GetPlayerLang(playerid);
+	Lang_GetText(lang, "WEAPON_DIALOG_LIST_HEADER", string);
 
 	for (new weaponid = 1; weaponid < MAX_WEAPONS; weaponid++) {
 		if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
 			continue;
 		}
-		format(string, sizeof(string), _(playerid, WEAPON_DIALOG_LIST_ITEM), string, ReturnPlayerWeaponName(playerid, weaponid), GetWeaponCost(weaponid));
+		Lang_GetText(lang, "WEAPON_DIALOG_LIST_ITEM", string, _, string, ReturnPlayerWeaponName(playerid, weaponid), GetWeaponCost(weaponid));
 	}
 
-	Dialog_Open(playerid, Dialog:ServiceWeapon, DIALOG_STYLE_TABLIST_HEADERS, _(playerid, WEAPON_DIALOG_HEADER), string, _(playerid, WEAPON_DIALOG_BUTTON_0), _(playerid, WEAPON_DIALOG_BUTTON_1));
+	Dialog_Open(playerid, Dialog:ServiceWeapon, DIALOG_STYLE_TABLIST_HEADERS,
+	            "WEAPON_DIALOG_HEADER",
+	            string,
+	            "WEAPON_DIALOG_BUTTON_0", "WEAPON_DIALOG_BUTTON_1",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:ServiceWeapon(playerid, response, listitem, inputtext[])
@@ -125,19 +133,20 @@ DialogResponse:ServiceWeapon(playerid, response, listitem, inputtext[])
 // buy and input bullets count
 DialogCreate:ServiceWeaponBuy(playerid)
 {
-	new
-		string[MAX_STRING * 2],
-		dialog_style = DIALOG_STYLE_INPUT,
-		weaponid = GetPVarInt(playerid, "Buy_Weapon_ID");
-
+	new weaponid = GetPVarInt(playerid, "Buy_Weapon_ID");
 	new max_ammo = GetWeaponMaxAmmo(weaponid);
 	if (max_ammo == 0) {
 		return;
 	}
 
 	if (max_ammo == 1) {
-		format(string, sizeof(string), _(playerid, WEAPON_DIALOG_WEAPON_ONE), ReturnPlayerWeaponName(playerid, weaponid), GetWeaponCost(weaponid));
-		dialog_style = DIALOG_STYLE_MSGBOX;
+		Dialog_Open(playerid, Dialog:ServiceWeaponBuy, DIALOG_STYLE_MSGBOX,
+		            "WEAPON_DIALOG_WEAPON_BUY_HEADER",
+		            "WEAPON_DIALOG_WEAPON_ONE",
+		            "WEAPON_DIALOG_WEAPON_BUY_BUTTON_0", "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1",
+		            MDIALOG_NOTVAR_INFO,
+		            ReturnPlayerWeaponName(playerid, weaponid),
+		            GetWeaponCost(weaponid));
 	} else {
 		new
 			max_bullets = max_ammo - GetPlayerWeaponAmmo(playerid, weaponid),
@@ -147,17 +156,16 @@ DialogCreate:ServiceWeaponBuy(playerid)
 			max_bullets = max_bullets_money;
 		}
 
-		format(string, sizeof(string),
-			_(playerid, WEAPON_DIALOG_WEAPON),
-			ReturnPlayerWeaponName(playerid, weaponid),
-			GetWeaponCost(weaponid),
-			max_bullets,
-			Declension_ReturnAmmo(playerid, max_bullets)
-		);
-		strcat(string, _(playerid, WEAPON_DIALOG_INFORMATION_TEXT_AMMO));
+		Dialog_Open(playerid, Dialog:ServiceWeaponBuy, DIALOG_STYLE_INPUT,
+		            "WEAPON_DIALOG_WEAPON_BUY_HEADER",
+		            "WEAPON_DIALOG_WEAPON",
+		            "WEAPON_DIALOG_WEAPON_BUY_BUTTON_0", "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1",
+		            MDIALOG_NOTVAR_INFO,
+		            ReturnPlayerWeaponName(playerid, weaponid),
+		            GetWeaponCost(weaponid),
+		            max_bullets,
+		            Declension_ReturnAmmo(playerid, max_bullets));
 	}
-
-	Dialog_Open(playerid, Dialog:ServiceWeaponBuy, dialog_style, _(playerid, WEAPON_DIALOG_WEAPON_BUY_HEADER), string, _(playerid, WEAPON_DIALOG_WEAPON_BUY_BUTTON_0), _(playerid, WEAPON_DIALOG_WEAPON_BUY_BUTTON_1));
 }
 
 DialogResponse:ServiceWeaponBuy(playerid, response, listitem, inputtext[])

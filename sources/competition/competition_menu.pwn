@@ -263,7 +263,7 @@ DialogCreate:CompetitionStartMenu(playerid)
 		__(playerid, COMPETITION_START_PARAM_RANDOM, cweather_string);
 		cweather_color = COLOR_BLUEGREY_200;
 	} else {
-		Weather_GetName(cweather, Lang_GetPlayerLangType(playerid), cweather_string);
+		Weather_GetName(cweather, Lang_GetPlayerLang(playerid), cweather_string);
 		cweather_color = COLOR_TEAL_400;
 	}
 	GetColorEmbeddingCode(cweather_color, cweather_color_code);
@@ -437,7 +437,7 @@ DialogCreate:CompetitionStartWeatherMenu(playerid)
 	format(string, sizeof(string), "{B0BEC5}%s\n", _(playerid, COMPETITION_START_PARAM_RANDOM));
 
 	for (new i = 0; i < sizeof(gAvailableWeather); i++) {
-		Weather_GetName(gAvailableWeather[i], Lang_GetPlayerLangType(playerid), cweather_name);
+		Weather_GetName(gAvailableWeather[i], Lang_GetPlayerLang(playerid), cweather_name);
 		strcat(string, cweather_name);
 		strcat(string, "\n");
 	}

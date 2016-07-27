@@ -44,7 +44,7 @@ COMMAND:teleport(playerid, params[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
+		players[MAX_PLAYERS],
 
 		playername[MAX_PLAYER_NAME + 1],
 		Float:p_pos_x,
@@ -85,8 +85,8 @@ COMMAND:teleport(playerid, params[])
 		TeleportPlayerToPos(playerid, t_pos_x + random(2) - random(4), t_pos_y + random(2) - random(4), t_pos_z,
 		                    t_pos_a, t_interior, t_world);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_TELEPORT_TO_PLAYER), targetname, targetid, playername, playerid);
-		SendMessageToNearPlayerPlayers(string, 40.0, targetid);
+		GetPlayerNearPlayers(targetid, 40.0, players);
+		Lang_SendTextToPlayers(players, "ADMIN_COMMAND_TELEPORT_TO_PLAYER", targetname, targetid, playername, playerid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_TELEPORT_TO_SELF", targetname, targetid);
 	} else if (strcmp(subcmd, "here", true) == 0) {
@@ -106,8 +106,8 @@ COMMAND:teleport(playerid, params[])
 			TeleportPlayerToPos(targetid, p_pos_x + random(2) - random(4), p_pos_y + random(2) - random(4), p_pos_z,
 			                    p_pos_a, p_interior, p_world);
 
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_TELEPORT_HERE_PLAYER), playername, playerid, targetname, targetid);
-			SendMessageToNearPlayerPlayers(string, 40.0, targetid);
+			GetPlayerNearPlayers(targetid, 40.0, players);
+			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_TELEPORT_HERE_PLAYER", playername, playerid, targetname, targetid);
 		}
 	} else if (strcmp(subcmd, "coord", true) == 0) {
 		if (sscanf(subparams, "p<,>fffI(0)I(0)", t_pos_x, t_pos_y, t_pos_z, t_interior, t_world)) {
@@ -117,9 +117,11 @@ COMMAND:teleport(playerid, params[])
 
 		TeleportPlayerToPos(playerid, t_pos_x, t_pos_y, t_pos_z, p_pos_a, t_interior, t_world);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_TELEPORT_COORD_PLAYER),
-		       playername, playerid, t_pos_x, t_pos_y, t_pos_z, p_pos_a, t_interior, t_world);
-		SendMessageToNearPlayerPlayers(string, 40.0, playerid);
+		GetPlayerNearPlayers(playerid, 40.0, players);
+		Lang_SendTextToPlayers(players, "ADMIN_COMMAND_TELEPORT_COORD_PLAYER",
+		                       playername, playerid,
+		                       t_pos_x, t_pos_y, t_pos_z, p_pos_a,
+		                       t_interior, t_world);
 	} else {
 		Lang_SendText(playerid, "ADMIN_COMMAND_TELEPORT_COORD_HELP");
 	}

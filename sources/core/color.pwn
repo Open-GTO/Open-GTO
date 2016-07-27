@@ -135,12 +135,24 @@ static gColors[MAX_COLOR_COUNT][e_Colors_Info] = {
 	Public functions
 */
 
+stock GetPlayerEmbeddingCode(playerid, code[], const size = sizeof(code))
+{
+	GetColorEmbeddingCode(GetPlayerColor(playerid), code, size);
+}
+
+stock ReturnPlayerEmbeddingCode(playerid)
+{
+	new code[7];
+	Color_GetPlayerCode(playerid, code, size);
+	return code;
+}
+
 stock GetColorEmbeddingCode(color, code[], const size = sizeof(code))
 {
 	format(code, size, "%06x", color >>> 8);
 }
 
-stock Color_GetEmbeddingCode(id, code[], size = sizeof(code))
+stock Color_GetEmbeddingCode(id, code[], const size = sizeof(code))
 {
 	GetColorEmbeddingCode(gColors[id][e_cCode], code, size);
 }
