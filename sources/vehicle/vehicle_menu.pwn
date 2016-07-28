@@ -128,30 +128,45 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 		// заправить
 		case 1: {
 			if (vehicleid == 0) {
-				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(playerid, VEHICLE_FUEL_DIALOG_HEADER), _(playerid, VEHICLE_FUEL_NOT_IN_VEHICLE), "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
+				                 "VEHICLE_FUEL_DIALOG_HEADER",
+				                 "VEHICLE_FUEL_NOT_IN_VEHICLE",
+				                 "VEHICLE_FUEL_DIALOG_BUTTON_BACK", "VEHICLE_FUEL_DIALOG_BUTTON_CANCEL");
 				return 1;
 			}
 
 			if (!IsPlayerAtFuelStation(playerid)) {
-				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(playerid, VEHICLE_FUEL_DIALOG_HEADER), _(playerid, VEHICLE_FUEL_NOT_ON_FUEL_ST), "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
+				                 "VEHICLE_FUEL_DIALOG_HEADER",
+				                 "VEHICLE_FUEL_NOT_ON_FUEL_ST",
+				                 "VEHICLE_FUEL_DIALOG_BUTTON_BACK", "VEHICLE_FUEL_DIALOG_BUTTON_CANCEL");
 				return 1;
 			}
 
 			if (IsVehicleRefilling(vehicleid)) {
-				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(playerid, VEHICLE_FUEL_DIALOG_HEADER), _(playerid, VEHICLE_FUEL_IS_FUELING_ERROR), "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
+				                 "VEHICLE_FUEL_DIALOG_HEADER",
+				                 "VEHICLE_FUEL_IS_FUELING_ERROR",
+				                 "VEHICLE_FUEL_DIALOG_BUTTON_BACK", "VEHICLE_FUEL_DIALOG_BUTTON_CANCEL");
 				return 1;
 			}
 
 			new vehiclemodel = GetVehicleModel(vehicleid);
 			switch (vehiclemodel) {
 				case 481, 509, 510: {
-					Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(playerid, VEHICLE_FUEL_DIALOG_HEADER), _(playerid, VEHICLE_FUEL_WITHOUT_FUEL_ENGINE), "Назад", "Отмена");
+					Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
+					                 "VEHICLE_FUEL_DIALOG_HEADER",
+					                 "VEHICLE_FUEL_WITHOUT_FUEL_ENGINE",
+					                 "VEHICLE_FUEL_DIALOG_BUTTON_BACK", "VEHICLE_FUEL_DIALOG_BUTTON_CANCEL");
 					return 1;
 				}
 			}
 
 			if (GetVehicleFuel(vehicleid) >= GetVehicleModelMaxFuel(vehiclemodel)) {
-				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu, _(playerid, VEHICLE_FUEL_DIALOG_HEADER), _(playerid, VEHICLE_FUEL_FUEL_IS_FULL), "Назад", "Отмена");
+				Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
+				                 "VEHICLE_FUEL_DIALOG_HEADER",
+				                 "VEHICLE_FUEL_FUEL_IS_FULL",
+				                 "VEHICLE_FUEL_DIALOG_BUTTON_BACK", "VEHICLE_FUEL_DIALOG_BUTTON_CANCEL");
 				return 1;
 			}
 

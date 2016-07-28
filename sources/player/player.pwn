@@ -89,30 +89,29 @@ Player_OnPlayerDisconnect(playerid, reason)
 	Account_Save(playerid);
 
 	// message
-	new string[MAX_LANG_VALUE_STRING];
-	format(string, sizeof(string), _(playerid, PLAYER_DISCONNECT), ReturnPlayerName(playerid), playerid);
+	new playername[MAX_PLAYER_NAME + 1];
+	GetPlayerName(playerid, playername, sizeof(playername));
 
 	switch (reason) {
 		case 0: {
-			strcat(string, " (вылетел)", sizeof(string));
+			Lang_SendTextToAll("PLAYER_DISCONNECT_CRASH", playername, playerid);
 		}
 		case 1: {
-			strcat(string, " (вышел)", sizeof(string));
+			Lang_SendTextToAll("PLAYER_DISCONNECT_EXIT", playername, playerid);
 		}
 		case 2: {
-			strcat(string, " (кикнут)", sizeof(string));
+			Lang_SendTextToAll("PLAYER_DISCONNECT_KICK", playername, playerid);
 		}
 	}
-
-	SendClientMessageToAll(COLOR_GREY, string);
 
 	// gang logout
 	new gangid = GetPlayerGangID(playerid);
 
 	new is_ok = Gang_MemberLogout(playerid, gangid);
 	if (is_ok) {
-		format(string, sizeof(string), _(playerid, GANG_MEMBER_LOGOUT), ReturnPlayerName(playerid));
-		Gang_SendMessage(gangid, string, COLOR_GANG);
+		new string[MAX_LANG_VALUE_STRING];
+		Lang_GetPlayerText(playerid, "GANG_MEMBER_LOGOUT", string, _, playername);
+		Gang_SendMessage(gangid, string);
 	}
 
 	// other stuff
@@ -173,12 +172,12 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 	new killer_gang_id = GetPlayerGangID(killerid);
 	if (killer_gang_id != INVALID_GANG_ID) {
 		if (Gang_PlayerKill(killer_gang_id, killerid, playerid) == 1) {
+			new killername[MAX_PLAYER_NAME + 1];
+			GetPlayerName(killerid, killername, sizeof(killername));
+
 			new string[MAX_LANG_VALUE_STRING];
-
-			GetPlayerName(killerid, string, sizeof(string));
-			format(string, sizeof(string), _(playerid, GANG_KILL_TEAMMATE), string);
-
-			Gang_SendMessage(killer_gang_id, string, COLOR_GANG);
+			Lang_GetPlayerText(playerid, "GANG_KILL_TEAMMATE", string, _, killername);
+			Gang_SendMessage(killer_gang_id, string);
 			return;
 		}
 
@@ -309,8 +308,8 @@ stock Player_OnLogin(playerid)
 			new is_ok = Gang_MemberLogin(playerid, gangid);
 
 			if (is_ok) {
-				format(string, sizeof(string), _(playerid, GANG_MEMBER_LOGIN), playername);
-				Gang_SendMessage(gangid, string, COLOR_GANG);
+				Lang_GetPlayerText(playerid, "GANG_MEMBER_LOGIN", string, _, playername);
+				Gang_SendMessage(gangid, string);
 
 				Lang_SendText(playerid, "GANG_MEMBER_LOGIN_SELF", gangname, Gang_GetOnlineCount(gangid) - 1);
 

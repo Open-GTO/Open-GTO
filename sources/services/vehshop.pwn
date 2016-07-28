@@ -157,14 +157,18 @@ DialogCreate:VehicleBuy(playerid)
 {
 	new
 		model,
-		string[MAX_LANG_VALUE_STRING];
+		cost[MAX_LANG_VALUE_STRING];
 
 	model = GetVehicleModel(GetPlayerVehicleID(playerid));
 
-	InsertSpacesInInt(GetVehicleModelCost(model), string);
-	format(string, sizeof(string), _(playerid, VEHSHOP_DIALOG_INFO), ReturnVehicleModelName(model), string);
+	InsertSpacesInInt(GetVehicleModelCost(model), cost);
 
-	Dialog_Open(playerid, Dialog:VehicleBuy, DIALOG_STYLE_MSGBOX, "VEHSHOP_DIALOG_HEADER", string, "VEHSHOP_DIALOG_BUTTON_BUY", "VEHSHOP_DIALOG_BUTTON_EXIT", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:VehicleBuy, DIALOG_STYLE_MSGBOX,
+	            "VEHSHOP_DIALOG_HEADER",
+	            "VEHSHOP_DIALOG_INFO",
+	            "VEHSHOP_DIALOG_BUTTON_BUY", "VEHSHOP_DIALOG_BUTTON_EXIT",
+	            MDIALOG_NOTVAR_NONE,
+	            ReturnVehicleModelName(model), cost);
 }
 
 DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
@@ -200,7 +204,7 @@ DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
 	GivePlayerMoney(playerid, -cost);
 	VehShop_BuyVehicle(playerid, vehicleid, color1, color2);
 
-	Dialog_Message(playerid, _(playerid, VEHSHOP_DIALOG_HEADER), _m(playerid, VEHSHOP_DIALOG_INFO_SUCCESS), _(playerid, VEHSHOP_DIALOG_BUTTON_OK));
+	Dialog_Message(playerid, "VEHSHOP_DIALOG_HEADER", "VEHSHOP_DIALOG_INFO_SUCCESS", "VEHSHOP_DIALOG_BUTTON_OK");
 	return 1;
 }
 
@@ -210,11 +214,11 @@ DialogCreate:VehicleHaveMax(playerid)
 		string[MAX_LANG_VALUE_STRING * 2],
 		level;
 
-	__(playerid, VEHSHOP_DIALOG_HAVE_MAXIMUM, string);
+	Lang_GetPlayerText(playerid, "VEHSHOP_DIALOG_HAVE_MAXIMUM", string);
 	level = GetPlayerVehicleNearestLevel(playerid);
 
 	if (level != -1) {
-		format(string, sizeof(string), _(playerid, VEHSHOP_DIALOG_NEW_VEHICLE), string, level);
+		Lang_GetPlayerText(playerid, "VEHSHOP_DIALOG_NEW_VEHICLE", string, level);
 	}
 
 	Dialog_Message(playerid, "VEHSHOP_DIALOG_HEADER", string, "VEHSHOP_DIALOG_BUTTON_OK", MDIALOG_NOTVAR_INFO);

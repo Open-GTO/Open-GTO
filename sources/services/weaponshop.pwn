@@ -144,7 +144,7 @@ DialogCreate:ServiceWeaponBuy(playerid)
 		            "WEAPON_DIALOG_WEAPON_BUY_HEADER",
 		            "WEAPON_DIALOG_WEAPON_ONE",
 		            "WEAPON_DIALOG_WEAPON_BUY_BUTTON_0", "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1",
-		            MDIALOG_NOTVAR_INFO,
+		            MDIALOG_NOTVAR_NONE,
 		            ReturnPlayerWeaponName(playerid, weaponid),
 		            GetWeaponCost(weaponid));
 	} else {
@@ -160,7 +160,7 @@ DialogCreate:ServiceWeaponBuy(playerid)
 		            "WEAPON_DIALOG_WEAPON_BUY_HEADER",
 		            "WEAPON_DIALOG_WEAPON",
 		            "WEAPON_DIALOG_WEAPON_BUY_BUTTON_0", "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1",
-		            MDIALOG_NOTVAR_INFO,
+		            MDIALOG_NOTVAR_NONE,
 		            ReturnPlayerWeaponName(playerid, weaponid),
 		            GetWeaponCost(weaponid),
 		            max_bullets,
@@ -192,9 +192,17 @@ DialogResponse:ServiceWeaponBuy(playerid, response, listitem, inputtext[])
 stock wshop_Message(playerid, info[], bool:is_buy_menu = true)
 {
 	if (is_buy_menu) {
-		Dialog_MessageEx(playerid, Dialog:WShopReturnBuyMenu, _(playerid, WEAPON_DIALOG_WEAPON_BUY_HEADER), info, _(playerid, WEAPON_DIALOG_WEAPON_BUY_BUTTON_1), _(playerid, WEAPON_DIALOG_BUTTON_1));
+		Dialog_MessageEx(playerid, Dialog:WShopReturnBuyMenu,
+		                 "WEAPON_DIALOG_WEAPON_BUY_HEADER",
+		                 info,
+		                 "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1", "WEAPON_DIALOG_BUTTON_1",
+		                 MDIALOG_NOTVAR_INFO);
 	} else {
-		Dialog_MessageEx(playerid, Dialog:WShopReturnMainMenu, _(playerid, WEAPON_DIALOG_WEAPON_BUY_HEADER), info, _(playerid, WEAPON_DIALOG_WEAPON_BUY_BUTTON_1), _(playerid, WEAPON_DIALOG_BUTTON_1));
+		Dialog_MessageEx(playerid, Dialog:WShopReturnMainMenu,
+		                 "WEAPON_DIALOG_WEAPON_BUY_HEADER",
+		                 info,
+		                 "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1", "WEAPON_DIALOG_BUTTON_1",
+		                 MDIALOG_NOTVAR_INFO);
 	}
 	return 1;
 }
@@ -217,21 +225,23 @@ DialogResponse:WShopReturnMainMenu(playerid, response, listitem, inputtext[])
 
 stock wshop_Buy(playerid, weaponid, bullets)
 {
+	new string[MAX_LANG_VALUE_STRING];
+
 	if (!IsPlayerAtWeaponShop(playerid)) {
-		wshop_Message(playerid, _(playerid, WEAPON_NOT_IN_SHOP));
+		Lang_GetPlayerText(playerid, "WEAPON_NOT_IN_SHOP", string);
+		wshop_Message(playerid, string);
 		return 0;
 	}
 
-	new string[MAX_STRING];
-
 	if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
-		format(string, sizeof(string), _(playerid, WEAPON_BAD_WEAPON), ReturnPlayerWeaponName(playerid, weaponid));
+		Lang_GetPlayerText(playerid, "WEAPON_BAD_WEAPON", string, _, ReturnPlayerWeaponName(playerid, weaponid));
 		wshop_Message(playerid, string, false);
 		return 0;
 	}
 
 	if (bullets < 1) {
-		wshop_Message(playerid, _(playerid, WEAPON_BAD_AMMO_COUNT));
+		Lang_GetPlayerText(playerid, "WEAPON_BAD_AMMO_COUNT", string);
+		wshop_Message(playerid, string);
 		return 0;
 	}
 
@@ -240,19 +250,21 @@ stock wshop_Buy(playerid, weaponid, bullets)
 		current_bullets = GetPlayerWeaponAmmo(playerid, weaponid);
 
 	if (current_bullets >= max_ammo) {
-		wshop_Message(playerid, _(playerid, WEAPON_MAX_AMMO_COUNT));
+		Lang_GetPlayerText(playerid, "WEAPON_MAX_AMMO_COUNT", string);
+		wshop_Message(playerid, string);
 		return 0;
 	}
 
 	if (current_bullets + bullets > max_ammo) {
-		wshop_Message(playerid, _(playerid, WEAPON_BAD_AMMO_COUNT));
+		Lang_GetPlayerText(playerid, "WEAPON_BAD_AMMO_COUNT", string);
+		wshop_Message(playerid, string);
 		return 0;
 	}
 
 	new purchasecost = GetWeaponCost(weaponid) * bullets;
 
 	if (GetPlayerMoney(playerid) < purchasecost) {
-		format(string, sizeof(string), _(playerid, WEAPON_NOT_ENOUGH_MONEY), purchasecost);
+		Lang_GetPlayerText(playerid, "WEAPON_NOT_ENOUGH_MONEY", purchasecost);
 		wshop_Message(playerid, string, !IsWeaponHandToHand(weaponid));
 		return 0;
 	}
@@ -273,9 +285,9 @@ stock wshop_Buy(playerid, weaponid, bullets)
 	}
 
 	if (!IsWeaponHandToHand(weaponid)) {
-		format(string, sizeof(string), _(playerid, WEAPON_BUYED), bullets, ReturnPlayerWeaponName(playerid, weaponid), purchasecost);
+		Lang_GetPlayerText(playerid, "WEAPON_BUYED", bullets, ReturnPlayerWeaponName(playerid, weaponid), purchasecost);
 	} else {
-		format(string, sizeof(string), _(playerid, WEAPON_BUYED_ONE), ReturnPlayerWeaponName(playerid, weaponid), purchasecost);
+		Lang_GetPlayerText(playerid, "WEAPON_BUYED_ONE", ReturnPlayerWeaponName(playerid, weaponid), purchasecost);
 	}
 
 	wshop_Message(playerid, string, false);

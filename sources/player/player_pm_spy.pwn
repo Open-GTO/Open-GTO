@@ -62,11 +62,10 @@ stock SendPrivateMessageToSpies(senderid, receiveid, message[])
 			continue;
 		}
 
-		format(string, sizeof(string), _(i, PLAYER_PMSPY_MESSAGE),
-		       sendername, senderid,
-		       receivename, receiveid,
-		       message);
-		SendClientMessage(i, COLOR_PM, string);
+		Lang_SendText(i, "PLAYER_PMSPY_MESSAGE",
+		              sendername, senderid,
+		              receivename, receiveid,
+		              message);
 	}
 }
 

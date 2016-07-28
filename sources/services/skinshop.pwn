@@ -79,7 +79,10 @@ SkinSelectResponse:SkinShop(playerid, SS_Response:type, oldskin, newskin)
 
 DialogCreate:ServiceSkin(playerid)
 {
-	Dialog_Open(playerid, Dialog:ServiceSkin, DIALOG_STYLE_MSGBOX, _(playerid, SKINSHOP_DIALOG_HEADER), _(playerid, SKINSHOP_DIALOG_INFO_BUY), _(playerid, SKINSHOP_DIALOG_BUTTON_0), _(playerid, SKINSHOP_DIALOG_BUTTON_1));
+	Dialog_Open(playerid, Dialog:ServiceSkin, DIALOG_STYLE_MSGBOX,
+	            "SKINSHOP_DIALOG_HEADER",
+	            "SKINSHOP_DIALOG_INFO_BUY",
+	            "SKINSHOP_DIALOG_BUTTON_0", "SKINSHOP_DIALOG_BUTTON_1");
 }
 
 DialogResponse:ServiceSkin(playerid, response, listitem, inputtext[])

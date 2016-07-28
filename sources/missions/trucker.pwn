@@ -208,9 +208,9 @@ forward Trucker_BackCarTimer(playerid);
 public Trucker_BackCarTimer(playerid)
 {
 	if (player_trucker[playerid][pt_BackCarTime] > 0) {
-		new string[MAX_STRING];
-		format(string, sizeof(string), _(playerid, TRUCKER_ALERT_GET_BACK), player_trucker[playerid][pt_BackCarTime]);
-		Message_Alert(playerid, _(playerid, TRUCKER_ALERT_HEADER), string, 1200);
+		Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_BACK", 1200, _,
+		              MESSAGE_NOTVAR_NONE,
+		              player_trucker[playerid][pt_BackCarTime]);
 
 		player_trucker[playerid][pt_BackCarTime]--;
 		SetTimerEx("Trucker_BackCarTimer", 1000, 0, "d", playerid);
@@ -228,14 +228,13 @@ stock Trucker_Start(playerid)
 		TrailerType:trailer_type = GetTrailerType(vehicleid);
 
 	if (trailer_type == TRAILER_TYPE_UNKNOWN) {
-		new string[MAX_LANG_VALUE_STRING];
-
 		Lang_SendText(playerid, "TRUCKER_GET_TRAILER", TRUCKER_TIME_GET_TRAILER);
 
-		format(string, sizeof(string), _(playerid, TRUCKER_ALERT_GET_TRAILER_S), TRUCKER_TIME_GET_TRAILER);
-		Message_Alert(playerid, _(playerid, TRUCKER_ALERT_HEADER), string);
+		Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_TRAILER_S", _, _,
+		              MESSAGE_NOTVAR_NONE,
+		              "TRUCKER_ALERT_GET_TRAILER_S");
 
-		Message_Objective(playerid, _(playerid, TRUCKER_OBJECTIVE_GET_TRAILER), -1);
+		Message_Objective(playerid, "TRUCKER_OBJECTIVE_GET_TRAILER", -1);
 
 		player_trucker[playerid][pt_TrailerCheck_Time] = gettime();
 		player_trucker[playerid][pt_TrailerCheck_Timer] = SetTimerEx("Trucker_Trailer_Check", 500, 1, "dd", playerid, vehicleid);
@@ -354,14 +353,13 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 		GivePlayerXP(playerid, mission_CalculateXP(playerid, mission_trucker), 1);
 
 		if (player_trucker[playerid][pt_TryCount] > 0) {
-			new string[MAX_STRING];
-
 			Lang_SendText(playerid, "TRUCKER_MISSION_COMPLETE", TRUCKER_MISSION_TIME / 60);
 
-			format(string, sizeof(string), _(playerid, TRUCKER_ALERT_GET_TRAILER_M), TRUCKER_MISSION_TIME / 60);
-			Message_Alert(playerid, _(playerid, TRUCKER_ALERT_HEADER), string);
+			Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_TRAILER_M", _, _,
+			              MESSAGE_NOTVAR_NONE,
+			              TRUCKER_MISSION_TIME / 60);
 
-			Message_Objective(playerid, _(playerid, TRUCKER_OBJECTIVE_GET_TRAILER), -1);
+			Message_Objective(playerid, "TRUCKER_OBJECTIVE_GET_TRAILER", -1);
 
 			player_trucker[playerid][pt_TrailerCheck_Time] = gettime() + TRUCKER_MISSION_TIME - TRUCKER_TIME_GET_TRAILER;
 			player_trucker[playerid][pt_TrailerCheck_Timer] = SetTimerEx("Trucker_Trailer_Check", 500, 1, "dd", playerid, vehicleid);
@@ -372,7 +370,10 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 
 DialogCreate:TruckerMenu(playerid)
 {
-	Dialog_Open(playerid, Dialog:TruckerMenu, DIALOG_STYLE_MSGBOX, _(playerid, TRUCKER_DIALOG_HEADER), _m(playerid, TRUCKER_DIALOG_INFORMATION_TEXT), _(playerid, TRUCKER_DIALOG_ACCEPT), _(playerid, TRUCKER_DIALOG_DECLINE));
+	Dialog_Open(playerid, Dialog:TruckerMenu, DIALOG_STYLE_MSGBOX,
+	            "TRUCKER_DIALOG_HEADER",
+	            "TRUCKER_DIALOG_INFORMATION_TEXT",
+	            "TRUCKER_DIALOG_ACCEPT", "TRUCKER_DIALOG_DECLINE");
 }
 
 DialogResponse:TruckerMenu(playerid, response, listitem, inputtext[])
@@ -479,7 +480,7 @@ Trucker_OnVehicleDeath(vehicleid, killerid)
 		} else {
 			if (player_trucker[killerid][pt_TrailerCheck_Timer] != 0) {
 				Lang_SendText(killerid, "TRUCKER_MISSION_FAILED_DECLINE");
-				Message_Alert(killerid, _(killerid, TRUCKER_ALERT_HEADER), _(killerid, TRUCKER_ALERT_ABORTED));
+				Message_Alert(killerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_ABORTED");
 
 				KillTimer(player_trucker[killerid][pt_TrailerCheck_Timer]);
 				player_trucker[killerid][pt_TrailerCheck_Timer] = 0;
@@ -494,7 +495,7 @@ public Trucker_Trailer_Check(playerid, vehicleid)
 {
 	if (GetPlayerVehicleID(playerid) == 0) {
 		Lang_SendText(playerid, "TRUCKER_MISSION_FAILED_DECLINE");
-		Message_Alert(playerid, _(playerid, TRUCKER_ALERT_HEADER), _(playerid, TRUCKER_ALERT_ABORTED));
+		Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_ABORTED");
 
 		Message_ObjectiveHide(playerid);
 
@@ -509,9 +510,9 @@ public Trucker_Trailer_Check(playerid, vehicleid)
 	if (time_left != previous_time) {
 		switch (time_left) {
 			case 10, TRUCKER_TIME_GET_TRAILER / 4, TRUCKER_TIME_GET_TRAILER / 2: {
-				new string[MAX_STRING];
-				format(string, sizeof(string), _(playerid, TRUCKER_ALERT_GET_TRAILER_S), time_left);
-				Message_Alert(playerid, _(playerid, TRUCKER_ALERT_HEADER), string);
+				Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_TRAILER_S", _, _,
+				              MESSAGE_NOTVAR_NONE,
+				              time_left);
 			}
 		}
 
@@ -524,7 +525,7 @@ public Trucker_Trailer_Check(playerid, vehicleid)
 		player_trucker[playerid][pt_TrailerCheck_Time] = 0;
 		KillTimer(player_trucker[playerid][pt_TrailerCheck_Timer]);
 		Lang_SendText(playerid, "TRUCKER_MISSION_FAILED_TRAILER");
-		Message_Alert(playerid, _(playerid, TRUCKER_ALERT_HEADER), _(playerid, TRUCKER_ALERT_ABORTED));
+		Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_ABORTED");
 		Message_ObjectiveHide(playerid);
 		return 0;
 	}

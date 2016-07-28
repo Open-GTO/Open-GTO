@@ -106,17 +106,22 @@ stock fastfood_OnPlayerEnterCP(playerid, cp)
 
 DialogCreate:ServiceFastfood(playerid)
 {
-	new string[MAX_STRING * (sizeof(food_data) + 1)];
-	string = _(playerid, FASTFOOD_DIALOG_LIST_HEADER);
+	new string[MAX_LANG_VALUE_STRING * (sizeof(food_data) + 1)];
+	Lang_GetPlayerText(playerid, "FASTFOOD_DIALOG_LIST_HEADER", string);
 
 	for (new i = 0; i < sizeof(food_data); i++) {
-		format(string, sizeof(string),
-			_(playerid, FASTFOOD_DIALOG_LIST_ITEM),
-			string, food_data[i][food_name], food_data[i][food_cost], food_data[i][food_hp]
-		);
+		Lang_GetPlayerText(playerid, "FASTFOOD_DIALOG_LIST_ITEM", string, _,
+		                   string,
+		                   food_data[i][food_name],
+		                   food_data[i][food_cost],
+		                   food_data[i][food_hp]);
 	}
 
-	Dialog_Open(playerid, Dialog:ServiceFastfood, DIALOG_STYLE_TABLIST_HEADERS, _(playerid, FASTFOOD_DIALOG_HEADER), string, _(playerid, FASTFOOD_DIALOG_BUTTON_0), _(playerid, FASTFOOD_DIALOG_BUTTON_1));
+	Dialog_Open(playerid, Dialog:ServiceFastfood, DIALOG_STYLE_TABLIST_HEADERS,
+	            "FASTFOOD_DIALOG_HEADER",
+	            string,
+	            "FASTFOOD_DIALOG_BUTTON_0", "FASTFOOD_DIALOG_BUTTON_1",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
@@ -145,9 +150,14 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 		SetPlayerHealth(playerid, health + food_data[listitem][food_hp]);
 	}
 
-	new string[MAX_STRING];
-	format(string, sizeof(string), _(playerid, FASTFOOD_DIALOG_INFORMATION_TEXT), food_data[listitem][food_name], food_data[listitem][food_cost], food_data[listitem][food_hp]);
-	Dialog_Message(playerid, "FASTFOOD_DIALOG_BUY_HEADER", string, "FASTFOOD_DIALOG_BUTTON_OK", MDIALOG_NOTVAR_INFO);
+	Dialog_Message(playerid,
+	               "FASTFOOD_DIALOG_BUY_HEADER",
+	               "FASTFOOD_DIALOG_INFORMATION_TEXT",
+	               "FASTFOOD_DIALOG_BUTTON_OK",
+	               MDIALOG_NOTVAR_NONE,
+	               food_data[listitem][food_name],
+	               food_data[listitem][food_cost],
+	               food_data[listitem][food_hp]);
 	return 1;
 }
 

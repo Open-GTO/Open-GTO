@@ -130,7 +130,7 @@ forward OnPlayerConnect(playerid);
  * Public functions
  */
 
-stock Message_Alert(playerid, header[], content[], time = 4000, hcolor = -5963521)
+stock Message_Alert(playerid, header[] = "", content[], time = 4000, hcolor = -5963521)
 {
 	new id = GetFreeSlot(playerid);
 	if (id == -1) {

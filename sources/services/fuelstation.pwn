@@ -99,7 +99,7 @@ Fuelstation_OnPlayerStateChange(playerid, newstate, oldstate)
 	}
 
 	if (gPlayerStationID[playerid] != INVALID_FUELSTATION_ID) {
-		Message_Alert(playerid, "", _(playerid, VEHICLE_FUEL_ENTER_AREA_ALERT), 2000);
+		Message_Alert(playerid, "", "VEHICLE_FUEL_ENTER_AREA_ALERT", 2000);
 	}
 
 	return 1;
@@ -123,7 +123,7 @@ Fuelstation_OnPlayerEnterDyArea(playerid, STREAMER_TAG_AREA areaid)
 	gPlayerStationID[playerid] = stid;
 
 	if (IsPlayerInAnyVehicle(playerid)) {
-		Message_Alert(playerid, "", _(playerid, VEHICLE_FUEL_ENTER_AREA_ALERT), 2000);
+		Message_Alert(playerid, "", "VEHICLE_FUEL_ENTER_AREA_ALERT", 2000);
 	}
 
 	return 1;
@@ -188,7 +188,7 @@ Fuelstation_OnPlayerKeyStateCh(playerid, newkeys, oldkeys)
 
 	FillVehicle(vehicleid, playerid);
 	Lang_SendText(playerid, "VEHICLE_FUEL_IS_FUELING");
-	Message_Alert(playerid, "", _(playerid, VEHICLE_FUEL_IS_FUELING_ALERT), 2000);
+	Message_Alert(playerid, "", "VEHICLE_FUEL_IS_FUELING_ALERT", 2000);
 	return 1;
 }
 
@@ -198,10 +198,7 @@ stock Fuelstation_OnVehicleFilled(vehicleid, playerid, money)
 	new string[MAX_LANG_VALUE_STRING];
 
 	Lang_SendText(playerid, "VEHICLE_FUEL_AFTER_FUEL", money);
-
-	format(string, sizeof(string), _(playerid, VEHICLE_FUEL_AFTER_FUEL_ALERT), money);
-	Message_Alert(playerid, "", string);
-
+	Message_Alert(playerid, "", "VEHICLE_FUEL_AFTER_FUEL_ALERT", _, _, money);
 	return 1;
 }
 

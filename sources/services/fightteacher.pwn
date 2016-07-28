@@ -41,7 +41,7 @@ Fight_OnGameModeInit()
 Fight_OnPlayerEnterCheckpoint(playerid, cp)
 {
 	new
-		string[MAX_LANG_VALUE_STRING],
+		teachername[MAX_LANG_VALUE_STRING],
 		caption[MAX_LANG_VALUE_STRING],
 		teacherid = GetFightTeacherIdByCheckpoint(cp);
 
@@ -51,18 +51,26 @@ Fight_OnPlayerEnterCheckpoint(playerid, cp)
 
 	SetPlayerFightTeacherID(playerid, teacherid);
 
-	GetFightTeacherName(teacherid, Lang_GetPlayerLangType(playerid), string);
-	format(caption, sizeof(caption), _(playerid, FIGHT_TEACHER_DIALOG_TEACHER_CAPTION), string);
+	GetFightTeacherName(teacherid, Lang_GetPlayerLang(playerid), teachername);
+	Lang_GetPlayerText(playerid, "FIGHT_TEACHER_DIALOG_TEACHER_CAPTION", caption, _, teachername);
 
 	if (IsPlayerFightStyleLearned(playerid, teacherid)) {
-		format(string, sizeof(string), _(playerid, FIGHT_TEACHER_LEARNED), string);
-		Dialog_Message(playerid, caption, string, _(playerid, FIGHT_TEACHER_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid,
+		               caption,
+		               "FIGHT_TEACHER_LEARNED",
+		               "FIGHT_TEACHER_DIALOG_BUTTON_OK",
+		               MDIALOG_NOTVAR_CAPTION
+		               teachername);
 		return 1;
 	}
 
 	if (GetFightTeacherLevel(teacherid) > GetPlayerLevel(playerid)) {
-		format(string, sizeof(string), _(playerid, FIGHT_TEACHER_LOW_LEVEL), GetFightTeacherLevel(teacherid));
-		Dialog_Message(playerid, caption, string, _(playerid, FIGHT_TEACHER_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid,
+		               caption,
+		               "FIGHT_TEACHER_LOW_LEVEL",
+		               "FIGHT_TEACHER_DIALOG_BUTTON_OK",
+		               MDIALOG_NOTVAR_CAPTION,
+		               GetFightTeacherLevel(teacherid));
 		return 1;
 	}
 
@@ -73,15 +81,19 @@ Fight_OnPlayerEnterCheckpoint(playerid, cp)
 DialogCreate:ServiceFights(playerid)
 {
 	new
-		string[MAX_LANG_VALUE_STRING],
+		teachername[MAX_LANG_VALUE_STRING],
 		caption[MAX_LANG_VALUE_STRING],
 		teacherid = GetPlayerFightTeacherID(playerid);
 
-	GetFightTeacherName(teacherid, Lang_GetPlayerLangType(playerid), string);
-	format(caption, sizeof(caption), _(playerid, FIGHT_TEACHER_DIALOG_TEACHER_CAPTION), string);
-	format(string, sizeof(string), _(playerid, FIGHT_TEACHER_LEARN_MESSAGE), string, GetFightTeacherCost(teacherid));
+	GetFightTeacherName(teacherid, Lang_GetPlayerLang(playerid), teachername);
+	Lang_GetPlayerText(playerid, "FIGHT_TEACHER_DIALOG_TEACHER_CAPTION", caption, _, teachername);
 
-	Dialog_Open(playerid, Dialog:ServiceFights, DIALOG_STYLE_MSGBOX, caption, string, _(playerid, FIGHT_TEACHER_DIALOG_TEACHER_BUTTON1), _(playerid, FIGHT_TEACHER_DIALOG_TEACHER_BUTTON2));
+	Dialog_Open(playerid, Dialog:ServiceFights, DIALOG_STYLE_MSGBOX,
+	            caption,
+	            "FIGHT_TEACHER_LEARN_MESSAGE",
+	            "FIGHT_TEACHER_DIALOG_TEACHER_BUTTON1", "FIGHT_TEACHER_DIALOG_TEACHER_BUTTON2",
+	            MDIALOG_NOTVAR_CAPTION,
+	            teachername, GetFightTeacherCost(teacherid));
 }
 
 DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
@@ -91,18 +103,21 @@ DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
 		caption[MAX_LANG_VALUE_STRING],
 		teachername[MAX_LANG_VALUE_STRING],
 		teacherid = GetPlayerFightTeacherID(playerid),
 		cost = GetFightTeacherCost(teacherid);
 
-	GetFightTeacherName(teacherid, Lang_GetPlayerLangType(playerid), teachername);
-	format(caption, sizeof(caption), _(playerid, FIGHT_TEACHER_DIALOG_TEACHER_CAPTION), teachername);
+	GetFightTeacherName(teacherid, Lang_GetPlayerLang(playerid), teachername);
+	Lang_GetPlayerText(playerid, "FIGHT_TEACHER_DIALOG_TEACHER_CAPTION", caption, _, teachername);
 
 	if (GetPlayerMoney(playerid) < cost) {
-		format(string, sizeof(string), _(playerid, FIGHT_TEACHER_NO_MONEY), cost);
-		Dialog_Message(playerid, caption, string, _(playerid, FIGHT_TEACHER_DIALOG_BUTTON_OK));
+		Dialog_Message(playerid,
+		               caption,
+		               "FIGHT_TEACHER_NO_MONEY",
+		               "FIGHT_TEACHER_DIALOG_BUTTON_OK",
+		               MDIALOG_NOTVAR_CAPTION,
+		               cost);
 		return 0;
 	}
 
@@ -110,8 +125,12 @@ DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
 	SetPlayerFightStyleUsed(playerid, GetFightTeacherStyleID(teacherid));
 	GivePlayerMoney(playerid, -cost);
 
-	format(string, sizeof(string), _m(playerid, FIGHT_TEACHER_LEARNED_MESSAGE), teachername, cost);
-	Dialog_Message(playerid, caption, string, _(playerid, FIGHT_TEACHER_DIALOG_BUTTON_OK));
+	Dialog_Message(playerid,
+	               caption,
+	               "FIGHT_TEACHER_LEARNED_MESSAGE",
+	               "FIGHT_TEACHER_DIALOG_BUTTON_OK",
+	               MDIALOG_NOTVAR_CAPTION,
+	               teachername, cost);
 	return 1;
 }
 

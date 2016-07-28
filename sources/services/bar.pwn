@@ -153,17 +153,23 @@ public bar_Gulp(playerid)
 
 DialogCreate:ServiceBar(playerid)
 {
-	new string[MAX_STRING * (sizeof(drinks_data) + 1)];
-	string = _(playerid, BAR_DIALOG_LIST_HEADER);
+	new string[MAX_LANG_VALUE_STRING * (sizeof(drinks_data) + 1)];
+	Lang_GetPlayerText(playerid, "BAR_DIALOG_LIST_HEADER", string);
 
 	for (new i = 0; i < sizeof(drinks_data); i++) {
-		format(string, sizeof(string),
-			_(playerid, BAR_DIALOG_LIST_ITEM),
-			string, drinks_data[i][Name], drinks_data[i][Cost], drinks_data[i][Alcohol], drinks_data[i][Hp]
-		);
+		Lang_GetPlayerText(playerid, "BAR_DIALOG_LIST_ITEM", string, _,
+		                   string,
+		                   drinks_data[i][Name],
+		                   drinks_data[i][Cost],
+		                   drinks_data[i][Alcohol],
+		                   drinks_data[i][Hp]);
 	}
 
-	Dialog_Open(playerid, Dialog:ServiceBar, DIALOG_STYLE_TABLIST_HEADERS, _(playerid, BAR_DIALOG_HEADER), string, _(playerid, BAR_DIALOG_BUTTON_0), _(playerid, BAR_DIALOG_BUTTON_1));
+	Dialog_Open(playerid, Dialog:ServiceBar, DIALOG_STYLE_TABLIST_HEADERS,
+	            "BAR_DIALOG_HEADER",
+	            string,
+	            "BAR_DIALOG_BUTTON_0", "BAR_DIALOG_BUTTON_1",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
@@ -182,12 +188,15 @@ DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
 	SetPVarInt(playerid, "bar_Drinking", 1);
 	SetPVarInt(playerid, "bar_Alcohol_Id", listitem);
 
-	new string[MAX_STRING];
-	format(string, sizeof(string),
-		_(playerid, BAR_DIALOG_INFORMATION_TEXT),
-		drinks_data[listitem][Name], drinks_data[listitem][Cost], drinks_data[listitem][Alcohol], drinks_data[listitem][Hp]
-	);
-	Dialog_Message(playerid, "BAR_DIALOG_HEADER", string, "BAR_DIALOG_BUTTON_OK", MDIALOG_NOTVAR_INFO);
+	Dialog_Message(playerid,
+	               "BAR_DIALOG_HEADER",
+	               "BAR_DIALOG_INFORMATION_TEXT",
+	               "BAR_DIALOG_BUTTON_OK",
+	               MDIALOG_NOTVAR_NONE,
+	               drinks_data[listitem][Name],
+	               drinks_data[listitem][Cost],
+	               drinks_data[listitem][Alcohol],
+	               drinks_data[listitem][Hp]);
 	return 1;
 }
 

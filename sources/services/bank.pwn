@@ -151,18 +151,27 @@ DialogResponse:BankStart(playerid, response, listitem, inputtext[])
 
 DialogCreate:BankList(playerid)
 {
-	new string[MAX_LANG_VALUE_STRING * 3];
-	__(playerid, BANK_LIST_INFO, string);
+	new
+		temp[MAX_LANG_VALUE_STRING],
+		string[MAX_LANG_VALUE_STRING * 3];
+
+	Lang_GetPlayerText(playerid, "BANK_LIST_INFO", string);
 
 	if (GetPlayerGangID(playerid) != INVALID_GANG_ID) {
-		strcat(string, _(playerid, BANK_GANG_LIST_1), sizeof(string));
+		Lang_GetPlayerText(playerid, "BANK_GANG_LIST_1", temp);
+		strcat(string, temp);
 
 		if (GangMember_IsPlayerHaveRank(playerid, GangMemberPaymaster)) {
-			strcat(string, _(playerid, BANK_GANG_LIST_2), sizeof(string));
+			Lang_GetPlayerText(playerid, "BANK_GANG_LIST_2", temp);
+			strcat(string, temp);
 		}
 	}
 
-	Dialog_Open(playerid, Dialog:BankList, DIALOG_STYLE_LIST, "BANK_CAPTION", string, "BANK_BUTTON_OK", "BANK_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:BankList, DIALOG_STYLE_LIST,
+	            "BANK_CAPTION",
+	            string,
+	            "BANK_BUTTON_OK", "BANK_BUTTON_CANCEL",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:BankList(playerid, response, listitem, inputtext[])
@@ -235,14 +244,17 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 
 	new
 		amount_string[16],
-		string[MAX_LANG_VALUE_STRING];
+		bank_string[16];
 
 	InsertSpacesInInt(amount, amount_string);
-	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
+	InsertSpacesInInt(GetPlayerBankMoney(playerid), bank_string);
 
-	format(string, sizeof(string), _(playerid, BANK_WITHDRAW_INFO), amount_string, string);
-
-	Dialog_Message(playerid, "BANK_CAPTION", string, "BANK_BUTTON_OK", MDIALOG_NOTVAR_INFO);
+	Dialog_Message(playerid,
+	               "BANK_CAPTION",
+	               "BANK_WITHDRAW_INFO",
+	               "BANK_BUTTON_OK",
+	               MDIALOG_NOTVAR_NONE,
+	               amount_string, bank_string);
 
 	PlayerPlaySoundOnPlayer(playerid, 1084);
 	return 1;
@@ -294,15 +306,17 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 
 	new
 		amount_string[16],
-		string[MAX_LANG_VALUE_STRING];
+		string[MAX_LANG_VALUE_STRING],
+		temp[MAX_LANG_VALUE_STRING];
 
 	InsertSpacesInInt(amount, amount_string);
-	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
+	InsertSpacesInInt(GetPlayerBankMoney(playerid), temp);
 
-	format(string, sizeof(string), _(playerid, BANK_DEPOSIT_INFO), amount_string, string);
+	Lang_GetPlayerText(playerid, "BANK_DEPOSIT_INFO", string, _, amount_string, temp);
 
 	if (GetPlayerBankMoney(playerid) == gMaxBankMoney) {
-		strcat(string, _(playerid, BANK_MAX_MONEY_ERROR), sizeof(string));
+		Lang_GetPlayerText(playerid, "BANK_MAX_MONEY_ERROR", temp);
+		strcat(string, temp);
 	}
 
 	Dialog_Message(playerid, "BANK_CAPTION", string, "BANK_BUTTON_OK", MDIALOG_NOTVAR_INFO);
@@ -359,8 +373,8 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 	               MDIALOG_NOTVAR_INFO,
 	               amount_string, string);
 
-	format(string, sizeof(string), _(playerid, BANK_GANG_WITHDRAW_MESSAGE), ReturnPlayerName(playerid), playerid, amount_string);
-	Gang_SendMessage(gangid, string, COLOR_GANG);
+	Lang_GetPlayerText(playerid, "BANK_GANG_WITHDRAW_MESSAGE", string, _, ReturnPlayerName(playerid), playerid, amount_string);
+	Gang_SendMessage(gangid, string);
 	return 1;
 }
 
@@ -414,8 +428,8 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 	               MDIALOG_NOTVAR_INFO,
 	               amount_string, string);
 
-	format(string, sizeof(string), _(playerid, BANK_GANG_DEPOSIT_MESSAGE), ReturnPlayerName(playerid), playerid, amount_string);
-	Gang_SendMessage(gangid, string, COLOR_GANG);
+	Lang_GetPlayerText(playerid, "BANK_GANG_DEPOSIT_MESSAGE", string, _, ReturnPlayerName(playerid), playerid, amount_string);
+	Gang_SendMessage(gangid, string);
 	return 1;
 }
 
