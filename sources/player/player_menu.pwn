@@ -28,21 +28,9 @@ PMenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 DialogCreate:PlayerMenu(playerid)
 {
 	Dialog_Open(playerid, Dialog:PlayerMenu, DIALOG_STYLE_LIST,
-		"Меню игрока",
-		"Информация о персонаже\n\
-		Соревнования\n\
-		Банда\n\
-		Стиль борьбы\n\
-		Анимации\n\
-		Телепорты\n\
-		Выбросить оружие\n\
-		Место спавна\n\
-		Мои бизнесы\n\
-		Мой транспорт\n\
-		Администрация онлайн\n\
-		Настройки\n\
-		Версия",
-		"ОК", "Отмена"
+		"PLAYER_MENU_HEADER",
+		"PLAYER_MENU_LIST",
+		"BUTTON_OK", "BUTTON_CANCEL"
 	);
 }
 
@@ -55,11 +43,11 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 	switch (listitem) {
 		// информация о персонаже
 		case 0: {
-			new premium_status[MAX_NAME];
+			new premium_status[MAX_LANG_VALUE_STRING];
 			if (IsPlayerHavePremium(playerid)) {
-				format(premium_status, sizeof(premium_status), "до %s", ReturnPlayerPremiumDateString(playerid));
+				Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO_TO", premium_status, _, ReturnPlayerPremiumDateString(playerid));
 			} else {
-				strcpy(premium_status, "нет");
+				Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO_NO", premium_status);
 			}
 
 			new fstylename[MAX_STRING];
@@ -68,7 +56,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			new gangname[MAX_GANG_NAME];
 			GetPlayerGangName(playerid, gangname);
 			if (strlen(gangname) == 0) {
-				strcpy(gangname, "нет");
+				Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO_NO", gangname);
 			}
 
 			new played_time[MAX_LANG_VALUE_STRING];
@@ -79,30 +67,33 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			InsertSpacesInInt(GetPlayerBankMoney(playerid), bank_money_str);
 			InsertSpacesInInt(GetPlayerTotalMoney(playerid), total_money_str);
 
-			new string[MAX_LANG_MULTI_STRING];
-			__m(playerid, PLAYER_MENU_INFO, string);
+			new string[MAX_LANG_VALUE_STRING * 9];
+			Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO", string);
 
 			format(string, sizeof(string),
-				string,
+			       string,
 
-				GetPlayerLevel(playerid),
-				GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1),
-				timestamp_to_format_date( Account_GetRegistrationTime(playerid) ),
-				played_time,
+			       GetPlayerLevel(playerid),
+			       GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1),
+			       timestamp_to_format_date( Account_GetRegistrationTime(playerid) ),
+			       played_time,
 
-				gangname,
+			       gangname,
 
-				money_str, bank_money_str, total_money_str,
+			       money_str, bank_money_str, total_money_str,
 
-				GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid),
-				GetPlayerJailedCount(playerid),
-				GetPlayerMutedCount(playerid),
+			       GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid),
+			       GetPlayerJailedCount(playerid),
+			       GetPlayerMutedCount(playerid),
 
-				fstylename,
-				premium_status
-			);
+			       fstylename,
+			       premium_status);
 
-			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Информация о персонаже", string, "Назад", "Выход");
+			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
+			            "PLAYER_MENU_INFO_HEADER",
+			            string,
+			            "BUTTON_BACK", "BUTTON_EXIT",
+			            MDIALOG_NOTVAR_INFO);
 			return 1;
 		}
 		// competition
@@ -128,7 +119,10 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 		// телепорты
 		case 5: {
 			if (GetPVarInt(playerid, "teleports_Pause") == 1) {
-				Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Меню телепортов", "Вы недавно телепортировались, ждите...", "Назад", "Выход");
+				Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
+				            "PLAYER_MENU_TELEPORT_HEADER",
+				            "PLAYER_MENU_TELEPORT_NOT_YET",
+				            "BUTTON_BACK", "BUTTON_EXIT");
 				return 0;
 			}
 			Dialog_Show(playerid, Dialog:PlayerTeleportMenu);
@@ -137,7 +131,10 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 		// выбросить оружие
 		case 6: {
 			ResetPlayerWeapons(playerid);
-			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Выбросить оружие", "Вы добровольно избавились от всего оружия.", "Назад", "Выход");
+			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
+			            "PLAYER_MENU_DROPWEAPON_HEADER",
+			            "PLAYER_MENU_DROPWEAPON_DROPPED",
+			            "BUTTON_BACK", "BUTTON_EXIT");
 			return 1;
 		}
 		// место спавна
@@ -157,10 +154,12 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 		}
 		// администрация онлайн
 		case 10: {
-			new idsa = 0,
+			new
+				idsa = 0,
 				idsm = 0,
 				admins[(MAX_PLAYER_NAME + 1 + 5) * 10],
-				moders[(MAX_PLAYER_NAME + 1 + 5) * 10];
+				moders[(MAX_PLAYER_NAME + 1 + 5) * 10],
+				string[sizeof(admins) + sizeof(moders) + 64];
 
 			foreach (new id : Player) {
 				if (IsPlayerHavePrivilege(id, PlayerPrivilegeAdmin)) {
@@ -172,20 +171,27 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 				}
 			}
 
-			new string[(MAX_PLAYER_NAME + 1 + 5) * 20 + 64];
 			if (idsa == 0 && idsm == 0) {
-				format(string, sizeof(string), _(playerid, NO_ADMINS));
+				Lang_GetPlayerText(playerid, "PLAYER_MENU_ADMINS_NO", string);
 			} else {
 				if (idsa != 0) {
-					format(string, sizeof(string), "Администрация:\n%s\n", admins);
+					Lang_GetPlayerText(playerid, "PLAYER_MENU_ADMINS_ADMIN_LIST", string, _, admins);
+				}
+
+				if (idsa != 0 && idsm != 0) {
+					strcat(string, "\n");
 				}
 
 				if (idsm != 0) {
-					format(string, sizeof(string), "%s\nМодерация:\n%s\n", string, moders);
+					Lang_GetPlayerText(playerid, "PLAYER_MENU_ADMINS_MODER_LIST", string, _, string, moders);
 				}
 			}
 
-			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, "Администрация онлайн", string, "Назад", "Выход");
+			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
+			            "PLAYER_MENU_ADMINS_HEADER",
+			            string,
+			            "BUTTON_BACK", "BUTTON_EXIT",
+			            MDIALOG_NOTVAR_INFO);
 			return 1;
 		}
 		// настройки
@@ -196,34 +202,9 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 		// версия
 		case 12: {
 			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
-				"Информация о версии",
-				"{AFE7FF}На сервере запущен:\n\
-				\n\
-				\t{FFFFFF}Open - Grand Theft Online {AA3333}"VERSION_STRING"{FFFFFF}.\n\
-				\n\
-				\n\
-				{00C0DD}Создал {AFE7FF}Iain Gilbert\n\
-				\n\
-				{00C0DD}Продолжили:{AFE7FF}\n\
-							\tPeter Steenbergen\n\
-							\tRobin Kikkert\n\
-							\tAsturel\n\
-							\tDmitry Frolov (FP)\n\
-							\tOpen-GTO Team:\n\
-							\t\tТекущие: ziggi\n\
-							\t\tПредыдущие: GhostTT, heufix, Elbi\n\
-				\n\
-				{00C0DD}Благодарность: {AFE7FF}\n\
-							\tMX_Master - mxINI, Chat-Guard.\n\
-							\tY_Less - foreach, fixes, sscanf2.\n\
-							\tZeeX - zcmd, crashdetect, Pawn Compiler.\n\
-							\tIncognito - Streamer.\n\
-							\tD0erfler - mSelection.\n\
-							\tNexius - MapFix.\n\
-				\n\
-				",
-				"Назад", "Выход"
-			);
+			            "PLAYER_MENU_VERSION_HEADER",
+			            "PLAYER_MENU_VERSION_INFO",
+			            "BUTTON_BACK", "BUTTON_EXIT");
 			return 1;
 		}
 	}

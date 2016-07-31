@@ -215,8 +215,9 @@ static stock Fuelstation_DestroyPlayerLabel(playerid, id)
 
 static stock Fuelstation_CreatePlayerLabel(playerid, id)
 {
-	new langid = Lang_GetPlayerLanguage(playerid);
-	gLabelID[id][playerid] = CreateDynamic3DTextLabel(_l(langid, FUEL_STATION_3DTEXT), 0xFFFFFFFF,
+	new string[MAX_LANG_VALUE_STRING];
+	Lang_GetPlayerText(playerid, "FUEL_STATION_3DTEXT", string);
+	gLabelID[id][playerid] = CreateDynamic3DTextLabel(string, 0xFFFFFFFF,
 		gFuelstation[id][e_fsPosX], gFuelstation[id][e_fsPosY], gFuelstation[id][e_fsPosZ], 20.0,
 		.testlos = 1, .playerid = playerid);
 }

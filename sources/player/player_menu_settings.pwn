@@ -14,12 +14,12 @@
 
 DialogCreate:PlayerSettingsMenu(playerid)
 {
-	static
-		string[MAX_LANG_MULTI_STRING];
-
-	format(string, sizeof(string), _m(playerid, PLAYER_MENU_SETTINGS_INFO), CHANGE_NICK_COST, CHANGE_PASS_COST);
-
-	Dialog_Open(playerid, Dialog:PlayerSettingsMenu, DIALOG_STYLE_TABLIST_HEADERS, "PLAYER_MENU_SETTINGS_CAPTION", string, "PLAYER_MENU_SETTINGS_BUTTON_SELECT", "PLAYER_MENU_SETTINGS_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:PlayerSettingsMenu, DIALOG_STYLE_TABLIST_HEADERS,
+	            "PLAYER_MENU_SETTINGS_CAPTION",
+	            "PLAYER_MENU_SETTINGS_INFO",
+	            "PLAYER_MENU_SETTINGS_BUTTON_SELECT", "PLAYER_MENU_SETTINGS_BUTTON_BACK",
+	            MDIALOG_NOTVAR_NONE,
+	            CHANGE_NICK_COST, CHANGE_PASS_COST);
 }
 
 DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
@@ -355,7 +355,8 @@ DialogResponse:SettingsLanguageMenu(playerid, response, listitem, inputtext[])
 
 	foreach (new Lang:lang : LangIterator) {
 		if (i == listitem) {
-			Account_SetLanguageByType(playerid, lang);
+			Account_SetLang(playerid, lang);
+			break;
 		}
 
 		i++;

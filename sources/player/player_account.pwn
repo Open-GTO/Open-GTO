@@ -1,8 +1,7 @@
 /*
 
 	About: player account login system
-	Author:	Iain Gilbert
-	Modified by GhostTT, ziggi
+	Author:	ziggi
 
 */
 
@@ -117,7 +116,9 @@ stock Account_Login(playerid, password[])
 
 		if (IsLoginAttemptsEnded(playerid)) {
 			Lang_SendText(playerid, "ACCOUNT_AUTO_KICK");
-			KickPlayer(playerid, _(playerid, ACCOUNT_INCORRECT_PASSWORD));
+			new reason[MAX_LANG_VALUE_STRING];
+			Lang_GetPlayerText(playerid, "ACCOUNT_INCORRECT_PASSWORD", reason);
+			KickPlayer(playerid, reason);
 		} else {
 			Dialog_Show(playerid, Dialog:AccountLogin);
 		}
@@ -134,7 +135,6 @@ stock Account_Login(playerid, password[])
 
 	// login player
 	Player_Login(playerid);
-
 	return 1;
 }
 
@@ -218,14 +218,17 @@ stock Account_LoadData(account_name[], result[e_Account_Info])
 DialogCreate:AccountRegister(playerid)
 {
 	new
-		caption[MAX_STRING],
+		caption[MAX_LANG_VALUE_STRING],
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
+	Lang_GetPlayerText(playerid, "ACCOUNT_DIALOG_REGISTER_HEAD", caption, _, playername);
 
-	format(caption, sizeof(caption), _(playerid, ACCOUNT_DIALOG_REGISTER_HEAD), playername);
-
-	Dialog_Open(playerid, Dialog:AccountRegister, DIALOG_STYLE_INPUT, caption, _(playerid, ACCOUNT_DIALOG_REGISTER), _(playerid, ACCOUNT_DIALOG_REGISTER_BUTTON), "");
+	Dialog_Open(playerid, Dialog:AccountRegister, DIALOG_STYLE_INPUT,
+	            caption,
+	            "ACCOUNT_DIALOG_REGISTER",
+	            "ACCOUNT_DIALOG_REGISTER_BUTTON", "",
+	            MDIALOG_NOTVAR_CAPTION);
 }
 
 DialogResponse:AccountRegister(playerid, response, listitem, inputtext[])
@@ -242,16 +245,18 @@ DialogResponse:AccountRegister(playerid, response, listitem, inputtext[])
 DialogCreate:AccountLogin(playerid)
 {
 	new
-		string[MAX_STRING + MAX_PLAYER_NAME + 1],
-		caption[MAX_STRING],
+		caption[MAX_LANG_VALUE_STRING],
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
+	Lang_GetPlayerText(playerid, "ACCOUNT_DIALOG_LOGIN_HEAD", caption, _, playername);
 
-	format(string, sizeof(string), _(playerid, ACCOUNT_DIALOG_LOGIN), GetLoginAttemptCount(playerid));
-	format(caption, sizeof(caption), _(playerid, ACCOUNT_DIALOG_LOGIN_HEAD), playername);
-
-	Dialog_Open(playerid, Dialog:AccountLogin, DIALOG_STYLE_PASSWORD, caption, string, _(playerid, ACCOUNT_DIALOG_LOGIN_BUTTON), "");
+	Dialog_Open(playerid, Dialog:AccountLogin, DIALOG_STYLE_PASSWORD,
+	            caption,
+	            "ACCOUNT_DIALOG_LOGIN",
+	            "ACCOUNT_DIALOG_LOGIN_BUTTON", "",
+	            MDIALOG_NOTVAR_CAPTION,
+	            GetLoginAttemptCount(playerid));
 }
 
 DialogResponse:AccountLogin(playerid, response, listitem, inputtext[])
@@ -267,13 +272,13 @@ DialogResponse:AccountLogin(playerid, response, listitem, inputtext[])
 DialogCreate:AccountInformation(playerid)
 {
 	new caption[MAX_LANG_VALUE_STRING];
-	format(caption, sizeof(caption), _(playerid, ACCOUNT_DIALOG_INFORMATION_CAPTION), VERSION_STRING, VERSION_NAME);
+	Lang_GetPlayerText(playerid, "ACCOUNT_DIALOG_INFORMATION_CAPTION", caption, _, VERSION_STRING, VERSION_NAME);
 
 	Dialog_Open(playerid, Dialog:AccountInformation, DIALOG_STYLE_MSGBOX,
-		caption,
-		_m(playerid, ACCOUNT_DIALOG_INFORMATION_TEXT),
-		_(playerid, ACCOUNT_DIALOG_INFORMATION_BUTTON), ""
-	);
+	            caption,
+	            "ACCOUNT_DIALOG_INFORMATION_TEXT",
+	            "ACCOUNT_DIALOG_INFORMATION_BUTTON", "",
+	            MDIALOG_NOTVAR_CAPTION);
 }
 
 DialogResponse:AccountInformation(playerid, response, listitem, inputtext[])
@@ -285,18 +290,19 @@ DialogCreate:AccountLanguage(playerid)
 {
 	new
 		lang_name[MAX_LANG_NAME],
-		string[MAX_LANG_VALUE_STRING * sizeof(gLangSize)];
+		string[MAX_LANG_VALUE_STRING * LANGS_COUNT];
 
 	foreach (new Lang:lang : LangIterator) {
-		Lang_GetTypeName(lang, lang_name);
-		format(string, sizeof(string), "%s%c%s\n", string, toupper(lang_name[0]), lang_name[1]);
+		Lang_GetName(lang, lang_name);
+		strcat(string, lang_name);
+		strcat(string, "\n");
 	}
 
 	Dialog_Open(playerid, Dialog:AccountLanguage, DIALOG_STYLE_LIST,
-		"Language",
-		string,
-		"OK", ""
-	);
+	            "Language",
+	            string,
+	            "OK", "",
+	            MDIALOG_NOTVAR_ALL);
 }
 
 DialogResponse:AccountLanguage(playerid, response, listitem, inputtext[])
@@ -306,7 +312,7 @@ DialogResponse:AccountLanguage(playerid, response, listitem, inputtext[])
 
 	foreach (new Lang:lang : LangIterator) {
 		if (i == listitem) {
-			Account_SetLanguageByType(playerid, lang);
+			Account_SetLang(playerid, lang);
 		}
 
 		i++;
@@ -478,34 +484,12 @@ stock Account_LoadLanguage(playerid, playername[] = "", const size = sizeof(play
 	ini_getString(file_account, "Language", language);
 	ini_closeFile(file_account);
 
-	Account_SetLanguage(playerid, language);
+	Account_SetLang(playerid, Lang_Get(.name = language));
 	return 1;
 }
 
-stock Account_SetLanguage(playerid, language[])
+stock Account_SetLang(playerid, Lang:lang)
 {
-	Lang_SetPlayerLanguage(playerid, Lang_GetIDFromName(language));
-	strcpy(gAccount[playerid][e_aLanguage], language, MAX_LANG_NAME);
-}
-
-stock Account_SetLanguageByType(playerid, Lang:lang)
-{
-	Lang_SetPlayerLanguage(playerid, Lang_GetID(lang));
-	Lang_GetTypeName(lang, gAccount[playerid][e_aLanguage], MAX_LANG_NAME);
-}
-
-stock Account_SetLanguageByID(playerid, langid)
-{
-	Lang_SetPlayerLanguage(playerid, langid);
-	Lang_GetTypeName(Lang_GetType(langid), gAccount[playerid][e_aLanguage], MAX_LANG_NAME);
-}
-
-stock Account_GetLanguageName(playerid, language[], const size = sizeof(language))
-{
-	return strcpy(language, gAccount[playerid][e_aLanguage], size);
-}
-
-stock Account_GetLanguageID(playerid)
-{
-	return Lang_GetPlayerLanguage(playerid);
+	Lang_SetPlayerLang(playerid, lang);
+	Lang_GetName(lang, gAccount[playerid][e_aLanguage], MAX_LANG_NAME);
 }

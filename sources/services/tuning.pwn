@@ -238,12 +238,14 @@ TextListCreate:tuning_menu(playerid)
 	new list_offset;
 
 	// add color
-	format(items[list_offset++], TEXTLIST_MAX_ITEM_NAME, _(playerid, TUNING_TD_COLOR), GetModCost(CARMODTYPE_COLOR));
+	Lang_GetPlayerText(playerid, "TUNING_TD_COLOR", items[list_offset], TEXTLIST_MAX_ITEM_NAME, GetModCost(CARMODTYPE_COLOR));
+	list_offset++;
 
 	// add paintjob
 	new paintjob = GetVehicleModelPaintjobLevel(gInfo[playerid][e_tModel]);
 	if (paintjob != 0) {
-		format(items[list_offset++], TEXTLIST_MAX_ITEM_NAME, _(playerid, TUNING_TD_PAINTJOB), GetModCost(CARMODTYPE_PAINTJOB));
+		Lang_GetPlayerText(playerid, "TUNING_TD_PAINTJOB", items[list_offset], TEXTLIST_MAX_ITEM_NAME, GetModCost(CARMODTYPE_PAINTJOB));
+		list_offset++;
 	}
 
 	// add component types
@@ -269,7 +271,9 @@ TextListCreate:tuning_menu(playerid)
 				}
 			}
 
-			format(items[list_offset + item_index], TEXTLIST_MAX_ITEM_NAME, _(playerid, TUNING_TD_TYPE_FORMAT), type_name, GetModCost(compatible_types[i]));
+			Lang_GetPlayerText(playerid, "TUNING_TD_TYPE_FORMAT",
+			                   items[list_offset + item_index], TEXTLIST_MAX_ITEM_NAME,
+			                   type_name, GetModCost(compatible_types[i]));
 			item_index++;
 		}
 	}
@@ -277,7 +281,14 @@ TextListCreate:tuning_menu(playerid)
 	//
 	gInfo[playerid][e_tListOffset] = list_offset;
 
-	TextList_Open(playerid, TextList:tuning_menu, items, list_offset + item_index, _(playerid, TUNING_TD_HEADER), _(playerid, TUNING_TD_BUTTON_EXIT));
+	new
+		header[TEXTLIST_MAX_ITEM_NAME],
+		button_exit[TEXTLIST_MAX_BUTTON_NAME];
+
+	Lang_GetPlayerText(playerid, "TUNING_TD_HEADER", header);
+	Lang_GetPlayerText(playerid, "TUNING_TD_BUTTON_EXIT", button_exit);
+
+	TextList_Open(playerid, TextList:tuning_menu, items, list_offset + item_index, header, button_exit);
 }
 
 TextListResponse:tuning_menu(playerid, TextListType:response, itemid, itemvalue[])
@@ -372,8 +383,15 @@ TextListCreate:component_list(playerid)
 		}
 	}
 
+	new
+		button_buy[TEXTLIST_MAX_BUTTON_NAME],
+		button_back[TEXTLIST_MAX_BUTTON_NAME];
+
+	Lang_GetPlayerText(playerid, "TUNING_TD_BUTTON_BUY", button_buy);
+	Lang_GetPlayerText(playerid, "TUNING_TD_BUTTON_BACK", button_back);
+
 	TextList_Open(playerid, TextList:component_list, items, item_index,
-	              header, _(playerid, TUNING_TD_BUTTON_BUY), _(playerid, TUNING_TD_BUTTON_BACK),
+	              header, button_buy, button_back,
 	              .lists_fg_color = items_colors);
 	return 1;
 }
@@ -414,13 +432,17 @@ TextListResponse:component_list(playerid, TextListType:response, itemid, itemval
 
 TextListCreate:color_menu(playerid)
 {
-	new items[2][TEXTLIST_MAX_ITEM_NAME];
+	new
+		items[2][TEXTLIST_MAX_ITEM_NAME],
+		header[TEXTLIST_MAX_BUTTON_NAME],
+		button[TEXTLIST_MAX_BUTTON_NAME];
 
-	strcat(items[0], _(playerid, TUNING_TD_COLOR_COLOR1));
-	strcat(items[1], _(playerid, TUNING_TD_COLOR_COLOR2));
+	Lang_GetPlayerText(playerid, "TUNING_TD_COLOR_COLOR1", items[0], TEXTLIST_MAX_ITEM_NAME);
+	Lang_GetPlayerText(playerid, "TUNING_TD_COLOR_COLOR2", items[1], TEXTLIST_MAX_ITEM_NAME);
+	Lang_GetPlayerText(playerid, "TUNING_TD_COLOR_HEADER", header);
+	Lang_GetPlayerText(playerid, "TUNING_TD_BUTTON_BACK", button);
 
-	TextList_Open(playerid, TextList:color_menu, items, 2,
-	              _(playerid, TUNING_TD_COLOR_HEADER), _(playerid, TUNING_TD_BUTTON_BACK));
+	TextList_Open(playerid, TextList:color_menu, items, 2, header, button);
 	return 1;
 }
 
@@ -467,11 +489,19 @@ TextListCreate:color_select(playerid)
 		}
 	}
 
-	new header[16];
-	format(header, sizeof(header), "%s %d", _(playerid, TUNING_TD_COLOR_HEADER), gInfo[playerid][e_tColorType] + 1);
+	new
+		header[TEXTLIST_MAX_ITEM_NAME],
+		button_back[TEXTLIST_MAX_BUTTON_NAME],
+		button_buy[TEXTLIST_MAX_BUTTON_NAME];
+
+	Lang_GetPlayerText(playerid, "TUNING_TD_COLOR_HEADER", header);
+	format(header, sizeof(header), "%s %d", header, gInfo[playerid][e_tColorType] + 1);
+
+	Lang_GetPlayerText(playerid, "TUNING_TD_BUTTON_BUY", button_buy);
+	Lang_GetPlayerText(playerid, "TUNING_TD_BUTTON_BACK", button_back);
 
 	TextList_Open(playerid, TextList:color_select, items, item_index,
-	              header, _(playerid, TUNING_TD_BUTTON_BUY), _(playerid, TUNING_TD_BUTTON_BACK),
+	              header, button_buy, button_back,
 	              .lists_fg_color = items_fg_colors,
 	              .lists_bg_color = items_bg_colors);
 }
@@ -520,14 +550,22 @@ TextListCreate:paintjob_select(playerid)
 {
 	new
 		paintjob_level = GetVehicleModelPaintjobLevel(gInfo[playerid][e_tModel]),
-		items[MAX_PAINTJOB_LEVEL][TEXTLIST_MAX_ITEM_NAME];
+		items[MAX_PAINTJOB_LEVEL][TEXTLIST_MAX_ITEM_NAME],
+		temp[MAX_LANG_VALUE_STRING],
+		button_buy[TEXTLIST_MAX_BUTTON_NAME],
+		button_back[TEXTLIST_MAX_BUTTON_NAME];
+
+	Lang_GetPlayerText(playerid, "TUNING_TD_PAINTJOB_TEXT", temp);
 
 	for (new i = 0; i < paintjob_level; i++) {
-		format(items[i], TEXTLIST_MAX_ITEM_NAME, "%s %d", _(playerid, TUNING_TD_PAINTJOB_TEXT), i + 1);
+		format(items[i], TEXTLIST_MAX_ITEM_NAME, "%s %d", temp, i + 1);
 	}
 
-	TextList_Open(playerid, TextList:paintjob_select, items, paintjob_level,
-	              _(playerid, TUNING_TD_PAINTJOB_HEADER), _(playerid, TUNING_TD_BUTTON_BUY), _(playerid, TUNING_TD_BUTTON_BACK));
+	Lang_GetPlayerText(playerid, "TUNING_TD_PAINTJOB_HEADER", temp);
+	Lang_GetPlayerText(playerid, "TUNING_TD_BUTTON_BUY", button_buy);
+	Lang_GetPlayerText(playerid, "TUNING_TD_BUTTON_BACK", button_back);
+
+	TextList_Open(playerid, TextList:paintjob_select, items, paintjob_level, temp, button_buy, button_back);
 }
 
 TextListResponse:paintjob_select(playerid, TextListType:response, itemid, itemvalue[])

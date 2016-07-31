@@ -21,6 +21,9 @@ static
 new
 	Iterator:LangIterator<sizeof(gLang)>;
 
+const
+	LANGS_COUNT = sizeof(gLang);
+
 /*
 	Forwards
 */

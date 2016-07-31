@@ -83,7 +83,7 @@ DialogCreate:PlayerClick(playerid)
 		Lang:lang,
 		listitems[MAX_CLICK_DIALOG_CAPTION_SIZE * sizeof(gClickArray)];
 
-	lang = Lang_GetPlayerLangType(playerid);
+	lang = Lang_GetPlayerLang(playerid);
 
 	for (new i = 0; i < sizeof(gClickArray); i++) {
 		if (IsPlayerHavePrivilege(playerid, gClickArray[i][cda_privilege])) {
@@ -119,14 +119,13 @@ DialogCreate:PlayerClickResponse(playerid)
 		Lang:lang;
 
 	dialogid = Click_GetResponseID(playerid);
-	lang = Lang_GetPlayerLangType(playerid);
+	lang = Lang_GetPlayerLang(playerid);
 
 	Dialog_Open(playerid, Dialog:PlayerClickResponse, gClickArray[dialogid][cda_style],
-		gClickTextArray[dialogid][lang][cda_caption],
-		gClickTextArray[dialogid][lang][cda_info],
-		gClickTextArray[dialogid][lang][cda_button1],
-		gClickTextArray[dialogid][lang][cda_button2]
-	);
+	            gClickTextArray[dialogid][lang][cda_caption],
+	            gClickTextArray[dialogid][lang][cda_info],
+	            gClickTextArray[dialogid][lang][cda_button1],
+	            gClickTextArray[dialogid][lang][cda_button2]);
 }
 
 DialogResponse:PlayerClickResponse(playerid, response, listitem, inputtext[])
@@ -160,16 +159,11 @@ stock Click_AddItem(style, var_caption[], var_info[], var_button1[], var_button2
 
 	gClickArray[id][cda_style] = style;
 
-	new
-		langid;
-
 	foreach (new Lang:lang : LangIterator) {
-		langid = Lang_GetID(lang);
-
-		Lang_GetText(langid, var_caption, gClickTextArray[id][lang][cda_caption], MAX_CLICK_DIALOG_CAPTION_SIZE);
-		Lang_GetText(langid, var_info, gClickTextArray[id][lang][cda_info], MAX_CLICK_DIALOG_INFO_SIZE);
-		Lang_GetText(langid, var_button1, gClickTextArray[id][lang][cda_button1], MAX_CLICK_DIALOG_BUTTON_SIZE);
-		Lang_GetText(langid, var_button2, gClickTextArray[id][lang][cda_button2], MAX_CLICK_DIALOG_BUTTON_SIZE);
+		Lang_GetText(lang, var_caption, gClickTextArray[id][lang][cda_caption], MAX_CLICK_DIALOG_CAPTION_SIZE);
+		Lang_GetText(lang, var_info, gClickTextArray[id][lang][cda_info], MAX_CLICK_DIALOG_INFO_SIZE);
+		Lang_GetText(lang, var_button1, gClickTextArray[id][lang][cda_button1], MAX_CLICK_DIALOG_BUTTON_SIZE);
+		Lang_GetText(lang, var_button2, gClickTextArray[id][lang][cda_button2], MAX_CLICK_DIALOG_BUTTON_SIZE);
 	}
 
 	gClickArray[id][cda_privilege] = privilege;

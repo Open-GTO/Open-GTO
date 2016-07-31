@@ -317,11 +317,12 @@ static stock VehShop_UpdateLabelString(pos_id)
 	InsertSpacesInInt(GetVehicleModelCost(model), cost_str);
 
 	new
-		langid;
+		langid,
+		string[MAX_LANG_VALUE_STRING];
 
 	foreach (new Lang:lang : LangIterator) {
-		langid = Lang_GetID(lang);
-		format(gLabelString[pos_id][lang], sizeof(gLabelString[][]), _l(langid, VEHSHOP_3DTEXT), vehicle_name, cost_str);
+		Lang_GetText(lang, "VEHSHOP_3DTEXT", string);
+		format(gLabelString[pos_id][lang], sizeof(gLabelString[][]), string, vehicle_name, cost_str);
 	}
 }
 
@@ -333,7 +334,7 @@ static stock VehShop_DestroyPlayerLabel(playerid, pos_id)
 
 static stock VehShop_CreatePlayerLabel(playerid, pos_id)
 {
-	new Lang:lang = Lang_GetPlayerLangType(playerid);
+	new Lang:lang = Lang_GetPlayerLang(playerid);
 	gLabelID[pos_id][playerid] = CreateDynamic3DTextLabel(gLabelString[pos_id][lang], COLOR_WHITE,
 		gPositions[pos_id][e_vsPosX], gPositions[pos_id][e_vsPosY], gPositions[pos_id][e_vsPosZ], 20.0,
 		.attachedvehicle = gPositions[pos_id][e_vsID], .testlos = 1, .playerid = playerid);

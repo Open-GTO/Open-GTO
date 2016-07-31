@@ -612,8 +612,9 @@ static stock DestroyPlayerLinerunnerLabel(playerid, id)
 
 static stock CreatePlayerLinerunnerLabel(playerid, id)
 {
-	new langid = Lang_GetPlayerLanguage(playerid);
-	gLinerunnerLabelID[id][playerid] = CreateDynamic3DTextLabel(_l(langid, TRUCKER_3D_TEXT), 0x1CE89BAA,
+	new string[MAX_LANG_VALUE_STRING];
+	Lang_GetPlayerText(playerid, "TRUCKER_3D_TEXT", string);
+	gLinerunnerLabelID[id][playerid] = CreateDynamic3DTextLabel(string, 0x1CE89BAA,
 		0.0, 0.0, 0.0, 20.0,
 		.attachedvehicle = gLinerunner[id][e_tID], .testlos = 1, .playerid = playerid);
 }
@@ -626,8 +627,9 @@ static stock DestroyPlayerTrailerLabel(playerid, id)
 
 static stock CreatePlayerTrailerLabel(playerid, id)
 {
-	new langid = Lang_GetPlayerLanguage(playerid);
-	gTrailerLabelID[id][playerid] = CreateDynamic3DTextLabel(_l(langid, TRUCKER_3D_TEXT), 0x1CE89BAA,
+	new string[MAX_LANG_VALUE_STRING];
+	Lang_GetPlayerText(playerid, "TRUCKER_3D_TEXT", string);
+	gTrailerLabelID[id][playerid] = CreateDynamic3DTextLabel(string, 0x1CE89BAA,
 		0.0, 0.0, 0.0, 20.0,
 		.attachedvehicle = gTrailer[id][e_tID], .testlos = 1, .playerid = playerid);
 }

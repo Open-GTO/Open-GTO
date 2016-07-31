@@ -79,7 +79,7 @@ stock SendClientMessageToModers(senderid, text[])
 	return 0;
 }
 
-stock Admin_SendProtectReport(issuerid, var[], {Float, _}:...)
+stock Admin_SendProtectReport(issuerid, var[], va_args<>)
 {
 	static
 		text[MAX_LANG_VALUE_STRING],
@@ -88,6 +88,10 @@ stock Admin_SendProtectReport(issuerid, var[], {Float, _}:...)
 
 	GetPlayerName(issuerid, playername, sizeof(playername));
 	success = Lang_GetText(Lang_GetDefaultLang(), var, text);
+	if (!success) {
+		return 0;
+	}
+
 	va_format(text, sizeof(text), text, va_start<2>);
 
 	foreach (new adminid : Player) {
@@ -95,8 +99,9 @@ stock Admin_SendProtectReport(issuerid, var[], {Float, _}:...)
 			continue;
 		}
 
-		Lang_SendText(adminid, "ADMIN_PROTECTION_REPORT", playername, issuerid, fstring);
+		Lang_SendText(adminid, "ADMIN_PROTECTION_REPORT", playername, issuerid, text);
 	}
 
-	Log_Player("ADMIN_PROTECTION_REPORT", playername, issuerid, fstring);
+	Log_Player("ADMIN_PROTECTION_REPORT", playername, issuerid, text);
+	return 1;
 }

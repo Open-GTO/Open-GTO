@@ -77,7 +77,9 @@ pt_idle_PlayerTimer(playerid)
 			}
 			if (gIdleTime[playerid] > MaxTime) {
 				gIdleTime[playerid] = 0;
-				KickPlayer(playerid, _(playerid, PROTECTION_ANTIIDLE_KICK_REASON));
+				new reason[MAX_LANG_VALUE_STRING];
+				Lang_GetPlayerText(playerid, "PROTECTION_ANTIIDLE_KICK_REASON", reason);
+				KickPlayer(playerid, reason);
 			}
 		} else {
 			gIdleTime[playerid] = 0;

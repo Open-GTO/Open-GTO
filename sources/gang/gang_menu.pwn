@@ -22,39 +22,52 @@ DialogCreate:GangMenu(playerid)
 		string[MAX_LANG_VALUE_STRING * 7];
 
 	if (!IsPlayerInGang(playerid)) {
-		strcat(string, _(playerid, GANG_MENU_LIST_INFO), sizeof(string));
+		Lang_GetPlayerText(playerid, "GANG_MENU_LIST_INFO", string);
 
-		format(temp_str, sizeof(temp_str), _(playerid, GANG_MENU_LIST_CREATE), Gang_GetCreateCost());
-		strcat(string, temp_str, sizeof(string));
+		Lang_GetPlayerText(playerid, "GANG_MENU_LIST_CREATE", temp_str, _, Gang_GetCreateCost());
+		strcat(string, temp_str);
 
 		if (IsPlayerInvitedInAnyGang(playerid)) {
-			strcat(string, _(playerid, GANG_MENU_LIST_ACCEPT), sizeof(string));
+			Lang_GetPlayerText(playerid, "GANG_MENU_LIST_ACCEPT", temp_str);
+			strcat(string, temp_str);
 		}
 	} else {
-		strcat(string, _(playerid, GANG_MENU_LIST_INFO_SELF), sizeof(string));
-		strcat(string, _(playerid, GANG_MENU_LIST_EXIT), sizeof(string));
+		Lang_GetPlayerText(playerid, "GANG_MENU_LIST_INFO_SELF", temp_str);
+		strcat(string, temp_str);
+
+		Lang_GetPlayerText(playerid, "GANG_MENU_LIST_EXIT", temp_str);
+		strcat(string, temp_str);
 
 		new gangid = GetPlayerGangID(playerid);
 		new memberid = GetPlayerGangMemberID(playerid);
 
 		if (GangMember_IsHaveRank(gangid, memberid, GangMemberInviter)) {
-			strcat(string, _(playerid, GANG_MENU_LIST_INVITE), sizeof(string));
+			Lang_GetPlayerText(playerid, "GANG_MENU_LIST_INVITE", temp_str);
+			strcat(string, temp_str);
 		}
 
 		if (GangMember_IsHaveRank(gangid, memberid, GangMemberHelper)) {
-			strcat(string, _(playerid, GANG_MENU_LIST_KICK), sizeof(string));
-			strcat(string, _(playerid, GANG_MENU_LIST_MOTD), sizeof(string));
+			Lang_GetPlayerText(playerid, "GANG_MENU_LIST_KICK", temp_str);
+			strcat(string, temp_str);
+
+			Lang_GetPlayerText(playerid, "GANG_MENU_LIST_MOTD", temp_str);
+			strcat(string, temp_str);
 		}
 
 		if (GangMember_IsHaveRank(gangid, memberid, GangMemberLeader)) {
-			strcat(string, _(playerid, GANG_MENU_LIST_RANK), sizeof(string));
+			Lang_GetPlayerText(playerid, "GANG_MENU_LIST_RANK", temp_str);
+			strcat(string, temp_str);
 
-			format(temp_str, sizeof(temp_str), _(playerid, GANG_MENU_LIST_COLOR), Gang_GetColorCost());
-			strcat(string, temp_str, sizeof(string));
+			Lang_GetPlayerText(playerid, "GANG_MENU_LIST_COLOR", temp_str, _, Gang_GetColorCost());
+			strcat(string, temp_str);
 		}
 	}
 
-	Dialog_Open(playerid, Dialog:GangMenu, DIALOG_STYLE_LIST, "GANG_MENU_HEADER", string, "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:GangMenu, DIALOG_STYLE_LIST,
+	            "GANG_MENU_HEADER",
+	            string,
+	            "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
@@ -72,18 +85,20 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 			// информация
 			case 0: {
 				Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
-						_(playerid, GANG_MENU_INFO_HEADER),
-						_m(playerid, GANG_MENU_INFO),
-						_(playerid, GANG_MENU_BUTTON_BACK), _(playerid, GANG_MENU_BUTTON_CANCEL)
-					);
+				                 "GANG_MENU_INFO_HEADER",
+				                 "GANG_MENU_INFO",
+				                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL");
 				return 1;
 			}
 			// создать банду
 			case 1: {
 				if (GetPlayerMoney(playerid) < Gang_GetCreateCost()) {
-					new string[MAX_STRING];
-					format(string, sizeof(string), _(playerid, GANG_CREATE_MONEY_ERROR), Gang_GetCreateCost());
-					Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_CREATE_HEADER", string, "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+					Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+					                 "GANG_CREATE_HEADER",
+					                 "GANG_CREATE_MONEY_ERROR",
+					                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL",
+					                 MDIALOG_NOTVAR_NONE,
+					                 Gang_GetCreateCost());
 					return 1;
 				}
 				Dialog_Show(playerid, Dialog:GangCreateName);
@@ -92,7 +107,10 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 			// принять приглашение
 			case 2: {
 				if (!IsPlayerInvitedInAnyGang(playerid)) {
-					Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_CREATE_HEADER", "GANG_INVITE_NOT_INVITED", "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL");
+					Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+					                 "GANG_CREATE_HEADER",
+					                 "GANG_INVITE_NOT_INVITED",
+					                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL");
 					return 0;
 				}
 
@@ -105,24 +123,21 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 			// информация о банде
 			case 0: {
 				new
-					members[64 * MAX_GANG_SIZE];
+					members[64 * MAX_GANG_SIZE],
+					gang_money[16];
 
 				GetGangMemberListString(gangid, Lang_GetPlayerLanguage(playerid), members);
-
-				new
-					gang_money[16],
-					string[MAX_STRING + sizeof(members)];
-
 				InsertSpacesInInt(Gang_GetMoney(gangid), gang_money);
 
-				format(string, sizeof(string),
-						_m(playerid, GANG_MENU_INFO_MESSAGE),
-						Gang_GetKills(gangid), gang_money, Gang_GetScore(gangid),
-						GetGangLevel(gangid), GetGangXP(gangid), GetXPToGangLevel(GetGangLevel(gangid) + 1),
-						Gang_GetOnlineCount(gangid), Gang_GetExistsCount(gangid),
-						members
-					);
-				Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_MENU_INFO_HEADER_SELF", string, "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+				Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+				                 "GANG_MENU_INFO_HEADER_SELF",
+				                 "GANG_MENU_INFO_MESSAGE",
+				                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL",
+				                 MDIALOG_NOTVAR_NONE,
+				                 Gang_GetKills(gangid), gang_money, Gang_GetScore(gangid),
+				                 GetGangLevel(gangid), GetGangXP(gangid), GetXPToGangLevel(GetGangLevel(gangid) + 1),
+				                 Gang_GetOnlineCount(gangid), Gang_GetExistsCount(gangid),
+				                 members);
 				return 1;
 			}
 			// выйти из банды
@@ -236,9 +251,12 @@ DialogResponse:GangCreateName(playerid, response, listitem, inputtext[])
 	}
 
 	if (GetPlayerMoney(playerid) < Gang_GetCreateCost()) {
-		new string[MAX_STRING];
-		format(string, sizeof(string), _(playerid, GANG_CREATE_MONEY_ERROR), Gang_GetCreateCost());
-		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_CREATE_HEADER", string, "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+		                 "GANG_CREATE_HEADER",
+		                 "GANG_CREATE_MONEY_ERROR",
+		                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL",
+		                 MDIALOG_NOTVAR_NONE,
+		                 Gang_GetCreateCost());
 		return 1;
 	}
 
@@ -249,16 +267,22 @@ DialogResponse:GangCreateName(playerid, response, listitem, inputtext[])
 	}
 
 	if (len > MAX_GANG_NAME || len < MIN_GANG_NAME) {
-		new string[MAX_STRING];
-		format(string, sizeof(string), _(playerid, GANG_CREATE_NAME_ERROR), MIN_GANG_NAME, MAX_GANG_NAME);
-		Dialog_MessageEx(playerid, Dialog:Gang_CreateReturn, "GANG_CREATE_HEADER", string, "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+		Dialog_MessageEx(playerid, Dialog:Gang_CreateReturn,
+		                 "GANG_CREATE_HEADER",
+		                 "GANG_CREATE_NAME_ERROR",
+		                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL",
+		                 MDIALOG_NOTVAR_NONE,
+		                 MIN_GANG_NAME, MAX_GANG_NAME);
 		return 1;
 	}
 
 	if (!IsValidChars(inputtext) || !strcmp(inputtext, "Unknown", true)) {
-		new string[MAX_STRING];
-		format(string, sizeof(string), _(playerid, GANG_CREATE_NAME_SYMBOLS_ERROR), ALLOWED_STRING_SYMBOLS_STR);
-		Dialog_MessageEx(playerid, Dialog:Gang_CreateReturn, "GANG_CREATE_HEADER", string, "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+		Dialog_MessageEx(playerid, Dialog:Gang_CreateReturn,
+		                 "GANG_CREATE_HEADER",
+		                 "GANG_CREATE_NAME_SYMBOLS_ERROR",
+		                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL",
+		                 MDIALOG_NOTVAR_INFO,
+		                 ALLOWED_STRING_SYMBOLS_STR);
 		return 1;
 	}
 
@@ -288,9 +312,12 @@ DialogResponse:GangCreateColor(playerid, response, listitem, inputtext[])
 	}
 
 	if (GetPlayerMoney(playerid) < Gang_GetCreateCost()) {
-		new string[MAX_STRING];
-		format(string, sizeof(string), _(playerid, GANG_CREATE_MONEY_ERROR), Gang_GetCreateCost());
-		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_CREATE_HEADER", string, "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+		                 "GANG_CREATE_HEADER",
+		                 "GANG_CREATE_MONEY_ERROR",
+		                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL",
+		                 MDIALOG_NOTVAR_NONE,
+		                 Gang_GetCreateCost());
 		return 1;
 	}
 
@@ -353,7 +380,7 @@ DialogCreate:GangInviteAccept(playerid)
 		invited_times[MAX_GANG_INVITES],
 		size;
 
-	__(playerid, GANG_INVITE_ACCEPT_LIST_HEADER, string);
+	Lang_GetPlayerText(playerid, "GANG_INVITE_ACCEPT_LIST_HEADER", string);
 	strcat(string, "\n");
 
 	GetPlayerInvitedGangArrayID(playerid, invited_gangid, size);
@@ -362,13 +389,17 @@ DialogCreate:GangInviteAccept(playerid)
 	for (new i = 0; i < size; i++) {
 		Gang_GetName(invited_gangid[i], temp_str);
 
-		format(temp_str, sizeof(temp_str), _(playerid, GANG_INVITE_ACCEPT_LIST), temp_str, invited_times[i]);
+		Lang_GetPlayerText(playerid, "GANG_INVITE_ACCEPT_LIST", temp_str, _, invited_times[i]);
 
 		strcat(string, temp_str);
 		strcat(string, "\n");
 	}
 
-	Dialog_Open(playerid, Dialog:GangInviteAccept, DIALOG_STYLE_TABLIST_HEADERS, "GANG_INVITE_HEADER", string, "GANG_MENU_BUTTON_ACCEPT", "GANG_MENU_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:GangInviteAccept, DIALOG_STYLE_TABLIST_HEADERS,
+	            "GANG_INVITE_HEADER",
+	            string,
+	            "GANG_MENU_BUTTON_ACCEPT", "GANG_MENU_BUTTON_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:GangInviteAccept(playerid, response, listitem, inputtext[])
@@ -417,12 +448,14 @@ DialogCreate:GangInvite(playerid)
 
 	if (Gang_IsGangFull(gangid)) {
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
-				_(playerid, GANG_INVITE_HEADER),
-				_(playerid, GANG_INVITE_IS_FULL),
-				_(playerid, GANG_MENU_BUTTON_OK), ""
-			);
+		                 "GANG_INVITE_HEADER",
+		                 "GANG_INVITE_IS_FULL",
+		                 "GANG_MENU_BUTTON_OK", "");
 	} else {
-		Dialog_Open(playerid, Dialog:GangInvite, DIALOG_STYLE_INPUT, "GANG_INVITE_HEADER", "GANG_INVITE_INPUT", "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK");
+		Dialog_Open(playerid, Dialog:GangInvite, DIALOG_STYLE_INPUT,
+		            "GANG_INVITE_HEADER",
+		            "GANG_INVITE_INPUT",
+		            "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK");
 	}
 }
 
@@ -464,8 +497,7 @@ DialogResponse:GangInvite(playerid, response, listitem, inputtext[])
 	new
 		player_name[MAX_PLAYER_NAME + 1],
 		invite_name[MAX_PLAYER_NAME + 1],
-		gang_name[MAX_GANG_NAME + 1],
-		string[MAX_STRING];
+		gang_name[MAX_GANG_NAME + 1];
 
 	GetPlayerName(playerid, player_name, sizeof(player_name));
 	GetPlayerName(inviteid, invite_name, sizeof(invite_name));
@@ -473,8 +505,12 @@ DialogResponse:GangInvite(playerid, response, listitem, inputtext[])
 
 	Lang_SendText(inviteid, "GANG_INVITE_MESSAGE", player_name, gang_name);
 
-	format(string, sizeof(string), _(playerid, GANG_INVITE_MESSAGE_SELF), invite_name, gang_name);
-	Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_INVITE_HEADER", string, "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+	Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+	                 "GANG_INVITE_HEADER",
+	                 "GANG_INVITE_MESSAGE_SELF",
+	                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL",
+	                 MDIALOG_NOTVAR_NONE,
+	                 invite_name, gang_name);
 
 	Log_Game("LOG_GANG_SEND_INVITE", player_name, playerid, invite_name, inviteid, gang_name);
 	return 1;
@@ -488,7 +524,11 @@ DialogCreate:GangKick(playerid)
 
 	GetGangMemberListString(gangid, Lang_GetPlayerLanguage(playerid), members);
 
-	Dialog_Open(playerid, Dialog:GangKick, DIALOG_STYLE_LIST, "GANG_KICK_HEADER", members, "GANG_KICK_BUTTON", "GANG_MENU_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:GangKick, DIALOG_STYLE_LIST,
+	            "GANG_KICK_HEADER",
+	            members,
+	            "GANG_KICK_BUTTON", "GANG_MENU_BUTTON_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:GangKick(playerid, response, listitem, inputtext[])
@@ -511,9 +551,12 @@ DialogResponse:GangKick(playerid, response, listitem, inputtext[])
 
 	Gang_MemberRemove(gangid, memberid);
 
-	new string[MAX_LANG_VALUE_STRING];
-	format(string, sizeof(string), _(playerid, GANG_KICK_PLAYER_KICKED), member_name);
-	Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_KICK_HEADER", string, "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+	Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+	                 "GANG_KICK_HEADER",
+	                 "GANG_KICK_PLAYER_KICKED",
+	                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL",
+	                 MDIALOG_NOTVAR_NONE,
+	                 member_name);
 	return 1;
 }
 
@@ -556,24 +599,35 @@ DialogResponse:GangRank(playerid, response, listitem, inputtext[])
 
 DialogCreate:GangRankList(playerid)
 {
-	new string[MAX_LANG_VALUE_STRING * MAX_GANG_RANK_COUNT];
+	new
+		temp_string[MAX_LANG_VALUE_STRING],
+		string[MAX_LANG_VALUE_STRING * MAX_GANG_RANK_COUNT];
 
-	strcat(string, _(playerid, GANG_RANK_LEADER), sizeof(string));
-	strcat(string, "\n", sizeof(string));
+	Lang_GetPlayerText(playerid, "GANG_RANK_LEADER", temp_string);
+	strcat(string, temp_string);
+	strcat(string, "\n");
 
-	strcat(string, _(playerid, GANG_RANK_HELPER), sizeof(string));
-	strcat(string, "\n", sizeof(string));
+	Lang_GetPlayerText(playerid, "GANG_RANK_HELPER", temp_string);
+	strcat(string, temp_string);
+	strcat(string, "\n");
 
-	strcat(string, _(playerid, GANG_RANK_PAYMASTER), sizeof(string));
-	strcat(string, "\n", sizeof(string));
+	Lang_GetPlayerText(playerid, "GANG_RANK_PAYMASTER", temp_string);
+	strcat(string, temp_string);
+	strcat(string, "\n");
 
-	strcat(string, _(playerid, GANG_RANK_INVITER), sizeof(string));
-	strcat(string, "\n", sizeof(string));
+	Lang_GetPlayerText(playerid, "GANG_RANK_INVITER", temp_string);
+	strcat(string, temp_string);
+	strcat(string, "\n");
 
-	strcat(string, _(playerid, GANG_RANK_SOLDIER), sizeof(string));
-	strcat(string, "\n", sizeof(string));
+	Lang_GetPlayerText(playerid, "GANG_RANK_SOLDIER", temp_string);
+	strcat(string, temp_string);
+	strcat(string, "\n");
 
-	Dialog_Open(playerid, Dialog:GangRankList, DIALOG_STYLE_LIST, "GANG_RANK_HEADER", string, "GANG_RANK_BUTTON", "GANG_MENU_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:GangRankList, DIALOG_STYLE_LIST,
+	            "GANG_RANK_HEADER",
+	            string,
+	            "GANG_RANK_BUTTON", "GANG_MENU_BUTTON_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:GangRankList(playerid, response, listitem, inputtext[])
@@ -611,11 +665,15 @@ DialogCreate:GangColor(playerid)
 
 	for (new i = 0; i < MAX_COLOR_COUNT; i++) {
 		format(temp_str, sizeof(temp_str), "{%s}%s", Color_ReturnEmbeddingCode(i), Color_ReturnName(i));
-		strcat(string, temp_str, sizeof(string));
-		strcat(string, "\n", sizeof(string));
+		strcat(string, temp_str);
+		strcat(string, "\n");
 	}
 
-	Dialog_Open(playerid, Dialog:GangColor, DIALOG_STYLE_LIST, "GANG_COLOR_HEADER", string, "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:GangColor, DIALOG_STYLE_LIST,
+	            "GANG_COLOR_HEADER",
+	            string,
+	            "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:GangColor(playerid, response, listitem, inputtext[])
@@ -626,20 +684,29 @@ DialogResponse:GangColor(playerid, response, listitem, inputtext[])
 	}
 
 	if (GetPlayerMoney(playerid) < Gang_GetColorCost()) {
-		new string[MAX_STRING];
-		format(string, sizeof(string), _(playerid, GANG_COLOR_MONEY_ERROR), Gang_GetColorCost());
-		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_COLOR_HEADER", string, "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+		                 "GANG_COLOR_HEADER",
+		                 "GANG_COLOR_MONEY_ERROR",
+		                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL",
+		                 MDIALOG_NOTVAR_NONE,
+		                 Gang_GetColorCost());
 		return 1;
 	}
 
 	if (strlen(inputtext) == 0) {
-		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_COLOR_HEADER", "GANG_COLOR_INCORRECT", "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL");
+		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+		                 "GANG_COLOR_HEADER",
+		                 "GANG_COLOR_INCORRECT",
+		                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL");
 		return 1;
 	}
 
 	new colorid = Color_GetIdByName(inputtext);
 	if (colorid == -1) {
-		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_COLOR_HEADER", "GANG_COLOR_INCORRECT", "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL");
+		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+		                 "GANG_COLOR_HEADER",
+		                 "GANG_COLOR_INCORRECT",
+		                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL");
 		return 1;
 	}
 
@@ -648,7 +715,10 @@ DialogResponse:GangColor(playerid, response, listitem, inputtext[])
 	Gang_SetColor(GetPlayerGangID(playerid), gangcolor);
 	GivePlayerMoney(playerid, -Gang_GetColorCost());
 
-	Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_COLOR_HEADER", "GANG_COLOR_SUCCESS", "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL");
+	Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+	                 "GANG_COLOR_HEADER",
+	                 "GANG_COLOR_SUCCESS",
+	                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL");
 	return 1;
 }
 
@@ -656,17 +726,23 @@ DialogCreate:GangMotd(playerid)
 {
 	new
 		gangid = GetPlayerGangID(playerid),
-		string[MAX_LANG_VALUE_STRING];
+		motd[MAX_GANG_MOTD + MAX_LANG_VALUE_STRING];
 
-	Gang_GetMotd(gangid, string);
+	Gang_GetMotd(gangid, motd);
 
-	if (strlen(string) == 0) {
-		strcat(string, _(playerid, GANG_MOTD_MESSAGE));
+	if (strlen(motd) == 0) {
+		Dialog_Open(playerid, Dialog:GangMotd, DIALOG_STYLE_INPUT,
+		            "GANG_MOTD_HEADER",
+		            "GANG_MOTD_MESSAGE",
+		            "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK");
 	} else {
-		format(string, sizeof(string), _(playerid, GANG_MOTD_MESSAGE_OLD), string);
+		Dialog_Open(playerid, Dialog:GangMotd, DIALOG_STYLE_INPUT,
+		            "GANG_MOTD_HEADER",
+		            "GANG_MOTD_MESSAGE_OLD",
+		            "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK",
+		            MDIALOG_NOTVAR_NONE,
+		            motd);
 	}
-
-	Dialog_Open(playerid, Dialog:GangMotd, DIALOG_STYLE_INPUT, "GANG_MOTD_HEADER", string, "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:GangMotd(playerid, response, listitem, inputtext[])

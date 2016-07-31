@@ -132,12 +132,15 @@ Bank_OnPlayerEnterCheckpoint(playerid, cp)
 
 DialogCreate:BankStart(playerid)
 {
-	new string[MAX_LANG_MULTI_STRING];
+	new bank_money[MAX_CELLVALUE_SIZE + 1];
+	InsertSpacesInInt(GetPlayerBankMoney(playerid), bank_money);
 
-	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
-	format(string, sizeof(string), _m(playerid, BANK_START_INFO), gProfitCount, gProfitCountPremium, string);
-
-	Dialog_Open(playerid, Dialog:BankStart, DIALOG_STYLE_MSGBOX, "BANK_CAPTION", string, "BANK_BUTTON_OPERATIONS", "BANK_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:BankStart, DIALOG_STYLE_MSGBOX,
+	            "BANK_CAPTION",
+	            "BANK_START_INFO",
+	            "BANK_BUTTON_OPERATIONS", "BANK_BUTTON_CANCEL",
+	            MDIALOG_NOTVAR_NONE,
+	            gProfitCount, gProfitCountPremium, bank_money);
 }
 
 DialogResponse:BankStart(playerid, response, listitem, inputtext[])
@@ -207,13 +210,14 @@ DialogResponse:BankReturnWithdrawMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:BankWithdraw(playerid)
 {
-	new
-		string[MAX_LANG_VALUE_STRING * 2];
+	new bank_money[MAX_CELLVALUE_SIZE + 1];
+	InsertSpacesInInt(GetPlayerBankMoney(playerid), bank_money);
 
-	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
-	Lang_GetPlayerText(playerid, "BANK_START_INFO", string, sizeof(string), gProfitCount, gProfitCountPremium, string);
-
-	Dialog_Open(playerid, Dialog:BankWithdraw, DIALOG_STYLE_INPUT, "BANK_CAPTION", string, "BANK_BUTTON_WITHDRAW", "BANK_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:BankWithdraw, DIALOG_STYLE_INPUT,
+	            "BANK_CAPTION",
+	            "BANK_START_INFO",
+	            "BANK_BUTTON_WITHDRAW", "BANK_BUTTON_BACK",
+	            gProfitCount, gProfitCountPremium, bank_money);
 }
 
 DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
@@ -270,12 +274,15 @@ DialogResponse:BankReturnDepositMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:BankDeposit(playerid)
 {
-	new string[MAX_LANG_MULTI_STRING];
+	new bank_money[MAX_CELLVALUE_SIZE + 1];
+	InsertSpacesInInt(GetPlayerBankMoney(playerid), bank_money);
 
-	InsertSpacesInInt(GetPlayerBankMoney(playerid), string);
-	format(string, sizeof(string), _m(playerid, BANK_START_INFO), gProfitCount, gProfitCountPremium, string);
-
-	Dialog_Open(playerid, Dialog:BankDeposit, DIALOG_STYLE_INPUT, "BANK_CAPTION", string, "BANK_BUTTON_DEPOSIT", "BANK_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:BankDeposit, DIALOG_STYLE_INPUT,
+	            "BANK_CAPTION",
+	            "BANK_START_INFO",
+	            "BANK_BUTTON_DEPOSIT", "BANK_BUTTON_BACK",
+	            MDIALOG_NOTVAR_NONE,
+	            gProfitCount, gProfitCountPremium, bank_money);
 }
 
 DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])

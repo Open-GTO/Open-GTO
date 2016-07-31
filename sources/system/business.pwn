@@ -677,27 +677,18 @@ stock business_GetUpgradeCost(id)
 
 static stock business_UpdateLabelString(id)
 {
-	new
-		langid;
-
 	foreach (new Lang:lang : LangIterator) {
-		langid = Lang_GetID(lang);
-
-		format(gLabelString[id][lang], sizeof(gLabelString[][]),
-			_l(langid, BUSINESS_TEXT_LABEL),
-			Businesses[id][Business_Name],
-			Businesses[id][Business_Cost],
-			Businesses[id][Business_Value],
-			Businesses[id][Business_Level]
-		);
+		Lang_GetText(lang, "BUSINESS_TEXT_LABEL", gLabelString[id][lang], sizeof(gLabelString[][]),
+		             Businesses[id][Business_Name],
+		             Businesses[id][Business_Cost],
+		             Businesses[id][Business_Value],
+		             Businesses[id][Business_Level]);
 
 		if (strcmp(Businesses[id][Business_Owner], "Unknown", false)) {
-			format(gLabelString[id][lang], sizeof(gLabelString[][]),
-				_l(langid, BUSINESS_TEXT_LABEL_INFO),
-				gLabelString[id][lang],
-				Businesses[id][Business_Upgrade],
-				Businesses[id][Business_Owner]
-			);
+			Lang_GetText(lang, "BUSINESS_TEXT_LABEL_INFO", gLabelString[id][lang], sizeof(gLabelString[][]),
+			             gLabelString[id][lang],
+			             Businesses[id][Business_Upgrade],
+			             Businesses[id][Business_Owner]);
 		}
 	}
 }
@@ -710,7 +701,7 @@ static stock business_DestroyPlayerLabel(playerid, id)
 
 static stock business_CreatePlayerLabel(playerid, id)
 {
-	new Lang:lang = Lang_GetPlayerLangType(playerid);
+	new Lang:lang = Lang_GetPlayerLang(playerid);
 	gLabelID[id][playerid] = CreateDynamic3DTextLabel(gLabelString[id][lang], COLOR_WHITE,
 		Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.75,
 		BusinessDistanceOfShowLabel, .testlos = 1, .playerid = playerid);
@@ -718,7 +709,7 @@ static stock business_CreatePlayerLabel(playerid, id)
 
 stock business_UpdatePlayerLabel(playerid, id)
 {
-	new Lang:lang = Lang_GetPlayerLangType(playerid);
+	new Lang:lang = Lang_GetPlayerLang(playerid);
 	UpdateDynamic3DTextLabelText(gLabelID[id][playerid], COLOR_WHITE, gLabelString[id][lang]);
 }
 
