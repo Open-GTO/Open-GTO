@@ -21,25 +21,31 @@ stock KickPlayer(playerid, reason[] = "", showreason = 1)
 		return 0;
 	}
 
-	if (strlen(reason) == 0) {
-		__(playerid, ADMIN_COMMAND_KICK_NOREASON, reason, MAX_KICK_REASON_LENGTH);
-	}
-
 	new
+		is_with_reason,
 		string[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
 
+	is_with_reason = strlen(reason) != 0;
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		Lang_SendText(playerid, "ADMIN_COMMAND_KICK_IS_ADMIN", reason);
+		if (is_with_reason) {
+			Lang_SendText(playerid, "ADMIN_COMMAND_KICK_IS_ADMIN_REASON", reason);
+		} else {
+			Lang_SendText(playerid, "ADMIN_COMMAND_KICK_IS_ADMIN");
+		}
 		return 0;
 	}
 
 	if (showreason) {
-		Lang_SendText(playerid, "ADMIN_COMMAND_KICK_KICKED_SELF", reason);
-
-		Lang_SendTextToAll("ADMIN_COMMAND_KICK_KICKED", playername, reason);
+		if (is_with_reason) {
+			Lang_SendText(playerid, "ADMIN_COMMAND_KICK_KICKED_SELF_REASON", reason);
+			Lang_SendTextToAll("ADMIN_COMMAND_KICK_KICKED_REASON", playername, reason);
+		} else {
+			Lang_SendText(playerid, "ADMIN_COMMAND_KICK_KICKED_SELF");
+			Lang_SendTextToAll("ADMIN_COMMAND_KICK_KICKED", playername);
+		}
 	}
 
 	GameTextForPlayer(playerid, "~r~Connection Lost.", 1000, 5);

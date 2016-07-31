@@ -39,18 +39,16 @@ COMMAND:warn(playerid, params[])
 	}
 
 	new
+		is_with_reason,
 		string[MAX_LANG_VALUE_STRING],
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
+	is_with_reason = strlen(reason) != 0;
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (targetid != -1) {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
-	}
-
-	if (strlen(reason) == 0) {
-		__(playerid, ADMIN_COMMAND_WARN_NOREASON, reason);
 	}
 
 	if (strcmp(subcmd, "set", true) == 0) {
@@ -59,7 +57,11 @@ COMMAND:warn(playerid, params[])
 				SetPlayerWarnsCount(id, amount);
 			}
 
-			Lang_SendTextToAll("ADMIN_COMMAND_WARN_SET_ALL", playername, playerid, amount, reason);
+			if (is_with_reason) {
+				Lang_SendTextToAll("ADMIN_COMMAND_WARN_SET_ALL_REASON", playername, playerid, amount, reason);
+			} else {
+				Lang_SendTextToAll("ADMIN_COMMAND_WARN_SET_ALL", playername, playerid, amount);
+			}
 		} else {
 			SetPlayerWarnsCount(targetid, amount);
 
@@ -86,12 +88,21 @@ COMMAND:warn(playerid, params[])
 				GivePlayerWarn(id, amount);
 			}
 
-			Lang_SendTextToAll("ADMIN_COMMAND_WARN_GIVE_ALL", playername, playerid, amount, warnword, reason);
+			if (is_with_reason) {
+				Lang_SendTextToAll("ADMIN_COMMAND_WARN_GIVE_ALL_REASON", playername, playerid, amount, warnword, reason);
+			} else {
+				Lang_SendTextToAll("ADMIN_COMMAND_WARN_GIVE_ALL", playername, playerid, amount, warnword);
+			}
 		} else {
 			GivePlayerWarn(targetid, amount);
 
-			Lang_SendText(targetid, "ADMIN_COMMAND_WARN_GIVE_PLAYER", playername, playerid, amount, warnword, reason);
-			Lang_SendText(playerid, "ADMIN_COMMAND_WARN_GIVE_SELF", targetname, targetid, amount, warnword, reason);
+			if (is_with_reason) {
+				Lang_SendText(targetid, "ADMIN_COMMAND_WARN_GIVE_PLAYER_REASON", playername, playerid, amount, warnword, reason);
+				Lang_SendText(playerid, "ADMIN_COMMAND_WARN_GIVE_SELF_REASON", targetname, targetid, amount, warnword, reason);
+			} else {
+				Lang_SendText(targetid, "ADMIN_COMMAND_WARN_GIVE_PLAYER", playername, playerid, amount, warnword);
+				Lang_SendText(playerid, "ADMIN_COMMAND_WARN_GIVE_SELF", targetname, targetid, amount, warnword);
+			}
 		}
 	} else {
 		Lang_SendText(playerid, "ADMIN_COMMAND_WARN_HELP");

@@ -37,19 +37,19 @@ stock SetPlayerPrivilege(playerid, PlayerPrivilege:privilege)
 }
 
 /*
-	GetPrivilegeName
+	GetPrivilegeNameForPlayer
 */
 
-stock GetPrivilegeName(langid, PlayerPrivilege:privilege, name[], size = sizeof(name))
+stock GetPrivilegeNameForPlayer(playerid, PlayerPrivilege:privilege, name[], size = sizeof(name))
 {
 	if (privilege == PlayerPrivilegeModer) {
-		__l(langid, PRIVILEGE_MODER, name, size);
+		Lang_GetPlayerText(playerid, "PRIVILEGE_MODER", name, size);
 	} else if (privilege == PlayerPrivilegeAdmin) {
-		__l(langid, PRIVILEGE_ADMIN, name, size);
+		Lang_GetPlayerText(playerid, "PRIVILEGE_ADMIN", name, size);
 	} else if (privilege == PlayerPrivilegeRcon) {
-		__l(langid, PRIVILEGE_RCON, name, size);
+		Lang_GetPlayerText(playerid, "PRIVILEGE_RCON", name, size);
 	} else {
-		__l(langid, PRIVILEGE_PLAYER, name, size);
+		Lang_GetPlayerText(playerid, "PRIVILEGE_PLAYER", name, size);
 	}
 }
 
@@ -60,4 +60,33 @@ stock GetPrivilegeName(langid, PlayerPrivilege:privilege, name[], size = sizeof(
 stock IsPlayerHavePrivilege(playerid, PlayerPrivilege:privilege)
 {
 	return _:GetPlayerPrivilege(playerid) >= _:privilege;
+}
+
+/*
+	GetPlayersWithPrivilege
+*/
+
+stock GetPlayersWithPrivilege(PlayerPrivilege:privilege, players[], const size = sizeof(players))
+{
+	new
+		id,
+		i;
+
+	players[0] = INVALID_PLAYER_ID;
+
+	foreach (id : Player) {
+		if (IsPlayerHavePrivilege(id, privilege)) {
+			players[i] = id;
+			i++;
+
+			if (i >= size) {
+				break;
+			}
+		}
+	}
+
+	if (i > 0) {
+		players[i - 1] = INVALID_PLAYER_ID;
+	}
+	return i;
 }

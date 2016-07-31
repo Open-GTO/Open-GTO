@@ -78,7 +78,7 @@ pt_spac_Check(playerid)
 		if (clientaction == SPECIAL_ACTION_NONE) {
 			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
 		} else {
-			Admin_SendProtectReport(playerid, _(playerid, PROTECTION_SPECIAL_ACTION), clientaction, serveraction);
+			Admin_SendProtectReport(playerid, "PROTECTION_SPECIAL_ACTION", clientaction, serveraction);
 		}
 	}
 	return 1;

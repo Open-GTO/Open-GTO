@@ -202,16 +202,15 @@ DialogResponse:GangExitAccept(playerid, response, listitem, inputtext[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
+		player_name[MAX_PLAYER_NAME + 1],
 		gang_name[MAX_GANG_NAME],
 		gangid;
 
-	GetPlayerName(playerid, string, MAX_PLAYER_NAME + 1);
+	GetPlayerName(playerid, player_name, sizeof(player_name));
 	gangid = GetPlayerGangID(playerid);
 	Gang_GetName(gangid, gang_name, sizeof(gang_name));
 
-	format(string, sizeof(string), _(playerid, GANG_REMOVED), string, playerid, gang_name);
-	Gang_SendMessage(gangid, string);
+	Gang_SendLangMessage(gangid, "GANG_REMOVED", _, player_name, playerid, gang_name);
 
 	new is_ok = Gang_Remove(gangid);
 	if (is_ok) {
@@ -395,11 +394,14 @@ DialogResponse:GangInviteAccept(playerid, response, listitem, inputtext[])
 	Gang_GetName(gangid, gang_name);
 
 	if (Gang_MemberJoin(gangid, playerid) == 1) {
-		format(string, sizeof(string), _(playerid, GANG_INVITE_YOU_IN), gang_name);
-		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_INVITE_HEADER", string, "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+		Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
+		                 "GANG_INVITE_HEADER",
+		                 "GANG_INVITE_YOU_IN",
+		                 "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL",
+		                 MDIALOG_NOTVAR_NONE,
+		                 gang_name);
 
-		format(string, sizeof(string), _(playerid, GANG_INVITE_PLAYER_IN), player_name);
-		Gang_SendMessage(gangid, string, COLOR_GANG);
+		Gang_SendLangMessage(gangid, "GANG_INVITE_PLAYER_IN", _, player_name);
 
 		Log_Game("LOG_GANG_ACCEPT_INVITE", player_name, playerid, gang_name);
 	} else {
@@ -688,7 +690,7 @@ DialogResponse:GangMotd(playerid, response, listitem, inputtext[])
 	if (len == 0) {
 		Gang_SetMotd(gangid, "");
 
-		Gang_SendMessage(gangid, _(playerid, GANG_MOTD_REMOVED), COLOR_GANG);
+		Gang_SendLangMessage(gangid, "GANG_MOTD_REMOVED");
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_MOTD_HEADER", "GANG_MOTD_REMOVED", "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL");
 		return 1;
 	}
@@ -696,9 +698,7 @@ DialogResponse:GangMotd(playerid, response, listitem, inputtext[])
 	Gang_SetMotd(gangid, inputtext);
 
 	Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_MOTD_HEADER", "GANG_MOTD_CHANGED_MSG", "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_NONE, inputtext);
-
-	format(string, sizeof(string), _(playerid, GANG_MOTD_CHANGED), ReturnPlayerName(playerid), playerid, inputtext);
-	Gang_SendMessage(gangid, string, COLOR_GANG);
+	Gang_SendLangMessage(gangid, "GANG_MOTD_CHANGED", _, ReturnPlayerName(playerid), playerid, inputtext);
 	return 1;
 }
 

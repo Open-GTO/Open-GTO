@@ -180,12 +180,12 @@ Tuning_OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 		if (areaid == gTuningPlace[i][e_tpDynamic]) {
 			if (IsPlayerInAnyVehicle(playerid)) {
 				if (GetPlayerVehicleSeat(playerid) == 0) {
-					Message_Alert(playerid, _(playerid, TUNING_ALERT_HEADER), _(playerid, TUNING_ALERT_MESSAGE));
+					Message_Alert(playerid, "TUNING_ALERT_HEADER", "TUNING_ALERT_MESSAGE");
 				}
 
 				gInfo[playerid][e_tPlaceID] = i;
 			} else {
-				Message_Alert(playerid, _(playerid, TUNING_ALERT_HEADER), _(playerid, TUNING_ALERT_ERROR_MESSAGE));
+				Message_Alert(playerid, "TUNING_ALERT_HEADER", "TUNING_ALERT_ERROR_MESSAGE");
 			}
 
 			return 1;

@@ -361,20 +361,19 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 
 	new
 		amount_string[16],
-		string[MAX_LANG_VALUE_STRING];
+		gang_money_string[MAX_LANG_VALUE_STRING];
 
 	InsertSpacesInInt(amount, amount_string);
-	InsertSpacesInInt(Gang_GetMoney(gangid), string);
+	InsertSpacesInInt(Gang_GetMoney(gangid), gang_money_string);
 
 	Dialog_Message(playerid,
 	               "BANK_GANG_CAPTION",
 	               "BANK_GANG_WITHDRAW_INFO",
 	               "BANK_BUTTON_OK",
 	               MDIALOG_NOTVAR_INFO,
-	               amount_string, string);
+	               amount_string, gang_money_string);
 
-	Lang_GetPlayerText(playerid, "BANK_GANG_WITHDRAW_MESSAGE", string, _, ReturnPlayerName(playerid), playerid, amount_string);
-	Gang_SendMessage(gangid, string);
+	Gang_SendLangMessage(gangid, "BANK_GANG_WITHDRAW_MESSAGE", _, ReturnPlayerName(playerid), playerid, amount_string);
 	return 1;
 }
 
@@ -416,20 +415,19 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 
 	new
 		amount_string[16],
-		string[MAX_LANG_VALUE_STRING];
+		gang_money_string[16];
 
 	InsertSpacesInInt(amount, amount_string);
-	InsertSpacesInInt(Gang_GetMoney(gangid), string);
+	InsertSpacesInInt(Gang_GetMoney(gangid), gang_money_string);
 
 	Dialog_Message(playerid,
 	               "BANK_GANG_CAPTION",
 	               "BANK_GANG_DEPOSIT_INFO",
 	               "BANK_BUTTON_OK",
 	               MDIALOG_NOTVAR_INFO,
-	               amount_string, string);
+	               amount_string, gang_money_string);
 
-	Lang_GetPlayerText(playerid, "BANK_GANG_DEPOSIT_MESSAGE", string, _, ReturnPlayerName(playerid), playerid, amount_string);
-	Gang_SendMessage(gangid, string);
+	Gang_SendLangMessage(gangid, "BANK_GANG_DEPOSIT_MESSAGE", _, ReturnPlayerName(playerid), playerid, amount_string);
 	return 1;
 }
 

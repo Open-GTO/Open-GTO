@@ -46,13 +46,13 @@ COMMAND:privileje(playerid, params[])
 	if (strcmp(subcmd, "set", true) == 0) {
 		SetPlayerPrivilege(targetid, privileje);
 
-		GetPrivilegeName(Lang_GetPlayerLanguage(targetid), privileje, privileje_name);
+		GetPrivilegeNameForPlayer(targetid, privileje, privileje_name);
 		Lang_SendText(playerid, "ADMIN_COMMAND_PRIVILEGE_SET_PLAYER", playername, playerid, privileje_name);
 
-		GetPrivilegeName(Lang_GetPlayerLanguage(playerid), privileje, privileje_name);
+		GetPrivilegeNameForPlayer(playerid, privileje, privileje_name);
 		Lang_SendText(playerid, "ADMIN_COMMAND_PRIVILEGE_SET_SELF", targetname, targetid, privileje_name);
 	} else if (strcmp(subcmd, "get", true) == 0) {
-		GetPrivilegeName(Lang_GetPlayerLanguage(playerid), GetPlayerPrivilege(targetid), privileje_name);
+		GetPrivilegeNameForPlayer(playerid, GetPlayerPrivilege(targetid), privileje_name);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_PRIVILEGE_GET", targetname, targetid, privileje_name);
 	} else {

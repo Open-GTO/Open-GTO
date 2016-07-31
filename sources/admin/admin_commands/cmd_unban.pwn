@@ -42,7 +42,6 @@ COMMAND:unban(playerid, params[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
 		filename[MAX_STRING];
 
 	format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, db_ban, target);
@@ -50,11 +49,9 @@ COMMAND:unban(playerid, params[])
 	if (ini_fileExist(filename)) {
 		ini_fileRemove(filename);
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNBAN_SUCCESS), target);
+		Lang_SendText(playerid, "ADMIN_COMMAND_UNBAN_SUCCESS", target);
 	} else {
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNBAN_FAIL), target);
+		Lang_SendText(playerid, "ADMIN_COMMAND_UNBAN_FAIL", target);
 	}
-
-	SendClientMessage(playerid, COLOR_RED, string);
 	return 1;
 }

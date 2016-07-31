@@ -43,8 +43,7 @@ stock Player_Text_OnPlayerText(playerid, text[])
 				return 0;
 			}
 
-			format(string, sizeof(string), _(playerid, GANG_TEXT_PATTERN), playername, playerid, text[start_pos]);
-			Gang_SendMessage(gangid, string, COLOR_GANG_CHAT);
+			Gang_SendLangMessage(gangid, "GANG_TEXT_PATTERN", COLOR_GANG_CHAT, playername, playerid, text[start_pos]);
 
 			Log_Player("Player: %s(%d): <GANG CHAT>: %s", playername, playerid, text[start_pos]);
 			return 0;

@@ -29,20 +29,15 @@ COMMAND:skydive(playerid, params[])
 		return 1;
 	}
 
-	new string[MAX_STRING];
 	new time_sky = GetPlayerSkydiveTime(playerid) - gettime();
 	if (time_sky > 0) {
 		new
 			minutes = (time_sky / 60) % 60,
 			seconds = time_sky % 60;
 
-		format(string, sizeof(string),
-			_(playerid, SKYDIVING_NEED_TIME),
-			minutes, Declension_ReturnMinutes(playerid, minutes),
-			seconds, Declension_ReturnSeconds(playerid, seconds)
-		);
-
-		SendClientMessage(playerid, COLOR_WHITE, string);
+		Lang_SendText(playerid, "SKYDIVING_NEED_TIME",
+		              minutes, Declension_ReturnMinutes(playerid, minutes),
+		              seconds, Declension_ReturnSeconds(playerid, seconds));
 		return 1;
 	}
 

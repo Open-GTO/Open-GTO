@@ -15,8 +15,12 @@
 	Defines
 */
 
+#if !defined MAX_COMPETITION_TYPE_NAME_VAR
+	#define MAX_COMPETITION_TYPE_NAME_VAR MAX_LANG_VAR_STRING
+#endif
+
 #if !defined MAX_COMPETITION_TYPE_NAME
-	#define MAX_COMPETITION_TYPE_NAME 32
+	#define MAX_COMPETITION_TYPE_NAME MAX_LANG_VALUE_STRING
 #endif
 
 #if !defined MAX_FUNCTION_NAME
@@ -31,6 +35,7 @@
 */
 
 enum CompetitionTypeParams {
+	COMPETITION_TYPE_NAME_VAR[MAX_COMPETITION_TYPE_NAME_VAR],
 	COMPETITION_TYPE_COLOR,
 	COMPETITION_TYPE_ADD_CALLBACK[MAX_FUNCTION_NAME],
 	COMPETITION_TYPE_JOIN_CALLBACK[MAX_FUNCTION_NAME],
@@ -43,8 +48,7 @@ enum CompetitionTypeParams {
 */
 
 static
-	gParam[MAX_COMPETITION_TYPES][CompetitionTypeParams],
-	gParamName[MAX_COMPETITION_TYPES][Lang][MAX_COMPETITION_TYPE_NAME];
+	gParam[MAX_COMPETITION_TYPES][CompetitionTypeParams];
 
 new
 	Iterator:CompetitionTypeIterator<MAX_COMPETITION_TYPES>;
@@ -53,17 +57,13 @@ new
 	CompetitionType_Add
 */
 
-stock CompetitionType_Add(ctype_name[Lang][MAX_COMPETITION_TYPE_NAME], ctype_params[CompetitionTypeParams])
+stock CompetitionType_Add(ctype_params[CompetitionTypeParams])
 {
 	new
 		ctype = CompetitionType_GetFreeSlot();
 
 	if (ctype != INVALID_COMPETITION_TYPE_ID) {
 		gParam[ctype] = ctype_params;
-
-		foreach (new Lang:lang : LangIterator) {
-			CompetitionType_SetName(ctype, lang, ctype_name[lang]);
-		}
 	}
 
 	return ctype;
@@ -80,8 +80,6 @@ stock CompetitionType_Remove(ctype)
 	}
 
 	CompetitionType_SetActiveStatus(ctype, false);
-	CompetitionType_SetName(ctype, "");
-
 	return 1;
 }
 
@@ -214,15 +212,15 @@ stock CompetitionType_GetParamString(ctype, CompetitionTypeParams:param, value[]
 }
 
 /*
-	Type name
+	Name param
 */
 
-stock CompetitionType_SetName(ctype, Lang:lang, value[])
+stock CompetitionType_GetNameForPlayer(ctype, playerid, value[], size = sizeof(value))
 {
-	strcpy(gParamName[ctype][lang], value, COMPETITION_MAX_STRING);
-}
+	new
+		ctype_name_var[MAX_COMPETITION_TYPE_NAME_VAR];
 
-stock CompetitionType_GetName(ctype, Lang:lang, value[], size = sizeof(value))
-{
-	strcpy(value, gParamName[ctype][lang], size);
+	CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME_VAR, ctype_name_var);
+
+	return Lang_GetPlayerText(playerid, ctype_name_var, value, size);
 }

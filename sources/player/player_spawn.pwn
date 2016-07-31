@@ -137,7 +137,7 @@ DialogCreate:PlayerSpawnMenu(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	__(playerid, PLAYER_SPAWN_LIST_NEARLY_POINT, string);
+	Lang_GetPlayerText(playerid, "PLAYER_SPAWN_LIST_NEARLY_POINT", string);
 
 	new gangid = GetPlayerGangID(playerid);
 	new gang_houseid = -1;
@@ -146,7 +146,7 @@ DialogCreate:PlayerSpawnMenu(playerid)
 		gang_houseid = Gang_GetHouseID(gangid);
 		if (gang_houseid != -1) {
 			count++;
-			format(string, sizeof(string), _(playerid, PLAYER_SPAWN_LIST_GANG), string, house_GetName(gang_houseid));
+			Lang_GetPlayerText(playerid, "PLAYER_SPAWN_LIST_GANG", string, house_GetName(gang_houseid));
 		}
 	}
 

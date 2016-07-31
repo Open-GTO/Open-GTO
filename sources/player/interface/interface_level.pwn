@@ -231,7 +231,7 @@ stock PlayerLevelTD_UpdateLevelString(playerid, level)
 	static
 		string[MAX_LANG_VALUE_STRING];
 
-	format(string, sizeof(string), _(playerid, PLAYER_LEVEL_TEXTDRAW_LEVEL), level);
+	Lang_GetPlayerText(playerid, "PLAYER_LEVEL_TEXTDRAW_LEVEL", string, _, level);
 	PlayerTextDrawSetString(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelLevel, PIP_TextDraw), string);
 }
 
@@ -246,7 +246,7 @@ stock PlayerLevelTD_UpdateXPString(playerid, xp, xp_max, is_max = false)
 		static
 			string[MAX_LANG_VALUE_STRING];
 
-		format(string, sizeof(string), _(playerid, PLAYER_LEVEL_TEXTDRAW_XP), xp, xp_max);
+		Lang_GetPlayerText(playerid, "PLAYER_LEVEL_TEXTDRAW_XP", string, _, xp, xp_max);
 		PlayerTextDrawSetString(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelXP, PIP_TextDraw), string);
 	}
 

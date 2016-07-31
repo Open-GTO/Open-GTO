@@ -75,23 +75,15 @@ public PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[])
 	new
 		clickedname[MAX_PLAYER_NAME + 1],
 		sendername[MAX_PLAYER_NAME + 1],
-		string[MAX_STRING];
+		players[MAX_PLAYERS],
+		admin_count;
 
 	GetPlayerName(clickedid, clickedname, sizeof(clickedname));
+	GetPlayerName(playerid, sendername, sizeof(sendername));
+	admin_count = GetPlayersWithPrivilege(PlayerPrivilegeModer, players);
 
 	Lang_SendText(playerid, "CLICK_REPORT_SELF", clickedname, clickedid, inputtext);
-
-	GetPlayerName(playerid, sendername, sizeof(sendername));
-	format(string, sizeof(string), _(playerid, CLICK_REPORT_PLAYER), sendername, playerid, clickedname, clickedid, inputtext);
-
-	new admin_count = 0;
-
-	foreach (new id : Player) {
-		if (IsPlayerHavePrivilege(id, PlayerPrivilegeModer)) {
-			admin_count++;
-			SendClientMessage(id, COLOR_RED, string);
-		}
-	}
+	Lang_SendTextToGroup(players, "CLICK_REPORT_PLAYER", sendername, playerid, clickedname, clickedid, inputtext);
 
 	if (admin_count == 0) {
 		new reports = GetPlayerReportsCount(playerid) + 1;
@@ -106,8 +98,7 @@ public PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[])
 			JailPlayer(clickedid, jail_time);
 			SetPlayerReportsCount(clickedid, 0);
 
-			format(string, sizeof(string), _(playerid, CLICK_REPORT_BY_MINUTE), jail_time);
-			Lang_SendTextToAll($ReturnPlayerName(clickedid, string);
+			Lang_SendTextToAll("CLICK_REPORT_SERVER", clickedname, jail_time);
 		}
 	}
 	return 1;

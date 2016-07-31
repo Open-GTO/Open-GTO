@@ -172,7 +172,7 @@ stock PlayerHealthTD_UpdateString(playerid, Float:health = -1.0)
 		string[4];
 
 	if (IsPlayerGodmod(playerid)) {
-		__(playerid, ADMIN_GODMOD_INTERFACE_TEXT, string);
+		Lang_GetPlayerText(playerid, "ADMIN_GODMOD_INTERFACE_TEXT", string);
 	} else {
 		if (health == -1.0) {
 			GetPlayerHealth(playerid, health);

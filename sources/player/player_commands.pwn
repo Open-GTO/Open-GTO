@@ -16,31 +16,31 @@
 COMMAND:help(playerid, params[])
 {
 	Lang_SendText(playerid, "COMMAND_HELP_HEADER");
-	Lang_SendText(playerid, $COMMAND_HELP_0);
-	Lang_SendText(playerid, $COMMAND_HELP_1);
-	Lang_SendText(playerid, $COMMAND_HELP_2);
-	Lang_SendText(playerid, $COMMAND_HELP_3);
+	Lang_SendText(playerid, "COMMAND_HELP_0");
+	Lang_SendText(playerid, "COMMAND_HELP_1");
+	Lang_SendText(playerid, "COMMAND_HELP_2");
+	Lang_SendText(playerid, "COMMAND_HELP_3");
 	return 1;
 }
 
 COMMAND:info(playerid, params[])
 {
-	Dialog_Message(playerid, _(playerid, COMMAND_INFO_CAPTION), _m(playerid, ACCOUNT_DIALOG_INFORMATION_TEXT), _(playerid, COMMAND_INFO_BUTTON_OK));
+	Dialog_Message(playerid, "COMMAND_INFO_CAPTION", "ACCOUNT_DIALOG_INFORMATION_TEXT", "COMMAND_INFO_BUTTON_OK");
 	return 1;
 }
 
 COMMAND:commands(playerid, params[])
 {
-	Lang_SendText(playerid, $COMMAND_COMMANDS_0);
-	Lang_SendText(playerid, $COMMAND_COMMANDS_1);
-	Lang_SendText(playerid, $COMMAND_COMMANDS_2);
-	Lang_SendText(playerid, $COMMAND_COMMANDS_3);
-	Lang_SendText(playerid, $COMMAND_COMMANDS_4);
-	Lang_SendText(playerid, $COMMAND_COMMANDS_5);
-	Lang_SendText(playerid, $COMMAND_COMMANDS_6);
-	Lang_SendText(playerid, $COMMAND_COMMANDS_7);
-	Lang_SendText(playerid, $COMMAND_COMMANDS_8);
-	Lang_SendText(playerid, $COMMAND_COMMANDS_9);
+	Lang_SendText(playerid, "COMMAND_COMMANDS_0");
+	Lang_SendText(playerid, "COMMAND_COMMANDS_1");
+	Lang_SendText(playerid, "COMMAND_COMMANDS_2");
+	Lang_SendText(playerid, "COMMAND_COMMANDS_3");
+	Lang_SendText(playerid, "COMMAND_COMMANDS_4");
+	Lang_SendText(playerid, "COMMAND_COMMANDS_5");
+	Lang_SendText(playerid, "COMMAND_COMMANDS_6");
+	Lang_SendText(playerid, "COMMAND_COMMANDS_7");
+	Lang_SendText(playerid, "COMMAND_COMMANDS_8");
+	Lang_SendText(playerid, "COMMAND_COMMANDS_9");
 	return 1;
 }
 
@@ -51,60 +51,63 @@ COMMAND:stats(playerid, params[])
 
 COMMAND:status(playerid, params[])
 {
-	Lang_SendText(playerid, $COMMAND_STATUS_0);
+	new
+		string[MAX_STRING];
 
-	new string[MAX_STRING];
+	Lang_SendText(playerid, "COMMAND_STATUS_0");
 
-	GetPrivilegeName(Lang_GetPlayerLanguage(playerid), GetPlayerPrivilege(playerid), string);
-	format(string, sizeof(string), _(playerid, COMMAND_STATUS_PRIVILEGE), string);
-	SendClientMessage(playerid, COLOR_LIGHTRED, string);
+	GetPrivilegeNameForPlayer(playerid, GetPlayerPrivilege(playerid), string);
+	Lang_SendText(playerid, "COMMAND_STATUS_PRIVILEGE", string);
 
 	if (IsPlayerInGang(playerid)) {
-		format(string, sizeof(string), _(playerid, COMMAND_STATUS_1), ReturnPlayerGangName(playerid));
-		SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
+		Lang_SendText(playerid, "COMMAND_STATUS_1", ReturnPlayerGangName(playerid));
 	}
 
-	format(string, sizeof(string), _(playerid, COMMAND_STATUS_2), GetPlayerLevel(playerid), GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1), GetPlayerMoney(playerid), GetPlayerBankMoney(playerid), GetPlayerTotalMoney(playerid));
-	SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
+	Lang_SendText(playerid, "COMMAND_STATUS_2",
+	              GetPlayerLevel(playerid),
+	              GetPlayerXP(playerid),
+	              GetXPToLevel(GetPlayerLevel(playerid) + 1),
+	              GetPlayerMoney(playerid),
+	              GetPlayerBankMoney(playerid),
+	              GetPlayerTotalMoney(playerid));
 
-	format(string, sizeof(string), _(playerid, COMMAND_STATUS_3), GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid), GetPlayerJailedCount(playerid), GetPlayerMutedCount(playerid));
-	SendClientMessage(playerid, COLOR_LIGHTRED, string);
+	Lang_SendText(playerid, "COMMAND_STATUS_3",
+	              GetPlayerKills(playerid),
+	              GetPlayerDeaths(playerid),
+	              GetPlayerKillDeathRatio(playerid),
+	              GetPlayerJailedCount(playerid),
+	              GetPlayerMutedCount(playerid));
 
-	new fstylename[MAX_STRING];
-	GetFightStyleName(GetPlayerFightStyleUsed(playerid), Lang_GetPlayerLangType(playerid), fstylename);
-
-	format(string, sizeof(string), _(playerid, COMMAND_STATUS_FIGHTSTYLE), fstylename);
-	SendClientMessage(playerid, COLOR_LIGHTRED, string);
+	GetFightStyleNameForPlayer(playerid, GetPlayerFightStyleUsed(playerid), string);
+	Lang_SendText(playerid, "COMMAND_STATUS_FIGHTSTYLE", string);
 
 	if (IsPlayerHavePremium(playerid)) {
-		format(string, sizeof(string), _(playerid, COMMAND_STATUS_PREMIUM), ReturnPlayerPremiumDateString(playerid));
+		Lang_SendText(playerid, "COMMAND_STATUS_PREMIUM", ReturnPlayerPremiumDateString(playerid));
 	} else {
-		format(string, sizeof(string), _(playerid, COMMAND_STATUS_NO_PREMIUM));
+		Lang_SendText(playerid, "COMMAND_STATUS_NO_PREMIUM");
 	}
-	SendClientMessage(playerid, COLOR_LIGHTRED, string);
 	return 1;
 }
 
 COMMAND:version(playerid, params[])
 {
-	Lang_SendText(playerid, $COMMAND_VERSION_0);
-	new string[MAX_LANG_VALUE_STRING];
-	format(string, sizeof(string), _(playerid, COMMAND_VERSION_1), VERSION_STRING);
-	SendClientMessage(playerid, -1, string);
-	Lang_SendText(playerid, $COMMAND_VERSION_2);
-	Lang_SendText(playerid, $COMMAND_VERSION_3);
-	Lang_SendText(playerid, $COMMAND_VERSION_4);
+	Lang_SendText(playerid, "COMMAND_VERSION_0");
+	Lang_SendText(playerid, "COMMAND_VERSION_1", VERSION_STRING);
+	Lang_SendText(playerid, "COMMAND_VERSION_2");
+	Lang_SendText(playerid, "COMMAND_VERSION_3");
+	Lang_SendText(playerid, "COMMAND_VERSION_4");
 	return 1;
 }
 
 COMMAND:time(playerid, params[])
 {
-	new string[MAX_STRING],
+	new
+		time[6],
 		minute;
 
 	gettime(_, minute);
-	format(string, sizeof(string), "%02d:%02d", Time_GetCurrentHour(), minute);
-	GameTextForPlayer(playerid, string, 2000, 1);
+	format(time, sizeof(time), "%02d:%02d", Time_GetCurrentHour(), minute);
+	GameTextForPlayer(playerid, time, 2000, 1);
 
 	new jail_time = GetPlayerJailTime(playerid);
 	new mute_time = GetPlayerMuteTime(playerid);

@@ -38,7 +38,6 @@ COMMAND:unjail(playerid, params[])
 
 	new
 		is_with_reason,
-		string[MAX_LANG_VALUE_STRING],
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
@@ -46,11 +45,11 @@ COMMAND:unjail(playerid, params[])
 	is_with_reason = strlen(reason) != 0;
 
 	if (targetid == -1) {
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNJAIL_ALL), playername, playerid, reason);
 		if (is_with_reason) {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNJAIL_REASON), string, reason);
+			Lang_SendTextToAll("ADMIN_COMMAND_UNJAIL_ALL_REASON", playername, playerid, reason);
+		} else {
+			Lang_SendTextToAll("ADMIN_COMMAND_UNJAIL_ALL", playername, playerid);
 		}
-		SendClientMessageToAll(-1, string);
 
 		foreach (targetid : Player) {
 			UnJailPlayer(targetid);
@@ -58,17 +57,13 @@ COMMAND:unjail(playerid, params[])
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNJAIL_PLAYER), playername, playerid, targetname, targetid);
 		if (is_with_reason) {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNJAIL_REASON), string, reason);
+			Lang_SendTextToAll("ADMIN_COMMAND_UNJAIL_PLAYER_REASON", playername, playerid, targetname, targetid, reason);
+			Lang_SendText(playerid, "ADMIN_COMMAND_UNJAIL_PLAYER_SELF_REASON", targetname, targetid, reason);
+		} else {
+			Lang_SendTextToAll("ADMIN_COMMAND_UNJAIL_PLAYER", playername, playerid, targetname, targetid);
+			Lang_SendText(playerid, "ADMIN_COMMAND_UNJAIL_PLAYER_SELF", targetname, targetid);
 		}
-		SendClientMessageToAll(-1, string);
-
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNJAIL_PLAYER_SELF), targetname, targetid);
-		if (is_with_reason) {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_UNJAIL_REASON), string, reason);
-		}
-		SendClientMessage(playerid, -1, string);
 
 		UnJailPlayer(targetid);
 	}

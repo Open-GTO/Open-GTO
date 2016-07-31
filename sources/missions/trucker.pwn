@@ -232,7 +232,7 @@ stock Trucker_Start(playerid)
 
 		Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_TRAILER_S", _, _,
 		              MESSAGE_NOTVAR_NONE,
-		              "TRUCKER_ALERT_GET_TRAILER_S");
+		              TRUCKER_TIME_GET_TRAILER);
 
 		Message_Objective(playerid, "TRUCKER_OBJECTIVE_GET_TRAILER", -1);
 
@@ -275,31 +275,31 @@ stock Trucker_Start(playerid)
 
 	switch (trailer_type) {
 		case TRAILER_TYPE_PRODUCT: {
-			__(playerid, TRUCKER_PRODUCTS, type_name);
-			__(playerid, TRUCKER_TEXTDRAW_PRODUCTS, td_type_name);
+			Lang_GetPlayerText(playerid, "TRUCKER_PRODUCTS", type_name);
+			Lang_GetPlayerText(playerid, "TRUCKER_TEXTDRAW_PRODUCTS", td_type_name);
 		}
 		case TRAILER_TYPE_PETROL: {
-			__(playerid, TRUCKER_FUEL, type_name);
-			__(playerid, TRUCKER_TEXTDRAW_FUEL, td_type_name);
+			Lang_GetPlayerText(playerid, "TRUCKER_FUEL", type_name);
+			Lang_GetPlayerText(playerid, "TRUCKER_TEXTDRAW_FUEL", td_type_name);
 		}
 		case TRAILER_TYPE_CAREER: {
-			__(playerid, TRUCKER_COAL, type_name);
-			__(playerid, TRUCKER_TEXTDRAW_COAL, td_type_name);
+			Lang_GetPlayerText(playerid, "TRUCKER_COAL", type_name);
+			Lang_GetPlayerText(playerid, "TRUCKER_TEXTDRAW_COAL", td_type_name);
 		}
 	}
 
 	SetPlayerQuestID(playerid, mission_GetQuestID(mission_trucker));
 	player_trucker[playerid][pt_MissionTimer] = SetTimerEx("Trucker_CancelMission", TRUCKER_MISSION_TIME * 1000, 0, "d", playerid);
 
-	new string[MAX_STRING];
-
 	Lang_SendText(playerid, "TRUCKER_MISSION_STARTED", type_name, zone, TRUCKER_MISSION_TIME / 60);
 
-	format(string, sizeof(string), _(playerid, TRUCKER_ALERT_STARTED), TRUCKER_MISSION_TIME / 60);
-	Message_Alert(playerid, _(playerid, TRUCKER_ALERT_HEADER), string);
+	new
+		header[MAX_LANG_VALUE_STRING];
 
-	format(string, sizeof(string), _(playerid, TRUCKER_OBJECTIVE_STARTED), td_type_name, zone);
-	Message_Objective(playerid, string, -1);
+	Lang_GetPlayerText(playerid, "TRUCKER_ALERT_HEADER", header);
+	Message_Alert(playerid, header, "TRUCKER_ALERT_STARTED", _, _, TRUCKER_MISSION_TIME / 60);
+
+	Message_Objective(playerid, "TRUCKER_OBJECTIVE_STARTED", -1, _, td_type_name, zone);
 	return 1;
 }
 

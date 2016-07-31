@@ -79,70 +79,24 @@ stock SendClientMessageToModers(senderid, text[])
 	return 0;
 }
 
-stock Admin_SendProtectReport(issuerid, text[], {Float, _}:...)
+stock Admin_SendProtectReport(issuerid, var[], {Float, _}:...)
 {
-	new
-		message[MAX_LANG_VALUE_STRING],
+	static
+		text[MAX_LANG_VALUE_STRING],
+		success,
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(issuerid, playername, sizeof(playername));
+	success = Lang_GetText(Lang_GetDefaultLang(), var, text);
+	va_format(text, sizeof(text), text, va_start<2>);
 
-	static const STATIC_ARGS = 2;
-	new n = (numargs() - STATIC_ARGS) * BYTES_PER_CELL;
-	if (n)
-	{
-		new fstring[144], arg_start, arg_end;
-		#emit CONST.alt			text
-		#emit LCTRL				5
-		#emit ADD
-		#emit STOR.S.pri		arg_start
-
-		#emit LOAD.S.alt		n
-		#emit ADD
-		#emit STOR.S.pri		arg_end
-		do
-		{
-			#emit LOAD.I
-			#emit PUSH.pri
-			arg_end -= BYTES_PER_CELL;
-			#emit LOAD.S.pri	arg_end
-		}
-		while(arg_end > arg_start);
-
-		#emit PUSH.S			text
-		#emit PUSH.C			144
-		#emit PUSH.ADR			fstring
-
-		n += BYTES_PER_CELL * 3;
-		#emit PUSH.S			n
-		#emit SYSREQ.C			format
-
-		n += BYTES_PER_CELL;
-		#emit LCTRL				4
-		#emit LOAD.S.alt		n
-		#emit ADD
-		#emit SCTRL				4
-
-		foreach (new adminid : Player) {
-			if (!IsPlayerHavePrivilege(adminid, PlayerPrivilegeModer)) {
-				continue;
-			}
-
-			Lang_SendText(adminid, "ADMIN_PROTECTION_REPORT", playername, issuerid, fstring);
+	foreach (new adminid : Player) {
+		if (!IsPlayerHavePrivilege(adminid, PlayerPrivilegeModer)) {
+			continue;
 		}
 
-		Log_Player("ADMIN_PROTECTION_REPORT", playername, issuerid, fstring);
+		Lang_SendText(adminid, "ADMIN_PROTECTION_REPORT", playername, issuerid, fstring);
 	}
-	else
-	{
-		foreach (new adminid : Player) {
-			if (!IsPlayerHavePrivilege(adminid, PlayerPrivilegeModer)) {
-				continue;
-			}
 
-			Lang_SendText(adminid, "ADMIN_PROTECTION_REPORT", playername, issuerid, text);
-		}
-
-		Log_Player("ADMIN_PROTECTION_REPORT", playername, issuerid, text);
-	}
+	Log_Player("ADMIN_PROTECTION_REPORT", playername, issuerid, fstring);
 }

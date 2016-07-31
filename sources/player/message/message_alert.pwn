@@ -29,12 +29,18 @@
 
 enum e_Alerts_Info {
 	bool:e_aIsBusy,
-	e_aHeader[MAX_LANG_VALUE_STRING],
-	e_aContent[MAX_LANG_VALUE_STRING],
+	e_aCaption[MAX_LANG_VALUE_STRING],
+	e_aInfo[MAX_LANG_VALUE_STRING],
 	e_aTime,
 	e_aColor,
 }
 
+enum (<<= 1) {
+	MESSAGE_NOTVAR_ALL = -1,
+	MESSAGE_NOTVAR_NONE = 0,
+	MESSAGE_NOTVAR_CAPTION = 1,
+	MESSAGE_NOTVAR_INFO,
+}
 
 /*
  * Vars
@@ -130,7 +136,7 @@ forward OnPlayerConnect(playerid);
  * Public functions
  */
 
-stock Message_Alert(playerid, header[] = "", content[], time = 4000, hcolor = -5963521)
+stock Message_Alert(playerid, caption[] = "", info[], time = 4000, hcolor = -5963521, notvar_flags = MESSAGE_NOTVAR_NONE, va_args<>)
 {
 	new id = GetFreeSlot(playerid);
 	if (id == -1) {
@@ -138,9 +144,26 @@ stock Message_Alert(playerid, header[] = "", content[], time = 4000, hcolor = -5
 		return id;
 	}
 
+	static
+		Lang:lang;
+
+	lang = Lang_GetPlayerLang(playerid);
+
+	if (!(notvar_flags & MESSAGE_NOTVAR_CAPTION)) {
+		Lang_GetText(lang, caption, messages[playerid][id][e_aCaption], MAX_LANG_VALUE_STRING);
+	} else {
+		strcpy(messages[playerid][id][e_aCaption], caption, MAX_LANG_VALUE_STRING);
+	}
+
+	if (!(notvar_flags & MESSAGE_NOTVAR_INFO)) {
+		Lang_GetText(lang, info, messages[playerid][id][e_aInfo], MAX_LANG_VALUE_STRING);
+	} else {
+		strcpy(messages[playerid][id][e_aInfo], info, MAX_LANG_VALUE_STRING);
+	}
+
+	va_format(messages[playerid][id][e_aInfo], MAX_LANG_VALUE_STRING, messages[playerid][id][e_aInfo], va_start<6>);
+
 	messages[playerid][id][e_aIsBusy] = true;
-	strcpy(messages[playerid][id][e_aHeader], header, MAX_LANG_VALUE_STRING);
-	strcpy(messages[playerid][id][e_aContent], content, MAX_LANG_VALUE_STRING);
 	messages[playerid][id][e_aTime] = time;
 	messages[playerid][id][e_aColor] = hcolor;
 
@@ -179,9 +202,9 @@ public Message_AlertHide(playerid)
 
 static stock Message_AlertCached(playerid, id)
 {
-	if (strlen(messages[playerid][id][e_aHeader]) > 0) {
+	if (strlen(messages[playerid][id][e_aCaption]) > 0) {
 		PlayerTextDrawColor(playerid, td_header[playerid], messages[playerid][id][e_aColor]);
-		PlayerTextDrawSetString(playerid, td_header[playerid], messages[playerid][id][e_aHeader]);
+		PlayerTextDrawSetString(playerid, td_header[playerid], messages[playerid][id][e_aCaption]);
 
 		PlayerTextDrawShow(playerid, td_header[playerid]);
 
@@ -195,8 +218,8 @@ static stock Message_AlertCached(playerid, id)
 		TextDrawHideForPlayer(playerid, td_background);
 	}
 
-	if (strlen(messages[playerid][id][e_aContent]) > 0) {
-		PlayerTextDrawSetString(playerid, td_content[playerid], messages[playerid][id][e_aContent]);
+	if (strlen(messages[playerid][id][e_aInfo]) > 0) {
+		PlayerTextDrawSetString(playerid, td_content[playerid], messages[playerid][id][e_aInfo]);
 
 		PlayerTextDrawShow(playerid, td_content[playerid]);
 	} else {
@@ -210,8 +233,8 @@ static stock Message_AlertCached(playerid, id)
 	}
 
 	messages[playerid][id][e_aIsBusy] = false;
-	messages[playerid][id][e_aHeader][0] = '\0';
-	messages[playerid][id][e_aContent][0] = '\0';
+	messages[playerid][id][e_aCaption][0] = '\0';
+	messages[playerid][id][e_aInfo][0] = '\0';
 
 	timer_id[playerid] = SetTimerEx("Message_AlertHide", messages[playerid][id][e_aTime], 0, "d", playerid);
 }

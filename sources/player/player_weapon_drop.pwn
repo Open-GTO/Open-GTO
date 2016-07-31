@@ -111,7 +111,7 @@ PWDrop_OnPlayerDeath(playerid, killerid, reason)
 
 		wd_slot = FindFreeWeaponDropSlot();
 		if (wd_slot == -1) {
-			Log_Game(_(playerid, WEAPON_DROP_ERROR_SLOT_NOT_FOUND));
+			Log_Game("WEAPON_DROP_ERROR_SLOT_NOT_FOUND");
 			return 1;
 		}
 
@@ -119,7 +119,7 @@ PWDrop_OnPlayerDeath(playerid, killerid, reason)
 
 		gDroppedWeapons[wd_slot][wd_pickupid] = CreateDynamicPickup(pickupmodel, 1, pos_x + (random(5) - random(5)) / 2, pos_y + (random(5) - random(5)) / 2, pos_z, -1);
 		if (gDroppedWeapons[wd_slot][wd_pickupid] == -1) {
-			Log_Game(_(playerid, WEAPON_DROP_ERROR_LIMIT_IS_REACHED));
+			Log_Game("WEAPON_DROP_ERROR_LIMIT_IS_REACHED");
 			return 1;
 		}
 

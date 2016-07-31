@@ -489,6 +489,21 @@ stock Gang_SendMessage(gangid, message[], color = COLOR_GANG)
 	}
 }
 
+stock Gang_SendLangMessage(gangid, var[], color = COLOR_GANG, va_args<>)
+{
+	static
+		text[MAX_LANG_VALUE_STRING],
+		playerid;
+
+	foreach (new memberid : LoadedGangMembers[gangid]) {
+		playerid = GangMember_GetID(gangid, memberid);
+
+		Lang_GetText(Lang_GetPlayerLang(playerid), var, text);
+		va_format(text, sizeof(text), text, va_start<3>);
+		SendClientMessage(playerid, color, text);
+	}
+}
+
 /*
 	Gang House
 */

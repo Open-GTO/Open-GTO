@@ -40,7 +40,6 @@ COMMAND:jail(playerid, params[])
 	new
 		is_with_reason,
 		timeword[MAX_LANG_VALUE_STRING],
-		string[MAX_LANG_VALUE_STRING],
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
@@ -49,11 +48,11 @@ COMMAND:jail(playerid, params[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (targetid == -1) {
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_ALL), playername, playerid, time, timeword);
 		if (is_with_reason) {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_REASON), string, reason);
+			Lang_SendTextToAll("ADMIN_COMMAND_JAIL_ALL_REASON", playername, playerid, time, timeword, string, reason);
+		} else {
+			Lang_SendTextToAll("ADMIN_COMMAND_JAIL_ALL", playername, playerid, time, timeword);
 		}
-		SendClientMessageToAll(-1, string);
 
 		foreach (targetid : Player) {
 			JailPlayer(targetid, time);
@@ -61,17 +60,13 @@ COMMAND:jail(playerid, params[])
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_PLAYER), playername, playerid, targetname, targetid, time, timeword);
 		if (is_with_reason) {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_REASON), string, reason);
+			Lang_SendTextToAll("ADMIN_COMMAND_JAIL_PLAYER_REASON", playername, playerid, targetname, targetid, time, timeword, reason);
+			Lang_SendText(playerid, "ADMIN_COMMAND_JAIL_PLAYER_SELF_REASON", targetname, targetid, time, timeword, reason);
+		} else {
+			Lang_SendTextToAll("ADMIN_COMMAND_JAIL_PLAYER", playername, playerid, targetname, targetid, time, timeword);
+			Lang_SendText(playerid, "ADMIN_COMMAND_JAIL_PLAYER_SELF", targetname, targetid, time, timeword);
 		}
-		SendClientMessageToAll(-1, string);
-
-		format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_PLAYER_SELF), targetname, targetid, time, timeword);
-		if (is_with_reason) {
-			format(string, sizeof(string), _(playerid, ADMIN_COMMAND_JAIL_REASON), string, reason);
-		}
-		SendClientMessage(playerid, -1, string);
 
 		JailPlayer(targetid, time);
 	}

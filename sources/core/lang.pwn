@@ -39,7 +39,7 @@ Lang_OnGameModeInit()
 	Lang_SetDefaultLang(gLang[LangEN]);
 
 	new rcon_command[9 + (MAX_LANG_CODE + 1) * sizeof(gLang) + 1] = "language ";
-	strcat(rcon_command, Lang_GetCodes(.isuppercase = true));
+	strcat(rcon_command, Lang_ReturnCodes(.isuppercase = true));
 	SendRconCommand(rcon_command);
 
 	Log_Game("LOG_LANG_INIT");
@@ -49,7 +49,7 @@ stock Lang_ReloadAll()
 {
 	foreach (new Lang:lang : LangIterator) {
 		Lang_Reload(lang);
-		Log_Game("LOG_LANG_RELOADED", Lang_GetName(lang));
+		Log_Game("LOG_LANG_RELOADED", Lang_ReturnName(lang));
 	}
 }
 

@@ -12,6 +12,7 @@
 #define _fightteacher_included
 
 enum e_Fight_Info {
+	e_fStyleNameVar[MAX_LANG_VAR_STRING],
 	e_fStyleLevel,
 	e_fStyleID,
 	bool:e_fHaveTeacher,
@@ -24,7 +25,6 @@ enum e_Fight_Info {
 
 static
 	gFightStyle[MAX_FIGHTS][e_Fight_Info],
-	gFightStyleName[MAX_FIGHTS][Lang][MAX_LANG_VALUE_STRING],
 	gFightStyleLastID;
 
 Fight_OnGameModeInit()
@@ -51,7 +51,7 @@ Fight_OnPlayerEnterCheckpoint(playerid, cp)
 
 	SetPlayerFightTeacherID(playerid, teacherid);
 
-	GetFightTeacherName(teacherid, Lang_GetPlayerLang(playerid), teachername);
+	GetFightTeacherNameForPlayer(playerid, teacherid, teachername);
 	Lang_GetPlayerText(playerid, "FIGHT_TEACHER_DIALOG_TEACHER_CAPTION", caption, _, teachername);
 
 	if (IsPlayerFightStyleLearned(playerid, teacherid)) {
@@ -85,7 +85,7 @@ DialogCreate:ServiceFights(playerid)
 		caption[MAX_LANG_VALUE_STRING],
 		teacherid = GetPlayerFightTeacherID(playerid);
 
-	GetFightTeacherName(teacherid, Lang_GetPlayerLang(playerid), teachername);
+	GetFightTeacherNameForPlayer(playerid, teacherid, teachername);
 	Lang_GetPlayerText(playerid, "FIGHT_TEACHER_DIALOG_TEACHER_CAPTION", caption, _, teachername);
 
 	Dialog_Open(playerid, Dialog:ServiceFights, DIALOG_STYLE_MSGBOX,
@@ -108,7 +108,7 @@ DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
 		teacherid = GetPlayerFightTeacherID(playerid),
 		cost = GetFightTeacherCost(teacherid);
 
-	GetFightTeacherName(teacherid, Lang_GetPlayerLang(playerid), teachername);
+	GetFightTeacherNameForPlayer(playerid, teacherid, teachername);
 	Lang_GetPlayerText(playerid, "FIGHT_TEACHER_DIALOG_TEACHER_CAPTION", caption, _, teachername);
 
 	if (GetPlayerMoney(playerid) < cost) {
@@ -144,14 +144,7 @@ stock AddFightStyle(minlvl, styleid, varname[], bool:haveteacher, cost = 0, Floa
 
 	SetFightTeacherLastID(id + 1);
 
-	new
-		langid;
-
-	foreach (new Lang:lang : LangIterator) {
-		langid = Lang_GetID(lang);
-
-		strcpy(gFightStyleName[id][lang], Lang_ReturnText(langid, varname), MAX_LANG_VALUE_STRING);
-	}
+	strcpy(gFightStyle[id][e_fStyleNameVar], varname, MAX_LANG_VAR_STRING);
 	gFightStyle[id][e_fStyleLevel] = minlvl;
 	gFightStyle[id][e_fStyleID] = styleid;
 	gFightStyle[id][e_fHaveTeacher] = haveteacher;
@@ -202,12 +195,12 @@ stock GetFightTeacherLevel(teacherid)
 	return gFightStyle[teacherid][e_fStyleLevel];
 }
 
-stock GetFightTeacherName(teacherid, Lang:lang, fstylename[], const size = sizeof(fstylename))
+stock GetFightTeacherNameForPlayer(playerid, teacherid, fstylename[], const size = sizeof(fstylename))
 {
 	if (!IsTeacherValid(teacherid)) {
 		return 0;
 	}
-	strcpy(fstylename, gFightStyleName[teacherid][lang], size);
+	Lang_GetPlayerText(playerid, gFightStyle[teacherid][e_fStyleNameVar], fstylename, size);
 	return 1;
 }
 
@@ -227,7 +220,7 @@ stock IsHaveFightTeacher(teacherid)
 	return gFightStyle[teacherid][e_fHaveTeacher];
 }
 
-stock GetFightStyleName(styleid, Lang:lang, fstylename[], const size = sizeof(fstylename))
+stock GetFightStyleNameForPlayer(playerid, styleid, fstylename[], const size = sizeof(fstylename))
 {
 	new teacherid = -1;
 	for (new id = 0; id < GetFightTeacherLastID(); id++) {
@@ -241,7 +234,7 @@ stock GetFightStyleName(styleid, Lang:lang, fstylename[], const size = sizeof(fs
 		return 0;
 	}
 
-	strcpy(fstylename, gFightStyleName[teacherid][lang], size);
+	GetFightTeacherNameForPlayer(playerid, teacherid, fstylename, size);
 	return 1;
 }
 

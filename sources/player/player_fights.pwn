@@ -26,17 +26,17 @@ DialogCreate:PlayerFights(playerid)
 			continue;
 		}
 
-		GetFightTeacherName(id, Lang_GetPlayerLangType(playerid), temp);
+		GetFightTeacherNameForPlayer(playerid, id, temp);
 
 		strcat(string, temp);
 		strcat(string, "\n");
 	}
 
 	Dialog_Open(playerid, Dialog:PlayerFights, DIALOG_STYLE_LIST,
-		_(playerid, FIGHT_TEACHER_PLAYER_CAPTION),
-		string,
-		_(playerid, FIGHT_TEACHER_DIALOG_BUTTON_OK), _(playerid, FIGHT_TEACHER_PLAYER_BUTTON1)
-	);
+	            "FIGHT_TEACHER_PLAYER_CAPTION",
+	            string,
+	            "FIGHT_TEACHER_DIALOG_BUTTON_OK", "FIGHT_TEACHER_PLAYER_BUTTON1",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
@@ -49,7 +49,7 @@ DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
 	new
 		teacherid,
 		styleid,
-		string[MAX_LANG_VALUE_STRING];
+		teacher_name[MAX_LANG_VALUE_STRING];
 
 	teacherid = listitem;
 
@@ -67,10 +67,14 @@ DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
 	styleid = GetFightTeacherStyleID(teacherid);
 
 	SetPlayerFightStyleUsed(playerid, styleid);
-	GetFightTeacherName(teacherid, Lang_GetPlayerLangType(playerid), string);
+	GetFightTeacherNameForPlayer(playerid, teacherid, teacher_name);
 
-	format(string, sizeof(string), _(playerid, FIGHT_TEACHER_PLAYER_USED_STYLE), string);
-	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX, _(playerid, FIGHT_TEACHER_PLAYER_CAPTION), string, _(playerid, FIGHT_TEACHER_PLAYER_BUTTON1), _(playerid, FIGHT_TEACHER_PLAYER_BUTTON2));
+	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
+	            "FIGHT_TEACHER_PLAYER_CAPTION",
+	            "FIGHT_TEACHER_PLAYER_USED_STYLE",
+	            "FIGHT_TEACHER_PLAYER_BUTTON1", "FIGHT_TEACHER_PLAYER_BUTTON2",
+	            MDIALOG_NOTVAR_NONE,
+	            teacher_name);
 	return 1;
 }
 

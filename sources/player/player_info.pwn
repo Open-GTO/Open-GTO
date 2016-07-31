@@ -73,10 +73,10 @@ stock GetPlayerInfoArray(playerid, string[MAX_PLAYER_INFO_LINES][], const size_s
 		distance = GetPlayerDistanceFromPoint(requestorid, pos_x, pos_y, pos_z);
 	}
 
-	format(string[0], size_string, _(playerid, PLAYER_INFO_0), playerid, health, armour, ping);
-	format(string[1], size_string, _(playerid, PLAYER_INFO_1), gang_string, money, level, xp, xp_to_level);
-	format(string[2], size_string, _(playerid, PLAYER_INFO_2), weapon_name, weapon_id, weapon_ammo);
-	format(string[3], size_string, _(playerid, PLAYER_INFO_3), interior, world);
-	format(string[4], size_string, _(playerid, PLAYER_INFO_4), distance);
-	format(string[5], size_string, _(playerid, PLAYER_INFO_5), pos_x, pos_y, pos_z, pos_a);
+	Lang_GetPlayerText(playerid, "PLAYER_INFO_0", string[0], size_string, playerid, health, armour, ping);
+	Lang_GetPlayerText(playerid, "PLAYER_INFO_1", string[1], size_string, gang_string, money, level, xp, xp_to_level);
+	Lang_GetPlayerText(playerid, "PLAYER_INFO_2", string[2], size_string, weapon_name, weapon_id, weapon_ammo);
+	Lang_GetPlayerText(playerid, "PLAYER_INFO_3", string[3], size_string, interior, world);
+	Lang_GetPlayerText(playerid, "PLAYER_INFO_4", string[4], size_string, distance);
+	Lang_GetPlayerText(playerid, "PLAYER_INFO_5", string[5], size_string, pos_x, pos_y, pos_z, pos_a);
 }

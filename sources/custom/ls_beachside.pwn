@@ -52,7 +52,7 @@
 
 // Time in ms that the elevator will wait in each floor before continuing with the queue...
 // be sure to give enough time for doors to open
-#define ELEVATOR_WAIT_TIME  (5000)  
+#define ELEVATOR_WAIT_TIME  (5000)
 
 // Position defines
 #define X_DOOR_R_OPENED     (289.542419)
@@ -131,7 +131,7 @@ static Float:FloorZOffsets[14] =
 // the elevator floor doors so they can be destroyed when the filterscript
 // is unloaded
 new Obj_Elevator, Obj_ElevatorDoors[2], Obj_FloorDoors[14][2];
-	
+
 // Stores a reference to the 3D text labels used on each floor and inside the
 // elevator itself so they can be detroyed when the filterscript is unloaded
 new Text3D:Label_Elevator, Text3D:Label_Floors[14];
@@ -143,7 +143,7 @@ new ElevatorState;
 // Stores the current floor the elevator is on or heading to... if the value is
 // ELEVATOR_STATE_IDLE or ELEVATOR_STATE_WAITING this is the current floor. If
 // the value is ELEVATOR_STATE_MOVING then it is the floor it's moving to
-new	ElevatorFloor;  
+new	ElevatorFloor;
 
 // Stores the elevator queue for each floor
 new ElevatorQueue[14];
@@ -193,7 +193,7 @@ Beachside_OnPlayerConnect(playerid)
 {
 	// Remove the lamp post at the underground car park entrance
 	RemoveBuildingForPlayer(playerid, 1226, 265.481, -1581.1, 32.9311, 5.0);
-	
+
 	// Remove the night lights object (must be removed to also remove any
 	// occulsion zones inside the building)
 	RemoveBuildingForPlayer(playerid, 6518, 280.297, -1606.2, 72.3984, 250.0);
@@ -206,7 +206,7 @@ Beachside_OnObjectMoved(objectid)
 {
 	// Create variables
 	new Float:x, Float:y, Float:z;
-	
+
 	// Loop
 	for(new i; i < sizeof(Obj_FloorDoors); i ++)
 	{
@@ -263,7 +263,7 @@ Beachside_OnPlayerKeySC(playerid, newkeys, oldkeys)
 	{
 		// The player is using the button inside the elevator
 		// --------------------------------------------------
-		
+
 		// Show the elevator dialog to the player
 		Dialog_Show(playerid, Dialog:ElevatorMenu);
 		return 1;
@@ -275,7 +275,7 @@ Beachside_OnPlayerKeySC(playerid, newkeys, oldkeys)
 		{
 			// The player is most likely using an elevator floor button... check which floor
 			// -----------------------------------------------------------------------------
-			
+
 			// Create variable with the number of floors to check (total floors minus 1)
 			new i = 13;
 
@@ -297,7 +297,11 @@ Beachside_OnPlayerKeySC(playerid, newkeys, oldkeys)
 						// Display gametext message to the player
 						if (gettime() >= GetPVarInt(playerid, "ls_beachside_call_time")) {
 							SetPVarInt(playerid, "ls_beachside_call_time", gettime() + ALERT_TIME);
-							Message_Alert(playerid, "Elevator", "LS BeachSide Elevator is already on this floor.~n~Walk inside and press '"KEY_NAME"'", ALERT_TIME * 1000);
+							Message_Alert(playerid,
+							              "Elevator",
+							              "LS BeachSide Elevator is already on this floor.~n~Walk inside and press '"KEY_NAME"'",
+							              ALERT_TIME * 1000, _,
+							              MESSAGE_NOTVAR_CAPTION | MESSAGE_NOTVAR_INFO);
 						}
 
 						// Exit here (return 1 so this callback is processed in other scripts)
@@ -311,12 +315,15 @@ Beachside_OnPlayerKeySC(playerid, newkeys, oldkeys)
 				// Display gametext message to the player
 				if (gettime() >= GetPVarInt(playerid, "ls_beachside_call_time")) {
 					SetPVarInt(playerid, "ls_beachside_call_time", gettime() + ALERT_TIME);
-					Message_Alert(playerid, "Elevator", "LS BeachSide Elevator has been called.~n~Please wait", ALERT_TIME * 1000);
-				
+					Message_Alert(playerid,
+					              "Elevator",
+					              "LS BeachSide Elevator has been called.~n~Please wait",
+					              ALERT_TIME * 1000, _,
+					              MESSAGE_NOTVAR_CAPTION | MESSAGE_NOTVAR_INFO);
 
 					// Create variable for formatted message
 					new strTempString[100];
-					
+
 					// Check if the elevator is moving
 					if (ElevatorState == ELEVATOR_STATE_MOVING)
 					{
@@ -326,7 +333,7 @@ Beachside_OnPlayerKeySC(playerid, newkeys, oldkeys)
 					{
 						format(strTempString, sizeof(strTempString), "* Лифт The LS BeachSide был вызван... Сейчас он на '%s'.", FloorNames[ElevatorFloor]);
 					}
-					
+
 					// Display formatted chat text message to the player
 					SendClientMessage(playerid, COLOR_MESSAGE_YELLOW, strTempString);
 				}
@@ -335,7 +342,7 @@ Beachside_OnPlayerKeySC(playerid, newkeys, oldkeys)
 			}
 		}
 	}
-	
+
 	return 0;
 }
 
@@ -359,9 +366,9 @@ DialogResponse:ElevatorMenu(playerid, response, listitem, inputtext[])
 		return 0;
 
 	if(FloorRequestedBy[listitem] != INVALID_PLAYER_ID || IsFloorInQueue(listitem))
-		Message_Alert(playerid, "Elevator", "The floor is already in the queue");
+		Message_Alert(playerid, "Elevator", "The floor is already in the queue", _, _, MESSAGE_NOTVAR_CAPTION | MESSAGE_NOTVAR_INFO);
 	else if(DidPlayerRequestElevator(playerid))
-		Message_Alert(playerid, "Elevator", "The floor is already in the queue");
+		Message_Alert(playerid, "Elevator", "The floor is already in the queue", _, _, MESSAGE_NOTVAR_CAPTION | MESSAGE_NOTVAR_INFO);
 	else
 		CallElevator(playerid, listitem);
 
@@ -448,7 +455,7 @@ stock Floor_OpenDoors(floorid)
 
 	MoveDynamicObject(Obj_FloorDoors[floorid][0], X_FDOOR_L_OPENED, Y_FDOOR_L_OPENED, GetDoorsZCoordForFloor(floorid) + 0.05, DOORS_SPEED);
 	MoveDynamicObject(Obj_FloorDoors[floorid][1], X_FDOOR_R_OPENED, Y_FDOOR_R_OPENED, GetDoorsZCoordForFloor(floorid) + 0.05, DOORS_SPEED);
-	
+
 	PlaySoundForPlayersInRange(6401, 50.0, X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid) + 5.0);
 
 	return 1;
@@ -460,7 +467,7 @@ stock Floor_CloseDoors(floorid)
 
 	MoveDynamicObject(Obj_FloorDoors[floorid][0], X_ELEVATOR_POS, Y_ELEVATOR_POS - 0.245, GetDoorsZCoordForFloor(floorid) + 0.05, DOORS_SPEED);
 	MoveDynamicObject(Obj_FloorDoors[floorid][1], X_ELEVATOR_POS, Y_ELEVATOR_POS - 0.245, GetDoorsZCoordForFloor(floorid) + 0.05, DOORS_SPEED);
-	
+
 	PlaySoundForPlayersInRange(6401, 50.0, X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid) + 5.0);
 
 	return 1;
@@ -490,7 +497,7 @@ public Elevator_Boost(floorid)
 	StopDynamicObject(Obj_Elevator);
 	StopDynamicObject(Obj_ElevatorDoors[0]);
 	StopDynamicObject(Obj_ElevatorDoors[1]);
-	
+
 	MoveDynamicObject(Obj_Elevator, X_ELEVATOR_POS, Y_ELEVATOR_POS, GetElevatorZCoordForFloor(floorid), ELEVATOR_SPEED);
 	MoveDynamicObject(Obj_ElevatorDoors[0], X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid), ELEVATOR_SPEED);
 	MoveDynamicObject(Obj_ElevatorDoors[1], X_ELEVATOR_POS, Y_ELEVATOR_POS, GetDoorsZCoordForFloor(floorid), ELEVATOR_SPEED);

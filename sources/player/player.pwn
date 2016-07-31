@@ -109,9 +109,7 @@ Player_OnPlayerDisconnect(playerid, reason)
 
 	new is_ok = Gang_MemberLogout(playerid, gangid);
 	if (is_ok) {
-		new string[MAX_LANG_VALUE_STRING];
-		Lang_GetPlayerText(playerid, "GANG_MEMBER_LOGOUT", string, _, playername);
-		Gang_SendMessage(gangid, string);
+		Gang_SendLangMessage(gangid, "GANG_MEMBER_LOGOUT", _, playername);
 	}
 
 	// other stuff
@@ -175,9 +173,7 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 			new killername[MAX_PLAYER_NAME + 1];
 			GetPlayerName(killerid, killername, sizeof(killername));
 
-			new string[MAX_LANG_VALUE_STRING];
-			Lang_GetPlayerText(playerid, "GANG_KILL_TEAMMATE", string, _, killername);
-			Gang_SendMessage(killer_gang_id, string);
+			Gang_SendLangMessage(killer_gang_id, "GANG_KILL_TEAMMATE", _, killername);
 			return;
 		}
 
@@ -308,9 +304,7 @@ stock Player_OnLogin(playerid)
 			new is_ok = Gang_MemberLogin(playerid, gangid);
 
 			if (is_ok) {
-				Lang_GetPlayerText(playerid, "GANG_MEMBER_LOGIN", string, _, playername);
-				Gang_SendMessage(gangid, string);
-
+				Gang_SendLangMessage(gangid, "GANG_MEMBER_LOGIN", _, playername);
 				Lang_SendText(playerid, "GANG_MEMBER_LOGIN_SELF", gangname, Gang_GetOnlineCount(gangid) - 1);
 
 				Gang_GetMotd(gangid, string);

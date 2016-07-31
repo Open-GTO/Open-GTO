@@ -63,7 +63,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			}
 
 			new fstylename[MAX_STRING];
-			GetFightStyleName(GetPlayerFightStyleUsed(playerid), Lang_GetPlayerLangType(playerid), fstylename);
+			GetFightStyleNameForPlayer(playerid, GetPlayerFightStyleUsed(playerid), fstylename);
 
 			new gangname[MAX_GANG_NAME];
 			GetPlayerGangName(playerid, gangname);
