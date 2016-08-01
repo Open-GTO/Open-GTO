@@ -35,7 +35,7 @@ COMMAND:weapon(playerid, params[])
 		weaponid,
 		amount;
 
-	if (sscanf(params, "s[5]s[32]k<weapon>I(0)", subcmd, subparams, weaponid, amount)) {
+	if (sscanf(params, "s[5]s[32]k<weapon>I(0)", subcmd, subparams, weaponid, amount) || weaponid == -1) {
 		Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_HELP");
 		return 1;
 	}
