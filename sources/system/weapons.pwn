@@ -238,16 +238,8 @@ Weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 Weapon_OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	#pragma unused oldstate
-	new
-		weaponid,
-		ammo;
-
-	if (newstate == PLAYER_STATE_DRIVER) {
-		// fix for GetPlayerAmmo
-		GetPlayerWeaponData(playerid, 4, weaponid, ammo);
-		SetPlayerArmedWeapon(playerid, weaponid);
-	} else if (newstate == PLAYER_STATE_PASSENGER) {
-		weaponid = GetPlayerWeapon(playerid);
+	if (newstate == PLAYER_STATE_PASSENGER) {
+		new weaponid = GetPlayerWeapon(playerid);
 
 		// check semi automatic
 		new
