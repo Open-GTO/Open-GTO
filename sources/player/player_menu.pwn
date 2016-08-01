@@ -28,10 +28,9 @@ PMenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 DialogCreate:PlayerMenu(playerid)
 {
 	Dialog_Open(playerid, Dialog:PlayerMenu, DIALOG_STYLE_LIST,
-		"PLAYER_MENU_HEADER",
-		"PLAYER_MENU_LIST",
-		"BUTTON_OK", "BUTTON_CANCEL"
-	);
+	            "PLAYER_MENU_HEADER",
+	            "PLAYER_MENU_LIST",
+	            "BUTTON_OK", "BUTTON_CANCEL");
 }
 
 DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
@@ -204,7 +203,9 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
 			            "PLAYER_MENU_VERSION_HEADER",
 			            "PLAYER_MENU_VERSION_INFO",
-			            "BUTTON_BACK", "BUTTON_EXIT");
+			            "BUTTON_BACK", "BUTTON_EXIT",
+			            MDIALOG_NOTVAR_NONE,
+			            VERSION_STRING);
 			return 1;
 		}
 	}

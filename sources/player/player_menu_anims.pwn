@@ -1909,7 +1909,11 @@ DialogCreate:AnimLib(playerid)
 		strcat(string, "\n", sizeof(string));
 	}
 
-	Dialog_Open(playerid, Dialog:AnimLib, DIALOG_STYLE_LIST, "Меню анимаций", string, "ОК", "Назад");
+	Dialog_Open(playerid, Dialog:AnimLib, DIALOG_STYLE_LIST,
+	            "PLAYER_MENU_ANIMATION_CAPTION",
+	            string,
+	            "BUTTON_OK", "BUTTON_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:AnimLib(playerid, response, listitem, inputtext[])
@@ -1943,10 +1947,14 @@ DialogCreate:AnimMenu(playerid)
 		}
 	}
 
-	new head_msg[MAX_ANIM_LIB_NAME + 32];
-	format(head_msg, sizeof(head_msg), "Меню анимаций - %s", lib);
+	new head[MAX_ANIM_LIB_NAME + 32];
+	Lang_GetPlayerText(playerid, "PLAYER_MENU_ANIMATION_SUBCAPTION", head, _, lib);
 
-	Dialog_Open(playerid, Dialog:AnimMenu, DIALOG_STYLE_LIST, head_msg, string, "ОК", "Назад");
+	Dialog_Open(playerid, Dialog:AnimMenu, DIALOG_STYLE_LIST,
+	            head,
+	            string,
+	            "BUTTON_OK", "BUTTON_BACK",
+	            MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_INFO);
 	return 1;
 }
 

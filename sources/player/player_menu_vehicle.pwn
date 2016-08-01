@@ -29,7 +29,11 @@ DialogCreate:PlayerVehicleMenu(playerid)
 		}
 	}
 
-	Dialog_Open(playerid, Dialog:PlayerVehicleMenu, DIALOG_STYLE_LIST, "PLAYER_MENU_VEHICLE_CAPTION", string, "PLAYER_MENU_VEHICLE_BUTTON_NEXT", "PLAYER_MENU_VEHICLE_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:PlayerVehicleMenu, DIALOG_STYLE_LIST,
+	            "PLAYER_MENU_VEHICLE_CAPTION",
+	            string,
+	            "PLAYER_MENU_VEHICLE_BUTTON_NEXT", "PLAYER_MENU_VEHICLE_BUTTON_BACK",
+	            MDIALOG_NOTVAR_INFO);
 	return 1;
 }
 

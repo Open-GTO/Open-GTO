@@ -159,11 +159,18 @@ DialogCreate:PlayerSpawnMenu(playerid)
 	}
 
 	if (count < 1) {
-		Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu, "PLAYER_SPAWN_DIALOG_HEADER", "PLAYER_SPAWN_DIALOG_INFO", "PLAYER_SPAWN_DIALOG_BUTTON_BACK", "PLAYER_SPAWN_DIALOG_BUTTON_BACK");
+		Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
+		                 "PLAYER_SPAWN_DIALOG_HEADER",
+		                 "PLAYER_SPAWN_DIALOG_INFO",
+		                 "PLAYER_SPAWN_DIALOG_BUTTON_BACK", "PLAYER_SPAWN_DIALOG_BUTTON_BACK");
 		return 1;
 	}
 
-	Dialog_Open(playerid, Dialog:PlayerSpawnMenu, DIALOG_STYLE_LIST, "PLAYER_SPAWN_DIALOG_HEADER", string, "PLAYER_SPAWN_DIALOG_BUTTON_OK", "PLAYER_SPAWN_DIALOG_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:PlayerSpawnMenu, DIALOG_STYLE_LIST,
+	            "PLAYER_SPAWN_DIALOG_HEADER",
+	            string,
+	            "PLAYER_SPAWN_DIALOG_BUTTON_OK", "PLAYER_SPAWN_DIALOG_BUTTON_BACK",
+	            MDIALOG_NOTVAR_INFO);
 	return 1;
 }
 
@@ -179,14 +186,20 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 
 	if (listitem == 0) {
 		SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
-		Dialog_Message(playerid, "PLAYER_SPAWN_DIALOG_HEADER", "PLAYER_SPAWN_HAS_CHANGED", "PLAYER_SPAWN_DIALOG_BUTTON_OK");
+		Dialog_Message(playerid,
+		               "PLAYER_SPAWN_DIALOG_HEADER",
+		               "PLAYER_SPAWN_HAS_CHANGED",
+		               "PLAYER_SPAWN_DIALOG_BUTTON_OK");
 		return 1;
 	}
 
 	new gangid = GetPlayerGangID(playerid);
 	if (listitem == 1 && gangid != INVALID_GANG_ID && Gang_GetHouseID(gangid) != -1) {
 		SetPlayerSpawnType(playerid, SPAWN_TYPE_GANG);
-		Dialog_Message(playerid, "PLAYER_SPAWN_DIALOG_HEADER", "PLAYER_SPAWN_HAS_CHANGED", "PLAYER_SPAWN_DIALOG_BUTTON_OK");
+		Dialog_Message(playerid,
+		               "PLAYER_SPAWN_DIALOG_HEADER",
+		               "PLAYER_SPAWN_HAS_CHANGED",
+		               "PLAYER_SPAWN_DIALOG_BUTTON_OK");
 		return 1;
 	}
 
@@ -207,9 +220,15 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 			// если игрок, сменивший спавн - лидер банды, то устанавливаем домом банды этот дом
 			if (GangMember_IsPlayerHaveRank(playerid, GangMemberLeader)) {
 				Gang_SetHouseID(gangid, i);
-				Dialog_Message(playerid, "PLAYER_SPAWN_DIALOG_HEADER", "PLAYER_SPAWN_GANG_HAS_CHANGED", "PLAYER_SPAWN_DIALOG_BUTTON_OK");
+				Dialog_Message(playerid,
+				               "PLAYER_SPAWN_DIALOG_HEADER",
+				               "PLAYER_SPAWN_GANG_HAS_CHANGED",
+				               "PLAYER_SPAWN_DIALOG_BUTTON_OK");
 			} else {
-				Dialog_Message(playerid, "PLAYER_SPAWN_DIALOG_HEADER", "PLAYER_SPAWN_HAS_CHANGED", "PLAYER_SPAWN_DIALOG_BUTTON_OK");
+				Dialog_Message(playerid,
+				               "PLAYER_SPAWN_DIALOG_HEADER",
+				               "PLAYER_SPAWN_HAS_CHANGED",
+				               "PLAYER_SPAWN_DIALOG_BUTTON_OK");
 			}
 			return 1;
 		}

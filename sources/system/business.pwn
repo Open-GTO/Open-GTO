@@ -329,7 +329,10 @@ DialogResponse:BusinessMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:BusinessSellAccept(playerid)
 {
-	Dialog_Open(playerid, Dialog:BusinessSellAccept, DIALOG_STYLE_MSGBOX, "BUSINESS_ACCEPT_HEADER", "BUSINESS_ACCEPT_INFO", "BUSINESS_DIALOG_BUTTON_SELL", "BUSINESS_DIALOG_BUTTON_BACK");
+	Dialog_Open(playerid, Dialog:BusinessSellAccept, DIALOG_STYLE_MSGBOX,
+	            "BUSINESS_ACCEPT_HEADER",
+	            "BUSINESS_ACCEPT_INFO",
+	            "BUSINESS_DIALOG_BUTTON_SELL", "BUSINESS_DIALOG_BUTTON_BACK");
 }
 
 DialogResponse:BusinessSellAccept(playerid, response, listitem, inputtext[])
@@ -557,7 +560,11 @@ stock bis_Sell(playerid)
 	Lang_GetPlayerText(playerid, "BUSINESS_DIALOG_HEAD", head, _, Businesses[id][Business_Name]);
 	if (strcmp(Businesses[id][Business_Owner], ReturnPlayerName(playerid), true))
 	{
-		Dialog_MessageEx(playerid, Dialog:BusinessMessage, head, "BUSINESS_NOT_YOU", "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL", MDIALOG_NOTVAR_CAPTION);
+		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
+		                 head,
+		                 "BUSINESS_NOT_YOU",
+		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
+		                 MDIALOG_NOTVAR_CAPTION);
 	}
 	else
 	{
@@ -575,6 +582,7 @@ stock bis_Sell(playerid)
 		                 head,
 		                 "BUSINESS_DIALOG_INFO_SELL",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
+		                 MDIALOG_NOTVAR_CAPTION,
 		                 Businesses[id][Business_Name],
 		                 Businesses[id][Business_Vault]);
 

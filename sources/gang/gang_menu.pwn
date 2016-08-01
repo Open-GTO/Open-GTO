@@ -203,10 +203,9 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 DialogCreate:GangExitAccept(playerid)
 {
 	Dialog_Open(playerid, Dialog:GangExitAccept, DIALOG_STYLE_MSGBOX,
-		"GANG_REMOVE_HEADER",
-		"GANG_REMOVE_INFO",
-		"GANG_REMOVE_BUTTON", "GANG_MENU_BUTTON_BACK"
-	);
+	            "GANG_REMOVE_HEADER",
+	            "GANG_REMOVE_INFO",
+	            "GANG_REMOVE_BUTTON", "GANG_MENU_BUTTON_BACK");
 }
 
 DialogResponse:GangExitAccept(playerid, response, listitem, inputtext[])
@@ -239,7 +238,10 @@ DialogResponse:GangExitAccept(playerid, response, listitem, inputtext[])
 
 DialogCreate:GangCreateName(playerid)
 {
-	Dialog_Open(playerid, Dialog:GangCreateName, DIALOG_STYLE_INPUT, "GANG_CREATE_HEADER", "GANG_CREATE_NAME_MESSAGE", "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK");
+	Dialog_Open(playerid, Dialog:GangCreateName, DIALOG_STYLE_INPUT,
+	            "GANG_CREATE_HEADER",
+	            "GANG_CREATE_NAME_MESSAGE",
+	            "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK");
 }
 
 DialogResponse:GangCreateName(playerid, response, listitem, inputtext[])
@@ -300,7 +302,11 @@ DialogCreate:GangCreateColor(playerid)
 		format(string, sizeof(string), "%s{%s}%s\n", string, Color_ReturnEmbeddingCode(i), Color_ReturnName(i));
 	}
 
-	Dialog_Open(playerid, Dialog:GangCreateColor, DIALOG_STYLE_LIST, "GANG_CREATE_HEADER", string, "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:GangCreateColor, DIALOG_STYLE_LIST,
+	            "GANG_CREATE_HEADER",
+	            string,
+	            "GANG_MENU_BUTTON_OK", "GANG_MENU_BUTTON_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:GangCreateColor(playerid, response, listitem, inputtext[])
@@ -561,7 +567,11 @@ DialogCreate:GangRank(playerid)
 	new members[64 * MAX_GANG_SIZE];
 	GetPlayerGangMemberListString(playerid, members);
 
-	Dialog_Open(playerid, Dialog:GangRank, DIALOG_STYLE_LIST, "GANG_RANK_HEADER", members, "GANG_RANK_BUTTON", "GANG_MENU_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:GangRank, DIALOG_STYLE_LIST,
+	            "GANG_RANK_HEADER",
+	            members,
+	            "GANG_RANK_BUTTON", "GANG_MENU_BUTTON_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:GangRank(playerid, response, listitem, inputtext[])

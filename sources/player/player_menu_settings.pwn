@@ -95,7 +95,10 @@ DialogResponse:SettingsReturnMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:PlayerChangeNickMenu(playerid)
 {
-	Dialog_Open(playerid, Dialog:PlayerChangeNickMenu, DIALOG_STYLE_INPUT, "PLAYER_MENU_SETTINGS_NAME_CAPTION", "PLAYER_MENU_SETTINGS_NAME_INFO", "PLAYER_MENU_SETTINGS_NAME_BUTTON_OK", "PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK");
+	Dialog_Open(playerid, Dialog:PlayerChangeNickMenu, DIALOG_STYLE_INPUT,
+	            "PLAYER_MENU_SETTINGS_NAME_CAPTION",
+	            "PLAYER_MENU_SETTINGS_NAME_INFO",
+	            "PLAYER_MENU_SETTINGS_NAME_BUTTON_OK", "PLAYER_MENU_SETTINGS_NAME_BUTTON_BACK");
 }
 
 DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
@@ -204,7 +207,10 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:PlayerChangePassMenu(playerid)
 {
-	Dialog_Open(playerid, Dialog:PlayerChangePassMenu, DIALOG_STYLE_INPUT, "PLAYER_MENU_SETTINGS_PASSWORD_CAPTION", "PLAYER_MENU_SETTINGS_PASSWORD_INFO", "PLAYER_MENU_SETTINGS_PASSWORD_BTN_OK", "PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK");
+	Dialog_Open(playerid, Dialog:PlayerChangePassMenu, DIALOG_STYLE_INPUT,
+	            "PLAYER_MENU_SETTINGS_PASSWORD_CAPTION",
+	            "PLAYER_MENU_SETTINGS_PASSWORD_INFO",
+	            "PLAYER_MENU_SETTINGS_PASSWORD_BTN_OK", "PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK");
 }
 
 DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])

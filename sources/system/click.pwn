@@ -92,7 +92,11 @@ DialogCreate:PlayerClick(playerid)
 		}
 	}
 
-	Dialog_Open(playerid, Dialog:PlayerClick, DIALOG_STYLE_LIST, "Выберите действие", listitems, "Выбрать", "Отмена");
+	Dialog_Open(playerid, Dialog:PlayerClick, DIALOG_STYLE_LIST,
+	            "PLAYER_CLICK_MENU_CAPTION",
+	            listitems,
+	            "BUTTON_SELECT", "BUTTON_CANCEL",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:PlayerClick(playerid, response, listitem, inputtext[])

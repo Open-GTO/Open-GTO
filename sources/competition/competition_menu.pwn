@@ -105,7 +105,11 @@ DialogCreate:CompetitionMenu(playerid)
 		strcat(string, temp);
 	}
 
-	Dialog_Open(playerid, Dialog:CompetitionMenu, DIALOG_STYLE_TABLIST_HEADERS, "COMPETITION_MENU_HEADER", string, "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:CompetitionMenu, DIALOG_STYLE_TABLIST_HEADERS,
+	            "COMPETITION_MENU_HEADER",
+	            string,
+	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
@@ -357,7 +361,11 @@ DialogCreate:CompetitionStartTypeMenu(playerid)
 		format(string, sizeof(string), "%s{%s}%s\n", string, ctype_color_code, ctype_name);
 	}
 
-	Dialog_Open(playerid, Dialog:CompetitionStartTypeMenu, DIALOG_STYLE_LIST, "COMPETITION_START_TYPE_HEADER", string, "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:CompetitionStartTypeMenu, DIALOG_STYLE_LIST,
+	            "COMPETITION_START_TYPE_HEADER",
+	            string,
+	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:CompetitionStartTypeMenu(playerid, response, listitem, inputtext[])
@@ -417,7 +425,11 @@ DialogCreate:CompetitionStartMapMenu(playerid)
 		}
 	}
 
-	Dialog_Open(playerid, Dialog:CompetitionStartMapMenu, DIALOG_STYLE_LIST, "COMPETITION_START_TYPE_HEADER", string, "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:CompetitionStartMapMenu, DIALOG_STYLE_LIST,
+	            "COMPETITION_START_TYPE_HEADER",
+	            string,
+	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:CompetitionStartMapMenu(playerid, response, listitem, inputtext[])
@@ -452,7 +464,11 @@ DialogCreate:CompetitionStartWeatherMenu(playerid)
 		strcat(string, "\n");
 	}
 
-	Dialog_Open(playerid, Dialog:CompetitionStartWeatherMenu, DIALOG_STYLE_LIST, "COMPETITION_START_TYPE_HEADER", string, "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:CompetitionStartWeatherMenu, DIALOG_STYLE_LIST,
+	            "COMPETITION_START_TYPE_HEADER",
+	            string,
+	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:CompetitionStartWeatherMenu(playerid, response, listitem, inputtext[])

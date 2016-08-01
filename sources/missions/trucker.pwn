@@ -393,7 +393,10 @@ DialogResponse:TruckerMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:TruckerCancel(playerid)
 {
-	Dialog_Open(playerid, Dialog:TruckerCancel, DIALOG_STYLE_MSGBOX, "TRUCKER_DIALOG_HEADER", "TRUCKER_MISSION_LEAVE", "TRUCKER_DIALOG_YES", "TRUCKER_DIALOG_NO");
+	Dialog_Open(playerid, Dialog:TruckerCancel, DIALOG_STYLE_MSGBOX,
+	            "TRUCKER_DIALOG_HEADER",
+	            "TRUCKER_MISSION_LEAVE",
+	            "TRUCKER_DIALOG_YES", "TRUCKER_DIALOG_NO");
 }
 
 DialogResponse:TruckerCancel(playerid, response, listitem, inputtext[])

@@ -67,6 +67,10 @@ static stock Lang:_Lang_Load(code[], name[])
 		filename[MAX_LANG_FILENAME];
 
 	lang = Lang_Add(code, name);
+	if (lang == INVALID_LANG_ID) {
+		return INVALID_LANG_ID;
+	}
+
 	Iter_Add(LangIterator, _:lang);
 
 	for (new i = 0; name[i] != '\0'; i++) {

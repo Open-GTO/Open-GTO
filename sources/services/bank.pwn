@@ -217,6 +217,7 @@ DialogCreate:BankWithdraw(playerid)
 	            "BANK_CAPTION",
 	            "BANK_START_INFO",
 	            "BANK_BUTTON_WITHDRAW", "BANK_BUTTON_BACK",
+	            MDIALOG_NOTVAR_NONE,
 	            gProfitCount, gProfitCountPremium, bank_money);
 }
 
@@ -229,7 +230,10 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 
 	new amount = strval(inputtext);
 	if (amount <= 0 || strlen(inputtext) == 0 || !IsNumeric(inputtext)) {
-		Dialog_MessageEx(playerid, Dialog:BankReturnWithdrawMenu, "BANK_CAPTION", "BANK_INCORRECT_VALUE", "BANK_BUTTON_BACK", "BANK_BUTTON_CANCEL");
+		Dialog_MessageEx(playerid, Dialog:BankReturnWithdrawMenu,
+		                 "BANK_CAPTION",
+		                 "BANK_INCORRECT_VALUE",
+		                 "BANK_BUTTON_BACK", "BANK_BUTTON_CANCEL");
 		return 1;
 	}
 
@@ -341,7 +345,10 @@ DialogResponse:GangBankReturnWithdraw(playerid, response, listitem, inputtext[])
 
 DialogCreate:GangBankWithdraw(playerid)
 {
-	Dialog_Open(playerid, Dialog:GangBankWithdraw, DIALOG_STYLE_INPUT, "BANK_GANG_CAPTION", "BANK_GANG_WITHDRAW_MESSAGE_INFO", "BANK_BUTTON_OK", "BANK_BUTTON_BACK");
+	Dialog_Open(playerid, Dialog:GangBankWithdraw, DIALOG_STYLE_INPUT,
+	            "BANK_GANG_CAPTION",
+	            "BANK_GANG_WITHDRAW_MESSAGE_INFO",
+	            "BANK_BUTTON_OK", "BANK_BUTTON_BACK");
 }
 
 DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
@@ -394,7 +401,10 @@ DialogResponse:GangBankReturnDeposit(playerid, response, listitem, inputtext[])
 
 DialogCreate:GangBankDeposit(playerid)
 {
-	Dialog_Open(playerid, Dialog:GangBankDeposit, DIALOG_STYLE_INPUT, "BANK_GANG_CAPTION", "BANK_GANG_DEPOSIT_MESSAGE_INFO", "BANK_BUTTON_OK", "BANK_BUTTON_BACK");
+	Dialog_Open(playerid, Dialog:GangBankDeposit, DIALOG_STYLE_INPUT,
+	            "BANK_GANG_CAPTION",
+	            "BANK_GANG_DEPOSIT_MESSAGE_INFO",
+	            "BANK_BUTTON_OK", "BANK_BUTTON_BACK");
 }
 
 DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
