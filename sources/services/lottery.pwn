@@ -113,7 +113,6 @@ COMMAND:lottery(playerid, params[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
 		value;
 
 	if (sscanf(params, "i", value)) {
@@ -168,19 +167,18 @@ stock Lottery_WaitTimer()
 	SetLotteryStatus(LotteryStart);
 
 	new
-		string[MAX_LANG_VALUE_STRING],
 		playerid;
 
 	foreach (playerid : Player) {
-		Lang_SendText(playerid, $LOTTERY_START_MESSAGE_0, WinMoney);
+		Lang_SendText(playerid, "LOTTERY_START_MESSAGE_0", WinMoney);
 	}
 
 	foreach (playerid : Player) {
-		Lang_SendText(playerid, $LOTTERY_START_MESSAGE_1, GetLotteryMaxValue(), TicketCost);
+		Lang_SendText(playerid, "LOTTERY_START_MESSAGE_1", GetLotteryMaxValue(), TicketCost);
 	}
 
 	foreach (playerid : Player) {
-		Lang_SendText(playerid, $LOTTERY_START_MESSAGE_2, DelayStartSecondCount);
+		Lang_SendText(playerid, "LOTTERY_START_MESSAGE_2", DelayStartSecondCount);
 	}
 
 	return 1;
@@ -189,7 +187,6 @@ stock Lottery_WaitTimer()
 stock Lottery_StartTimer()
 {
 	new
-		string[MAX_LANG_VALUE_STRING],
 		sec_to_end = DelayStartSecondCount - GetLotterySecondGone();
 
 	if (sec_to_end > 0) {
@@ -212,7 +209,7 @@ stock Lottery_StartTimer()
 		case LOTTERY_ERROR_NO: {
 			GivePlayerMoney(winner_id, WinMoney);
 
-			Lang_SendText(winner_id, $LOTTERY_YOU_WINNER, WinMoney);
+			Lang_SendText(winner_id, "LOTTERY_YOU_WINNER", WinMoney);
 
 			GetPlayerName(winner_id, winner_name, sizeof(winner_name));
 

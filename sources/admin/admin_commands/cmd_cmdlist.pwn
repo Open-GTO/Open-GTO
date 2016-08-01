@@ -26,8 +26,8 @@ COMMAND:cmdlist(playerid, params[])
 
 	if (strcmp(subparams, "dialog", true) == 0) {
 		new
-			string[MAX_LANG_MULTI_STRING * 3],
-			temp[MAX_LANG_MULTI_STRING];
+			string[MAX_LANG_VALUE_STRING * 9],
+			temp[MAX_LANG_VALUE_STRING * 4];
 
 		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_CMDLIST_MODER", string);
 
@@ -48,20 +48,20 @@ COMMAND:cmdlist(playerid, params[])
 			MDIALOG_NOTVAR_INFO);
 	} else {
 		Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_HEADER");
-		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_0);
-		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_1);
-		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_2);
-		Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_MODER_3);
+		Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_MODER_0");
+		Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_MODER_1");
+		Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_MODER_2");
+		Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_MODER_3");
 
 		if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_ADMIN_0);
-			Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_ADMIN_1);
-			Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_ADMIN_2);
-			Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_ADMIN_3);
+			Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_ADMIN_0");
+			Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_ADMIN_1");
+			Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_ADMIN_2");
+			Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_ADMIN_3");
 		}
 
 		if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_CMDLIST_RCON_0);
+			Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_RCON_0");
 		}
 	}
 

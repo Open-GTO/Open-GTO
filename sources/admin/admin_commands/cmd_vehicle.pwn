@@ -213,8 +213,8 @@ COMMAND:vehicle(playerid, params[])
 		GetVehicleModelName(vehicleid, name);
 
 		// print
-		Lang_SendText(playerid, $ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_0, vehicleid, name, model);
-		Lang_SendText(playerid, $ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1, health, x, y, z, angle);
+		Lang_SendText(playerid, "ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_0", vehicleid, name, model);
+		Lang_SendText(playerid, "ADMIN_COMMAND_VEHICLE_INFO_MESSAGE_1", health, x, y, z, angle);
 	} else if (strcmp(subcmd, "health", true) == 0) {
 		if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeModer)) {
 			Lang_SendText(playerid, "ADMIN_COMMAND_NOT_ALLOWED");

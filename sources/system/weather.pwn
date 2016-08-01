@@ -130,3 +130,8 @@ stock Weather_GetName(weatherid, Lang:lang, name[], const size = sizeof(name))
 	}
 	return Lang_GetText(lang, gWeatherVarName[weatherid], name, size);
 }
+
+stock Weather_GetNameForPlayer(weatherid, playerid, name[], const size = sizeof(name))
+{
+	return Weather_GetName(weatherid, Lang_GetPlayerLang(playerid), name, size);
+}

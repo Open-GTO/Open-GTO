@@ -41,7 +41,6 @@ COMMAND:spectate(playerid, params[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
 		targetname[MAX_PLAYER_NAME + 1];
 
 	if (targetid == -1) {

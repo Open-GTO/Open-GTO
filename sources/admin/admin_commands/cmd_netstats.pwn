@@ -32,12 +32,12 @@ COMMAND:netstats(playerid, params[])
 
 	new ip_port[15 + 1 + 4 + 1];
 	NetStats_GetIpPort(targetid, ip_port, sizeof(ip_port));
-	Lang_SendText(playerid, $ADMIN_COMMAND_NETSTATS_0, ip_port);
-	Lang_SendText(playerid, $ADMIN_COMMAND_NETSTATS_1, NetStats_GetConnectedTime(targetid));
-	Lang_SendText(playerid, $ADMIN_COMMAND_NETSTATS_2, NetStats_ConnectionStatus(targetid));
-	Lang_SendText(playerid, $ADMIN_COMMAND_NETSTATS_3, NetStats_PacketLossPercent(targetid));
-	Lang_SendText(playerid, $ADMIN_COMMAND_NETSTATS_4, NetStats_MessagesReceived(targetid));
-	Lang_SendText(playerid, $ADMIN_COMMAND_NETSTATS_5, NetStats_MessagesSent(targetid));
-	Lang_SendText(playerid, $ADMIN_COMMAND_NETSTATS_6, NetStats_MessagesRecvPerSecond(targetid));
+	Lang_SendText(playerid, "ADMIN_COMMAND_NETSTATS_0", ip_port);
+	Lang_SendText(playerid, "ADMIN_COMMAND_NETSTATS_1", NetStats_GetConnectedTime(targetid));
+	Lang_SendText(playerid, "ADMIN_COMMAND_NETSTATS_2", NetStats_ConnectionStatus(targetid));
+	Lang_SendText(playerid, "ADMIN_COMMAND_NETSTATS_3", NetStats_PacketLossPercent(targetid));
+	Lang_SendText(playerid, "ADMIN_COMMAND_NETSTATS_4", NetStats_MessagesReceived(targetid));
+	Lang_SendText(playerid, "ADMIN_COMMAND_NETSTATS_5", NetStats_MessagesSent(targetid));
+	Lang_SendText(playerid, "ADMIN_COMMAND_NETSTATS_6", NetStats_MessagesRecvPerSecond(targetid));
 	return 1;
 }

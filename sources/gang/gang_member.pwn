@@ -177,12 +177,6 @@ stock GangMember_IsPlayerHaveRank(playerid, GangMemberRank:rank)
 
 stock GangMember_GetRankName(gangid, memberid, Lang:lang, name[], const size = sizeof(name))
 {
-	new
-		GangMemberRank:rank,
-		var_name[MAX_GANG_NAME];
-
-	rank = GangMember_GetRank(gangid, memberid);
-
-	GangRankMember_GetVarName(gRankVarName[rank], var_name);
-	Lang_GetText(lang, var_name, name, size);
+	new GangMemberRank:rank = GangMember_GetRank(gangid, memberid);
+	Lang_GetText(lang, gRankVarName[rank], name, size);
 }

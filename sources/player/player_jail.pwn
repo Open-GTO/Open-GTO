@@ -68,10 +68,7 @@ stock JailPlayerTimer(playerid)
 	if (gettime() >= jail_time) {
 		UnJailPlayer(playerid);
 
-		new
-			string[MAX_LANG_VALUE_STRING],
-			playername[MAX_PLAYER_NAME + 1];
-
+		new playername[MAX_PLAYER_NAME + 1];
 		GetPlayerName(playerid, playername, sizeof(playername));
 
 		Lang_SendTextToAll("ADMIN_JAIL_UNJAILED", playername, playerid);

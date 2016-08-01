@@ -59,7 +59,7 @@ Fight_OnPlayerEnterCheckpoint(playerid, cp)
 		               caption,
 		               "FIGHT_TEACHER_LEARNED",
 		               "FIGHT_TEACHER_DIALOG_BUTTON_OK",
-		               MDIALOG_NOTVAR_CAPTION
+		               MDIALOG_NOTVAR_CAPTION,
 		               teachername);
 		return 1;
 	}

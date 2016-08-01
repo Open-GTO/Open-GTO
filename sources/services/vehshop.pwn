@@ -317,7 +317,6 @@ static stock VehShop_UpdateLabelString(pos_id)
 	InsertSpacesInInt(GetVehicleModelCost(model), cost_str);
 
 	new
-		langid,
 		string[MAX_LANG_VALUE_STRING];
 
 	foreach (new Lang:lang : LangIterator) {

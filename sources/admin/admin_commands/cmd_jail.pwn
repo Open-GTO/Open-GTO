@@ -49,7 +49,7 @@ COMMAND:jail(playerid, params[])
 
 	if (targetid == -1) {
 		if (is_with_reason) {
-			Lang_SendTextToAll("ADMIN_COMMAND_JAIL_ALL_REASON", playername, playerid, time, timeword, string, reason);
+			Lang_SendTextToAll("ADMIN_COMMAND_JAIL_ALL_REASON", playername, playerid, time, timeword, reason);
 		} else {
 			Lang_SendTextToAll("ADMIN_COMMAND_JAIL_ALL", playername, playerid, time, timeword);
 		}

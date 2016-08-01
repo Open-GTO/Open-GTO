@@ -136,7 +136,6 @@ Player_OnPlayerConnect(playerid)
 
 	// check name
 	if (!NameCharCheck(playername)) {
-		new string[MAX_LANG_VALUE_STRING];
 		Lang_SendText(playerid, "PLAYER_NICK_BAD_SYMBOLS", ALLOWED_NICK_SYMBOLS_STR);
 		Lang_SendText(playerid, "PLAYER_NICK_IS_IP");
 		KickPlayer(playerid, "Такой ник запрещён.");
@@ -256,10 +255,10 @@ stock Player_OnLogin(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	Lang_SendText(playerid, $ACCOUNT_LOGIN_MESSAGE_0, VERSION_STRING);
-	Lang_SendText(playerid, $ACCOUNT_LOGIN_MESSAGE_1);
-	Lang_SendText(playerid, $ACCOUNT_LOGIN_MESSAGE_2);
-	Lang_SendText(playerid, $ACCOUNT_LOGIN_MESSAGE_3);
+	Lang_SendText(playerid, "ACCOUNT_LOGIN_MESSAGE_0", VERSION_STRING);
+	Lang_SendText(playerid, "ACCOUNT_LOGIN_MESSAGE_1");
+	Lang_SendText(playerid, "ACCOUNT_LOGIN_MESSAGE_2");
+	Lang_SendText(playerid, "ACCOUNT_LOGIN_MESSAGE_3");
 
 	if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
 		Lang_SendText(playerid, "ACCOUNT_LOGIN_ROOT");
@@ -387,7 +386,6 @@ stock Player_Sync(playerid)
 stock ShowPlayerWeaponsOnLevel(playerid, newlevel, oldlevel)
 {
 	new
-		string[MAX_LANG_VALUE_STRING],
 		bool:is_found;
 
 	for (new weaponid = 1; weaponid < MAX_WEAPONS; weaponid++) {
@@ -401,7 +399,7 @@ stock ShowPlayerWeaponsOnLevel(playerid, newlevel, oldlevel)
 				is_found = true;
 			}
 
-			Lang_SendText(playerid, $PLAYER_LEVEL_NEW_WEAPON_ITEM,
+			Lang_SendText(playerid, "PLAYER_LEVEL_NEW_WEAPON_ITEM",
 			              ReturnPlayerWeaponName(playerid, weaponid),
  			              GetWeaponCost(weaponid));
 		}

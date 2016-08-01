@@ -40,7 +40,6 @@ COMMAND:freeze(playerid, params[])
 	new
 		is_with_reason,
 		timeword[MAX_LANG_VALUE_STRING],
-		string[MAX_LANG_VALUE_STRING],
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 

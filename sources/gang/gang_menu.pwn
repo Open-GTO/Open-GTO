@@ -126,7 +126,7 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 					members[64 * MAX_GANG_SIZE],
 					gang_money[16];
 
-				GetGangMemberListString(gangid, Lang_GetPlayerLanguage(playerid), members);
+				GetPlayerGangMemberListString(playerid, members);
 				InsertSpacesInInt(Gang_GetMoney(gangid), gang_money);
 
 				Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
@@ -417,7 +417,6 @@ DialogResponse:GangInviteAccept(playerid, response, listitem, inputtext[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
 		player_name[MAX_PLAYER_NAME + 1],
 		gang_name[MAX_GANG_NAME + 1];
 
@@ -518,11 +517,8 @@ DialogResponse:GangInvite(playerid, response, listitem, inputtext[])
 
 DialogCreate:GangKick(playerid)
 {
-	new
-		members[64 * MAX_GANG_SIZE],
-		gangid = GetPlayerGangID(playerid);
-
-	GetGangMemberListString(gangid, Lang_GetPlayerLanguage(playerid), members);
+	new members[64 * MAX_GANG_SIZE];
+	GetPlayerGangMemberListString(playerid, members);
 
 	Dialog_Open(playerid, Dialog:GangKick, DIALOG_STYLE_LIST,
 	            "GANG_KICK_HEADER",
@@ -562,13 +558,8 @@ DialogResponse:GangKick(playerid, response, listitem, inputtext[])
 
 DialogCreate:GangRank(playerid)
 {
-	new
-		members[64 * MAX_GANG_SIZE],
-		gangid;
-
-	gangid = GetPlayerGangID(playerid);
-
-	GetGangMemberListString(gangid, Lang_GetPlayerLanguage(playerid), members);
+	new members[64 * MAX_GANG_SIZE];
+	GetPlayerGangMemberListString(playerid, members);
 
 	Dialog_Open(playerid, Dialog:GangRank, DIALOG_STYLE_LIST, "GANG_RANK_HEADER", members, "GANG_RANK_BUTTON", "GANG_MENU_BUTTON_BACK", MDIALOG_NOTVAR_INFO);
 }
@@ -752,8 +743,6 @@ DialogResponse:GangMotd(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new string[MAX_LANG_VALUE_STRING];
-
 	new len = strlen(inputtext);
 	if (len > MAX_GANG_MOTD) {
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_MOTD_HEADER", "GANG_MOTD_LENGTH_ERROR", "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_NONE, MAX_GANG_MOTD);
@@ -812,6 +801,18 @@ static stock GetGangMemberID(gangid, listitem)
 /*
 	GetGangMemberListString
 */
+
+static stock GetPlayerGangMemberListString(playerid, members[], const size = sizeof(members))
+{
+	new
+		gangid,
+		Lang:lang;
+
+	gangid = GetPlayerGangID(playerid);
+	lang = Lang_GetPlayerLang(playerid);
+
+	GetGangMemberListString(gangid, lang, members, size);
+}
 
 static stock GetGangMemberListString(gangid, Lang:lang, members[], const size = sizeof(members))
 {

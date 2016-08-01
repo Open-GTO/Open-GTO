@@ -48,17 +48,17 @@ DialogCreate:VehicleMenu(playerid)
 		string[MAX_LANG_VALUE_STRING * 8];
 
 	Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_FLIP", temp);
-	strcat(string, temp, sizeof(string));
+	strcat(string, temp);
 
 	Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_FILL", temp);
-	strcat(string, _temp, sizeof(string));
+	strcat(string, temp);
 
 	Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_RADIO", temp);
-	strcat(string, temp, sizeof(string));
+	strcat(string, temp);
 
 	// двери
 	Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_DOORS", temp);
-	format(string, sizeof(string), temp, string, ReturnVehicleDoorsAccessName(Lang_GetPlayerLanguage(playerid), vehicleid));
+	format(string, sizeof(string), temp, string, ReturnVehicleDoorsAccessName(Lang_GetPlayerLang(playerid), vehicleid));
 
 	// фары
 	if (lights == VEHICLE_PARAMS_ON) {
@@ -66,7 +66,7 @@ DialogCreate:VehicleMenu(playerid)
 	} else {
 		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_ENABLE_LIGHTS", temp);
 	}
-	strcat(string, temp, sizeof(string));
+	strcat(string, temp);
 
 	// двигатель
 	if (engine == VEHICLE_PARAMS_ON) {
@@ -74,7 +74,7 @@ DialogCreate:VehicleMenu(playerid)
 	} else {
 		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_ENABLE_ENGINE", temp);
 	}
-	strcat(string, temp, sizeof(string));
+	strcat(string, temp);
 
 	// капот
 	if (bonnet == VEHICLE_PARAMS_ON) {
@@ -82,7 +82,7 @@ DialogCreate:VehicleMenu(playerid)
 	} else {
 		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_OPEN_BONNET", temp);
 	}
-	strcat(string, temp, sizeof(string));
+	strcat(string, temp);
 
 	// багажник
 	if (boot == VEHICLE_PARAMS_ON) {
@@ -90,7 +90,7 @@ DialogCreate:VehicleMenu(playerid)
 	} else {
 		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_OPEN_BOOT", temp);
 	}
-	strcat(string, temp, sizeof(string));
+	strcat(string, temp);
 
 	// окна
 	new window_state;
@@ -101,7 +101,7 @@ DialogCreate:VehicleMenu(playerid)
 	} else {
 		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_OPEN_WINDOWS", temp);
 	}
-	strcat(string, temp, sizeof(string));
+	strcat(string, temp);
 
 	Dialog_Open(playerid, Dialog:VehicleMenu, DIALOG_STYLE_LIST, "VEHICLE_MENU_HEADER", string, "VEHICLE_MENU_BUTTON_OK", "VEHICLE_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
 }

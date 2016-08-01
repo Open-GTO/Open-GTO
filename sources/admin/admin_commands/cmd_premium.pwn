@@ -36,7 +36,6 @@ COMMAND:premium(playerid, params[])
 
 	new
 		timestamp,
-		string[MAX_LANG_VALUE_STRING],
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 

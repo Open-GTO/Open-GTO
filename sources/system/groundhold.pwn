@@ -259,8 +259,6 @@ stock Groundhold_CheckAll()
 stock Groundhold_RemovePlayer(ghid, playerid, &return_playerid = INVALID_PLAYER_ID)
 {
 	// message
-	new string[MAX_LANG_VALUE_STRING];
-
 	Lang_SendText(playerid, "GROUNDHOLD_MISSING", gGroundholds[ghid][e_ghName]);
 
 	Message_Alert(playerid, "GROUNDHOLD_ALERT_HEADER", "GROUNDHOLD_ALERT_MISSING");

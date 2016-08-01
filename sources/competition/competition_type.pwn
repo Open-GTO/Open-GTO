@@ -210,17 +210,3 @@ stock CompetitionType_GetParamString(ctype, CompetitionTypeParams:param, value[]
 {
 	strcpy(value, gParam[ctype][param], size);
 }
-
-/*
-	Name param
-*/
-
-stock CompetitionType_GetNameForPlayer(ctype, playerid, value[], size = sizeof(value))
-{
-	new
-		ctype_name_var[MAX_COMPETITION_TYPE_NAME_VAR];
-
-	CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME_VAR, ctype_name_var);
-
-	return Lang_GetPlayerText(playerid, ctype_name_var, value, size);
-}

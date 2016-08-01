@@ -44,7 +44,6 @@ public PlayerClick_SendCash(playerid, clickedid, listitem, inputtext[])
 	new
 		clickedname[MAX_PLAYER_NAME + 1],
 		sendername[MAX_PLAYER_NAME + 1],
-		string[MAX_STRING],
 		money = strval(inputtext);
 
 	GetPlayerName(clickedid, clickedname, sizeof(clickedname));
@@ -83,7 +82,7 @@ public PlayerClick_SendReport(playerid, clickedid, listitem, inputtext[])
 	admin_count = GetPlayersWithPrivilege(PlayerPrivilegeModer, players);
 
 	Lang_SendText(playerid, "CLICK_REPORT_SELF", clickedname, clickedid, inputtext);
-	Lang_SendTextToGroup(players, "CLICK_REPORT_PLAYER", sendername, playerid, clickedname, clickedid, inputtext);
+	Lang_SendTextToPlayers(players, "CLICK_REPORT_PLAYER", sendername, playerid, clickedname, clickedid, inputtext);
 
 	if (admin_count == 0) {
 		new reports = GetPlayerReportsCount(playerid) + 1;

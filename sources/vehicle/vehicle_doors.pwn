@@ -169,30 +169,30 @@ stock GetVehicleDoorsAccess(vehicleid)
 	Name
 */
 
-stock GetVehicleDoorsAccessName(langid, vehicleid, name[], size = sizeof(name))
+stock GetVehicleDoorsAccessName(Lang:lang, vehicleid, name[], size = sizeof(name))
 {
 	new access_status = GetVehicleDoorsAccess(vehicleid);
 	switch (access_status) {
 		case VEHICLE_DOORS_ACCESS_INVALID: {
-			Lang_GetText(langid, "VEHICLE_DOORS_ACCESS_INVALID", name, size);
+			Lang_GetText(lang, "VEHICLE_DOORS_ACCESS_INVALID", name, size);
 		}
 		case VEHICLE_DOORS_ACCESS_EVERYONE: {
-			Lang_GetText(langid, "VEHICLE_DOORS_ACCESS_EVERYONE", name, size);
+			Lang_GetText(lang, "VEHICLE_DOORS_ACCESS_EVERYONE", name, size);
 		}
 		case VEHICLE_DOORS_ACCESS_NOONE: {
-			Lang_GetText(langid, "VEHICLE_DOORS_ACCESS_NOONE", name, size);
+			Lang_GetText(lang, "VEHICLE_DOORS_ACCESS_NOONE", name, size);
 		}
 		case VEHICLE_DOORS_ACCESS_GANG: {
-			Lang_GetText(langid, "VEHICLE_DOORS_ACCESS_GANG", name, size);
+			Lang_GetText(lang, "VEHICLE_DOORS_ACCESS_GANG", name, size);
 		}
 	}
 
 	return 1;
 }
 
-stock ReturnVehicleDoorsAccessName(langid, vehicleid)
+stock ReturnVehicleDoorsAccessName(Lang:lang, vehicleid)
 {
 	new name[MAX_LANG_VALUE_STRING];
-	GetVehicleDoorsAccessName(langid, vehicleid, name);
+	GetVehicleDoorsAccessName(lang, vehicleid, name);
 	return name;
 }

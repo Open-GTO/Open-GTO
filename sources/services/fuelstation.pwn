@@ -195,10 +195,8 @@ Fuelstation_OnPlayerKeyStateCh(playerid, newkeys, oldkeys)
 stock Fuelstation_OnVehicleFilled(vehicleid, playerid, money)
 {
 	#pragma unused vehicleid
-	new string[MAX_LANG_VALUE_STRING];
-
 	Lang_SendText(playerid, "VEHICLE_FUEL_AFTER_FUEL", money);
-	Message_Alert(playerid, "", "VEHICLE_FUEL_AFTER_FUEL_ALERT", _, _, money);
+	Message_Alert(playerid, "", "VEHICLE_FUEL_AFTER_FUEL_ALERT", _, _, _, money);
 	return 1;
 }
 

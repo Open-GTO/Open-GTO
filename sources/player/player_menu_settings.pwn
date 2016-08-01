@@ -319,7 +319,7 @@ DialogCreate:SettingsLanguageMenu(playerid)
 {
 	new
 		Lang:player_lang,
-		string[MAX_LANG_VALUE_STRING * sizeof(gLangSize)],
+		string[MAX_LANG_VALUE_STRING * LANGS_COUNT],
 		temp[MAX_LANG_VALUE_STRING];
 
 	player_lang = Lang_GetPlayerLang(playerid);

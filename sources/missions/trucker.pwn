@@ -297,9 +297,9 @@ stock Trucker_Start(playerid)
 		header[MAX_LANG_VALUE_STRING];
 
 	Lang_GetPlayerText(playerid, "TRUCKER_ALERT_HEADER", header);
-	Message_Alert(playerid, header, "TRUCKER_ALERT_STARTED", _, _, TRUCKER_MISSION_TIME / 60);
+	Message_Alert(playerid, header, "TRUCKER_ALERT_STARTED", _, _, MESSAGE_NOTVAR_CAPTION, TRUCKER_MISSION_TIME / 60);
 
-	Message_Objective(playerid, "TRUCKER_OBJECTIVE_STARTED", -1, _, td_type_name, zone);
+	Message_Objective(playerid, "TRUCKER_OBJECTIVE_STARTED", -1, _, _, td_type_name, zone);
 	return 1;
 }
 
@@ -313,7 +313,6 @@ stock Trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		Dialog_Show(playerid, Dialog:TruckerCancel);
 		return 1;
 	}
-
 	return 0;
 }
 
@@ -594,7 +593,6 @@ stock Trucker_Stop(playerid)
 static stock Trucker_ShowPauseMessage(playerid)
 {
 	new
-		string[MAX_LANG_VALUE_STRING],
 		seconds,
 		timeword[MAX_LANG_VALUE_STRING];
 

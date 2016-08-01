@@ -70,10 +70,10 @@ COMMAND:getinfo(playerid, params[])
 
 					Declension_GetMinutes(playerid, time, timeword);
 
-					Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_ALL_JAIL_REMAIN,
+					Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_ALL_JAIL_REMAIN",
 					              targetname, targetid, time, timeword);
 				} else {
-					Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_ALL_JAIL_NOTIME,
+					Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_ALL_JAIL_NOTIME",
 					              targetname, targetid);
 				}
 			}
@@ -83,7 +83,7 @@ COMMAND:getinfo(playerid, params[])
 
 				Declension_GetMinutes(playerid, time, timeword);
 
-				Lang_SendText(playerid, $ADMIN_COMMAND_GETINFO_ALL_MUTE_REMAIN,
+				Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_ALL_MUTE_REMAIN",
 				              targetname, targetid, time, timeword);
 			}
 		}

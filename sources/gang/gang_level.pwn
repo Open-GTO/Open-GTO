@@ -117,19 +117,19 @@ stock SetGangLevel(gangid, level)
 	new
 		string[MAX_STRING],
 		playerid,
-		color;
+		color_code[7];
 
-	color = Gang_GetColor(gangid);
+	GetColorEmbeddingCode(Gang_GetColor(gangid), color_code);
 
 	if (old_level < level) {
 		foreach (new memberid : LoadedGangMembers[gangid]) {
 			playerid = GangMember_GetID(gangid, memberid);
-			Lang_SendText(playerid, "GANG_LEVEL_INCREASE", level);
+			Lang_SendText(playerid, "GANG_LEVEL_INCREASE", color_code, level);
 		}
 	} else {
 		foreach (new memberid : LoadedGangMembers[gangid]) {
 			playerid = GangMember_GetID(gangid, memberid);
-			Lang_SendText(playerid, "GANG_LEVEL_DECREASE", level);
+			Lang_SendText(playerid, "GANG_LEVEL_DECREASE", color_code, level);
 		}
 	}
 

@@ -26,12 +26,12 @@ COMMAND:about(playerid, params[])
 
 	if (strcmp(subparams, "dialog", true) == 0) {
 		new
-			string[MAX_LANG_MULTI_STRING * 3],
-			temp[MAX_LANG_MULTI_STRING];
+			string[MAX_LANG_VALUE_STRING * 9],
+			temp[MAX_LANG_VALUE_STRING * 3];
 
 		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_ABOUT_MODER", string);
 
-		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_ABOUT_MODER", temp);
+		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_ABOUT_ADMIN", temp);
 		strcat(string, temp);
 
 		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_ABOUT_RCON", temp);
@@ -40,20 +40,20 @@ COMMAND:about(playerid, params[])
 		Dialog_Message(playerid, "ADMIN_COMMAND_ABOUT_DIALOG_HEADER", string, "ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK", MDIALOG_NOTVAR_INFO);
 
 	} else {
-		Lang_SendText(playerid, $ADMIN_COMMAND_ABOUT_MODER_0);
-		Lang_SendText(playerid, $ADMIN_COMMAND_ABOUT_MODER_1);
-		Lang_SendText(playerid, $ADMIN_COMMAND_ABOUT_MODER_2);
+		Lang_SendText(playerid, "ADMIN_COMMAND_ABOUT_MODER_0");
+		Lang_SendText(playerid, "ADMIN_COMMAND_ABOUT_MODER_1");
+		Lang_SendText(playerid, "ADMIN_COMMAND_ABOUT_MODER_2");
 
 		if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeAdmin)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_ABOUT_ADMIN_0);
-			Lang_SendText(playerid, $ADMIN_COMMAND_ABOUT_ADMIN_1);
-			Lang_SendText(playerid, $ADMIN_COMMAND_ABOUT_ADMIN_2);
+			Lang_SendText(playerid, "ADMIN_COMMAND_ABOUT_ADMIN_0");
+			Lang_SendText(playerid, "ADMIN_COMMAND_ABOUT_ADMIN_1");
+			Lang_SendText(playerid, "ADMIN_COMMAND_ABOUT_ADMIN_2");
 		}
 
 		if (IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-			Lang_SendText(playerid, $ADMIN_COMMAND_ABOUT_RCON_0);
-			Lang_SendText(playerid, $ADMIN_COMMAND_ABOUT_RCON_1);
-			Lang_SendText(playerid, $ADMIN_COMMAND_ABOUT_RCON_2);
+			Lang_SendText(playerid, "ADMIN_COMMAND_ABOUT_RCON_0");
+			Lang_SendText(playerid, "ADMIN_COMMAND_ABOUT_RCON_1");
+			Lang_SendText(playerid, "ADMIN_COMMAND_ABOUT_RCON_2");
 		}
 	}
 

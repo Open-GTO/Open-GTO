@@ -53,7 +53,7 @@ COMMAND:skydive(playerid, params[])
 	Lang_SendText(playerid, "SKYDIVING_MSG");
 	Lang_GameText(playerid, 4000, 5, "SKYDIVING_GAMETEXT");
 
-	Lang_SendTextToAll("SKYDIVING_MSG_TO_ALL", ReturnPlayerName(playerid, playerid));
+	Lang_SendTextToAll("SKYDIVING_MSG_TO_ALL", ReturnPlayerName(playerid), playerid);
 	return 1;
 }
 

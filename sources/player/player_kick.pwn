@@ -23,7 +23,6 @@ stock KickPlayer(playerid, reason[] = "", showreason = 1)
 
 	new
 		is_with_reason,
-		string[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
 
 	is_with_reason = strlen(reason) != 0;

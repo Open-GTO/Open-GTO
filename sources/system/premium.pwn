@@ -49,8 +49,8 @@ Premium_OnPlayerPickUpPickup(playerid, pickupid)
 	gate_IsOpening = true;
 	MoveDynamicObject(gate_ObjectID, 227.178, 2001.188, 10.742, 1.00);
 
-	new string[LANG_MAX_VALUE_STRING];
-	Lang_GetText(playerid, "PREMIUM_GATES_IS_OPENING", string);
+	new string[MAX_LANG_VALUE_STRING];
+	Lang_GetPlayerText(playerid, "PREMIUM_GATES_IS_OPENING", string);
 	PlayerText_Say(playerid, 20.0, string);
 	SetTimer("Premium_CloseGate", 60000, 0);
 	return 1;

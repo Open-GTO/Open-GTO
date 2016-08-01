@@ -79,8 +79,6 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 		return 0;
 	}
 
-	new string[MAX_STRING];
-
 	if (xpamount > 0) {
 		if (showtd == 1) {
 			Lang_GameText(playerid, texttime, 3, "PLAYER_XP_GAMETEXT", '+', xpamount);
@@ -124,8 +122,6 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 	}
 
 	if (notify == 1) {
-		new string[MAX_STRING];
-
 		PlayerPlaySoundOnPlayer(playerid, 1057);
 
 		if (old_level < level) {

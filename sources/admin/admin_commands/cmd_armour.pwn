@@ -38,7 +38,6 @@ COMMAND:armour(playerid, params[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
 		players[MAX_PLAYERS],
 		playername[MAX_PLAYER_NAME + 1],
 		targetname[MAX_PLAYER_NAME + 1];

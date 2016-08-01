@@ -88,7 +88,8 @@ DialogCreate:CompetitionMenu(playerid)
 		CompetitionMap_GetParamString(cmap, COMPETITION_MAP_NAME, cmap_name);
 		ctime = Competition_GetParamInt(cid, COMPETITION_TIME);
 		ctype = Competition_GetParamInt(cid, COMPETITION_TYPE);
-		CompetitionType_GetName(ctype, Lang_GetPlayerLang(playerid), ctype_name);
+		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME_VAR, ctype_name);
+		Lang_GetPlayerText(playerid, ctype_name, ctype_name);
 		ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
 		GetColorEmbeddingCode(ctype_color, ctype_color_code);
 
@@ -150,7 +151,8 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 	CompetitionMap_GetParamString(cmap, COMPETITION_MAP_NAME, cmap_name);
 	ctime = Competition_GetParamInt(cid, COMPETITION_TIME);
 	ctype = Competition_GetParamInt(cid, COMPETITION_TYPE);
-	CompetitionType_GetNameForPlayer(ctype, playerid, ctype_name);
+	CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME_VAR, ctype_name);
+	Lang_GetPlayerText(playerid, ctype_name, ctype_name);
 	ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
 	GetColorEmbeddingCode(ctype_color, ctype_color_code);
 
@@ -206,7 +208,7 @@ DialogCreate:CompetitionStartMenu(playerid)
 		temp[MAX_LANG_VALUE_STRING];
 
 	// start
-	Lang_GetPlayerText(playeried, "COMPETITION_START_START", string);
+	Lang_GetPlayerText(playerid, "COMPETITION_START_START", string);
 
 	// type
 	new
@@ -218,15 +220,16 @@ DialogCreate:CompetitionStartMenu(playerid)
 	ctype = gPlayerStartParams[playerid][COMPETITION_TYPE];
 
 	if (ctype == INVALID_COMPETITION_TYPE_ID) {
-		Lang_GetPlayerText(playeried, "COMPETITION_START_PARAM_RANDOM", ctype_name);
+		Lang_GetPlayerText(playerid, "COMPETITION_START_PARAM_RANDOM", ctype_name);
 		GetColorEmbeddingCode(COLOR_BLUEGREY_200, ctype_color_code);
 	} else {
-		CompetitionType_GetNameForPlayer(ctype, playerid, ctype_name);
+		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME_VAR, ctype_name);
+		Lang_GetPlayerText(playerid, ctype_name, ctype_name);
 		ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
 
 		GetColorEmbeddingCode(ctype_color, ctype_color_code);
 	}
-	Lang_GetPlayerText(playeried, "COMPETITION_START_PARAM_TYPE", temp, _, ctype_color_code, ctype_name);
+	Lang_GetPlayerText(playerid, "COMPETITION_START_PARAM_TYPE", temp, _, ctype_color_code, ctype_name);
 	strcat(string, temp);
 
 	// map
@@ -239,14 +242,14 @@ DialogCreate:CompetitionStartMenu(playerid)
 	cmap = gPlayerStartParams[playerid][COMPETITION_MAP];
 
 	if (cmap == INVALID_COMPETITION_MAP_ID) {
-		Lang_GetPlayerText(playeried, "COMPETITION_START_PARAM_RANDOM", cmap_name);
+		Lang_GetPlayerText(playerid, "COMPETITION_START_PARAM_RANDOM", cmap_name);
 		cmap_color = COLOR_BLUEGREY_200;
 	} else {
 		CompetitionMap_GetParamString(cmap, COMPETITION_MAP_NAME, cmap_name);
 		cmap_color = COLOR_TEAL_400;
 	}
 	GetColorEmbeddingCode(cmap_color, cmap_color_code);
-	Lang_GetPlayerText(playeried, "COMPETITION_START_PARAM_MAP", temp, _, cmap_color_code, cmap_name);
+	Lang_GetPlayerText(playerid, "COMPETITION_START_PARAM_MAP", temp, _, cmap_color_code, cmap_name);
 	strcat(string, temp);
 
 	// weather
@@ -259,14 +262,14 @@ DialogCreate:CompetitionStartMenu(playerid)
 	cweather = gPlayerStartParams[playerid][COMPETITION_WEATHER];
 
 	if (cweather == INVALID_WEATHER_ID) {
-		Lang_GetPlayerText(playeried, "COMPETITION_START_PARAM_RANDOM", cweather_string);
+		Lang_GetPlayerText(playerid, "COMPETITION_START_PARAM_RANDOM", cweather_string);
 		cweather_color = COLOR_BLUEGREY_200;
 	} else {
-		Weather_GetName(cweather, Lang_GetPlayerLang(playerid), cweather_string);
+		Weather_GetNameForPlayer(cweather, playerid, cweather_string);
 		cweather_color = COLOR_TEAL_400;
 	}
 	GetColorEmbeddingCode(cweather_color, cweather_color_code);
-	Lang_GetPlayerText(playeried, "COMPETITION_START_PARAM_WEATHER", temp, _, cweather_color_code, cweather_string);
+	Lang_GetPlayerText(playerid, "COMPETITION_START_PARAM_WEATHER", temp, _, cweather_color_code, cweather_string);
 	strcat(string, temp);
 
 	// open dialog
@@ -345,7 +348,8 @@ DialogCreate:CompetitionStartTypeMenu(playerid)
 	format(string, sizeof(string), "{B0BEC5}%s\n", string);
 
 	foreach (ctype : CompetitionTypeIterator) {
-		CompetitionType_GetNameForPlayer(ctype, playerid, ctype_name);
+		CompetitionType_GetParamString(ctype, COMPETITION_TYPE_NAME_VAR, ctype_name);
+		Lang_GetPlayerText(playerid, ctype_name, ctype_name);
 		ctype_color = CompetitionType_GetParamInt(ctype, COMPETITION_TYPE_COLOR);
 
 		GetColorEmbeddingCode(ctype_color, ctype_color_code);
@@ -443,7 +447,7 @@ DialogCreate:CompetitionStartWeatherMenu(playerid)
 	format(string, sizeof(string), "{B0BEC5}%s\n", string);
 
 	for (new i = 0; i < sizeof(gAvailableWeather); i++) {
-		Weather_GetName(gAvailableWeather[i], Lang_GetPlayerLang(playerid), cweather_name);
+		Weather_GetNameForPlayer(gAvailableWeather[i], playerid, cweather_name);
 		strcat(string, cweather_name);
 		strcat(string, "\n");
 	}

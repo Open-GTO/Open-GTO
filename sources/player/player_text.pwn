@@ -15,7 +15,6 @@
 stock Player_Text_OnPlayerText(playerid, text[])
 {
 	new
-		string[MAX_STRING],
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
@@ -90,12 +89,11 @@ stock Player_Text_OnPlayerText(playerid, text[])
 stock PlayerText_Say(playerid, Float:dist, text[])
 {
 	new
-		players[MAX_PLAYERS],
-		color = GetPlayerColor(playerid);
+		players[MAX_PLAYERS];
 
 	GetPlayerNearPlayers(playerid, dist, players);
 	Lang_SendTextToPlayers(players, "PLAYER_TEXT_SAY",
-	                       Color_ReturnPlayerEmbeddingCode(playerid),
+	                       ReturnPlayerEmbeddingCode(playerid),
 	                       ReturnPlayerName(playerid),
 	                       playerid,
 	                       text);

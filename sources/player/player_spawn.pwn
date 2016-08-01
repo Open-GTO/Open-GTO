@@ -146,7 +146,7 @@ DialogCreate:PlayerSpawnMenu(playerid)
 		gang_houseid = Gang_GetHouseID(gangid);
 		if (gang_houseid != -1) {
 			count++;
-			Lang_GetPlayerText(playerid, "PLAYER_SPAWN_LIST_GANG", string, house_GetName(gang_houseid));
+			Lang_GetPlayerText(playerid, "PLAYER_SPAWN_LIST_GANG", string, _, house_GetName(gang_houseid));
 		}
 	}
 

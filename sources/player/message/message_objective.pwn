@@ -72,20 +72,20 @@ public OnPlayerConnect(playerid)
 
 stock Message_Objective(playerid, info[], time = 4000, hcolor = -1, notvar_flags = MESSAGE_NOTVAR_NONE, va_args<>)
 {
-	if (strlen(var_info) == 0) {
+	if (strlen(info) == 0) {
 		return 0;
 	}
 
 	static
-		temp[MAX_LANG_VALUE_STRING];
+		temp_info[MAX_LANG_VALUE_STRING];
 
 	if (!(notvar_flags & MESSAGE_NOTVAR_INFO)) {
-		Lang_GetPlayerText(playerid, info, temp);
+		Lang_GetPlayerText(playerid, info, temp_info);
 	} else {
-		strcpy(temp, info);
+		strcpy(temp_info, info);
 	}
 
-	va_format(temp, sizeof(temp), temp, va_start<5>);
+	va_format(temp_info, sizeof(temp_info), temp_info, va_start<5>);
 
 	PlayerTextDrawColor(playerid, TD_Info[playerid], hcolor);
 	PlayerTextDrawSetString(playerid, TD_Info[playerid], info);

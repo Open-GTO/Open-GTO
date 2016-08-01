@@ -38,7 +38,6 @@ COMMAND:level(playerid, params[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
@@ -50,7 +49,7 @@ COMMAND:level(playerid, params[])
 
 	if (strcmp(subcmd, "set", true) == 0) {
 		if (!IsValidPlayerLevel(amount)) {
-			Lang_SendTextToAll($GetMinPlayerLevel(, GetMaxPlayerLevel());
+			Lang_SendTextToAll("ADMIN_COMMAND_LEVEL_LEVEL_ERROR", GetMinPlayerLevel(), GetMaxPlayerLevel());
 			return 1;
 		}
 

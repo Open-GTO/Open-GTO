@@ -98,7 +98,7 @@ wshop_OnPlayerEnterCheckpoint(playerid, cp)
 DialogCreate:ServiceWeapon(playerid)
 {
 	new
-		Lang:lang;
+		Lang:lang,
 		string[ (MAX_WEAPONS + 1) * (MAX_WEAPON_NAME + 12 + 4) ];
 
 	lang = Lang_GetPlayerLang(playerid);
@@ -264,7 +264,7 @@ stock wshop_Buy(playerid, weaponid, bullets)
 	new purchasecost = GetWeaponCost(weaponid) * bullets;
 
 	if (GetPlayerMoney(playerid) < purchasecost) {
-		Lang_GetPlayerText(playerid, "WEAPON_NOT_ENOUGH_MONEY", purchasecost);
+		Lang_GetPlayerText(playerid, "WEAPON_NOT_ENOUGH_MONEY", string, _, purchasecost);
 		wshop_Message(playerid, string, !IsWeaponHandToHand(weaponid));
 		return 0;
 	}
@@ -285,9 +285,9 @@ stock wshop_Buy(playerid, weaponid, bullets)
 	}
 
 	if (!IsWeaponHandToHand(weaponid)) {
-		Lang_GetPlayerText(playerid, "WEAPON_BUYED", bullets, ReturnPlayerWeaponName(playerid, weaponid), purchasecost);
+		Lang_GetPlayerText(playerid, "WEAPON_BUYED", string, _, bullets, ReturnPlayerWeaponName(playerid, weaponid), purchasecost);
 	} else {
-		Lang_GetPlayerText(playerid, "WEAPON_BUYED_ONE", ReturnPlayerWeaponName(playerid, weaponid), purchasecost);
+		Lang_GetPlayerText(playerid, "WEAPON_BUYED_ONE", string, _, ReturnPlayerWeaponName(playerid, weaponid), purchasecost);
 	}
 
 	wshop_Message(playerid, string, false);

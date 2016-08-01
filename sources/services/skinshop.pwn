@@ -69,7 +69,6 @@ SkinSelectResponse:SkinShop(playerid, SS_Response:type, oldskin, newskin)
 		SkinShop_Exit(playerid, ShopID[playerid]);
 	} else if (type == SS_Response:SS_Response_Select) {
 		if (GetPlayerMoney(playerid) < SKINS_COST) {
-			new string[MAX_STRING];
 			Lang_SendText(playerid, "SKINSHOP_NOT_ENOUGH_MONEY", SKINS_COST);
 		} else {
 			Dialog_Show(playerid, Dialog:ServiceSkin);

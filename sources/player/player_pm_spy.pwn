@@ -50,7 +50,6 @@ public OnPlayerConnect(playerid)
 stock SendPrivateMessageToSpies(senderid, receiveid, message[])
 {
 	new
-		string[MAX_LANG_VALUE_STRING],
 		sendername[MAX_PLAYER_NAME + 1],
 		receivename[MAX_PLAYER_NAME + 1];
 

@@ -241,7 +241,6 @@ stock TurnAround()
 
 				new amount = Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade];
 				GivePlayerBankMoney(playerid, amount);
-				new string[MAX_STRING];
 				Lang_SendText(playerid, "BUSINESS_COLLECT", Businesses[id][Business_Name], amount);
 				Businesses[id][Business_Vault] = 0;
 			}

@@ -79,7 +79,7 @@ COMMAND:system(playerid, params[])
 			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_GROUNDHOLD_OFF");
 		}
 	} else if (strcmp(subcmd, "gmx", true) == 0) {
-		Lang_SendTextToAll($ADMIN_COMMAND_SYSTEM_GMX_MESSAGE);
+		Lang_SendTextToAll("ADMIN_COMMAND_SYSTEM_GMX_MESSAGE");
 
 		foreach (new id : Player) {
 			Player_Save(id);
