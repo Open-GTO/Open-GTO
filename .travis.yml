@@ -1,5 +1,5 @@
 language: Pawn
-script: ./!compile.sh
+script: make
 notifications:
   webhooks:
     urls:
