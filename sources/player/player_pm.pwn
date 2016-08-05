@@ -38,6 +38,6 @@ stock SendPlayerPrivateMessage(senderid, receiveid, message[])
 	Lang_SendText(senderid, "PLAYER_PM_FOR", receivename, receiveid, message);
 	Lang_SendText(receiveid, "PLAYER_PM_FROM", sendername, senderid, message);
 
-	Log_Player("PLAYER_PM_LOG", sendername, senderid, receivename, receiveid, message);
+	Log(playerlog, INFO, "PLAYER_PM_LOG", sendername, senderid, receivename, receiveid, message);
 	return 1;
 }

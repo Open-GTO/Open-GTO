@@ -56,7 +56,7 @@ Vehicle_Fuel_OnGameModeInit()
 	}
 
 	SetTimer("Vehicle_Fuel_SpeedTimer", 300, 1);
-	Log_Game("LOG_VEHICLE_FUEL_INIT");
+	Log_Init("vehicle", "Vehicle Fuel System v2.7 initialized.");
 	return 1;
 }
 

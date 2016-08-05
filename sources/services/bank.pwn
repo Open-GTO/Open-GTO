@@ -76,7 +76,7 @@ Bank_OnGameModeInit()
 	for (new bankid = 0; bankid < sizeof(bank_place); bankid++) {
 		bank_place[bankid][bank_checkpoint] = CreateDynamicCP(bank_place[bankid][bank_x], bank_place[bankid][bank_y], bank_place[bankid][bank_z], 1.5, .streamdistance = 20.0);
 	}
-	Log_Game("LOG_BANK_INIT");
+	Log_Init("services", "Bank module init");
 	return 1;
 }
 
@@ -89,7 +89,7 @@ Bank_OnInteriorCreated(id, type, world)
 		if (bank_place[i][bank_type] == type) {
 			slot = Bank_GetActorFreeSlot();
 			if (slot == -1) {
-				Log_Debug("bank.inc: Free slot not found. Increase MAX_BANK_ACTORS value.");
+				Log(systemlog, DEBUG, "bank.inc: Free slot not found. Increase MAX_BANK_ACTORS value.");
 				break;
 			}
 

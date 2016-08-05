@@ -65,9 +65,9 @@
 
 #define LOG_PRINTING // если задефайнен, то функции выводят сообщения в консоль сервера
 // логи(параметры по умолчанию) 1 вкл, 0 выкл
-#define LOG_GAME_ENABLED    1 // логирование серверных сообщений
-#define LOG_DEBUG_ENABLED   1 // логирование отладочных сообщений
-#define LOG_PLAYER_ENABLED  1 // логирование действий игрока в чат
+#define LOG_MAIN_ENABLED    1 // логирование серверных сообщений
+#define LOG_SYSTEM_ENABLED  1 // логирование системных сообщений
+#define LOG_PLAYER_ENABLED  1 // логирование действий игрока
 
 #define KEY_USING      KEY_YES // Кнопка 'Y' - отвечает за открытие диалогов(банк, покупка чегонибудь...), входов/выходов
 #define KEY_NAME       "Y"

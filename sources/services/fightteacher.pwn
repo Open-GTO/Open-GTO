@@ -34,7 +34,7 @@ Fight_OnGameModeInit()
 	AddFightStyle(20, FIGHT_STYLE_KUNGFU, "FIGHT_TEACHER_STYLE_KUNGFU", true, 2000, 768.5967,-22.9764, 1000.5859);
 	AddFightStyle(30, FIGHT_STYLE_KNEEHEAD, "FIGHT_TEACHER_STYLE_KNEEHEAD", true, 3000, 766.5240,-76.6523, 1000.6563);
 
-	Log_Game("LOG_FIGHT_TEACHER_INIT");
+	Log_Init("services", "Fightstyles module init.");
 	return 1;
 }
 
@@ -138,7 +138,7 @@ stock AddFightStyle(minlvl, styleid, varname[], bool:haveteacher, cost = 0, Floa
 {
 	new id = GetFightTeacherLastID();
 	if (id >= MAX_FIGHTS) {
-		Log_Debug("Error <fightteacher:AddFightStyle>: free slot not found (%d).", id);
+		Log(systemlog, DEBUG, "Error <fightteacher:AddFightStyle>: free slot not found (%d).", id);
 		return -1;
 	}
 

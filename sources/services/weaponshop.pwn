@@ -44,7 +44,7 @@ wshop_OnGameModeInit()
 	for (new id = 0; id < sizeof(wshop_place); id++) {
 		wshop_place[id][wshop_checkpoint] = CreateDynamicCP(wshop_place[id][wshop_x], wshop_place[id][wshop_y], wshop_place[id][wshop_z], 1.5, .streamdistance = 20.0);
 	}
-	Log_Game("LOG_WEAPON_SHOP_INIT");
+	Log_Init("services", "Weapon shop module init.");
 	return 1;
 }
 
@@ -57,7 +57,7 @@ wshop_OnInteriorCreated(id, type, world)
 		if (wshop_place[i][wshop_type] == type) {
 			slot = wshop_GetActorFreeSlot();
 			if (slot == -1) {
-				Log_Debug("weaponshop.inc: Free slot not found. Increase MAX_WSHOP_ACTORS value.");
+				Log(systemlog, DEBUG, "weaponshop.inc: Free slot not found. Increase MAX_WSHOP_ACTORS value.");
 				break;
 			}
 

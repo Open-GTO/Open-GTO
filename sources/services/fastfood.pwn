@@ -54,7 +54,7 @@ stock fastfood_OnGameModeInit()
 		fastfood_place[id][ff_checkpoint_id] = CreateDynamicCP(fastfood_place[id][ff_x], fastfood_place[id][ff_y], fastfood_place[id][ff_z], 1.5, .streamdistance = 20.0);
 	}
 
-	Log_Game("LOG_FASTFOOD_INIT");
+	Log_Init("services", "Fastfood module init.");
 	return 1;
 }
 
@@ -67,7 +67,7 @@ stock fastfood_OnInteriorCreated(id, type, world)
 		if (type == fastfood_place[i][ff_type]) {
 			slot = fastfood_GetActorFreeSlot();
 			if (slot == -1) {
-				Log_Debug("fastfood.inc: Free slot not found. Increase MAX_FASTFOOD_ACTORS value.");
+				Log(systemlog, DEBUG, "fastfood.inc: Free slot not found. Increase MAX_FASTFOOD_ACTORS value.");
 				break;
 			}
 

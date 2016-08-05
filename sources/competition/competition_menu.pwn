@@ -145,7 +145,7 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 
 	cid = GetCompetitionIdByListitem(listitem, 1);
 	if (cid == INVALID_COMPETITION_ID) {
-		Log_Debug("Error <DialogResponse:CompetitionMenu>: unable to get competition id by listitem.");
+		Log(systemlog, DEBUG, "Error <DialogResponse:CompetitionMenu>: unable to get competition id by listitem.");
 		return 0;
 	}
 

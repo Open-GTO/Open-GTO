@@ -344,14 +344,14 @@ static stock GetPlayerRandomSpawnID(playerid)
 {
 	new id = GetPVarInt(playerid, "random_spawn_id");
 	if (id != -1) {
-		Log_Debug("player_spawn:GetPlayerRandomSpawnID(%d): return stolen spawn id: %d.", playerid, id);
+		Log(playerlog, DEBUG, "player_spawn:GetPlayerRandomSpawnID(%d): return stolen spawn id: %d.", playerid, id);
 		return id;
 	}
 
 	id = random( sizeof(gSpawns) );
 	SetPVarInt(playerid, "random_spawn_id", id);
 
-	Log_Debug("player_spawn:GetPlayerRandomSpawnID(%d): return random spawn id: %d.", playerid, id);
+	Log(playerlog, DEBUG, "player_spawn:GetPlayerRandomSpawnID(%d): return random spawn id: %d.", playerid, id);
 	return id;
 }
 
@@ -379,7 +379,7 @@ static stock GetNearestSpawnID(Float:x, Float:y, Float:z)
 	}
 
 #if debug > 0
-	Log_Debug("player_spawn:GetNearestSpawnID(%f, %f, %f): nearest spawn id: %d, time taken: %d.", x, y, z, id, GetTickCount() - tick);
+	Log(playerlog, DEBUG, "player_spawn:GetNearestSpawnID(%f, %f, %f): nearest spawn id: %d, time taken: %d.", x, y, z, id, GetTickCount() - tick);
 #endif
 
 	return id;

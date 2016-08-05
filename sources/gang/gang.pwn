@@ -76,7 +76,7 @@ stock Gang_Load(gangname[])
 
 	gangid = Gang_GetFreeSlot();
 	if (gangid == INVALID_GANG_ID) {
-		Log_Debug("Error <gang:Gang_Load>: free slot not found (%s).", gangname);
+		Log(systemlog, DEBUG, "Error <gang:Gang_Load>: free slot not found (%s).", gangname);
 		return INVALID_GANG_ID;
 	}
 
@@ -86,7 +86,7 @@ stock Gang_Load(gangname[])
 	format(string, sizeof(string), "%s%s" DATA_FILES_FORMAT, gGangDB, gangname);
 
 	if (!ini_fileExist(string)) {
-		Log_Debug("Error <gang:Gang_Load>: file not found (%s).", string);
+		Log(systemlog, DEBUG, "Error <gang:Gang_Load>: file not found (%s).", string);
 		return INVALID_GANG_ID;
 	}
 
@@ -222,13 +222,13 @@ stock Gang_Create(playerid, gangname[], gangcolour)
 	format(string, sizeof(string), "%s%s" DATA_FILES_FORMAT, gGangDB, gangname);
 
 	if (ini_fileExist(string)) {
-		Log_Debug("Error <gang:Gang_Create>: gang file already exists (%s).", gangname);
+		Log(systemlog, DEBUG, "Error <gang:Gang_Create>: gang file already exists (%s).", gangname);
 		return INVALID_GANG_ID;
 	}
 
 	new gangid = Gang_GetFreeSlot();
 	if (gangid == INVALID_GANG_ID) {
-		Log_Debug("Error <gang:Gang_Create>: free slot not found (%s).", gangname);
+		Log(systemlog, DEBUG, "Error <gang:Gang_Create>: free slot not found (%s).", gangname);
 		return INVALID_GANG_ID;
 	}
 
@@ -270,7 +270,7 @@ stock Gang_Remove(gangid)
 	format(string, sizeof(string), "%s%s" DATA_FILES_FORMAT, gGangDB, string);
 
 	if (!ini_fileExist(string)) {
-		Log_Debug("Error <gang:Gang_Remove>: gang file not exists (%s).", string);
+		Log(systemlog, DEBUG, "Error <gang:Gang_Remove>: gang file not exists (%s).", string);
 		return 0;
 	}
 
@@ -291,23 +291,23 @@ stock Gang_Remove(gangid)
 stock Gang_MemberJoin(gangid, playerid, GangMemberRank:rank = GangMemberSoldier)
 {
 	if (!Gang_IsActive(gangid)) {
-		Log_Debug("Error <gang:Gang_MemberJoin>: gang is not active.");
+		Log(systemlog, DEBUG, "Error <gang:Gang_MemberJoin>: gang is not active.");
 		return 0;
 	}
 
 	if (GetPlayerGangID(playerid) != INVALID_GANG_ID) {
-		Log_Debug("Error <gang:Gang_MemberJoin>: player already in a gang.");
+		Log(systemlog, DEBUG, "Error <gang:Gang_MemberJoin>: player already in a gang.");
 		return 0;
 	}
 
 	if (Gang_GetOnlineCount(gangid) >= MAX_GANG_SIZE) {
-		Log_Debug("Error <gang:Gang_MemberJoin>: gang is already full.");
+		Log(systemlog, DEBUG, "Error <gang:Gang_MemberJoin>: gang is already full.");
 		return 0;
 	}
 
 	new memberid = GangMember_GetFreeSlot(gangid);
 	if (memberid == INVALID_MEMBER_ID) {
-		Log_Debug("Error <gang:Gang_MemberJoin>: free slot not found.");
+		Log(systemlog, DEBUG, "Error <gang:Gang_MemberJoin>: free slot not found.");
 		return 0;
 	}
 
@@ -347,7 +347,7 @@ stock Gang_MemberRemove(gangid, memberid)
 stock Gang_MemberLogin(playerid, gangid, memberid = INVALID_MEMBER_ID)
 {
 	if (!Gang_IsActive(gangid)) {
-		Log_Debug("Error <gang:Gang_MemberLogin>: gang is not active.");
+		Log(systemlog, DEBUG, "Error <gang:Gang_MemberLogin>: gang is not active.");
 		return 0;
 	}
 
@@ -373,7 +373,7 @@ stock Gang_MemberLogin(playerid, gangid, memberid = INVALID_MEMBER_ID)
 	}
 
 	if (memberid >= MAX_GANG_SIZE) {
-		Log_Debug("Error <gang:Gang_MemberLogin>: gang member slot not found (%d >= %d).", memberid, MAX_GANG_SIZE);
+		Log(systemlog, DEBUG, "Error <gang:Gang_MemberLogin>: gang member slot not found (%d >= %d).", memberid, MAX_GANG_SIZE);
 		return 0;
 	}
 

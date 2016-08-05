@@ -157,7 +157,7 @@ stock Click_AddItem(style, var_caption[], var_info[], var_button1[], var_button2
 {
 	new id = gClickItemId++;
 	if (id >= MAX_CLICK_DIALOG_ITEMS) {
-		Log_Debug("Error <click:Click_AddItem>: dialog items is reached (%d >= %d).", id, MAX_CLICK_DIALOG_ITEMS);
+		Log(systemlog, DEBUG, "Error <click:Click_AddItem>: dialog items is reached (%d >= %d).", id, MAX_CLICK_DIALOG_ITEMS);
 		return -1;
 	}
 

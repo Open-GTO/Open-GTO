@@ -42,7 +42,7 @@ stock REDEF_GivePlayerMoney(playerid, money)
 
 	if (money > MAX_MONEY - player_money) {
 		money = MAX_MONEY - player_money;
-		Log_Game("LOG_PLAYER_MAX_MONEY", ReturnPlayerName(playerid), playerid);
+		Log(mainlog, INFO, "Player: %s(%d) is on max money.", ReturnPlayerName(playerid), playerid);
 	}
 
 	PlayerMoneyTD_Give(playerid, money);

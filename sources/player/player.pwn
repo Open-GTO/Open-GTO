@@ -318,7 +318,7 @@ stock Player_OnLogin(playerid)
 	// hide widstrip
 	Widestrip_HideForPlayer(playerid);
 
-	Log_Game("LOG_PLAYER_LOGGED", playername, playerid);
+	Log(mainlog, INFO, "Player: %s(%d) logged in successfully.", playername, playerid);
 }
 
 SkinSelectResponse:RegisterSkin(playerid, SS_Response:type, oldskin, newskin)

@@ -85,7 +85,7 @@ stock Account_Register(playerid, password[])
 	Player_Login(playerid);
 
 	Lang_SendText(playerid, "ACCOUNT_SUCCESS_REGISTER");
-	Log_Game("LOG_PLAYER_CREATE_ACCOUNT", playername, playerid);
+	Log(mainlog, INFO, "Player: account created for %s(%d)", playername, playerid);
 	return 1;
 }
 
@@ -110,7 +110,7 @@ stock Account_Login(playerid, password[])
 #endif
 
 	if (strcmp(password, result[e_aPassword], false)) {
-		Log_Game("LOG_PLAYER_INCORRECT_PASSWORD", playername, playerid);
+		Log(mainlog, INFO, "Player: login failed, incorrect password by %s(%d)", playername, playerid);
 
 		AddLoginAttempt(playerid);
 
@@ -157,7 +157,7 @@ stock Account_SaveData(account_name[], data[e_Account_Info])
 	}
 
 	if (file_account < 0) {
-		Log_Debug("Error <account:Account_SaveData>: account '%s' has not been opened (error code: %d).", account_name, file_account);
+		Log(systemlog, DEBUG, "Error <account:Account_SaveData>: account '%s' has not been opened (error code: %d).", account_name, file_account);
 		return 0;
 	}
 
@@ -190,7 +190,7 @@ stock Account_LoadData(account_name[], result[e_Account_Info])
 
 	file_account = ini_openFile(filename_account);
 	if (file_account < 0) {
-		Log_Debug("Error <account:Account_LoadData>: account '%s' has not been opened (error code: %d).", account_name, file_account);
+		Log(systemlog, DEBUG, "Error <account:Account_LoadData>: account '%s' has not been opened (error code: %d).", account_name, file_account);
 		return 0;
 	}
 
@@ -477,7 +477,7 @@ stock Account_LoadLanguage(playerid, playername[] = "", const size = sizeof(play
 
 	file_account = ini_openFile(filename_account);
 	if (file_account < 0) {
-		Log_Debug("Error <account:Account_LoadLanguage>: account '%s' has not been opened (error code: %d).", playername, file_account);
+		Log(systemlog, DEBUG, "Error <account:Account_LoadLanguage>: account '%s' has not been opened (error code: %d).", playername, file_account);
 		return 0;
 	}
 

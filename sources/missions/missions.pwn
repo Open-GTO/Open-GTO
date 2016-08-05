@@ -94,7 +94,7 @@ stock mission_Register(missionid)
 	mission_questid[missionid] = RegisterQuest();
 
 	if (mission_questid[missionid] == INVALID_QUEST_ID) {
-		Log_Debug("Mission module: quests is over, increase MAX_QUESTS value.");
+		Log(systemlog, DEBUG, "Mission module: quests is over, increase MAX_QUESTS value.");
 	}
 }
 

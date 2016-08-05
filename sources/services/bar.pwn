@@ -59,7 +59,7 @@ bar_OnGameModeInit()
 	for (new id = 0; id < sizeof(bar_place); id++) {
 		bar_place[id][bar_checkpoint] = CreateDynamicCP(bar_place[id][bar_x], bar_place[id][bar_y], bar_place[id][bar_z], 1.5, .streamdistance = 20.0);
 	}
-	Log_Game("LOG_BAR_INIT");
+	Log_Init("services", "Bar module init.");
 	return 1;
 }
 
@@ -72,7 +72,7 @@ bar_OnInteriorCreated(id, type, world)
 		if (bar_place[i][bar_type] == type) {
 			slot = bar_GetActorFreeSlot();
 			if (slot == -1) {
-				Log_Debug("bar.inc: Free slot not found. Increase MAX_BAR_ACTORS value.");
+				Log(systemlog, DEBUG, "bar.inc: Free slot not found. Increase MAX_BAR_ACTORS value.");
 				break;
 			}
 

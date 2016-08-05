@@ -7,9 +7,6 @@ del/q open-gto\deathmatch\record\*.ini
 del/q open-gto\gang\*.ini
 del/q open-gto\groundhold\*.ini
 del/q open-gto\housing\*.ini
-del/q open-gto\logging\player\*.log
-del/q open-gto\logging\game\*.log
-del/q open-gto\logging\debug\*.log
 del/q open-gto\player\*.ini
 del/q open-gto\race\*.ini
 del/q open-gto\race\record\*.ini

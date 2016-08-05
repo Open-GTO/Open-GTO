@@ -45,14 +45,14 @@ Lang_OnGameModeInit()
 	strcat(rcon_command, Lang_ReturnCodes(.isuppercase = true));
 	SendRconCommand(rcon_command);
 
-	Log_Game("LOG_LANG_INIT");
+	Log_Init("core", "Lang module init.");
 }
 
 stock Lang_ReloadAll()
 {
 	foreach (new Lang:lang : LangIterator) {
 		Lang_Reload(lang);
-		Log_Game("LOG_LANG_RELOADED", Lang_ReturnName(lang));
+		Log(mainlog, INFO, "SERVER: Language reloaded (%s).", Lang_ReturnName(lang));
 	}
 }
 
@@ -80,6 +80,6 @@ static stock Lang:_Lang_Load(code[], name[])
 
 	Lang_LoadFile(lang, filename);
 
-	Log_Game("LOG_LANG_LOADED", name, _:lang, code);
+	Log(mainlog, INFO, "SERVER: %s language loaded (id: %d, code: %s).", name, _:lang, code);
 	return lang;
 }

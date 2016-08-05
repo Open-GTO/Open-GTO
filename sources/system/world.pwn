@@ -42,7 +42,7 @@ public WorldSave(necessarily) // save all
 	Gang_SaveAll();
 	Groundhold_SaveAll();
 
-	Log_Game("LOG_WORLD_SAVE", (GetTickCount() - starttime));
+	Log(mainlog, INFO, "World save complete! Time taken: %d milliseconds.", (GetTickCount() - starttime));
 	return 1;
 }
 

@@ -20,7 +20,6 @@ stock cfg_LoadConfigs()
 
 	new file_config = ini_openFile(db_config);
 
-	Log_LoadConfig(file_config);
 	Time_LoadConfig(file_config);
 	Groundhold_LoadConfig(file_config);
 	Gang_LoadConfig(file_config);
@@ -70,7 +69,6 @@ stock cfg_SaveConfigs()
 		file_config = ini_createFile(db_config);
 	}
 
-	Log_SaveConfig(file_config);
 	Time_SaveConfig(file_config);
 	Groundhold_SaveConfig(file_config);
 	Gang_SaveConfig(file_config);

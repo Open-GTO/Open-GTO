@@ -344,7 +344,7 @@ DialogResponse:GangCreateColor(playerid, response, listitem, inputtext[])
 		GivePlayerMoney(playerid, -Gang_GetCreateCost());
 		Lang_SendText(playerid, "GANG_CREATE_SUCCESS");
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_CREATE_HEADER", "GANG_CREATE_SUCCESS", "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL");
-		Log_Game("LOG_GANG_CREATE_GANG", ReturnPlayerName(playerid), playerid, gangname);
+		Log(mainlog, INFO, "Action <GangCreateColor>: %s(%d) created gang '%s'.", ReturnPlayerName(playerid), playerid, gangname);
 	} else {
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_CREATE_HEADER", "GANG_CREATE_ERROR", "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL");
 	}
@@ -439,7 +439,7 @@ DialogResponse:GangInviteAccept(playerid, response, listitem, inputtext[])
 
 		Gang_SendLangMessage(gangid, "GANG_INVITE_PLAYER_IN", _, player_name);
 
-		Log_Game("LOG_GANG_ACCEPT_INVITE", player_name, playerid, gang_name);
+		Log(mainlog, INFO, "Action <GangInviteAccept>: %s(%d) have joined '%s' gang.", player_name, playerid, gang_name);
 	} else {
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_INVITE_HEADER", "GANG_INVITE_ERROR", "GANG_MENU_BUTTON_BACK", "GANG_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_NONE, gang_name);
 	}
@@ -517,7 +517,7 @@ DialogResponse:GangInvite(playerid, response, listitem, inputtext[])
 	                 MDIALOG_NOTVAR_NONE,
 	                 invite_name, gang_name);
 
-	Log_Game("LOG_GANG_SEND_INVITE", player_name, playerid, invite_name, inviteid, gang_name);
+	Log(mainlog, INFO, "Action <GangInvite>: %s(%d) has invited %s(%d) to join gang '%s'.", player_name, playerid, invite_name, inviteid, gang_name);
 	return 1;
 }
 

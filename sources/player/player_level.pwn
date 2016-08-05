@@ -43,7 +43,7 @@ PLevel_OnGameModeInit()
 	level--;
 
 	if (level < GetMaxPlayerLevel()) {
-		Log_Debug("player_level.inc: Player_Level_Max is VERY HIGH, maximum supported value is %d", level);
+		Log(systemlog, DEBUG, "player_level.inc: Player_Level_Max is VERY HIGH, maximum supported value is %d", level);
 	}
 	return 1;
 }
@@ -132,7 +132,7 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 			Lang_SendText(playerid, "PLAYER_LEVEL_DOWN", level);
 		}
 
-		Log_Game("LOG_PLAYER_LEVEL_SET", ReturnPlayerName(playerid), playerid, old_level, level);
+		Log(mainlog, INFO, "Player: %s(%d) changed his level from %d to %d.", ReturnPlayerName(playerid), playerid, old_level, level);
 	}
 
 	return 1;

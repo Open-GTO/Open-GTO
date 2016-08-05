@@ -158,7 +158,7 @@ Weapon_Save()
 		}
 
 		if (file_handler < 0) {
-			Log_Debug("Error <Weapon_Save>: unable to open or create ini file.");
+			Log(systemlog, DEBUG, "Error <Weapon_Save>: unable to open or create ini file.");
 			continue;
 		}
 
@@ -179,7 +179,7 @@ Weapon_OnGameModeInit()
 	Weapon_Load();
 	EnableVehicleFriendlyFire();
 
-	Log_Game("LOG_WEAPON_INIT");
+	Log_Init("system", "Weapon module init.");
 }
 
 /*

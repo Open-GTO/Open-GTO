@@ -70,9 +70,11 @@ Thanks:
 #include "lib/getweather/getweather.inc"
 #include "lib/weaponskill/weaponskill.inc"
 #include "lib/zvehinfo/zvehinfo.inc"
+#include "lib/log-plugin.inc"
 
 // header files
 #include "core/lang.inc"
+#include "core/log.inc"
 #include "gang/gang.inc"
 #include "player/player.inc"
 #include "player/player_account.inc"
@@ -95,10 +97,10 @@ Thanks:
 #include "core/api.pwn"
 #include "core/db.pwn"
 #include "core/cfg.pwn"
+#include "core/log.pwn"
 #include "core/core.pwn"
 #include "core/core_time.pwn"
 #include "core/lang.pwn"
-#include "core/log.pwn"
 #include "core/color.pwn"
 #include "core/widestrip.pwn"
 #include "core/declension.pwn"
@@ -329,7 +331,7 @@ public OnGameModeInit()
 	// custom
 	#tryinclude "custom/mapicon.pwn"
 	#tryinclude "custom/objects.pwn"
-	Log_Game("LOG_CUSTOM_INIT");
+	Log_Init("main", "Custom mapicons and objects init.");
 
 	Time_Sync();
 	Weather_SetRandom();
@@ -339,17 +341,17 @@ public OnGameModeInit()
 	SetTimer("TenMinuteTimer", 600000, 1); // 10 minute
 	SetTimer("OneHourTimer", 3600000, 1); // 1 hour
 	SetTimerEx("WorldSave", WORLD_SAVE_TIME, 1, "d", 0);
-	Log_Game("LOG_TIMERS_INIT");
+	Log_Init("main", "Timers init.");
 
 	WorldSave(0);
-	Log_Game("LOG_GAMEMODE_INIT", GAMEMODE_TEXT);
+	Log_Init("main", "%s initialization complete.", GAMEMODE_TEXT);
 	return 1;
 }
 
 public OnGameModeExit()
 {
 	WorldSave(1);
-	Log_Game("LOG_GAMEMODE_EXIT", GAMEMODE_TEXT);
+	Log_Init("main", "%s turned off.", GAMEMODE_TEXT);
 	return 1;
 }
 
@@ -482,9 +484,9 @@ public OnPlayerDeath(playerid, killerid, reason)
 	SetPlayerSpawned(playerid, 0);
 
 	if (killerid == INVALID_PLAYER_ID) {
-		Log_Game("LOG_PLAYER_DIED", ReturnPlayerName(playerid), playerid, reason);
+		Log(mainlog, INFO, "Player: %s(%d) has died > Reason: (%d)", ReturnPlayerName(playerid), playerid, reason);
 	} else {
-		Log_Game("LOG_PLAYER_KILLED", ReturnPlayerName(killerid), killerid, ReturnPlayerName(playerid), playerid, reason);
+		Log(mainlog, INFO, "Player: %s(%d) has killed player %s(%d)> Reason: (%d)", ReturnPlayerName(killerid), killerid, ReturnPlayerName(playerid), playerid, reason);
 	}
 
 	SendDeathMessage(killerid, playerid, reason);
@@ -563,7 +565,7 @@ public OnPlayerCommandReceived(playerid, cmdtext[])
 		return 0;
 	}
 
-	Log_Player("LOG_PLAYER_COMMAND", ReturnPlayerName(playerid), playerid, cmdtext);
+	Log(playerlog, INFO, "Player: %s(%d) %s", ReturnPlayerName(playerid), playerid, cmdtext);
 	return 1;
 }
 
@@ -605,7 +607,7 @@ public OnPlayerText(playerid, text[])
 	format(string, sizeof(string), "%s(%d): {FFFFFF}%s", playername, playerid, text);
 	SendClientMessageToAll(GetPlayerColor(playerid), string);
 
-	Log_Player("Player: %s(%d): %s", playername, playerid, text);
+	Log(playerlog, INFO, "Player: %s(%d): %s", playername, playerid, text);
 	return 0;
 }
 

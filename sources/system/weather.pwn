@@ -96,7 +96,7 @@ stock Weather_SetRandom()
 {
 	new weatherid = Weather_GetRadom();
 	SetWeather(weatherid);
-	Log_Game("LOG_WEATHER_SET", weatherid);
+	Log(mainlog, INFO, "SERVER: Weather set to %d.", weatherid);
 }
 
 stock Weather_GetRadom()

@@ -179,7 +179,7 @@ business_OnGameModeInit()
 			business_icon[id] = CreateDynamicMapIcon(Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z], icon_type, 0);
 		}
 	}
-	Log_Game("LOG_BUSINESS_INIT");
+	Log_Init("system", "Business module init.");
 }
 
 business_OnPlayerConnect(playerid)
@@ -544,7 +544,7 @@ stock bis_Buy(playerid)
 		                 Businesses[id][Business_Name],
 		                 Businesses[id][Business_Vault]);
 
-		Log_Game("LOG_BUSINESS_PLAYER_BOUGHT", playername, playerid, Businesses[id][Business_Name]);
+		Log(mainlog, INFO, "player: %s(%d): bought the '%s' (business)", playername, playerid, Businesses[id][Business_Name]);
 	}
 	return 1;
 }
@@ -586,7 +586,7 @@ stock bis_Sell(playerid)
 		                 Businesses[id][Business_Name],
 		                 Businesses[id][Business_Vault]);
 
-		Log_Game("LOG_BUSINESS_PLAYER_SOLD", ReturnPlayerName(playerid), playerid, Businesses[id][Business_Name]);
+		Log(mainlog, INFO, "player: %s(%d): sold the '%s' (business)", ReturnPlayerName(playerid), playerid, Businesses[id][Business_Name]);
 	}
 	return 1;
 }
@@ -756,7 +756,7 @@ stock CheckBusinessOwners()
 		Account_LoadData(Businesses[i][Business_Owner], result);
 
 		if (IsDateExpired(result[e_aPremiumTime]) && gettime() > result[e_aLoginTime] + BUSINESS_UNLOGIN_SELL_DAYS * 24 * 60 * 60) {
-			Log_Game("LOG_BUSINESS_FREE", Businesses[i][Business_Owner], BUSINESS_UNLOGIN_SELL_DAYS);
+			Log(mainlog, INFO, "Business has been free. Owner '%s'. BUSINESS_UNLOGIN_SELL_DAYS = %d", Businesses[i][Business_Owner], BUSINESS_UNLOGIN_SELL_DAYS);
 
 			strcpy(Businesses[i][Business_Owner], "Unknown");
 			Businesses[i][Business_Buyout] = 0;

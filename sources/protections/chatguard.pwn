@@ -534,7 +534,7 @@ stock pt_chat_OnGameModeInit()
         ms[i][chPosterID] = -1;
     }
 
-	Log_Game("LOG_PROTECTION_CHAT_INIT");
+	Log_Init("protections", "ChatGuard(by MX_Master) module init.");
 }
 
 #undef CHAT_HISTORY_SIZE

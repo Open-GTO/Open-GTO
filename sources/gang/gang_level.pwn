@@ -66,7 +66,7 @@ GangLevel_OnGameModeInit()
 	level--;
 
 	if (level < GetMaxGangLevel()) {
-		Log_Debug("gang_level.inc: Gang_Level_Max is VERY HIGH, maximum supported value is %d", level);
+		Log(systemlog, DEBUG, "gang_level.inc: Gang_Level_Max is VERY HIGH, maximum supported value is %d", level);
 	}
 
 	return 1;
@@ -134,7 +134,7 @@ stock SetGangLevel(gangid, level)
 	}
 
 	Gang_GetName(gangid, string);
-	Log_Game("LOG_GANG_LEVEL_SET", string, gangid, old_level, level);
+	Log(mainlog, INFO, "Action <SetGangLevel>: %s(%d) changed his level from %d to %d.", string, gangid, old_level, level);
 	return 1;
 }
 

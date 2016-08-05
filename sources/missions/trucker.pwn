@@ -170,7 +170,7 @@ Trucker_OnGameModeInit()
 	CreateDynamicMapIcon(-49.7828, -269.3626, 6.6332, 51, 0);
 	CreateDynamicMapIcon(816.5801, 857.0634, 12.7891, 51, 0);
 
-	Log_Game("LOG_TRUCKER_INIT");
+	Log_Init("missions", "Trucker module init");
 	return 1;
 }
 
