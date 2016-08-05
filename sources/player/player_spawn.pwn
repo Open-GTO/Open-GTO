@@ -379,7 +379,8 @@ static stock GetNearestSpawnID(Float:x, Float:y, Float:z)
 	}
 
 #if debug > 0
-	Log(playerlog, DEBUG, "player_spawn:GetNearestSpawnID(%f, %f, %f): nearest spawn id: %d, time taken: %d.", x, y, z, id, GetTickCount() - tick);
+	Log(playerlog, DEBUG, "player_spawn:GetNearestSpawnID(%f, %f, %f): nearest spawn id: %d, time taken: %d.",
+	    x, y, z, id, GetTickDiff(GetTickCount(), tick));
 #endif
 
 	return id;

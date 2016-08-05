@@ -141,7 +141,7 @@ Prot_Teleport_Sync(playerid)
 	new
 		current_tick = GetTickCount();
 
-	if (current_tick - LastTickCount < DelayTickCount) {
+	if (GetTickDiff(current_tick, LastTickCount) < DelayTickCount) {
 		return 1;
 	}
 

@@ -2,7 +2,7 @@
 
 PAWNCC=LD_LIBRARY_PATH=compiler/:$(LD_LIBRARY_PATH) ./compiler/pawncc
 
-NAME="Open-GTO"
+NAME=Open-GTO
 
 all:
 	$(PAWNCC) "-;+" "-(+" "-icompiler/includes" "-ogamemodes/$(NAME).amx" $(param) "sources/$(NAME).pwn"

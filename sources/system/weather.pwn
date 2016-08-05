@@ -78,7 +78,7 @@ stock Weather_Update()
 	new
 		current_tick = GetTickCount();
 
-	if (current_tick - LastTickCount < gWeatherTime * 60 * 1000) {
+	if (GetTickDiff(current_tick, LastTickCount) < gWeatherTime * 60 * 1000) {
 		return 1;
 	}
 

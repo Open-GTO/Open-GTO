@@ -254,7 +254,7 @@ stock GetMinPlayerLevel()
 
 stock IsValidPlayerLevel(level)
 {
-	if (IS_IN_RANGE(level, MIN_LEVEL, GetMaxPlayerLevel())) {
+	if (MIN_LEVEL <= level <= GetMaxPlayerLevel()) {
 		return 1;
 	}
 	return 0;

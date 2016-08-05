@@ -100,7 +100,7 @@ pt_weapon_Check(playerid)
 		slotid = GetWeaponSlot(weaponid),
 		current_tick = GetTickCount();
 
-	if (weaponid == 0 || current_tick - LastTickCount < DelayTickCount) {
+	if (weaponid == 0 || GetTickDiff(current_tick, LastTickCount) < DelayTickCount) {
 		return 1;
 	}
 

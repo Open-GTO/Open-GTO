@@ -42,7 +42,7 @@ COMMAND:announce(playerid, params[])
 		return 1;
 	}
 
-	if (!IS_IN_RANGE(type, 0, 6)) {
+	if (!(0 <= type <= 6)) {
 		Lang_SendText(playerid, "ADMIN_COMMAND_ANNOUNCE_HELP");
 		return 1;
 	}

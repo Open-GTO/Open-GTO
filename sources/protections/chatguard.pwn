@@ -451,7 +451,7 @@ stock tooManyMessagesForShortTime ( playerid, lastMsTick )
         if ( ms[m][chPosterID] == playerid && ++messages > MAX_MESSAGES_PER_TIME ) break;
 
     if ( m >= CHAT_HISTORY_SIZE ) m--;
-    if ( messages > MAX_MESSAGES_PER_TIME && lastMsTick - ms[m][chTick] < MAX_MESSAGES_TIME ) return 1;
+    if ( messages > MAX_MESSAGES_PER_TIME && GetTickDiff(lastMsTick, ms[m][chTick]) < MAX_MESSAGES_TIME ) return 1;
 
     return 0;
 }
