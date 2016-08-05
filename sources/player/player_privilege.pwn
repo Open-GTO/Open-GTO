@@ -72,21 +72,18 @@ stock GetPlayersWithPrivilege(PlayerPrivilege:privilege, players[], const size =
 		id,
 		i;
 
-	players[0] = INVALID_PLAYER_ID;
-
 	foreach (id : Player) {
 		if (IsPlayerHavePrivilege(id, privilege)) {
 			players[i] = id;
-			i++;
 
-			if (i >= size) {
+			if (i >= size - 1) {
 				break;
+			} else {
+				i++;
 			}
 		}
 	}
 
-	if (i > 0) {
-		players[i - 1] = INVALID_PLAYER_ID;
-	}
+	players[i] = INVALID_PLAYER_ID;
 	return i;
 }
