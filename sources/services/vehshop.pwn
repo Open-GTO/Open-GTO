@@ -218,7 +218,7 @@ DialogCreate:VehicleHaveMax(playerid)
 	level = GetPlayerVehicleNearestLevel(playerid);
 
 	if (level != -1) {
-		Lang_GetPlayerText(playerid, "VEHSHOP_DIALOG_NEW_VEHICLE", string, level);
+		Lang_GetPlayerText(playerid, "VEHSHOP_DIALOG_NEW_VEHICLE", string, _, string, level);
 	}
 
 	Dialog_Message(playerid, "VEHSHOP_DIALOG_HEADER", string, "VEHSHOP_DIALOG_BUTTON_OK", MDIALOG_NOTVAR_INFO);
