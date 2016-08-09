@@ -30,7 +30,7 @@ enum e_Teleports_Info {
 	Vars
 */
 
-static gTeleports[6][e_Teleports_Info] = {
+static gTeleports[][e_Teleports_Info] = {
 	{"PLAYER_MENU_TELEPORT_POINT_LS_AIRPORT", 5, 10000, 0, 1685.6606, -2242.8801, 13.5469, 180.0000},
 	{"PLAYER_MENU_TELEPORT_POINT_LS_RAILWAY", 5, 5000, 0, 1742.9779, -1861.6843, 13.5772, 360.0000},
 	{"PLAYER_MENU_TELEPORT_POINT_SF_AIRPORT", 10, 15000, 0, -1411.8593, -296.6611, 14.1484, 130.0000},
