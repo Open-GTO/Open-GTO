@@ -57,6 +57,10 @@ stock Vehicle_UpdateTextdraw(playerid, Float:speed = -1.0, Float:fuel = -1.0, Fl
 		fuel = GetVehicleFuel(vehicleid);
 	}
 
+	if (fuel <= 0.0) {
+		fuel = 0.00001;
+	}
+
 	if (health == -1.0) {
 		GetVehicleHealth(vehicleid, health);
 	}
