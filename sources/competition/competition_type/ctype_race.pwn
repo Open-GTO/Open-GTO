@@ -26,6 +26,7 @@ CompetitionRace_OnGameModeInit()
 		ctype,
 		ctype_params[CompetitionTypeParams];
 
+	strcpy(ctype_params[COMPETITION_TYPE_NAME_VAR], "COMPETITION_TYPE_RACE_NAME", MAX_COMPETITION_TYPE_NAME_VAR);
 	ctype_params[COMPETITION_TYPE_COLOR] = COLOR_BLUE_500;
 
 	ctype = CompetitionType_Add(ctype_params);
