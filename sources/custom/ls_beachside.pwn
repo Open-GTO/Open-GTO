@@ -185,7 +185,7 @@ Beachside_OnGameModeInit()
 	Elevator_Initialize();
 
 	// Exit here
-	Log_Init("CUSTOM", "LS BeachSide Building Elevator init.");
+	Log_Init("custom", "LS BeachSide Building Elevator init.");
 	return 1;
 }
 
