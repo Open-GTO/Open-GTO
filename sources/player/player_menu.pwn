@@ -117,7 +117,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 		}
 		// телепорты
 		case 5: {
-			if (GetPVarInt(playerid, "teleports_Pause") == 1) {
+			if (IsTeleportPaused(playerid)) {
 				Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
 				            "PLAYER_MENU_TELEPORT_HEADER",
 				            "PLAYER_MENU_TELEPORT_NOT_YET",

@@ -11,44 +11,63 @@
 
 #define _teleport_menu_included
 
+/*
+	Enums
+*/
 
-enum TeleportsInfo {
-	Teleports_Name[MAX_STRING],
-	Teleports_Level,
-	Teleports_Cost,
-	Teleports_Interior,
-	Float:Teleports_Pos_X,
-	Float:Teleports_Pos_Y,
-	Float:Teleports_Pos_Z,
-	Float:Teleports_Pos_A,
+enum e_Teleports_Info {
+	e_tpNameVar[MAX_LANG_VALUE_STRING],
+	e_tpLevel,
+	e_tpCost,
+	e_tpInterior,
+	Float:e_tpPosX,
+	Float:e_tpPosY,
+	Float:e_tpPosZ,
+	Float:e_tpPosA,
 }
 
-new Teleports[][TeleportsInfo] = {
-	{"[LS]: аэропорт", 5, 10000, 0, 1685.6606, -2242.8801, 13.5469, 180.0000},
-	{"[LS]: вокзал", 5, 5000, 0, 1742.9779, -1861.6843, 13.5772, 360.0000},
-	{"[SF]: аэропорт", 10, 15000, 0, -1411.8593, -296.6611, 14.1484, 130.0000},
-	{"[SF]: вокзал", 10, 10000, 0, -1965.2836, 137.8133, 27.6875, 88.0000},
-	{"[LV]: аэропорт", 20, 20000, 0, 1679.5679, 1447.7352, 10.7742, 270.0000},
-	{"[LV]: вокзал", 20, 15000, 0, 2850.8833, 1290.3472, 11.3906, 88.0000}
+/*
+	Vars
+*/
+
+static gTeleports[6][e_Teleports_Info] = {
+	{"PLAYER_MENU_TELEPORT_POINT_LS_AIRPORT", 5, 10000, 0, 1685.6606, -2242.8801, 13.5469, 180.0000},
+	{"PLAYER_MENU_TELEPORT_POINT_LS_RAILWAY", 5, 5000, 0, 1742.9779, -1861.6843, 13.5772, 360.0000},
+	{"PLAYER_MENU_TELEPORT_POINT_SF_AIRPORT", 10, 15000, 0, -1411.8593, -296.6611, 14.1484, 130.0000},
+	{"PLAYER_MENU_TELEPORT_POINT_SF_RAILWAY", 10, 10000, 0, -1965.2836, 137.8133, 27.6875, 88.0000},
+	{"PLAYER_MENU_TELEPORT_POINT_LV_AIRPORT", 20, 20000, 0, 1679.5679, 1447.7352, 10.7742, 270.0000},
+	{"PLAYER_MENU_TELEPORT_POINT_LV_RAILWAY", 20, 15000, 0, 2850.8833, 1290.3472, 11.3906, 88.0000}
 };
+
+static
+	gPauseTime[MAX_PLAYERS];
+
+/*
+	Dialogs
+*/
 
 DialogCreate:PlayerTeleportMenu(playerid)
 {
-	new string[((MAX_NAME + 8) * 3) * (sizeof(Teleports) + 1)];
-	string = "Название\tЦена\tУровень\n";
+	static
+		name[MAX_LANG_VALUE_STRING],
+		temp[MAX_LANG_VALUE_STRING],
+		string[MAX_LANG_VALUE_STRING * sizeof(gTeleports)];
 
-	for (new i = 0; i < sizeof(Teleports); i++) {
-		format(string, sizeof(string),
-			"%s{CCCCCC}%s\t{00AA00}$%d\t{E6ACDD}%d\n",
-			string,
-			Teleports[i][Teleports_Name], Teleports[i][Teleports_Cost], Teleports[i][Teleports_Level]
-			);
+	Lang_GetPlayerText(playerid, "PLAYER_MENU_TELEPORT_LIST_HEADER", string);
+
+	for (new i = 0; i < sizeof(gTeleports); i++) {
+		Lang_GetPlayerText(playerid, gTeleports[i][e_tpNameVar], name);
+		Lang_GetPlayerText(playerid, "PLAYER_MENU_TELEPORT_LIST_ITEM", temp, _,
+		                   name,
+		                   gTeleports[i][e_tpCost],
+		                   gTeleports[i][e_tpLevel]);
+		strcat(string, temp);
 	}
 
 	Dialog_Open(playerid, Dialog:PlayerTeleportMenu, DIALOG_STYLE_TABLIST_HEADERS,
-	            "Меню телепортов",
+	            "PLAYER_MENU_TELEPORT_HEADER",
 	            string,
-	            "ОК", "Назад",
+	            "BUTTON_OK", "BUTTON_BACK",
 	            MDIALOG_NOTVAR_INFO);
 }
 
@@ -59,27 +78,42 @@ DialogResponse:PlayerTeleportMenu(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	if (GetPlayerLevel(playerid) < Teleports[listitem][Teleports_Level]) {
-		new string[MAX_STRING];
-		format(string, sizeof(string), "{CCCCCC}Ваш уровень слишком мал, нужен {E6ACDD}%d.", Teleports[listitem][Teleports_Level]);
-		Dialog_MessageEx(playerid, Dialog:TeleportReturnMenu, "Телепорт", string, "Назад", "Отмена");
+	if (IsTeleportPaused(playerid)) {
+		Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
+		            "PLAYER_MENU_TELEPORT_HEADER",
+		            "PLAYER_MENU_TELEPORT_NOT_YET",
+		            "BUTTON_BACK", "BUTTON_EXIT");
 		return 0;
 	}
 
-	if (GetPlayerMoney(playerid) < Teleports[listitem][Teleports_Cost]) {
-		new string[MAX_STRING];
-		format(string, sizeof(string), "{CCCCCC}Недостаточно денег, нужно {00AA00}$%d.", Teleports[listitem][Teleports_Cost]);
-		Dialog_MessageEx(playerid, Dialog:TeleportReturnMenu, "Телепорт", string, "Назад", "Отмена");
+	if (GetPlayerLevel(playerid) < gTeleports[listitem][e_tpLevel]) {
+		Dialog_MessageEx(playerid, Dialog:TeleportReturnMenu,
+		                 "PLAYER_MENU_TELEPORT_HEADER",
+		                 "PLAYER_MENU_TELEPORT_LOW_LEVEL",
+		                 "BUTTON_BACK", "BUTTON_CANCEL",
+		                 _,
+		                 gTeleports[listitem][e_tpLevel]);
 		return 0;
 	}
 
-	SetPVarInt(playerid, "teleports_Pause", 1);
-	SetTimerEx("teleports_Pause_Time", TELEPORTS_PAUSE_TIME * 1000, 0, "d", playerid);
-	GivePlayerMoney(playerid, -Teleports[listitem][Teleports_Cost]);
-	SetPlayerPosEx(playerid,
-		Teleports[listitem][Teleports_Pos_X], Teleports[listitem][Teleports_Pos_Y], Teleports[listitem][Teleports_Pos_Z], Teleports[listitem][Teleports_Pos_A],
-		Teleports[listitem][Teleports_Interior], 0
-	);
+	if (GetPlayerMoney(playerid) < gTeleports[listitem][e_tpCost]) {
+		Dialog_MessageEx(playerid, Dialog:TeleportReturnMenu,
+		                 "PLAYER_MENU_TELEPORT_HEADER",
+		                 "PLAYER_MENU_TELEPORT_NO_MONEY",
+		                 "BUTTON_BACK", "BUTTON_CANCEL",
+		                 _,
+		                 gTeleports[listitem][e_tpCost]);
+		return 0;
+	}
+
+	SetTeleportPauseTime(playerid, TELEPORTS_PAUSE_TIME);
+	GivePlayerMoney(playerid, -gTeleports[listitem][e_tpCost]);
+	TeleportPlayerToPos(playerid,
+	                    gTeleports[listitem][e_tpPosX],
+	                    gTeleports[listitem][e_tpPosY],
+	                    gTeleports[listitem][e_tpPosZ],
+	                    gTeleports[listitem][e_tpPosA],
+	                    gTeleports[listitem][e_tpInterior]);
 	return 1;
 }
 
@@ -91,9 +125,21 @@ DialogResponse:TeleportReturnMenu(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-forward teleports_Pause_Time(playerid);
-public teleports_Pause_Time(playerid)
+/*
+	Functions
+*/
+
+stock SetTeleportPauseTime(playerid, time)
 {
-	DeletePVar(playerid, "teleports_Pause");
-	return 1;
+	gPauseTime[playerid] = gettime() + time;
+}
+
+stock GetTeleportPauseTime(playerid)
+{
+	return gPauseTime[playerid];
+}
+
+stock IsTeleportPaused(playerid)
+{
+	return gPauseTime[playerid] > gettime();
 }
