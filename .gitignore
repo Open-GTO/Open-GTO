@@ -4,6 +4,7 @@ filterscripts/
 plugins/
 *.exe
 *.dll
+*.so
 *.cfg
 *.txt
 *.amx
