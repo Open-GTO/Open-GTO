@@ -1,5 +1,9 @@
 language: Pawn
 script: make
+addons:
+  apt:
+    packages:
+      - libc6-i386
 notifications:
   webhooks:
     urls:
