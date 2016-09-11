@@ -1,7 +1,7 @@
 /*
 
-	Описание: Скрипт анимаций
-	Автор: ziggi
+	About: animation menu script
+	Author: ziggi
 
 */
 
@@ -11,17 +11,28 @@
 
 #define _anims_included
 
+/*
+	Defines
+*/
 
 #define MAX_ANIM_LIB_NAME	16
 #define MAX_ANIM_NAME		24
 #define MAX_ANIMS_IN_LIB    295
 
-enum Anims_Info {
-	anim_Lib[MAX_ANIM_LIB_NAME],
-	anim_Name[MAX_ANIM_NAME],
+/*
+	Enums
+*/
+
+enum e_Anim_Info {
+	e_aLib[MAX_ANIM_LIB_NAME],
+	e_aName[MAX_ANIM_NAME],
 }
 
-static anim_lib_array[][MAX_ANIM_LIB_NAME] = {
+/*
+	Vars
+*/
+
+static const gAnimLibs[][MAX_ANIM_LIB_NAME] = {
 	"AIRPORT", "Attractors", "BAR", "BASEBALL", "BD_FIRE", "BEACH", "benchpress",
 	"BF_injection", "BIKED", "BIKEH", "BIKELEAP", "BIKES", "BIKEV", "BIKE_DBZ",
 	"BLOWJOBZ", "BMX", "BOMBER", "BOX", "BSKTBALL", "BUDDY", "BUS", "CAMERA",
@@ -42,7 +53,7 @@ static anim_lib_array[][MAX_ANIM_LIB_NAME] = {
 	"VENDING", "VORTEX", "WAYFARER", "WEAPONS", "WUZI", "SAMP"
 };
 
-static anim_array[][Anims_Info] = {
+static const gAnims[][e_Anim_Info] = {
 	{"AIRPORT", "thrw_barl_thrw"},
 
 	{"Attractors", "Stepsit_in"},
@@ -1899,13 +1910,18 @@ static anim_array[][Anims_Info] = {
 	{"SAMP", "FishingIdle"}
 };
 
+/*
+	Functions
+*/
+
 DialogCreate:AnimLib(playerid)
 {
-	new
-		string[MAX_ANIM_LIB_NAME * sizeof(anim_lib_array)];
+	static
+		string[MAX_ANIM_LIB_NAME * sizeof(gAnimLibs)];
 
-	for (new i = 0; i < sizeof(anim_lib_array); i++) {
-		strcat(string, anim_lib_array[i], sizeof(string));
+	string[0] = '\0';
+	for (new i = 0; i < sizeof(gAnimLibs); i++) {
+		strcat(string, gAnimLibs[i], sizeof(string));
 		strcat(string, "\n", sizeof(string));
 	}
 
@@ -1923,7 +1939,7 @@ DialogResponse:AnimLib(playerid, response, listitem, inputtext[])
 		return 0;
 	}
 
-	SetPVarString(playerid, "anims_SelectedLib", anim_lib_array[listitem]);
+	SetPVarString(playerid, "anims_SelectedLib", gAnimLibs[listitem]);
 
 	Dialog_Show(playerid, Dialog:AnimMenu);
 	return 1;
@@ -1931,15 +1947,16 @@ DialogResponse:AnimLib(playerid, response, listitem, inputtext[])
 
 DialogCreate:AnimMenu(playerid)
 {
-	new
-		string[MAX_ANIM_NAME * MAX_ANIMS_IN_LIB],
-		lib[MAX_ANIM_LIB_NAME];
+	static
+		string[MAX_ANIM_LIB_NAME * sizeof(gAnimLibs)];
 
+	new lib[MAX_ANIM_LIB_NAME];
 	GetPVarString(playerid, "anims_SelectedLib", lib, sizeof(lib));
 
-	for (new i = 0, founded = 0; i < sizeof(anim_array); i++) {
-		if (!strcmp(lib, anim_array[i][anim_Lib], true)) {
-			strcat(string, anim_array[i][anim_Name], sizeof(string));
+	string[0] = '\0';
+	for (new i = 0, founded = 0; i < sizeof(gAnims); i++) {
+		if (!strcmp(lib, gAnims[i][e_aLib], true)) {
+			strcat(string, gAnims[i][e_aName], sizeof(string));
 			strcat(string, "\n", sizeof(string));
 			founded = 1;
 		} else if (founded == 1) {
@@ -1970,25 +1987,28 @@ DialogResponse:AnimMenu(playerid, response, listitem, inputtext[])
 	DeletePVar(playerid, "anims_SelectedLib");
 
 	new anim_id;
-	for (new i = 0; i < sizeof(anim_array); i++) {
-		if (!strcmp(lib, anim_array[i][anim_Lib], true)) {
+	for (new i = 0; i < sizeof(gAnims); i++) {
+		if (!strcmp(lib, gAnims[i][e_aLib], true)) {
 			anim_id = i + listitem;
 			break;
 		}
 	}
 
-	ApplyAnimation(playerid, lib, anim_array[anim_id][anim_Name], 4.1, 0, 1, 1, 0, 0, 1);
+	ApplyAnimation(playerid, lib, gAnims[anim_id][e_aName], 4.1, 0, 1, 1, 0, 0, 1);
 	return 1;
 }
 
-COMMAND:dance(playerid, params[])
+CMD:dance(playerid, params[])
 {
-	if (isnull(params)) {
+	new
+		type;
+
+	if (sscanf(params, "i", type)) {
 		Lang_SendText(playerid, "COMMAND_DANCE_ERROR");
 		return 1;
 	}
 
-	switch (strval(params)) {
+	switch (type) {
 		case 1: {
 			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DANCE1);
 		}
@@ -2008,13 +2028,13 @@ COMMAND:dance(playerid, params[])
 	return 1;
 }
 
-COMMAND:handsup(playerid, params[])
+CMD:handsup(playerid, params[])
 {
 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_HANDSUP);
 	return 1;
 }
 
-COMMAND:piss(playerid, params[])
+CMD:piss(playerid, params[])
 {
 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_PISSING);
 	return 1;

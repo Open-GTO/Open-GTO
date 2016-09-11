@@ -358,10 +358,12 @@ DialogResponse:BusinessMessage(playerid, response, listitem, inputtext[])
 
 DialogCreate:BusinessPlayerOwned(playerid)
 {
-	new
+	static
 		string[MAX_STRING * MAX_PLAYER_BUSINESS],
 		count = 0,
 		playername[MAX_PLAYER_NAME+1];
+
+	count = 0;
 
 	Lang_GetPlayerText(playerid, "BUSINESS_DIALOG_LIST_ITEM_HEAD", string);
 

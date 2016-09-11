@@ -79,10 +79,11 @@ Click_OnPlayerClickPlayer(playerid, clickedplayerid)
 
 DialogCreate:PlayerClick(playerid)
 {
-	new
+	static
 		Lang:lang,
 		listitems[MAX_CLICK_DIALOG_CAPTION_SIZE * sizeof(gClickArray)];
 
+	listitems[0] = '\0';
 	lang = Lang_GetPlayerLang(playerid);
 
 	for (new i = 0; i < sizeof(gClickArray); i++) {

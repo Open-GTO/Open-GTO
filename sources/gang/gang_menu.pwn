@@ -17,9 +17,11 @@
 
 DialogCreate:GangMenu(playerid)
 {
-	new
+	static
 		temp_str[MAX_LANG_VALUE_STRING],
 		string[MAX_LANG_VALUE_STRING * 7];
+
+	string[0] = '\0';
 
 	if (!IsPlayerInGang(playerid)) {
 		Lang_GetPlayerText(playerid, "GANG_MENU_LIST_INFO", string);
@@ -379,7 +381,7 @@ DialogResponse:Gang_CreateReturn(playerid, response, listitem, inputtext[])
 
 DialogCreate:GangInviteAccept(playerid)
 {
-	new
+	static
 		string[(MAX_LANG_VALUE_STRING + 1) * MAX_GANG_INVITES + 1],
 		temp_str[MAX_LANG_VALUE_STRING],
 		invited_gangid[MAX_GANG_INVITES],

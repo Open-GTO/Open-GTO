@@ -66,7 +66,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			InsertSpacesInInt(GetPlayerBankMoney(playerid), bank_money_str);
 			InsertSpacesInInt(GetPlayerTotalMoney(playerid), total_money_str);
 
-			new string[MAX_LANG_VALUE_STRING * 9];
+			static string[MAX_LANG_VALUE_STRING * 9];
 			Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO", string);
 
 			format(string, sizeof(string),
@@ -153,12 +153,16 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 		}
 		// администрация онлайн
 		case 10: {
-			new
+			static
 				idsa = 0,
 				idsm = 0,
 				admins[(MAX_PLAYER_NAME + 1 + 5) * 10],
 				moders[(MAX_PLAYER_NAME + 1 + 5) * 10],
 				string[sizeof(admins) + sizeof(moders) + 64];
+
+			admins[0] = '\0';
+			moders[0] = '\0';
+			string[0] = '\0';
 
 			foreach (new id : Player) {
 				if (IsPlayerHavePrivilege(id, PlayerPrivilegeAdmin)) {

@@ -17,9 +17,11 @@ static
 
 DialogCreate:PlayerFights(playerid)
 {
-	new
+	static
 		temp[MAX_LANG_VALUE_STRING],
 		string[MAX_LANG_VALUE_STRING * MAX_FIGHTS];
+
+	string[0] = '\0';
 
 	for (new id = 0; id < GetFightTeacherLastID(); id++) {
 		if (!IsPlayerFightStyleLearned(playerid, id)) {

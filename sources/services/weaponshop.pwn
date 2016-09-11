@@ -97,7 +97,7 @@ wshop_OnPlayerEnterCheckpoint(playerid, cp)
 // select weapon from list
 DialogCreate:ServiceWeapon(playerid)
 {
-	new
+	static
 		Lang:lang,
 		string[ (MAX_WEAPONS + 1) * (MAX_WEAPON_NAME + 12 + 4) ];
 

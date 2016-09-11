@@ -154,7 +154,7 @@ DialogResponse:BankStart(playerid, response, listitem, inputtext[])
 
 DialogCreate:BankList(playerid)
 {
-	new
+	static
 		temp[MAX_LANG_VALUE_STRING],
 		string[MAX_LANG_VALUE_STRING * 3];
 
