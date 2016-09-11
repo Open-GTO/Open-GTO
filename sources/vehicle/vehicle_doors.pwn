@@ -9,7 +9,7 @@
 	#error "Please include a_samp or a_npc before vehicle_doors"
 #endif
 
-#if !defined _FOREACH_LOCAL_VERSION
+#if !defined foreach
 	#error "Please include foreach before vehicle_doors"
 #endif
 
