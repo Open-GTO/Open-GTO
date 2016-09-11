@@ -130,7 +130,7 @@ COMMAND:getinfo(playerid, params[])
 		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PLAYED", string);
 
 		if (targetid != -2) {
-			new
+			static
 				info[MAX_PLAYER_INFO_LINES][MAX_LANG_VALUE_STRING];
 
 			GetPlayerInfoArray(targetid, info, sizeof(info[]), playerid);

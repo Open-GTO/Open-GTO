@@ -63,9 +63,11 @@ public OnPlayerConnect(playerid)
 
 DialogCreate:CompetitionMenu(playerid)
 {
-	new
+	static
 		string[MAX_LANG_VALUE_STRING * (2 + MAX_COMPETITION) + 1],
 		temp[MAX_LANG_VALUE_STRING];
+
+	string[0] = '\0';
 
 	Lang_GetPlayerText(playerid, "COMPETITION_MENU_LIST_HEADER", temp);
 	strcat(string, temp);

@@ -18,14 +18,16 @@ DialogCreate:PlayerVehicleMenu(playerid)
 		return 1;
 	}
 
-	new
+	static
 		model_name[MAX_VEHICLE_NAME],
 		string[MAX_VEHICLE_NAME * (MAX_PLAYER_VEHICLES + 1) + 1];
 
+	string[0] = '\0';
 	for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
 		if (IsValidPlayerVehicleSlot(playerid, i)) {
 			GetVehicleModelName(GetPlayerVehicleModelBySlot(playerid, i), model_name);
-			format(string, sizeof(string), "%s%s\n", string, model_name);
+			strcat(string, model_name);
+			strcat(string, "\n");
 		}
 	}
 

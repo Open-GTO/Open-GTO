@@ -43,9 +43,11 @@ DialogCreate:VehicleMenu(playerid)
 	new engine, lights, alarm, doors, bonnet, boot, objective;
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 
-	new
+	static
 		temp[MAX_LANG_VALUE_STRING],
 		string[MAX_LANG_VALUE_STRING * 8];
+
+	string[0] = '\0';
 
 	Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_FLIP", temp);
 	strcat(string, temp);

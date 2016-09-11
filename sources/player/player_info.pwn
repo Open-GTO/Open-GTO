@@ -17,7 +17,7 @@
 
 stock GetPlayerInfoString(playerid, string[], const size = sizeof(string), requestorid = INVALID_PLAYER_ID)
 {
-	new
+	static
 		info[MAX_PLAYER_INFO_LINES][MAX_LANG_VALUE_STRING];
 
 	GetPlayerInfoArray(playerid, info, sizeof(info[]), requestorid);

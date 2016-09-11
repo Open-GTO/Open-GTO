@@ -371,11 +371,17 @@ DialogResponse:HouseInfo(playerid, response, listitem, inputtext[])
 
 DialogCreate:HouseMenu(playerid)
 {
-	new id = GetPlayerToHouseID(playerid);
-	new string[MAX_LANG_VALUE_STRING * 7], temp[MAX_LANG_VALUE_STRING], playername[MAX_PLAYER_NAME+1];
+	static
+		string[MAX_LANG_VALUE_STRING * 7],
+		temp[MAX_LANG_VALUE_STRING],
+		head[MAX_LANG_VALUE_STRING],
+		playername[MAX_PLAYER_NAME+1];
+
+	string[0] = '\0';
+
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	new head[MAX_LANG_VALUE_STRING];
+	new id = GetPlayerToHouseID(playerid);
 	Lang_GetPlayerText(playerid, "HOUSING_DIALOG_HEADER", head, sizeof(head), Houses[id][Houses_Name]);
 
 	new isowner = !strcmp(Houses[id][Houses_Owner], playername, true);

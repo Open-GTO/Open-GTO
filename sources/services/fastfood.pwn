@@ -106,7 +106,9 @@ stock fastfood_OnPlayerEnterCP(playerid, cp)
 
 DialogCreate:ServiceFastfood(playerid)
 {
-	new string[MAX_LANG_VALUE_STRING * (sizeof(food_data) + 1)];
+	static
+		string[MAX_LANG_VALUE_STRING * (sizeof(food_data) + 1)];
+
 	Lang_GetPlayerText(playerid, "FASTFOOD_DIALOG_LIST_HEADER", string);
 
 	for (new i = 0; i < sizeof(food_data); i++) {

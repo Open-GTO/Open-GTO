@@ -153,7 +153,9 @@ public bar_Gulp(playerid)
 
 DialogCreate:ServiceBar(playerid)
 {
-	new string[MAX_LANG_VALUE_STRING * (sizeof(drinks_data) + 1)];
+	static
+		string[MAX_LANG_VALUE_STRING * (sizeof(drinks_data) + 1)];
+
 	Lang_GetPlayerText(playerid, "BAR_DIALOG_LIST_HEADER", string);
 
 	for (new i = 0; i < sizeof(drinks_data); i++) {

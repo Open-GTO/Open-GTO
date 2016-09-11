@@ -328,11 +328,11 @@ public AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[])
 	}
 
 	static
-		message[MAX_LANG_VALUE_STRING * 6 * MAX_PLAYER_INFO_LINES];
+		message[MAX_LANG_VALUE_STRING * 6 + MAX_LANG_VALUE_STRING * MAX_PLAYER_INFO_LINES];
 
 	message[0] = '\0';
 
-	new
+	static
 		string[MAX_LANG_VALUE_STRING],
 		account_info[e_Account_Info],
 		player_info[MAX_PLAYER_INFO_LINES][MAX_LANG_VALUE_STRING],
