@@ -22,6 +22,7 @@ stock GetPlayerInfoString(playerid, string[], const size = sizeof(string), reque
 
 	GetPlayerInfoArray(playerid, info, sizeof(info[]), requestorid);
 
+	string[0] = '\0';
 	for (new i = 0; i < sizeof(info); i++) {
 		strcat(string, info[i], size);
 	}

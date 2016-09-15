@@ -39,7 +39,7 @@ AdminSpectate_OnPlayerSpectate(playerid, specid, status)
 
 stock AdminSpectate_CreateLabel(playerid, specid)
 {
-	new
+	static
 		string[MAX_LANG_VALUE_STRING * MAX_PLAYER_INFO_LINES];
 
 	GetPlayerInfoString(specid, string, sizeof(string), playerid);
@@ -60,7 +60,7 @@ public AdminSpectate_UpdateLabel(playerid)
 		return 0;
 	}
 
-	new
+	static
 		string[MAX_LANG_VALUE_STRING * MAX_PLAYER_INFO_LINES];
 
 	GetPlayerInfoString(Spectate_GetSpecID(playerid), string, sizeof(string), playerid);
