@@ -209,7 +209,7 @@ DialogResponse:CompetitionJoinMenu(playerid, response, listitem, inputtext[])
 
 DialogCreate:CompetitionStartMenu(playerid)
 {
-	new
+	static
 		string[MAX_LANG_VALUE_STRING * 10 + 1],
 		temp[MAX_LANG_VALUE_STRING];
 
