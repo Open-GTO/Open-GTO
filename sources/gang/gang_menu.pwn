@@ -382,22 +382,21 @@ DialogResponse:Gang_CreateReturn(playerid, response, listitem, inputtext[])
 DialogCreate:GangInviteAccept(playerid)
 {
 	static
-		string[(MAX_LANG_VALUE_STRING + 1) * MAX_GANG_INVITES + 1],
-		temp_str[MAX_LANG_VALUE_STRING],
+		string[(MAX_LANG_VALUE_STRING + 1) * (1 + MAX_GANG_INVITES) + 1],
+		temp_str[MAX_LANG_VALUE_STRING + 1],
 		invited_gangid[MAX_GANG_INVITES],
-		invited_times[MAX_GANG_INVITES],
+		remaining_times[MAX_GANG_INVITES],
 		size;
 
 	Lang_GetPlayerText(playerid, "GANG_INVITE_ACCEPT_LIST_HEADER", string);
 	strcat(string, "\n");
 
-	GetPlayerInvitedGangArrayID(playerid, invited_gangid, size);
-	GetPlayerInvitedGangArrayReTime(playerid, invited_times, size);
+	GetPlayerInvitedGangArrayInfo(playerid, invited_gangid, .remaining_times = remaining_times, .size = size);
 
 	for (new i = 0; i < size; i++) {
 		Gang_GetName(invited_gangid[i], temp_str);
 
-		Lang_GetPlayerText(playerid, "GANG_INVITE_ACCEPT_LIST", temp_str, _, invited_times[i]);
+		Lang_GetPlayerText(playerid, "GANG_INVITE_ACCEPT_LIST", temp_str, _, remaining_times[i]);
 
 		strcat(string, temp_str);
 		strcat(string, "\n");
