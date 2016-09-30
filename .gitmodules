@@ -55,3 +55,6 @@
 [submodule "sources/lib/foreach"]
 	path = sources/lib/foreach
 	url = https://github.com/Open-GTO/foreach.git
+[submodule "sources/lib/mselect"]
+	path = sources/lib/mselect
+	url = https://github.com/Open-GTO/mselect.git

@@ -171,8 +171,7 @@
 // skins
 #define SKINS_COST    0 // цена покупки скина
 #define SKINS_IGNORE  0, 74  // список игнорируемых скинов
-#define SKINS_MAXID   311
-#define SKINS_MINID   1
+#define MSELECT_MAX_ITEMS 310
 
 // groundhold
 #define GROUNDHOLD_ENABLED    1 // точки прокачки

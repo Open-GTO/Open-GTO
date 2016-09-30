@@ -32,7 +32,6 @@ Thanks:
 	Y_Less - foreach, fixes, sscanf2.
 	ZeeX - zcmd, crashdetect, Pawn Compiler.
 	Incognito - Streamer.
-	D0erfler - mSelection.
 	Nexius - MapFix.
 */
 
@@ -52,7 +51,6 @@ Thanks:
 #include "lib/zcmd.inc"
 #include "lib/mxINI/mxINI.inc"
 #include "lib/time_t/time_t.inc"
-#include "lib/mSelection.inc"
 #include "lib/mapfix.inc"
 #include "lib/textlist/textlist.inc"
 #include "lib/shootingrange/shootingrange.inc"
@@ -62,6 +60,7 @@ Thanks:
 #include "lib/zvehpaintjob/zvehpaintjob.inc"
 #include "lib/zvehgetcolor/zvehgetcolor.inc"
 #include "lib/mdialog/mdialog.inc"
+#include "lib/mselect/mselect.inc"
 #include "lib/skinselect/skinselect.inc"
 #include "lib/garageblock/garage_block.inc"
 #include "lib/gpickup/gpickup.inc"
