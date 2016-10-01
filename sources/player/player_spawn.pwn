@@ -2,7 +2,7 @@
 
 	About: player spawn system
 	Author:	ziggi
-
+	Thanks White_116 for W_Points (GetPointChunkPos from this lib)
 */
 
 #if defined _pl_spawn_included
@@ -12,13 +12,33 @@
 #define _pl_spawn_included
 
 /*
+	Defines
+*/
+
+#if !defined MAX_CELL_POINTS
+	#define MAX_CELL_POINTS (50)
+#elseif MAX_CELL_POINTS > 255
+	#error Player spawn: MAX_CELL_POINTS should be lower than 256
+#endif
+
+#if !defined MAX_AREA_SIZE
+	#define MAX_AREA_SIZE (3000)
+#endif
+
+#if !defined MAX_CELL_SIZE
+	#define MAX_CELL_SIZE (60)
+#endif
+
+#define MAX_GRID_SIZE (((MAX_AREA_SIZE) * 2) / MAX_CELL_SIZE)
+
+/*
 	Vars
 */
 
 static
 	SpawnType:gPlayerSpawnType[MAX_PLAYERS];
 
-// camera
+// camera info
 enum e_Spawn_Camera_Info {
 	e_scInterior,
 	Float:e_scPosX,
@@ -35,6 +55,7 @@ static gCamera[][e_Spawn_Camera_Info] = {
 	{0, 1937.4159, 1251.2012, 97.4819,      1938.1495, 1251.8807, 97.0875}
 };
 
+// spawn info
 enum e_Spawns_Info {
 	Float:e_sPosX,
 	Float:e_sPosY,
@@ -582,9 +603,61 @@ static Float:gSpawns[][e_Spawns_Info] = {
 	{1217.0377, -1001.3464, 33.2014, 284.6580}
 };
 
-PSpawn_OnPlayerRequestClass(playerid, classid)
+// chunks
+static
+	gChunkPoints[MAX_GRID_SIZE][MAX_GRID_SIZE][MAX_CELL_POINTS],
+	gChunkPointsCount[MAX_GRID_SIZE][MAX_GRID_SIZE char];
+
+/*
+	OnGameModeInit
+*/
+
+public OnGameModeInit()
 {
-	#pragma unused classid
+	new
+		i,
+		chunk_x,
+		chunk_y,
+		chunk_pointid;
+
+	while (i < sizeof(gSpawns)) {
+		GetPointChunkPos(gSpawns[i][e_sPosX], gSpawns[i][e_sPosY], chunk_x, chunk_y);
+
+		chunk_pointid = gChunkPointsCount[chunk_x]{chunk_y};
+		if (chunk_pointid >= MAX_CELL_POINTS) {
+			Log(systemlog, DEBUG, "Error <player_spawn:OnGameModeInit>: points in one cell is too much (point %d).", i);
+			break;
+		}
+
+		gChunkPoints[chunk_x][chunk_y][chunk_pointid] = i;
+
+		gChunkPointsCount[chunk_x]{chunk_y}++;
+		i++;
+	}
+
+	#if defined PSpawn_OnGameModeInit
+		return PSpawn_OnGameModeInit();
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
+
+#define OnGameModeInit PSpawn_OnGameModeInit
+#if defined PSpawn_OnGameModeInit
+	forward PSpawn_OnGameModeInit();
+#endif
+
+/*
+	OnPlayerRequestClass
+*/
+
+public OnPlayerRequestClass(playerid, classid)
+{
 	if (IsPlayerLogin(playerid)) {
 		SpawnPlayer(playerid);
 		return 0;
@@ -601,8 +674,27 @@ PSpawn_OnPlayerRequestClass(playerid, classid)
 	SetPlayerInterior(playerid, gCamera[camera_id][e_scInterior]);
 	SetPlayerCameraPos(playerid, gCamera[camera_id][e_scPosX], gCamera[camera_id][e_scPosY], gCamera[camera_id][e_scPosZ]);
 	SetPlayerCameraLookAt(playerid, gCamera[camera_id][e_scLookPosX], gCamera[camera_id][e_scLookPosY], gCamera[camera_id][e_scLookPosZ]);
-	return 1;
+
+	#if defined PSpawn_OnPlayerRequestClass
+		return PSpawn_OnPlayerRequestClass(playerid, classid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerRequestClass
+	#undef OnPlayerRequestClass
+#else
+	#define _ALS_OnPlayerRequestClass
+#endif
+
+#define OnPlayerRequestClass PSpawn_OnPlayerRequestClass
+#if defined PSpawn_OnPlayerRequestClass
+	forward PSpawn_OnPlayerRequestClass(playerid, classid);
+#endif
+
+/*
+	Functions
+*/
 
 DialogCreate:PlayerSpawnMenu(playerid)
 {
@@ -813,7 +905,7 @@ static stock GetPlayerSpawnID(playerid)
 		return GetPlayerRandomSpawnID(playerid);
 	}
 
-	return GetNearestSpawnID(pos_x, pos_y, pos_z);
+	return GetNearestRandomSpawnID(pos_x, pos_y);
 }
 
 static stock GetPlayerRandomSpawnID(playerid)
@@ -831,35 +923,16 @@ static stock GetPlayerRandomSpawnID(playerid)
 	return id;
 }
 
-static stock GetNearestSpawnID(Float:x, Float:y, Float:z)
+static stock GetNearestRandomSpawnID(Float:x, Float:y)
 {
 	new
-		Float:min_distance = 99999.0,
-		Float:curr_distance,
-		id = 0;
+		chunk_x,
+		chunk_y,
+		chunk_pointid;
 
-#if debug > 0
-	static
-		tick;
-
-	tick = GetTickCount();
-#endif
-
-	for (new i = 0; i < sizeof(gSpawns); i++) {
-		curr_distance = GetDistanceBetweenPoints(x, y, z, gSpawns[i][e_sPosX], gSpawns[i][e_sPosY], gSpawns[i][e_sPosZ]);
-
-		if (min_distance > curr_distance) {
-			min_distance = curr_distance;
-			id = i;
-		}
-	}
-
-#if debug > 0
-	Log(playerlog, DEBUG, "player_spawn:GetNearestSpawnID(%f, %f, %f): nearest spawn id: %d, time taken: %d.",
-	    x, y, z, id, GetTickDiff(GetTickCount(), tick));
-#endif
-
-	return id;
+	GetPointChunkPos(x, y, chunk_x, chunk_y);
+	chunk_pointid = random(gChunkPointsCount[chunk_x]{chunk_y});
+	return gChunkPoints[chunk_x][chunk_y][chunk_pointid];
 }
 
 static stock SaveDeathInfo(playerid)
@@ -963,4 +1036,26 @@ stock SetPlayerSpawnType(playerid, SpawnType:type)
 stock SpawnType:GetPlayerSpawnType(playerid)
 {
 	return gPlayerSpawnType[playerid];
+}
+
+static stock GetPointChunkPos(Float:x, Float:y, &chunk_x, &chunk_y)
+{
+	new
+		Float:area = float(MAX_AREA_SIZE - MAX_CELL_SIZE),
+		Float:size = float(MAX_CELL_SIZE);
+
+	if (x < -area) {
+		x = -area + 1.0;
+	} else if (x > area) {
+		x = area - 1.0;
+	}
+
+	if (y < -area) {
+		y = -area + 1;
+	} else if (y > area) {
+		y = area - 1;
+	}
+
+	chunk_x = floatround((x + area) / size, floatround_floor);
+	chunk_y = floatround((y + area) / size, floatround_floor);
 }

@@ -545,7 +545,6 @@ public OnPlayerRequestClass(playerid, classid)
 {
 	SetPlayerSpawned(playerid, 0);
 	Player_OnPlayerRequestClass(playerid, classid);
-	PSpawn_OnPlayerRequestClass(playerid, classid);
 	return 1;
 }
 
