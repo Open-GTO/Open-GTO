@@ -1,5 +1,5 @@
 /**
- * Log plugin v0.2
+ * Log plugin v0.2.1
  * by maddinat0r
  */
 
