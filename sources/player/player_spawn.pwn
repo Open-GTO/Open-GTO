@@ -2296,6 +2296,7 @@ public OnGameModeInit()
 		gChunkPointsCount[chunk_x]{chunk_y}++;
 		i++;
 	}
+	Log_Init("player", "Chunk spawn points init.");
 
 	#if defined PSpawn_OnGameModeInit
 		return PSpawn_OnGameModeInit();
@@ -2596,14 +2597,14 @@ static stock GetNearestRandomSpawnID(Float:x, Float:y)
 	points_count = gChunkPointsCount[chunk_x]{chunk_y};
 	if (points_count != 0) {
 		chunk_pointid = random(points_count);
-	} else
+	} else {
 		if (GetNearestNotEmptyChunk(chunk_x, chunk_y, chunk_x, chunk_y)) {
 			chunk_pointid = random(gChunkPointsCount[chunk_x]{chunk_y});
 		}
 	}
 
 	if (chunk_pointid == -1) {
-		return GetPlayerRandomSpawnID(playerid);
+		return random( sizeof(gSpawns) );
 	}
 
 	return gChunkPoints[chunk_x][chunk_y][chunk_pointid];
