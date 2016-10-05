@@ -2614,67 +2614,49 @@ static stock GetNearestNotEmptyChunk(current_x, current_y, &cx, &cy)
 {
 	new
 		n,
-		k;
+		k,
+		max_n;
+
+	max_n = getmax(current_x, MAX_GRID_SIZE - current_x,
+	               current_y, MAX_GRID_SIZE - current_y);
 
 	// pass through array by a spiral
-	while (current_x && current_y) {
+	while (n < max_n) {
 		n++;
 
-		if (current_x < n) {
-			break;
-		}
-		for (k = 0; k < n; k++) {
+		for (k = 0; k < n && current_x >= 0; k++, current_x--) {
 			if (gChunkPointsCount[current_x]{current_y} != 0) {
 				cx = current_x;
 				cy = current_y;
 				return 1;
 			}
-			current_x--;
 		}
 
-		if (current_y >= MAX_GRID_SIZE - n) {
-			break;
-		}
-		for (k = 0; k < n; k++) {
+		for (k = 0; k < n && current_y < MAX_GRID_SIZE; k++, current_y++) {
 			if (gChunkPointsCount[current_x]{current_y} != 0) {
 				cx = current_x;
 				cy = current_y;
 				return 1;
 			}
-			current_y++;
 		}
 
 		n++;
 
-		if (current_x >= MAX_GRID_SIZE - n) {
-			break;
-		}
-		for (k = 0; k < n; k++) {
+		for (k = 0; k < n && current_x < MAX_GRID_SIZE; k++, current_x++) {
 			if (gChunkPointsCount[current_x]{current_y} != 0) {
 				cx = current_x;
 				cy = current_y;
 				return 1;
 			}
-			current_x++;
 		}
 
-		if (current_y < n) {
-			break;
-		}
-		for (k = 0; k < n; k++) {
+		for (k = 0; k < n && current_y >= 0; k++, current_y--) {
 			if (gChunkPointsCount[current_x]{current_y} != 0) {
 				cx = current_x;
 				cy = current_y;
 				return 1;
 			}
-			current_y--;
 		}
-	}
-
-	if (0 <= current_x < MAX_GRID_SIZE && 0 <= current_y < MAX_GRID_SIZE) {
-		cx = current_x;
-		cy = current_y;
-		return 1;
 	}
 	return 0;
 }
