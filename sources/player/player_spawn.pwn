@@ -2620,7 +2620,7 @@ static stock GetNearestNotEmptyChunk(current_x, current_y, &cx, &cy)
 	while (current_x && current_y) {
 		n++;
 
-		if (current_x <= -1) {
+		if (current_x < n) {
 			break;
 		}
 		for (k = 0; k < n; k++) {
@@ -2632,7 +2632,7 @@ static stock GetNearestNotEmptyChunk(current_x, current_y, &cx, &cy)
 			current_x--;
 		}
 
-		if (current_y >= MAX_GRID_SIZE) {
+		if (current_y >= MAX_GRID_SIZE - n) {
 			break;
 		}
 		for (k = 0; k < n; k++) {
@@ -2646,7 +2646,7 @@ static stock GetNearestNotEmptyChunk(current_x, current_y, &cx, &cy)
 
 		n++;
 
-		if (current_x >= MAX_GRID_SIZE) {
+		if (current_x >= MAX_GRID_SIZE - n) {
 			break;
 		}
 		for (k = 0; k < n; k++) {
@@ -2658,7 +2658,7 @@ static stock GetNearestNotEmptyChunk(current_x, current_y, &cx, &cy)
 			current_x++;
 		}
 
-		if (current_y <= -1) {
+		if (current_y < n) {
 			break;
 		}
 		for (k = 0; k < n; k++) {
