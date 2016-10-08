@@ -48,3 +48,20 @@ stock DecodePlayerInterfaceData(playerid, PlayerInterfaceParams:paramid, data)
 		SetPlayerInterfaceParam(playerid, PlayerInterface:pinterface, paramid, data >> pinterface & 1);
 	}
 }
+
+static stock PlayerTD_Update(playerid, PlayerText:textdraw, color, value, prefix[] = "")
+{
+	static
+		str[MAX_LANG_VALUE_STRING];
+
+	InsertSpacesInInt(value, str);
+
+	if (!isnull(prefix)) {
+		format(str, sizeof(str), "%s%s", prefix, str);
+	}
+
+	PlayerTextDrawHide(playerid, textdraw);
+	PlayerTextDrawColor(playerid, textdraw, color);
+	PlayerTextDrawSetString(playerid, textdraw, str);
+	PlayerTextDrawShow(playerid, textdraw);
+}

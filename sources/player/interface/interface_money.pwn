@@ -72,7 +72,7 @@ PlayerMoneyTD_OnPlayerConnect(playerid)
 	PlayerTextDrawColor(playerid, td_temp, -1);
 	PlayerTextDrawSetShadow(playerid, td_temp, 0);
 	PlayerTextDrawSetOutline(playerid, td_temp, 1);
-	PlayerTextDrawBackgroundColor(playerid, td_temp, 51);
+	PlayerTextDrawBackgroundColor(playerid, td_temp, 0x00000033);
 	PlayerTextDrawFont(playerid, td_temp, 1);
 	PlayerTextDrawSetProportional(playerid, td_temp, 1);
 
@@ -131,7 +131,7 @@ public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInt
 			}
 		}
 	}
-	
+
 	#if defined PlayerMoneyTD_OnPlayerIntChng
 		return PlayerMoneyTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
 	#else
@@ -179,19 +179,13 @@ stock PlayerMoneyTD_UpdateString(playerid, value)
 		return;
 	}
 
-	new
-		PlayerText:td_money,
-		string[16];
-
-	td_money = PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyMoney, PIP_TextDraw);
+	new PlayerText:td_money = PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyMoney, PIP_TextDraw);
 
 	if (value < 0) {
-		PlayerMoneyTD_UpdateStyle(playerid, td_money, 0xDD0000FF, -value, "-$", string);
+		PlayerTD_Update(playerid, td_money, 0xDD0000FF, -value, .prefix = "-$");
 	} else {
-		PlayerMoneyTD_UpdateStyle(playerid, td_money, 0xFFFFFFFF, value, "$", string);
+		PlayerTD_Update(playerid, td_money, 0xFFFFFFFF, value, .prefix = "$");
 	}
-
-	PlayerTextDrawSetString(playerid, td_money, string);
 }
 
 stock PlayerMoneyTD_Give(playerid, value)
@@ -204,19 +198,13 @@ stock PlayerMoneyTD_Give(playerid, value)
 		return;
 	}
 
-	new
-		PlayerText:td_money_plus,
-		string[16];
-
-	td_money_plus = PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyPlus, PIP_TextDraw);
+	new PlayerText:td_money_plus = PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyPlus, PIP_TextDraw);
 
 	if (value < 0) {
-		PlayerMoneyTD_UpdateStyle(playerid, td_money_plus, 0xDD0000FF, -value, "-$", string);
+		PlayerTD_Update(playerid, td_money_plus, 0xDD0000FF, -value, .prefix = "-$");
 	} else {
-		PlayerMoneyTD_UpdateStyle(playerid, td_money_plus, 0x00DD00FF, value, "+$", string);
+		PlayerTD_Update(playerid, td_money_plus, 0x00DD00FF, value, .prefix = "+$");
 	}
-
-	PlayerTextDrawSetString(playerid, td_money_plus, string);
 
 	if (gGiveTimer[playerid] != 0) {
 		KillTimer(gGiveTimer[playerid]);
@@ -230,15 +218,4 @@ public PlayerMoneyTD_GiveHide(playerid)
 {
 	PlayerTextDrawHide(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyPlus, PIP_TextDraw));
 	gGiveTimer[playerid] = 0;
-}
-
-static stock PlayerMoneyTD_UpdateStyle(playerid, PlayerText:textdraw, color, value, insert[], string[], size_string = sizeof(string))
-{
-	valstr(string, value);
-	InsertSpacesInString(string, size_string);
-	strins(string, insert, 0, size_string);
-
-	PlayerTextDrawHide(playerid, textdraw);
-	PlayerTextDrawColor(playerid, textdraw, color);
-	PlayerTextDrawShow(playerid, textdraw);
 }
