@@ -253,7 +253,6 @@ static Float:gSpawns[][e_Spawns_Info] = {
 	{1494.3448, -2095.7719, 29.7073, 181.0635},
 	{1620.6683, -1928.0251, 26.6627, 263.4710},
 	{1476.2159, -1676.8480, 14.0466, 64.7667},
-	{1128.7746, -1488.0362, 22.7688, 185.7848},
 	{877.6748, -1527.7535, 13.5544, 180.7713},
 	{1003.3378, -1443.7281, 13.5466, 95.2537},
 	{1005.9287, -1359.8210, 13.3275, 332.1364},
@@ -2393,14 +2392,14 @@ DialogCreate:PlayerSpawnMenu(playerid)
 		Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
 		                 "PLAYER_SPAWN_DIALOG_HEADER",
 		                 "PLAYER_SPAWN_DIALOG_INFO",
-		                 "PLAYER_SPAWN_DIALOG_BUTTON_BACK", "PLAYER_SPAWN_DIALOG_BUTTON_BACK");
+		                 "BUTTON_BACK", "BUTTON_CANCEL");
 		return 1;
 	}
 
 	Dialog_Open(playerid, Dialog:PlayerSpawnMenu, DIALOG_STYLE_LIST,
 	            "PLAYER_SPAWN_DIALOG_HEADER",
 	            string,
-	            "PLAYER_SPAWN_DIALOG_BUTTON_OK", "PLAYER_SPAWN_DIALOG_BUTTON_BACK",
+	            "BUTTON_OK", "BUTTON_BACK",
 	            MDIALOG_NOTVAR_INFO);
 	return 1;
 }
@@ -2420,7 +2419,7 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 		Dialog_Message(playerid,
 		               "PLAYER_SPAWN_DIALOG_HEADER",
 		               "PLAYER_SPAWN_HAS_CHANGED",
-		               "PLAYER_SPAWN_DIALOG_BUTTON_OK");
+		               "BUTTON_OK");
 		return 1;
 	}
 
@@ -2430,7 +2429,7 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 		Dialog_Message(playerid,
 		               "PLAYER_SPAWN_DIALOG_HEADER",
 		               "PLAYER_SPAWN_HAS_CHANGED",
-		               "PLAYER_SPAWN_DIALOG_BUTTON_OK");
+		               "BUTTON_OK");
 		return 1;
 	}
 
@@ -2454,12 +2453,12 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 				Dialog_Message(playerid,
 				               "PLAYER_SPAWN_DIALOG_HEADER",
 				               "PLAYER_SPAWN_GANG_HAS_CHANGED",
-				               "PLAYER_SPAWN_DIALOG_BUTTON_OK");
+				               "BUTTON_OK");
 			} else {
 				Dialog_Message(playerid,
 				               "PLAYER_SPAWN_DIALOG_HEADER",
 				               "PLAYER_SPAWN_HAS_CHANGED",
-				               "PLAYER_SPAWN_DIALOG_BUTTON_OK");
+				               "BUTTON_OK");
 			}
 			return 1;
 		}
