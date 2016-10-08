@@ -65,10 +65,10 @@ public api_GetMaxHealth(playerid)
 	return _:amount;
 }
 
-forward api_GivePlayerXP(playerid, xpamount, showtext, showtd);
-public api_GivePlayerXP(playerid, xpamount, showtext, showtd)
+forward api_GivePlayerXP(playerid, xpamount, bool:showtext);
+public api_GivePlayerXP(playerid, xpamount, bool:showtext)
 {
-	return GivePlayerXP(playerid, xpamount, showtext, showtd);
+	return GivePlayerXP(playerid, xpamount, showtext);
 }
 
 forward api_GetPlayerLevel(playerid);

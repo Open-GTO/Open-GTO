@@ -1,5 +1,5 @@
 /*
-	
+
 	About: interface header system
 	Author: ziggi
 
@@ -27,7 +27,9 @@ enum PlayerInterface {
 	PI_LevelLineBackground,
 	PI_LevelLine,
 	PI_LevelLevel,
+	PI_LevelPlus,
 	PI_LevelXP,
+	PI_LevelXPPlus,
 	PI_MoneyBorder,
 	PI_MoneyBackground,
 	PI_MoneyMoney,

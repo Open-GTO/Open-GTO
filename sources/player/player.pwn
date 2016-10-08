@@ -345,7 +345,7 @@ stock Player_SetDefaultData(playerid)
 	SetPlayerSkin(playerid, SKINS_MINID);
 #endif
 
-	SetPlayerLevel(playerid, PLAYER_START_LEVEL, 0, 0);
+	SetPlayerLevel(playerid, PLAYER_START_LEVEL, false, false);
 	SetPlayerPrivilege(playerid, PlayerPrivilegePlayer);
 	SetPlayerFightStyleUsed(playerid, FIGHT_STYLE_NORMAL);
 

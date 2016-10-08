@@ -423,7 +423,7 @@ stock Gang_GiveMemberXP(playerid)
 	}
 
 	gPlayerGiveXP[playerid] = 0;
-	GivePlayerXP(playerid, xp_amount, 0);
+	GivePlayerXP(playerid, xp_amount);
 
 	Lang_SendText(playerid, "GANG_GIVE_MEMBER_XP", xp_amount);
 }

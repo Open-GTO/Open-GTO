@@ -48,7 +48,7 @@ PLevel_OnGameModeInit()
 	return 1;
 }
 
-stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
+stock GivePlayerXP(playerid, xpamount, bool:showtext = false)
 {
 	if (xpamount == 0) {
 		return 0;
@@ -58,10 +58,6 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 		xpamount += (xpamount / 100) * PLAYER_XP_PREMIUM_PROFIT;
 	}
 
-	Gang_GiveXpFromPlayer(playerid, xpamount);
-
-	new texttime = (xpamount > 5000) ? 2000 : 1000;
-
 	if (xpamount < 0) {
 		new minxp = GetPlayerXPToLevel(playerid, MIN_LEVEL);
 		if (xpamount < minxp) {
@@ -70,7 +66,6 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 	} else {
 		new maxxp = GetPlayerXPToLevel(playerid, GetMaxPlayerLevel());
 		if (xpamount >= maxxp) {
-			Lang_SendText(playerid, "PLAYER_XP_MAX");
 			xpamount = maxxp;
 		}
 	}
@@ -79,29 +74,21 @@ stock GivePlayerXP(playerid, xpamount, showtext = 0, showtd = 1)
 		return 0;
 	}
 
-	if (xpamount > 0) {
-		if (showtd == 1) {
-			Lang_GameText(playerid, texttime, 3, "PLAYER_XP_GAMETEXT", '+', xpamount);
-		}
-
-		if (showtext == 1) {
+	if (showtext) {
+		if (xpamount > 0) {
 			Lang_SendText(playerid, "PLAYER_XP_GET", xpamount);
-		}
-	} else {
-		if (showtd == 1) {
-			Lang_GameText(playerid, texttime, 3, "PLAYER_XP_GAMETEXT", '-', -xpamount);
-		}
-
-		if (showtext == 1) {
+		} else {
 			Lang_SendText(playerid, "PLAYER_XP_MISS", -xpamount);
 		}
 	}
 
+	Gang_GiveXpFromPlayer(playerid, xpamount);
+	PlayerLevelTD_Give(playerid, .xp = xpamount);
 	SetPlayerXP(playerid, GetPlayerXP(playerid) + xpamount);
 	return 1;
 }
 
-stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
+stock SetPlayerLevel(playerid, level, bool:regenhp = true, bool:notify = true)
 {
 	new old_level = GetPlayerLevel(playerid);
 
@@ -109,6 +96,7 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 		return 0;
 	}
 
+	new xp_diff = GetPlayerXPToLevel(playerid, level);
 	SetPVarInt(playerid, "Level", level);
 	SetPlayerScore(playerid, level);
 	SetPVarInt(playerid, "XP", 0);
@@ -117,12 +105,13 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 	PlayerLevelTD_UpdateLevelString(playerid, level);
 	PlayerLevelTD_UpdateXPString(playerid, 0, GetXPToLevel(level + 1), level >= GetMaxPlayerLevel());
 
-	if (regenhp == 1 && old_level < level) {
+	if (regenhp && old_level < level) {
 		SetPlayerMaxHealth(playerid);
 	}
 
-	if (notify == 1) {
+	if (notify) {
 		PlayerPlaySoundOnPlayer(playerid, 1057);
+		PlayerLevelTD_Give(playerid, xp_diff, level - old_level);
 
 		if (old_level < level) {
 			Lang_SendText(playerid, "PLAYER_LEVEL_UP", level);
@@ -138,7 +127,7 @@ stock SetPlayerLevel(playerid, level, regenhp = 1, notify = 1)
 	return 1;
 }
 
-stock GivePlayerLevel(playerid, amount, regenhp = 1, notify = 1)
+stock GivePlayerLevel(playerid, amount, bool:regenhp = true, bool:notify = true)
 {
 	return SetPlayerLevel(playerid, GetPlayerLevel(playerid) + amount, regenhp, notify);
 }
@@ -151,12 +140,14 @@ stock GetPlayerLevel(playerid)
 stock SetPlayerXP(playerid, amount)
 {
 	new
+		old_level,
 		level,
 		level_max,
 		xp_to_level,
 		xp_set;
 
-	level = GetPlayerLevel(playerid);
+	old_level = GetPlayerLevel(playerid);
+	level = old_level;
 	level_max = GetMaxPlayerLevel();
 	xp_set = amount;
 
@@ -203,6 +194,7 @@ stock SetPlayerXP(playerid, amount)
 	SetPVarInt(playerid, "XP", xp_set);
 	PlayerLevelTD_UpdateLevelString(playerid, level);
 	PlayerLevelTD_UpdateXPString(playerid, xp_set, GetXPToLevel(level + 1), level >= level_max);
+	PlayerLevelTD_Give(playerid, amount, level - old_level);
 }
 
 stock GetPlayerXP(playerid)
@@ -254,8 +246,5 @@ stock GetMinPlayerLevel()
 
 stock IsValidPlayerLevel(level)
 {
-	if (MIN_LEVEL <= level <= GetMaxPlayerLevel()) {
-		return 1;
-	}
-	return 0;
+	return MIN_LEVEL <= level <= GetMaxPlayerLevel();
 }

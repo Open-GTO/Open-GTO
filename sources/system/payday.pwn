@@ -66,7 +66,7 @@ stock payday_Give()
 		pay_xp = 0;
 		if (GetPlayerLevel(id) < GetMaxPlayerLevel()) {
 			pay_xp = xp_base + (xp_base * GetPlayerLevel(id));
-			GivePlayerXP(id, pay_xp , 0, 0);
+			GivePlayerXP(id, pay_xp);
 		}
 
 		Lang_SendText(id, "PAYDAY_MESSAGE", pay_money, pay_xp);

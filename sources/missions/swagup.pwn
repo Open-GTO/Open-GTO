@@ -109,7 +109,7 @@ stock swagup_OnPlayerPickUpPickup(playerid, pickupid)
 		win_xp = mission_CalculateXP(playerid, mission_swagup);
 
 	GivePlayerMoney(playerid, win_money);
-	GivePlayerXP(playerid, win_xp, 1);
+	GivePlayerXP(playerid, win_xp, true);
 
 	Lang_SendTextToAll("SWAGUP_BAG_FOUND", ReturnPlayerName(playerid), playerid, win_money, win_xp);
 

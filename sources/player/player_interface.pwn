@@ -49,7 +49,7 @@ stock DecodePlayerInterfaceData(playerid, PlayerInterfaceParams:paramid, data)
 	}
 }
 
-static stock PlayerTD_Update(playerid, PlayerText:textdraw, color, value, prefix[] = "")
+stock PlayerTD_Update(playerid, PlayerText:textdraw, color, value, prefix[] = "")
 {
 	static
 		str[MAX_LANG_VALUE_STRING];

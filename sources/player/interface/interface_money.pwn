@@ -102,33 +102,16 @@ public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInt
 		new
 			PlayerText:td_temp;
 
-		if (componentid == PlayerInterface:PI_MoneyBorder) {
-			td_temp = PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyBorder, PIP_TextDraw);
-			if (newvalue) {
-				PlayerTextDrawShow(playerid, td_temp);
-			} else {
-				PlayerTextDrawHide(playerid, td_temp);
-			}
-		} else if (componentid == PlayerInterface:PI_MoneyBackground) {
-			td_temp = PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyBackground, PIP_TextDraw);
-			if (newvalue) {
-				PlayerTextDrawShow(playerid, td_temp);
-			} else {
-				PlayerTextDrawHide(playerid, td_temp);
-			}
-		} else if (componentid == PlayerInterface:PI_MoneyMoney) {
-			td_temp = PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyMoney, PIP_TextDraw);
-			if (newvalue) {
+		td_temp = PlayerText:GetPlayerInterfaceParam(playerid, componentid, PIP_TextDraw);
+
+		if (newvalue) {
+			if (componentid == PlayerInterface:PI_MoneyMoney) {
 				PlayerMoneyTD_UpdateString(playerid, GetPlayerMoney(playerid));
-				PlayerTextDrawShow(playerid, td_temp);
-			} else {
-				PlayerTextDrawHide(playerid, td_temp);
 			}
-		} else if (componentid == PlayerInterface:PI_MoneyPlus) {
-			td_temp = PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyPlus, PIP_TextDraw);
-			if (!newvalue) {
-				PlayerTextDrawHide(playerid, td_temp);
-			}
+
+			PlayerTextDrawShow(playerid, td_temp);
+		} else {
+			PlayerTextDrawHide(playerid, td_temp);
 		}
 	}
 
