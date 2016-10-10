@@ -22,6 +22,11 @@ static
 	Functions
 */
 
+stock SetPlayerBankMoney(playerid, amount)
+{
+	gPlayerBankMoney[playerid] = amount;
+}
+
 stock GetPlayerBankMoney(playerid)
 {
 	return gPlayerBankMoney[playerid];

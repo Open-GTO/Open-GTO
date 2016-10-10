@@ -87,10 +87,6 @@ Thanks:
 #include "player/player_interface.inc"
 #include "player/interface/interface_health.inc"
 #include "player/interface/interface_armour.inc"
-#include "protections/armour.inc"
-#include "protections/health.inc"
-#include "protections/specialaction.inc"
-#include "protections/teleport.inc"
 #include "vehicle/vehicle_info.inc"
 
 // core
@@ -263,18 +259,6 @@ Thanks:
 #include "services/fuelstation.pwn"
 #include "services/tuning.pwn"
 
-// protection
-#include "protections/idle.pwn"
-#include "protections/rconhack.pwn"
-#include "protections/highping.pwn"
-#include "protections/chatguard.pwn"
-#include "protections/specialaction.pwn"
-#include "protections/teleport.pwn"
-#include "protections/weaponhack.pwn"
-#include "protections/health.pwn"
-#include "protections/armour.pwn"
-#include "protections/vehicleteleport.pwn"
-
 main() {}
 
 public OnGameModeInit()
@@ -309,7 +293,7 @@ public OnGameModeInit()
 
 	// services
 	fastfood_OnGameModeInit();
-	bar_OnGameModeInit();
+	Bar_OnGameModeInit();
 	sshop_OnGameModeInit();
 	VehShop_OnGameModeInit();
 	wshop_OnGameModeInit();
@@ -322,11 +306,6 @@ public OnGameModeInit()
 	// competition
 	CompetitionRace_OnGameModeInit();
 	CompetitionDM_OnGameModeInit();
-
-	// protection
-	pt_idle_OnGameModeInit();
-	pt_chat_OnGameModeInit();
-	Prot_Teleport_OnGameModeInit();
 
 	// custom
 	#tryinclude "custom/mapicon.pwn"
@@ -367,7 +346,6 @@ public OnPlayerConnect(playerid)
 	// main action
 	Player_OnPlayerConnect(playerid);
 	Trucker_OnPlayerConnect(playerid);
-	pt_chat_OnPlayerConnect(playerid);
 	PlayerMoneyTD_OnPlayerConnect(playerid);
 	Vehicle_Textdraw_OnPlayerConn(playerid);
 	Enterexit_OnPlayerConnect(playerid);
@@ -389,7 +367,6 @@ public OnPlayerDisconnect(playerid, reason)
 	}
 	Player_OnPlayerDisconnect(playerid, reason);
 	Trucker_OnPlayerDisconnect(playerid, reason);
-	pt_chat_OnPlayerDisconnect(playerid, reason);
 	Groundhold_OnPlayerDisconnect(playerid, reason);
 	PlayerMoneyTD_OnPlayerDisconn(playerid, reason);
 	PVehicle_OnPlayerDisconnect(playerid, reason);
@@ -397,7 +374,7 @@ public OnPlayerDisconnect(playerid, reason)
 	housing_OnPlayerDisconnect(playerid, reason);
 	business_OnPlayerDisconnect(playerid, reason);
 	Fuelstation_OnPlayerDisconnect(playerid, reason);
-	SetPlayerSpawned(playerid, 0);
+	SetPlayerSpawned(playerid, false);
 	return 1;
 }
 
@@ -443,7 +420,7 @@ public OnPlayerEnterDynamicCP(playerid, checkpointid)
 	if (wshop_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
 		return 1;
 	}
-	if (bar_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
+	if (Bar_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
 		return 1;
 	}
 	if (fastfood_OnPlayerEnterCP(playerid, checkpointid)) {
@@ -477,11 +454,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 		return 1;
 	}
 
-	if (!pt_weapon_OnPlayerDeath(playerid, killerid, reason)) {
-		return 1;
-	}
-
-	SetPlayerSpawned(playerid, 0);
+	SetPlayerSpawned(playerid, false);
 
 	if (killerid == INVALID_PLAYER_ID) {
 		Log(mainlog, INFO, "Player: %s(%d) has died > Reason: (%d)", ret_GetPlayerName(playerid), playerid, reason);
@@ -506,9 +479,6 @@ public OnPlayerSpawn(playerid)
 	if (IsPlayerNPC(playerid)) {
 		return 1;
 	}
-
-	// protections
-	Prot_Teleport_OnPlayerSpawn(playerid);
 
 	// set interior and virtual world
 	new
@@ -538,13 +508,13 @@ public OnPlayerSpawn(playerid)
 forward OnPlayerSpawned(playerid);
 public OnPlayerSpawned(playerid)
 {
-	SetPlayerSpawned(playerid, 1);
+	SetPlayerSpawned(playerid, true);
 	return 1;
 }
 
 public OnPlayerRequestClass(playerid, classid)
 {
-	SetPlayerSpawned(playerid, 0);
+	SetPlayerSpawned(playerid, false);
 	Player_OnPlayerRequestClass(playerid, classid);
 	return 1;
 }
@@ -584,11 +554,6 @@ public OnPlayerText(playerid, text[])
 		return 0;
 	}
 
-	new pt_result = pt_chat_OnPlayerText(playerid, text);
-	if (pt_result == 0) {
-		return 0;
-	}
-
 	new pl_result = Player_Text_OnPlayerText(playerid, text);
 	if (pl_result == 0) {
 		return 0;
@@ -617,7 +582,7 @@ public OnPlayerUpdate(playerid)
 
 public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	if (bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+	if (Bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
 		return 1;
 	}
 
@@ -691,7 +656,6 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 public OnPlayerExitVehicle(playerid, vehicleid)
 {
 	Tuning_OnPlayerExitVehicle(playerid, vehicleid);
-	pt_weapon_OnPlayerExitVehicle(playerid, vehicleid);
 	return 1;
 }
 
@@ -703,7 +667,7 @@ public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
-	bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
+	Bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
 	return 1;
 }
 
@@ -748,7 +712,6 @@ public OnVehicleDeath(vehicleid, killerid)
 
 public OnRconLoginAttempt(ip[], password[], success)
 {
-	Admin_OnRconLoginAttempt(ip, password, success);
 	return 1;
 }
 
@@ -771,7 +734,6 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
 	PWeapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
-	pt_weapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
 
 	if (hittype == BULLET_HIT_TYPE_VEHICLE) {
 		Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
@@ -819,7 +781,7 @@ public OnEnterExitModShop(playerid, enterexit, interiorid)
 
 public OnActorStreamIn(actorid, forplayerid)
 {
-	if (bar_OnActorStreamIn(actorid, forplayerid)) {
+	if (Bar_OnActorStreamIn(actorid, forplayerid)) {
 		return 1;
 	}
 	if (fastfood_OnActorStreamIn(actorid, forplayerid)) {
@@ -848,7 +810,7 @@ public OnPlayerSpectate(playerid, specid, status)
 
 public OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat, Float:new_x, Float:new_y, Float:new_z, Float:vel_x, Float:vel_y, Float:vel_z)
 {
-	return pt_vehtp_OnUnoccupiedVehicleU(vehicleid, playerid, passenger_seat, new_x, new_y, new_z, vel_x, vel_y, vel_z);
+	return 1;
 }
 
 public OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)

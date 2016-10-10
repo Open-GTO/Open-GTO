@@ -52,7 +52,6 @@ forward OneSecTimer();
 public OneSecTimer()
 {
 	foreach (new playerid : Player) {
-		Player_Sync(playerid);
 		PlayerWSkillTD_UpdateString(playerid);
 		AdminSpectate_UpdateLabel(playerid);
 	}
@@ -65,7 +64,6 @@ public OneMinuteTimer()
 {
 	foreach (new playerid : Player) {
 		if (IsPlayerLogin(playerid)) {
-			pt_idle_PlayerTimer(playerid);
 			Gang_GiveMemberXP(playerid);
 		}
 	}

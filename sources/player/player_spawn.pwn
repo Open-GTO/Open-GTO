@@ -1,5 +1,4 @@
 /*
-
 	About: player spawn system
 	Author:	ziggi
 	Thanks White_116 for W_Points (GetPointChunkPos from this lib)
@@ -32,6 +31,19 @@
 #define MAX_GRID_SIZE (((MAX_AREA_SIZE) * 2) / MAX_CELL_SIZE)
 
 /*
+	Enums
+*/
+
+enum e_Player_Spawn_Info {
+	Float:e_psPosX,
+	Float:e_psPosY,
+	Float:e_psPosZ,
+	Float:e_psPosA,
+	e_psInterior,
+	e_psWorld,
+}
+
+/*
 	Vars
 */
 
@@ -40,9 +52,14 @@ static
 	gChunkPoints[MAX_GRID_SIZE][MAX_GRID_SIZE][MAX_CELL_POINTS],
 	gChunkPointsCount[MAX_GRID_SIZE][MAX_GRID_SIZE char];
 
-// player spawn type
+// player variables
 static
-	SpawnType:gPlayerSpawnType[MAX_PLAYERS];
+	SpawnType:gPlayerSpawnType[MAX_PLAYERS],
+	bool:gPlayerSpawned[MAX_PLAYERS char],
+	gPlayerSpawnHouseID[MAX_PLAYERS],
+	gPlayerRandomSpawnID[MAX_PLAYERS],
+	gPlayerSpawnInfo[MAX_PLAYERS][e_Player_Spawn_Info],
+	gPlayerDeathInfo[MAX_PLAYERS][e_Player_Spawn_Info];
 
 // camera info
 enum e_Spawn_Camera_Info {
@@ -2470,7 +2487,7 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 
 stock GetPlayerSpawnPos(playerid, &Float:spos_x = 0.0, &Float:spos_y = 0.0, &Float:spos_z = 0.0, &Float:spos_a = 0.0, &interior = 0, &world = 0)
 {
-	GetPlayerSpawnCoords(playerid, spos_x, spos_y, spos_z, spos_a, interior, world);
+	GetPlayerSpawnInfo(playerid, spos_x, spos_y, spos_z, spos_a, interior, world);
 
 	if (spos_x != 0.0 && spos_y != 0.0 && spos_z != 0.0) {
 		return 1;
@@ -2526,7 +2543,7 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x = 0.0, &Float:spos_y = 0.0, &Flo
 stock UpdatePlayerSpawnInfo(playerid)
 {
 	SaveDeathInfo(playerid);
-	SetPlayerSpawnCoords(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
+	SetPlayerSpawnInfo(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
 	ResetPlayerRandomSpawnID(playerid);
 
 	new
@@ -2572,14 +2589,11 @@ static stock GetPlayerSpawnID(playerid)
 
 static stock GetPlayerRandomSpawnID(playerid)
 {
-	new id = GetPVarInt(playerid, "random_spawn_id");
+	new id = gPlayerRandomSpawnID[playerid];
 	if (id != -1) {
 		return id;
 	}
-
-	id = random( sizeof(gSpawns) );
-	SetPVarInt(playerid, "random_spawn_id", id);
-	return id;
+	return gPlayerRandomSpawnID[playerid] = random( sizeof(gSpawns) );
 }
 
 static stock GetNearestRandomSpawnID(Float:x, Float:y)
@@ -2660,52 +2674,82 @@ static stock GetNearestNotEmptyChunk(current_x, current_y, &cx, &cy)
 	return 0;
 }
 
+/*
+	Death info
+*/
+
 static stock SaveDeathInfo(playerid)
 {
 	new
 		Float:pos_x,
 		Float:pos_y,
-		Float:pos_z;
+		Float:pos_z,
+		Float:pos_a;
 
 	GetPlayerPos(playerid, pos_x, pos_y, pos_z);
-	SetDeathPos(playerid, pos_x, pos_y, pos_z);
-	SetDeathInterior(playerid, GetPlayerInterior(playerid));
-	SetDeathVirtualWorld(playerid, GetPlayerVirtualWorld(playerid));
+	GetPlayerFacingAngle(playerid, pos_a);
+
+	SetPlayerDeathInfo(playerid, pos_x, pos_y, pos_z, pos_a,
+	                   GetPlayerInterior(playerid), GetPlayerVirtualWorld(playerid));
 	return 1;
 }
 
-static stock GetDeathPos(playerid, &Float:x, &Float:y, &Float:z)
+stock GetPlayerDeathInfo(playerid, &Float:x = 0.0, &Float:y = 0.0, &Float:z = 0.0,
+                         &Float:a = 0.0, interior = 0, world = 0)
 {
-	x = GetPVarFloat(playerid, "pl_spawn_DeathPosX");
-	y = GetPVarFloat(playerid, "pl_spawn_DeathPosY");
-	z = GetPVarFloat(playerid, "pl_spawn_DeathPosZ");
+	x = gPlayerDeathInfo[playerid][e_psPosX];
+	y = gPlayerDeathInfo[playerid][e_psPosY];
+	z = gPlayerDeathInfo[playerid][e_psPosZ];
+	a = gPlayerDeathInfo[playerid][e_psPosA];
+	interior = gPlayerDeathInfo[playerid][e_psInterior];
+	world = gPlayerDeathInfo[playerid][e_psWorld];
 }
 
-static stock SetDeathPos(playerid, Float:x, Float:y, Float:z)
+stock SetPlayerDeathInfo(playerid, Float:x = 0.0, Float:y = 0.0, Float:z = 0.0,
+                         Float:a = 0.0, interior = 0, world = 0)
 {
-	SetPVarFloat(playerid, "pl_spawn_DeathPosX", x);
-	SetPVarFloat(playerid, "pl_spawn_DeathPosY", y);
-	SetPVarFloat(playerid, "pl_spawn_DeathPosZ", z);
+	gPlayerDeathInfo[playerid][e_psPosX] = x;
+	gPlayerDeathInfo[playerid][e_psPosY] = y;
+	gPlayerDeathInfo[playerid][e_psPosZ] = z;
+	gPlayerDeathInfo[playerid][e_psPosA] = a;
+	gPlayerDeathInfo[playerid][e_psInterior] = interior;
+	gPlayerDeathInfo[playerid][e_psWorld] = world;
 }
 
-static stock SetDeathInterior(playerid, interior)
+stock GetDeathPos(playerid, &Float:x, &Float:y, &Float:z, &Float:a = 0.0)
 {
-	SetPVarInt(playerid, "pl_spawn_DeathInterior", interior);
+	x = gPlayerDeathInfo[playerid][e_psPosX];
+	y = gPlayerDeathInfo[playerid][e_psPosY];
+	z = gPlayerDeathInfo[playerid][e_psPosZ];
+	a = gPlayerDeathInfo[playerid][e_psPosA];
 }
 
-static stock GetDeathInterior(playerid)
+stock SetDeathPos(playerid, Float:x, Float:y, Float:z, Float:a = 0.0)
 {
-	return GetPVarInt(playerid, "pl_spawn_DeathInterior");
+	gPlayerDeathInfo[playerid][e_psPosX] = x;
+	gPlayerDeathInfo[playerid][e_psPosY] = y;
+	gPlayerDeathInfo[playerid][e_psPosZ] = z;
+	gPlayerDeathInfo[playerid][e_psPosA] = a;
 }
 
-static stock SetDeathVirtualWorld(playerid, world)
+stock SetDeathInterior(playerid, interior)
 {
-	SetPVarInt(playerid, "pl_spawn_DeathWorld", world);
+	gPlayerDeathInfo[playerid][e_psInterior] = interior;
 }
 
-static stock GetDeathVirtualWorld(playerid)
+stock GetDeathInterior(playerid)
 {
-	return GetPVarInt(playerid, "pl_spawn_DeathWorld");
+	return gPlayerDeathInfo[playerid][e_psInterior];
+}
+
+stock SetDeathVirtualWorld(playerid, world)
+{
+	gPlayerDeathInfo[playerid][e_psWorld] = world;
+}
+
+stock GetDeathVirtualWorld(playerid)
+{
+	return gPlayerDeathInfo[playerid][e_psWorld];
 }
 
 /*
@@ -2714,43 +2758,43 @@ static stock GetDeathVirtualWorld(playerid)
 
 stock ResetPlayerRandomSpawnID(playerid)
 {
-	SetPVarInt(playerid, "random_spawn_id", -1);
+	gPlayerRandomSpawnID[playerid] = -1;
 }
 
 stock IsPlayerSpawned(playerid) {
-	return (GetPVarInt(playerid, "Spawned") == 1 ? 1 : 0);
+	return _:gPlayerSpawned{playerid};
 }
 
-stock SetPlayerSpawned(playerid, isspawned) {
-	SetPVarInt(playerid, "Spawned", isspawned);
+stock SetPlayerSpawned(playerid, bool:isspawned) {
+	gPlayerSpawned{playerid} = isspawned;
 }
 
 stock GetPlayerSpawnHouseID(playerid) {
-	return GetPVarInt(playerid, "SpawnHouseID");
+	return gPlayerSpawnHouseID[playerid];
 }
 
 stock SetPlayerSpawnHouseID(playerid, houseid) {
-	SetPVarInt(playerid, "SpawnHouseID", houseid);
+	gPlayerSpawnHouseID[playerid] = houseid;
 }
 
-stock SetPlayerSpawnCoords(playerid, Float:x, Float:y, Float:z, Float:a, interior, world)
+stock SetPlayerSpawnInfo(playerid, Float:x, Float:y, Float:z, Float:a, interior, world)
 {
-	SetPVarFloat(playerid, "Coord_X", x);
-	SetPVarFloat(playerid, "Coord_Y", y);
-	SetPVarFloat(playerid, "Coord_Z", z);
-	SetPVarFloat(playerid, "Coord_A", a);
-	SetPVarInt(playerid, "Interior", interior);
-	SetPVarInt(playerid, "World", world);
+	gPlayerSpawnInfo[playerid][e_psPosX] = x;
+	gPlayerSpawnInfo[playerid][e_psPosY] = y;
+	gPlayerSpawnInfo[playerid][e_psPosZ] = z;
+	gPlayerSpawnInfo[playerid][e_psPosA] = a;
+	gPlayerSpawnInfo[playerid][e_psInterior] = interior;
+	gPlayerSpawnInfo[playerid][e_psWorld] = world;
 }
 
-stock GetPlayerSpawnCoords(playerid, &Float:x, &Float:y, &Float:z, &Float:a, &interior, &world)
+stock GetPlayerSpawnInfo(playerid, &Float:x, &Float:y, &Float:z, &Float:a, &interior, &world)
 {
-	x = GetPVarFloat(playerid, "Coord_X");
-	y = GetPVarFloat(playerid, "Coord_Y");
-	z = GetPVarFloat(playerid, "Coord_Z");
-	a = GetPVarFloat(playerid, "Coord_A");
-	interior = GetPVarInt(playerid, "Interior");
-	world = GetPVarInt(playerid, "World");
+	x = gPlayerSpawnInfo[playerid][e_psPosX];
+	y = gPlayerSpawnInfo[playerid][e_psPosY];
+	z = gPlayerSpawnInfo[playerid][e_psPosZ];
+	a = gPlayerSpawnInfo[playerid][e_psPosA];
+	interior = gPlayerSpawnInfo[playerid][e_psInterior];
+	world = gPlayerSpawnInfo[playerid][e_psWorld];
 }
 
 stock SetPlayerSpawnType(playerid, SpawnType:type)

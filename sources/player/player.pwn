@@ -338,6 +338,10 @@ stock Player_SetDefaultData(playerid)
 	SetPlayerMoney(playerid, gPlayerStartMoney);
 	SetPlayerJailTime(playerid, -1);
 	SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
+	SetPlayerLoginStatus(playerid, false);
+	SetPlayerSpawned(playerid, false);
+	SetPlayerSpawnInfo(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
+	SetPlayerDeathInfo(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
 
 #if defined PLAYER_START_SKIN
 	SetPlayerSkin(playerid, PLAYER_START_SKIN);
@@ -362,21 +366,6 @@ stock Player_SetDefaultData(playerid)
 	for (new pinterface; pinterface < sizeof(gPlayerInterface[]); pinterface++) {
 		SetPlayerInterfaceParam(playerid, PlayerInterface:pinterface, PIP_Visible, true);
 	}
-}
-
-stock Player_Sync(playerid)
-{
-	// если игрок мертв, то защиты не срабатывают
-	if (!IsPlayerSpawned(playerid)) {
-		return 0;
-	}
-
-	pt_ping_Check(playerid);
-	pt_spac_Check(playerid);
-	pt_health_Sync(playerid);
-	pt_armour_Sync(playerid);
-	pt_weapon_Check(playerid);
-	return 1;
 }
 
 /*

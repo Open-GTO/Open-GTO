@@ -247,7 +247,7 @@ DialogCreate:GangCreateName(playerid)
 DialogResponse:GangCreateName(playerid, response, listitem, inputtext[])
 {
 	if (!response) {
-		gangmenu_CleanCreateGarbage(playerid);
+		GangMenu_CleanCreateGarbage(playerid);
 		Dialog_Show(playerid, Dialog:GangMenu);
 		return 1;
 	}
@@ -288,7 +288,7 @@ DialogResponse:GangCreateName(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	gangmenu_SetCreateName(playerid, inputtext);
+	GangMenu_SetCreateName(playerid, inputtext);
 
 	Dialog_Show(playerid, Dialog:GangCreateColor);
 	return 1;
@@ -312,7 +312,7 @@ DialogCreate:GangCreateColor(playerid)
 DialogResponse:GangCreateColor(playerid, response, listitem, inputtext[])
 {
 	if (!response) {
-		gangmenu_CleanCreateGarbage(playerid);
+		GangMenu_CleanCreateGarbage(playerid);
 		Dialog_Show(playerid, Dialog:GangCreateName);
 		return 1;
 	}
@@ -336,7 +336,7 @@ DialogResponse:GangCreateColor(playerid, response, listitem, inputtext[])
 	new gangcolor = Color_GetCode(colorid);
 
 	new gangname[MAX_NAME];
-	gangmenu_GetCreateName(playerid, gangname);
+	GangMenu_GetCreateName(playerid, gangname);
 
 	new gangid = Gang_Create(playerid, gangname, gangcolor);
 
@@ -349,24 +349,24 @@ DialogResponse:GangCreateColor(playerid, response, listitem, inputtext[])
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_CREATE_HEADER", "GANG_CREATE_ERROR", "BUTTON_BACK", "BUTTON_CANCEL");
 	}
 
-	gangmenu_CleanCreateGarbage(playerid);
+	GangMenu_CleanCreateGarbage(playerid);
 	return 1;
 }
 
-stock gangmenu_CleanCreateGarbage(playerid)
+stock GangMenu_CleanCreateGarbage(playerid)
 {
-	DeletePVar(playerid, "gangmenu_CreateStep");
-	DeletePVar(playerid, "gangmenu_GangName");
+	DeletePVar(playerid, "GangMenu_CreateStep");
+	DeletePVar(playerid, "GangMenu_GangName");
 }
 
-stock gangmenu_SetCreateName(playerid, gangname[])
+stock GangMenu_SetCreateName(playerid, gangname[])
 {
-	SetPVarString(playerid, "gangmenu_GangName", gangname);
+	SetPVarString(playerid, "GangMenu_GangName", gangname);
 }
 
-stock gangmenu_GetCreateName(playerid, gangname[])
+stock GangMenu_GetCreateName(playerid, gangname[], const size = sizeof(gangname))
 {
-	GetPVarString(playerid, "gangmenu_GangName", gangname, MAX_NAME);
+	GetPVarString(playerid, "GangMenu_GangName", gangname, size);
 }
 
 DialogResponse:Gang_CreateReturn(playerid, response, listitem, inputtext[])

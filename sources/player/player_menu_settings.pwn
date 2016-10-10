@@ -232,10 +232,7 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 	}
 
 	new
-		password[MAX_PASS_LEN + 1],
 		length = strlen(inputtext);
-
-	strcpy(password, inputtext);
 
 	if (length < MIN_PASS_LEN || length > MAX_PASS_LEN) {
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
@@ -254,15 +251,11 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 	                 "PLAYER_MENU_SETTINGS_PASSWORD_BTN_BACK",
 	                 "PLAYER_MENU_SETTINGS_PASSWORD_BTN_CANCL",
 	                 MDIALOG_NOTVAR_NONE,
-	                 password);
+	                 inputtext);
 
-#if defined USE_PASSWORD_ENCRYPT
-	SetPVarString(playerid, "Password", encrypt(password));
-#else
-	SetPVarString(playerid, "Password", password);
-#endif
-
+	Account_SetPassword(playerid, inputtext);
 	Account_Save(playerid);
+
 	GivePlayerMoney(playerid, -CHANGE_PASS_COST);
 	return 1;
 }

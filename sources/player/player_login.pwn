@@ -11,6 +11,16 @@
 
 #define _player_login_included
 
+/*
+	Vars
+*/
+
+static
+	bool:gPlayerIsLogin[MAX_PLAYERS char];
+
+/*
+	Functions
+*/
 
 stock Player_Save(playerid)
 {
@@ -33,7 +43,7 @@ stock Player_Save(playerid)
 		GetPlayerPos(playerid, pos_x, pos_y, pos_z);
 		GetPlayerFacingAngle(playerid, pos_a);
 
-		SetPlayerSpawnCoords(playerid, pos_x, pos_y, pos_z, pos_a, interior, world);
+		SetPlayerSpawnInfo(playerid, pos_x, pos_y, pos_z, pos_a, interior, world);
 	}
 
 	// save
@@ -105,7 +115,7 @@ stock Player_SaveEx(playerid)
 		Float:pos_z,
 		Float:pos_a;
 
-	GetPlayerSpawnCoords(playerid, pos_x, pos_y, pos_z, pos_a, interior, world);
+	GetPlayerSpawnInfo(playerid, pos_x, pos_y, pos_z, pos_a, interior, world);
 	ini_setInteger(file_player, "Interior", interior);
 	ini_setInteger(file_player, "World", world);
 
@@ -143,62 +153,62 @@ stock Player_Login(playerid)
 		Player_Create(playerid);
 	} else {
 		new
-			buf,
-			s_buf[MAX_STRING],
-			Float:f_buf;
+			temp,
+			s_temp[MAX_STRING],
+			Float:f_temp;
 
 		new file_player = ini_openFile(filename_player);
 
-		ini_getFloat(file_player, "Armour", f_buf);
-		SetPlayerArmour(playerid, f_buf);
+		ini_getFloat(file_player, "Armour", f_temp);
+		SetPlayerArmour(playerid, f_temp);
 
-		ini_getInteger(file_player, "Level", buf);
-		SetPlayerLevel(playerid, buf, false, false);
+		ini_getInteger(file_player, "Level", temp);
+		SetPlayerLevel(playerid, temp, false, false);
 
-		ini_getInteger(file_player, "XP", buf);
-		SetPlayerXP(playerid, buf);
+		ini_getInteger(file_player, "XP", temp);
+		SetPlayerXP(playerid, temp);
 
-		ini_getInteger(file_player, "Money", buf);
-		SetPlayerMoney(playerid, buf);
+		ini_getInteger(file_player, "Money", temp);
+		SetPlayerMoney(playerid, temp);
 
-		ini_getInteger(file_player, "BankMoney", buf);
-		SetPVarInt(playerid, "BankMoney", buf);
+		ini_getInteger(file_player, "BankMoney", temp);
+		SetPlayerBankMoney(playerid, temp);
 
-		ini_getInteger(file_player, "Deaths", buf);
-		SetPlayerDeaths(playerid, buf);
+		ini_getInteger(file_player, "Deaths", temp);
+		SetPlayerDeaths(playerid, temp);
 
-		ini_getInteger(file_player, "Kills", buf);
-		SetPlayerKills(playerid, buf);
+		ini_getInteger(file_player, "Kills", temp);
+		SetPlayerKills(playerid, temp);
 
-		ini_getInteger(file_player, "Jailed", buf);
-		SetPlayerJailedCount(playerid, buf);
+		ini_getInteger(file_player, "Jailed", temp);
+		SetPlayerJailedCount(playerid, temp);
 
-		ini_getInteger(file_player, "JailTime", buf);
-		SetPlayerJailTime(playerid, buf);
+		ini_getInteger(file_player, "JailTime", temp);
+		SetPlayerJailTime(playerid, temp);
 
-		ini_getInteger(file_player, "Muted", buf);
-		SetPlayerMutedCount(playerid, buf);
+		ini_getInteger(file_player, "Muted", temp);
+		SetPlayerMutedCount(playerid, temp);
 
-		ini_getInteger(file_player, "MuteTime", buf);
-		SetPlayerMuteTime(playerid, buf);
+		ini_getInteger(file_player, "MuteTime", temp);
+		SetPlayerMuteTime(playerid, temp);
 
-		ini_getInteger(file_player, "Reports", buf);
-		SetPlayerReportsCount(playerid, buf);
+		ini_getInteger(file_player, "Reports", temp);
+		SetPlayerReportsCount(playerid, temp);
 
-		ini_getInteger(file_player, "Warns", buf);
-		SetPlayerWarnsCount(playerid, buf);
+		ini_getInteger(file_player, "Warns", temp);
+		SetPlayerWarnsCount(playerid, temp);
 
 		for (new i = 0; i < GetFightTeacherLastID(); i++) {
-			format(s_buf, sizeof(s_buf), "FightStyle_%d", GetFightTeacherStyleID(i));
-			ini_getInteger(file_player, s_buf, buf);
-			SetPlayerFightStyleLearned(playerid, i, bool:buf);
+			format(s_temp, sizeof(s_temp), "FightStyle_%d", GetFightTeacherStyleID(i));
+			ini_getInteger(file_player, s_temp, temp);
+			SetPlayerFightStyleLearned(playerid, i, bool:temp);
 		}
 
-		ini_getInteger(file_player, "FightStyleUsed", buf);
-		SetPlayerFightStyleUsed(playerid, buf);
+		ini_getInteger(file_player, "FightStyleUsed", temp);
+		SetPlayerFightStyleUsed(playerid, temp);
 
-		ini_getInteger(file_player, "InteriorIndex", buf);
-		Enterexit_SetPlayerIndex(playerid, buf);
+		ini_getInteger(file_player, "InteriorIndex", temp);
+		Enterexit_SetPlayerIndex(playerid, temp);
 
 		// player pos
 		new
@@ -208,62 +218,62 @@ stock Player_Login(playerid)
 
 		ini_getInteger(file_player, "Interior", interior);
 		ini_getInteger(file_player, "World", world);
-		ini_getString(file_player, "Coords", s_buf);
-		sscanf(s_buf, "p<,>a<f>[4]", coords);
+		ini_getString(file_player, "Coords", s_temp);
+		sscanf(s_temp, "p<,>a<f>[4]", coords);
 
-		SetPlayerSpawnCoords(playerid, coords[0], coords[1], coords[2], coords[3], interior, world);
+		SetPlayerSpawnInfo(playerid, coords[0], coords[1], coords[2], coords[3], interior, world);
 
 		//
-		ini_getInteger(file_player, "Privilege", buf);
-		SetPlayerPrivilege(playerid, PlayerPrivilege:buf);
+		ini_getInteger(file_player, "Privilege", temp);
+		SetPlayerPrivilege(playerid, PlayerPrivilege:temp);
 
-		ini_getString(file_player, "Gang", s_buf);
-		SetPlayerGangName(playerid, s_buf);
+		ini_getString(file_player, "Gang", s_temp);
+		SetPlayerGangName(playerid, s_temp);
 
 		// weapon db
 		new
 			bullets[PLAYER_WEAPON_SLOTS],
 			weapons[PLAYER_WEAPON_SLOTS];
 
-		ini_getString(file_player, "Weapons", s_buf);
-		sscanf(s_buf, "p</>a<i>[" #PLAYER_WEAPON_SLOTS "]", weapons);
+		ini_getString(file_player, "Weapons", s_temp);
+		sscanf(s_temp, "p</>a<i>[" #PLAYER_WEAPON_SLOTS "]", weapons);
 		SetPlayerWeaponsFromArray(playerid, weapons);
 
-		ini_getString(file_player, "Bullets", s_buf);
-		sscanf(s_buf, "p</>a<i>[" #PLAYER_WEAPON_SLOTS "]", bullets);
+		ini_getString(file_player, "Bullets", s_temp);
+		sscanf(s_temp, "p</>a<i>[" #PLAYER_WEAPON_SLOTS "]", bullets);
 		SetPlayerBulletsFromArray(playerid, bullets);
 
-		ini_getString(file_player, "WeaponsSkills", s_buf);
-		SetWeaponsSkillsFromDBString(playerid, s_buf);
+		ini_getString(file_player, "WeaponsSkills", s_temp);
+		SetWeaponsSkillsFromDBString(playerid, s_temp);
 
-		ini_getInteger(file_player, "SkinModel", buf);
-		SetPlayerSkin(playerid, buf);
+		ini_getInteger(file_player, "SkinModel", temp);
+		SetPlayerSkin(playerid, temp);
 
-		ini_getInteger(file_player, "SpawnType", buf);
-		SetPlayerSpawnType(playerid, SpawnType:buf);
+		ini_getInteger(file_player, "SpawnType", temp);
+		SetPlayerSpawnType(playerid, SpawnType:temp);
 
-		ini_getInteger(file_player, "SpawnHouseID", buf);
-		SetPlayerSpawnHouseID(playerid, buf);
+		ini_getInteger(file_player, "SpawnHouseID", temp);
+		SetPlayerSpawnHouseID(playerid, temp);
 
 		for (new i = 0; i < MAX_PLAYER_VEHICLES; i++) {
-			format(s_buf, sizeof(s_buf), "Vehicle_%d", i);
-			new error = ini_getString(file_player, s_buf, s_buf);
+			format(s_temp, sizeof(s_temp), "Vehicle_%d", i);
+			new error = ini_getString(file_player, s_temp, s_temp);
 
 			if (error == INI_KEY_NOT_FOUND) {
 				break;
 			}
 
-			SetVehicleFromDbString(playerid, i, s_buf);
+			SetVehicleFromDbString(playerid, i, s_temp);
 		}
 
-		ini_getInteger(file_player, "Trucker_TryCount", buf);
-		Trucker_SetPlayerTryCount(playerid, buf);
+		ini_getInteger(file_player, "Trucker_TryCount", temp);
+		Trucker_SetPlayerTryCount(playerid, temp);
 
-		ini_getInteger(file_player, "Trucker_PauseTime", buf);
-		Trucker_SetPlayerPauseTime(playerid, buf);
+		ini_getInteger(file_player, "Trucker_PauseTime", temp);
+		Trucker_SetPlayerPauseTime(playerid, temp);
 
-		ini_getInteger(file_player, "Interface_Visible", buf);
-		DecodePlayerInterfaceData(playerid, PIP_Visible, buf);
+		ini_getInteger(file_player, "Interface_Visible", temp);
+		DecodePlayerInterfaceData(playerid, PIP_Visible, temp);
 
 		ini_closeFile(file_player);
 	}
@@ -274,9 +284,9 @@ stock Player_Login(playerid)
 }
 
 stock IsPlayerLogin(playerid) {
-	return GetPVarInt(playerid, "IsLogin");
+	return _:gPlayerIsLogin{playerid};
 }
 
 stock SetPlayerLoginStatus(playerid, bool:islogin) {
-	SetPVarInt(playerid, "IsLogin", _:islogin);
+	gPlayerIsLogin{playerid} = islogin;
 }

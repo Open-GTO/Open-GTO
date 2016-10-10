@@ -60,14 +60,7 @@ stock Account_Save(playerid)
 stock Account_Register(playerid, password[])
 {
 	// set default data
-#if defined PASSWORD_ENCRYPT_ENABLED
-	GenerateRandomString(gAccount[playerid][e_aPasswordSalt], PASSWORD_SALT_LENGTH, PASSWORD_SALT_LENGTH + 1);
-
-	SHA256_PassHash(password, gAccount[playerid][e_aPasswordSalt], gAccount[playerid][e_aPassword], PASSWORD_HASH_LENGTH);
-#else
-	strcpy(gAccount[playerid][e_aPassword], password, MAX_PASS_LEN);
-#endif
-
+	Account_SetPassword(playerid, password);
 	Account_SetRegistrationTime(playerid, gettime());
 	Account_SetLoginTime(playerid, gettime());
 	Account_SetPlayedTime(playerid, 0);
@@ -362,6 +355,22 @@ stock Account_SetRegistrationTime(playerid, timestamp)
 stock Account_GetRegistrationTime(playerid)
 {
 	return gAccount[playerid][e_aCreationTime];
+}
+
+stock Account_SetPassword(playerid, password[])
+{
+#if defined PASSWORD_ENCRYPT_ENABLED
+	GenerateRandomString(gAccount[playerid][e_aPasswordSalt], PASSWORD_SALT_LENGTH, PASSWORD_SALT_LENGTH + 1);
+
+	SHA256_PassHash(password, gAccount[playerid][e_aPasswordSalt], gAccount[playerid][e_aPassword], PASSWORD_HASH_LENGTH);
+#else
+	strcpy(gAccount[playerid][e_aPassword], password, MAX_PASS_LEN);
+#endif
+}
+
+stock Account_GetPassword(playerid, password[], const size = sizeof(password))
+{
+	return strcpy(password, gAccount[playerid][e_aPasswordSalt], size);
 }
 
 /*

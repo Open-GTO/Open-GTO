@@ -5,6 +5,17 @@
 
 */
 
+/*
+	Vars
+*/
+
+static
+	gPlayerNetstatsTimer[MAX_PLAYERS];
+
+/*
+	OnGameModeInit
+*/
+
 AdminClick_OnGameModeInit()
 {
 	// moder
@@ -758,8 +769,7 @@ public AdminClick_GetNetStats(playerid, targetid, listitem, inputtext[])
 	            NetStats_MessagesSent(targetid),
 	            NetStats_MessagesRecvPerSecond(targetid));
 
-	new timerid = SetTimerEx("AdminClick_GetNetStats", 2000, 0, "dd", playerid, targetid);
-	SetPVarInt(playerid, "click_NetStats_TimerID", timerid);
+	gPlayerNetstatsTimer[playerid] = SetTimerEx("AdminClick_GetNetStats", 2000, 0, "dd", playerid, targetid);
 }
 
 DialogResponse:PlayerClickNetStats(playerid, response, listitem, inputtext[])
@@ -768,9 +778,8 @@ DialogResponse:PlayerClickNetStats(playerid, response, listitem, inputtext[])
 		Dialog_Show(playerid, Dialog:PlayerClick);
 	}
 
-	new timerid = GetPVarInt(playerid, "click_NetStats_TimerID");
-	if (timerid != 0) {
-		KillTimer(timerid);
+	if (gPlayerNetstatsTimer[playerid] != 0) {
+		KillTimer(gPlayerNetstatsTimer[playerid]);
 	}
 
 	return 1;

@@ -10,12 +10,6 @@
 
 #define _admin_included
 
-stock Admin_OnRconLoginAttempt(ip[], password[], success)
-{
-	AdminLogin_OnRconLoginAttempt(ip, password, success);
-	return 1;
-}
-
 stock SendClientMessageToAdmins(senderid, text[])
 {
 	new
