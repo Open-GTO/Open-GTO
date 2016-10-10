@@ -85,9 +85,11 @@ public OnVehicleStreamIn(vehicleid, forplayerid)
 
 stock vda_SetVehicleParamsForPlayer(vehicleid, playerid, objective, doorslocked)
 {
+	if (!IsValidVehicle(vehicleid) || !IsPlayerConnected(playerid)) {
+		return 0;
+	}
 	gParamObjective[playerid]{vehicleid} = objective;
 	gParamDoors[playerid]{vehicleid} = doorslocked;
-
 	return SetVehicleParamsForPlayer(vehicleid, playerid, objective, doorslocked);
 }
 #if defined _ALS_SetVehicleParamsForPlayer
@@ -104,9 +106,24 @@ stock vda_SetVehicleParamsForPlayer(vehicleid, playerid, objective, doorslocked)
 
 stock GetVehicleParamsForPlayer(vehicleid, playerid, &objective, &doorslocked)
 {
+	if (!IsValidVehicle(vehicleid) || !IsPlayerConnected(playerid)) {
+		return 0;
+	}
 	objective = gParamObjective[playerid]{vehicleid};
 	doorslocked = gParamDoors[playerid]{vehicleid};
 	return 1;
+}
+
+/*
+	SetVehicleDoorsForPlayer
+*/
+
+stock SetVehicleDoorsForPlayer(vehicleid, playerid, doorslocked)
+{
+	if (!IsValidVehicle(vehicleid) || !IsPlayerConnected(playerid)) {
+		return 0;
+	}
+	return SetVehicleParamsForPlayer(vehicleid, playerid, gParamObjective[playerid]{vehicleid}, doorslocked);
 }
 
 /*
@@ -115,42 +132,38 @@ stock GetVehicleParamsForPlayer(vehicleid, playerid, &objective, &doorslocked)
 
 stock SetVehicleDoorsAccess(vehicleid, ownerid, VehicleDoorsAccess:status)
 {
-	gAccessStatus{vehicleid} = status;
+	if (!IsValidVehicle(vehicleid)) {
+		return 0;
+	}
 
-	new
-		objective,
-		doorslocked;
+	gAccessStatus{vehicleid} = status;
 
 	switch (status) {
 		case VehicleDoorsAccess_Everyone: {
 			foreach (new playerid : Player) {
-				GetVehicleParamsForPlayer(vehicleid, playerid, objective, doorslocked);
-				SetVehicleParamsForPlayer(vehicleid, playerid, objective, 0);
+				SetVehicleDoorsForPlayer(vehicleid, playerid, 0);
 			}
 		}
 		case VehicleDoorsAccess_Noone: {
 			foreach (new playerid : Player) {
-				GetVehicleParamsForPlayer(vehicleid, playerid, objective, doorslocked);
-
 				if (ownerid == playerid) {
-					SetVehicleParamsForPlayer(vehicleid, playerid, objective, 0);
+					SetVehicleDoorsForPlayer(vehicleid, playerid, 0);
 				} else {
-					SetVehicleParamsForPlayer(vehicleid, playerid, objective, 1);
+					SetVehicleDoorsForPlayer(vehicleid, playerid, 1);
 				}
 			}
 		}
 		case VehicleDoorsAccess_Gang: {
 			foreach (new playerid : Player) {
-				GetVehicleParamsForPlayer(vehicleid, playerid, objective, doorslocked);
-
 				if (ownerid == playerid || IsPlayersTeammates(playerid, ownerid)) {
-					SetVehicleParamsForPlayer(vehicleid, playerid, objective, 0);
+					SetVehicleDoorsForPlayer(vehicleid, playerid, 0);
 				} else {
-					SetVehicleParamsForPlayer(vehicleid, playerid, objective, 1);
+					SetVehicleDoorsForPlayer(vehicleid, playerid, 1);
 				}
 			}
 		}
 	}
+	return 1;
 }
 
 stock ChangeVehicleDoorsAccess(vehicleid, ownerid)
