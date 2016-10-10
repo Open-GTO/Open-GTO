@@ -157,18 +157,18 @@ DialogCreate:VehicleBuy(playerid)
 {
 	new
 		model,
-		cost[MAX_LANG_VALUE_STRING];
+		cost;
 
 	model = GetVehicleModel(GetPlayerVehicleID(playerid));
-
-	InsertSpacesInInt(GetVehicleModelCost(model), cost);
+	cost = GetVehicleModelCost(model);
 
 	Dialog_Open(playerid, Dialog:VehicleBuy, DIALOG_STYLE_MSGBOX,
 	            "VEHSHOP_DIALOG_HEADER",
 	            "VEHSHOP_DIALOG_INFO",
 	            "VEHSHOP_DIALOG_BUTTON_BUY", "VEHSHOP_DIALOG_BUTTON_EXIT",
 	            MDIALOG_NOTVAR_NONE,
-	            ReturnVehicleModelName(model), cost);
+	            ReturnVehicleModelName(model),
+	            FormatNumber(cost));
 }
 
 DialogResponse:VehicleBuy(playerid, response, listitem, inputtext[])
@@ -310,18 +310,19 @@ static stock VehShop_UpdateLabelString(pos_id)
 	new
 		model,
 		vehicle_name[MAX_VEHICLE_NAME],
-		cost_str[64];
+		cost;
 
 	model = GetVehicleModel(gPositions[pos_id][e_vsID]);
 	GetVehicleModelName(model, vehicle_name);
-	InsertSpacesInInt(GetVehicleModelCost(model), cost_str);
+	cost = GetVehicleModelCost(model);
 
 	new
 		string[MAX_LANG_VALUE_STRING];
 
 	foreach (new Lang:lang : LangIterator) {
 		Lang_GetText(lang, "VEHSHOP_3DTEXT", string);
-		format(gLabelString[pos_id][lang], sizeof(gLabelString[][]), string, vehicle_name, cost_str);
+		format(gLabelString[pos_id][lang], sizeof(gLabelString[][]), string,
+		       vehicle_name, FormatNumber(cost));
 	}
 }
 

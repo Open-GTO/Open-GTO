@@ -125,18 +125,16 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 			// информация о банде
 			case 0: {
 				new
-					members[64 * MAX_GANG_SIZE],
-					gang_money[16];
+					members[64 * MAX_GANG_SIZE];
 
 				GetPlayerGangMemberListString(playerid, members);
-				InsertSpacesInInt(Gang_GetMoney(gangid), gang_money);
 
 				Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
 				                 "GANG_MENU_INFO_HEADER_SELF",
 				                 "GANG_MENU_INFO_MESSAGE",
 				                 "BUTTON_BACK", "BUTTON_CANCEL",
 				                 MDIALOG_NOTVAR_NONE,
-				                 Gang_GetKills(gangid), gang_money, Gang_GetScore(gangid),
+				                 Gang_GetKills(gangid), FormatNumber(Gang_GetMoney(gangid)), Gang_GetScore(gangid),
 				                 GetGangLevel(gangid), GetGangXP(gangid), GetXPToGangLevel(GetGangLevel(gangid) + 1),
 				                 Gang_GetOnlineCount(gangid), Gang_GetExistsCount(gangid),
 				                 members);

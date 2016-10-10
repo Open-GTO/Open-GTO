@@ -141,10 +141,10 @@ static stock
 	{
 	    new
      		name[MAX_PLAYER_NAME];
-	
+
 		SSCANF_Init(GetMaxPlayers(), INVALID_PLAYER_ID, MAX_PLAYER_NAME);
 		SSCANF_gInit = true;
-		
+
 		// Check if there are any players that aren't initialized.
 		for (new i = 0; i < MAX_PLAYERS; i ++)
 		{
@@ -154,7 +154,7 @@ static stock
 		        SSCANF_Join(i, name, IsPlayerNPC(i));
 		    }
 		}
-		
+
 		#if defined SSCANF_OnFilterScriptInit
 			SSCANF_OnFilterScriptInit();
 		#endif
@@ -185,10 +185,10 @@ static stock
 		{
 		    new
 		        name[MAX_PLAYER_NAME];
-		
+
 			SSCANF_Init(GetMaxPlayers(), INVALID_PLAYER_ID, MAX_PLAYER_NAME);
 			SSCANF_gInit = true;
-			
+
 			// Check if there are any players that aren't initialized.
 			for (new i = 0; i < MAX_PLAYERS; i ++)
 			{
@@ -318,7 +318,7 @@ static stock
 
 #define player:
 
-#define hex:
+#define hex:%0;unformat(_:EXTRZ:EXTRX:%1); %0;unformat(_:EXTRZ:EXTRX:%1);
 #define hex_EXTRO:%0##%1,%2|||%3=%9|||%4,%5) EXTRY:%0##%1H"("#%9")"#,%2,%3|||%4|||%5)
 #define hex_EXTRN:%0##%1,%2|||%3|||%4,%5) EXTRY:%0##%1h,%2,%3|||%4|||%5)
 #define hex_EXTRW:%0##%1,%2|||%3[%7]|||%4,%5) EXTRY:%0##%1a<h>[%7],%2,%3|||%4|||%5)

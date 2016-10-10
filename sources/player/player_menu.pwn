@@ -61,11 +61,6 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			new played_time[MAX_LANG_VALUE_STRING];
 			GetTimeStringFromSeconds(playerid, Account_GetCurrentPlayedTime(playerid), played_time);
 
-			new money_str[16], bank_money_str[16], total_money_str[16];
-			InsertSpacesInInt(GetPlayerMoney(playerid), money_str);
-			InsertSpacesInInt(GetPlayerBankMoney(playerid), bank_money_str);
-			InsertSpacesInInt(GetPlayerTotalMoney(playerid), total_money_str);
-
 			static string[MAX_LANG_VALUE_STRING * 9];
 			Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO", string);
 
@@ -79,7 +74,9 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 
 			       gangname,
 
-			       money_str, bank_money_str, total_money_str,
+			       FormatNumber(GetPlayerMoney(playerid)),
+			       FormatNumber(GetPlayerBankMoney(playerid)),
+			       FormatNumber(GetPlayerTotalMoney(playerid)),
 
 			       GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid),
 			       GetPlayerJailedCount(playerid),

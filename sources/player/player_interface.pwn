@@ -54,7 +54,7 @@ stock PlayerTD_Update(playerid, PlayerText:textdraw, color, value, prefix[] = ""
 	static
 		str[MAX_LANG_VALUE_STRING];
 
-	InsertSpacesInInt(value, str);
+	FormatNumberToString(str, sizeof(str), value);
 
 	if (!isnull(prefix)) {
 		format(str, sizeof(str), "%s%s", prefix, str);

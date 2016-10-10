@@ -49,6 +49,7 @@ Thanks:
 #include "lib/foreach/foreach.inc"
 #include "lib/sscanf2.inc"
 #include "lib/zcmd.inc"
+#include "lib/formatnumber.inc"
 #include "lib/mxINI/mxINI.inc"
 #include "lib/time_t/time_t.inc"
 #include "lib/mapfix.inc"
