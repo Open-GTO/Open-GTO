@@ -10,23 +10,6 @@
 
 #define _admin_included
 
-
-stock Admin_SaveConfig(file_config)
-{
-	AdminMapTP_SaveConfig(file_config);
-}
-
-stock Admin_LoadConfig(file_config)
-{
-	AdminMapTP_LoadConfig(file_config);
-}
-
-stock Admin_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
-{
-	AdminMapTP_OnPlayerClickMap(playerid, fX, fY, fZ);
-	return 1;
-}
-
 stock Admin_OnRconLoginAttempt(ip[], password[], success)
 {
 	AdminLogin_OnRconLoginAttempt(ip, password, success);

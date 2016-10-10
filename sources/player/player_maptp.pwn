@@ -11,20 +11,48 @@
 
 #define _pl_maptp_included
 
-stock PMaptp_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+/*
+	Vars
+*/
+
+static
+	bool:gPlayerTeleportAllowed[MAX_PLAYERS char];
+
+/*
+	OnPlayerClickMap
+*/
+
+public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
-	if (!IsAllowPlayerTeleport(playerid)) {
-		return 0;
+	if (IsAllowPlayerTeleport(playerid)) {
+		TeleportPlayerToPos(playerid, fX, fY, fZ, 0.0);
 	}
 
-	TeleportPlayerToPos(playerid, fX, fY, fZ, 0.0);
-	return 1;
+	#if defined PMaptp_OnPlayerClickMap
+		return PMaptp_OnPlayerClickMap(playerid, fX, fY, fZ);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerClickMap
+	#undef OnPlayerClickMap
+#else
+	#define _ALS_OnPlayerClickMap
+#endif
+
+#define OnPlayerClickMap PMaptp_OnPlayerClickMap
+#if defined PMaptp_OnPlayerClickMap
+	forward PMaptp_OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ);
+#endif
+
+/*
+	Functions
+*/
 
 stock IsAllowPlayerTeleport(playerid) {
-	return GetPVarInt(playerid, "AllowTeleport") == 1 ? 1 : 0;
+	return _:gPlayerTeleportAllowed{playerid};
 }
 
-stock SetPlayerTeleportStatus(playerid, isallow) {
-	SetPVarInt(playerid, "AllowTeleport", isallow);
+stock SetPlayerTeleportStatus(playerid, bool:isallow) {
+	gPlayerTeleportAllowed{playerid} = isallow;
 }

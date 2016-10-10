@@ -241,7 +241,7 @@ Thanks:
 #include "admin/admin_commands/cmd_pmspy.pwn"
 #include "admin/admin_ban.pwn"
 #include "admin/admin_spectate.pwn"
-#include "admin/admin_map_tp.pwn"
+#include "admin/admin_maptp.pwn"
 #include "admin/admin_click.pwn"
 #include "admin/admin_login.pwn"
 #include "admin/admin.pwn"
@@ -754,8 +754,6 @@ public OnRconLoginAttempt(ip[], password[], success)
 
 public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 {
-	Admin_OnPlayerClickMap(playerid, fX, fY, fZ);
-	PMaptp_OnPlayerClickMap(playerid, fX, fY, fZ);
 	return 1;
 }
 

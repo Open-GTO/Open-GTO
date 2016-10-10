@@ -9,6 +9,9 @@
 
 #define _player_level_included
 
+/*
+	Defines
+*/
 
 #define MIN_LEVEL    1
 
@@ -16,8 +19,18 @@
 	#error PLAYER_START_LEVEL must be greater than MIN_LEVEL
 #endif
 
+/*
+	Vars
+*/
+
 static
+	gPlayerLevel[MAX_PLAYERS],
+	gPlayerXP[MAX_PLAYERS],
 	gMaxPlayerLevel = MAX_LEVEL;
+
+/*
+	Functions
+*/
 
 PLevel_LoadConfig(file_config)
 {
@@ -97,9 +110,9 @@ stock SetPlayerLevel(playerid, level, bool:regenhp = true, bool:notify = true)
 	}
 
 	new xp_diff = GetPlayerXPToLevel(playerid, level);
-	SetPVarInt(playerid, "Level", level);
+	gPlayerLevel[playerid] = level;
 	SetPlayerScore(playerid, level);
-	SetPVarInt(playerid, "XP", 0);
+	gPlayerXP[playerid] = 0;
 
 	// update text draws
 	PlayerLevelTD_UpdateLevelString(playerid, level);
@@ -134,7 +147,7 @@ stock GivePlayerLevel(playerid, amount, bool:regenhp = true, bool:notify = true)
 
 stock GetPlayerLevel(playerid)
 {
-	return GetPVarInt(playerid, "Level");
+	return gPlayerLevel[playerid];
 }
 
 stock SetPlayerXP(playerid, amount)
@@ -191,7 +204,7 @@ stock SetPlayerXP(playerid, amount)
 		}
 	}
 
-	SetPVarInt(playerid, "XP", xp_set);
+	gPlayerXP[playerid] = xp_set;
 	PlayerLevelTD_UpdateLevelString(playerid, level);
 	PlayerLevelTD_UpdateXPString(playerid, xp_set, GetXPToLevel(level + 1), level >= level_max);
 	PlayerLevelTD_Give(playerid, amount, level - old_level);
@@ -199,7 +212,7 @@ stock SetPlayerXP(playerid, amount)
 
 stock GetPlayerXP(playerid)
 {
-	return GetPVarInt(playerid, "XP");
+	return gPlayerXP[playerid];
 }
 
 stock GetXPToLevel(level)

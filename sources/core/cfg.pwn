@@ -34,7 +34,7 @@ stock cfg_LoadConfigs()
 	Bank_LoadConfig(file_config);
 	business_LoadConfig(file_config);
 	houses_LoadConfig(file_config);
-	Admin_LoadConfig(file_config);
+	AdminMapTP_LoadConfig(file_config);
 	Weather_LoadConfig(file_config);
 
 	// player/
@@ -83,7 +83,7 @@ stock cfg_SaveConfigs()
 	Bank_SaveConfig(file_config);
 	business_SaveConfig(file_config);
 	houses_SaveConfig(file_config);
-	Admin_SaveConfig(file_config);
+	AdminMapTP_SaveConfig(file_config);
 	Weather_SaveConfig(file_config);
 
 	// player/
