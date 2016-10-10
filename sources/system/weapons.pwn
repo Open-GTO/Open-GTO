@@ -325,7 +325,7 @@ stock IsWeaponHandToHand(weaponid)
 	Weapon name
 */
 
-stock ReturnPlayerWeaponName(playerid, weaponid)
+stock ret_GetPlayerWeaponName(playerid, weaponid)
 {
 	new name[MAX_WEAPON_NAME];
 	GetPlayerWeaponName(playerid, weaponid, name, sizeof(name));

@@ -375,7 +375,7 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 	               amount_string,
 	               FormatNumber(Gang_GetMoney(gangid)));
 
-	Gang_SendLangMessage(gangid, "BANK_GANG_WITHDRAW_MESSAGE", _, ReturnPlayerName(playerid), playerid, amount_string);
+	Gang_SendLangMessage(gangid, "BANK_GANG_WITHDRAW_MESSAGE", _, ret_GetPlayerName(playerid), playerid, amount_string);
 	return 1;
 }
 
@@ -431,7 +431,7 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 	               amount_string,
 	               FormatNumber(Gang_GetMoney(gangid)));
 
-	Gang_SendLangMessage(gangid, "BANK_GANG_DEPOSIT_MESSAGE", _, ReturnPlayerName(playerid), playerid, amount_string);
+	Gang_SendLangMessage(gangid, "BANK_GANG_DEPOSIT_MESSAGE", _, ret_GetPlayerName(playerid), playerid, amount_string);
 	return 1;
 }
 

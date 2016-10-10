@@ -44,7 +44,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 		case 0: {
 			new premium_status[MAX_LANG_VALUE_STRING];
 			if (IsPlayerHavePremium(playerid)) {
-				Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO_TO", premium_status, _, ReturnPlayerPremiumDateString(playerid));
+				Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO_TO", premium_status, _, ret_GetPlayerPremiumDateString(playerid));
 			} else {
 				Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO_NO", premium_status);
 			}
@@ -163,10 +163,10 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 
 			foreach (new id : Player) {
 				if (IsPlayerHavePrivilege(id, PlayerPrivilegeAdmin)) {
-					format(admins, sizeof(admins), "%s%s(%d)\n", admins, ReturnPlayerName(id), id);
+					format(admins, sizeof(admins), "%s%s(%d)\n", admins, ret_GetPlayerName(id), id);
 					idsa++;
 				} else if (IsPlayerHavePrivilege(id, PlayerPrivilegeModer)) {
-					format(moders, sizeof(moders), "%s%s(%d)\n", moders, ReturnPlayerName(id), id);
+					format(moders, sizeof(moders), "%s%s(%d)\n", moders, ret_GetPlayerName(id), id);
 					idsm++;
 				}
 			}

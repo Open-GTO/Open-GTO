@@ -145,7 +145,7 @@ stock GetPlayerEmbeddingCode(playerid, code[], const size = sizeof(code))
 	GetColorEmbeddingCode(GetPlayerColor(playerid), code, size);
 }
 
-stock ReturnPlayerEmbeddingCode(playerid)
+stock ret_GetPlayerEmbeddingCode(playerid)
 {
 	new code[7];
 	GetPlayerEmbeddingCode(playerid, code);

@@ -306,7 +306,7 @@ DialogResponse:BusinessMenu(playerid, response, listitem, inputtext[])
 	switch (listitem) {
 		// продать/купить
 		case 0: {
-			if (!strcmp(Businesses[ GetPlayerToBusinessID(playerid) ][Business_Owner], ReturnPlayerName(playerid), true)) {
+			if (!strcmp(Businesses[ GetPlayerToBusinessID(playerid) ][Business_Owner], ret_GetPlayerName(playerid), true)) {
 				Dialog_Show(playerid, Dialog:BusinessSellAccept);
 			} else {
 				bis_Buy(playerid);
@@ -416,7 +416,7 @@ business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	new head[MAX_LANG_VALUE_STRING];
 	Lang_GetPlayerText(playerid, "BUSINESS_DIALOG_HEAD", head, _, Businesses[id][Business_Name]);
 
-	if (!strcmp(Businesses[id][Business_Owner], ReturnPlayerName(playerid), true))
+	if (!strcmp(Businesses[id][Business_Owner], ret_GetPlayerName(playerid), true))
 	{
 		// если мой
 		Dialog_Open(playerid, Dialog:BusinessInfo, DIALOG_STYLE_MSGBOX,
@@ -523,7 +523,7 @@ stock bis_Buy(playerid)
 	#if defined BUY_ALL_BUSINESS
 		foreach (Player, ownerid)
 		{
-			if (!strcmp(Businesses[id][Business_Owner], ReturnPlayerName(ownerid), true))
+			if (!strcmp(Businesses[id][Business_Owner], ret_GetPlayerName(ownerid), true))
 			{
 				Lang_SendText(ownerid, "BUSINESS_OUTBIDDING", playername, Businesses[id][Business_Name]);
 				GivePlayerMoney(ownerid, price);
@@ -560,7 +560,7 @@ stock bis_Sell(playerid)
 	}
 	new head[MAX_LANG_VALUE_STRING];
 	Lang_GetPlayerText(playerid, "BUSINESS_DIALOG_HEAD", head, _, Businesses[id][Business_Name]);
-	if (strcmp(Businesses[id][Business_Owner], ReturnPlayerName(playerid), true))
+	if (strcmp(Businesses[id][Business_Owner], ret_GetPlayerName(playerid), true))
 	{
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
 		                 head,
@@ -588,7 +588,7 @@ stock bis_Sell(playerid)
 		                 Businesses[id][Business_Name],
 		                 Businesses[id][Business_Vault]);
 
-		Log(mainlog, INFO, "player: %s(%d): sold the '%s' (business)", ReturnPlayerName(playerid), playerid, Businesses[id][Business_Name]);
+		Log(mainlog, INFO, "player: %s(%d): sold the '%s' (business)", ret_GetPlayerName(playerid), playerid, Businesses[id][Business_Name]);
 	}
 	return 1;
 }
@@ -604,7 +604,7 @@ stock bis_Collect(playerid)
 	new head[MAX_LANG_VALUE_STRING];
 	Lang_GetPlayerText(playerid, "BUSINESS_DIALOG_HEAD", head, _, Businesses[id][Business_Name]);
 
-	if (strcmp(Businesses[id][Business_Owner], ReturnPlayerName(playerid), true))
+	if (strcmp(Businesses[id][Business_Owner], ret_GetPlayerName(playerid), true))
 	{
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
 		                 head,

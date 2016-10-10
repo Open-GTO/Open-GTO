@@ -484,9 +484,9 @@ public OnPlayerDeath(playerid, killerid, reason)
 	SetPlayerSpawned(playerid, 0);
 
 	if (killerid == INVALID_PLAYER_ID) {
-		Log(mainlog, INFO, "Player: %s(%d) has died > Reason: (%d)", ReturnPlayerName(playerid), playerid, reason);
+		Log(mainlog, INFO, "Player: %s(%d) has died > Reason: (%d)", ret_GetPlayerName(playerid), playerid, reason);
 	} else {
-		Log(mainlog, INFO, "Player: %s(%d) has killed player %s(%d)> Reason: (%d)", ReturnPlayerName(killerid), killerid, ReturnPlayerName(playerid), playerid, reason);
+		Log(mainlog, INFO, "Player: %s(%d) has killed player %s(%d)> Reason: (%d)", ret_GetPlayerName(killerid), killerid, ret_GetPlayerName(playerid), playerid, reason);
 	}
 
 	SendDeathMessage(killerid, playerid, reason);
@@ -564,7 +564,7 @@ public OnPlayerCommandReceived(playerid, cmdtext[])
 		return 0;
 	}
 
-	Log(playerlog, INFO, "Player: %s(%d) %s", ReturnPlayerName(playerid), playerid, cmdtext);
+	Log(playerlog, INFO, "Player: %s(%d) %s", ret_GetPlayerName(playerid), playerid, cmdtext);
 	return 1;
 }
 

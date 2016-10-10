@@ -344,7 +344,7 @@ DialogResponse:GangCreateColor(playerid, response, listitem, inputtext[])
 		GivePlayerMoney(playerid, -Gang_GetCreateCost());
 		Lang_SendText(playerid, "GANG_CREATE_SUCCESS");
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_CREATE_HEADER", "GANG_CREATE_SUCCESS", "BUTTON_BACK", "BUTTON_CANCEL");
-		Log(mainlog, INFO, "Action <GangCreateColor>: %s(%d) created gang '%s'.", ReturnPlayerName(playerid), playerid, gangname);
+		Log(mainlog, INFO, "Action <GangCreateColor>: %s(%d) created gang '%s'.", ret_GetPlayerName(playerid), playerid, gangname);
 	} else {
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_CREATE_HEADER", "GANG_CREATE_ERROR", "BUTTON_BACK", "BUTTON_CANCEL");
 	}
@@ -772,7 +772,7 @@ DialogResponse:GangMotd(playerid, response, listitem, inputtext[])
 	Gang_SetMotd(gangid, inputtext);
 
 	Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_MOTD_HEADER", "GANG_MOTD_CHANGED_MSG", "BUTTON_BACK", "BUTTON_CANCEL", MDIALOG_NOTVAR_NONE, inputtext);
-	Gang_SendLangMessage(gangid, "GANG_MOTD_CHANGED", _, ReturnPlayerName(playerid), playerid, inputtext);
+	Gang_SendLangMessage(gangid, "GANG_MOTD_CHANGED", _, ret_GetPlayerName(playerid), playerid, inputtext);
 	return 1;
 }
 

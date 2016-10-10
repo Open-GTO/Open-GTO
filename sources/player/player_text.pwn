@@ -93,8 +93,8 @@ stock PlayerText_Say(playerid, Float:dist, text[])
 
 	GetPlayerNearPlayers(playerid, dist, players);
 	Lang_SendTextToPlayers(players, "PLAYER_TEXT_SAY",
-	                       ReturnPlayerEmbeddingCode(playerid),
-	                       ReturnPlayerName(playerid),
+	                       ret_GetPlayerEmbeddingCode(playerid),
+	                       ret_GetPlayerName(playerid),
 	                       playerid,
 	                       text);
 }

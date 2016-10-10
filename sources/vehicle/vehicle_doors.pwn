@@ -190,7 +190,7 @@ stock GetVehicleDoorsAccessName(Lang:lang, vehicleid, name[], size = sizeof(name
 	return 1;
 }
 
-stock ReturnVehicleDoorsAccessName(Lang:lang, vehicleid)
+stock ret_GetVehicleDoorsAccessName(Lang:lang, vehicleid)
 {
 	new name[MAX_LANG_VALUE_STRING];
 	GetVehicleDoorsAccessName(lang, vehicleid, name);

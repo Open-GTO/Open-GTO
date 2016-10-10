@@ -400,7 +400,7 @@ stock ShowPlayerWeaponsOnLevel(playerid, newlevel, oldlevel)
 			}
 
 			Lang_SendText(playerid, "PLAYER_LEVEL_NEW_WEAPON_ITEM",
-			              ReturnPlayerWeaponName(playerid, weaponid),
+			              ret_GetPlayerWeaponName(playerid, weaponid),
  			              GetWeaponCost(weaponid));
 		}
 	}
@@ -411,7 +411,7 @@ stock ShowPlayerWeaponsOnLevel(playerid, newlevel, oldlevel)
 	Name
 */
 
-stock ReturnPlayerName(playerid)
+stock ret_GetPlayerName(playerid)
 {
 	new name[MAX_PLAYER_NAME + 1];
 	GetPlayerName(playerid, name, sizeof(name));

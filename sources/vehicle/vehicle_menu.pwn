@@ -60,7 +60,7 @@ DialogCreate:VehicleMenu(playerid)
 
 	// двери
 	Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_DOORS", temp);
-	format(string, sizeof(string), temp, string, ReturnVehicleDoorsAccessName(Lang_GetPlayerLang(playerid), vehicleid));
+	format(string, sizeof(string), temp, string, ret_GetVehicleDoorsAccessName(Lang_GetPlayerLang(playerid), vehicleid));
 
 	// фары
 	if (lights == VEHICLE_PARAMS_ON) {

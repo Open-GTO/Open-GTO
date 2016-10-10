@@ -38,7 +38,7 @@ stock Player_Save(playerid)
 
 	// save
 	Player_SaveEx(playerid);
-	Log(mainlog, INFO, "Player: %s(%d) player saved successfully.", ReturnPlayerName(playerid), playerid);
+	Log(mainlog, INFO, "Player: %s(%d) player saved successfully.", ret_GetPlayerName(playerid), playerid);
 	return 1;
 }
 
@@ -47,7 +47,7 @@ stock Player_Create(playerid)
 	Player_SetDefaultData(playerid);
 
 	Player_SaveEx(playerid);
-	Log(mainlog, INFO, "Player: %s(%d) player created successfully.", ReturnPlayerName(playerid), playerid);
+	Log(mainlog, INFO, "Player: %s(%d) player created successfully.", ret_GetPlayerName(playerid), playerid);
 	return 1;
 }
 
@@ -71,7 +71,7 @@ stock Player_SaveEx(playerid)
 		Float:temp_float;
 
 	ini_setString(file_player, "Name", playername);
-	ini_setString(file_player, "Gang", ReturnPlayerGangName(playerid));
+	ini_setString(file_player, "Gang", ret_GetPlayerGangName(playerid));
 
 	GetPlayerArmour(playerid, temp_float);
 	ini_setFloat(file_player, "Armour", temp_float);
@@ -137,7 +137,7 @@ stock Player_SaveEx(playerid)
 stock Player_Login(playerid)
 {
 	new filename_player[MAX_STRING];
-	format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, db_player, ReturnPlayerName(playerid));
+	format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, db_player, ret_GetPlayerName(playerid));
 
 	if (!ini_fileExist(filename_player)) {
 		Player_Create(playerid);

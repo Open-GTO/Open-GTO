@@ -232,7 +232,7 @@ stock GetPlayerGangName(playerid, name[], const size = sizeof(name))
 	strcpy(name, gPlayerGangName[playerid], size);
 }
 
-stock ReturnPlayerGangName(playerid)
+stock ret_GetPlayerGangName(playerid)
 {
 	return gPlayerGangName[playerid];
 }

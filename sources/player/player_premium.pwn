@@ -48,7 +48,7 @@ stock GetPlayerPremiumDateString(playerid, string[], const size = sizeof(string)
 	GetPremiumDateString(time, string, size);
 }
 
-stock ReturnPlayerPremiumDateString(playerid)
+stock ret_GetPlayerPremiumDateString(playerid)
 {
 	new string[11];
 	GetPlayerPremiumDateString(playerid, string);

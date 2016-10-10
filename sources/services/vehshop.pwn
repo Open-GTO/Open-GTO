@@ -167,7 +167,7 @@ DialogCreate:VehicleBuy(playerid)
 	            "VEHSHOP_DIALOG_INFO",
 	            "VEHSHOP_DIALOG_BUTTON_BUY", "VEHSHOP_DIALOG_BUTTON_EXIT",
 	            MDIALOG_NOTVAR_NONE,
-	            ReturnVehicleModelName(model),
+	            ret_GetVehicleModelName(model),
 	            FormatNumber(cost));
 }
 

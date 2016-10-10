@@ -1,5 +1,5 @@
 /*
-	
+
 	About: gto vehicle information
 	Author: ziggi
 
@@ -233,7 +233,7 @@ new gVehicleInfo[][e_Vehicle_Info] = {
 	{0.0,     0,    0}
 };
 
-stock ReturnVehicleModelName(model)
+stock ret_GetVehicleModelName(model)
 {
 	new name[MAX_VEHICLE_NAME];
 	GetVehicleModelName(model, name);

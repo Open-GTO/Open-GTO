@@ -60,7 +60,7 @@ COMMAND:status(playerid, params[])
 	Lang_SendText(playerid, "COMMAND_STATUS_PRIVILEGE", string);
 
 	if (IsPlayerInGang(playerid)) {
-		Lang_SendText(playerid, "COMMAND_STATUS_1", ReturnPlayerGangName(playerid));
+		Lang_SendText(playerid, "COMMAND_STATUS_1", ret_GetPlayerGangName(playerid));
 	}
 
 	Lang_SendText(playerid, "COMMAND_STATUS_2",
@@ -82,7 +82,7 @@ COMMAND:status(playerid, params[])
 	Lang_SendText(playerid, "COMMAND_STATUS_FIGHTSTYLE", string);
 
 	if (IsPlayerHavePremium(playerid)) {
-		Lang_SendText(playerid, "COMMAND_STATUS_PREMIUM", ReturnPlayerPremiumDateString(playerid));
+		Lang_SendText(playerid, "COMMAND_STATUS_PREMIUM", ret_GetPlayerPremiumDateString(playerid));
 	} else {
 		Lang_SendText(playerid, "COMMAND_STATUS_NO_PREMIUM");
 	}

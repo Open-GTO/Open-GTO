@@ -686,7 +686,7 @@ stock RentRoom(playerid)
 		return 1;
 	}
 
-	if (strlen(ReturnPlayerGangName(playerid)) > 0)
+	if (strlen(ret_GetPlayerGangName(playerid)) > 0)
 	{
 		Dialog_Message(playerid, "HOUSING_RENT_HEADER", "HOUSING_RENT_IN_GANG", "HOUSING_DIALOG_BUTTON_OK");
 		return 1;
@@ -705,7 +705,7 @@ stock RentRoom(playerid)
 		// перечислим деньги в банк владельцу
 		new owner_id = -1;
 		foreach (new pid : Player) {
-			if ( !strcmp(Houses[id][Houses_Owner], ReturnPlayerName(pid)) ) {
+			if ( !strcmp(Houses[id][Houses_Owner], ret_GetPlayerName(pid)) ) {
 				owner_id = pid;
 				break;
 			}
@@ -726,7 +726,7 @@ stock RentRoom(playerid)
 		format(string, sizeof(string), "%s%s"DATA_FILES_FORMAT, db_houses, Houses[id][Houses_Name]);
 		new file_housing = ini_openFile(string);
 		ini_setInteger(file_housing, "Rentabil", 1);
-		ini_setString(file_housing, "RentName", ReturnPlayerName(playerid));
+		ini_setString(file_housing, "RentName", ret_GetPlayerName(playerid));
 		ini_closeFile(file_housing);
 		Dialog_Message(playerid, "HOUSING_RENT_HEADER", "HOUSING_RENT_SUCCESS", "HOUSING_DIALOG_BUTTON_OK");
 	}
@@ -745,18 +745,18 @@ stock RentRoom(playerid)
 stock DeleteRenter(playerid)
 {
 	new id = GetPlayerToHouseID(playerid);
-	if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true))
+	if (!strcmp(Houses[id][Houses_Owner], ret_GetPlayerName(playerid), true))
 	{
 		Dialog_Message(playerid, "HOUSING_RENT_HEADER", "HOUSING_RENT_RENTER_KICK", "HOUSING_DIALOG_BUTTON_OK");
 		foreach (Player, i)
 		{
-			if (!strcmp(Houses[id][Houses_RentName], ReturnPlayerName(i), true))
+			if (!strcmp(Houses[id][Houses_RentName], ret_GetPlayerName(i), true))
 			{
 				Lang_SendText(i, "HOUSING_KICKED");
 			}
 		}
 	}
-	else if (!strcmp(Houses[id][Houses_RentName], ReturnPlayerName(playerid), true))
+	else if (!strcmp(Houses[id][Houses_RentName], ret_GetPlayerName(playerid), true))
 	{
 		Dialog_Message(playerid, "HOUSING_RENT_HEADER", "HOUSING_RENT_LEAVE", "HOUSING_DIALOG_BUTTON_OK");
 	}
@@ -810,8 +810,8 @@ stock house_Buy(playerid)
 	else {
 	#if defined BUY_ALL_HOUSES
 		foreach (new ownerid : Player) {
-			if (!strcmp(Houses[id][Houses_Owner], ReturnPlayerName(ownerid), true)) {
-				Lang_SendText(ownerid, "HOUSING_RENT_SET_HEADER", ReturnPlayerName(playerid), Houses[id][Houses_Name]);
+			if (!strcmp(Houses[id][Houses_Owner], ret_GetPlayerName(ownerid), true)) {
+				Lang_SendText(ownerid, "HOUSING_RENT_SET_HEADER", ret_GetPlayerName(playerid), Houses[id][Houses_Name]);
 				GivePlayerMoney(ownerid, price);
 				break;
 			}
@@ -850,7 +850,7 @@ stock house_Sell(playerid)
 		return 1;
 	}
 
-	if (strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true)) {
+	if (strcmp(Houses[id][Houses_Owner], ret_GetPlayerName(playerid), true)) {
 		Dialog_Message(playerid, "HOUSING_SELL_HEADER", "HOUSING_SELL_NOT_OWNER", "HOUSING_DIALOG_BUTTON_OK");
 	} else {
 		new price = ((Houses[id][Houses_Cost] + Houses[id][Houses_Buyout]) * 85) / 100;
@@ -874,7 +874,7 @@ stock house_Sell(playerid)
 		               MDIALOG_NOTVAR_NONE,
 		               Houses[id][Houses_Name]);
 
-		Log(mainlog, INFO, "player: %s(%d): sold the '%s' (house)", ReturnPlayerName(playerid), playerid, Houses[id][Houses_Name]);
+		Log(mainlog, INFO, "player: %s(%d): sold the '%s' (house)", ret_GetPlayerName(playerid), playerid, Houses[id][Houses_Name]);
 	}
 	return 1;
 }
@@ -888,7 +888,7 @@ stock house_Keep(playerid)
 		return 1;
 	}
 
-	if (strcmp(Houses[id][Houses_Gang], ReturnPlayerGangName(playerid), true))
+	if (strcmp(Houses[id][Houses_Gang], ret_GetPlayerGangName(playerid), true))
 	{
 		Dialog_Message(playerid, "HOUSING_KEEP_HEADER", "HOUSING_KEEP_NO_OWNER", "HOUSING_DIALOG_BUTTON_OK");
 		return 1;
@@ -984,7 +984,7 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 					Lang_GetPlayerText(playerid, "HOUSING_RENT_CURRENT", rent_string, _, Houses[id][Houses_RentName]);
 				}
 
-				if (strcmp(Houses[id][Houses_Owner], ReturnPlayerName(playerid), true))
+				if (strcmp(Houses[id][Houses_Owner], ret_GetPlayerName(playerid), true))
 				{
 					Lang_GetPlayerText(playerid, "HOUSING_DIALOG_INFO_OWNER", string, _, Houses[id][Houses_Owner]);
 					Lang_GetPlayerText(playerid, "HOUSING_DIALOG_INFO", temp, _,
