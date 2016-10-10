@@ -27,21 +27,33 @@
 	native IsValidVehicle(vehicleid);
 #endif
 
-enum {
-	VEHICLE_DOORS_ACCESS_INVALID,
-	VEHICLE_DOORS_ACCESS_EVERYONE,
-	VEHICLE_DOORS_ACCESS_NOONE,
-	VEHICLE_DOORS_ACCESS_GANG,
+/*
+	Enums
+*/
+
+enum VehicleDoorsAccess {
+	VehicleDoorsAccess_Invalid,
+	VehicleDoorsAccess_Everyone,
+	VehicleDoorsAccess_Noone,
+	VehicleDoorsAccess_Gang,
 }
 
 /*
 	Vars
 */
 
+static const
+	gVehicleAccessLangVars[VehicleDoorsAccess][] = {
+		"VEHICLE_DOORS_ACCESS_INVALID",
+		"VEHICLE_DOORS_ACCESS_EVERYONE",
+		"VEHICLE_DOORS_ACCESS_NOONE",
+		"VEHICLE_DOORS_ACCESS_GANG"
+	};
+
 static
 	gParamObjective[MAX_PLAYERS][MAX_VEHICLES char],
 	gParamDoors[MAX_PLAYERS][MAX_VEHICLES char],
-	gAccessStatus[MAX_VEHICLES char];
+	VehicleDoorsAccess:gAccessStatus[MAX_VEHICLES char];
 
 
 /*
@@ -101,7 +113,7 @@ stock GetVehicleParamsForPlayer(vehicleid, playerid, &objective, &doorslocked)
 	Public functions
 */
 
-stock SetVehicleDoorsAccess(vehicleid, ownerid, status)
+stock SetVehicleDoorsAccess(vehicleid, ownerid, VehicleDoorsAccess:status)
 {
 	gAccessStatus{vehicleid} = status;
 
@@ -110,13 +122,13 @@ stock SetVehicleDoorsAccess(vehicleid, ownerid, status)
 		doorslocked;
 
 	switch (status) {
-		case VEHICLE_DOORS_ACCESS_EVERYONE: {
+		case VehicleDoorsAccess_Everyone: {
 			foreach (new playerid : Player) {
 				GetVehicleParamsForPlayer(vehicleid, playerid, objective, doorslocked);
 				SetVehicleParamsForPlayer(vehicleid, playerid, objective, 0);
 			}
 		}
-		case VEHICLE_DOORS_ACCESS_NOONE: {
+		case VehicleDoorsAccess_Noone: {
 			foreach (new playerid : Player) {
 				GetVehicleParamsForPlayer(vehicleid, playerid, objective, doorslocked);
 
@@ -127,7 +139,7 @@ stock SetVehicleDoorsAccess(vehicleid, ownerid, status)
 				}
 			}
 		}
-		case VEHICLE_DOORS_ACCESS_GANG: {
+		case VehicleDoorsAccess_Gang: {
 			foreach (new playerid : Player) {
 				GetVehicleParamsForPlayer(vehicleid, playerid, objective, doorslocked);
 
@@ -147,19 +159,19 @@ stock ChangeVehicleDoorsAccess(vehicleid, ownerid)
 		return 0;
 	}
 
-	new status = gAccessStatus{vehicleid} + 1;
-	if (status > VEHICLE_DOORS_ACCESS_GANG) {
-		status = VEHICLE_DOORS_ACCESS_EVERYONE;
+	new VehicleDoorsAccess:status = gAccessStatus{vehicleid} + VehicleDoorsAccess:1;
+	if (status > VehicleDoorsAccess_Gang) {
+		status = VehicleDoorsAccess_Everyone;
 	}
 
 	SetVehicleDoorsAccess(vehicleid, ownerid, status);
 	return 1;
 }
 
-stock GetVehicleDoorsAccess(vehicleid)
+stock VehicleDoorsAccess:GetVehicleDoorsAccess(vehicleid)
 {
 	if (!IsValidVehicle(vehicleid)) {
-		return VEHICLE_DOORS_ACCESS_INVALID;
+		return VehicleDoorsAccess_Invalid;
 	}
 
 	return gAccessStatus{vehicleid};
@@ -171,23 +183,8 @@ stock GetVehicleDoorsAccess(vehicleid)
 
 stock GetVehicleDoorsAccessName(Lang:lang, vehicleid, name[], size = sizeof(name))
 {
-	new access_status = GetVehicleDoorsAccess(vehicleid);
-	switch (access_status) {
-		case VEHICLE_DOORS_ACCESS_INVALID: {
-			Lang_GetText(lang, "VEHICLE_DOORS_ACCESS_INVALID", name, size);
-		}
-		case VEHICLE_DOORS_ACCESS_EVERYONE: {
-			Lang_GetText(lang, "VEHICLE_DOORS_ACCESS_EVERYONE", name, size);
-		}
-		case VEHICLE_DOORS_ACCESS_NOONE: {
-			Lang_GetText(lang, "VEHICLE_DOORS_ACCESS_NOONE", name, size);
-		}
-		case VEHICLE_DOORS_ACCESS_GANG: {
-			Lang_GetText(lang, "VEHICLE_DOORS_ACCESS_GANG", name, size);
-		}
-	}
-
-	return 1;
+	new VehicleDoorsAccess:access_status = GetVehicleDoorsAccess(vehicleid);
+	return Lang_GetText(lang, gVehicleAccessLangVars[access_status], name, size);
 }
 
 stock ret_GetVehicleDoorsAccessName(Lang:lang, vehicleid)
