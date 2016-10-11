@@ -67,8 +67,12 @@ public OnPlayerCommandText(playerid, cmdtext[])
 		funcname[ZCMD_MAX_COMMAND + 4] = "cmd_",
 		params[ZCMD_MAX_PARAMS];
 
-	if (sscanf(cmdtext[1], "s[" #ZCMD_MAX_COMMAND "]S(\1)[" #ZCMD_MAX_PARAMS "]", funcname[4], params)) {
+	if (sscanf(cmdtext[1], "s[" #ZCMD_MAX_COMMAND "]S()[" #ZCMD_MAX_PARAMS "]", funcname[4], params)) {
 		return 0;
+	}
+
+	if (isnull(params)) {
+		params[0] = '\1';
 	}
 
 	while (funcname[pos]) {
