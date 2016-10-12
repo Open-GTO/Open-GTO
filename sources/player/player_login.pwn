@@ -19,6 +19,31 @@ static
 	bool:gPlayerIsLogin[MAX_PLAYERS char];
 
 /*
+	OnPlayerDisconnect
+*/
+
+public OnPlayerDisconnect(playerid, reason)
+{
+	SetPlayerLoginStatus(playerid, false);
+
+	#if defined PLogin_OnPlayerDisconnect
+		return PLogin_OnPlayerDisconnect(playerid, reason);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerDisconnect
+	#undef OnPlayerDisconnect
+#else
+	#define _ALS_OnPlayerDisconnect
+#endif
+
+#define OnPlayerDisconnect PLogin_OnPlayerDisconnect
+#if defined PLogin_OnPlayerDisconnect
+	forward PLogin_OnPlayerDisconnect(playerid, reason);
+#endif
+
+/*
 	Functions
 */
 

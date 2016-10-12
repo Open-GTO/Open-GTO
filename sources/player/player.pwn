@@ -338,10 +338,6 @@ stock Player_SetDefaultData(playerid)
 	SetPlayerMoney(playerid, gPlayerStartMoney);
 	SetPlayerJailTime(playerid, -1);
 	SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
-	SetPlayerLoginStatus(playerid, false);
-	SetPlayerSpawned(playerid, false);
-	SetPlayerSpawnInfo(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
-	SetPlayerDeathInfo(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
 
 #if defined PLAYER_START_SKIN
 	SetPlayerSkin(playerid, PLAYER_START_SKIN);
