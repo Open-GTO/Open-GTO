@@ -2372,30 +2372,30 @@ public OnPlayerRequestClass(playerid, classid)
 #endif
 
 /*
-	OnPlayerDisconnect
+	OnPlayerConnect
 */
 
-public OnPlayerDisconnect(playerid, reason)
+public OnPlayerConnect(playerid)
 {
 	SetPlayerSpawned(playerid, false);
 	SetPlayerSpawnInfo(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
 	SetPlayerDeathInfo(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
 
-	#if defined PSpawn_OnPlayerDisconnect
-		return PSpawn_OnPlayerDisconnect(playerid, reason);
+	#if defined PSpawn_OnPlayerConnect
+		return PSpawn_OnPlayerConnect(playerid);
 	#else
 		return 1;
 	#endif
 }
-#if defined _ALS_OnPlayerDisconnect
-	#undef OnPlayerDisconnect
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
 #else
-	#define _ALS_OnPlayerDisconnect
+	#define _ALS_OnPlayerConnect
 #endif
 
-#define OnPlayerDisconnect PSpawn_OnPlayerDisconnect
-#if defined PSpawn_OnPlayerDisconnect
-	forward PSpawn_OnPlayerDisconnect(playerid, reason);
+#define OnPlayerConnect PSpawn_OnPlayerConnect
+#if defined PSpawn_OnPlayerConnect
+	forward PSpawn_OnPlayerConnect(playerid);
 #endif
 
 /*
