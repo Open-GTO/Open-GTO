@@ -20,7 +20,7 @@ COMMAND:boom(playerid, params[])
 	new
 		type;
 
-	if (sscanf(params, "i", type) || 13 < type < 0) {
+	if (sscanf(params, "i", type) || !(0 < type < 13)) {
 		Lang_SendText(playerid, "ADMIN_COMMAND_BOOM_HELP");
 		return 1;
 	}
