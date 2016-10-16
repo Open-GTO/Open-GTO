@@ -47,11 +47,11 @@ new PlayerStartWeapon[START_PLAYER_WEAPON_SLOTS][PWeap] = {
 PWeapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
 	#pragma unused hittype, hitid, fX, fY, fZ
-	
+
 	new slotid = GetWeaponSlot(weaponid);
 
 	PlayerWeapons[playerid][slotid][pbullets]--;
-	
+
 	if (PlayerWeapons[playerid][slotid][pbullets] == 0) {
 		PlayerWeapons[playerid][slotid][pwid] = 0;
 	}
@@ -117,20 +117,18 @@ stock REDEF_GivePlayerWeapon(playerid, weaponid, ammo, bool:allowcheck = false)
 	}
 
 	if (!IsWeaponHandToHand(weaponid)) {
-		// если оружия разные, то обнуляем патроны
 		if (PlayerWeapons[playerid][slot][pwid] == weaponid) {
 			PlayerWeapons[playerid][slot][pbullets] += ammo;
 		} else {
 			PlayerWeapons[playerid][slot][pbullets] = ammo;
 		}
-		PlayerWeapons[playerid][slot][pwid] = weaponid;
 	} else {
-		PlayerWeapons[playerid][slot][pwid] = weaponid;
 		PlayerWeapons[playerid][slot][pbullets] = 1;
 	}
+	PlayerWeapons[playerid][slot][pwid] = weaponid;
 
-	new result = ORIG_GivePlayerWeapon(playerid, PlayerWeapons[playerid][slot][pwid], 0);
-	SetPlayerAmmo(playerid, PlayerWeapons[playerid][slot][pwid], PlayerWeapons[playerid][slot][pbullets]);
+	new result = ORIG_GivePlayerWeapon(playerid, weaponid, 0);
+	SetPlayerAmmo(playerid, weaponid, PlayerWeapons[playerid][slot][pbullets]);
 	return result;
 }
 
@@ -144,7 +142,6 @@ stock REDEF_ResetPlayerWeapons(playerid)
 	return ORIG_ResetPlayerWeapons(playerid);
 }
 
-// даёт всё 'всегдашнее' оружие
 stock GivePlayerOwnedWeapon(playerid)
 {
 	for (new slot = 0; slot < PLAYER_WEAPON_SLOTS; slot++) {

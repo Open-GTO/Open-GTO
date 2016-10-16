@@ -83,7 +83,6 @@ Thanks:
 #include "player/player_money.inc"
 #include "player/player_privilege.inc"
 #include "player/player_info.inc"
-#include "player/player_team.inc"
 #include "player/player_interface.inc"
 #include "player/interface/interface_health.inc"
 #include "player/interface/interface_armour.inc"
@@ -171,7 +170,6 @@ Thanks:
 #include "player/player_gang.pwn"
 #include "player/player_skydive.pwn"
 #include "player/player_godmod.pwn"
-#include "player/player_team.pwn"
 #include "player/player_warn.pwn"
 #include "player/message/message_alert.pwn"
 #include "player/message/message_objective.pwn"
@@ -722,7 +720,6 @@ public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
 
 public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 {
-	Weapon_OnPlayerGiveDamage(playerid, damagedid, amount, weaponid, bodypart);
 	return 1;
 }
 

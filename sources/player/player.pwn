@@ -18,7 +18,6 @@
 static
 	gPlayerDeaths[MAX_PLAYERS],
 	gPlayerKills[MAX_PLAYERS],
-	gPlayerSkin[MAX_PLAYERS],
 
 	gPlayerStartMoney = PLAYER_START_MONEY;
 
@@ -453,20 +452,6 @@ stock Float:GetPlayerKillDeathRatio(playerid)
 	}
 
 	return 0.0;
-}
-
-/*
-	Skin
-*/
-
-stock REDEF_GetPlayerSkin(playerid) {
-	return gPlayerSkin[playerid];
-}
-
-stock REDEF_SetPlayerSkin(playerid, skinid)
-{
-	gPlayerSkin[playerid] = skinid;
-	return ORIG_SetPlayerSkin(playerid, skinid);
 }
 
 /*

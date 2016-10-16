@@ -183,55 +183,6 @@ Weapon_OnGameModeInit()
 }
 
 /*
-	Weapon_OnPlayerGiveDamage
-*/
-
-Weapon_OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
-{
-	#pragma unused weaponid
-
-	if (damagedid == INVALID_PLAYER_ID) {
-		return 1;
-	}
-
-	if (IsPlayerGodmod(damagedid)) {
-		return 1;
-	}
-
-	new team = GetPlayerTeam(playerid);
-	if (team != NO_TEAM && team == GetPlayerTeam(damagedid)) {
-		return 1;
-	}
-
-	if (GetPlayerState(playerid) == PLAYER_STATE_DRIVER) {
-		amount /= 2.0;
-	}
-
-	if (bodypart == BODY_PART_HEAD) {
-		amount *= 1.5;
-	}
-
-	new
-		Float:health,
-		Float:armour,
-		Float:difference;
-
-	GetPlayerHealth(damagedid, health);
-	GetPlayerArmour(damagedid, armour);
-
-	difference = armour - amount;
-
-	if (difference > 0.0) {
-		SetPlayerArmour(damagedid, difference);
-	} else {
-		SetPlayerArmour(damagedid, 0.0);
-		SetPlayerHealth(damagedid, health + difference);
-	}
-
-	return 1;
-}
-
-/*
 	Weapon_OnPlayerStateChange
 */
 
