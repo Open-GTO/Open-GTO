@@ -58,27 +58,22 @@ PWeapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:f
 	return 1;
 }
 
-// узнаёт слот у оружия
 stock GetWeaponSlot(weaponid)
 {
-	switch (weaponid)
-	{
-		case 0,1: return 0;
-		case 2..9: return 1;
-		case 22..24: return 2;
-		case 25..27: return 3;
-		case 28,29,32: return 4;
-		case 30,31: return 5;
-		case 33,34: return 6;
-		case 35..38: return 7;
-		case 16..18,39: return 8;
-		case 41..43: return 9;
-		case 10..15: return 10;
-		case 45,46: return 11;
-		case 40: return 12;
-		default: return -1;
+	static const gWeaponSlots[] = {
+		0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+		10, 10, 10, 10, 10, 10, 8, 8,
+		8, -1, -1, -1, 2, 2, 2, 3, 3,
+		3, 4, 4, 5, 5, 4, 6, 6, 7, 7,
+		7, 7, 8, 12, 9, 9, 9, 11, 11,
+		11
+	};
+
+	if (!(0 <= weaponid < sizeof(gWeaponSlots))) {
+		return -1;
 	}
-	return -1;
+
+	return gWeaponSlots[weaponid];
 }
 //
 
