@@ -125,7 +125,7 @@ stock Weather_SetTime(time)
 
 stock Weather_GetName(weatherid, Lang:lang, name[], const size = sizeof(name))
 {
-	if (MAX_WEATHER <= weatherid < 0) {
+	if (!(0 < weatherid <= MAX_WEATHER)) {
 		return 0;
 	}
 	return Lang_GetText(lang, gWeatherVarName[weatherid], name, size);
