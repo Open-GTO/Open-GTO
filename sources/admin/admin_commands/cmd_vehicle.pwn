@@ -45,7 +45,7 @@ COMMAND:vehicle(playerid, params[])
 
 		new modelid;
 
-		if (sscanf(subparams, "k<vehicle>", modelid)) {
+		if (sscanf(subparams, "k<vehicle>", modelid) || modelid == -1) {
 			Lang_SendText(playerid, "ADMIN_COMMAND_VEHICLE_ADD_ERROR");
 			return 1;
 		}
