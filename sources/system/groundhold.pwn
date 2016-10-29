@@ -179,7 +179,6 @@ Groundhold_OnPlayerLeaveDynArea(playerid, STREAMER_TAG_AREA areaid)
 
 	// check enemy
 	UpdateEnemiesStatus(ghid, playerid);
-
 	return 1;
 }
 
@@ -215,10 +214,6 @@ stock Groundhold_Check(ghid)
 {
 	foreach (new playerid : PlayerOnGround[ghid]) {
 		if (!pIsHold[playerid]) {
-			if (pHoldTime[playerid] == 0) {
-				continue;
-			}
-
 			pHoldTime[playerid] -= GROUNDHOLD_HOLD_TIME;
 
 			// remove player from ground
@@ -308,7 +303,7 @@ stock IsPlayerInAnyGround(playerid)
 static stock UpdateEnemiesStatus(ghid, playerid)
 {
 	new
-		bool:previous_status = gGroundholds[ghid][e_ghIsEnemies];
+		bool:has_enemies_before = gGroundholds[ghid][e_ghIsEnemies];
 
 	gGroundholds[ghid][e_ghIsEnemies] = false;
 
@@ -321,7 +316,7 @@ static stock UpdateEnemiesStatus(ghid, playerid)
 		break;
 	}
 
-	return !previous_status && gGroundholds[ghid][e_ghIsEnemies];
+	return !has_enemies_before && gGroundholds[ghid][e_ghIsEnemies];
 }
 
 static stock IsGroundWithEnemies(ghid)
