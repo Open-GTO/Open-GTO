@@ -1918,7 +1918,6 @@ Vehicle_OnInteriorCreated(id, type, world)
 
 Vehicle_OnPlayerStateChange(playerid, newstate, oldstate)
 {
-	vh_radio_OnPlayerStateChange(playerid, newstate, oldstate);
 	Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate);
 
 	if (newstate == PLAYER_STATE_DRIVER) {

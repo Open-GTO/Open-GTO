@@ -11,23 +11,47 @@
 
 #define _vehicle_radio_included
 
+/*
+	Defines
+*/
 
-enum VehicleRadioInfo {
-	vehradio_Name[MAX_NAME],
-	vehradio_URL[MAX_STRING],
+#if !defined MAX_RADIO_NAME
+	#define MAX_RADIO_NAME 64
+#endif
+
+#if !defined MAX_RADIO_URL
+	#define MAX_RADIO_URL 128
+#endif
+
+#define INVALID_RADIO_ID -1
+
+/*
+	Enums
+*/
+
+enum e_RadioInfo {
+	e_riName[MAX_RADIO_NAME],
+	e_riUrl[MAX_RADIO_URL],
 }
 
-new vehicle_radio[][VehicleRadioInfo] = {
-	{"Зайцев FM", "http://radio.zaycev.fm:9002/ZaycevFM(128).m3u"},
-	{"Кисс FM", "http://radiogrom.com/online/ua_fm/kiss_fm_radio_online.m3u"},
-	{"Rock 2", "http://skycast.su:2007/2420"},
-	{"Бинарное Радио", "http://binradio.ru:24000/bin.m3u"}
-};
+/*
+	Vars
+*/
 
-static vehicle_RadioStatus[MAX_VEHICLES] = {-1, ...};
+static
+	gRadioList[][e_RadioInfo] = {
+		{"Zaycev FM", "http://radio.zaycev.fm:9002/ZaycevFM(128).m3u"},
+		{"Rock 2", "http://skycast.su:2007/2420"}
+	};
 
+static
+	gRadioID[MAX_VEHICLES] = {INVALID_RADIO_ID, ...};
 
-stock vh_radio_OnPlayerStateChange(playerid, newstate, oldstate)
+/*
+	OnPlayerStateChange
+*/
+
+public OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	if (oldstate == PLAYER_STATE_DRIVER || oldstate == PLAYER_STATE_PASSENGER) {
 		StopAudioStreamForPlayer(playerid);
@@ -35,28 +59,62 @@ stock vh_radio_OnPlayerStateChange(playerid, newstate, oldstate)
 
 	if (newstate == PLAYER_STATE_DRIVER || newstate == PLAYER_STATE_PASSENGER) {
 		new radioid = GetVehicleRadio( GetPlayerVehicleID(playerid) );
-		if (radioid >= 0) {
-			PlayAudioStreamForPlayer(playerid, vehicle_radio[radioid][vehradio_URL]);
+		if (radioid != INVALID_RADIO_ID) {
+			PlayAudioStreamForPlayer(playerid, gRadioList[radioid][e_riUrl]);
 		}
 	}
+
+	#if defined VRadio_OnPlayerStateChange
+		return VRadio_OnPlayerStateChange(playerid, newstate, oldstate);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerStateChange
+	#undef OnPlayerStateChange
+#else
+	#define _ALS_OnPlayerStateChange
+#endif
+
+#define OnPlayerStateChange VRadio_OnPlayerStateChange
+#if defined VRadio_OnPlayerStateChange
+	forward VRadio_OnPlayerStateChange(playerid, newstate, oldstate);
+#endif
+
+/*
+	Dialog
+*/
 
 DialogCreate:VehicleRadio(playerid)
 {
-	new string[MAX_NAME * (sizeof(vehicle_radio) + 1 + 8)] = "{FF0000}Выключить радио\n{FFFFFF}";
-	new current_radioid = GetVehicleRadio( GetPlayerVehicleID(playerid) );
+	new
+		string[MAX_LANG_VALUE_STRING + MAX_RADIO_NAME * (sizeof(gRadioList) + 8)],
+		vehicleid,
+		current_radioid;
 
-	for (new i = 0; i < sizeof(vehicle_radio); i++) {
+	vehicleid = GetPlayerVehicleID(playerid);
+	if (!vehicleid) {
+		return;
+	}
+
+	current_radioid = GetVehicleRadio(vehicleid);
+	Lang_GetPlayerText(playerid, "VEHICLE_MENU_RADIO_ENABLE", string);
+
+	for (new i = 0; i < sizeof(gRadioList); i++) {
 		if (i == current_radioid) {
 			strcat(string, "{FFFFFF}", sizeof(string));
 		} else {
 			strcat(string, "{CCCCCC}", sizeof(string));
 		}
-		strcat(string, vehicle_radio[i][vehradio_Name], sizeof(string));
+		strcat(string, gRadioList[i][e_riName], sizeof(string));
 		strcat(string, "\n", sizeof(string));
 	}
 
-	Dialog_Open(playerid, Dialog:VehicleRadio, DIALOG_STYLE_LIST, "Радио", string, "Выбрать", "Назад");
+	Dialog_Open(playerid, Dialog:VehicleRadio, DIALOG_STYLE_LIST,
+	            "VEHICLE_MENU_RADIO_HEADER",
+	            string,
+	            "BUTTON_SELECT", "BUTTON_BACK",
+	            MDIALOG_NOTVAR_INFO);
 }
 
 DialogResponse:VehicleRadio(playerid, response, listitem, inputtext[])
@@ -76,36 +134,50 @@ DialogResponse:VehicleRadio(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
+/*
+	Functions
+*/
+
 stock DisableVehicleRadio(vehicleid)
 {
-	vehicle_RadioStatus[vehicleid] = -1;
-
-	foreach (new playerid : Player) {
-		if (vehicleid == GetPlayerVehicleID(playerid)) {
-			StopAudioStreamForPlayer(playerid);
-			SendClientMessage(playerid, COLOR_SKYBLUE, "* Радио выключено");
-		}
+	if (!IsValidVehicle(vehicleid)) {
+		return 0;
 	}
+
+	gRadioID[vehicleid] = INVALID_RADIO_ID;
+
+	new players[MAX_PLAYERS];
+	GetPlayersInVehicle(vehicleid, players);
+
+	StopAudioStreamForPlayers(players);
+	Lang_SendTextToPlayers(players, "VEHICLE_RADIO_DISABLED");
 	return 1;
 }
 
 stock SetVehicleRadio(vehicleid, radioid)
 {
-	vehicle_RadioStatus[vehicleid] = radioid;
-
-	new string[MAX_STRING];
-	format(string, sizeof(string), "* Текущая радиостанция: %s", vehicle_radio[radioid][vehradio_Name]);
-
-	foreach (new playerid : Player) {
-		if (vehicleid == GetPlayerVehicleID(playerid)) {
-			PlayAudioStreamForPlayer(playerid, vehicle_radio[radioid][vehradio_URL]);
-			SendClientMessage(playerid, COLOR_SKYBLUE, string);
-		}
+	if (!IsValidVehicle(vehicleid)) {
+		return 0;
 	}
+
+	if (!(0 <= radioid < sizeof(gRadioList))) {
+		return 0;
+	}
+
+	gRadioID[vehicleid] = radioid;
+
+	new players[MAX_PLAYERS];
+	GetPlayersInVehicle(vehicleid, players);
+
+	PlayAudioStreamForPlayers(players, gRadioList[radioid][e_riUrl]);
+	Lang_SendTextToPlayers(players, "VEHICLE_RADIO_CURRENT", gRadioList[radioid][e_riName]);
 	return 1;
 }
 
 stock GetVehicleRadio(vehicleid)
 {
-	return vehicle_RadioStatus[vehicleid];
+	if (!IsValidVehicle(vehicleid)) {
+		return INVALID_RADIO_ID;
+	}
+	return gRadioID[vehicleid];
 }
