@@ -106,7 +106,7 @@ COMMAND:vehicle(playerid, params[])
 		}
 
 		if (strcmp(subparams, "all", true) == 0) {
-			for (new vehid = 1; vehid <= MAX_VEHICLES; vehid++) {
+			foreach (new vehid : Vehicle) {
 				SetVehicleToRespawn(vehid);
 			}
 
@@ -144,7 +144,7 @@ COMMAND:vehicle(playerid, params[])
 		}
 
 		if (strcmp(subparams, "all", true) == 0) {
-			for (new vehid = 1; vehid <= MAX_VEHICLES; vehid++) {
+			foreach (new vehid : Vehicle) {
 				RepairVehicle(vehid);
 			}
 
@@ -251,7 +251,7 @@ COMMAND:vehicle(playerid, params[])
 		// get action
 		if (strcmp(action, "set", true) == 0) {
 			if (vehicleid == 0) {
-				for (new vehid = 1; vehid <= MAX_VEHICLES; vehid++) {
+				foreach (new vehid : Vehicle) {
 					SetVehicleHealth(vehid, amount);
 				}
 
@@ -273,7 +273,7 @@ COMMAND:vehicle(playerid, params[])
 				Float:current_health;
 
 			if (vehicleid == 0) {
-				for (new vehid = 1; vehid <= MAX_VEHICLES; vehid++) {
+				foreach (new vehid : Vehicle) {
 					GetVehicleHealth(vehid, current_health);
 					SetVehicleHealth(vehid, current_health + amount);
 				}
