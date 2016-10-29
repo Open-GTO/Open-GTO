@@ -88,7 +88,7 @@ stock Message_Objective(playerid, info[], time = 4000, hcolor = -1, notvar_flags
 	va_format(temp_info, sizeof(temp_info), temp_info, va_start<5>);
 
 	PlayerTextDrawColor(playerid, TD_Info[playerid], hcolor);
-	PlayerTextDrawSetString(playerid, TD_Info[playerid], info);
+	PlayerTextDrawSetString(playerid, TD_Info[playerid], temp_info);
 
 	PlayerTextDrawShow(playerid, TD_Info[playerid]);
 
