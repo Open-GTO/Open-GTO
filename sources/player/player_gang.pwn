@@ -40,7 +40,7 @@ static
 	gPlayerGangID[MAX_PLAYERS],
 	gPlayerGangName[MAX_PLAYERS][MAX_GANG_NAME],
 	gPlayerInvitedGang[MAX_PLAYERS][MAX_GANG_INVITES][e_Player_Invited_Gang_Info],
-	gPlayerGangMemberID[MAX_PLAYERS char];
+	gPlayerGangMemberID[MAX_PLAYERS];
 
 /*
 	Invite ID
@@ -268,12 +268,12 @@ stock SetPlayerGangID(playerid, gangid)
 
 stock GetPlayerGangMemberID(playerid)
 {
-	return gPlayerGangMemberID{playerid};
+	return gPlayerGangMemberID[playerid];
 }
 
 stock SetPlayerGangMemberID(playerid, memberid)
 {
-	gPlayerGangMemberID{playerid} = memberid;
+	gPlayerGangMemberID[playerid] = memberid;
 }
 
 /*

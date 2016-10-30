@@ -22,23 +22,23 @@
 */
 
 enum e_Bank_Info {
-	bank_type,
-	Float:bank_x,
-	Float:bank_y,
-	Float:bank_z,
-	bank_actor_model,
-	Float:bank_actor_pos_x,
-	Float:bank_actor_pos_y,
-	Float:bank_actor_pos_z,
-	Float:bank_actor_pos_a,
-	bank_checkpoint,
+	e_bType,
+	Float:e_bPosX,
+	Float:e_bPosY,
+	Float:e_bPosZ,
+	e_bActor_Model,
+	Float:e_bActor_PosX,
+	Float:e_bActor_PosY,
+	Float:e_bActor_PosZ,
+	Float:e_bActor_PosA,
+	e_bCheckpoint,
 }
 
 /*
 	Vars
 */
 
-static bank_place[][e_Bank_Info] = {
+static gBankPlace[][e_Bank_Info] = {
 	{ENTEREXIT_TYPE_24ON7_3, -22.9578, -54.8951, 1003.5469, 187, -27.4657, -91.6320, 1003.5469, 1.9766}, // LV 24/7 bank
 	{ENTEREXIT_TYPE_24ON7,   -27.0310, -89.5228, 1003.5469, 187, -22.9353, -57.3491, 1003.5469, 0.0967} // 24/7 bank
 };
@@ -47,7 +47,7 @@ static
 	gProfitCount = BANK_PROFIT,
 	gProfitCountPremium = BANK_PROFIT_PREMIUM,
 	gMaxBankMoney = MAX_BANK_MONEY,
-	bank_actors[MAX_BANK_ACTORS];
+	gActors[MAX_BANK_ACTORS];
 
 /*
 	Config functions
@@ -68,63 +68,131 @@ stock Bank_SaveConfig(file_config)
 }
 
 /*
-	Callbacks
+	OnGameModeInit
 */
 
-Bank_OnGameModeInit()
+public OnGameModeInit()
 {
-	for (new bankid = 0; bankid < sizeof(bank_place); bankid++) {
-		bank_place[bankid][bank_checkpoint] = CreateDynamicCP(bank_place[bankid][bank_x], bank_place[bankid][bank_y], bank_place[bankid][bank_z], 1.5, .streamdistance = 20.0);
+	for (new bankid = 0; bankid < sizeof(gBankPlace); bankid++) {
+		gBankPlace[bankid][e_bCheckpoint] = CreateDynamicCP(gBankPlace[bankid][e_bPosX], gBankPlace[bankid][e_bPosY], gBankPlace[bankid][e_bPosZ], 1.5, .streamdistance = 20.0);
 	}
 	Log_Init("services", "Bank module init");
-	return 1;
+	#if defined Bank_OnGameModeInit
+		return Bank_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
 
-Bank_OnInteriorCreated(id, type, world)
+#define OnGameModeInit Bank_OnGameModeInit
+#if defined Bank_OnGameModeInit
+	forward Bank_OnGameModeInit();
+#endif
+
+/*
+	OnInteriorCreated
+*/
+
+public OnInteriorCreated(id, type, world)
 {
-	#pragma unused id
 	new slot;
 
-	for (new i = 0; i < sizeof(bank_place); i++) {
-		if (bank_place[i][bank_type] == type) {
-			slot = Bank_GetActorFreeSlot();
+	for (new i = 0; i < sizeof(gBankPlace); i++) {
+		if (gBankPlace[i][e_bType] == type) {
+			slot = GetActorFreeSlot();
 			if (slot == -1) {
 				Log(systemlog, DEBUG, "bank.inc: Free slot not found. Increase MAX_BANK_ACTORS value.");
 				break;
 			}
 
-			bank_actors[slot] = CreateActor(bank_place[i][bank_actor_model],
-				bank_place[i][bank_actor_pos_x], bank_place[i][bank_actor_pos_y], bank_place[i][bank_actor_pos_z],
-				bank_place[i][bank_actor_pos_a]
+			gActors[slot] = CreateActor(gBankPlace[i][e_bActor_Model],
+				gBankPlace[i][e_bActor_PosX], gBankPlace[i][e_bActor_PosY], gBankPlace[i][e_bActor_PosZ],
+				gBankPlace[i][e_bActor_PosA]
 			);
-			SetActorVirtualWorld(bank_actors[slot], world);
+			SetActorVirtualWorld(gActors[slot], world);
 		}
 	}
+	#if defined Bank_OnInteriorCreated
+		return Bank_OnInteriorCreated(id, type, world);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnInteriorCreated
+	#undef OnInteriorCreated
+#else
+	#define _ALS_OnInteriorCreated
+#endif
 
-Bank_OnActorStreamIn(actorid, forplayerid)
+#define OnInteriorCreated Bank_OnInteriorCreated
+#if defined Bank_OnInteriorCreated
+	forward Bank_OnInteriorCreated(id, type, world);
+#endif
+
+/*
+	OnActorStreamIn
+*/
+
+public OnActorStreamIn(actorid, forplayerid)
 {
-	for (new id = 0; id < sizeof(bank_actors); id++) {
-		if (actorid == bank_actors[id]) {
+	for (new id = 0; id < sizeof(gActors); id++) {
+		if (actorid == gActors[id]) {
 			SetPVarInt(forplayerid, "bank_actor_id", actorid);
 			ClearActorAnimations(actorid);
 			return 1;
 		}
 	}
-	return 0;
+	#if defined Bank_OnActorStreamIn
+		return Bank_OnActorStreamIn(actorid, forplayerid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnActorStreamIn
+	#undef OnActorStreamIn
+#else
+	#define _ALS_OnActorStreamIn
+#endif
 
-Bank_OnPlayerEnterCheckpoint(playerid, cp)
+#define OnActorStreamIn Bank_OnActorStreamIn
+#if defined Bank_OnActorStreamIn
+	forward Bank_OnActorStreamIn(actorid, forplayerid);
+#endif
+
+/*
+	OnPlayerEnterDynamicCP
+*/
+
+public OnPlayerEnterDynamicCP(playerid, checkpointid)
 {
-	for (new id = 0; id < sizeof(bank_place); id++) {
-		if (cp == bank_place[id][bank_checkpoint]) {
+	for (new id = 0; id < sizeof(gBankPlace); id++) {
+		if (checkpointid == gBankPlace[id][e_bCheckpoint]) {
 			Dialog_Show(playerid, Dialog:BankStart);
 			ApplyActorAnimation(GetPVarInt(playerid, "bank_actor_id"), "MISC", "Idle_Chat_02", 4.1, 0, 1, 1, 1, 1);
 			return 1;
 		}
 	}
-	return 0;
+	#if defined Bank_OnPlayerEnterDynamicCP
+		return Bank_OnPlayerEnterDynamicCP(playerid, checkpointid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerEnterDynamicCP
+	#undef OnPlayerEnterDynamicCP
+#else
+	#define _ALS_OnPlayerEnterDynamicCP
+#endif
+
+#define OnPlayerEnterDynamicCP Bank_OnPlayerEnterDynamicCP
+#if defined Bank_OnPlayerEnterDynamicCP
+	forward Bank_OnPlayerEnterDynamicCP(playerid, checkpointid);
+#endif
 
 /*
 	Dialogs
@@ -436,13 +504,13 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 }
 
 /*
-	Functions
+	Public functions
 */
 
 stock IsPlayerAtBank(playerid)
 {
-	for (new bankid = 0; bankid < sizeof(bank_place); bankid++) {
-		if (IsPlayerInRangeOfPoint(playerid, 2.0, bank_place[bankid][bank_x], bank_place[bankid][bank_y], bank_place[bankid][bank_z])) {
+	for (new bankid = 0; bankid < sizeof(gBankPlace); bankid++) {
+		if (IsPlayerInRangeOfPoint(playerid, 2.0, gBankPlace[bankid][e_bPosX], gBankPlace[bankid][e_bPosY], gBankPlace[bankid][e_bPosZ])) {
 			return 1;
 		}
 	}
@@ -479,11 +547,15 @@ stock Bank_GetMaxMoney()
 	return gMaxBankMoney;
 }
 
-stock Bank_GetActorFreeSlot()
+/*
+	Private functions
+*/
+
+static stock GetActorFreeSlot()
 {
 	static slot;
 
-	if (slot >= sizeof(bank_actors)) {
+	if (slot >= sizeof(gActors)) {
 		return -1;
 	}
 

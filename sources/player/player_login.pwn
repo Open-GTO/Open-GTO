@@ -124,13 +124,13 @@ stock Player_SaveEx(playerid)
 	ini_setInteger(file_player, "Reports", GetPlayerReportsCount(playerid));
 	ini_setInteger(file_player, "Warns", GetPlayerWarnsCount(playerid));
 
-	for (new i = 0; i < GetFightTeacherLastID(); i++) {
+	for (new i = 0; i < GetFightTeachersCount(); i++) {
 		format(string, sizeof(string), "FightStyle_%d", GetFightTeacherStyleID(i));
 		ini_setInteger(file_player, string, IsPlayerFightStyleLearned(playerid, i));
 	}
 
 	ini_setInteger(file_player, "FightStyleUsed", GetPlayerFightStyleUsed(playerid));
-	ini_setInteger(file_player, "InteriorIndex", Enterexit_GetPlayerIndex(playerid));
+	ini_setInteger(file_player, "EnterexitIndex", Enterexit_GetPlayerIndex(playerid));
 
 	new
 		interior,
@@ -143,10 +143,10 @@ stock Player_SaveEx(playerid)
 	GetPlayerSpawnInfo(playerid, pos_x, pos_y, pos_z, pos_a, interior, world);
 	ini_setInteger(file_player, "Interior", interior);
 	ini_setInteger(file_player, "World", world);
-
-	format(string, sizeof(string), "%f,%f,%f,%f", pos_x, pos_y, pos_z, pos_a);
-	ini_setString(file_player, "Coords", string);
-
+	ini_setFloat(file_player, "Coord_X", pos_x);
+	ini_setFloat(file_player, "Coord_Y", pos_y);
+	ini_setFloat(file_player, "Coord_Z", pos_z);
+	ini_setFloat(file_player, "Coord_A", pos_a);
 	ini_setInteger(file_player, "Privilege", _:GetPlayerPrivilege(playerid));
 	ini_setString(file_player, "Weapons", CreatePlayerWeaponsString(playerid));
 	ini_setString(file_player, "Bullets", CreatePlayerBulletsString(playerid));
@@ -223,7 +223,7 @@ stock Player_Login(playerid)
 		ini_getInteger(file_player, "Warns", temp);
 		SetPlayerWarnsCount(playerid, temp);
 
-		for (new i = 0; i < GetFightTeacherLastID(); i++) {
+		for (new i = 0; i < GetFightTeachersCount(); i++) {
 			format(s_temp, sizeof(s_temp), "FightStyle_%d", GetFightTeacherStyleID(i));
 			ini_getInteger(file_player, s_temp, temp);
 			SetPlayerFightStyleLearned(playerid, i, bool:temp);
@@ -232,21 +232,26 @@ stock Player_Login(playerid)
 		ini_getInteger(file_player, "FightStyleUsed", temp);
 		SetPlayerFightStyleUsed(playerid, temp);
 
-		ini_getInteger(file_player, "InteriorIndex", temp);
+		ini_getInteger(file_player, "EnterexitIndex", temp);
 		Enterexit_SetPlayerIndex(playerid, temp);
 
 		// player pos
 		new
 			interior,
 			world,
-			Float:coords[4];
+			Float:pos_x,
+			Float:pos_y,
+			Float:pos_z,
+			Float:pos_a;
 
 		ini_getInteger(file_player, "Interior", interior);
 		ini_getInteger(file_player, "World", world);
-		ini_getString(file_player, "Coords", s_temp);
-		sscanf(s_temp, "p<,>a<f>[4]", coords);
+		ini_getFloat(file_player, "Coord_X", pos_x);
+		ini_getFloat(file_player, "Coord_Y", pos_y);
+		ini_getFloat(file_player, "Coord_Z", pos_z);
+		ini_getFloat(file_player, "Coord_A", pos_a);
 
-		SetPlayerSpawnInfo(playerid, coords[0], coords[1], coords[2], coords[3], interior, world);
+		SetPlayerSpawnInfo(playerid, pos_x, pos_y, pos_z, pos_a, interior, world);
 
 		//
 		ini_getInteger(file_player, "Privilege", temp);

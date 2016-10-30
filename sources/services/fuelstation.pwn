@@ -56,56 +56,123 @@ static
 	Text3D:gLabelID[ sizeof(gFuelstation) ][MAX_PLAYERS];
 
 /*
-	Functions
+	OnGameModeInit
 */
 
-Fuelstation_OnGameModeInit()
+public OnGameModeInit()
 {
-	if (!IsVehicleFuelEnabled()) {
-		return 0;
-	}
+	if (IsVehicleFuelEnabled()) {
+		for (new i = 0; i < sizeof(gFuelstation); i++) {
+			if (gFuelstation[i][e_fsShowIcon]) {
+				CreateDynamicMapIcon(gFuelstation[i][e_fsPosX], gFuelstation[i][e_fsPosY], gFuelstation[i][e_fsPosZ], 55, 0);
+			}
 
-	for (new i = 0; i < sizeof(gFuelstation); i++) {
-		if (gFuelstation[i][e_fsShowIcon]) {
-			CreateDynamicMapIcon(gFuelstation[i][e_fsPosX], gFuelstation[i][e_fsPosY], gFuelstation[i][e_fsPosZ], 55, 0);
+			CreateDynamicPickup(1650, 23, gFuelstation[i][e_fsPosX], gFuelstation[i][e_fsPosY], gFuelstation[i][e_fsPosZ]);
+			gFuelstation[i][e_fsAreaID] = CreateDynamicSphere(gFuelstation[i][e_fsPosX], gFuelstation[i][e_fsPosY], gFuelstation[i][e_fsPosZ], 10.0);
 		}
-
-		CreateDynamicPickup(1650, 23, gFuelstation[i][e_fsPosX], gFuelstation[i][e_fsPosY], gFuelstation[i][e_fsPosZ]);
-		gFuelstation[i][e_fsAreaID] = CreateDynamicSphere(gFuelstation[i][e_fsPosX], gFuelstation[i][e_fsPosY], gFuelstation[i][e_fsPosZ], 10.0);
 	}
-	return 1;
+	#if defined Fuelst_OnGameModeInit
+		return Fuelst_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
 
-Fuelstation_OnPlayerConnect(playerid)
+#define OnGameModeInit Fuelst_OnGameModeInit
+#if defined Fuelst_OnGameModeInit
+	forward Fuelst_OnGameModeInit();
+#endif
+
+/*
+	OnPlayerConnect
+*/
+
+public OnPlayerConnect(playerid)
 {
 	for (new id = 0; id < sizeof(gFuelstation); id++) {
-		Fuelstation_CreatePlayerLabel(playerid, id);
+		CreatePlayerLabel(playerid, id);
 	}
+	#if defined Fuelst_OnPlayerConnect
+		return Fuelst_OnPlayerConnect(playerid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
 
-Fuelstation_OnPlayerDisconnect(playerid, reason)
+#define OnPlayerConnect Fuelst_OnPlayerConnect
+#if defined Fuelst_OnPlayerConnect
+	forward Fuelst_OnPlayerConnect(playerid);
+#endif
+
+/*
+	OnPlayerDisconnect
+*/
+
+public OnPlayerDisconnect(playerid, reason)
 {
-	#pragma unused reason
 	for (new id = 0; id < sizeof(gFuelstation); id++) {
-		Fuelstation_DestroyPlayerLabel(playerid, id);
+		DestroyPlayerLabel(playerid, id);
 	}
+	#if defined Fuelst_OnPlayerDisconnect
+		return Fuelst_OnPlayerDisconnect(playerid, reason);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerDisconnect
+	#undef OnPlayerDisconnect
+#else
+	#define _ALS_OnPlayerDisconnect
+#endif
 
-Fuelstation_OnPlayerStateChange(playerid, newstate, oldstate)
+#define OnPlayerDisconnect Fuelst_OnPlayerDisconnect
+#if defined Fuelst_OnPlayerDisconnect
+	forward Fuelst_OnPlayerDisconnect(playerid, reason);
+#endif
+
+/*
+	OnPlayerStateChange
+*/
+
+public OnPlayerStateChange(playerid, newstate, oldstate)
 {
-	#pragma unused oldstate
-	if (newstate != PLAYER_STATE_DRIVER) {
-		return 0;
+	if (newstate == PLAYER_STATE_DRIVER) {
+		if (gPlayerStationID[playerid] != INVALID_FUELSTATION_ID) {
+			Message_Alert(playerid, "", "VEHICLE_FUEL_ENTER_AREA_ALERT", 2000);
+		}
 	}
-
-	if (gPlayerStationID[playerid] != INVALID_FUELSTATION_ID) {
-		Message_Alert(playerid, "", "VEHICLE_FUEL_ENTER_AREA_ALERT", 2000);
-	}
-
-	return 1;
+	#if defined Fuelst_OnPlayerStateChange
+		return Fuelst_OnPlayerStateChange(playerid, newstate, oldstate);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerStateChange
+	#undef OnPlayerStateChange
+#else
+	#define _ALS_OnPlayerStateChange
+#endif
 
-Fuelstation_OnPlayerEnterDyArea(playerid, STREAMER_TAG_AREA areaid)
+#define OnPlayerStateChange Fuelst_OnPlayerStateChange
+#if defined Fuelst_OnPlayerStateChange
+	forward Fuelst_OnPlayerStateChange(playerid, newstate, oldstate);
+#endif
+
+/*
+	OnPlayerEnterDynamicArea
+*/
+
+public OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 {
 	new stid = INVALID_FUELSTATION_ID;
 
@@ -116,20 +183,37 @@ Fuelstation_OnPlayerEnterDyArea(playerid, STREAMER_TAG_AREA areaid)
 		}
 	}
 
-	if (stid == INVALID_FUELSTATION_ID) {
-		return 0;
+	if (stid != INVALID_FUELSTATION_ID) {
+		gPlayerStationID[playerid] = stid;
+
+		if (IsPlayerInAnyVehicle(playerid)) {
+			Message_Alert(playerid, "", "VEHICLE_FUEL_ENTER_AREA_ALERT", 2000);
+		}
+		return 1;
 	}
 
-	gPlayerStationID[playerid] = stid;
-
-	if (IsPlayerInAnyVehicle(playerid)) {
-		Message_Alert(playerid, "", "VEHICLE_FUEL_ENTER_AREA_ALERT", 2000);
-	}
-
-	return 1;
+	#if defined Fuelst_OnPlayerEnterDynamicArea
+		return Fuelst_OnPlayerEnterDynamicArea(playerid, areaid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerEnterDynamicArea
+	#undef OnPlayerEnterDynamicArea
+#else
+	#define _ALS_OnPlayerEnterDynamicArea
+#endif
 
-Fuelstation_OnPlayerLeaveDyArea(playerid, STREAMER_TAG_AREA areaid)
+#define OnPlayerEnterDynamicArea Fuelst_OnPlayerEnterDynamicArea
+#if defined Fuelst_OnPlayerEnterDynamicArea
+	forward Fuelst_OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid);
+#endif
+
+/*
+	OnPlayerLeaveDynamicArea
+*/
+
+public OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 {
 	new stid = INVALID_FUELSTATION_ID;
 
@@ -140,32 +224,48 @@ Fuelstation_OnPlayerLeaveDyArea(playerid, STREAMER_TAG_AREA areaid)
 		}
 	}
 
-	if (stid == INVALID_FUELSTATION_ID) {
-		return 0;
+	if (stid != INVALID_FUELSTATION_ID) {
+		gPlayerStationID[playerid] = INVALID_FUELSTATION_ID;
+		return 1;
 	}
-
-	gPlayerStationID[playerid] = INVALID_FUELSTATION_ID;
-
-	return 1;
+	#if defined Fuelst_OnPlayerLeaveDynamicArea
+		return Fuelst_OnPlayerLeaveDynamicArea(playerid, areaid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerLeaveDynamicArea
+	#undef OnPlayerLeaveDynamicArea
+#else
+	#define _ALS_OnPlayerLeaveDynamicArea
+#endif
 
-Fuelstation_OnPlayerKeyStateCh(playerid, newkeys, oldkeys)
+#define OnPlayerLeaveDynamicArea Fuelst_OnPlayerLeaveDynamicArea
+#if defined Fuelst_OnPlayerLeaveDynamicArea
+	forward Fuelst_OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid);
+#endif
+
+/*
+	OnGameModeInit
+*/
+
+public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	if (!IsVehicleFuelEnabled()) {
-		return 0;
-	}
-
-	if (!PRESSED(KEY_SUBMISSION)) {
-		return 0;
-	}
-
-	if (!IsPlayerAtFuelStation(playerid)) {
-		return 0;
+	if (!IsVehicleFuelEnabled() || !PRESSED(KEY_SUBMISSION) || !IsPlayerAtFuelStation(playerid)) {
+		#if defined Fuelst_OnPlayerKeyStateChange
+			return Fuelst_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		#else
+			return 1;
+		#endif
 	}
 
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if (vehicleid == 0) {
-		return 0;
+		#if defined Fuelst_OnPlayerKeyStateChange
+			return Fuelst_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+		#else
+			return 1;
+		#endif
 	}
 
 	if (IsVehicleRefilling(vehicleid)) {
@@ -191,27 +291,62 @@ Fuelstation_OnPlayerKeyStateCh(playerid, newkeys, oldkeys)
 	Message_Alert(playerid, "", "VEHICLE_FUEL_IS_FUELING_ALERT", 2000);
 	return 1;
 }
+#if defined _ALS_OnPlayerKeyStateChange
+	#undef OnPlayerKeyStateChange
+#else
+	#define _ALS_OnPlayerKeyStateChange
+#endif
 
-stock Fuelstation_OnVehicleFilled(vehicleid, playerid, money)
+#define OnPlayerKeyStateChange Fuelst_OnPlayerKeyStateChange
+#if defined Fuelst_OnPlayerKeyStateChange
+	forward Fuelst_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+#endif
+
+/*
+	OnVehicleFilled
+*/
+
+public OnVehicleFilled(vehicleid, playerid, money)
 {
-	#pragma unused vehicleid
 	Lang_SendText(playerid, "VEHICLE_FUEL_AFTER_FUEL", money);
 	Message_Alert(playerid, "", "VEHICLE_FUEL_AFTER_FUEL_ALERT", _, _, _, money);
-	return 1;
+	#if defined Fuelst_OnVehicleFilled
+		return Fuelst_OnVehicleFilled(vehicleid, playerid, money);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnVehicleFilled
+	#undef OnVehicleFilled
+#else
+	#define _ALS_OnVehicleFilled
+#endif
+
+#define OnVehicleFilled Fuelst_OnVehicleFilled
+#if defined Fuelst_OnVehicleFilled
+	forward Fuelst_OnVehicleFilled(vehicleid, playerid, money);
+#endif
+
+/*
+	Public functions
+*/
 
 stock IsPlayerAtFuelStation(playerid)
 {
 	return gPlayerStationID[playerid] != INVALID_FUELSTATION_ID;
 }
 
-static stock Fuelstation_DestroyPlayerLabel(playerid, id)
+/*
+	Private functions
+*/
+
+static stock DestroyPlayerLabel(playerid, id)
 {
 	DestroyDynamic3DTextLabel(gLabelID[id][playerid]);
 	gLabelID[id][playerid] = Text3D:INVALID_3DTEXT_ID;
 }
 
-static stock Fuelstation_CreatePlayerLabel(playerid, id)
+static stock CreatePlayerLabel(playerid, id)
 {
 	new string[MAX_LANG_VALUE_STRING];
 	Lang_GetPlayerText(playerid, "FUEL_STATION_3DTEXT", string);

@@ -11,6 +11,7 @@
 
 #define _enterexit_included
 
+forward OnInteriorCreated(id, type, world);
 
 enum e_ee_Player_Info {
 	e_pi_index,
@@ -302,20 +303,12 @@ Enterexit_OnGameModeInit()
 		);
 
 		// callback
-		Enterexit_OnInteriorCreated(i, type, world);
+	#if defined OnInteriorCreated
+		OnInteriorCreated(i, type, world);
+	#endif
 	}
 
 	Log_Init("system", "Interior module init.");
-	return 1;
-}
-
-Enterexit_OnInteriorCreated(id, type, world)
-{
-	fastfood_OnInteriorCreated(id, type, world);
-	Bar_OnInteriorCreated(id, type, world);
-	Bank_OnInteriorCreated(id, type, world);
-	wshop_OnInteriorCreated(id, type, world);
-	Vehicle_OnInteriorCreated(id, type, world);
 	return 1;
 }
 

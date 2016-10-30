@@ -12,6 +12,13 @@
 #define _gang_menu_included
 
 /*
+	Vars
+*/
+
+static
+	gWorkingMemberID[MAX_PLAYERS];
+
+/*
 	Dialogs
 */
 
@@ -871,15 +878,12 @@ static stock GetGangMemberListString(gangid, Lang:lang, members[], const size = 
 	Working member id
 */
 
-static
-	gWorkingMemberID[MAX_PLAYERS char];
-
 static stock SetPlayerWorkingMemberID(playerid, memberid)
 {
-	gWorkingMemberID{playerid} = memberid;
+	gWorkingMemberID[playerid] = memberid;
 }
 
 static stock GetPlayerWorkingMemberID(playerid)
 {
-	return gWorkingMemberID{playerid};
+	return gWorkingMemberID[playerid];
 }

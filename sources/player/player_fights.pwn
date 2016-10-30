@@ -23,7 +23,7 @@ DialogCreate:PlayerFights(playerid)
 
 	string[0] = '\0';
 
-	for (new id = 0; id < GetFightTeacherLastID(); id++) {
+	for (new id = 0; id < GetFightTeachersCount(); id++) {
 		if (!IsPlayerFightStyleLearned(playerid, id)) {
 			continue;
 		}
@@ -55,7 +55,7 @@ DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
 
 	teacherid = listitem;
 
-	for (new id = 0; id < GetFightTeacherLastID(); id++) {
+	for (new id = 0; id < GetFightTeachersCount(); id++) {
 		if (!IsPlayerFightStyleLearned(playerid, id)) {
 			teacherid++;
 			continue;

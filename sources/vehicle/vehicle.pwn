@@ -1861,7 +1861,11 @@ Vehicle_SaveConfig(file_config)
 	ini_setInteger(file_config, "Vehicle_RespawnTime", GetVehicleRespawnTime());
 }
 
-Vehicle_OnGameModeInit()
+/*
+	OnGameModeInit
+*/
+
+public OnGameModeInit()
 {
 	Premium_VehiclesLoad();
 
@@ -1887,13 +1891,29 @@ Vehicle_OnGameModeInit()
 	Vehicle_Fuel_OnGameModeInit();
 
 	Log_Init("vehicle", "Vehicles module init");
-	return 1;
+	#if defined Vehicle_OnGameModeInit
+		return Vehicle_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
 
-Vehicle_OnInteriorCreated(id, type, world)
+#define OnGameModeInit Vehicle_OnGameModeInit
+#if defined Vehicle_OnGameModeInit
+	forward Vehicle_OnGameModeInit();
+#endif
+
+/*
+	OnInteriorCreated
+*/
+
+public OnInteriorCreated(id, type, world)
 {
-	#pragma unused id
-
 	new
 		i,
 		vehicleid;
@@ -1914,12 +1934,29 @@ Vehicle_OnInteriorCreated(id, type, world)
 		SetVehicleVirtualWorld(vehicleid, world);
 		SetVehicleMaxFuel(vehicleid);
 	} while (++i < sizeof(gVehicleInteriorSpawns));
+	#if defined Vehicle_OnInteriorCreated
+		return Vehicle_OnInteriorCreated(id, type, world);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnInteriorCreated
+	#undef OnInteriorCreated
+#else
+	#define _ALS_OnInteriorCreated
+#endif
 
-Vehicle_OnPlayerStateChange(playerid, newstate, oldstate)
+#define OnInteriorCreated Vehicle_OnInteriorCreated
+#if defined Vehicle_OnInteriorCreated
+	forward Vehicle_OnInteriorCreated(id, type, world);
+#endif
+
+/*
+	OnPlayerStateChange
+*/
+
+public OnPlayerStateChange(playerid, newstate, oldstate)
 {
-	Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate);
-
 	if (newstate == PLAYER_STATE_DRIVER) {
 		new vehicleid = GetPlayerVehicleID(playerid);
 
@@ -1944,13 +1981,50 @@ Vehicle_OnPlayerStateChange(playerid, newstate, oldstate)
 		}
 	}
 #endif
-	return 1;
+	#if defined Vehicle_OnPlayerStateChange
+		return Vehicle_OnPlayerStateChange(playerid, newstate, oldstate);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerStateChange
+	#undef OnPlayerStateChange
+#else
+	#define _ALS_OnPlayerStateChange
+#endif
 
-Vehicle_OnPlayerConnect(playerid)
+#define OnPlayerStateChange Vehicle_OnPlayerStateChange
+#if defined Vehicle_OnPlayerStateChange
+	forward Vehicle_OnPlayerStateChange(playerid, newstate, oldstate);
+#endif
+
+/*
+	OnInteriorCreated
+*/
+
+public OnPlayerConnect(playerid)
 {
 	SetPlayerPreviousVehicleID(playerid, INVALID_VEHICLE_ID);
+	#if defined Vehicle_OnPlayerConnect
+		return Vehicle_OnPlayerConnect(playerid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
+
+#define OnPlayerConnect Vehicle_OnPlayerConnect
+#if defined Vehicle_OnPlayerConnect
+	forward Vehicle_OnPlayerConnect(playerid);
+#endif
+
+/*
+	Commands
+*/
 
 COMMAND:engine(playerid, params[])
 {
@@ -1973,6 +2047,10 @@ COMMAND:engine(playerid, params[])
 
 	return 1;
 }
+
+/*
+	Public functions
+*/
 
 stock GetVehicleRespawnTime()
 {
@@ -2034,12 +2112,16 @@ stock IsVehicleOccupied(vehicleid)
 	return 0;
 }
 
-stock GetPlayerPreviousVehicleID(playerid)
+/*
+	Private functions
+*/
+
+static stock GetPlayerPreviousVehicleID(playerid)
 {
 	return gPlayerPreviousVehicle[playerid];
 }
 
-stock SetPlayerPreviousVehicleID(playerid, vehicleid)
+static stock SetPlayerPreviousVehicleID(playerid, vehicleid)
 {
 	gPlayerPreviousVehicle[playerid] = vehicleid;
 }

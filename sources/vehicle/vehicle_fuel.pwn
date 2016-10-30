@@ -28,7 +28,7 @@ static
 	IsEnabled = VEHICLE_FUEL_ENABLED,
 	Float:gFuel[MAX_VEHICLES],
 	Float:gOldFuel[MAX_VEHICLES],
-	gIsRefilling[MAX_VEHICLES char],
+	bool:gIsRefilling[MAX_VEHICLES char],
 	Timer_Fill[MAX_PLAYERS] = {0,...};
 
 /*
@@ -223,12 +223,12 @@ stock IsVehicleFuelEnabled()
 
 stock ToggleVehicleRefillingStatus(vehicleid, bool:toggle)
 {
-	gIsRefilling{vehicleid} = _:toggle;
+	gIsRefilling{vehicleid} = toggle;
 }
 
 stock IsVehicleRefilling(vehicleid)
 {
-	return gIsRefilling{vehicleid} != 0;
+	return gIsRefilling{vehicleid};
 }
 
 stock Float:GetVehicleFuel(vehicleid)

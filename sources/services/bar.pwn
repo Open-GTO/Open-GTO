@@ -19,6 +19,8 @@
 	#error MAX_GULPS should be lower than 255
 #endif
 
+#define INVALID_GULP_ID 255
+
 /*
 	Enums
 */
@@ -37,7 +39,7 @@ enum e_Bar_Info {
 }
 
 enum e_Drink_Info {
-	e_dName[MAX_NAME],
+	e_dNameVar[MAX_LANG_VAR_STRING],
 	e_dCost,
 	Float:e_dHealth,
 	Float:e_dAlcohol,
@@ -61,42 +63,67 @@ static gBarPlace[][e_Bar_Info] = {
 };
 
 static gDrinksInfo[][e_Drink_Info] = {
-	{"Водка", 100, 30.0, 40.0, SPECIAL_ACTION_DRINK_SPRUNK},
-	{"Пиво", 30, 10.0, 4.5, SPECIAL_ACTION_DRINK_BEER},
-	{"Вино", 30, 10.0, 10.0, SPECIAL_ACTION_DRINK_WINE},
-	{"Чай", 15, 10.0, -20.0, SPECIAL_ACTION_DRINK_SPRUNK},
-	{"Сигара", 15, 5.0, 2.0, SPECIAL_ACTION_SMOKE_CIGGY}
+	{"BAR_TYPE_0", 100, 30.0, 40.0, SPECIAL_ACTION_DRINK_SPRUNK},
+	{"BAR_TYPE_1", 30, 10.0, 4.5, SPECIAL_ACTION_DRINK_BEER},
+	{"BAR_TYPE_2", 30, 10.0, 10.0, SPECIAL_ACTION_DRINK_WINE},
+	{"BAR_TYPE_3", 15, 10.0, -20.0, SPECIAL_ACTION_DRINK_SPRUNK},
+	{"BAR_TYPE_4", 15, 5.0, 2.0, SPECIAL_ACTION_SMOKE_CIGGY}
 };
 
 static
 	gActors[MAX_BAR_ACTORS],
-	gPlayerGulps[MAX_PLAYERS char] = {255, ...},
+	gPlayerGulps[MAX_PLAYERS char] = {INVALID_GULP_ID, ...},
 	gPlayerAlcoholID[MAX_PLAYERS char],
 	bool:gPlayerIsGulping[MAX_PLAYERS char];
 
 /*
-	Functions
+	Additional checks
 */
 
-Bar_OnGameModeInit()
+#if sizeof(gDrinksInfo) > 255
+	#error gDrinksInfo elements count should be lower than 255
+#endif
+
+/*
+	OnGameModeInit
+*/
+
+public OnGameModeInit()
 {
 	for (new id = 0; id < sizeof(gBarPlace); id++) {
 		gBarPlace[id][e_bpCheckpoint] = CreateDynamicCP(gBarPlace[id][e_bpPosX], gBarPlace[id][e_bpPosY], gBarPlace[id][e_bpPosZ], 1.5, .streamdistance = 20.0);
 	}
 	Log_Init("services", "Bar module init.");
-	return 1;
+	#if defined Bar_OnGameModeInit
+		return Bar_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
 
-Bar_OnInteriorCreated(id, type, world)
+#define OnGameModeInit Bar_OnGameModeInit
+#if defined Bar_OnGameModeInit
+	forward Bar_OnGameModeInit();
+#endif
+
+/*
+	OnInteriorCreated
+*/
+
+public OnInteriorCreated(id, type, world)
 {
-	#pragma unused id
 	new slot;
 
 	for (new i = 0; i < sizeof(gBarPlace); i++) {
 		if (gBarPlace[i][e_bpType] == type) {
-			slot = Bar_GetActorFreeSlot();
+			slot = GetActorFreeSlot();
 			if (slot == -1) {
-				Log(systemlog, DEBUG, "bar.inc: Free slot not found. Increase MAX_BAR_ACTORS value.");
+				Log(systemlog, DEBUG, "bar.pwn: Free slot not found. Increase MAX_BAR_ACTORS value.");
 				break;
 			}
 
@@ -107,9 +134,28 @@ Bar_OnInteriorCreated(id, type, world)
 			SetActorVirtualWorld(gActors[slot], world);
 		}
 	}
+	#if defined Bar_OnInteriorCreated
+		return Bar_OnInteriorCreated(id, type, world);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnInteriorCreated
+	#undef OnInteriorCreated
+#else
+	#define _ALS_OnInteriorCreated
+#endif
 
-Bar_OnActorStreamIn(actorid, forplayerid)
+#define OnInteriorCreated Bar_OnInteriorCreated
+#if defined Bar_OnInteriorCreated
+	forward Bar_OnInteriorCreated(id, type, world);
+#endif
+
+/*
+	OnActorStreamIn
+*/
+
+public OnActorStreamIn(actorid, forplayerid)
 {
 	for (new id = 0; id < sizeof(gActors); id++) {
 		if (actorid == gActors[id]) {
@@ -118,22 +164,58 @@ Bar_OnActorStreamIn(actorid, forplayerid)
 			return 1;
 		}
 	}
-	return 0;
+	#if defined Bar_OnActorStreamIn
+		return Bar_OnActorStreamIn(actorid, forplayerid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnActorStreamIn
+	#undef OnActorStreamIn
+#else
+	#define _ALS_OnActorStreamIn
+#endif
 
-Bar_OnPlayerEnterCheckpoint(playerid, cp)
+#define OnActorStreamIn Bar_OnActorStreamIn
+#if defined Bar_OnActorStreamIn
+	forward Bar_OnActorStreamIn(actorid, forplayerid);
+#endif
+
+/*
+	OnPlayerEnterDynamicCP
+*/
+
+public OnPlayerEnterDynamicCP(playerid, checkpointid)
 {
 	for (new id = 0; id < sizeof(gBarPlace); id++) {
-		if (cp == gBarPlace[id][e_bpCheckpoint]) {
+		if (checkpointid == gBarPlace[id][e_bpCheckpoint]) {
 			Dialog_Show(playerid, Dialog:ServiceBar);
 			ApplyActorAnimation(GetPVarInt(playerid, "Bar_actor_id"), "MISC", "Idle_Chat_02", 4.1, 0, 1, 1, 1, 1);
 			return 1;
 		}
 	}
-	return 0;
+	#if defined Bar_OnPlayerEnterDynamicCP
+		return Bar_OnPlayerEnterDynamicCP(playerid, checkpointid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerEnterDynamicCP
+	#undef OnPlayerEnterDynamicCP
+#else
+	#define _ALS_OnPlayerEnterDynamicCP
+#endif
 
-Bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+#define OnPlayerEnterDynamicCP Bar_OnPlayerEnterDynamicCP
+#if defined Bar_OnPlayerEnterDynamicCP
+	forward Bar_OnPlayerEnterDynamicCP(playerid, checkpointid);
+#endif
+
+/*
+	OnPlayerKeyStateChange
+*/
+
+public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	if ( PRESSED ( KEY_FIRE ) ) {
 		if (IsPlayerDrinking(playerid) && !IsPlayerGulping(playerid)) {
@@ -144,20 +226,66 @@ Bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		StopPlayerDrinking(playerid);
 		return 1;
 	}
-	return 0;
+	#if defined Bar_OnPlayerKeyStateChange
+		return Bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerKeyStateChange
+	#undef OnPlayerKeyStateChange
+#else
+	#define _ALS_OnPlayerKeyStateChange
+#endif
+
+#define OnPlayerKeyStateChange Bar_OnPlayerKeyStateChange
+#if defined Bar_OnPlayerKeyStateChange
+	forward Bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys);
+#endif
+
+/*
+	OnPlayerEnterVehicle
+*/
+
+public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
+{
+	if (ispassenger) {
+		StopPlayerDrinking(playerid);
+	}
+	#if defined Bar_OnPlayerEnterVehicle
+		return Bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerEnterVehicle
+	#undef OnPlayerEnterVehicle
+#else
+	#define _ALS_OnPlayerEnterVehicle
+#endif
+
+#define OnPlayerEnterVehicle Bar_OnPlayerEnterVehicle
+#if defined Bar_OnPlayerEnterVehicle
+	forward Bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
+#endif
+
+/*
+	Dialogs
+*/
 
 DialogCreate:ServiceBar(playerid)
 {
 	static
+		name[MAX_LANG_VALUE_STRING],
 		string[MAX_LANG_VALUE_STRING * (sizeof(gDrinksInfo) + 1)];
 
 	Lang_GetPlayerText(playerid, "BAR_DIALOG_LIST_HEADER", string);
 
 	for (new i = 0; i < sizeof(gDrinksInfo); i++) {
+		Lang_GetPlayerText(playerid, gDrinksInfo[i][e_dNameVar], name);
 		Lang_GetPlayerText(playerid, "BAR_DIALOG_LIST_ITEM", string, _,
 		                   string,
-		                   gDrinksInfo[i][e_dName],
+		                   name,
 		                   gDrinksInfo[i][e_dCost],
 		                   gDrinksInfo[i][e_dAlcohol],
 		                   gDrinksInfo[i][e_dHealth]);
@@ -176,35 +304,35 @@ DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	if (GetPlayerMoney(playerid) < gDrinksInfo[listitem][e_dCost]) {
+	new id = listitem;
+
+	if (GetPlayerMoney(playerid) < gDrinksInfo[id][e_dCost]) {
 		Dialog_Message(playerid, "BAR_DIALOG_HEADER", "BAR_NOT_ENOUGH_MONEY", "BAR_DIALOG_BUTTON_OK");
 		return 1;
 	}
 
-	GivePlayerMoney(playerid, -gDrinksInfo[listitem][e_dCost]);
-	SetPlayerSpecialAction(playerid, gDrinksInfo[listitem][e_dAction]);
-	StartPlayerDrinking(playerid, listitem);
+	new name[MAX_LANG_VALUE_STRING];
+	Lang_GetPlayerText(playerid, gDrinksInfo[id][e_dNameVar], name);
+
+	GivePlayerMoney(playerid, -gDrinksInfo[id][e_dCost]);
+	SetPlayerSpecialAction(playerid, gDrinksInfo[id][e_dAction]);
+	StartPlayerDrinking(playerid, id);
 
 	Dialog_Message(playerid,
 	               "BAR_DIALOG_HEADER",
 	               "BAR_DIALOG_INFORMATION_TEXT",
 	               "BAR_DIALOG_BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
-	               gDrinksInfo[listitem][e_dName],
-	               gDrinksInfo[listitem][e_dCost],
-	               gDrinksInfo[listitem][e_dAlcohol],
-	               gDrinksInfo[listitem][e_dHealth]);
+	               name,
+	               gDrinksInfo[id][e_dCost],
+	               gDrinksInfo[id][e_dAlcohol],
+	               gDrinksInfo[id][e_dHealth]);
 	return 1;
 }
 
-Bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
-{
-	#pragma unused vehicleid
-	if (ispassenger) {
-		StopPlayerDrinking(playerid);
-	}
-	return 1;
-}
+/*
+	Process
+*/
 
 forward Bar_GulpProcess(playerid);
 public Bar_GulpProcess(playerid)
@@ -232,10 +360,28 @@ public Bar_GulpProcess(playerid)
 	return 1;
 }
 
+/*
+	Public functions
+*/
+
+stock IsPlayerAtBar(playerid)
+{
+	for (new b_id = 0; b_id < sizeof(gBarPlace); b_id++) {
+		if (IsPlayerInRangeOfPoint(playerid, 2, gBarPlace[b_id][Bar_x], gBarPlace[b_id][Bar_y], gBarPlace[b_id][Bar_z])) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+/*
+	Private functions
+*/
+
 static stock StopPlayerDrinking(playerid)
 {
 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
-	gPlayerGulps{playerid} = 255;
+	gPlayerGulps{playerid} = INVALID_GULP_ID;
 	gPlayerIsGulping{playerid} = false;
 	gPlayerAlcoholID{playerid} = 0;
 	return 1;
@@ -248,7 +394,7 @@ static stock IsPlayerGulping(playerid)
 
 static stock IsPlayerDrinking(playerid)
 {
-	return gPlayerGulps{playerid} != 255;
+	return gPlayerGulps{playerid} != INVALID_GULP_ID;
 }
 
 static stock GetPlayerGulps(playerid)
@@ -269,26 +415,16 @@ static stock StartPlayerDrinking(playerid, alcoholid)
 
 static stock MakePlayerGulp(playerid)
 {
-	if (gPlayerGulps{playerid} == 255) {
-		gPlayerGulps{playerid} = 1;
-	} else {
+	if (IsPlayerDrinking(playerid)) {
 		gPlayerGulps{playerid}++;
+	} else {
+		gPlayerGulps{playerid} = 1;
 	}
 	gPlayerIsGulping{playerid} = true;
 	SetTimerEx("Bar_GulpProcess", 2000, 0, "i", playerid);
 }
 
-stock IsPlayerAtBar(playerid)
-{
-	for (new b_id = 0; b_id < sizeof(gBarPlace); b_id++) {
-		if (IsPlayerInRangeOfPoint(playerid, 2, gBarPlace[b_id][Bar_x], gBarPlace[b_id][Bar_y], gBarPlace[b_id][Bar_z])) {
-			return 1;
-		}
-	}
-	return 0;
-}
-
-stock Bar_GetActorFreeSlot()
+static stock GetActorFreeSlot()
 {
 	static slot;
 

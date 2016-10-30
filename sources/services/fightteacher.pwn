@@ -11,41 +11,82 @@
 
 #define _fightteacher_included
 
+/*
+	Defines
+*/
+
+#define INVALID_FIGHT_ID -1
+
+/*
+	Enums
+*/
+
 enum e_Fight_Info {
 	e_fStyleNameVar[MAX_LANG_VAR_STRING],
 	e_fStyleLevel,
 	e_fStyleID,
 	bool:e_fHaveTeacher,
 	e_fCost,
-	Float:e_fCoord_X,
-	Float:e_fCoord_Y,
-	Float:e_fCoord_Z,
+	Float:e_fPosX,
+	Float:e_fPosY,
+	Float:e_fPosZ,
 	e_fCheckpoint
 };
 
-static
-	gFightStyle[MAX_FIGHTS][e_Fight_Info],
-	gFightStyleLastID;
+/*
+	Vars
+*/
 
-Fight_OnGameModeInit()
+static gFightStyle[][e_Fight_Info] = {
+	{"FIGHT_TEACHER_STYLE_NORMAL", 1, FIGHT_STYLE_NORMAL, false},
+	{"FIGHT_TEACHER_STYLE_BOX", 10, FIGHT_STYLE_BOXING, true, 1000, 767.6851, 12.8269, 1000.7025},
+	{"FIGHT_TEACHER_STYLE_KUNGFU", 20, FIGHT_STYLE_KUNGFU, true, 2000, 768.5967,-22.9764, 1000.5859},
+	{"FIGHT_TEACHER_STYLE_KNEEHEAD", 30, FIGHT_STYLE_KNEEHEAD, true, 3000, 766.5240,-76.6523, 1000.6563}
+};
+
+/*
+	OnGameModeInit
+*/
+
+public OnGameModeInit()
 {
-	AddFightStyle(1, FIGHT_STYLE_NORMAL, "FIGHT_TEACHER_STYLE_NORMAL", false);
-	AddFightStyle(10, FIGHT_STYLE_BOXING, "FIGHT_TEACHER_STYLE_BOX", true, 1000, 767.6851, 12.8269, 1000.7025);
-	AddFightStyle(20, FIGHT_STYLE_KUNGFU, "FIGHT_TEACHER_STYLE_KUNGFU", true, 2000, 768.5967,-22.9764, 1000.5859);
-	AddFightStyle(30, FIGHT_STYLE_KNEEHEAD, "FIGHT_TEACHER_STYLE_KNEEHEAD", true, 3000, 766.5240,-76.6523, 1000.6563);
-
+	for (new id = 0; id < sizeof(gFightStyle); id++) {
+		if (!gFightStyle[id][e_fHaveTeacher]) {
+			continue;
+		}
+		gFightStyle[id][e_fCheckpoint] = CreateDynamicCP(gFightStyle[id][e_fPosX], gFightStyle[id][e_fPosY], gFightStyle[id][e_fPosZ], 1.5, .streamdistance = 20.0);
+	}
 	Log_Init("services", "Fightstyles module init.");
-	return 1;
+	#if defined Fight_OnGameModeInit
+		return Fight_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
 
-Fight_OnPlayerEnterCheckpoint(playerid, cp)
+#define OnGameModeInit Fight_OnGameModeInit
+#if defined Fight_OnGameModeInit
+	forward Fight_OnGameModeInit();
+#endif
+
+/*
+	OnPlayerEnterDynamicCP
+*/
+
+public OnPlayerEnterDynamicCP(playerid, checkpointid)
 {
+
 	new
 		teachername[MAX_LANG_VALUE_STRING],
 		caption[MAX_LANG_VALUE_STRING],
-		teacherid = GetFightTeacherIdByCheckpoint(cp);
+		teacherid = GetFightTeacherIdByCheckpoint(checkpointid);
 
-	if (teacherid == -1) {
+	if (teacherid == INVALID_FIGHT_ID) {
 		return 0;
 	}
 
@@ -75,8 +116,26 @@ Fight_OnPlayerEnterCheckpoint(playerid, cp)
 	}
 
 	Dialog_Show(playerid, Dialog:ServiceFights);
-	return 1;
+	#if defined Fight_OnPlayerEnterDynamicCP
+		return Fight_OnPlayerEnterDynamicCP(playerid, checkpointid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerEnterDynamicCP
+	#undef OnPlayerEnterDynamicCP
+#else
+	#define _ALS_OnPlayerEnterDynamicCP
+#endif
+
+#define OnPlayerEnterDynamicCP Fight_OnPlayerEnterDynamicCP
+#if defined Fight_OnPlayerEnterDynamicCP
+	forward Fight_OnPlayerEnterDynamicCP(playerid, checkpointid);
+#endif
+
+/*
+	Functions
+*/
 
 DialogCreate:ServiceFights(playerid)
 {
@@ -134,31 +193,6 @@ DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-stock AddFightStyle(minlvl, styleid, varname[], bool:haveteacher, cost = 0, Float:pos_x = 0.0, Float:pos_y = 0.0, Float:pos_z = 0.0)
-{
-	new id = GetFightTeacherLastID();
-	if (id >= MAX_FIGHTS) {
-		Log(systemlog, DEBUG, "Error <fightteacher:AddFightStyle>: free slot not found (%d).", id);
-		return -1;
-	}
-
-	SetFightTeacherLastID(id + 1);
-
-	strcpy(gFightStyle[id][e_fStyleNameVar], varname, MAX_LANG_VAR_STRING);
-	gFightStyle[id][e_fStyleLevel] = minlvl;
-	gFightStyle[id][e_fStyleID] = styleid;
-	gFightStyle[id][e_fHaveTeacher] = haveteacher;
-	gFightStyle[id][e_fCost] = cost;
-	gFightStyle[id][e_fCoord_X] = pos_x;
-	gFightStyle[id][e_fCoord_Y] = pos_y;
-	gFightStyle[id][e_fCoord_Z] = pos_z;
-
-	if (haveteacher) {
-		gFightStyle[id][e_fCheckpoint] = CreateDynamicCP(pos_x, pos_y, pos_z, 1.5, .streamdistance = 20.0);
-	}
-	return id;
-}
-
 stock SetPlayerFightTeacherID(playerid, teacherid)
 {
 	SetPVarInt(playerid, "fights_TeacherID", teacherid);
@@ -171,18 +205,18 @@ stock GetPlayerFightTeacherID(playerid)
 
 stock GetFightTeacherIdByCheckpoint(cpid)
 {
-	for (new id = 0; id < GetFightTeacherLastID(); id++) {
+	for (new id = 0; id < sizeof(gFightStyle); id++) {
 		if (gFightStyle[id][e_fHaveTeacher] && gFightStyle[id][e_fCheckpoint] == cpid) {
 			return id;
 		}
 	}
-	return -1;
+	return INVALID_FIGHT_ID;
 }
 
 stock GetFightTeacherStyleID(teacherid)
 {
 	if (!IsTeacherValid(teacherid)) {
-		return -1;
+		return INVALID_FIGHT_ID;
 	}
 	return gFightStyle[teacherid][e_fStyleID];
 }
@@ -190,7 +224,7 @@ stock GetFightTeacherStyleID(teacherid)
 stock GetFightTeacherLevel(teacherid)
 {
 	if (!IsTeacherValid(teacherid)) {
-		return -1;
+		return INVALID_FIGHT_ID;
 	}
 	return gFightStyle[teacherid][e_fStyleLevel];
 }
@@ -207,7 +241,7 @@ stock GetFightTeacherNameForPlayer(playerid, teacherid, fstylename[], const size
 stock GetFightTeacherCost(teacherid)
 {
 	if (!IsTeacherValid(teacherid)) {
-		return -1;
+		return INVALID_FIGHT_ID;
 	}
 	return gFightStyle[teacherid][e_fCost];
 }
@@ -222,15 +256,15 @@ stock IsHaveFightTeacher(teacherid)
 
 stock GetFightStyleNameForPlayer(playerid, styleid, fstylename[], const size = sizeof(fstylename))
 {
-	new teacherid = -1;
-	for (new id = 0; id < GetFightTeacherLastID(); id++) {
+	new teacherid = INVALID_FIGHT_ID;
+	for (new id = 0; id < sizeof(gFightStyle); id++) {
 		if (gFightStyle[id][e_fStyleID] == styleid) {
 			teacherid = id;
 			break;
 		}
 	}
 
-	if (teacherid == -1) {
+	if (teacherid == INVALID_FIGHT_ID) {
 		return 0;
 	}
 
@@ -238,17 +272,12 @@ stock GetFightStyleNameForPlayer(playerid, styleid, fstylename[], const size = s
 	return 1;
 }
 
-stock GetFightTeacherLastID()
+stock GetFightTeachersCount()
 {
-	return gFightStyleLastID;
-}
-
-stock SetFightTeacherLastID(value)
-{
-	gFightStyleLastID = value;
+	return sizeof(gFightStyle);
 }
 
 stock IsTeacherValid(teacherid)
 {
-	return (0 <= teacherid < GetFightTeacherLastID());
+	return (0 <= teacherid < sizeof(gFightStyle));
 }

@@ -266,7 +266,6 @@ public OnGameModeInit()
 	Lang_OnGameModeInit();
 
 	Core_OnGameModeInit();
-	Vehicle_OnGameModeInit();
 	Vehicle_Textdraw_OnGameModeInit();
 	GangMember_OnGameModeInit();
 	GangLevel_OnGameModeInit();
@@ -290,16 +289,9 @@ public OnGameModeInit()
 	swagup_OnGameModeInit();
 
 	// services
-	fastfood_OnGameModeInit();
-	Bar_OnGameModeInit();
 	sshop_OnGameModeInit();
 	VehShop_OnGameModeInit();
-	wshop_OnGameModeInit();
-	Fuelstation_OnGameModeInit();
-	Bank_OnGameModeInit();
-	Fight_OnGameModeInit();
 	Tuning_OnGameModeInit();
-	Lottery_OnGameModeInit();
 
 	// competition
 	CompetitionRace_OnGameModeInit();
@@ -350,11 +342,9 @@ public OnPlayerConnect(playerid)
 	Spectate_OnPlayerConnect(playerid);
 	Beachside_OnPlayerConnect(playerid);
 	Tuning_OnPlayerConnect(playerid);
-	Vehicle_OnPlayerConnect(playerid);
 	VehShop_OnPlayerConnect(playerid);
 	housing_OnPlayerConnect(playerid);
 	business_OnPlayerConnect(playerid);
-	Fuelstation_OnPlayerConnect(playerid);
 	return 1;
 }
 
@@ -371,7 +361,6 @@ public OnPlayerDisconnect(playerid, reason)
 	VehShop_OnPlayerDisconnect(playerid, reason);
 	housing_OnPlayerDisconnect(playerid, reason);
 	business_OnPlayerDisconnect(playerid, reason);
-	Fuelstation_OnPlayerDisconnect(playerid, reason);
 	SetPlayerSpawned(playerid, false);
 	return 1;
 }
@@ -415,22 +404,7 @@ public OnPlayerEnterDynamicCP(playerid, checkpointid)
 	if (Trucker_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
 		return 1;
 	}
-	if (wshop_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
-		return 1;
-	}
-	if (Bar_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
-		return 1;
-	}
-	if (fastfood_OnPlayerEnterCP(playerid, checkpointid)) {
-		return 1;
-	}
 	if (ss_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
-		return 1;
-	}
-	if (Fight_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
-		return 1;
-	}
-	if (Bank_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
 		return 1;
 	}
 	return 1;
@@ -580,10 +554,6 @@ public OnPlayerUpdate(playerid)
 
 public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-	if (Bar_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
-		return 1;
-	}
-
 	if (Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)) {
 		return 1;
 	}
@@ -612,10 +582,6 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		return 1;
 	}
 
-	if (Fuelstation_OnPlayerKeyStateCh(playerid, newkeys, oldkeys)) {
-		return 1;
-	}
-
 	if (VMenu_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
 		return 1;
 	}
@@ -635,11 +601,10 @@ public OnPlayerExitedMenu(playerid)
 
 public OnPlayerStateChange(playerid, newstate, oldstate)
 {
-	Vehicle_OnPlayerStateChange(playerid, newstate, oldstate);
+	Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate);
 	Trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 	Spectate_OnPlayerStateChange(playerid, newstate, oldstate);
 	Weapon_OnPlayerStateChange(playerid, newstate, oldstate);
-	Fuelstation_OnPlayerStateChange(playerid, newstate, oldstate);
 
 	if (newstate == PLAYER_STATE_DRIVER) {
 		Premium_OnPlayerStateChange(playerid, newstate, oldstate);
@@ -665,7 +630,6 @@ public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
-	Bar_OnPlayerEnterVehicle(playerid, vehicleid, ispassenger);
 	return 1;
 }
 
@@ -778,18 +742,6 @@ public OnEnterExitModShop(playerid, enterexit, interiorid)
 
 public OnActorStreamIn(actorid, forplayerid)
 {
-	if (Bar_OnActorStreamIn(actorid, forplayerid)) {
-		return 1;
-	}
-	if (fastfood_OnActorStreamIn(actorid, forplayerid)) {
-		return 1;
-	}
-	if (Bank_OnActorStreamIn(actorid, forplayerid)) {
-		return 1;
-	}
-	if (wshop_OnActorStreamIn(actorid, forplayerid)) {
-		return 1;
-	}
 	return 1;
 }
 
@@ -820,10 +772,6 @@ public OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 		return 1;
 	}
 
-	if (Fuelstation_OnPlayerEnterDyArea(playerid, areaid)) {
-		return 1;
-	}
-
 	return 1;
 }
 
@@ -837,18 +785,10 @@ public OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 		return 1;
 	}
 
-	if (Fuelstation_OnPlayerLeaveDyArea(playerid, areaid)) {
-		return 1;
-	}
-
 	return 1;
 }
 
 public OnVehicleFilled(vehicleid, playerid, money)
 {
-	if (Fuelstation_OnVehicleFilled(vehicleid, playerid, money)) {
-		return 1;
-	}
-
 	return 1;
 }

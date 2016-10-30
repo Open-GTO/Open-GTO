@@ -12,6 +12,14 @@
 #define _pl_account_included
 
 /*
+	Defines
+*/
+
+#if MAX_PLAYER_LOGIN_ATTEMPT > 255
+	#error MAX_PLAYER_LOGIN_ATTEMPT should be lower than 255
+#endif
+
+/*
 	Vars
 */
 

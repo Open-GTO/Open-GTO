@@ -89,13 +89,28 @@ stock Lottery_SaveConfig(file_config)
 }
 
 /*
-	For public
+	OnGameModeInit
 */
 
-Lottery_OnGameModeInit()
+public OnGameModeInit()
 {
 	SetLotteryStatus(LotteryWait);
+	#if defined Lottery_OnGameModeInit
+		return Lottery_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
+
+#define OnGameModeInit Lottery_OnGameModeInit
+#if defined Lottery_OnGameModeInit
+	forward Lottery_OnGameModeInit();
+#endif
 
 /*
 	Command

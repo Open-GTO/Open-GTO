@@ -16,7 +16,7 @@
 */
 
 static
-	gPlayerGodmodStatus[MAX_PLAYERS char];
+	bool:gPlayerGodmodEnabled[MAX_PLAYERS char];
 
 /*
 	OnPlayerTakeDamage
@@ -50,7 +50,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 */
 
 stock IsPlayerGodmod(playerid) {
-	return gPlayerGodmodStatus{playerid};
+	return gPlayerGodmodEnabled{playerid};
 }
 
 /*
@@ -58,7 +58,7 @@ stock IsPlayerGodmod(playerid) {
 */
 
 stock SetPlayerGodmod(playerid, bool:isgodmod) {
-	gPlayerGodmodStatus{playerid} = _:isgodmod;
+	gPlayerGodmodEnabled{playerid} = isgodmod;
 
 	if (isgodmod) {
 		SetPlayerHealth(playerid, Float:0x7F800000);

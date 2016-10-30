@@ -1,8 +1,7 @@
 /*
 
-	About: Weapon shop
+	About: weapon shop
 	Author: ziggi
-	Date: 14.01.2014
 
 */
 
@@ -13,22 +12,34 @@
 
 #define _weaponshop_included
 
+/*
+	Defines
+*/
+
 #define MAX_WSHOP_ACTORS 11
 
-enum weapon_Shop_Info {
-	wshop_type,
-	Float:wshop_x,
-	Float:wshop_y,
-	Float:wshop_z,
-	wshop_actor_model,
-	Float:wshop_actor_pos_x,
-	Float:wshop_actor_pos_y,
-	Float:wshop_actor_pos_z,
-	Float:wshop_actor_pos_a,
-	wshop_checkpoint,
+/*
+	Enums
+*/
+
+enum e_WShop_Info {
+	e_wsType,
+	Float:e_wsPosX,
+	Float:e_wsPosY,
+	Float:e_wsPosZ,
+	e_wsActor_Model,
+	Float:e_wsActor_PosX,
+	Float:e_wsActor_PosY,
+	Float:e_wsActor_PosZ,
+	Float:e_wsActor_PosA,
+	e_wsCheckpoint,
 }
 
-new wshop_place[][weapon_Shop_Info] = {
+/*
+	Vars
+*/
+
+static gWShopPlace[][e_WShop_Info] = {
 	{ENTEREXIT_TYPE_AMMUNATION_1, 296.1441, -37.7606, 1001.5156,   179, 296.1232, -40.2155, 1001.5156, 359.9678},
 	{ENTEREXIT_TYPE_AMMUNATION_2, 295.3583, -80.1250, 1001.5156,   179, 295.3518, -82.5274, 1001.5156, 356.2078},
 	{ENTEREXIT_TYPE_AMMUNATION_3, 290.0941, -109.2533, 1001.5156,  179, 290.0896, -111.5135, 1001.5156, 356.8344},
@@ -36,63 +47,139 @@ new wshop_place[][weapon_Shop_Info] = {
 	{ENTEREXIT_TYPE_AMMUNATION_5, 312.5029, -165.4625, 999.6010,   179, 312.5927, -167.7639, 999.5938, 3.1246}
 };
 
-static wshop_actors[MAX_WSHOP_ACTORS];
+static
+	gActors[MAX_WSHOP_ACTORS];
 
+/*
+	OnGameModeInit
+*/
 
-wshop_OnGameModeInit()
+public OnGameModeInit()
 {
-	for (new id = 0; id < sizeof(wshop_place); id++) {
-		wshop_place[id][wshop_checkpoint] = CreateDynamicCP(wshop_place[id][wshop_x], wshop_place[id][wshop_y], wshop_place[id][wshop_z], 1.5, .streamdistance = 20.0);
+	for (new id = 0; id < sizeof(gWShopPlace); id++) {
+		gWShopPlace[id][e_wsCheckpoint] = CreateDynamicCP(gWShopPlace[id][e_wsPosX], gWShopPlace[id][e_wsPosY], gWShopPlace[id][e_wsPosZ], 1.5, .streamdistance = 20.0);
 	}
 	Log_Init("services", "Weapon shop module init.");
-	return 1;
+	#if defined WShop_OnGameModeInit
+		return WShop_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
 
-wshop_OnInteriorCreated(id, type, world)
+#define OnGameModeInit WShop_OnGameModeInit
+#if defined WShop_OnGameModeInit
+	forward WShop_OnGameModeInit();
+#endif
+
+/*
+	OnInteriorCreated
+*/
+
+public OnInteriorCreated(id, type, world)
 {
-	#pragma unused id
 	new slot;
 
-	for (new i = 0; i < sizeof(wshop_place); i++) {
-		if (wshop_place[i][wshop_type] == type) {
-			slot = wshop_GetActorFreeSlot();
+	for (new i = 0; i < sizeof(gWShopPlace); i++) {
+		if (gWShopPlace[i][e_wsType] == type) {
+			slot = GetActorFreeSlot();
 			if (slot == -1) {
 				Log(systemlog, DEBUG, "weaponshop.inc: Free slot not found. Increase MAX_WSHOP_ACTORS value.");
 				break;
 			}
 
-			wshop_actors[slot] = CreateActor(wshop_place[i][wshop_actor_model],
-				wshop_place[i][wshop_actor_pos_x], wshop_place[i][wshop_actor_pos_y], wshop_place[i][wshop_actor_pos_z],
-				wshop_place[i][wshop_actor_pos_a]
+			gActors[slot] = CreateActor(gWShopPlace[i][e_wsActor_Model],
+				gWShopPlace[i][e_wsActor_PosX], gWShopPlace[i][e_wsActor_PosY], gWShopPlace[i][e_wsActor_PosZ],
+				gWShopPlace[i][e_wsActor_PosA]
 			);
-			SetActorVirtualWorld(wshop_actors[slot], world);
+			SetActorVirtualWorld(gActors[slot], world);
 		}
 	}
+	#if defined WShop_OnInteriorCreated
+		return WShop_OnInteriorCreated(id, type, world);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnInteriorCreated
+	#undef OnInteriorCreated
+#else
+	#define _ALS_OnInteriorCreated
+#endif
 
-wshop_OnActorStreamIn(actorid, forplayerid)
+#define OnInteriorCreated WShop_OnInteriorCreated
+#if defined WShop_OnInteriorCreated
+	forward WShop_OnInteriorCreated(id, type, world);
+#endif
+
+/*
+	OnActorStreamIn
+*/
+
+public OnActorStreamIn(actorid, forplayerid)
 {
-	for (new id = 0; id < sizeof(wshop_actors); id++) {
-		if (actorid == wshop_actors[id]) {
+	for (new id = 0; id < sizeof(gActors); id++) {
+		if (actorid == gActors[id]) {
 			SetPVarInt(forplayerid, "wshop_actor_id", actorid);
 			ClearActorAnimations(actorid);
 			return 1;
 		}
 	}
-	return 0;
+	#if defined WShop_OnActorStreamIn
+		return WShop_OnActorStreamIn(actorid, forplayerid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnActorStreamIn
+	#undef OnActorStreamIn
+#else
+	#define _ALS_OnActorStreamIn
+#endif
 
-wshop_OnPlayerEnterCheckpoint(playerid, cp)
+#define OnActorStreamIn WShop_OnActorStreamIn
+#if defined WShop_OnActorStreamIn
+	forward WShop_OnActorStreamIn(actorid, forplayerid);
+#endif
+
+/*
+	OnPlayerEnterDynamicCP
+*/
+
+public OnPlayerEnterDynamicCP(playerid, checkpointid)
 {
-	for (new id = 0; id < sizeof(wshop_place); id++) {
-		if (cp == wshop_place[id][wshop_checkpoint]) {
+	for (new id = 0; id < sizeof(gWShopPlace); id++) {
+		if (checkpointid == gWShopPlace[id][e_wsCheckpoint]) {
 			Dialog_Show(playerid, Dialog:ServiceWeapon);
 			ApplyActorAnimation(GetPVarInt(playerid, "wshop_actor_id"), "MISC", "Idle_Chat_02", 4.1, 0, 1, 1, 1, 1);
 			return 1;
 		}
 	}
-	return 0;
+	#if defined WShop_OnPlayerEnterDynamicCP
+		return WShop_OnPlayerEnterDynamicCP(playerid, checkpointid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerEnterDynamicCP
+	#undef OnPlayerEnterDynamicCP
+#else
+	#define _ALS_OnPlayerEnterDynamicCP
+#endif
+
+#define OnPlayerEnterDynamicCP WShop_OnPlayerEnterDynamicCP
+#if defined WShop_OnPlayerEnterDynamicCP
+	forward WShop_OnPlayerEnterDynamicCP(playerid, checkpointid);
+#endif
+
+/*
+	Dialogs
+*/
 
 // select weapon from list
 DialogCreate:ServiceWeapon(playerid)
@@ -124,7 +211,7 @@ DialogResponse:ServiceWeapon(playerid, response, listitem, inputtext[])
 		return 0;
 	}
 
-	new weaponid = wshop_GetSelectedWeaponID(playerid, listitem);
+	new weaponid = WShop_GetSelectedWeaponID(playerid, listitem);
 	SetPVarInt(playerid, "Buy_Weapon_ID", weaponid);
 	Dialog_Show(playerid, Dialog:ServiceWeaponBuy);
 	return 1;
@@ -185,25 +272,7 @@ DialogResponse:ServiceWeaponBuy(playerid, response, listitem, inputtext[])
 		bullets = strval(inputtext);
 	}
 
-	wshop_Buy(playerid, weaponid, bullets);
-	return 1;
-}
-
-stock wshop_Message(playerid, info[], bool:is_buy_menu = true)
-{
-	if (is_buy_menu) {
-		Dialog_MessageEx(playerid, Dialog:WShopReturnBuyMenu,
-		                 "WEAPON_DIALOG_WEAPON_BUY_HEADER",
-		                 info,
-		                 "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1", "WEAPON_DIALOG_BUTTON_1",
-		                 MDIALOG_NOTVAR_INFO);
-	} else {
-		Dialog_MessageEx(playerid, Dialog:WShopReturnMainMenu,
-		                 "WEAPON_DIALOG_WEAPON_BUY_HEADER",
-		                 info,
-		                 "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1", "WEAPON_DIALOG_BUTTON_1",
-		                 MDIALOG_NOTVAR_INFO);
-	}
+	WShop_Buy(playerid, weaponid, bullets);
 	return 1;
 }
 
@@ -223,25 +292,47 @@ DialogResponse:WShopReturnMainMenu(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-stock wshop_Buy(playerid, weaponid, bullets)
+/*
+	Public functions
+*/
+
+stock WShop_Message(playerid, info[], bool:is_buy_menu = true)
+{
+	if (is_buy_menu) {
+		Dialog_MessageEx(playerid, Dialog:WShopReturnBuyMenu,
+		                 "WEAPON_DIALOG_WEAPON_BUY_HEADER",
+		                 info,
+		                 "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1", "WEAPON_DIALOG_BUTTON_1",
+		                 MDIALOG_NOTVAR_INFO);
+	} else {
+		Dialog_MessageEx(playerid, Dialog:WShopReturnMainMenu,
+		                 "WEAPON_DIALOG_WEAPON_BUY_HEADER",
+		                 info,
+		                 "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1", "WEAPON_DIALOG_BUTTON_1",
+		                 MDIALOG_NOTVAR_INFO);
+	}
+	return 1;
+}
+
+stock WShop_Buy(playerid, weaponid, bullets)
 {
 	new string[MAX_LANG_VALUE_STRING];
 
 	if (!IsPlayerAtWeaponShop(playerid)) {
 		Lang_GetPlayerText(playerid, "WEAPON_NOT_IN_SHOP", string);
-		wshop_Message(playerid, string);
+		WShop_Message(playerid, string);
 		return 0;
 	}
 
 	if (!IsPlayerAllowedWeapon(playerid, weaponid)) {
 		Lang_GetPlayerText(playerid, "WEAPON_BAD_WEAPON", string, _, ret_GetPlayerWeaponName(playerid, weaponid));
-		wshop_Message(playerid, string, false);
+		WShop_Message(playerid, string, false);
 		return 0;
 	}
 
 	if (bullets < 1) {
 		Lang_GetPlayerText(playerid, "WEAPON_BAD_AMMO_COUNT", string);
-		wshop_Message(playerid, string);
+		WShop_Message(playerid, string);
 		return 0;
 	}
 
@@ -251,13 +342,13 @@ stock wshop_Buy(playerid, weaponid, bullets)
 
 	if (current_bullets >= max_ammo) {
 		Lang_GetPlayerText(playerid, "WEAPON_MAX_AMMO_COUNT", string);
-		wshop_Message(playerid, string);
+		WShop_Message(playerid, string);
 		return 0;
 	}
 
 	if (current_bullets + bullets > max_ammo) {
 		Lang_GetPlayerText(playerid, "WEAPON_BAD_AMMO_COUNT", string);
-		wshop_Message(playerid, string);
+		WShop_Message(playerid, string);
 		return 0;
 	}
 
@@ -265,7 +356,7 @@ stock wshop_Buy(playerid, weaponid, bullets)
 
 	if (GetPlayerMoney(playerid) < purchasecost) {
 		Lang_GetPlayerText(playerid, "WEAPON_NOT_ENOUGH_MONEY", string, _, purchasecost);
-		wshop_Message(playerid, string, !IsWeaponHandToHand(weaponid));
+		WShop_Message(playerid, string, !IsWeaponHandToHand(weaponid));
 		return 0;
 	}
 
@@ -290,12 +381,11 @@ stock wshop_Buy(playerid, weaponid, bullets)
 		Lang_GetPlayerText(playerid, "WEAPON_BUYED_ONE", string, _, ret_GetPlayerWeaponName(playerid, weaponid), purchasecost);
 	}
 
-	wshop_Message(playerid, string, false);
+	WShop_Message(playerid, string, false);
 	return 1;
 }
 
-// узнаёт ид оружия по нажатию в диалоге
-stock wshop_GetSelectedWeaponID(playerid, listitem)
+stock WShop_GetSelectedWeaponID(playerid, listitem)
 {
 	new k = 0;
 	for (new weaponid = 1; weaponid < MAX_WEAPONS; weaponid++) {
@@ -312,19 +402,23 @@ stock wshop_GetSelectedWeaponID(playerid, listitem)
 
 stock IsPlayerAtWeaponShop(playerid)
 {
-	for (new id = 0; id < sizeof(wshop_place); id++) {
-		if (IsPlayerInRangeOfPoint(playerid, 2, wshop_place[id][wshop_x], wshop_place[id][wshop_y], wshop_place[id][wshop_z])) {
+	for (new id = 0; id < sizeof(gWShopPlace); id++) {
+		if (IsPlayerInRangeOfPoint(playerid, 2, gWShopPlace[id][e_wsPosX], gWShopPlace[id][e_wsPosY], gWShopPlace[id][e_wsPosZ])) {
 			return 1;
 		}
 	}
 	return 0;
 }
 
-stock wshop_GetActorFreeSlot()
+/*
+	Private functions
+*/
+
+static stock GetActorFreeSlot()
 {
 	static slot;
 
-	if (slot >= sizeof(wshop_actors)) {
+	if (slot >= sizeof(gActors)) {
 		return -1;
 	}
 
