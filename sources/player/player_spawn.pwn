@@ -2405,7 +2405,7 @@ public OnPlayerConnect(playerid)
 DialogCreate:PlayerSpawnMenu(playerid)
 {
 	new
-		temp[MAX_LANG_VALUE_STRING].
+		temp[MAX_LANG_VALUE_STRING],
 		string[ MAX_NAME * (MAX_PLAYER_HOUSES + 2) ],
 		count = 0,
 		playername[MAX_PLAYER_NAME + 1];
