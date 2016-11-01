@@ -2541,7 +2541,7 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x = 0.0, &Float:spos_y = 0.0, &Flo
 			SetPlayerSpawnHouseID(playerid, -1);
 			Lang_SendText(playerid, "HOUSING_KICKED");
 		} else {
-			house_GetPickupPos(house_id, spos_x, spos_y, spos_z);
+			house_GetSpawnPos(house_id, spos_x, spos_y, spos_z, spos_a);
 		}
 	} else if (spawn_type == SPAWN_TYPE_GANG) {
 		new
@@ -2554,7 +2554,7 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x = 0.0, &Float:spos_y = 0.0, &Flo
 		if (gangid == INVALID_GANG_ID || gang_houseid == -1) {
 			SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
 		} else {
-			house_GetPickupPos(gang_houseid, spos_x, spos_y, spos_z);
+			house_GetSpawnPos(gang_houseid, spos_x, spos_y, spos_z, spos_a);
 		}
 	}
 
