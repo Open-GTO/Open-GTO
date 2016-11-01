@@ -308,7 +308,13 @@ static stock UpdateEnemiesStatus(ghid, playerid)
 	gGroundholds[ghid][e_ghIsEnemies] = false;
 
 	foreach (new i : PlayerOnGround[ghid]) {
-		if (i == playerid || pHoldTime[i] == 0 || IsPlayersTeammates(i, playerid) || !pIsHold[playerid]) {
+		if (   i == playerid
+		    || pHoldTime[i] == 0
+		    || !pIsHold[playerid]
+		    || !IsPlayerInGang(i)
+		    || !IsPlayerInGang(playerid)
+		    || IsPlayersTeammates(i, playerid)
+		    ) {
 			continue;
 		}
 
