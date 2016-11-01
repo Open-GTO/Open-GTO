@@ -154,11 +154,11 @@
 
 // on death
 #define PLAYER_XP_KILL_TARIF            4 // отвечает за количество получаемого опыта при убийстве, подробнее в функции player_OnPlayerKill
-#define PLAYER_XP_DEATH_MINUS_PROC      3 // сколько процентов XP убирается от уже имеющегося опыта
+#define PLAYER_XP_DEATH_MINUS_PROC      10 // сколько процентов XP убирается от уже имеющегося опыта
 #define PLAYER_MONEY_DEATH_MINUS_PROC   20 // сколько процентов денег убирается
 
 // admin
-#define ADMIN_TELEPORT_ENABLED       1 // включена-ли система телепортации администрации по клику на карте
+#define ADMIN_TELEPORT_ENABLED          1 // включена-ли система телепортации администрации по клику на карте
 #define ADMIN_TELEPORT_MIN_PRIVILEGE    PlayerPrivilegeAdmin // минимальный уровень доступа для телепортации
 
 // lottery

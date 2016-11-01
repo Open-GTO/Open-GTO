@@ -186,11 +186,15 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 	}
 
 	// give xp
-	new xp_give_player = -GetPlayerXP(playerid) / 100 * PLAYER_XP_DEATH_MINUS_PROC;
+	new player_xp = GetPlayerXP(playerid);
+	if (player_xp < 100) {
+		player_xp = 100;
+	}
+
+	new xp_give_player = -player_xp / 100 * PLAYER_XP_DEATH_MINUS_PROC;
 	new xp_give_killer = (pow(GetPlayerLevel(playerid) * 4, 2) / (GetPlayerLevel(killerid) + 10) + 20) * PLAYER_XP_KILL_TARIF;
 
 	new level_difference = GetPlayerLevel(playerid) - GetPlayerLevel(killerid);
-
 	if (level_difference <= -10) {
 		xp_give_player = 0;
 	}
