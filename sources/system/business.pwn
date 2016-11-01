@@ -167,6 +167,7 @@ business_OnGameModeInit()
 
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{
+		business_UpdateLabelString(id);
 		CreateDynamicPickup(1274, 49, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z], -1);
 
 		if (Businesses[id][Business_ShowIcon] == 1)
