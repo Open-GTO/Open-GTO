@@ -24,8 +24,18 @@ static
 
 stock SetPlayerMoney(playerid, money)
 {
+	if (money < 0) {
+		return 0;
+	}
+
+	if (money > MAX_MONEY) {
+		money = MAX_MONEY;
+		Log(mainlog, INFO, "Player: %s(%d) is on max money.", ret_GetPlayerName(playerid), playerid);
+	}
+
 	gPlayerMoney[playerid] = money;
 	PlayerMoneyTD_UpdateString(playerid, money);
+	return 1;
 }
 
 stock REDEF_GivePlayerMoney(playerid, money)
