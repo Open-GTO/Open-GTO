@@ -136,7 +136,7 @@ forward OnPlayerConnect(playerid);
  * Public functions
  */
 
-stock Message_Alert(playerid, caption[] = "", info[], time = 4000, hcolor = -5963521, notvar_flags = MESSAGE_NOTVAR_NONE, va_args<>)
+stock Message_Alert(playerid, caption[], info[], time = 4000, hcolor = -5963521, notvar_flags = MESSAGE_NOTVAR_NONE, va_args<>)
 {
 	new id = GetFreeSlot(playerid);
 	if (id == -1) {
@@ -149,10 +149,12 @@ stock Message_Alert(playerid, caption[] = "", info[], time = 4000, hcolor = -596
 
 	lang = Lang_GetPlayerLang(playerid);
 
-	if (!(notvar_flags & MESSAGE_NOTVAR_CAPTION)) {
-		Lang_GetText(lang, caption, messages[playerid][id][e_aCaption], MAX_LANG_VALUE_STRING);
-	} else {
-		strcpy(messages[playerid][id][e_aCaption], caption, MAX_LANG_VALUE_STRING);
+	if (!isnull(caption)) {
+		if (!(notvar_flags & MESSAGE_NOTVAR_CAPTION)) {
+			Lang_GetText(lang, caption, messages[playerid][id][e_aCaption], MAX_LANG_VALUE_STRING);
+		} else {
+			strcpy(messages[playerid][id][e_aCaption], caption, MAX_LANG_VALUE_STRING);
+		}
 	}
 
 	if (!(notvar_flags & MESSAGE_NOTVAR_INFO)) {
