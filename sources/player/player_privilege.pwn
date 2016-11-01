@@ -19,6 +19,18 @@ static
 	PlayerPrivilege:gPlayerPrivilege[MAX_PLAYERS];
 
 /*
+	IsPrivilegeValid(privilege)
+*/
+
+stock IsPrivilegeValid(privilege)
+{
+	static const
+		privilege_array[PlayerPrivilege];
+	#pragma unused privilege_array
+	return 0 <= privilege < sizeof(privilege_array);
+}
+
+/*
 	GetPlayerPrivilege
 */
 
