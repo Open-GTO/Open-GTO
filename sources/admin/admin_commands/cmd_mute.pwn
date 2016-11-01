@@ -19,11 +19,16 @@ COMMAND:mute(playerid, params[])
 
 	new
 		subparams[32],
-		time,
+		time = -1,
 		reason[MAX_MUTE_REASON_LENGTH];
 
 	if (sscanf(params, "s[32]k<ftime>S()[" #MAX_MUTE_REASON_LENGTH "]", subparams, time, reason)) {
 		Lang_SendText(playerid, "ADMIN_COMMAND_MUTE_HELP");
+		return 1;
+	}
+
+	if (time == -1) {
+		Lang_SendText(playerid, "ADMIN_COMMAND_TIME_ERROR");
 		return 1;
 	}
 
