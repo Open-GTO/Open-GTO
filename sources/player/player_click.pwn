@@ -16,24 +16,24 @@ PlayerClick_OnGameModeInit()
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              "CLICK_SENDCASH_DIALOG_HEADER",
 	              "CLICK_SENDCASH_DIALOG_MESSAGE",
-	              "CLICK_SENDCASH_DIALOG_BUTTON_SEND",
-	              "CLICK_SENDCASH_DIALOG_BUTTON_BACK",
+	              "BUTTON_SEND",
+	              "BUTTON_BACK",
 	              PlayerPrivilegePlayer,
 	              "PlayerClick_SendCash");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              "CLICK_PM_DIALOG_HEADER",
 	              "CLICK_PM_DIALOG_MESSAGE",
-	              "CLICK_PM_DIALOG_BUTTON_SEND",
-	              "CLICK_PM_DIALOG_BUTTON_BACK",
+	              "BUTTON_SEND",
+	              "BUTTON_BACK",
 	              PlayerPrivilegePlayer,
 	              "PlayerClick_SendMessage");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              "CLICK_REPORT_DIALOG_HEADER",
 	              "CLICK_REPORT_DIALOG_MESSAGE",
-	              "CLICK_REPORT_DIALOG_BUTTON_SEND",
-	              "CLICK_REPORT_DIALOG_BUTTON_BACK",
+	              "BUTTON_SEND",
+	              "BUTTON_BACK",
 	              PlayerPrivilegePlayer,
 	              "PlayerClick_SendReport");
 }
