@@ -614,7 +614,7 @@ stock Tuning_Start(playerid)
 	LinkVehicleToInterior(vehicleid, TUNING_VEHICLE_INTERIOR);
 
 	RepairVehicle(vehicleid);
-	Vehicle_ToggleEngine(vehicleid, 0);
+	Vehicle_ToggleEngine(vehicleid, VEHICLE_PARAMS_OFF);
 
 	// player
 	new type = CARMODTYPE_HOOD;
@@ -652,7 +652,7 @@ stock Tuning_Stop(playerid)
 	SetVehicleVirtualWorld(vehicleid, 0);
 	LinkVehicleToInterior(vehicleid, 0);
 
-	Vehicle_ToggleEngine(vehicleid, 1);
+	Vehicle_ToggleEngine(vehicleid, VEHICLE_PARAMS_ON);
 
 	gInfo[playerid][e_tModel] = 0;
 

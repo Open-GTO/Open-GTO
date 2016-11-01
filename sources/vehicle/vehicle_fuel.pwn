@@ -93,8 +93,6 @@ Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate)
 		if (gFuel[vehicleid] <= 0.1 && !VehShop_IsShopVehicle(vehicleid)) {
 			Lang_SendText(playerid, "VEHICLE_FUEL_EMPTY");
 		}
-
-		Vehicle_ToggleEngine(vehicleid);
 		return 1;
 	}
 
@@ -199,7 +197,7 @@ public Vehicle_Fuel_SpeedTimer()
 		}
 
 		if (gFuel[vehicleid] <= 0.1) {
-			Vehicle_ToggleEngine(vehicleid, 0);
+			Vehicle_ToggleEngine(vehicleid, VEHICLE_PARAMS_OFF);
 
 			gFuel[vehicleid] = 0.0;
 		}
