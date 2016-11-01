@@ -53,6 +53,13 @@ COMMAND:skin(playerid, params[])
 			return 1;
 		}
 
+		switch (skin) {
+			case SKINS_IGNORE: {
+				Lang_SendText(playerid, "ADMIN_COMMAND_SKIN_SKINID_ERROR");
+				return 1;
+			}
+		}
+
 		if (targetid == -1) {
 			foreach (new id : Player) {
 				SetPlayerSkin(id, skin);
