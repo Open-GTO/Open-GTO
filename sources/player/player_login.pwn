@@ -19,6 +19,12 @@ static
 	bool:gPlayerIsLogin[MAX_PLAYERS char];
 
 /*
+	Forwards
+*/
+
+forward OnPlayerLogin(playerid);
+
+/*
 	OnPlayerConnect
 */
 

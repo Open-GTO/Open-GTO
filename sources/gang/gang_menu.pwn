@@ -152,8 +152,18 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 				if (GangMember_IsHaveRank(gangid, memberid, GangMemberLeader)) {
 					Dialog_Show(playerid, Dialog:GangExitAccept);
 				} else {
+					new
+						player_name[MAX_PLAYER_NAME + 1],
+						gang_name[MAX_GANG_NAME + 1];
+
+					GetPlayerName(playerid, player_name, sizeof(player_name));
+					Gang_GetName(gangid, gang_name);
+
 					Gang_MemberRemove(gangid, memberid);
+
 					Dialog_Message(playerid, "GANG_EXIT_HEADER", "GANG_EXIT_INFO", "BUTTON_OK");
+					Gang_SendLangMessage(gangid, "GANG_MEMBER_LEAVE", _, player_name);
+					Log(mainlog, INFO, "Action <GangMenu>: %s(%d) have leaved from '%s' gang.", player_name, playerid, gang_name);
 				}
 				return 1;
 			}
