@@ -439,7 +439,7 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 	               "BANK_GANG_CAPTION",
 	               "BANK_GANG_WITHDRAW_INFO",
 	               "BANK_BUTTON_OK",
-	               MDIALOG_NOTVAR_INFO,
+	               MDIALOG_NOTVAR_NONE,
 	               amount_string,
 	               FormatNumber(Gang_GetMoney(gangid)));
 
@@ -495,7 +495,7 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 	               "BANK_GANG_CAPTION",
 	               "BANK_GANG_DEPOSIT_INFO",
 	               "BANK_BUTTON_OK",
-	               MDIALOG_NOTVAR_INFO,
+	               MDIALOG_NOTVAR_NONE,
 	               amount_string,
 	               FormatNumber(Gang_GetMoney(gangid)));
 
