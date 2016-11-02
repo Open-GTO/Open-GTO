@@ -20,7 +20,7 @@ stock SendClientMessageToAdmins(senderid, text[])
 
 	foreach (new adminid : Player) {
 		if (IsPlayerHavePrivilege(adminid, PlayerPrivilegeAdmin)) {
-			Lang_SendText(adminid, "ACCOUNT_LOGIN_FIRST", sender_name, senderid, text);
+			Lang_SendText(adminid, "ADMIN_CHAT_MESSAGE_TO_ADMIN", sender_name, senderid, text);
 			count++;
 		}
 	}
