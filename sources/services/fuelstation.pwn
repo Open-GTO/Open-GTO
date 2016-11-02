@@ -89,29 +89,29 @@ public OnGameModeInit()
 #endif
 
 /*
-	OnPlayerConnect
+	OnPlayerLogin
 */
 
-public OnPlayerConnect(playerid)
+public OnPlayerLogin(playerid)
 {
 	for (new id = 0; id < sizeof(gFuelstation); id++) {
 		CreatePlayerLabel(playerid, id);
 	}
-	#if defined Fuelst_OnPlayerConnect
-		return Fuelst_OnPlayerConnect(playerid);
+	#if defined Fuelst_OnPlayerLogin
+		return Fuelst_OnPlayerLogin(playerid);
 	#else
 		return 1;
 	#endif
 }
-#if defined _ALS_OnPlayerConnect
-	#undef OnPlayerConnect
+#if defined _ALS_OnPlayerLogin
+	#undef OnPlayerLogin
 #else
-	#define _ALS_OnPlayerConnect
+	#define _ALS_OnPlayerLogin
 #endif
 
-#define OnPlayerConnect Fuelst_OnPlayerConnect
-#if defined Fuelst_OnPlayerConnect
-	forward Fuelst_OnPlayerConnect(playerid);
+#define OnPlayerLogin Fuelst_OnPlayerLogin
+#if defined Fuelst_OnPlayerLogin
+	forward Fuelst_OnPlayerLogin(playerid);
 #endif
 
 /*

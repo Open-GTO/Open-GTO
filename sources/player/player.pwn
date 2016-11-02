@@ -215,7 +215,7 @@ Player_OnPlayerRequestClass(playerid, classid)
 	return 1;
 }
 
-stock Player_OnLogin(playerid)
+public OnPlayerLogin(playerid)
 {
 	// spawn player
 	new
@@ -322,7 +322,23 @@ stock Player_OnLogin(playerid)
 	Widestrip_HideForPlayer(playerid);
 
 	Log(mainlog, INFO, "Player: %s(%d) logged in successfully.", playername, playerid);
+
+	#if defined Player_OnPlayerLogin
+		return Player_OnPlayerLogin(playerid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerLogin
+	#undef OnPlayerLogin
+#else
+	#define _ALS_OnPlayerLogin
+#endif
+
+#define OnPlayerLogin Player_OnPlayerLogin
+#if defined Player_OnPlayerLogin
+	forward Player_OnPlayerLogin(playerid);
+#endif
 
 SkinSelectResponse:RegisterSkin(playerid, SS_Response:type, oldskin, newskin)
 {

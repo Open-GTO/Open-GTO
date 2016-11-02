@@ -309,7 +309,9 @@ stock Player_Login(playerid)
 	}
 
 	SetPlayerLoginStatus(playerid, true);
-	Player_OnLogin(playerid);
+#if defined OnPlayerLogin
+	OnPlayerLogin(playerid);
+#endif
 	return 1;
 }
 
