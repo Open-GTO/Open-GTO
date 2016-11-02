@@ -91,8 +91,7 @@ new
 	Float:BusinessDistanceOfShowLabel=20.0;
 
 static
-	Text3D:gLabelID[ sizeof(Businesses) ][MAX_PLAYERS],
-	gLabelString[ sizeof(Businesses) ][Lang][MAX_LANG_VALUE_STRING];
+	Text3D:gLabelID[ sizeof(Businesses) ][MAX_PLAYERS];
 
 stock business_LoadConfig(file_config)
 {
@@ -167,7 +166,6 @@ business_OnGameModeInit()
 
 	for (new id = 0; id < sizeof(Businesses); id++)
 	{
-		business_UpdateLabelString(id);
 		CreateDynamicPickup(1274, 49, Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z], -1);
 
 		if (Businesses[id][Business_ShowIcon] == 1)
@@ -183,12 +181,28 @@ business_OnGameModeInit()
 	Log_Init("system", "Business module init.");
 }
 
-business_OnPlayerConnect(playerid)
+
+public OnPlayerLogin(playerid)
 {
 	for (new id = 0; id < sizeof(Businesses); id++) {
 		business_CreatePlayerLabel(playerid, id);
 	}
+	#if defined Business_OnPlayerLogin
+		return Business_OnPlayerLogin(playerid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerLogin
+	#undef OnPlayerLogin
+#else
+	#define _ALS_OnPlayerLogin
+#endif
+
+#define OnPlayerLogin Business_OnPlayerLogin
+#if defined Business_OnPlayerLogin
+	forward Business_OnPlayerLogin(playerid);
+#endif
 
 business_OnPlayerDisconnect(playerid, reason)
 {
@@ -685,24 +699,6 @@ stock business_GetUpgradeCost(id)
 	return (Businesses[id][Business_Upgrade] + 1) * Businesses[id][Business_Value] * UPGRADE_TARIF;
 }
 
-static stock business_UpdateLabelString(id)
-{
-	foreach (new Lang:lang : LangIterator) {
-		Lang_GetText(lang, "BUSINESS_TEXT_LABEL", gLabelString[id][lang], sizeof(gLabelString[][]),
-		             Businesses[id][Business_Name],
-		             Businesses[id][Business_Cost],
-		             Businesses[id][Business_Value],
-		             Businesses[id][Business_Level]);
-
-		if (strcmp(Businesses[id][Business_Owner], "Unknown", false)) {
-			Lang_GetText(lang, "BUSINESS_TEXT_LABEL_INFO", gLabelString[id][lang], sizeof(gLabelString[][]),
-			             gLabelString[id][lang],
-			             Businesses[id][Business_Upgrade],
-			             Businesses[id][Business_Owner]);
-		}
-	}
-}
-
 static stock business_DestroyPlayerLabel(playerid, id)
 {
 	DestroyDynamic3DTextLabel(gLabelID[id][playerid]);
@@ -711,22 +707,38 @@ static stock business_DestroyPlayerLabel(playerid, id)
 
 static stock business_CreatePlayerLabel(playerid, id)
 {
-	new Lang:lang = Lang_GetPlayerLang(playerid);
-	gLabelID[id][playerid] = CreateDynamic3DTextLabel(gLabelString[id][lang], COLOR_WHITE,
+	new string[MAX_LANG_VALUE_STRING * 2];
+	business_GetLabelString(id, Lang_GetPlayerLang(playerid), string);
+	gLabelID[id][playerid] = CreateDynamic3DTextLabel(string, COLOR_WHITE,
 		Businesses[id][Coord_X], Businesses[id][Coord_Y], Businesses[id][Coord_Z]+0.75,
 		BusinessDistanceOfShowLabel, .testlos = 1, .playerid = playerid);
 }
 
+static stock business_GetLabelString(id, Lang:lang, string[], const size = sizeof(string))
+{
+	Lang_GetText(lang, "BUSINESS_TEXT_LABEL", string, size,
+	             Businesses[id][Business_Name],
+	             Businesses[id][Business_Cost],
+	             Businesses[id][Business_Value],
+	             Businesses[id][Business_Level]);
+
+	if (strcmp(Businesses[id][Business_Owner], "Unknown", false)) {
+		Lang_GetText(lang, "BUSINESS_TEXT_LABEL_INFO", string, size,
+		             string,
+		             Businesses[id][Business_Upgrade],
+		             Businesses[id][Business_Owner]);
+	}
+}
+
 stock business_UpdatePlayerLabel(playerid, id)
 {
-	new Lang:lang = Lang_GetPlayerLang(playerid);
-	UpdateDynamic3DTextLabelText(gLabelID[id][playerid], COLOR_WHITE, gLabelString[id][lang]);
+	new string[MAX_LANG_VALUE_STRING * 2];
+	business_GetLabelString(id, Lang_GetPlayerLang(playerid), string);
+	UpdateDynamic3DTextLabelText(gLabelID[id][playerid], COLOR_WHITE, string);
 }
 
 stock business_UpdateLabel(id)
 {
-	business_UpdateLabelString(id);
-
 	foreach (new playerid : Player) {
 		business_UpdatePlayerLabel(playerid, id);
 	}

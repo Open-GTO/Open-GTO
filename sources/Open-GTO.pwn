@@ -84,6 +84,7 @@ Thanks:
 #include "player/player_privilege.inc"
 #include "player/player_info.inc"
 #include "player/player_interface.inc"
+#include "player/player_login.inc"
 #include "player/interface/interface_health.inc"
 #include "player/interface/interface_armour.inc"
 #include "vehicle/vehicle_info.inc"
@@ -343,8 +344,6 @@ public OnPlayerConnect(playerid)
 	Beachside_OnPlayerConnect(playerid);
 	Tuning_OnPlayerConnect(playerid);
 	VehShop_OnPlayerConnect(playerid);
-	housing_OnPlayerConnect(playerid);
-	business_OnPlayerConnect(playerid);
 	return 1;
 }
 

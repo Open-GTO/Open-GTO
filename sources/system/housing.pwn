@@ -325,12 +325,27 @@ housing_OnGameModeInit()
 	Log_Init("system", "Housing module init.");
 }
 
-housing_OnPlayerConnect(playerid)
+public OnPlayerLogin(playerid)
 {
 	for (new id = 0; id < sizeof(Houses); id++) {
 		housing_CreatePlayerLabel(playerid, id);
 	}
+	#if defined Housing_OnPlayerLogin
+		return Housing_OnPlayerLogin(playerid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerLogin
+	#undef OnPlayerLogin
+#else
+	#define _ALS_OnPlayerLogin
+#endif
+
+#define OnPlayerLogin Housing_OnPlayerLogin
+#if defined Housing_OnPlayerLogin
+	forward Housing_OnPlayerLogin(playerid);
+#endif
 
 housing_OnPlayerDisconnect(playerid, reason)
 {
