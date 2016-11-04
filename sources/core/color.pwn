@@ -85,7 +85,6 @@
 	Param defines
 */
 
-#define MAX_COLOR_COUNT 30
 #define MAX_COLOR_NAME 16
 
 /*
@@ -98,8 +97,9 @@ enum e_Colors_Info {
 	e_cVehicle,
 }
 
-static gColors[MAX_COLOR_COUNT][e_Colors_Info] = {
+static gColors[][e_Colors_Info] = {
 	{"Black", COLOR_BLACK, 0},
+	{"White", COLOR_WHITE, 1},
 	{"Red Devil", COLOR_RED_DEVIL, 3},
 	{"Golden Bell", COLOR_GOLDEN_BELL, 6},
 	{"Deep Blush", COLOR_DEEP_BLUSH, 126},
@@ -130,6 +130,8 @@ static gColors[MAX_COLOR_COUNT][e_Colors_Info] = {
 	{"Maroon Oak", COLOR_MAROON_OAK, 249},
 	{"Tuna", COLOR_TUNA, 251}
 };
+
+const MAX_COLOR_COUNT = sizeof(gColors);
 
 /*
 	Public functions

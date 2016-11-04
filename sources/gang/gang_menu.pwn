@@ -315,7 +315,7 @@ DialogCreate:GangCreateColor(playerid)
 {
 	new string[(MAX_COLOR_NAME + 8 + 2 + 1) * MAX_COLOR_COUNT];
 
-	for (new i = 0; i < MAX_COLOR_COUNT; i++) {
+	for (new i = 1; i < MAX_COLOR_COUNT; i++) {
 		format(string, sizeof(string), "%s{%s}%s\n", string, Color_ReturnEmbeddingCode(i), Color_ReturnName(i));
 	}
 
@@ -680,7 +680,7 @@ DialogCreate:GangColor(playerid)
 		temp_str[MAX_LANG_VALUE_STRING],
 		string[(MAX_COLOR_NAME + 8 + 2 + 1 + 1) * MAX_COLOR_COUNT];
 
-	for (new i = 0; i < MAX_COLOR_COUNT; i++) {
+	for (new i = 1; i < MAX_COLOR_COUNT; i++) {
 		format(temp_str, sizeof(temp_str), "{%s}%s", Color_ReturnEmbeddingCode(i), Color_ReturnName(i));
 		strcat(string, temp_str);
 		strcat(string, "\n");
