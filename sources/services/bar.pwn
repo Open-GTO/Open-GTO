@@ -72,7 +72,7 @@ static gDrinksInfo[][e_Drink_Info] = {
 
 static
 	gActors[MAX_BAR_ACTORS],
-	gPlayerGulps[MAX_PLAYERS char] = {INVALID_GULP_ID, ...},
+	gPlayerGulps[MAX_PLAYERS char],
 	gPlayerAlcoholID[MAX_PLAYERS char],
 	bool:gPlayerIsGulping[MAX_PLAYERS char];
 
@@ -109,6 +109,30 @@ public OnGameModeInit()
 #define OnGameModeInit Bar_OnGameModeInit
 #if defined Bar_OnGameModeInit
 	forward Bar_OnGameModeInit();
+#endif
+
+/*
+	OnPlayerConnect
+*/
+
+public OnPlayerConnect(playerid)
+{
+	ResetDrinkingData(playerid);
+	#if defined Bar_OnPlayerConnect
+		return Bar_OnPlayerConnect(playerid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
+
+#define OnPlayerConnect Bar_OnPlayerConnect
+#if defined Bar_OnPlayerConnect
+	forward Bar_OnPlayerConnect(playerid);
 #endif
 
 /*
@@ -378,13 +402,23 @@ stock IsPlayerAtBar(playerid)
 	Private functions
 */
 
+static stock StartPlayerDrinking(playerid, alcoholid)
+{
+	gPlayerGulps{playerid} = 0;
+	gPlayerAlcoholID{playerid} = alcoholid;
+}
+
 static stock StopPlayerDrinking(playerid)
 {
 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
+	ResetDrinkingData(playerid);
+}
+
+static stock ResetDrinkingData(playerid)
+{
 	gPlayerGulps{playerid} = INVALID_GULP_ID;
 	gPlayerIsGulping{playerid} = false;
 	gPlayerAlcoholID{playerid} = 0;
-	return 1;
 }
 
 static stock IsPlayerGulping(playerid)
@@ -405,12 +439,6 @@ static stock GetPlayerGulps(playerid)
 static stock GetPlayerAlcoholID(playerid)
 {
 	return gPlayerAlcoholID{playerid};
-}
-
-static stock StartPlayerDrinking(playerid, alcoholid)
-{
-	gPlayerGulps{playerid} = 0;
-	gPlayerAlcoholID{playerid} = alcoholid;
 }
 
 static stock MakePlayerGulp(playerid)
