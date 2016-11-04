@@ -371,9 +371,11 @@ public AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[])
 	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_LOGIN", string, sizeof(string), day, month, year);
 	strcat(message, string);
 
-	gmtime(account_info[e_aPremiumTime], year, month, day);
-	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM", string, sizeof(string), day, month, year);
-	strcat(message, string);
+	if (account_info[e_aPremiumTime] != 0) {
+		gmtime(account_info[e_aPremiumTime], year, month, day);
+		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM", string, sizeof(string), day, month, year);
+		strcat(message, string);
+	}
 
 	GetTimeStringFromSeconds(playerid, account_info[e_aPlayedSeconds], string);
 	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PLAYED", string, sizeof(string), string);

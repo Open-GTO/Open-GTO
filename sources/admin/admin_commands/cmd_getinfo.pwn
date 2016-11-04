@@ -123,8 +123,10 @@ COMMAND:getinfo(playerid, params[])
 		gmtime(account_info[e_aLoginTime], year, month, day);
 		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_LOGIN", day, month, year);
 
-		gmtime(account_info[e_aPremiumTime], year, month, day);
-		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM", day, month, year);
+		if (account_info[e_aPremiumTime] != 0) {
+			gmtime(account_info[e_aPremiumTime], year, month, day);
+			Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM", day, month, year);
+		}
 
 		GetTimeStringFromSeconds(playerid, account_info[e_aPlayedSeconds], string);
 		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PLAYED", string);
