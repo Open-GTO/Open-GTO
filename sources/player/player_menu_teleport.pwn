@@ -78,11 +78,19 @@ DialogResponse:PlayerTeleportMenu(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
+	if (IsPlayerInAnyVehicle(playerid)) {
+		Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
+		                 "PLAYER_MENU_TELEPORT_HEADER",
+		                 "PLAYER_MENU_TELEPORT_NO_VEHICLE",
+		                 "BUTTON_BACK", "BUTTON_EXIT");
+		return 0;
+	}
+
 	if (IsTeleportPaused(playerid)) {
-		Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_MSGBOX,
-		            "PLAYER_MENU_TELEPORT_HEADER",
-		            "PLAYER_MENU_TELEPORT_NOT_YET",
-		            "BUTTON_BACK", "BUTTON_EXIT");
+		Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
+		                 "PLAYER_MENU_TELEPORT_HEADER",
+		                 "PLAYER_MENU_TELEPORT_NOT_YET",
+		                 "BUTTON_BACK", "BUTTON_EXIT");
 		return 0;
 	}
 
