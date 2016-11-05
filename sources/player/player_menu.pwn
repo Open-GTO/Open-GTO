@@ -133,11 +133,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 		}
 		// выбросить оружие
 		case 6: {
-			ResetPlayerWeapons(playerid);
-			Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
-			                 "PLAYER_MENU_DROPWEAPON_HEADER",
-			                 "PLAYER_MENU_DROPWEAPON_DROPPED",
-			                 "BUTTON_BACK", "BUTTON_EXIT");
+			Dialog_Show(playerid, Dialog:PlayerDropAcceptMenu);
 			return 1;
 		}
 		// место спавна
@@ -225,5 +221,28 @@ DialogResponse:PlayerReturnMenu(playerid, response, listitem, inputtext[])
 	if (response) {
 		Dialog_Show(playerid, Dialog:PlayerMenu);
 	}
+	return 1;
+}
+
+DialogCreate:PlayerDropAcceptMenu(playerid)
+{
+	Dialog_Open(playerid, Dialog:PlayerDropAcceptMenu, DIALOG_STYLE_MSGBOX,
+	            "PLAYER_MENU_DROPWEAPON_ACCEPT_HEADER",
+	            "PLAYER_MENU_DROPWEAPON_ACCEPT_INFO",
+	            "BUTTON_DROP", "BUTTON_BACK");
+}
+
+DialogResponse:PlayerDropAcceptMenu(playerid, response, listitem, inputtext[])
+{
+	if (!response) {
+		Dialog_Show(playerid, Dialog:PlayerMenu);
+		return 1;
+	}
+
+	ResetPlayerWeapons(playerid);
+	Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
+	                 "PLAYER_MENU_DROPWEAPON_HEADER",
+	                 "PLAYER_MENU_DROPWEAPON_DROPPED",
+	                 "BUTTON_BACK", "BUTTON_EXIT");
 	return 1;
 }
