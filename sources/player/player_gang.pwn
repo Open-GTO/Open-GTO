@@ -46,6 +46,14 @@ static
 	Invite ID
 */
 
+stock ResetPlayerInvitedData(playerid)
+{
+	for (new i = 0; i < MAX_GANG_INVITES; i++) {
+		gPlayerInvitedGang[playerid][i][e_pigID] = INVALID_GANG_ID;
+		gPlayerInvitedGang[playerid][i][e_pigTime] = 0;
+	}
+}
+
 stock IsPlayerInvitedInAnyGang(playerid)
 {
 	for (new i = 0; i < MAX_GANG_INVITES; i++) {
@@ -197,6 +205,7 @@ stock ResetPlayerGangData(playerid)
 	SetPlayerGangName(playerid, "");
 	SetPlayerGangMemberID(playerid, INVALID_MEMBER_ID);
 	SetPlayerColor(playerid, GetPlayerGangColor(playerid));
+	ResetPlayerInvitedData(playerid);
 
 	if (GetPlayerSpawnType(playerid) == SPAWN_TYPE_GANG) {
 		SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
