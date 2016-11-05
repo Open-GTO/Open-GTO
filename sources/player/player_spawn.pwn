@@ -2380,6 +2380,7 @@ public OnPlayerConnect(playerid)
 	SetPlayerSpawned(playerid, false);
 	SetPlayerSpawnInfo(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
 	SetPlayerDeathInfo(playerid, 0.0, 0.0, 0.0, 0.0, 0, 0);
+	SetPlayerSpawnHouseID(playerid, -1);
 
 	#if defined PSpawn_OnPlayerConnect
 		return PSpawn_OnPlayerConnect(playerid);
