@@ -232,17 +232,19 @@ DialogResponse:GangRemoveAccept(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new gangid = GetPlayerGangID(playerid);
-	new is_ok = Gang_Remove(gangid);
-	if (is_ok) {
-		new
-			player_name[MAX_PLAYER_NAME + 1],
-			gang_name[MAX_GANG_NAME];
+	new
+		gangid,
+		gang_name[MAX_GANG_NAME],
+		players[MAX_GANG_SIZE + 1],
+		is_removed;
 
-		GetPlayerName(playerid, player_name, sizeof(player_name));
-		Gang_GetName(gangid, gang_name, sizeof(gang_name));
+	gangid = GetPlayerGangID(playerid);
+	Gang_GetName(gangid, gang_name, sizeof(gang_name));
+	GangMember_GetPlayers(gangid, players);
 
-		Gang_SendLangMessage(gangid, "GANG_REMOVED", _, player_name, playerid, gang_name);
+	is_removed = Gang_Remove(gangid);
+	if (is_removed) {
+		Lang_SendTextToPlayers(players, "GANG_REMOVED", ret_GetPlayerName(playerid), playerid, gang_name);
 		Dialog_Message(playerid, "GANG_EXIT_HEADER", "GANG_EXIT_REMOVED", "BUTTON_OK",
 		               MDIALOG_NOTVAR_NONE, gang_name);
 	} else {

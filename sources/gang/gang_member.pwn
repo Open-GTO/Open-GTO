@@ -108,6 +108,30 @@ stock GangMember_GetFreeSlot(gangid)
 }
 
 /*
+	Gang Members
+*/
+
+stock GangMember_GetPlayers(gangid, players[], const size = sizeof(players))
+{
+	new
+		memberid,
+		i;
+
+	foreach (memberid : LoadedGangMembers[gangid]) {
+		players[i] = GangMember_GetID(gangid, memberid);
+
+		if (i >= size - 1) {
+			break;
+		} else {
+			i++;
+		}
+	}
+
+	players[i] = INVALID_PLAYER_ID;
+	return i;
+}
+
+/*
 	Gang Member Name
 */
 
