@@ -365,7 +365,7 @@ public Bar_GulpProcess(playerid)
 	SetPlayerDrunkLevel(playerid, GetPlayerDrunkLevel(playerid) + floatround(gDrinksInfo[id][e_dAlcohol] * 100.0 / MAX_GULPS, floatround_round));
 
 	new Float:max_health;
-	GetMaxHealth(playerid, max_health);
+	GetPlayerMaxHealth(playerid, max_health);
 
 	new Float:health;
 	GetPlayerHealth(playerid, health);

@@ -52,11 +52,13 @@ COMMAND:health(playerid, params[])
 		if (targetid == -1) {
 			foreach (new id : Player) {
 				SetPlayerHealth(id, amount);
+				SetPlayerHealthRegen(id, false);
 			}
 
 			Lang_SendTextToAll("ADMIN_COMMAND_HEALTH_SET_ALL", playername, playerid, amount);
 		} else {
 			SetPlayerHealth(targetid, amount);
+			SetPlayerHealthRegen(targetid, false);
 
 			GetPlayerNearPlayers(playerid, 40.0, players);
 			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_HEALTH_SET_PLAYER", playername, playerid, targetname, targetid, amount);

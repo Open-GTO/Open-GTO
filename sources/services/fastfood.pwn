@@ -235,7 +235,7 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 		Float:health;
 
 	Lang_GetPlayerText(playerid, gFoodInfo[id][e_fNameVar], name);
-	GetMaxHealth(playerid, max_health);
+	GetPlayerMaxHealth(playerid, max_health);
 	GetPlayerHealth(playerid, health);
 
 	if (gFoodInfo[id][e_fHealth] + health > max_health) {
