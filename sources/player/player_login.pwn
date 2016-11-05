@@ -309,9 +309,7 @@ stock Player_Login(playerid)
 	}
 
 	SetPlayerLoginStatus(playerid, true);
-#if defined OnPlayerLogin
-	OnPlayerLogin(playerid);
-#endif
+	CallLocalFunction("OnPlayerLogin", "i", playerid);
 	return 1;
 }
 
