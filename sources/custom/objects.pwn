@@ -13,6 +13,24 @@
 
 /*
 
+	Og Loc's house
+
+*/
+
+	CreateDynamicObject(3857, 514.13690, -6.69190, 1001.09491,   0.00000, 0.00000, 45.00000, .interiorid = 3);
+	CreateDynamicObject(3857, 517.75128, -6.70750, 1001.13489,   0.00000, 0.00000, 45.00000, .interiorid = 3);
+	CreateDynamicObject(3857, 521.49512, -10.09380, 1001.11188,   0.00000, 0.00000, 135.00000, .interiorid = 3);
+	CreateDynamicObject(3857, 521.49707, -12.06980, 1001.13190,   0.00000, 0.00000, 135.00000, .interiorid = 3);
+	CreateDynamicObject(3857, 519.13000, -15.74590, 1000.39368,   0.00000, 0.00000, 45.00000, .interiorid = 3);
+	CreateDynamicObject(3857, 510.39590, -10.16580, 1001.08698,   0.00000, 0.00000, 135.00000, .interiorid = 3);
+	CreateDynamicObject(3857, 510.40210, -16.12550, 1001.02698,   0.00000, 0.00000, 135.00000, .interiorid = 3);
+	CreateDynamicObject(19325, 515.39850, -19.04670, 1001.77081,   0.00000, 0.00000, 0.00000, .interiorid = 3);
+	CreateDynamicObject(19325, 510.94620, -20.40400, 1002.41052,   0.00000, 0.00000, 88.86000, .interiorid = 3);
+	CreateDynamicObject(19325, 509.84698, -19.17280, 1001.91168,   0.00000, 0.00000, 53.85990, .interiorid = 3);
+	CreateDynamicObject(19325, 512.32098, -20.64680, 1001.91772,   0.00000, 0.00000, 107.71980, .interiorid = 3);
+
+/*
+
 	Las Venturas Free Base
 
 */
