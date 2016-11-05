@@ -10,8 +10,22 @@
 
 #define _world_included
 
+/*
+	Forwards
+*/
 
 forward WorldSave(necessarily);
+
+forward OneSecTimer();
+forward OneMinuteTimer();
+forward OneHourTimer();
+forward TenMinuteTimer();
+forward FiveSecondTimer();
+
+/*
+	WorldSave
+*/
+
 public WorldSave(necessarily) // save all
 {
 	static emptyServerSaved = 0;
@@ -46,9 +60,10 @@ public WorldSave(necessarily) // save all
 	return 1;
 }
 
-//----------------------------------------------------------------------------------------------------
+/*
+	Timers
+*/
 
-forward OneSecTimer();
 public OneSecTimer()
 {
 	foreach (new playerid : Player) {
@@ -57,36 +72,9 @@ public OneSecTimer()
 	}
 
 	Lottery_WaitTimer();
+	return 1;
 }
 
-forward OneMinuteTimer();
-public OneMinuteTimer()
-{
-	foreach (new playerid : Player) {
-		if (IsPlayerLogin(playerid)) {
-			Gang_GiveMemberXP(playerid);
-		}
-	}
-
-	Time_Sync();
-	TurnAround();
-}
-
-forward OneHourTimer();
-public OneHourTimer()
-{
-	Bank_AddProfit();
-	CheckBusinessOwners();
-	VehShop_OneHourTimer();
-}
-
-forward TenMinuteTimer();
-public TenMinuteTimer()
-{
-	HouseKeepUp();
-}
-
-forward FiveSecondTimer();
 public FiveSecondTimer()
 {
 	foreach (new playerid : Player) {
@@ -103,4 +91,50 @@ public FiveSecondTimer()
 	payday_Check();
 	VehShop_SetVehiclesToRespawn();
 	Weather_Update();
+	return 1;
+}
+
+/*
+	OneMinuteTimer
+*/
+
+public OneMinuteTimer()
+{
+	foreach (new playerid : Player) {
+		if (IsPlayerLogin(playerid)) {
+			Gang_GiveMemberXP(playerid);
+		}
+	}
+
+	Time_Sync();
+	TurnAround();
+	#if defined World_OneMinuteTimer
+		return World_OneMinuteTimer();
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OneMinuteTimer
+	#undef OneMinuteTimer
+#else
+	#define _ALS_OneMinuteTimer
+#endif
+
+#define OneMinuteTimer World_OneMinuteTimer
+#if defined World_OneMinuteTimer
+	forward World_OneMinuteTimer();
+#endif
+
+public TenMinuteTimer()
+{
+	HouseKeepUp();
+	return 1;
+}
+
+public OneHourTimer()
+{
+	Bank_AddProfit();
+	CheckBusinessOwners();
+	VehShop_OneHourTimer();
+	return 1;
 }

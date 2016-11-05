@@ -288,7 +288,6 @@ public OnGameModeInit()
 
 	// missions
 	Trucker_OnGameModeInit();
-	swagup_OnGameModeInit();
 
 	// services
 	sshop_OnGameModeInit();
@@ -377,9 +376,6 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
 	if (PWDrop_OnPlayerPickUpPickup(playerid, pickupid)) {
-		return 1;
-	}
-	if (swagup_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
 	}
 	if (Premium_OnPlayerPickUpPickup(playerid, pickupid)) {

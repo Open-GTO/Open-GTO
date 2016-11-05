@@ -1,8 +1,8 @@
 /*
 
-	Описание: Скрипт поклаж
-	Автор: ziggi
-	Дата: 08.05.2011
+	About: package pickup system
+	Author: ziggi
+	Thanks: Sandra for coords in CashBox script
 
 */
 
@@ -12,11 +12,15 @@
 
 #define _swagup_included
 
+/*
+	Vars
+*/
 
 static
-	g_pickup_id;
+	gPickupID,
+	gPreviousTime;
 
-static Float:swagup_Coords[][CoordInfo] = { // from CashBox script by Sandra
+static Float:gCoords[][CoordInfo] = {
 	{2227.74, 1516.43, 10.82},
 	{-724.44, 1402.81, 13.07},
 	{-1940.61, 1086.14, 53.09},
@@ -84,25 +88,47 @@ static Float:swagup_Coords[][CoordInfo] = { // from CashBox script by Sandra
 	{286.36, -1145.15, 80.91}
 };
 
-stock swagup_OnGameModeInit()
+/*
+	OnGameModeInit
+*/
+
+public OnGameModeInit()
 {
 	if (!IsMissionEnabled(mission_swagup)) {
 		return 0;
 	}
 
-	swagup_SpawnPickup();
+	Swagup_SetTimeout();
 
 	Log_Init("missions", "Swagup module init.");
-	return 1;
+	#if defined Swagup_OnGameModeInit
+		return Swagup_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
 
-stock swagup_OnPlayerPickUpPickup(playerid, pickupid)
+#define OnGameModeInit Swagup_OnGameModeInit
+#if defined Swagup_OnGameModeInit
+	forward Swagup_OnGameModeInit();
+#endif
+
+/*
+	OnPlayerPickUpDynamicPickup
+*/
+
+public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
-	if (!IsMissionEnabled(mission_swagup) || pickupid != g_pickup_id) {
+	if (!IsMissionEnabled(mission_swagup) || pickupid != gPickupID) {
 		return 0;
 	}
 
-	DestroyDynamicPickup(g_pickup_id);
+	DestroyDynamicPickup(gPickupID);
 
 	new
 		win_money = mission_CalculateMoney(playerid, mission_swagup),
@@ -113,17 +139,69 @@ stock swagup_OnPlayerPickUpPickup(playerid, pickupid)
 
 	Lang_SendTextToAll("SWAGUP_BAG_FOUND", ret_GetPlayerName(playerid), playerid, win_money, win_xp);
 
-	SetTimer("swagup_SpawnPickup", mission_GetPauseTime(mission_swagup), 0);
-	return 1;
+	Swagup_SetTimeout();
+	#if defined Swagup_OnPlayerPickUpDP
+		return Swagup_OnPlayerPickUpDP(playerid, pickupid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerPickUpDP
+	#undef OnPlayerPickUpDynamicPickup
+#else
+	#define _ALS_OnPlayerPickUpDP
+#endif
+
+#define OnPlayerPickUpDynamicPickup Swagup_OnPlayerPickUpDP
+#if defined Swagup_OnPlayerPickUpDP
+	forward Swagup_OnPlayerPickUpDP(playerid, pickupid);
+#endif
+
+/*
+	OneMinuteTimer
+*/
+
+public OneMinuteTimer()
+{
+	if (!Swagup_IsPaused() && gPreviousTime > gettime()) {
+		Lang_SendTextToAll("SWAGUP_BAG_CREATED");
+
+		new swid = random( sizeof(gCoords) );
+		gPickupID = CreateDynamicPickup(410, 3, gCoords[swid][Coord_X], gCoords[swid][Coord_Y], gCoords[swid][Coord_Z], -1);
+		Swagup_SetPaused();
+	}
+	#if defined Swagup_OneMinuteTimer
+		return Swagup_OneMinuteTimer();
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OneMinuteTimer
+	#undef OneMinuteTimer
+#else
+	#define _ALS_OneMinuteTimer
+#endif
+
+#define OneMinuteTimer Swagup_OneMinuteTimer
+#if defined Swagup_OneMinuteTimer
+	forward Swagup_OneMinuteTimer();
+#endif
+
+/*
+	Functions
+*/
+
+stock Swagup_IsPaused()
+{
+	return gPreviousTime == -1;
 }
 
-forward swagup_SpawnPickup();
-public swagup_SpawnPickup()
+stock Swagup_SetPaused()
 {
-	new swid = random( sizeof(swagup_Coords) );
-	g_pickup_id = CreateDynamicPickup(410, 3, swagup_Coords[swid][Coord_X], swagup_Coords[swid][Coord_Y], swagup_Coords[swid][Coord_Z], -1);
-	foreach (new playerid : Player) {
-		Lang_SendText(playerid, "SWAGUP_BAG_CREATED");
-	}
-	return 1;
+	gPreviousTime = -1;
+}
+
+stock Swagup_SetTimeout()
+{
+	gPreviousTime = gettime() + mission_GetPauseTime(mission_swagup);
 }
