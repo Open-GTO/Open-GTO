@@ -35,7 +35,7 @@ COMMAND:weapon(playerid, params[])
 		weaponid,
 		amount;
 
-	if (sscanf(params, "s[5]s[32]k<weapon>I(0)", subcmd, subparams, weaponid, amount) || weaponid == -1) {
+	if (sscanf(params, "s[5]s[32]K<weapon>(-1)I(0)", subcmd, subparams, weaponid, amount)) {
 		Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_HELP");
 		return 1;
 	}
@@ -61,6 +61,10 @@ COMMAND:weapon(playerid, params[])
 	}
 
 	if (strcmp(subcmd, "set", true) == 0) {
+		if (weaponid == -1) {
+			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_TARGET_ERROR");
+			return 1;
+		}
 		if (targetid == -1) {
 			foreach (new id : Player) {
 				SetPlayerWeapon(id, weaponid, amount);
@@ -81,16 +85,25 @@ COMMAND:weapon(playerid, params[])
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_GET", targetname, targetid);
 
+		new
+			weaponname[MAX_NAME];
+
 		for (new slot = 0; slot < PLAYER_WEAPON_SLOTS; slot++) {
 			GetPlayerWeaponData(playerid, slot, weaponid, amount);
+			GetPlayerWeaponName(playerid, weaponid, weaponname, sizeof(weaponname));
 
 			if (weaponid == 0) {
 				continue;
 			}
 
-			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_GET_ITEM", slot, weaponid, amount);
+			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_GET_ITEM", slot, weaponid, weaponname, amount);
 		}
 	} else if (strcmp(subcmd, "give", true) == 0) {
+		if (weaponid == -1) {
+			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_TARGET_ERROR");
+			return 1;
+		}
+
 		if (amount == 0) {
 			amount = 100;
 		}
