@@ -53,12 +53,11 @@ PWSkill_OnPlayerDeath(playerid, killerid, reason)
 	}
 
 	new skillid = GetWeaponSkillID(reason);
-	if (skillid == -1) {
+	if (skillid == INVALID_WEAPON_SKILL_ID) {
 		return 0;
 	}
 
 	GivePlayerSkillLevel(killerid, skillid, WEAPON_SKILL_SPEED);
-
 	return 1;
 }
 

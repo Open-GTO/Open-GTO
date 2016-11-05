@@ -187,7 +187,7 @@ stock PlayerWSkillTD_UpdateString(playerid)
 	td_wskill = PlayerText:GetPlayerInterfaceParam(playerid, PI_WeaponSkill, PIP_TextDraw);
 	skillid = GetWeaponSkillID( GetPlayerWeapon(playerid) );
 
-	if (skillid != -1) {
+	if (skillid != INVALID_WEAPON_SKILL_ID) {
 		format(string, sizeof(string), "%03d/" #MAX_WEAPON_SKILL_LEVEL, GetPlayerSkillLevel(playerid, skillid));
 
 		PlayerTextDrawSetString(playerid, td_wskill, string);

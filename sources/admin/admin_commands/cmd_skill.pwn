@@ -51,12 +51,12 @@ COMMAND:skill(playerid, params[])
 	}
 
 	new
-		skillid = -1;
+		skillid = INVALID_WEAPON_SKILL_ID;
 
 	if (weaponid != -1) {
 		skillid = GetWeaponSkillID(weaponid);
 
-		if (skillid == -1) {
+		if (skillid == INVALID_WEAPON_SKILL_ID) {
 			Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_WEAPON_ERROR");
 			return 1;
 		}
@@ -70,7 +70,7 @@ COMMAND:skill(playerid, params[])
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	if (skillid != -1) {
+	if (skillid != INVALID_WEAPON_SKILL_ID) {
 		GetWeaponSkillName(skillid, skillname);
 	}
 
