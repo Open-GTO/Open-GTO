@@ -150,7 +150,7 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 			// выйти из банды
 			case 1: {
 				if (GangMember_IsHaveRank(gangid, memberid, GangMemberLeader)) {
-					Dialog_Show(playerid, Dialog:GangExitAccept);
+					Dialog_Show(playerid, Dialog:GangRemoveAccept);
 				} else {
 					new
 						player_name[MAX_PLAYER_NAME + 1],
@@ -217,15 +217,15 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-DialogCreate:GangExitAccept(playerid)
+DialogCreate:GangRemoveAccept(playerid)
 {
-	Dialog_Open(playerid, Dialog:GangExitAccept, DIALOG_STYLE_MSGBOX,
+	Dialog_Open(playerid, Dialog:GangRemoveAccept, DIALOG_STYLE_MSGBOX,
 	            "GANG_REMOVE_HEADER",
 	            "GANG_REMOVE_INFO",
 	            "GANG_REMOVE_BUTTON", "BUTTON_BACK");
 }
 
-DialogResponse:GangExitAccept(playerid, response, listitem, inputtext[])
+DialogResponse:GangRemoveAccept(playerid, response, listitem, inputtext[])
 {
 	if (!response) {
 		Dialog_Show(playerid, Dialog:GangMenu);

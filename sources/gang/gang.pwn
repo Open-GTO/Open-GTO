@@ -275,7 +275,7 @@ stock Gang_Remove(gangid)
 	}
 
 	foreach (new memberid : LoadedGangMembers[gangid]) {
-		Gang_MemberRemove(gangid, memberid);
+		Gang_MemberRemove(gangid, memberid, true, memberid);
 	}
 
 	Gang_Unload(gangid);
@@ -325,7 +325,7 @@ stock Gang_MemberJoin(gangid, playerid, GangMemberRank:rank = GangMemberSoldier)
 	Gang_MemberRemove
 */
 
-stock Gang_MemberRemove(gangid, memberid)
+stock Gang_MemberRemove(gangid, memberid, bool:safe = false, &next_value = 0)
 {
 	new playerid = GangMember_GetID(gangid, memberid);
 
@@ -333,10 +333,13 @@ stock Gang_MemberRemove(gangid, memberid)
 	GangMember_SetName(gangid, memberid, "");
 	GangMember_SetExists(gangid, memberid, false);
 	GangMember_SetRank(gangid, memberid, GangMemberSoldier);
-	GangMember_SetActiveStatus(gangid, memberid, false);
+	if (safe) {
+		GangMember_SetActiveStatus(gangid, memberid, false, true, next_value);
+	} else {
+		GangMember_SetActiveStatus(gangid, memberid, false);
+	}
 
 	ResetPlayerGangData(playerid);
-
 	return 1;
 }
 
@@ -385,7 +388,6 @@ stock Gang_MemberLogin(playerid, gangid, memberid = INVALID_MEMBER_ID)
 	SetPlayerGangMemberID(playerid, memberid);
 	SetPlayerColor(playerid, Gang_GetColor(gangid));
 	SetPlayerInvitedGangID(playerid, gangid, false);
-
 	return 1;
 }
 
@@ -407,7 +409,6 @@ stock Gang_MemberLogout(playerid, gangid)
 	if (Gang_GetOnlineCount(gangid) == 0) {
 		Gang_Unload(gangid);
 	}
-
 	return 1;
 }
 
