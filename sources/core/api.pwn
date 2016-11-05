@@ -57,11 +57,11 @@ public api_SetPlayerHealth(playerid, Float:amount)
 	return SetPlayerHealth(playerid, amount);
 }
 
-forward api_GetMaxHealth(playerid);
-public api_GetMaxHealth(playerid)
+forward api_GetPlayerMaxHealth(playerid);
+public api_GetPlayerMaxHealth(playerid)
 {
 	new Float:amount;
-	GetMaxHealth(playerid, amount);
+	GetPlayerMaxHealth(playerid, amount);
 	return _:amount;
 }
 
