@@ -50,12 +50,14 @@ Thanks:
 #include "lib/sscanf2.inc"
 #include "lib/zcmd.inc"
 #include "lib/formatnumber.inc"
+#include "lib/log-plugin.inc"
+#include "lib/gvar.inc"
 #include "lib/mxINI/mxINI.inc"
+#include "lib/zmessage/zmessage.inc"
 #include "lib/time_t/time_t.inc"
 #include "lib/mapfix.inc"
 #include "lib/textlist/textlist.inc"
 #include "lib/shootingrange/shootingrange.inc"
-#include "lib/gvar.inc"
 #include "lib/zlang/zlang.inc"
 #include "lib/zvehcomp/zvehcomp.inc"
 #include "lib/zvehpaintjob/zvehpaintjob.inc"
@@ -70,7 +72,6 @@ Thanks:
 #include "lib/getweather/getweather.inc"
 #include "lib/weaponskill/weaponskill.inc"
 #include "lib/zvehinfo/zvehinfo.inc"
-#include "lib/log-plugin.inc"
 
 // header files
 #include "core/lang.inc"

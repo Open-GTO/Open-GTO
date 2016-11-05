@@ -58,3 +58,6 @@
 [submodule "sources/lib/mselect"]
 	path = sources/lib/mselect
 	url = https://github.com/Open-GTO/mselect.git
+[submodule "sources/lib/zmessage"]
+	path = sources/lib/zmessage
+	url = https://github.com/Open-GTO/zmessage
