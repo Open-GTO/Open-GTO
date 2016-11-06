@@ -48,6 +48,10 @@ COMMAND:health(playerid, params[])
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 	}
 
+	if (amount > MAX_HEALTH) {
+		amount = MAX_HEALTH;
+	}
+
 	if (strcmp(subcmd, "set", true) == 0) {
 		if (targetid == -1) {
 			foreach (new id : Player) {

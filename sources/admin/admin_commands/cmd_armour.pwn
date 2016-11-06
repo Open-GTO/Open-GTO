@@ -48,6 +48,10 @@ COMMAND:armour(playerid, params[])
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 	}
 
+	if (amount > 100.0) {
+		amount = 100.0;
+	}
+
 	if (strcmp(subcmd, "set", true) == 0) {
 		if (targetid == -1) {
 			foreach (new id : Player) {
