@@ -403,7 +403,6 @@ DialogCreate:HouseMenu(playerid)
 	static
 		string[MAX_LANG_VALUE_STRING * 7],
 		temp[MAX_LANG_VALUE_STRING],
-		head[MAX_LANG_VALUE_STRING],
 		playername[MAX_PLAYER_NAME+1];
 
 	string[0] = '\0';
@@ -411,7 +410,6 @@ DialogCreate:HouseMenu(playerid)
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	new id = GetPlayerToHouseID(playerid);
-	Lang_GetPlayerText(playerid, "HOUSING_DIALOG_HEADER", head, sizeof(head), Houses[id][Houses_Name]);
 
 	new isowner = !strcmp(Houses[id][Houses_Owner], playername, true);
 	if (isowner) {
@@ -462,7 +460,7 @@ DialogCreate:HouseMenu(playerid)
 	}
 
 	Dialog_Open(playerid, Dialog:HouseMenu, DIALOG_STYLE_LIST,
-	            head,
+	            Houses[id][Houses_Name],
 	            string,
 	            "HOUSING_DIALOG_BUTTON_SELECT", "HOUSING_DIALOG_BUTTON_CANCEL",
 	            MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_INFO);
@@ -1002,12 +1000,9 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		if (IsPlayerInRangeOfPoint(playerid, 3, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.5))
 		{
 			new
-				head[MAX_LANG_VALUE_STRING],
 				string[MAX_LANG_VALUE_STRING * 2],
 				temp[MAX_LANG_VALUE_STRING],
 				rent_string[MAX_LANG_VALUE_STRING];
-
-			Lang_GetPlayerText(playerid, "HOUSING_DIALOG_HEADER", head, _, Houses[id][Houses_Name]);
 
 			new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
 
@@ -1033,7 +1028,7 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 					}
 
 					Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX,
-					            head,
+					            Houses[id][Houses_Name],
 					            string,
 					            "HOUSING_DIALOG_BUTTON_ACTIONS", "HOUSING_DIALOG_BUTTON_CANCEL",
 					            MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_INFO);
@@ -1045,7 +1040,7 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 					strcat(string, rent_string, sizeof(string));
 
 					Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX,
-					            head,
+					            Houses[id][Houses_Name],
 					            string,
 					            "HOUSING_DIALOG_BUTTON_ACTIONS", "HOUSING_DIALOG_BUTTON_CANCEL",
 					            MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_INFO);
@@ -1055,7 +1050,7 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			else
 			{
 				Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX,
-				            head,
+				            Houses[id][Houses_Name],
 				            "HOUSING_DIALOG_INFO_NO_OWNER",
 				            "HOUSING_DIALOG_BUTTON_ACTIONS", "HOUSING_DIALOG_BUTTON_CANCEL",
 				            MDIALOG_NOTVAR_CAPTION,
