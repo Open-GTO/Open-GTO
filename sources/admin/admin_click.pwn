@@ -22,14 +22,14 @@ AdminClick_OnGameModeInit()
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              "ADMIN_CLICK_KICK_DIALOG_HEADER",
 	              "ADMIN_CLICK_KICK_DIALOG_MESSAGE",
-	              "ADMIN_CLICK_KICK_DIALOG_BUTTON_KICK", "ADMIN_CLICK_MESSAGE_BUTTON_BACK",
+	              "ADMIN_CLICK_KICK_DIALOG_BUTTON_KICK", "BUTTON_BACK",
 	              PlayerPrivilegeModer,
 	              "AdminClick_KickPlayer");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              "ADMIN_CLICK_MUTE_DIALOG_HEADER",
 	              "ADMIN_CLICK_MUTE_DIALOG_MESSAGE",
-	              "ADMIN_CLICK_MUTE_DIALOG_BUTTON_MUTE", "ADMIN_CLICK_MESSAGE_BUTTON_BACK",
+	              "ADMIN_CLICK_MUTE_DIALOG_BUTTON_MUTE", "BUTTON_BACK",
 	              PlayerPrivilegeModer,
 	              "AdminClick_MutePlayer");
 
@@ -43,7 +43,7 @@ AdminClick_OnGameModeInit()
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              "ADMIN_CLICK_JAIL_DIALOG_HEADER",
 	              "ADMIN_CLICK_JAIL_DIALOG_MESSAGE",
-	              "ADMIN_CLICK_JAIL_DIALOG_BUTTON_JAIL", "ADMIN_CLICK_MESSAGE_BUTTON_BACK",
+	              "ADMIN_CLICK_JAIL_DIALOG_BUTTON_JAIL", "BUTTON_BACK",
 	              PlayerPrivilegeModer,
 	              "AdminClick_JailPlayer");
 
@@ -86,42 +86,42 @@ AdminClick_OnGameModeInit()
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              "ADMIN_CLICK_HEALTH_DIALOG_HEADER",
 	              "ADMIN_CLICK_HEALTH_DIALOG_MESSAGE",
-	              "ADMIN_CLICK_MESSAGE_BUTTON_CHANGE", "ADMIN_CLICK_MESSAGE_BUTTON_BACK",
+	              "BUTTON_CHANGE", "BUTTON_BACK",
 	              PlayerPrivilegeAdmin,
 	              "AdminClick_SetHealth");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              "ADMIN_CLICK_ARMOUR_DIALOG_HEADER",
 	              "ADMIN_CLICK_ARMOUR_DIALOG_MESSAGE",
-	              "ADMIN_CLICK_MESSAGE_BUTTON_CHANGE", "ADMIN_CLICK_MESSAGE_BUTTON_BACK",
+	              "BUTTON_CHANGE", "BUTTON_BACK",
 	              PlayerPrivilegeAdmin,
 	              "AdminClick_SetArmour");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              "ADMIN_CLICK_LEVEL_DIALOG_HEADER",
 	              "ADMIN_CLICK_LEVEL_DIALOG_MESSAGE",
-	              "ADMIN_CLICK_MESSAGE_BUTTON_CHANGE", "ADMIN_CLICK_MESSAGE_BUTTON_BACK",
+	              "BUTTON_CHANGE", "BUTTON_BACK",
 	               PlayerPrivilegeAdmin,
 	               "AdminClick_SetLevel");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              "ADMIN_CLICK_XP_DIALOG_HEADER",
 	              "ADMIN_CLICK_XP_DIALOG_MESSAGE",
-	              "ADMIN_CLICK_MESSAGE_BUTTON_GIVE", "ADMIN_CLICK_MESSAGE_BUTTON_BACK",
+	              "BUTTON_GIVE", "BUTTON_BACK",
 	              PlayerPrivilegeAdmin,
 	              "AdminClick_GiveXP");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              "ADMIN_CLICK_MONEY_DIALOG_HEADER",
 	              "ADMIN_CLICK_MONEY_DIALOG_MESSAGE",
-	              "ADMIN_CLICK_MESSAGE_BUTTON_GIVE", "ADMIN_CLICK_MESSAGE_BUTTON_BACK",
+	              "BUTTON_GIVE", "BUTTON_BACK",
 	              PlayerPrivilegeAdmin,
 	              "AdminClick_GiveMoney");
 
 	Click_AddItem(DIALOG_STYLE_INPUT,
 	              "ADMIN_CLICK_FREEZE_DIALOG_HEADER",
 	              "ADMIN_CLICK_FREEZE_DIALOG_MESSAGE",
-	              "ADMIN_CLICK_FREEZE_DIALOG_BUTTON", "ADMIN_CLICK_MESSAGE_BUTTON_BACK",
+	              "ADMIN_CLICK_FREEZE_DIALOG_BUTTON", "BUTTON_BACK",
 	              PlayerPrivilegeAdmin,
 	              "AdminClick_FreezePlayer");
 
@@ -145,7 +145,7 @@ static stock ShowErrorDialog(playerid, error_var_msg[])
 	Dialog_MessageEx(playerid, Dialog:AdminErrorPlayerClick,
 	                 "ADMIN_CLICK_MESSAGE_HEADER",
 	                 error_var_msg,
-	                 "ADMIN_CLICK_MESSAGE_BUTTON_OK", "ADMIN_CLICK_MESSAGE_BUTTON_BACK");
+	                 "BUTTON_OK", "BUTTON_BACK");
 }
 
 DialogResponse:AdminErrorPlayerClick(playerid, response, listitem, inputtext[])
@@ -184,7 +184,7 @@ public AdminClick_KickPlayer(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_KICK_PLAYER_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid);
 
@@ -198,13 +198,13 @@ public AdminClick_MutePlayer(playerid, targetid, listitem, inputtext[])
 	new
 		time;
 
-	if (sscanf(inputtext, "k<ftime>", time)) {
+	if (sscanf(inputtext, "k<ftime>", time) || time == -1) {
 		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
 		return 0;
 	}
 
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
@@ -221,7 +221,7 @@ public AdminClick_MutePlayer(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_MUTE_PLAYER_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid, time, timeword);
 
@@ -233,7 +233,12 @@ forward AdminClick_UnMutePlayer(playerid, targetid, listitem, inputtext[]);
 public AdminClick_UnMutePlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
+		return 0;
+	}
+
+	if (!IsPlayerMuted(targetid)) {
+		ShowErrorDialog(playerid, "ADMIN_CLICK_UNMUTE_BAD_TARGET");
 		return 0;
 	}
 
@@ -248,7 +253,7 @@ public AdminClick_UnMutePlayer(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_UNMUTE_PLAYER_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid);
 
@@ -260,19 +265,19 @@ forward AdminClick_JailPlayer(playerid, targetid, listitem, inputtext[]);
 public AdminClick_JailPlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_PRIVILEGE_ERROR");
 		return 0;
 	}
 
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
 	new
 		time;
 
-	if (sscanf(inputtext, "k<ftime>", time)) {
+	if (sscanf(inputtext, "k<ftime>", time) || time == -1) {
 		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
 		return 0;
 	}
@@ -290,7 +295,7 @@ public AdminClick_JailPlayer(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_JAIL_PLAYER_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid, time, timeword);
 
@@ -302,12 +307,12 @@ forward AdminClick_UnJailPlayer(playerid, targetid, listitem, inputtext[]);
 public AdminClick_UnJailPlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
 	if (!IsPlayerJailed(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_UNJAIL_BAD_TARGET");
 		return 0;
 	}
 
@@ -322,7 +327,7 @@ public AdminClick_UnJailPlayer(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_UNJAIL_PLAYER_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid);
 
@@ -334,7 +339,7 @@ forward AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[]);
 public AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
@@ -389,7 +394,7 @@ public AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               message,
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_INFO);
 	return 1;
 }
@@ -398,12 +403,12 @@ forward AdminClick_KillPlayer(playerid, targetid, listitem, inputtext[]);
 public AdminClick_KillPlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_PRIVILEGE_ERROR");
 		return 0;
 	}
 
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
@@ -423,7 +428,7 @@ public AdminClick_KillPlayer(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_KILL_PLAYER_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid);
 	return 1;
@@ -433,7 +438,7 @@ forward AdminClick_TeleportToPlayer(playerid, targetid, listitem, inputtext[]);
 public AdminClick_TeleportToPlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
@@ -453,7 +458,7 @@ public AdminClick_TeleportToPlayer(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_TELEPORT_TO_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid);
 	return 1;
@@ -463,12 +468,12 @@ forward AdminClick_TeleportToMe(playerid, targetid, listitem, inputtext[]);
 public AdminClick_TeleportToMe(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_PRIVILEGE_ERROR");
 		return 0;
 	}
 
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
@@ -491,20 +496,20 @@ forward AdminClick_SetHealth(playerid, targetid, listitem, inputtext[]);
 public AdminClick_SetHealth(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_PRIVILEGE_ERROR");
 		return 0;
 	}
 
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
 	new
 		Float:amount;
 
-	if (sscanf(inputtext, "f", amount)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+	if (sscanf(inputtext, "f", amount) || amount > MAX_HEALTH) {
+		ShowErrorDialog(playerid, "ADMIN_CLICK_HEALTH_ERROR");
 		return 0;
 	}
 
@@ -524,7 +529,7 @@ public AdminClick_SetHealth(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_HEALTH_SET_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid, amount);
 	return 1;
@@ -534,20 +539,20 @@ forward AdminClick_SetArmour(playerid, targetid, listitem, inputtext[]);
 public AdminClick_SetArmour(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_PRIVILEGE_ERROR");
 		return 0;
 	}
 
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
 	new
 		Float:amount;
 
-	if (sscanf(inputtext, "f", amount)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+	if (sscanf(inputtext, "f", amount) || amount > 100.0) {
+		ShowErrorDialog(playerid, "ADMIN_CLICK_ARMOUR_ERROR");
 		return 0;
 	}
 
@@ -567,7 +572,7 @@ public AdminClick_SetArmour(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_ARMOUR_SET_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid, amount);
 	return 1;
@@ -577,12 +582,12 @@ forward AdminClick_SetLevel(playerid, targetid, listitem, inputtext[]);
 public AdminClick_SetLevel(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_PRIVILEGE_ERROR");
 		return 0;
 	}
 
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
@@ -596,7 +601,7 @@ public AdminClick_SetLevel(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (!IsValidPlayerLevel(amount)) {
-		Dialog_Message(playerid, "ADMIN_CLICK_MESSAGE_HEADER", "ADMIN_CLICK_LEVEL_ERROR", "ADMIN_CLICK_MESSAGE_BUTTON_OK");
+		Dialog_Message(playerid, "ADMIN_CLICK_MESSAGE_HEADER", "ADMIN_CLICK_LEVEL_ERROR", "BUTTON_OK");
 		return 0;
 	}
 
@@ -607,7 +612,7 @@ public AdminClick_SetLevel(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_LEVEL_SET_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid, amount);
 	return 1;
@@ -617,12 +622,12 @@ forward AdminClick_GiveXP(playerid, targetid, listitem, inputtext[]);
 public AdminClick_GiveXP(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_PRIVILEGE_ERROR");
 		return 0;
 	}
 
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
@@ -642,7 +647,7 @@ public AdminClick_GiveXP(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_XP_GIVE_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid, amount);
 	return 1;
@@ -652,7 +657,7 @@ forward AdminClick_GiveMoney(playerid, targetid, listitem, inputtext[]);
 public AdminClick_GiveMoney(playerid, targetid, listitem, inputtext[])
 {
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
@@ -672,7 +677,7 @@ public AdminClick_GiveMoney(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_MONEY_GIVE_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid, amount);
 	return 1;
@@ -682,19 +687,19 @@ forward AdminClick_FreezePlayer(playerid, targetid, listitem, inputtext[]);
 public AdminClick_FreezePlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_PRIVILEGE_ERROR");
 		return 0;
 	}
 
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
 		return 0;
 	}
 
 	new
 		time;
 
-	if (sscanf(inputtext, "k<ftime>", time)) {
+	if (sscanf(inputtext, "k<ftime>", time) || time == -1) {
 		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
 		return 0;
 	}
@@ -712,7 +717,7 @@ public AdminClick_FreezePlayer(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_FREEZE_PLAYER_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid, time, timeword);
 
@@ -724,12 +729,17 @@ forward AdminClick_UnFreezePlayer(playerid, targetid, listitem, inputtext[]);
 public AdminClick_UnFreezePlayer(playerid, targetid, listitem, inputtext[])
 {
 	if (IsPlayerHavePrivilege(targetid, PlayerPrivilegeRcon) && !IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_PRIVILEGE_ERROR");
 		return 0;
 	}
 
 	if (!IsPlayerConnected(targetid)) {
-		ShowErrorDialog(playerid, "ADMIN_CLICK_TIME_ERROR");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_TARGET_ERROR");
+		return 0;
+	}
+
+	if (!IsPlayerFreezed(targetid)) {
+		ShowErrorDialog(playerid, "ADMIN_CLICK_UNFREEZE_BAD_TARGET");
 		return 0;
 	}
 
@@ -744,7 +754,7 @@ public AdminClick_UnFreezePlayer(playerid, targetid, listitem, inputtext[])
 	Dialog_Message(playerid,
 	               "ADMIN_CLICK_MESSAGE_HEADER",
 	               "ADMIN_COMMAND_UNFREEZE_PLAYER_SELF",
-	               "ADMIN_CLICK_MESSAGE_BUTTON_OK",
+	               "BUTTON_OK",
 	               MDIALOG_NOTVAR_NONE,
 	               targetname, targetid);
 
@@ -761,7 +771,7 @@ public AdminClick_GetNetStats(playerid, targetid, listitem, inputtext[])
 	Dialog_Open(playerid, Dialog:PlayerClickNetStats, DIALOG_STYLE_MSGBOX,
 	            "ADMIN_CLICK_MESSAGE_HEADER",
 	            "ADMIN_COMMAND_NETSTATS",
-	            "ADMIN_CLICK_MESSAGE_BUTTON_OK", "ADMIN_CLICK_MESSAGE_BUTTON_BACK",
+	            "BUTTON_OK", "BUTTON_BACK",
 	            MDIALOG_NOTVAR_NONE,
 	            ip_port,
 	            NetStats_GetConnectedTime(targetid),
