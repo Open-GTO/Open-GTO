@@ -191,10 +191,10 @@ stock Player_Login(playerid)
 		SetPlayerLevel(playerid, temp, false, false);
 
 		ini_getInteger(file_player, "XP", temp);
-		SetPlayerXP(playerid, temp);
+		SetPlayerXP(playerid, temp, .notify = false);
 
 		ini_getInteger(file_player, "Money", temp);
-		SetPlayerMoney(playerid, temp);
+		SetPlayerMoney(playerid, temp, false);
 
 		ini_getInteger(file_player, "BankMoney", temp);
 		SetPlayerBankMoney(playerid, temp);

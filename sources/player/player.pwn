@@ -354,7 +354,7 @@ SkinSelectResponse:RegisterSkin(playerid, SS_Response:type, oldskin, newskin)
 
 stock Player_SetDefaultData(playerid)
 {
-	SetPlayerMoney(playerid, gPlayerStartMoney);
+	SetPlayerMoney(playerid, gPlayerStartMoney, false);
 	SetPlayerJailTime(playerid, -1);
 	SetPlayerSpawnType(playerid, SPAWN_TYPE_NONE);
 

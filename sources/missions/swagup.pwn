@@ -135,7 +135,7 @@ public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 		win_xp = mission_CalculateXP(playerid, mission_swagup);
 
 	GivePlayerMoney(playerid, win_money);
-	GivePlayerXP(playerid, win_xp, true);
+	GivePlayerXP(playerid, win_xp);
 
 	Lang_SendTextToAll("SWAGUP_BAG_FOUND", ret_GetPlayerName(playerid), playerid, win_money, win_xp);
 

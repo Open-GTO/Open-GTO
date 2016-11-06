@@ -22,7 +22,7 @@ static
 	Functions
 */
 
-stock SetPlayerMoney(playerid, money)
+stock SetPlayerMoney(playerid, money, bool:notify = true)
 {
 	if (money < 0) {
 		return 0;
@@ -33,8 +33,14 @@ stock SetPlayerMoney(playerid, money)
 		Log(mainlog, INFO, "Player: %s(%d) is on max money.", ret_GetPlayerName(playerid), playerid);
 	}
 
+	new old_money = GetPlayerMoney(playerid);
+
 	gPlayerMoney[playerid] = money;
+
 	PlayerMoneyTD_UpdateString(playerid, money);
+	if (notify) {
+		PlayerMoneyTD_Give(playerid, money - old_money);
+	}
 	return 1;
 }
 
@@ -55,7 +61,6 @@ stock REDEF_GivePlayerMoney(playerid, money)
 		Log(mainlog, INFO, "Player: %s(%d) is on max money.", ret_GetPlayerName(playerid), playerid);
 	}
 
-	PlayerMoneyTD_Give(playerid, money);
 	SetPlayerMoney(playerid, player_money + money);
 	return 1;
 }

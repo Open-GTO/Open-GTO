@@ -61,46 +61,6 @@ PLevel_OnGameModeInit()
 	return 1;
 }
 
-stock GivePlayerXP(playerid, xpamount, bool:showtext = false)
-{
-	if (xpamount == 0) {
-		return 0;
-	}
-
-	if (xpamount > 0 && IsPlayerHavePremium(playerid)) {
-		xpamount += (xpamount / 100) * PLAYER_XP_PREMIUM_PROFIT;
-	}
-
-	if (xpamount < 0) {
-		new minxp = GetPlayerXPToLevel(playerid, MIN_LEVEL);
-		if (xpamount < minxp) {
-			xpamount = minxp;
-		}
-	} else {
-		new maxxp = GetPlayerXPToLevel(playerid, GetMaxPlayerLevel());
-		if (xpamount >= maxxp) {
-			xpamount = maxxp;
-		}
-	}
-
-	if (xpamount == 0) {
-		return 0;
-	}
-
-	if (showtext) {
-		if (xpamount > 0) {
-			Lang_SendText(playerid, "PLAYER_XP_GET", xpamount);
-		} else {
-			Lang_SendText(playerid, "PLAYER_XP_MISS", -xpamount);
-		}
-	}
-
-	Gang_GiveXpFromPlayer(playerid, xpamount);
-	PlayerLevelTD_Give(playerid, .xp = xpamount);
-	SetPlayerXP(playerid, GetPlayerXP(playerid) + xpamount);
-	return 1;
-}
-
 stock SetPlayerLevel(playerid, level, bool:regenhp = true, bool:notify = true)
 {
 	new old_level = GetPlayerLevel(playerid);
@@ -150,18 +110,20 @@ stock GetPlayerLevel(playerid)
 	return gPlayerLevel[playerid];
 }
 
-stock SetPlayerXP(playerid, amount)
+stock SetPlayerXP(playerid, amount, bool:notify = true)
 {
 	new
 		old_level,
 		level,
 		level_max,
+		old_xp,
 		xp_to_level,
 		xp_set;
 
 	old_level = GetPlayerLevel(playerid);
 	level = old_level;
 	level_max = GetMaxPlayerLevel();
+	old_xp = GetPlayerXP(playerid);
 	xp_set = amount;
 
 	if (xp_set < 0) {
@@ -207,7 +169,40 @@ stock SetPlayerXP(playerid, amount)
 	gPlayerXP[playerid] = xp_set;
 	PlayerLevelTD_UpdateLevelString(playerid, level);
 	PlayerLevelTD_UpdateXPString(playerid, xp_set, GetXPToLevel(level + 1), level >= level_max);
-	PlayerLevelTD_Give(playerid, amount, level - old_level);
+	if (notify) {
+		PlayerLevelTD_Give(playerid, xp_set - old_xp, level - old_level);
+	}
+}
+
+stock GivePlayerXP(playerid, xpamount, bool:notify = true)
+{
+	if (xpamount == 0) {
+		return 0;
+	}
+
+	if (xpamount > 0 && IsPlayerHavePremium(playerid)) {
+		xpamount += (xpamount / 100) * PLAYER_XP_PREMIUM_PROFIT;
+	}
+
+	if (xpamount < 0) {
+		new minxp = GetPlayerXPToLevel(playerid, MIN_LEVEL);
+		if (xpamount < minxp) {
+			xpamount = minxp;
+		}
+	} else {
+		new maxxp = GetPlayerXPToLevel(playerid, GetMaxPlayerLevel());
+		if (xpamount >= maxxp) {
+			xpamount = maxxp;
+		}
+	}
+
+	if (xpamount == 0) {
+		return 0;
+	}
+
+	Gang_GiveXpFromPlayer(playerid, xpamount);
+	SetPlayerXP(playerid, GetPlayerXP(playerid) + xpamount, notify);
+	return 1;
 }
 
 stock GetPlayerXP(playerid)

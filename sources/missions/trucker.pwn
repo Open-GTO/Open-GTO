@@ -349,7 +349,7 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 		Trucker_Stop(playerid);
 		KillTimer(player_trucker[playerid][pt_MissionTimer]);
 		GivePlayerMoney(playerid, mission_CalculateMoney(playerid, mission_trucker));
-		GivePlayerXP(playerid, mission_CalculateXP(playerid, mission_trucker), true);
+		GivePlayerXP(playerid, mission_CalculateXP(playerid, mission_trucker));
 
 		if (player_trucker[playerid][pt_TryCount] > 0) {
 			Lang_SendText(playerid, "TRUCKER_MISSION_COMPLETE", TRUCKER_MISSION_TIME / 60);
