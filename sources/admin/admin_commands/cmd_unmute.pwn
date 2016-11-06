@@ -55,6 +55,11 @@ COMMAND:unmute(playerid, params[])
 			UnMutePlayer(targetid);
 		}
 	} else {
+		if (!IsPlayerMuted(targetid)) {
+			Lang_SendText(playerid, "ADMIN_COMMAND_UNMUTE_PLAYER_ERROR");
+			return 1;
+		}
+
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
 		if (is_with_reason) {

@@ -55,6 +55,11 @@ COMMAND:unfreeze(playerid, params[])
 			UnFreezePlayer(targetid);
 		}
 	} else {
+		if (!IsPlayerFreezed(targetid)) {
+			Lang_SendText(playerid, "ADMIN_COMMAND_UNFREEZE_PLAYER_ERROR");
+			return 1;
+		}
+
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
 		if (is_with_reason) {

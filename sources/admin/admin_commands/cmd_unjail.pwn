@@ -55,6 +55,11 @@ COMMAND:unjail(playerid, params[])
 			UnJailPlayer(targetid);
 		}
 	} else {
+		if (!IsPlayerJailed(targetid)) {
+			Lang_SendText(playerid, "ADMIN_COMMAND_UNJAIL_PLAYER_ERROR");
+			return 1;
+		}
+
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
 		if (is_with_reason) {
