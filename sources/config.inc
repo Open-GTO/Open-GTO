@@ -82,7 +82,7 @@
 
 #define MAX_PLAYER_LOGIN_ATTEMPT    3 // максимальное количество попыток входа
 
-#define MIN_SEND_SYMBOLS  3 // минимальное кол-во отправляемых символов в ПМ
+#define MIN_SEND_SYMBOLS  2 // минимальное кол-во отправляемых символов в ПМ
 #define MAX_SEND_SYMBOLS  100 // максимальное кол-во отправляемых символов в ПМ
 
 #define MIN_NAME_LEN      3
@@ -127,12 +127,12 @@
 
 // start player settings
 #define PLAYER_START_LEVEL    1 // уровень, который даётся игроку после регистрации
-#define PLAYER_START_MONEY    1500 // кол-во стартовых денег
-#define PLAYER_START_WEAPON   {WEAPON_COLT45, 200}
+#define PLAYER_START_MONEY    100 // кол-во стартовых денег
+#define PLAYER_START_WEAPON   {WEAPON_COLT45, 850}
 //#define PLAYER_START_SKIN     95 // скин по умолчанию (если выключено, то выбор после регистрации)
 
 // player
-#define MIN_HEALTH            35.0 // минимальное(стартовое) кол-во здоровья
+#define MIN_HEALTH            25.0 // минимальное(стартовое) кол-во здоровья
 #define MAX_HEALTH            100.0 // максимальное кол-во здоровья
 #define HEALTH_TARIF          3.0 // степень увеличения максимального здоровья от лвл, формула: MIN_HEALTH + (GetPlayerLevel(playerid) * HEALTH_TARIF)
 #define HEALTH_REGEN_TARIF    0.1 // степень кол-ва востанавливаемого здоровья, формула: (GetPlayerLevel(id) * HEALTH_REGEN_TARIF)
@@ -140,10 +140,10 @@
 #define MAX_LEVEL             30 // максимальный уровень игрока
 #define XP_RATE               50 // коэффициент увеличения опыта для уровня, формула (XP_RATE * (3 * level + 2) * (level - 1))
 
-#define MAX_MONEY             999999999 // максимальное кол-во денег, которое может иметь игрок
+#define MAX_MONEY             1_000_000_000 // максимальное кол-во денег, которое может иметь игрок
 
-#define CHANGE_NICK_COST      100000 // кол-во денег, требуемых для смены ника
-#define CHANGE_PASS_COST      5000 // кол-во денег, требуемых для смены пароля
+#define CHANGE_NICK_COST      5000000 // кол-во денег, требуемых для смены ника
+#define CHANGE_PASS_COST      0 // кол-во денег, требуемых для смены пароля
 
 #define PLAYER_XP_PREMIUM_PROFIT  10 // премиум игроки получают на PLAYER_XP_PREMIUM_PROFIT процентов больше опыта
 
@@ -198,7 +198,7 @@
 
 // house
 #define MAX_PLAYER_HOUSES          3 // количество домов, которые может иметь игрок(много ставить не рекомендуется)
-#define HOUSE_UPGRADE_ARMOUR_COST  100000
+#define HOUSE_UPGRADE_ARMOUR_COST  500000
 #define HOUSE_UPGRADE_HEALTH_COST  100000
 #define HOUSE_UPGRADE_USE_TIME     300 // время через которое можно использовать апгрейд в доме (в секундах)
 //#define BUY_ALL_HOUSES // позволяет запретить покупать чужие дома(если закомментировано то чужие дома нельзя покупать)
@@ -212,8 +212,8 @@
 
 // other
 #define MAX_GULPS            3 // максимальное количество глотков из бутылки
-#define MAX_COUNTDOWN        4 // кол-во секунд для отсчёта гонок и дм
-#define GPICKUP_RESPAWN_TIME 10 // кол-во секунд через которое снова появится поднятый пикап
+#define GPICKUP_RESPAWN_TIME 90 // кол-во секунд через которое снова появится поднятый пикап
+
 /*
  * Vehicle settings
  */
