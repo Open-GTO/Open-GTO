@@ -54,7 +54,6 @@ new Businesses[][BusinessInfo] = {
 	{"Jizzy's Pleasure Domes", 375000, 3000, 5, "Unknown", 0, 0, 1, 0, -2652.5295, 1410.2631, 906.2734},
 	{"Lil' Probe'Inn", 100000, 1800, 5, "Unknown", 0, 0, 1, 0, -217.4339, 1402.6681, 27.7734},
 	{"Linden Station", 500000, 5000, 5, "Unknown", 0, 0, 1, 1, 2840.1270, 1290.5465, 11.3906},
-	{"Los-Santos City Hall", 500000, 3000, 5, "Unknown", 0, 0, 1, 1, 1481.0409, -1769.1469, 18.7958},
 	{"Macisla Unisex Hair Salon", 50000, 1000, 5, "Unknown", 0, 0, 1, 0, 412.0497, -49.3973, 1001.9025},
 	{"Marco's Bistro", 800000, 3000, 10, "Unknown", 0, 0, 1, 0, -789.2899, 510.2562, 1367.3745},
 	{"Nude Strippers Daily", 200000, 1800, 5, "Unknown", 0, 0, 1, 0, 1207.9760, -31.6712, 1000.9531},
@@ -63,7 +62,6 @@ new Businesses[][BusinessInfo] = {
 	{"Pro-Laps Clothing", 165000, 1500, 5, "Unknown", 0, 0, 1, 0, 207.0665, -127.5535, 1003.5078},
 	{"Reece's Hair Facial Studio", 50000, 900, 1, "Unknown", 0, 0, 1, 0, 411.7967, -13.2574, 1001.8047},
 	{"Rodeo Hotel", 915000, 4500, 5, "Unknown", 0, 0, 1, 1, 328.6830, -1512.8302, 36.0391},
-	{"San-Fierro City Hall", 200000, 3000, 30, "Unknown", 0, 0, 1, 1, -2764.9919, 375.5921, 6.3430},
 	{"Sex-Shop", 200000, 1500, 5, "Unknown", 0, 0, 1, 0, -103.9304, -22.4892, 1000.7188},
 	{"Sherman Dam", 500000, 3000, 5, "Unknown", 0, 0, 1, 0, -961.3422, 1946.3208, 9.0000},
 	{"Sub-Urban Clothing", 130000, 1300, 5, "Unknown", 0, 0, 1, 0, 204.1066, -40.7047, 1001.8047},
@@ -81,7 +79,9 @@ new Businesses[][BusinessInfo] = {
 	{"Yellow Bell Golf-Club", 500000, 5000, 5, "Unknown", 0, 0, 1, 1, 1456.5182, 2773.3857, 10.8203},
 	{"Zero RC", 180000, 1800, 5, "Unknown", 0, 0, 1, 0, -2230.7651, 132.2124, 1035.4141},
 	{"Zip Clothing", 180000, 1800, 5, "Unknown", 0, 0, 1, 0, 161.3900, -79.9809, 1001.8047},
-	{"Zombotech Corporation", 500000, 3000, 5, "Unknown", 0, 0, 1, 1, -1951.7206, 689.0686, 46.5625}
+	{"Zombotech Corporation", 500000, 3000, 5, "Unknown", 0, 0, 1, 1, -1951.7206, 689.0686, 46.5625},
+	{"Crack Den", 150000, 2400, 8, "Unknown", 0, 0, 1, 0, 323.3233, 1118.7882, 1083.8828},
+	{"Big Smoke's Crack Palace", 10000000, 24000, 25, "Unknown", 0, 0, 1, 0, 2546.8057, -1281.2859, 1060.9844}
 };
 
 #define SetPlayerToBusinessID(%0,%1) SetPVarInt(%0, "BusID",%1)
