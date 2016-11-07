@@ -143,7 +143,6 @@
 #define MAX_MONEY             1_000_000_000 // максимальное кол-во денег, которое может иметь игрок
 
 #define CHANGE_NICK_COST      5000000 // кол-во денег, требуемых для смены ника
-#define CHANGE_PASS_COST      0 // кол-во денег, требуемых для смены пароля
 
 #define PLAYER_XP_PREMIUM_PROFIT  10 // премиум игроки получают на PLAYER_XP_PREMIUM_PROFIT процентов больше опыта
 
