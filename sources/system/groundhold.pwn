@@ -23,18 +23,18 @@ enum e_Groundhold_Info {
 	Float:e_ghPosY,
 	Float:e_ghPosZ,
 	bool:e_ghIsEnemies,
-	e_ghCheckpointID,
+	e_ghObjectID,
 	e_ghMapiconID,
 	e_ghAreaID,
 }
 
 static gGroundholds[][e_Groundhold_Info] = {
-	{"GROUNDHOLD_POINT_MARKET",            5, 10, 100, 30,  1128.9720, -1489.8420, 22.7689},
+	{"GROUNDHOLD_POINT_MARKET",             5, 10, 100, 30,  1128.9720, -1489.8420, 22.7689},
 	{"GROUNDHOLD_POINT_PIER",              10, 10, 100, 30, -1632.2703,  1416.9258, 7.1875},
 	{"GROUNDHOLD_POINT_PIRAT_SHIP",        15, 10, 100, 30,  2000.7501,  1545.0303, 13.5859},
-	{"GROUNDHOLD_POINT_ARCH",              5, 20, 100, 30, -791.7888,   2424.8628, 157.1479},
+	{"GROUNDHOLD_POINT_ARCH",               5, 20, 100, 30, -791.7888,   2424.8628, 157.1479},
 	{"GROUNDHOLD_POINT_CHILLIAD_MOUNTAIN", 30,  5, 100, 30, -2315.8278, -1643.5167, 483.7030},
-	{"GROUNDHOLD_POINT_HIGHLAND_FARM",     5, 15, 100, 20,  1106.4384, -309.8355, 73.5568}
+	{"GROUNDHOLD_POINT_HIGHLAND_FARM",      5, 15, 100, 20,  1106.4384, -309.8355, 73.5568}
 };
 
 static
@@ -282,11 +282,11 @@ stock ToggleGroundholdStatus(bool:toggle)
 		Groundhold_Check(ghid);
 
 		if (IsEnabled) {
-			gGroundholds[ghid][e_ghCheckpointID] = CreateDynamicCP(gGroundholds[ghid][e_ghPosX], gGroundholds[ghid][e_ghPosY], gGroundholds[ghid][e_ghPosZ], 20.0);
+			gGroundholds[ghid][e_ghObjectID] = CreateDynamicObject(18728, gGroundholds[ghid][e_ghPosX], gGroundholds[ghid][e_ghPosY], gGroundholds[ghid][e_ghPosZ] - 2.5, 0.0, 0.0, 0.0);
 			gGroundholds[ghid][e_ghMapiconID] = CreateDynamicMapIcon(gGroundholds[ghid][e_ghPosX], gGroundholds[ghid][e_ghPosY], gGroundholds[ghid][e_ghPosZ], 56, 0);
 			gGroundholds[ghid][e_ghAreaID] = CreateDynamicSphere(gGroundholds[ghid][e_ghPosX], gGroundholds[ghid][e_ghPosY], gGroundholds[ghid][e_ghPosZ], gGroundholds[ghid][e_ghDist]);
 		} else {
-			DestroyDynamicCP(gGroundholds[ghid][e_ghCheckpointID]);
+			DestroyDynamicCP(gGroundholds[ghid][e_ghObjectID]);
 			DestroyDynamicMapIcon(gGroundholds[ghid][e_ghMapiconID]);
 			DestroyDynamicArea(gGroundholds[ghid][e_ghAreaID]);
 		}
