@@ -989,25 +989,23 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		return 0;
 	}
 
-	if (!IsPlayerAtHouse(playerid)) {
-		return 0;
-	}
-
 	new player_vw = GetPlayerVirtualWorld(playerid);
 	for (new id = 0; id < sizeof(Houses); id++)
 	{
-		SetPlayerToHouseID(playerid, id);
-		if (IsPlayerInRangeOfPoint(playerid, 3, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.5))
+		if (player_vw == 0 && IsPlayerInRangeOfPoint(playerid, 3, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.5))
 		{
-			new
-				string[MAX_LANG_VALUE_STRING * 2],
-				temp[MAX_LANG_VALUE_STRING],
-				rent_string[MAX_LANG_VALUE_STRING];
-
-			new price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
+			SetPlayerToHouseID(playerid, id);
 
 			if (strcmp(Houses[id][Houses_Owner], "Unknown", true) && strcmp(Houses[id][Houses_Gang], "Unknown", true))
 			{
+				new
+					string[MAX_LANG_VALUE_STRING * 2],
+					temp[MAX_LANG_VALUE_STRING],
+					rent_string[MAX_LANG_VALUE_STRING],
+					price;
+
+				price = Houses[id][Houses_Cost] + Houses[id][Houses_Buyout];
+
 				if (!strcmp(Houses[id][Houses_RentName], "Unknown", true)) {
 					Lang_GetPlayerText(playerid, "HOUSING_RENT_COST", rent_string, _, Houses[id][Houses_RentCost]);
 				} else {
@@ -1059,16 +1057,14 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				return 1;
 			}
 		}
-		else if (IsPlayerInRangeOfPoint(playerid, 2, Houses[id][Houses_InteriorX], Houses[id][Houses_InteriorY], Houses[id][Houses_InteriorZ]) && player_vw == Houses[id][Houses_VirtualWorld])
+		else if (player_vw == Houses[id][Houses_VirtualWorld] && IsPlayerInRangeOfPoint(playerid, 2, Houses[id][Houses_InteriorX], Houses[id][Houses_InteriorY], Houses[id][Houses_InteriorZ]))
 		{
 			SetPlayerPosToHouse(playerid, id);
 			SetPlayerToHouseID(playerid,-1);
 			return 1;
 		}
-		SetPlayerToHouseID(playerid,-1);
 	}
-
-	return 1;
+	return 0;
 }
 
 static stock housing_GetLabelString(houseid, Lang:lang, string[], const size = sizeof(string))
