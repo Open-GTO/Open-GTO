@@ -45,50 +45,80 @@ PWDrop_SaveConfig(file_config)
 }
 
 /*
-	For public
+	OnGameModeInit
 */
 
-PWDrop_OnGameModeInit()
+public OnGameModeInit()
 {
-	if (!IsEnabled) {
-		return 0;
-	}
-
-	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++) {
-		gDroppedWeapons[wd_slot][wd_weaponid] = -1;
-		gDroppedWeapons[wd_slot][wd_bullets] = -1;
-		gDroppedWeapons[wd_slot][wd_pickupid] = -1;
-		gDroppedWeapons[wd_slot][wd_timer] = -1;
-	}
-	return 1;
-}
-
-PWDrop_OnPlayerPickUpPickup(playerid, pickupid)
-{
-	if (!IsEnabled) {
-		return 0;
-	}
-
-	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)  {
-		if (pickupid == gDroppedWeapons[wd_slot][wd_pickupid]) {
-			GivePlayerWeapon(playerid, gDroppedWeapons[wd_slot][wd_weaponid], gDroppedWeapons[wd_slot][wd_bullets]);
-			DestroyWeaponDropPickup(wd_slot);
-			return 1;
+	if (IsEnabled) {
+		for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++) {
+			gDroppedWeapons[wd_slot][wd_weaponid] = -1;
+			gDroppedWeapons[wd_slot][wd_bullets] = -1;
+			gDroppedWeapons[wd_slot][wd_pickupid] = -1;
+			gDroppedWeapons[wd_slot][wd_timer] = -1;
 		}
 	}
-	return 0;
+	#if defined PWDrop_OnGameModeInit
+		return PWDrop_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
 
-PWDrop_OnPlayerDeath(playerid, killerid, reason)
+#define OnGameModeInit PWDrop_OnGameModeInit
+#if defined PWDrop_OnGameModeInit
+	forward PWDrop_OnGameModeInit();
+#endif
+
+/*
+	OnPlayerPickUpDynamicPickup
+*/
+
+public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
-	#pragma unused killerid
-
-	if (!IsEnabled) {
-		return 0;
+	if (IsEnabled) {
+		for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)  {
+			if (pickupid == gDroppedWeapons[wd_slot][wd_pickupid]) {
+				GivePlayerWeapon(playerid, gDroppedWeapons[wd_slot][wd_weaponid], gDroppedWeapons[wd_slot][wd_bullets]);
+				DestroyWeaponDropPickup(wd_slot);
+				break;
+			}
+		}
 	}
+	#if defined PWDrop_OnPlayerPickUpDP
+		return PWDrop_OnPlayerPickUpDP(playerid, pickupid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerPickUpDP
+	#undef OnPlayerPickUpDynamicPickup
+#else
+	#define _ALS_OnPlayerPickUpDP
+#endif
 
-	if (!IsValidWeapon(reason)) {
-		return 0;
+#define OnPlayerPickUpDynamicPickup PWDrop_OnPlayerPickUpDP
+#if defined PWDrop_OnPlayerPickUpDP
+	forward PWDrop_OnPlayerPickUpDP(playerid, pickupid);
+#endif
+
+/*
+	OnPlayerDeath
+*/
+
+public OnPlayerDeath(playerid, killerid, reason)
+{
+	if (!IsEnabled || !IsValidWeapon(reason)) {
+		#if defined PWDrop_OnPlayerDeath
+			return PWDrop_OnPlayerDeath(playerid, killerid, reason);
+		#else
+			return 1;
+		#endif
 	}
 
 	// drop pickups
@@ -112,7 +142,11 @@ PWDrop_OnPlayerDeath(playerid, killerid, reason)
 		wd_slot = FindFreeWeaponDropSlot();
 		if (wd_slot == -1) {
 			Log(mainlog, INFO, "WEAPON_DROP_ERROR_SLOT_NOT_FOUND");
+		#if defined PWDrop_OnPlayerDeath
+			return PWDrop_OnPlayerDeath(playerid, killerid, reason);
+		#else
 			return 1;
+		#endif
 		}
 
 		GetPlayerPos(playerid, pos_x, pos_y, pos_z);
@@ -120,7 +154,11 @@ PWDrop_OnPlayerDeath(playerid, killerid, reason)
 		gDroppedWeapons[wd_slot][wd_pickupid] = CreateDynamicPickup(pickupmodel, 1, pos_x + (random(5) - random(5)) / 2, pos_y + (random(5) - random(5)) / 2, pos_z, -1);
 		if (gDroppedWeapons[wd_slot][wd_pickupid] == -1) {
 			Log(mainlog, INFO, "WEAPON_DROP_ERROR_LIMIT_IS_REACHED");
+		#if defined PWDrop_OnPlayerDeath
+			return PWDrop_OnPlayerDeath(playerid, killerid, reason);
+		#else
 			return 1;
+		#endif
 		}
 
 		gDroppedWeapons[wd_slot][wd_weaponid] = weapon[pwid];
@@ -131,8 +169,22 @@ PWDrop_OnPlayerDeath(playerid, killerid, reason)
 		// запустим таймер асинхронно, чтобы пикапы удалялись постепенно
 		gDroppedWeapons[wd_slot][wd_timer] = SetTimerEx("DestroyWeaponDropPickup", (WEAPON_DROP_TIME * 1000) + slot * 300, 0, "d", wd_slot);
 	}
-	return 1;
+	#if defined PWDrop_OnPlayerDeath
+		return PWDrop_OnPlayerDeath(playerid, killerid, reason);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerDeath
+	#undef OnPlayerDeath
+#else
+	#define _ALS_OnPlayerDeath
+#endif
+
+#define OnPlayerDeath PWDrop_OnPlayerDeath
+#if defined PWDrop_OnPlayerDeath
+	forward PWDrop_OnPlayerDeath(playerid, killerid, reason);
+#endif
 
 /*
 	Functions

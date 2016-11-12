@@ -137,10 +137,10 @@
 #define HEALTH_TARIF          3.0 // степень увеличения максимального здоровья от лвл, формула: MIN_HEALTH + (GetPlayerLevel(playerid) * HEALTH_TARIF)
 #define HEALTH_REGEN_TARIF    0.1 // степень кол-ва востанавливаемого здоровья, формула: (GetPlayerLevel(id) * HEALTH_REGEN_TARIF)
 
-#define MAX_LEVEL             30 // максимальный уровень игрока
+#define MAX_LEVEL             60 // максимальный уровень игрока
 #define XP_RATE               50 // коэффициент увеличения опыта для уровня, формула (XP_RATE * (3 * level + 2) * (level - 1))
 
-#define MAX_MONEY             1_000_000_000 // максимальное кол-во денег, которое может иметь игрок
+#define MAX_MONEY             999_999_999 // максимальное кол-во денег, которое может иметь игрок
 
 #define CHANGE_NICK_COST      5000000 // кол-во денег, требуемых для смены ника
 

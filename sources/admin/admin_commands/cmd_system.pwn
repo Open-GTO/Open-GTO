@@ -41,7 +41,7 @@ COMMAND:system(playerid, params[])
 		Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_WEATHER_HELP");
 		Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_GROUNDHOLD_HELP");
 		Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_TIME_HELP");
-		Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_HELP");
+		Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_HELP", Lang_ReturnCodes());
 		Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_SAY_HELP");
 		return 1;
 	}
@@ -90,18 +90,29 @@ COMMAND:system(playerid, params[])
 	} else if (strcmp(subcmd, "lang", true) == 0) {
 		new
 			subsubcmd[8],
-			langname[MAX_LANG_NAME];
+			reload_param[4];
 
-		if (sscanf(subparams, "s[8]S()[" #MAX_LANG_FILE_NAME "]", subsubcmd, langname)) {
-			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_HELP");
+		if (sscanf(subparams, "s[8]s[4]", subsubcmd, reload_param)) {
+			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_HELP", Lang_ReturnCodes());
 			return 1;
 		}
 
 		if (strcmp(subsubcmd, "reload", true) == 0) {
-			Lang_ReloadAll();
-			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_RELOAD");
+			if (strcmp(reload_param, "all", true) == 0) {
+				Lang_ReloadAll();
+				Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_RELOAD_ALL");
+				return 1;
+			}
+
+			new Lang:lang = Lang_Get(reload_param);
+			if (lang == INVALID_LANG_ID) {
+				Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_RELOAD_ERROR");
+				return 1;
+			}
+
+			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_RELOAD", Lang_ReturnName(lang));
 		} else {
-			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_HELP");
+			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_HELP", Lang_ReturnCodes());
 		}
 	} else if (strcmp(subcmd, "time", true) == 0) {
 		new

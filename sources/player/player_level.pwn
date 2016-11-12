@@ -116,14 +116,14 @@ stock SetPlayerXP(playerid, amount, bool:notify = true)
 		old_level,
 		level,
 		level_max,
-		old_xp,
+		xp_diff,
 		xp_to_level,
 		xp_set;
 
 	old_level = GetPlayerLevel(playerid);
 	level = old_level;
 	level_max = GetMaxPlayerLevel();
-	old_xp = GetPlayerXP(playerid);
+	xp_diff = amount - GetPlayerXP(playerid);
 	xp_set = amount;
 
 	if (xp_set < 0) {
@@ -170,7 +170,7 @@ stock SetPlayerXP(playerid, amount, bool:notify = true)
 	PlayerLevelTD_UpdateLevelString(playerid, level);
 	PlayerLevelTD_UpdateXPString(playerid, xp_set, GetXPToLevel(level + 1), level >= level_max);
 	if (notify) {
-		PlayerLevelTD_Give(playerid, xp_set - old_xp, level - old_level);
+		PlayerLevelTD_Give(playerid, xp_diff, level - old_level);
 	}
 }
 

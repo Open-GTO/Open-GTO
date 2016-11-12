@@ -274,10 +274,7 @@ public OnGameModeInit()
 	Groundhold_OnGameModeInit();
 	business_OnGameModeInit();
 	housing_OnGameModeInit();
-	Enterexit_OnGameModeInit();
 	Weapon_OnGameModeInit();
-	Premium_OnGameModeInit();
-	PWDrop_OnGameModeInit();
 	PLevel_OnGameModeInit();
 	PlayerClick_OnGameModeInit();
 	AdminClick_OnGameModeInit();
@@ -339,7 +336,6 @@ public OnPlayerConnect(playerid)
 	Trucker_OnPlayerConnect(playerid);
 	PlayerMoneyTD_OnPlayerConnect(playerid);
 	Vehicle_Textdraw_OnPlayerConn(playerid);
-	Enterexit_OnPlayerConnect(playerid);
 	Spectate_OnPlayerConnect(playerid);
 	Beachside_OnPlayerConnect(playerid);
 	Tuning_OnPlayerConnect(playerid);
@@ -375,15 +371,6 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 
 public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
-	if (PWDrop_OnPlayerPickUpPickup(playerid, pickupid)) {
-		return 1;
-	}
-	if (Premium_OnPlayerPickUpPickup(playerid, pickupid)) {
-		return 1;
-	}
-	if (Enterexit_OnPlayerPickUpPickup(playerid, pickupid)) {
-		return 1;
-	}
 	return 1;
 }
 
@@ -434,7 +421,6 @@ public OnPlayerDeath(playerid, killerid, reason)
 
 	Player_OnPlayerDeath(playerid, killerid, reason);
 	PWSkill_OnPlayerDeath(playerid, killerid, reason);
-	PWDrop_OnPlayerDeath(playerid, killerid, reason);
 	Trucker_OnPlayerDeath(playerid, killerid, reason);
 
 	PlayCrimeReportForPlayer(killerid, killerid, random(18)+3);
@@ -601,10 +587,6 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	Trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 	Spectate_OnPlayerStateChange(playerid, newstate, oldstate);
 	Weapon_OnPlayerStateChange(playerid, newstate, oldstate);
-
-	if (newstate == PLAYER_STATE_DRIVER) {
-		Premium_OnPlayerStateChange(playerid, newstate, oldstate);
-	}
 
 	if (newstate == PLAYER_STATE_DRIVER || newstate == PLAYER_STATE_PASSENGER) {
 		VehShop_OnPlayerStateChange(playerid, newstate, oldstate);

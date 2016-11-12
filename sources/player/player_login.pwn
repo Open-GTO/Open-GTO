@@ -108,6 +108,8 @@ stock Player_SaveEx(playerid)
 	ini_setString(file_player, "Name", playername);
 	ini_setString(file_player, "Gang", ret_GetPlayerGangName(playerid));
 
+	ini_setInteger(file_player, "Interface_Visible", EncodePlayerInterfaceData(playerid, PIP_Visible));
+
 	GetPlayerArmour(playerid, temp_float);
 	ini_setFloat(file_player, "Armour", temp_float);
 
@@ -163,8 +165,6 @@ stock Player_SaveEx(playerid)
 	ini_setInteger(file_player, "Trucker_TryCount", Trucker_GetPlayerTryCount(playerid));
 	ini_setInteger(file_player, "Trucker_PauseTime", Trucker_GetPlayerPauseTime(playerid));
 
-	ini_setInteger(file_player, "Interface_Visible", EncodePlayerInterfaceData(playerid, PIP_Visible));
-
 	ini_closeFile(file_player);
 	return 1;
 }
@@ -183,6 +183,12 @@ stock Player_Login(playerid)
 			Float:f_temp;
 
 		new file_player = ini_openFile(filename_player);
+
+		ini_getString(file_player, "Gang", s_temp);
+		SetPlayerGangName(playerid, s_temp);
+
+		ini_getInteger(file_player, "Interface_Visible", temp);
+		DecodePlayerInterfaceData(playerid, PIP_Visible, temp);
 
 		ini_getFloat(file_player, "Armour", f_temp);
 		SetPlayerArmour(playerid, f_temp);
@@ -257,9 +263,6 @@ stock Player_Login(playerid)
 		ini_getInteger(file_player, "Privilege", temp);
 		SetPlayerPrivilege(playerid, PlayerPrivilege:temp);
 
-		ini_getString(file_player, "Gang", s_temp);
-		SetPlayerGangName(playerid, s_temp);
-
 		// weapon db
 		new
 			bullets[PLAYER_WEAPON_SLOTS],
@@ -301,9 +304,6 @@ stock Player_Login(playerid)
 
 		ini_getInteger(file_player, "Trucker_PauseTime", temp);
 		Trucker_SetPlayerPauseTime(playerid, temp);
-
-		ini_getInteger(file_player, "Interface_Visible", temp);
-		DecodePlayerInterfaceData(playerid, PIP_Visible, temp);
 
 		ini_closeFile(file_player);
 	}
