@@ -14,8 +14,7 @@
 #define INVALID_GROUNDHOLD_ID -1
 
 enum e_Groundhold_Info {
-	e_ghID,
-	e_ghName[MAX_NAME],
+	e_ghNameVar[MAX_LANG_VAR_STRING],
 	e_ghMoney,
 	e_ghXP,
 	e_ghMulti,
@@ -30,12 +29,12 @@ enum e_Groundhold_Info {
 }
 
 static gGroundholds[][e_Groundhold_Info] = {
-	{0, "Маркет",             5, 10, 100, 30,  1128.9720, -1489.8420, 22.7689},
-	{1, "Пирс",              10, 10, 100, 30, -1632.2703,  1416.9258, 7.1875},
-	{2, "Пиратский корабль", 15, 10, 100, 30,  2000.7501,  1545.0303, 13.5859},
-	{3, "Арка",               5, 20, 100, 30, -791.7888,   2424.8628, 157.1479},
-	{4, "Гора Чилиад",       30,  5, 100, 30, -2315.8278, -1643.5167, 483.7030},
-	{5, "Высокогорная ферма", 5,  15, 100, 20, 1106.4384, -309.8355, 73.5568}
+	{"GROUNDHOLD_POINT_MARKET",            5, 10, 100, 30,  1128.9720, -1489.8420, 22.7689},
+	{"GROUNDHOLD_POINT_PIER",              10, 10, 100, 30, -1632.2703,  1416.9258, 7.1875},
+	{"GROUNDHOLD_POINT_PIRAT_SHIP",        15, 10, 100, 30,  2000.7501,  1545.0303, 13.5859},
+	{"GROUNDHOLD_POINT_ARCH",              5, 20, 100, 30, -791.7888,   2424.8628, 157.1479},
+	{"GROUNDHOLD_POINT_CHILLIAD_MOUNTAIN", 30,  5, 100, 30, -2315.8278, -1643.5167, 483.7030},
+	{"GROUNDHOLD_POINT_HIGHLAND_FARM",     5, 15, 100, 20,  1106.4384, -309.8355, 73.5568}
 };
 
 static
@@ -69,14 +68,14 @@ Groundhold_OnGameModeInit()
 		filename[MAX_STRING];
 
 	for (new i = 0; i < sizeof(gGroundholds); i++) {
-		format(filename, sizeof(filename), "%sid_%d"DATA_FILES_FORMAT, db_groundhold, gGroundholds[i][e_ghID]);
+		format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, db_groundhold, gGroundholds[i][e_ghNameVar]);
 		if (!ini_fileExist(filename)) {
 			continue;
 		}
 
 		file = ini_openFile(filename);
 
-		ini_getString(file, "Name", gGroundholds[i][e_ghName], MAX_NAME);
+		ini_getString(file, "NameVar", gGroundholds[i][e_ghNameVar], MAX_LANG_VAR_STRING);
 		ini_getInteger(file, "Money", gGroundholds[i][e_ghMoney]);
 		ini_getInteger(file, "XP", gGroundholds[i][e_ghXP]);
 		ini_getInteger(file, "Multi", gGroundholds[i][e_ghMulti]);
@@ -138,7 +137,9 @@ Groundhold_OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA areaid)
 		Iter_Add(PlayerOnGround[ghid], playerid);
 
 		// message
-		Lang_SendText(playerid, "GROUNDHOLD_INFO", gGroundholds[ghid][e_ghName]);
+		new gh_name[MAX_LANG_VALUE_STRING];
+		Lang_GetPlayerText(playerid, gGroundholds[ghid][e_ghNameVar], gh_name);
+		Lang_SendText(playerid, "GROUNDHOLD_INFO", gh_name);
 		Lang_SendText(playerid, "GROUNDHOLD_BONUS",
 		              gGroundholds[ghid][e_ghMoney] * gGroundholds[ghid][e_ghMulti],
 		              gGroundholds[ghid][e_ghXP] * gGroundholds[ghid][e_ghMulti]);
@@ -190,7 +191,7 @@ stock Groundhold_SaveAll()
 		filename[MAX_STRING];
 
 	for (new i = 0; i < sizeof(gGroundholds); i++) {
-		format(filename, sizeof(filename), "%sid_%d"DATA_FILES_FORMAT, db_groundhold, gGroundholds[i][e_ghID]);
+		format(filename, sizeof(filename), "%s%s"DATA_FILES_FORMAT, db_groundhold, gGroundholds[i][e_ghNameVar]);
 
 		if (ini_fileExist(filename)) {
 			file = ini_openFile(filename);
@@ -198,7 +199,7 @@ stock Groundhold_SaveAll()
 			file = ini_createFile(filename);
 		}
 
-		ini_setString(file, "Name", gGroundholds[i][e_ghName]);
+		ini_setString(file, "NameVar", gGroundholds[i][e_ghNameVar]);
 		ini_setInteger(file, "Money", gGroundholds[i][e_ghMoney]);
 		ini_setInteger(file, "XP", gGroundholds[i][e_ghXP]);
 		ini_setInteger(file, "Multi", gGroundholds[i][e_ghMulti]);
@@ -255,7 +256,9 @@ stock Groundhold_CheckAll()
 stock Groundhold_RemovePlayer(ghid, playerid, &return_playerid = INVALID_PLAYER_ID)
 {
 	// message
-	Lang_SendText(playerid, "GROUNDHOLD_MISSING", gGroundholds[ghid][e_ghName]);
+	new gh_name[MAX_LANG_VALUE_STRING];
+	Lang_GetPlayerText(playerid, gGroundholds[ghid][e_ghNameVar], gh_name);
+	Lang_SendText(playerid, "GROUNDHOLD_MISSING", gh_name);
 
 	Message_Alert(playerid, "GROUNDHOLD_ALERT_HEADER", "GROUNDHOLD_ALERT_MISSING");
 	Message_ObjectiveHide(playerid);
