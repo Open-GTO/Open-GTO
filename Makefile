@@ -7,4 +7,4 @@ all:
 	$(PAWNCC) $(PARAMS) "-;+" "-(+" "-icompiler/includes" "-ogamemodes/$(NAME).amx" "sources/$(NAME).pwn"
 
 clean:
-	rm Open-GTO.lst Open-GTO.asm gamemodes/Open-GTO.amx
+	rm gamemodes/Open-GTO.lst gamemodes/Open-GTO.asm gamemodes/Open-GTO.amx
