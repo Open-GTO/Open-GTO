@@ -185,3 +185,23 @@
 	CreateDynamicObject(19448, 1523.09705, -41.23540, 1002.82428,   0.00000, 0.00000, 90.00000, .interiorid = 2);
 	CreateDynamicObject(19448, 1523.09705, -41.23540, 1003.60577,   0.00000, 0.00000, 90.00000, .interiorid = 2);
 	CreateDynamicObject(14638, 1520.21606, -48.74120, 1001.08960,   0.00000, 0.00000, 0.00000, .interiorid = 2);
+
+/*
+
+	Blastin' Fools Records
+
+*/
+
+	CreateDynamicObject(19463, 1035.94336, 0.02330, 1002.01141,   0.00000, 0.00000, 0.00000, .interiorid = 3);
+	CreateDynamicObject(19463, 1035.93994, 7.26710, 1002.01141,   0.00000, 0.00000, 0.00000, .interiorid = 3);
+	CreateDynamicObject(19463, 1037.60791, 0.03760, 1003.80560,   0.00000, 90.00000, 0.00000, .interiorid = 3);
+	CreateDynamicObject(19463, 1038.61621, 0.03710, 1003.80560,   0.00000, 90.00000, 0.00000, .interiorid = 3);
+	CreateDynamicObject(19463, 1040.69348, 10.45770, 1003.80969,   0.00000, 90.00000, 90.00000, .interiorid = 3);
+	CreateDynamicObject(19463, 1040.70642, 6.96977, 1003.80969,   0.00000, 90.00000, 90.00000, .interiorid = 3);
+	CreateDynamicObject(19463, 1040.67444, 12.14480, 1002.01422,   0.00000, 0.00000, 90.00000, .interiorid = 3);
+	CreateDynamicObject(19463, 1040.68872, 6.55770, 1003.80969,   0.00000, 90.00000, 90.00000, .interiorid = 3);
+	CreateDynamicObject(19463, 1040.30225, 0.07010, 1002.03540,   0.00000, 0.00000, 0.00000, .interiorid = 3);
+	CreateDynamicObject(19463, 1040.69812, -4.83550, 1002.03821,   0.00000, 0.00000, 90.00000, .interiorid = 3);
+	CreateDynamicObject(19463, 1040.30286, 3.63280, 1002.03540,   0.00000, 0.00000, 0.00000, .interiorid = 3);
+	CreateDynamicObject(19463, 1045.03125, 8.36150, 1002.03821,   0.00000, 0.00000, 90.00000, .interiorid = 3);
+	CreateDynamicObject(19463, 1044.55054, 7.40000, 1002.03540,   0.00000, 0.00000, 0.00000, .interiorid = 3);

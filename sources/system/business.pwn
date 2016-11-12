@@ -82,7 +82,8 @@ new Businesses[][BusinessInfo] = {
 	{"Zombotech Corporation", 500000, 3000, 5, "Unknown", 0, 0, 1, 1, -1951.7206, 689.0686, 46.5625},
 	{"Crack Den", 150000, 2400, 8, "Unknown", 0, 0, 1, 0, 323.3233, 1118.7882, 1083.8828},
 	{"Big Smoke's Crack Palace", 10000000, 24000, 25, "Unknown", 0, 0, 1, 0, 2546.8057, -1281.2859, 1060.9844},
-	{"B-Dup's Crack Palace", 1000000, 3400, 10, "Unknown", 0, 0, 1, 0, 1526.0604, -45.5709, 1002.1310}
+	{"B-Dup's Crack Palace", 1000000, 3400, 10, "Unknown", 0, 0, 1, 0, 1526.0604, -45.5709, 1002.1310},
+	{"Blastin' Fools Records", 1000000, 3400, 10, "Unknown", 0, 0, 1, 0, 1043.5496, 10.2776, 1001.2845}
 };
 
 #define SetPlayerToBusinessID(%0,%1) SetPVarInt(%0, "BusID",%1)
