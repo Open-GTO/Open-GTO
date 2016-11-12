@@ -276,8 +276,13 @@ static gEnters[][e_Enterexit_Enter] = {
 	{ENTEREXIT_TYPE_BDCRACKPALACE, -1, 2000.0543, -1114.0648, 27.1250, 180.0000}
 };
 
-Enterexit_OnGameModeInit()
+/*
+	OnGameModeInit
+*/
+
+public OnGameModeInit()
 {
+
 	DisableInteriorEnterExits();
 
 	new
@@ -312,23 +317,57 @@ Enterexit_OnGameModeInit()
 		);
 
 		// callback
-	#if defined OnInteriorCreated
-		OnInteriorCreated(i, type, world);
-	#endif
+		CallLocalFunction("OnInteriorCreated", "iii", i, type, world);
 	}
 
 	Log_Init("system", "Interior module init.");
-	return 1;
+	#if defined Enterexit_OnGameModeInit
+		return Enterexit_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
 
-Enterexit_OnPlayerConnect(playerid)
+#define OnGameModeInit Enterexit_OnGameModeInit
+#if defined Enterexit_OnGameModeInit
+	forward Enterexit_OnGameModeInit();
+#endif
+
+/*
+	OnPlayerConnect
+*/
+
+public OnPlayerConnect(playerid)
 {
 	Enterexit_SetPlayerEnterID(playerid, -1);
 	Enterexit_SetPlayerIndex(playerid, -1);
-	return 1;
+	#if defined Enterexit_OnPlayerConnect
+		return Enterexit_OnPlayerConnect(playerid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
 
-Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
+#define OnPlayerConnect Enterexit_OnPlayerConnect
+#if defined Enterexit_OnPlayerConnect
+	forward Enterexit_OnPlayerConnect(playerid);
+#endif
+
+/*
+	OnPlayerKeyStateChange
+*/
+
+stock Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
 {
 	if (!PRESSED(KEY_USING)) {
 		return 0;
@@ -368,11 +407,14 @@ Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
 			return 1;
 		}
 	}
-
 	return 0;
 }
 
-Enterexit_OnPlayerPickUpPickup(playerid, pickupid)
+/*
+	OnPlayerPickUpDynamicPickup
+*/
+
+public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
 	Enterexit_SetPlayerEnterID(playerid, -1);
 
@@ -383,11 +425,29 @@ Enterexit_OnPlayerPickUpPickup(playerid, pickupid)
 			}
 
 			Enterexit_SetPlayerEnterID(playerid, i);
-			return 1;
+			break;
 		}
 	}
-	return 0;
+	#if defined Enterexit_OnPlayerPickUpDP
+		return Enterexit_OnPlayerPickUpDP(playerid, pickupid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerPickUpDP
+	#undef OnPlayerPickUpDynamicPickup
+#else
+	#define _ALS_OnPlayerPickUpDP
+#endif
+
+#define OnPlayerPickUpDynamicPickup Enterexit_OnPlayerPickUpDP
+#if defined Enterexit_OnPlayerPickUpDP
+	forward Enterexit_OnPlayerPickUpDP(playerid, pickupid);
+#endif
+
+/*
+	Functions
+*/
 
 stock Enterexit_GetPlayerIndex(playerid)
 {

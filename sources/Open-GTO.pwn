@@ -274,7 +274,6 @@ public OnGameModeInit()
 	Groundhold_OnGameModeInit();
 	business_OnGameModeInit();
 	housing_OnGameModeInit();
-	Enterexit_OnGameModeInit();
 	Weapon_OnGameModeInit();
 	Premium_OnGameModeInit();
 	PWDrop_OnGameModeInit();
@@ -339,7 +338,6 @@ public OnPlayerConnect(playerid)
 	Trucker_OnPlayerConnect(playerid);
 	PlayerMoneyTD_OnPlayerConnect(playerid);
 	Vehicle_Textdraw_OnPlayerConn(playerid);
-	Enterexit_OnPlayerConnect(playerid);
 	Spectate_OnPlayerConnect(playerid);
 	Beachside_OnPlayerConnect(playerid);
 	Tuning_OnPlayerConnect(playerid);
@@ -379,9 +377,6 @@ public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 		return 1;
 	}
 	if (Premium_OnPlayerPickUpPickup(playerid, pickupid)) {
-		return 1;
-	}
-	if (Enterexit_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
 	}
 	return 1;
