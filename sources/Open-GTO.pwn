@@ -275,7 +275,6 @@ public OnGameModeInit()
 	business_OnGameModeInit();
 	housing_OnGameModeInit();
 	Weapon_OnGameModeInit();
-	Premium_OnGameModeInit();
 	PWDrop_OnGameModeInit();
 	PLevel_OnGameModeInit();
 	PlayerClick_OnGameModeInit();
@@ -374,9 +373,6 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
 	if (PWDrop_OnPlayerPickUpPickup(playerid, pickupid)) {
-		return 1;
-	}
-	if (Premium_OnPlayerPickUpPickup(playerid, pickupid)) {
 		return 1;
 	}
 	return 1;
@@ -596,10 +592,6 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	Trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 	Spectate_OnPlayerStateChange(playerid, newstate, oldstate);
 	Weapon_OnPlayerStateChange(playerid, newstate, oldstate);
-
-	if (newstate == PLAYER_STATE_DRIVER) {
-		Premium_OnPlayerStateChange(playerid, newstate, oldstate);
-	}
 
 	if (newstate == PLAYER_STATE_DRIVER || newstate == PLAYER_STATE_PASSENGER) {
 		VehShop_OnPlayerStateChange(playerid, newstate, oldstate);
