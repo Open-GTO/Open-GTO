@@ -275,7 +275,6 @@ public OnGameModeInit()
 	business_OnGameModeInit();
 	housing_OnGameModeInit();
 	Weapon_OnGameModeInit();
-	PWDrop_OnGameModeInit();
 	PLevel_OnGameModeInit();
 	PlayerClick_OnGameModeInit();
 	AdminClick_OnGameModeInit();
@@ -372,9 +371,6 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, source)
 
 public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
-	if (PWDrop_OnPlayerPickUpPickup(playerid, pickupid)) {
-		return 1;
-	}
 	return 1;
 }
 
@@ -425,7 +421,6 @@ public OnPlayerDeath(playerid, killerid, reason)
 
 	Player_OnPlayerDeath(playerid, killerid, reason);
 	PWSkill_OnPlayerDeath(playerid, killerid, reason);
-	PWDrop_OnPlayerDeath(playerid, killerid, reason);
 	Trucker_OnPlayerDeath(playerid, killerid, reason);
 
 	PlayCrimeReportForPlayer(killerid, killerid, random(18)+3);
