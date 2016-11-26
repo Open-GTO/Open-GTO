@@ -69,7 +69,7 @@ stock oBan_Check(playerid)
 	return 1;
 }
 
-stock oBan(user[], reason[], adminid, time_second=0)
+stock oBan(user[], reason[], adminid, duration_time = 0)
 {
 	new timestamp = gettime();
 
@@ -90,7 +90,7 @@ stock oBan(user[], reason[], adminid, time_second=0)
 	}
 
 	ini_setInteger(file_ban_db, "Date", timestamp);
-	ini_setInteger(file_ban_db, "Time", time_second);
+	ini_setInteger(file_ban_db, "Time", duration_time);
 	ini_setString(file_ban_db, "Admin", ret_GetPlayerName(adminid));
 	ini_setString(file_ban_db, "Reason", reason);
 	ini_closeFile(file_ban_db);
@@ -103,10 +103,10 @@ stock oBan(user[], reason[], adminid, time_second=0)
 	GetPlayerName(adminid, admin_name, sizeof(admin_name));
 
 	foreach (new playerid : Player) {
-		if (time_second == 0) {
+		if (duration_time == 0) {
 			Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_TIME_FOREVER", string, sizeof(string));
 		} else {
-			GetTimeStringFromSeconds(playerid, seconds_to_unban, timestring);
+			GetTimeStringFromSeconds(playerid, duration_time, timestring);
 			Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_TIME_VALUE", string, sizeof(string), timestring);
 		}
 
