@@ -206,6 +206,9 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 
 	GivePlayerXP(killerid, xp_give_killer);
 	GivePlayerXP(playerid, xp_give_player);
+
+	Lang_SendText(playerid, "PLAYER_DEATH_MESSAGE", stolencash, -xp_give_player);
+	Lang_SendText(killerid, "PLAYER_KILL_MESSAGE", stolencash, xp_give_killer);
 }
 
 Player_OnPlayerRequestClass(playerid, classid)
