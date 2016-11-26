@@ -1963,6 +1963,15 @@ public OnInteriorCreated(id, type, world)
 
 public OnPlayerStateChange(playerid, newstate, oldstate)
 {
+#if defined OLD_ENGINE_DO
+	if (oldstate == PLAYER_STATE_DRIVER) {
+		new vehicleid = GetPlayerPreviousVehicleID(playerid);
+		if (vehicleid != INVALID_VEHICLE_ID && IsVehicleOccupied(vehicleid)) {
+			Vehicle_ToggleEngine(vehicleid, VEHICLE_PARAMS_OFF);
+		}
+	}
+#endif
+
 	if (newstate == PLAYER_STATE_DRIVER) {
 		new vehicleid = GetPlayerVehicleID(playerid);
 
@@ -1978,15 +1987,6 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 		}
 	#endif
 	}
-
-#if defined OLD_ENGINE_DO
-	if (oldstate == PLAYER_STATE_DRIVER) {
-		new vehicleid = GetPlayerPreviousVehicleID(playerid);
-		if (vehicleid != INVALID_VEHICLE_ID) {
-			Vehicle_ToggleEngine(vehicleid, VEHICLE_PARAMS_OFF);
-		}
-	}
-#endif
 	#if defined Vehicle_OnPlayerStateChange
 		return Vehicle_OnPlayerStateChange(playerid, newstate, oldstate);
 	#else
@@ -2068,7 +2068,7 @@ stock SetVehicleRespawnTime(value)
 	vehicle_respawn_time = value;
 }
 
-stock Vehicle_ToggleEngine(vehicleid, newstate = -1)
+stock Vehicle_ToggleEngine(vehicleid, newstate = VEHICLE_PARAMS_UNSET)
 {
 	new engine, lights, alarm, doors, bonnet, boot, objective;
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
@@ -2077,7 +2077,7 @@ stock Vehicle_ToggleEngine(vehicleid, newstate = -1)
 		return 0;
 	}
 
-	if (newstate == -1) {
+	if (newstate == VEHICLE_PARAMS_UNSET) {
 		if (engine == VEHICLE_PARAMS_OFF) {
 			newstate = VEHICLE_PARAMS_ON;
 		} else {
@@ -2088,7 +2088,7 @@ stock Vehicle_ToggleEngine(vehicleid, newstate = -1)
 	return SetVehicleParamsEx(vehicleid, newstate, lights, alarm, doors, bonnet, boot, objective);
 }
 
-stock Vehicle_ToggleLight(vehicleid, newstate = -1)
+stock Vehicle_ToggleLight(vehicleid, newstate = VEHICLE_PARAMS_UNSET)
 {
 	new engine, lights, alarm, doors, bonnet, boot, objective;
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
@@ -2097,7 +2097,7 @@ stock Vehicle_ToggleLight(vehicleid, newstate = -1)
 		return 0;
 	}
 
-	if (newstate == -1) {
+	if (newstate == VEHICLE_PARAMS_UNSET) {
 		if (engine == VEHICLE_PARAMS_OFF) {
 			newstate = VEHICLE_PARAMS_ON;
 		} else {
