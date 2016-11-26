@@ -41,7 +41,7 @@ static gWeapons[MAX_WEAPONS][e_Weapon_Info] = {
 	// hand to hand
 	{!"Unarmed",           false, false, 0,       0},
 	{!"Brass Knuckles",    true,  false, 10000,   1},
-	{!"Golf Club",         false, false, 5000,    7},
+	{!"Golf Club",         true,  false, 5000,    7},
 	{!"Nightstick",        false, false, 7500,    9},
 	{!"Knife",             true,  false, 100000,  15},
 	{!"Baseball Bat",      true,  false, 5000,    6},
@@ -84,7 +84,7 @@ static gWeapons[MAX_WEAPONS][e_Weapon_Info] = {
 	// other
 	{!"Spraycan",          false, true,  20,      15},
 	{!"Fire Extinguisher", false, true,  30,      23},
-	{!"Camera",            false, true,  5,       5},
+	{!"Camera",            true,  true,  5,       5},
 	{!"Night Vis Goggles", false, false, 10,      5},
 	{!"Thermal Goggles",   false, false, 10,      5},
 	{!"Parachute",         true,  false, 2000,    1}
