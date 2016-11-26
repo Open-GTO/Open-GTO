@@ -270,6 +270,11 @@ stock GetPlayerVehicleCostBySlot(playerid, slot)
 	return GetVehicleModelCost( PlayerVehicle[playerid][slot][pv_Model] );
 }
 
+stock GetPlayerVehicleSellCostBySlot(playerid, slot)
+{
+	return GetVehicleModelSellCost( PlayerVehicle[playerid][slot][pv_Model] );
+}
+
 stock GetPlayerVehicleModelBySlot(playerid, slot)
 {
 	return PlayerVehicle[playerid][slot][pv_Model];

@@ -83,7 +83,7 @@ DialogCreate:PlayerVehicleList(playerid)
 	            string,
 	            "BUTTON_SELECT", "BUTTON_BACK",
 	            MDIALOG_NOTVAR_INFO,
-	            GetPlayerVehicleCostBySlot(playerid, veh_slot) / 2);
+	            GetPlayerVehicleSellCostBySlot(playerid, veh_slot));
 }
 
 DialogResponse:PlayerVehicleList(playerid, response, listitem, inputtext[])
@@ -114,7 +114,7 @@ DialogResponse:PlayerVehicleList(playerid, response, listitem, inputtext[])
 		case 1: {
 			new slot = pl_veh_menu_GetVehicleSlot(playerid);
 
-			GivePlayerMoney(playerid, GetPlayerVehicleCostBySlot(playerid, slot) / 2);
+			GivePlayerMoney(playerid, GetPlayerVehicleSellCostBySlot(playerid, slot));
 			RemovePlayerVehicle(playerid, slot);
 
 			Dialog_MessageEx(playerid, Dialog:PlayerVehicleReturnMenu, "PLAYER_MENU_VEHICLE_CAPTION", "PLAYER_MENU_VEHICLE_SELLED", "BUTTON_BACK", "BUTTON_CANCEL");

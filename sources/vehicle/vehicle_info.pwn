@@ -1,6 +1,6 @@
 /*
 
-	About: gto vehicle information
+	About: gamemode vehicle information
 	Author: ziggi
 
 */
@@ -11,6 +11,9 @@
 
 #define _vehicle_info_included
 
+/*
+	Enums
+*/
 
 enum e_Vehicle_Info {
 	Float:e_viFuel,
@@ -18,7 +21,11 @@ enum e_Vehicle_Info {
 	e_viCost,
 };
 
-new gVehicleInfo[][e_Vehicle_Info] = {
+/*
+	Vars
+*/
+
+static gVehicleInfo[][e_Vehicle_Info] = {
 	{70.0,    5,    600000},
 	{45.0,    0,    0},
 	{40.0,    9,    800000},
@@ -233,6 +240,10 @@ new gVehicleInfo[][e_Vehicle_Info] = {
 	{0.0,     0,    0}
 };
 
+/*
+	Function
+*/
+
 stock ret_GetVehicleModelName(model)
 {
 	new name[MAX_VEHICLE_NAME];
@@ -246,6 +257,14 @@ stock GetVehicleModelCost(model)
 		return 0;
 	}
 	return gVehicleInfo[model - 400][e_viCost];
+}
+
+stock GetVehicleModelSellCost(model)
+{
+	if (model < 400 || model > 611) {
+		return 0;
+	}
+	return (gVehicleInfo[model - 400][e_viCost] * 80) / 100;
 }
 
 stock Float:GetVehicleModelMaxFuel(model)
