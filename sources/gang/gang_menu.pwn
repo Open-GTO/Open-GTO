@@ -162,7 +162,7 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 					Gang_MemberRemove(gangid, memberid);
 
 					Dialog_Message(playerid, "GANG_EXIT_HEADER", "GANG_EXIT_INFO", "BUTTON_OK");
-					Gang_SendLangMessage(gangid, "GANG_MEMBER_LEAVE", _, player_name);
+					Gang_SendLangMessage(gangid, "GANG_MEMBER_LEAVE", _, player_name, playerid);
 					Log(mainlog, INFO, "Action <GangMenu>: %s(%d) have leaved from '%s' gang.", player_name, playerid, gang_name);
 				}
 				return 1;
@@ -453,7 +453,7 @@ DialogResponse:GangInviteAccept(playerid, response, listitem, inputtext[])
 		                 MDIALOG_NOTVAR_NONE,
 		                 gang_name);
 
-		Gang_SendLangMessage(gangid, "GANG_INVITE_PLAYER_IN", _, player_name);
+		Gang_SendLangMessage(gangid, "GANG_INVITE_PLAYER_IN", _, player_name, playerid);
 
 		Log(mainlog, INFO, "Action <GangInviteAccept>: %s(%d) have joined '%s' gang.", player_name, playerid, gang_name);
 	} else {
@@ -569,6 +569,7 @@ DialogResponse:GangKick(playerid, response, listitem, inputtext[])
 
 	Gang_MemberRemove(gangid, memberid);
 
+	Gang_SendLangMessage(gangid, "GANG_KICK_PLAYER_KICKED", _, member_name);
 	Dialog_MessageEx(playerid, Dialog:GangReturnMenu,
 	                 "GANG_KICK_HEADER",
 	                 "GANG_KICK_PLAYER_KICKED",

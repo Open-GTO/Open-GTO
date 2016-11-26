@@ -153,30 +153,35 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 	UpdatePlayerSpawnInfo(playerid);
 	SetPlayerArmour(playerid, 0.0);
 
-	if (killerid == INVALID_PLAYER_ID || IsPlayersTeammates(playerid, killerid)) {
+	if (killerid == INVALID_PLAYER_ID) {
 		return;
 	}
-
-	AddPlayerDeaths(playerid);
-	AddPlayerKills(killerid);
 
 	if (IsPlayerJailed(playerid)) {
 		return;
 	}
 
-	// gang kill
+	// is gang kill
 	new killer_gang_id = GetPlayerGangID(killerid);
 	if (killer_gang_id != INVALID_GANG_ID) {
 		if (Gang_PlayerKill(killer_gang_id, killerid, playerid) == 1) {
-			new killername[MAX_PLAYER_NAME + 1];
-			GetPlayerName(killerid, killername, sizeof(killername));
+			new
+				killername[MAX_PLAYER_NAME + 1],
+				playername[MAX_PLAYER_NAME + 1];
 
-			Gang_SendLangMessage(killer_gang_id, "GANG_KILL_TEAMMATE", _, killername);
+			GetPlayerName(killerid, killername, sizeof(killername));
+			GetPlayerName(playerid, playername, sizeof(playername));
+
+			Gang_SendLangMessage(killer_gang_id, "GANG_KILL_TEAMMATE", _, killername, killerid, playername, playerid);
 			return;
 		}
 
 		GiveGangXP(killer_gang_id, (GetGangLevel(killer_gang_id) + 1) * 20);
 	}
+
+	// give stats
+	AddPlayerDeaths(playerid);
+	AddPlayerKills(killerid);
 
 	// give money
 	new stolencash = (GetPlayerMoney(playerid) / 100) * PLAYER_MONEY_DEATH_MINUS_PROC;

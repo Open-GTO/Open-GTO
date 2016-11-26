@@ -466,7 +466,7 @@ stock Gang_GiveXpFromPlayer(giverid, xpamount)
 
 stock Gang_PlayerKill(gangid, killerid, victimid)
 {
-	if (GetPlayerGangID(killerid) == GetPlayerGangID(victimid)) {
+	if (IsPlayersTeammates(killerid, victimid)) {
 		return 1;
 	}
 
