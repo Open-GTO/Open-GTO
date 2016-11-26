@@ -44,19 +44,24 @@ COMMAND:freeze(playerid, params[])
 
 	new
 		is_with_reason,
-		timeword[MAX_LANG_VALUE_STRING],
+		timestring[MAX_LANG_VALUE_STRING],
 		targetname[MAX_PLAYER_NAME + 1],
 		playername[MAX_PLAYER_NAME + 1];
 
 	is_with_reason = strlen(reason) != 0;
-	Declension_GetSeconds2(playerid, time, timeword);
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (targetid == -1) {
 		if (is_with_reason) {
-			Lang_SendTextToAll("ADMIN_COMMAND_FREEZE_ALL_REASON", playername, playerid, time, timeword, reason);
+			foreach (new i : Player) {
+				GetTimeStringFromSeconds(i, time, timestring);
+				Lang_SendText(i, "ADMIN_COMMAND_FREEZE_ALL_REASON", playername, playerid, timestring, reason);
+			}
 		} else {
-			Lang_SendTextToAll("ADMIN_COMMAND_FREEZE_ALL", playername, playerid, time, timeword);
+			foreach (new i : Player) {
+				GetTimeStringFromSeconds(i, time, timestring);
+				Lang_SendText(i, "ADMIN_COMMAND_FREEZE_ALL", playername, playerid, timestring);
+			}
 		}
 
 		foreach (targetid : Player) {
@@ -66,11 +71,27 @@ COMMAND:freeze(playerid, params[])
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
 		if (is_with_reason) {
-			Lang_SendTextToAll("ADMIN_COMMAND_FREEZE_PLAYER_REASON", playername, playerid, targetname, targetid, time, timeword, reason);
-			Lang_SendText(playerid, "ADMIN_COMMAND_FREEZE_PLAYER_SELF_REASON", targetname, targetid, time, timeword, reason);
+			foreach (new i : Player) {
+				if (i == playerid) {
+					continue;
+				}
+				GetTimeStringFromSeconds(i, time, timestring);
+				Lang_SendText(i, "ADMIN_COMMAND_FREEZE_PLAYER_REASON", playername, playerid, targetname, targetid, timestring, reason);
+			}
+
+			GetTimeStringFromSeconds(playerid, time, timestring);
+			Lang_SendText(playerid, "ADMIN_COMMAND_FREEZE_PLAYER_SELF_REASON", targetname, targetid, timestring, reason);
 		} else {
-			Lang_SendTextToAll("ADMIN_COMMAND_FREEZE_PLAYER", playername, playerid, targetname, targetid, time, timeword);
-			Lang_SendText(playerid, "ADMIN_COMMAND_FREEZE_PLAYER_SELF", targetname, targetid, time, timeword);
+			foreach (new i : Player) {
+				if (i == playerid) {
+					continue;
+				}
+				GetTimeStringFromSeconds(i, time, timestring);
+				Lang_SendText(i, "ADMIN_COMMAND_FREEZE_PLAYER", playername, playerid, targetname, targetid, timestring);
+			}
+
+			GetTimeStringFromSeconds(playerid, time, timestring);
+			Lang_SendText(playerid, "ADMIN_COMMAND_FREEZE_PLAYER_SELF", targetname, targetid, timestring);
 		}
 
 		FreezePlayer(targetid, time);

@@ -42,22 +42,25 @@ stock oBan_Check(playerid)
 	ini_closeFile(file_ban_db);
 
 	new
-		unban_time = ban_time + duration_time - gettime(),
+		seconds_to_unban = ban_time - gettime() + duration_time,
+		timestring[MAX_LANG_VALUE_STRING],
 		string[MAX_LANG_VALUE_STRING];
 
 	if (duration_time == 0) {
 		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_TIME_FOREVER", string);
-		unban_time = 1;
+		seconds_to_unban = 1;
 	} else {
-		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_TIME_SECOND", string, sizeof(string), duration_time);
-		if (unban_time > 0) {
-			Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_TIME_REMAIN", string, sizeof(string), string, unban_time);
+		GetTimeStringFromSeconds(playerid, duration_time, timestring);
+		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_TIME_VALUE", string, sizeof(string), timestring);
+		if (seconds_to_unban > 0) {
+			GetTimeStringFromSeconds(playerid, seconds_to_unban, timestring);
+			Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_TIME_REMAIN", string, sizeof(string), string, timestring);
 		}
 	}
 
 	Lang_SendText(playerid, "ADMIN_COMMAND_BAN_PLAYER_MESSAGE", admin, timestamp_to_format_date(ban_time), string, reason);
 
-	if (unban_time > 0) {
+	if (seconds_to_unban > 0) {
 		KickPlayer(playerid, "ban check", 0);
 	} else {
 		ini_fileRemove(filename);
@@ -94,20 +97,21 @@ stock oBan(user[], reason[], adminid, time_second=0)
 
 	new
 		admin_name[MAX_PLAYER_NAME + 1],
-		format_date[20],
+		timestring[MAX_LANG_VALUE_STRING],
 		string[MAX_LANG_VALUE_STRING];
 
 	GetPlayerName(adminid, admin_name, sizeof(admin_name));
-	strcpy(format_date, timestamp_to_format_date(timestamp));
 
 	foreach (new playerid : Player) {
 		if (time_second == 0) {
 			Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_TIME_FOREVER", string, sizeof(string));
 		} else {
-			Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_TIME_SECOND", string, sizeof(string), time_second);
+			GetTimeStringFromSeconds(playerid, seconds_to_unban, timestring);
+			Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_TIME_VALUE", string, sizeof(string), timestring);
 		}
 
-		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_SUCCESS", string, sizeof(string), user, format_date, admin_name, adminid, string);
+		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_SUCCESS", string, sizeof(string),
+		                   user, timestamp_to_format_date(timestamp), admin_name, adminid, string);
 
 		if (strlen(reason) > 0) {
 			Lang_GetPlayerText(playerid, "ADMIN_COMMAND_BAN_SUCCESS_REASON", string, sizeof(string), reason);

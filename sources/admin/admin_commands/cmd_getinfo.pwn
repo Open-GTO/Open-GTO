@@ -48,7 +48,7 @@ COMMAND:getinfo(playerid, params[])
 			current_time,
 			time,
 			count,
-			timeword[MAX_LANG_VALUE_STRING];
+			timestring[MAX_LANG_VALUE_STRING];
 
 		current_time = gettime();
 
@@ -63,15 +63,13 @@ COMMAND:getinfo(playerid, params[])
 			count++;
 
 			if (IsPlayerJailed(targetid)) {
-				time = GetPlayerJailTime(targetid);
-
 				if (time > 0) {
-					time = (time - current_time) / 60 + 1;
+					time = (GetPlayerJailTime(targetid) - current_time) + 1;
 
-					Declension_GetMinutes(playerid, time, timeword);
+					GetTimeStringFromSeconds(playerid, time, timestring);
 
 					Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_ALL_JAIL_REMAIN",
-					              targetname, targetid, time, timeword);
+					              targetname, targetid, timestring);
 				} else {
 					Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_ALL_JAIL_NOTIME",
 					              targetname, targetid);
@@ -79,12 +77,12 @@ COMMAND:getinfo(playerid, params[])
 			}
 
 			if (IsPlayerMuted(playerid)) {
-				time = (GetPlayerMuteTime(targetid) - current_time) / 60 + 1;
+				time = (GetPlayerMuteTime(targetid) - current_time) + 1;
 
-				Declension_GetMinutes(playerid, time, timeword);
+				GetTimeStringFromSeconds(playerid, time, timestring);
 
 				Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_ALL_MUTE_REMAIN",
-				              targetname, targetid, time, timeword);
+				              targetname, targetid, timestring);
 			}
 		}
 
