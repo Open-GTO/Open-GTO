@@ -129,7 +129,7 @@ stock SkinShop_SetPlayerFittingRoom(playerid, shopid)
 	new Float:camera_pos[3];
 	camera_pos[2] = SkinShops[shopid][ss_select_z] + 1.0;
 
-	GetCoordsBefore(pos[0], pos[1], pos[3], 2.0, camera_pos[0], camera_pos[1]);
+	GetCoordsInFront(pos[0], pos[1], pos[3], 2.0, camera_pos[0], camera_pos[1]);
 	SetPlayerCameraPos(playerid, camera_pos[0], camera_pos[1], camera_pos[2]);
 	SetPlayerCameraLookAt(playerid, pos[0], pos[1], pos[2] + 0.5);
 }

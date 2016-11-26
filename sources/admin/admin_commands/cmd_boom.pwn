@@ -37,7 +37,7 @@ COMMAND:boom(playerid, params[])
 	GetPlayerPos(playerid, pos_x, pos_y, pos_z);
 	GetPlayerFacingAngle(playerid, pos_a);
 
-	GetCoordsBefore(pos_x, pos_y, pos_a, 20.0, pos_x, pos_y);
+	GetCoordsInFront(pos_x, pos_y, pos_a, 20.0, pos_x, pos_y);
 
 	CreateExplosion(pos_x, pos_y, pos_z + 2, type, 30.0);
 

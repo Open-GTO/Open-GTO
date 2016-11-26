@@ -245,7 +245,7 @@ public OnPlayerLogin(playerid)
 
 			camera_pos_z = spawn_pos_z + 1.0;
 
-			GetCoordsBefore(spawn_pos_x, spawn_pos_y, spawn_pos_a, 2.0, camera_pos_x, camera_pos_y);
+			GetCoordsInFront(spawn_pos_x, spawn_pos_y, spawn_pos_a, 2.0, camera_pos_x, camera_pos_y);
 			SetPlayerCameraPos(playerid, camera_pos_x, camera_pos_y, camera_pos_z);
 			SetPlayerCameraLookAt(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z + 0.5);
 

@@ -105,7 +105,7 @@ DialogResponse:PlayerVehicleList(playerid, response, listitem, inputtext[])
 			new model = GetPlayerVehicleModelBySlot(playerid, slot);
 
 			new Float:pos[4];
-			GetVehicleCoordsBeforePlayer(pos[0], pos[1], pos[2], pos[3], playerid, model);
+			GetVehicleCoordsInFrontOfPlayer(pos[0], pos[1], pos[2], pos[3], playerid, model);
 
 			CreatePlayerVehicle(playerid, slot, pos[0], pos[1], pos[2], pos[3]);
 			return 1;
