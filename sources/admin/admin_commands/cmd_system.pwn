@@ -110,6 +110,7 @@ COMMAND:system(playerid, params[])
 				return 1;
 			}
 
+			Lang_Reload(lang);
 			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_RELOAD", Lang_ReturnName(lang));
 		} else {
 			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_HELP", Lang_ReturnCodes());
