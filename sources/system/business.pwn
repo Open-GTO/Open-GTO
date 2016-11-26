@@ -553,6 +553,7 @@ stock bis_Buy(playerid)
 		strcpy(Businesses[id][Business_Owner], playername, MAX_PLAYER_NAME);
 		Businesses[id][Business_Buyout] = 0;
 
+		Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, business_icon[id], E_STREAMER_TYPE, 36);
 		business_UpdateLabel(id);
 
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
@@ -595,6 +596,7 @@ stock bis_Sell(playerid)
 		Businesses[id][Business_Buyout] = 0;
 		Businesses[id][Business_Upgrade] = 1;
 
+		Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, business_icon[id], E_STREAMER_TYPE, 52);
 		business_UpdateLabel(id);
 
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
