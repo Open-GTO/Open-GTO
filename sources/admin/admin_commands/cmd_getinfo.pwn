@@ -40,7 +40,6 @@ COMMAND:getinfo(playerid, params[])
 	}
 
 	new
-		string[MAX_LANG_VALUE_STRING],
 		targetname[MAX_PLAYER_NAME + 1];
 
 	if (targetid == -1) {
@@ -90,9 +89,12 @@ COMMAND:getinfo(playerid, params[])
 			Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_ALL_NOPLAYERS");
 		}
 	} else {
-		new
+		static
 			account_info[e_Account_Info],
-			year, month, day, hour, minute, second;
+			account_info_str[MAX_ACCOUNT_INFO_LINES][MAX_LANG_VALUE_STRING],
+			account_scount,
+			player_info_str[MAX_PLAYER_INFO_LINES][MAX_LANG_VALUE_STRING],
+			player_scount;
 
 		if (targetid == -2) {
 			strcpy(targetname, subparams);
@@ -111,30 +113,16 @@ COMMAND:getinfo(playerid, params[])
 		}
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_HEADER", targetname);
-		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_IP", account_info[e_aIP]);
 
-		gmtime(account_info[e_aCreationTime], year, month, day, hour, minute, second);
-		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_CREATION", day, month, year, hour, minute, second);
-
-		gmtime(account_info[e_aLoginTime], year, month, day, hour, minute, second);
-		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_LOGIN", day, month, year, hour, minute, second);
-
-		if (account_info[e_aPremiumTime] != 0) {
-			gmtime(account_info[e_aPremiumTime], year, month, day, hour, minute, second);
-			Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM", day, month, year, hour, minute, second);
+		account_scount = GetAccountInfoArray(account_info, account_info_str, sizeof(account_info_str[]), playerid);
+		for (new i = 0; i < account_scount; i++) {
+			Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREFIX", account_info_str[i]);
 		}
 
-		GetTimeStringFromSeconds(playerid, account_info[e_aPlayedSeconds], string);
-		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PLAYED", string);
-
 		if (targetid != -2) {
-			static
-				info[MAX_PLAYER_INFO_LINES][MAX_LANG_VALUE_STRING];
-
-			GetPlayerInfoArray(targetid, info, sizeof(info[]), playerid);
-
-			for (new i = 0; i < sizeof(info); i++) {
-				Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREFIX", info[i]);
+			player_scount = GetPlayerInfoArray(targetid, player_info_str, sizeof(player_info_str[]), playerid);
+			for (new i = 0; i < player_scount; i++) {
+				Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREFIX", player_info_str[i]);
 			}
 		}
 	}

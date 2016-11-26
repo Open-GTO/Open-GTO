@@ -51,40 +51,22 @@ COMMAND:stats(playerid, params[])
 
 COMMAND:status(playerid, params[])
 {
-	new
-		string[MAX_STRING];
+	static
+		account_info[MAX_ACCOUNT_INFO_LINES][MAX_LANG_VALUE_STRING],
+		account_scount,
+		player_info[MAX_PLAYER_INFO_LINES][MAX_LANG_VALUE_STRING],
+		player_scount;
 
-	Lang_SendText(playerid, "COMMAND_STATUS_0");
+	Lang_SendText(playerid, "COMMAND_STATUS_HEADER");
 
-	GetPrivilegeNameForPlayer(playerid, GetPlayerPrivilege(playerid), string);
-	Lang_SendText(playerid, "COMMAND_STATUS_PRIVILEGE", string);
-
-	if (IsPlayerInGang(playerid)) {
-		Lang_SendText(playerid, "COMMAND_STATUS_1", ret_GetPlayerGangName(playerid));
+	account_scount = GetPlayerAccountInfoArray(playerid, account_info, sizeof(account_info[]), playerid);
+	for (new i = 0; i < account_scount; i++) {
+		Lang_SendText(playerid, "COMMAND_STATUS_PREFIX", account_info[i]);
 	}
 
-	Lang_SendText(playerid, "COMMAND_STATUS_2",
-	              GetPlayerLevel(playerid),
-	              GetPlayerXP(playerid),
-	              GetXPToLevel(GetPlayerLevel(playerid) + 1),
-	              GetPlayerMoney(playerid),
-	              GetPlayerBankMoney(playerid),
-	              GetPlayerTotalMoney(playerid));
-
-	Lang_SendText(playerid, "COMMAND_STATUS_3",
-	              GetPlayerKills(playerid),
-	              GetPlayerDeaths(playerid),
-	              GetPlayerKillDeathRatio(playerid),
-	              GetPlayerJailedCount(playerid),
-	              GetPlayerMutedCount(playerid));
-
-	GetFightStyleNameForPlayer(playerid, GetPlayerFightStyleUsed(playerid), string);
-	Lang_SendText(playerid, "COMMAND_STATUS_FIGHTSTYLE", string);
-
-	if (IsPlayerHavePremium(playerid)) {
-		Lang_SendText(playerid, "COMMAND_STATUS_PREMIUM", ret_GetPlayerPremiumDateString(playerid));
-	} else {
-		Lang_SendText(playerid, "COMMAND_STATUS_NO_PREMIUM");
+	player_scount = GetPlayerInfoArray(playerid, player_info, sizeof(player_info[]), playerid);
+	for (new i = 0; i < player_scount; i++) {
+		Lang_SendText(playerid, "COMMAND_STATUS_PREFIX", player_info[i]);
 	}
 	return 1;
 }

@@ -344,50 +344,29 @@ public AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[])
 	}
 
 	static
-		message[MAX_LANG_VALUE_STRING * 6 + MAX_LANG_VALUE_STRING * MAX_PLAYER_INFO_LINES];
+		message[MAX_LANG_VALUE_STRING * MAX_ACCOUNT_INFO_LINES + MAX_LANG_VALUE_STRING * MAX_PLAYER_INFO_LINES],
+		string[MAX_LANG_VALUE_STRING],
+		account_info[MAX_ACCOUNT_INFO_LINES][MAX_LANG_VALUE_STRING],
+		account_scount,
+		player_info[MAX_PLAYER_INFO_LINES][MAX_LANG_VALUE_STRING],
+		player_scount,
+		targetname[MAX_PLAYER_NAME + 1];
 
 	message[0] = '\0';
 
-	static
-		string[MAX_LANG_VALUE_STRING],
-		account_info[e_Account_Info],
-		player_info[MAX_PLAYER_INFO_LINES][MAX_LANG_VALUE_STRING],
-		targetname[MAX_PLAYER_NAME + 1],
-		year, month, day, hour, minute, second;
-
-	Account_GetData(targetid, account_info);
-	GetPlayerInfoArray(targetid, player_info, sizeof(player_info[]), playerid);
+	account_scount = GetPlayerAccountInfoArray(targetid, account_info, sizeof(account_info[]), playerid);
+	player_scount = GetPlayerInfoArray(targetid, player_info, sizeof(player_info[]), playerid);
 	GetPlayerName(targetid, targetname, sizeof(targetname));
-	account_info[e_aPlayedSeconds] = Account_GetCurrentPlayedTime(playerid);
 
 	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_HEADER", string, sizeof(string), targetname);
 	strcat(message, string);
 
-	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_IP", string, sizeof(string), account_info[e_aIP]);
-	strcat(message, string);
-
-	gmtime(account_info[e_aCreationTime], year, month, day, hour, minute, second);
-	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_CREATION", string, sizeof(string),
-	                   day, month, year, hour, minute, second);
-	strcat(message, string);
-
-	gmtime(account_info[e_aLoginTime], year, month, day, hour, minute, second);
-	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_LOGIN", string, sizeof(string),
-	                   day, month, year, hour, minute, second);
-	strcat(message, string);
-
-	if (account_info[e_aPremiumTime] != 0) {
-		gmtime(account_info[e_aPremiumTime], year, month, day, hour, minute, second);
-		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM", string, sizeof(string),
-		                   day, month, year, hour, minute, second);
+	for (new i = 0; i < account_scount; i++) {
+		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREFIX", string, sizeof(string), account_info[i]);
 		strcat(message, string);
 	}
 
-	GetTimeStringFromSeconds(playerid, account_info[e_aPlayedSeconds], string);
-	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PLAYED", string, sizeof(string), string);
-	strcat(message, string);
-
-	for (new i = 0; i < sizeof(player_info); i++) {
+	for (new i = 0; i < player_scount; i++) {
 		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREFIX", string, sizeof(string), player_info[i]);
 		strcat(message, string);
 	}

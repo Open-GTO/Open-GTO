@@ -16,5 +16,9 @@
 */
 
 #if !defined MAX_PLAYER_INFO_LINES
-	#define MAX_PLAYER_INFO_LINES 9
+	#define MAX_PLAYER_INFO_LINES 10
+#endif
+
+#if !defined MAX_ACCOUNT_INFO_LINES
+	#define MAX_ACCOUNT_INFO_LINES 3
 #endif

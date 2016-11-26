@@ -18,14 +18,16 @@
 stock GetPlayerInfoString(playerid, string[], const size = sizeof(string), requestorid = INVALID_PLAYER_ID)
 {
 	static
+		scount,
 		info[MAX_PLAYER_INFO_LINES][MAX_LANG_VALUE_STRING];
 
-	GetPlayerInfoArray(playerid, info, sizeof(info[]), requestorid);
+	scount = GetPlayerInfoArray(playerid, info, sizeof(info[]), requestorid);
 
 	string[0] = '\0';
-	for (new i = 0; i < sizeof(info); i++) {
+	for (new i = 0; i < scount; i++) {
 		strcat(string, info[i], size);
 	}
+	return scount;
 }
 
 /*
@@ -35,9 +37,12 @@ stock GetPlayerInfoString(playerid, string[], const size = sizeof(string), reque
 stock GetPlayerInfoArray(playerid, string[MAX_PLAYER_INFO_LINES][], const size_string = sizeof(string[]), requestorid = INVALID_PLAYER_ID)
 {
 	new
+		scount,
+		ip[MAX_IP],
+		ping,
+		privilege[MAX_LANG_VALUE_STRING],
 		Float:health,
 		Float:armour,
-		ping,
 		gang_string[MAX_NAME],
 		money,
 		money_bank,
@@ -60,6 +65,8 @@ stock GetPlayerInfoArray(playerid, string[MAX_PLAYER_INFO_LINES][], const size_s
 		Float:pos_a,
 		Float:distance;
 
+	GetPlayerIp(playerid, ip, sizeof(ip));
+	GetPrivilegeNameForPlayer(requestorid, GetPlayerPrivilege(playerid), privilege);
 	GetPlayerHealth(playerid, health);
 	GetPlayerArmour(playerid, armour);
 	ping = GetPlayerPing(playerid);
@@ -83,20 +90,102 @@ stock GetPlayerInfoArray(playerid, string[MAX_PLAYER_INFO_LINES][], const size_s
 	GetPlayerFacingAngle(playerid, pos_a);
 
 	if (strlen(gang_string) == 0) {
-		Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO_NO", gang_string);
+		Lang_GetPlayerText(requestorid, "PLAYER_MENU_INFO_NO", gang_string);
 	}
 
 	if (requestorid != INVALID_PLAYER_ID) {
 		distance = GetPlayerDistanceFromPoint(requestorid, pos_x, pos_y, pos_z);
 	}
 
-	Lang_GetPlayerText(playerid, "PLAYER_INFO_0", string[0], size_string, playerid, ping, health, armour);
-	Lang_GetPlayerText(playerid, "PLAYER_INFO_1", string[1], size_string, gang_string, level, xp, xp_max_on_level);
-	Lang_GetPlayerText(playerid, "PLAYER_INFO_2", string[2], size_string, money, money_bank, money + money_bank);
-	Lang_GetPlayerText(playerid, "PLAYER_INFO_3", string[3], size_string, weapon_name, weapon_id, weapon_ammo);
-	Lang_GetPlayerText(playerid, "PLAYER_INFO_4", string[4], size_string, kills, deaths, kd_ratio);
-	Lang_GetPlayerText(playerid, "PLAYER_INFO_5", string[5], size_string, jailed_count, muted_count);
-	Lang_GetPlayerText(playerid, "PLAYER_INFO_6", string[6], size_string, interior, world);
-	Lang_GetPlayerText(playerid, "PLAYER_INFO_7", string[7], size_string, distance);
-	Lang_GetPlayerText(playerid, "PLAYER_INFO_8", string[8], size_string, pos_x, pos_y, pos_z, pos_a);
+	Lang_GetPlayerText(requestorid, "PLAYER_INFO_0", string[scount++], size_string, ip, playerid, ping, privilege);
+	Lang_GetPlayerText(requestorid, "PLAYER_INFO_1", string[scount++], size_string, health, armour);
+	Lang_GetPlayerText(requestorid, "PLAYER_INFO_2", string[scount++], size_string, gang_string, level, xp, xp_max_on_level);
+	Lang_GetPlayerText(requestorid, "PLAYER_INFO_3", string[scount++], size_string, money, money_bank, money + money_bank);
+	Lang_GetPlayerText(requestorid, "PLAYER_INFO_4", string[scount++], size_string, weapon_name, weapon_id, weapon_ammo);
+	Lang_GetPlayerText(requestorid, "PLAYER_INFO_5", string[scount++], size_string, kills, deaths, kd_ratio);
+	Lang_GetPlayerText(requestorid, "PLAYER_INFO_6", string[scount++], size_string, jailed_count, muted_count);
+	if (IsPlayerHavePrivilege(requestorid, PlayerPrivilegeModer)) {
+		Lang_GetPlayerText(requestorid, "PLAYER_INFO_7", string[scount++], size_string, interior, world);
+		Lang_GetPlayerText(requestorid, "PLAYER_INFO_8", string[scount++], size_string, distance);
+		Lang_GetPlayerText(requestorid, "PLAYER_INFO_9", string[scount++], size_string, pos_x, pos_y, pos_z, pos_a);
+	}
+	return scount;
+}
+
+/*
+	GetAccountInfoString
+*/
+
+stock GetAccountInfoString(account_info[e_Account_Info], string[], const size = sizeof(string), requestorid = INVALID_PLAYER_ID)
+{
+	static
+		scount,
+		info[MAX_ACCOUNT_INFO_LINES][MAX_LANG_VALUE_STRING];
+
+	scount = GetAccountInfoArray(account_info, info, sizeof(info[]), requestorid);
+
+	string[0] = '\0';
+	for (new i = 0; i < scount; i++) {
+		strcat(string, info[i], size);
+	}
+	return scount;
+}
+
+/*
+	GetAccountInfoArray
+*/
+
+stock GetAccountInfoArray(account_info[e_Account_Info], string[MAX_ACCOUNT_INFO_LINES][], const size_string = sizeof(string[]), requestorid = INVALID_PLAYER_ID)
+{
+	new
+		scount,
+		played_string[MAX_LANG_VALUE_STRING],
+		cy, cm, cd, ch, cmi, cs,
+		ly, lm, ld, lh, lmi, ls,
+		py, pm, pd, ph, pmi, ps;
+
+	gmtime(account_info[e_aCreationTime], cy, cm, cd, ch, cmi, cs);
+	gmtime(account_info[e_aLoginTime], ly, lm, ld, lh, lmi, ls);
+	gmtime(account_info[e_aPremiumTime], py, pm, pd, ph, pmi, ps);
+	GetTimeStringFromSeconds(requestorid, account_info[e_aPlayedSeconds], played_string);
+
+	Lang_GetPlayerText(requestorid, "ACCOUNT_INFO_0", string[scount++], size_string, cy, cm, cd, ch, cmi, cs);
+	Lang_GetPlayerText(requestorid, "ACCOUNT_INFO_1", string[scount++], size_string, ly, lm, ld, lh, lmi, ls);
+	Lang_GetPlayerText(requestorid, "ACCOUNT_INFO_2", string[scount++], size_string, played_string);
+	if (account_info[e_aPremiumTime] != 0) {
+		Lang_GetPlayerText(requestorid, "ACCOUNT_INFO_3", string[scount++], size_string, pd, pm, py, ph, pmi, ps);
+	} else {
+		Lang_GetPlayerText(requestorid, "ACCOUNT_INFO_3_NO", string[scount++], size_string);
+	}
+	return scount;
+}
+
+/*
+	GetPlayerAccountInfoString
+*/
+
+stock GetPlayerAccountInfoString(playerid, string[], const size = sizeof(string), requestorid = INVALID_PLAYER_ID)
+{
+	static
+		scount,
+		info[MAX_ACCOUNT_INFO_LINES][MAX_LANG_VALUE_STRING];
+
+	scount = GetPlayerAccountInfoArray(playerid, info, sizeof(info[]), requestorid);
+
+	string[0] = '\0';
+	for (new i = 0; i < scount; i++) {
+		strcat(string, info[i], size);
+	}
+	return scount;
+}
+
+/*
+	GetPlayerAccountInfoArray
+*/
+
+stock GetPlayerAccountInfoArray(playerid, string[MAX_ACCOUNT_INFO_LINES][], const size_string = sizeof(string[]), requestorid = INVALID_PLAYER_ID)
+{
+	new account_info[e_Account_Info];
+	Account_GetData(playerid, account_info);
+	return GetAccountInfoArray(account_info, string, size_string, requestorid);
 }
