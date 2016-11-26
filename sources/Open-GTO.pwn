@@ -27,12 +27,12 @@ Developers:
 		0.0.0 – 0.5.7       Iain Gilbert
 
 Thanks:
-	Dmitry Borisoff (Beginner) - Russian translation.
-	MX_Master - mxINI, Chat-Guard.
-	Y_Less - foreach, fixes, sscanf2.
-	ZeeX - zcmd, crashdetect, Pawn Compiler.
-	Incognito - Streamer.
-	Nexius - MapFix.
+	Dmitry Borisoff (Beginner) - Russian translation
+	MX_Master - mxINI, Chat-Guard
+	Y_Less - foreach, fixes, sscanf2
+	ZeeX - zcmd, crashdetect, Pawn Compiler
+	Incognito - Streamer, GVar
+	Nexius - MapFix
 */
 
 #include <a_samp>
@@ -404,9 +404,9 @@ public OnPlayerDeath(playerid, killerid, reason)
 	SetPlayerSpawned(playerid, false);
 
 	if (killerid == INVALID_PLAYER_ID) {
-		Log(mainlog, INFO, "Player: %s(%d) has died > Reason: (%d)", ret_GetPlayerName(playerid), playerid, reason);
+		Log(mainlog, INFO, "Player: %s [id: %d] has died > Reason: (%d)", ret_GetPlayerName(playerid), playerid, reason);
 	} else {
-		Log(mainlog, INFO, "Player: %s(%d) has killed player %s(%d)> Reason: (%d)", ret_GetPlayerName(killerid), killerid, ret_GetPlayerName(playerid), playerid, reason);
+		Log(mainlog, INFO, "Player: %s [id: %d] has killed player %s [id: %d]> Reason: (%d)", ret_GetPlayerName(killerid), killerid, ret_GetPlayerName(playerid), playerid, reason);
 	}
 
 	SendDeathMessage(killerid, playerid, reason);
@@ -479,7 +479,7 @@ public OnPlayerCommandReceived(playerid, cmdtext[])
 		return 0;
 	}
 
-	Log(playerlog, INFO, "Player: %s(%d) %s", ret_GetPlayerName(playerid), playerid, cmdtext);
+	Log(playerlog, INFO, "Player: %s [id: %d] %s", ret_GetPlayerName(playerid), playerid, cmdtext);
 	return 1;
 }
 
@@ -513,10 +513,10 @@ public OnPlayerText(playerid, text[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	new string[MAX_STRING];
-	format(string, sizeof(string), "%s(%d): {FFFFFF}%s", playername, playerid, text);
+	format(string, sizeof(string), "%s {81AE00}[id: %d]: {FFFFFF}%s", playername, playerid, text);
 	SendClientMessageToAll(GetPlayerColor(playerid), string);
 
-	Log(playerlog, INFO, "Player: %s(%d): %s", playername, playerid, text);
+	Log(playerlog, INFO, "Player: %s [id: %d]: %s", playername, playerid, text);
 	return 0;
 }
 

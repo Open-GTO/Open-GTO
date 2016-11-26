@@ -30,7 +30,7 @@ stock SetPlayerMoney(playerid, money, bool:notify = true)
 
 	if (money > MAX_MONEY) {
 		money = MAX_MONEY;
-		Log(mainlog, INFO, "Player: %s(%d) is on max money.", ret_GetPlayerName(playerid), playerid);
+		Log(mainlog, INFO, "Player: %s [id: %d] is on max money.", ret_GetPlayerName(playerid), playerid);
 	}
 
 	new old_money = GetPlayerMoney(playerid);
@@ -58,7 +58,7 @@ stock REDEF_GivePlayerMoney(playerid, money)
 
 	if (money > MAX_MONEY - player_money) {
 		money = MAX_MONEY - player_money;
-		Log(mainlog, INFO, "Player: %s(%d) is on max money.", ret_GetPlayerName(playerid), playerid);
+		Log(mainlog, INFO, "Player: %s [id: %d] is on max money.", ret_GetPlayerName(playerid), playerid);
 	}
 
 	SetPlayerMoney(playerid, player_money + money);

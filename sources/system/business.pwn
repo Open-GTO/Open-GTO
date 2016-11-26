@@ -570,7 +570,7 @@ stock bis_Buy(playerid)
 		                 Businesses[id][Business_Name],
 		                 Businesses[id][Business_Vault]);
 
-		Log(mainlog, INFO, "player: %s(%d): bought the '%s' (business)", playername, playerid, Businesses[id][Business_Name]);
+		Log(mainlog, INFO, "player: %s [id: %d]: bought the '%s' (business)", playername, playerid, Businesses[id][Business_Name]);
 	}
 	return 1;
 }
@@ -613,7 +613,7 @@ stock bis_Sell(playerid)
 		                 Businesses[id][Business_Name],
 		                 Businesses[id][Business_Vault]);
 
-		Log(mainlog, INFO, "player: %s(%d): sold the '%s' (business)", ret_GetPlayerName(playerid), playerid, Businesses[id][Business_Name]);
+		Log(mainlog, INFO, "player: %s [id: %d]: sold the '%s' (business)", ret_GetPlayerName(playerid), playerid, Businesses[id][Business_Name]);
 	}
 	return 1;
 }

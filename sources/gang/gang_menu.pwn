@@ -163,7 +163,7 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 
 					Dialog_Message(playerid, "GANG_EXIT_HEADER", "GANG_EXIT_INFO", "BUTTON_OK");
 					Gang_SendLangMessage(gangid, "GANG_MEMBER_LEAVE", _, player_name, playerid);
-					Log(mainlog, INFO, "Action <GangMenu>: %s(%d) have leaved from '%s' gang.", player_name, playerid, gang_name);
+					Log(mainlog, INFO, "Action <GangMenu>: %s [id: %d] have leaved from '%s' gang.", player_name, playerid, gang_name);
 				}
 				return 1;
 			}
@@ -361,7 +361,7 @@ DialogResponse:GangCreateColor(playerid, response, listitem, inputtext[])
 		GivePlayerMoney(playerid, -Gang_GetCreateCost());
 		Lang_SendText(playerid, "GANG_CREATE_SUCCESS");
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_CREATE_HEADER", "GANG_CREATE_SUCCESS", "BUTTON_BACK", "BUTTON_CANCEL");
-		Log(mainlog, INFO, "Action <GangCreateColor>: %s(%d) created gang '%s'.", ret_GetPlayerName(playerid), playerid, gangname);
+		Log(mainlog, INFO, "Action <GangCreateColor>: %s [id: %d] created gang '%s'.", ret_GetPlayerName(playerid), playerid, gangname);
 	} else {
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_CREATE_HEADER", "GANG_CREATE_ERROR", "BUTTON_BACK", "BUTTON_CANCEL");
 	}
@@ -455,7 +455,7 @@ DialogResponse:GangInviteAccept(playerid, response, listitem, inputtext[])
 
 		Gang_SendLangMessage(gangid, "GANG_INVITE_PLAYER_IN", _, player_name, playerid);
 
-		Log(mainlog, INFO, "Action <GangInviteAccept>: %s(%d) have joined '%s' gang.", player_name, playerid, gang_name);
+		Log(mainlog, INFO, "Action <GangInviteAccept>: %s [id: %d] have joined '%s' gang.", player_name, playerid, gang_name);
 	} else {
 		Dialog_MessageEx(playerid, Dialog:GangReturnMenu, "GANG_INVITE_HEADER", "GANG_INVITE_ERROR", "BUTTON_BACK", "BUTTON_CANCEL", MDIALOG_NOTVAR_NONE, gang_name);
 	}
@@ -533,7 +533,7 @@ DialogResponse:GangInvite(playerid, response, listitem, inputtext[])
 	                 MDIALOG_NOTVAR_NONE,
 	                 invite_name, gang_name);
 
-	Log(mainlog, INFO, "Action <GangInvite>: %s(%d) has invited %s(%d) to join gang '%s'.", player_name, playerid, invite_name, inviteid, gang_name);
+	Log(mainlog, INFO, "Action <GangInvite>: %s [id: %d] has invited %s [id: %d] to join gang '%s'.", player_name, playerid, invite_name, inviteid, gang_name);
 	return 1;
 }
 

@@ -73,7 +73,7 @@ stock Player_Save(playerid)
 
 	// save
 	Player_SaveEx(playerid);
-	Log(mainlog, INFO, "Player: %s(%d) player saved successfully.", ret_GetPlayerName(playerid), playerid);
+	Log(mainlog, INFO, "Player: %s [id: %d] player saved successfully.", ret_GetPlayerName(playerid), playerid);
 	return 1;
 }
 
@@ -82,7 +82,7 @@ stock Player_Create(playerid)
 	Player_SetDefaultData(playerid);
 
 	Player_SaveEx(playerid);
-	Log(mainlog, INFO, "Player: %s(%d) player created successfully.", ret_GetPlayerName(playerid), playerid);
+	Log(mainlog, INFO, "Player: %s [id: %d] player created successfully.", ret_GetPlayerName(playerid), playerid);
 	return 1;
 }
 

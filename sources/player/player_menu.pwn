@@ -143,10 +143,10 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 
 			foreach (new id : Player) {
 				if (IsPlayerHavePrivilege(id, PlayerPrivilegeAdmin)) {
-					format(admins, sizeof(admins), "%s%s(%d)\n", admins, ret_GetPlayerName(id), id);
+					format(admins, sizeof(admins), "%s%s [id: %d]\n", admins, ret_GetPlayerName(id), id);
 					idsa++;
 				} else if (IsPlayerHavePrivilege(id, PlayerPrivilegeModer)) {
-					format(moders, sizeof(moders), "%s%s(%d)\n", moders, ret_GetPlayerName(id), id);
+					format(moders, sizeof(moders), "%s%s [id: %d]\n", moders, ret_GetPlayerName(id), id);
 					idsm++;
 				}
 			}

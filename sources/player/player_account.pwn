@@ -86,7 +86,7 @@ stock Account_Register(playerid, password[])
 	Player_Login(playerid);
 
 	Lang_SendText(playerid, "ACCOUNT_SUCCESS_REGISTER");
-	Log(mainlog, INFO, "Player: account created for %s(%d)", playername, playerid);
+	Log(mainlog, INFO, "Player: account created for %s [id: %d]", playername, playerid);
 	return 1;
 }
 
@@ -111,7 +111,7 @@ stock Account_Login(playerid, password[])
 #endif
 
 	if (strcmp(password, result[e_aPassword], false)) {
-		Log(mainlog, INFO, "Player: login failed, incorrect password by %s(%d)", playername, playerid);
+		Log(mainlog, INFO, "Player: login failed, incorrect password by %s [id: %d]", playername, playerid);
 
 		AddLoginAttempt(playerid);
 

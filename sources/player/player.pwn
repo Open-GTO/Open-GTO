@@ -329,7 +329,7 @@ public OnPlayerLogin(playerid)
 	// hide widstrip
 	Widestrip_HideForPlayer(playerid);
 
-	Log(mainlog, INFO, "Player: %s(%d) logged in successfully.", playername, playerid);
+	Log(mainlog, INFO, "Player: %s [id: %d] logged in successfully.", playername, playerid);
 
 	#if defined Player_OnPlayerLogin
 		return Player_OnPlayerLogin(playerid);

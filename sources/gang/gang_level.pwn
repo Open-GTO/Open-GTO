@@ -134,7 +134,7 @@ stock SetGangLevel(gangid, level)
 	}
 
 	Gang_GetName(gangid, string);
-	Log(mainlog, INFO, "Action <SetGangLevel>: %s(%d) changed his level from %d to %d.", string, gangid, old_level, level);
+	Log(mainlog, INFO, "Action <SetGangLevel>: %s [id: %d] changed his level from %d to %d.", string, gangid, old_level, level);
 	return 1;
 }
 

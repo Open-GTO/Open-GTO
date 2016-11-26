@@ -79,6 +79,6 @@ stock Admin_SendProtectReport(issuerid, var[], va_args<>)
 		Lang_SendText(adminid, "ADMIN_PROTECTION_REPORT", playername, issuerid, text);
 	}
 
-	Log(playerlog, INFO, "Player %s(%d) possible use cheats. Protection: %s", playername, issuerid, text);
+	Log(playerlog, INFO, "Player %s [id: %d] possible use cheats. Protection: %s", playername, issuerid, text);
 	return 1;
 }

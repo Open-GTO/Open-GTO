@@ -867,7 +867,7 @@ stock house_Buy(playerid)
 		               MDIALOG_NOTVAR_NONE,
 		               Houses[id][Houses_Name]);
 
-		Log(mainlog, INFO, "player: %s(%d): bought the '%s' (house)", playername, playerid, Houses[id][Houses_Name]);
+		Log(mainlog, INFO, "player: %s [id: %d]: bought the '%s' (house)", playername, playerid, Houses[id][Houses_Name]);
 	}
 	return 1;
 }
@@ -906,7 +906,7 @@ stock house_Sell(playerid)
 		               MDIALOG_NOTVAR_NONE,
 		               Houses[id][Houses_Name]);
 
-		Log(mainlog, INFO, "player: %s(%d): sold the '%s' (house)", ret_GetPlayerName(playerid), playerid, Houses[id][Houses_Name]);
+		Log(mainlog, INFO, "player: %s [id: %d]: sold the '%s' (house)", ret_GetPlayerName(playerid), playerid, Houses[id][Houses_Name]);
 	}
 	return 1;
 }
