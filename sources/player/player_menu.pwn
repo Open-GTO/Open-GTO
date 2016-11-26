@@ -186,7 +186,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			                 "PLAYER_MENU_VERSION_INFO",
 			                 "BUTTON_BACK", "BUTTON_EXIT",
 			                 MDIALOG_NOTVAR_NONE,
-			                 VERSION_STRING);
+			                 VERSION_STRING, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
 			return 1;
 		}
 	}
