@@ -399,6 +399,7 @@ stock Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
 			SetPlayerVirtualWorld(playerid, Enterexit_GetVirtualWorld(id));
 			SetPlayerPos(playerid, gTypes[type][e_ee_pos_x], gTypes[type][e_ee_pos_y], gTypes[type][e_ee_pos_z]);
 			SetPlayerFacingAngle(playerid, gTypes[type][e_ee_pos_a]);
+			SetCameraBehindPlayer(playerid);
 			return 1;
 		}
 	} else {
@@ -410,6 +411,7 @@ stock Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
 			SetPlayerVirtualWorld(playerid, 0);
 			SetPlayerPos(playerid, gEnters[index][e_ie_pos_x], gEnters[index][e_ie_pos_y], gEnters[index][e_ie_pos_z]);
 			SetPlayerFacingAngle(playerid, gEnters[index][e_ie_pos_a]);
+			SetCameraBehindPlayer(playerid);
 			return 1;
 		}
 	}
