@@ -16,5 +16,5 @@
 */
 
 #if !defined MAX_PLAYER_INFO_LINES
-	#define MAX_PLAYER_INFO_LINES 6
+	#define MAX_PLAYER_INFO_LINES 9
 #endif

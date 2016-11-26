@@ -92,9 +92,7 @@ COMMAND:getinfo(playerid, params[])
 	} else {
 		new
 			account_info[e_Account_Info],
-			year,
-			month,
-			day;
+			year, month, day, hour, minute, second;
 
 		if (targetid == -2) {
 			strcpy(targetname, subparams);
@@ -115,15 +113,15 @@ COMMAND:getinfo(playerid, params[])
 		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_HEADER", targetname);
 		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_IP", account_info[e_aIP]);
 
-		gmtime(account_info[e_aCreationTime], year, month, day);
-		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_CREATION", day, month, year);
+		gmtime(account_info[e_aCreationTime], year, month, day, hour, minute, second);
+		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_CREATION", day, month, year, hour, minute, second);
 
-		gmtime(account_info[e_aLoginTime], year, month, day);
-		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_LOGIN", day, month, year);
+		gmtime(account_info[e_aLoginTime], year, month, day, hour, minute, second);
+		Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_LOGIN", day, month, year, hour, minute, second);
 
 		if (account_info[e_aPremiumTime] != 0) {
-			gmtime(account_info[e_aPremiumTime], year, month, day);
-			Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM", day, month, year);
+			gmtime(account_info[e_aPremiumTime], year, month, day, hour, minute, second);
+			Lang_SendText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM", day, month, year, hour, minute, second);
 		}
 
 		GetTimeStringFromSeconds(playerid, account_info[e_aPlayedSeconds], string);

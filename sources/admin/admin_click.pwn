@@ -353,9 +353,7 @@ public AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[])
 		account_info[e_Account_Info],
 		player_info[MAX_PLAYER_INFO_LINES][MAX_LANG_VALUE_STRING],
 		targetname[MAX_PLAYER_NAME + 1],
-		year,
-		month,
-		day;
+		year, month, day, hour, minute, second;
 
 	Account_GetData(targetid, account_info);
 	GetPlayerInfoArray(targetid, player_info, sizeof(player_info[]), playerid);
@@ -368,17 +366,20 @@ public AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[])
 	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_IP", string, sizeof(string), account_info[e_aIP]);
 	strcat(message, string);
 
-	gmtime(account_info[e_aCreationTime], year, month, day);
-	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_CREATION", string, sizeof(string), day, month, year);
+	gmtime(account_info[e_aCreationTime], year, month, day, hour, minute, second);
+	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_CREATION", string, sizeof(string),
+	                   day, month, year, hour, minute, second);
 	strcat(message, string);
 
-	gmtime(account_info[e_aLoginTime], year, month, day);
-	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_LOGIN", string, sizeof(string), day, month, year);
+	gmtime(account_info[e_aLoginTime], year, month, day, hour, minute, second);
+	Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_LOGIN", string, sizeof(string),
+	                   day, month, year, hour, minute, second);
 	strcat(message, string);
 
 	if (account_info[e_aPremiumTime] != 0) {
-		gmtime(account_info[e_aPremiumTime], year, month, day);
-		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM", string, sizeof(string), day, month, year);
+		gmtime(account_info[e_aPremiumTime], year, month, day, hour, minute, second);
+		Lang_GetPlayerText(playerid, "ADMIN_COMMAND_GETINFO_PLAYER_PREMIUM", string, sizeof(string),
+		                   day, month, year, hour, minute, second);
 		strcat(message, string);
 	}
 
