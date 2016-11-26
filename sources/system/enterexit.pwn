@@ -11,6 +11,8 @@
 
 #define _enterexit_included
 
+#define INVALID_ENTEREXIT_ID -1
+
 forward OnInteriorCreated(id, type, world);
 
 enum e_ee_Player_Info {
@@ -288,7 +290,6 @@ static gEnters[][e_Enterexit_Enter] = {
 
 public OnGameModeInit()
 {
-
 	DisableInteriorEnterExits();
 
 	new
@@ -299,12 +300,11 @@ public OnGameModeInit()
 	for (i = 0; i < sizeof(gEnters); i++) {
 		// enter pos
 		gEnters[i][e_ie_pickup_id] = CreateDynamicPickup(19902, 1,
-			gEnters[i][e_ie_pos_x], gEnters[i][e_ie_pos_y], gEnters[i][e_ie_pos_z] - 1.0
-		);
+			gEnters[i][e_ie_pos_x], gEnters[i][e_ie_pos_y], gEnters[i][e_ie_pos_z] - 1.0);
+
 		CreateDynamic3DTextLabel("Вход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF,
 			gEnters[i][e_ie_pos_x], gEnters[i][e_ie_pos_y], gEnters[i][e_ie_pos_z],
-			20.0, .testlos = 1
-		);
+			20.0, .testlos = 1);
 
 		if (gEnters[i][e_ie_icon_id] != -1) {
 			CreateDynamicMapIcon(gEnters[i][e_ie_pos_x], gEnters[i][e_ie_pos_y], gEnters[i][e_ie_pos_z], gEnters[i][e_ie_icon_id], 0);
@@ -317,16 +317,16 @@ public OnGameModeInit()
 		gEnters[i][e_ie_pickup_exit_id] = CreateDynamicPickup(19902, 1,
 			gTypes[type][e_ee_pos_x], gTypes[type][e_ee_pos_y], gTypes[type][e_ee_pos_z] - 1.0, world
 		);
+
 		CreateDynamic3DTextLabel("Выход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF,
 			gTypes[type][e_ee_pos_x], gTypes[type][e_ee_pos_y], gTypes[type][e_ee_pos_z],
-			20.0, .worldid = world, .testlos = 1
-		);
+			20.0, .worldid = world, .testlos = 1);
 
 		// callback
 		CallLocalFunction("OnInteriorCreated", "iii", i, type, world);
 	}
 
-	Log_Init("system", "Interior module init.");
+	Log_Init("system", "Enterexit module init.");
 	#if defined Enterexit_OnGameModeInit
 		return Enterexit_OnGameModeInit();
 	#else
@@ -350,8 +350,8 @@ public OnGameModeInit()
 
 public OnPlayerConnect(playerid)
 {
-	Enterexit_SetPlayerEnterID(playerid, -1);
-	Enterexit_SetPlayerIndex(playerid, -1);
+	Enterexit_SetPlayerEnterID(playerid, INVALID_ENTEREXIT_ID);
+	Enterexit_SetPlayerIndex(playerid, INVALID_ENTEREXIT_ID);
 	#if defined Enterexit_OnPlayerConnect
 		return Enterexit_OnPlayerConnect(playerid);
 	#else
@@ -382,7 +382,7 @@ stock Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
 	new
 		id = Enterexit_GetPlayerEnterID(playerid);
 
-	if (id == -1) {
+	if (id == INVALID_ENTEREXIT_ID) {
 		return 0;
 	}
 
@@ -390,8 +390,8 @@ stock Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
 		type = Enterexit_GetType(id),
 		index = Enterexit_GetPlayerIndex(playerid);
 
-	if (index == -1) {
-		if (IsPlayerInRangeOfPoint(playerid, 2,
+	if (index == INVALID_ENTEREXIT_ID) {
+		if (IsPlayerInRangeOfPoint(playerid, 2.0,
 				gEnters[id][e_ie_pos_x], gEnters[id][e_ie_pos_y], gEnters[id][e_ie_pos_z])) {
 			Enterexit_SetPlayerIndex(playerid, id);
 
@@ -403,9 +403,9 @@ stock Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
 			return 1;
 		}
 	} else {
-		if (IsPlayerInRangeOfPoint(playerid, 2,
+		if (IsPlayerInRangeOfPoint(playerid, 2.0,
 				gTypes[type][e_ee_pos_x], gTypes[type][e_ee_pos_y], gTypes[type][e_ee_pos_z])) {
-			Enterexit_SetPlayerIndex(playerid, -1);
+			Enterexit_SetPlayerIndex(playerid, INVALID_ENTEREXIT_ID);
 
 			SetPlayerInterior(playerid, 0);
 			SetPlayerVirtualWorld(playerid, 0);
@@ -424,16 +424,14 @@ stock Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
 
 public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
-	Enterexit_SetPlayerEnterID(playerid, -1);
-
 	for (new i = 0; i < sizeof(gEnters); i++) {
 		if (pickupid == gEnters[i][e_ie_pickup_id] || pickupid == gEnters[i][e_ie_pickup_exit_id]) {
 			if (pickupid == gEnters[i][e_ie_pickup_id]) {
-				Enterexit_SetPlayerIndex(playerid, -1);
+				Enterexit_SetPlayerIndex(playerid, INVALID_ENTEREXIT_ID);
 			}
 
 			Enterexit_SetPlayerEnterID(playerid, i);
-			break;
+			return 1;
 		}
 	}
 	#if defined Enterexit_OnPlayerPickUpDP
@@ -502,7 +500,7 @@ stock Enterexit_GetType(id)
 		return gEnters[id][e_ie_type];
 	}
 
-	return -1;
+	return INVALID_ENTEREXIT_ID;
 }
 
 stock Enterexit_GetPos(id, &Float:x, &Float:y, &Float:z)
@@ -518,7 +516,7 @@ stock Enterexit_GetPos(id, &Float:x, &Float:y, &Float:z)
 
 stock Enterexit_IsValidInfo(index, interior, world)
 {
-	if (index != -1 && Enterexit_GetVirtualWorld(index) == world && Enterexit_GetInterior(index) == interior) {
+	if (index != INVALID_ENTEREXIT_ID && Enterexit_GetVirtualWorld(index) == world && Enterexit_GetInterior(index) == interior) {
 		return 1;
 	}
 
