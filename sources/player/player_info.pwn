@@ -106,7 +106,9 @@ stock GetPlayerInfoArray(playerid, string[MAX_PLAYER_INFO_LINES][], const size_s
 	Lang_GetPlayerText(requestorid, "PLAYER_INFO_6", string[scount++], size_string, jailed_count, muted_count);
 	if (IsPlayerHavePrivilege(requestorid, PlayerPrivilegeModer)) {
 		Lang_GetPlayerText(requestorid, "PLAYER_INFO_7", string[scount++], size_string, interior, world);
-		Lang_GetPlayerText(requestorid, "PLAYER_INFO_8", string[scount++], size_string, distance);
+		if (requestorid != playerid) {
+			Lang_GetPlayerText(requestorid, "PLAYER_INFO_8", string[scount++], size_string, distance);
+		}
 		Lang_GetPlayerText(requestorid, "PLAYER_INFO_9", string[scount++], size_string, pos_x, pos_y, pos_z, pos_a);
 	}
 	return scount;
