@@ -130,13 +130,13 @@ COMMAND:id(playerid, params[])
 		string[MAX_LANG_VALUE_STRING],
 		temp[MAX_LANG_VALUE_STRING];
 
-	for (i = 0; ids[i] != INVALID_PLAYER_ID; i++) {
+	while (ids[i] != INVALID_PLAYER_ID) {
 		if (ids[i] == cellmin) {
 			Lang_SendText(playerid, "COMMAND_ID_AND_MORE");
 			break;
 		}
 
-		GetPlayerName(ids[i], string, sizeof(string));
+		GetPlayerName(ids[i], string, MAX_PLAYER_NAME);
 
 		insert_pos = strfind(string, params, true);
 		if (insert_pos != -1) {
@@ -148,12 +148,13 @@ COMMAND:id(playerid, params[])
 		}
 
 		Lang_SendText(playerid, "COMMAND_ID_PLAYER", string, ids[i]);
+
+		i++;
 	}
 
 	if (i == 0) {
 		Lang_SendText(playerid, "COMMAND_ID_NO_ONE");
 	}
-
 	return 1;
 }
 
