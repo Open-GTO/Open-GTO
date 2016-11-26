@@ -142,13 +142,13 @@ AdminClick_OnGameModeInit()
 
 static stock ShowErrorDialog(playerid, error_var_msg[])
 {
-	Dialog_MessageEx(playerid, Dialog:AdminErrorPlayerClick,
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
 	                 "ADMIN_CLICK_MESSAGE_HEADER",
 	                 error_var_msg,
 	                 "BUTTON_OK", "BUTTON_BACK");
 }
 
-DialogResponse:AdminErrorPlayerClick(playerid, response, listitem, inputtext[])
+DialogResponse:AdminPlayerClickReturn(playerid, response, listitem, inputtext[])
 {
 	if (!response) {
 		Dialog_Show(playerid, Dialog:PlayerClick);
@@ -181,12 +181,12 @@ public AdminClick_KickPlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerNearPlayers(targetid, 40.0, players);
 	Lang_SendTextToPlayers(players, "ADMIN_COMMAND_KICK_PLAYER", playername, playerid, targetname, targetid);
 
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_KICK_PLAYER_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_KICK_PLAYER_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid);
 
 	KickPlayer(targetid, inputtext);
 	return 1;
@@ -218,12 +218,12 @@ public AdminClick_MutePlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
 	Lang_SendTextToAll("ADMIN_COMMAND_MUTE_PLAYER", playername, playerid, targetname, targetid, time, timeword);
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_MUTE_PLAYER_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid, time, timeword);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_MUTE_PLAYER_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid, time, timeword);
 
 	MutePlayer(targetid, time);
 	return 1;
@@ -250,12 +250,12 @@ public AdminClick_UnMutePlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
 	Lang_SendTextToAll("ADMIN_COMMAND_UNMUTE_PLAYER", playername, playerid, targetname, targetid);
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_UNMUTE_PLAYER_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_UNMUTE_PLAYER_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid);
 
 	UnMutePlayer(targetid);
 	return 1;
@@ -292,12 +292,12 @@ public AdminClick_JailPlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
 	Lang_SendTextToAll("ADMIN_COMMAND_JAIL_PLAYER", playername, playerid, targetname, targetid, time, timeword);
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_JAIL_PLAYER_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid, time, timeword);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_JAIL_PLAYER_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid, time, timeword);
 
 	JailPlayer(targetid, time);
 	return 1;
@@ -324,12 +324,12 @@ public AdminClick_UnJailPlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(targetid, targetname, sizeof(targetname));
 
 	Lang_SendTextToAll("ADMIN_COMMAND_UNJAIL_PLAYER", playername, playerid, targetname, targetid);
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_UNJAIL_PLAYER_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_UNJAIL_PLAYER_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid);
 
 	UnJailPlayer(targetid);
 	return 1;
@@ -391,11 +391,11 @@ public AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[])
 		strcat(message, string);
 	}
 
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               message,
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_INFO);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 message,
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_INFO);
 	return 1;
 }
 
@@ -425,12 +425,12 @@ public AdminClick_KillPlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerNearPlayers(targetid, 40.0, players);
 	Lang_SendTextToPlayers(players, "ADMIN_COMMAND_KILL_PLAYER", playername, playerid, targetname, targetid);
 
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_KILL_PLAYER_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_KILL_PLAYER_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid);
 	return 1;
 }
 
@@ -455,12 +455,12 @@ public AdminClick_TeleportToPlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerNearPlayers(targetid, 40.0, players);
 	Lang_SendTextToPlayers(players, "ADMIN_COMMAND_TELEPORT_TO_PLAYER", targetname, targetid, playername, playerid);
 
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_TELEPORT_TO_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_TELEPORT_TO_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid);
 	return 1;
 }
 
@@ -526,12 +526,12 @@ public AdminClick_SetHealth(playerid, targetid, listitem, inputtext[])
 	GetPlayerNearPlayers(playerid, 40.0, players);
 	Lang_SendTextToPlayers(players, "ADMIN_COMMAND_HEALTH_SET_PLAYER", playername, playerid, targetname, targetid, amount);
 
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_HEALTH_SET_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid, amount);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_HEALTH_SET_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid, amount);
 	return 1;
 }
 
@@ -569,12 +569,12 @@ public AdminClick_SetArmour(playerid, targetid, listitem, inputtext[])
 	GetPlayerNearPlayers(playerid, 40.0, players);
 	Lang_SendTextToPlayers(players, "ADMIN_COMMAND_ARMOUR_SET_PLAYER", playername, playerid, targetname, targetid, amount);
 
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_ARMOUR_SET_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid, amount);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_ARMOUR_SET_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid, amount);
 	return 1;
 }
 
@@ -601,7 +601,7 @@ public AdminClick_SetLevel(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	if (!IsValidPlayerLevel(amount)) {
-		Dialog_Message(playerid, "ADMIN_CLICK_MESSAGE_HEADER", "ADMIN_CLICK_LEVEL_ERROR", "BUTTON_OK");
+		ShowErrorDialog(playerid, "ADMIN_CLICK_LEVEL_ERROR");
 		return 0;
 	}
 
@@ -609,12 +609,12 @@ public AdminClick_SetLevel(playerid, targetid, listitem, inputtext[])
 
 	Lang_SendText(targetid, "ADMIN_COMMAND_LEVEL_SET_PLAYER", playername, playerid, amount);
 
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_LEVEL_SET_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid, amount);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_LEVEL_SET_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid, amount);
 	return 1;
 }
 
@@ -644,12 +644,12 @@ public AdminClick_GiveXP(playerid, targetid, listitem, inputtext[])
 
 	Lang_SendText(targetid, "ADMIN_COMMAND_XP_GIVE_PLAYER", playername, playerid, amount);
 
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_XP_GIVE_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid, amount);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_XP_GIVE_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid, amount);
 	return 1;
 }
 
@@ -674,12 +674,12 @@ public AdminClick_GiveMoney(playerid, targetid, listitem, inputtext[])
 
 	Lang_SendText(targetid, "ADMIN_COMMAND_MONEY_GIVE_PLAYER", playername, playerid, amount);
 
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_MONEY_GIVE_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid, amount);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_MONEY_GIVE_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid, amount);
 	return 1;
 }
 
@@ -714,12 +714,12 @@ public AdminClick_FreezePlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	Lang_SendTextToAll("ADMIN_COMMAND_FREEZE_PLAYER", playername, playerid, targetname, targetid, time, timeword);
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_FREEZE_PLAYER_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid, time, timeword);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_FREEZE_PLAYER_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid, time, timeword);
 
 	FreezePlayer(targetid, time);
 	return 1;
@@ -751,12 +751,12 @@ public AdminClick_UnFreezePlayer(playerid, targetid, listitem, inputtext[])
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	Lang_SendTextToAll("ADMIN_COMMAND_UNFREEZE_PLAYER", playername, playerid, targetname, targetid);
-	Dialog_Message(playerid,
-	               "ADMIN_CLICK_MESSAGE_HEADER",
-	               "ADMIN_COMMAND_UNFREEZE_PLAYER_SELF",
-	               "BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
-	               targetname, targetid);
+	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_UNFREEZE_PLAYER_SELF",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 targetname, targetid);
 
 	UnFreezePlayer(targetid);
 	return 1;
@@ -768,18 +768,18 @@ public AdminClick_GetNetStats(playerid, targetid, listitem, inputtext[])
 	new ip_port[22];
 	NetStats_GetIpPort(targetid, ip_port, sizeof(ip_port));
 
-	Dialog_Open(playerid, Dialog:PlayerClickNetStats, DIALOG_STYLE_MSGBOX,
-	            "ADMIN_CLICK_MESSAGE_HEADER",
-	            "ADMIN_COMMAND_NETSTATS",
-	            "BUTTON_OK", "BUTTON_BACK",
-	            MDIALOG_NOTVAR_NONE,
-	            ip_port,
-	            NetStats_GetConnectedTime(targetid),
-	            NetStats_ConnectionStatus(targetid),
-	            NetStats_PacketLossPercent(targetid),
-	            NetStats_MessagesReceived(targetid),
-	            NetStats_MessagesSent(targetid),
-	            NetStats_MessagesRecvPerSecond(targetid));
+	Dialog_MessageEx(playerid, Dialog:PlayerClickNetStats,
+	                 "ADMIN_CLICK_MESSAGE_HEADER",
+	                 "ADMIN_COMMAND_NETSTATS",
+	                 "BUTTON_OK", "BUTTON_BACK",
+	                 MDIALOG_NOTVAR_NONE,
+	                 ip_port,
+	                 NetStats_GetConnectedTime(targetid),
+	                 NetStats_ConnectionStatus(targetid),
+	                 NetStats_PacketLossPercent(targetid),
+	                 NetStats_MessagesReceived(targetid),
+	                 NetStats_MessagesSent(targetid),
+	                 NetStats_MessagesRecvPerSecond(targetid));
 
 	gPlayerNetstatsTimer[playerid] = SetTimerEx("AdminClick_GetNetStats", 2000, 0, "dd", playerid, targetid);
 }
