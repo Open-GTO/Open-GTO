@@ -344,7 +344,7 @@ public AdminClick_InfoPlayer(playerid, targetid, listitem, inputtext[])
 	}
 
 	static
-		message[MAX_LANG_VALUE_STRING * MAX_ACCOUNT_INFO_LINES + MAX_LANG_VALUE_STRING * MAX_PLAYER_INFO_LINES],
+		message[MAX_LANG_VALUE_STRING * (MAX_ACCOUNT_INFO_LINES + MAX_PLAYER_INFO_LINES)],
 		string[MAX_LANG_VALUE_STRING],
 		account_info[MAX_ACCOUNT_INFO_LINES][MAX_LANG_VALUE_STRING],
 		account_scount,

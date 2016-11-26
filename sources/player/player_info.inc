@@ -20,5 +20,5 @@
 #endif
 
 #if !defined MAX_ACCOUNT_INFO_LINES
-	#define MAX_ACCOUNT_INFO_LINES 3
+	#define MAX_ACCOUNT_INFO_LINES 4
 #endif

@@ -100,7 +100,7 @@ stock GetPlayerInfoArray(playerid, string[MAX_PLAYER_INFO_LINES][], const size_s
 	Lang_GetPlayerText(requestorid, "PLAYER_INFO_0", string[scount++], size_string, ip, playerid, ping, privilege);
 	Lang_GetPlayerText(requestorid, "PLAYER_INFO_1", string[scount++], size_string, health, armour);
 	Lang_GetPlayerText(requestorid, "PLAYER_INFO_2", string[scount++], size_string, gang_string, level, xp, xp_max_on_level);
-	Lang_GetPlayerText(requestorid, "PLAYER_INFO_3", string[scount++], size_string, money, money_bank, money + money_bank);
+	Lang_GetPlayerText(requestorid, "PLAYER_INFO_3", string[scount++], size_string, FormatNumber(money), FormatNumber(money_bank), FormatNumber(money + money_bank));
 	Lang_GetPlayerText(requestorid, "PLAYER_INFO_4", string[scount++], size_string, weapon_name, weapon_id, weapon_ammo);
 	Lang_GetPlayerText(requestorid, "PLAYER_INFO_5", string[scount++], size_string, kills, deaths, kd_ratio);
 	Lang_GetPlayerText(requestorid, "PLAYER_INFO_6", string[scount++], size_string, jailed_count, muted_count);
@@ -149,8 +149,8 @@ stock GetAccountInfoArray(account_info[e_Account_Info], string[MAX_ACCOUNT_INFO_
 	gmtime(account_info[e_aPremiumTime], py, pm, pd, ph, pmi, ps);
 	GetTimeStringFromSeconds(requestorid, account_info[e_aPlayedSeconds], played_string);
 
-	Lang_GetPlayerText(requestorid, "ACCOUNT_INFO_0", string[scount++], size_string, cy, cm, cd, ch, cmi, cs);
-	Lang_GetPlayerText(requestorid, "ACCOUNT_INFO_1", string[scount++], size_string, ly, lm, ld, lh, lmi, ls);
+	Lang_GetPlayerText(requestorid, "ACCOUNT_INFO_0", string[scount++], size_string, cd, cm, cy, ch, cmi, cs);
+	Lang_GetPlayerText(requestorid, "ACCOUNT_INFO_1", string[scount++], size_string, ld, lm, ly, lh, lmi, ls);
 	Lang_GetPlayerText(requestorid, "ACCOUNT_INFO_2", string[scount++], size_string, played_string);
 	if (account_info[e_aPremiumTime] != 0) {
 		Lang_GetPlayerText(requestorid, "ACCOUNT_INFO_3", string[scount++], size_string, pd, pm, py, ph, pmi, ps);

@@ -42,52 +42,29 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 	switch (listitem) {
 		// информация о персонаже
 		case 0: {
-			new premium_status[MAX_LANG_VALUE_STRING];
-			if (IsPlayerHavePremium(playerid)) {
-				Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO_TO", premium_status, _, ret_GetPlayerPremiumDateString(playerid));
-			} else {
-				Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO_NO", premium_status);
+			static
+				message[MAX_LANG_VALUE_STRING * (MAX_ACCOUNT_INFO_LINES + MAX_PLAYER_INFO_LINES)],
+				account_info[MAX_ACCOUNT_INFO_LINES][MAX_LANG_VALUE_STRING],
+				account_scount,
+				player_info[MAX_PLAYER_INFO_LINES][MAX_LANG_VALUE_STRING],
+				player_scount;
+
+			message[0] = '\0';
+
+			account_scount = GetPlayerAccountInfoArray(playerid, account_info, sizeof(account_info[]), playerid);
+			player_scount = GetPlayerInfoArray(playerid, player_info, sizeof(player_info[]), playerid);
+
+			for (new i = 0; i < account_scount; i++) {
+				strcat(message, account_info[i]);
 			}
 
-			new fstylename[MAX_STRING];
-			GetFightStyleNameForPlayer(playerid, GetPlayerFightStyleUsed(playerid), fstylename);
-
-			new gangname[MAX_GANG_NAME];
-			GetPlayerGangName(playerid, gangname);
-			if (strlen(gangname) == 0) {
-				Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO_NO", gangname);
+			for (new i = 0; i < player_scount; i++) {
+				strcat(message, player_info[i]);
 			}
-
-			new played_time[MAX_LANG_VALUE_STRING];
-			GetTimeStringFromSeconds(playerid, Account_GetCurrentPlayedTime(playerid), played_time);
-
-			static string[MAX_LANG_VALUE_STRING * 9];
-			Lang_GetPlayerText(playerid, "PLAYER_MENU_INFO", string);
-
-			format(string, sizeof(string),
-			       string,
-
-			       GetPlayerLevel(playerid),
-			       GetPlayerXP(playerid), GetXPToLevel(GetPlayerLevel(playerid) + 1),
-			       timestamp_to_format_date( Account_GetRegistrationTime(playerid) ),
-			       played_time,
-
-			       gangname,
-
-			       FormatNumber(GetPlayerMoney(playerid)),
-			       FormatNumber(GetPlayerBankMoney(playerid)),
-			       FormatNumber(GetPlayerTotalMoney(playerid)),
-
-			       GetPlayerKills(playerid), GetPlayerDeaths(playerid), GetPlayerKillDeathRatio(playerid),
-			       GetPlayerJailedCount(playerid),
-			       GetPlayerMutedCount(playerid),
-
-			       fstylename,
-			       premium_status);
 
 			Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
 			                 "PLAYER_MENU_INFO_HEADER",
-			                 string,
+			                 message,
 			                 "BUTTON_BACK", "BUTTON_EXIT",
 			                 MDIALOG_NOTVAR_INFO);
 			return 1;
