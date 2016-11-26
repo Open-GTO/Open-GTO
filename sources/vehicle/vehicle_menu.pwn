@@ -75,32 +75,42 @@ DialogCreate:VehicleMenu(playerid)
 	}
 	strcat(string, temp);
 
-	// капот
-	if (bonnet == VEHICLE_PARAMS_ON) {
-		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_CLOSE_BONNET", temp);
-	} else {
-		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_OPEN_BONNET", temp);
-	}
-	strcat(string, temp);
+	new vehicle_type = GetVehicleModelType(GetVehicleModel(vehicleid));
 
-	// багажник
-	if (boot == VEHICLE_PARAMS_ON) {
-		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_CLOSE_BOOT", temp);
-	} else {
-		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_OPEN_BOOT", temp);
-	}
-	strcat(string, temp);
+	if (vehicle_type == VEHICLE_TYPE_CAR) {
+		// капот
+		if (bonnet == VEHICLE_PARAMS_ON) {
+			Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_CLOSE_BONNET", temp);
+		} else {
+			Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_OPEN_BONNET", temp);
+		}
+		strcat(string, temp);
 
-	// окна
-	new window_state;
-	GetVehicleParamsCarWindows(vehicleid, window_state, window_state, window_state, window_state);
-
-	if (window_state == VEHICLE_WINDOW_OPENED) {
-		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_CLOSE_WINDOWS", temp);
-	} else {
-		Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_OPEN_WINDOWS", temp);
+		// багажник
+		if (boot == VEHICLE_PARAMS_ON) {
+			Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_CLOSE_BOOT", temp);
+		} else {
+			Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_OPEN_BOOT", temp);
+		}
+		strcat(string, temp);
 	}
-	strcat(string, temp);
+
+	if (   vehicle_type == VEHICLE_TYPE_CAR
+	    || vehicle_type == VEHICLE_TYPE_BOAT
+	    || vehicle_type == VEHICLE_TYPE_TRAIN
+	    || vehicle_type == VEHICLE_TYPE_HELICOPTER
+	    || vehicle_type == VEHICLE_TYPE_PLANE) {
+		// окна
+		new window_state;
+		GetVehicleParamsCarWindows(vehicleid, window_state, window_state, window_state, window_state);
+
+		if (window_state == VEHICLE_WINDOW_OPENED) {
+			Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_CLOSE_WINDOWS", temp);
+		} else {
+			Lang_GetPlayerText(playerid, "VEHICLE_MENU_LIST_OPEN_WINDOWS", temp);
+		}
+		strcat(string, temp);
+	}
 
 	Dialog_Open(playerid, Dialog:VehicleMenu, DIALOG_STYLE_LIST, "VEHICLE_MENU_HEADER", string, "VEHICLE_MENU_BUTTON_OK", "VEHICLE_MENU_BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
 }
@@ -115,8 +125,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 	new vehicleid = GetPlayerVehicleID(playerid);
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 
-	switch (listitem)
-	{
+	switch (listitem) {
 		// перевернуть
 		case 0: {
 			new Float:float_tmp;
@@ -158,8 +167,13 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			}
 			return 1;
 		}
+	}
+
+	new vehicle_type = GetVehicleModelType(GetVehicleModel(vehicleid));
+
+	if (vehicle_type == VEHICLE_TYPE_CAR) {
 		// капот
-		case 5: {
+		if (listitem == 5) {
 			if (bonnet == VEHICLE_PARAMS_ON) {
 				SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, VEHICLE_PARAMS_OFF, boot, objective);
 			} else {
@@ -167,8 +181,9 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			}
 			return 1;
 		}
+
 		// багажник
-		case 6: {
+		if (listitem == 6) {
 			if (boot == VEHICLE_PARAMS_ON) {
 				SetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, VEHICLE_PARAMS_OFF, objective);
 			} else {
@@ -176,8 +191,16 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			}
 			return 1;
 		}
+	}
+
+	if (   vehicle_type == VEHICLE_TYPE_CAR
+	    || vehicle_type == VEHICLE_TYPE_BOAT
+	    || vehicle_type == VEHICLE_TYPE_TRAIN
+	    || vehicle_type == VEHICLE_TYPE_HELICOPTER
+	    || vehicle_type == VEHICLE_TYPE_PLANE) {
 		// окна
-		case 7: {
+		if (   (listitem == 7 && vehicle_type == VEHICLE_TYPE_CAR)
+		    || (listitem == 5 && vehicle_type != VEHICLE_TYPE_CAR)) {
 			new window_state;
 			GetVehicleParamsCarWindows(vehicleid, window_state, window_state, window_state, window_state);
 
@@ -189,6 +212,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 	}
+
 	return 1;
 }
 
