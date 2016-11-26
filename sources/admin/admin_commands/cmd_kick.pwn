@@ -52,7 +52,7 @@ COMMAND:kick(playerid, params[])
 	} else {
 		GetPlayerName(targetid, targetname, sizeof(targetname));
 
-		GetPlayerNearPlayers(targetid, 40.0, players);
+		GetPlayerNearPlayers(targetid, 40.0, players, .exclude_playerid = playerid);
 		Lang_SendTextToPlayers(players, "ADMIN_COMMAND_KICK_PLAYER", playername, playerid, targetname, targetid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_KICK_PLAYER_SELF", targetname, targetid);

@@ -62,7 +62,7 @@ COMMAND:armour(playerid, params[])
 		} else {
 			SetPlayerArmour(targetid, amount);
 
-			GetPlayerNearPlayers(targetid, 40.0, players);
+			GetPlayerNearPlayers(targetid, 40.0, players, .exclude_playerid = playerid);
 			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_ARMOUR_SET_PLAYER", playername, playerid, targetname, targetid, amount);
 
 			Lang_SendText(playerid, "ADMIN_COMMAND_ARMOUR_SET_SELF", targetname, targetid, amount);
@@ -91,7 +91,7 @@ COMMAND:armour(playerid, params[])
 			GetPlayerArmour(targetid, current_armour);
 			SetPlayerArmour(targetid, current_armour + amount);
 
-			GetPlayerNearPlayers(targetid, 40.0, players);
+			GetPlayerNearPlayers(targetid, 40.0, players, .exclude_playerid = playerid);
 			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_ARMOUR_GIVE_PLAYER", playername, playerid, targetname, targetid, amount);
 
 			Lang_SendText(playerid, "ADMIN_COMMAND_ARMOUR_GIVE_SELF", targetname, targetid, amount);

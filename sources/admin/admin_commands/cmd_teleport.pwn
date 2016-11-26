@@ -85,7 +85,7 @@ COMMAND:teleport(playerid, params[])
 		TeleportPlayerToPos(playerid, t_pos_x + random(2) - random(4), t_pos_y + random(2) - random(4), t_pos_z,
 		                    t_pos_a, t_interior, t_world);
 
-		GetPlayerNearPlayers(targetid, 40.0, players);
+		GetPlayerNearPlayers(targetid, 40.0, players, .exclude_playerid = playerid);
 		Lang_SendTextToPlayers(players, "ADMIN_COMMAND_TELEPORT_TO_PLAYER", targetname, targetid, playername, playerid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_TELEPORT_TO_SELF", targetname, targetid);

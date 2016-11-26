@@ -92,7 +92,7 @@ COMMAND:vehicle(playerid, params[])
 		}
 
 		// message
-		GetVehicleNearPlayers(vehicleid, 40.0, players);
+		GetVehicleNearPlayers(vehicleid, 40.0, players, .exclude_playerid = playerid);
 		Lang_SendTextToPlayers(players, "ADMIN_COMMAND_VEHICLE_REMOVE_MESSAGE", playername, playerid, vehicleid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_VEHICLE_REMOVE_MSG_SELF", vehicleid);
@@ -129,7 +129,7 @@ COMMAND:vehicle(playerid, params[])
 			}
 
 			// message
-			GetVehicleNearPlayers(vehicleid, 40.0, players);
+			GetVehicleNearPlayers(vehicleid, 40.0, players, .exclude_playerid = playerid);
 			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_VEHICLE_RESPAWN_MESSAGE", playername, playerid, vehicleid);
 
 			Lang_SendText(playerid, "ADMIN_COMMAND_VEHICLE_RESPAWN_MSG_SELF", vehicleid);
@@ -167,7 +167,7 @@ COMMAND:vehicle(playerid, params[])
 			}
 
 			// message
-			GetVehicleNearPlayers(vehicleid, 40.0, players);
+			GetVehicleNearPlayers(vehicleid, 40.0, players, .exclude_playerid = playerid);
 			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_VEHICLE_REPAIR_MESSAGE", playername, playerid, vehicleid);
 
 			Lang_SendText(playerid, "ADMIN_COMMAND_VEHICLE_REPAIR_MSG_SELF", vehicleid);
@@ -259,7 +259,7 @@ COMMAND:vehicle(playerid, params[])
 			} else {
 				SetVehicleHealth(vehicleid, amount);
 
-				GetVehicleNearPlayers(vehicleid, 40.0, players);
+				GetVehicleNearPlayers(vehicleid, 40.0, players, .exclude_playerid = playerid);
 				Lang_SendTextToPlayers(players, "ADMIN_COMMAND_VEHICLE_HEALTH_SET", playername, playerid, vehicleid);
 
 				Lang_SendText(playerid, "ADMIN_COMMAND_VEHICLE_HEALTH_SET_SELF", vehicleid, amount);
@@ -283,7 +283,7 @@ COMMAND:vehicle(playerid, params[])
 				GetVehicleHealth(vehicleid, current_health);
 				SetVehicleHealth(vehicleid, current_health + amount);
 
-				GetVehicleNearPlayers(vehicleid, 40.0, players);
+				GetVehicleNearPlayers(vehicleid, 40.0, players, .exclude_playerid = playerid);
 				Lang_SendTextToPlayers(players, "ADMIN_COMMAND_VEHICLE_HEALTH_GIVE", playername, playerid, vehicleid, amount);
 
 				Lang_SendText(playerid, "ADMIN_COMMAND_VEHICLE_HEALTH_GIVE_SELF", vehicleid, amount);

@@ -64,7 +64,7 @@ COMMAND:health(playerid, params[])
 			SetPlayerHealth(targetid, amount);
 			SetPlayerHealthRegen(targetid, false);
 
-			GetPlayerNearPlayers(playerid, 40.0, players);
+			GetPlayerNearPlayers(playerid, 40.0, players, .exclude_playerid = playerid);
 			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_HEALTH_SET_PLAYER", playername, playerid, targetname, targetid, amount);
 
 			Lang_SendText(playerid, "ADMIN_COMMAND_HEALTH_SET_SELF", targetname, targetid, amount);
@@ -93,7 +93,7 @@ COMMAND:health(playerid, params[])
 			GetPlayerHealth(targetid, current_health);
 			SetPlayerHealth(targetid, current_health + amount);
 
-			GetPlayerNearPlayers(playerid, 40.0, players);
+			GetPlayerNearPlayers(playerid, 40.0, players, .exclude_playerid = playerid);
 			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_HEALTH_GIVE_PLAYER", playername, playerid, targetname, targetid, amount);
 
 			Lang_SendText(playerid, "ADMIN_COMMAND_HEALTH_GIVE_SELF", targetname, targetid, amount);
