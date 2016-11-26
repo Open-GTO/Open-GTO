@@ -33,6 +33,7 @@ enum e_Alerts_Info {
 	e_aInfo[MAX_LANG_VALUE_STRING],
 	e_aTime,
 	e_aColor,
+	bool:e_aWithSound,
 }
 
 enum (<<= 1) {
@@ -136,7 +137,7 @@ forward OnPlayerConnect(playerid);
  * Public functions
  */
 
-stock Message_Alert(playerid, caption[], info[], time = 4000, hcolor = -5963521, notvar_flags = MESSAGE_NOTVAR_NONE, va_args<>)
+stock Message_Alert(playerid, caption[], info[], time = 4000, hcolor = -5963521, bool:with_sound = true, notvar_flags = MESSAGE_NOTVAR_NONE, va_args<>)
 {
 	new id = GetFreeSlot(playerid);
 	if (id == -1) {
@@ -168,6 +169,7 @@ stock Message_Alert(playerid, caption[], info[], time = 4000, hcolor = -5963521,
 	messages[playerid][id][e_aIsBusy] = true;
 	messages[playerid][id][e_aTime] = time;
 	messages[playerid][id][e_aColor] = hcolor;
+	messages[playerid][id][e_aWithSound] = with_sound;
 
 	if (!Message_Alert_IsShowed(playerid)) {
 		Message_AlertCached(playerid, id);
@@ -228,7 +230,9 @@ static stock Message_AlertCached(playerid, id)
 		PlayerTextDrawHide(playerid, td_content[playerid]);
 	}
 
-	PlayerPlaySound(playerid, 45400, 0.0, 0.0, 0.0);
+	if (messages[playerid][id][e_aWithSound]) {
+		PlayerPlaySound(playerid, 45400, 0.0, 0.0, 0.0);
+	}
 
 	if (Message_Alert_IsShowed(playerid)) {
 		KillTimer(timer_id[playerid]);

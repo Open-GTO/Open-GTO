@@ -208,7 +208,7 @@ forward Trucker_BackCarTimer(playerid);
 public Trucker_BackCarTimer(playerid)
 {
 	if (player_trucker[playerid][pt_BackCarTime] > 0) {
-		Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_BACK", 1200, _,
+		Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_BACK", 1200, _, false,
 		              MESSAGE_NOTVAR_NONE,
 		              player_trucker[playerid][pt_BackCarTime]);
 
@@ -230,7 +230,7 @@ stock Trucker_Start(playerid)
 	if (trailer_type == TRAILER_TYPE_UNKNOWN) {
 		Lang_SendText(playerid, "TRUCKER_GET_TRAILER", TRUCKER_TIME_GET_TRAILER);
 
-		Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_TRAILER_S", _, _,
+		Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_TRAILER_S", _, _, _,
 		              MESSAGE_NOTVAR_NONE,
 		              TRUCKER_TIME_GET_TRAILER);
 
@@ -297,7 +297,7 @@ stock Trucker_Start(playerid)
 		header[MAX_LANG_VALUE_STRING];
 
 	Lang_GetPlayerText(playerid, "TRUCKER_ALERT_HEADER", header);
-	Message_Alert(playerid, header, "TRUCKER_ALERT_STARTED", _, _, MESSAGE_NOTVAR_CAPTION, TRUCKER_MISSION_TIME / 60);
+	Message_Alert(playerid, header, "TRUCKER_ALERT_STARTED", _, _, _, MESSAGE_NOTVAR_CAPTION, TRUCKER_MISSION_TIME / 60);
 
 	Message_Objective(playerid, "TRUCKER_OBJECTIVE_STARTED", -1, _, _, td_type_name, zone);
 	return 1;
@@ -354,7 +354,7 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 		if (player_trucker[playerid][pt_TryCount] > 0) {
 			Lang_SendText(playerid, "TRUCKER_MISSION_COMPLETE", TRUCKER_MISSION_TIME / 60);
 
-			Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_TRAILER_M", _, _,
+			Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_TRAILER_M", _, _, _,
 			              MESSAGE_NOTVAR_NONE,
 			              TRUCKER_MISSION_TIME / 60);
 
@@ -512,7 +512,7 @@ public Trucker_Trailer_Check(playerid, vehicleid)
 	if (time_left != previous_time) {
 		switch (time_left) {
 			case 10, TRUCKER_TIME_GET_TRAILER / 4, TRUCKER_TIME_GET_TRAILER / 2: {
-				Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_TRAILER_S", _, _,
+				Message_Alert(playerid, "TRUCKER_ALERT_HEADER", "TRUCKER_ALERT_GET_TRAILER_S", _, _, _,
 				              MESSAGE_NOTVAR_NONE,
 				              time_left);
 			}
