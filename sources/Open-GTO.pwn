@@ -661,11 +661,6 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 
 public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
-	PWeapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
-
-	if (hittype == BULLET_HIT_TYPE_VEHICLE) {
-		Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
-	}
 	return 1;
 }
 

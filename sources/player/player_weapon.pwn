@@ -41,13 +41,11 @@ new PlayerStartWeapon[START_PLAYER_WEAPON_SLOTS][PWeap] = {
 };
 
 /*
-	OnGameModeInit
+	OnPlayerWeaponShot
 */
 
-PWeapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
+public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
-	#pragma unused hittype, hitid, fX, fY, fZ
-
 	new slotid = GetWeaponSlot(weaponid);
 
 	PlayerWeapons[playerid][slotid][pbullets]--;
@@ -55,8 +53,22 @@ PWeapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:f
 	if (PlayerWeapons[playerid][slotid][pbullets] == 0) {
 		PlayerWeapons[playerid][slotid][pwid] = 0;
 	}
-	return 1;
+	#if defined PWeapon_OnPlayerWeaponShot
+		return PWeapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerWeaponShot
+	#undef OnPlayerWeaponShot
+#else
+	#define _ALS_OnPlayerWeaponShot
+#endif
+
+#define OnPlayerWeaponShot PWeapon_OnPlayerWeaponShot
+#if defined PWeapon_OnPlayerWeaponShot
+	forward PWeapon_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ);
+#endif
 
 stock GetWeaponSlot(weaponid)
 {

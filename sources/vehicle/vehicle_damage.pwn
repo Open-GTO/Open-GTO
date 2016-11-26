@@ -11,16 +11,21 @@
 
 #define _vehicle_damage_included
 
-forward Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ);
-public Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
-{
-	#pragma unused playerid, hittype
+/*
+	OnPlayerWeaponShot
+*/
 
-	if (IsVehicleOccupied(hitid)) {
+public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ)
+{
+#if defined VEHICLE_DAMAGE_ENABLE_TIRES
+	if (hittype != BULLET_HIT_TYPE_VEHICLE || IsVehicleOccupied(hitid)) {
+	#if defined Vehicle_OnPlayerWeaponShot
+		return Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+	#else
 		return 1;
+	#endif
 	}
 
-#if defined VEHICLE_DAMAGE_ENABLE_TIRES
 	new
 		veh_model,
 		Float:v_wide, Float:v_long, Float:v_height,
@@ -51,6 +56,19 @@ public Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, 
 	tires = encode_tires(wheel_status[0], wheel_status[1], wheel_status[2], wheel_status[3]);
 	UpdateVehicleDamageStatus(hitid, panels, doors, lights, tires);
 #endif
-
-	return 1;
+	#if defined Vehicle_OnPlayerWeaponShot
+		return Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, fX, fY, fZ);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerWeaponShot
+	#undef OnPlayerWeaponShot
+#else
+	#define _ALS_OnPlayerWeaponShot
+#endif
+
+#define OnPlayerWeaponShot Vehicle_OnPlayerWeaponShot
+#if defined Vehicle_OnPlayerWeaponShot
+	forward Vehicle_OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY, Float:fZ);
+#endif
