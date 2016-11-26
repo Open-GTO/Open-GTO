@@ -289,13 +289,10 @@ DialogCreate:BusinessMenu(playerid)
 
 	GetPlayerName(playerid, playername, sizeof(playername));
 
-	new head[MAX_STRING];
-	Lang_GetPlayerText(playerid, "BUSINESS_DIALOG_HEAD", head, _, Businesses[id][Business_Name]);
-
 	if (!strcmp(Businesses[id][Business_Owner], playername, true)) {
 		if (Businesses[id][Business_Upgrade] >= MAX_BUSINESS_LEVEL) {
 			Dialog_Open(playerid, Dialog:BusinessMenu, DIALOG_STYLE_LIST,
-			            head,
+			            Businesses[id][Business_Name],
 			            "BUSINESS_DIALOG_LIST_SELL",
 			            "BUSINESS_DIALOG_BUTTON_OK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 			            MDIALOG_NOTVAR_CAPTION,
@@ -303,7 +300,7 @@ DialogCreate:BusinessMenu(playerid)
 			            Businesses[id][Business_Upgrade]);
 		} else {
 			Dialog_Open(playerid, Dialog:BusinessMenu, DIALOG_STYLE_LIST,
-			            head,
+			            Businesses[id][Business_Name],
 			            "BUSINESS_DIALOG_LIST",
 			            "BUSINESS_DIALOG_BUTTON_OK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 			            MDIALOG_NOTVAR_CAPTION,
@@ -313,7 +310,7 @@ DialogCreate:BusinessMenu(playerid)
 		}
 	} else {
 		Dialog_Open(playerid, Dialog:BusinessMenu, DIALOG_STYLE_LIST,
-		            head,
+		            Businesses[id][Business_Name],
 		            "BUSINESS_DIALOG_LIST_BUY",
 		            "BUSINESS_DIALOG_BUTTON_OK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 		            MDIALOG_NOTVAR_CAPTION);
@@ -436,14 +433,11 @@ business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 
 	SetPlayerToBusinessID(playerid, id);
 
-	new head[MAX_LANG_VALUE_STRING];
-	Lang_GetPlayerText(playerid, "BUSINESS_DIALOG_HEAD", head, _, Businesses[id][Business_Name]);
-
 	if (!strcmp(Businesses[id][Business_Owner], ret_GetPlayerName(playerid), true))
 	{
 		// если мой
 		Dialog_Open(playerid, Dialog:BusinessInfo, DIALOG_STYLE_MSGBOX,
-		            head,
+		            Businesses[id][Business_Name],
 		            "BUSINESS_DIALOG_INFO_SELF",
 		            "BUSINESS_DIALOG_BUTTON_ACTION", "BUSINESS_DIALOG_BUTTON_BACK",
 		            MDIALOG_NOTVAR_CAPTION,
@@ -457,7 +451,7 @@ business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		{
 			// если ничей
 			Dialog_Open(playerid, Dialog:BusinessInfo, DIALOG_STYLE_MSGBOX,
-			            head,
+			            Businesses[id][Business_Name],
 			            "BUSINESS_DIALOG_INFO_FOREIGN",
 			            "BUSINESS_DIALOG_BUTTON_ACTION", "BUSINESS_DIALOG_BUTTON_BACK",
 			            MDIALOG_NOTVAR_CAPTION,
@@ -470,7 +464,7 @@ business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		{
 			// если кого-то
 			Dialog_Open(playerid, Dialog:BusinessInfo, DIALOG_STYLE_MSGBOX,
-			            head,
+			            Businesses[id][Business_Name],
 			            "BUSINESS_DIALOG_INFO_PLAYER",
 			            "BUSINESS_DIALOG_BUTTON_ACTION", "BUSINESS_DIALOG_BUTTON_BACK",
 			            MDIALOG_NOTVAR_CAPTION,
@@ -504,12 +498,10 @@ stock bis_Buy(playerid)
 	{
 		return Lang_SendText(playerid, "BUSINESS_ERROR");
 	}
-	new head[MAX_STRING];
-	Lang_GetPlayerText(playerid, "BUSINESS_DIALOG_HEAD", head, _, Businesses[id][Business_Name]);
 	if (GetPlayerLevel(playerid) < Businesses[id][Business_Level])
 	{
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
-		                 head,
+		                 Businesses[id][Business_Name],
 		                 "BUSINESS_LEVEL_ERROR",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 		                 MDIALOG_NOTVAR_CAPTION,
@@ -520,7 +512,7 @@ stock bis_Buy(playerid)
 	if (GetPlayerMoney(playerid) < price)
 	{
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
-		                 head,
+		                 Businesses[id][Business_Name],
 		                 "BUSINESS_NO_MONEY",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 		                 MDIALOG_NOTVAR_CAPTION);
@@ -530,7 +522,7 @@ stock bis_Buy(playerid)
 	if (!strcmp(Businesses[id][Business_Owner], playername, true))
 	{
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
-		                 head,
+		                 Businesses[id][Business_Name],
 		                 "BUSINESS_YOU_BUSINESS",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 		                 MDIALOG_NOTVAR_CAPTION);
@@ -563,7 +555,7 @@ stock bis_Buy(playerid)
 		business_UpdateLabel(id);
 
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
-		                 head,
+		                 Businesses[id][Business_Name],
 		                 "BUSINESS_DIALOG_INFO_BUY",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 		                 MDIALOG_NOTVAR_CAPTION,
@@ -582,12 +574,10 @@ stock bis_Sell(playerid)
 	{
 		return Lang_SendText(playerid, "BUSINESS_ERROR");
 	}
-	new head[MAX_LANG_VALUE_STRING];
-	Lang_GetPlayerText(playerid, "BUSINESS_DIALOG_HEAD", head, _, Businesses[id][Business_Name]);
 	if (strcmp(Businesses[id][Business_Owner], ret_GetPlayerName(playerid), true))
 	{
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
-		                 head,
+		                 Businesses[id][Business_Name],
 		                 "BUSINESS_NOT_YOU",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 		                 MDIALOG_NOTVAR_CAPTION);
@@ -606,7 +596,7 @@ stock bis_Sell(playerid)
 		business_UpdateLabel(id);
 
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
-		                 head,
+		                 Businesses[id][Business_Name],
 		                 "BUSINESS_DIALOG_INFO_SELL",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 		                 MDIALOG_NOTVAR_CAPTION,
@@ -626,13 +616,10 @@ stock bis_Collect(playerid)
 		return Lang_SendText(playerid, "BUSINESS_ERROR");
 	}
 
-	new head[MAX_LANG_VALUE_STRING];
-	Lang_GetPlayerText(playerid, "BUSINESS_DIALOG_HEAD", head, _, Businesses[id][Business_Name]);
-
 	if (strcmp(Businesses[id][Business_Owner], ret_GetPlayerName(playerid), true))
 	{
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
-		                 head,
+		                 Businesses[id][Business_Name],
 		                 "BUSINESS_NOT_YOU",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 		                 MDIALOG_NOTVAR_CAPTION);
@@ -645,7 +632,7 @@ stock bis_Collect(playerid)
 			Businesses[id][Business_Vault] = 0;
 
 			Dialog_MessageEx(playerid, Dialog:BusinessMessage,
-			                 head,
+			                 Businesses[id][Business_Name],
 			                 "BUSINESS_TOOK_VAULT",
 			                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 			                 MDIALOG_NOTVAR_CAPTION);
@@ -653,7 +640,7 @@ stock bis_Collect(playerid)
 		else
 		{
 			Dialog_MessageEx(playerid, Dialog:BusinessMessage,
-			                 head,
+			                 Businesses[id][Business_Name],
 			                 "BUSINESS_NO_VAULT",
 			                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 			                 MDIALOG_NOTVAR_CAPTION);
@@ -665,14 +652,11 @@ stock bis_Collect(playerid)
 stock bis_buyUpgrade(playerid)
 {
 	new
-		id = GetPlayerToBusinessID(playerid),
-		head[MAX_LANG_VALUE_STRING];
-
-	Lang_GetPlayerText(playerid, "BUSINESS_DIALOG_HEAD", head, _, Businesses[id][Business_Name]);
+		id = GetPlayerToBusinessID(playerid);
 
 	if (Businesses[id][Business_Upgrade] >= MAX_BUSINESS_LEVEL) {
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
-		                 head,
+		                 Businesses[id][Business_Name],
 		                 "BUSINESS_UPGRADE_MAX",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 		                 MDIALOG_NOTVAR_CAPTION,
@@ -683,7 +667,7 @@ stock bis_buyUpgrade(playerid)
 
 	if (GetPlayerMoney(playerid) < price) {
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
-		                 head,
+		                 Businesses[id][Business_Name],
 		                 "BUSINESS_UPGRADE_NO_MONEY",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 		                 MDIALOG_NOTVAR_CAPTION,
@@ -696,7 +680,7 @@ stock bis_buyUpgrade(playerid)
 	business_UpdateLabel(id);
 
 	Dialog_MessageEx(playerid, Dialog:BusinessMessage,
-	                 head,
+	                 Businesses[id][Business_Name],
 	                 "BUSINESS_UPGRADE_UP",
 	                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
 	                 MDIALOG_NOTVAR_CAPTION,
