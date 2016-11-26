@@ -283,9 +283,6 @@ public OnGameModeInit()
 	Beachside_OnGameModeInit();
 	Custom_OnGameModeInit();
 
-	// missions
-	Trucker_OnGameModeInit();
-
 	// services
 	sshop_OnGameModeInit();
 	VehShop_OnGameModeInit();
@@ -333,7 +330,6 @@ public OnPlayerConnect(playerid)
 
 	// main action
 	Player_OnPlayerConnect(playerid);
-	Trucker_OnPlayerConnect(playerid);
 	PlayerMoneyTD_OnPlayerConnect(playerid);
 	Vehicle_Textdraw_OnPlayerConn(playerid);
 	Spectate_OnPlayerConnect(playerid);
@@ -349,7 +345,6 @@ public OnPlayerDisconnect(playerid, reason)
 		return 1;
 	}
 	Player_OnPlayerDisconnect(playerid, reason);
-	Trucker_OnPlayerDisconnect(playerid, reason);
 	Groundhold_OnPlayerDisconnect(playerid, reason);
 	PlayerMoneyTD_OnPlayerDisconn(playerid, reason);
 	PVehicle_OnPlayerDisconnect(playerid, reason);
@@ -384,9 +379,6 @@ public OnPlayerPickUpGlobalPickup(playerid, pickupid, gpickupid, model)
 
 public OnPlayerEnterDynamicCP(playerid, checkpointid)
 {
-	if (Trucker_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
-		return 1;
-	}
 	if (ss_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
 		return 1;
 	}
@@ -421,7 +413,6 @@ public OnPlayerDeath(playerid, killerid, reason)
 
 	Player_OnPlayerDeath(playerid, killerid, reason);
 	PWSkill_OnPlayerDeath(playerid, killerid, reason);
-	Trucker_OnPlayerDeath(playerid, killerid, reason);
 
 	PlayCrimeReportForPlayer(killerid, killerid, random(18)+3);
 	PlayCrimeReportForPlayer(playerid, killerid, random(18)+3);
@@ -584,7 +575,6 @@ public OnPlayerExitedMenu(playerid)
 public OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	Vehicle_Fuel_OnPlayerStateChang(playerid, newstate, oldstate);
-	Trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 	Spectate_OnPlayerStateChange(playerid, newstate, oldstate);
 	Weapon_OnPlayerStateChange(playerid, newstate, oldstate);
 
@@ -645,7 +635,6 @@ public OnVehicleSpawn(vehicleid)
 
 public OnVehicleDeath(vehicleid, killerid)
 {
-	Trucker_OnVehicleDeath(vehicleid, killerid);
 	PVehicle_OnVehicleDeath(vehicleid, killerid);
 	return 1;
 }

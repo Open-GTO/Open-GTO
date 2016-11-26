@@ -138,10 +138,18 @@ static
 	Text3D:gLinerunnerLabelID[ sizeof(Houses) ][MAX_PLAYERS],
 	Text3D:gTrailerLabelID[ sizeof(Houses) ][MAX_PLAYERS];
 
-Trucker_OnGameModeInit()
+/*
+	OnGameModeInit
+*/
+
+public OnGameModeInit()
 {
 	if (!IsMissionEnabled(mission_trucker)) {
+	#if defined Trucker_OnGameModeInit
+		return Trucker_OnGameModeInit();
+	#else
 		return 1;
+	#endif
 	}
 
 	// регистрируем миссию
@@ -171,13 +179,35 @@ Trucker_OnGameModeInit()
 	CreateDynamicMapIcon(816.5801, 857.0634, 12.7891, 51, 0);
 
 	Log_Init("missions", "Trucker module init");
-	return 1;
+	#if defined Trucker_OnGameModeInit
+		return Trucker_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
 
-Trucker_OnPlayerStateChange(playerid, newstate, oldstate)
+#define OnGameModeInit Trucker_OnGameModeInit
+#if defined Trucker_OnGameModeInit
+	forward Trucker_OnGameModeInit();
+#endif
+
+/*
+	OnPlayerStateChange
+*/
+
+public OnPlayerStateChange(playerid, newstate, oldstate)
 {
 	if (!IsMissionEnabled(mission_trucker)) {
+	#if defined Trucker_OnPlayerStateChange
+		return Trucker_OnPlayerStateChange(playerid, newstate, oldstate);
+	#else
 		return 1;
+	#endif
 	}
 
 	if (newstate == PLAYER_STATE_DRIVER) {
@@ -201,8 +231,22 @@ Trucker_OnPlayerStateChange(playerid, newstate, oldstate)
 			Trucker_BackCarTimer(playerid);
 		}
 	}
-	return 1;
+	#if defined Trucker_OnPlayerStateChange
+		return Trucker_OnPlayerStateChange(playerid, newstate, oldstate);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerStateChange
+	#undef OnPlayerStateChange
+#else
+	#define _ALS_OnPlayerStateChange
+#endif
+
+#define OnPlayerStateChange Trucker_OnPlayerStateChange
+#if defined Trucker_OnPlayerStateChange
+	forward Trucker_OnPlayerStateChange(playerid, newstate, oldstate);
+#endif
 
 forward Trucker_BackCarTimer(playerid);
 public Trucker_BackCarTimer(playerid)
@@ -303,6 +347,10 @@ stock Trucker_Start(playerid)
 	return 1;
 }
 
+/*
+	OnPlayerKeyStateChange
+*/
+
 stock Trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
 	if (!PRESSED(KEY_SUBMISSION)) {
@@ -316,14 +364,17 @@ stock Trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	return 0;
 }
 
-stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
+/*
+	OnPlayerEnterDynamicCP
+*/
+public OnPlayerEnterDynamicCP(playerid, checkpointid)
 {
-	if (!IsMissionEnabled(mission_trucker)) {
-		return 0;
-	}
-
-	if (cp != player_checkpoint[playerid]) {
-		return 0;
+	if (!IsMissionEnabled(mission_trucker) || checkpointid != player_checkpoint[playerid]) {
+	#if defined Trucker_OnPlayerEnterDynamicCP
+		return Trucker_OnPlayerEnterDynamicCP(playerid, checkpointid);
+	#else
+		return 1;
+	#endif
 	}
 
 	new vehicleid = GetPlayerVehicleID(playerid);
@@ -364,8 +415,26 @@ stock Trucker_OnPlayerEnterCheckpoint(playerid, cp)
 			player_trucker[playerid][pt_TrailerCheck_Timer] = SetTimerEx("Trucker_Trailer_Check", 500, 1, "dd", playerid, vehicleid);
 		}
 	}
-	return 1;
+	#if defined Trucker_OnPlayerEnterDynamicCP
+		return Trucker_OnPlayerEnterDynamicCP(playerid, checkpointid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerEnterDynamicCP
+	#undef OnPlayerEnterDynamicCP
+#else
+	#define _ALS_OnPlayerEnterDynamicCP
+#endif
+
+#define OnPlayerEnterDynamicCP Trucker_OnPlayerEnterDynamicCP
+#if defined Trucker_OnPlayerEnterDynamicCP
+	forward Trucker_OnPlayerEnterDynamicCP(playerid, checkpointid);
+#endif
+
+/*
+	Dialogs
+*/
 
 DialogCreate:TruckerMenu(playerid)
 {
@@ -412,7 +481,10 @@ DialogResponse:TruckerCancel(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-Trucker_OnPlayerConnect(playerid)
+/*
+	OnPlayerConnect
+*/
+public OnPlayerConnect(playerid)
 {
 	for (new id = 0; id < sizeof(gTrailer); id++) {
 		CreatePlayerTrailerLabel(playerid, id);
@@ -421,11 +493,29 @@ Trucker_OnPlayerConnect(playerid)
 	for (new id = 0; id < sizeof(gLinerunner); id++) {
 		CreatePlayerLinerunnerLabel(playerid, id);
 	}
+	#if defined Trucker_OnPlayerConnect
+		return Trucker_OnPlayerConnect(playerid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
 
-Trucker_OnPlayerDisconnect(playerid, reason)
+#define OnPlayerConnect Trucker_OnPlayerConnect
+#if defined Trucker_OnPlayerConnect
+	forward Trucker_OnPlayerConnect(playerid);
+#endif
+
+/*
+	OnPlayerDisconnect
+*/
+
+public OnPlayerDisconnect(playerid, reason)
 {
-	#pragma unused reason
 	if (!IsMissionEnabled(mission_trucker)) {
 		return 1;
 	}
@@ -454,25 +544,68 @@ Trucker_OnPlayerDisconnect(playerid, reason)
 	for (new id = 0; id < sizeof(gLinerunner); id++) {
 		DestroyPlayerLinerunnerLabel(playerid, id);
 	}
-	return 1;
-}
-
-Trucker_OnPlayerDeath(playerid, killerid, reason)
-{
-	#pragma unused killerid, reason
-	if (!IsMissionEnabled(mission_trucker) || !IsPlayerInMission(playerid, mission_trucker)) {
+	#if defined Trucker_OnPlayerDisconnect
+		return Trucker_OnPlayerDisconnect(playerid, reason);
+	#else
 		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerDisconnect
+	#undef OnPlayerDisconnect
+#else
+	#define _ALS_OnPlayerDisconnect
+#endif
+
+#define OnPlayerDisconnect Trucker_OnPlayerDisconnect
+#if defined Trucker_OnPlayerDisconnect
+	forward Trucker_OnPlayerDisconnect(playerid, reason);
+#endif
+
+/*
+	OnPlayerDeath
+*/
+
+public OnPlayerDeath(playerid, killerid, reason)
+{
+	if (!IsMissionEnabled(mission_trucker) || !IsPlayerInMission(playerid, mission_trucker)) {
+	#if defined Trucker_OnPlayerDeath
+		return Trucker_OnPlayerDeath(playerid, killerid, reason);
+	#else
+		return 1;
+	#endif
 	}
 	Trucker_Stop(playerid);
 	GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker));
 	Lang_SendText(playerid, "TRUCKER_MISSION_FAILED");
-	return 1;
+	#if defined Trucker_OnPlayerDeath
+		return Trucker_OnPlayerDeath(playerid, killerid, reason);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerDeath
+	#undef OnPlayerDeath
+#else
+	#define _ALS_OnPlayerDeath
+#endif
 
-Trucker_OnVehicleDeath(vehicleid, killerid)
+#define OnPlayerDeath Trucker_OnPlayerDeath
+#if defined Trucker_OnPlayerDeath
+	forward Trucker_OnPlayerDeath(playerid, killerid, reason);
+#endif
+
+/*
+	OnVehicleDeath
+*/
+
+public OnVehicleDeath(vehicleid, killerid)
 {
 	if (!IsMissionEnabled(mission_trucker)) {
-		return 0;
+	#if defined Trucker_OnVehicleDeath
+		return Trucker_OnVehicleDeath(vehicleid, killerid);
+	#else
+		return 1;
+	#endif
 	}
 	if (IsVehicleIsRunner(vehicleid)) {
 		if (IsPlayerInMission(killerid, mission_trucker)) {
@@ -489,8 +622,26 @@ Trucker_OnVehicleDeath(vehicleid, killerid)
 			}
 		}
 	}
-	return 1;
+	#if defined Trucker_OnVehicleDeath
+		return Trucker_OnVehicleDeath(vehicleid, killerid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnVehicleDeath
+	#undef OnVehicleDeath
+#else
+	#define _ALS_OnVehicleDeath
+#endif
+
+#define OnVehicleDeath Trucker_OnVehicleDeath
+#if defined Trucker_OnVehicleDeath
+	forward Trucker_OnVehicleDeath(vehicleid, killerid);
+#endif
+
+/*
+	Functions
+*/
 
 forward Trucker_Trailer_Check(playerid, vehicleid);
 public Trucker_Trailer_Check(playerid, vehicleid)
