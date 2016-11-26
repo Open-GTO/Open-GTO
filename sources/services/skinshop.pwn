@@ -13,6 +13,10 @@
 
 #define _skinshop_included
 
+/*
+	Enums
+*/
+
 enum SkinShop_Info {
 	Float:ss_x,
 	Float:ss_y,
@@ -24,6 +28,10 @@ enum SkinShop_Info {
 	ss_checkpoint
 }
 
+/*
+	Vars
+*/
+
 static SkinShops[][SkinShop_Info] = {
 	{207.6596, -100.7878, 1005.2578, 217.5216, -98.4044,  1005.2578, 113.2594},
 	{161.5244, -83.5924, 1001.8047,  181.1685, -87.4101,  1002.0234, 110.1505},
@@ -34,20 +42,42 @@ static SkinShops[][SkinShop_Info] = {
 static
 	ShopID[MAX_PLAYERS] = {-1, ...};
 
-stock sshop_OnGameModeInit()
+/*
+	OnGameModeInit
+*/
+
+public OnGameModeInit()
 {
 	for (new id = 0; id < sizeof(SkinShops); id++) {
 		SkinShops[id][ss_checkpoint] = CreateDynamicCP(SkinShops[id][ss_x], SkinShops[id][ss_y], SkinShops[id][ss_z], 1.5, .streamdistance = 20.0);
 	}
 
 	Log_Init("services", "SkinShop module init.");
-	return 1;
+	#if defined SShop_OnGameModeInit
+		return SShop_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnGameModeInit
+	#undef OnGameModeInit
+#else
+	#define _ALS_OnGameModeInit
+#endif
 
-stock ss_OnPlayerEnterCheckpoint(playerid, cp)
+#define OnGameModeInit SShop_OnGameModeInit
+#if defined SShop_OnGameModeInit
+	forward SShop_OnGameModeInit();
+#endif
+
+/*
+	OnPlayerEnterDynamicCP
+*/
+
+public OnPlayerEnterDynamicCP(playerid, checkpointid)
 {
 	for (new id = 0; id < sizeof(SkinShops); id++) {
-		if (cp == SkinShops[id][ss_checkpoint]) {
+		if (checkpointid == SkinShops[id][ss_checkpoint]) {
 			SkinShop_SetPlayerFittingRoom(playerid, id);
 
 			ShopID[playerid] = id;
@@ -56,8 +86,22 @@ stock ss_OnPlayerEnterCheckpoint(playerid, cp)
 			return 1;
 		}
 	}
-	return 0;
+	#if defined SShop_OnPlayerEnterDynamicCP
+		return SShop_OnPlayerEnterDynamicCP(playerid, checkpointid);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnPlayerEnterDynamicCP
+	#undef OnPlayerEnterDynamicCP
+#else
+	#define _ALS_OnPlayerEnterDynamicCP
+#endif
+
+#define OnPlayerEnterDynamicCP SShop_OnPlayerEnterDynamicCP
+#if defined SShop_OnPlayerEnterDynamicCP
+	forward SShop_OnPlayerEnterDynamicCP(playerid, checkpointid);
+#endif
 
 SkinSelectResponse:SkinShop(playerid, SS_Response:type, oldskin, newskin)
 {

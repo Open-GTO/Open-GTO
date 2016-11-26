@@ -284,7 +284,6 @@ public OnGameModeInit()
 	Custom_OnGameModeInit();
 
 	// services
-	sshop_OnGameModeInit();
 	VehShop_OnGameModeInit();
 	Tuning_OnGameModeInit();
 
@@ -372,14 +371,6 @@ public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 public OnPlayerPickUpGlobalPickup(playerid, pickupid, gpickupid, model)
 {
 	if (Custom_OnPlayerPickUpGP(playerid, pickupid, gpickupid, model)) {
-		return 1;
-	}
-	return 1;
-}
-
-public OnPlayerEnterDynamicCP(playerid, checkpointid)
-{
-	if (ss_OnPlayerEnterCheckpoint(playerid, checkpointid)) {
 		return 1;
 	}
 	return 1;
