@@ -136,7 +136,7 @@ COMMAND:id(playerid, params[])
 			break;
 		}
 
-		GetPlayerName(ids[i], string, MAX_PLAYER_NAME);
+		GetPlayerName(ids[i], string, sizeof(string));
 
 		insert_pos = strfind(string, params, true);
 		if (insert_pos != -1) {
