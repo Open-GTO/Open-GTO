@@ -123,6 +123,7 @@ COMMAND:id(playerid, params[])
 		Lang_SendText(playerid, "COMMAND_ID_HELP");
 		return 1;
 	}
+	#undef COMMAND_ID_MAX_MATCHES
 
 	new
 		i,
