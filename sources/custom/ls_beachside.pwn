@@ -162,6 +162,7 @@ new ElevatorBoostTimer;
 
 // Public:
 forward CallElevator(playerid, floorid);    // You can use INVALID_PLAYER_ID too.
+forward Floor_OpenDoors(floorid);
 
 // Private:
 forward Elevator_Boost(floorid);        	// Increases the elevator speed until it reaches 'floorid'.
