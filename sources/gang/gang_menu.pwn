@@ -159,6 +159,7 @@ DialogResponse:GangMenu(playerid, response, listitem, inputtext[])
 					GetPlayerName(playerid, player_name, sizeof(player_name));
 					Gang_GetName(gangid, gang_name);
 
+					Gang_GiveMemberXP(playerid);
 					Gang_MemberRemove(gangid, memberid);
 
 					Dialog_Message(playerid, "GANG_EXIT_HEADER", "GANG_EXIT_INFO", "BUTTON_OK");
