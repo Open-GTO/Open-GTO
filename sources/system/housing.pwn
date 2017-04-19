@@ -958,7 +958,7 @@ stock house_GetSpawnPos(houseid, &Float:x, &Float:y, &Float:z, &Float:angle)
 	}
 	x = Houses[houseid][Houses_PickupX];
 	y = Houses[houseid][Houses_PickupY];
-	z = Houses[houseid][Houses_PickupZ] + 0.5;
+	z = Houses[houseid][Houses_PickupZ];
 	angle = Houses[houseid][Houses_PickupA];
 	return 1;
 }
@@ -994,7 +994,7 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	new player_vw = GetPlayerVirtualWorld(playerid);
 	for (new id = 0; id < sizeof(Houses); id++)
 	{
-		if (player_vw == 0 && IsPlayerInRangeOfPoint(playerid, 3, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]+0.5))
+		if (player_vw == 0 && IsPlayerInRangeOfPoint(playerid, 3, Houses[id][Houses_PickupX], Houses[id][Houses_PickupY], Houses[id][Houses_PickupZ]))
 		{
 			SetPlayerToHouseID(playerid, id);
 
