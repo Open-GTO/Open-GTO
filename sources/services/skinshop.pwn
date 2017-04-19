@@ -157,6 +157,7 @@ stock SkinShop_Exit(playerid, shopid)
 	SetPlayerFacingAngle(playerid, SkinShops[shopid][ss_select_a]);
 
 	SetCameraBehindPlayer(playerid);
+	TogglePlayerInterfaceVisibility(playerid, true);
 	return 1;
 }
 
@@ -176,4 +177,6 @@ stock SkinShop_SetPlayerFittingRoom(playerid, shopid)
 	GetCoordsInFront(pos[0], pos[1], pos[3], 2.0, camera_pos[0], camera_pos[1]);
 	SetPlayerCameraPos(playerid, camera_pos[0], camera_pos[1], camera_pos[2]);
 	SetPlayerCameraLookAt(playerid, pos[0], pos[1], pos[2] + 0.5);
+
+	TogglePlayerInterfaceVisibility(playerid, false);
 }

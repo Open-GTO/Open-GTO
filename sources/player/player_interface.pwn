@@ -49,6 +49,17 @@ stock DecodePlayerInterfaceData(playerid, PlayerInterfaceParams:paramid, data)
 	}
 }
 
+stock TogglePlayerInterfaceVisibility(playerid, bool:show)
+{
+	for (new pinterface; pinterface < sizeof(gPlayerInterface[]); pinterface++) {
+		if (show && !gPlayerInterface[playerid][PlayerInterface:pinterface][PIP_Visible]) {
+			continue;
+		}
+
+		CallLocalFunction("OnPlayerInterfaceChanged", "iiiii", playerid, pinterface, _:PIP_Visible, 0, _:show);
+	}
+}
+
 stock PlayerTD_Update(playerid, PlayerText:textdraw, color, value, prefix[] = "")
 {
 	static

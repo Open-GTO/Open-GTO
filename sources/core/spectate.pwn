@@ -99,6 +99,8 @@ stock Spectate_Start(playerid, specid)
 	SetPlayerInterior(playerid, GetPlayerInterior(specid));
 	SetPlayerVirtualWorld(playerid, GetPlayerVirtualWorld(specid));
 
+	TogglePlayerInterfaceVisibility(playerid, false);
+
 	TogglePlayerSpectating(playerid, 1);
 
 	new vehicleid = GetPlayerVehicleID(specid);
@@ -117,6 +119,8 @@ stock Spectate_Stop(playerid)
 
 	Spectate_SetSpecID(playerid, INVALID_PLAYER_ID);
 	gSpecData[playerid][e_AfterSpec] = true;
+
+	TogglePlayerInterfaceVisibility(playerid, true);
 
 	TogglePlayerSpectating(playerid, 0);
 

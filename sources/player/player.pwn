@@ -253,6 +253,8 @@ public OnPlayerLogin(playerid)
 			SetPlayerCameraLookAt(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z + 0.5);
 
 			SkinSelect_Start(playerid, SkinSelect:RegisterSkin);
+
+			TogglePlayerInterfaceVisibility(playerid, false);
 		#endif
 	}
 
@@ -357,6 +359,8 @@ SkinSelectResponse:RegisterSkin(playerid, SS_Response:type, oldskin, newskin)
 
 	if (type == SS_Response:SS_Response_Select) {
 		SkinSelect_Stop(playerid);
+
+		TogglePlayerInterfaceVisibility(playerid, true);
 	}
 }
 
