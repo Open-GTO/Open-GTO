@@ -82,6 +82,31 @@ public OnPlayerConnect(playerid)
 #endif
 
 /*
+	OnPlayerSpawn
+*/
+
+public OnPlayerSpawn(playerid)
+{
+	PlayerLevelTD_ShowTextDraw(playerid);
+
+	#if defined PlayerLevelTD_OnPlayerSpawn
+		return PlayerLevelTD_OnPlayerSpawn(playerid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerSpawn
+	#undef OnPlayerSpawn
+#else
+	#define _ALS_OnPlayerSpawn
+#endif
+
+#define OnPlayerSpawn PlayerLevelTD_OnPlayerSpawn
+#if defined PlayerLevelTD_OnPlayerSpawn
+	forward PlayerLevelTD_OnPlayerSpawn(playerid);
+#endif
+
+/*
 	OnPlayerInterfaceChanged
 */
 
@@ -210,16 +235,16 @@ stock PlayerLevelTD_DestroyTextDraw(playerid)
 
 stock PlayerLevelTD_ShowTextDraw(playerid)
 {
-	if (GetPlayerInterfaceParam(playerid, PI_LevelLineBackground, PIP_Visible)) {
+	if (GetPlayerInterfaceParam(playerid, PI_LevelLineBackground, PIP_Visible) && IsPlayerInterfaceVisible(playerid)) {
 		PlayerTextDrawShow(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelLineBackground, PIP_TextDraw));
 	}
-	if (GetPlayerInterfaceParam(playerid, PI_LevelLine, PIP_Visible)) {
+	if (GetPlayerInterfaceParam(playerid, PI_LevelLine, PIP_Visible) && IsPlayerInterfaceVisible(playerid)) {
 		PlayerTextDrawShow(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelLine, PIP_TextDraw));
 	}
-	if (GetPlayerInterfaceParam(playerid, PI_LevelLevel, PIP_Visible)) {
+	if (GetPlayerInterfaceParam(playerid, PI_LevelLevel, PIP_Visible) && IsPlayerInterfaceVisible(playerid)) {
 		PlayerTextDrawShow(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelLevel, PIP_TextDraw));
 	}
-	if (GetPlayerInterfaceParam(playerid, PI_LevelXP, PIP_Visible)) {
+	if (GetPlayerInterfaceParam(playerid, PI_LevelXP, PIP_Visible) && IsPlayerInterfaceVisible(playerid)) {
 		PlayerTextDrawShow(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelXP, PIP_TextDraw));
 	}
 }
@@ -234,7 +259,7 @@ stock PlayerLevelTD_HideTextDraw(playerid)
 
 stock PlayerLevelTD_UpdateLevelString(playerid, level)
 {
-	if (!GetPlayerInterfaceParam(playerid, PI_LevelLevel, PIP_Visible)) {
+	if (!GetPlayerInterfaceParam(playerid, PI_LevelLevel, PIP_Visible) || !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
 
@@ -252,7 +277,7 @@ stock PlayerLevelTD_UpdateXPString(playerid, xp, xp_max, is_max = false)
 		xp = xp_max;
 	}
 
-	if (GetPlayerInterfaceParam(playerid, PI_LevelXP, PIP_Visible)) {
+	if (GetPlayerInterfaceParam(playerid, PI_LevelXP, PIP_Visible) && IsPlayerInterfaceVisible(playerid)) {
 		static
 			string[MAX_LANG_VALUE_STRING];
 
@@ -261,7 +286,7 @@ stock PlayerLevelTD_UpdateXPString(playerid, xp, xp_max, is_max = false)
 	}
 
 	// update line
-	if (xp_max == 0 || !GetPlayerInterfaceParam(playerid, PI_LevelLine, PIP_Visible)) {
+	if (xp_max == 0 || !GetPlayerInterfaceParam(playerid, PI_LevelLine, PIP_Visible) || !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
 
@@ -279,7 +304,7 @@ stock PlayerLevelTD_UpdateXPString(playerid, xp, xp_max, is_max = false)
 
 stock PlayerLevelTD_Give(playerid, xp = 0, level = 0)
 {
-	if (xp != 0 && GetPlayerInterfaceParam(playerid, PI_LevelXPPlus, PIP_Visible)) {
+	if (xp != 0 && GetPlayerInterfaceParam(playerid, PI_LevelXPPlus, PIP_Visible) && IsPlayerInterfaceVisible(playerid)) {
 		new PlayerText:td_money_plus = PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelXPPlus, PIP_TextDraw);
 
 		if (xp < 0) {
@@ -295,7 +320,7 @@ stock PlayerLevelTD_Give(playerid, xp = 0, level = 0)
 		gGiveXPTimer[playerid] = SetTimerEx("PlayerLevelTD_GiveXPHide", 3000, 0, "i", playerid);
 	}
 
-	if (level != 0 && GetPlayerInterfaceParam(playerid, PI_LevelPlus, PIP_Visible)) {
+	if (level != 0 && GetPlayerInterfaceParam(playerid, PI_LevelPlus, PIP_Visible) && IsPlayerInterfaceVisible(playerid)) {
 		new PlayerText:td_level_plus = PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelPlus, PIP_TextDraw);
 
 		if (level < 0) {

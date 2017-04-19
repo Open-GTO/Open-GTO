@@ -17,9 +17,7 @@
 
 public OnPlayerConnect(playerid)
 {
-	if (IsWeaponSkillEnabled()) {
-		PlayerWSkillTD_CreateTextDraw(playerid);
-	}
+	PlayerWSkillTD_CreateTextDraw(playerid);
 
 	#if defined PlayerWSkillTD_OnPlayerConnect
 		return PlayerWSkillTD_OnPlayerConnect(playerid);
@@ -93,6 +91,31 @@ public OnPlayerRequestClass(playerid, classid)
 #endif
 
 /*
+	OnPlayerSpawn
+*/
+
+public OnPlayerSpawn(playerid)
+{
+	PlayerWSkillTD_UpdateString(playerid);
+
+	#if defined PlayerWSkillTD_OnPlayerSpawn
+		return PlayerWSkillTD_OnPlayerSpawn(playerid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerSpawn
+	#undef OnPlayerSpawn
+#else
+	#define _ALS_OnPlayerSpawn
+#endif
+
+#define OnPlayerSpawn PlayerWSkillTD_OnPlayerSpawn
+#if defined PlayerWSkillTD_OnPlayerSpawn
+	forward PlayerWSkillTD_OnPlayerSpawn(playerid);
+#endif
+
+/*
 	OnPlayerInterfaceChanged
 */
 
@@ -134,7 +157,7 @@ stock PlayerWSkillTD_CreateTextDraw(playerid)
 	new
 		PlayerText:td_temp;
 
-	td_temp = CreatePlayerTextDraw(playerid, 499.000000, 13.000000, "0/" #MAX_WEAPON_SKILL_LEVEL);
+	td_temp = CreatePlayerTextDraw(playerid, 499.000000, 13.000000, "000/" #MAX_WEAPON_SKILL_LEVEL);
 	PlayerTextDrawBackgroundColor(playerid, td_temp, 255);
 	PlayerTextDrawFont(playerid, td_temp, 1);
 	PlayerTextDrawLetterSize(playerid, td_temp, 0.280000, 1.000000);
@@ -153,7 +176,7 @@ stock PlayerWSkillTD_DestroyTextDraw(playerid)
 
 stock PlayerWSkillTD_ShowTextDraw(playerid)
 {
-	if (!GetPlayerInterfaceParam(playerid, PI_WeaponSkill, PIP_Visible)) {
+	if (!GetPlayerInterfaceParam(playerid, PI_WeaponSkill, PIP_Visible)|| !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
 
@@ -171,7 +194,7 @@ stock PlayerWSkillTD_UpdateString(playerid)
 		return;
 	}
 
-	if (!GetPlayerInterfaceParam(playerid, PI_WeaponSkill, PIP_Visible)) {
+	if (!GetPlayerInterfaceParam(playerid, PI_WeaponSkill, PIP_Visible) || !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
 

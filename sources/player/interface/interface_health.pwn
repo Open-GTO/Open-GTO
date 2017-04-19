@@ -150,7 +150,7 @@ stock PlayerHealthTD_DestroyTextDraw(playerid)
 
 stock PlayerHealthTD_ShowTextDraw(playerid)
 {
-	if (!GetPlayerInterfaceParam(playerid, PI_Health, PIP_Visible)) {
+	if (!GetPlayerInterfaceParam(playerid, PI_Health, PIP_Visible) || !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
 
@@ -164,7 +164,7 @@ stock PlayerHealthTD_HideTextDraw(playerid)
 
 stock PlayerHealthTD_UpdateString(playerid, Float:health = -1.0)
 {
-	if (!GetPlayerInterfaceParam(playerid, PI_Health, PIP_Visible)) {
+	if (!GetPlayerInterfaceParam(playerid, PI_Health, PIP_Visible) || !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
 
@@ -184,8 +184,8 @@ stock PlayerHealthTD_UpdateString(playerid, Float:health = -1.0)
 	if (health <= 0.0) {
 		PlayerHealthTD_HideTextDraw(playerid);
 	} else {
+		PlayerTextDrawSetString(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Health, PIP_TextDraw), string);
+
 		PlayerHealthTD_ShowTextDraw(playerid);
 	}
-
-	PlayerTextDrawSetString(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Health, PIP_TextDraw), string);
 }

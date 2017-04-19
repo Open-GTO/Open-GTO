@@ -12,6 +12,38 @@
 #define _player_interface_included
 
 /*
+	Variables
+*/
+
+static
+	bool:gPlayerInterfaceVisible[MAX_PLAYERS];
+
+/*
+	Callbacks
+*/
+
+public OnPlayerConnect(playerid)
+{
+	TogglePlayerInterfaceVisibility(playerid, true, true);
+
+	#if defined PlayerInterface_OnPlayerConnect
+		return PlayerInterface_OnPlayerConnect(playerid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
+
+#define OnPlayerConnect PlayerInterface_OnPlayerConnect
+#if defined PlayerInterface_OnPlayerConnect
+	forward PlayerInterface_OnPlayerConnect(playerid);
+#endif
+
+/*
 	Functions
 */
 
@@ -49,8 +81,14 @@ stock DecodePlayerInterfaceData(playerid, PlayerInterfaceParams:paramid, data)
 	}
 }
 
-stock TogglePlayerInterfaceVisibility(playerid, bool:show)
+stock TogglePlayerInterfaceVisibility(playerid, bool:show, bool:skip_init = false)
 {
+	gPlayerInterfaceVisible[playerid] = show;
+
+	if (skip_init) {
+		return;
+	}
+
 	for (new pinterface; pinterface < sizeof(gPlayerInterface[]); pinterface++) {
 		if (show && !gPlayerInterface[playerid][PlayerInterface:pinterface][PIP_Visible]) {
 			continue;
@@ -58,6 +96,11 @@ stock TogglePlayerInterfaceVisibility(playerid, bool:show)
 
 		CallLocalFunction("OnPlayerInterfaceChanged", "iiiii", playerid, pinterface, _:PIP_Visible, 0, _:show);
 	}
+}
+
+stock IsPlayerInterfaceVisible(playerid)
+{
+	return _:gPlayerInterfaceVisible[playerid];
 }
 
 stock PlayerTD_Update(playerid, PlayerText:textdraw, color, value, prefix[] = "")

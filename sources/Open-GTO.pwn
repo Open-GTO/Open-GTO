@@ -329,7 +329,6 @@ public OnPlayerConnect(playerid)
 
 	// main action
 	Player_OnPlayerConnect(playerid);
-	PlayerMoneyTD_OnPlayerConnect(playerid);
 	Vehicle_Textdraw_OnPlayerConn(playerid);
 	Spectate_OnPlayerConnect(playerid);
 	Beachside_OnPlayerConnect(playerid);
@@ -345,7 +344,6 @@ public OnPlayerDisconnect(playerid, reason)
 	}
 	Player_OnPlayerDisconnect(playerid, reason);
 	Groundhold_OnPlayerDisconnect(playerid, reason);
-	PlayerMoneyTD_OnPlayerDisconn(playerid, reason);
 	PVehicle_OnPlayerDisconnect(playerid, reason);
 	VehShop_OnPlayerDisconnect(playerid, reason);
 	housing_OnPlayerDisconnect(playerid, reason);

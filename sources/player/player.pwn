@@ -63,9 +63,6 @@ Player_OnPlayerSpawn(playerid)
 		Lang_SendText(playerid, "MUTED_HELP_MESSAGE");
 	}
 
-	PlayerLevelTD_ShowTextDraw(playerid);
-	PlayerWSkillTD_UpdateString(playerid);
-
 	SetPlayerColor(playerid, GetPlayerGangColor(playerid));
 	if (!Account_IsAfterRegistration(playerid)) {
 		SetPlayerSkin(playerid, GetPlayerSkin(playerid));
@@ -73,7 +70,6 @@ Player_OnPlayerSpawn(playerid)
 	SetPlayerMaxHealth(playerid);
 	UpdatePlayerFightStyleUsed(playerid);
 	GivePlayerOwnedWeapon(playerid);
-	PlayerMoneyTD_Show(playerid);
 	return 1;
 }
 

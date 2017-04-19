@@ -22,7 +22,126 @@ static
 	Callbacks
 */
 
-PlayerMoneyTD_OnPlayerConnect(playerid)
+/*
+	OnPlayerConnect
+*/
+
+public OnPlayerConnect(playerid)
+{
+	PlayerMoneyTD_CreateTextDraw(playerid);
+
+	#if defined PlayerMoneyTD_OnPlayerConnect
+		return PlayerMoneyTD_OnPlayerConnect(playerid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerConnect
+	#undef OnPlayerConnect
+#else
+	#define _ALS_OnPlayerConnect
+#endif
+
+#define OnPlayerConnect PlayerMoneyTD_OnPlayerConnect
+#if defined PlayerMoneyTD_OnPlayerConnect
+	forward PlayerMoneyTD_OnPlayerConnect(playerid);
+#endif
+
+/*
+	OnPlayerDisconnect
+*/
+
+public OnPlayerDisconnect(playerid, reason)
+{
+	PlayerMoneyTD_DestroyTextDraw(playerid);
+
+	#if defined PMoneyTD_OnPlayerDisconnect
+		return PMoneyTD_OnPlayerDisconnect(playerid, reason);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerDisconnect
+	#undef OnPlayerDisconnect
+#else
+	#define _ALS_OnPlayerDisconnect
+#endif
+
+#define OnPlayerDisconnect PMoneyTD_OnPlayerDisconnect
+#if defined PMoneyTD_OnPlayerDisconnect
+	forward PMoneyTD_OnPlayerDisconnect(playerid, reason);
+#endif
+
+/*
+	OnPlayerSpawn
+*/
+
+public OnPlayerSpawn(playerid)
+{
+	PlayerMoneyTD_Show(playerid);
+
+	#if defined PlayerMoneyTD_OnPlayerSpawn
+		return PlayerMoneyTD_OnPlayerSpawn(playerid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerSpawn
+	#undef OnPlayerSpawn
+#else
+	#define _ALS_OnPlayerSpawn
+#endif
+
+#define OnPlayerSpawn PlayerMoneyTD_OnPlayerSpawn
+#if defined PlayerMoneyTD_OnPlayerSpawn
+	forward PlayerMoneyTD_OnPlayerSpawn(playerid);
+#endif
+
+/*
+	OnPlayerInterfaceChanged
+*/
+
+public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue)
+{
+	if (paramid == PlayerInterfaceParams:PIP_Visible) {
+		new
+			PlayerText:td_temp;
+
+		td_temp = PlayerText:GetPlayerInterfaceParam(playerid, componentid, PIP_TextDraw);
+
+		if (newvalue) {
+			if (componentid == PlayerInterface:PI_MoneyMoney) {
+				PlayerMoneyTD_UpdateString(playerid, GetPlayerMoney(playerid));
+			}
+
+			PlayerTextDrawShow(playerid, td_temp);
+		} else {
+			PlayerTextDrawHide(playerid, td_temp);
+		}
+	}
+
+	#if defined PlayerMoneyTD_OnPlayerIntChng
+		return PlayerMoneyTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerInterfaceChanged
+	#undef OnPlayerInterfaceChanged
+#else
+	#define _ALS_OnPlayerInterfaceChanged
+#endif
+
+#define OnPlayerInterfaceChanged PlayerMoneyTD_OnPlayerIntChng
+#if defined PlayerMoneyTD_OnPlayerIntChng
+	forward PlayerMoneyTD_OnPlayerIntChng(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue);
+#endif
+
+/*
+	Functions
+*/
+
+stock PlayerMoneyTD_CreateTextDraw(playerid)
 {
 	new
 		PlayerText:td_temp;
@@ -77,74 +196,27 @@ PlayerMoneyTD_OnPlayerConnect(playerid)
 	PlayerTextDrawSetProportional(playerid, td_temp, 1);
 
 	SetPlayerInterfaceParam(playerid, PI_MoneyPlus, PIP_TextDraw, td_temp);
-	return 1;
 }
 
-PlayerMoneyTD_OnPlayerDisconn(playerid, reason)
+stock PlayerMoneyTD_DestroyTextDraw(playerid)
 {
-	#pragma unused reason
 	PlayerMoneyTD_Hide(playerid);
 
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyBorder, PIP_TextDraw));
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyBackground, PIP_TextDraw));
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyMoney, PIP_TextDraw));
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyPlus, PIP_TextDraw));
-	return 1;
 }
-
-/*
-	OnPlayerInterfaceChanged
-*/
-
-public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue)
-{
-	if (paramid == PlayerInterfaceParams:PIP_Visible) {
-		new
-			PlayerText:td_temp;
-
-		td_temp = PlayerText:GetPlayerInterfaceParam(playerid, componentid, PIP_TextDraw);
-
-		if (newvalue) {
-			if (componentid == PlayerInterface:PI_MoneyMoney) {
-				PlayerMoneyTD_UpdateString(playerid, GetPlayerMoney(playerid));
-			}
-
-			PlayerTextDrawShow(playerid, td_temp);
-		} else {
-			PlayerTextDrawHide(playerid, td_temp);
-		}
-	}
-
-	#if defined PlayerMoneyTD_OnPlayerIntChng
-		return PlayerMoneyTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
-	#else
-		return 1;
-	#endif
-}
-#if defined _ALS_OnPlayerInterfaceChanged
-	#undef OnPlayerInterfaceChanged
-#else
-	#define _ALS_OnPlayerInterfaceChanged
-#endif
-
-#define OnPlayerInterfaceChanged PlayerMoneyTD_OnPlayerIntChng
-#if defined PlayerMoneyTD_OnPlayerIntChng
-	forward PlayerMoneyTD_OnPlayerIntChng(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue);
-#endif
-
-/*
-	Functions
-*/
 
 stock PlayerMoneyTD_Show(playerid)
 {
-	if (GetPlayerInterfaceParam(playerid, PI_MoneyBorder, PIP_Visible)) {
+	if (GetPlayerInterfaceParam(playerid, PI_MoneyBorder, PIP_Visible) && IsPlayerInterfaceVisible(playerid)) {
 		PlayerTextDrawShow(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyBorder, PIP_TextDraw));
 	}
-	if (GetPlayerInterfaceParam(playerid, PI_MoneyBackground, PIP_Visible)) {
+	if (GetPlayerInterfaceParam(playerid, PI_MoneyBackground, PIP_Visible) && IsPlayerInterfaceVisible(playerid)) {
 		PlayerTextDrawShow(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyBackground, PIP_TextDraw));
 	}
-	if (GetPlayerInterfaceParam(playerid, PI_MoneyMoney, PIP_Visible)) {
+	if (GetPlayerInterfaceParam(playerid, PI_MoneyMoney, PIP_Visible) && IsPlayerInterfaceVisible(playerid)) {
 		PlayerTextDrawShow(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyMoney, PIP_TextDraw));
 	}
 }
@@ -158,7 +230,7 @@ stock PlayerMoneyTD_Hide(playerid)
 
 stock PlayerMoneyTD_UpdateString(playerid, value)
 {
-	if (!GetPlayerInterfaceParam(playerid, PI_MoneyMoney, PIP_Visible)) {
+	if (!GetPlayerInterfaceParam(playerid, PI_MoneyMoney, PIP_Visible) || !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
 
@@ -173,7 +245,7 @@ stock PlayerMoneyTD_UpdateString(playerid, value)
 
 stock PlayerMoneyTD_Give(playerid, value)
 {
-	if (!GetPlayerInterfaceParam(playerid, PI_MoneyPlus, PIP_Visible)) {
+	if (!GetPlayerInterfaceParam(playerid, PI_MoneyPlus, PIP_Visible) || !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
 

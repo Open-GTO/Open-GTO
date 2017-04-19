@@ -154,7 +154,7 @@ stock PlayerArmourTD_DestroyTextDraw(playerid)
 
 stock PlayerArmourTD_ShowTextDraw(playerid)
 {
-	if (!GetPlayerInterfaceParam(playerid, PI_Armour, PIP_Visible)) {
+	if (!GetPlayerInterfaceParam(playerid, PI_Armour, PIP_Visible) || !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
 
@@ -168,7 +168,7 @@ stock PlayerArmourTD_HideTextDraw(playerid)
 
 stock PlayerArmourTD_UpdateString(playerid, Float:armour = -1.0)
 {
-	if (!GetPlayerInterfaceParam(playerid, PI_Armour, PIP_Visible)) {
+	if (!GetPlayerInterfaceParam(playerid, PI_Armour, PIP_Visible) || !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
 
@@ -182,10 +182,10 @@ stock PlayerArmourTD_UpdateString(playerid, Float:armour = -1.0)
 	if (armour <= 0.0) {
 		PlayerArmourTD_HideTextDraw(playerid);
 	} else {
+		format(string, sizeof(string), "%.0f", armour);
+
+		PlayerTextDrawSetString(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Armour, PIP_TextDraw), string);
+
 		PlayerArmourTD_ShowTextDraw(playerid);
 	}
-	
-	format(string, sizeof(string), "%.0f", armour);
-
-	PlayerTextDrawSetString(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Armour, PIP_TextDraw), string);
 }

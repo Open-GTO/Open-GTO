@@ -122,7 +122,7 @@ stock PlayerInfoTD_DestroyTextDraw(playerid)
 
 stock PlayerInfoTD_ShowTextDraw(playerid)
 {
-	if (!GetPlayerInterfaceParam(playerid, PI_Info, PIP_Visible)) {
+	if (!GetPlayerInterfaceParam(playerid, PI_Info, PIP_Visible) || !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
 	
@@ -136,7 +136,7 @@ stock PlayerInfoTD_HideTextDraw(playerid)
 
 stock PlayerInfoTD_UpdateString(playerid)
 {
-	if (!GetPlayerInterfaceParam(playerid, PI_Info, PIP_Visible)) {
+	if (!GetPlayerInterfaceParam(playerid, PI_Info, PIP_Visible) || !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
 
