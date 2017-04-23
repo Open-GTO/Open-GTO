@@ -10,8 +10,15 @@
 
 #define _groundhold_included
 
+/*
+	Defines
+*/
 
 #define INVALID_GROUNDHOLD_ID -1
+
+/*
+	Enums
+*/
 
 enum e_Groundhold_Info {
 	e_ghNameVar[MAX_LANG_VAR_STRING],
@@ -27,6 +34,10 @@ enum e_Groundhold_Info {
 	e_ghMapiconID,
 	e_ghAreaID,
 }
+
+/*
+	Vars
+*/
 
 static gGroundholds[][e_Groundhold_Info] = {
 	{"GROUNDHOLD_POINT_MARKET",             5, 10, 100, 30,  1128.9720, -1489.8420, 22.7689},
@@ -44,6 +55,9 @@ static
 	pGroundID[MAX_PLAYERS] = INVALID_GROUNDHOLD_ID,
 	Iterator:PlayerOnGround[ sizeof(gGroundholds) ]<MAX_PLAYERS>;
 
+/*
+	Config functions
+*/
 
 stock Groundhold_SaveConfig(file_config)
 {
@@ -56,6 +70,10 @@ stock Groundhold_LoadConfig(file_config)
 	ini_getInteger(file_config, "Groundhold_IsEnabled", IsEnabled);
 	ini_getString(file_config, "Groundhold_DB", db_groundhold);
 }
+
+/*
+	OnGameModeInit
+*/
 
 Groundhold_OnGameModeInit()
 {
@@ -95,6 +113,10 @@ Groundhold_OnGameModeInit()
 	return 1;
 }
 
+/*
+	OnPlayerDisconnect
+*/
+
 Groundhold_OnPlayerDisconnect(playerid, reason)
 {
 	#pragma unused reason
@@ -106,6 +128,10 @@ Groundhold_OnPlayerDisconnect(playerid, reason)
 	pIsHold[playerid] = false;
 	pGroundID[playerid] = INVALID_GROUNDHOLD_ID;
 }
+
+/*
+	OnPlayerEnterDynamicArea
+*/
 
 Groundhold_OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA areaid)
 {
@@ -162,6 +188,10 @@ Groundhold_OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA areaid)
 	return 1;
 }
 
+/*
+	OnPlayerLeaveDynamicArea
+*/
+
 Groundhold_OnPlayerLeaveDynArea(playerid, STREAMER_TAG_AREA areaid)
 {
 	new ghid = pGroundID[playerid];
@@ -183,6 +213,37 @@ Groundhold_OnPlayerLeaveDynArea(playerid, STREAMER_TAG_AREA areaid)
 	UpdateEnemiesStatus(ghid, playerid);
 	return 1;
 }
+
+/*
+	OnPlayerGangJoin
+*/
+
+Groundhold_OnPlayerGangJoin(playerid, gangid)
+{
+	#pragma unused gangid
+
+	new ghid = pGroundID[playerid];
+	if (ghid == INVALID_GROUNDHOLD_ID) {
+		return 0;
+	}
+
+	if (gGroundholds[ghid][e_ghAreaID] == INVALID_STREAMER_ID) {
+		return 0;
+	}
+
+	if (UpdateEnemiesStatus(ghid, playerid)) {
+		foreach (new i : PlayerOnGround[ghid]) {
+			Message_Alert(i, "GROUNDHOLD_ALERT_HEADER", "GROUNDHOLD_ALERT_ENEMIES");
+			Message_Objective(i, "GROUNDHOLD_ALERT_ENEMIES", -1);
+		}
+	}
+
+	return 1;
+}
+
+/*
+	Functions
+*/
 
 stock Groundhold_SaveAll()
 {
@@ -289,6 +350,10 @@ stock ToggleGroundholdStatus(bool:toggle)
 			DestroyDynamicCP(gGroundholds[ghid][e_ghObjectID]);
 			DestroyDynamicMapIcon(gGroundholds[ghid][e_ghMapiconID]);
 			DestroyDynamicArea(gGroundholds[ghid][e_ghAreaID]);
+
+			gGroundholds[ghid][e_ghObjectID] = INVALID_STREAMER_ID;
+			gGroundholds[ghid][e_ghMapiconID] = INVALID_STREAMER_ID;
+			gGroundholds[ghid][e_ghAreaID] = INVALID_STREAMER_ID;
 		}
 	}
 }
@@ -303,6 +368,9 @@ stock IsPlayerInAnyGround(playerid)
 	return 0;
 }
 
+/*
+	Private functions
+*/
 
 static stock UpdateEnemiesStatus(ghid, playerid)
 {
