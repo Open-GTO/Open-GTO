@@ -28,6 +28,12 @@ enum e_Gang_Info {
 }
 
 /*
+	Forwards
+*/
+
+forward OnPlayerGangJoin(playerid, gangid);
+
+/*
 	Vars
 */
 
@@ -388,6 +394,8 @@ stock Gang_MemberLogin(playerid, gangid, memberid = INVALID_MEMBER_ID)
 	SetPlayerGangMemberID(playerid, memberid);
 	SetPlayerColor(playerid, Gang_GetColor(gangid));
 	SetPlayerInvitedGangID(playerid, gangid, false);
+
+	CallLocalFunction("OnPlayerGangJoin", "ii", playerid, gangid);
 	return 1;
 }
 

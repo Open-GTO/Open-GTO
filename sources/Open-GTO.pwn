@@ -746,3 +746,12 @@ public OnVehicleFilled(vehicleid, playerid, money)
 {
 	return 1;
 }
+
+public OnPlayerGangJoin(playerid, gangid)
+{
+	if (Groundhold_OnPlayerGangJoin(playerid, gangid)) {
+		return 1;
+	}
+
+	return 1;
+}
