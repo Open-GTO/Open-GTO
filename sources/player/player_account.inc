@@ -25,4 +25,5 @@ enum e_Account_Info {
 	e_aPlayedSeconds,
 	e_aPremiumTime,
 	e_aLanguage[MAX_LANG_NAME],
+	RussifierType:e_aRussifier,
 }

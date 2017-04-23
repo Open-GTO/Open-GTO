@@ -172,6 +172,7 @@ stock Account_SaveData(account_name[], data[e_Account_Info])
 	ini_setInteger(file_account, "Played_Seconds", data[e_aPlayedSeconds]);
 	ini_setInteger(file_account, "Premium_Timestamp", data[e_aPremiumTime]);
 	ini_setString(file_account, "Language", data[e_aLanguage]);
+	ini_setInteger(file_account, "Russifier", _:data[e_aRussifier]);
 
 	ini_closeFile(file_account);
 	return 1;
@@ -207,6 +208,7 @@ stock Account_LoadData(account_name[], result[e_Account_Info])
 	ini_getInteger(file_account, "Played_Seconds", result[e_aPlayedSeconds]);
 	ini_getInteger(file_account, "Premium_Timestamp", result[e_aPremiumTime]);
 	ini_getString(file_account, "Language", result[e_aLanguage], MAX_LANG_NAME);
+	ini_getInteger(file_account, "Russifier", _:result[e_aRussifier]);
 
 	ini_closeFile(file_account);
 	return 1;
@@ -509,4 +511,19 @@ stock Account_SetLang(playerid, Lang:lang)
 {
 	Lang_SetPlayerLang(playerid, lang);
 	Lang_GetName(lang, gAccount[playerid][e_aLanguage], MAX_LANG_NAME);
+}
+
+/*
+	Russifier
+*/
+
+stock Account_SetRussifier(playerid, RussifierType:type)
+{
+	SetPlayerRussifierType(playerid, type);
+	gAccount[playerid][e_aRussifier] = type;
+}
+
+stock RussifierType:Account_GetRussifier(playerid)
+{
+	return gAccount[playerid][e_aRussifier];
 }

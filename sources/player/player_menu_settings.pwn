@@ -35,8 +35,20 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 			Dialog_Show(playerid, Dialog:SettingsLanguageMenu);
 			return 1;
 		}
-		// сохранить аккаунт
+		// textdraw russifier
 		case 1: {
+			if (Lang_GetPlayerLang(playerid) != Lang_Get("ru")) {
+				Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
+				                 "PLAYER_MENU_SETTINGS_RUSSIFIER_CAPTION",
+				                 "PLAYER_MENU_SETTINGS_RUSSIFIER_ERROR",
+				                 "BUTTON_BACK", "BUTTON_CANCEL");
+			} else {
+				ShowPlayerRussifierSettings(playerid);
+			}
+			return 1;
+		}
+		// сохранить аккаунт
+		case 2: {
 			Player_Save(playerid);
 			Account_Save(playerid);
 			Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
@@ -46,7 +58,7 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 		// изменить ник
-		case 2: {
+		case 3: {
 			if (GetPlayerMoney(playerid) < CHANGE_NICK_COST) {
 				Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 				                 "PLAYER_MENU_SETTINGS_NAME_CAPTION",
@@ -60,12 +72,12 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 			return 1;
 		}
 		// изменить пароль
-		case 3: {
+		case 4: {
 			Dialog_Show(playerid, Dialog:PlayerChangePassMenu);
 			return 1;
 		}
 		// интерфейс
-		case 4: {
+		case 5: {
 			Dialog_Show(playerid, Dialog:SettingsInterfaceMenu);
 			return 1;
 		}
@@ -329,5 +341,15 @@ DialogResponse:SettingsLanguageMenu(playerid, response, listitem, inputtext[])
 	}
 
 	Dialog_Show(playerid, Dialog:SettingsLanguageMenu);
+	return 1;
+}
+
+public OnPlayerRussifierSelect(playerid, RussifierType:type)
+{
+	Account_SetRussifier(playerid, type);
+	Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
+	                 "PLAYER_MENU_SETTINGS_RUSSIFIER_CAPTION",
+	                 "PLAYER_MENU_SETTINGS_RUSSIFIER_CHANGED",
+	                 "BUTTON_BACK", "BUTTON_CANCEL");
 	return 1;
 }

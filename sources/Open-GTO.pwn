@@ -52,6 +52,7 @@ Thanks:
 #include "lib/formatnumber.inc"
 #include "lib/log-plugin.inc"
 #include "lib/gvar.inc"
+#include "lib/rustext.inc"
 #include "lib/mxINI/mxINI.inc"
 #include "lib/zmessage/zmessage.inc"
 #include "lib/time_t/time_t.inc"
@@ -173,6 +174,7 @@ Thanks:
 #include "player/player_skydive.pwn"
 #include "player/player_godmod.pwn"
 #include "player/player_warn.pwn"
+#include "player/player_russifier.pwn"
 #include "player/message/message_alert.pwn"
 #include "player/message/message_objective.pwn"
 #include "player/interface/interface_info.pwn"
@@ -277,6 +279,7 @@ public OnGameModeInit()
 	Weapon_OnGameModeInit();
 	PLevel_OnGameModeInit();
 	PlayerClick_OnGameModeInit();
+	PlayerRussifier_OnGameModeInit();
 	AdminClick_OnGameModeInit();
 
 	// custom
