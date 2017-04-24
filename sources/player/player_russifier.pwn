@@ -16,11 +16,11 @@
 */
 
 #if !defined RUSSIFIER_TEXT_BASE_X
-	#define RUSSIFIER_TEXT_BASE_X 150.0
+	#define RUSSIFIER_TEXT_BASE_X 130.0
 #endif
 
 #if !defined RUSSIFIER_TEXT_BASE_Y
-	#define RUSSIFIER_TEXT_BASE_Y 150.0
+	#define RUSSIFIER_TEXT_BASE_Y 200.0
 #endif
 
 #if !defined RUSSIFIER_TEXT_Y_STEP
@@ -32,7 +32,7 @@
 #endif
 
 #if !defined RUSSIFIER_TEXT_SIZE_Y
-	#define RUSSIFIER_TEXT_SIZE_Y 10.0
+	#define RUSSIFIER_TEXT_SIZE_Y 12.0
 #endif
 
 #if !defined RUSSIFIER_SELECT_COLOR
@@ -43,14 +43,15 @@
 	Forwards
 */
 
-forward OnPlayerRussifierSelect(playerid, RussifierType:type);
+forward OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type);
 
 /*
 	Vars
 */
 
 static
-	Text:TextRusTD[RussifierType];
+	Text:TextRusTD[RussifierType],
+	bool:IsSettingsShowed[MAX_PLAYERS];
 
 const
 	RussifierType:TEXT_RUSSIFIERS_COUNT = RussifierType:7; // only Russian localizations
@@ -83,11 +84,25 @@ stock PlayerRussifier_OnGameModeInit()
 
 public OnPlayerClickTextDraw(playerid, Text:clickedid)
 {
+	if (!IsSettingsShowed[playerid]) {
+	#if defined Russifier_OnPlayerClickTextDraw
+		return Russifier_OnPlayerClickTextDraw(playerid, clickedid);
+	#else
+		return 0;
+	#endif
+	}
+
+	if (clickedid == Text:INVALID_TEXT_DRAW) {
+		HidePlayerRussifierSettings(playerid);
+		CallLocalFunction("OnPlayerRussifierSelect", "iii", playerid, false, -1);
+		return 1;
+	}
+
 	for (new RussifierType:type; type < TEXT_RUSSIFIERS_COUNT; type++) {
 		if (TextRusTD[type] == clickedid) {
 			SetPlayerRussifierType(playerid, type);
 			HidePlayerRussifierSettings(playerid);
-			CallLocalFunction("OnPlayerRussifierSelect", "ii", playerid, _:type);
+			CallLocalFunction("OnPlayerRussifierSelect", "iii", playerid, true, _:type);
 			return 1;
 		}
 	}
@@ -121,6 +136,7 @@ stock ShowPlayerRussifierSettings(playerid)
 	}
 
 	SelectTextDraw(playerid, RUSSIFIER_SELECT_COLOR);
+	IsSettingsShowed[playerid] = true;
 	return 1;
 }
 
@@ -131,5 +147,6 @@ stock HidePlayerRussifierSettings(playerid)
 	}
 
 	CancelSelectTextDraw(playerid);
+	IsSettingsShowed[playerid] = false;
 	return 1;
 }
