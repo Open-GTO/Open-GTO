@@ -1,4 +1,4 @@
-//MapFix by Nexius v2.8.1
+//MapFix by Nexius v2.9.1
 
 #if defined _mapfix_included
 	#endinput
@@ -7,9 +7,9 @@
 
 #include <a_samp>
 
-#define MAPFIX_VERSION		"2.8.1"
+#define MAPFIX_VERSION		"2.9.1"
 
-#define MAX_MAPFIX_OBJECTS	317
+#define MAX_MAPFIX_OBJECTS	322
 
 //Uncomment to enable
 //#define USE_INCOGNITO_STREAMER
@@ -711,6 +711,21 @@ CreateMapFixObjects()
 		mf_SetObjectMaterial(MapFixObjects[315], 0, 0, "none", "none", 0x00000000);
 		MapFixObjects[316] = mf_CreateObject(3117, 2009.6, -2079.3, 25.1, 90.0, 0.0, 90.0, 3.0);
 		mf_SetObjectMaterial(MapFixObjects[316], 0, 0, "none", "none", 0x00000000);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_91 //By KinG7
+		MapFixObjects[317] = mf_CreateObject(1501, -383.46, -1439.64, 25.33, 0.0, 0.0, 90.0, 150.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_92 //By KinG7
+		MapFixObjects[318] = mf_CreateObject(1505, -2574.495, 1153.023, 54.669, 0.0, 0.0, -19.444, 150.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_93 //By KinG7
+		MapFixObjects[319] = mf_CreateObject(1496, -1800.7048, 1201.0538, 24.1293, 0.0, 0.0, 0.0, 150.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_94 //By KinG7
+		MapFixObjects[320] = mf_CreateObject(1522, -1390.7784, 2639.247, 54.9744, 0.0, 0.0, 0.0, 150.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_95 //By KinG7
+		MapFixObjects[321] = mf_CreateObject(1498, 2038.036, 2721.37, 10.53, 0.0, 0.0, -180.0, 150.0);
 	#endif
 	#undef mf_CreateObject
 	#undef mf_SetObjectMaterial
