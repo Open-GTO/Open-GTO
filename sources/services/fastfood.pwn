@@ -246,6 +246,7 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 
 	GivePlayerMoney(playerid, -gFoodInfo[id][e_fCost]);
 	ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.1, 0, 1, 1, 1, 1, 1);
+	PlayerPlaySoundOnPlayer(playerid, 32200);
 
 	Dialog_Message(playerid,
 	               "FASTFOOD_DIALOG_BUY_HEADER",
