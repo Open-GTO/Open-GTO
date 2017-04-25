@@ -41,6 +41,7 @@
 #define DATA_FILES_FOLDER       "open-gto/" // каталог в scriptfiles/, где хранятся файлы Open-GTO
 
 #define MDIALOG_ZLANG_MODE
+#define MAX_LANG_FORMAT_STRING (288)
 
 #define USE_PLAYER_PED_ANIMS
 #define USED_PLAYER_MARKERS     PLAYER_MARKERS_MODE_GLOBAL
