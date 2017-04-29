@@ -97,7 +97,15 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 
 public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue)
 {
-	if (componentid == PlayerInterface:PI_Health && paramid == PlayerInterfaceParams:PIP_Visible) {
+	if (!PlayerHealthTD_IsValidComponent(componentid)) {
+	#if defined PlayerHealthTD_OnPlayerIntChng
+		return PlayerHealthTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
+	#else
+		return 1;
+	#endif
+	}
+
+	if (paramid == PIP_Visible) {
 		if (newvalue) {
 			PlayerHealthTD_UpdateString(playerid);
 		} else {
@@ -146,6 +154,16 @@ stock PlayerHealthTD_CreateTextDraw(playerid)
 stock PlayerHealthTD_DestroyTextDraw(playerid)
 {
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Health, PIP_TextDraw));
+}
+
+stock PlayerHealthTD_IsValidComponent(PlayerInterface:componentid)
+{
+	switch (componentid) {
+		case PI_Health: {
+			return 1;
+		}
+	}
+	return 0;
 }
 
 stock PlayerHealthTD_ShowTextDraw(playerid)

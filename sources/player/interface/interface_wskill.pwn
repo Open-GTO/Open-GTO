@@ -121,13 +121,19 @@ public OnPlayerSpawn(playerid)
 
 public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue)
 {
-	if (IsWeaponSkillEnabled()) {
-		if (componentid == PlayerInterface:PI_WeaponSkill && paramid == PlayerInterfaceParams:PIP_Visible) {
-			if (newvalue) {
-				PlayerWSkillTD_UpdateString(playerid);
-			} else {
-				PlayerWSkillTD_HideTextDraw(playerid);
-			}
+	if (!IsWeaponSkillEnabled() || !PlayerWSkillTD_IsValidComponent(componentid)) {
+	#if defined PlayerWSkillTD_OnPlayerIntChng
+		return PlayerWSkillTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
+	#else
+		return 1;
+	#endif
+	}
+
+	if (paramid == PIP_Visible) {
+		if (newvalue) {
+			PlayerWSkillTD_UpdateString(playerid);
+		} else {
+			PlayerWSkillTD_HideTextDraw(playerid);
 		}
 	}
 
@@ -172,6 +178,16 @@ stock PlayerWSkillTD_CreateTextDraw(playerid)
 stock PlayerWSkillTD_DestroyTextDraw(playerid)
 {
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_WeaponSkill, PIP_TextDraw));
+}
+
+stock PlayerWSkillTD_IsValidComponent(PlayerInterface:componentid)
+{
+	switch (componentid) {
+		case PI_WeaponSkill: {
+			return 1;
+		}
+	}
+	return 0;
 }
 
 stock PlayerWSkillTD_ShowTextDraw(playerid)

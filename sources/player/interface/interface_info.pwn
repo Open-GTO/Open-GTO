@@ -68,7 +68,15 @@ public OnPlayerSpawn(playerid)
 
 public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue)
 {
-	if (componentid == PlayerInterface:PI_Info && paramid == PlayerInterfaceParams:PIP_Visible) {
+	if (PlayerInfoTD_IsValidComponent(componentid)) {
+	#if defined PlayerInfoTD_OnPlayerIntChng
+		return PlayerInfoTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
+	#else
+		return 1;
+	#endif
+	}
+
+	if (paramid == PIP_Visible) {
 		if (newvalue) {
 			PlayerInfoTD_UpdateString(playerid);
 			PlayerInfoTD_ShowTextDraw(playerid);	
@@ -118,6 +126,16 @@ stock PlayerInfoTD_CreateTextDraw(playerid)
 stock PlayerInfoTD_DestroyTextDraw(playerid)
 {
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Info, PIP_TextDraw));
+}
+
+stock PlayerInfoTD_IsValidComponent(PlayerInterface:componentid)
+{
+	switch (componentid) {
+		case PI_Info: {
+			return 1;
+		}
+	}
+	return 0;
 }
 
 stock PlayerInfoTD_ShowTextDraw(playerid)

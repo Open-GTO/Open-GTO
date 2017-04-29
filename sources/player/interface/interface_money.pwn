@@ -103,18 +103,35 @@ public OnPlayerSpawn(playerid)
 
 public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue)
 {
-	if (paramid == PlayerInterfaceParams:PIP_Visible) {
+	if (!PlayerMoneyTD_IsValidComponent(componentid)) {
+	#if defined PlayerMoneyTD_OnPlayerIntChng
+		return PlayerMoneyTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
+	#else
+		return 1;
+	#endif
+	}
+
+	if (paramid == PIP_Visible) {
 		new
 			PlayerText:td_temp;
 
 		td_temp = PlayerText:GetPlayerInterfaceParam(playerid, componentid, PIP_TextDraw);
 
 		if (newvalue) {
-			if (componentid == PlayerInterface:PI_MoneyMoney) {
+			if (componentid == PI_MoneyMoney) {
 				PlayerMoneyTD_UpdateString(playerid, GetPlayerMoney(playerid));
 			}
 
-			PlayerTextDrawShow(playerid, td_temp);
+			switch (componentid) {
+				case PI_MoneyPlus: {
+					if (gGiveTimer[playerid] != 0) {
+						PlayerTextDrawShow(playerid, td_temp);
+					}
+				}
+				default: {
+					PlayerTextDrawShow(playerid, td_temp);
+				}
+			}
 		} else {
 			PlayerTextDrawHide(playerid, td_temp);
 		}
@@ -206,6 +223,16 @@ stock PlayerMoneyTD_DestroyTextDraw(playerid)
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyBackground, PIP_TextDraw));
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyMoney, PIP_TextDraw));
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_MoneyPlus, PIP_TextDraw));
+}
+
+stock PlayerMoneyTD_IsValidComponent(PlayerInterface:componentid)
+{
+	switch (componentid) {
+		case PI_MoneyBorder, PI_MoneyBackground, PI_MoneyMoney, PI_MoneyPlus: {
+			return 1;
+		}
+	}
+	return 0;
 }
 
 stock PlayerMoneyTD_Show(playerid)

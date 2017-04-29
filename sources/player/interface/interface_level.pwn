@@ -112,21 +112,43 @@ public OnPlayerSpawn(playerid)
 
 public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue)
 {
-	if (paramid == PlayerInterfaceParams:PIP_Visible) {
+	if (!PlayerLevelTD_IsValidComponent(componentid)) {
+	#if defined PlayerLevelTD_OnPlayerIntChng
+		return PlayerLevelTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
+	#else
+		return 1;
+	#endif
+	}
+
+	if (paramid == PIP_Visible) {
 		new
 			PlayerText:td_temp;
 
 		td_temp = PlayerText:GetPlayerInterfaceParam(playerid, componentid, PIP_TextDraw);
 
 		if (newvalue) {
-			if (componentid == PlayerInterface:PI_LevelLine || componentid == PlayerInterface:PI_LevelXP || componentid == PlayerInterface:PI_LevelXPPlus) {
+			if (componentid == PI_LevelLine || componentid == PI_LevelXP || componentid == PI_LevelXPPlus) {
 				new level = GetPlayerLevel(playerid);
 				PlayerLevelTD_UpdateXPString(playerid, GetPlayerXP(playerid), GetXPToLevel(level + 1), level >= GetMaxPlayerLevel());
-			} else if (componentid == PlayerInterface:PI_LevelLevel || componentid == PlayerInterface:PI_LevelPlus) {
+			} else if (componentid == PI_LevelLevel || componentid == PI_LevelPlus) {
 				PlayerLevelTD_UpdateLevelString(playerid, GetPlayerLevel(playerid));
 			}
 
-			PlayerTextDrawShow(playerid, td_temp);
+			switch (componentid) {
+				case PI_LevelPlus: {
+					if (gGiveLevelTimer[playerid] != 0) {
+						PlayerTextDrawShow(playerid, td_temp);
+					}
+				}
+				case PI_LevelXPPlus: {
+					if (gGiveXPTimer[playerid] != 0) {
+						PlayerTextDrawShow(playerid, td_temp);
+					}
+				}
+				default: {
+					PlayerTextDrawShow(playerid, td_temp);
+				}
+			}
 		} else {
 			PlayerTextDrawHide(playerid, td_temp);
 		}
@@ -231,6 +253,17 @@ stock PlayerLevelTD_DestroyTextDraw(playerid)
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelPlus, PIP_TextDraw));
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelXP, PIP_TextDraw));
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelXPPlus, PIP_TextDraw));
+}
+
+stock PlayerLevelTD_IsValidComponent(PlayerInterface:componentid)
+{
+	switch (componentid) {
+		case PI_LevelLineBackground, PI_LevelLine, PI_LevelLevel,
+		     PI_LevelPlus, PI_LevelXP, PI_LevelXPPlus: {
+			return 1;
+		}
+	}
+	return 0;
 }
 
 stock PlayerLevelTD_ShowTextDraw(playerid)

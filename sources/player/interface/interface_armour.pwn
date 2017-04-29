@@ -101,14 +101,22 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 
 public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue)
 {
-	if (componentid == PlayerInterface:PI_Armour && paramid == PlayerInterfaceParams:PIP_Visible) {
+	if (!PlayerArmourTD_IsValidComponent(componentid)) {
+	#if defined PlayerArmourTD_OnPlayerIntChng
+		return PlayerArmourTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
+	#else
+		return 1;
+	#endif
+	}
+
+	if (paramid == PIP_Visible) {
 		if (newvalue) {
 			PlayerArmourTD_UpdateString(playerid);
 		} else {
 			PlayerArmourTD_HideTextDraw(playerid);
 		}
 	}
-	
+
 	#if defined PlayerArmourTD_OnPlayerIntChng
 		return PlayerArmourTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
 	#else
@@ -150,6 +158,16 @@ stock PlayerArmourTD_CreateTextDraw(playerid)
 stock PlayerArmourTD_DestroyTextDraw(playerid)
 {
 	PlayerTextDrawDestroy(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Armour, PIP_TextDraw));
+}
+
+stock PlayerArmourTD_IsValidComponent(PlayerInterface:componentid)
+{
+	switch (componentid) {
+		case PI_Armour: {
+			return 1;
+		}
+	}
+	return 0;
 }
 
 stock PlayerArmourTD_ShowTextDraw(playerid)
