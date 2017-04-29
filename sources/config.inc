@@ -84,7 +84,7 @@
 #define MAX_PLAYER_LOGIN_ATTEMPT    3 // максимальное количество попыток входа
 
 #define MIN_SEND_SYMBOLS  2 // минимальное кол-во отправляемых символов в ПМ
-#define MAX_SEND_SYMBOLS  100 // максимальное кол-во отправляемых символов в ПМ
+#define MAX_SEND_SYMBOLS  200 // максимальное кол-во отправляемых символов в ПМ
 
 #define MIN_NAME_LEN      3
 #define MAX_NAME_LEN      20
