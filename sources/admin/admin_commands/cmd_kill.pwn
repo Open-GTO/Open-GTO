@@ -54,7 +54,9 @@ COMMAND:kill(playerid, params[])
 		SetPlayerHealth(targetid, 0.0);
 
 		GetPlayerNearPlayers(targetid, 40.0, players, .exclude_playerid = playerid);
-		Lang_SendTextToPlayers(players, "ADMIN_COMMAND_KILL_PLAYER", playername, playerid, targetname, targetid);
+		Lang_SendTextToPlayers(players, "ADMIN_COMMAND_KILL_PLAYER_NEAR", playername, playerid, targetname, targetid);
+
+		Lang_SendText(targetid, "ADMIN_COMMAND_KILL_PLAYER", playername, playerid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_KILL_PLAYER_SELF", targetname, targetid);
 	}
