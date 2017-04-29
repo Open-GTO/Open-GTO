@@ -1,4 +1,3 @@
-* text=crlf
 *.inc linguist-language=PAWN
 
 sources/* linguist-vendored

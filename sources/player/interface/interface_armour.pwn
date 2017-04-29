@@ -30,7 +30,7 @@ public OnPlayerConnect(playerid)
 #else
 	#define _ALS_OnPlayerConnect
 #endif
- 
+
 #define OnPlayerConnect PlayerArmourTD_OnPlayerConnect
 #if defined PlayerArmourTD_OnPlayerConnect
 	forward PlayerArmourTD_OnPlayerConnect(playerid);
@@ -55,7 +55,7 @@ public OnPlayerSpawn(playerid)
 #else
 	#define _ALS_OnPlayerSpawn
 #endif
- 
+
 #define OnPlayerSpawn PlayerArmourTD_OnPlayerSpawn
 #if defined PlayerArmourTD_OnPlayerSpawn
 	forward PlayerArmourTD_OnPlayerSpawn(playerid);
@@ -75,7 +75,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 	if (issuerid != INVALID_PLAYER_ID) {
 		armour -= amount;
 	}
-	
+
 	PlayerArmourTD_UpdateString(playerid, armour);
 
 	#if defined PlayerArmourTD_OnPlayerTakeDmg
@@ -89,7 +89,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 #else
 	#define _ALS_OnPlayerTakeDamage
 #endif
- 
+
 #define OnPlayerTakeDamage PlayerArmourTD_OnPlayerTakeDmg
 #if defined PlayerArmourTD_OnPlayerTakeDmg
 	forward PlayerArmourTD_OnPlayerTakeDmg(playerid, issuerid, Float:amount, weaponid, bodypart);
@@ -192,7 +192,7 @@ stock PlayerArmourTD_UpdateString(playerid, Float:armour = -1.0)
 
 	new
 		string[4];
-	
+
 	if (armour == -1.0) {
 		GetPlayerArmour(playerid, armour);
 	}

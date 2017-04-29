@@ -27,7 +27,7 @@ stock ORIG_GivePlayerWeapon(playerid, weaponid, ammo)
 #else
 	#define _ALS_GivePlayerWeapon
 #endif
- 
+
 #define GivePlayerWeapon REDEF_GivePlayerWeapon
 
 /*
@@ -45,5 +45,5 @@ stock ORIG_ResetPlayerWeapons(playerid)
 #else
 	#define _ALS_ResetPlayerWeapons
 #endif
- 
+
 #define ResetPlayerWeapons REDEF_ResetPlayerWeapons

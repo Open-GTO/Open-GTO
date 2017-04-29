@@ -25,5 +25,5 @@ stock PlayerArmourTD_SetPlayerArmour(playerid, Float:armour)
 #else
 	#define _ALS_SetPlayerArmour
 #endif
- 
+
 #define SetPlayerArmour PlayerArmourTD_SetPlayerArmour

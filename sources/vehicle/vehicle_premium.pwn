@@ -2,7 +2,7 @@
 
 	About: premium vehicles
 	Author: ziggi
-	
+
 */
 
 #if defined _vehicle_premium_included

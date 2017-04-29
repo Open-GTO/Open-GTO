@@ -26,7 +26,7 @@ stock ORIG_GivePlayerMoney(playerid, money)
 #else
 	#define _ALS_GivePlayerMoney
 #endif
- 
+
 #define GivePlayerMoney REDEF_GivePlayerMoney
 
 /*
@@ -44,5 +44,5 @@ stock ORIG_GetPlayerMoney(playerid)
 #else
 	#define _ALS_GetPlayerMoney
 #endif
- 
+
 #define GetPlayerMoney REDEF_GetPlayerMoney

@@ -17,7 +17,7 @@ enum E_LOGLEVEL
 	INFO = 2,
 	WARNING = 4,
 	ERROR = 8,
-	
+
 	ALL = ERROR | WARNING | INFO | DEBUG
 };
 #endif

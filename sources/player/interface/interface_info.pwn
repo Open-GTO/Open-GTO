@@ -31,7 +31,7 @@ public OnPlayerConnect(playerid)
 #else
 	#define _ALS_OnPlayerConnect
 #endif
- 
+
 #define OnPlayerConnect PlayerInfoTD_OnPlayerConnect
 #if defined PlayerInfoTD_OnPlayerConnect
 	forward PlayerInfoTD_OnPlayerConnect(playerid);
@@ -56,7 +56,7 @@ public OnPlayerSpawn(playerid)
 #else
 	#define _ALS_OnPlayerSpawn
 #endif
- 
+
 #define OnPlayerSpawn PlayerInfoTD_OnPlayerSpawn
 #if defined PlayerInfoTD_OnPlayerSpawn
 	forward PlayerInfoTD_OnPlayerSpawn(playerid);
@@ -79,7 +79,7 @@ public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInt
 	if (paramid == PIP_Visible) {
 		if (newvalue) {
 			PlayerInfoTD_UpdateString(playerid);
-			PlayerInfoTD_ShowTextDraw(playerid);	
+			PlayerInfoTD_ShowTextDraw(playerid);
 		} else {
 			PlayerInfoTD_HideTextDraw(playerid);
 		}
@@ -143,7 +143,7 @@ stock PlayerInfoTD_ShowTextDraw(playerid)
 	if (!GetPlayerInterfaceParam(playerid, PI_Info, PIP_Visible) || !IsPlayerInterfaceVisible(playerid)) {
 		return;
 	}
-	
+
 	PlayerTextDrawShow(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_Info, PIP_TextDraw));
 }
 
@@ -164,7 +164,7 @@ stock PlayerInfoTD_UpdateString(playerid)
 	new
 		playername[MAX_PLAYER_NAME + 1],
 		string[sizeof(string_mask) + (-2 + sizeof(playername)) + (-2 + 3)];
-	
+
 	GetPlayerName(playerid, playername, sizeof(playername));
 	format(string, sizeof(string), string_mask, playername, playerid);
 

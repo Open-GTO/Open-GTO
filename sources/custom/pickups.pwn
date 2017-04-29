@@ -115,7 +115,7 @@ Custom_OnGameModeInit()
 	GPickup_Create(371, 2055.7258, 2395.8589, 150.4766, 0);
 	GPickup_Create(371, 2265.0120, 1672.3837, 94.9219, 0);
 	GPickup_Create(371, 2265.9739, 1623.4060, 94.9219, 0);
-	
+
 	// health
 	GPickup_Create(1240, 1243.9448, 332.0957, 19.5547, 0);
 	GPickup_Create(1240, -2655.2725, 620.4910, 14.4531, 0);

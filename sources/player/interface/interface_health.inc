@@ -25,5 +25,5 @@ stock PlayerHealthTD_SetPlayerHealth(playerid, Float:health)
 #else
 	#define _ALS_SetPlayerHealth
 #endif
- 
+
 #define SetPlayerHealth PlayerHealthTD_SetPlayerHealth
