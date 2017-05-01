@@ -2,9 +2,9 @@
 Project Name:
 	Open - Grand Theft Online (Open-GTO)
 
-Web site:
-	http://open-gto.ru/
-	https://github.com/Open-GTO
+Website:
+	https://gto.ziggi.org/
+	https://github.com/Open-GTO/
 
 Date started:
 	Open-GTO:
