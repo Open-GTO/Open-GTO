@@ -24,19 +24,31 @@
 #endif
 
 #if !defined RUSSIFIER_TEXT_Y_STEP
-	#define RUSSIFIER_TEXT_Y_STEP 15.0
+	#define RUSSIFIER_TEXT_Y_STEP 19.0
 #endif
 
 #if !defined RUSSIFIER_TEXT_SIZE_X
-	#define RUSSIFIER_TEXT_SIZE_X 600.0
+	#define RUSSIFIER_TEXT_SIZE_X 505.0
 #endif
 
 #if !defined RUSSIFIER_TEXT_SIZE_Y
-	#define RUSSIFIER_TEXT_SIZE_Y 12.0
+	#define RUSSIFIER_TEXT_SIZE_Y 15.0
 #endif
 
 #if !defined RUSSIFIER_SELECT_COLOR
 	#define RUSSIFIER_SELECT_COLOR 0xAA3333FF
+#endif
+
+#if !defined RUSSIFIER_BACKGROUND_PADDING
+	#define RUSSIFIER_BACKGROUND_PADDING 5.0
+#endif
+
+#if !defined RUSSIFIER_TEXT_LETTER_SIZE_X 
+	#define RUSSIFIER_TEXT_LETTER_SIZE_X 0.4
+#endif
+
+#if !defined RUSSIFIER_TEXT_LETTER_SIZE_Y
+	#define RUSSIFIER_TEXT_LETTER_SIZE_Y RUSSIFIER_TEXT_SIZE_Y / 10.0
 #endif
 
 /*
@@ -50,7 +62,8 @@ forward OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type);
 */
 
 static
-	Text:TextRusTD[RussifierType],
+	Text:TD_Background,
+	Text:TD_Text[RussifierType],
 	bool:IsSettingsShowed[MAX_PLAYERS];
 
 const
@@ -63,16 +76,29 @@ const
 stock PlayerRussifier_OnGameModeInit()
 {
 	new
+		Float:bg_pos_x = RUSSIFIER_TEXT_BASE_X - RUSSIFIER_BACKGROUND_PADDING,
+		Float:bg_pos_y = RUSSIFIER_TEXT_BASE_Y - RUSSIFIER_BACKGROUND_PADDING,
+		Float:bg_width = RUSSIFIER_TEXT_SIZE_X + RUSSIFIER_BACKGROUND_PADDING,
+		Float:bg_height = RUSSIFIER_TEXT_Y_STEP * (_:TEXT_RUSSIFIERS_COUNT - 1);
+
+	TD_Background = TextDrawCreate(bg_pos_x, bg_pos_y, "_");
+	TextDrawLetterSize(TD_Background, 0.0, bg_height * 0.135);
+	TextDrawTextSize(TD_Background, bg_width, 0.0);
+	TextDrawUseBox(TD_Background, 1);
+	TextDrawBoxColor(TD_Background, 124);
+
+	new
 		string[MAX_LANG_VALUE_STRING];
 
 	Lang_GetText(Lang_Get("ru"), "PLAYER_MENU_SETTINGS_RUSSIFIER_TEXT", string);
 
 	for (new RussifierType:type; type < TEXT_RUSSIFIERS_COUNT; type++) {
-		TextRusTD[type] = TextDrawCreate(RUSSIFIER_TEXT_BASE_X,
-		                                 RUSSIFIER_TEXT_BASE_Y + RUSSIFIER_TEXT_Y_STEP * _:type,
-		                                 string);
-		TextDrawSetSelectable(TextRusTD[type], 1);
-		TextDrawTextSize(TextRusTD[type], RUSSIFIER_TEXT_SIZE_X, RUSSIFIER_TEXT_SIZE_Y);
+		TD_Text[type] = TextDrawCreate(RUSSIFIER_TEXT_BASE_X,
+		                               RUSSIFIER_TEXT_BASE_Y + RUSSIFIER_TEXT_Y_STEP * _:type,
+		                               string);
+		TextDrawSetSelectable(TD_Text[type], 1);
+		TextDrawTextSize(TD_Text[type], RUSSIFIER_TEXT_SIZE_X, RUSSIFIER_TEXT_SIZE_Y);
+		TextDrawLetterSize(TD_Text[type], RUSSIFIER_TEXT_LETTER_SIZE_X, RUSSIFIER_TEXT_LETTER_SIZE_Y);
 	}
 
 	return 1;
@@ -99,7 +125,7 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid)
 	}
 
 	for (new RussifierType:type; type < TEXT_RUSSIFIERS_COUNT; type++) {
-		if (TextRusTD[type] == clickedid) {
+		if (TD_Text[type] == clickedid) {
 			SetPlayerRussifierType(playerid, type);
 			HidePlayerRussifierSettings(playerid);
 			CallLocalFunction("OnPlayerRussifierSelect", "iii", playerid, true, _:type);
@@ -132,7 +158,8 @@ stock ShowPlayerRussifierSettings(playerid)
 {
 	for (new RussifierType:type; type < TEXT_RUSSIFIERS_COUNT; type++) {
 		SetPlayerRussifierType(playerid, type);
-		TextDrawShowForPlayer(playerid, TextRusTD[type]);
+		TextDrawShowForPlayer(playerid, TD_Text[type]);
+		TextDrawShowForPlayer(playerid, TD_Background);
 	}
 
 	SelectTextDraw(playerid, RUSSIFIER_SELECT_COLOR);
@@ -143,7 +170,8 @@ stock ShowPlayerRussifierSettings(playerid)
 stock HidePlayerRussifierSettings(playerid)
 {
 	for (new RussifierType:type; type < TEXT_RUSSIFIERS_COUNT; type++) {
-		TextDrawHideForPlayer(playerid, TextRusTD[type]);
+		TextDrawHideForPlayer(playerid, TD_Text[type]);
+		TextDrawHideForPlayer(playerid, TD_Background);
 	}
 
 	CancelSelectTextDraw(playerid);
