@@ -755,3 +755,16 @@ public OnPlayerGangJoin(playerid, gangid)
 
 	return 1;
 }
+
+public OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type)
+{
+	if (Account_OnPlayerRussifierSelect(playerid, changed, type)) {
+		return 1;
+	}
+
+	if (PMenu_OnPlayerRussifierSelect(playerid, changed, type)) {
+		return 1;
+	}
+
+	return 1;
+}

@@ -316,12 +316,27 @@ DialogResponse:AccountLanguage(playerid, response, listitem, inputtext[])
 	foreach (new Lang:lang : LangIterator) {
 		if (i == listitem) {
 			Account_SetLang(playerid, lang);
+			break;
 		}
 
 		i++;
 	}
 
-	Dialog_Show(playerid, Dialog:AccountInformation);
+	if (Lang_GetPlayerLang(playerid) == Lang_Get("ru")) {
+		ShowPlayerRussifierSettings(playerid);
+	} else {
+		Dialog_Show(playerid, Dialog:AccountInformation);
+	}
+}
+
+stock Account_OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type)
+{
+	if (!IsPlayerLogin(playerid)) {
+		Account_SetRussifier(playerid, changed ? type : RussifierType:0);
+		Dialog_Show(playerid, Dialog:AccountInformation);
+		return 1;
+	}
+	return 0;
 }
 
 stock Account_ShowDialog(playerid)
