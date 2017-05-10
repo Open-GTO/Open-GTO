@@ -351,6 +351,8 @@ SkinSelectResponse:RegisterSkin(playerid, SS_Response:type, oldskin, newskin)
 	if (type == SS_Response:SS_Response_Stop || type == SS_Response:SS_Response_Select) {
 		SetPlayerSkin(playerid, newskin);
 		SetCameraBehindPlayer(playerid);
+
+		TogglePlayerInterfaceVisibility(playerid, true);
 	}
 
 	if (type == SS_Response:SS_Response_Select) {
