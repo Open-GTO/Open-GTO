@@ -42,12 +42,12 @@
 
 #define MDIALOG_ZLANG_MODE
 #define MAX_LANG_FORMAT_STRING (288)
-
 #define USE_PLAYER_PED_ANIMS
 #define USED_PLAYER_MARKERS     PLAYER_MARKERS_MODE_GLOBAL
-
 #define STREAMER_MAP_ICON_SD 300.0
 #define USE_INCOGNITO_STREAMER // use streamer in MapFix script
+#define FOREACH_I_PlayerPlayersStream
+#define FOREACH_I_VehiclePlayersStream
 
 #define PASSWORD_ENCRYPT_ENABLED // если задефайнено, то пароль в файле игрока будет шифроваться
 #define PASSWORD_SALT_LENGTH  12 // длина соли для хэша
