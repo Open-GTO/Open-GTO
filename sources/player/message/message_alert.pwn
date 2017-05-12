@@ -164,7 +164,7 @@ stock Message_Alert(playerid, caption[], info[], time = 4000, hcolor = -5963521,
 		strcpy(messages[playerid][id][e_aInfo], info, MAX_LANG_VALUE_STRING);
 	}
 
-	va_format(messages[playerid][id][e_aInfo], MAX_LANG_VALUE_STRING, messages[playerid][id][e_aInfo], va_start<6>);
+	va_format(messages[playerid][id][e_aInfo], MAX_LANG_VALUE_STRING, messages[playerid][id][e_aInfo], va_start<7>);
 
 	messages[playerid][id][e_aIsBusy] = true;
 	messages[playerid][id][e_aTime] = time;
