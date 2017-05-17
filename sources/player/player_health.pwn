@@ -81,7 +81,8 @@ stock RegenerationPlayerHealth()
 		Float:health_new;
 
 	foreach (new playerid : Player) {
-		if (!IsPlayerSpawned(playerid) || IsPlayerGodmod(playerid) || !IsPlayerHealthRegen(playerid)) {
+		if (!IsPlayerSpawned(playerid) || Protection_IsPlayerPaused(playerid) ||
+		    IsPlayerGodmod(playerid) || !IsPlayerHealthRegen(playerid)) {
 			continue;
 		}
 
