@@ -61,3 +61,6 @@
 [submodule "sources/lib/zmessage"]
 	path = sources/lib/zmessage
 	url = https://github.com/Open-GTO/zmessage
+[submodule "sources/lib/protection"]
+	path = sources/lib/protection
+	url = https://github.com/Open-GTO/protection.git

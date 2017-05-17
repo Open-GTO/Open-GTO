@@ -73,6 +73,7 @@ Thanks:
 #include "lib/getweather/getweather.inc"
 #include "lib/weaponskill/weaponskill.inc"
 #include "lib/zvehinfo/zvehinfo.inc"
+#include "lib/protection/protection.inc"
 
 // header files
 #include "core/lang.inc"

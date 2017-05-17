@@ -1,5 +1,3 @@
 set name=Open-GTO
-compiler\pawncc.exe -;+ -(+ -icompiler/includes -d2 sources\%name%.pwn
-if exist %name%.amx ^
-move %name%.amx gamemodes\
+compiler\pawncc.exe -;+ -(+ -icompiler/includes -isources -isources/lib/protection -d2 -ogamemodes/%name%.amx sources/%name%.pwn
 pause
