@@ -62,6 +62,7 @@ COMMAND:vehicle(playerid, params[])
 		LinkVehicleToInterior(vehicleid, interior);
 		SetVehicleVirtualWorld(vehicleid, world);
 		SetVehicleFuel(vehicleid, -1);
+		SetVehicleNumberPlate(vehicleid, MODE_NAME);
 
 		// put in
 		PutPlayerInVehicle(playerid, vehicleid, 0);

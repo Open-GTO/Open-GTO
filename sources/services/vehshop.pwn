@@ -296,6 +296,7 @@ stock VehShop_ChangeVehicles()
 			-1, -1, 0
 		);
 		SetVehicleFuel(gPositions[i][e_vsID], 0);
+		SetVehicleNumberPlate(gPositions[i][e_vsID], MODE_NAME);
 
 		VehShop_UpdateLabelString(i);
 

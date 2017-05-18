@@ -1892,6 +1892,7 @@ public OnGameModeInit()
 				GetVehicleRespawnTime()
 			);
 		SetVehicleFuel(vehicleid, -1);
+		SetVehicleNumberPlate(vehicleid, MODE_NAME);
 	} while (++i < sizeof(gVehicleSpawns));
 
 	Vehicle_Fuel_OnGameModeInit();
@@ -1939,6 +1940,7 @@ public OnInteriorCreated(id, type, world)
 		LinkVehicleToInterior(vehicleid, gVehicleInteriorSpawns[i][e_vis_interior]);
 		SetVehicleVirtualWorld(vehicleid, world);
 		SetVehicleMaxFuel(vehicleid);
+		SetVehicleNumberPlate(vehicleid, MODE_NAME);
 	} while (++i < sizeof(gVehicleInteriorSpawns));
 	#if defined Vehicle_OnInteriorCreated
 		return Vehicle_OnInteriorCreated(id, type, world);

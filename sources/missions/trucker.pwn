@@ -161,6 +161,7 @@ public OnGameModeInit()
 			gTrailer[veh_id][e_tPosX], gTrailer[veh_id][e_tPosY], gTrailer[veh_id][e_tPosZ], gTrailer[veh_id][e_tAngle],
 			gTrailer[veh_id][e_tColor1], gTrailer[veh_id][e_tColor2], TRUCKER_CAR_SPAWN_TIME
 		);
+		SetVehicleNumberPlate(gTrailer[veh_id][e_tID], MODE_NAME);
 	}
 
 	// создаём грузовики
@@ -171,6 +172,7 @@ public OnGameModeInit()
 		);
 
 		SetVehicleFuel(gLinerunner[veh_id][e_tID], -1);
+		SetVehicleNumberPlate(gLinerunner[veh_id][e_tID], MODE_NAME);
 	}
 
 	// иконки

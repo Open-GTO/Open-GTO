@@ -267,7 +267,7 @@ DialogCreate:VehicleNumber(playerid)
 	if (slot == -1) {
 		Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
 		                 "VEHICLE_MENU_HEADER",
-		                 "VEHICLE_MENU_NUMBER_INVALID",
+		                 "VEHICLE_MENU_NUMBER_NOTOWNER",
 		                 "BUTTON_OK", "BUTTON_BACK");
 		return 0;
 	}

@@ -89,7 +89,7 @@ PVehicle_OnVehicleTuning(playerid, vehicleid, componentid)
 */
 
 stock AddPlayerVehicle(playerid, model, color1, color2, Float:fuel, VehicleDoorsAccess:access = VehicleDoorsAccess_Everyone,
-                       paintjob = -1, number[] = "", component[VEHICLE_COMPONENTS] = {0, ...})
+                       paintjob = -1, number[] = MODE_NAME, component[VEHICLE_COMPONENTS] = {0, ...})
 {
 	new slot = GetPlayerVehicleFreeSlot(playerid);
 	PlayerVehicle[playerid][slot][pv_ID] = 0;
@@ -177,7 +177,7 @@ stock CreateVehicleDbString(playerid, slot)
 		PlayerVehicle[playerid][slot][pv_Fuel] = GetVehicleFuel(PlayerVehicle[playerid][slot][pv_ID]);
 	}
 	new vehstr[MAX_STRING];
-	format(vehstr, sizeof(vehstr), "%d/%d/%d/%f/%d/%d/%d",
+	format(vehstr, sizeof(vehstr), "%d/%d/%d/%f/%d/%d/%s",
 		PlayerVehicle[playerid][slot][pv_Model],
 		PlayerVehicle[playerid][slot][pv_Color][0],
 		PlayerVehicle[playerid][slot][pv_Color][1],

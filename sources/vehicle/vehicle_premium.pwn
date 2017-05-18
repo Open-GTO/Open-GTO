@@ -42,6 +42,7 @@ stock Premium_VehiclesLoad()
 				GetVehicleRespawnTime()
 			);
 		SetVehicleMaxFuel(vehicle_ids[i]);
+		SetVehicleNumberPlate(vehicle_ids[i], MODE_NAME);
 	}
 }
 
