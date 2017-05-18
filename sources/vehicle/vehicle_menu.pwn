@@ -239,19 +239,36 @@ DialogCreate:VehicleNumber(playerid)
 		string[MAX_LANG_VALUE_STRING * 2],
 		number[VEHICLE_NUMBER_SIZE],
 		vehicleid,
+		vehicle_type,
 		slot;
 
 	// vehicle
 	vehicleid = GetPlayerVehicleID(playerid);
 	if (!vehicleid) {
-		Dialog_Message(playerid, "VEHICLE_MENU_HEADER", "VEHICLE_MENU_NUMBER_NOTOWNER", "BUTTON_OK");
+		Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
+		                 "VEHICLE_MENU_HEADER",
+		                 "VEHICLE_MENU_NUMBER_INVALID",
+		                 "BUTTON_OK", "BUTTON_BACK");
+		return 0;
+	}
+
+	// vehicle type
+	vehicle_type = GetVehicleModelType(GetVehicleModel(vehicleid));
+	if (vehicle_type == VEHICLE_TYPE_CAR) {
+		Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
+		                 "VEHICLE_MENU_HEADER",
+		                 "VEHICLE_MENU_NUMBER_INVALID",
+		                 "BUTTON_OK", "BUTTON_BACK");
 		return 0;
 	}
 
 	// slot
 	slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
 	if (slot == -1) {
-		Dialog_Message(playerid, "VEHICLE_MENU_HEADER", "VEHICLE_MENU_NUMBER_NOTOWNER", "BUTTON_OK");
+		Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
+		                 "VEHICLE_MENU_HEADER",
+		                 "VEHICLE_MENU_NUMBER_INVALID",
+		                 "BUTTON_OK", "BUTTON_BACK");
 		return 0;
 	}
 
@@ -285,6 +302,9 @@ DialogResponse:VehicleNumber(playerid, response, listitem, inputtext[])
 
 	SetPlayerVehicleNumber(playerid, slot, inputtext);
 
-	Dialog_Message(playerid, "VEHICLE_MENU_HEADER", "VEHICLE_MENU_NUMBER_CHANGED", "BUTTON_OK");
+	Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
+	                 "VEHICLE_MENU_HEADER",
+	                 "VEHICLE_MENU_NUMBER_CHANGED",
+	                 "BUTTON_OK", "BUTTON_BACK");
 	return 1;
 }
