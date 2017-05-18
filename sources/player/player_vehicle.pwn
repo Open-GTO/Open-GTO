@@ -12,23 +12,12 @@
 
 #define _pvehicle_included
 
+/*
+	Vars
+*/
 
-#define VEHICLE_COMPONENTS 14
-
-new vehicle_increase_levels[] = {PLAYER_VEHICLE_INCREASE_LEVELS};
-
-#define MAX_PLAYER_VEHICLES    sizeof(vehicle_increase_levels)
-
-enum pvInfo {
-	pv_ID,
-	pv_Model,
-	pv_Color[2],
-	Float:pv_Fuel,
-	VehicleDoorsAccess:pv_Access,
-	pv_Paintjob,
-	pv_Component[VEHICLE_COMPONENTS]
-}
-static PlayerVehicle[MAX_PLAYERS][MAX_PLAYER_VEHICLES][pvInfo];
+static
+	PlayerVehicle[MAX_PLAYERS][MAX_PLAYER_VEHICLES][pvInfo];
 
 /*
 	For publics
@@ -85,7 +74,13 @@ PVehicle_OnVehicleTuning(playerid, vehicleid, componentid)
 	if (slot == -1) {
 		return 0;
 	}
-	PlayerVehicle[playerid][slot][pv_Component][ GetVehicleComponentType(componentid) ] = componentid;
+
+	new type = GetVehicleComponentType(componentid);
+	if (type == -1) {
+		return 0;
+	}
+
+	PlayerVehicle[playerid][slot][pv_Component][type] = componentid;
 	return 1;
 }
 
@@ -94,7 +89,7 @@ PVehicle_OnVehicleTuning(playerid, vehicleid, componentid)
 */
 
 stock AddPlayerVehicle(playerid, model, color1, color2, Float:fuel, VehicleDoorsAccess:access = VehicleDoorsAccess_Everyone,
-                       paintjob = -1, component[VEHICLE_COMPONENTS] = {0, ...})
+                       paintjob = -1, number[] = "", component[VEHICLE_COMPONENTS] = {0, ...})
 {
 	new slot = GetPlayerVehicleFreeSlot(playerid);
 	PlayerVehicle[playerid][slot][pv_ID] = 0;
@@ -104,6 +99,7 @@ stock AddPlayerVehicle(playerid, model, color1, color2, Float:fuel, VehicleDoors
 	PlayerVehicle[playerid][slot][pv_Fuel] = fuel;
 	PlayerVehicle[playerid][slot][pv_Access] = access;
 	PlayerVehicle[playerid][slot][pv_Paintjob] = paintjob;
+	strcpy(PlayerVehicle[playerid][slot][pv_Number], number, VEHICLE_NUMBER_SIZE);
 	for (new i = 0; i < VEHICLE_COMPONENTS; i++) {
 		PlayerVehicle[playerid][slot][pv_Component][i] = component[i];
 	}
@@ -123,13 +119,14 @@ stock RemovePlayerVehicle(playerid, slot)
 	PlayerVehicle[playerid][slot][pv_Fuel] = 0;
 	PlayerVehicle[playerid][slot][pv_Access] = VehicleDoorsAccess_Invalid;
 	PlayerVehicle[playerid][slot][pv_Paintjob] = -1;
+	PlayerVehicle[playerid][slot][pv_Number][0] = '\0';
 	for (new i = 0; i < VEHICLE_COMPONENTS; i++) {
 		PlayerVehicle[playerid][slot][pv_Component][i] = 0;
 	}
 	return 1;
 }
 
-stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh_Z, Float:pveh_A)
+stock CreatePlayerVehicle(playerid, slot, Float:pveh_x, Float:pveh_y, Float:pveh_z, Float:pveh_a)
 {
 	new vehicleid;
 
@@ -137,19 +134,19 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 	vehicleid = PlayerVehicle[playerid][slot][pv_ID];
 	if (vehicleid != 0) {
 		foreach (new id : Player) {
-			if(GetPlayerVehicleID(id) == vehicleid) {
+			if (GetPlayerVehicleID(id) == vehicleid) {
 				RemovePlayerFromVehicle(id);
 			}
 		}
-		SetVehiclePos(vehicleid, pveh_X, pveh_Y, pveh_Z);
-		SetVehicleZAngle(vehicleid, pveh_A);
+		SetVehiclePos(vehicleid, pveh_x, pveh_y, pveh_z);
+		SetVehicleZAngle(vehicleid, pveh_a);
 		return vehicleid;
 	}
 
 	// если не создан, то создаём
 	vehicleid = CreateVehicle(
 		PlayerVehicle[playerid][slot][pv_Model],
-		pveh_X, pveh_Y, pveh_Z, pveh_A,
+		pveh_x, pveh_y, pveh_z, pveh_a,
 		PlayerVehicle[playerid][slot][pv_Color][0], PlayerVehicle[playerid][slot][pv_Color][1],
 		GetVehicleRespawnTime()
 	);
@@ -157,10 +154,14 @@ stock CreatePlayerVehicle(playerid, slot, Float:pveh_X, Float:pveh_Y, Float:pveh
 	PlayerVehicle[playerid][slot][pv_ID] = vehicleid;
 
 	SetVehicleFuel(vehicleid, PlayerVehicle[playerid][slot][pv_Fuel]);
-	SetPlayerVehicleDoorsAccess(vehicleid, playerid, PlayerVehicle[playerid][slot][pv_Access], slot);
+	SetVehicleDoorsAccess(vehicleid, playerid, PlayerVehicle[playerid][slot][pv_Access]);
 
 	if (PlayerVehicle[playerid][slot][pv_Paintjob] != -1) {
 		ChangeVehiclePaintjob(vehicleid, PlayerVehicle[playerid][slot][pv_Paintjob]);
+	}
+
+	if (strlen(PlayerVehicle[playerid][slot][pv_Number]) != 0) {
+		SetVehicleNumberPlate(vehicleid, PlayerVehicle[playerid][slot][pv_Number]);
 	}
 
 	for (new i = 0; i < VEHICLE_COMPONENTS; i++) {
@@ -176,9 +177,14 @@ stock CreateVehicleDbString(playerid, slot)
 		PlayerVehicle[playerid][slot][pv_Fuel] = GetVehicleFuel(PlayerVehicle[playerid][slot][pv_ID]);
 	}
 	new vehstr[MAX_STRING];
-	format(vehstr, sizeof(vehstr), "%d/%d/%d/%f/%d/%d",
-		PlayerVehicle[playerid][slot][pv_Model], PlayerVehicle[playerid][slot][pv_Color][0], PlayerVehicle[playerid][slot][pv_Color][1],
-		PlayerVehicle[playerid][slot][pv_Fuel], _:PlayerVehicle[playerid][slot][pv_Access], PlayerVehicle[playerid][slot][pv_Paintjob]
+	format(vehstr, sizeof(vehstr), "%d/%d/%d/%f/%d/%d/%d",
+		PlayerVehicle[playerid][slot][pv_Model],
+		PlayerVehicle[playerid][slot][pv_Color][0],
+		PlayerVehicle[playerid][slot][pv_Color][1],
+		PlayerVehicle[playerid][slot][pv_Fuel],
+		_:PlayerVehicle[playerid][slot][pv_Access],
+		PlayerVehicle[playerid][slot][pv_Paintjob],
+		PlayerVehicle[playerid][slot][pv_Number]
 	);
 	for (new i = 0; i < VEHICLE_COMPONENTS; i++) {
 		format(vehstr, sizeof(vehstr), "%s/%d", vehstr, PlayerVehicle[playerid][slot][pv_Component][i]);
@@ -188,12 +194,13 @@ stock CreateVehicleDbString(playerid, slot)
 
 stock SetVehicleFromDbString(playerid, slot, dbstring[])
 {
-	if (sscanf(dbstring, "p</>ia<i>[2]fiia<i>[" #VEHICLE_COMPONENTS "]",
+	if (sscanf(dbstring, "p</>ia<i>[2]fiis[" #VEHICLE_NUMBER_SIZE "]a<i>[" #VEHICLE_COMPONENTS "]",
 		    PlayerVehicle[playerid][slot][pv_Model],
 		    PlayerVehicle[playerid][slot][pv_Color],
 		    PlayerVehicle[playerid][slot][pv_Fuel],
 		    _:PlayerVehicle[playerid][slot][pv_Access],
 		    PlayerVehicle[playerid][slot][pv_Paintjob],
+		    PlayerVehicle[playerid][slot][pv_Number],
 		    PlayerVehicle[playerid][slot][pv_Component])
 		) {
 		return 0;
@@ -280,31 +287,47 @@ stock GetPlayerVehicleModelBySlot(playerid, slot)
 	return PlayerVehicle[playerid][slot][pv_Model];
 }
 
-stock SetPlayerVehicleDoorsAccess(vehicleid, playerid, VehicleDoorsAccess:status, slot = -1)
+stock SetPlayerVehicleDoorsAccess(playerid, slot, VehicleDoorsAccess:status)
 {
-	if (slot == -1) {
-		slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
-		if (slot == -1) {
-			return 0;
-		}
-	}
-
+	new vehicleid = PlayerVehicle[playerid][slot][pv_ID];
 	PlayerVehicle[playerid][slot][pv_Access] = status;
 	SetVehicleDoorsAccess(vehicleid, playerid, status);
 	return 1;
 }
 
-stock ChangePlayerVehicleDoorsAccess(vehicleid, playerid, slot = -1)
+stock ChangePlayerVehicleDoorsAccess(playerid, slot)
 {
-	if (slot == -1) {
-		slot = GetPlayerVehicleSlotByID(playerid, vehicleid);
-		if (slot == -1) {
-			return 0;
-		}
-	}
-
+	new vehicleid = PlayerVehicle[playerid][slot][pv_ID];
 	ChangeVehicleDoorsAccess(vehicleid, playerid);
 	PlayerVehicle[playerid][slot][pv_Access] = GetVehicleDoorsAccess(vehicleid);
+	return 1;
+}
+
+stock SetPlayerVehicleNumber(playerid, slot, number[])
+{
+	new
+		vehicleid,
+		Float:pos_x,
+		Float:pos_y,
+		Float:pos_z;
+
+	vehicleid = PlayerVehicle[playerid][slot][pv_ID];
+	if (!vehicleid) {
+		GetVehiclePos(vehicleid, pos_x, pos_y, pos_z);
+
+		SetVehicleNumberPlate(vehicleid, number);
+
+		SetVehicleToRespawn(vehicleid);
+		SetVehiclePos(vehicleid, pos_x, pos_y, pos_z);
+	}
+
+	strcpy(PlayerVehicle[playerid][slot][pv_Number], number, VEHICLE_NUMBER_SIZE);
+	return 1;
+}
+
+stock GetPlayerVehicleNumber(playerid, slot, number[], size = sizeof(number))
+{
+	strcpy(number, PlayerVehicle[playerid][slot][pv_Number], size);
 	return 1;
 }
 

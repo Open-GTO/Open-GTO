@@ -88,6 +88,7 @@ Thanks:
 #include "player/player_info.inc"
 #include "player/player_interface.inc"
 #include "player/player_login.inc"
+#include "player/player_vehicle.inc"
 #include "player/interface/interface_health.inc"
 #include "player/interface/interface_armour.inc"
 #include "vehicle/vehicle_info.inc"
