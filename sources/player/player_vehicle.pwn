@@ -305,20 +305,9 @@ stock ChangePlayerVehicleDoorsAccess(playerid, slot)
 
 stock SetPlayerVehicleNumber(playerid, slot, number[])
 {
-	new
-		vehicleid,
-		Float:pos_x,
-		Float:pos_y,
-		Float:pos_z;
-
-	vehicleid = PlayerVehicle[playerid][slot][pv_ID];
-	if (!vehicleid) {
-		GetVehiclePos(vehicleid, pos_x, pos_y, pos_z);
-
-		SetVehicleNumberPlate(vehicleid, number);
-
-		SetVehicleToRespawn(vehicleid);
-		SetVehiclePos(vehicleid, pos_x, pos_y, pos_z);
+	new vehicleid = PlayerVehicle[playerid][slot][pv_ID];
+	if (vehicleid != 0) {
+		UpdateVehicleNumberPlate(vehicleid, number);
 	}
 
 	strcpy(PlayerVehicle[playerid][slot][pv_Number], number, VEHICLE_NUMBER_SIZE);

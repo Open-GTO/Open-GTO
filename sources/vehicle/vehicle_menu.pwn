@@ -227,7 +227,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 
 DialogResponse:VehicleReturnMenu(playerid, response, listitem, inputtext[])
 {
-	if (response) {
+	if (!response) {
 		Dialog_Show(playerid, Dialog:VehicleMenu);
 	}
 	return 1;
@@ -244,7 +244,7 @@ DialogCreate:VehicleNumber(playerid)
 
 	// vehicle
 	vehicleid = GetPlayerVehicleID(playerid);
-	if (!vehicleid) {
+	if (vehicleid == 0) {
 		Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
 		                 "VEHICLE_MENU_HEADER",
 		                 "VEHICLE_MENU_NUMBER_INVALID",
@@ -254,7 +254,7 @@ DialogCreate:VehicleNumber(playerid)
 
 	// vehicle type
 	vehicle_type = GetVehicleModelType(GetVehicleModel(vehicleid));
-	if (vehicle_type == VEHICLE_TYPE_CAR) {
+	if (vehicle_type != VEHICLE_TYPE_CAR) {
 		Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
 		                 "VEHICLE_MENU_HEADER",
 		                 "VEHICLE_MENU_NUMBER_INVALID",
@@ -292,7 +292,7 @@ DialogCreate:VehicleNumber(playerid)
 
 DialogResponse:VehicleNumber(playerid, response, listitem, inputtext[])
 {
-	if (response) {
+	if (!response) {
 		Dialog_Show(playerid, Dialog:VehicleMenu);
 		return 1;
 	}

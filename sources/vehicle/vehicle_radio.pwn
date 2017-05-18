@@ -93,7 +93,7 @@ DialogCreate:VehicleRadio(playerid)
 		current_radioid;
 
 	vehicleid = GetPlayerVehicleID(playerid);
-	if (!vehicleid) {
+	if (vehicleid == 0) {
 		return;
 	}
 
