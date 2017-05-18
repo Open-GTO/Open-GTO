@@ -40,7 +40,6 @@ PVehicle_OnVehicleDeath(vehicleid, killerid)
 		if (slot != -1) {
 			SetTimerEx("DestroyPlayerVehicle", 4000, 0, "d", vehicleid);
 			PlayerVehicle[playerid][slot][pv_ID] = 0;
-			vehicleid = 0;
 			break;
 		}
 	}
@@ -110,7 +109,6 @@ stock RemovePlayerVehicle(playerid, slot)
 {
 	if (GetVehicleModel(PlayerVehicle[playerid][slot][pv_ID]) != 0) {
 		DestroyVehicle(PlayerVehicle[playerid][slot][pv_ID]);
-		PlayerVehicle[playerid][slot][pv_ID] = 0;
 	}
 	PlayerVehicle[playerid][slot][pv_ID] = 0;
 	PlayerVehicle[playerid][slot][pv_Model] = 0;
