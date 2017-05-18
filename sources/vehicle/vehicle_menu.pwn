@@ -237,7 +237,7 @@ DialogCreate:VehicleNumber(playerid)
 {
 	new
 		string[MAX_LANG_VALUE_STRING * 2],
-		number[VEHICLE_NUMBER_SIZE],
+		number[VEHICLE_NUMBER_SIZE + 1],
 		vehicleid,
 		vehicle_type,
 		slot;

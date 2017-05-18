@@ -198,7 +198,7 @@ stock SetVehicleFromDbString(playerid, slot, dbstring[])
 		    PlayerVehicle[playerid][slot][pv_Fuel],
 		    _:PlayerVehicle[playerid][slot][pv_Access],
 		    PlayerVehicle[playerid][slot][pv_Paintjob],
-		    PlayerVehicle[playerid][slot][pv_Number],
+		    PlayerVehicle[playerid][slot][pv_Number][0],
 		    PlayerVehicle[playerid][slot][pv_Component])
 		) {
 		return 0;
@@ -305,7 +305,9 @@ stock SetPlayerVehicleNumber(playerid, slot, number[])
 {
 	new vehicleid = PlayerVehicle[playerid][slot][pv_ID];
 	if (vehicleid != 0) {
+		new Float:fuel = GetVehicleFuel(vehicleid);
 		UpdateVehicleNumberPlate(vehicleid, number);
+		SetVehicleFuel(vehicleid, fuel);
 	}
 
 	strcpy(PlayerVehicle[playerid][slot][pv_Number], number, VEHICLE_NUMBER_SIZE);

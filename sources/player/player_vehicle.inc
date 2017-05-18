@@ -26,6 +26,6 @@ enum pvInfo {
 	Float:pv_Fuel,
 	VehicleDoorsAccess:pv_Access,
 	pv_Paintjob,
-	pv_Number[VEHICLE_NUMBER_SIZE],
+	pv_Number[VEHICLE_NUMBER_SIZE + 1],
 	pv_Component[VEHICLE_COMPONENTS]
 }
