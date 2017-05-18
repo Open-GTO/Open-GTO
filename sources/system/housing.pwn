@@ -850,7 +850,7 @@ stock house_Buy(playerid)
 
 			if (pl_houses >= pl_houses_count) {
 				new
-					string[MAX_LANG_VALUE_STRING],
+					string[MAX_LANG_VALUE_STRING * 2],
 					pl_houses_nearest;
 
 				Lang_GetPlayerText(playerid, "HOUSING_BUY_MAX_LIMIT", string);

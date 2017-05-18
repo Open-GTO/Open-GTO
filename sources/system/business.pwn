@@ -92,6 +92,10 @@ new Businesses[][BusinessInfo] = {
 	{"Zombotech Corporation", 500000, 3000, 5, "Unknown", 0, 0, 1, 1, -1951.7206, 689.0686, 46.5625}
 };
 
+new business_increase_levels[] = {PLAYER_BUSINESS_INCREASE_LEVELS};
+
+#define MAX_PLAYER_BUSINESS sizeof(business_increase_levels)
+
 #define SetPlayerToBusinessID(%0,%1) SetPVarInt(%0, "BusID",%1)
 #define GetPlayerToBusinessID(%0) GetPVarInt(%0, "BusID")
 new
@@ -478,25 +482,75 @@ business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	return 1;
 }
 
+stock GetPlayerBusinessMaximumCount(playerid)
+{
+	return GetBusinessMaximumCountByLevel( GetPlayerLevel(playerid) );
+}
+
+stock GetBusinessMaximumCountByLevel(level)
+{
+	new count = 0;
+
+	for (new i = 0; i < MAX_PLAYER_BUSINESS; i++) {
+		if (level >= business_increase_levels[i]) {
+			count++;
+		}
+	}
+
+	return count;
+}
+
+stock GetPlayerBusinessNearestLevel(playerid)
+{
+	new level = GetPlayerLevel(playerid);
+
+	for (new i = 0; i < MAX_PLAYER_BUSINESS; i++) {
+		if (business_increase_levels[i] > level) {
+			return business_increase_levels[i];
+		}
+	}
+
+	return -1;
+}
+
 stock bis_Buy(playerid)
 {
 	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
-	for (new i = 0, pl_business = 0; i < sizeof(Businesses); i++)
+
+	new
+		pl_business,
+		pl_business_count = GetPlayerHouseMaximumCount(playerid);
+
+	for (new i = 0; i < sizeof(Businesses); i++)
 	{
 		if (!strcmp(Businesses[i][Business_Owner], playername, true))
 		{
 			pl_business++;
-			if (pl_business >= MAX_PLAYER_BUSINESS)
+
+			if (pl_business >= pl_business_count)
 			{
-				return Lang_SendText(playerid, "BUSINESS_MAX_COUNT");
+				new
+					string[MAX_LANG_VALUE_STRING * 2],
+					pl_business_nearest;
+
+				Lang_GetPlayerText(playerid, "BUSINESS_BUY_MAX_LIMIT", string);
+				pl_business_nearest = GetPlayerHouseNearestLevel(playerid);
+
+				if (pl_business_nearest != -1) {
+					Lang_GetPlayerText(playerid, "BUSINESS_BUY_NEW_BUSINESS_LEVEL", string, _, string, pl_business_nearest);
+				}
+
+				Dialog_Message(playerid, "BUSINESS_BUY_HEADER", string, "BUSINESS_DIALOG_BUTTON_OK");
+				return 1;
 			}
 		}
 	}
 	new id = GetPlayerToBusinessID(playerid);
 	if (id <= -1)
 	{
-		return Lang_SendText(playerid, "BUSINESS_ERROR");
+		Dialog_Message(playerid, "BUSINESS_BUY_HEADER", "BUSINESS_ERROR", "BUSINESS_DIALOG_BUTTON_OK");
+		return 1;
 	}
 	if (GetPlayerLevel(playerid) < Businesses[id][Business_Level])
 	{

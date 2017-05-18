@@ -204,7 +204,7 @@
 //#define BUY_ALL_HOUSES // позволяет запретить покупать чужие дома(если закомментировано то чужие дома нельзя покупать)
 
 // business
-#define MAX_PLAYER_BUSINESS  3 // количество бизнесов, которые может иметь игрок(много ставить не рекомендуется)
+#define PLAYER_BUSINESS_INCREASE_LEVELS 0, 20, 40, 60 // уровни, при достижении которых увеличивается макс. бизнесов игрока
 #define MAX_BUSINESS_LEVEL   3 // максимальный уровень поднятия бизнеса
 #define UPGRADE_TARIF        100 // тариф денег на повышение уровня, формула: (Businesses[id][Business_Upgrade]+1) * Businesses[id][Business_Value] * UPGRADE_TARIF
 //#define BUY_ALL_BUSINESS // позволяет запретить покупать чужие бизнесы(если закомментировано то чужие бизнесы нельзя покупать)
