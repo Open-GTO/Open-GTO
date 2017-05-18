@@ -520,7 +520,7 @@ stock bis_Buy(playerid)
 
 	new
 		pl_business,
-		pl_business_count = GetPlayerHouseMaximumCount(playerid);
+		pl_business_count = GetPlayerBusinessMaximumCount(playerid);
 
 	for (new i = 0; i < sizeof(Businesses); i++)
 	{
@@ -535,7 +535,7 @@ stock bis_Buy(playerid)
 					pl_business_nearest;
 
 				Lang_GetPlayerText(playerid, "BUSINESS_BUY_MAX_LIMIT", string);
-				pl_business_nearest = GetPlayerHouseNearestLevel(playerid);
+				pl_business_nearest = GetPlayerBusinessNearestLevel(playerid);
 
 				if (pl_business_nearest != -1) {
 					Lang_GetPlayerText(playerid, "BUSINESS_BUY_NEW_BUSINESS_LEVEL", string, _, string, pl_business_nearest);
