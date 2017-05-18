@@ -227,7 +227,7 @@ DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
 
 DialogResponse:VehicleReturnMenu(playerid, response, listitem, inputtext[])
 {
-	if (!response) {
+	if (response) {
 		Dialog_Show(playerid, Dialog:VehicleMenu);
 	}
 	return 1;
@@ -248,7 +248,7 @@ DialogCreate:VehicleNumber(playerid)
 		Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
 		                 "VEHICLE_MENU_HEADER",
 		                 "VEHICLE_MENU_NUMBER_INVALID",
-		                 "BUTTON_OK", "BUTTON_BACK");
+		                 "BUTTON_BACK", "BUTTON_CANCEL");
 		return 0;
 	}
 
@@ -258,7 +258,7 @@ DialogCreate:VehicleNumber(playerid)
 		Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
 		                 "VEHICLE_MENU_HEADER",
 		                 "VEHICLE_MENU_NUMBER_INVALID",
-		                 "BUTTON_OK", "BUTTON_BACK");
+		                 "BUTTON_BACK", "BUTTON_CANCEL");
 		return 0;
 	}
 
@@ -268,7 +268,7 @@ DialogCreate:VehicleNumber(playerid)
 		Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
 		                 "VEHICLE_MENU_HEADER",
 		                 "VEHICLE_MENU_NUMBER_NOTOWNER",
-		                 "BUTTON_OK", "BUTTON_BACK");
+		                 "BUTTON_BACK", "BUTTON_CANCEL");
 		return 0;
 	}
 
@@ -305,6 +305,6 @@ DialogResponse:VehicleNumber(playerid, response, listitem, inputtext[])
 	Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
 	                 "VEHICLE_MENU_HEADER",
 	                 "VEHICLE_MENU_NUMBER_CHANGED",
-	                 "BUTTON_OK", "BUTTON_BACK");
+	                 "BUTTON_BACK", "BUTTON_CANCEL");
 	return 1;
 }
