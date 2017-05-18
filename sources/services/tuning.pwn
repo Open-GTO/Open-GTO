@@ -267,7 +267,7 @@ TextListCreate:tuning_menu(playerid)
 			if (compatible_types[i] == CARMODTYPE_VENT_RIGHT) {
 				new spacepos = strfind(type_name, " ");
 				if (spacepos != -1) {
-					strcpy(type_name, type_name, spacepos);
+					type_name[spacepos] = '\0';
 				}
 			}
 
