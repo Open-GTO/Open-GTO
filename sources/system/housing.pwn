@@ -204,6 +204,10 @@ new Houses[][HouseInfo] = {
 {"[LV]Suburban House", 500000, "Unknown", "Unknown", 120, 0, 0, 8, 0, 0, 0, "Unknown", 50000, 0, 0, -911.748300, 2686.420900, 42.370300, 2807.620117, -1171.900024, 1025.570312}
 };
 
+new house_increase_levels[] = {PLAYER_HOUSE_INCREASE_LEVELS};
+
+#define MAX_PLAYER_HOUSES sizeof(house_increase_levels)
+
 #define SetPlayerToHouseID(%0,%1) SetPVarInt(%0, "HausID",%1)
 #define GetPlayerToHouseID(%0) GetPVarInt(%0, "HausID")
 new
@@ -800,16 +804,63 @@ stock DeleteRenter(playerid)
 	return 1;
 }
 
+stock GetPlayerHouseMaximumCount(playerid)
+{
+	return GetHouseMaximumCountByLevel( GetPlayerLevel(playerid) );
+}
+
+stock GetHouseMaximumCountByLevel(level)
+{
+	new count = 0;
+
+	for (new i = 0; i < MAX_PLAYER_HOUSES; i++) {
+		if (level >= house_increase_levels[i]) {
+			count++;
+		}
+	}
+
+	return count;
+}
+
+stock GetPlayerHouseNearestLevel(playerid)
+{
+	new level = GetPlayerLevel(playerid);
+
+	for (new i = 0; i < MAX_PLAYER_HOUSES; i++) {
+		if (house_increase_levels[i] > level) {
+			return house_increase_levels[i];
+		}
+	}
+
+	return -1;
+}
+
 stock house_Buy(playerid)
 {
-	new playername[MAX_PLAYER_NAME+1], pl_houses=0;
+	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
+
+	new
+		pl_houses,
+		pl_houses_count = GetPlayerHouseMaximumCount(playerid);
 
 	for (new i = 0; i < sizeof(Houses); i++) {
 		if (!strcmp(Houses[i][Houses_Owner], playername, true)) {
 			pl_houses++;
-			if (pl_houses >= MAX_PLAYER_HOUSES) {
-				Dialog_Message(playerid, "HOUSING_BUY_HEADER", "HOUSING_BUY_MAX_LIMIT", "HOUSING_DIALOG_BUTTON_OK");
+
+			if (pl_houses >= pl_houses_count) {
+				new
+					string[MAX_LANG_VALUE_STRING],
+					pl_houses_nearest;
+
+				Lang_GetPlayerText(playerid, "HOUSING_BUY_MAX_LIMIT", string);
+				pl_houses_nearest = GetPlayerHouseNearestLevel(playerid);
+
+				if (pl_houses_nearest != -1) {
+					Lang_GetPlayerText(playerid, "HOUSING_BUY_NEW_HOUSE_LEVEL", string, _, string, pl_houses_nearest);
+				}
+
+				Dialog_Message(playerid, "HOUSING_BUY_HEADER", string, "HOUSING_DIALOG_BUTTON_OK");
 				return 1;
 			}
 		}

@@ -197,7 +197,7 @@
 #define WEAPON_DRIVEBY_DISABLED WEAPON_COLT45, WEAPON_SILENCED, WEAPON_DEAGLE, WEAPON_SHOTGSPA
 
 // house
-#define MAX_PLAYER_HOUSES          3 // количество домов, которые может иметь игрок(много ставить не рекомендуется)
+#define PLAYER_HOUSE_INCREASE_LEVELS 0, 20, 40, 60 // уровни, при достижении которых увеличивается макс. домов игрока
 #define HOUSE_UPGRADE_ARMOUR_COST  500000
 #define HOUSE_UPGRADE_HEALTH_COST  100000
 #define HOUSE_UPGRADE_USE_TIME     300 // время через которое можно использовать апгрейд в доме (в секундах)
