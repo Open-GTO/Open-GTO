@@ -341,6 +341,39 @@ static stock VehShop_CreatePlayerLabel(playerid, pos_id)
 		.attachedvehicle = gPositions[pos_id][e_vsID], .testlos = 1, .playerid = playerid);
 }
 
+static stock VehShop_UpdatePlayerLabel(playerid, pos_id)
+{
+	new Lang:lang = Lang_GetPlayerLang(playerid);
+	VehShop_UpdateLabelString(pos_id);
+	UpdateDynamic3DTextLabelText(gLabelID[pos_id][playerid], COLOR_WHITE, gLabelString[pos_id][lang]);
+}
+
+public OnAccountLanguageChanged(playerid, Lang:lang)
+{
+	for (new i = 0; i < sizeof(gPositions); i++) {
+		if (gPositions[i][e_vsID] == 0) {
+			continue;
+		}
+		VehShop_UpdatePlayerLabel(playerid, i);
+	}
+
+	#if defined VShop_OnAccountLanguageChanged
+		return VShop_OnAccountLanguageChanged(playerid, Lang:lang);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnAccountLanguageChanged
+	#undef OnAccountLanguageChanged
+#else
+	#define _ALS_OnAccountLanguageChanged
+#endif
+
+#define OnAccountLanguageChanged VShop_OnAccountLanguageChanged
+#if defined VShop_OnAccountLanguageChanged
+	forward VShop_OnAccountLanguageChanged(playerid, Lang:lang);
+#endif
+
 stock VehShop_OneHourTimer()
 {
 	static hours;

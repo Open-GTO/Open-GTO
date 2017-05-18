@@ -27,3 +27,5 @@ enum e_Account_Info {
 	e_aLanguage[MAX_LANG_NAME],
 	RussifierType:e_aRussifier,
 }
+
+forward OnAccountLanguageChanged(playerid, Lang:lang);
