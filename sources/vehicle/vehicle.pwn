@@ -1968,7 +1968,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 #if defined OLD_ENGINE_DO
 	if (oldstate == PLAYER_STATE_DRIVER) {
 		new vehicleid = GetPlayerPreviousVehicleID(playerid);
-		if (vehicleid != INVALID_VEHICLE_ID && IsVehicleOccupied(vehicleid)) {
+		if (vehicleid != INVALID_VEHICLE_ID && !IsVehicleOccupied(vehicleid)) {
 			Vehicle_ToggleEngine(vehicleid, VEHICLE_PARAMS_OFF);
 		}
 	}
