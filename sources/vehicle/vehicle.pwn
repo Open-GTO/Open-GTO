@@ -2095,12 +2095,12 @@ stock Vehicle_ToggleLight(vehicleid, newstate = VEHICLE_PARAMS_UNSET)
 	new engine, lights, alarm, doors, bonnet, boot, objective;
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 
-	if (newstate == engine) {
+	if (newstate == lights) {
 		return 0;
 	}
 
 	if (newstate == VEHICLE_PARAMS_UNSET) {
-		if (engine == VEHICLE_PARAMS_OFF) {
+		if (lights == VEHICLE_PARAMS_OFF) {
 			newstate = VEHICLE_PARAMS_ON;
 		} else {
 			newstate = VEHICLE_PARAMS_OFF;
