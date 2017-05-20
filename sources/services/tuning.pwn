@@ -253,7 +253,7 @@ TextListCreate:tuning_menu(playerid)
 	new placeid = gInfo[playerid][e_tPlaceID];
 
 	if (gTuningPlace[placeid][e_tpType] == TUNING_PLACE_TYPE_TUNING) {
-		new type_name[ZVEH_MAX_COMPONENT_TYPE_NAME];
+		new type_name[TEXTLIST_MAX_ITEM_NAME];
 
 		for (new i = 0; i < compatible_types_count; i++) {
 			if (IsVehicleComponentTypeIgnored(compatible_types[i])) {
@@ -262,13 +262,10 @@ TextListCreate:tuning_menu(playerid)
 
 			gInfo[playerid][e_tListTypes][item_index] = compatible_types[i];
 
-			GetVehicleComponentTypeName(compatible_types[i], type_name);
+			PL_GetVehicleComponentTypeName(playerid, compatible_types[i], type_name);
 
 			if (compatible_types[i] == CARMODTYPE_VENT_RIGHT) {
-				new spacepos = strfind(type_name, " ");
-				if (spacepos != -1) {
-					type_name[spacepos] = '\0';
-				}
+				Lang_GetPlayerText(playerid, "VEHICLE_COMPONENT_VENT", type_name);
 			}
 
 			Lang_GetPlayerText(playerid, "TUNING_TD_TYPE_FORMAT",
@@ -374,13 +371,10 @@ TextListCreate:component_list(playerid)
 	gInfo[playerid][e_tListCount] = item_index;
 
 	new header[TEXTLIST_MAX_ITEM_NAME];
-	GetVehicleComponentTypeName(type, header);
+	PL_GetVehicleComponentTypeName(playerid, type, header);
 
 	if (type == CARMODTYPE_VENT_RIGHT) {
-		new spacepos = strfind(header, " ");
-		if (spacepos != -1) {
-			strmid(header, header, 0, spacepos);
-		}
+		Lang_GetPlayerText(playerid, "VEHICLE_COMPONENT_VENT", header);
 	}
 
 	new
@@ -401,6 +395,12 @@ TextListResponse:component_list(playerid, TextListType:response, itemid, itemval
 	if (response == TextList_ListItem) {
 		gInfo[playerid][e_tComponent] = gInfo[playerid][e_tListComponents][itemid];
 		AddVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
+
+		new type = GetVehicleComponentType(gInfo[playerid][e_tComponent]);
+		if (type == CARMODTYPE_SIDESKIRT || type == CARMODTYPE_VENT_RIGHT) {
+			AddVehicleComponent(gInfo[playerid][e_tVehicle], gInfo[playerid][e_tComponent]);
+		}
+
 		PlayerPlaySoundOnPlayer(playerid, 1083);
 	} else if (response == TextList_Button1) {
 		if (gInfo[playerid][e_tComponent] == ZVEH_INVALID_COMPONENT_ID) {
@@ -736,4 +736,25 @@ stock IsVehicleComponentTypeIgnored(type)
 	}
 
 	return 0;
+}
+
+stock PL_GetVehicleComponentTypeName(playerid, type, name[], size = sizeof(name))
+{
+	if (!GetVehicleComponentTypeName(type, name, size)) {
+		return 0;
+	}
+
+	for (new i = 0; i < size; i++) {
+		if (name[i] == '\0') {
+			break;
+		} else if (name[i] == ' ') {
+			name[i] = '_';
+		} else {
+			name[i] = toupper(name[i]);
+		}
+	}
+
+	format(name, size, "VEHICLE_COMPONENT_%s", name);
+	Lang_GetPlayerText(playerid, name, name, size);
+	return 1;
 }
