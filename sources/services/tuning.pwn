@@ -622,6 +622,7 @@ stock Tuning_Start(playerid)
 	gInfo[playerid][e_tCameraType] = type;
 
 	TogglePlayerControllable(playerid, 0);
+	TogglePlayerInterfaceVisibility(playerid, false, _, PI_WeaponSkill, PI_Health, PI_Armour);
 
 	foreach (new id : Player) {
 		if (!IsPlayerInVehicle(id, vehicleid)) {
@@ -658,6 +659,7 @@ stock Tuning_Stop(playerid)
 	gInfo[playerid][e_tModel] = 0;
 
 	TogglePlayerControllable(playerid, 1);
+	TogglePlayerInterfaceVisibility(playerid, true, _, PI_WeaponSkill, PI_Health, PI_Armour);
 
 	// player
 	foreach (new id : Player) {

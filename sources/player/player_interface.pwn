@@ -81,7 +81,7 @@ stock DecodePlayerInterfaceData(playerid, PlayerInterfaceParams:paramid, data)
 	}
 }
 
-stock TogglePlayerInterfaceVisibility(playerid, bool:show, bool:skip_init = false)
+stock TogglePlayerInterfaceVisibility(playerid, bool:show, bool:skip_init = false, PlayerInterface:...)
 {
 	gPlayerInterfaceVisible[playerid] = show;
 
@@ -89,12 +89,26 @@ stock TogglePlayerInterfaceVisibility(playerid, bool:show, bool:skip_init = fals
 		return;
 	}
 
-	for (new pinterface; pinterface < sizeof(gPlayerInterface[]); pinterface++) {
-		if (show && !gPlayerInterface[playerid][PlayerInterface:pinterface][PIP_Visible]) {
-			continue;
-		}
+	new args_count = numargs();
 
-		CallLocalFunction("OnPlayerInterfaceChanged", "iiiii", playerid, pinterface, _:PIP_Visible, 0, _:show);
+	if (args_count > 3) {
+		for (new i = 3, pinterface; i < args_count; i++) {
+			pinterface = getarg(i);
+
+			if (show && !gPlayerInterface[playerid][PlayerInterface:pinterface][PIP_Visible]) {
+				continue;
+			}
+
+			CallLocalFunction("OnPlayerInterfaceChanged", "iiiii", playerid, pinterface, _:PIP_Visible, 0, _:show);
+		}
+	} else {
+		for (new pinterface; pinterface < sizeof(gPlayerInterface[]); pinterface++) {
+			if (show && !gPlayerInterface[playerid][PlayerInterface:pinterface][PIP_Visible]) {
+				continue;
+			}
+
+			CallLocalFunction("OnPlayerInterfaceChanged", "iiiii", playerid, pinterface, _:PIP_Visible, 0, _:show);
+		}
 	}
 }
 
