@@ -614,6 +614,7 @@ stock Tuning_Start(playerid)
 	LinkVehicleToInterior(vehicleid, TUNING_VEHICLE_INTERIOR);
 
 	RepairVehicle(vehicleid);
+	PlayerPlaySoundOnPlayer(playerid, 1133);
 	Vehicle_ToggleEngine(vehicleid, VEHICLE_PARAMS_OFF);
 
 	// player
