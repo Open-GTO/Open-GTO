@@ -12,14 +12,6 @@
 #define _admin_cmd_skill_included
 
 /*
-	Defines
-*/
-
-#if !defined PLAYER_SKILL_SLOTS
-	#define PLAYER_SKILL_SLOTS 11
-#endif
-
-/*
 	Command
 */
 
@@ -35,7 +27,7 @@ COMMAND:skill(playerid, params[])
 		weaponid,
 		amount;
 
-	if (sscanf(params, "s[5]s[32]K<weapon>(-1)I(0)", subcmd, subparams, weaponid, amount)) {
+	if (sscanf(params, "s[5]s[32]I(-1)I(0)", subcmd, subparams, weaponid, amount)) {
 		Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_HELP");
 		return 1;
 	}
@@ -53,7 +45,9 @@ COMMAND:skill(playerid, params[])
 	new
 		skillid = INVALID_WEAPON_SKILL_ID;
 
-	if (weaponid != -1) {
+	if (0 <= weaponid < MAX_WEAPON_SKILL_LEVEL) {
+		skillid = weaponid;
+	} else if (weaponid != -1) {
 		skillid = GetWeaponSkillID(weaponid);
 
 		if (skillid == INVALID_WEAPON_SKILL_ID) {
@@ -111,7 +105,7 @@ COMMAND:skill(playerid, params[])
 		Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_GET", targetname, targetid);
 
 		if (skillid == -1) {
-			for (new skill = 0; skill < PLAYER_SKILL_SLOTS; skill++) {
+			for (new skill = 0; skill < MAX_WEAPON_SKILLS; skill++) {
 				amount = GetPlayerSkillLevel(playerid, skill);
 				GetWeaponSkillName(skill, string);
 
