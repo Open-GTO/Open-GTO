@@ -36,6 +36,7 @@ Thanks:
 */
 
 #include <a_samp>
+#include <a_http>
 
 // configuration
 #include "config.inc"
