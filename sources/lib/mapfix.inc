@@ -1,4 +1,4 @@
-//MapFix by Nexius v2.9.1
+//MapFix by Nexius v3.0.0
 
 #if defined _mapfix_included
 	#endinput
@@ -7,9 +7,9 @@
 
 #include <a_samp>
 
-#define MAPFIX_VERSION		"2.9.1"
+#define MAPFIX_VERSION		"3.0.0"
 
-#define MAX_MAPFIX_OBJECTS	322
+#define MAX_MAPFIX_OBJECTS	332
 
 //Uncomment to enable
 //#define USE_INCOGNITO_STREAMER
@@ -96,7 +96,7 @@ CreateMapFixObjects()
 {
 	#if defined USE_INCOGNITO_STREAMER\
 		&& defined CreateDynamicObject
-		#define mf_CreateObject(%0,%1,%2,%3,%4,%5,%6,%7) CreateDynamicObject(%0,%1,%2,%3,%4,%5,%6, -1, -1, -1, %7)
+		#define mf_CreateObject(%0,%1,%2,%3,%4,%5,%6,%7) CreateDynamicObject(%0, %1, %2, %3, %4, %5, %6, -1, -1, -1, %7)
 		#define mf_SetObjectMaterial SetDynamicObjectMaterial
 	#else
 		#define mf_CreateObject CreateObject
@@ -726,6 +726,27 @@ CreateMapFixObjects()
 	#endif
 	#if !defined DISABLE_MAPFIX_PLACE_95 //By KinG7
 		MapFixObjects[321] = mf_CreateObject(1498, 2038.036, 2721.37, 10.53, 0.0, 0.0, -180.0, 150.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_96
+		MapFixObjects[322] = mf_CreateObject(2957, -2550.5, 193.9, 6.5, 0.0, 0.0, 285.5, 3.0);
+		mf_SetObjectMaterial(MapFixObjects[322], 0, 0, "none", "none", 0x00000000);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_97
+		MapFixObjects[323] = mf_CreateObject(3037, 875.6, -1565.0, 16.7, 0.0, 270.0, 293.0, 6.0);
+		MapFixObjects[324] = mf_CreateObject(2957, 869.3, -1567.8, 16.7, 90.0, 0.0, 12.0, 3.0);
+		MapFixObjects[325] = mf_CreateObject(2957, 882.3, -1562.4, 16.7, 90.0, 0.0, 31.997, 3.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_98
+		MapFixObjects[326] = mf_CreateObject(3037, 770.2, -3.6, 1004.2, 0.0, 90.0, 90.0, 6.0);
+		MapFixObjects[327] = mf_CreateObject(3037, 760.0, -3.6, 1004.2, 0.0, 90.0, 90.0, 6.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_99
+		MapFixObjects[328] = mf_CreateObject(3117, 145.2, -199.6, 3.95, 0.0, 0.0, 315.25, 3.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_100
+		MapFixObjects[329] = mf_CreateObject(10184, 353.2, -1603.6, 36.1, 0.0, 90.0, 88.25, 9.0);
+		MapFixObjects[330] = mf_CreateObject(10184, 370.2, -1604.1, 36.1, 0.0, 90.0, 88.25, 9.0);
+		MapFixObjects[331] = mf_CreateObject(10184, 387.2, -1604.6, 36.1, 0.0, 90.0, 88.25, 9.0);
 	#endif
 	#undef mf_CreateObject
 	#undef mf_SetObjectMaterial
