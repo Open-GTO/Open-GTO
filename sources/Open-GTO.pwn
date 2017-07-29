@@ -57,7 +57,6 @@ Thanks:
 #include "lib/mxINI/mxINI.inc"
 #include "lib/mapfix.inc"
 #include "lib/getspawninfo/getspawninfo.inc"
-#include "lib/getweather/getweather.inc"
 #include "lib/protection/protection.inc"
 #include "lib/zmessage/zmessage.inc"
 #include "lib/time_t/time_t.inc"
