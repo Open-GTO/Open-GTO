@@ -1,5 +1,5 @@
 /**
- * Log plugin v0.2.1
+ * Log plugin v0.4
  * by maddinat0r
  */
 
@@ -17,10 +17,13 @@ enum E_LOGLEVEL
 	INFO = 2,
 	WARNING = 4,
 	ERROR = 8,
-
+	
 	ALL = ERROR | WARNING | INFO | DEBUG
 };
 #endif
+
+
+native SetLogPluginLogLevel(E_LOGLEVEL:level);
 
 
 native Logger:CreateLog(const name[], E_LOGLEVEL:level = INFO | WARNING | ERROR, bool:debuginfo = true);

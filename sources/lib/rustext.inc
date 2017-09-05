@@ -105,7 +105,7 @@ native RussifierType:GetDefaultRussifierType();
 	{
 		if (index == 0 && response_code == 200) {
 			new length = strlen(data);
-			if (length == 0) {
+			if (length == 0 || length > 10) {
 				return;
 			}
 
@@ -114,7 +114,7 @@ native RussifierType:GetDefaultRussifierType();
 			GetRussifierVersion(plugin_version);
 
 			if (strcmp(last_version, plugin_version) != 0) {
-				printf("\n** Please update your rustext plugin to %s from here: https://github.com/ziggi/rustext/releases.\n", data);
+				printf("\n** Please update your rustext plugin to %s from here: https://github.com/ziggi/rustext/releases.\n", last_version);
 			}
 		}
 	}
