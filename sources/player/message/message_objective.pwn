@@ -70,7 +70,7 @@ public OnPlayerConnect(playerid)
  * Public functions
  */
 
-stock Message_Objective(playerid, info[], time = 4000, hcolor = -1, notvar_flags = MESSAGE_NOTVAR_NONE, va_args<>)
+stock Message_Objective(playerid, info[], time = 4000, hcolor = -1, notvar_flags = MESSAGE_NOTVAR_NONE, lang_args<>)
 {
 	if (strlen(info) == 0) {
 		return 0;
@@ -85,7 +85,7 @@ stock Message_Objective(playerid, info[], time = 4000, hcolor = -1, notvar_flags
 		strcpy(temp_info, info);
 	}
 
-	va_format(temp_info, sizeof(temp_info), temp_info, va_start<5>);
+	Lang_format(temp_info, sizeof(temp_info), temp_info, lang_start<5>);
 
 	PlayerTextDrawColor(playerid, TD_Info[playerid], hcolor);
 	PlayerTextDrawSetString(playerid, TD_Info[playerid], temp_info);

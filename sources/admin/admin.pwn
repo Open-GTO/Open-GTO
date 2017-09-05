@@ -56,7 +56,7 @@ stock SendClientMessageToModers(senderid, text[])
 	return 0;
 }
 
-stock Admin_SendProtectReport(issuerid, var[], va_args<>)
+stock Admin_SendProtectReport(issuerid, var[], lang_args<>)
 {
 	static
 		text[MAX_LANG_VALUE_STRING],
@@ -69,7 +69,7 @@ stock Admin_SendProtectReport(issuerid, var[], va_args<>)
 		return 0;
 	}
 
-	va_format(text, sizeof(text), text, va_start<2>);
+	Lang_format(text, sizeof(text), text, lang_start<2>);
 
 	foreach (new adminid : Player) {
 		if (!IsPlayerHavePrivilege(adminid, PlayerPrivilegeModer)) {

@@ -137,7 +137,7 @@ forward OnPlayerConnect(playerid);
  * Public functions
  */
 
-stock Message_Alert(playerid, caption[], info[], time = 4000, hcolor = -5963521, bool:with_sound = true, notvar_flags = MESSAGE_NOTVAR_NONE, va_args<>)
+stock Message_Alert(playerid, caption[], info[], time = 4000, hcolor = -5963521, bool:with_sound = true, notvar_flags = MESSAGE_NOTVAR_NONE, lang_args<>)
 {
 	new id = GetFreeSlot(playerid);
 	if (id == -1) {
@@ -164,7 +164,7 @@ stock Message_Alert(playerid, caption[], info[], time = 4000, hcolor = -5963521,
 		strcpy(messages[playerid][id][e_aInfo], info, MAX_LANG_VALUE_STRING);
 	}
 
-	va_format(messages[playerid][id][e_aInfo], MAX_LANG_VALUE_STRING, messages[playerid][id][e_aInfo], va_start<7>);
+	Lang_format(messages[playerid][id][e_aInfo], MAX_LANG_VALUE_STRING, messages[playerid][id][e_aInfo], lang_start<7>);
 
 	messages[playerid][id][e_aIsBusy] = true;
 	messages[playerid][id][e_aTime] = time;

@@ -83,12 +83,12 @@ public OnGameModeExit()
 	Log_Init
 */
 
-stock Log_Init(const category[], const msg[], va_args<>)
+stock Log_Init(const category[], const msg[], lang_args<>)
 {
 	static
 		text[256];
 
-	va_format(text, sizeof(text), msg, va_start<2>);
+	Lang_format(text, sizeof(text), msg, lang_start<2>);
 	format(text, sizeof(text), "[init] [%s]: %s", category, text);
 
 	printf(text);
