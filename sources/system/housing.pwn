@@ -211,7 +211,7 @@ new house_increase_levels[] = {PLAYER_HOUSE_INCREASE_LEVELS};
 #define SetPlayerToHouseID(%0,%1) SetPVarInt(%0, "HausID",%1)
 #define GetPlayerToHouseID(%0) GetPVarInt(%0, "HausID")
 new
-	house_icon[ sizeof(Houses) ],
+	house_icon[ sizeof(Houses) ] = {INVALID_STREAMER_ID, ...},
 	Float:HouseDistanceOfShowLabel = 20.0,
 	HouseUpKeepRatio = 1000;
 

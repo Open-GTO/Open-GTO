@@ -99,7 +99,7 @@ new business_increase_levels[] = {PLAYER_BUSINESS_INCREASE_LEVELS};
 #define SetPlayerToBusinessID(%0,%1) SetPVarInt(%0, "BusID",%1)
 #define GetPlayerToBusinessID(%0) GetPVarInt(%0, "BusID")
 new
-	business_icon[ sizeof(Businesses) ],
+	business_icon[ sizeof(Businesses) ] = {INVALID_STREAMER_ID, ...},
 	Float:BusinessDistanceOfShowLabel=20.0;
 
 static
@@ -605,7 +605,9 @@ stock bis_Buy(playerid)
 		strcpy(Businesses[id][Business_Owner], playername, MAX_PLAYER_NAME);
 		Businesses[id][Business_Buyout] = 0;
 
-		Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, business_icon[id], E_STREAMER_TYPE, 36);
+		if (business_icon[id] != INVALID_STREAMER_ID) {
+			Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, business_icon[id], E_STREAMER_TYPE, 36);
+		}
 		business_UpdateLabel(id);
 
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
@@ -646,7 +648,9 @@ stock bis_Sell(playerid)
 		Businesses[id][Business_Buyout] = 0;
 		Businesses[id][Business_Upgrade] = 1;
 
-		Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, business_icon[id], E_STREAMER_TYPE, 52);
+		if (business_icon[id] != INVALID_STREAMER_ID) {
+			Streamer_SetIntData(STREAMER_TYPE_MAP_ICON, business_icon[id], E_STREAMER_TYPE, 52);
+		}
 		business_UpdateLabel(id);
 
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
