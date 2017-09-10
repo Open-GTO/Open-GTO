@@ -15,6 +15,16 @@
 
 #define MAX_FASTFOOD_ACTORS 37
 
+#if !defined FASTFOOD_EAT_TIME
+	#define FASTFOOD_EAT_TIME 3500
+#endif
+
+/*
+	Forwards
+*/
+
+forward ClearFastfoodPlayerObjects(playerid, objectid);
+
 /*
 	Enums
 */
@@ -35,7 +45,21 @@ enum e_Fastfood_Info {
 enum e_Food_Info {
 	e_fNameVar[MAX_LANG_VAR_STRING],
 	e_fCost,
-	Float:e_fHealth
+	Float:e_fHealth,
+	e_fAnimLib[16],
+	e_fAnimName[16],
+	e_fModel,
+	Float:e_fOffsetX,
+	Float:e_fOffsetY,
+	Float:e_fOffsetZ,
+	Float:e_fRotX,
+	Float:e_fRotY,
+	Float:e_fRotZ,
+	Float:e_fScaleX,
+	Float:e_fScaleY,
+	Float:e_fScaleZ,
+	e_fMaterialColor1,
+	e_fMaterialColor2,
 }
 
 /*
@@ -51,11 +75,11 @@ static gFastFoodPlace[][e_Fastfood_Info] = {
 };
 
 static gFoodInfo[][e_Food_Info] = {
-	{"FASTFOOD_TYPE_0", 10, 10.0},
-	{"FASTFOOD_TYPE_1", 15, 25.0},
-	{"FASTFOOD_TYPE_2", 25, 50.0},
-	{"FASTFOOD_TYPE_3", 35, 80.0},
-	{"FASTFOOD_TYPE_4", 45, 100.0}
+	{"FASTFOOD_TYPE_0", 10, 10.0,  "FOOD", "EAT_Burger",  2880,  0.02, 0.0, 0.0, 0.0, 0.0, 0.0, 0.8, 0.8, 0.8, 0, 0},
+	{"FASTFOOD_TYPE_1", 15, 25.0,  "FOOD", "EAT_Burger",  2769,  0.09, 0.03, 0.0, 90.0, 30.0, -120.0, 0.8, 0.8, 0.8, 0, 0},
+	{"FASTFOOD_TYPE_2", 25, 50.0,  "FOOD", "EAT_Pizza",   2702,  0.07, 0.1, 0.0, 0.0, -7.3, 0.0, 0.6, 0.6, 0.6, 0, 0},
+	{"FASTFOOD_TYPE_3", 35, 80.0,  "FOOD", "EAT_Chicken", 2804,  0.03, 0.04, 0.06, -90.0, 0.0, 180.0, 0.3, 0.3, 0.3, 0, 0},
+	{"FASTFOOD_TYPE_4", 45, 100.0, "FOOD", "EAT_Chicken", 19847, 0.08, 0.02, 0.0, 90.0, 0.0, 180.0, 0.5, 0.5, 0.5, 0, 0}
 };
 
 static
@@ -232,7 +256,8 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 	new
 		name[MAX_LANG_VALUE_STRING],
 		Float:max_health,
-		Float:health;
+		Float:health,
+		obj_idx;
 
 	Lang_GetPlayerText(playerid, gFoodInfo[id][e_fNameVar], name);
 	GetPlayerMaxHealth(playerid, max_health);
@@ -245,7 +270,13 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 	}
 
 	GivePlayerMoney(playerid, -gFoodInfo[id][e_fCost]);
-	ApplyAnimation(playerid, "FOOD", "EAT_Burger", 4.1, 0, 1, 1, 1, 1, 1);
+	obj_idx = AddPlayerAttachedObject(playerid, gFoodInfo[id][e_fModel], 6,
+	                                  gFoodInfo[id][e_fOffsetX], gFoodInfo[id][e_fOffsetY], gFoodInfo[id][e_fOffsetZ],
+	                                  gFoodInfo[id][e_fRotX], gFoodInfo[id][e_fRotY], gFoodInfo[id][e_fRotZ],
+	                                  gFoodInfo[id][e_fScaleX], gFoodInfo[id][e_fScaleY], gFoodInfo[id][e_fScaleZ],
+	                                  gFoodInfo[id][e_fMaterialColor1], gFoodInfo[id][e_fMaterialColor2]);
+	SetTimerEx("ClearFastfoodPlayerObjects", FASTFOOD_EAT_TIME, 0, "ii", playerid, obj_idx);
+	ApplyAnimation(playerid, gFoodInfo[id][e_fAnimLib], gFoodInfo[id][e_fAnimName], 4.1, 0, 0, 0, 0, 0, 1);
 	PlayerPlaySoundOnPlayer(playerid, 32200);
 
 	Dialog_Message(playerid,
@@ -259,7 +290,13 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 	return 1;
 }
 
-stock IsPlayerAtFastgFoodInfo(playerid)
+public ClearFastfoodPlayerObjects(playerid, objectid)
+{
+	RemovePlayerAttachedObject(playerid, objectid);
+	return 1;
+}
+
+stock IsPlayerAtFastFoodInfo(playerid)
 {
 	for (new ff_id = 0; ff_id < sizeof(gFastFoodPlace); ff_id++) {
 		if (IsPlayerInRangeOfPoint(playerid, 2, gFastFoodPlace[ff_id][e_ffPosX], gFastFoodPlace[ff_id][e_ffPosY], gFastFoodPlace[ff_id][e_ffPosZ])) {

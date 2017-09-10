@@ -106,6 +106,7 @@ Thanks:
 #include "core/declension.pwn"
 #include "core/spectate.pwn"
 #include "core/zones.pwn"
+#include "core/attached_objects.pwn"
 
 // system
 #include "system/weapons.pwn"
