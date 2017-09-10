@@ -35,7 +35,7 @@ static
 	#endif
 	if(MapFixIsEnabled < 2)
 	{
-		printf("MapFix by Nexius v%s loaded (include version).\a", MAPFIX_VERSION);
+		printf("MapFix by Nexius v%s loaded (include version).", MAPFIX_VERSION);
 		CreateMapFixObjects();
 	}
 	#if !defined _inc_y_hooks && !defined _INC_y_hooks\
@@ -66,7 +66,7 @@ static
 {
 	if(MapFixIsEnabled < 2)
 	{
-		printf("MapFix by Nexius v%s unloaded (include version).\a", MAPFIX_VERSION);
+		// printf("MapFix by Nexius v%s unloaded (include version).\a", MAPFIX_VERSION);
 		DestroyMapFixObjects();
 		#if defined DeleteSVar
 			DeleteSVar("MapFixIsEnabled");
