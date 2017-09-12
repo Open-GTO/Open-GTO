@@ -64,7 +64,7 @@ static
 public OnGameModeInit()
 {
 	td_background = TextDrawCreate(ALERT_POS_X, ALERT_POS_Y, "alert_background");
-	TextDrawLetterSize(td_background, 0.0, 0.85);
+	TextDrawLetterSize(td_background, 0.0, 1.02);
 	TextDrawTextSize(td_background, ALERT_POS_X + ALERT_WIDTH, 0.0);
 	TextDrawAlignment(td_background, 1);
 	TextDrawColor(td_background, -2139062017);
@@ -75,8 +75,11 @@ public OnGameModeInit()
 	TextDrawBackgroundColor(td_background, 16777215);
 	TextDrawFont(td_background, 1);
 
-	CallLocalFunction("GTOALERT_OnGameModeInit", "");
-	return 1;
+	#if defined AlertMsg_OnGameModeInit
+		return AlertMsg_OnGameModeInit();
+	#else
+		return 1;
+	#endif
 }
 
 #if defined _ALS_OnGameModeInit
@@ -84,20 +87,20 @@ public OnGameModeInit()
 #else
 	#define _ALS_OnGameModeInit
 #endif
-#define OnGameModeInit GTOALERT_OnGameModeInit
+#define OnGameModeInit AlertMsg_OnGameModeInit
 forward OnGameModeInit();
 
 
 public OnPlayerConnect(playerid)
 {
-	td_strip[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y + 15.5, "_");
-	PlayerTextDrawLetterSize(playerid, td_strip[playerid], 0.0, -0.6);
+	td_strip[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y + 15.0, "_");
+	PlayerTextDrawLetterSize(playerid, td_strip[playerid], 0.0, -0.5);
 	PlayerTextDrawTextSize(playerid, td_strip[playerid], ALERT_POS_X + ALERT_WIDTH, 0.0);
 	PlayerTextDrawUseBox(playerid, td_strip[playerid], true);
 	PlayerTextDrawBoxColor(playerid, td_strip[playerid], 0xFF0000FF);
 
 	td_header[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y - 1.5, "Header");
-	PlayerTextDrawLetterSize(playerid, td_header[playerid], 0.4, 1.5);
+	PlayerTextDrawLetterSize(playerid, td_header[playerid], 0.35, 1.45);
 	PlayerTextDrawTextSize(playerid, td_header[playerid], ALERT_POS_X + ALERT_WIDTH, 0.0);
 	PlayerTextDrawAlignment(playerid, td_header[playerid], 1);
 	PlayerTextDrawColor(playerid, td_header[playerid], -5963521);
@@ -120,8 +123,11 @@ public OnPlayerConnect(playerid)
 	PlayerTextDrawFont(playerid, td_content[playerid], 1);
 	PlayerTextDrawSetProportional(playerid, td_content[playerid], 1);
 
-	CallLocalFunction("GTOALERT_OnPlayerConnect", "i", playerid);
-	return 1;
+	#if defined AlertMsg_OnPlayerConnect
+		return AlertMsg_OnPlayerConnect(playerid);
+	#else
+		return 1;
+	#endif
 }
 
 #if defined _ALS_OnPlayerConnect
@@ -129,7 +135,7 @@ public OnPlayerConnect(playerid)
 #else
 	#define _ALS_OnPlayerConnect
 #endif
-#define OnPlayerConnect GTOALERT_OnPlayerConnect
+#define OnPlayerConnect AlertMsg_OnPlayerConnect
 forward OnPlayerConnect(playerid);
 
 
