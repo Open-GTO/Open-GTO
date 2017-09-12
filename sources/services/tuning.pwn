@@ -107,6 +107,7 @@ enum e_Tuning_Info {
 	e_tCameraType,
 	// other
 	e_tPlaceID,
+	bool:e_tAfterExit,
 }
 
 static
@@ -177,6 +178,10 @@ Tuning_OnPlayerConnect(playerid)
 Tuning_OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 {
 	for (new i = 0; i < sizeof(gTuningPlace); i++) {
+		if (gInfo[playerid][e_tAfterExit]) {
+			continue;
+		}
+
 		if (areaid == gTuningPlace[i][e_tpDynamic]) {
 			if (IsPlayerInAnyVehicle(playerid)) {
 				if (GetPlayerVehicleSeat(playerid) == 0) {
@@ -200,6 +205,7 @@ Tuning_OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 	for (new i = 0; i < sizeof(gTuningPlace); i++) {
 		if (areaid == gTuningPlace[i][e_tpDynamic] && !IsPlayerInTuning(playerid)) {
 			gInfo[playerid][e_tPlaceID] = -1;
+			gInfo[playerid][e_tAfterExit] = false;
 			return 1;
 		}
 	}
@@ -605,6 +611,7 @@ stock Tuning_Start(playerid)
 		return 0;
 	}
 
+	gInfo[playerid][e_tAfterExit] = false;
 	gInfo[playerid][e_tModel] = GetVehicleModel(vehicleid);
 
 	// vehicle
@@ -656,6 +663,7 @@ stock Tuning_Stop(playerid)
 
 	Vehicle_ToggleEngine(vehicleid, VEHICLE_PARAMS_ON);
 
+	gInfo[playerid][e_tAfterExit] = true;
 	gInfo[playerid][e_tModel] = 0;
 
 	TogglePlayerControllable(playerid, 1);
