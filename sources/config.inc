@@ -277,6 +277,13 @@
 #define SWAGUP_XP_RATE      300 // коэффициент количества опыта за поднятие поклажи
 #define SWAGUP_PAUSE_TIME   480000
 
+/*
+	Message Idexes
+*/
+
+enum {
+	MESSAGE_INDEX_TUNING,
+}
 
 /*
  * CoordInfo

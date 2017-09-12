@@ -13,22 +13,34 @@
 
 
 /*
- * Macros
- */
+	Macros
+*/
 
-#define ALERT_POS_X     479.5
-#define ALERT_POS_Y     286.5
-#define ALERT_WIDTH     144
+#if !defined ALERT_POS_X
+	#define ALERT_POS_X 479.5
+#endif
 
-#define MAX_CACHE_ALERT 6
+#if !defined ALERT_POS_Y
+	#define ALERT_POS_Y 286.5
+#endif
 
+#if !defined ALERT_WIDTH
+	#define ALERT_WIDTH 144
+#endif
+
+#if !defined MAX_CACHE_ALERT
+	#define MAX_CACHE_ALERT 6
+#endif
+
+#define INVALID_ALERT_ID -1
 
 /*
- * Enums
- */
+	Enums
+*/
 
 enum e_Alerts_Info {
 	bool:e_aIsBusy,
+	e_aIndex,
 	e_aCaption[MAX_LANG_VALUE_STRING],
 	e_aInfo[MAX_LANG_VALUE_STRING],
 	e_aTime,
@@ -44,36 +56,35 @@ enum (<<= 1) {
 }
 
 /*
- * Vars
- */
+	Vars
+*/
 
 static
-	Text:td_background,
-	PlayerText:td_strip[MAX_PLAYERS],
-	PlayerText:td_header[MAX_PLAYERS],
-	PlayerText:td_content[MAX_PLAYERS],
+	Text:TD_Background,
+	PlayerText:TD_Strip[MAX_PLAYERS],
+	PlayerText:TD_Header[MAX_PLAYERS],
+	PlayerText:TD_Content[MAX_PLAYERS],
 
-	timer_id[MAX_PLAYERS] = {0, ...},
-	messages[MAX_PLAYERS][MAX_CACHE_ALERT][e_Alerts_Info];
-
+	gTimerID[MAX_PLAYERS] = {0, ...},
+	gMessages[MAX_PLAYERS][MAX_CACHE_ALERT][e_Alerts_Info];
 
 /*
- * For public
- */
+	OnGameModeInit
+*/
 
 public OnGameModeInit()
 {
-	td_background = TextDrawCreate(ALERT_POS_X, ALERT_POS_Y, "alert_background");
-	TextDrawLetterSize(td_background, 0.0, 1.02);
-	TextDrawTextSize(td_background, ALERT_POS_X + ALERT_WIDTH, 0.0);
-	TextDrawAlignment(td_background, 1);
-	TextDrawColor(td_background, -2139062017);
-	TextDrawUseBox(td_background, true);
-	TextDrawBoxColor(td_background, 100);
-	TextDrawSetShadow(td_background, 0);
-	TextDrawSetOutline(td_background, 0);
-	TextDrawBackgroundColor(td_background, 16777215);
-	TextDrawFont(td_background, 1);
+	TD_Background = TextDrawCreate(ALERT_POS_X, ALERT_POS_Y, "alert_background");
+	TextDrawLetterSize(TD_Background, 0.0, 1.02);
+	TextDrawTextSize(TD_Background, ALERT_POS_X + ALERT_WIDTH, 0.0);
+	TextDrawAlignment(TD_Background, 1);
+	TextDrawColor(TD_Background, -2139062017);
+	TextDrawUseBox(TD_Background, true);
+	TextDrawBoxColor(TD_Background, 100);
+	TextDrawSetShadow(TD_Background, 0);
+	TextDrawSetOutline(TD_Background, 0);
+	TextDrawBackgroundColor(TD_Background, 16777215);
+	TextDrawFont(TD_Background, 1);
 
 	#if defined AlertMsg_OnGameModeInit
 		return AlertMsg_OnGameModeInit();
@@ -90,38 +101,43 @@ public OnGameModeInit()
 #define OnGameModeInit AlertMsg_OnGameModeInit
 forward OnGameModeInit();
 
+/*
+	OnPlayerConnect
+*/
 
 public OnPlayerConnect(playerid)
 {
-	td_strip[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y + 15.0, "_");
-	PlayerTextDrawLetterSize(playerid, td_strip[playerid], 0.0, -0.5);
-	PlayerTextDrawTextSize(playerid, td_strip[playerid], ALERT_POS_X + ALERT_WIDTH, 0.0);
-	PlayerTextDrawUseBox(playerid, td_strip[playerid], true);
-	PlayerTextDrawBoxColor(playerid, td_strip[playerid], 0xFF0000FF);
+	Message_ResetData(playerid);
 
-	td_header[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y - 1.5, "Header");
-	PlayerTextDrawLetterSize(playerid, td_header[playerid], 0.35, 1.45);
-	PlayerTextDrawTextSize(playerid, td_header[playerid], ALERT_POS_X + ALERT_WIDTH, 0.0);
-	PlayerTextDrawAlignment(playerid, td_header[playerid], 1);
-	PlayerTextDrawColor(playerid, td_header[playerid], -5963521);
-	PlayerTextDrawSetShadow(playerid, td_header[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, td_header[playerid], 1);
-	PlayerTextDrawBackgroundColor(playerid, td_header[playerid], 51);
-	PlayerTextDrawFont(playerid, td_header[playerid], 1);
-	PlayerTextDrawSetProportional(playerid, td_header[playerid], 1);
+	TD_Strip[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y + 15.0, "_");
+	PlayerTextDrawLetterSize(playerid, TD_Strip[playerid], 0.0, -0.5);
+	PlayerTextDrawTextSize(playerid, TD_Strip[playerid], ALERT_POS_X + ALERT_WIDTH, 0.0);
+	PlayerTextDrawUseBox(playerid, TD_Strip[playerid], true);
+	PlayerTextDrawBoxColor(playerid, TD_Strip[playerid], 0xFF0000FF);
 
-	td_content[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y + 12.5, "Content");
-	PlayerTextDrawLetterSize(playerid, td_content[playerid], 0.3, 1.3);
-	PlayerTextDrawTextSize(playerid, td_content[playerid], ALERT_POS_X + ALERT_WIDTH, 0.0);
-	PlayerTextDrawAlignment(playerid, td_content[playerid], 1);
-	PlayerTextDrawColor(playerid, td_content[playerid], -1);
-	PlayerTextDrawUseBox(playerid, td_content[playerid], true);
-	PlayerTextDrawBoxColor(playerid, td_content[playerid], 100);
-	PlayerTextDrawSetShadow(playerid, td_content[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, td_content[playerid], 1);
-	PlayerTextDrawBackgroundColor(playerid, td_content[playerid], 51);
-	PlayerTextDrawFont(playerid, td_content[playerid], 1);
-	PlayerTextDrawSetProportional(playerid, td_content[playerid], 1);
+	TD_Header[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y - 1.5, "Header");
+	PlayerTextDrawLetterSize(playerid, TD_Header[playerid], 0.35, 1.45);
+	PlayerTextDrawTextSize(playerid, TD_Header[playerid], ALERT_POS_X + ALERT_WIDTH, 0.0);
+	PlayerTextDrawAlignment(playerid, TD_Header[playerid], 1);
+	PlayerTextDrawColor(playerid, TD_Header[playerid], -5963521);
+	PlayerTextDrawSetShadow(playerid, TD_Header[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, TD_Header[playerid], 1);
+	PlayerTextDrawBackgroundColor(playerid, TD_Header[playerid], 51);
+	PlayerTextDrawFont(playerid, TD_Header[playerid], 1);
+	PlayerTextDrawSetProportional(playerid, TD_Header[playerid], 1);
+
+	TD_Content[playerid] = CreatePlayerTextDraw(playerid, ALERT_POS_X, ALERT_POS_Y + 12.5, "Content");
+	PlayerTextDrawLetterSize(playerid, TD_Content[playerid], 0.3, 1.3);
+	PlayerTextDrawTextSize(playerid, TD_Content[playerid], ALERT_POS_X + ALERT_WIDTH, 0.0);
+	PlayerTextDrawAlignment(playerid, TD_Content[playerid], 1);
+	PlayerTextDrawColor(playerid, TD_Content[playerid], -1);
+	PlayerTextDrawUseBox(playerid, TD_Content[playerid], true);
+	PlayerTextDrawBoxColor(playerid, TD_Content[playerid], 100);
+	PlayerTextDrawSetShadow(playerid, TD_Content[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, TD_Content[playerid], 1);
+	PlayerTextDrawBackgroundColor(playerid, TD_Content[playerid], 51);
+	PlayerTextDrawFont(playerid, TD_Content[playerid], 1);
+	PlayerTextDrawSetProportional(playerid, TD_Content[playerid], 1);
 
 	#if defined AlertMsg_OnPlayerConnect
 		return AlertMsg_OnPlayerConnect(playerid);
@@ -140,17 +156,25 @@ forward OnPlayerConnect(playerid);
 
 
 /*
- * Public functions
- */
+	Public functions
+*/
 
-stock Message_Alert(playerid, caption[], info[], time = 4000, hcolor = -5963521, bool:with_sound = true, notvar_flags = MESSAGE_NOTVAR_NONE, lang_args<>)
+stock Message_Alert(playerid, caption[], info[], time = 4000, hcolor = -5963521, bool:with_sound = true, index = -1, notvar_flags = MESSAGE_NOTVAR_NONE, lang_args<>)
 {
-	new id = GetFreeSlot(playerid);
-	if (id == -1) {
+	new id = Message_GetFreeSlot(playerid);
+	if (id == INVALID_ALERT_ID) {
 		Log(systemlog, DEBUG, "player_alert.inc: Free slot not found. Increase MAX_CACHE_ALERT value.");
-		return id;
+		return INVALID_ALERT_ID;
 	}
 
+	// check for duplicates
+	for (new i = 0; i < MAX_CACHE_ALERT; i++) {
+		if (gMessages[playerid][i][e_aIndex] == index) {
+			return INVALID_ALERT_ID;
+		}
+	}
+
+	// get the string
 	static
 		Lang:lang;
 
@@ -158,116 +182,142 @@ stock Message_Alert(playerid, caption[], info[], time = 4000, hcolor = -5963521,
 
 	if (!isnull(caption)) {
 		if (!(notvar_flags & MESSAGE_NOTVAR_CAPTION)) {
-			Lang_GetText(lang, caption, messages[playerid][id][e_aCaption], MAX_LANG_VALUE_STRING);
+			Lang_GetText(lang, caption, gMessages[playerid][id][e_aCaption], MAX_LANG_VALUE_STRING);
 		} else {
-			strcpy(messages[playerid][id][e_aCaption], caption, MAX_LANG_VALUE_STRING);
+			strcpy(gMessages[playerid][id][e_aCaption], caption, MAX_LANG_VALUE_STRING);
 		}
 	}
 
 	if (!(notvar_flags & MESSAGE_NOTVAR_INFO)) {
-		Lang_GetText(lang, info, messages[playerid][id][e_aInfo], MAX_LANG_VALUE_STRING);
+		Lang_GetText(lang, info, gMessages[playerid][id][e_aInfo], MAX_LANG_VALUE_STRING);
 	} else {
-		strcpy(messages[playerid][id][e_aInfo], info, MAX_LANG_VALUE_STRING);
+		strcpy(gMessages[playerid][id][e_aInfo], info, MAX_LANG_VALUE_STRING);
 	}
 
-	Lang_format(messages[playerid][id][e_aInfo], MAX_LANG_VALUE_STRING, messages[playerid][id][e_aInfo], lang_start<7>);
+	// format info string
+	Lang_format(gMessages[playerid][id][e_aInfo], MAX_LANG_VALUE_STRING, gMessages[playerid][id][e_aInfo], lang_start<8>);
 
-	messages[playerid][id][e_aIsBusy] = true;
-	messages[playerid][id][e_aTime] = time;
-	messages[playerid][id][e_aColor] = hcolor;
-	messages[playerid][id][e_aWithSound] = with_sound;
+	// save info
+	gMessages[playerid][id][e_aIsBusy] = true;
+	gMessages[playerid][id][e_aIndex] = index;
+	gMessages[playerid][id][e_aTime] = time;
+	gMessages[playerid][id][e_aColor] = hcolor;
+	gMessages[playerid][id][e_aWithSound] = with_sound;
 
+	// send message to the order
 	if (!Message_Alert_IsShowed(playerid)) {
 		Message_AlertCached(playerid, id);
 	}
+
 	return id;
 }
 
 stock Message_Alert_IsShowed(playerid)
 {
-	if (timer_id[playerid] != 0) {
+	if (gTimerID[playerid] != 0) {
 		return 1;
 	}
+
 	return 0;
 }
 
 forward Message_AlertHide(playerid);
 public Message_AlertHide(playerid)
 {
-	timer_id[playerid] = 0;
+	gTimerID[playerid] = 0;
 
-	TextDrawHideForPlayer(playerid, td_background);
-	PlayerTextDrawHide(playerid, td_strip[playerid]);
+	Message_ResetData(playerid);
 
-	PlayerTextDrawHide(playerid, td_header[playerid]);
-	PlayerTextDrawHide(playerid, td_content[playerid]);
+	TextDrawHideForPlayer(playerid, TD_Background);
+	PlayerTextDrawHide(playerid, TD_Strip[playerid]);
+
+	PlayerTextDrawHide(playerid, TD_Header[playerid]);
+	PlayerTextDrawHide(playerid, TD_Content[playerid]);
 
 	SetTimer("Message_AlertBusy", 200, 0);
 }
 
 
 /*
- * Private functions
- */
+	Private functions
+*/
 
 static stock Message_AlertCached(playerid, id)
 {
-	if (strlen(messages[playerid][id][e_aCaption]) > 0) {
-		PlayerTextDrawColor(playerid, td_header[playerid], messages[playerid][id][e_aColor]);
-		PlayerTextDrawSetString(playerid, td_header[playerid], messages[playerid][id][e_aCaption]);
+	if (strlen(gMessages[playerid][id][e_aCaption]) > 0) {
+		PlayerTextDrawColor(playerid, TD_Header[playerid], gMessages[playerid][id][e_aColor]);
+		PlayerTextDrawSetString(playerid, TD_Header[playerid], gMessages[playerid][id][e_aCaption]);
 
-		PlayerTextDrawShow(playerid, td_header[playerid]);
+		PlayerTextDrawShow(playerid, TD_Header[playerid]);
 
-		TextDrawShowForPlayer(playerid, td_background);
+		TextDrawShowForPlayer(playerid, TD_Background);
 
-		PlayerTextDrawBoxColor(playerid, td_strip[playerid], messages[playerid][id][e_aColor]);
-		PlayerTextDrawShow(playerid, td_strip[playerid]);
+		PlayerTextDrawBoxColor(playerid, TD_Strip[playerid], gMessages[playerid][id][e_aColor]);
+		PlayerTextDrawShow(playerid, TD_Strip[playerid]);
 	} else {
-		PlayerTextDrawHide(playerid, td_header[playerid]);
-		PlayerTextDrawHide(playerid, td_strip[playerid]);
-		TextDrawHideForPlayer(playerid, td_background);
+		PlayerTextDrawHide(playerid, TD_Header[playerid]);
+		PlayerTextDrawHide(playerid, TD_Strip[playerid]);
+		TextDrawHideForPlayer(playerid, TD_Background);
 	}
 
-	if (strlen(messages[playerid][id][e_aInfo]) > 0) {
-		PlayerTextDrawSetString(playerid, td_content[playerid], messages[playerid][id][e_aInfo]);
+	if (strlen(gMessages[playerid][id][e_aInfo]) > 0) {
+		PlayerTextDrawSetString(playerid, TD_Content[playerid], gMessages[playerid][id][e_aInfo]);
 
-		PlayerTextDrawShow(playerid, td_content[playerid]);
+		PlayerTextDrawShow(playerid, TD_Content[playerid]);
 	} else {
-		PlayerTextDrawHide(playerid, td_content[playerid]);
+		PlayerTextDrawHide(playerid, TD_Content[playerid]);
 	}
 
-	if (messages[playerid][id][e_aWithSound]) {
+	if (gMessages[playerid][id][e_aWithSound]) {
 		PlayerPlaySound(playerid, 45400, 0.0, 0.0, 0.0);
 	}
 
 	if (Message_Alert_IsShowed(playerid)) {
-		KillTimer(timer_id[playerid]);
+		KillTimer(gTimerID[playerid]);
 	}
 
-	messages[playerid][id][e_aIsBusy] = false;
-	messages[playerid][id][e_aCaption][0] = '\0';
-	messages[playerid][id][e_aInfo][0] = '\0';
-
-	timer_id[playerid] = SetTimerEx("Message_AlertHide", messages[playerid][id][e_aTime], 0, "d", playerid);
+	gTimerID[playerid] = SetTimerEx("Message_AlertHide", gMessages[playerid][id][e_aTime], 0, "i", playerid);
 }
 
 forward Message_AlertBusy(playerid);
 public Message_AlertBusy(playerid)
 {
 	for (new i = 0; i < MAX_CACHE_ALERT; i++) {
-		if (messages[playerid][i][e_aIsBusy]) {
+		if (gMessages[playerid][i][e_aIsBusy]) {
 			Message_AlertCached(playerid, i);
 			break;
 		}
 	}
 }
 
-static stock GetFreeSlot(playerid)
+static stock Message_ResetData(playerid, id = INVALID_ALERT_ID)
+{
+	if (id == INVALID_ALERT_ID) {
+		for (new i = 0; i < MAX_CACHE_ALERT; i++) {
+			gMessages[playerid][i][e_aIsBusy] = false;
+			gMessages[playerid][i][e_aIndex] = -1;
+			gMessages[playerid][i][e_aCaption][0] = '\0';
+			gMessages[playerid][i][e_aInfo][0] = '\0';
+		}
+
+		return 1;
+	}
+
+	gMessages[playerid][id][e_aIsBusy] = false;
+	gMessages[playerid][id][e_aIndex] = -1;
+	gMessages[playerid][id][e_aCaption][0] = '\0';
+	gMessages[playerid][id][e_aInfo][0] = '\0';
+
+	return 1;
+}
+
+static stock Message_GetFreeSlot(playerid)
 {
 	for (new i = 0; i < MAX_CACHE_ALERT; i++) {
-		if (!messages[playerid][i][e_aIsBusy]) {
+		if (!gMessages[playerid][i][e_aIsBusy]) {
 			return i;
 		}
 	}
-	return -1;
+
+	return INVALID_ALERT_ID;
 }

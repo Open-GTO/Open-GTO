@@ -309,7 +309,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 public OnVehicleFilled(vehicleid, playerid, money)
 {
 	Lang_SendText(playerid, "VEHICLE_FUEL_AFTER_FUEL", money);
-	Message_Alert(playerid, "", "VEHICLE_FUEL_AFTER_FUEL_ALERT", _, _, _, _, money);
+	Message_Alert(playerid, "", "VEHICLE_FUEL_AFTER_FUEL_ALERT", _, _, _, _, _, money);
 	#if defined Fuelst_OnVehicleFilled
 		return Fuelst_OnVehicleFilled(vehicleid, playerid, money);
 	#else
