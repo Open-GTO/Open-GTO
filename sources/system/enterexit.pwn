@@ -284,6 +284,9 @@ static gEnters[][e_Enterexit_Enter] = {
 	{ENTEREXIT_TYPE_WUZIMU, -1, -2156.0916, 645.4984, 52.3672, 270.0000}
 };
 
+static
+	Text3D:gLabelID[ sizeof(gEnters) ][MAX_PLAYERS][2];
+
 /*
 	OnGameModeInit
 */
@@ -302,10 +305,6 @@ public OnGameModeInit()
 		gEnters[i][e_ie_pickup_id] = CreateDynamicPickup(19902, 1,
 			gEnters[i][e_ie_pos_x], gEnters[i][e_ie_pos_y], gEnters[i][e_ie_pos_z] - 1.0);
 
-		CreateDynamic3DTextLabel("Вход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF,
-			gEnters[i][e_ie_pos_x], gEnters[i][e_ie_pos_y], gEnters[i][e_ie_pos_z],
-			20.0, .testlos = 1);
-
 		if (gEnters[i][e_ie_icon_id] != -1) {
 			CreateDynamicMapIcon(gEnters[i][e_ie_pos_x], gEnters[i][e_ie_pos_y], gEnters[i][e_ie_pos_z], gEnters[i][e_ie_icon_id], 0);
 		}
@@ -318,15 +317,12 @@ public OnGameModeInit()
 			gTypes[type][e_ee_pos_x], gTypes[type][e_ee_pos_y], gTypes[type][e_ee_pos_z] - 1.0, world
 		);
 
-		CreateDynamic3DTextLabel("Выход\n{33AA33}Нажмите кнопку '{FFFFFF}"KEY_NAME"{33AA33}'", 0xFFFFFFFF,
-			gTypes[type][e_ee_pos_x], gTypes[type][e_ee_pos_y], gTypes[type][e_ee_pos_z],
-			20.0, .worldid = world, .testlos = 1);
-
 		// callback
 		CallLocalFunction("OnInteriorCreated", "iii", i, type, world);
 	}
 
 	Log_Init("system", "Enterexit module init.");
+
 	#if defined Enterexit_OnGameModeInit
 		return Enterexit_OnGameModeInit();
 	#else
@@ -352,6 +348,7 @@ public OnPlayerConnect(playerid)
 {
 	Enterexit_SetPlayerEnterID(playerid, INVALID_ENTEREXIT_ID);
 	Enterexit_SetPlayerIndex(playerid, INVALID_ENTEREXIT_ID);
+
 	#if defined Enterexit_OnPlayerConnect
 		return Enterexit_OnPlayerConnect(playerid);
 	#else
@@ -367,6 +364,87 @@ public OnPlayerConnect(playerid)
 #define OnPlayerConnect Enterexit_OnPlayerConnect
 #if defined Enterexit_OnPlayerConnect
 	forward Enterexit_OnPlayerConnect(playerid);
+#endif
+
+/*
+	OnPlayerDisconnect
+*/
+
+public OnPlayerDisconnect(playerid, reason)
+{
+	for (new id = 0; id < sizeof(gEnters); id++) {
+		DestroyPlayerLabel(playerid, id);
+	}
+
+	#if defined Enterexit_OnPlayerDisconnect
+		return Enterexit_OnPlayerDisconnect(playerid, reason);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerDisconnect
+	#undef OnPlayerDisconnect
+#else
+	#define _ALS_OnPlayerDisconnect
+#endif
+
+#define OnPlayerDisconnect Enterexit_OnPlayerDisconnect
+#if defined Enterexit_OnPlayerDisconnect
+	forward Enterexit_OnPlayerDisconnect(playerid, reason);
+#endif
+
+/*
+	OnPlayerLogin
+*/
+
+public OnPlayerLogin(playerid)
+{
+	for (new id = 0; id < sizeof(gEnters); id++) {
+		CreatePlayerLabel(playerid, id);
+	}
+
+	#if defined Enterexit_OnPlayerLogin
+		return Enterexit_OnPlayerLogin(playerid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerLogin
+	#undef OnPlayerLogin
+#else
+	#define _ALS_OnPlayerLogin
+#endif
+
+#define OnPlayerLogin Enterexit_OnPlayerLogin
+#if defined Enterexit_OnPlayerLogin
+	forward Enterexit_OnPlayerLogin(playerid);
+#endif
+
+/*
+	OnAccountLanguageChanged
+*/
+
+public OnAccountLanguageChanged(playerid, Lang:lang)
+{
+	for (new i = 0; i < sizeof(gEnters); i++) {
+		UpdatePlayerLabel(playerid, i);
+	}
+
+	#if defined Entext_OnAccountLanguageChanged
+		return Entext_OnAccountLanguageChanged(playerid, Lang:lang);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnAccountLanguageChanged
+	#undef OnAccountLanguageChanged
+#else
+	#define _ALS_OnAccountLanguageChanged
+#endif
+
+#define OnAccountLanguageChanged Entext_OnAccountLanguageChanged
+#if defined Entext_OnAccountLanguageChanged
+	forward Entext_OnAccountLanguageChanged(playerid, Lang:lang);
 #endif
 
 /*
@@ -521,4 +599,48 @@ stock Enterexit_IsValidInfo(index, interior, world)
 	}
 
 	return 0;
+}
+
+/*
+	Private functions
+*/
+
+static stock DestroyPlayerLabel(playerid, id)
+{
+	for (new i = 0; i < sizeof(gLabelID[][]); i++) {
+		DestroyDynamic3DTextLabel(gLabelID[id][playerid][i]);
+		gLabelID[id][playerid][i] = Text3D:INVALID_3DTEXT_ID;
+	}
+}
+
+static stock CreatePlayerLabel(playerid, id)
+{
+	new string[MAX_LANG_VALUE_STRING];
+
+	// enter 3d text
+	Lang_GetPlayerText(playerid, "ENTEREXIT_ENTER_3DTEXT", string, _, KEY_NAME);
+	gLabelID[id][playerid][0] = CreateDynamic3DTextLabel(string, -1,
+		gEnters[id][e_ie_pos_x], gEnters[id][e_ie_pos_y], gEnters[id][e_ie_pos_z], 20.0,
+		.testlos = 1, .playerid = playerid);
+
+	// exit 3d text
+	new
+		world = Enterexit_GetVirtualWorld(id),
+		type = Enterexit_GetType(id);
+
+	Lang_GetPlayerText(playerid, "ENTEREXIT_EXIT_3DTEXT", string, _, KEY_NAME);
+	gLabelID[id][playerid][1] = CreateDynamic3DTextLabel(string, -1,
+		gTypes[type][e_ee_pos_x], gTypes[type][e_ee_pos_y], gTypes[type][e_ee_pos_z], 20.0,
+		.testlos = 1, .worldid = world, .playerid = playerid);
+}
+
+static stock UpdatePlayerLabel(playerid, id)
+{
+	new string[MAX_LANG_VALUE_STRING];
+
+	Lang_GetPlayerText(playerid, "ENTEREXIT_ENTER_3DTEXT", string, _, KEY_NAME);
+	UpdateDynamic3DTextLabelText(gLabelID[id][playerid][0], -1, string);
+
+	Lang_GetPlayerText(playerid, "ENTEREXIT_EXIT_3DTEXT", string, _, KEY_NAME);
+	UpdateDynamic3DTextLabelText(gLabelID[id][playerid][1], -1, string);
 }

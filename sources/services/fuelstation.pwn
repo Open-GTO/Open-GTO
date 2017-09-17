@@ -97,6 +97,7 @@ public OnPlayerLogin(playerid)
 	for (new id = 0; id < sizeof(gFuelstation); id++) {
 		CreatePlayerLabel(playerid, id);
 	}
+
 	#if defined Fuelst_OnPlayerLogin
 		return Fuelst_OnPlayerLogin(playerid);
 	#else
@@ -115,6 +116,33 @@ public OnPlayerLogin(playerid)
 #endif
 
 /*
+	OnAccountLanguageChanged
+*/
+
+public OnAccountLanguageChanged(playerid, Lang:lang)
+{
+	for (new i = 0; i < sizeof(gFuelstation); i++) {
+		UpdatePlayerLabel(playerid, i);
+	}
+
+	#if defined Fuelst_OnAccountLanguageChanged
+		return Fuelst_OnAccountLanguageChanged(playerid, Lang:lang);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnAccountLanguageChanged
+	#undef OnAccountLanguageChanged
+#else
+	#define _ALS_OnAccountLanguageChanged
+#endif
+
+#define OnAccountLanguageChanged Fuelst_OnAccountLanguageChanged
+#if defined Fuelst_OnAccountLanguageChanged
+	forward Fuelst_OnAccountLanguageChanged(playerid, Lang:lang);
+#endif
+
+/*
 	OnPlayerDisconnect
 */
 
@@ -123,6 +151,7 @@ public OnPlayerDisconnect(playerid, reason)
 	for (new id = 0; id < sizeof(gFuelstation); id++) {
 		DestroyPlayerLabel(playerid, id);
 	}
+
 	#if defined Fuelst_OnPlayerDisconnect
 		return Fuelst_OnPlayerDisconnect(playerid, reason);
 	#else
@@ -350,7 +379,14 @@ static stock CreatePlayerLabel(playerid, id)
 {
 	new string[MAX_LANG_VALUE_STRING];
 	Lang_GetPlayerText(playerid, "FUEL_STATION_3DTEXT", string);
-	gLabelID[id][playerid] = CreateDynamic3DTextLabel(string, 0xFFFFFFFF,
+	gLabelID[id][playerid] = CreateDynamic3DTextLabel(string, -1,
 		gFuelstation[id][e_fsPosX], gFuelstation[id][e_fsPosY], gFuelstation[id][e_fsPosZ], 20.0,
 		.testlos = 1, .playerid = playerid);
+}
+
+static stock UpdatePlayerLabel(playerid, id)
+{
+	new string[MAX_LANG_VALUE_STRING];
+	Lang_GetPlayerText(playerid, "FUEL_STATION_3DTEXT", string);
+	UpdateDynamic3DTextLabelText(gLabelID[id][playerid], -1, string);
 }

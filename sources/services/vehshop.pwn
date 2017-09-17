@@ -136,7 +136,7 @@ VehShop_OnPlayerConnect(playerid)
 		if (gPositions[i][e_vsID] == 0) {
 			continue;
 		}
-		VehShop_CreatePlayerLabel(playerid, i);
+		CreatePlayerLabel(playerid, i);
 	}
 	return 1;
 }
@@ -148,7 +148,7 @@ VehShop_OnPlayerDisconnect(playerid, reason)
 		if (gPositions[i][e_vsID] == 0) {
 			continue;
 		}
-		VehShop_DestroyPlayerLabel(playerid, i);
+		DestroyPlayerLabel(playerid, i);
 	}
 	return 1;
 }
@@ -281,7 +281,7 @@ stock VehShop_ChangeVehicles()
 			gPositions[i][e_vsID] = 0;
 
 			foreach (new playerid : Player) {
-				VehShop_DestroyPlayerLabel(playerid, i);
+				DestroyPlayerLabel(playerid, i);
 			}
 		}
 
@@ -301,7 +301,7 @@ stock VehShop_ChangeVehicles()
 		VehShop_UpdateLabelString(i);
 
 		foreach (new playerid : Player) {
-			VehShop_CreatePlayerLabel(playerid, i);
+			CreatePlayerLabel(playerid, i);
 		}
 	}
 }
@@ -327,13 +327,13 @@ static stock VehShop_UpdateLabelString(pos_id)
 	}
 }
 
-static stock VehShop_DestroyPlayerLabel(playerid, pos_id)
+static stock DestroyPlayerLabel(playerid, pos_id)
 {
 	DestroyDynamic3DTextLabel(gLabelID[pos_id][playerid]);
 	gLabelID[pos_id][playerid] = Text3D:INVALID_3DTEXT_ID;
 }
 
-static stock VehShop_CreatePlayerLabel(playerid, pos_id)
+static stock CreatePlayerLabel(playerid, pos_id)
 {
 	new Lang:lang = Lang_GetPlayerLang(playerid);
 	gLabelID[pos_id][playerid] = CreateDynamic3DTextLabel(gLabelString[pos_id][lang], COLOR_WHITE,
@@ -341,7 +341,7 @@ static stock VehShop_CreatePlayerLabel(playerid, pos_id)
 		.attachedvehicle = gPositions[pos_id][e_vsID], .testlos = 1, .playerid = playerid);
 }
 
-static stock VehShop_UpdatePlayerLabel(playerid, pos_id)
+static stock UpdatePlayerLabel(playerid, pos_id)
 {
 	new Lang:lang = Lang_GetPlayerLang(playerid);
 	VehShop_UpdateLabelString(pos_id);
@@ -354,7 +354,7 @@ public OnAccountLanguageChanged(playerid, Lang:lang)
 		if (gPositions[i][e_vsID] == 0) {
 			continue;
 		}
-		VehShop_UpdatePlayerLabel(playerid, i);
+		UpdatePlayerLabel(playerid, i);
 	}
 
 	#if defined VShop_OnAccountLanguageChanged
