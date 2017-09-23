@@ -772,3 +772,17 @@ public OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type)
 
 	return 1;
 }
+
+public OnPlayerGetProtectionWarning(playerid, Protection:protection, bool:warn_reached, message[])
+{
+	new
+		string[144],
+		protection_name[32];
+
+	Protection_GetParamString(protection, PROTECTION_NAME, protection_name);
+
+	format(string, sizeof(string), "* Player: %d | Warn reached: %d | Name: %s | Message: %s", playerid, _:warn_reached, protection_name, message);
+	SendClientMessageToAll(-1, string);
+	printf(string);
+	return 1;
+}

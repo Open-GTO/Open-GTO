@@ -11,6 +11,10 @@
 
 #define _enterexit_included
 
+#if !defined ENTEREXIT_FREEZE_TIME
+	#define ENTEREXIT_FREEZE_TIME 500
+#endif
+
 #define INVALID_ENTEREXIT_ID -1
 
 forward OnInteriorCreated(id, type, world);
@@ -473,10 +477,18 @@ stock Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
 				gEnters[id][e_ie_pos_x], gEnters[id][e_ie_pos_y], gEnters[id][e_ie_pos_z])) {
 			Enterexit_SetPlayerIndex(playerid, id);
 
-			SetPlayerInterior(playerid, gTypes[type][e_ee_interior]);
-			SetPlayerVirtualWorld(playerid, Enterexit_GetVirtualWorld(id));
-			SetPlayerPos(playerid, gTypes[type][e_ee_pos_x], gTypes[type][e_ee_pos_y], gTypes[type][e_ee_pos_z]);
+			new world = Enterexit_GetVirtualWorld(id);
+
+			Streamer_UpdateEx(playerid,
+			                  gTypes[type][e_ee_pos_x],
+			                  gTypes[type][e_ee_pos_y],
+			                  gTypes[type][e_ee_pos_z],
+			                  world,
+			                  gTypes[type][e_ee_interior],
+			                  .compensatedtime = ENTEREXIT_FREEZE_TIME);
 			SetPlayerFacingAngle(playerid, gTypes[type][e_ee_pos_a]);
+			SetPlayerVirtualWorld(playerid, world);
+			SetPlayerInterior(playerid, gTypes[type][e_ee_interior]);
 			SetCameraBehindPlayer(playerid);
 			return 1;
 		}
@@ -485,10 +497,16 @@ stock Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)
 				gTypes[type][e_ee_pos_x], gTypes[type][e_ee_pos_y], gTypes[type][e_ee_pos_z])) {
 			Enterexit_SetPlayerIndex(playerid, INVALID_ENTEREXIT_ID);
 
-			SetPlayerInterior(playerid, 0);
-			SetPlayerVirtualWorld(playerid, 0);
-			SetPlayerPos(playerid, gEnters[index][e_ie_pos_x], gEnters[index][e_ie_pos_y], gEnters[index][e_ie_pos_z]);
+			Streamer_UpdateEx(playerid,
+			                  gEnters[index][e_ie_pos_x],
+			                  gEnters[index][e_ie_pos_y],
+			                  gEnters[index][e_ie_pos_z],
+			                  0,
+			                  0,
+			                  .compensatedtime = ENTEREXIT_FREEZE_TIME);
 			SetPlayerFacingAngle(playerid, gEnters[index][e_ie_pos_a]);
+			SetPlayerVirtualWorld(playerid, 0);
+			SetPlayerInterior(playerid, 0);
 			SetCameraBehindPlayer(playerid);
 			return 1;
 		}
