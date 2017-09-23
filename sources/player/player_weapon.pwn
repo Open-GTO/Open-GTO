@@ -237,7 +237,12 @@ stock CreatePlayerStartBulletsString()
 	return string;
 }
 
-stock GetPlayerWeaponSlotAmmo(playerid, weapon_slot)
+stock GetPlayerWeaponBySlot(playerid, weapon_slot)
+{
+	return PlayerWeapons[playerid][weapon_slot][pwid];
+}
+
+stock GetPlayerWeaponAmmoBySlot(playerid, weapon_slot)
 {
 	return PlayerWeapons[playerid][weapon_slot][pbullets];
 }
@@ -254,4 +259,14 @@ stock GetPlayerWeaponAmmo(playerid, weaponid)
 	}
 
 	return PlayerWeapons[playerid][weapon_slot][pbullets];
+}
+
+stock IsPlayerHaveWeapon(playerid, weaponid)
+{
+	new weapon_slot = GetWeaponSlot(weaponid);
+	if (weapon_slot == -1) {
+		return 0;
+	}
+
+	return weaponid == PlayerWeapons[playerid][weapon_slot][pwid];
 }

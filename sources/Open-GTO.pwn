@@ -523,6 +523,10 @@ public OnPlayerUpdate(playerid)
 
 public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
+	if (PWDrop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)) {
+		return 1;
+	}
+
 	if (Enterexit_OnPlayerKeyStateChang(playerid, newkeys, oldkeys)) {
 		return 1;
 	}

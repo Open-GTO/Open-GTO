@@ -28,7 +28,8 @@ enum wd_Info {
 
 static
 	IsEnabled = WEAPON_DROP_ENABLED,
-	gDroppedWeapons[MAX_DROPPED_WEAPONS][wd_Info];
+	gDroppedWeapons[MAX_DROPPED_WEAPONS][wd_Info],
+	gPlayerPickedSlot[MAX_PLAYERS];
 
 /*
 	Config
@@ -76,20 +77,65 @@ public OnGameModeInit()
 #endif
 
 /*
+	OnPlayerLogin
+*/
+
+public OnPlayerLogin(playerid)
+{
+	gPlayerPickedSlot[playerid] = -1;
+
+	#if defined PWDrop_OnPlayerLogin
+		return PWDrop_OnPlayerLogin(playerid);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerLogin
+	#undef OnPlayerLogin
+#else
+	#define _ALS_OnPlayerLogin
+#endif
+
+#define OnPlayerLogin PWDrop_OnPlayerLogin
+#if defined PWDrop_OnPlayerLogin
+	forward PWDrop_OnPlayerLogin(playerid);
+#endif
+
+/*
 	OnPlayerPickUpDynamicPickup
 */
 
 public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
-	if (IsEnabled) {
-		for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)  {
-			if (pickupid == gDroppedWeapons[wd_slot][wd_pickupid]) {
-				GivePlayerWeapon(playerid, gDroppedWeapons[wd_slot][wd_weaponid], gDroppedWeapons[wd_slot][wd_bullets]);
-				DestroyWeaponDropPickup(wd_slot);
-				break;
-			}
-		}
+	if (!IsEnabled) {
+		#if defined PWDrop_OnPlayerPickUpDP
+			return PWDrop_OnPlayerPickUpDP(playerid, pickupid);
+		#else
+			return 1;
+		#endif
 	}
+
+	new wd_slot = GetSlotByPickupID(pickupid);
+	if (wd_slot == -1) {
+		#if defined PWDrop_OnPlayerPickUpDP
+			return PWDrop_OnPlayerPickUpDP(playerid, pickupid);
+		#else
+			return 1;
+		#endif
+	}
+
+	new
+		weaponid = gDroppedWeapons[wd_slot][wd_weaponid],
+		weaponslot = GetWeaponSlot(weaponid);
+
+	if (GetPlayerWeaponBySlot(playerid, weaponslot) == weaponid || GetPlayerWeaponAmmoBySlot(playerid, weaponslot) == 0) {
+		GivePlayerWeapon(playerid, weaponid, gDroppedWeapons[wd_slot][wd_bullets]);
+		DestroyWeaponDropPickup(wd_slot);
+	} else {
+		gPlayerPickedSlot[playerid] = wd_slot;
+		Message_Alert(playerid, "", "WEAPON_DROP_CHANGE_WEAPON", .with_sound = false, .index = MESSAGE_INDEX_WEAPONDROP);
+	}
+
 	#if defined PWDrop_OnPlayerPickUpDP
 		return PWDrop_OnPlayerPickUpDP(playerid, pickupid);
 	#else
@@ -106,6 +152,31 @@ public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 #if defined PWDrop_OnPlayerPickUpDP
 	forward PWDrop_OnPlayerPickUpDP(playerid, pickupid);
 #endif
+
+/*
+	OnPlayerKeyStateChange
+*/
+
+PWDrop_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+{
+	if (!IsEnabled) {
+		return 0;
+	}
+
+	if (!PRESSED(KEY_USING)) {
+		return 0;
+	}
+
+	new wd_slot = gPlayerPickedSlot[playerid];
+	if (wd_slot != -1) {
+		gPlayerPickedSlot[playerid] = -1;
+		GivePlayerWeapon(playerid, gDroppedWeapons[wd_slot][wd_weaponid], gDroppedWeapons[wd_slot][wd_bullets]);
+		DestroyWeaponDropPickup(wd_slot);
+		return 1;
+	}
+
+	return 0;
+}
 
 /*
 	OnPlayerDeath
@@ -197,6 +268,17 @@ static stock FindFreeWeaponDropSlot()
 			&& gDroppedWeapons[wd_slot][wd_bullets] == -1
 			&& gDroppedWeapons[wd_slot][wd_pickupid] == -1
 			&& gDroppedWeapons[wd_slot][wd_timer] == -1) {
+			return wd_slot;
+		}
+	}
+
+	return -1;
+}
+
+static stock GetSlotByPickupID(pickupid)
+{
+	for (new wd_slot = 0; wd_slot < MAX_DROPPED_WEAPONS; wd_slot++)  {
+		if (pickupid == gDroppedWeapons[wd_slot][wd_pickupid]) {
 			return wd_slot;
 		}
 	}
