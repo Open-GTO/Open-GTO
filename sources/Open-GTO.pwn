@@ -57,6 +57,7 @@ Thanks:
 #include "lib/mxINI/mxINI.inc"
 #include "lib/mapfix.inc"
 #include "lib/getspawninfo/getspawninfo.inc"
+#include "lib/weaponskill/weaponskill.inc"
 #include "lib/protection/protection.inc"
 #include "lib/zmessage/zmessage.inc"
 #include "lib/time_t/time_t.inc"
@@ -72,7 +73,6 @@ Thanks:
 #include "lib/garageblock/garage_block.inc"
 #include "lib/gpickup/gpickup.inc"
 #include "lib/gtolib/gtolib.inc"
-#include "lib/weaponskill/weaponskill.inc"
 #include "lib/zvehinfo/zvehinfo.inc"
 
 // header files
