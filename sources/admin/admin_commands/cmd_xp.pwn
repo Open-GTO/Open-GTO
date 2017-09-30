@@ -61,6 +61,11 @@ COMMAND:xp(playerid, params[])
 			Lang_SendText(playerid, "ADMIN_COMMAND_XP_SET_SELF", targetname, targetid, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
+		if (!IsPlayerConnected(targetid)) {
+			Lang_SendText(playerid, "ADMIN_COMMAND_XP_TARGET_ERROR");
+			return 1;
+		}
+
 		amount = GetPlayerXP(targetid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_XP_GET", targetname, targetid, amount);
