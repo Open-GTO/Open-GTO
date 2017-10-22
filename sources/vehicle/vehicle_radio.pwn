@@ -41,7 +41,20 @@ enum e_RadioInfo {
 static
 	gRadioList[][e_RadioInfo] = {
 		{"Zaycev FM", "http://radio.zaycev.fm:9002/ZaycevFM(128).m3u"},
-		{"Rock 2", "http://skycast.su:2007/2420"}
+		{"Smooth Jazz Tampa", "http://us3.internet-radio.com:8007/listen.pls"},
+		{"Classic Rock Florida", "http://us2.internet-radio.com:8046/listen.pls"},
+		{"Ambient Radio", "http://uk2.internet-radio.com:31491/listen.pls"},
+		{"MEGATON CAFE RADIO", "http://us2.internet-radio.com:8443/listen.pls"},
+		{"PONdENDS.COM", "http://s7.voscast.com:7000/listen.pls?sid=1"},
+		{"FOREX CHILL MUSIC", "http://aska.ru-hoster.com:8053/autodj.m3u"},
+		{"Rock Around The Block Radio", "http://uk6.internet-radio.com:8465/listen.pls"},
+		{"FUN45s.com", "http://173.193.205.96:7032/listen.pls?sid=1"},
+		{"The UK 1950s Radio Station", "http://91.121.134.23:8648/listen.pls?sid=1"},
+		{"1FM", "http://uk2.internet-radio.com:8358/listen.pls"},
+		{"KBRD", "http://205.134.192.90:680/listen.pls?sid=1"},
+		{"Pigpen Radio", "http://uk6.internet-radio.com:8213/listen.pls"},
+		{"Rainbow Sound UK", "http://uk5.internet-radio.com:8163/listen.pls"},
+		{"Box UK Radio", "http://uk2.internet-radio.com:8145/listen.pls"}
 	};
 
 static
