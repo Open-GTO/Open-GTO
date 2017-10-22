@@ -2,6 +2,7 @@ announce
 samp03svr
 filterscripts/
 plugins/
+scriptfiles/callbackfix.amx
 /*.exe
 /*.dll
 /*.so
