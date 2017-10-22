@@ -3,6 +3,7 @@ samp03svr
 filterscripts/
 plugins/
 scriptfiles/callbackfix.amx
+scriptfiles/DANGEROUS_SERVER_ROOT
 /*.exe
 /*.dll
 /*.so
