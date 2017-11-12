@@ -159,7 +159,7 @@ stock DisableVehicleRadio(vehicleid)
 
 	gRadioID[vehicleid] = INVALID_RADIO_ID;
 
-	new players[MAX_PLAYERS];
+	new players[9];
 	GetPlayersInVehicle(vehicleid, players);
 
 	StopAudioStreamForPlayers(players);
@@ -179,7 +179,7 @@ stock SetVehicleRadio(vehicleid, radioid)
 
 	gRadioID[vehicleid] = radioid;
 
-	new players[MAX_PLAYERS];
+	new players[9];
 	GetPlayersInVehicle(vehicleid, players);
 
 	PlayAudioStreamForPlayers(players, gRadioList[radioid][e_riUrl]);
