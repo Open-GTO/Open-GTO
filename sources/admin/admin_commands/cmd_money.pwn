@@ -61,11 +61,6 @@ COMMAND:money(playerid, params[])
 			Lang_SendText(playerid, "ADMIN_COMMAND_MONEY_SET_SELF", targetname, targetid, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
-		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, "ADMIN_COMMAND_MONEY_TARGET_ERROR");
-			return 1;
-		}
-
 		amount = GetPlayerMoney(targetid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_MONEY_GET", targetname, targetid, amount);

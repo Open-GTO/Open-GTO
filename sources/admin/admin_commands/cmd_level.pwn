@@ -67,11 +67,6 @@ COMMAND:level(playerid, params[])
 			Lang_SendText(playerid, "ADMIN_COMMAND_LEVEL_SET_SELF", targetname, targetid, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
-		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, "ADMIN_COMMAND_LEVEL_TARGET_ERROR");
-			return 1;
-		}
-
 		amount = GetPlayerLevel(targetid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_LEVEL_GET", targetname, targetid, amount);

@@ -74,11 +74,6 @@ COMMAND:skin(playerid, params[])
 			Lang_SendText(playerid, "ADMIN_COMMAND_SKIN_SET_SELF", targetname, targetid, skin);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
-		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, "ADMIN_COMMAND_SKIN_TARGET_ERROR");
-			return 1;
-		}
-
 		skin = GetPlayerSkin(targetid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_SKIN_GET", targetname, targetid, skin);

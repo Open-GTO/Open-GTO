@@ -66,11 +66,6 @@ COMMAND:interior(playerid, params[])
 			Lang_SendText(playerid, "ADMIN_COMMAND_INTERIOR_SET_SELF", targetname, targetid, interior);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
-		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, "ADMIN_COMMAND_INTERIOR_TARGET_ERROR");
-			return 1;
-		}
-
 		interior = GetPlayerInterior(targetid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_INTERIOR_GET", targetname, targetid, interior);

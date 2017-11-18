@@ -97,11 +97,6 @@ COMMAND:skill(playerid, params[])
 			Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_SET_SELF", targetname, targetid, skillname, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
-		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_TARGET_ERROR");
-			return 1;
-		}
-
 		Lang_SendText(playerid, "ADMIN_COMMAND_SKILL_GET", targetname, targetid);
 
 		if (skillid == -1) {

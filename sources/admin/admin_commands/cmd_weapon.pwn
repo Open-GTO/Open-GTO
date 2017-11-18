@@ -79,11 +79,6 @@ COMMAND:weapon(playerid, params[])
 			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_SET_SELF", targetname, targetid, weaponid, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
-		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_TARGET_ERROR");
-			return 1;
-		}
-
 		Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_GET", targetname, targetid);
 
 		new

@@ -70,11 +70,6 @@ COMMAND:health(playerid, params[])
 			Lang_SendText(playerid, "ADMIN_COMMAND_HEALTH_SET_SELF", targetname, targetid, amount);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
-		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, "ADMIN_COMMAND_HEALTH_TARGET_ERROR");
-			return 1;
-		}
-
 		GetPlayerHealth(targetid, amount);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_HEALTH_GET", targetname, targetid, amount);

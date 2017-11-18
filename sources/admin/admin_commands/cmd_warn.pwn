@@ -68,11 +68,6 @@ COMMAND:warn(playerid, params[])
 			Lang_SendText(playerid, "ADMIN_COMMAND_WARN_SET_SELF", targetname, targetid, amount, reason);
 		}
 	} else if (strcmp(subcmd, "get", true) == 0) {
-		if (!IsPlayerConnected(targetid)) {
-			Lang_SendText(playerid, "ADMIN_COMMAND_WARN_TARGET_ERROR");
-			return 1;
-		}
-
 		amount = GetPlayerWarnsCount(targetid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_WARN_GET", targetname, targetid, amount);
