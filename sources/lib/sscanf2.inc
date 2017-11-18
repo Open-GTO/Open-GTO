@@ -335,61 +335,118 @@ static stock
 
 SSCANF:weapon(string[])
 {
-	// This function is VERY basic, needs VASTLY improving to detect variations.
-	if ('0' <= string[0] <= '9')
-	{
-		new
-			ret = strval(string);
-		if (0 <= ret <= 18 || 22 <= ret <= 46)
-		{
+	if ('0' <= string[0] <= '9') {
+		new ret = strval(string);
+		if (0 <= ret <= 18 || 22 <= ret <= 46) {
 			return ret;
 		}
 	}
-	else if (!strcmp(string, "Unarmed", true)) return 0;
-	else if (!strcmp(string, "Brass Knuckles", true)) return 1;
-	else if (!strcmp(string, "Golf Club", true)) return 2;
-	else if (!strcmp(string, "Night Stick", true)) return 3;
-	else if (!strcmp(string, "Knife", true)) return 4;
-	else if (!strcmp(string, "Baseball Bat", true)) return 5;
-	else if (!strcmp(string, "Shovel", true)) return 6;
-	else if (!strcmp(string, "Pool cue", true)) return 7;
-	else if (!strcmp(string, "Katana", true)) return 8;
-	else if (!strcmp(string, "Chainsaw", true)) return 9;
-	else if (!strcmp(string, "Purple Dildo", true)) return 10;
-	else if (!strcmp(string, "White Dildo", true)) return 11;
-	else if (!strcmp(string, "Long White Dildo", true)) return 12;
-	else if (!strcmp(string, "White Dildo 2", true)) return 13;
-	else if (!strcmp(string, "Flowers", true)) return 14;
-	else if (!strcmp(string, "Cane", true)) return 15;
-	else if (!strcmp(string, "Grenades", true)) return 16;
-	else if (!strcmp(string, "Tear Gas", true)) return 17;
-	else if (!strcmp(string, "Molotovs", true)) return 18;
-	else if (!strcmp(string, "Pistol", true)) return 22;
-	else if (!strcmp(string, "Silenced Pistol", true)) return 23;
-	else if (!strcmp(string, "Desert Eagle", true)) return 24;
-	else if (!strcmp(string, "Shotgun", true)) return 25;
-	else if (!strcmp(string, "Sawn Off Shotgun", true)) return 26;
-	else if (!strcmp(string, "Combat Shotgun", true)) return 27;
-	else if (!strcmp(string, "Micro Uzi", true)) return 28;
-	else if (!strcmp(string, "Mac 10", true)) return 28;
-	else if (!strcmp(string, "MP5", true)) return 29;
-	else if (!strcmp(string, "AK47", true)) return 30;
-	else if (!strcmp(string, "M4", true)) return 31;
-	else if (!strcmp(string, "Tec9", true)) return 32;
-	else if (!strcmp(string, "Rifle", true)) return 33;
-	else if (!strcmp(string, "Sniper Rifle", true)) return 34;
-	else if (!strcmp(string, "RPG", true)) return 35;
-	else if (!strcmp(string, "Missile Launcher", true)) return 36;
-	else if (!strcmp(string, "Flame Thrower", true)) return 37;
-	else if (!strcmp(string, "Minigun", true)) return 38;
-	else if (!strcmp(string, "Sachel Charges", true)) return 39;
-	else if (!strcmp(string, "Detonator", true)) return 40;
-	else if (!strcmp(string, "Spray Paint", true)) return 41;
-	else if (!strcmp(string, "Fire Extinguisher", true)) return 42;
-	else if (!strcmp(string, "Camera", true)) return 43;
-	else if (!strcmp(string, "Nightvision Goggles", true)) return 44;
-	else if (!strcmp(string, "Thermal Goggles", true)) return 45;
-	else if (!strcmp(string, "Parachute", true)) return 46;
+
+	static
+		weapon_ids[23][7] = {
+			{30, -1}, // a
+			{1, 5, -1}, // b
+			{9, 15, 27, 43, -1}, // c
+			{24, 40, -1}, // d
+			{-1}, // e
+			{42, 37, 14, 0, -1}, // f
+			{2, 16, -1}, // g
+			{-1}, // h
+			{-1}, // i
+			{-1}, // j
+			{8, 4, 12, -1}, // k
+			{-1}, // l
+			{31, 28, 28, 38, 36, 18, 29}, // m
+			{3, 44, -1}, // n
+			{-1}, // o
+			{46, 22, 7, 10, -1}, // p
+			{-1}, // q
+			{33, 35, -1}, // r
+			{39, 26, 25, 6, 23, 34, 41}, // s
+			{17, 32, 45, -1}, // t
+			{0, 28, -1}, // u
+			{-1}, // v
+			{11, 13, -1} // w
+		},
+		weapon_names[47][3][20] = {
+			{"Fist", "Unarmed", -1}, // 0
+			{"Brass Knuckles", "BK", "Brass"}, // 1
+			{"Golf Club", "GC", "Golf"}, // 2
+			{"Nightstick", "NS", "Nit"}, // 3
+			{"Knife", "Kni", -1}, // 4
+			{"Baseball Bat", "Bas", -1}, // 5
+			{"Shovel", "Sho", -1}, // 6
+			{"Pool Cue", "PC", "Pool"}, // 7
+			{"Katana", "Kat", -1}, // 8
+			{"Chainsaw", "CS", "Chain"}, // 9
+			{"Purple Dildo", "PD", "Pur"}, // 10
+			{"Dildo", "Dil", -1}, // 11
+			{"Vibrator", "Vib", -1}, // 12
+			{"Silver Vibrator", "SV", "Silv"}, // 13
+			{"Flowers", "Flo", -1}, // 14
+			{"Cane", "Can", -1}, // 15
+			{"Grenades", "Gren", -1}, // 16
+			{"Tear Gas", "TG", "Tear"}, // 17
+			{"Molotov Cocktail", "MC", "Mol"}, // 18
+			{-1, -1, -1},
+			{-1, -1, -1},
+			{-1, -1, -1},
+			{"Pistol", "Pis", -1}, // 22
+			{"Silenced Pistol", "SP", "Sil"}, // 23
+			{"Desert Eagle", "DE", "Deag"}, // 24
+			{"Shotgun", "SG", -1}, // 25
+			{"Sawnoff Shotgun", "SS", "Sawn"}, // 26
+			{"Combat Shotgun", "CS", "Comb"}, // 27
+			{"Micro SMG", "Uzi", -1}, // 28
+			{"MP5", "MP", -1}, // 29
+			{"AK-47", "AK", "AK47"}, // 30
+			{"M4", -1, -1}, // 31
+			{"Tec-9", "Tec", -1}, // 32
+			{"Country Rifle", "CR", "Rif"}, // 33
+			{"Sniper Rifle", "SR", "Snip"}, // 34
+			{"RPG", -1, -1}, // 35
+			{"HS Rocket", "HS", "Heatseeker"}, // 36
+			{"Flamethrower", "FT", "Flam"}, // 37
+			{"Minigun", "Mini", -1}, // 38
+			{"Sachel Charges", "SC", "Sach"}, // 39
+			{"Detonator", "Det", -1}, // 40
+			{"Spraycan", "Spray", -1}, // 41
+			{"Fire Extinguisher", "FE", "Fire"}, // 42
+			{"Camera", "Cam", -1}, // 43
+			{"Night Vis Goggles", "NVG", "Night"}, // 44
+			{"Thermal Goggles", "TG", "Ther"}, // 45
+			{"Parachute", "Par", -1} // 46
+		};
+
+	new
+		i,
+		j,
+		weapon_id,
+		id_index = tolower(string[0]) - 'a';
+
+	if (!(0 <= id_index < sizeof(weapon_ids))) {
+		return -1;
+	}
+
+	for (i = 0; i < sizeof(weapon_ids[]); i++) {
+		weapon_id = weapon_ids[id_index][i];
+		if (weapon_id == -1) {
+			break;
+		}
+
+		for (j = 0; j < sizeof(weapon_names[]); j++) {
+			if (weapon_names[weapon_id][j][0] == -1) {
+				break;
+			}
+			printf("string = %s", string);
+			printf("weapon_names = %s", weapon_names[weapon_id][j]);
+
+			if (!strcmp(string, weapon_names[weapon_id][j], true, strlen(weapon_names[weapon_id][j]))) {
+				return weapon_id;
+			}
+		}
+	}
+
 	return -1;
 }
 
