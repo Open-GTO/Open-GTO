@@ -62,9 +62,10 @@ COMMAND:weapon(playerid, params[])
 
 	if (strcmp(subcmd, "set", true) == 0) {
 		if (weaponid == -1) {
-			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_TARGET_ERROR");
+			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_WEAPON_ERROR");
 			return 1;
 		}
+
 		if (targetid == -1) {
 			foreach (new id : Player) {
 				SetPlayerWeapon(id, weaponid, amount);
@@ -100,7 +101,7 @@ COMMAND:weapon(playerid, params[])
 		}
 	} else if (strcmp(subcmd, "give", true) == 0) {
 		if (weaponid == -1) {
-			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_TARGET_ERROR");
+			Lang_SendText(playerid, "ADMIN_COMMAND_WEAPON_WEAPON_ERROR");
 			return 1;
 		}
 
