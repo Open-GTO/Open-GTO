@@ -438,8 +438,6 @@ SSCANF:weapon(string[])
 			if (weapon_names[weapon_id][j][0] == -1) {
 				break;
 			}
-			printf("string = %s", string);
-			printf("weapon_names = %s", weapon_names[weapon_id][j]);
 
 			if (!strcmp(string, weapon_names[weapon_id][j], true, strlen(weapon_names[weapon_id][j]))) {
 				return weapon_id;
