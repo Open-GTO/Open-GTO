@@ -393,7 +393,7 @@ SSCANF:weapon(string[])
 			{-1, -1, -1},
 			{"Pistol", "Pis", -1}, // 22
 			{"Silenced Pistol", "SP", "Sil"}, // 23
-			{"Desert Eagle", "DE", "Deag"}, // 24
+			{"Desert Eagle", "De", -1}, // 24
 			{"Shotgun", "SG", -1}, // 25
 			{"Sawnoff Shotgun", "SS", "Sawn"}, // 26
 			{"Combat Shotgun", "CS", "Comb"}, // 27
