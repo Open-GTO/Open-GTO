@@ -342,7 +342,7 @@ SSCANF:weapon(string[])
 		}
 	}
 
-	static
+	static const
 		weapon_ids[23][7] = {
 			{30, -1}, // a
 			{1, 5, -1}, // b
@@ -356,7 +356,7 @@ SSCANF:weapon(string[])
 			{-1}, // j
 			{8, 4, 12, -1}, // k
 			{-1}, // l
-			{31, 28, 28, 38, 36, 18, 29}, // m
+			{31, 28, 38, 36, 18, 29}, // m
 			{3, 44, -1}, // n
 			{-1}, // o
 			{46, 22, 7, 10, -1}, // p
@@ -369,53 +369,53 @@ SSCANF:weapon(string[])
 			{11, 13, -1} // w
 		},
 		weapon_names[47][3][20] = {
-			{"Fist", "Unarmed", -1}, // 0
-			{"Brass Knuckles", "BK", "Brass"}, // 1
-			{"Golf Club", "GC", "Golf"}, // 2
+			{"Fis", "Unarmed", -1}, // 0
+			{"Bra", "BK", -1}, // 1
+			{"Gol", "GC", -1}, // 2
 			{"Nightstick", "NS", "Nit"}, // 3
-			{"Knife", "Kni", -1}, // 4
-			{"Baseball Bat", "Bas", -1}, // 5
-			{"Shovel", "Sho", -1}, // 6
-			{"Pool Cue", "PC", "Pool"}, // 7
-			{"Katana", "Kat", -1}, // 8
-			{"Chainsaw", "CS", "Chain"}, // 9
-			{"Purple Dildo", "PD", "Pur"}, // 10
-			{"Dildo", "Dil", -1}, // 11
-			{"Vibrator", "Vib", -1}, // 12
-			{"Silver Vibrator", "SV", "Silv"}, // 13
-			{"Flowers", "Flo", -1}, // 14
-			{"Cane", "Can", -1}, // 15
-			{"Grenades", "Gren", -1}, // 16
-			{"Tear Gas", "TG", "Tear"}, // 17
-			{"Molotov Cocktail", "MC", "Mol"}, // 18
+			{"Kni", -1, -1}, // 4
+			{"Bas", -1, -1}, // 5
+			{"Show", -1, -1}, // 6
+			{"Poo", "PC", -1}, // 7
+			{"Kat", -1, -1}, // 8
+			{"Cha", "CS", -1}, // 9
+			{"Pur", "PD", -1}, // 10
+			{"Dil", -1, -1}, // 11
+			{"Vib", -1, -1}, // 12
+			{"Silv", "SV", -1}, // 13
+			{"Flo", -1, -1}, // 14
+			{"Can", -1, -1}, // 15
+			{"Gre", -1, -1}, // 16
+			{"Tea", "TG", -1}, // 17
+			{"Mol", "MC", -1}, // 18
 			{-1, -1, -1},
 			{-1, -1, -1},
 			{-1, -1, -1},
-			{"Pistol", "Pis", -1}, // 22
-			{"Silenced Pistol", "SP", "Sil"}, // 23
-			{"Desert Eagle", "De", -1}, // 24
-			{"Shotgun", "SG", -1}, // 25
-			{"Sawnoff Shotgun", "SS", "Sawn"}, // 26
-			{"Combat Shotgun", "CS", "Comb"}, // 27
-			{"Micro SMG", "Uzi", -1}, // 28
-			{"MP5", "MP", -1}, // 29
-			{"AK-47", "AK", "AK47"}, // 30
+			{"Pis", -1, -1}, // 22
+			{"Sil", "SP", -1}, // 23
+			{"De", -1, -1}, // 24
+			{"Sho", "SG", -1}, // 25
+			{"Saw", "SS", -1}, // 26
+			{"Com", "CS", -1}, // 27
+			{"Mic", "Uzi", -1}, // 28
+			{"MP", -1, -1}, // 29
+			{"AK", -1, -1}, // 30
 			{"M4", -1, -1}, // 31
-			{"Tec-9", "Tec", -1}, // 32
-			{"Country Rifle", "CR", "Rif"}, // 33
-			{"Sniper Rifle", "SR", "Snip"}, // 34
+			{"Tec", -1, -1}, // 32
+			{"Cou", "CR", "Rif"}, // 33
+			{"Sni", "SR", -1}, // 34
 			{"RPG", -1, -1}, // 35
-			{"HS Rocket", "HS", "Heatseeker"}, // 36
-			{"Flamethrower", "FT", "Flam"}, // 37
-			{"Minigun", "Mini", -1}, // 38
-			{"Sachel Charges", "SC", "Sach"}, // 39
-			{"Detonator", "Det", -1}, // 40
-			{"Spraycan", "Spray", -1}, // 41
-			{"Fire Extinguisher", "FE", "Fire"}, // 42
-			{"Camera", "Cam", -1}, // 43
-			{"Night Vis Goggles", "NVG", "Night"}, // 44
-			{"Thermal Goggles", "TG", "Ther"}, // 45
-			{"Parachute", "Par", -1} // 46
+			{"HS", "Heat", -1}, // 36
+			{"Fla", "FT", -1}, // 37
+			{"Min", -1, -1}, // 38
+			{"Sac", "SC", -1}, // 39
+			{"Det", -1, -1}, // 40
+			{"Spr", -1, -1}, // 41
+			{"Fir", "FE", -1}, // 42
+			{"Cam", -1, -1}, // 43
+			{"Nig", "NVG", -1}, // 44
+			{"The", "TG", -1}, // 45
+			{"Par", -1, -1} // 46
 		};
 
 	new
