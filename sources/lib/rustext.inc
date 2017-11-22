@@ -109,12 +109,18 @@ native RussifierType:GetDefaultRussifierType();
 				return;
 			}
 
-			new last_version[16], plugin_version[16];
-			strmid(last_version, data, 1, length);
+			new version[16];
+			strmid(version, data, 1, length);
+
+			if (!('0' <= version[0] <= '9')) {
+				return;
+			}
+
+			new plugin_version[16];
 			GetRussifierVersion(plugin_version);
 
-			if (strcmp(last_version, plugin_version) != 0) {
-				printf("\n** Please update your rustext plugin to %s from here: https://github.com/ziggi/rustext/releases.\n", last_version);
+			if (strcmp(version, plugin_version) != 0) {
+				printf("\n** Please update your rustext plugin to %s from here: https://github.com/ziggi/rustext/releases.\n", version);
 			}
 		}
 	}
