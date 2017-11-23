@@ -44,8 +44,7 @@ COMMAND:cmdlist(playerid, params[])
 		Dialog_Message(playerid,
 			"ADMIN_COMMAND_CMDLIST_DIALOG_HEADER",
 			string,
-			"ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK",
-			MDIALOG_NOTVAR_INFO);
+			"ADMIN_COMMAND_ABOUT_DIALOG_BUTTON_OK");
 	} else {
 		Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_HEADER");
 		Lang_SendText(playerid, "ADMIN_COMMAND_CMDLIST_MODER_0");

@@ -126,8 +126,7 @@ DialogCreate:VehicleRadio(playerid)
 	Dialog_Open(playerid, Dialog:VehicleRadio, DIALOG_STYLE_LIST,
 	            "VEHICLE_MENU_RADIO_HEADER",
 	            string,
-	            "BUTTON_SELECT", "BUTTON_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "BUTTON_SELECT", "BUTTON_BACK");
 }
 
 DialogResponse:VehicleRadio(playerid, response, listitem, inputtext[])

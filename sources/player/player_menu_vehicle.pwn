@@ -34,8 +34,7 @@ DialogCreate:PlayerVehicleMenu(playerid)
 	Dialog_Open(playerid, Dialog:PlayerVehicleMenu, DIALOG_STYLE_LIST,
 	            "PLAYER_MENU_VEHICLE_CAPTION",
 	            string,
-	            "BUTTON_NEXT", "BUTTON_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "BUTTON_NEXT", "BUTTON_BACK");
 	return 1;
 }
 
@@ -82,7 +81,6 @@ DialogCreate:PlayerVehicleList(playerid)
 	            "PLAYER_MENU_VEHICLE_CAPTION",
 	            string,
 	            "BUTTON_SELECT", "BUTTON_BACK",
-	            MDIALOG_NOTVAR_INFO,
 	            GetPlayerVehicleSellCostBySlot(playerid, veh_slot));
 }
 

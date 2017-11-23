@@ -18,7 +18,6 @@ DialogCreate:PlayerSettingsMenu(playerid)
 	            "PLAYER_MENU_SETTINGS_CAPTION",
 	            "PLAYER_MENU_SETTINGS_INFO",
 	            "BUTTON_SELECT", "BUTTON_BACK",
-	            MDIALOG_NOTVAR_NONE,
 	            CHANGE_NICK_COST);
 }
 
@@ -64,7 +63,6 @@ DialogResponse:PlayerSettingsMenu(playerid, response, listitem, inputtext[])
 				                 "PLAYER_MENU_SETTINGS_NAME_CAPTION",
 				                 "PLAYER_MENU_SETTINGS_NAME_NO_MONEY",
 				                 "BUTTON_BACK", "BUTTON_CANCEL",
-				                 MDIALOG_NOTVAR_NONE,
 				                 CHANGE_NICK_COST);
 			} else {
 				Dialog_Show(playerid, Dialog:PlayerChangeNickMenu);
@@ -113,7 +111,6 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		                 "PLAYER_MENU_SETTINGS_NAME_CAPTION",
 		                 "PLAYER_MENU_SETTINGS_NAME_NO_MONEY",
 		                 "BUTTON_BACK", "BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_NONE,
 		                 CHANGE_NICK_COST);
 		return 1;
 	}
@@ -131,7 +128,6 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		                 "PLAYER_MENU_SETTINGS_NAME_CAPTION",
 		                 "PLAYER_MENU_SETTINGS_NAME_LENGTH",
 		                 "BUTTON_BACK", "BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_NONE,
 		                 MIN_NAME_LEN, MAX_NAME_LEN);
 		return 1;
 	}
@@ -152,7 +148,6 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 			             "PLAYER_MENU_SETTINGS_NAME_CAPTION",
 		                 "PLAYER_MENU_SETTINGS_NAME_ALLOWED_SYMB",
 		                 "BUTTON_BACK", "BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_NONE,
 		                 ALLOWED_NICK_SYMBOLS_STR);
 		return 1;
 	}
@@ -162,7 +157,6 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		                 "PLAYER_MENU_SETTINGS_NAME_CAPTION",
 		                 "PLAYER_MENU_SETTINGS_NAME_ALLOWED_SYMB",
 		                 "BUTTON_BACK", "BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_NONE,
 		                 ALLOWED_NICK_SYMBOLS_STR);
 		return 1;
 	}
@@ -194,7 +188,6 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 	                 "PLAYER_MENU_SETTINGS_NAME_CAPTION",
 	                 "PLAYER_MENU_SETTINGS_NAME_CHANGED",
 	                 "BUTTON_BACK", "BUTTON_CANCEL",
-	                 MDIALOG_NOTVAR_NONE,
 	                 old_name, new_name);
 	return 1;
 }
@@ -222,7 +215,6 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 		                 "PLAYER_MENU_SETTINGS_PASSWORD_CAPTION",
 		                 "PLAYER_MENU_SETTINGS_PASSWORD_LENGTH",
 		                 "BUTTON_BACK", "BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_NONE,
 		                 MIN_PASS_LEN, MAX_PASS_LEN);
 		return 1;
 	}
@@ -231,7 +223,6 @@ DialogResponse:PlayerChangePassMenu(playerid, response, listitem, inputtext[])
 	                 "PLAYER_MENU_SETTINGS_PASSWORD_CAPTION",
 	                 "PLAYER_MENU_SETTINGS_PASSWORD_CHANGED",
 	                 "BUTTON_BACK", "BUTTON_CANCEL",
-	                 MDIALOG_NOTVAR_NONE,
 	                 inputtext);
 
 	Account_SetPassword(playerid, inputtext);
@@ -268,8 +259,7 @@ DialogCreate:SettingsInterfaceMenu(playerid)
 	Dialog_Open(playerid, Dialog:SettingsInterfaceMenu, DIALOG_STYLE_TABLIST_HEADERS,
 	            "PLAYER_MENU_SETTINGS_INTERFACE_CAPTION",
 	            string,
-	            "BUTTON_SELECT", "BUTTON_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "BUTTON_SELECT", "BUTTON_BACK");
 	return 1;
 }
 
@@ -316,8 +306,7 @@ DialogCreate:SettingsLanguageMenu(playerid)
 	Dialog_Open(playerid, Dialog:SettingsLanguageMenu, DIALOG_STYLE_TABLIST,
 	            "PLAYER_MENU_SETTINGS_LANGUAGE_CAPTION",
 	            string,
-	            "BUTTON_SELECT", "BUTTON_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "BUTTON_SELECT", "BUTTON_BACK");
 	return 1;
 }
 

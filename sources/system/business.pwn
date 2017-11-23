@@ -299,7 +299,6 @@ DialogCreate:BusinessMenu(playerid)
 			            Businesses[id][Business_Name],
 			            "BUSINESS_DIALOG_LIST_SELL",
 			            "BUSINESS_DIALOG_BUTTON_OK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-			            MDIALOG_NOTVAR_CAPTION,
 			            Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade],
 			            Businesses[id][Business_Upgrade]);
 		} else {
@@ -307,7 +306,6 @@ DialogCreate:BusinessMenu(playerid)
 			            Businesses[id][Business_Name],
 			            "BUSINESS_DIALOG_LIST",
 			            "BUSINESS_DIALOG_BUTTON_OK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-			            MDIALOG_NOTVAR_CAPTION,
 			            Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade],
 			            Businesses[id][Business_Upgrade],
 			            business_GetUpgradeCost(id));
@@ -316,8 +314,7 @@ DialogCreate:BusinessMenu(playerid)
 		Dialog_Open(playerid, Dialog:BusinessMenu, DIALOG_STYLE_LIST,
 		            Businesses[id][Business_Name],
 		            "BUSINESS_DIALOG_LIST_BUY",
-		            "BUSINESS_DIALOG_BUTTON_OK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-		            MDIALOG_NOTVAR_CAPTION);
+		            "BUSINESS_DIALOG_BUTTON_OK", "BUSINESS_DIALOG_BUTTON_CANCEL");
 	}
 }
 
@@ -414,8 +411,7 @@ DialogCreate:BusinessPlayerOwned(playerid)
 	Dialog_Open(playerid, Dialog:PlayerReturnMenu, DIALOG_STYLE_TABLIST_HEADERS,
 	            "BUSINESS_DIALOG_CAPTION",
 	            string,
-	            "BUSINESS_DIALOG_BACK", "BUSINESS_DIALOG_CANCEL",
-	            MDIALOG_NOTVAR_INFO);
+	            "BUSINESS_DIALOG_BACK", "BUSINESS_DIALOG_CANCEL");
 	return 1;
 }
 
@@ -444,7 +440,6 @@ business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		            Businesses[id][Business_Name],
 		            "BUSINESS_DIALOG_INFO_SELF",
 		            "BUTTON_ACTION", "BUTTON_CANCEL",
-		            MDIALOG_NOTVAR_CAPTION,
 		            ((Businesses[id][Business_Cost] + Businesses[id][Business_Buyout]) * 85) / 100,
 		            Businesses[id][Business_Vault] * Businesses[id][Business_Upgrade],
 		            Businesses[id][Business_Upgrade]);
@@ -458,7 +453,6 @@ business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			            Businesses[id][Business_Name],
 			            "BUSINESS_DIALOG_INFO_FOREIGN",
 			            "BUTTON_ACTION", "BUTTON_CANCEL",
-			            MDIALOG_NOTVAR_CAPTION,
 			            Businesses[id][Business_Cost],
 			            Businesses[id][Business_Level],
 			            Businesses[id][Business_Value],
@@ -471,7 +465,6 @@ business_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			            Businesses[id][Business_Name],
 			            "BUSINESS_DIALOG_INFO_PLAYER",
 			            "BUTTON_ACTION", "BUTTON_CANCEL",
-			            MDIALOG_NOTVAR_CAPTION,
 			            Businesses[id][Business_Owner],
 			            Businesses[id][Business_Cost] + Businesses[id][Business_Buyout],
 			            Businesses[id][Business_Level],
@@ -558,7 +551,6 @@ stock bis_Buy(playerid)
 		                 Businesses[id][Business_Name],
 		                 "BUSINESS_LEVEL_ERROR",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_CAPTION,
 		                 Businesses[id][Business_Level]);
 		return 1;
 	}
@@ -568,8 +560,7 @@ stock bis_Buy(playerid)
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
 		                 Businesses[id][Business_Name],
 		                 "BUSINESS_NO_MONEY",
-		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_CAPTION);
+		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL");
 		return 1;
 	}
 
@@ -578,8 +569,7 @@ stock bis_Buy(playerid)
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
 		                 Businesses[id][Business_Name],
 		                 "BUSINESS_YOU_BUSINESS",
-		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_CAPTION);
+		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL");
 	}
 #if !defined BUY_ALL_BUSINESS
 	else if (strcmp(Businesses[id][Business_Owner], "Unknown", true))
@@ -614,7 +604,6 @@ stock bis_Buy(playerid)
 		                 Businesses[id][Business_Name],
 		                 "BUSINESS_DIALOG_INFO_BUY",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_CAPTION,
 		                 Businesses[id][Business_Name],
 		                 Businesses[id][Business_Vault]);
 
@@ -635,8 +624,7 @@ stock bis_Sell(playerid)
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
 		                 Businesses[id][Business_Name],
 		                 "BUSINESS_NOT_YOU",
-		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_CAPTION);
+		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL");
 	}
 	else
 	{
@@ -657,7 +645,6 @@ stock bis_Sell(playerid)
 		                 Businesses[id][Business_Name],
 		                 "BUSINESS_DIALOG_INFO_SELL",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_CAPTION,
 		                 Businesses[id][Business_Name],
 		                 Businesses[id][Business_Vault]);
 
@@ -679,8 +666,7 @@ stock bis_Collect(playerid)
 		Dialog_MessageEx(playerid, Dialog:BusinessMessage,
 		                 Businesses[id][Business_Name],
 		                 "BUSINESS_NOT_YOU",
-		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_CAPTION);
+		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL");
 	}
 	else
 	{
@@ -692,16 +678,14 @@ stock bis_Collect(playerid)
 			Dialog_MessageEx(playerid, Dialog:BusinessMessage,
 			                 Businesses[id][Business_Name],
 			                 "BUSINESS_TOOK_VAULT",
-			                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-			                 MDIALOG_NOTVAR_CAPTION);
+			                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL");
 		}
 		else
 		{
 			Dialog_MessageEx(playerid, Dialog:BusinessMessage,
 			                 Businesses[id][Business_Name],
 			                 "BUSINESS_NO_VAULT",
-			                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-			                 MDIALOG_NOTVAR_CAPTION);
+			                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL");
 		}
 	}
 	return 1;
@@ -717,7 +701,6 @@ stock bis_buyUpgrade(playerid)
 		                 Businesses[id][Business_Name],
 		                 "BUSINESS_UPGRADE_MAX",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_CAPTION,
 		                 Businesses[id][Business_Name]);
 		return 1;
 	}
@@ -728,7 +711,6 @@ stock bis_buyUpgrade(playerid)
 		                 Businesses[id][Business_Name],
 		                 "BUSINESS_UPGRADE_NO_MONEY",
 		                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-		                 MDIALOG_NOTVAR_CAPTION,
 		                 price);
 		return 1;
 	}
@@ -741,7 +723,6 @@ stock bis_buyUpgrade(playerid)
 	                 Businesses[id][Business_Name],
 	                 "BUSINESS_UPGRADE_UP",
 	                 "BUSINESS_DIALOG_BUTTON_BACK", "BUSINESS_DIALOG_BUTTON_CANCEL",
-	                 MDIALOG_NOTVAR_CAPTION,
 	                 Businesses[id][Business_Name], Businesses[id][Business_Upgrade]);
 	return 1;
 }

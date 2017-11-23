@@ -230,8 +230,7 @@ DialogCreate:AccountRegister(playerid)
 	Dialog_Open(playerid, Dialog:AccountRegister, DIALOG_STYLE_INPUT,
 	            caption,
 	            "ACCOUNT_DIALOG_REGISTER",
-	            "ACCOUNT_DIALOG_REGISTER_BUTTON", "",
-	            MDIALOG_NOTVAR_CAPTION);
+	            "ACCOUNT_DIALOG_REGISTER_BUTTON", "");
 }
 
 DialogResponse:AccountRegister(playerid, response, listitem, inputtext[])
@@ -258,7 +257,6 @@ DialogCreate:AccountLogin(playerid)
 	            caption,
 	            "ACCOUNT_DIALOG_LOGIN",
 	            "ACCOUNT_DIALOG_LOGIN_BUTTON", "",
-	            MDIALOG_NOTVAR_CAPTION,
 	            GetLoginAttemptCount(playerid));
 }
 
@@ -280,8 +278,7 @@ DialogCreate:AccountInformation(playerid)
 	Dialog_Open(playerid, Dialog:AccountInformation, DIALOG_STYLE_MSGBOX,
 	            caption,
 	            "ACCOUNT_DIALOG_INFORMATION_TEXT",
-	            "ACCOUNT_DIALOG_INFORMATION_BUTTON", "",
-	            MDIALOG_NOTVAR_CAPTION);
+	            "ACCOUNT_DIALOG_INFORMATION_BUTTON", "");
 }
 
 DialogResponse:AccountInformation(playerid, response, listitem, inputtext[])
@@ -304,8 +301,7 @@ DialogCreate:AccountLanguage(playerid)
 	Dialog_Open(playerid, Dialog:AccountLanguage, DIALOG_STYLE_LIST,
 	            "Language",
 	            string,
-	            "OK", "",
-	            MDIALOG_NOTVAR_ALL);
+	            "OK", "");
 }
 
 DialogResponse:AccountLanguage(playerid, response, listitem, inputtext[])

@@ -110,8 +110,7 @@ DialogCreate:CompetitionMenu(playerid)
 	Dialog_Open(playerid, Dialog:CompetitionMenu, DIALOG_STYLE_TABLIST_HEADERS,
 	            "COMPETITION_MENU_HEADER",
 	            string,
-	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK");
 }
 
 DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
@@ -177,7 +176,6 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 		            cmap_name,
 		            "COMPETITION_JOIN_MENU_MSG",
 		            "COMPETITION_MENU_JOIN", "COMPETITION_MENU_BACK",
-		            MDIALOG_NOTVAR_CAPTION,
 		            cmap_name, ctype_color_code, ctype_name, cplayer_name, cplayer_id, cstatus);
 	} else {
 		SetJoinCompetitionId(playerid, INVALID_COMPETITION_ID);
@@ -186,7 +184,6 @@ DialogResponse:CompetitionMenu(playerid, response, listitem, inputtext[])
 		            cmap_name,
 		            "COMPETITION_JOIN_MENU_MSG",
 		            "COMPETITION_MENU_BACK", "",
-		            MDIALOG_NOTVAR_CAPTION,
 		            cmap_name, ctype_color_code, ctype_name, cplayer_name, cplayer_id, cstatus);
 	}
 	return 1;
@@ -282,8 +279,7 @@ DialogCreate:CompetitionStartMenu(playerid)
 	Dialog_Open(playerid, Dialog:CompetitionStartMenu, DIALOG_STYLE_TABLIST,
 	            "COMPETITION_MENU_HEADER",
 	            string,
-	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK");
 	return 1;
 }
 
@@ -366,8 +362,7 @@ DialogCreate:CompetitionStartTypeMenu(playerid)
 	Dialog_Open(playerid, Dialog:CompetitionStartTypeMenu, DIALOG_STYLE_LIST,
 	            "COMPETITION_START_TYPE_HEADER",
 	            string,
-	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK");
 }
 
 DialogResponse:CompetitionStartTypeMenu(playerid, response, listitem, inputtext[])
@@ -430,8 +425,7 @@ DialogCreate:CompetitionStartMapMenu(playerid)
 	Dialog_Open(playerid, Dialog:CompetitionStartMapMenu, DIALOG_STYLE_LIST,
 	            "COMPETITION_START_TYPE_HEADER",
 	            string,
-	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK");
 }
 
 DialogResponse:CompetitionStartMapMenu(playerid, response, listitem, inputtext[])
@@ -469,8 +463,7 @@ DialogCreate:CompetitionStartWeatherMenu(playerid)
 	Dialog_Open(playerid, Dialog:CompetitionStartWeatherMenu, DIALOG_STYLE_LIST,
 	            "COMPETITION_START_TYPE_HEADER",
 	            string,
-	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "COMPETITION_MENU_SELECT", "COMPETITION_MENU_BACK");
 }
 
 DialogResponse:CompetitionStartWeatherMenu(playerid, response, listitem, inputtext[])

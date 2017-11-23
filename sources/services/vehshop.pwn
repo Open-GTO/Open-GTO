@@ -166,7 +166,6 @@ DialogCreate:VehicleBuy(playerid)
 	            "VEHSHOP_DIALOG_HEADER",
 	            "VEHSHOP_DIALOG_INFO",
 	            "VEHSHOP_DIALOG_BUTTON_BUY", "VEHSHOP_DIALOG_BUTTON_EXIT",
-	            MDIALOG_NOTVAR_NONE,
 	            ret_GetVehicleModelName(model),
 	            FormatNumber(cost));
 }
@@ -221,7 +220,7 @@ DialogCreate:VehicleHaveMax(playerid)
 		Lang_GetPlayerText(playerid, "VEHSHOP_DIALOG_NEW_VEHICLE", string, _, string, level);
 	}
 
-	Dialog_Message(playerid, "VEHSHOP_DIALOG_HEADER", string, "VEHSHOP_DIALOG_BUTTON_OK", MDIALOG_NOTVAR_INFO);
+	Dialog_Message(playerid, "VEHSHOP_DIALOG_HEADER", string, "VEHSHOP_DIALOG_BUTTON_OK");
 }
 
 stock VehShop_SetVehiclesToRespawn()

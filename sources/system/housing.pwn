@@ -468,8 +468,7 @@ DialogCreate:HouseMenu(playerid)
 	Dialog_Open(playerid, Dialog:HouseMenu, DIALOG_STYLE_LIST,
 	            Houses[id][Houses_Name],
 	            string,
-	            "HOUSING_DIALOG_BUTTON_SELECT", "HOUSING_DIALOG_BUTTON_CANCEL",
-	            MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_INFO);
+	            "HOUSING_DIALOG_BUTTON_SELECT", "HOUSING_DIALOG_BUTTON_CANCEL");
 	return 1;
 }
 
@@ -586,7 +585,6 @@ DialogCreate:HouseSetRent(playerid)
 	            "HOUSING_RENT_SET_HEADER",
 	            "HOUSING_RENT_SET_NEW",
 	            "HOUSING_DIALOG_BUTTON_SELECT", "HOUSING_DIALOG_BUTTON_BACK",
-	            MDIALOG_NOTVAR_NONE,
 	            Houses[id][Houses_RentCost]);
 }
 
@@ -609,7 +607,6 @@ DialogResponse:HouseSetRent(playerid, response, listitem, inputtext[])
 	               "HOUSING_RENT_SET_HEADER",
 	               "HOUSING_RENT_SET_SUCCESS",
 	               "HOUSING_DIALOG_BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
 	               rentcost);
 	return 1;
 }
@@ -663,7 +660,6 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 				               "HOUSING_UPGRADE_HEALTH",
 				               "HOUSING_UPGRADE_NO_MONEY",
 				               "HOUSING_DIALOG_BUTTON_OK",
-				               MDIALOG_NOTVAR_NONE,
 				               HOUSE_UPGRADE_HEALTH_COST);
 				return 1;
 			}
@@ -693,7 +689,6 @@ DialogResponse:HouseUpgrades(playerid, response, listitem, inputtext[])
 				               "HOUSING_UPGRADE_ARMOUR",
 				               "HOUSING_UPGRADE_NO_MONEY",
 				               "HOUSING_DIALOG_BUTTON_OK",
-				               MDIALOG_NOTVAR_NONE,
 				               HOUSE_UPGRADE_ARMOUR_COST);
 				return 1;
 			}
@@ -772,7 +767,6 @@ stock RentRoom(playerid)
 		               "HOUSING_RENT_HEADER",
 		               "HOUSING_RENT_CURRENT_RENTER",
 		               "HOUSING_DIALOG_BUTTON_OK",
-		               MDIALOG_NOTVAR_NONE,
 		               Houses[id][Houses_RentName]);
 	}
 	return 1;
@@ -915,7 +909,6 @@ stock house_Buy(playerid)
 		               "HOUSING_BUY_HEADER",
 		               "HOUSING_BUY_SUCCESS",
 		               "HOUSING_DIALOG_BUTTON_OK",
-		               MDIALOG_NOTVAR_NONE,
 		               Houses[id][Houses_Name]);
 
 		Log(mainlog, INFO, "player: %s [id: %d]: bought the '%s' (house)", playername, playerid, Houses[id][Houses_Name]);
@@ -954,7 +947,6 @@ stock house_Sell(playerid)
 		               "HOUSING_SELL_HEADER",
 		               "HOUSING_SELL_SUCCESS",
 		               "HOUSING_DIALOG_BUTTON_OK",
-		               MDIALOG_NOTVAR_NONE,
 		               Houses[id][Houses_Name]);
 
 		Log(mainlog, INFO, "player: %s [id: %d]: sold the '%s' (house)", ret_GetPlayerName(playerid), playerid, Houses[id][Houses_Name]);
@@ -1081,8 +1073,7 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 					Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX,
 					            Houses[id][Houses_Name],
 					            string,
-					            "HOUSING_DIALOG_BUTTON_ACTIONS", "HOUSING_DIALOG_BUTTON_CANCEL",
-					            MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_INFO);
+					            "HOUSING_DIALOG_BUTTON_ACTIONS", "HOUSING_DIALOG_BUTTON_CANCEL");
 					return 1;
 				}
 				else
@@ -1093,8 +1084,7 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 					Dialog_Open(playerid, Dialog:HouseInfo, DIALOG_STYLE_MSGBOX,
 					            Houses[id][Houses_Name],
 					            string,
-					            "HOUSING_DIALOG_BUTTON_ACTIONS", "HOUSING_DIALOG_BUTTON_CANCEL",
-					            MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_INFO);
+					            "HOUSING_DIALOG_BUTTON_ACTIONS", "HOUSING_DIALOG_BUTTON_CANCEL");
 					return 1;
 				}
 			}
@@ -1104,7 +1094,6 @@ housing_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				            Houses[id][Houses_Name],
 				            "HOUSING_DIALOG_INFO_NO_OWNER",
 				            "HOUSING_DIALOG_BUTTON_ACTIONS", "HOUSING_DIALOG_BUTTON_CANCEL",
-				            MDIALOG_NOTVAR_CAPTION,
 				            Houses[id][Houses_Cost],
 				            Houses[id][Houses_UpKeep]);
 				return 1;

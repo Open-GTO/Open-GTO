@@ -116,7 +116,7 @@ DialogCreate:VehicleMenu(playerid)
 		strcat(string, temp);
 	}
 
-	Dialog_Open(playerid, Dialog:VehicleMenu, DIALOG_STYLE_LIST, "VEHICLE_MENU_HEADER", string, "BUTTON_OK", "BUTTON_CANCEL", MDIALOG_NOTVAR_INFO);
+	Dialog_Open(playerid, Dialog:VehicleMenu, DIALOG_STYLE_LIST, "VEHICLE_MENU_HEADER", string, "BUTTON_OK", "BUTTON_CANCEL");
 }
 
 DialogResponse:VehicleMenu(playerid, response, listitem, inputtext[])
@@ -285,8 +285,7 @@ DialogCreate:VehicleNumber(playerid)
 	Dialog_Open(playerid, Dialog:VehicleNumber, DIALOG_STYLE_INPUT,
 	            "VEHICLE_MENU_NUMBER_HEADER",
 	            string,
-	            "BUTTON_OK", "BUTTON_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "BUTTON_OK", "BUTTON_BACK");
 	return 1;
 }
 

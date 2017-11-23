@@ -1928,8 +1928,7 @@ DialogCreate:AnimLib(playerid)
 	Dialog_Open(playerid, Dialog:AnimLib, DIALOG_STYLE_LIST,
 	            "PLAYER_MENU_ANIMATION_CAPTION",
 	            string,
-	            "BUTTON_OK", "BUTTON_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "BUTTON_OK", "BUTTON_BACK");
 }
 
 DialogResponse:AnimLib(playerid, response, listitem, inputtext[])
@@ -1970,8 +1969,7 @@ DialogCreate:AnimMenu(playerid)
 	Dialog_Open(playerid, Dialog:AnimMenu, DIALOG_STYLE_LIST,
 	            head,
 	            string,
-	            "BUTTON_OK", "BUTTON_BACK",
-	            MDIALOG_NOTVAR_CAPTION | MDIALOG_NOTVAR_INFO);
+	            "BUTTON_OK", "BUTTON_BACK");
 	return 1;
 }
 

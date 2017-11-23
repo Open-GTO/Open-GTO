@@ -204,7 +204,6 @@ DialogCreate:BankStart(playerid)
 	            "BANK_CAPTION",
 	            "BANK_START_INFO",
 	            "BANK_BUTTON_OPERATIONS", "BANK_BUTTON_CANCEL",
-	            MDIALOG_NOTVAR_NONE,
 	            gProfitCount,
 	            gProfitCountPremium,
 	            FormatNumber(GetPlayerBankMoney(playerid)));
@@ -240,8 +239,7 @@ DialogCreate:BankList(playerid)
 	Dialog_Open(playerid, Dialog:BankList, DIALOG_STYLE_LIST,
 	            "BANK_CAPTION",
 	            string,
-	            "BANK_BUTTON_OK", "BANK_BUTTON_CANCEL",
-	            MDIALOG_NOTVAR_INFO);
+	            "BANK_BUTTON_OK", "BANK_BUTTON_CANCEL");
 }
 
 DialogResponse:BankList(playerid, response, listitem, inputtext[])
@@ -281,7 +279,6 @@ DialogCreate:BankWithdraw(playerid)
 	            "BANK_CAPTION",
 	            "BANK_START_INFO",
 	            "BANK_BUTTON_WITHDRAW", "BANK_BUTTON_BACK",
-	            MDIALOG_NOTVAR_NONE,
 	            gProfitCount,
 	            gProfitCountPremium,
 	            FormatNumber(GetPlayerBankMoney(playerid)));
@@ -320,7 +317,6 @@ DialogResponse:BankWithdraw(playerid, response, listitem, inputtext[])
 	               "BANK_CAPTION",
 	               "BANK_WITHDRAW_INFO",
 	               "BANK_BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
 	               FormatNumber(amount),
 	               FormatNumber(GetPlayerBankMoney(playerid)));
 
@@ -342,7 +338,6 @@ DialogCreate:BankDeposit(playerid)
 	            "BANK_CAPTION",
 	            "BANK_START_INFO",
 	            "BANK_BUTTON_DEPOSIT", "BANK_BUTTON_BACK",
-	            MDIALOG_NOTVAR_NONE,
 	            gProfitCount,
 	            gProfitCountPremium,
 	            FormatNumber(GetPlayerBankMoney(playerid)));
@@ -387,7 +382,7 @@ DialogResponse:BankDeposit(playerid, response, listitem, inputtext[])
 		strcat(string, temp);
 	}
 
-	Dialog_Message(playerid, "BANK_CAPTION", string, "BANK_BUTTON_OK", MDIALOG_NOTVAR_INFO);
+	Dialog_Message(playerid, "BANK_CAPTION", string, "BANK_BUTTON_OK");
 	PlayerPlaySoundOnPlayer(playerid, 1084);
 	return 1;
 }
@@ -439,7 +434,6 @@ DialogResponse:GangBankWithdraw(playerid, response, listitem, inputtext[])
 	               "BANK_GANG_CAPTION",
 	               "BANK_GANG_WITHDRAW_INFO",
 	               "BANK_BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
 	               amount_string,
 	               FormatNumber(Gang_GetMoney(gangid)));
 
@@ -495,7 +489,6 @@ DialogResponse:GangBankDeposit(playerid, response, listitem, inputtext[])
 	               "BANK_GANG_CAPTION",
 	               "BANK_GANG_DEPOSIT_INFO",
 	               "BANK_BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
 	               amount_string,
 	               FormatNumber(Gang_GetMoney(gangid)));
 

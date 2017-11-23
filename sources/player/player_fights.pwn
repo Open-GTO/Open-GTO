@@ -37,8 +37,7 @@ DialogCreate:PlayerFights(playerid)
 	Dialog_Open(playerid, Dialog:PlayerFights, DIALOG_STYLE_LIST,
 	            "FIGHT_TEACHER_PLAYER_CAPTION",
 	            string,
-	            "FIGHT_TEACHER_DIALOG_BUTTON_OK", "FIGHT_TEACHER_PLAYER_BUTTON1",
-	            MDIALOG_NOTVAR_INFO);
+	            "FIGHT_TEACHER_DIALOG_BUTTON_OK", "FIGHT_TEACHER_PLAYER_BUTTON1");
 }
 
 DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
@@ -75,7 +74,6 @@ DialogResponse:PlayerFights(playerid, response, listitem, inputtext[])
 	            "FIGHT_TEACHER_PLAYER_CAPTION",
 	            "FIGHT_TEACHER_PLAYER_USED_STYLE",
 	            "FIGHT_TEACHER_PLAYER_BUTTON1", "FIGHT_TEACHER_PLAYER_BUTTON2",
-	            MDIALOG_NOTVAR_NONE,
 	            teacher_name);
 	return 1;
 }

@@ -2446,8 +2446,7 @@ DialogCreate:PlayerSpawnMenu(playerid)
 	Dialog_Open(playerid, Dialog:PlayerSpawnMenu, DIALOG_STYLE_LIST,
 	            "PLAYER_SPAWN_DIALOG_HEADER",
 	            string,
-	            "BUTTON_OK", "BUTTON_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "BUTTON_OK", "BUTTON_BACK");
 	return 1;
 }
 

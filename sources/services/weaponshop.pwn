@@ -201,8 +201,7 @@ DialogCreate:ServiceWeapon(playerid)
 	Dialog_Open(playerid, Dialog:ServiceWeapon, DIALOG_STYLE_TABLIST_HEADERS,
 	            "WEAPON_DIALOG_HEADER",
 	            string,
-	            "WEAPON_DIALOG_BUTTON_0", "WEAPON_DIALOG_BUTTON_1",
-	            MDIALOG_NOTVAR_INFO);
+	            "WEAPON_DIALOG_BUTTON_0", "WEAPON_DIALOG_BUTTON_1");
 }
 
 DialogResponse:ServiceWeapon(playerid, response, listitem, inputtext[])
@@ -231,7 +230,6 @@ DialogCreate:ServiceWeaponBuy(playerid)
 		            "WEAPON_DIALOG_WEAPON_BUY_HEADER",
 		            "WEAPON_DIALOG_WEAPON_ONE",
 		            "WEAPON_DIALOG_WEAPON_BUY_BUTTON_0", "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1",
-		            MDIALOG_NOTVAR_NONE,
 		            ret_GetPlayerWeaponName(playerid, weaponid),
 		            GetWeaponCost(weaponid));
 	} else {
@@ -247,7 +245,6 @@ DialogCreate:ServiceWeaponBuy(playerid)
 		            "WEAPON_DIALOG_WEAPON_BUY_HEADER",
 		            "WEAPON_DIALOG_WEAPON",
 		            "WEAPON_DIALOG_WEAPON_BUY_BUTTON_0", "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1",
-		            MDIALOG_NOTVAR_NONE,
 		            ret_GetPlayerWeaponName(playerid, weaponid),
 		            GetWeaponCost(weaponid),
 		            max_bullets,
@@ -302,14 +299,12 @@ stock WShop_Message(playerid, info[], bool:is_buy_menu = true)
 		Dialog_MessageEx(playerid, Dialog:WShopReturnBuyMenu,
 		                 "WEAPON_DIALOG_WEAPON_BUY_HEADER",
 		                 info,
-		                 "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1", "WEAPON_DIALOG_BUTTON_1",
-		                 MDIALOG_NOTVAR_INFO);
+		                 "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1", "WEAPON_DIALOG_BUTTON_1");
 	} else {
 		Dialog_MessageEx(playerid, Dialog:WShopReturnMainMenu,
 		                 "WEAPON_DIALOG_WEAPON_BUY_HEADER",
 		                 info,
-		                 "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1", "WEAPON_DIALOG_BUTTON_1",
-		                 MDIALOG_NOTVAR_INFO);
+		                 "WEAPON_DIALOG_WEAPON_BUY_BUTTON_1", "WEAPON_DIALOG_BUTTON_1");
 	}
 	return 1;
 }

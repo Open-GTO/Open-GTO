@@ -65,8 +65,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
 			                 "PLAYER_MENU_INFO_HEADER",
 			                 message,
-			                 "BUTTON_BACK", "BUTTON_EXIT",
-			                 MDIALOG_NOTVAR_INFO);
+			                 "BUTTON_BACK", "BUTTON_EXIT");
 			return 1;
 		}
 		// competition
@@ -170,8 +169,7 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			Dialog_MessageEx(playerid, Dialog:PlayerReturnMenu,
 			                 "PLAYER_MENU_ADMINS_HEADER",
 			                 string,
-			                 "BUTTON_BACK", "BUTTON_EXIT",
-			                 MDIALOG_NOTVAR_INFO);
+			                 "BUTTON_BACK", "BUTTON_EXIT");
 			return 1;
 		}
 		// настройки
@@ -185,7 +183,6 @@ DialogResponse:PlayerMenu(playerid, response, listitem, inputtext[])
 			                 "PLAYER_MENU_VERSION_HEADER",
 			                 "PLAYER_MENU_VERSION_INFO",
 			                 "BUTTON_BACK", "BUTTON_EXIT",
-			                 MDIALOG_NOTVAR_NONE,
 			                 VERSION_STRING, VERSION_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
 			return 1;
 		}

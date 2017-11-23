@@ -67,8 +67,7 @@ DialogCreate:PlayerTeleportMenu(playerid)
 	Dialog_Open(playerid, Dialog:PlayerTeleportMenu, DIALOG_STYLE_TABLIST_HEADERS,
 	            "PLAYER_MENU_TELEPORT_HEADER",
 	            string,
-	            "BUTTON_OK", "BUTTON_BACK",
-	            MDIALOG_NOTVAR_INFO);
+	            "BUTTON_OK", "BUTTON_BACK");
 }
 
 DialogResponse:PlayerTeleportMenu(playerid, response, listitem, inputtext[])
@@ -99,7 +98,6 @@ DialogResponse:PlayerTeleportMenu(playerid, response, listitem, inputtext[])
 		                 "PLAYER_MENU_TELEPORT_HEADER",
 		                 "PLAYER_MENU_TELEPORT_LOW_LEVEL",
 		                 "BUTTON_BACK", "BUTTON_CANCEL",
-		                 _,
 		                 gTeleports[listitem][e_tpLevel]);
 		return 0;
 	}
@@ -109,7 +107,6 @@ DialogResponse:PlayerTeleportMenu(playerid, response, listitem, inputtext[])
 		                 "PLAYER_MENU_TELEPORT_HEADER",
 		                 "PLAYER_MENU_TELEPORT_NO_MONEY",
 		                 "BUTTON_BACK", "BUTTON_CANCEL",
-		                 _,
 		                 gTeleports[listitem][e_tpCost]);
 		return 0;
 	}

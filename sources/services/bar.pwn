@@ -318,8 +318,7 @@ DialogCreate:ServiceBar(playerid)
 	Dialog_Open(playerid, Dialog:ServiceBar, DIALOG_STYLE_TABLIST_HEADERS,
 	            "BAR_DIALOG_HEADER",
 	            string,
-	            "BAR_DIALOG_BUTTON_0", "BAR_DIALOG_BUTTON_1",
-	            MDIALOG_NOTVAR_INFO);
+	            "BAR_DIALOG_BUTTON_0", "BAR_DIALOG_BUTTON_1");
 }
 
 DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
@@ -346,7 +345,6 @@ DialogResponse:ServiceBar(playerid, response, listitem, inputtext[])
 	               "BAR_DIALOG_HEADER",
 	               "BAR_DIALOG_INFORMATION_TEXT",
 	               "BAR_DIALOG_BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
 	               name,
 	               gDrinksInfo[id][e_dCost],
 	               gDrinksInfo[id][e_dAlcohol],

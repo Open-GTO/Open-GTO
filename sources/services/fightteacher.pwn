@@ -101,7 +101,6 @@ public OnPlayerEnterDynamicCP(playerid, checkpointid)
 		               caption,
 		               "FIGHT_TEACHER_LEARNED",
 		               "FIGHT_TEACHER_DIALOG_BUTTON_OK",
-		               MDIALOG_NOTVAR_CAPTION,
 		               teachername);
 		return 1;
 	}
@@ -111,7 +110,6 @@ public OnPlayerEnterDynamicCP(playerid, checkpointid)
 		               caption,
 		               "FIGHT_TEACHER_LOW_LEVEL",
 		               "FIGHT_TEACHER_DIALOG_BUTTON_OK",
-		               MDIALOG_NOTVAR_CAPTION,
 		               GetFightTeacherLevel(teacherid));
 		return 1;
 	}
@@ -152,7 +150,6 @@ DialogCreate:ServiceFights(playerid)
 	            caption,
 	            "FIGHT_TEACHER_LEARN_MESSAGE",
 	            "FIGHT_TEACHER_DIALOG_TEACHER_BUTTON1", "FIGHT_TEACHER_DIALOG_TEACHER_BUTTON2",
-	            MDIALOG_NOTVAR_CAPTION,
 	            teachername, GetFightTeacherCost(teacherid));
 }
 
@@ -176,7 +173,6 @@ DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
 		               caption,
 		               "FIGHT_TEACHER_NO_MONEY",
 		               "FIGHT_TEACHER_DIALOG_BUTTON_OK",
-		               MDIALOG_NOTVAR_CAPTION,
 		               cost);
 		return 0;
 	}
@@ -189,7 +185,6 @@ DialogResponse:ServiceFights(playerid, response, listitem, inputtext[])
 	               caption,
 	               "FIGHT_TEACHER_LEARNED_MESSAGE",
 	               "FIGHT_TEACHER_DIALOG_BUTTON_OK",
-	               MDIALOG_NOTVAR_CAPTION,
 	               teachername, cost);
 	return 1;
 }

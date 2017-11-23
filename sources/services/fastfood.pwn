@@ -236,8 +236,7 @@ DialogCreate:ServiceFastfood(playerid)
 	Dialog_Open(playerid, Dialog:ServiceFastfood, DIALOG_STYLE_TABLIST_HEADERS,
 	            "FASTFOOD_DIALOG_HEADER",
 	            string,
-	            "FASTFOOD_DIALOG_BUTTON_0", "FASTFOOD_DIALOG_BUTTON_1",
-	            MDIALOG_NOTVAR_INFO);
+	            "FASTFOOD_DIALOG_BUTTON_0", "FASTFOOD_DIALOG_BUTTON_1");
 }
 
 DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
@@ -283,7 +282,6 @@ DialogResponse:ServiceFastfood(playerid, response, listitem, inputtext[])
 	               "FASTFOOD_DIALOG_BUY_HEADER",
 	               "FASTFOOD_DIALOG_INFORMATION_TEXT",
 	               "FASTFOOD_DIALOG_BUTTON_OK",
-	               MDIALOG_NOTVAR_NONE,
 	               name,
 	               gFoodInfo[id][e_fCost],
 	               gFoodInfo[id][e_fHealth]);
