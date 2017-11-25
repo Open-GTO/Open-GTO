@@ -68,7 +68,7 @@ public OnPlayerSpawn(playerid)
 
 public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInterfaceParams:paramid, oldvalue, newvalue)
 {
-	if (PlayerInfoTD_IsValidComponent(componentid)) {
+	if (!PlayerInfoTD_IsValidComponent(componentid)) {
 	#if defined PlayerInfoTD_OnPlayerIntChng
 		return PlayerInfoTD_OnPlayerIntChng(playerid, componentid, paramid, oldvalue, newvalue);
 	#else
