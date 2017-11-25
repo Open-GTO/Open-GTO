@@ -254,7 +254,7 @@ DialogCreate:VehicleNumber(playerid)
 
 	// vehicle type
 	vehicle_type = GetVehicleModelType(GetVehicleModel(vehicleid));
-	if (vehicle_type != VEHICLE_TYPE_CAR) {
+	if (vehicle_type != VEHICLE_TYPE_CAR && vehicle_type != VEHICLE_TYPE_MOTORBIKE) {
 		Dialog_MessageEx(playerid, Dialog:VehicleReturnMenu,
 		                 "VEHICLE_MENU_HEADER",
 		                 "VEHICLE_MENU_NUMBER_INVALID",
