@@ -187,7 +187,12 @@ stock GetPlayerAccountInfoString(playerid, string[], const size = sizeof(string)
 
 stock GetPlayerAccountInfoArray(playerid, string[MAX_ACCOUNT_INFO_LINES][], const size_string = sizeof(string[]), requestorid = INVALID_PLAYER_ID)
 {
-	new account_info[e_Account_Info];
+	new
+		account_info[e_Account_Info];
+
 	Account_GetData(playerid, account_info);
+
+	account_info[e_aPlayedSeconds] = Account_GetCurrentPlayedTime(playerid);
+
 	return GetAccountInfoArray(account_info, string, size_string, requestorid);
 }
