@@ -692,7 +692,7 @@ SSCANF:vehicle(string[])
 			{"Alp", -1, -1}, // 602
 			{"Pho", -1, -1}, // 603
 			{"GlendaleShit", "GS", -1}, // 604
-			{"SadlerShit", "S", -1}, // 605
+			{"SadlerShit", "SS", -1}, // 605
 			{"BaggageTrailerA", "BTA", -1}, // 606
 			{"BaggageTrailerB", "BTB", -1}, // 607
 			{"TugStairs", "TS", -1}, // 608
