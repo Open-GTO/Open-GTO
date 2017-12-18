@@ -1,4 +1,4 @@
-//MapFix by Nexius v3.1.1
+//MapFix by Nexius v3.2.2
 
 #if defined _mapfix_included
 	#endinput
@@ -7,9 +7,9 @@
 
 #include <a_samp>
 
-#define MAPFIX_VERSION		"3.1.1"
+#define MAPFIX_VERSION		"3.2.2"
 
-#define MAX_MAPFIX_OBJECTS	410
+#define MAX_MAPFIX_OBJECTS	440
 
 //Uncomment to enable
 //#define USE_INCOGNITO_STREAMER
@@ -847,44 +847,84 @@ CreateMapFixObjects()
 		MapFixObjects[391] = mf_CreateObject(3084, -1611.5, 868.9, 26.6, 90.0, 0.0, 0.0, 7.0);
 		MapFixObjects[392] = mf_CreateObject(3084, -1600.0, 868.9, 26.6, 90.0, 0.0, 0.0, 7.0);
 		MapFixObjects[393] = mf_CreateObject(3084, -1588.9, 868.9, 26.6, 90.0, 0.0, 0.0, 7.0);
+		MapFixObjects[394] = mf_CreateObject(2938, -1611.6, 867.3, 29.2, 0.0, 0.0, 270.0, 7.0);
+		MapFixObjects[395] = mf_CreateObject(2938, -1611.6, 867.3, 34.6, 0.0, 0.0, 270.0, 7.0);
+		MapFixObjects[396] = mf_CreateObject(2938, -1599.8, 867.3, 29.2, 0.0, 0.0, 270.0, 7.0);
+		MapFixObjects[397] = mf_CreateObject(2938, -1588.7, 867.3, 29.2, 0.0, 0.0, 270.0, 7.0);
+		MapFixObjects[398] = mf_CreateObject(2938, -1599.8, 867.3, 34.6, 0.0, 0.0, 270.0, 7.0);
+		MapFixObjects[399] = mf_CreateObject(2938, -1588.7, 867.3, 34.6, 0.0, 0.0, 270.0, 7.0);
 	#endif
 	#if !defined DISABLE_MAPFIX_PLACE_115
-		MapFixObjects[394] = mf_CreateObject(2938, 2482.9, 2358.7, 15.1, 0.0, 90.0, 90.0, 7.0);
-		MapFixObjects[395] = mf_CreateObject(2938, 2482.9, 2353.3, 15.1, 0.0, 90.0, 90.0, 7.0);
-		MapFixObjects[396] = mf_CreateObject(2938, 2494.8, 2358.7, 15.1, 0.0, 90.0, 90.0, 7.0);
-		MapFixObjects[397] = mf_CreateObject(2938, 2494.8, 2353.3, 15.1, 0.0, 90.0, 90.0, 7.0);
+		MapFixObjects[400] = mf_CreateObject(2938, 2482.9, 2358.7, 15.1, 0.0, 90.0, 90.0, 7.0);
+		MapFixObjects[401] = mf_CreateObject(2938, 2482.9, 2353.3, 15.1, 0.0, 90.0, 90.0, 7.0);
+		MapFixObjects[402] = mf_CreateObject(2938, 2494.8, 2358.7, 15.1, 0.0, 90.0, 90.0, 7.0);
+		MapFixObjects[403] = mf_CreateObject(2938, 2494.8, 2353.3, 15.1, 0.0, 90.0, 90.0, 7.0);
 	#endif
 	#if !defined DISABLE_MAPFIX_PLACE_116
-		MapFixObjects[398] = mf_CreateObject(3117, -2553.4, 1181.4, 43.9, 86.0, 60.0, 10.0, 3.0);
+		MapFixObjects[404] = mf_CreateObject(3117, -2553.4, 1181.4, 43.9, 86.0, 60.0, 10.0, 3.0);
 	#endif
 	#if !defined DISABLE_MAPFIX_PLACE_117 //by Romzes
-		MapFixObjects[399] = mf_CreateObject(19362, 1209.8636, -16.1376, 1001.9523, 0.0, 0.0, 90.0, 3.0);
-		mf_SetObjectMaterial(MapFixObjects[399], 0, 0, "none", "none", 0x00000000);
-		MapFixObjects[400] = mf_CreateObject(19362, 1211.3809, -17.6581, 1001.9523, 0.0, 0.0, 0.0, 3.0);
-		mf_SetObjectMaterial(MapFixObjects[400], 0, 0, "none", "none", 0x00000000);
+		MapFixObjects[405] = mf_CreateObject(19362, 1209.8636, -16.1376, 1001.9523, 0.0, 0.0, 90.0, 3.0);
+		mf_SetObjectMaterial(MapFixObjects[405], 0, 0, "none", "none", 0x00000000);
+		MapFixObjects[406] = mf_CreateObject(19362, 1211.3809, -17.6581, 1001.9523, 0.0, 0.0, 0.0, 3.0);
+		mf_SetObjectMaterial(MapFixObjects[406], 0, 0, "none", "none", 0x00000000);
 	#endif
 	#if !defined DISABLE_MAPFIX_PLACE_118
-		MapFixObjects[401] = mf_CreateObject(3055, 2317.9, -1026.0, 1053.3, 270.0, 0.0, 0.0, 5.0);
+		MapFixObjects[407] = mf_CreateObject(3055, 2317.9, -1026.0, 1053.3, 270.0, 0.0, 0.0, 5.0);
 	#endif
 	#if !defined DISABLE_MAPFIX_PLACE_119
-		MapFixObjects[402] = mf_CreateObject(3117, 161.3, -22.3, 7.3, 90.0, 90.0, 0.0, 3.0);
+		MapFixObjects[408] = mf_CreateObject(3117, 161.3, -22.3, 7.3, 90.0, 90.0, 0.0, 3.0);
 	#endif
 	#if !defined DISABLE_MAPFIX_PLACE_120
-		MapFixObjects[403] = mf_CreateObject(3037, 958.7, -1550.1, 20.3, 0.0, 0.0, 0.0, 6.0);
-		MapFixObjects[404] = mf_CreateObject(3037, 958.7, -1557.2, 20.3, 0.0, 0.0, 0.0, 6.0);
+		MapFixObjects[409] = mf_CreateObject(3037, 958.7, -1550.1, 20.3, 0.0, 0.0, 0.0, 6.0);
+		MapFixObjects[410] = mf_CreateObject(3037, 958.7, -1557.2, 20.3, 0.0, 0.0, 0.0, 6.0);
 	#endif
 	#if !defined DISABLE_MAPFIX_PLACE_121
-		MapFixObjects[405] = mf_CreateObject(3117, -2008.9, -1038.0, 56.5, 0.0, 0.0, 10.0, 3.0);
+		MapFixObjects[411] = mf_CreateObject(3117, -2008.9, -1038.0, 56.5, 0.0, 0.0, 10.0, 3.0);
 	#endif
 	#if !defined DISABLE_MAPFIX_PLACE_122
-		MapFixObjects[406] = mf_CreateObject(3037, 858.2, -614.0, 27.2, 0.0, 0.0, 90.0, 6.0);
-		MapFixObjects[407] = mf_CreateObject(3037, 864.6, -614.0, 27.2, 0.0, 0.0, 90.0, 6.0);
+		MapFixObjects[412] = mf_CreateObject(3037, 858.2, -614.0, 27.2, 0.0, 0.0, 90.0, 6.0);
+		MapFixObjects[413] = mf_CreateObject(3037, 864.6, -614.0, 27.2, 0.0, 0.0, 90.0, 6.0);
 	#endif
 	#if !defined DISABLE_MAPFIX_PLACE_123
-		MapFixObjects[408] = mf_CreateObject(2957, 953.0, -994.4, 40.9, 90.0, 0.0, 270.6, 13.0);
-		mf_SetObjectMaterial(MapFixObjects[408], 0, 0, "none", "none", 0x00000000);
-		MapFixObjects[409] = mf_CreateObject(2957, 952.96, -990.5, 40.9, 90.0, 0.0, 270.6, 13.0);
-		mf_SetObjectMaterial(MapFixObjects[409], 0, 0, "none", "none", 0x00000000);
+		MapFixObjects[414] = mf_CreateObject(2957, 953.0, -994.4, 40.9, 90.0, 0.0, 270.6, 13.0);
+		mf_SetObjectMaterial(MapFixObjects[414], 0, 0, "none", "none", 0x00000000);
+		MapFixObjects[415] = mf_CreateObject(2957, 952.96, -990.5, 40.9, 90.0, 0.0, 270.6, 13.0);
+		mf_SetObjectMaterial(MapFixObjects[415], 0, 0, "none", "none", 0x00000000);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_124
+		MapFixObjects[416] = mf_CreateObject(3084, -1911.9, 750.1, 102.0, 0.0, 0.0, 90.0, 7.0);
+		MapFixObjects[417] = mf_CreateObject(3084, -1911.9, 762.5, 102.0, 0.0, 0.0, 90.0, 7.0);
+		MapFixObjects[418] = mf_CreateObject(3084, -1911.9, 774.9, 102.0, 0.0, 0.0, 90.0, 7.0);
+		MapFixObjects[419] = mf_CreateObject(3084, -1911.9, 783.4, 102.0, 0.0, 0.0, 90.0, 7.0);
+		MapFixObjects[420] = mf_CreateObject(3084, -1918.0, 789.6, 102.0, 0.0, 0.0, 0.0, 7.0);
+		MapFixObjects[421] = mf_CreateObject(3084, -1930.4, 789.6, 102.0, 0.0, 0.0, 0.0, 7.0);
+		MapFixObjects[422] = mf_CreateObject(3084, -1942.8, 789.6, 102.0, 0.0, 0.0, 0.0, 7.0);
+		MapFixObjects[423] = mf_CreateObject(3084, -1948.4, 789.6, 102.0, 0.0, 0.0, 0.0, 7.0);
+		MapFixObjects[424] = mf_CreateObject(3084, -1918.0, 743.8, 102.0, 0.0, 0.0, 180.0, 7.0);
+		MapFixObjects[425] = mf_CreateObject(3084, -1930.4, 743.8, 102.0, 0.0, 0.0, 180.0, 7.0);
+		MapFixObjects[426] = mf_CreateObject(3084, -1942.8, 743.8, 102.0, 0.0, 0.0, 180.0, 7.0);
+		MapFixObjects[427] = mf_CreateObject(3084, -1948.4, 743.8, 102.0, 0.0, 0.0, 180.0, 7.0);
+		MapFixObjects[428] = mf_CreateObject(3084, -1954.5, 750.1, 102.0, 0.0, 0.0, 270.0, 7.0);
+		MapFixObjects[429] = mf_CreateObject(3084, -1954.5, 762.5, 102.0, 0.0, 0.0, 270.0, 7.0);
+		MapFixObjects[430] = mf_CreateObject(3084, -1954.5, 774.9, 102.0, 0.0, 0.0, 270.0, 7.0);
+		MapFixObjects[431] = mf_CreateObject(3084, -1954.5, 783.4, 102.0, 0.0, 0.0, 270.0, 7.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_125
+		MapFixObjects[432] = mf_CreateObject(3037, 1054.3, -940.3, 44.3, 0.0, 270.0, 77.5, 6.0);
+		MapFixObjects[433] = mf_CreateObject(3037, 1062.2, -939.1, 44.3, 0.0, 270.0, 300.0, 6.0);
+		MapFixObjects[434] = mf_CreateObject(3084, 1036.4, -942.6, 44.0, 90.0, 0.0, 8.5, 7.0);
+		MapFixObjects[435] = mf_CreateObject(2957, 1046.6, -941.1, 44.3, 90.0, 0.0, 8.5, 3.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_126
+		MapFixObjects[436] = mf_CreateObject(2938, -1479.5, 696.9, -33.0, 0.0, 0.0, 0.0, 17.0);
+		mf_SetObjectMaterial(MapFixObjects[436], 0, 0, "none", "none", 0x00000000);
+		MapFixObjects[437] = mf_CreateObject(2938, -1479.5, 708.2, -33.0, 0.0, 0.0, 0.0, 17.0);
+		mf_SetObjectMaterial(MapFixObjects[437], 0, 0, "none", "none", 0x00000000);
+		MapFixObjects[438] = mf_CreateObject(2938, -1479.5, 690.2, -33.0, 0.0, 0.0, 0.0, 17.0);
+		mf_SetObjectMaterial(MapFixObjects[438], 0, 0, "none", "none", 0x00000000);
+		MapFixObjects[439] = mf_CreateObject(2938, -1485.4, 684.3, -33.0, 0.0, 0.0, 270.0, 17.0);
+		mf_SetObjectMaterial(MapFixObjects[439], 0, 0, "none", "none", 0x00000000);
 	#endif
 	#undef mf_CreateObject
 	#undef mf_SetObjectMaterial
