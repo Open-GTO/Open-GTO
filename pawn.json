@@ -1,0 +1,33 @@
+{
+	"user": "ziggi",
+	"repo": "Open-GTO",
+	"entry": "sources/Open-GTO.pwn",
+	"output": "gamemodes/Open-GTO.amx",
+	"dependencies": [
+		"sampctl/samp-stdlib",
+		"Open-GTO/sa-mp-fixes",
+		"Open-GTO/textlist",
+		"Open-GTO/shootingrange",
+		"Open-GTO/zlang",
+		"Open-GTO/mdialog",
+		"Open-GTO/zvehcomp",
+		"Open-GTO/zvehpaintjob",
+		"Open-GTO/skinselect",
+		"Open-GTO/zvehgetcolor",
+		"Open-GTO/gpickup",
+		"Open-GTO/gtolib",
+		"Open-GTO/getspawninfo",
+		"Open-GTO/time_t",
+		"Open-GTO/weaponskill",
+		"Open-GTO/zvehinfo",
+		"Crayder/Realistic-Garage-Blocking",
+		"Open-GTO/mxINI",
+		"Open-GTO/foreach",
+		"Open-GTO/mselect",
+		"Open-GTO/zmessage",
+		"Open-GTO/protection"
+	],
+    "builds": [{
+        "args": ["-;+", "-(+", "-d2"]
+    }]
+}

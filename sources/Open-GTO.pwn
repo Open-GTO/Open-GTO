@@ -43,37 +43,37 @@ Thanks:
 #include "core/unfixes.inc"
 
 // important lib
-#include "lib/sa-mp-fixes/fixes.inc"
+#include <fixes>
 
 // lib
 #include "lib/streamer.inc"
-#include "lib/foreach/foreach.inc"
+#include <foreach>
 #include "lib/sscanf2.inc"
 #include "lib/zcmd.inc"
 #include "lib/formatnumber.inc"
 #include "lib/log-plugin.inc"
 #include "lib/gvar.inc"
 #include "lib/rustext.inc"
-#include "lib/mxINI/mxINI.inc"
+#include <mxINI>
 #include "lib/mapfix.inc"
-#include "lib/getspawninfo/getspawninfo.inc"
-#include "lib/weaponskill/weaponskill.inc"
-#include "lib/protection/protection.inc"
-#include "lib/zmessage/zmessage.inc"
-#include "lib/time_t/time_t.inc"
-#include "lib/textlist/textlist.inc"
-#include "lib/shootingrange/shootingrange.inc"
-#include "lib/zlang/zlang.inc"
-#include "lib/zvehcomp/zvehcomp.inc"
-#include "lib/zvehpaintjob/zvehpaintjob.inc"
-#include "lib/zvehgetcolor/zvehgetcolor.inc"
-#include "lib/mdialog/mdialog.inc"
-#include "lib/mselect/mselect.inc"
-#include "lib/skinselect/skinselect.inc"
-#include "lib/garageblock/garage_block.inc"
-#include "lib/gpickup/gpickup.inc"
-#include "lib/gtolib/gtolib.inc"
-#include "lib/zvehinfo/zvehinfo.inc"
+#include <getspawninfo>
+#include <weaponskill>
+#include <protection>
+#include <zmessage>
+#include <time_t>
+#include <textlist>
+#include <shootingrange>
+#include <zlang>
+#include <zvehcomp>
+#include <zvehpaintjob>
+#include <zvehgetcolor>
+#include <mdialog>
+#include <mselect>
+#include <skinselect>
+#include <garage_block>
+#include <gpickup>
+#include <gtolib>
+#include <zvehinfo>
 
 // header files
 #include "core/lang.inc"
