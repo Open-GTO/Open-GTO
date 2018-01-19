@@ -1,5 +1,7 @@
 language: cpp
-sudo: enabled
+sudo: required
+dist: trusty
+group: deprecated-2017Q4
 install:
 - curl https://raw.githubusercontent.com/Southclaws/sampctl/master/install-deb.sh | sh
 - sudo dpkg --add-architecture i386
