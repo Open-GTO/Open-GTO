@@ -1,0 +1,17 @@
+{
+	"gamemodes": [
+		"Open-GTO"
+	],
+	"plugins": [
+		"crashdetect",
+		"gvar",
+		"log-plugin",
+		"rustext",
+		"sscanf",
+		"streamer"
+	],
+	"rcon_password": "1",
+	"port": 7777,
+	"hostname": "Open - Grand Theft Online server",
+	"maxplayers": 1000
+}

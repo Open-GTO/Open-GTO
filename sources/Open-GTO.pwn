@@ -46,14 +46,15 @@ Thanks:
 #include <fixes>
 
 // lib
-#include "lib/streamer.inc"
+#include <crashdetect>
+#include <streamer>
 #include <foreach>
-#include "lib/sscanf2.inc"
+#include <sscanf2>
 #include "lib/zcmd.inc"
 #include "lib/formatnumber.inc"
 #include "lib/log-plugin.inc"
 #include "lib/gvar.inc"
-#include "lib/rustext.inc"
+#include <rustext>
 #include <mxINI>
 #include "lib/mapfix.inc"
 #include <getspawninfo>

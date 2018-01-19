@@ -25,9 +25,21 @@
 		"Open-GTO/foreach",
 		"Open-GTO/mselect",
 		"Open-GTO/zmessage",
-		"Open-GTO/protection"
+		"Open-GTO/protection",
+		"samp-incognito/samp-streamer-plugin",
+		"Zeex/samp-plugin-crashdetect",
+		"maddinat0r/sscanf",
+		"ziggi/rustext"
 	],
-    "builds": [{
-        "args": ["-;+", "-(+", "-d2"]
-    }]
+	"builds": [
+		{
+			"name": "dev",
+			"args": [
+				"-;+",
+				"-(+",
+				"-d2"
+			],
+			"version": "3.10.6"
+		}
+	]
 }
