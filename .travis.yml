@@ -1,14 +1,12 @@
-language: cpp
-sudo: required
-dist: trusty
-group: deprecated-2017Q4
-install:
-- curl https://raw.githubusercontent.com/Southclaws/sampctl/master/install-deb.sh | sh
-- sudo dpkg --add-architecture i386
-- sudo apt update && sudo apt install -y g++-multilib
+language: Pawn
 script:
+- curl https://raw.githubusercontent.com/Southclaws/sampctl/master/install-deb.sh | sh
 - sampctl package ensure
 - sampctl package build
+addons:
+  apt:
+    packages:
+      - libc6-i386
 notifications:
   webhooks:
     urls:
