@@ -315,6 +315,12 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		return 1;
 	}
 
+	new minimum_money = VEHICLE_FUEL_SPEED * VEHICLE_FUEL_FILL_TARIF;
+	if (GetPlayerMoney(playerid) < minimum_money) {
+		Lang_SendText(playerid, "VEHICLE_FUEL_NO_MONEY");
+		return 1;
+	}
+
 	FillVehicle(vehicleid, playerid);
 	Lang_SendText(playerid, "VEHICLE_FUEL_IS_FUELING");
 	Message_Alert(playerid, "", "VEHICLE_FUEL_IS_FUELING_ALERT", 2000);

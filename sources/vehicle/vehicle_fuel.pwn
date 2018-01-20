@@ -140,6 +140,12 @@ COMMAND:fill(playerid, params[])
 		return 1;
 	}
 
+	new minimum_money = VEHICLE_FUEL_SPEED * VEHICLE_FUEL_FILL_TARIF;
+	if (GetPlayerMoney(playerid) < minimum_money) {
+		Lang_SendText(playerid, "VEHICLE_FUEL_NO_MONEY");
+		return 1;
+	}
+
 	Lang_SendText(playerid, "VEHICLE_FUEL_IS_FUELING");
 	FillVehicle(vehicleid, playerid);
 	return 1;
@@ -159,10 +165,11 @@ public Vehicle_Fuel_FillTimer(playerid)
 	new vehicleid = GetPlayerVehicleID(playerid);
 	new model = GetVehicleModel(vehicleid);
 
-	gFuel[vehicleid] += VEHICLE_FUEL_SPEED;
+	new Float:new_fuel = gFuel[vehicleid] + VEHICLE_FUEL_SPEED;
+	new fill_money = floatround( new_fuel - gOldFuel[vehicleid] ) * VEHICLE_FUEL_FILL_TARIF;
 
-	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || gFuel[vehicleid] >= GetVehicleModelMaxFuel(model)) {
-		new fill_money = floatround( gFuel[vehicleid] - gOldFuel[vehicleid] ) * VEHICLE_FUEL_FILL_TARIF;
+	if (vehicleid == 0 || !IsPlayerAtFuelStation(playerid) || new_fuel >= GetVehicleModelMaxFuel(model) || fill_money >= GetPlayerMoney(playerid)) {
+		fill_money = floatround( gFuel[vehicleid] - gOldFuel[vehicleid] ) * VEHICLE_FUEL_FILL_TARIF;
 		GivePlayerMoney(playerid, -fill_money);
 
 		if (Timer_Fill[playerid] != 0) {
@@ -176,6 +183,8 @@ public Vehicle_Fuel_FillTimer(playerid)
 	#else
 		CallRemoteFunction("OnVehicleFilled", "iii", vehicleid, playerid, fill_money);
 	#endif
+	} else {
+		gFuel[vehicleid] = new_fuel;
 	}
 	return 0;
 }
