@@ -3,12 +3,12 @@
 		"Open-GTO"
 	],
 	"plugins": [
-		"crashdetect",
+		"Zeex/samp-plugin-crashdetect",
 		"gvar",
-		"log-plugin",
-		"rustext",
-		"sscanf",
-		"streamer"
+		"maddinat0r/samp-log",
+		"ziggi/rustext",
+		"maddinat0r/sscanf",
+		"samp-incognito/samp-streamer-plugin"
 	],
 	"rcon_password": "1",
 	"port": 7777,

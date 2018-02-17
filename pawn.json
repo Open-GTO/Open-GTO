@@ -30,16 +30,17 @@
 		"Zeex/samp-plugin-crashdetect",
 		"maddinat0r/sscanf",
 		"ziggi/rustext"
+		"ziggi/rustext",
 	],
 	"builds": [
 		{
 			"name": "dev",
+			"version": "3.10.6",
 			"args": [
 				"-;+",
 				"-(+",
 				"-d2"
-			],
-			"version": "3.10.6"
+			]
 		}
 	]
 }

@@ -1,4 +1,4 @@
-//MapFix by Nexius v3.2.2
+//MapFix by Nexius v3.5.2
 
 #if defined _mapfix_included
 	#endinput
@@ -7,9 +7,9 @@
 
 #include <a_samp>
 
-#define MAPFIX_VERSION		"3.2.2"
+#define MAPFIX_VERSION		"3.5.2"
 
-#define MAX_MAPFIX_OBJECTS	440
+#define MAX_MAPFIX_OBJECTS	446
 
 //Uncomment to enable
 //#define USE_INCOGNITO_STREAMER
@@ -926,6 +926,19 @@ CreateMapFixObjects()
 		MapFixObjects[439] = mf_CreateObject(2938, -1485.4, 684.3, -33.0, 0.0, 0.0, 270.0, 17.0);
 		mf_SetObjectMaterial(MapFixObjects[439], 0, 0, "none", "none", 0x00000000);
 	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_127
+		MapFixObjects[440] = mf_CreateObject(3117, 1519.1, 1911.6, 14.0, 14.5, 90.0, 0.0, 3.0);
+		MapFixObjects[441] = mf_CreateObject(3117, 1652.1, 1911.6, 14.0, 14.5, 90.0, 0.0, 3.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_128 //by Romzes
+		MapFixObjects[442] = mf_CreateObject(19426, 617.2022, -1124.6236, 47.2562, 0.0, 0.0, 31.6442, 150.0);
+		mf_SetObjectMaterial(MapFixObjects[442], 0, 13699, "cunte2_lahills", "hedge2", 0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_129
+		MapFixObjects[443] = mf_CreateObject(2938, 1318.5, 353.9, 18.4, 0.0, 270.0, 66.0, 7.0);
+		MapFixObjects[444] = mf_CreateObject(2938, 1307.6, 358.7, 18.4, 0.0, 270.0, 66.0, 7.0);
+		MapFixObjects[445] = mf_CreateObject(2938, 1301.6, 361.4, 18.4, 0.0, 270.0, 66.0, 7.0);
+	#endif
 	#undef mf_CreateObject
 	#undef mf_SetObjectMaterial
 	return 1;
@@ -933,7 +946,7 @@ CreateMapFixObjects()
 
 DestroyMapFixObjects()
 {
-	for(new i = sizeof(MapFixObjects) - 1; i > -1; --i)
+	for(new i = sizeof(MapFixObjects) - 1; i >= 0; --i)
 	{
 		if(MapFixObjects[i])
 		{
