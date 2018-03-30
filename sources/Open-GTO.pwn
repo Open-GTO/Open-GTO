@@ -133,9 +133,9 @@ public OnGameModeInit()
 	player_OnGameModeInit();
 	gang_OnGameModeInit();
 	payday_OnGameModeInit();
-    weapons_OnGameModeInit();
+	weapons_OnGameModeInit();
 	vehicles_OnGameModeInit();
-    race_OnGameModeInit();
+	race_OnGameModeInit();
 	deathmatch_OnGameModeInit();
 	groundhold_OnGameModeInit();
 	business_OnGameModeInit();
@@ -150,7 +150,7 @@ public OnGameModeInit()
 	vip_OnGameModeInit();
 	// missions
 	mission_OnGameModeInit();
-    trucker_OnGameModeInit();
+	trucker_OnGameModeInit();
 	// services
 	fastfood_OnGameModeInit();
 	bar_OnGameModeInit();
@@ -236,7 +236,7 @@ public OnGameModeExit()
 
 public OnPlayerConnect(playerid)
 {
-    if (IsPlayerNPC(playerid)) return 1;
+	if (IsPlayerNPC(playerid)) return 1;
 	player_OnPlayerConnect(playerid);
    	account_OnPlayerConnect(playerid);
 	chatguard_OnPlayerConnect(playerid);
@@ -357,8 +357,8 @@ public OnPlayerEnterCheckpoint(playerid)
 
 public OnPlayerEnterRaceCheckpoint(playerid)
 {
-    race_OnPlayerEnterCheckpoint(playerid);
-    return 1;
+	race_OnPlayerEnterCheckpoint(playerid);
+	return 1;
 }
 
 public OnPlayerDeath(playerid, killerid, reason)
@@ -590,14 +590,20 @@ public OnPlayerText(playerid, text[])
 	}
 	if (chatguard_OnPlayerText(playerid, text) == 0) return 0;
 
+	for (new i = strlen(text) - 1; i != -1; i--) {
+		if (text[i] == '%') {
+			text[i] = '#';
+		}
+	}
+
 	new playername[MAX_PLAYER_NAME+1];
 	GetPlayerName(playerid, playername, sizeof(playername));
 
 	new string[MAX_STRING];
 	switch (text[0])
 	{
-	    case '!':
-	    {
+		case '!':
+		{
 			if (GetPVarInt(playerid, "GangID") == 0 || GetPlayerMuteTime(playerid) > 0)
 			{
 				SendClientMessage(playerid, COLOUR_RED, lang_texts[1][14]);
@@ -748,8 +754,8 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 public OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid)
 {
 	ash_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
-    modfunc_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
-    return 1;
+	modfunc_OnPlayerInteriorChange(playerid, newinteriorid, oldinteriorid);
+	return 1;
 }
 
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
@@ -761,12 +767,12 @@ public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 
 public OnPlayerStreamIn(playerid, forplayerid)
 {
-    return 1;
+	return 1;
 }
 
 public OnPlayerStreamOut(playerid, forplayerid)
 {
-    return 1;
+	return 1;
 }
 
 public OnVehicleDamageStatusUpdate(vehicleid, playerid)
@@ -776,12 +782,12 @@ public OnVehicleDamageStatusUpdate(vehicleid, playerid)
 
 public OnVehicleStreamIn(vehicleid, forplayerid)
 {
-    return 1;
+	return 1;
 }
 
 public OnVehicleStreamOut(vehicleid, forplayerid)
 {
-    return 1;
+	return 1;
 }
 
 public OnVehicleSpawn(vehicleid)
@@ -840,7 +846,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
 public OnVehiclePaintjob(playerid, vehicleid, paintjobid)
 {
 	pveh_OnVehiclePaintjob(playerid, vehicleid, paintjobid);
-    return 1;
+	return 1;
 }
 
 public OnVehicleRespray(playerid, vehicleid, color1, color2)
