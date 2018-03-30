@@ -468,7 +468,7 @@ stock Adm_OnPlayerCommandText(playerid, text[]) // process player commands
 	if (!strcmp(cmd, "/getip", true))
 	{
 		new string[MAX_STRING], LastIP[MAX_IP], filename_account[MAX_STRING];
-		set(string, text[idx+1]);
+		set(string, strcharsplit(text, idx, ' '));
 		
 		if (strlen(string) <= 0)
 		{
