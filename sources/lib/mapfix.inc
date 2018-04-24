@@ -1,4 +1,4 @@
-//MapFix by Nexius v3.5.2
+//MapFix by Nexius v3.6.2
 
 #if defined _mapfix_included
 	#endinput
@@ -7,9 +7,9 @@
 
 #include <a_samp>
 
-#define MAPFIX_VERSION		"3.5.2"
+#define MAPFIX_VERSION		"3.6.2"
 
-#define MAX_MAPFIX_OBJECTS	446
+#define MAX_MAPFIX_OBJECTS	456
 
 //Uncomment to enable
 //#define USE_INCOGNITO_STREAMER
@@ -938,6 +938,21 @@ CreateMapFixObjects()
 		MapFixObjects[443] = mf_CreateObject(2938, 1318.5, 353.9, 18.4, 0.0, 270.0, 66.0, 7.0);
 		MapFixObjects[444] = mf_CreateObject(2938, 1307.6, 358.7, 18.4, 0.0, 270.0, 66.0, 7.0);
 		MapFixObjects[445] = mf_CreateObject(2938, 1301.6, 361.4, 18.4, 0.0, 270.0, 66.0, 7.0);
+	#endif
+	#if !defined DISABLE_MAPFIX_PLACE_130 //by reAL_
+		MapFixObjects[446] = mf_CreateObject(2938, 445.4595, 511.5701, 1003.7977, 0.0, 90.0, 0.0, 9.0);
+		mf_SetObjectMaterial(MapFixObjects[446], 0, 0, "none", "none", 0x00000000);
+		MapFixObjects[447] = mf_CreateObject(2938, 450.7594, 511.5701, 1003.7977, 0.0, 90.0, 0.0, 9.0);
+		mf_SetObjectMaterial(MapFixObjects[447], 0, 0, "none", "none", 0x00000000);
+		MapFixObjects[448] = mf_CreateObject(2957, 456.1647, 513.8776, 1003.7949, 90.0, 0.0, 90.0, 3.0);
+		MapFixObjects[449] = mf_CreateObject(2957, 454.3006, 513.8814, 1003.8049, 90.0, 0.0, 90.0, 3.0);
+		MapFixObjects[450] = mf_CreateObject(2904, 453.1383, 513.4265, 1004.3114, 0.0, 90.0, 90.0, 3.0);
+		MapFixObjects[451] = mf_CreateObject(2957, 455.4764, 511.4462, 1002.1149, 0.0, 0.0, 0.0, 5.0);
+		MapFixObjects[452] = mf_CreateObject(3117, 453.0726, 515.1799, 1001.9401, 0.0, 90.0, 0.0, 4.0);
+		MapFixObjects[453] = mf_CreateObject(3117, 453.1283, 511.2336, 1001.9401, 0.0, 90.0, 0.0, 4.0);
+		MapFixObjects[454] = mf_CreateObject(3037, 452.8891, 507.164, 1001.6256, 0.0, 0.0, 0.0, 8.0);
+		mf_SetObjectMaterial(MapFixObjects[454], 0, 0, "none", "none", 0x00000000);
+		MapFixObjects[455] = mf_CreateObject(3117, 442.3696, 509.1084, 1001.9041, 0.0, 90.0, 0.0, 4.0);
 	#endif
 	#undef mf_CreateObject
 	#undef mf_SetObjectMaterial

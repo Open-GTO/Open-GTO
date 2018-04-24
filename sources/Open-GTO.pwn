@@ -49,10 +49,10 @@ Thanks:
 #include <crashdetect>
 #include <streamer>
 #include <foreach>
-#include <sscanf2>
+#include "lib/sscanf2.inc"
 #include "lib/zcmd.inc"
 #include "lib/formatnumber.inc"
-#include "lib/log-plugin.inc"
+#include <log-plugin>
 #include "lib/gvar.inc"
 #include <rustext>
 #include <mxINI>
