@@ -1,6 +1,2 @@
 *.pwn linguist-language=Pawn
 *.inc linguist-language=Pawn
-
-sources/* linguist-vendored
-scriptfiles/* linguist-vendored
-compiler/* linguist-vendored=false
