@@ -30,7 +30,8 @@
 		"Zeex/samp-plugin-crashdetect",
 		"maddinat0r/sscanf",
 		"ziggi/rustext",
-		"maddinat0r/samp-log"
+		"maddinat0r/samp-log",
+		"Open-GTO/samp-gvar-plugin"
 	],
 	"builds": [
 		{

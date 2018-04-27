@@ -4,7 +4,7 @@
 	],
 	"plugins": [
 		"Zeex/samp-plugin-crashdetect",
-		"gvar",
+		"Open-GTO/samp-gvar-plugin",
 		"maddinat0r/samp-log",
 		"ziggi/rustext",
 		"maddinat0r/sscanf",

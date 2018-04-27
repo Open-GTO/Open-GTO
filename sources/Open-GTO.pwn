@@ -53,7 +53,7 @@ Thanks:
 #include "lib/zcmd.inc"
 #include "lib/formatnumber.inc"
 #include <log-plugin>
-#include "lib/gvar.inc"
+#include <gvar>
 #include <rustext>
 #include <mxINI>
 #include "lib/mapfix.inc"
