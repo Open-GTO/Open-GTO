@@ -187,17 +187,23 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 	}
 
 	// give xp
-	new player_xp = GetPlayerXP(playerid);
+	new
+		player_level = GetPlayerLevel(playerid),
+		killer_level = GetPlayerLevel(killerid),
+		max_level = GetMaxPlayerLevel(),
+		player_xp = (player_level == max_level) ? GetXPToLevel(max_level) : GetPlayerXP(playerid);
+	
 	if (player_xp < 100) {
 		player_xp = 100;
 	}
 
-	new xp_give_player = -player_xp / 100 * PLAYER_XP_DEATH_MINUS_PROC;
-	new xp_give_killer = (pow(GetPlayerLevel(playerid) * 4, 2) / (GetPlayerLevel(killerid) + 10) + 20) * PLAYER_XP_KILL_TARIF;
+	new
+		xp_give_player = 0,
+		xp_give_killer = (pow(player_level * 4, 2) / (killer_level + 10) + 20) * PLAYER_XP_KILL_TARIF;
 
-	new level_difference = GetPlayerLevel(playerid) - GetPlayerLevel(killerid);
-	if (level_difference <= -10) {
-		xp_give_player = 0;
+	// check level difference
+	if ((player_level - killer_level) > -10) {
+		xp_give_player = (-player_xp / 100) * PLAYER_XP_DEATH_MINUS_PROC;
 	}
 
 	GivePlayerXP(killerid, xp_give_killer);
