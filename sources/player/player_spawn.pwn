@@ -2516,12 +2516,6 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 
 stock GetPlayerSpawnPos(playerid, &Float:spos_x = 0.0, &Float:spos_y = 0.0, &Float:spos_z = 0.0, &Float:spos_a = 0.0, &interior = 0, &world = 0)
 {
-	GetPlayerSpawnInfo(playerid, spos_x, spos_y, spos_z, spos_a, interior, world);
-
-	if (spos_x != 0.0 && spos_y != 0.0 && spos_z != 0.0) {
-		return 1;
-	}
-
 	if (IsPlayerJailed(playerid)) {
 		GetJailPos(spos_x, spos_y, spos_z, spos_a, interior);
 		return 1;
@@ -2529,6 +2523,12 @@ stock GetPlayerSpawnPos(playerid, &Float:spos_x = 0.0, &Float:spos_y = 0.0, &Flo
 
 	if (Spectate_IsAfterSpec(playerid)) {
 		Spectate_GetPlayerPos(playerid, spos_x, spos_y, spos_z, spos_a, interior, world);
+		return 1;
+	}
+
+	GetPlayerSpawnInfo(playerid, spos_x, spos_y, spos_z, spos_a, interior, world);
+
+	if (spos_x != 0.0 && spos_y != 0.0 && spos_z != 0.0) {
 		return 1;
 	}
 
