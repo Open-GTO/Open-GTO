@@ -335,20 +335,17 @@ DialogResponse:SettingsLanguageMenu(playerid, response, listitem, inputtext[])
 
 stock PMenu_OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type)
 {
-	if (IsPlayerLogin(playerid)) {
-		if (changed) {
-			Account_SetRussifier(playerid, type);
-			Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-			                 "PLAYER_MENU_SETTINGS_RUSSIFIER_CAPTION",
-			                 "PLAYER_MENU_SETTINGS_RUSSIFIER_CHANGED",
-			                 "BUTTON_BACK", "BUTTON_CANCEL");
-		} else {
-			Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
-			                 "PLAYER_MENU_SETTINGS_RUSSIFIER_CAPTION",
-			                 "PLAYER_MENU_SETTINGS_RUSSIFIER_CANCEL",
-			                 "BUTTON_BACK", "BUTTON_CANCEL");
-		}
-		return 1;
+	if (changed) {
+		Account_SetRussifier(playerid, type);
+		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
+		                 "PLAYER_MENU_SETTINGS_RUSSIFIER_CAPTION",
+		                 "PLAYER_MENU_SETTINGS_RUSSIFIER_CHANGED",
+		                 "BUTTON_BACK", "BUTTON_CANCEL");
+	} else {
+		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
+		                 "PLAYER_MENU_SETTINGS_RUSSIFIER_CAPTION",
+		                 "PLAYER_MENU_SETTINGS_RUSSIFIER_CANCEL",
+		                 "BUTTON_BACK", "BUTTON_CANCEL");
 	}
-	return 0;
+	return 1;
 }

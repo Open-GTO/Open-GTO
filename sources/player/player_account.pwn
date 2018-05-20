@@ -327,12 +327,9 @@ DialogResponse:AccountLanguage(playerid, response, listitem, inputtext[])
 
 stock Account_OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type)
 {
-	if (!IsPlayerLogin(playerid)) {
-		Account_SetRussifier(playerid, changed ? type : RussifierType:0);
-		Dialog_Show(playerid, Dialog:AccountInformation);
-		return 1;
-	}
-	return 0;
+	Account_SetRussifier(playerid, changed ? type : RussifierType:0);
+	Dialog_Show(playerid, Dialog:AccountInformation);
+	return 1;
 }
 
 stock Account_ShowDialog(playerid)

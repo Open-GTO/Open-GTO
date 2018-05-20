@@ -767,12 +767,12 @@ public OnPlayerGangJoin(playerid, gangid)
 
 public OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type)
 {
-	if (Account_OnPlayerRussifierSelect(playerid, changed, type)) {
-		return 1;
-	}
+	PInterf_OnPlayerRussifierSelect(playerid, changed, type);
 
-	if (PMenu_OnPlayerRussifierSelect(playerid, changed, type)) {
-		return 1;
+	if (!IsPlayerLogin(playerid)) {
+		Account_OnPlayerRussifierSelect(playerid, changed, type);
+	} else {
+		PMenu_OnPlayerRussifierSelect(playerid, changed, type);
 	}
 
 	return 1;

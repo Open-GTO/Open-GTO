@@ -43,6 +43,30 @@ public OnPlayerConnect(playerid)
 	forward PlayerInterface_OnPlayerConnect(playerid);
 #endif
 
+stock PInterf_OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type)
+{
+	#pragma unused type
+	if (!changed) {
+		return 0;
+	}
+
+	static const
+		PlayerInterface:update_components[] = {
+			PI_LevelLevel,
+			PI_LevelXP
+		};
+
+	new
+		PlayerInterface:componentid;
+
+	for (new i = 0; i < sizeof(update_components); i++) {
+		componentid = update_components[i];
+		CallLocalFunction("OnPlayerInterfaceChanged", "iiiii", playerid, _:componentid, _:PIP_Visible, _:gPlayerInterface[playerid][componentid][PIP_Visible], 1);
+	}
+
+	return 1;
+}
+
 /*
 	Functions
 */
