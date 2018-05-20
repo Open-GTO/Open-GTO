@@ -110,6 +110,9 @@ Player_OnPlayerDisconnect(playerid, reason)
 	// other stuff
 	StopAudioStreamForPlayer(playerid);
 	SendDeathMessage(INVALID_PLAYER_ID, playerid, 201);
+
+	// reset login status
+	SetPlayerLoginStatus(playerid, false);
 }
 
 Player_OnPlayerConnect(playerid)
