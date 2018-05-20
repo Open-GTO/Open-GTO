@@ -18,6 +18,11 @@ git clone https://github.com/Open-GTO/Open-GTO.git
 ```
 (или вы можете использовать [GitHub Desktop](https://desktop.github.com/))
 
-Для сборки необходимо установить [sampctl](https://github.com/Southclaws/sampctl) и выполнить `sampctl p build`.
+Для установки всех зависимостей и сборки необходимо установить [sampctl](https://github.com/Southclaws/sampctl) и выполнить:
+```
+sampctl package ensure
+sampctl package build
+sampctl server ensure
+```
 
-Для запуска сервера необходимо ввести команду `sampctl s run`, предварительно настроив `samp.json`. Также, необходимо скачать плагины [GVar](https://github.com/samp-incognito/samp-gvar-plugin/releases), [samp-log](https://github.com/maddinat0r/samp-log/releases) и поместить **.dll** (для Windows) и **.so** (для GNU/Linux) файлы в каталог **plugins/**.
+Для запуска сервера необходимо ввести команду `sampctl s run`, предварительно настроив `samp.json`.
