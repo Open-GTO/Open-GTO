@@ -115,14 +115,7 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	new
-		new_name[MAX_PLAYER_NAME+1],
-		old_name[MAX_PLAYER_NAME+1],
-		length = strlen(inputtext);
-
-	GetPlayerName(playerid, old_name, sizeof(old_name));
-	strcpy(new_name, inputtext, length);
-
+	new length = strlen(inputtext);
 	if (length < MIN_NAME_LEN || length > MAX_NAME_LEN) {
 		Dialog_MessageEx(playerid, Dialog:SettingsReturnMenu,
 		                 "PLAYER_MENU_SETTINGS_NAME_CAPTION",
@@ -131,6 +124,13 @@ DialogResponse:PlayerChangeNickMenu(playerid, response, listitem, inputtext[])
 		                 MIN_NAME_LEN, MAX_NAME_LEN);
 		return 1;
 	}
+
+	new
+		new_name[MAX_PLAYER_NAME+1],
+		old_name[MAX_PLAYER_NAME+1];
+
+	GetPlayerName(playerid, old_name, sizeof(old_name));
+	strcpy(new_name, inputtext);
 
 	new file_path[MAX_STRING];
 	format(file_path, sizeof(file_path), "%s%s"DATA_FILES_FORMAT, db_account, new_name);
