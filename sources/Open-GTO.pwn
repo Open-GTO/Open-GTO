@@ -158,7 +158,6 @@ Thanks:
 #include "player/player_mute.pwn"
 #include "player/player_ip.pwn"
 #include "player/player_info.pwn"
-#include "player/player_interface.pwn"
 #include "player/player_jail.pwn"
 #include "player/player_freeze.pwn"
 #include "player/player_report.pwn"
@@ -180,6 +179,7 @@ Thanks:
 #include "player/player_godmod.pwn"
 #include "player/player_warn.pwn"
 #include "player/player_russifier.pwn"
+#include "player/player_interface.pwn"
 #include "player/message/message_alert.pwn"
 #include "player/message/message_objective.pwn"
 #include "player/interface/interface_info.pwn"
@@ -767,8 +767,6 @@ public OnPlayerGangJoin(playerid, gangid)
 
 public OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type)
 {
-	PInterf_OnPlayerRussifierSelect(playerid, changed, type);
-
 	if (!IsPlayerLogin(playerid)) {
 		Account_OnPlayerRussifierSelect(playerid, changed, type);
 	} else {

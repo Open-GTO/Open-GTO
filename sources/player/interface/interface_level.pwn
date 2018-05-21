@@ -128,10 +128,9 @@ public OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerInt
 
 		if (newvalue) {
 			if (componentid == PI_LevelLine || componentid == PI_LevelXP || componentid == PI_LevelXPPlus) {
-				new level = GetPlayerLevel(playerid);
-				PlayerLevelTD_UpdateXPString(playerid, GetPlayerXP(playerid), GetXPToLevel(level + 1), level >= GetMaxPlayerLevel());
+				PlayerLevelTD_UpdateString(playerid, false, true);
 			} else if (componentid == PI_LevelLevel || componentid == PI_LevelPlus) {
-				PlayerLevelTD_UpdateLevelString(playerid, GetPlayerLevel(playerid));
+				PlayerLevelTD_UpdateString(playerid, true, false);
 			}
 
 			switch (componentid) {
@@ -288,6 +287,19 @@ stock PlayerLevelTD_HideTextDraw(playerid)
 	PlayerTextDrawHide(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelLine, PIP_TextDraw));
 	PlayerTextDrawHide(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelLevel, PIP_TextDraw));
 	PlayerTextDrawHide(playerid, PlayerText:GetPlayerInterfaceParam(playerid, PI_LevelXP, PIP_TextDraw));
+}
+
+stock PlayerLevelTD_UpdateString(playerid, bool:update_level = true, bool:update_xp = true)
+{
+	new level = GetPlayerLevel(playerid);
+
+	if (update_level) {
+		PlayerLevelTD_UpdateLevelString(playerid, level);
+	}
+
+	if (update_xp) {
+		PlayerLevelTD_UpdateXPString(playerid, GetPlayerXP(playerid), GetXPToLevel(level + 1), level >= GetMaxPlayerLevel());
+	}
 }
 
 stock PlayerLevelTD_UpdateLevelString(playerid, level)

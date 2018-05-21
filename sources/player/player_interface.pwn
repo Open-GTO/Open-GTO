@@ -19,15 +19,15 @@ static
 	bool:gPlayerInterfaceVisible[MAX_PLAYERS];
 
 /*
-	Callbacks
+	OnPlayerConnect
 */
 
 public OnPlayerConnect(playerid)
 {
 	TogglePlayerInterfaceVisibility(playerid, true, true);
 
-	#if defined PlayerInterface_OnPlayerConnect
-		return PlayerInterface_OnPlayerConnect(playerid);
+	#if defined PInter_OnPlayerConnect
+		return PInter_OnPlayerConnect(playerid);
 	#else
 		return 1;
 	#endif
@@ -38,34 +38,62 @@ public OnPlayerConnect(playerid)
 	#define _ALS_OnPlayerConnect
 #endif
 
-#define OnPlayerConnect PlayerInterface_OnPlayerConnect
-#if defined PlayerInterface_OnPlayerConnect
-	forward PlayerInterface_OnPlayerConnect(playerid);
+#define OnPlayerConnect PInter_OnPlayerConnect
+#if defined PInter_OnPlayerConnect
+	forward PInter_OnPlayerConnect(playerid);
 #endif
 
-stock PInterf_OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type)
+/*
+	OnAccountLanguageChanged
+*/
+
+public OnAccountLanguageChanged(playerid, Lang:lang)
 {
-	#pragma unused type
-	if (!changed) {
-		return 0;
-	}
+	PlayerLevelTD_UpdateString(playerid);
 
-	static const
-		PlayerInterface:update_components[] = {
-			PI_LevelLevel,
-			PI_LevelXP
-		};
-
-	new
-		PlayerInterface:componentid;
-
-	for (new i = 0; i < sizeof(update_components); i++) {
-		componentid = update_components[i];
-		CallLocalFunction("OnPlayerInterfaceChanged", "iiiii", playerid, _:componentid, _:PIP_Visible, _:gPlayerInterface[playerid][componentid][PIP_Visible], 1);
-	}
-
-	return 1;
+	#if defined PInter_OnAccountLanguageChanged
+		return PInter_OnAccountLanguageChanged(playerid, Lang:lang);
+	#else
+		return 1;
+	#endif
 }
+#if defined _ALS_OnAccountLanguageChanged
+	#undef OnAccountLanguageChanged
+#else
+	#define _ALS_OnAccountLanguageChanged
+#endif
+
+#define OnAccountLanguageChanged PInter_OnAccountLanguageChanged
+#if defined PInter_OnAccountLanguageChanged
+	forward PInter_OnAccountLanguageChanged(playerid, Lang:lang);
+#endif
+
+/*
+	OnPlayerRussifierSelect
+*/
+
+public OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type)
+{
+	if (changed) {
+		PlayerLevelTD_UpdateString(playerid);
+	}
+
+	#if defined PInter_OnPlayerRussifierSelect
+		return PInter_OnPlayerRussifierSelect(playerid, changed, type);
+	#else
+		return 1;
+	#endif
+}
+#if defined _ALS_OnPlayerRussifierSelect
+	#undef OnPlayerRussifierSelect
+#else
+	#define _ALS_OnPlayerRussifierSelect
+#endif
+
+#define OnPlayerRussifierSelect PInter_OnPlayerRussifierSelect
+#if defined PInter_OnPlayerRussifierSelect
+	forward PInter_OnPlayerRussifierSelect(playerid, bool:changed, RussifierType:type);
+#endif
 
 /*
 	Functions
