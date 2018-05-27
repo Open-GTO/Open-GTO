@@ -30,6 +30,24 @@ stock ORIG_GivePlayerMoney(playerid, money)
 #define GivePlayerMoney REDEF_GivePlayerMoney
 
 /*
+	ResetPlayerMoney
+*/
+
+stock ORIG_ResetPlayerMoney(playerid)
+{
+	return
+		ResetPlayerMoney(playerid);
+}
+
+#if defined _ALS_ResetPlayerMoney
+	#undef ResetPlayerMoney
+#else
+	#define _ALS_ResetPlayerMoney
+#endif
+
+#define ResetPlayerMoney REDEF_ResetPlayerMoney
+
+/*
 	GetPlayerMoney
 */
 

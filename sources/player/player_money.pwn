@@ -41,6 +41,9 @@ stock SetPlayerMoney(playerid, money, bool:notify = true)
 	if (notify) {
 		PlayerMoneyTD_Give(playerid, money - old_money);
 	}
+
+	ORIG_ResetPlayerMoney(playerid);
+	ORIG_GivePlayerMoney(playerid, money);
 	return 1;
 }
 
@@ -62,6 +65,12 @@ stock REDEF_GivePlayerMoney(playerid, money)
 	}
 
 	SetPlayerMoney(playerid, player_money + money);
+	return 1;
+}
+
+stock REDEF_ResetPlayerMoney(playerid)
+{
+	SetPlayerMoney(playerid, 0);
 	return 1;
 }
 
