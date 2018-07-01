@@ -75,6 +75,7 @@ Thanks:
 #include <gpickup>
 #include <gtolib>
 #include <zvehinfo>
+#include <russifier>
 
 // header files
 #include "core/lang.inc"
@@ -178,7 +179,6 @@ Thanks:
 #include "player/player_skydive.pwn"
 #include "player/player_godmod.pwn"
 #include "player/player_warn.pwn"
-#include "player/player_russifier.pwn"
 #include "player/player_interface.pwn"
 #include "player/message/message_alert.pwn"
 #include "player/message/message_objective.pwn"
@@ -284,7 +284,6 @@ public OnGameModeInit()
 	Weapon_OnGameModeInit();
 	PLevel_OnGameModeInit();
 	PlayerClick_OnGameModeInit();
-	PlayerRussifier_OnGameModeInit();
 	AdminClick_OnGameModeInit();
 
 	// custom

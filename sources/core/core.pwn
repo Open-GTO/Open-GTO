@@ -27,5 +27,9 @@ Core_OnGameModeInit()
 	ManualVehicleEngineAndLights();
 	EnableStuntBonusForAll(0);
 
+	new string[MAX_LANG_VALUE_STRING];
+	Lang_GetText(Lang_Get("ru"), "PLAYER_MENU_SETTINGS_RUSSIFIER_TEXT", string);
+	Russifier_SetText(string);
+
 	Log_Init("core", "Core module init.");
 }

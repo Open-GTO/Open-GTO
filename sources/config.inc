@@ -123,6 +123,12 @@
 #define PROTECTION_TELEPORT_MAX_DISTANCE         80.0
 
 /*
+ * Russifier settings
+ */
+
+#define RUSSIFIER_DISABLE_HOOKS
+
+/*
  * Gameplay settings
  */
 

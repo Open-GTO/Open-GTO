@@ -31,7 +31,8 @@
 		"maddinat0r/sscanf",
 		"ziggi/rustext",
 		"maddinat0r/samp-log",
-		"Open-GTO/samp-gvar-plugin"
+		"Open-GTO/samp-gvar-plugin",
+		"Open-GTO/russifier"
 	],
 	"builds": [
 		{
@@ -60,5 +61,11 @@
 				"-l"
 			]
 		}
-	]
+	],
+	"runtime": {
+		"version": "0.3.7",
+		"mode": "server",
+		"rcon_password": "1",
+		"port": 7777
+	}
 }
