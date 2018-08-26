@@ -145,7 +145,7 @@ static gIgnoredComponents[] = {
 
 Tuning_OnGameModeInit()
 {
-	BlockGarages();
+	ToggleGaragesBlock();
 
 	for (new i = 0; i < sizeof(gTuningPlace); i++) {
 		CreateDynamicMapIcon(

@@ -71,7 +71,7 @@ Thanks:
 #include <mdialog>
 #include <mselect>
 #include <skinselect>
-#include <garage_block>
+#include <garage_blocker>
 #include <gpickup>
 #include <gtolib>
 #include <zvehinfo>
