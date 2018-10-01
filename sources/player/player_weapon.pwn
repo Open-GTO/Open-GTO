@@ -161,14 +161,14 @@ stock GivePlayerOwnedWeapon(playerid)
 	}
 }
 
-stock SetPlayerWeaponsFromArray(playerid, array[PLAYER_WEAPON_SLOTS])
+stock SetPlayerWeaponsFromArray(playerid, const array[PLAYER_WEAPON_SLOTS])
 {
 	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
 		PlayerWeapons[playerid][i][pwid] = array[i];
 	}
 }
 
-stock SetPlayerBulletsFromArray(playerid, array[PLAYER_WEAPON_SLOTS])
+stock SetPlayerBulletsFromArray(playerid, const array[PLAYER_WEAPON_SLOTS])
 {
 	for (new i = 0; i < PLAYER_WEAPON_SLOTS; i++) {
 		PlayerWeapons[playerid][i][pbullets] = array[i];
@@ -199,14 +199,14 @@ stock CreatePlayerBulletsString(playerid)
 	return string;
 }
 
-stock SetStartPlayerWeaponsFromArray(array[START_PLAYER_WEAPON_SLOTS])
+stock SetStartPlayerWeaponsFromArray(const array[START_PLAYER_WEAPON_SLOTS])
 {
 	for (new i = 0; i < START_PLAYER_WEAPON_SLOTS; i++) {
 		PlayerStartWeapon[i][pwid] = array[i];
 	}
 }
 
-stock SetStartPlayerBulletsFromArray(array[START_PLAYER_WEAPON_SLOTS])
+stock SetStartPlayerBulletsFromArray(const array[START_PLAYER_WEAPON_SLOTS])
 {
 	for (new i = 0; i < START_PLAYER_WEAPON_SLOTS; i++) {
 		PlayerStartWeapon[i][pbullets] = array[i];

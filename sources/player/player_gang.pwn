@@ -246,7 +246,7 @@ stock ret_GetPlayerGangName(playerid)
 	return gPlayerGangName[playerid];
 }
 
-stock SetPlayerGangName(playerid, name[])
+stock SetPlayerGangName(playerid, const name[])
 {
 	strcpy(gPlayerGangName[playerid], name, MAX_GANG_NAME);
 }

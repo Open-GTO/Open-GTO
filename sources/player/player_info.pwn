@@ -15,7 +15,7 @@
 	GetPlayerInfoString
 */
 
-stock GetPlayerInfoString(playerid, string[], const size = sizeof(string), requestorid = INVALID_PLAYER_ID)
+stock GetPlayerInfoString(playerid, string[], const size = sizeof(string), const requestorid = INVALID_PLAYER_ID)
 {
 	static
 		scount,
@@ -34,7 +34,7 @@ stock GetPlayerInfoString(playerid, string[], const size = sizeof(string), reque
 	GetPlayerInfoArray
 */
 
-stock GetPlayerInfoArray(playerid, string[MAX_PLAYER_INFO_LINES][], const size_string = sizeof(string[]), requestorid = INVALID_PLAYER_ID)
+stock GetPlayerInfoArray(playerid, string[MAX_PLAYER_INFO_LINES][], const size_string = sizeof(string[]), const requestorid = INVALID_PLAYER_ID)
 {
 	new
 		scount,
@@ -118,7 +118,7 @@ stock GetPlayerInfoArray(playerid, string[MAX_PLAYER_INFO_LINES][], const size_s
 	GetAccountInfoString
 */
 
-stock GetAccountInfoString(account_info[e_Account_Info], string[], const size = sizeof(string), requestorid = INVALID_PLAYER_ID)
+stock GetAccountInfoString(const account_info[e_Account_Info], string[], const size = sizeof(string), const requestorid = INVALID_PLAYER_ID)
 {
 	static
 		scount,
@@ -137,7 +137,7 @@ stock GetAccountInfoString(account_info[e_Account_Info], string[], const size = 
 	GetAccountInfoArray
 */
 
-stock GetAccountInfoArray(account_info[e_Account_Info], string[MAX_ACCOUNT_INFO_LINES][], const size_string = sizeof(string[]), requestorid = INVALID_PLAYER_ID)
+stock GetAccountInfoArray(const account_info[e_Account_Info], string[MAX_ACCOUNT_INFO_LINES][], const size_string = sizeof(string[]), const requestorid = INVALID_PLAYER_ID)
 {
 	new
 		scount,
@@ -166,7 +166,7 @@ stock GetAccountInfoArray(account_info[e_Account_Info], string[MAX_ACCOUNT_INFO_
 	GetPlayerAccountInfoString
 */
 
-stock GetPlayerAccountInfoString(playerid, string[], const size = sizeof(string), requestorid = INVALID_PLAYER_ID)
+stock GetPlayerAccountInfoString(playerid, string[], const size = sizeof(string), const requestorid = INVALID_PLAYER_ID)
 {
 	static
 		scount,
@@ -185,7 +185,7 @@ stock GetPlayerAccountInfoString(playerid, string[], const size = sizeof(string)
 	GetPlayerAccountInfoArray
 */
 
-stock GetPlayerAccountInfoArray(playerid, string[MAX_ACCOUNT_INFO_LINES][], const size_string = sizeof(string[]), requestorid = INVALID_PLAYER_ID)
+stock GetPlayerAccountInfoArray(playerid, string[MAX_ACCOUNT_INFO_LINES][], const size_string = sizeof(string[]), const requestorid = INVALID_PLAYER_ID)
 {
 	new
 		account_info[e_Account_Info];

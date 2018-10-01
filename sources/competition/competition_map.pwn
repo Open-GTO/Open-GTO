@@ -45,7 +45,7 @@ new
 	CompetitionMap_Add
 */
 
-stock CompetitionMap_Add(cmap_params[CompetitionMapParams])
+stock CompetitionMap_Add(const cmap_params[CompetitionMapParams])
 {
 	new
 		cmap = CompetitionMap_GetFreeSlot();
@@ -147,7 +147,7 @@ stock Float:CompetitionMap_GetParamFloat(cmap, CompetitionMapParams:param)
 	String params
 */
 
-stock CompetitionMap_SetParamString(cmap, CompetitionMapParams:param, value[])
+stock CompetitionMap_SetParamString(cmap, CompetitionMapParams:param, const value[])
 {
 	strcpy(gParam[cmap][param], value, COMPETITION_MAX_STRING);
 }

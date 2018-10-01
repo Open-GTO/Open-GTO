@@ -65,7 +65,7 @@ stock Account_Save(playerid)
 	Register
 */
 
-stock Account_Register(playerid, password[])
+stock Account_Register(playerid, const password[])
 {
 	// set default data
 	Account_SetPassword(playerid, password);
@@ -94,23 +94,25 @@ stock Account_Register(playerid, password[])
 	Login
 */
 
-stock Account_Login(playerid, password[])
+stock Account_Login(playerid, const password[])
 {
 	new
 		result[e_Account_Info],
-		playername[MAX_PLAYER_NAME + 1];
+		playername[MAX_PLAYER_NAME + 1],
+		password_copy[MAX_PASS_LEN];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
+	strcpy(password_copy, password);
 
 	// get data
 	Account_LoadData(playername, result);
 
 	// check password
 #if defined PASSWORD_ENCRYPT_ENABLED
-	SHA256_PassHash(password, result[e_aPasswordSalt], password, PASSWORD_HASH_LENGTH);
+	SHA256_PassHash(password, result[e_aPasswordSalt], password_copy, PASSWORD_HASH_LENGTH);
 #endif
 
-	if (strcmp(password, result[e_aPassword], false)) {
+	if (strcmp(password_copy, result[e_aPassword], false)) {
 		Log(mainlog, INFO, "Player: login failed, incorrect password by %s [id: %d]", playername, playerid);
 
 		AddLoginAttempt(playerid);
@@ -143,7 +145,7 @@ stock Account_Login(playerid, password[])
 	Account_SaveData
 */
 
-stock Account_SaveData(account_name[], data[e_Account_Info])
+stock Account_SaveData(const account_name[], const data[e_Account_Info])
 {
 	new
 		file_account,
@@ -182,7 +184,7 @@ stock Account_SaveData(account_name[], data[e_Account_Info])
 	Account_LoadData
 */
 
-stock Account_LoadData(account_name[], result[e_Account_Info])
+stock Account_LoadData(const account_name[], result[e_Account_Info])
 {
 	new
 		file_account,
@@ -375,7 +377,7 @@ stock Account_GetRegistrationTime(playerid)
 	return gAccount[playerid][e_aCreationTime];
 }
 
-stock Account_SetPassword(playerid, password[])
+stock Account_SetPassword(playerid, const password[])
 {
 #if defined PASSWORD_ENCRYPT_ENABLED
 	GenerateRandomString(gAccount[playerid][e_aPasswordSalt], PASSWORD_SALT_LENGTH, PASSWORD_SALT_LENGTH + 1);
@@ -395,7 +397,7 @@ stock Account_GetPassword(playerid, password[], const size = sizeof(password))
 	Account data
 */
 
-stock Account_SetData(playerid, data[e_Account_Info])
+stock Account_SetData(playerid, const data[e_Account_Info])
 {
 	gAccount[playerid] = data;
 }

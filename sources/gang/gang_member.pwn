@@ -135,7 +135,7 @@ stock GangMember_GetPlayers(gangid, players[], const size = sizeof(players))
 	Gang Member Name
 */
 
-stock GangMember_SetName(gangid, memberid, name[])
+stock GangMember_SetName(gangid, memberid, const name[])
 {
 	strcpy(gMember[gangid][memberid][e_gmName], name, MAX_PLAYER_NAME);
 }

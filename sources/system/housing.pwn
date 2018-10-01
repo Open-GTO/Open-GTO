@@ -1164,7 +1164,7 @@ stock housing_UpdateLabel(id)
 	}
 }
 
-stock housing_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+1])
+stock housing_RenameOwner(const old_name[MAX_PLAYER_NAME+1], const new_name[MAX_PLAYER_NAME+1])
 {
 	for (new i = 0; i < sizeof(Houses); i++)
 	{

@@ -293,7 +293,7 @@ DialogResponse:WShopReturnMainMenu(playerid, response, listitem, inputtext[])
 	Public functions
 */
 
-stock WShop_Message(playerid, info[], bool:is_buy_menu = true)
+stock WShop_Message(playerid, const info[], const bool:is_buy_menu = true)
 {
 	if (is_buy_menu) {
 		Dialog_MessageEx(playerid, Dialog:WShopReturnBuyMenu,

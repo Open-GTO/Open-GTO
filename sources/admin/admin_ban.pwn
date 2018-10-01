@@ -61,7 +61,7 @@ stock oBan_Check(playerid)
 	Lang_SendText(playerid, "ADMIN_COMMAND_BAN_PLAYER_MESSAGE", admin, timestamp_to_format_date(ban_time), string, reason);
 
 	if (seconds_to_unban > 0) {
-		KickPlayer(playerid, "ban check", 0);
+		KickPlayer(playerid, "ban check", false);
 	} else {
 		ini_fileRemove(filename);
 		Lang_SendText(playerid, "ADMIN_COMMAND_BAN_UNBANED");
@@ -125,13 +125,13 @@ stock oBan(user[], reason[], adminid, duration_time = 0)
 			Player_GetIP(playerid, player_ip);
 
 			if (!strcmp(user, player_ip, false)) {
-				KickPlayer(playerid, "ban", 0);
+				KickPlayer(playerid, "ban", false);
 			}
 		}
 	} else {
 		foreach (new playerid : Player) {
 			if (!strcmp(user, ret_GetPlayerName(playerid), false)) {
-				KickPlayer(playerid, "ban", 0);
+				KickPlayer(playerid, "ban", false);
 			}
 		}
 	}

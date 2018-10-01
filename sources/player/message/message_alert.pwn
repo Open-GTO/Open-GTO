@@ -117,7 +117,7 @@ forward OnPlayerConnect(playerid);
 	Public functions
 */
 
-stock Message_Alert(playerid, caption[], info[], time = 4000, hcolor = -5963521, bool:with_sound = true, index = -1, notvar_flags = MESSAGE_NOTVAR_NONE, lang_args<>)
+stock Message_Alert(playerid, const caption[], const info[], time = 4000, hcolor = -5963521, bool:with_sound = true, index = -1, notvar_flags = MESSAGE_NOTVAR_NONE, lang_args<>)
 {
 	new id = Message_GetFreeSlot(playerid);
 	if (id == INVALID_ALERT_ID) {

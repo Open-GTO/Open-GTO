@@ -368,7 +368,7 @@ stock GangMenu_CleanCreateGarbage(playerid)
 	DeletePVar(playerid, "GangMenu_GangName");
 }
 
-stock GangMenu_SetCreateName(playerid, gangname[])
+stock GangMenu_SetCreateName(playerid, const gangname[])
 {
 	SetPVarString(playerid, "GangMenu_GangName", gangname);
 }

@@ -70,7 +70,7 @@ public OnPlayerConnect(playerid)
  * Public functions
  */
 
-stock Message_Objective(playerid, info[], time = 4000, hcolor = -1, notvar_flags = MESSAGE_NOTVAR_NONE, lang_args<>)
+stock Message_Objective(playerid, const info[], time = 4000, hcolor = -1, notvar_flags = MESSAGE_NOTVAR_NONE, lang_args<>)
 {
 	if (strlen(info) == 0) {
 		return 0;

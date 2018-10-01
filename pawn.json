@@ -26,7 +26,7 @@
 		"Open-GTO/zmessage",
 		"Open-GTO/protection",
 		"samp-incognito/samp-streamer-plugin:v2.9.3",
-		"Zeex/samp-plugin-crashdetect:v4.19.1",
+		"Zeex/samp-plugin-crashdetect:v4.19.4",
 		"maddinat0r/sscanf:v2.8.2",
 		"ziggi/rustext:v2.0.7",
 		"maddinat0r/samp-log:v0.4",
@@ -38,7 +38,7 @@
 	"builds": [
 		{
 			"name": "dev",
-			"version": "3.10.8",
+			"version": "3.10.9",
 			"args": [
 				"-;+",
 				"-(+",
@@ -47,7 +47,7 @@
 		},
 		{
 			"name": "prod",
-			"version": "3.10.8",
+			"version": "3.10.9",
 			"args": [
 				"-;+",
 				"-(+"
@@ -55,7 +55,7 @@
 		},
 		{
 			"name": "pre",
-			"version": "3.10.8",
+			"version": "3.10.9",
 			"args": [
 				"-;+",
 				"-(+",

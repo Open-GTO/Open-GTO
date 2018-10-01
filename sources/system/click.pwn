@@ -142,7 +142,7 @@ DialogResponse:PlayerClickResponse(playerid, response, listitem, inputtext[])
 
 */
 
-stock Click_AddItem(style, var_caption[], var_info[], var_button1[], var_button2[], PlayerPrivilege:privilege, function[])
+stock Click_AddItem(style, const var_caption[], const var_info[], const var_button1[], const var_button2[], PlayerPrivilege:privilege, const function[])
 {
 	new id = gClickItemId++;
 	if (id >= MAX_CLICK_DIALOG_ITEMS) {

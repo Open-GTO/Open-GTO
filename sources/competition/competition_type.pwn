@@ -57,7 +57,7 @@ new
 	CompetitionType_Add
 */
 
-stock CompetitionType_Add(ctype_params[CompetitionTypeParams])
+stock CompetitionType_Add(const ctype_params[CompetitionTypeParams])
 {
 	new
 		ctype = CompetitionType_GetFreeSlot();
@@ -201,7 +201,7 @@ stock Float:CompetitionType_GetParamFloat(ctype, CompetitionTypeParams:param)
 	String params
 */
 
-stock CompetitionType_SetParamString(ctype, CompetitionTypeParams:param, value[])
+stock CompetitionType_SetParamString(ctype, CompetitionTypeParams:param, const value[])
 {
 	strcpy(gParam[ctype][param], value, COMPETITION_MAX_STRING);
 }

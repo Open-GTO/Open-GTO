@@ -489,14 +489,14 @@ stock Gang_PlayerKill(gangid, killerid, victimid)
 	Gang Message
 */
 
-stock Gang_SendMessage(gangid, message[], color = COLOR_GANG)
+stock Gang_SendMessage(gangid, const message[], const color = COLOR_GANG)
 {
 	foreach (new memberid : LoadedGangMembers[gangid]) {
 		SendClientMessage(GangMember_GetID(gangid, memberid), color, message);
 	}
 }
 
-stock Gang_SendLangMessage(gangid, var[], color = COLOR_GANG, lang_args<>)
+stock Gang_SendLangMessage(gangid, const var[], const color = COLOR_GANG, lang_args<>)
 {
 	static
 		text[MAX_LANG_VALUE_STRING],
@@ -710,7 +710,7 @@ stock Gang_GetMotd(gangid, text[], const size = sizeof(text))
 	strcpy(text, gGang[gangid][e_gMotd], size);
 }
 
-stock Gang_SetMotd(gangid, text[])
+stock Gang_SetMotd(gangid, const text[])
 {
 	strcpy(gGang[gangid][e_gMotd], text, MAX_GANG_MOTD);
 }
@@ -724,7 +724,7 @@ stock Gang_ReturnMotd(gangid)
 	Get ID
 */
 
-stock Gang_GetID(gangname[])
+stock Gang_GetID(const gangname[])
 {
 	foreach (new gangid : LoadedGangs) {
 		if (!strcmp(gangname, gGang[gangid][e_gName], false)) {

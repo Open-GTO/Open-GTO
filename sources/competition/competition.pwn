@@ -204,7 +204,7 @@ public Competition_Timer()
 	Competition Add
 */
 
-stock Competition_Add(cparams[CompetitionParams])
+stock Competition_Add(const cparams[CompetitionParams])
 {
 	new cid = Competition_GetFreeSlot();
 	if (cid == INVALID_COMPETITION_ID) {
@@ -344,7 +344,7 @@ stock Float:Competition_GetParamFloat(cid, CompetitionParams:param)
 	String params
 */
 
-stock Competition_SetParamString(cid, CompetitionParams:param, value[])
+stock Competition_SetParamString(cid, CompetitionParams:param, const value[])
 {
 	strcpy(gParam[cid][param], value, COMPETITION_MAX_STRING);
 }

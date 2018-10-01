@@ -28,7 +28,7 @@ const
 	Forwards
 */
 
-forward Lang:_Lang_Load(code[], name[]);
+forward Lang:_Lang_Load(const code[], const name[]);
 
 /*
 	OnGameModeInit
@@ -60,7 +60,7 @@ stock Lang_ReloadAll()
 	Lang functions
 */
 
-static stock Lang:_Lang_Load(code[], name[])
+static stock Lang:_Lang_Load(const code[], const name[])
 {
 	new
 		Lang:lang,

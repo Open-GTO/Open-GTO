@@ -24,7 +24,7 @@ static
 	Get functions
 */
 
-stock Declension_GetWord(result[], const size = sizeof(result), num, word_1[MAX_LANG_VALUE_STRING], word_2[MAX_LANG_VALUE_STRING], word_3[MAX_LANG_VALUE_STRING])
+stock Declension_GetWord(result[], const size = sizeof(result), num, const word_1[MAX_LANG_VALUE_STRING], const word_2[MAX_LANG_VALUE_STRING], const word_3[MAX_LANG_VALUE_STRING])
 {
 	num %= 100;
 
@@ -121,7 +121,7 @@ stock Declension_GetAdminWarn(playerid, value, result[], const size = sizeof(res
 	Return functions
 */
 
-stock Declension_ReturnWord(num, word_1[MAX_LANG_VALUE_STRING], word_2[MAX_LANG_VALUE_STRING], word_3[MAX_LANG_VALUE_STRING])
+stock Declension_ReturnWord(num, const word_1[MAX_LANG_VALUE_STRING], const word_2[MAX_LANG_VALUE_STRING], const word_3[MAX_LANG_VALUE_STRING])
 {
 	new result[MAX_LANG_VALUE_STRING];
 	Declension_GetWord(result, sizeof(result), num, word_1, word_2, word_3);

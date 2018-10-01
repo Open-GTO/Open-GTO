@@ -169,7 +169,7 @@ stock IsPlayerInterfaceVisible(playerid)
 	return _:gPlayerInterfaceVisible[playerid];
 }
 
-stock PlayerTD_Update(playerid, PlayerText:textdraw, color, value, prefix[] = "")
+stock PlayerTD_Update(playerid, PlayerText:textdraw, color, value, const prefix[] = "")
 {
 	static
 		str[MAX_LANG_VALUE_STRING];

@@ -777,7 +777,7 @@ stock business_UpdateLabel(id)
 	}
 }
 
-stock business_RenameOwner(old_name[MAX_PLAYER_NAME+1], new_name[MAX_PLAYER_NAME+1])
+stock business_RenameOwner(const old_name[MAX_PLAYER_NAME+1], const new_name[MAX_PLAYER_NAME+1])
 {
 	for (new i = 0; i < sizeof(Businesses); i++)
 	{

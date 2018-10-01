@@ -176,7 +176,7 @@ stock Color_GetVehicleCode(id)
 	return gColors[id][e_cVehicle];
 }
 
-stock Color_GetName(id, name[], size = sizeof(name))
+stock Color_GetName(id, name[], const size = sizeof(name))
 {
 	strcpy(name, gColors[id][e_cName], size);
 }
@@ -188,7 +188,7 @@ stock Color_ReturnName(id)
 	return name;
 }
 
-stock Color_GetIdByName(name[])
+stock Color_GetIdByName(const name[])
 {
 	for (new i = 0; i < MAX_COLOR_COUNT; i++) {
 		if (strcmp(name, gColors[i][e_cName], true) == 0) {
@@ -198,7 +198,7 @@ stock Color_GetIdByName(name[])
 	return -1;
 }
 
-stock Color_GetCodeByName(name[])
+stock Color_GetCodeByName(const name[])
 {
 	for (new i = 0; i < MAX_COLOR_COUNT; i++) {
 		if (strcmp(name, gColors[i][e_cName], true) == 0) {

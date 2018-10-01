@@ -140,7 +140,7 @@ AdminClick_OnGameModeInit()
 	              "AdminClick_GetNetStats");
 }
 
-static stock ShowErrorDialog(playerid, error_var_msg[])
+static stock ShowErrorDialog(playerid, const error_var_msg[])
 {
 	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
 	                 "ADMIN_CLICK_MESSAGE_HEADER",

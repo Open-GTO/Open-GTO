@@ -15,7 +15,7 @@
 	#define MAX_KICK_REASON_LENGTH 64
 #endif
 
-stock KickPlayer(playerid, reason[] = "", showreason = 1)
+stock KickPlayer(playerid, const reason[] = "", const bool:showreason = true)
 {
 	if (!IsPlayerConnected(playerid)) {
 		return 0;

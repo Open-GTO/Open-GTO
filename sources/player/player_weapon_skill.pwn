@@ -66,7 +66,7 @@ PWSkill_OnPlayerDeath(playerid, killerid, reason)
 	Functions
 */
 
-stock SetWeaponsSkillsFromDBString(playerid, dbstring[])
+stock SetWeaponsSkillsFromDBString(playerid, const dbstring[])
 {
 	new
 		skills[MAX_WEAPON_SKILLS];

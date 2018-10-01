@@ -88,7 +88,7 @@ PVehicle_OnVehicleTuning(playerid, vehicleid, componentid)
 */
 
 stock AddPlayerVehicle(playerid, model, color1, color2, Float:fuel, VehicleDoorsAccess:access = VehicleDoorsAccess_Everyone,
-                       paintjob = -1, number[] = MODE_NAME, component[VEHICLE_COMPONENTS] = {0, ...})
+                       paintjob = -1, const number[] = MODE_NAME, const component[VEHICLE_COMPONENTS] = {0, ...})
 {
 	new slot = GetPlayerVehicleFreeSlot(playerid);
 	PlayerVehicle[playerid][slot][pv_ID] = 0;
@@ -190,7 +190,7 @@ stock CreateVehicleDbString(playerid, slot)
 	return vehstr;
 }
 
-stock SetVehicleFromDbString(playerid, slot, dbstring[])
+stock SetVehicleFromDbString(playerid, slot, const dbstring[])
 {
 	if (sscanf(dbstring, "p</>ia<i>[2]fiis[" #VEHICLE_NUMBER_SIZE "]a<i>[" #VEHICLE_COMPONENTS "]",
 		    PlayerVehicle[playerid][slot][pv_Model],
@@ -301,7 +301,7 @@ stock ChangePlayerVehicleDoorsAccess(playerid, slot)
 	return 1;
 }
 
-stock SetPlayerVehicleNumber(playerid, slot, number[])
+stock SetPlayerVehicleNumber(playerid, slot, const number[])
 {
 	new vehicleid = PlayerVehicle[playerid][slot][pv_ID];
 	if (vehicleid != 0) {
