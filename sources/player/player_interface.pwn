@@ -25,6 +25,7 @@ static
 public OnPlayerConnect(playerid)
 {
 	TogglePlayerInterfaceVisibility(playerid, true, true);
+	gPlayerInterface[playerid] = NULL_gPlayerInterface;
 
 	#if defined PInter_OnPlayerConnect
 		return PInter_OnPlayerConnect(playerid);
