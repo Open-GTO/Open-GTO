@@ -24,7 +24,7 @@ enum e_Fuelstation_Info {
 	Float:e_fsPosY,
 	Float:e_fsPosZ,
 	bool:e_fsShowIcon,
-	STREAMER_TAG_AREA e_fsAreaID,
+	STREAMER_TAG_AREA:e_fsAreaID,
 }
 
 /*
@@ -201,7 +201,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	OnPlayerEnterDynamicArea
 */
 
-public OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
+public OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA:areaid)
 {
 	new stid = INVALID_FUELSTATION_ID;
 
@@ -235,14 +235,14 @@ public OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 
 #define OnPlayerEnterDynamicArea Fuelst_OnPlayerEnterDynamicArea
 #if defined Fuelst_OnPlayerEnterDynamicArea
-	forward Fuelst_OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid);
+	forward Fuelst_OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA:areaid);
 #endif
 
 /*
 	OnPlayerLeaveDynamicArea
 */
 
-public OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
+public OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA:areaid)
 {
 	new stid = INVALID_FUELSTATION_ID;
 
@@ -271,7 +271,7 @@ public OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 
 #define OnPlayerLeaveDynamicArea Fuelst_OnPlayerLeaveDynamicArea
 #if defined Fuelst_OnPlayerLeaveDynamicArea
-	forward Fuelst_OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid);
+	forward Fuelst_OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA:areaid);
 #endif
 
 /*

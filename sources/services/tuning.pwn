@@ -58,7 +58,7 @@ enum e_TuningPlace_Info {
 	Float:e_tpCoord_Y,
 	Float:e_tpCoord_Z,
 	Float:e_tpCoord_Angle,
-	STREAMER_TAG_AREA e_tpDynamic,
+	STREAMER_TAG_AREA:e_tpDynamic,
 }
 
 static gTuningPlace[][e_TuningPlace_Info] = {
@@ -175,7 +175,7 @@ Tuning_OnPlayerConnect(playerid)
 	return 1;
 }
 
-Tuning_OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
+Tuning_OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA:areaid)
 {
 	for (new i = 0; i < sizeof(gTuningPlace); i++) {
 		if (gInfo[playerid][e_tAfterExit]) {
@@ -200,7 +200,7 @@ Tuning_OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 	return 0;
 }
 
-Tuning_OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
+Tuning_OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA:areaid)
 {
 	for (new i = 0; i < sizeof(gTuningPlace); i++) {
 		if (areaid == gTuningPlace[i][e_tpDynamic] && !IsPlayerInTuning(playerid)) {

@@ -724,7 +724,7 @@ public OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat, Float:new_
 	return 1;
 }
 
-public OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
+public OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA:areaid)
 {
 	if (Tuning_OnPlayerEnterDynamicArea(playerid, areaid)) {
 		return 1;
@@ -737,7 +737,7 @@ public OnPlayerEnterDynamicArea(playerid, STREAMER_TAG_AREA areaid)
 	return 1;
 }
 
-public OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA areaid)
+public OnPlayerLeaveDynamicArea(playerid, STREAMER_TAG_AREA:areaid)
 {
 	if (Tuning_OnPlayerLeaveDynamicArea(playerid, areaid)) {
 		return 1;

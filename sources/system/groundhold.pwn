@@ -133,7 +133,7 @@ Groundhold_OnPlayerDisconnect(playerid, reason)
 	OnPlayerEnterDynamicArea
 */
 
-Groundhold_OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA areaid)
+Groundhold_OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA:areaid)
 {
 	if (Spectate_IsSpectating(playerid)) {
 		return 0;
@@ -192,7 +192,7 @@ Groundhold_OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA areaid)
 	OnPlayerLeaveDynamicArea
 */
 
-Groundhold_OnPlayerLeaveDynArea(playerid, STREAMER_TAG_AREA areaid)
+Groundhold_OnPlayerLeaveDynArea(playerid, STREAMER_TAG_AREA:areaid)
 {
 	new ghid = pGroundID[playerid];
 	if (ghid == INVALID_GROUNDHOLD_ID) {
