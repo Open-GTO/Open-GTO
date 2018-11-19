@@ -1,8 +1,5 @@
 language: Pawn
-script:
-- curl https://raw.githubusercontent.com/Southclaws/sampctl/master/install-deb.sh | sh
-- sampctl package ensure
-- sampctl package build
+script: make
 addons:
   apt:
     packages:
