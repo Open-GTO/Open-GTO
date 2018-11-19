@@ -14,15 +14,10 @@ Open-GTO – свободный, некоммерческий проект, на
 
 Загрузка всех исходных кодов:
 ```
-git clone https://github.com/Open-GTO/Open-GTO.git
+git clone --recursive https://github.com/Open-GTO/Open-GTO.git
 ```
 (или вы можете использовать [GitHub Desktop](https://desktop.github.com/))
 
-Для установки всех зависимостей и сборки необходимо установить [sampctl](https://github.com/Southclaws/sampctl) и выполнить:
-```
-sampctl package ensure
-sampctl package build
-sampctl server ensure
-```
+Для сборки необходимо запустить **!compile.bat** (если вы используете Windows) или **make** (если вы используете GNU/Linux).
 
-Для запуска сервера необходимо ввести команду `sampctl s run`, предварительно настроив `samp.json`.
+Для запуска сервера необходимо скачать последнюю версию сервера с сайта [sa-mp.com](http://sa-mp.com/download.php) и скопировать файл сервера **samp-server.exe** (для Windows) или **samp03svr** (для GNU/Linux) и файл конфигурации **server.cfg** в каталог **Open-GTO/**. Также, необходимо скачать плагины [Streamer](https://github.com/samp-incognito/samp-streamer-plugin/releases), [sscanf2](http://forum.sa-mp.com/showthread.php?t=602923), [GVar](https://github.com/samp-incognito/samp-gvar-plugin/releases), [samp-log](https://github.com/maddinat0r/samp-log/releases), [rustext](https://github.com/ziggi/rustext) и поместить **.dll** (для Windows) и **.so** (для GNU/Linux) файлы в каталог **plugins/**. Не забудьте прописать плагины и название режима в файл конфигурации сервера **server.cfg** ([инструкция по этому файлу](http://wiki.sa-mp.com/wiki/Server.cfg)).
