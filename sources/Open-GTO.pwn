@@ -17,14 +17,14 @@ SA-MP version:
 
 Developers:
 	Open-GTO:
-		0.6.4 – current     ziggi
-		0.6.0 – 0.6.4       GhostTT, heufix, Elbi, ziggi
+		0.6.4 ï¿½ current     ziggi
+		0.6.0 ï¿½ 0.6.4       GhostTT, heufix, Elbi, ziggi
 
 	GTO:
-		0.5.9 – 0.6.0       SCALOLaz
-		0.5.8 – 0.5.9       Robin Kikkert (dejavu), Lajos Pacsek (Asturel)
-		0.5.7 – 0.5.8       Peter Steenbergen (j1nx)
-		0.0.0 – 0.5.7       Iain Gilbert
+		0.5.9 ï¿½ 0.6.0       SCALOLaz
+		0.5.8 ï¿½ 0.5.9       Robin Kikkert (dejavu), Lajos Pacsek (Asturel)
+		0.5.7 ï¿½ 0.5.8       Peter Steenbergen (j1nx)
+		0.0.0 ï¿½ 0.5.7       Iain Gilbert
 
 Thanks:
 	Dmitry Borisoff (Beginner) - Russian translation
@@ -43,39 +43,37 @@ Thanks:
 #include "core/unfixes.inc"
 
 // important lib
-#include <fixes>
+#include "lib/sa-mp-fixes/fixes.inc"
 
 // lib
-#include <crashdetect>
-#include <streamer>
-#include <foreach>
+#include "lib/streamer.inc"
+#include "lib/foreach/foreach.inc"
 #include "lib/sscanf2.inc"
 #include "lib/zcmd.inc"
 #include "lib/formatnumber.inc"
-#include <log-plugin>
-#include <gvar>
-#include <rustext>
-#include <mxINI>
+#include "lib/log-plugin.inc"
+#include "lib/gvar.inc"
+#include "lib/rustext.inc"
+#include "lib/mxINI/mxINI.inc"
 #include "lib/mapfix.inc"
-#include <getspawninfo>
-#include <weaponskill>
-#include <protection>
-#include <zmessage>
-#include <time_t>
-#include <textlist>
-#include <shootingrange>
-#include <zlang>
-#include <zvehcomp>
-#include <zvehpaintjob>
-#include <zvehgetcolor>
-#include <mdialog>
-#include <mselect>
-#include <skinselect>
-#include <garage_blocker>
-#include <gpickup>
-#include <gtolib>
-#include <zvehinfo>
-#include <russifier>
+#include "lib/getspawninfo/getspawninfo.inc"
+#include "lib/weaponskill/weaponskill.inc"
+#include "lib/protection/protection.inc"
+#include "lib/zmessage/zmessage.inc"
+#include "lib/time_t/time_t.inc"
+#include "lib/textlist/textlist.inc"
+#include "lib/shootingrange/shootingrange.inc"
+#include "lib/zlang/zlang.inc"
+#include "lib/zvehcomp/zvehcomp.inc"
+#include "lib/zvehpaintjob/zvehpaintjob.inc"
+#include "lib/zvehgetcolor/zvehgetcolor.inc"
+#include "lib/mdialog/mdialog.inc"
+#include "lib/mselect/mselect.inc"
+#include "lib/skinselect/skinselect.inc"
+#include "lib/garageblock/garage_block.inc"
+#include "lib/gpickup/gpickup.inc"
+#include "lib/gtolib/gtolib.inc"
+#include "lib/zvehinfo/zvehinfo.inc"
 
 // header files
 #include "core/lang.inc"
