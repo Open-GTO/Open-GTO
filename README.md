@@ -14,7 +14,7 @@ Open-GTO – свободный, некоммерческий проект, на
 
 Загрузка всех исходных кодов:
 ```
-git clone --recursive https://github.com/Open-GTO/Open-GTO.git
+git clone -b nosampctl --recursive https://github.com/Open-GTO/Open-GTO.git
 ```
 (или вы можете использовать [GitHub Desktop](https://desktop.github.com/))
 
