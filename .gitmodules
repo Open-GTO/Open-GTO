@@ -43,9 +43,6 @@
 [submodule "sources/lib/zvehinfo"]
 	path = sources/lib/zvehinfo
 	url = https://github.com/Open-GTO/zvehinfo.git
-[submodule "sources/lib/garageblock"]
-	path = sources/lib/garageblock
-	url = https://github.com/Crayder/Realistic-Garage-Blocking.git
 [submodule "sources/lib/mxINI"]
 	path = sources/lib/mxINI
 	url = https://github.com/Open-GTO/mxINI.git
