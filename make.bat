@@ -1,2 +1,0 @@
-sampctl p build
-pause
