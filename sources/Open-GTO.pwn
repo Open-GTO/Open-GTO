@@ -70,10 +70,11 @@ Thanks:
 #include "lib/mdialog/mdialog.inc"
 #include "lib/mselect/mselect.inc"
 #include "lib/skinselect/skinselect.inc"
-#include "lib/garageblock/garage_block.inc"
 #include "lib/gpickup/gpickup.inc"
 #include "lib/gtolib/gtolib.inc"
 #include "lib/zvehinfo/zvehinfo.inc"
+#include "lib/russifier/russifier.inc"
+#include "lib/realistic-garage-blocker/garage_blocker.inc"
 
 // header files
 #include "core/lang.inc"

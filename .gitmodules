@@ -58,3 +58,9 @@
 [submodule "sources/lib/protection"]
 	path = sources/lib/protection
 	url = https://github.com/Open-GTO/protection.git
+[submodule "sources/lib/russifier"]
+	path = sources/lib/russifier
+	url = https://github.com/Open-GTO/russifier
+[submodule "sources/lib/realistic-garage-blocker"]
+	path = sources/lib/realistic-garage-blocker
+	url = https://github.com/Open-GTO/realistic-garage-blocker
