@@ -1,6 +1,7 @@
 announce
 samp03svr
 filterscripts/
+dependencies/
 plugins/
 scriptfiles/callbackfix.amx
 scriptfiles/DANGEROUS_SERVER_ROOT
@@ -10,4 +11,4 @@ scriptfiles/DANGEROUS_SERVER_ROOT
 /*.cfg
 /*.txt
 /*.amx
-/*.lst
+*.lst
