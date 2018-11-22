@@ -48,6 +48,8 @@ static gGroundholds[][e_Groundhold_Info] = {
 	{"GROUNDHOLD_POINT_HIGHLAND_FARM",      5, 15, 100, 20,  1106.4384, -309.8355, 73.5568}
 };
 
+const GROUNDHOLD_POINTS = sizeof(gGroundholds);
+
 static
 	IsEnabled = GROUNDHOLD_ENABLED,
 	bool:pIsHold[MAX_PLAYERS],
@@ -366,6 +368,13 @@ stock IsPlayerInAnyGround(playerid)
 		}
 	}
 	return 0;
+}
+
+stock Groundhold_GetPos(ghid, &Float:x, &Float:y, &Float:z)
+{
+	x = gGroundholds[ghid][e_ghPosX];
+	y = gGroundholds[ghid][e_ghPosY];
+	z = gGroundholds[ghid][e_ghPosZ];
 }
 
 /*

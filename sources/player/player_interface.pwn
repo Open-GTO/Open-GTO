@@ -24,8 +24,12 @@ static
 
 public OnPlayerConnect(playerid)
 {
+	for (new i = 0; i < sizeof(gPlayerInterface[]); i++) {
+		for (new j = 0; j < sizeof(gPlayerInterface[][]); j++) {
+			gPlayerInterface[playerid][PlayerInterface:i][PlayerInterfaceParams:j] = 0;
+		}
+	}
 	TogglePlayerInterfaceVisibility(playerid, true, true);
-	gPlayerInterface[playerid] = NULL_gPlayerInterface;
 
 	#if defined PInter_OnPlayerConnect
 		return PInter_OnPlayerConnect(playerid);
