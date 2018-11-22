@@ -150,6 +150,7 @@ stock Player_Login(playerid)
 	format(filename_player, sizeof(filename_player), "%s%s"DATA_FILES_FORMAT, db_player, ret_GetPlayerName(playerid));
 
 	if (!ini_fileExist(filename_player)) {
+		Account_SetAfterRegistration(playerid, true);
 		Player_Create(playerid);
 	} else {
 		new
