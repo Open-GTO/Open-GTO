@@ -2613,6 +2613,28 @@ static stock GetPlayerSpawnID(playerid)
 		return GetPlayerRandomSpawnID(playerid);
 	}
 
+	new
+		Float:gh_x,
+		Float:gh_y,
+		Float:gh_z,
+		gh_chunk_x,
+		gh_chunk_y;
+
+	for (new ghid = 0; ghid < GROUNDHOLD_POINTS; ghid++) {
+		Groundhold_GetPos(ghid, gh_x, gh_y, gh_z);
+		GetPointChunkPos(gh_x, gh_y, gh_chunk_x, gh_chunk_y);
+	}
+
+	new
+		chunk_x,
+		chunk_y;
+
+	GetPointChunkPos(pos_x, pos_y, chunk_x, chunk_y);
+
+	if (chunk_x == gh_chunk_x && chunk_y == gh_chunk_y) {
+		return GetNearestRandomSpawnID(pos_x, pos_y, 1);
+	}
+
 	return GetNearestRandomSpawnID(pos_x, pos_y);
 }
 
@@ -2625,7 +2647,7 @@ static stock GetPlayerRandomSpawnID(playerid)
 	return gPlayerRandomSpawnID[playerid] = random( sizeof(gSpawns) );
 }
 
-static stock GetNearestRandomSpawnID(Float:x, Float:y)
+static stock GetNearestRandomSpawnID(Float:x, Float:y, chunk_level = 0)
 {
 	new
 		chunk_x,
@@ -2637,10 +2659,10 @@ static stock GetNearestRandomSpawnID(Float:x, Float:y)
 	chunk_pointid = -1;
 
 	points_count = gChunkPointsCount[chunk_x]{chunk_y};
-	if (points_count != 0) {
+	if (points_count != 0 && chunk_level == 0) {
 		chunk_pointid = random(points_count);
 	} else {
-		if (GetNearestNotEmptyChunk(chunk_x, chunk_y, chunk_x, chunk_y)) {
+		if (GetNearestNotEmptyChunk(chunk_x, chunk_y, chunk_x, chunk_y, chunk_level)) {
 			chunk_pointid = random(gChunkPointsCount[chunk_x]{chunk_y});
 		}
 	}
@@ -2652,7 +2674,7 @@ static stock GetNearestRandomSpawnID(Float:x, Float:y)
 	return gChunkPoints[chunk_x][chunk_y][chunk_pointid];
 }
 
-static stock GetNearestNotEmptyChunk(current_x, current_y, &cx, &cy)
+static stock GetNearestNotEmptyChunk(current_x, current_y, &cx, &cy, chunk_level = 0)
 {
 	new
 		n,
@@ -2667,6 +2689,10 @@ static stock GetNearestNotEmptyChunk(current_x, current_y, &cx, &cy)
 		n++;
 
 		for (k = 0; k < n && current_x >= 0; k++, current_x--) {
+			if (k < chunk_level) {
+				continue;
+			}
+
 			if (gChunkPointsCount[current_x]{current_y} != 0) {
 				cx = current_x;
 				cy = current_y;
@@ -2675,6 +2701,10 @@ static stock GetNearestNotEmptyChunk(current_x, current_y, &cx, &cy)
 		}
 
 		for (k = 0; k < n && current_y < MAX_GRID_SIZE; k++, current_y++) {
+			if (k < chunk_level) {
+				continue;
+			}
+
 			if (gChunkPointsCount[current_x]{current_y} != 0) {
 				cx = current_x;
 				cy = current_y;
@@ -2685,6 +2715,10 @@ static stock GetNearestNotEmptyChunk(current_x, current_y, &cx, &cy)
 		n++;
 
 		for (k = 0; k < n && current_x < MAX_GRID_SIZE; k++, current_x++) {
+			if (k < chunk_level) {
+				continue;
+			}
+
 			if (gChunkPointsCount[current_x]{current_y} != 0) {
 				cx = current_x;
 				cy = current_y;
@@ -2693,6 +2727,10 @@ static stock GetNearestNotEmptyChunk(current_x, current_y, &cx, &cy)
 		}
 
 		for (k = 0; k < n && current_y >= 0; k++, current_y--) {
+			if (k < chunk_level) {
+				continue;
+			}
+
 			if (gChunkPointsCount[current_x]{current_y} != 0) {
 				cx = current_x;
 				cy = current_y;
