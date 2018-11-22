@@ -62,10 +62,6 @@ static
 	gBusyTicket[1 + MAX_LOTTERY_TICKET],
 	gPlayerTicket[MAX_PLAYERS];
 
-static const
-	NULL_gBusyTicket[ sizeof(gBusyTicket) ] = {INVALID_PLAYER_ID, ...},
-	NULL_gPlayerTicket[ sizeof(gPlayerTicket) ] = {INVALID_TICKET_ID, ...};
-
 /*
 	Config
 */
@@ -255,8 +251,13 @@ static stock SetLotteryStatus(LotteryStatus:status)
 	if (status == LotteryStart) {
 		SetLotteryMaxValue(GetPlayersCount() * 2);
 
-		gPlayerTicket = NULL_gPlayerTicket;
-		gBusyTicket = NULL_gBusyTicket;
+		for (new i = 0; i < sizeof(gBusyTicket); i++) {
+			gBusyTicket[i] = INVALID_PLAYER_ID;
+		}
+
+		for (new i = 0; i < sizeof(gPlayerTicket); i++) {
+			gPlayerTicket[i] = INVALID_TICKET_ID;
+		}
 	}
 }
 

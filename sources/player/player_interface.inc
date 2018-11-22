@@ -48,5 +48,4 @@ forward OnPlayerInterfaceChanged(playerid, PlayerInterface:componentid, PlayerIn
 */
 
 new
-	gPlayerInterface[MAX_PLAYERS][PlayerInterface][PlayerInterfaceParams],
-	NULL_gPlayerInterface[PlayerInterface][PlayerInterfaceParams];
+	gPlayerInterface[MAX_PLAYERS][PlayerInterface][PlayerInterfaceParams];
