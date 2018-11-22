@@ -195,7 +195,7 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 		killer_level = GetPlayerLevel(killerid),
 		max_level = GetMaxPlayerLevel(),
 		player_xp = (player_level == max_level) ? GetXPToLevel(max_level) : GetPlayerXP(playerid);
-	
+
 	if (player_xp < 100) {
 		player_xp = 100;
 	}
@@ -238,7 +238,7 @@ public OnPlayerLogin(playerid)
 		Float:spawn_pos_a;
 
 	GetPlayerSpawnPos(playerid, spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a);
-	SetSpawnInfo(playerid, 0, GetPlayerSkin(playerid), spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, 0, 0, 0, 0, 0, 0);
+	SetSpawnInfo(playerid, NO_TEAM, GetPlayerSkin(playerid), spawn_pos_x, spawn_pos_y, spawn_pos_z, spawn_pos_a, 0, 0, 0, 0, 0, 0);
 	TogglePlayerSpectating(playerid, 0);
 
 	// skin select
