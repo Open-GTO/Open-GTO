@@ -46,7 +46,7 @@ COMMAND:privilege(playerid, params[])
 		SetPlayerPrivilege(targetid, privilege);
 
 		GetPrivilegeNameForPlayer(targetid, privilege, privilege_name);
-		Lang_SendText(playerid, "ADMIN_COMMAND_PRIVILEGE_SET_PLAYER", playername, playerid, privilege_name);
+		Lang_SendText(targetid, "ADMIN_COMMAND_PRIVILEGE_SET_PLAYER", playername, playerid, privilege_name);
 
 		GetPrivilegeNameForPlayer(playerid, privilege, privilege_name);
 		Lang_SendText(playerid, "ADMIN_COMMAND_PRIVILEGE_SET_SELF", targetname, targetid, privilege_name);

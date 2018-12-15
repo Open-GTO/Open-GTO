@@ -2493,7 +2493,7 @@ DialogResponse:PlayerSpawnMenu(playerid, response, listitem, inputtext[])
 			SetPlayerSpawnType(playerid, SPAWN_TYPE_HOUSE);
 			SetPlayerSpawnHouseID(playerid, i);
 
-			// если игрок, сменивший спавн - лидер банды, то устанавливаем домом банды этот дом
+			// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 			if (GangMember_IsPlayerHaveRank(playerid, GangMemberLeader)) {
 				Gang_SetHouseID(gangid, i);
 				Dialog_Message(playerid,
@@ -2632,7 +2632,7 @@ static stock GetPlayerSpawnID(playerid)
 	GetPointChunkPos(pos_x, pos_y, chunk_x, chunk_y);
 
 	if (chunk_x == gh_chunk_x && chunk_y == gh_chunk_y) {
-		return GetNearestRandomSpawnID(pos_x, pos_y, 1);
+		return GetNearestRandomSpawnID(pos_x, pos_y, 2);
 	}
 
 	return GetNearestRandomSpawnID(pos_x, pos_y);
