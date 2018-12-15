@@ -84,6 +84,7 @@ COMMAND:teleport(playerid, params[])
 
 		TeleportPlayerToPos(playerid, t_pos_x + random(2) - random(4), t_pos_y + random(2) - random(4), t_pos_z,
 		                    t_pos_a, t_interior, t_world);
+		Enterexit_SyncPlayersExits(targetid, playerid);
 
 		GetPlayerNearPlayers(targetid, 40.0, players, .exclude_playerid = playerid);
 		Lang_SendTextToPlayers(players, "ADMIN_COMMAND_TELEPORT_TO_PLAYER", targetname, targetid, playername, playerid);
@@ -99,12 +100,14 @@ COMMAND:teleport(playerid, params[])
 			foreach (new i : Player) {
 				TeleportPlayerToPos(i, p_pos_x + random(2) - random(4), p_pos_y + random(2) - random(4), p_pos_z,
 				                    p_pos_a, p_interior, p_world, false);
+				Enterexit_SyncPlayersExits(playerid, i);
 			}
 
 			Lang_SendTextToAll("ADMIN_COMMAND_TELEPORT_HERE_ALL", playername, playerid);
 		} else {
 			TeleportPlayerToPos(targetid, p_pos_x + random(2) - random(4), p_pos_y + random(2) - random(4), p_pos_z,
 			                    p_pos_a, p_interior, p_world);
+			Enterexit_SyncPlayersExits(playerid, targetid);
 
 			GetPlayerNearPlayers(targetid, 40.0, players);
 			Lang_SendTextToPlayers(players, "ADMIN_COMMAND_TELEPORT_HERE_PLAYER", playername, playerid, targetname, targetid);
