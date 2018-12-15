@@ -521,7 +521,12 @@ stock Account_SetLang(playerid, Lang:lang)
 {
 	Lang_SetPlayerLang(playerid, lang);
 	Lang_GetName(lang, gAccount[playerid][e_aLanguage], MAX_LANG_NAME);
-	CallLocalFunction("OnAccountLanguageChanged", "ii", playerid, _:lang);
+	Account_OnLanguageChanged(playerid);
+}
+
+stock Account_OnLanguageChanged(playerid)
+{
+	CallLocalFunction("OnAccountLanguageChanged", "ii", playerid, _:Lang_GetPlayerLang(playerid));
 }
 
 /*

@@ -101,17 +101,20 @@ COMMAND:system(playerid, params[])
 			if (strcmp(reload_param, "all", true) == 0) {
 				Lang_ReloadAll();
 				Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_RELOAD_ALL");
-				return 1;
+			} else {
+				new Lang:lang = Lang_Get(reload_param);
+				if (lang == INVALID_LANG_ID) {
+					Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_RELOAD_ERROR");
+					return 1;
+				}
+
+				Lang_Reload(lang);
+				Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_RELOAD", Lang_ReturnName(lang));
 			}
 
-			new Lang:lang = Lang_Get(reload_param);
-			if (lang == INVALID_LANG_ID) {
-				Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_RELOAD_ERROR");
-				return 1;
+			foreach (new i : Player) {
+				Account_OnLanguageChanged(i);
 			}
-
-			Lang_Reload(lang);
-			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_RELOAD", Lang_ReturnName(lang));
 		} else {
 			Lang_SendText(playerid, "ADMIN_COMMAND_SYSTEM_LANG_HELP", Lang_ReturnCodes());
 		}

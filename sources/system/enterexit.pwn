@@ -623,7 +623,7 @@ stock Enterexit_SyncPlayersExits(fromid, playerid)
 {
 	new id = Enterexit_GetPlayerEnterID(fromid);
 	if (id != INVALID_ENTEREXIT_ID) {
-		Enterexit_SetPlayerEnterID(playerid, id)
+		Enterexit_SetPlayerEnterID(playerid, id);
 		Enterexit_SetPlayerIndex(playerid, id);
 	}
 }
