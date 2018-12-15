@@ -94,7 +94,7 @@ static Float:gCoords[][CoordInfo] = {
 
 public OnGameModeInit()
 {
-	if (!IsMissionEnabled(mission_swagup)) {
+	if (!IsMissionEnabled(MISSION_SWAGUP)) {
 		return 0;
 	}
 
@@ -124,15 +124,15 @@ public OnGameModeInit()
 
 public OnPlayerPickUpDynamicPickup(playerid, pickupid)
 {
-	if (!IsMissionEnabled(mission_swagup) || pickupid != gPickupID) {
+	if (!IsMissionEnabled(MISSION_SWAGUP) || pickupid != gPickupID) {
 		return 0;
 	}
 
 	DestroyDynamicPickup(gPickupID);
 
 	new
-		win_money = mission_CalculateMoney(playerid, mission_swagup),
-		win_xp = mission_CalculateXP(playerid, mission_swagup);
+		win_money = Mission_CalculateMoney(playerid, MISSION_SWAGUP),
+		win_xp = Mission_CalculateXP(playerid, MISSION_SWAGUP);
 
 	GivePlayerMoney(playerid, win_money);
 	GivePlayerXP(playerid, win_xp);
@@ -203,5 +203,5 @@ stock Swagup_SetPaused()
 
 stock Swagup_SetTimeout()
 {
-	gPreviousTime = gettime() + mission_GetPauseTime(mission_swagup);
+	gPreviousTime = gettime() + Mission_GetPauseTime(MISSION_SWAGUP);
 }

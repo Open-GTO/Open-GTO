@@ -144,7 +144,7 @@ static
 
 public OnGameModeInit()
 {
-	if (!IsMissionEnabled(mission_trucker)) {
+	if (!IsMissionEnabled(MISSION_TRUCKER)) {
 	#if defined Trucker_OnGameModeInit
 		return Trucker_OnGameModeInit();
 	#else
@@ -153,7 +153,7 @@ public OnGameModeInit()
 	}
 
 	// регистрируем миссию
-	mission_Register(mission_trucker);
+	Mission_Register(MISSION_TRUCKER);
 
 	// создаём прицепы
 	for (new veh_id = 0; veh_id < sizeof(gTrailer); veh_id++) {
@@ -204,7 +204,7 @@ public OnGameModeInit()
 
 public OnPlayerStateChange(playerid, newstate, oldstate)
 {
-	if (!IsMissionEnabled(mission_trucker)) {
+	if (!IsMissionEnabled(MISSION_TRUCKER)) {
 	#if defined Trucker_OnPlayerStateChange
 		return Trucker_OnPlayerStateChange(playerid, newstate, oldstate);
 	#else
@@ -214,7 +214,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 
 	if (newstate == PLAYER_STATE_DRIVER) {
 		if (IsVehicleIsRunner( GetPlayerVehicleID(playerid) )) {
-			if (!IsPlayerInMission(playerid, mission_trucker)) {
+			if (!IsPlayerOnMission(playerid, MISSION_TRUCKER)) {
 				if (player_trucker[playerid][pt_PauseTime] > gettime()) {
 					RemovePlayerFromVehicle(playerid);
 					Trucker_ShowPauseMessage(playerid);
@@ -229,7 +229,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 	} else if (oldstate == PLAYER_STATE_DRIVER) {
 		player_trucker[playerid][pt_BackCarTime] = TRUCKER_BACK_CAR_TIME;
 
-		if (IsPlayerInMission(playerid, mission_trucker)) {
+		if (IsPlayerOnMission(playerid, MISSION_TRUCKER)) {
 			Trucker_BackCarTimer(playerid);
 		}
 	}
@@ -334,7 +334,7 @@ stock Trucker_Start(playerid)
 		}
 	}
 
-	SetPlayerQuestID(playerid, mission_GetQuestID(mission_trucker));
+	SetPlayerQuestID(playerid, Mission_GetQuestID(MISSION_TRUCKER));
 	player_trucker[playerid][pt_MissionTimer] = SetTimerEx("Trucker_CancelMission", TRUCKER_MISSION_TIME * 1000, 0, "d", playerid);
 
 	Lang_SendText(playerid, "TRUCKER_MISSION_STARTED", type_name, zone, TRUCKER_MISSION_TIME / 60);
@@ -359,7 +359,7 @@ stock Trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		return 0;
 	}
 
-	if (IsPlayerInMission(playerid, mission_trucker)) {
+	if (IsPlayerOnMission(playerid, MISSION_TRUCKER)) {
 		Dialog_Show(playerid, Dialog:TruckerCancel);
 		return 1;
 	}
@@ -371,7 +371,7 @@ stock Trucker_OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 */
 public OnPlayerEnterDynamicCP(playerid, checkpointid)
 {
-	if (!IsMissionEnabled(mission_trucker) || checkpointid != player_checkpoint[playerid]) {
+	if (!IsMissionEnabled(MISSION_TRUCKER) || checkpointid != player_checkpoint[playerid]) {
 	#if defined Trucker_OnPlayerEnterDynamicCP
 		return Trucker_OnPlayerEnterDynamicCP(playerid, checkpointid);
 	#else
@@ -380,7 +380,7 @@ public OnPlayerEnterDynamicCP(playerid, checkpointid)
 	}
 
 	new vehicleid = GetPlayerVehicleID(playerid);
-	if (IsPlayerInMission(playerid, mission_trucker) && IsVehicleIsRunner(vehicleid)) {
+	if (IsPlayerOnMission(playerid, MISSION_TRUCKER) && IsVehicleIsRunner(vehicleid)) {
 		new trailerid = GetVehicleTrailer(vehicleid);
 		if (trailerid == 0) {
 			Lang_SendText(playerid, "TRUCKER_TRAILER_MISSING");
@@ -389,7 +389,7 @@ public OnPlayerEnterDynamicCP(playerid, checkpointid)
 
 		if (!IsMissionTrailer(trailerid)) {
 			Trucker_Stop(playerid);
-			GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker));
+			GivePlayerMoney(playerid, -Mission_CalculateMoney(playerid, MISSION_TRUCKER));
 
 			new Float:health;
 			GetPlayerHealth(playerid, health);
@@ -401,8 +401,8 @@ public OnPlayerEnterDynamicCP(playerid, checkpointid)
 
 		Trucker_Stop(playerid);
 		KillTimer(player_trucker[playerid][pt_MissionTimer]);
-		GivePlayerMoney(playerid, mission_CalculateMoney(playerid, mission_trucker));
-		GivePlayerXP(playerid, mission_CalculateXP(playerid, mission_trucker));
+		GivePlayerMoney(playerid, Mission_CalculateMoney(playerid, MISSION_TRUCKER));
+		GivePlayerXP(playerid, Mission_CalculateXP(playerid, MISSION_TRUCKER));
 
 		if (player_trucker[playerid][pt_TryCount] > 0) {
 			Lang_SendText(playerid, "TRUCKER_MISSION_COMPLETE", TRUCKER_MISSION_TIME / 60);
@@ -476,7 +476,7 @@ DialogResponse:TruckerCancel(playerid, response, listitem, inputtext[])
 		return 1;
 	}
 
-	if (IsPlayerInMission(playerid, mission_trucker)) {
+	if (IsPlayerOnMission(playerid, MISSION_TRUCKER)) {
 		Trucker_CancelMission(playerid);
 		KillTimer(player_trucker[playerid][pt_MissionTimer]);
 	}
@@ -518,11 +518,11 @@ public OnPlayerConnect(playerid)
 
 public OnPlayerDisconnect(playerid, reason)
 {
-	if (!IsMissionEnabled(mission_trucker)) {
+	if (!IsMissionEnabled(MISSION_TRUCKER)) {
 		return 1;
 	}
 
-	if (IsPlayerInMission(playerid, mission_trucker)) {
+	if (IsPlayerOnMission(playerid, MISSION_TRUCKER)) {
 		if (player_trucker[playerid][pt_MissionTimer] != 0) {
 			KillTimer(player_trucker[playerid][pt_MissionTimer]);
 			player_trucker[playerid][pt_MissionTimer] = 0;
@@ -569,7 +569,7 @@ public OnPlayerDisconnect(playerid, reason)
 
 public OnPlayerDeath(playerid, killerid, reason)
 {
-	if (!IsMissionEnabled(mission_trucker) || !IsPlayerInMission(playerid, mission_trucker)) {
+	if (!IsMissionEnabled(MISSION_TRUCKER) || !IsPlayerOnMission(playerid, MISSION_TRUCKER)) {
 	#if defined Trucker_OnPlayerDeath
 		return Trucker_OnPlayerDeath(playerid, killerid, reason);
 	#else
@@ -577,7 +577,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	#endif
 	}
 	Trucker_Stop(playerid);
-	GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker));
+	GivePlayerMoney(playerid, -Mission_CalculateMoney(playerid, MISSION_TRUCKER));
 	Lang_SendText(playerid, "TRUCKER_MISSION_FAILED");
 	#if defined Trucker_OnPlayerDeath
 		return Trucker_OnPlayerDeath(playerid, killerid, reason);
@@ -602,7 +602,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 
 public OnVehicleDeath(vehicleid, killerid)
 {
-	if (!IsMissionEnabled(mission_trucker)) {
+	if (!IsMissionEnabled(MISSION_TRUCKER)) {
 	#if defined Trucker_OnVehicleDeath
 		return Trucker_OnVehicleDeath(vehicleid, killerid);
 	#else
@@ -610,9 +610,9 @@ public OnVehicleDeath(vehicleid, killerid)
 	#endif
 	}
 	if (IsVehicleIsRunner(vehicleid)) {
-		if (IsPlayerInMission(killerid, mission_trucker)) {
+		if (IsPlayerOnMission(killerid, MISSION_TRUCKER)) {
 			Trucker_Stop(killerid);
-			GivePlayerMoney(killerid, -mission_CalculateMoney(killerid, mission_trucker));
+			GivePlayerMoney(killerid, -Mission_CalculateMoney(killerid, MISSION_TRUCKER));
 			Lang_SendText(killerid, "TRUCKER_MISSION_FAILED_DESTROY");
 		} else {
 			if (player_trucker[killerid][pt_TrailerCheck_Timer] != 0) {
@@ -698,9 +698,9 @@ public Trucker_Trailer_Check(playerid, vehicleid)
 forward Trucker_CancelMission(playerid);
 public Trucker_CancelMission(playerid)
 {
-	if (IsPlayerInMission(playerid, mission_trucker)) {
+	if (IsPlayerOnMission(playerid, MISSION_TRUCKER)) {
 		Trucker_Stop(playerid);
-		GivePlayerMoney(playerid, -mission_CalculateMoney(playerid, mission_trucker));
+		GivePlayerMoney(playerid, -Mission_CalculateMoney(playerid, MISSION_TRUCKER));
 		Lang_SendText(playerid, "TRUCKER_MISSION_FAILED_DESCRIPTION");
 
 		new vehicleid = GetPlayerVehicleID(playerid);
@@ -735,9 +735,9 @@ stock Trucker_Stop(playerid)
 
 	player_trucker[playerid][pt_TryCount]++;
 
-	if (player_trucker[playerid][pt_TryCount] >= mission_GetTryCount(mission_trucker)) {
+	if (player_trucker[playerid][pt_TryCount] >= Mission_GetTryCount(MISSION_TRUCKER)) {
 		player_trucker[playerid][pt_TryCount] = 0;
-		player_trucker[playerid][pt_PauseTime] = gettime() + mission_GetPauseTime(mission_trucker);
+		player_trucker[playerid][pt_PauseTime] = gettime() + Mission_GetPauseTime(MISSION_TRUCKER);
 
 		RemovePlayerFromVehicle(playerid);
 		SetVehicleToRespawn(vehicleid);
