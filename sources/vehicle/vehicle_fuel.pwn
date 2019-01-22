@@ -245,6 +245,10 @@ stock Float:GetVehicleFuel(vehicleid)
 
 stock Float:SetVehicleFuel(vehicleid, Float:amount)
 {
+	if (!IsValidVehicle(vehicleid)) {
+		return -1.0;
+	}
+
 	new Float:max_fuel = GetVehicleModelMaxFuel( GetVehicleModel(vehicleid) );
 
 	if (amount == -1.0) {
