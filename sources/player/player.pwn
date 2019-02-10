@@ -18,6 +18,7 @@
 static
 	gPlayerDeaths[MAX_PLAYERS],
 	gPlayerKills[MAX_PLAYERS],
+	gPlayerConnectTime[MAX_PLAYERS],
 
 	gPlayerStartMoney = PLAYER_START_MONEY;
 
@@ -116,6 +117,7 @@ Player_OnPlayerDisconnect(playerid, reason)
 	ResetLoginAttempt(playerid);
 	SetPlayerPrivilege(playerid, PlayerPrivilegePlayer);
 	ResetPlayerLevel(playerid);
+	gPlayerConnectTime[playerid] = 0;
 }
 
 Player_OnPlayerConnect(playerid)
@@ -124,6 +126,9 @@ Player_OnPlayerConnect(playerid)
 		playername[MAX_PLAYER_NAME + 1];
 
 	GetPlayerName(playerid, playername, sizeof(playername));
+
+	// connect time
+	gPlayerConnectTime[playerid] = gettime();
 
 	// load language
 	Account_LoadLanguage(playerid, playername);
@@ -140,6 +145,7 @@ Player_OnPlayerConnect(playerid)
 		Lang_SendText(playerid, "PLAYER_NICK_BAD_SYMBOLS", ALLOWED_NICK_SYMBOLS_STR);
 		Lang_SendText(playerid, "PLAYER_NICK_IS_IP");
 		KickPlayer(playerid, "Такой ник запрещён.");
+		return;
 	}
 
 	// set color
@@ -504,4 +510,13 @@ stock Float:GetPlayerKillDeathRatio(playerid)
 stock GetPlayerTotalMoney(playerid)
 {
 	return GetPlayerMoney(playerid) + GetPlayerBankMoney(playerid);
+}
+
+/*
+	Connect Time
+*/
+
+stock GetPlayerConnectTime(playerid)
+{
+	return gPlayerConnectTime[playerid];
 }

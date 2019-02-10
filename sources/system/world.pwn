@@ -66,11 +66,17 @@ public WorldSave(necessarily) // save all
 
 public OneSecTimer()
 {
+	new kick_time = gettime() - MAX_LOGIN_TIME;
+
 	foreach (new playerid : Player) {
 		PlayerWSkillTD_UpdateString(playerid);
 		AdminSpectate_UpdateLabel(playerid);
+
 		if (IsPlayerLogin(playerid)) {
 			FreezePlayerTimer(playerid);
+		} else if (GetPlayerConnectTime(playerid) < kick_time) {
+			Lang_SendText(playerid, "ACCOUNT_AUTO_KICK");
+			KickPlayer(playerid);
 		}
 	}
 
