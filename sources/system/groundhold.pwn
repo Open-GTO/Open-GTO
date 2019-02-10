@@ -154,7 +154,7 @@ Groundhold_OnPlayerEnterDynArea(playerid, STREAMER_TAG_AREA:areaid)
 		return 0;
 	}
 
-	if (pHoldTime[playerid] != 0 && pGroundID[playerid] != INVALID_GROUNDHOLD_ID) {
+	if (pHoldTime[playerid] != 0 && pGroundID[playerid] != ghid) {
 		Groundhold_RemovePlayer(pGroundID[playerid], playerid);
 	}
 
