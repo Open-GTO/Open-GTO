@@ -426,7 +426,7 @@ public AdminClick_TeleportToPlayer(playerid, targetid, listitem, inputtext[])
 	TeleportPlayerToPlayer(playerid, targetid);
 
 	GetPlayerNearPlayers(targetid, 40.0, players);
-	Lang_SendTextToPlayers(players, "ADMIN_COMMAND_TELEPORT_TO_PLAYER", targetname, targetid, playername, playerid);
+	Lang_SendTextToPlayers(players, "ADMIN_COMMAND_TELEPORT_TO_PLAYER", playername, playerid, targetname, targetid);
 
 	Dialog_MessageEx(playerid, Dialog:AdminPlayerClickReturn,
 	                 "ADMIN_CLICK_MESSAGE_HEADER",

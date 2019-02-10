@@ -87,7 +87,7 @@ COMMAND:teleport(playerid, params[])
 		Enterexit_SyncPlayersExits(targetid, playerid);
 
 		GetPlayerNearPlayers(targetid, 40.0, players, .exclude_playerid = playerid);
-		Lang_SendTextToPlayers(players, "ADMIN_COMMAND_TELEPORT_TO_PLAYER", targetname, targetid, playername, playerid);
+		Lang_SendTextToPlayers(players, "ADMIN_COMMAND_TELEPORT_TO_PLAYER", playername, playerid, targetname, targetid);
 
 		Lang_SendText(playerid, "ADMIN_COMMAND_TELEPORT_TO_SELF", targetname, targetid);
 	} else if (strcmp(subcmd, "here", true) == 0) {
