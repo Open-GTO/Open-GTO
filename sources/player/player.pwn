@@ -115,6 +115,7 @@ Player_OnPlayerDisconnect(playerid, reason)
 	SetPlayerLoginStatus(playerid, false);
 	ResetLoginAttempt(playerid);
 	SetPlayerPrivilege(playerid, PlayerPrivilegePlayer);
+	ResetPlayerLevel(playerid);
 }
 
 Player_OnPlayerConnect(playerid)

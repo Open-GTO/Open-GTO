@@ -61,6 +61,12 @@ PLevel_OnGameModeInit()
 	return 1;
 }
 
+stock ResetPlayerLevel(playerid)
+{
+	gPlayerLevel[playerid] = 0;
+	gPlayerXP[playerid] = 0;
+}
+
 stock SetPlayerLevel(playerid, level, bool:regenhp = true, bool:notify = true)
 {
 	new old_level = GetPlayerLevel(playerid);
