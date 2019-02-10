@@ -420,22 +420,22 @@ stock Account_UpdateIP(playerid)
 	Login attempt
 */
 
-static stock ResetLoginAttempt(playerid)
+stock ResetLoginAttempt(playerid)
 {
 	gLoginAttempt{playerid} = 0;
 }
 
-static stock GetLoginAttemptCount(playerid)
+stock GetLoginAttemptCount(playerid)
 {
 	return MAX_PLAYER_LOGIN_ATTEMPT - gLoginAttempt{playerid};
 }
 
-static stock AddLoginAttempt(playerid, value = 1)
+stock AddLoginAttempt(playerid, value = 1)
 {
 	gLoginAttempt{playerid} += value;
 }
 
-static stock IsLoginAttemptsEnded(playerid)
+stock IsLoginAttemptsEnded(playerid)
 {
 	return gLoginAttempt{playerid} >= MAX_PLAYER_LOGIN_ATTEMPT;
 }

@@ -111,8 +111,10 @@ Player_OnPlayerDisconnect(playerid, reason)
 	StopAudioStreamForPlayer(playerid);
 	SendDeathMessage(INVALID_PLAYER_ID, playerid, 201);
 
-	// reset login status
+	// reset data
 	SetPlayerLoginStatus(playerid, false);
+	ResetLoginAttempt(playerid);
+	SetPlayerPrivilege(playerid, PlayerPrivilegePlayer);
 }
 
 Player_OnPlayerConnect(playerid)
@@ -195,7 +197,7 @@ Player_OnPlayerDeath(playerid, killerid, reason)
 		killer_level = GetPlayerLevel(killerid),
 		max_level = GetMaxPlayerLevel(),
 		player_xp = (player_level == max_level) ? GetXPToLevel(max_level) : GetPlayerXP(playerid);
-	
+
 	if (player_xp < 100) {
 		player_xp = 100;
 	}
