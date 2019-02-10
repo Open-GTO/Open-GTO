@@ -433,7 +433,7 @@ public OnPlayerSpawn(playerid)
 	GetPlayerSpawnPos(playerid, pos_x, pos_y, pos_z, pos_a, interior, world);
 
 	// we need to set position for avoid small player fall after spawn
-	SetPlayerPos(playerid, pos_x, pos_y, pos_z);
+	Streamer_UpdateEx(playerid, pos_x, pos_y, pos_z, world, interior, .compensatedtime = SPAWN_FREEZE_DELAY);
 	SetPlayerFacingAngle(playerid, pos_a);
 	SetPlayerInterior(playerid, interior);
 	SetPlayerVirtualWorld(playerid, world);
