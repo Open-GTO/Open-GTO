@@ -30,6 +30,10 @@ COMMAND:sys(playerid, params[])
 
 COMMAND:system(playerid, params[])
 {
+	if (!IsPlayerHavePrivilege(playerid, PlayerPrivilegeRcon)) {
+		return 0;
+	}
+
 	new
 		subcmd[20],
 		subparams[32];
