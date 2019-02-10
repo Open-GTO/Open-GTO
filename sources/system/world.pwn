@@ -69,6 +69,9 @@ public OneSecTimer()
 	foreach (new playerid : Player) {
 		PlayerWSkillTD_UpdateString(playerid);
 		AdminSpectate_UpdateLabel(playerid);
+		if (IsPlayerLogin(playerid)) {
+			FreezePlayerTimer(playerid);
+		}
 	}
 
 	Lottery_WaitTimer();
@@ -81,7 +84,6 @@ public FiveSecondTimer()
 		if (IsPlayerLogin(playerid)) {
 			MutePlayerTimer(playerid);
 			JailPlayerTimer(playerid);
-			FreezePlayerTimer(playerid);
 			CheckPlayerInvitedGangTime(playerid);
 		}
 	}

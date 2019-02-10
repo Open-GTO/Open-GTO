@@ -19,6 +19,10 @@
 	#define MAX_FREEZE_REASON_LENGTH 64
 #endif
 
+#if !defined FREEZE_TIMER_INTERVAL
+	#define FREEZE_TIMER_INTERVAL 400
+#endif
+
 /*
 	Vars
 */
@@ -40,10 +44,10 @@ stock FreezePlayerTimer(playerid)
 	static
 		freezetime;
 
-	freezetime = GetPlayerMuteTime(playerid);
+	freezetime = GetPlayerFreezeTime(playerid);
 
 	if (freezetime != 0 && gettime() >= freezetime) {
-		UnMutePlayer(playerid);
+		UnFreezePlayer(playerid);
 
 		new playername[MAX_PLAYER_NAME + 1];
 		GetPlayerName(playerid, playername, sizeof(playername));
